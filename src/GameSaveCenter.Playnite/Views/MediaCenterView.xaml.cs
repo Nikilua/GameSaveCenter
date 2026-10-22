@@ -62,6 +62,7 @@ namespace GameSaveCenter.Playnite.Views
             mediaFilterPresetRowGap = new WrapPanelRowGapController(MediaFilterPresetRow);
             mediaCurrentBatchActionRowGap = new WrapPanelRowGapController(MediaCurrentBatchActions);
             mediaInboxActionRowGap = new WrapPanelRowGapController(MediaInboxBatchActionRow);
+            MediaInboxBatchActionRow.SizeChanged += (_, __) => UpdateMediaInboxBatchIntroduction();
             mediaInboxSecondaryActionRowGap = new WrapPanelRowGapController(MediaInboxSecondaryActions);
             DataGridScrollDiagnostics.Attach(MediaInboxGrid, "MediaInboxGrid", GetScrollDiagnosticContext);
             MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged;
@@ -814,6 +815,27 @@ namespace GameSaveCenter.Playnite.Views
             return false;
         }
 
+        private void UpdateMediaInboxBatchIntroduction()
+        {
+            // The inspector column settles after the outer layout pass. Recheck on
+            // the action row's own SizeChanged using its actual available width.
+            var width = MediaInboxBatchActionRow.ActualWidth;
+            var actionWidth = 0d;
+            foreach (UIElement child in MediaInboxBatchActionRow.Children)
+            {
+                if (!ReferenceEquals(child, MediaInboxBatchIntroduction)
+                    && child.Visibility != Visibility.Collapsed)
+                    actionWidth += child.DesiredSize.Width;
+            }
+            var introductionWidth = MediaInboxBatchSelectionSummary.Width
+                + MediaInboxBatchIntroduction.Margin.Left + MediaInboxBatchIntroduction.Margin.Right;
+            var keepActionsTogether = width > 0 && actionWidth > 0
+                && actionWidth <= width && introductionWidth + actionWidth > width;
+            MediaInboxBatchIntroduction.Width = keepActionsTogether
+                ? Math.Max(0, width - MediaInboxBatchIntroduction.Margin.Left - MediaInboxBatchIntroduction.Margin.Right)
+                : double.NaN;
+        }
+
         public void ApplyResponsiveLayout(double width, double height)
         {
             if (isApplyingLayout) return;
@@ -843,6 +865,7 @@ namespace GameSaveCenter.Playnite.Views
                 // 20-DIP spacing as the other compact action rows in that range.
                 mediaInboxSecondaryActionRowGap.SetRowGap(width < 577d ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
                 var batchActionWidth = MediaInboxBatchActionRow.ActualWidth;
+                UpdateMediaInboxBatchIntroduction();
                 var compactBatchActions = batchActionWidth > 0
                     ? batchActionWidth < 960
                     : width < 1040;

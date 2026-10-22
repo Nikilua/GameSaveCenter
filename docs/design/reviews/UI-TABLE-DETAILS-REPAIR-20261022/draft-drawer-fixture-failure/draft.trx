@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="516f5285-93f3-44fa-bd9e-e0078dc5f906" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-22T20:15:22.8298040+08:00" queuing="2026-10-22T20:15:22.8298045+08:00" start="2026-10-22T20:15:16.2786686+08:00" finish="2026-10-22T20:15:24.2571569+08:00" />
+  <TestSettings name="default" id="529ee399-c17c-484c-b14a-3d40f524260a">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2e658d53-c4a7-41e3-9deb-a59fcda11a79" testId="2d6f1c46-62e6-1802-6331-0b055449aa2b" testName="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.ComparisonDistinguishesDifferentMappingsForSameVersionAndKeepsUnknownCountsUnknown" computerName="redacted-host" duration="00:00:00.0200000" startTime="2026-10-22T20:15:21.4046517+08:00" endTime="2026-10-22T20:15:21.4046517+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e658d53-c4a7-41e3-9deb-a59fcda11a79" />
+    <UnitTestResult executionId="c2ad02b6-f77f-4064-b88f-91c076b5ed78" testId="3f7b58c1-e26e-524a-34ab-b19475c1920f" testName="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.SaveCenterRendersDraftEvidenceAndBindsOnlyPreviewSaveAndDeleteCommands" computerName="redacted-host" duration="00:00:00.6440000" startTime="2026-10-22T20:15:23.4278488+08:00" endTime="2026-10-22T20:15:24.0420276+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c2ad02b6-f77f-4064-b88f-91c076b5ed78" />
+    <UnitTestResult executionId="9a65f245-7bfe-4f9c-87ad-8b215cf7b2c4" testId="705800b4-03b7-ac53-84fa-2562d4cee7ca" testName="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.SaveCenterExposesKeyboardOperableAtoBComparisonSelectorsAndResult" computerName="redacted-host" duration="00:00:01.9530000" startTime="2026-10-22T20:15:21.4214437+08:00" endTime="2026-10-22T20:15:23.3799466+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a65f245-7bfe-4f9c-87ad-8b215cf7b2c4">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Single() Failure: The collection did not contain any matching items&#xD;
+Expected:   (predicate expression)&#xD;
+Collection: [GameSaveCenter.Playnite.Controls.Button: 查看版本详情 ›, GameSaveCenter.Playnite.Controls.Button: 重试, GameSaveCenter.Playnite.Controls.Button: 单独重试云端上传, System.Windows.Controls.Primitives.ToggleButton 内容: IsChecked:False, GameSaveCenter.Playnite.Controls.Button: 清空范围, ···]</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R12RestorePlanDraftBehaviorTests.cs:行号 316</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c2d6e61d-77b7-483c-a214-215e46954633" testId="da8bd0e1-4ba5-848e-0ada-9d3ccc2a43c2" testName="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.MappingFingerprintKeyIsDpapiProtectedAndSurvivesSettingsRoundTrip" computerName="redacted-host" duration="00:00:00.0950000" startTime="2026-10-22T20:15:21.3313333+08:00" endTime="2026-10-22T20:15:21.3726452+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c2d6e61d-77b7-483c-a214-215e46954633" />
+    <UnitTestResult executionId="0ab63445-0785-43f7-a7e9-ea2a1983895f" testId="b83ef03c-bbec-d62c-6302-977cae545484" testName="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.SavedDraftCollectionIsBoundedAndDeduplicated" computerName="redacted-host" duration="00:00:00.0180000" startTime="2026-10-22T20:15:23.4258495+08:00" endTime="2026-10-22T20:15:23.4258495+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0ab63445-0785-43f7-a7e9-ea2a1983895f" />
+    <UnitTestResult executionId="6b351ca9-bca5-4162-ab88-808c2211b764" testId="3e3d6cf7-47f5-a7f8-0204-2635f5c17272" testName="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.DraftSettingsRoundTripKeepsOnlyBoundedPathFreePlanningEvidence" computerName="redacted-host" duration="00:00:00.0260000" startTime="2026-10-22T20:15:21.4064389+08:00" endTime="2026-10-22T20:15:21.4194404+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6b351ca9-bca5-4162-ab88-808c2211b764" />
+    <UnitTestResult executionId="513e5a0b-8712-4cad-abf4-1658c837a372" testId="90cde6ea-c64c-e0ac-0b94-de8adb887bce" testName="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.DraftCreationReferencesTheMatchingMappingAndReadinessCheck" computerName="redacted-host" duration="00:00:00.0040000" startTime="2026-10-22T20:15:24.0436032+08:00" endTime="2026-10-22T20:15:24.0456981+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="513e5a0b-8712-4cad-abf4-1658c837a372" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.SaveCenterExposesKeyboardOperableAtoBComparisonSelectorsAndResult" storage="[repo]\artifacts\gsc-b\dee6daeb\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="705800b4-03b7-ac53-84fa-2562d4cee7ca">
+      <Execution id="9a65f245-7bfe-4f9c-87ad-8b215cf7b2c4" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\dee6daeb\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests" name="SaveCenterExposesKeyboardOperableAtoBComparisonSelectorsAndResult" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.DraftCreationReferencesTheMatchingMappingAndReadinessCheck" storage="[repo]\artifacts\gsc-b\dee6daeb\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="90cde6ea-c64c-e0ac-0b94-de8adb887bce">
+      <Execution id="513e5a0b-8712-4cad-abf4-1658c837a372" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\dee6daeb\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests" name="DraftCreationReferencesTheMatchingMappingAndReadinessCheck" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.MappingFingerprintKeyIsDpapiProtectedAndSurvivesSettingsRoundTrip" storage="[repo]\artifacts\gsc-b\dee6daeb\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="da8bd0e1-4ba5-848e-0ada-9d3ccc2a43c2">
+      <Execution id="c2d6e61d-77b7-483c-a214-215e46954633" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\dee6daeb\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests" name="MappingFingerprintKeyIsDpapiProtectedAndSurvivesSettingsRoundTrip" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.SaveCenterRendersDraftEvidenceAndBindsOnlyPreviewSaveAndDeleteCommands" storage="[repo]\artifacts\gsc-b\dee6daeb\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3f7b58c1-e26e-524a-34ab-b19475c1920f">
+      <Execution id="c2ad02b6-f77f-4064-b88f-91c076b5ed78" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\dee6daeb\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests" name="SaveCenterRendersDraftEvidenceAndBindsOnlyPreviewSaveAndDeleteCommands" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.ComparisonDistinguishesDifferentMappingsForSameVersionAndKeepsUnknownCountsUnknown" storage="[repo]\artifacts\gsc-b\dee6daeb\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2d6f1c46-62e6-1802-6331-0b055449aa2b">
+      <Execution id="2e658d53-c4a7-41e3-9deb-a59fcda11a79" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\dee6daeb\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests" name="ComparisonDistinguishesDifferentMappingsForSameVersionAndKeepsUnknownCountsUnknown" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.DraftSettingsRoundTripKeepsOnlyBoundedPathFreePlanningEvidence" storage="[repo]\artifacts\gsc-b\dee6daeb\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3e3d6cf7-47f5-a7f8-0204-2635f5c17272">
+      <Execution id="6b351ca9-bca5-4162-ab88-808c2211b764" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\dee6daeb\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests" name="DraftSettingsRoundTripKeepsOnlyBoundedPathFreePlanningEvidence" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.SavedDraftCollectionIsBoundedAndDeduplicated" storage="[repo]\artifacts\gsc-b\dee6daeb\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b83ef03c-bbec-d62c-6302-977cae545484">
+      <Execution id="0ab63445-0785-43f7-a7e9-ea2a1983895f" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\dee6daeb\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests" name="SavedDraftCollectionIsBoundedAndDeduplicated" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2d6f1c46-62e6-1802-6331-0b055449aa2b" executionId="2e658d53-c4a7-41e3-9deb-a59fcda11a79" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3f7b58c1-e26e-524a-34ab-b19475c1920f" executionId="c2ad02b6-f77f-4064-b88f-91c076b5ed78" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="705800b4-03b7-ac53-84fa-2562d4cee7ca" executionId="9a65f245-7bfe-4f9c-87ad-8b215cf7b2c4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da8bd0e1-4ba5-848e-0ada-9d3ccc2a43c2" executionId="c2d6e61d-77b7-483c-a214-215e46954633" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b83ef03c-bbec-d62c-6302-977cae545484" executionId="0ab63445-0785-43f7-a7e9-ea2a1983895f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e3d6cf7-47f5-a7f8-0204-2635f5c17272" executionId="6b351ca9-bca5-4162-ab88-808c2211b764" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="90cde6ea-c64c-e0ac-0b94-de8adb887bce" executionId="513e5a0b-8712-4cad-abf4-1658c837a372" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="7" executed="7" passed="6" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.50]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.16]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.21]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.41]       Assert.Single() Failure: The collection did not contain any matching items&#xD;
+[xUnit.net 00:00:05.41]       Expected:   (predicate expression)&#xD;
+[xUnit.net 00:00:05.41]       Collection: [GameSaveCenter.Playnite.Controls.Button: 查看版本详情 ›, GameSaveCenter.Playnite.Controls.Button: 重试, GameSaveCenter.Playnite.Controls.Button: 单独重试云端上传, System.Windows.Controls.Primitives.ToggleButton 内容: IsChecked:False, GameSaveCenter.Playnite.Controls.Button: 清空范围, ···]&#xD;
+[xUnit.net 00:00:05.41]       Stack Trace:&#xD;
+[xUnit.net 00:00:05.41]            在 GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R12RestorePlanDraftBehaviorTests.cs:行号 316&#xD;
+[xUnit.net 00:00:06.04]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-22T20:15:23.4210008+08:00">
+        <Text>[xUnit.net 00:00:05.41]     GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests.SaveCenterExposesKeyboardOperableAtoBComparisonSelectorsAndResult [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-22T20:15:24.2131385+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

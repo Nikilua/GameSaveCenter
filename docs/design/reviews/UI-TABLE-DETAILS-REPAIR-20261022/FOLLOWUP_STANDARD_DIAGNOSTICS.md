@@ -19,3 +19,9 @@
 第七次：dee44e98 / run 20261022T112558956Z-428a4aa6，R07断点与缩放、R09焦点2/2均通过，第95类版本备注测试独立宿主没有调用生产壳层的ApplyResponsiveLayout，新固定外框仍折叠，视觉树找不到备注编辑器。累计1437 pass/18 skip/1 fail，根退出1。[失败TRX](version-note-fixture-failure/version-note.trx)、[摘要](version-note-fixture-failure/summary.json)、[退出码](version-note-fixture-failure/result.json)。修复测试宿主接线，并扩展1040/860宽窄两种：调用生产布局，窄窗使用真实详情按钮路由，要求外框可见、原备份仍选中，再执行绑定取消命令并检查原备注/锁/ID。未修改生产取消或保存逻辑。
 
 随后主动复核相邻恢复详情fixture：R12RestoreReadinessViewBehaviorTests原1/1失败（未生成详情视觉树）；R12RestoreWorkflowBehaviorTests原7 pass/1 fail（同一遗漏）。两者均补生产布局调用并明确断言固定外框可见，原哈希未知/部分覆盖/过期/损坏说明、恢复步骤/错误/状态变化断言完整保留。原始TRX保存在tests/R12RestoreReadinessViewBehaviorTests.trx和tests/R12RestoreWorkflowBehaviorTests.trx，修复后结果使用不同文件名归档。
+
+第八次：6fd2fbf5 / run 20261022T115646284Z-ddca8914，版本备注5/5通过，第99类恢复方案A/B比较fixture在900DIP窄窗未打开详情抽屉就搜索其按钮，6 pass/1 fail；累计1455 pass/18 skip/1 fail，根退出1。同类后一个fixture已通过真实按钮打开，现为前一个场景补齐相同用户入口操作，并断言按钮/外框可见，保留A/B选择、结果、映射差异断言。[失败TRX](draft-drawer-fixture-failure/draft.trx)、[摘要](draft-drawer-fixture-failure/summary.json)、[退出码](draft-drawer-fixture-failure/result.json)。随后定向检查全部剩余直接创建SaveCenterView的WPF类，避免只修当前首个失败。
+
+剩余直接构造存档页的定向检查：恢复草稿7/7、UIA24/24、禁用/隐藏2/2、键盘轨迹4/4、生产资源9/9；ReportedWorkspaceLayout54项中52 pass/2 fail，双主题媒体工具栏清空/重置与目标中心相差41.33DIP。原因是480DIP详情使左侧工具栏不再能同时容纳摘要和所有操作，WrapPanel把目标组挤到下一排。生产修复按实际操作组DesiredSize判断：所有操作本身能同排、加摘要才超宽时，让摘要独占上一排，避免把相关动作拆开；足够宽恢复自然单排，更窄保留自然换行。保留原对齐断言，失败TRX见tests/reported-layout-before-batch-fix.trx。
+
+最终定向：ReportedWorkspaceLayout54/54、MediaInboxScroll6/6、RestorePlanDraft7/7，见tests/*-confirmed.trx。首版工具栏测量在外列布局完成前读取旧ActualWidth，仍有原2失败；现通过操作行SizeChanged在实际列宽稳定后重测，双主题原对齐断言通过。首版失败仍在本地artifacts/ui-layout-fix/tests/batch-layout-final，未作为通过证据；没有删除对齐断言或扩大skip。

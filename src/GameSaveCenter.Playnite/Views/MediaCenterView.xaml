@@ -245,7 +245,7 @@
                                 </Grid>
                             </Border>
                             <WrapPanel x:Name="MediaInboxBatchActionRow" Margin="0,0,0,10" VerticalAlignment="Center">
-                                <StackPanel Margin="0,0,8,4">
+                                <StackPanel x:Name="MediaInboxBatchIntroduction" Margin="0,0,8,4">
                                     <TextBlock Text="批量处理" FontWeight="SemiBold"/>
                                     <TextBlock x:Name="MediaInboxBatchSelectionSummary" Text="未选择媒体 · Ctrl / Shift 多选" Style="{DynamicResource GscCaptionStyle}" Width="160" TextTrimming="CharacterEllipsis" ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" AutomationProperties.Name="批量选择摘要" Margin="0,3,0,0"/>
                                 </StackPanel>

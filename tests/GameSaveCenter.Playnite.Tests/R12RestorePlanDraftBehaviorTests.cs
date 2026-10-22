@@ -129,6 +129,12 @@ public sealed class R12RestorePlanDraftBehaviorTests
                 view.ApplyResponsiveLayout(window.ActualWidth, window.ActualHeight);
                 PumpLayout(window);
 
+                var detailsButton = Assert.IsAssignableFrom<ButtonBase>(view.FindName("SaveHistoryCompactDetailsButton"));
+                Assert.True(detailsButton.IsVisible);
+                detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                PumpLayout(window);
+                Assert.True(((Border)view.FindName("SaveHistoryInspectorFrame")!).IsVisible);
+
                 var from = Assert.IsType<ComboBox>(view.FindName("RestorePlanCompareFromSelector"));
                 var to = Assert.IsType<ComboBox>(view.FindName("RestorePlanCompareToSelector"));
                 Assert.Same(state.RestorePlanDrafts, from.ItemsSource);
