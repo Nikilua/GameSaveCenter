@@ -39,6 +39,9 @@ public sealed class R12RestoreReadinessViewBehaviorTests
             {
                 window.Show();
                 PumpLayout(window);
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                PumpLayout(window);
+                Assert.True(((Border)view.FindName("SaveHistoryInspectorFrame")!).IsVisible);
 
                 var textBlocks = FindVisualChildren<TextBlock>(view).ToList();
                 Assert.Contains("未验证", textBlocks.Select(item => item.Text));

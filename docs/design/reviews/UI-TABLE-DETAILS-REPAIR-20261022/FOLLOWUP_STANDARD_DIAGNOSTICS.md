@@ -15,3 +15,7 @@
 [真实媒体视图绑定探针](binding-probe/result.json) 使用5ced8abb的Release DLL，宽窄往返1400→860→1400→860→1400；已选合成批次始终为synthetic-b，空选择写入0次。只加载合成对象，没有真实媒体操作；探针源码与程序集SHA一并保留。
 
 第六次：a57159cf / run 20261022T110212727Z-fcf7cf8b，R07详情断点已通过；第64类缩放压力测试仍要求子控件固定MaxHeight（旧表格上限、旧宽详情420上限），与有限父Grid伸展分配冲突。累计1347 pass/18 skip/1 fail，根退出1。现验收实际命名页面Grid的有限Height、边框内预算与表格填满、宽详情填满、紧凑136上限、PageHost上限及缩放恢复，保留选择/焦点/抽屉路由/真实SizeChanged检查。[原始失败](resize-contract-failure/resize.trx)、[摘要](resize-contract-failure/summary.json)、[退出码](resize-contract-failure/result.json)。新增探针首跑遗漏宽详情Infinity相减导致NaN，已改为比较真实详情视口高度；该探针失败保留本地artifacts/ui-layout-fix/tests/r07-final，未作为通过证据。
+
+第七次：dee44e98 / run 20261022T112558956Z-428a4aa6，R07断点与缩放、R09焦点2/2均通过，第95类版本备注测试独立宿主没有调用生产壳层的ApplyResponsiveLayout，新固定外框仍折叠，视觉树找不到备注编辑器。累计1437 pass/18 skip/1 fail，根退出1。[失败TRX](version-note-fixture-failure/version-note.trx)、[摘要](version-note-fixture-failure/summary.json)、[退出码](version-note-fixture-failure/result.json)。修复测试宿主接线，并扩展1040/860宽窄两种：调用生产布局，窄窗使用真实详情按钮路由，要求外框可见、原备份仍选中，再执行绑定取消命令并检查原备注/锁/ID。未修改生产取消或保存逻辑。
+
+随后主动复核相邻恢复详情fixture：R12RestoreReadinessViewBehaviorTests原1/1失败（未生成详情视觉树）；R12RestoreWorkflowBehaviorTests原7 pass/1 fail（同一遗漏）。两者均补生产布局调用并明确断言固定外框可见，原哈希未知/部分覆盖/过期/损坏说明、恢复步骤/错误/状态变化断言完整保留。原始TRX保存在tests/R12RestoreReadinessViewBehaviorTests.trx和tests/R12RestoreWorkflowBehaviorTests.trx，修复后结果使用不同文件名归档。

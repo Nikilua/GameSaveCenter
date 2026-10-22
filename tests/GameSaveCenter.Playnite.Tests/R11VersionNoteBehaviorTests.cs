@@ -22,8 +22,10 @@ namespace GameSaveCenter.Playnite.Tests;
 [Collection("R11SaveWpf")]
 public sealed class R11VersionNoteBehaviorTests
 {
-    [Fact]
-    public void SaveCenterVersionEditorCancelsDraftThroughTheRealViewCommandPath()
+    [Theory]
+    [InlineData(1040)]
+    [InlineData(860)]
+    public void SaveCenterVersionEditorCancelsDraftThroughTheRealViewCommandPath(double width)
     {
         RunSta(() =>
         {
@@ -36,10 +38,10 @@ public sealed class R11VersionNoteBehaviorTests
             };
             var viewModel = CreateBareDashboardViewModel(backup);
             var state = new NotePageState(viewModel);
-            var view = new SaveCenterView { DataContext = state, Width = 1040, Height = 700 };
+            var view = new SaveCenterView { DataContext = state, Width = width, Height = 700 };
             var window = new Window
             {
-                Width = 1040,
+                Width = width,
                 Height = 700,
                 Content = view,
                 ShowInTaskbar = false,
@@ -50,6 +52,18 @@ public sealed class R11VersionNoteBehaviorTests
             {
                 window.Show();
                 PumpLayout(window);
+                // Standalone views need the same layout call the production shell
+                // provides before the fixed inspector frame can be displayed.
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                PumpLayout(window);
+                var detailsButton = (Button)view.FindName("SaveHistoryCompactDetailsButton")!;
+                if (detailsButton.IsVisible)
+                {
+                    detailsButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, detailsButton));
+                    PumpLayout(window);
+                }
+                Assert.True(((Border)view.FindName("SaveHistoryInspectorFrame")!).IsVisible);
+                Assert.Same(backup, ((DataGrid)view.FindName("SaveHistoryGrid")!).SelectedItem);
 
                 var editor = FindVisualChildren<TextBox>(view)
                     .Single(textBox => AutomationProperties.GetName(textBox) == "版本备注");

@@ -148,6 +148,9 @@ public sealed class R12RestoreWorkflowBehaviorTests
             {
                 window.Show();
                 PumpLayout(window);
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                PumpLayout(window);
+                Assert.True(((Border)view.FindName("SaveHistoryInspectorFrame")!).IsVisible);
 
                 var summary = FindVisualChildren<TextBlock>(view)
                     .Single(textBlock => textBlock.Text.StartsWith("恢复流程停在“目标核对”", StringComparison.Ordinal));

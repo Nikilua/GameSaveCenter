@@ -782,3 +782,7 @@ WPF 测试若新增窗口到另一个 STA thread，`Application.Current` 可能�
 ## 2026-10-22 缩放验收改为有限父布局预算
 
 a57159cf 的标准链已通过R07详情断点，在第64类窗口缩放压力测试因旧子控件MaxHeight约束失败；原始结果保留。现检查有限页面Grid、表格填满边框、宽详情填满视口、窄详情136上限、PageHost预算和缩放恢复，保留焦点/选择/抽屉/SizeChanged断言。SDK8.0.423 Release项目编译0警告0错误，缩放定向1/1；完整链待新提交运行。诊断与宽窄切换绑定探针见 docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FOLLOWUP_STANDARD_DIAGNOSTICS.md，用户旧TRX保留。
+
+## 2026-10-22 存档详情独立测试宿主补齐
+
+dee44e98 默认中文入口run 20261022T112558956Z-428a4aa6已通过95类前的R07/R09检查，在版本备注独立视图fixture未调用壳层ApplyResponsiveLayout处失败；累计1437 pass/18 skip/1 fail，根退出1。补齐fixture布局和可见性断言，备注扩展1040/860宽窄场景，窄窗通过真实详情按钮打开；顺查复现并修复两处恢复详情fixture同一遗漏，不改生产保存/恢复语义。SDK8 Release编译0/0，备注5/5、恢复可用性1/1、恢复步骤8/8，完整默认链须新提交重跑。证据见表格详情修复FOLLOWUP_STANDARD_DIAGNOSTICS，用户旧TRX不动。
