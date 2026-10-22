@@ -28,7 +28,7 @@
       "implementationCommit": "29dc09b2、a58dd582",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 默认全量本地构建及 WPF 隔离 `1,823/1,891` 通过、68 skip，见[当前复核](evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)",
+      "verificationText": "[证据](evidence/S00-02/README.md)：Release 目标构建与 21/21 定向用例通过；SDK8 默认全量本地构建及 WPF 隔离 `1,823/1,891` 通过、68 skip，见[当前复核](evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
@@ -37,9 +37,13 @@
         {
           "label": "当前 SDK8 全量本地复核",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "SDK8 官方默认本地构建完成，139 个 WPF 隔离类均结束；此前独立 S00-02 UI 门禁在 R05 GetCursorPos Win32 error 5 停止，因此本任务 host verification 仍 pending。S00-03/S00-04 后续已完成代码实现及当前标准链受控验证；这不替代 S00-02 的真实页面呈现验收。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite命令面板呈现与交互、物理输入仍待验；历史GetCursorPos权限边界未绕过。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S00-03",
@@ -200,7 +204,7 @@
       "implementationCommit": "ad7bd563",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-02/README.md)：密度/设置14/14；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)；[最终标准验收](../UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md)：4f40e016默认中文入口完整退出0，SDK8.0.423/Release，1908项（1851 pass/57原有skip/0 fail），140个WPF类、143份TRX一致；打包安装与Playnite启动通过，独立双主题RenderHarness 0 PROBLEM",
+      "verificationText": "[证据](evidence/S01-02/README.md)：密度/设置14/14；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)；[最终标准验收](../UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md)：4f40e016默认中文入口完整退出0，SDK8.0.423/Release，1908项（1851 pass/57原有skip/0 fail），140个WPF类、143份TRX一致；打包安装与Playnite启动通过，独立双主题RenderHarness 0 PROBLEM；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
@@ -213,9 +217,13 @@
         {
           "label": "截图修复后标准完整链",
           "path": "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "真实Playnite密度设置加载/保存、物理DPI与页面交互仍未运行；当前标准入口编译/受控测试/打包/安装身份/进程启动已在4f40e016通过，不替代host verification。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite密度/列配置保存加载、列宽/排序/拖动/预览与页面交互，以及物理DPI/双主题最终呈现仍须按本项范围验收。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S01-03",
@@ -225,14 +233,18 @@
       "implementationCommit": "8cdf5253",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-03/README.md)：SDK8.0.423 Release 解决方案构建 0/0；列显隐 4/4、列宽 6/6、视图配置 5/5、R09 2/2，source validation 通过",
+      "verificationText": "[证据](evidence/S01-03/README.md)：SDK8.0.423 Release 解决方案构建 0/0；列显隐 4/4、列宽 6/6、视图配置 5/5、R09 2/2，source validation 通过；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-03/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "Playnite 宿主设置提交/双主题视觉未验；完整安装/UI 门禁仍受 R05 GetCursorPos Win32 error 5 阻塞"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite密度/列配置保存加载、列宽/排序/拖动/预览与页面交互，以及物理DPI/双主题最终呈现仍须按本项范围验收。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S01-04",
@@ -242,14 +254,18 @@
       "implementationCommit": "c6eb8d62",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-04/README.md)：SDK8.0.423 Release 解决方案构建 0/0；视图配置/交互、列显隐/列宽、R09、R10、Q14 隔离测试共 29/29；Render QA OK，Task 1040×700 为 4/4 可读行",
+      "verificationText": "[证据](evidence/S01-04/README.md)：SDK8.0.423 Release 解决方案构建 0/0；视图配置/交互、列显隐/列宽、R09、R10、Q14 隔离测试共 29/29；Render QA OK，Task 1040×700 为 4/4 可读行；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-04/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "未运行完整 WPF/安装门禁及真实 Playnite；既有 R05 GetCursorPos Win32 error 5 权限边界未绕过，宿主设置保存与双主题呈现待验"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite密度/列配置保存加载、列宽/排序/拖动/预览与页面交互，以及物理DPI/双主题最终呈现仍须按本项范围验收。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S01-05",
@@ -259,14 +275,18 @@
       "implementationCommit": "dcfca235",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[证据](evidence/S01-05/README.md)：SDK8.0.423 Release 解决方案构建 0/0，视图/列/R09/R10/Q14 隔离测试 29/29，Render QA OK",
+      "verificationText": "[证据](evidence/S01-05/README.md)：SDK8.0.423 Release 解决方案构建 0/0，视图/列/R09/R10/Q14 隔离测试 29/29，Render QA OK；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-05/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "完整 WPF/安装门禁和真实 Playnite 设置保存、双主题宿主呈现未验；既有 R05 GetCursorPos Win32 error 5 权限边界保留"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite密度/列配置保存加载、列宽/排序/拖动/预览与页面交互，以及物理DPI/双主题最终呈现仍须按本项范围验收。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S01-06",
@@ -276,14 +296,18 @@
       "implementationCommit": "9ec0096b",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-06/README.md)：SDK8.0.423 Release 构建 0/0；定向测试 39 通过、11 跳过；Render QA OK，Task/候选表 1040×700 均为 4/4 可读行",
+      "verificationText": "[证据](evidence/S01-06/README.md)：SDK8.0.423 Release 构建 0/0；定向测试 39 通过、11 跳过；Render QA OK，Task/候选表 1040×700 均为 4/4 可读行；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-06/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "完整 WPF/安装门禁和真实 Playnite 设置/双主题宿主呈现未验；R05 GetCursorPos Win32 error 5 权限边界保留；外机 R09 因缺少同次 summary/TRX/DLL/PDB 身份无法追溯"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite密度/列配置保存加载、列宽/排序/拖动/预览与页面交互，以及物理DPI/双主题最终呈现仍须按本项范围验收。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S01-07",
@@ -293,14 +317,18 @@
       "implementationCommit": "87520a92",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-07/README.md)：SDK8.0.423 Release 构建 0/0；六个隔离测试类 20/20，R09 2/2；Render QA OK，Task/候选表 1040×700 均为 4/4 可读行",
+      "verificationText": "[证据](evidence/S01-07/README.md)：SDK8.0.423 Release 构建 0/0；六个隔离测试类 20/20，R09 2/2；Render QA OK，Task/候选表 1040×700 均为 4/4 可读行；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-07/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "完整 WPF/安装门禁和真实 Playnite 设置/双主题宿主呈现未验；R05 GetCursorPos Win32 error 5 权限边界保留；外机 R09 的 Thickness(2)→Thickness(1) 与 f13b9e05 前旧断言一致，但缺少同次 summary/TRX/DLL/PDB，无法确认其实际测试输入"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite密度/列配置保存加载、列宽/排序/拖动/预览与页面交互，以及物理DPI/双主题最终呈现仍须按本项范围验收。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S01-08",
@@ -310,14 +338,18 @@
       "implementationCommit": "d1005e33",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-08/README.md)：SDK 8.0.423 Release solution build 0/0；五个隔离测试类 21/21（含 R09 2/2）；source validation 与 diff check 通过。",
+      "verificationText": "[证据](evidence/S01-08/README.md)：SDK 8.0.423 Release solution build 0/0；五个隔离测试类 21/21（含 R09 2/2）；source validation 与 diff check 通过。；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-08/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "真实 Playnite 设置保存/加载、双主题宿主呈现及安装门禁未运行；用户旧 R09 运行缺同次 summary/TRX/DLL/PDB，无法确认实际测试输入。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite密度/列配置保存加载、列宽/排序/拖动/预览与页面交互，以及物理DPI/双主题最终呈现仍须按本项范围验收。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S02-01",
@@ -344,14 +376,18 @@
       "implementationCommit": "8810d9e6",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[证据](evidence/S02-02/README.md)：SDK8 Release solution 0/0；Playnite 定向测试 15/15（R09 2/2）、Worker 3/3；双主题 Render QA 22/22",
+      "verificationText": "[证据](evidence/S02-02/README.md)：SDK8 Release solution 0/0；Playnite 定向测试 15/15（R09 2/2）、Worker 3/3；双主题 Render QA 22/22；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-02/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "完整 WPF 独立进程循环未完成；真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺少 summary/TRX/DLL/PDB，不能确认旧输入；S02-03 已在后续批次完成。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite通知页面交互、实际宿主设置/导航与本项行为呈现仍待验；历史输入权限边界未绕过，旧R09输入身份仍未知。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S02-03",
@@ -361,14 +397,18 @@
       "implementationCommit": "6d3a6f43",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[证据](evidence/S02-03/README.md)：SDK8.0.423 Release 构建 0/0；Playnite 18/18（R09 2/2）；Worker SQLite 7/7；双主题 11 尺寸 Render QA 22/22",
+      "verificationText": "[证据](evidence/S02-03/README.md)：SDK8.0.423 Release 构建 0/0；Playnite 18/18（R09 2/2）；Worker SQLite 7/7；双主题 11 尺寸 Render QA 22/22；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-03/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "完整 WPF 独立进程循环和真实 Playnite 安装/宿主呈现未运行；旧 R09 诊断缺同次 summary/TRX/DLL/PDB，实际输入身份无法确认。下一项按依赖审查 S02-04。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite通知页面交互、实际宿主设置/导航与本项行为呈现仍待验；历史输入权限边界未绕过，旧R09输入身份仍未知。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S02-04",
@@ -378,7 +418,7 @@
       "implementationCommit": "1b17e4a0",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-04/README.md)：官方 Release solution build 0/0、XAML 25/25；通知/R10 8/8、Worker 精确 task ID 10/10、R09 2/2。",
+      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-04/README.md)：官方 Release solution build 0/0、XAML 25/25；通知/R10 8/8、Worker 精确 task ID 10/10、R09 2/2。；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "SDK8 当前源码复核",
@@ -387,9 +427,13 @@
         {
           "label": "本项历史证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "SDK8 定向验证通过；完整 WPF 独立循环、安装及真实 Playnite未验。R05系统鼠标位置用例在当前 Windows 会话按设计跳过；用户旧R09诊断身份仍缺。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite通知页面交互、实际宿主设置/导航与本项行为呈现仍待验；历史输入权限边界未绕过，旧R09输入身份仍未知。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S02-05",
@@ -399,7 +443,7 @@
       "implementationCommit": "2aa3fe3c",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-05/README.md)：官方 Release solution build 0/0、XAML 25/25；通知策略 22/22、设置持久化/便携设置 15/15、R09 2/2。",
+      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-05/README.md)：官方 Release solution build 0/0、XAML 25/25；通知策略 22/22、设置持久化/便携设置 15/15、R09 2/2。；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "SDK8 当前源码复核",
@@ -408,9 +452,13 @@
         {
           "label": "本项历史证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-05/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "SDK8 受控定向验证完成；完整 WPF 隔离、安装与真实 Playnite仍未验。R05物理鼠标用例因系统指针访问受限而跳过。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite通知页面交互、实际宿主设置/导航与本项行为呈现仍待验；历史输入权限边界未绕过，旧R09输入身份仍未知。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S02-06",
@@ -420,7 +468,7 @@
       "implementationCommit": "a6153219",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-06/README.md)：官方 Release solution build 0/0、XAML 25/25；通知例外策略 22/22、Worker 持久化 12/12、R09 2/2。",
+      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-06/README.md)：官方 Release solution build 0/0、XAML 25/25；通知例外策略 22/22、Worker 持久化 12/12、R09 2/2。；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "SDK8 当前源码复核",
@@ -429,9 +477,13 @@
         {
           "label": "本项历史证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-06/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "SDK8 受控定向验证完成；完整 WPF 隔离、安装与真实 Playnite仍未验。旧R09输入身份不全，不推断其根因。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite通知页面交互、实际宿主设置/导航与本项行为呈现仍待验；历史输入权限边界未绕过，旧R09输入身份仍未知。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S02-07",
@@ -441,7 +493,7 @@
       "implementationCommit": "9ed6b4e5、c4fb56a0",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-07/README.md)：官方 Release solution build 0/0、通知归并/筛选/已读/重试来源与R09 19/19，Worker通知持久化12/12。",
+      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-07/README.md)：官方 Release solution build 0/0、通知归并/筛选/已读/重试来源与R09 19/19，Worker通知持久化12/12。；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "SDK8 当前源码复核",
@@ -450,9 +502,13 @@
         {
           "label": "本项历史证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-07/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "SDK8 受控定向验证完成；完整 WPF 循环与真实 Playnite未验。用户旧R09诊断输入身份仍未知。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite通知页面交互、实际宿主设置/导航与本项行为呈现仍待验；历史输入权限边界未绕过，旧R09输入身份仍未知。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S02-08",
@@ -462,7 +518,7 @@
       "implementationCommit": "已有 S02 通知实现（83194c50 至 c4fb56a0）",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-08/README.md)：官方 Release solution build 0/0、通知体验子集20/20、完整R21 UIA类24/24、Worker持久化12/12。",
+      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-08/README.md)：官方 Release solution build 0/0、通知体验子集20/20、完整R21 UIA类24/24、Worker持久化12/12。；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
       "evidence": [
         {
           "label": "SDK8 当前源码复核",
@@ -471,9 +527,13 @@
         {
           "label": "本项历史证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-08/README.md"
+        },
+        {
+          "label": "最终默认全链",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "真实Playnite、Windows系统高对比切换和真实读屏器未验证；R05系统鼠标位置测试因当前会话权限按设计跳过。"
+      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite与Windows系统高对比切换、真实读屏仍待验；历史系统指针权限边界未绕过。 不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S03-01",
