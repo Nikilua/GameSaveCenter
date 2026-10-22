@@ -369,6 +369,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid>
@@ -409,7 +410,46 @@
                                    TextWrapping="Wrap"
                                    Margin="2,0,2,6"
                                    AutomationProperties.Name="命令目录状态"/>
-                        <ListBox x:Name="CommandDirectoryResultsListBox" Grid.Row="4"
+                        <Border x:Name="CommandDirectoryContextPreviewCard" Grid.Row="4"
+                                Style="{DynamicResource GscCommandDirectoryContextPreviewCard}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="作用对象" Grid.Row="0"
+                                           FontSize="{DynamicResource GscCaptionFontSize}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                                <TextBlock x:Name="CommandDirectoryContextPreviewText" Grid.Row="1"
+                                           Text="{Binding SelectedItem.ContextPreview, ElementName=CommandDirectoryResultsListBox, TargetNullValue='选择一条命令以查看作用对象。'}"
+                                           Foreground="{DynamicResource GscPrimaryTextBrush}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,2,0,0"
+                                           AutomationProperties.Name="当前命令作用对象"
+                                           AutomationProperties.HelpText="按方向键切换结果时会同步更新。"/>
+                                <TextBlock x:Name="CommandDirectoryContextUnavailableText" Grid.Row="2"
+                                           Text="{Binding SelectedItem.UnavailableReason, ElementName=CommandDirectoryResultsListBox}"
+                                           Foreground="{DynamicResource GscMutedTextBrush}"
+                                           FontSize="{DynamicResource GscCaptionFontSize}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,3,0,0"
+                                           AutomationProperties.Name="命令不可用原因">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedItem.IsAvailable, ElementName=CommandDirectoryResultsListBox}" Value="False">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                        <ListBox x:Name="CommandDirectoryResultsListBox" Grid.Row="5"
                                  BorderThickness="0" Background="Transparent" Padding="0"
                                  IsTabStop="False"
                                  ScrollViewer.VerticalScrollBarVisibility="Auto"

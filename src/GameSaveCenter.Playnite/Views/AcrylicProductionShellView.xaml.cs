@@ -34,6 +34,7 @@ namespace GameSaveCenter.Playnite.Views
         private readonly Dictionary<WorkspaceKind, UserControl> pages = new Dictionary<WorkspaceKind, UserControl>();
         private readonly HashSet<WorkspaceKind> activatedWorkspaces = new HashSet<WorkspaceKind>();
         private IReadOnlyList<CommandDirectoryItem> commandDirectoryItems = Array.Empty<CommandDirectoryItem>();
+        private CommandDirectoryContextSnapshot? commandDirectoryContextSnapshot;
         private DashboardViewModel? viewModel;
         private bool viewModelSubscribed;
         private bool suppressNavigation;
@@ -156,6 +157,8 @@ namespace GameSaveCenter.Playnite.Views
             if (PickerOverlay.Visibility == Visibility.Visible)
                 ClosePickerAndRestoreFocus();
             KeyboardShortcutHelpPopup.IsOpen = false;
+            commandDirectoryContextSnapshot = CommandDirectoryContextSnapshot.Capture(viewModel);
+            NotifyCommandDirectoryCanExecuteChanged();
             CommandDirectorySearchTextBox.Clear();
             UpdateCommandDirectorySearchResults();
             CommandDirectoryOverlay.Visibility = Visibility.Visible;
@@ -484,6 +487,8 @@ namespace GameSaveCenter.Playnite.Views
         private void CloseCommandDirectory(bool restoreFocus)
         {
             CommandDirectoryOverlay.Visibility = Visibility.Collapsed;
+            commandDirectoryContextSnapshot = null;
+            NotifyCommandDirectoryCanExecuteChanged();
             if (!restoreFocus)
                 return;
 
@@ -534,6 +539,7 @@ namespace GameSaveCenter.Playnite.Views
                     viewModel.PropertyChanged += OnViewModelPropertyChanged;
                     viewModel.GamePicker.PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged;
                     viewModel.Games.CollectionChanged += OnGamesCollectionChanged;
+                    viewModel.Tasks.CollectionChanged += OnTasksCollectionChanged;
                     viewModelSubscribed = true;
                 }
                 NavigateTo(dashboardViewModel.CurrentWorkspace);
@@ -547,9 +553,11 @@ namespace GameSaveCenter.Playnite.Views
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
                 viewModel.GamePicker.PlatformFilterOptions.CollectionChanged -= OnGamePickerPlatformOptionsChanged;
                 viewModel.Games.CollectionChanged -= OnGamesCollectionChanged;
+                viewModel.Tasks.CollectionChanged -= OnTasksCollectionChanged;
                 viewModelSubscribed = false;
             }
 
+            commandDirectoryContextSnapshot = null;
             foreach (var item in commandDirectoryItems)
                 item.Executed -= OnCommandDirectoryItemExecuted;
 
@@ -558,6 +566,7 @@ namespace GameSaveCenter.Playnite.Views
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
             viewModel.GamePicker.PlatformFilterOptions.CollectionChanged += OnGamePickerPlatformOptionsChanged;
             viewModel.Games.CollectionChanged += OnGamesCollectionChanged;
+            viewModel.Tasks.CollectionChanged += OnTasksCollectionChanged;
             viewModelSubscribed = true;
             CreatePages();
             commandDirectoryItems = CommandDirectoryCatalog.Create(
@@ -565,7 +574,8 @@ namespace GameSaveCenter.Playnite.Views
                 NavigateWorkspaceCommand,
                 OpenSettingsCommand,
                 OpenGamePickerCommand,
-                FocusWorkspaceSearchCommand);
+                FocusWorkspaceSearchCommand,
+                () => commandDirectoryContextSnapshot);
             foreach (var item in commandDirectoryItems)
                 item.Executed += OnCommandDirectoryItemExecuted;
             RefreshCommandDirectoryPreferences();
@@ -649,11 +659,14 @@ namespace GameSaveCenter.Playnite.Views
             gameSearchCompositionActive = false;
             pickerKeyboardNavigationActive = false;
             pickerKeyboardNavigationGeneration++;
+            commandDirectoryContextSnapshot = null;
+            NotifyCommandDirectoryCanExecuteChanged();
             if (viewModel != null && viewModelSubscribed)
             {
                 viewModel.PropertyChanged -= OnViewModelPropertyChanged;
                 viewModel.GamePicker.PlatformFilterOptions.CollectionChanged -= OnGamePickerPlatformOptionsChanged;
                 viewModel.Games.CollectionChanged -= OnGamesCollectionChanged;
+                viewModel.Tasks.CollectionChanged -= OnTasksCollectionChanged;
                 viewModelSubscribed = false;
             }
         }
@@ -664,6 +677,16 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         private void OnGamesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.BeginInvoke(new Action(NotifyCommandDirectoryCanExecuteChanged));
+                return;
+            }
+            NotifyCommandDirectoryCanExecuteChanged();
+        }
+
+        private void OnTasksCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (!Dispatcher.CheckAccess())
             {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Windows.Input;
+using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
@@ -78,11 +79,89 @@ public sealed class CommandDirectoryBehaviorTests
         Assert.Equal(WorkspaceKind.Tasks, command.LastParameter);
     }
 
+    [Fact]
+    public void ContextSnapshotShowsCapturedTargetsAndRequiresReselectionWhenTheyChangeOrDisappear()
+    {
+        var dashboard = CreateDashboard();
+        SetField(dashboard, "currentWorkspace", WorkspaceKind.Tasks);
+        var firstGame = new GameStatusDto { PlayniteId = "game-a", Name = "游戏甲" };
+        var secondGame = new GameStatusDto { PlayniteId = "game-b", Name = "游戏乙" };
+        dashboard.Games.Add(firstGame);
+        dashboard.Games.Add(secondGame);
+        var gamePicker = (GamePickerViewModel)GetField(dashboard, "gamePicker")!;
+        SetField(gamePicker, "selectedItem", new GamePickerItem(firstGame));
+
+        var firstTask = new TaskStatusDto
+        {
+            TaskId = "task-a",
+            TaskType = "Backup",
+            GameId = firstGame.PlayniteId,
+            GameName = firstGame.Name,
+        };
+        var secondTask = new TaskStatusDto
+        {
+            TaskId = "task-b",
+            TaskType = "MediaSync",
+            GameId = secondGame.PlayniteId,
+            GameName = secondGame.Name,
+        };
+        dashboard.Tasks.Add(firstTask);
+        dashboard.Tasks.Add(secondTask);
+        SetField(dashboard, "selectedTask", firstTask);
+
+        var navigation = new RecordingCommand();
+        var taskNavigation = new RecordingCommand();
+        SetField(dashboard, "<OpenSelectedTaskGameCommand>k__BackingField", taskNavigation);
+        CommandDirectoryContextSnapshot? snapshot = CommandDirectoryContextSnapshot.Capture(dashboard);
+        var items = CommandDirectoryCatalog.Create(
+            dashboard,
+            navigation,
+            new RecordingCommand(),
+            new RecordingCommand(),
+            new RecordingCommand(),
+            () => snapshot);
+        var saves = Assert.Single(items, item => item.Id == "workspace.saves");
+        var openTaskGame = Assert.Single(items, item => item.Id == "task.open-associated-game");
+
+        Assert.Contains("存档中心", saves.ContextPreview);
+        Assert.Contains("游戏甲", saves.ContextPreview);
+        Assert.Contains("Backup", openTaskGame.ContextPreview);
+        Assert.Contains("游戏甲", openTaskGame.ContextPreview);
+        Assert.True(saves.CanExecute(null));
+        Assert.True(openTaskGame.CanExecute(null));
+
+        SetField(gamePicker, "selectedItem", new GamePickerItem(secondGame));
+        Assert.False(saves.CanExecute(null));
+        Assert.Contains("游戏选择已变化", saves.UnavailableReason);
+        Assert.False(saves.TryExecute());
+        Assert.Equal(0, navigation.ExecutionCount);
+
+        SetField(gamePicker, "selectedItem", new GamePickerItem(firstGame));
+        SetField(dashboard, "selectedTask", secondTask);
+        Assert.False(openTaskGame.CanExecute(null));
+        Assert.Contains("任务已变化", openTaskGame.UnavailableReason);
+        Assert.False(openTaskGame.TryExecute());
+        Assert.Equal(0, taskNavigation.ExecutionCount);
+
+        SetField(dashboard, "selectedTask", firstTask);
+        dashboard.Tasks.Remove(firstTask);
+        Assert.False(openTaskGame.CanExecute(null));
+        Assert.Contains("任务已不在", openTaskGame.UnavailableReason);
+        Assert.False(openTaskGame.TryExecute());
+        Assert.Equal(0, taskNavigation.ExecutionCount);
+
+        snapshot = CommandDirectoryContextSnapshot.Capture(dashboard);
+        Assert.True(saves.TryExecute());
+        Assert.Equal(1, navigation.ExecutionCount);
+        Assert.Equal(WorkspaceKind.Saves, navigation.LastParameter);
+    }
+
     private static DashboardViewModel CreateDashboard()
     {
         var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
         SetField(dashboard, "gamePicker", (GamePickerViewModel)FormatterServices.GetUninitializedObject(typeof(GamePickerViewModel)));
         SetField(dashboard, "<Games>k__BackingField", new BatchObservableCollection<GameSaveCenter.Contracts.GameStatusDto>());
+        SetField(dashboard, "<Tasks>k__BackingField", new BatchObservableCollection<TaskStatusDto>());
         SetField(dashboard, "currentWorkspace", WorkspaceKind.Overview);
         SetField(dashboard, "isBusy", false);
         SetField(dashboard, "<OpenSelectedTaskGameCommand>k__BackingField", new RecordingCommand());
@@ -94,6 +173,13 @@ public sealed class CommandDirectoryBehaviorTests
         var field = target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(field);
         field!.SetValue(target, value);
+    }
+
+    private static object? GetField(object target, string name)
+    {
+        var field = target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        return field!.GetValue(target);
     }
 
     private sealed class RecordingCommand : ICommand

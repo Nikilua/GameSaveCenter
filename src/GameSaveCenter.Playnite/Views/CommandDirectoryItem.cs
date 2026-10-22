@@ -25,6 +25,8 @@ namespace GameSaveCenter.Playnite.Views
         private readonly object? commandParameter;
         private readonly Func<bool>? additionalCanExecute;
         private readonly Func<string?>? unavailableReason;
+        private readonly Func<string?>? contextPreview;
+        private readonly Func<string?>? contextUnavailableReason;
         private EventHandler? canExecuteChanged;
         private bool isPinned;
         private bool isRecent;
@@ -39,7 +41,9 @@ namespace GameSaveCenter.Playnite.Views
             ICommand command,
             object? commandParameter = null,
             Func<bool>? additionalCanExecute = null,
-            Func<string?>? unavailableReason = null)
+            Func<string?>? unavailableReason = null,
+            Func<string?>? contextPreview = null,
+            Func<string?>? contextUnavailableReason = null)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException("命令 ID 不能为空。", nameof(id));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("命令名称不能为空。", nameof(name));
@@ -58,6 +62,8 @@ namespace GameSaveCenter.Playnite.Views
             this.commandParameter = commandParameter;
             this.additionalCanExecute = additionalCanExecute;
             this.unavailableReason = unavailableReason;
+            this.contextPreview = contextPreview;
+            this.contextUnavailableReason = contextUnavailableReason;
         }
 
         public string Id { get; }
@@ -87,6 +93,8 @@ namespace GameSaveCenter.Playnite.Views
 
         public string AvailabilityDisplay => IsAvailable ? "可用" : "暂不可用";
 
+        public string ContextPreview => contextPreview?.Invoke() ?? "该命令不依赖当前游戏或任务。";
+
         public string AutomationDisplayName => IsAvailable
             ? BuildAutomationDisplayName("可用")
             : BuildAutomationDisplayName($"暂不可用：{UnavailableReason}");
@@ -95,6 +103,8 @@ namespace GameSaveCenter.Playnite.Views
         {
             get
             {
+                var contextReason = contextUnavailableReason?.Invoke();
+                if (!string.IsNullOrWhiteSpace(contextReason)) return contextReason!.Trim();
                 if (IsAvailable) return string.Empty;
                 var reason = unavailableReason?.Invoke();
                 return string.IsNullOrWhiteSpace(reason) ? "当前条件下不可用。" : reason!.Trim();
@@ -112,7 +122,8 @@ namespace GameSaveCenter.Playnite.Views
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public bool CanExecute(object? parameter)
-            => command.CanExecute(commandParameter)
+            => (contextUnavailableReason == null || string.IsNullOrWhiteSpace(contextUnavailableReason()))
+               && command.CanExecute(commandParameter)
                && (additionalCanExecute == null || additionalCanExecute());
 
         public void Execute(object? parameter)
@@ -137,6 +148,7 @@ namespace GameSaveCenter.Playnite.Views
             canExecuteChanged?.Invoke(this, EventArgs.Empty);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAvailable)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvailabilityDisplay)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ContextPreview)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnavailableReason)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutomationDisplayName)));
         }

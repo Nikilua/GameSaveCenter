@@ -90,14 +90,23 @@
     {
       "id": "S00-05",
       "title": "上下文预览",
-      "state": "待开始",
+      "state": "实施中",
       "implementationState": "not_started",
       "implementationCommit": "—",
-      "controlledVerificationState": "not_run",
-      "hostVerificationState": "not_run",
-      "verificationText": "待实现后按范围验证",
-      "evidence": [],
-      "boundary": "先核对已有能力；依赖见计划"
+      "controlledVerificationState": "passed",
+      "hostVerificationState": "pending",
+      "verificationText": "实现与命令目录定向行为/WPF 测试 21/21 通过，见[能力审计](evidence/S00-05/AUDIT.md)和[实现验证](evidence/S00-05/IMPLEMENTATION.md)；完整根命令待验收，真实 Playnite 交互仍 pending。",
+      "evidence": [
+        {
+          "label": "现有能力审计",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-05/AUDIT.md"
+        },
+        {
+          "label": "实现与定向验证",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-05/IMPLEMENTATION.md"
+        }
+      ],
+      "boundary": "游戏/任务稳定 ID 快照和失效拦截已实现，定向测试通过；GameSaveCenter-Run.cmd 完整验收待执行。此 checkout 缺少 AcrylicFork Demo 页面 XAML，本次仅在既有命令浮层使用共享动态资源。真实 Playnite 交互、物理键盘和 IME 候选保持 pending。"
     },
     {
       "id": "S00-06",

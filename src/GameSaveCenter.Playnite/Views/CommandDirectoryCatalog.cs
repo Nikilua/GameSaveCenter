@@ -58,7 +58,8 @@ namespace GameSaveCenter.Playnite.Views
             ICommand navigateWorkspaceCommand,
             ICommand openSettingsCommand,
             ICommand openGamePickerCommand,
-            ICommand focusWorkspaceSearchCommand)
+            ICommand focusWorkspaceSearchCommand,
+            Func<CommandDirectoryContextSnapshot?>? contextSnapshotProvider = null)
         {
             if (dashboard == null) throw new ArgumentNullException(nameof(dashboard));
             if (navigateWorkspaceCommand == null) throw new ArgumentNullException(nameof(navigateWorkspaceCommand));
@@ -66,11 +67,46 @@ namespace GameSaveCenter.Playnite.Views
             if (openGamePickerCommand == null) throw new ArgumentNullException(nameof(openGamePickerCommand));
             if (focusWorkspaceSearchCommand == null) throw new ArgumentNullException(nameof(focusWorkspaceSearchCommand));
 
+            CommandDirectoryItem CreateItem(
+                string id,
+                string name,
+                IEnumerable<string> aliases,
+                string category,
+                CommandDirectoryScope scope,
+                ICommand command,
+                object? commandParameter = null,
+                Func<bool>? additionalCanExecute = null,
+                Func<string?>? unavailableReason = null)
+            {
+                Func<string?>? contextPreview = null;
+                Func<string?>? contextUnavailableReason = null;
+                if (contextSnapshotProvider != null)
+                {
+                    contextPreview = () => CommandDirectoryContextSnapshot.GetPreview(
+                        contextSnapshotProvider(), id, scope, commandParameter);
+                    contextUnavailableReason = () => CommandDirectoryContextSnapshot.GetUnavailableReason(
+                        contextSnapshotProvider(), dashboard, id, scope);
+                }
+
+                return new CommandDirectoryItem(
+                    id,
+                    name,
+                    aliases,
+                    category,
+                    scope,
+                    command,
+                    commandParameter,
+                    additionalCanExecute,
+                    unavailableReason,
+                    contextPreview,
+                    contextUnavailableReason);
+            }
+
             var items = new List<CommandDirectoryItem>();
             foreach (var definition in Workspaces)
             {
                 var requiresGame = definition.RequiresGame;
-                items.Add(new CommandDirectoryItem(
+                items.Add(CreateItem(
                     definition.Id,
                     definition.Name,
                     definition.Aliases,
@@ -84,7 +120,7 @@ namespace GameSaveCenter.Playnite.Views
                         : "当前页面暂时无法打开。"));
             }
 
-            items.Add(new CommandDirectoryItem(
+            items.Add(CreateItem(
                 "settings.open",
                 "打开插件设置",
                 new[] { "设置", "偏好设置", "Settings", "Preferences", "Plugin settings" },
@@ -93,7 +129,7 @@ namespace GameSaveCenter.Playnite.Views
                 openSettingsCommand,
                 unavailableReason: () => "插件设置入口当前不可用。"));
 
-            items.Add(new CommandDirectoryItem(
+            items.Add(CreateItem(
                 "game-picker.open",
                 "选择当前游戏",
                 new[] { "切换游戏", "选择游戏", "Game picker", "Select game", "Switch game" },
@@ -102,7 +138,7 @@ namespace GameSaveCenter.Playnite.Views
                 openGamePickerCommand,
                 unavailableReason: () => "请先进入提供游戏选择器的工作区。"));
 
-            items.Add(new CommandDirectoryItem(
+            items.Add(CreateItem(
                 "workspace.focus-search",
                 "定位到当前页面搜索",
                 new[] { "页面搜索", "搜索框", "Ctrl+F", "Focus search", "Search current page" },
@@ -111,7 +147,7 @@ namespace GameSaveCenter.Playnite.Views
                 focusWorkspaceSearchCommand,
                 unavailableReason: () => "当前页面没有可用的搜索框。"));
 
-            items.Add(new CommandDirectoryItem(
+            items.Add(CreateItem(
                 "task.open-associated-game",
                 "打开任务关联游戏",
                 new[] { "关联游戏", "任务游戏", "Open task game", "Open related game" },

@@ -9,6 +9,8 @@ using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Views;
 using GameSaveCenter.Playnite.ViewModels;
 using Xunit;
@@ -138,6 +140,31 @@ public sealed class CommandDirectoryKeyboardBehaviorTests
     }
 
     [Fact]
+    public void SelectedResultUpdatesTheContextPreviewAndShowsItsUnavailableReason()
+    {
+        RunSta(() =>
+        {
+            using var host = CreateHost(
+                Item("workspace.first", "第一个", new RecordingCommand(), contextPreview: () => "目标工作区：首页"),
+                Item("workspace.second", "第二个", new RecordingCommand(), canExecute: false,
+                    contextPreview: () => "目标工作区：存档中心 · 游戏：游戏甲"));
+            host.OpenSearch();
+
+            var preview = (TextBlock)host.Shell.FindName("CommandDirectoryContextPreviewText")!;
+            var unavailable = (TextBlock)host.Shell.FindName("CommandDirectoryContextUnavailableText")!;
+            Assert.Equal("目标工作区：首页", preview.Text);
+            Assert.Equal(Visibility.Collapsed, unavailable.Visibility);
+
+            host.Results.SelectedIndex = 1;
+            host.Window.UpdateLayout();
+
+            Assert.Equal("目标工作区：存档中心 · 游戏：游戏甲", preview.Text);
+            Assert.Equal(Visibility.Visible, unavailable.Visibility);
+            Assert.Contains("当前命令暂不可用", unavailable.Text);
+        });
+    }
+
+    [Fact]
     public void OpenShortcutIsBoundToThePluginShellAndDoesNotCaptureTextEditing()
     {
         RunSta(() =>
@@ -192,7 +219,12 @@ public sealed class CommandDirectoryKeyboardBehaviorTests
         });
     }
 
-    private static CommandDirectoryItem Item(string id, string name, RecordingCommand command, bool canExecute = true)
+    private static CommandDirectoryItem Item(
+        string id,
+        string name,
+        RecordingCommand command,
+        bool canExecute = true,
+        Func<string?>? contextPreview = null)
         => new CommandDirectoryItem(
             id,
             name,
@@ -201,12 +233,19 @@ public sealed class CommandDirectoryKeyboardBehaviorTests
             CommandDirectoryScope.Workspace,
             command,
             additionalCanExecute: () => canExecute,
-            unavailableReason: () => "当前命令暂不可用。");
+            unavailableReason: () => "当前命令暂不可用。",
+            contextPreview: contextPreview);
 
     private static TestHost CreateHost(params CommandDirectoryItem[] items)
     {
         var shell = new AcrylicProductionShellView();
-        SetField(shell, "viewModel", FormatterServices.GetUninitializedObject(typeof(DashboardViewModel)));
+        var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
+        SetField(dashboard, "gamePicker", FormatterServices.GetUninitializedObject(typeof(GamePickerViewModel)));
+        SetField(dashboard, "<Games>k__BackingField", new BatchObservableCollection<GameStatusDto>());
+        SetField(dashboard, "<Tasks>k__BackingField", new BatchObservableCollection<TaskStatusDto>());
+        SetField(dashboard, "currentWorkspace", WorkspaceKind.Overview);
+        SetField(dashboard, "isBusy", false);
+        SetField(shell, "viewModel", dashboard);
         SetField(shell, "commandDirectoryItems", items);
         var window = new Window
         {
