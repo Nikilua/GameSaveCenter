@@ -131,8 +131,8 @@ public sealed class R03TextScaleTests
 
         var production = System.IO.File.ReadAllText(System.IO.Path.Combine(root, files[0]));
         Assert.Contains("x:Key=\"GscDataGridHeaderTextTemplate\"", production);
-        Assert.Contains("TextWrapping=\"Wrap\"", production);
-        Assert.Contains("TextTrimming=\"None\"", production);
+        Assert.Contains("TextWrapping=\"NoWrap\"", production);
+        Assert.Contains("TextTrimming=\"CharacterEllipsis\"", production);
         Assert.Contains("MinHeight\" Value=\"{DynamicResource GscTableHeaderHeight}", production);
         Assert.DoesNotContain("<Setter Property=\"Height\" Value=\"{DynamicResource GscButtonHeight}\"/>", production);
         var pathDetailStart = production.IndexOf("x:Key=\"GscWpfUiPathDetailTextBox\"", StringComparison.Ordinal);

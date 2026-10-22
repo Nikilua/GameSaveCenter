@@ -1,5 +1,9 @@
 # GameSaveCenter 长期项目记忆
 
+## 2026-10-22 用户截图：表格滚动和详情区域修复
+
+共享单元格 presenter 误设 Horizontal，导致纵向滚动累计补偿；改为 Both，并修复 Dashboard 兼容模板。任务表格改由有限页面 Grid 分配整块视口；紧凑筛选水平整组换行，表头单行省略并保留完整辅助说明。存档/任务/媒体详情采用固定外圆角框与 480 DIP 工作区宽度；媒体宽详情独立于左侧页面滚动，窄窗复用原抽屉。SDK8.0.423 Release 受控测试、source/XAML 检查与双主题 RenderHarness 通过；资源字典 140 pass / 39 原有历史 skip。标准默认 .cmd 全链待实施提交后复验，不能拿本段当安装启动证明。证据：[表格与详情修复](../design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/README.md)。Round4 总任务状态不变，用户原有 TRX/TestResults 保留。
+
 ## 2026-10-22 S00-05 当前 main 根目录标准全链通过
 
 最新源码提交 `5974742f4bea03d4975ff3a447eabe13d52a0e0e` 上，根目录 `GameSaveCenter-Run.cmd` 完整退出码 `0`，SDK `8.0.423`/Release。XAML `25/25`、solution `0/0`；Core `157/157`、Worker `400/400`、Playnite source `567`（`549` pass、`18` skip）、WPF 隔离 `782`（`743` pass、`39` skip；140 类），合计 `1,906`（`1,849` pass、`57` skip、0 fail/error/timeout/abort），143 份 TRX 计数一致。R08 `3/3`、R09 `2/2`。Worker 发布、构建身份、PEXT/ZIP、安装版本/DLL SHA 校验和 Playnite 启动成功。诊断 `20261022T012309056Z-3ccfe8e5`；[S00-05 标准全链证据](../design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md)。同提交首次尝试在 R08 隔离 testhost 挂起、完整链未完成；同一测试程序集独立复跑两次通过，之后完整根命令复跑通过，首次失败保留为诊断记录。原有用户 Round3 未跟踪 TRX/TestResults 没有修改或暂存。

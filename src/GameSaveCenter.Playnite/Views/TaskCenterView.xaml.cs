@@ -41,6 +41,8 @@ namespace GameSaveCenter.Playnite.Views
             TaskGrid.Loaded += OnTaskGridLoaded;
             TaskGrid.Unloaded += OnTaskGridUnloaded;
             TaskDetailScrollViewer.IsVisibleChanged += OnTaskDetailScrollViewerIsVisibleChanged;
+            TaskMoreFiltersExpander.Expanded += OnTaskMoreFiltersChanged;
+            TaskMoreFiltersExpander.Collapsed += OnTaskMoreFiltersChanged;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             DataContextChanged += OnDataContextChanged;
@@ -271,6 +273,14 @@ namespace GameSaveCenter.Playnite.Views
                 TaskPageScrollViewer.ViewportHeight);
         }
 
+        private void OnTaskMoreFiltersChanged(object sender, RoutedEventArgs e)
+        {
+            if (!IsLoaded) return;
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth,
+                    lastRequestedHeight > 0 ? lastRequestedHeight : ActualHeight)));
+        }
+
         public Border TaskSummaryPanelElement => TaskSummaryPanel;
         public Border TaskDetailCardElement => TaskDetailCard;
         public ScrollViewer TaskDetailScrollViewerElement => TaskDetailScrollViewer;
@@ -432,48 +442,65 @@ namespace GameSaveCenter.Playnite.Views
                         ? Visibility.Visible
                         : Visibility.Collapsed;
                 }
+                TaskDetailInspectorFrame.Visibility = TaskDetailScrollViewer.Visibility;
                 var showInspector = TaskDetailScrollViewer.Visibility == Visibility.Visible;
-                var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
+                var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl ? gl : new GridLength(480);
                 TaskWorkspaceLayout.ColumnDefinitions[1].Width = showInspector && !stack ? new GridLength(14) : new GridLength(0);
                 TaskWorkspaceLayout.ColumnDefinitions[2].Width = showInspector && !stack ? inspectorWidth : new GridLength(0);
                 TaskWorkspaceLayout.RowDefinitions[4].Height = showInspector && stack
                     ? new GridLength(1, GridUnitType.Auto)
                     : new GridLength(0);
-                Grid.SetColumn(TaskDetailScrollViewer, stack ? 0 : 2);
-                Grid.SetColumnSpan(TaskDetailScrollViewer, stack ? 3 : 1);
-                Grid.SetRow(TaskDetailScrollViewer, stack ? 4 : 3);
+                Grid.SetColumn(TaskDetailInspectorFrame, stack ? 0 : 2);
+                Grid.SetColumnSpan(TaskDetailInspectorFrame, stack ? 3 : 1);
+                Grid.SetRow(TaskDetailInspectorFrame, stack ? 4 : 3);
                 // A small bottom inset avoids the 0.8-DIP PageHost overflow produced
                 // by the host's fractional layout rounding at the compact breakpoint.
-                TaskDetailScrollViewer.Margin = showInspector && stack ? new Thickness(0, 10, 0, 2) : new Thickness(0);
+                TaskDetailInspectorFrame.Margin = showInspector && stack ? new Thickness(0, 10, 0, 2) : new Thickness(0);
                 // Keep the inspector finite beside or below the queue. The page viewer
                 // owns any remaining vertical overflow, while the task grid stays in its
                 // own bounded table frame.
-                var wideInspectorMaxHeight = Math.Max(160d, Math.Min(420d, availableHeight * 0.55d));
-                TaskDetailScrollViewer.MaxHeight = showInspector
-                    ? (stack ? compactInspectorMaxHeight : wideInspectorMaxHeight)
+                TaskDetailInspectorFrame.MaxHeight = showInspector
+                    ? (stack ? compactInspectorMaxHeight + 30 : double.PositiveInfinity)
                     : double.PositiveInfinity;
-                // Keep only the virtualized queue finite. The page ScrollViewer measures
-                // the full summary, queue, and inspector naturally; assigning a cached
-                // height to their shared root could clip those later sections.
-                var queueChromeHeight = WorkspaceTableViewportPolicy.MeasureChromeHeight(
-                    TaskQueuePanel.ActualHeight,
-                    TaskGrid.ActualHeight,
-                    fallbackHeight: 148d);
-                var pageChromeHeight = TaskWorkspaceLayout.RowDefinitions[0].ActualHeight
-                    + TaskWorkspaceLayout.RowDefinitions[1].ActualHeight
-                    + TaskWorkspaceLayout.RowDefinitions[2].ActualHeight
-                    + queueChromeHeight;
+                TaskDetailScrollViewer.MaxHeight = showInspector
+                    ? (stack ? compactInspectorMaxHeight : double.PositiveInfinity)
+                    : double.PositiveInfinity;
+                // Measure the actual header controls at the current width. Subtracting
+                // two arranged heights feeds stale star-row space back into this budget.
+                var pageWidth = TaskPageScrollViewer.ViewportWidth > 0
+                    ? Math.Min(width, TaskPageScrollViewer.ViewportWidth) : width;
+                var queueInsets = TaskQueuePanel.Padding.Top + TaskQueuePanel.Padding.Bottom
+                    + TaskQueuePanel.BorderThickness.Top + TaskQueuePanel.BorderThickness.Bottom;
+                var frameInsets = TaskTableFrame.Padding.Top + TaskTableFrame.Padding.Bottom
+                    + TaskTableFrame.BorderThickness.Top + TaskTableFrame.BorderThickness.Bottom;
+                TaskTableFrame.MinHeight = tableMinHeight + frameInsets;
+                var queueWidth = Math.Max(0, pageWidth - (showInspector && !stack ? inspectorWidth.Value + 14 : 0)
+                    - TaskQueuePanel.Padding.Left - TaskQueuePanel.Padding.Right
+                    - TaskQueuePanel.BorderThickness.Left - TaskQueuePanel.BorderThickness.Right);
+                var queueChromeHeight = MeasureChromeElement(TaskQueueHeaderLayoutGrid, queueWidth)
+                    + MeasureChromeElement(TaskStaleDataBanner, queueWidth) + queueInsets + frameInsets;
+                var pageChromeHeight = (ReferenceEquals(TaskSummaryPanel.Parent, TaskWorkspaceLayout)
+                        ? MeasureChromeElement(TaskSummaryPanel, pageWidth) : 0)
+                    + MeasureChromeElement(TaskFilterBar, pageWidth)
+                    + MeasureChromeElement(TaskMoreFiltersExpander, pageWidth) + queueChromeHeight;
                 var stackedInspectorHeight = showInspector && stack
-                    ? compactInspectorMaxHeight + TaskDetailScrollViewer.Margin.Top + TaskDetailScrollViewer.Margin.Bottom
+                    ? compactInspectorMaxHeight + 30 + TaskDetailInspectorFrame.Margin.Top + TaskDetailInspectorFrame.Margin.Bottom
                     : 0;
                 var tableBudget = WorkspaceTableViewportPolicy.CalculateTableHeight(
                     availableHeight,
                     tableMinHeight,
                     pageChromeHeight,
                     stackedInspectorHeight);
-                var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(620d, tableBudget));
-                TaskGrid.Height = tableViewportHeight;
-                TaskGrid.MaxHeight = tableViewportHeight;
+                var tableViewportHeight = Math.Max(tableMinHeight, tableBudget);
+                var pageContentHeight = WorkspaceTableViewportPolicy.CalculatePageContentHeight(
+                    availableHeight, pageChromeHeight, tableViewportHeight, stackedInspectorHeight);
+                // The finite page Grid owns the star row. A fixed child height is centered
+                // by Stretch alignment whenever the frame receives more space than that
+                // stale child budget; letting the grid fill the row removes both blank bands.
+                TaskPageScrollSurface.Height = pageContentHeight;
+                TaskWorkspaceLayout.Height = pageContentHeight;
+                TaskGrid.Height = double.NaN;
+                TaskGrid.MaxHeight = double.PositiveInfinity;
             }
             finally
             {
@@ -516,7 +543,7 @@ namespace GameSaveCenter.Playnite.Views
                 // the collapsed disclosure and into the visible toolbar.
                 if (!compact && !ReferenceEquals(TaskGameFilterGroup.Parent, TaskFiltersPanel))
                 {
-                    RemoveChild(TaskMoreFiltersHost, TaskGameFilterGroup);
+                    RemoveChild(TaskMoreFilterGroupsHost, TaskGameFilterGroup);
                     AddChild(TaskFiltersPanel, TaskGameFilterGroup);
                     Grid.SetColumn(TaskGameFilterGroup, 5);
                     Grid.SetColumn(TaskRefreshButton, 6);
@@ -538,16 +565,19 @@ namespace GameSaveCenter.Playnite.Views
                 RemoveChild(TaskFiltersPanel, TaskLeavePageHint);
                 RemoveChild(TaskWorkspaceLayout, TaskSummaryPanel);
 
-                TaskMoreFiltersHost.Children.Clear();
-                TaskMoreFiltersHost.Children.Add(TaskSummaryPanel);
-                TaskMoreFiltersHost.Children.Add(TaskTypeFilterGroup);
-                TaskMoreFiltersHost.Children.Add(TaskHistoryScopeFilterGroup);
-                TaskMoreFiltersHost.Children.Add(TaskHistoryRangeFilterGroup);
-                TaskMoreFiltersHost.Children.Add(TaskGameFilterGroup);
-                TaskMoreFiltersHost.Children.Add(TaskFilterPresetRow);
-                TaskMoreFiltersHost.Children.Add(TaskViewConfigurationRow);
-                TaskMoreFiltersHost.Children.Add(TaskNavigationSourceBanner);
-                TaskMoreFiltersHost.Children.Add(TaskLeavePageHint);
+                AddChild(TaskMoreFiltersHost, TaskSummaryPanel);
+                Grid.SetRow(TaskSummaryPanel, 0);
+                Grid.SetColumn(TaskSummaryPanel, 0);
+                Grid.SetColumnSpan(TaskSummaryPanel, 1);
+                TaskMoreFilterGroupsHost.Children.Clear();
+                TaskMoreFilterGroupsHost.Children.Add(TaskTypeFilterGroup);
+                TaskMoreFilterGroupsHost.Children.Add(TaskHistoryScopeFilterGroup);
+                TaskMoreFilterGroupsHost.Children.Add(TaskHistoryRangeFilterGroup);
+                TaskMoreFilterGroupsHost.Children.Add(TaskGameFilterGroup);
+                AddCompactFilterHostChild(TaskFilterPresetRow, 2);
+                AddCompactFilterHostChild(TaskViewConfigurationRow, 3);
+                AddCompactFilterHostChild(TaskNavigationSourceBanner, 4);
+                AddCompactFilterHostChild(TaskLeavePageHint, 5);
                 TaskSummaryPanel.Margin = new Thickness(0, 0, 0, 8);
                 SetCompactFilterGroupSpacing(bottom: 12d);
                 RestoreFilterSelection(TaskTypeFilterComboBox, typeSelection);
@@ -557,19 +587,27 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
-            RemoveChild(TaskMoreFiltersHost, TaskTypeFilterGroup);
-            RemoveChild(TaskMoreFiltersHost, TaskHistoryScopeFilterGroup);
-            RemoveChild(TaskMoreFiltersHost, TaskHistoryRangeFilterGroup);
-            TaskMoreFiltersHost.Children.Clear();
+            RemoveChild(TaskMoreFilterGroupsHost, TaskTypeFilterGroup);
+            RemoveChild(TaskMoreFilterGroupsHost, TaskHistoryScopeFilterGroup);
+            RemoveChild(TaskMoreFilterGroupsHost, TaskHistoryRangeFilterGroup);
+            RemoveChild(TaskMoreFilterGroupsHost, TaskGameFilterGroup);
+            RemoveChild(TaskMoreFiltersHost, TaskSummaryPanel);
+            RemoveChild(TaskMoreFiltersHost, TaskFilterPresetRow);
+            RemoveChild(TaskMoreFiltersHost, TaskViewConfigurationRow);
+            RemoveChild(TaskMoreFiltersHost, TaskNavigationSourceBanner);
+            RemoveChild(TaskMoreFiltersHost, TaskLeavePageHint);
             AddChild(TaskWorkspaceLayout, TaskSummaryPanel);
+            Grid.SetColumn(TaskSummaryPanel, 0);
+            Grid.SetColumnSpan(TaskSummaryPanel, 3);
+            Grid.SetRow(TaskSummaryPanel, 0);
             AddChild(TaskFiltersPanel, TaskTypeFilterGroup);
             AddChild(TaskFiltersPanel, TaskHistoryScopeFilterGroup);
             AddChild(TaskFiltersPanel, TaskHistoryRangeFilterGroup);
             AddChild(TaskFiltersPanel, TaskGameFilterGroup);
-            AddChild(TaskFiltersPanel, TaskFilterPresetRow);
-            AddChild(TaskFiltersPanel, TaskViewConfigurationRow);
-            AddChild(TaskFiltersPanel, TaskNavigationSourceBanner);
-            AddChild(TaskFiltersPanel, TaskLeavePageHint);
+            AddWideFilterHostChild(TaskFilterPresetRow, 1);
+            AddWideFilterHostChild(TaskViewConfigurationRow, 2);
+            AddWideFilterHostChild(TaskNavigationSourceBanner, 3);
+            AddWideFilterHostChild(TaskLeavePageHint, 4);
             Grid.SetColumn(TaskGameFilterGroup, 5);
             Grid.SetColumn(TaskRefreshButton, 6);
             TaskSummaryPanel.Margin = new Thickness(0, 0, 0, 8);
@@ -603,9 +641,32 @@ namespace GameSaveCenter.Playnite.Views
             if (parent.Children.Contains(child)) parent.Children.Remove(child);
         }
 
+        private static double MeasureChromeElement(FrameworkElement element, double width)
+        {
+            if (element.Visibility == Visibility.Collapsed) return 0;
+            element.Measure(new Size(Math.Max(0, width), double.PositiveInfinity));
+            return element.DesiredSize.Height;
+        }
+
         private static void AddChild(Panel parent, UIElement child)
         {
             if (!parent.Children.Contains(child)) parent.Children.Add(child);
+        }
+
+        private void AddCompactFilterHostChild(UIElement child, int row)
+        {
+            AddChild(TaskMoreFiltersHost, child);
+            Grid.SetRow(child, row);
+            Grid.SetColumn(child, 0);
+            Grid.SetColumnSpan(child, 1);
+        }
+
+        private void AddWideFilterHostChild(UIElement child, int row)
+        {
+            AddChild(TaskFiltersPanel, child);
+            Grid.SetRow(child, row);
+            Grid.SetColumn(child, 0);
+            Grid.SetColumnSpan(child, 6);
         }
 
         private void OnTaskCompactDetailsClick(object sender, RoutedEventArgs e)

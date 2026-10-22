@@ -876,35 +876,9 @@ namespace GameSaveCenter.Playnite.Views
                 MediaInboxInfoDescription.Visibility = compactHeight
                     ? Visibility.Collapsed
                     : Visibility.Visible;
-                // The inbox DataGrid and its inspector own the vertical scroll surfaces.
-                // Keep the DataGrid finite even when the page-level viewer owns overflow;
-                // an infinite MaxHeight lets the outer ScrollViewer hand Standard WPF's
-                // DataGrid an unbounded measure and instantiate the complete inbox window.
-                // A stale banner is part of the page content, not a bottom overlay.
-                // When it appears at a short-but-not-fallback height, keeping the page
-                // scroller disabled lets the banner, toolbar and footer consume the
-                // entire table frame and measures the DataGrid viewport to zero. Let the
-                // page surface own overflow in that state so the row viewport remains a
-                // real finite surface and the footer stays below it.
-                var staleInboxRequiresPageScroll = MediaInboxStaleBanner.Visibility == Visibility.Visible;
-                // The production shell can leave the page host at roughly 577–597 DIP
-                // even when the outer window is the supported 1040–1100 DIP layout.
-                // Keep the inbox page finite in that band too, so the table retains a
-                // readable row viewport and the footer remains reachable through the
-                // page surface instead of compressing the star row below two rows.
-                // Compact-height pages and panes below the existing 900 DIP width
-                // breakpoint can wrap several footer rows. Keep the page scroll
-                // channel available in those layouts instead of clipping the grid
-                // inside a disabled frame; when the content fits, the viewer still
-                // reports no scrollable extent.
-                var useInboxPageFallbackScroll = compactHeight || width < 900 || staleInboxRequiresPageScroll;
-                // The inner DataGrid owns the normal finite table viewport. Keep the
-                // page-level overflow channel only for the short/stale fallback; a
-                // nested Auto ScrollViewer otherwise measures Standard WPF rows as a
-                // page surface and defeats the retained-row container budget.
-                MediaInboxPageScrollViewer.VerticalScrollBarVisibility = useInboxPageFallbackScroll
-                    ? ScrollBarVisibility.Auto
-                    : ScrollBarVisibility.Disabled;
+                // The left page carries the toolbar/footer overflow. Wide inspectors
+                // are siblings of this viewer; compact drawers move into its content.
+                MediaInboxPageScrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
                 MediaInboxPageScrollViewer.VerticalContentAlignment = VerticalAlignment.Top;
                 MediaInboxScrollSurface.VerticalAlignment = VerticalAlignment.Top;
                 var sourceStack = width < 900;
@@ -936,9 +910,9 @@ namespace GameSaveCenter.Playnite.Views
                 // inspector budgets rather than from the outer window size. In a narrow
                 // pane the inspector becomes an explicit, keyboard-reachable details
                 // action; opening it moves the same inspector below the table.
-                var inboxInspectorWidth = MediaInboxLayout.TryFindResource("GscInspectorWidth") is GridLength inboxLength
+                var inboxInspectorWidth = MediaInboxLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength inboxLength
                     ? inboxLength
-                    : new GridLength(360);
+                    : new GridLength(480);
                 var inboxAvailableWidth = MediaInboxLayout.ActualWidth > 0
                     ? MediaInboxLayout.ActualWidth
                     : width;
@@ -954,22 +928,40 @@ namespace GameSaveCenter.Playnite.Views
                 MediaInboxLayout.ColumnDefinitions[2].Width = inboxStack || !showInboxInspector
                     ? new GridLength(0)
                     : inboxInspectorWidth;
-                MediaInboxLayout.RowDefinitions[1].Height = inboxStack && showInboxInspector
-                    ? new GridLength(1, GridUnitType.Auto)
-                    : new GridLength(0);
-                Grid.SetColumn(MediaInboxInspectorScrollViewer, inboxStack ? 0 : 2);
-                Grid.SetColumnSpan(MediaInboxInspectorScrollViewer, inboxStack ? 3 : 1);
-                Grid.SetRow(MediaInboxInspectorScrollViewer, inboxStack ? 1 : 0);
-                MediaInboxInspectorScrollViewer.Margin = inboxStack && showInboxInspector
+                MediaInboxLayout.RowDefinitions[1].Height = new GridLength(0);
+                // The wide inspector stays outside the left page's overflow channel so
+                // its rounded viewport cannot scroll offscreen with the table footer.
+                // The same frame moves into the full-width page only in drawer mode.
+                var inboxInspectorParent = inboxStack ? MediaInboxScrollSurface : MediaInboxLayout;
+                if (!ReferenceEquals(MediaInboxInspectorFrame.Parent, inboxInspectorParent))
+                {
+                    if (MediaInboxInspectorFrame.Parent is Panel previousParent)
+                        previousParent.Children.Remove(MediaInboxInspectorFrame);
+                    inboxInspectorParent.Children.Add(MediaInboxInspectorFrame);
+                }
+                Grid.SetColumnSpan(MediaInboxPageScrollViewer, inboxStack ? 3 : 1);
+                Grid.SetColumn(MediaInboxInspectorFrame, inboxStack ? 0 : 2);
+                Grid.SetColumnSpan(MediaInboxInspectorFrame, 1);
+                Grid.SetRow(MediaInboxInspectorFrame, inboxStack ? 1 : 0);
+                MediaInboxInspectorFrame.Margin = inboxStack && showInboxInspector
                     ? new Thickness(0, 10, 0, 0)
                     : new Thickness(0);
+                MediaInboxInspectorFrame.Visibility = showInboxInspector
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
                 MediaInboxInspectorScrollViewer.Visibility = showInboxInspector
                     ? Visibility.Visible
                     : Visibility.Collapsed;
                 var inboxInspectorMaxHeight = Math.Max(220, height - (compactHeight ? 190 : 230));
-                MediaInboxInspectorScrollViewer.MaxHeight = inboxStack && showInboxInspector
+                var inboxInspectorFrameMaxHeight = inboxStack && showInboxInspector
                     ? Math.Min(520, inboxInspectorMaxHeight)
                     : inboxInspectorMaxHeight;
+                MediaInboxInspectorFrame.MaxHeight = showInboxInspector
+                    ? (inboxStack ? inboxInspectorFrameMaxHeight : double.PositiveInfinity)
+                    : double.PositiveInfinity;
+                MediaInboxInspectorScrollViewer.MaxHeight = showInboxInspector
+                    ? (inboxStack ? Math.Max(0, inboxInspectorFrameMaxHeight - 30) : double.PositiveInfinity)
+                    : double.PositiveInfinity;
                 MediaInboxSelectionDetails.Visibility = hasInboxSelection
                     ? Visibility.Visible
                     : Visibility.Collapsed;
@@ -994,7 +986,7 @@ namespace GameSaveCenter.Playnite.Views
                     MediaInboxTableFrame.Padding,
                     MediaInboxTableFrame.BorderThickness);
                 MediaInboxGrid.MinHeight = readableGridHeight;
-                MediaInboxLayout.MinHeight = readableFrameHeight;
+                MediaInboxLayout.MinHeight = 0;
                 MediaInboxTableFrame.MinHeight = readableFrameHeight;
                 // The outer page viewer can measure its content with infinite height.
                 // Give the inner grid an explicit finite viewport in every layout;
@@ -1090,7 +1082,8 @@ namespace GameSaveCenter.Playnite.Views
                         MediaInspectorScrollViewer.Visibility = Visibility.Visible;
                 }
                 var showInspector = MediaInspectorScrollViewer.Visibility == Visibility.Visible;
-                var inspectorWidth = MediaCurrentLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
+                MediaInspectorFrame.Visibility = showInspector ? Visibility.Visible : Visibility.Collapsed;
+                var inspectorWidth = MediaCurrentLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl ? gl : new GridLength(480);
                 MediaCurrentLayout.ColumnDefinitions[1].Width = showInspector && !stack ? new GridLength(14) : new GridLength(0);
                 MediaCurrentLayout.ColumnDefinitions[2].Width = showInspector && !stack ? inspectorWidth : new GridLength(0);
                 MediaCurrentLayout.RowDefinitions[1].Height = showInspector && stack
@@ -1108,7 +1101,7 @@ namespace GameSaveCenter.Playnite.Views
                 // an empty selection must not retain a hidden capped surface.
                 var mediaInspectorHeight = Math.Min(220, Math.Max(0, pageViewportHeight * 0.30));
                 var mediaInspectorBudget = showInspector && stack
-                    ? mediaInspectorHeight + MediaInspectorFrame.Margin.Top + MediaInspectorFrame.Margin.Bottom
+                    ? mediaInspectorHeight + 30 + MediaInspectorFrame.Margin.Top + MediaInspectorFrame.Margin.Bottom
                     : 0;
                 var mediaTableViewportHeight = WorkspaceTableViewportPolicy.CalculateTableHeight(
                     pageViewportHeight,
@@ -1124,8 +1117,11 @@ namespace GameSaveCenter.Playnite.Views
                 MediaGrid.MaxHeight = double.PositiveInfinity;
                 MediaCurrentScrollSurface.Height = mediaPageContentHeight;
                 MediaCurrentLayout.Height = mediaPageContentHeight;
+                MediaInspectorFrame.MaxHeight = showInspector && stack
+                    ? mediaInspectorHeight + 30
+                    : double.PositiveInfinity;
                 MediaInspectorScrollViewer.MaxHeight = showInspector && stack
-                    ? mediaInspectorHeight
+                    ? Math.Max(0, mediaInspectorHeight)
                     : double.PositiveInfinity;
                 MediaPreviewPanel.Margin = new Thickness(0, 14, 0, 14);
             }

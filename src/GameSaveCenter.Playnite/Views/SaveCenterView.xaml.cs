@@ -255,7 +255,7 @@ namespace GameSaveCenter.Playnite.Views
                         ? new GridLength(0)
                         : new GridLength(14);
                 }
-                var inspectorWidth = SaveHistoryLayout.TryFindResource("GscInspectorWidth") is GridLength gl ? gl : new GridLength(360);
+                var inspectorWidth = SaveHistoryLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl ? gl : new GridLength(480);
                 // The shell passes the resized PageHost width from its SizeChanged pass;
                 // prefer that current value over this child grid's previous ActualWidth,
                 // which can still describe the old window for one layout turn.
@@ -381,17 +381,18 @@ namespace GameSaveCenter.Playnite.Views
             // their outer ScrollViewer keeps the complete finite table and detail card
             // reachable without letting either inner scrollbar escape its surface.
             var showHistoryInspector = SaveHistoryActionsScrollViewer.Visibility == Visibility.Visible;
+            SaveHistoryInspectorFrame.Visibility = SaveHistoryActionsScrollViewer.Visibility;
             var historySideBySide = showHistoryInspector && !compact;
             SaveHistoryLayout.ColumnDefinitions[1].Width = historySideBySide ? new GridLength(14) : new GridLength(0);
             SaveHistoryLayout.ColumnDefinitions[2].Width = historySideBySide ? inspectorWidth : new GridLength(0);
             SaveHistoryLayout.RowDefinitions[1].Height = showHistoryInspector && compact ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
-            Grid.SetColumn(SaveHistoryActionsScrollViewer, historySideBySide ? 2 : 0);
-            Grid.SetColumnSpan(SaveHistoryActionsScrollViewer, compact ? 3 : 1);
-            Grid.SetRow(SaveHistoryActionsScrollViewer, compact ? 1 : 0);
-            SaveHistoryActionsScrollViewer.Margin = showHistoryInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+            Grid.SetColumn(SaveHistoryInspectorFrame, historySideBySide ? 2 : 0);
+            Grid.SetColumnSpan(SaveHistoryInspectorFrame, compact ? 3 : 1);
+            Grid.SetRow(SaveHistoryInspectorFrame, compact ? 1 : 0);
+            SaveHistoryInspectorFrame.Margin = showHistoryInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             var historyInspectorHeight = Math.Min(220, Math.Max(0, pageViewportHeight * 0.30));
             var historyInspectorBudget = showHistoryInspector && compact
-                ? historyInspectorHeight + SaveHistoryActionsScrollViewer.Margin.Top + SaveHistoryActionsScrollViewer.Margin.Bottom
+                ? historyInspectorHeight + 30 + SaveHistoryInspectorFrame.Margin.Top + SaveHistoryInspectorFrame.Margin.Bottom
                 : 0;
             var historyTableBudget = WorkspaceTableViewportPolicy.CalculateTableHeight(
                 historyPageBudgetHeight,
@@ -401,24 +402,28 @@ namespace GameSaveCenter.Playnite.Views
             var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, historyTableBudget));
             SaveHistoryGrid.Height = tableViewportHeight;
             SaveHistoryGrid.MaxHeight = tableViewportHeight;
+            SaveHistoryInspectorFrame.MaxHeight = showHistoryInspector
+                ? (compact ? historyInspectorHeight + 30 : tableViewportHeight + historyFrameChromeHeight)
+                : double.PositiveInfinity;
             SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector
-                ? (compact ? historyInspectorHeight : tableViewportHeight)
+                ? (compact ? historyInspectorHeight : Math.Max(0, tableViewportHeight + historyFrameChromeHeight - 30))
                 : double.PositiveInfinity;
             var showCandidateInspector = SaveCandidateInspectorScrollViewer.Visibility == Visibility.Visible;
+            SaveCandidateInspectorFrame.Visibility = SaveCandidateInspectorScrollViewer.Visibility;
             var candidateSideBySide = showCandidateInspector && !compact;
             SaveCandidateLayout.ColumnDefinitions[1].Width = candidateSideBySide ? new GridLength(14) : new GridLength(0);
             SaveCandidateLayout.ColumnDefinitions[2].Width = candidateSideBySide ? inspectorWidth : new GridLength(0);
             SaveCandidateLayout.RowDefinitions[1].Height = showCandidateInspector && compact ? new GridLength(1, GridUnitType.Auto) : new GridLength(0);
-            Grid.SetColumn(SaveCandidateInspectorScrollViewer, candidateSideBySide ? 2 : 0);
-            Grid.SetColumnSpan(SaveCandidateInspectorScrollViewer, compact ? 3 : 1);
-            Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0);
-            SaveCandidateInspectorScrollViewer.Margin = showCandidateInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+            Grid.SetColumn(SaveCandidateInspectorFrame, candidateSideBySide ? 2 : 0);
+            Grid.SetColumnSpan(SaveCandidateInspectorFrame, compact ? 3 : 1);
+            Grid.SetRow(SaveCandidateInspectorFrame, compact ? 1 : 0);
+            SaveCandidateInspectorFrame.Margin = showCandidateInspector && compact ? new Thickness(0, 10, 0, 0) : new Thickness(0);
             var candidateInspectorHeight = Math.Min(360, Math.Max(0, pageViewportHeight * 0.30));
             var candidateTopChromeHeight = SaveCandidatePageSurface.RowDefinitions[0].ActualHeight
                 + SaveCandidatePageSurface.RowDefinitions[1].ActualHeight
                 + SaveCandidatePageSurface.RowDefinitions[2].ActualHeight;
             var candidateInspectorBudget = showCandidateInspector && compact
-                ? candidateInspectorHeight + SaveCandidateInspectorScrollViewer.Margin.Top + SaveCandidateInspectorScrollViewer.Margin.Bottom
+                ? candidateInspectorHeight + 30 + SaveCandidateInspectorFrame.Margin.Top + SaveCandidateInspectorFrame.Margin.Bottom
                 : 0;
             var candidateTableBudget = WorkspaceTableViewportPolicy.CalculateTableHeight(
                 pageViewportHeight,
@@ -428,8 +433,11 @@ namespace GameSaveCenter.Playnite.Views
             var candidateTableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, candidateTableBudget));
             SaveCandidateGrid.Height = candidateTableViewportHeight;
             SaveCandidateGrid.MaxHeight = candidateTableViewportHeight;
+            SaveCandidateInspectorFrame.MaxHeight = showCandidateInspector
+                ? (compact ? candidateInspectorHeight + 30 : candidateTableViewportHeight + candidateFrameChromeHeight)
+                : double.PositiveInfinity;
             SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector
-                ? (compact ? candidateInspectorHeight : candidateTableViewportHeight)
+                ? (compact ? candidateInspectorHeight : Math.Max(0, candidateTableViewportHeight + candidateFrameChromeHeight - 30))
                 : double.PositiveInfinity;
             var stackPolicy = width < 980;
             // Keep the three Demo cards in one row when there is room. Below

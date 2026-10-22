@@ -179,6 +179,7 @@
     <!-- GridLength so the resource binds directly to ColumnDefinition.Width without
          runtime conversion. -->
     <GridLength x:Key="GscInspectorWidth">360</GridLength>
+    <GridLength x:Key="GscWorkspaceInspectorWidth">480</GridLength>
     <!-- Form pages keep a readable content column instead of stretching across the host. -->
     <sys:Double x:Key="GscFormMaxWidth">1120</sys:Double>
 
@@ -239,6 +240,13 @@
     <Style x:Key="GscInspectorScrollViewer" TargetType="ScrollViewer" BasedOn="{StaticResource GscPageScrollViewer}">
         <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="MaxHeight" Value="280"/>
+    </Style>
+
+    <!-- Workspace inspectors fill their assigned table-height column. The containing
+         rounded frame owns the clipping and border; responsive code supplies a finite
+         height only when the inspector is stacked below its table. -->
+    <Style x:Key="GscWorkspaceInspectorScrollViewer" TargetType="ScrollViewer" BasedOn="{StaticResource GscPageScrollViewer}">
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
     </Style>
 
     <!-- Stable, mostly opaque reading surface. Views may add their own layout-only padding

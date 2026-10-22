@@ -101,7 +101,7 @@
     <Grid x:Name="TaskPageScrollSurface" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <ui:AmbientMaterialLayer Panel.ZIndex="-1"/>
     <Grid x:Name="TaskWorkspaceLayout" Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscInspectorWidth}"/></Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscWorkspaceInspectorWidth}"/></Grid.ColumnDefinitions>
         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
         <Border x:Name="TaskSummaryPanel" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource TaskBrowserSwitchablePanel}" Padding="6,14" MinHeight="84" Margin="0,0,0,8">
             <Grid>
@@ -278,12 +278,22 @@
                     </ui:Button>
                 </Grid>
             </Expander.Header>
-            <StackPanel x:Name="TaskMoreFiltersHost" Margin="0,4,0,0">
+            <Grid x:Name="TaskMoreFiltersHost" Margin="0,4,0,0" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <WrapPanel x:Name="TaskMoreFilterGroupsHost" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <StackPanel x:Name="TaskGameFilterGroup" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,8">
                     <TextBlock x:Name="TaskGameFilterLabel" Text="游戏：" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <ComboBox x:Name="TaskGameFilterComboBox" Style="{DynamicResource GscWpfUiFilterComboBox}" MinWidth="130" MaxWidth="210" ItemsSource="{Binding TaskGameFilterOptions}" SelectedItem="{Binding TaskGameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}" ToolTip="游戏筛选" AutomationProperties.Name="任务游戏筛选"/>
                 </StackPanel>
-            </StackPanel>
+                </WrapPanel>
+            </Grid>
         </Expander>
         <Border x:Name="TaskQueuePanel" Grid.Row="3" Grid.Column="0" Style="{StaticResource TaskBrowserSwitchablePanel}" Padding="6,10">
             <Grid>
@@ -344,7 +354,7 @@
                 </Border>
                 <Border x:Name="TaskTableFrame" Grid.Row="2" Style="{StaticResource TaskTableFrame}">
                     <Grid>
-                    <DataGrid x:Name="TaskGrid" Style="{StaticResource TaskDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding TasksView}" SelectedItem="{Binding SelectedTask}" SelectionMode="Extended" SelectionChanged="OnTaskSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="Task" ToolTip="Ctrl+C 复制所选行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.Name="任务列表" AutomationProperties.HelpText="Ctrl+C 复制所选任务行；Ctrl+Shift+C 复制当前单元格">
+                    <DataGrid x:Name="TaskGrid" VerticalAlignment="Stretch" Style="{StaticResource TaskDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding TasksView}" SelectedItem="{Binding SelectedTask}" SelectionMode="Extended" SelectionChanged="OnTaskSelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="Task" ToolTip="Ctrl+C 复制所选行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.Name="任务列表" AutomationProperties.HelpText="Ctrl+C 复制所选任务行；Ctrl+Shift+C 复制当前单元格">
                 <DataGrid.Columns>
                     <DataGridTextColumn HeaderStyle="{StaticResource TaskFirstColumnHeader}" Header="时间" infra:DataGridColumnHeaderHelpBehavior.Description="相对时间；悬停可查看本地时区、完整秒级时间和原始 UTC 值。" Binding="{Binding CreatedRelativeDisplay, Mode=OneWay}" Width="112" MinWidth="104" ElementStyle="{StaticResource TaskTimeCell}"/>
                     <DataGridTextColumn Header="任务" infra:DataGridColumnHeaderHelpBehavior.Description="任务类型；用于区分备份、校验、同步等工作。" Binding="{Binding TaskTypeDisplay, Mode=OneWay}" Width="104" MinWidth="96" ElementStyle="{StaticResource TaskLongTextCell}"/>
@@ -407,9 +417,10 @@
                 </Border>
             </Grid>
         </Border>
-        <ScrollViewer x:Name="TaskDetailScrollViewer" Grid.Row="3" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0" Focusable="True" KeyboardNavigation.IsTabStop="False" PreviewKeyDown="OnTaskDetailPreviewKeyDown">
+        <Border x:Name="TaskDetailInspectorFrame" Grid.Row="3" Grid.Column="2" Style="{StaticResource TaskSurface}" Padding="14" ClipToBounds="True" Visibility="Collapsed">
+        <ScrollViewer x:Name="TaskDetailScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0" Focusable="True" KeyboardNavigation.IsTabStop="False" PreviewKeyDown="OnTaskDetailPreviewKeyDown">
             <ScrollViewer.Style>
-                <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscInspectorScrollViewer}">
+                <Style TargetType="ScrollViewer" BasedOn="{StaticResource GscWorkspaceInspectorScrollViewer}">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding SelectedTask}" Value="{x:Null}">
@@ -539,6 +550,7 @@
             <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding AddSelectedTaskToWorklistCommand}" Content="加入待办" ToolTip="预览该任务并确认加入当前待办；不会重试、取消或改变任务状态。" AutomationProperties.Name="将所选后台任务加入待办" AutomationProperties.HelpText="仅保存任务稳定 ID。" HorizontalAlignment="Left" Margin="0,10,0,0"/>
         </StackPanel>
         </ScrollViewer>
+        </Border>
 
     </Grid>
     </Grid>

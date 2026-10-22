@@ -8916,8 +8916,10 @@ public static class Program
                     .FirstOrDefault(candidate => candidate.Name == "TaskDetailScrollViewer");
                 var taskDetailsButton = FindVisualChildren<Button>(tasks)
                     .FirstOrDefault(candidate => candidate.Name == "TaskCompactDetailsButton");
-                var taskCloseDetailsButton = FindVisualChildren<Button>(tasks)
-                    .FirstOrDefault(candidate => candidate.Name == "TaskCompactCloseDetailsButton");
+                // The closed drawer has not instantiated its ScrollViewer template yet.
+                // Resolve its authored control through the XAML namescope; opening below
+                // still validates visibility, reachability, rows and measured bounds.
+                var taskCloseDetailsButton = tasks.FindName("TaskCompactCloseDetailsButton") as Button;
                 var moreFilters = FindVisualChildren<Expander>(tasks)
                     .FirstOrDefault(candidate => candidate.Name == "TaskMoreFiltersExpander");
                 if (pageHost.ActualWidth <= 0 || pageHost.ActualHeight <= 0

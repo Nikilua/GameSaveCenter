@@ -1389,8 +1389,12 @@ def check_final_redesign_guards() -> None:
         "TaskGrid": (
             "TaskPageScrollViewer",
             "TaskGrid.MinHeight = tableMinHeight",
-            "TaskGrid.Height = tableViewportHeight",
-            "TaskGrid.MaxHeight = tableViewportHeight",
+            "TaskGrid.Height = double.NaN",
+            "TaskGrid.MaxHeight = double.PositiveInfinity",
+            "TaskPageScrollSurface.Height = pageContentHeight",
+            "TaskWorkspaceLayout.Height = pageContentHeight",
+            "WorkspaceTableViewportPolicy.CalculatePageContentHeight",
+            "TaskTableFrame.MinHeight = tableMinHeight + frameInsets",
             "WorkspaceTableViewportPolicy.CalculateTableHeight",
             "pageChromeHeight",
             "TaskPageScrollViewer.ViewportHeight",
@@ -1562,7 +1566,9 @@ def check_final_redesign_guards() -> None:
             )
         )
         bounded_workspace_scroll = bounded_workspace_scroll or (
-            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") == "MediaClassificationPreviewItems"
+            control.attrib.get("{http://schemas.microsoft.com/winfx/2006/xaml}Name") in {
+                "MediaClassificationPreviewItems", "MediaClassificationHistoryList"
+            }
             and control.attrib.get("Tag") == "FiniteViewport"
             and control.attrib.get("MaxHeight") == "260"
             and any(

@@ -485,8 +485,8 @@
 
     <DataTemplate x:Key="GscDataGridHeaderTextTemplate">
         <TextBlock Text="{Binding}"
-                   TextWrapping="Wrap"
-                   TextTrimming="None"
+                   TextWrapping="NoWrap"
+                   TextTrimming="CharacterEllipsis"
                    VerticalAlignment="Center"
                    TextOptions.TextHintingMode="Fixed"
                    SnapsToDevicePixels="True"/>
@@ -682,7 +682,7 @@
                                         Grid.Column="1"
                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Horizontal"/>
+                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"/>
                 <DataGridDetailsPresenter Grid.Row="1"
                                           Grid.Column="1"
                                           SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"

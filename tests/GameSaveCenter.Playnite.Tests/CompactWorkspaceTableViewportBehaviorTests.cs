@@ -52,7 +52,14 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var taskHost = MeasureInHost(taskView, width, height);
             taskView.ApplyResponsiveLayout(width, height);
             taskHost.UpdateLayout();
-            AssertTableScrollsInsideFrame(taskGrid, GetField<Border>(taskType, taskView, "TaskTableFrame"));
+            var taskFrame = GetField<Border>(taskType, taskView, "TaskTableFrame");
+            AssertTableScrollsInsideFrame(taskGrid, taskFrame);
+            var taskBounds = taskGrid.TransformToAncestor(taskFrame)
+                .TransformBounds(new Rect(0, 0, taskGrid.ActualWidth, taskGrid.ActualHeight));
+            Assert.True(Math.Abs(taskBounds.Top - taskFrame.BorderThickness.Top - taskFrame.Padding.Top) <= 1,
+                $"The task table must start at the frame top instead of floating in its middle: table={taskBounds}, frameHeight={taskFrame.ActualHeight}.");
+            Assert.True(taskFrame.ActualHeight - taskBounds.Bottom <= taskFrame.BorderThickness.Bottom + taskFrame.Padding.Bottom + 2,
+                $"The task table must use the frame height: table={taskBounds}, frameHeight={taskFrame.ActualHeight}.");
 
             var mediaView = new MediaCenterView();
             var mediaType = typeof(MediaCenterView);
@@ -123,7 +130,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             taskHost.UpdateLayout();
             ResizeHost(taskHost, 715, 577, () => taskView.ApplyResponsiveLayout(715, 577));
 
-            Assert.True(taskGrid.Height >= taskGrid.MinHeight && taskGrid.Height <= 620d);
+            Assert.True(taskGrid.ActualHeight >= taskGrid.MinHeight && taskGrid.ActualHeight <= taskHost.ActualHeight);
             var taskPage = GetField<ScrollViewer>(taskType, taskView, "TaskPageScrollViewer");
             AssertPageContentMeasuredWithinHost(taskPage, taskHost);
             AssertTableScrollsInsideFrame(taskGrid, GetField<Border>(taskType, taskView, "TaskTableFrame"));
@@ -315,7 +322,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var taskFrame = GetField<Border>(taskType, taskView, "TaskTableFrame");
             var taskDetailsButton = GetField<Button>(taskType, taskView, "TaskCompactDetailsButton");
             var taskMoreFilters = GetField<Expander>(taskType, taskView, "TaskMoreFiltersExpander");
-            var taskMoreFiltersHost = GetField<StackPanel>(taskType, taskView, "TaskMoreFiltersHost");
+            var taskMoreFiltersHost = GetField<Grid>(taskType, taskView, "TaskMoreFiltersHost");
             var taskSummary = GetField<Border>(taskType, taskView, "TaskSummaryPanel");
             var taskFilterPresetRow = GetField<WrapPanel>(taskType, taskView, "TaskFilterPresetRow");
             var taskViewConfigurationRow = GetField<WrapPanel>(taskType, taskView, "TaskViewConfigurationRow");

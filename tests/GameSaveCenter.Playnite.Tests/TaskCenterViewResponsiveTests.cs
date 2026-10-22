@@ -189,7 +189,8 @@ namespace GameSaveCenter.Playnite.Tests
                     var view = new TaskCenterView();
                     var viewType = typeof(TaskCenterView);
                     var filters = (Grid)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                    var more = (StackPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var more = (Grid)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                    var moreGroups = (WrapPanel)viewType.GetField("TaskMoreFilterGroupsHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var typeGroup = (StackPanel)viewType.GetField("TaskTypeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var scopeGroup = (StackPanel)viewType.GetField("TaskHistoryScopeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                     var rangeGroup = (StackPanel)viewType.GetField("TaskHistoryRangeFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
@@ -202,9 +203,9 @@ namespace GameSaveCenter.Playnite.Tests
                     compactMainHasType = filters.Children.Contains(typeGroup);
                     compactMainHasScope = filters.Children.Contains(scopeGroup);
                     compactMainHasRange = filters.Children.Contains(rangeGroup);
-                    compactMoreHasType = more.Children.Contains(typeGroup);
-                    compactMoreHasScope = more.Children.Contains(scopeGroup);
-                    compactMoreHasRange = more.Children.Contains(rangeGroup);
+                    compactMoreHasType = moreGroups.Children.Contains(typeGroup);
+                    compactMoreHasScope = moreGroups.Children.Contains(scopeGroup);
+                    compactMoreHasRange = moreGroups.Children.Contains(rangeGroup);
                     compactMoreHasSummary = more.Children.Contains(summary);
                     compactMoreHasPresetRow = more.Children.Contains(presetRow);
                     compactMoreHasViewRow = more.Children.Contains(viewRow);

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a04ea612-bd77-4f90-b18f-8657f8d5fd48" name="lopmatu@SULT 2026-10-22 16:03:19" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-22T16:03:19.8395591+08:00" queuing="2026-10-22T16:03:19.8395597+08:00" start="2026-10-22T16:03:13.9974504+08:00" finish="2026-10-22T16:03:37.1157871+08:00" />
+  <TestSettings name="default" id="bdc2bf8e-b46b-4903-a204-7945eeebe106">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-22_16_03_19" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c3b53a8f-f149-4b85-8cd6-5a34b1446aee" testId="2f1450b7-7f60-20ae-3652-8d39460206d4" testName="GameSaveCenter.Playnite.Tests.R03TextScaleTests.ProductionInputButtonAndHeaderGrowWithLargerTypography" computerName="SULT" duration="00:00:02.7740000" startTime="2026-10-22T16:03:18.4854447+08:00" endTime="2026-10-22T16:03:21.2382817+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c3b53a8f-f149-4b85-8cd6-5a34b1446aee" />
+    <UnitTestResult executionId="22b49ba8-dd98-47f0-89f3-324e9051648d" testId="6b470800-ad21-5775-8a8a-7f7b45c012b8" testName="GameSaveCenter.Playnite.Tests.R03TextScaleTests.ProductionTableHeadersAndTextControlsDoNotReintroduceHardHeightOverrides" computerName="SULT" duration="00:00:00.1870000" startTime="2026-10-22T16:03:18.2943948+08:00" endTime="2026-10-22T16:03:18.4641610+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="22b49ba8-dd98-47f0-89f3-324e9051648d" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03TextScaleTests.ProductionTableHeadersAndTextControlsDoNotReintroduceHardHeightOverrides" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="6b470800-ad21-5775-8a8a-7f7b45c012b8">
+      <Execution id="22b49ba8-dd98-47f0-89f3-324e9051648d" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03TextScaleTests" name="ProductionTableHeadersAndTextControlsDoNotReintroduceHardHeightOverrides" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03TextScaleTests.ProductionInputButtonAndHeaderGrowWithLargerTypography" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="2f1450b7-7f60-20ae-3652-8d39460206d4">
+      <Execution id="c3b53a8f-f149-4b85-8cd6-5a34b1446aee" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03TextScaleTests" name="ProductionInputButtonAndHeaderGrowWithLargerTypography" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2f1450b7-7f60-20ae-3652-8d39460206d4" executionId="c3b53a8f-f149-4b85-8cd6-5a34b1446aee" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b470800-ad21-5775-8a8a-7f7b45c012b8" executionId="22b49ba8-dd98-47f0-89f3-324e9051648d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.94]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.00]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.03]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

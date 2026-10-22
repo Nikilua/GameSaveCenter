@@ -85,7 +85,8 @@ public sealed class Q14FilterLabelBehaviorTests
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
 
         var filters = GetField<Grid>(view, "TaskFiltersPanel");
-        var moreFilters = GetField<StackPanel>(view, "TaskMoreFiltersHost");
+        var moreFilters = GetField<Grid>(view, "TaskMoreFiltersHost");
+        var moreFilterGroups = GetField<WrapPanel>(view, "TaskMoreFilterGroupsHost");
         var expander = GetField<Expander>(view, "TaskMoreFiltersExpander");
         var status = CreatePair(view, "Status", "状态：", "任务状态筛选", "TaskStatusFilterGroup", "TaskStatusFilterLabel", "TaskStatusFilterComboBox");
         var type = CreatePair(view, "Type", "类型：", "任务类型筛选", "TaskTypeFilterGroup", "TaskTypeFilterLabel", "TaskTypeFilterComboBox");
@@ -131,7 +132,7 @@ public sealed class Q14FilterLabelBehaviorTests
                     "Game" => "Bongo Cat",
                     _ => throw new InvalidOperationException("Unknown filter pair " + pair.Name)
                 };
-                var pairHost = compact ? (FrameworkElement)moreFilters : filters;
+                var pairHost = compact ? (FrameworkElement)moreFilterGroups : filters;
                 AssertPair(pair, pairHost, expectedSelection: null);
                 if (pair.Group.ActualWidth > 0 && pair.Group.ActualHeight > 0)
                 {
@@ -142,7 +143,7 @@ public sealed class Q14FilterLabelBehaviorTests
                     FlushLayout(window);
                     AssertPair(pair, pairHost, expectedSelection);
                 }
-                Panel expectedParent = compact ? moreFilters : filters;
+                Panel expectedParent = compact ? moreFilterGroups : filters;
                 Assert.Same(expectedParent, pair.Group.Parent);
                 if (!compact && pair.Name != "Game")
                     Assert.Equal(0d, pair.Group.Margin.Bottom);
@@ -153,35 +154,43 @@ public sealed class Q14FilterLabelBehaviorTests
                 ? pairs.Skip(1).ToArray()
                 : pairs.Skip(1).Where(pair => pair.Name != "Game").ToArray();
             var reportedRows = reportGroups
-                .Select(pair => GetBounds(pair.Group, compact ? (FrameworkElement)moreFilters : (FrameworkElement)filters).Top.ToString("0.##"))
+                .Select(pair => GetBounds(pair.Group, compact ? (FrameworkElement)moreFilterGroups : (FrameworkElement)filters).Top.ToString("0.##"))
                 .ToArray();
 
             if (compact)
             {
                 Assert.Same(filters, status.Group.Parent);
-                Assert.Equal(9, moreFilters.Children.Count);
+                Assert.Contains(moreFilterGroups, moreFilters.Children.Cast<UIElement>());
+                Assert.Contains(GetField<Border>(view, "TaskSummaryPanel"), moreFilters.Children.Cast<UIElement>());
+                Assert.Contains(GetField<WrapPanel>(view, "TaskFilterPresetRow"), moreFilters.Children.Cast<UIElement>());
+                Assert.Contains(GetField<WrapPanel>(view, "TaskViewConfigurationRow"), moreFilters.Children.Cast<UIElement>());
                 var visiblePairs = pairs.Skip(1).ToArray();
                 var rowTops = new List<double>();
                 foreach (var pair in visiblePairs)
                 {
                     Assert.Equal(10d, pair.Group.Margin.Right);
                     Assert.Equal(12d, pair.Group.Margin.Bottom);
-                    var bounds = GetBounds(pair.Group, moreFilters);
+                    var bounds = GetBounds(pair.Group, moreFilterGroups);
                     Assert.True(bounds.Left >= -GeometryTolerance,
                         $"{theme} {width:0} DIP {pair.Name} group left={bounds.Left:0.###}.");
-                    Assert.True(bounds.Right <= moreFilters.ActualWidth + GeometryTolerance,
-                        $"{theme} {width:0} DIP {pair.Name} group right={bounds.Right:0.###}, host width={moreFilters.ActualWidth:0.###}.");
+                    Assert.True(bounds.Right <= moreFilterGroups.ActualWidth + GeometryTolerance,
+                        $"{theme} {width:0} DIP {pair.Name} group right={bounds.Right:0.###}, host width={moreFilterGroups.ActualWidth:0.###}.");
                     rowTops.Add(bounds.Top);
                 }
 
                 Assert.True(moreFilters.ActualWidth > 0, $"{theme} {width:0} DIP more-filter host was not arranged.");
+                if (width >= 760d)
+                {
+                    Assert.True(rowTops.Max() - rowTops.Min() <= GeometryTolerance,
+                        $"{theme} {width:0} DIP secondary filters fit on one row; tops={string.Join(",", rowTops)}.");
+                }
                 if (width <= 700d)
                 {
                     var rowTopsDescription = string.Join(",", rowTops.Select(value => value.ToString("0.###")));
                     Assert.True(rowTops.Max() - rowTops.Min() > 1d,
                         $"{theme} {width:0} DIP should wrap whole field groups to multiple rows; tops={rowTopsDescription}.");
                     var groupBounds = visiblePairs
-                        .Select(pair => GetBounds(pair.Group, moreFilters))
+                        .Select(pair => GetBounds(pair.Group, moreFilterGroups))
                         .ToArray();
                     var firstRowTop = groupBounds.Min(bounds => bounds.Top);
                     var firstRowBottom = groupBounds
@@ -192,7 +201,7 @@ public sealed class Q14FilterLabelBehaviorTests
                         .Min(bounds => bounds.Top);
                     var rowGeometry = string.Join(";", visiblePairs.Select(pair =>
                     {
-                        var bounds = GetBounds(pair.Group, moreFilters);
+                        var bounds = GetBounds(pair.Group, moreFilterGroups);
                         var slot = System.Windows.Controls.Primitives.LayoutInformation.GetLayoutSlot(pair.Group);
                         return $"{pair.Name}:top={bounds.Top:0.###},height={bounds.Height:0.###},bottomMargin={pair.Group.Margin.Bottom:0.###},slot={slot.Top:0.###}/{slot.Height:0.###}";
                     }));
@@ -221,9 +230,9 @@ public sealed class Q14FilterLabelBehaviorTests
                 view.ApplyResponsiveLayout(width, height);
                 expander.IsExpanded = true;
                 FlushLayout(window);
-                Assert.Same(moreFilters, type.Group.Parent);
-                Assert.Same(moreFilters, scope.Group.Parent);
-                Assert.Same(moreFilters, range.Group.Parent);
+                Assert.Same(moreFilterGroups, type.Group.Parent);
+                Assert.Same(moreFilterGroups, scope.Group.Parent);
+                Assert.Same(moreFilterGroups, range.Group.Parent);
                 Assert.Equal("媒体同步", type.Combo.SelectedItem);
                 Assert.Equal("当前游戏", scope.Combo.SelectedItem);
                 Assert.Equal("30 天", range.Combo.SelectedItem);

@@ -1,0 +1,8 @@
+{
+  "target": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-layout-fix\\render",
+  "reason": "Initial render superseded by render-final; initial report archived in evidence",
+  "removedFileBytes": 52306569.0,
+  "freeBefore": 6897627136,
+  "freeAfter": 6950903808,
+  "preserved": "render-final, current tests, referenced evidence, all preexisting user outputs"
+}

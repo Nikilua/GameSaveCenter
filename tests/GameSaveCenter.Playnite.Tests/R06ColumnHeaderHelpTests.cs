@@ -57,6 +57,13 @@ public sealed class R06ColumnHeaderHelpTests
             };
             DataGridColumnHeaderHelpBehavior.SetDescription(longHeaderColumn, "任务当前阶段与完成比例。");
             grid.Columns.Add(longHeaderColumn);
+            var narrowHeaderColumn = new DataGridTextColumn
+            {
+                Header = "拍摄时间",
+                Binding = new System.Windows.Data.Binding("Value"),
+                Width = 68
+            };
+            grid.Columns.Add(narrowHeaderColumn);
             grid.ColumnHeaderStyle = (Style)shell.FindResource(typeof(DataGridColumnHeader));
             shell.Content = grid;
 
@@ -86,12 +93,17 @@ public sealed class R06ColumnHeaderHelpTests
                 var longHeader = FindVisualChildren<DataGridColumnHeader>(grid)
                     .Single(candidate => ReferenceEquals(candidate.Column, longHeaderColumn));
                 var headerText = Assert.Single(FindVisualChildren<TextBlock>(longHeader));
-                Assert.Equal(TextWrapping.Wrap, headerText.TextWrapping);
-                Assert.Equal(TextTrimming.None, headerText.TextTrimming);
-                Assert.True(headerText.ActualHeight >= headerText.FontSize * 1.5,
-                    $"Expected the long production header to wrap; measured {headerText.ActualHeight:0.##} DIP at {headerText.FontSize:0.##} DIP font size.");
+                Assert.Equal(TextWrapping.NoWrap, headerText.TextWrapping);
+                Assert.Equal(TextTrimming.CharacterEllipsis, headerText.TextTrimming);
+                Assert.True(headerText.ActualHeight <= headerText.FontSize * 1.5,
+                    $"Long production headers must stay on one line; measured {headerText.ActualHeight:0.##} DIP at {headerText.FontSize:0.##} DIP font size.");
                 Assert.Equal("任务当前阶段与完成比例。", longHeader.ToolTip as string);
                 Assert.Equal("任务当前阶段与完成比例。", AutomationProperties.GetHelpText(longHeader));
+
+                var narrowHeader = FindVisualChildren<DataGridColumnHeader>(grid)
+                    .Single(candidate => ReferenceEquals(candidate.Column, narrowHeaderColumn));
+                Assert.Equal("拍摄时间", narrowHeader.ToolTip as string);
+                Assert.Equal("拍摄时间", AutomationProperties.GetHelpText(narrowHeader));
 
                 var onClick = typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)
                     ?? throw new Xunit.Sdk.XunitException("WPF ButtonBase.OnClick was not found.");
@@ -122,8 +134,8 @@ public sealed class R06ColumnHeaderHelpTests
         var maintenance = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MaintenanceView.xaml"));
 
         Assert.Contains("DataGridColumnHeaderHelpBehavior.Enabled", production, StringComparison.Ordinal);
-        Assert.Contains("TextWrapping=\"Wrap\"", production, StringComparison.Ordinal);
-        Assert.Contains("TextTrimming=\"None\"", production, StringComparison.Ordinal);
+        Assert.Contains("TextWrapping=\"NoWrap\"", production, StringComparison.Ordinal);
+        Assert.Contains("TextTrimming=\"CharacterEllipsis\"", production, StringComparison.Ordinal);
         Assert.Contains("按 1024 进制显示 B、KiB、MiB 或 GiB", save, StringComparison.Ordinal);
         Assert.Contains("候选匹配置信度", save, StringComparison.Ordinal);
         Assert.Contains("任务生命周期状态", task, StringComparison.Ordinal);

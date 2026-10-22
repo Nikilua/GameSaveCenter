@@ -60,7 +60,16 @@ namespace GameSaveCenter.Playnite.Infrastructure
         private static void ApplyDescription(DataGridColumnHeader header)
         {
             var description = header.Column == null ? string.Empty : GetDescription(header.Column);
-            if (string.IsNullOrWhiteSpace(description)) return;
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                // Narrow columns keep a one-line ellipsis. Expose the complete label
+                // on hover and to UI Automation when no longer description is supplied.
+                var headerText = header.Column?.Header?.ToString();
+                if (string.IsNullOrWhiteSpace(headerText)) return;
+                header.ToolTip = headerText;
+                AutomationProperties.SetHelpText(header, headerText);
+                return;
+            }
 
             // Keep the native header as the only interactive element. A tooltip and
             // Automation HelpText do not intercept Sorting, keyboard navigation or resize.

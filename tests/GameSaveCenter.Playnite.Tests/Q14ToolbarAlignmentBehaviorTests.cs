@@ -154,7 +154,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
         var presetRow = GetField<WrapPanel>(view, "TaskFilterPresetRow");
         var moreFilters = GetField<Expander>(view, "TaskMoreFiltersExpander");
-        var moreFiltersHost = GetField<StackPanel>(view, "TaskMoreFiltersHost");
+        var moreFiltersHost = GetField<Grid>(view, "TaskMoreFiltersHost");
         foreach (var textBox in presetRow.Children.OfType<TextBox>())
             textBox.Text = "我的预设";
 

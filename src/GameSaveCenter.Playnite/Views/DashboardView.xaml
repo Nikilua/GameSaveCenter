@@ -446,7 +446,7 @@
                                                         Grid.Column="1"
                                                         ItemsPanel="{TemplateBinding ItemsPanel}"
                                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Horizontal"/>
+                                                        SelectiveScrollingGrid.SelectiveScrollingOrientation="Both"/>
                                 <DataGridDetailsPresenter Grid.Row="1"
                                                           Grid.Column="1"
                                                           SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"

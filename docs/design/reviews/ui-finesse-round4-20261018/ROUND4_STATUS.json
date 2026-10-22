@@ -173,14 +173,18 @@
       "implementationCommit": "ad7bd563",
       "controlledVerificationState": "passed",
       "hostVerificationState": "not_run",
-      "verificationText": "[证据](evidence/S01-02/README.md)：SDK8 Release 构建0/0；密度/设置14/14，R09 2/2，媒体几何3/3，生产资源双主题9/9",
+      "verificationText": "[证据](evidence/S01-02/README.md)：SDK8 Release 构建0/0；密度/设置14/14，R09 2/2，媒体几何3/3，生产资源双主题9/9；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)：SDK8 受控几何、双主题 RenderHarness 通过，标准入口将在实施提交复验",
       "evidence": [
         {
           "label": "证据",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-02/README.md"
+        },
+        {
+          "label": "共享表格滚动与详情区域受控修复",
+          "path": "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/README.md"
         }
       ],
-      "boundary": "真实 Playnite 设置加载/保存及宿主呈现未验证；完整 WPF/安装门禁仍在 R05 GetCursorPos Win32 error 5 处停止；门禁满足后继续 S01-03"
+      "boundary": "真实 Playnite 密度设置加载/保存、物理 DPI 与页面交互仍待验；本次修复保留 host verification pending，当前源码标准入口全链尚待精确提交复验。"
     },
     {
       "id": "S01-03",

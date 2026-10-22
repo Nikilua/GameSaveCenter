@@ -1278,8 +1278,13 @@ public sealed class WpfUiResourceDictionaryTests
         var inspector = tabGrid.Descendants()
             .Single(element => element.Name.LocalName == "ScrollViewer"
                 && element.Attribute(xamlName)?.Value == "MediaInboxInspectorScrollViewer");
-        Assert.Equal("0", inspector.Attribute("Grid.Row")?.Value);
-        Assert.Equal("2", inspector.Attribute("Grid.Column")?.Value);
+        var inspectorFrame = inspector.Parent!;
+        Assert.Equal("Border", inspectorFrame.Name.LocalName);
+        Assert.Equal("MediaInboxInspectorFrame", inspectorFrame.Attribute(xamlName)?.Value);
+        Assert.Equal("0", inspectorFrame.Attribute("Grid.Row")?.Value);
+        Assert.Equal("2", inspectorFrame.Attribute("Grid.Column")?.Value);
+        Assert.Equal("True", inspectorFrame.Attribute("ClipToBounds")?.Value);
+        Assert.DoesNotContain(inspector.Ancestors(), element => element.Attribute(xamlName)?.Value == "MediaInboxPageScrollViewer");
         Assert.False(inspector.Ancestors().Contains(tableFrame),
             "待归类预览、确认/忽略按钮与归类目标不能放进 MediaInboxGrid 的滚动面。");
         Assert.Contains(inspector.Descendants(), element => element.Attribute("Command")?.Value == "{Binding AssignInboxMediaCommand}");
@@ -1560,7 +1565,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("MaintenanceDeviceGrid.Height = double.NaN;", maintenanceCode);
         Assert.Contains("MaintenanceAuditFindingsGrid.Height = double.NaN;", maintenanceCode);
         Assert.Contains("MaintenanceProcessGrid.Height = double.NaN;", maintenanceCode);
-        Assert.Contains("TaskGrid.Height = tableViewportHeight;", taskCode);
+        Assert.Contains("TaskGrid.Height = double.NaN;", taskCode);
         Assert.DoesNotContain("MaintenanceDiagnosticSummaryGrid.MinHeight =", maintenanceCode);
         Assert.DoesNotContain("MaintenanceDiagnosticSummaryGrid.MaxHeight =", maintenanceCode);
         Assert.DoesNotContain("MaintenanceDiagnosticSummaryGrid\" Grid.Row=\"1\" Grid.Column=\"0\" Grid.ColumnSpan=\"3\" Style=\"{DynamicResource GscRedesignSubCard}\" Padding=\"12\" Margin=\"0,10,0,0\" ClipToBounds=\"True\"", maintenance);
@@ -1646,10 +1651,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("ScrollViewer x:Name=\"TaskPageScrollSurface\"", task);
         Assert.Contains("x:Name=\"TaskPageScrollViewer\"", task);
         Assert.Contains("TaskGrid.MinHeight = tableMinHeight", taskCode);
-        Assert.Contains("TaskGrid.Height = tableViewportHeight", taskCode);
-        Assert.Contains("TaskGrid.MaxHeight = tableViewportHeight", taskCode);
-        Assert.DoesNotContain("TaskPageScrollSurface.Height =", taskCode);
-        Assert.DoesNotContain("TaskWorkspaceLayout.Height =", taskCode);
+        Assert.Contains("TaskGrid.Height = double.NaN", taskCode);
+        Assert.Contains("TaskGrid.MaxHeight = double.PositiveInfinity", taskCode);
+        Assert.Contains("TaskPageScrollSurface.Height = pageContentHeight;", taskCode);
+        Assert.Contains("TaskWorkspaceLayout.Height = pageContentHeight;", taskCode);
         Assert.Contains("height > 0", taskCode);
         Assert.Contains("const double compactInspectorMaxHeight = 136d", taskCode);
         Assert.Contains("? compactInspectorMaxHeight", taskCode);
@@ -2428,15 +2433,17 @@ public sealed class WpfUiResourceDictionaryTests
             Assert.Null(viewer.Attribute("Style"));
             var inspectorStyle = viewer.Descendants().Single(element =>
                 element.Name.LocalName == "Style" &&
-                element.Attribute("BasedOn")?.Value == "{StaticResource GscInspectorScrollViewer}");
-            Assert.Equal("{StaticResource GscInspectorScrollViewer}", inspectorStyle.Attribute("BasedOn")?.Value);
+                element.Attribute("BasedOn")?.Value == "{StaticResource GscWorkspaceInspectorScrollViewer}");
+            Assert.Equal("{StaticResource GscWorkspaceInspectorScrollViewer}", inspectorStyle.Attribute("BasedOn")?.Value);
+            Assert.Equal("Border", viewer.Parent!.Name.LocalName);
+            Assert.Equal("True", viewer.Parent.Attribute("ClipToBounds")?.Value);
         }
 
         Assert.Contains("SaveHistoryActionsScrollViewer.MaxHeight = showHistoryInspector", saveCode);
-        Assert.Contains("(compact ? historyInspectorHeight : tableViewportHeight)", saveCode);
+        Assert.Contains("compact ? historyInspectorHeight : Math.Max(0, tableViewportHeight + historyFrameChromeHeight - 30)", saveCode);
         Assert.Contains("SaveCandidateInspectorScrollViewer.MaxHeight = showCandidateInspector", saveCode);
-        Assert.Contains("(compact ? candidateInspectorHeight : candidateTableViewportHeight)", saveCode);
-        Assert.Contains("Grid.SetRow(SaveCandidateInspectorScrollViewer, compact ? 1 : 0)", saveCode);
+        Assert.Contains("compact ? candidateInspectorHeight : Math.Max(0, candidateTableViewportHeight + candidateFrameChromeHeight - 30)", saveCode);
+        Assert.Contains("Grid.SetRow(SaveCandidateInspectorFrame, compact ? 1 : 0)", saveCode);
         Assert.Contains("SaveCandidateInspectorScrollViewer", saveText);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedBackup}\" Value=\"{x:Null}\">", saveText);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedCandidate}\" Value=\"{x:Null}\">", saveText);
@@ -3036,7 +3043,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("FindVisualChildren", maintenanceCode);
         Assert.Contains("MediaInspectorScrollViewer.MaxHeight = showInspector && stack", mediaCode);
         Assert.Contains("MediaInspectorScrollViewer.IsVisibleChanged += OnMediaInspectorIsVisibleChanged", mediaCode);
-        Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", media);
+        Assert.Contains("BasedOn=\"{StaticResource GscWorkspaceInspectorScrollViewer}\"", media);
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedMedia}\" Value=\"{x:Null}\">", media);
         Assert.Contains("MinHeight=\"96\" MaxHeight=\"160\"", maintenance);
         Assert.Contains("public Border TaskSummaryPanelElement => TaskSummaryPanel", taskCode);
@@ -4473,17 +4480,17 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("ScrollViewer x:Name=\"TaskPageScrollSurface\"", File.ReadAllText(taskPath));
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", File.ReadAllText(taskPath));
         Assert.Contains("HorizontalScrollBarVisibility=\"Disabled\"", File.ReadAllText(taskPath));
-        Assert.Contains("BasedOn=\"{StaticResource GscInspectorScrollViewer}\"", File.ReadAllText(taskPath));
+        Assert.Contains("BasedOn=\"{StaticResource GscWorkspaceInspectorScrollViewer}\"", File.ReadAllText(taskPath));
         Assert.Contains("<DataTrigger Binding=\"{Binding SelectedTask}\" Value=\"{x:Null}\">", File.ReadAllText(taskPath));
         Assert.Contains("CopyTaskErrorCommand", File.ReadAllText(taskPath));
         Assert.Contains("RetryTaskCommand", File.ReadAllText(taskPath));
         Assert.Contains("CancelTaskCommand", File.ReadAllText(taskPath));
 
         var taskCode = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml.cs"));
-        Assert.Contains("TaskGrid.Height = tableViewportHeight;", taskCode);
-        Assert.Contains("TaskGrid.MaxHeight = tableViewportHeight;", taskCode);
+        Assert.Contains("TaskGrid.Height = double.NaN;", taskCode);
+        Assert.Contains("TaskGrid.MaxHeight = double.PositiveInfinity;", taskCode);
         Assert.Contains("TaskPageScrollViewer", File.ReadAllText(taskPath));
-        Assert.DoesNotContain("TaskPageScrollSurface.Height =", taskCode);
+        Assert.Contains("TaskPageScrollSurface.Height = pageContentHeight;", taskCode);
         Assert.Contains("TaskDetailScrollViewer.MaxHeight = showInspector", taskCode);
     }
 
@@ -4707,13 +4714,14 @@ public sealed class WpfUiResourceDictionaryTests
                 var view = new TaskCenterView();
                 var viewType = typeof(TaskCenterView);
                 var filters = (Grid)viewType.GetField("TaskFiltersPanel", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                var moreHost = (StackPanel)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var moreHost = (Grid)viewType.GetField("TaskMoreFiltersHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var moreGroups = (WrapPanel)viewType.GetField("TaskMoreFilterGroupsHost", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var moreExpander = (Expander)viewType.GetField("TaskMoreFiltersExpander", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var gameFilterGroup = (StackPanel)viewType.GetField("TaskGameFilterGroup", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var gameFilter = (ComboBox)viewType.GetField("TaskGameFilterComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
 
                 view.ApplyResponsiveLayout(700, 640);
-                compactInMore = moreHost.Children.Contains(gameFilterGroup) && ReferenceEquals(gameFilter.Parent, gameFilterGroup);
+                compactInMore = moreGroups.Children.Contains(gameFilterGroup) && ReferenceEquals(gameFilter.Parent, gameFilterGroup);
                 compactExpanderVisible = moreExpander.Visibility == Visibility.Visible;
 
                 view.ApplyResponsiveLayout(1280, 720);

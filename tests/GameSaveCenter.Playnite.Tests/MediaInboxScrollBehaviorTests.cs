@@ -39,6 +39,7 @@ public sealed class MediaInboxScrollBehaviorTests
             BatchObservableCollection<MediaItemDto> items = null!;
             DataGrid grid = null!;
             ScrollViewer pageScroller = null!;
+            double? rowTextTop = null;
             try
             {
                 view = new MediaCenterView();
@@ -193,6 +194,20 @@ public sealed class MediaInboxScrollBehaviorTests
                 var pixelGap = Math.Abs(metrics.FirstRowTop - metrics.PresenterTop) * outputPixelScale;
                 Assert.True(pixelGap <= 1.5,
                     $"first visible row must touch the effective content viewport at {checkpoint}; device-scale gap={pixelGap:0.##}px, {metrics}");
+                foreach (var row in FindVisualChildren<DataGridRow>(grid).Where(candidate => candidate.IsVisible && candidate.ActualHeight > 0))
+                {
+                    var chrome = Assert.IsType<Border>(row.Template.FindName("RowChrome", row));
+                    var chromeBounds = GetRect(chrome, row);
+                    Assert.True(chromeBounds.Top >= -0.5 && chromeBounds.Bottom <= row.ActualHeight + 0.5,
+                        $"the selection/focus chrome must remain inside its scrolling row at {checkpoint}: {chromeBounds}, rowHeight={row.ActualHeight}");
+                    var cell = FindVisualChildren<DataGridCell>(row).FirstOrDefault(candidate => candidate.Column.DisplayIndex == 0);
+                    var text = cell == null ? null : FindVisualChildren<TextBlock>(cell).FirstOrDefault();
+                    if (text == null || text.ActualHeight <= 0) continue;
+                    var textTop = GetRect(text, row).Top;
+                    rowTextTop ??= textTop;
+                    Assert.True(Math.Abs(textTop - rowTextTop.Value) <= 1,
+                        $"row text must retain its vertical position relative to the row chrome at {checkpoint}: expected={rowTextTop:0.##}, actual={textTop:0.##}");
+                }
             }
 
             void AppendPageAndRestoreAnchor()
@@ -383,6 +398,62 @@ public sealed class MediaInboxScrollBehaviorTests
     }
 
     [Fact]
+    public void WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll()
+    {
+        RunSta(() =>
+        {
+            var view = new MediaCenterView();
+            var fields = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+            T Field<T>(string name) => (T)typeof(MediaCenterView).GetField(name, fields)!.GetValue(view)!;
+            var tabs = Field<TabControl>("MediaTabControl");
+            System.Windows.Data.BindingOperations.ClearBinding(tabs, TabControl.SelectedIndexProperty);
+            tabs.SelectedIndex = 0;
+            var grid = Field<DataGrid>("MediaInboxGrid");
+            grid.ItemsSource = CreateSyntheticMedia(2000);
+            grid.SelectedIndex = 0;
+            var page = Field<ScrollViewer>("MediaInboxPageScrollViewer");
+            var layout = Field<Grid>("MediaInboxLayout");
+            var frame = Field<Border>("MediaInboxInspectorFrame");
+            var inspector = Field<ScrollViewer>("MediaInboxInspectorScrollViewer");
+            var content = Assert.IsType<StackPanel>(inspector.Content);
+            for (var index = 0; index < 24; index++)
+                content.Children.Add(new Border { Height = 42 });
+            var window = new Window
+            {
+                Content = view, Width = 1400, Height = 700, WindowStyle = WindowStyle.None,
+                ShowInTaskbar = false, ShowActivated = false, Opacity = 0.01
+            };
+            try
+            {
+                window.Show();
+                DrainDispatcher(window);
+                grid.SelectedIndex = 0;
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                DrainDispatcher(window);
+                Assert.Same(layout, frame.Parent);
+                Assert.True(frame.ClipToBounds && frame.CornerRadius.TopLeft > 0 && frame.CornerRadius.BottomLeft > 0);
+                var before = GetRect(frame, view);
+                Assert.True(frame.ActualHeight > 0 && frame.ActualHeight <= layout.ActualHeight + 1,
+                    $"the visible inspector must fill its finite layout row: frame={frame.ActualHeight}, layout={layout.ActualHeight}, selection={grid.SelectedIndex}, visibility={frame.Visibility}");
+                Assert.True(page.ScrollableHeight > 0, "the real table toolbar/footer must retain an overflow channel");
+                Assert.True(inspector.ScrollableHeight > 0, "long details must scroll inside the fixed frame");
+                page.ScrollToEnd();
+                inspector.ScrollToEnd();
+                DrainDispatcher(window);
+                Assert.Equal(before, GetRect(frame, view));
+                Assert.True(page.VerticalOffset > 0 && inspector.VerticalOffset > 0);
+                Assert.True(Math.Abs(frame.ActualHeight - frame.Padding.Top - frame.Padding.Bottom
+                    - frame.BorderThickness.Top - frame.BorderThickness.Bottom - inspector.ActualHeight) <= 1,
+                    "the inspector fills the frame's padded interior within device-pixel rounding");
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
     public void ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary()
     {
         Exception? exception = null;
@@ -406,7 +477,9 @@ public sealed class MediaInboxScrollBehaviorTests
                 var inspector = (ScrollViewer)viewType.GetField("MediaInboxInspectorScrollViewer", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
                 var frame = (Border)viewType.GetField("MediaInboxInspectorFrame", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
                 var compactDetailsButton = (GameSaveCenter.Playnite.Controls.Button)viewType.GetField("MediaInboxCompactDetailsButton", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
-                var inspectorContent = Assert.IsType<StackPanel>(frame.Child);
+                Assert.Same(inspector, frame.Child);
+                Assert.True(frame.ClipToBounds && frame.CornerRadius.TopLeft > 0 && frame.CornerRadius.BottomLeft > 0);
+                var inspectorContent = Assert.IsType<StackPanel>(inspector.Content);
                 for (var index = 0; index < 24; index++)
                     inspectorContent.Children.Add(new Border { Height = 42, MinWidth = 120 });
 
