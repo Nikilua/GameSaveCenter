@@ -1,5 +1,9 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-22 当前 main 标准全链复验
+
+当前源码提交 `162170a6dc41d7a1148e0f3a1ea2fbae49c369e6` 的根目录 `GameSaveCenter-Run.cmd` 已完整退出 `0`（SDK8.0.423/Release）：XAML 25/25、solution 0/0、Core 157/157、Worker 400/400、Playnite source 567（549 pass、18 skip）、WPF 隔离 780（741 pass、39 skip；140 类）；合计 1,904 项，1,847 pass、57 skip、0 fail/error/timeout/abort，143 份 TRX 计数一致。R09 2/2。Worker 发布、构建身份、ZIP/PEXT、扩展安装身份和 Playnite 启动全部成功。诊断 run `20261021T225909667Z-dc4f8e95`；完整阶段、散列与 testhost 清理记录见 [当前 main 标准构建与 R09 复核](docs/design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)。R09 附件旧失败在此提交未复现；原 Round3 TRX/TestResults 保留。
+
 ## 2026-10-22 当前 S00-04 构建交付
 
 最新源提交 `f8b3144e36d190663f760a98aa0602bec6bda2f8` 的完整 `GameSaveCenter-Run.cmd` 已退出 `0`（SDK8.0.423/Release）：XAML 25/25、solution 0 warning/0 error、Core 157/157、Worker 400/400、总计 1,904 项（1,847 通过、57 跳过、0 失败）、WPF 隔离类 140/140。R09 附件所示宽度差异在当前提交的 R09 2/2 未复现。Worker 发布、包身份、ZIP/PEXT、安装版本与 DLL SHA、Playnite 启动均成功；详细身份及诊断 run `20261021T195442896Z-4faecb49` 见 [S00-04 证据](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md)。

@@ -2,6 +2,10 @@
 
 更新时间：2026-10-22。产品版本 `0.6.73`。旧记录已归档，本文仅保留当前身份、活动事项、硬性边界与证据索引。
 
+## 2026-10-22 当前 main 标准入口完整复验
+
+当前源码提交 `162170a6dc41d7a1148e0f3a1ea2fbae49c369e6` 上，从仓库根目录完整运行 `GameSaveCenter-Run.cmd`，全链退出码 `0`。SDK `8.0.423`/Release；XAML `25/25`、solution `0 warning / 0 error`、Core `157/157`、Worker `400/400`，143 份 TRX 共 `1,904` 项（`1,847` pass、`57` skip、`0` fail/error/timeout/abort），计数一致，140 个 WPF 隔离类全部结束；R09 `2/2`。Worker 发布、构建身份校验、ZIP/PEXT、扩展安装版本/DLL SHA 核验与 Playnite 启动成功。诊断 run `20261021T225909667Z-dc4f8e95`，完整证据见 [当前 main 标准入口与 R09 复核](../design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)。第 16 类曾留下已完成 `1/1` TRX 的孤立 testhost；确认其父进程已退出后清理，该 WPF 步骤和总 run 均记录退出码 `0`，未跳过或中断测试。用户保留的 Round3 TRX/TestResults 未修改。
+
 ## 2026-10-22 S00-04 标准构建与安装全链复核
 
 用户报告构建反复失败后，在实现提交 `f8b3144e36d190663f760a98aa0602bec6bda2f8` 上重新执行完整 `GameSaveCenter-Run.cmd`；SDK `8.0.423`、Release，完整脚本退出码 `0`。XAML `25/25`、solution `0 warning/0 error`、Core `157/157`、Worker `400/400`、总计 `1,904` 项（`1,847 pass / 0 fail / 57 skip`），143 份 TRX 计数一致，140 个 WPF 隔离类全部结束。R09 焦点轮廓 `2/2`，附件中的 `2→1` 描边失败在当前提交未复现；旧输入身份/根因未知。Worker 发布、包校验、ZIP/PEXT、扩展目录安装版本/DLL SHA 核验均成功，Playnite PID `44860` 启动。原始 run `20261021T195442896Z-4faecb49`、TRX/包/程序集身份见 [S00-04 标准验收](../design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md)。页面视觉与交互、物理键盘/IME 候选未验；S00-04 host verification 仍 pending，Round4 未整体完成。旧 Round3 未跟踪 TRX 与 `TestResults/` 未修改。

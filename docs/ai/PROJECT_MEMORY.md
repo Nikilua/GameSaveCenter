@@ -1,8 +1,12 @@
 # GameSaveCenter 长期项目记忆
 
-## 2026-10-22 当前 main 构建失败日志复核
+## 2026-10-22 当前 main 根目录标准全链通过
 
-当前 `main` (`fcf787cc`) 的 SDK8.0.423 Release 全量构建 `0 warning / 0 error`；1,904 项测试 `1,836` 通过、`68` 环境/历史断言 skip、`0` 失败，143 份 TRX 计数一致，140 个 WPF 隔离类全部完成，R09 `2/2`。附件中的旧日志是 `[65/116]` 测试集且第 151 行断言与当前源不符，不能归为当前 main 的失败；旧 DLL/PDB 身份缺失，不推测具体旧 checkout。完整根目录命令在沙箱内最终因无法写入 `%APPDATA%\Playnite\Extensions` 返回 1；同一提交随后以 PowerShell 7 提权做 `-SkipTests` 构建/打包/安装复核成功，构建包与已安装 DLL SHA 相同，Playnite 启动并响应。没有更改或跳过前述完整测试。完整身份、原始诊断路径和单次命令退出码边界见[当前 main 构建与 R09 复核](../design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)。
+最新源码提交 `162170a6dc41d7a1148e0f3a1ea2fbae49c369e6` 上，根目录 `GameSaveCenter-Run.cmd` 完整退出码 `0`，SDK `8.0.423`/Release。XAML `25/25`、solution `0/0`；Core `157/157`、Worker `400/400`、Playnite source `567`（`549` pass、`18` skip）、WPF 隔离 `780`（`741` pass、`39` skip；140 类），合计 `1,904`（`1,847` pass、`57` skip、0 fail/error/timeout/abort），143 份 TRX 计数一致。R09 `2/2`。Worker 发布、构建身份、PEXT/ZIP、安装版本/DLL SHA 校验和 Playnite 启动成功。诊断 `20261021T225909667Z-dc4f8e95`；[当前 main 标准构建与 R09 复核](../design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)。孤立 testhost 清理发生在该类 `1/1` pass 的 TRX 完成之后，父进程已退出；未跳过或中断测试。摘要的工作树非干净仅来自原有用户 Round3 未跟踪 TRX/TestResults，没有触碰。
+
+## 2026-10-22 附件 R09 失败日志与较早 main 构建复核（历史）
+
+当时 `main`（提交 `fcf787cc`）的 SDK8.0.423 Release 全量构建 `0 warning / 0 error`；1,904 项测试 `1,836` 通过、`68` skip、`0` 失败，143 份 TRX 计数一致，140 个 WPF 隔离类完成，R09 `2/2`。完整根目录命令在沙箱内最终因无法写入 `%APPDATA%\Playnite\Extensions` 返回 1；同一提交随后以 PowerShell 7 提权做 `-SkipTests` 构建/打包/安装复核成功。该历史 run 与附件旧失败的身份复核见[当前 main 构建与 R09 复核](../design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)；当前 main 的完整标准链已在上方最新记录中通过。
 
 ## 2026-10-22 S00-04 标准全链复验成功
 

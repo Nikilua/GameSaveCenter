@@ -11779,3 +11779,9 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 编译、测试、Worker 发布、构建身份、PEXT/ZIP 打包都通过；根目录命令最后在默认 `%APPDATA%\Playnite\Extensions` 写入时被沙箱拒绝，故该次退出码为 `1`，不记录为单次标准命令成功。之后同一提交使用 PowerShell 7 提权执行 `dev-install-run.ps1 -Configuration Release -SkipTests`，solution `0/0`，包/安装验证成功，版本 `0.6.73` / DLL `0.6.73.0`，构建/包/已安装 DLL SHA 均为 `5683CD242FC1EA1CBFEE15509D6A6F9C27A70BB965E892470FDA118D844DE81F`，Playnite PID `63560` 正在响应。该阶段没有重跑测试；完整测试已在同一 source commit 通过。安装诊断 `20261021T225251016Z-d115411c`。
 - 另一次提权全流程重跑的 R10 TRX 已记录 `5/5`，但测试宿主没有正常结束，故中断；不把该次重复运行作为验收结果。没有修改产品代码或完整测试运行中的任何用例。既有 Round3 TRX 与 `TestResults/` 保留。
 - 证据与边界：[当前 main 构建与 R09 失败日志复核](../design/reviews/ui-finesse-round4-20261018/evidence/CURRENT-MAIN-BUILD-R09-RECHECK-20261022.md)。本轮是诊断/验收记录，不声称当前沙箱里的单次根目录 `.cmd` 退出码为 0。
+
+## 2026-10-22 当前 main 标准一键全链完成
+
+- 当前 main 源码提交 `162170a6dc41d7a1148e0f3a1ea2fbae49c369e6` 上运行根目录 `GameSaveCenter-Run.cmd`，完整退出码 `0`。SDK `8.0.423`/Release；XAML `25/25`、solution `0 warning / 0 error`；Core `157/157`、Worker `400/400`、Playnite source `567`（549 pass、18 skip）、WPF 隔离 `780`（741 pass、39 skip，140 类完成）。143 份 TRX 共 1,904 项（1,847 pass、57 skip、0 fail/error/timeout/abort），报告计数完全一致。R09 `2/2`，TRX SHA-256 `2F15A331DCC66E828023C9AA5B61809389FF464BF740729600270B9BA37402DB`。
+- Worker 发布、构建身份、ZIP/PEXT、安装身份核验和 Playnite 启动成功；ZIP/PEXT SHA 均为 `2478E354F4029F635DE84DA8C9B6713487CD253FAED90D041F986C7005F9D486`，构建与已安装插件 DLL SHA 均为 `D26EC254B8E8173F97101FB1E2E1BA2E1A86885CDBB135DAA95D4C83110353F7`。Playnite PID `26040` 正在响应。诊断 run `20261021T225909667Z-dc4f8e95`。
+- `MediaThumbnailConverterTests` 的完整 TRX 为 `1/1` pass；测试 host 在 WPF 关闭日志后成为孤立进程。确认 VSTest 父进程已退出且该类 TRX 全部完成后清理该 host，入口随即继续；该步骤记为 0，没有跳过或取消测试。原 Round3 未跟踪 TRX 与 Playnite `TestResults/` 未修改、未暂存。
