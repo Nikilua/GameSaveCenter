@@ -1,5 +1,12 @@
 # GameSaveCenter 当前交接
 
+## 2026-10-22 后续专项计划：构建成功与安全清理
+
+按用户要求新增[32 项后续任务](design/BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)及[专项账本](design/reviews/build-ui-reliability-20261022/PROGRESS.md)。规划审阅基线 a5c96c8a；第四轮仍为 40 已验收、2 已满足、18 待验收、3 待开始、1 外部阻塞，不以新计划覆盖旧状态。优先接续 T00-01 最新修复后的标准 .cmd 全链复验；如已有任务正在执行该复验，等待其结果并复用证据，不并发重复运行。T00-01 为 READY 的接续/核验小批，其余 T 项为 PROPOSED，按现有实现去重后逐项准入。
+
+可复制提示词已明确：标准入口退出码/测试/包安装身份与启动验证；每阶段归档证据后检查路径、所有权、进程及引用再清理 artifacts/.tmp 无用产物，保留用户旧 TRX/TestResults。此次只更新文档，运行任务ID/数量/链接及源码校验，不执行产品构建、不宣称当前全链已通过，不为纯文档 CI 成功追加提交。
+
+
 ## 2026-10-22 S00-05 当前 main 标准全链复验
 
 当前源码提交 `5974742f4bea03d4975ff3a447eabe13d52a0e0e` 的根目录 `GameSaveCenter-Run.cmd` 已完整退出 `0`（SDK8.0.423/Release）：XAML 25/25、solution 0/0、Core 157/157、Worker 400/400、Playnite source 567（549 pass、18 skip）、WPF 隔离 782（743 pass、39 skip；140 类）；合计 1,906 项，1,849 pass、57 skip、0 fail/error/timeout/abort，143 份 TRX 计数一致。R08 3/3、R09 2/2。Worker 发布、构建身份、ZIP/PEXT、扩展安装身份和 Playnite 启动全部成功。诊断 run `20261022T012309056Z-3ccfe8e5`；完整阶段、散列和首次 R08 testhost 挂起/复跑记录见 [S00-05 标准全链验收](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md)。首次同提交整链在 R08 挂起，随后同 DLL 独立复跑和完整根命令复跑通过；两次结果分别记录，没有覆盖首次失败。原 Round3 TRX/TestResults 保留。
