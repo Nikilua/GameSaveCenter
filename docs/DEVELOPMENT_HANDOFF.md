@@ -1,3 +1,7 @@
+## 2026-10-23 默认链测试发现路径修复
+
+f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Playnite发现adapter AppDomain shadow-copy路径过长而零用例，根退出1。相同DLL增加现有执行阶段的DisableAppDomain设置后发现1390项；发现脚本同步该设置，零用例拒绝/隔离/过滤器不变，修复提交全链待跑。原始失败与对照见S00-08/discovery-failure；不把发现成功称为全链成功。
+
 ## 2026-10-23 S00-08 目录行为候选通过
 
 补齐13项真实factory命令逐项搜索/唯一执行、撤销底层可用性双入口拒绝、失效游戏/任务/页面、默认8项与注册表覆盖检查。SDK8 Release0/0，36/36、0 skip/fail，危险哨兵0次，版本锁/PreRestore保留。产品源码70e42163未变；候选d3dfad89加新测试哈希，精确提交最终默认.cmd待运行。真实Playnite页面/物理输入未验，用户旧TRX/TestResults未动。[证据](design/reviews/ui-finesse-round4-20261018/evidence/S00-08/README.md)。

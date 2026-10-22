@@ -13,3 +13,7 @@
 SDK8.0.423 Release编译0警告0错误，新增36/36、0 skip/fail。[候选身份](candidate-identity.json)、[TRX](registered-candidate.trx)、[编译](candidate-build-console.txt)。产品源码保持70e42163；候选基线d3dfad89加新测试哈希。提交后由最终默认.cmd复核精确提交，不能以候选结果或旧4f40e016标准链冒充本次新提交全链。
 
 真实Playnite页面、物理键盘/IME/物理DPI未验；受控结果不替代宿主验收。原有S00-03/04/05/06/07证据继续保留，无删断言或新增跳过。用户旧TRX/TestResults未动。
+
+## 默认全链首次结果
+
+首次精确提交f08b85be在测试发现阶段路径过长退出1；同DLL禁用额外AppDomain发现1390用例。已将发现设置与执行阶段对齐，新提交完整链待跑。[失败与对照](discovery-failure/README.md)。

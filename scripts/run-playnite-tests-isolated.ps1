@@ -136,6 +136,10 @@ try {
     if ($OutputRoot) {
         $discoveryArguments += ('-p:GscBuildOutputRoot=' + [System.IO.Path]::GetFullPath($OutputRoot))
     }
+    # Discovery loads the same .NET Framework adapter as execution. Its extra
+    # AppDomain can exceed MAX_PATH through shadow-copy paths in managed worktrees.
+    # Use the same host-domain setting for both phases; keep the empty-list guard.
+    $discoveryArguments += @('--', 'RunConfiguration.DisableAppDomain=true')
 
     $discoveryResult = Invoke-GscRecordedCommand $DiagnosticsContext 'playnite-discovery' dotnet $discoveryArguments
     $discovery = $discoveryResult.Output

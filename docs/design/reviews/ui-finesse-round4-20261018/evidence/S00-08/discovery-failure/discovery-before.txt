@@ -1,0 +1,32 @@
+[repo]\artifacts\gsc-b\eb817d9f\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+以下测试可用:
+[xUnit.net 00:00:00.27] Exception discovering tests: System.IO.FileLoadException: 完全限定后路径太长。请确保完整路径少于 260 个字符，并且目录名称少于 248 个字符。
+文件名:“xunit.runner.visualstudio.testadapter, Version=3.1.4.0, Culture=neutral, PublicKeyToken=null” ---> System.IO.FileLoadException: 完全限定后路径太长。请确保完整路径少于 260 个字符，并且目录名称少于 248 个字符。
+文件名:“file:///[repo]\artifacts\gsc-b\eb817d9f\bin\GameSaveCenter.Playnite.Tests\Release\net472\xunit.runner.visualstudio.testadapter.dll”
+
+
+警告: 程序集绑定日志记录被关闭。
+要启用程序集绑定失败日志记录，请将注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD)设置为 1。
+注意: 会有一些与程序集绑定失败日志记录关联的性能损失。
+要关闭此功能，请移除注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog]。
+
+   在 System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   在 System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   在 System.Reflection.RuntimeAssembly.InternalLoadFrom(String assemblyFile, Evidence securityEvidence, Byte[] hashValue, AssemblyHashAlgorithm hashAlgorithm, Boolean forIntrospection, Boolean suppressSecurityChecks, StackCrawlMark& stackMark)
+   在 System.Reflection.Assembly.LoadFrom(String assemblyFile, Evidence securityEvidence)
+   在 System.Activator.CreateInstanceFromInternal(String assemblyFile, String typeName, Boolean ignoreCase, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, Evidence securityInfo)
+   在 System.AppDomain.CreateInstanceFromAndUnwrap(String assemblyFile, String typeName, Boolean ignoreCase, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   在 System.AppDomain.CreateInstanceFromAndUnwrap(String assemblyFile, String typeName, Boolean ignoreCase, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   在 Xunit.AppDomainManager_AppDomain.CreateObjectFrom[TObject](String assemblyLocation, String typeName, Object[] args)
+   在 Xunit.Runner.v2.Xunit2..ctor(IMessageSink diagnosticMessageSink, AppDomainSupport appDomainSupport, ISourceInformationProvider sourceInformationProvider, IAssemblyInfo assemblyInfo, String assemblyFileName, String xunitExecutionAssemblyPath, String configFileName, Boolean shadowCopy, String shadowCopyFolder, Boolean verifyAssembliesOnDisk)
+   在 Xunit.Runner.v2.Xunit2.ForDiscoveryAndExecution(XunitProjectAssembly projectAssembly, ISourceInformationProvider sourceInformationProvider, IMessageSink diagnosticMessageSink, Boolean verifyAssembliesOnDisk)
+   在 Xunit.XunitFrontController.Create(XunitProjectAssembly projectAssembly, ISourceInformationProvider sourceInformationProvider, IMessageSink diagnosticMessageSink, ITestProcessLauncher testProcessLauncher)
+   在 Xunit.Runner.VisualStudio.VsTestRunner.<DiscoverTests>d__24`1.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 Xunit.Runner.VisualStudio.VsTestRunner.<DiscoverTests>d__24`1.MoveNext()
+
+
+[repo]\artifacts\gsc-b\eb817d9f\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll 中没有可用测试。请确保已注册测试发现器和执行器且平台和框架版本设置合理，然后重试。

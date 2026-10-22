@@ -1,0 +1,9 @@
+# 最终默认链发现阶段失败与修复
+
+源码f08b85bedc4d7ea908b3b021d8a388196f74b445，固定干净工作树round4-final-build；默认中文.cmd全链run20261022T163507086Z-16d5dd02，SDK8.0.423 Release编译0/0、Core157/157、Worker400/400后退出1。Playnite发现阶段adapter额外AppDomain加载shadow-copy时抛FileLoadException路径过长，vstest本身退出0但返回零用例，脚本正确拒绝继续。原始诊断仍在工作树artifacts/build-diagnostics，当前副本保留summary、根退出码和完整发现栈。
+
+同一DLL、同一worktree路径、同一发现参数，仅末尾增加官方RunConfiguration.DisableAppDomain=true，退出0并发现1390条用例。与已存在的执行阶段设置对齐；不删用例/过滤器/断言，不扩大skip，零用例拒绝与独立进程保留。适配器原AppDomain的LoadFrom失败栈与同DLL对照支持该修复，未改注册表长路径或Fusion设置。
+
+首次后台启动器另因UTF8无BOM被Windows PowerShell误读中文文件名而在产品脚本开始前退出1；原始日志保留artifacts/round4-final-standard/attempt1-launcher-encoding。启动器改UTF8 BOM与pwsh7后实际进入上述全链；不属于产品源码构建失败。
+
+修复后必须新提交默认.cmd完整复跑；上述发现成功不等于完整测试/安装启动通过。
