@@ -1,0 +1,327 @@
+{
+  "baseCommit": "44544b2d27fb692b61734439352cff61e15c0245",
+  "identity": "base plus uncommitted source hashes; not a clean commit",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "sources": [
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/CommandDirectoryCatalog.cs",
+      "sha256": "ea5734199fe0247d5fd0f9eff3dbfd6b0ce7bdf05883df19958163b27c514a5b"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/CommandDirectoryContextSnapshot.cs",
+      "sha256": "7b03992297ee85744ef4e523990c948b92f65d2085b5d964ad9168eb584d8083"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/CommandDirectoryItem.cs",
+      "sha256": "05f359c2b6bbc9f0e4c625408eda27e022fab58474f51cc4fe1499efaa6d5c4a"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/CommandDirectorySearch.cs",
+      "sha256": "82f28b350b477235bd99c32f6f2e40f68165efa7d61323059d780dc081af312e"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/KeyboardShortcutHelpCatalog.cs",
+      "sha256": "17011987497bf81ef77db667efbac3740937f8483c2670c2ce038f83eb4b6619"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+      "sha256": "5eee15c72f47899065b11c2210c18231b30b49153cce0ac41514aa25943c0338"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/AcrylicProductionResources.xaml",
+      "sha256": "203eb604017779698c03916e0c07598f00c5d56bcb5e0dc16c9a804cacf1e061"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Controls/CommandDirectoryResultPanel.cs",
+      "sha256": "821fa92ad5b151449092a57c1af15f07be67139ce389fbaa0345ae7c139334d5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/CommandDirectoryBehaviorTests.cs",
+      "sha256": "b1d848e75e4b0da6b02e00c81a3a43da861e8cd9ac2b63c2d4056f12adebe5f5"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/CommandDirectoryResultLayoutBehaviorTests.cs",
+      "sha256": "5edcf65b59acab1ba6dfd21d1d461abb044bb0b911ed2f33f9efecc15efd9eef"
+    }
+  ],
+  "testRuns": [
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/CommandDirectoryBehaviorTests/CommandDirectoryBehaviorTests.trx",
+      "rawSha256": "c0411ab0b836580bdfbcb21d7cb133da909b5c2d0f7af5c220bd41ffc33f6284",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/CommandDirectoryBehaviorTests.trx",
+      "evidenceSha256": "961c0c90f6e43d9eb9b3c2031a676589b3a449638f54fd89f50ec393f8d53e37",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "5",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/CommandDirectoryKeyboardBehaviorTests/CommandDirectoryKeyboardBehaviorTests.trx",
+      "rawSha256": "a56fbb2f6a16ffc08005a776e7ced142870a6cbc8be54231095cf568095d4b6c",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/CommandDirectoryKeyboardBehaviorTests.trx",
+      "evidenceSha256": "b6776f27608dbae9eaeacec44e2321d2fbf2ad4d80d7f2efc21f9878feb523a6",
+      "counters": {
+        "total": "7",
+        "executed": "7",
+        "passed": "7",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/CommandDirectoryPreferencePolicyTests/CommandDirectoryPreferencePolicyTests.trx",
+      "rawSha256": "a0e69a6e46c804201777d425f558aa68b9c963ca5095a21885e6ad6b49437df1",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/CommandDirectoryPreferencePolicyTests.trx",
+      "evidenceSha256": "b7f7d88c4ddcb5f0209cc45f7f99d48033d7846faa3986d6879ebda710d885a2",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "5",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/CommandDirectoryReviewBehaviorTests/CommandDirectoryReviewBehaviorTests.trx",
+      "rawSha256": "e6e774c781ad1a3cbf9dbffd6eb5a10f4cebb32e793eb670eb08d3bb26942f0f",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/CommandDirectoryReviewBehaviorTests.trx",
+      "evidenceSha256": "3a72c5cca243b662507c4fe4ffd914efb9fbf982e05553712003f74e14b8a08c",
+      "counters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "4",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/CommandDirectorySearchTests/CommandDirectorySearchTests.trx",
+      "rawSha256": "879645a7eda865be908982023b374bc5d5e0136530eb7b46a2757c0b43383a03",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/CommandDirectorySearchTests.trx",
+      "evidenceSha256": "f009eb76168bd566390c6ff3f5061cb7732ad63087152c4a02e02d9c8721b39b",
+      "counters": {
+        "total": "6",
+        "executed": "6",
+        "passed": "6",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/R10KeyboardShortcutHelpBehaviorTests/R10KeyboardShortcutHelpBehaviorTests.trx",
+      "rawSha256": "4496606833f6e66fbaaed534511d17b77b9db1eb1381feeda6b3f69805e017b1",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/R10KeyboardShortcutHelpBehaviorTests.trx",
+      "evidenceSha256": "b5e249dc6bcf3ed4a5b97d5014f64ec4970021294471ddc40dd6a48ed3c6ac3d",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "5",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/R10SearchShortcutBehaviorTests/R10SearchShortcutBehaviorTests.trx",
+      "rawSha256": "f45d94ca969f54bf73c7b403ae1dd14e257bea054c982ef15c5695759fc95512",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/R10SearchShortcutBehaviorTests.trx",
+      "evidenceSha256": "d1c9e4b273525f6f4ab661f2dc1f642d38c33e0c6febf4f186f454787102e233",
+      "counters": {
+        "total": "2",
+        "executed": "2",
+        "passed": "2",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/R10SearchShortcutFocusBehaviorTests/R10SearchShortcutFocusBehaviorTests.trx",
+      "rawSha256": "2fb7bf402e5d8511ba656a2380ae816c50c9fd4106a4b30623bee789e96a6fb7",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/R10SearchShortcutFocusBehaviorTests.trx",
+      "evidenceSha256": "e3b77793bc64f52539fc65cfb699c4d7993ac46c7bff688520be64f79145e5ac",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/related-tests/WpfUiResourceDictionaryTests/WpfUiResourceDictionaryTests.trx",
+      "rawSha256": "6e0b30b06d39ee1a1e571d1f354088c98f234af7d5fdaf3b9e763d8f13bb3ff5",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/WpfUiResourceDictionaryTests.trx",
+      "evidenceSha256": "f6dabc12bf794e73e2dcbad21a0d7029f7dc179d9bf9f024dc16c52bfd08e9c0",
+      "counters": {
+        "total": "179",
+        "executed": "140",
+        "passed": "140",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/adaptive-tests/adaptive.trx",
+      "rawSha256": "5b1afc42e550491df37ceb770b3d5f294b41a9b0f304fef7e63c33e2bbde8f5d",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/adaptive.trx",
+      "evidenceSha256": "6331530f79568016d8d5414b177ae7ec1dd9598e5eb282a614a2e624158dc84c",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "candidate verification"
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/clip-before-tests/clip-before.trx",
+      "rawSha256": "ce7d81ebb506ec17526f99ad7feafb4edccd8bb6168bf8428cfdb32e71239e83",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/tests/clip-before.trx",
+      "evidenceSha256": "947084d1c58b9085d53a91bb64149ac5bd28dbedb77873c3795b5b6662d0de93",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "purpose": "prototype clipping reproduction, expected failure"
+    }
+  ]
+}

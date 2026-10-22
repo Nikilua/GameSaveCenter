@@ -79,16 +79,20 @@ namespace GameSaveCenter.Playnite.Views
                 ICommand command,
                 object? commandParameter = null,
                 Func<bool>? additionalCanExecute = null,
-                Func<string?>? unavailableReason = null)
+                Func<string?>? unavailableReason = null,
+                string shortcutDisplay = "")
             {
                 Func<string?>? contextPreview = null;
                 Func<string?>? contextUnavailableReason = null;
+                Func<string?>? targetDisplay = null;
                 if (contextSnapshotProvider != null)
                 {
                     contextPreview = () => CommandDirectoryContextSnapshot.GetPreview(
                         contextSnapshotProvider(), id, scope, commandParameter);
                     contextUnavailableReason = () => CommandDirectoryContextSnapshot.GetUnavailableReason(
                         contextSnapshotProvider(), dashboard, id, scope);
+                    targetDisplay = () => CommandDirectoryContextSnapshot.GetTargetDisplay(
+                        contextSnapshotProvider(), id, scope, commandParameter);
                 }
 
                 return new CommandDirectoryItem(
@@ -102,7 +106,9 @@ namespace GameSaveCenter.Playnite.Views
                     additionalCanExecute,
                     unavailableReason,
                     contextPreview,
-                    contextUnavailableReason);
+                    contextUnavailableReason,
+                    targetDisplay,
+                    shortcutDisplay);
             }
 
             var items = new List<CommandDirectoryItem>();
@@ -148,7 +154,8 @@ namespace GameSaveCenter.Playnite.Views
                 "键盘导航",
                 CommandDirectoryScope.Workspace,
                 focusWorkspaceSearchCommand,
-                unavailableReason: () => "当前页面没有可用的搜索框。"));
+                unavailableReason: () => "当前页面没有可用的搜索框。",
+                shortcutDisplay: KeyboardShortcutHelpCatalog.WorkspaceSearchGesture));
 
             items.Add(CreateItem(
                 "task.open-associated-game",

@@ -21,12 +21,14 @@ namespace GameSaveCenter.Playnite.Views
 
     internal static class KeyboardShortcutHelpCatalog
     {
+        internal const string WorkspaceSearchGesture = "Ctrl+F";
+
         public static IReadOnlyList<KeyboardShortcutHelpItem> Create(
             WorkspaceKind workspace,
             ICommand searchCommand)
         {
             var item = new KeyboardShortcutHelpItem(
-                "Ctrl+F",
+                WorkspaceSearchGesture,
                 "搜索" + WorkspaceName(workspace) + "；弹层打开时由弹层继续处理输入",
                 searchCommand);
 

@@ -1,0 +1,38 @@
+[
+  {
+    "exitCode": 0,
+    "class": "CommandDirectoryBehaviorTests"
+  },
+  {
+    "exitCode": 0,
+    "class": "CommandDirectoryReviewBehaviorTests"
+  },
+  {
+    "exitCode": 0,
+    "class": "CommandDirectoryKeyboardBehaviorTests"
+  },
+  {
+    "exitCode": 0,
+    "class": "CommandDirectorySearchTests"
+  },
+  {
+    "exitCode": 0,
+    "class": "CommandDirectoryPreferencePolicyTests"
+  },
+  {
+    "exitCode": 0,
+    "class": "R10KeyboardShortcutHelpBehaviorTests"
+  },
+  {
+    "exitCode": 0,
+    "class": "R10SearchShortcutBehaviorTests"
+  },
+  {
+    "exitCode": 0,
+    "class": "R10SearchShortcutFocusBehaviorTests"
+  },
+  {
+    "exitCode": 0,
+    "class": "WpfUiResourceDictionaryTests"
+  }
+]

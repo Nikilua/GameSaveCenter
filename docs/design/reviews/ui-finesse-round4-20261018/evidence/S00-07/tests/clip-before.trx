@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:TestRun xmlns:ns0="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="f9def1ca-84bb-4d11-bae5-8078f087d6ab" name="clip-before" runUser="controlled-host">
+  <ns0:Times creation="2026-10-23T00:03:58.7887557+08:00" queuing="2026-10-23T00:03:58.7887560+08:00" start="2026-10-23T00:03:49.5301790+08:00" finish="2026-10-23T00:03:58.7937367+08:00" />
+  <ns0:TestSettings name="default" id="e5558a5b-2030-4491-a720-a5db1c83426b">
+    <ns0:Deployment runDeploymentRoot="controlled-user_controlled-host_2026-10-23_00_03_58" />
+  </ns0:TestSettings>
+  <ns0:Results>
+    <ns0:UnitTestResult executionId="a3855b92-4b9f-413e-97e7-ff62d7af3d95" testId="bbe920ec-5784-aac4-2ef6-05e7736aabdc" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText" computerName="controlled-host" duration="00:00:04.7840000" startTime="2026-10-23T00:03:53.8087537+08:00" endTime="2026-10-23T00:03:58.5517235+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a3855b92-4b9f-413e-97e7-ff62d7af3d95">
+      <ns0:Output>
+        <ns0:StdOut>Light window=620, text=100%, panel=292.67, list=258x269.33, row=264.67, titleWidth=118.67, reasonHeight=128, scroll=0/0
+
+Light window=860, text=100%, panel=420, list=385.33x185.33, row=180.67, titleWidth=246, reasonHeight=80, scroll=0/0
+
+Light window=1040, text=100%, panel=420, list=385.33x185.33, row=180.67, titleWidth=246, reasonHeight=80, scroll=0/0</ns0:StdOut>
+        <ns0:ErrorInfo>
+          <ns0:Message>System.InvalidOperationException : Command result layout failed.
+
+---- metadata escaped its parent: 键盘导航</ns0:Message>
+          <ns0:StackTrace>   在 GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\CommandDirectoryResultLayoutBehaviorTests.cs:行号 53
+
+----- Inner Stack Trace -----
+
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+
+   在 GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.Probe(GameSaveCenterThemeMode theme, Double scale, Double width) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\CommandDirectoryResultLayoutBehaviorTests.cs:行号 118
+
+   在 GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText&gt;b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\CommandDirectoryResultLayoutBehaviorTests.cs:行号 44</ns0:StackTrace>
+        </ns0:ErrorInfo>
+      </ns0:Output>
+    </ns0:UnitTestResult>
+  </ns0:Results>
+  <ns0:TestDefinitions>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="bbe920ec-5784-aac4-2ef6-05e7736aabdc">
+      <ns0:Execution id="a3855b92-4b9f-413e-97e7-ff62d7af3d95" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests" name="LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText" />
+    </ns0:UnitTest>
+  </ns0:TestDefinitions>
+  <ns0:TestEntries>
+    <ns0:TestEntry testId="bbe920ec-5784-aac4-2ef6-05e7736aabdc" executionId="a3855b92-4b9f-413e-97e7-ff62d7af3d95" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </ns0:TestEntries>
+  <ns0:TestLists>
+    <ns0:TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </ns0:TestLists>
+  <ns0:ResultSummary outcome="Failed">
+    <ns0:Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <ns0:Output>
+      <ns0:StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.63]   Discovered:  GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.67]   Starting:    GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:07.52]       System.InvalidOperationException : Command result layout failed.
+
+[xUnit.net 00:00:07.52]       ---- metadata escaped its parent: 键盘导航
+
+[xUnit.net 00:00:07.53]       Stack Trace:
+
+[xUnit.net 00:00:07.53]            在 GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\CommandDirectoryResultLayoutBehaviorTests.cs:行号 53
+
+[xUnit.net 00:00:07.53]         ----- Inner Stack Trace -----
+
+[xUnit.net 00:00:07.53]            在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+
+[xUnit.net 00:00:07.53]            在 GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.Probe(GameSaveCenterThemeMode theme, Double scale, Double width) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\CommandDirectoryResultLayoutBehaviorTests.cs:行号 118
+
+[xUnit.net 00:00:07.53]            在 GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText&gt;b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\CommandDirectoryResultLayoutBehaviorTests.cs:行号 44
+
+[xUnit.net 00:00:07.53]       Output:
+
+[xUnit.net 00:00:07.53]         Light window=620, text=100%, panel=292.67, list=258x269.33, row=264.67, titleWidth=118.67, reasonHeight=128, scroll=0/0
+
+[xUnit.net 00:00:07.53]         Light window=860, text=100%, panel=420, list=385.33x185.33, row=180.67, titleWidth=246, reasonHeight=80, scroll=0/0
+
+[xUnit.net 00:00:07.53]         Light window=1040, text=100%, panel=420, list=385.33x185.33, row=180.67, titleWidth=246, reasonHeight=80, scroll=0/0
+
+[xUnit.net 00:00:07.55]   Finished:    GameSaveCenter.Playnite.Tests
+
+</ns0:StdOut>
+    </ns0:Output>
+    <ns0:RunInfos>
+      <ns0:RunInfo computerName="controlled-host" outcome="Error" timestamp="2026-10-23T00:03:58.5688225+08:00">
+        <ns0:Text>[xUnit.net 00:00:07.52]     GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText [FAIL]</ns0:Text>
+      </ns0:RunInfo>
+      <ns0:RunInfo computerName="controlled-host" outcome="Warning" timestamp="2026-10-23T00:03:58.7483424+08:00">
+        <ns0:Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</ns0:Text>
+      </ns0:RunInfo>
+    </ns0:RunInfos>
+  </ns0:ResultSummary>
+</ns0:TestRun>

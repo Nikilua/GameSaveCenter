@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:TestRun xmlns:ns0="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="d9f77119-bc46-4969-a68e-ef6dd286a49f" name="adaptive" runUser="controlled-host">
+  <ns0:Times creation="2026-10-23T00:07:51.7220314+08:00" queuing="2026-10-23T00:07:51.7220317+08:00" start="2026-10-23T00:07:37.1054132+08:00" finish="2026-10-23T00:07:51.7263997+08:00" />
+  <ns0:TestSettings name="default" id="455948fc-fe1c-4b8b-b83a-44708272c542">
+    <ns0:Deployment runDeploymentRoot="controlled-user_controlled-host_2026-10-23_00_07_51" />
+  </ns0:TestSettings>
+  <ns0:Results>
+    <ns0:UnitTestResult executionId="226546cf-ee92-4355-b0c2-3f9268f0a71a" testId="bbe920ec-5784-aac4-2ef6-05e7736aabdc" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText" computerName="controlled-host" duration="00:00:10.0470000" startTime="2026-10-23T00:07:41.4901562+08:00" endTime="2026-10-23T00:07:51.4900338+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="226546cf-ee92-4355-b0c2-3f9268f0a71a">
+      <ns0:Output>
+        <ns0:StdOut>Light window=620, text=100%, panel=292.67, list=258x269.33, row=264.67, titleWidth=118.67, reasonHeight=128, scroll=0/0
+
+Light window=860, text=100%, panel=420, list=385.33x185.33, row=180.67, titleWidth=246, reasonHeight=80, scroll=0/0
+
+Light window=1040, text=100%, panel=420, list=385.33x185.33, row=180.67, titleWidth=246, reasonHeight=80, scroll=0/0
+
+Light window=620, text=200%, panel=292.67, list=258x246.67, row=842.67, titleWidth=190.67, reasonHeight=574.67, scroll=600.67/600.67
+
+Light window=860, text=200%, panel=420, list=385.33x322.67, row=553.33, titleWidth=318, reasonHeight=319.33, scroll=235.33/235.33
+
+Light window=1040, text=200%, panel=420, list=385.33x322.67, row=553.33, titleWidth=318, reasonHeight=319.33, scroll=235.33/235.33
+
+Dark window=620, text=100%, panel=292.67, list=258x269.33, row=264.67, titleWidth=118.67, reasonHeight=128, scroll=0/0
+
+Dark window=860, text=100%, panel=420, list=385.33x185.33, row=180.67, titleWidth=246, reasonHeight=80, scroll=0/0
+
+Dark window=1040, text=100%, panel=420, list=385.33x185.33, row=180.67, titleWidth=246, reasonHeight=80, scroll=0/0
+
+Dark window=620, text=200%, panel=292.67, list=258x246.67, row=842.67, titleWidth=190.67, reasonHeight=574.67, scroll=600.67/600.67
+
+Dark window=860, text=200%, panel=420, list=385.33x322.67, row=553.33, titleWidth=318, reasonHeight=319.33, scroll=235.33/235.33
+
+Dark window=1040, text=200%, panel=420, list=385.33x322.67, row=553.33, titleWidth=318, reasonHeight=319.33, scroll=235.33/235.33</ns0:StdOut>
+      </ns0:Output>
+    </ns0:UnitTestResult>
+  </ns0:Results>
+  <ns0:TestDefinitions>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests.LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="bbe920ec-5784-aac4-2ef6-05e7736aabdc">
+      <ns0:Execution id="226546cf-ee92-4355-b0c2-3f9268f0a71a" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests" name="LongResultsKeepTheirMetadataAccessibleAtBothThemesAndTwoHundredPercentText" />
+    </ns0:UnitTest>
+  </ns0:TestDefinitions>
+  <ns0:TestEntries>
+    <ns0:TestEntry testId="bbe920ec-5784-aac4-2ef6-05e7736aabdc" executionId="226546cf-ee92-4355-b0c2-3f9268f0a71a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </ns0:TestEntries>
+  <ns0:TestLists>
+    <ns0:TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </ns0:TestLists>
+  <ns0:ResultSummary outcome="Completed">
+    <ns0:Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <ns0:Output>
+      <ns0:StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.65]   Discovered:  GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.69]   Starting:    GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:12.82]   Finished:    GameSaveCenter.Playnite.Tests
+
+</ns0:StdOut>
+    </ns0:Output>
+    <ns0:RunInfos>
+      <ns0:RunInfo computerName="controlled-host" outcome="Warning" timestamp="2026-10-23T00:07:51.6782530+08:00">
+        <ns0:Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</ns0:Text>
+      </ns0:RunInfo>
+    </ns0:RunInfos>
+  </ns0:ResultSummary>
+</ns0:TestRun>

@@ -101,6 +101,30 @@ namespace GameSaveCenter.Playnite.Views
             return $"当前工作区：{GetWorkspaceDisplayName(snapshot.Workspace)}";
         }
 
+        public static string GetTargetDisplay(
+            CommandDirectoryContextSnapshot? snapshot,
+            string commandId,
+            CommandDirectoryScope scope,
+            object? commandParameter)
+        {
+            if (scope == CommandDirectoryScope.Global) return "插件全局设置";
+            if (scope == CommandDirectoryScope.Workspace && commandParameter is WorkspaceKind workspace)
+                return "页面：" + GetWorkspaceDisplayName(workspace)
+                    + (commandId == CommandDirectoryCatalog.RetentionReviewId ? " · 保留策略" : string.Empty);
+            if (snapshot == null) return "尚未确认作用对象";
+            if (scope == CommandDirectoryScope.CurrentGame)
+                return "游戏：" + (snapshot.GameName ?? "未选择游戏")
+                    + (snapshot.GameId == null ? string.Empty : " · " + snapshot.GameId);
+            if (scope == CommandDirectoryScope.SelectedTask)
+                return "任务：" + (snapshot.TaskType ?? "所选任务")
+                    + (snapshot.TaskId == null ? " · 未选择任务" : " · " + snapshot.TaskId);
+            if (commandId == "workspace.focus-search")
+                return "搜索框：" + GetWorkspaceDisplayName(snapshot.Workspace);
+            if (commandId == "game-picker.open")
+                return "游戏选择器：" + GetWorkspaceDisplayName(snapshot.Workspace);
+            return "工作区：" + GetWorkspaceDisplayName(snapshot.Workspace);
+        }
+
         public static string? GetUnavailableReason(
             CommandDirectoryContextSnapshot? snapshot,
             DashboardViewModel dashboard,

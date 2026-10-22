@@ -27,6 +27,7 @@ namespace GameSaveCenter.Playnite.Views
         private readonly Func<string?>? unavailableReason;
         private readonly Func<string?>? contextPreview;
         private readonly Func<string?>? contextUnavailableReason;
+        private readonly Func<string?>? targetDisplay;
         private EventHandler? canExecuteChanged;
         private bool isPinned;
         private bool isRecent;
@@ -43,7 +44,9 @@ namespace GameSaveCenter.Playnite.Views
             Func<bool>? additionalCanExecute = null,
             Func<string?>? unavailableReason = null,
             Func<string?>? contextPreview = null,
-            Func<string?>? contextUnavailableReason = null)
+            Func<string?>? contextUnavailableReason = null,
+            Func<string?>? targetDisplay = null,
+            string shortcutDisplay = "")
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentException("命令 ID 不能为空。", nameof(id));
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("命令名称不能为空。", nameof(name));
@@ -64,6 +67,8 @@ namespace GameSaveCenter.Playnite.Views
             this.unavailableReason = unavailableReason;
             this.contextPreview = contextPreview;
             this.contextUnavailableReason = contextUnavailableReason;
+            this.targetDisplay = targetDisplay;
+            ShortcutDisplay = (shortcutDisplay ?? string.Empty).Trim();
         }
 
         public string Id { get; }
@@ -71,6 +76,8 @@ namespace GameSaveCenter.Playnite.Views
         public IReadOnlyList<string> Aliases { get; }
         public string Category { get; }
         public CommandDirectoryScope Scope { get; }
+        public string ShortcutDisplay { get; }
+        public string TargetDisplay => targetDisplay?.Invoke() ?? ScopeDisplay;
         public bool IsAvailable => CanExecute(null);
         public bool IsPinned => isPinned;
         public bool IsRecent => isRecent;
@@ -94,6 +101,18 @@ namespace GameSaveCenter.Playnite.Views
         public string AvailabilityDisplay => IsAvailable ? "可用" : "暂不可用";
 
         public string ContextPreview => contextPreview?.Invoke() ?? "该命令不依赖当前游戏或任务。";
+
+        public string FullDescription
+        {
+            get
+            {
+                var shortcut = ShortcutDisplay.Length == 0 ? string.Empty : $"\n快捷键：{ShortcutDisplay}";
+                var preview = contextPreview == null ? string.Empty : "\n" + ContextPreview;
+                var reason = UnavailableReason;
+                return $"{Name}\n{Category} · {ScopeDisplay}\n{TargetDisplay}{shortcut}{preview}"
+                    + (string.IsNullOrWhiteSpace(reason) ? string.Empty : "\n不可用原因：" + reason);
+            }
+        }
 
         public string AutomationDisplayName => IsAvailable
             ? BuildAutomationDisplayName("可用")
@@ -149,6 +168,8 @@ namespace GameSaveCenter.Playnite.Views
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsAvailable)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AvailabilityDisplay)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ContextPreview)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TargetDisplay)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FullDescription)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UnavailableReason)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutomationDisplayName)));
         }
@@ -185,7 +206,9 @@ namespace GameSaveCenter.Playnite.Views
         private string BuildAutomationDisplayName(string availability)
         {
             var preference = IsPinned ? "，已固定" : IsRecent ? "，最近使用" : string.Empty;
-            return $"{Name}，{Category}，{ScopeDisplay}，{availability}{preference}";
+            var target = TargetDisplay == ScopeDisplay ? string.Empty : "，" + TargetDisplay;
+            var shortcut = ShortcutDisplay.Length == 0 ? string.Empty : "，快捷键 " + ShortcutDisplay;
+            return $"{Name}，{Category}，{ScopeDisplay}{target}，{availability}{shortcut}{preference}";
         }
     }
 }

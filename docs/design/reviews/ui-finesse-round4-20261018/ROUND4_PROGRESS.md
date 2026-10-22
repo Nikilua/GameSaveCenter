@@ -16,8 +16,8 @@
 
 <!-- ROUND4-STATUS-GENERATED-START -->
 
-状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收19、外部阻塞1、待开始2。
-实现状态：完成61、未开始3、不适用0；受控验证：通过62、未跑2、不适用0；宿主验证：通过0、待验16、未跑40、不适用8。
+状态摘要（由 `ROUND4_STATUS.json` 生成）：任务 64 项；状态 已验收40、已满足2、代码完成待验收19、实施中1、外部阻塞1、待开始1。
+实现状态：完成62、未开始2、不适用0；受控验证：通过62、未跑1、不适用0；宿主验证：通过0、待验17、未跑39、不适用8。
 
 | ID | 任务 | 状态 | 实现 commit | 验证与证据 | 边界/下一步 |
 | --- | --- | --- | --- | --- | --- |
@@ -27,7 +27,7 @@
 | S00-04 | 固定与最近命令 | 代码完成待验收 | f8b3144e36d190663f760a98aa0602bec6bda2f8 | [实现证据](evidence/S00-04/IMPLEMENTATION.md)；SDK8.0.423 完整标准 GameSaveCenter-Run.cmd 退出码 0，1,904 项（1,847 通过、57 跳过、0 失败），140 个 WPF 隔离类；打包、安装身份验证和 Playnite 启动均成功，详见[标准验收](evidence/S00-04/STANDARD_BUILD_20261022.md) | 已安装插件 DLL 与 Release 构建 DLL SHA-256 一致，Playnite 进程启动；未进行真实页面交互/视觉、物理键盘或 IME 候选验收，host verification 保持 pending。用户所附 R09 旧日志的 2→1 描边差异在当前提交 R09 2/2 中未复现，旧运行输入身份与根因未知。 |
 | S00-05 | 上下文预览 | 代码完成待验收 | 5974742f | 命令目录定向测试 21/21；提交 5974742f 的 GameSaveCenter-Run.cmd 完整通过（SDK8.0.423、1906 项、0 失败，140 个 WPF 隔离类），详见[能力审计](evidence/S00-05/AUDIT.md)、[实现验证](evidence/S00-05/IMPLEMENTATION.md)和[标准全链验收](evidence/S00-05/STANDARD_BUILD_20261022.md)。 | 游戏/任务稳定 ID 快照和失效拦截已实现；完整标准链含打包、安装身份核验和 Playnite 进程启动均通过。真实 Playnite 页面交互、物理键盘和 IME 候选保持 pending。 |
 | S00-06 | 危险动作转交 | 代码完成待验收 | 30e32794 | [实现与边界](evidence/S00-06/README.md)：仅打开恢复/保留策略审阅页；[精确提交复核](evidence/S00-06/formal-identity.json)：30e32794，SDK8.0.423 Release编译0/0，7类36/36、0 fail/skip；[候选身份](evidence/S00-06/candidate-identity.json)与原始/脱敏TRX保留 | 恢复/清理/预览哨兵执行0次，原版本对象与锁/PreRestore标记保留；真实页面和物理键盘/IME未验；S00-06～08最终默认.cmd全链待运行，4f40e016的旧全链不冒充此新改动验收。 |
-| S00-07 | 结果精细排版 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
+| S00-07 | 结果精细排版 | 实施中 | 44544b2d + candidate source hashes | [候选证据](evidence/S00-07/README.md)：SDK8 Release编译0/0，215项176 pass/39原有skip；12组排版通过；精确提交复核待运行 | 真实宿主/物理输入未验；S00-06～08最终默认.cmd待运行。 |
 | S00-08 | 目录行为验收 | 待开始 | — | 待实现后按范围验证 | 先核对已有能力；依赖见计划 |
 | S01-01 | 视图配置模型 | 已验收 | 25bbe005 | [证据](evidence/S01-01/README.md)：SDK8 Release 测试项目构建通过；ViewConfigurationDefinition 与 R09 合计 7/7 | 未改 XAML；真实 Playnite 设置加载/保存未验证；密度、列选择和视图保存交互留后续任务 |
 | S01-02 | 舒适紧凑密度 | 代码完成待验收 | ad7bd563 | [证据](evidence/S01-02/README.md)：密度/设置14/14；[共享表格/详情修复](../UI-TABLE-DETAILS-REPAIR-20261022/README.md)；[最终标准验收](../UI-TABLE-DETAILS-REPAIR-20261022/STANDARD_BUILD.md)：4f40e016默认中文入口完整退出0，SDK8.0.423/Release，1908项（1851 pass/57原有skip/0 fail），140个WPF类、143份TRX一致；打包安装与Playnite启动通过，独立双主题RenderHarness 0 PROBLEM | 真实Playnite密度设置加载/保存、物理DPI与页面交互仍未运行；当前标准入口编译/受控测试/打包/安装身份/进程启动已在4f40e016通过，不替代host verification。 |

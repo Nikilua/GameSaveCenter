@@ -13,6 +13,7 @@
     <Style x:Key="GscCommandDirectoryResultButton"
            TargetType="{x:Type ui:Button}"
            BasedOn="{StaticResource GscWpfUiContextButton}">
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
         <Setter Property="Height" Value="Auto"/>
         <Setter Property="MinHeight" Value="68"/>
         <Setter Property="Margin" Value="0,0,0,6"/>
@@ -22,6 +23,7 @@
     </Style>
 
     <Style x:Key="GscCommandDirectoryContextPreviewCard" TargetType="Border">
+        <Setter Property="MaxHeight" Value="140"/>
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -30,6 +32,41 @@
         <Setter Property="Margin" Value="0,0,0,8"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+
+    <Style x:Key="GscCommandDirectoryNameText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource GscBodyFontSize}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+    <Style x:Key="GscCommandDirectoryMetadataText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
+    </Style>
+    <Style x:Key="GscCommandDirectoryUnavailableText" TargetType="TextBlock"
+           BasedOn="{StaticResource GscCommandDirectoryMetadataText}">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Visibility" Value="Visible"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsAvailable}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="GscCommandDirectoryShortcutBadge" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Padding" Value="5,1"/>
+        <Setter Property="Visibility" Value="Visible"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ShortcutDisplay}" Value="">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="AcrylicNavItem" TargetType="RadioButton">

@@ -156,6 +156,74 @@ public sealed class CommandDirectoryBehaviorTests
         Assert.Equal(WorkspaceKind.Saves, navigation.LastParameter);
     }
 
+    [Fact]
+    public void CatalogTargetsIncludeStableIdsAndAdvertiseOnlyTheExistingSearchShortcut()
+    {
+        var dashboard = CreateDashboard();
+        SetField(dashboard, "currentWorkspace", WorkspaceKind.Tasks);
+        var game = new GameStatusDto { PlayniteId = "target-game-id", Name = "明确的合成游戏" };
+        dashboard.Games.Add(game);
+        SetField(GetField(dashboard, "gamePicker")!, "selectedItem", new GamePickerItem(game));
+        var task = new TaskStatusDto { TaskId = "target-task-id", TaskType = "Backup", GameId = game.PlayniteId, GameName = game.Name };
+        dashboard.Tasks.Add(task);
+        SetField(dashboard, "selectedTask", task);
+        var snapshot = CommandDirectoryContextSnapshot.Capture(dashboard);
+        var searchCommand = new RecordingCommand();
+        var items = CommandDirectoryCatalog.Create(dashboard, new RecordingCommand(), new RecordingCommand(),
+            new RecordingCommand(), searchCommand, () => snapshot);
+
+        var saves = items.Single(item => item.Id == "workspace.saves");
+        Assert.Contains(game.Name, saves.TargetDisplay);
+        Assert.Contains(game.PlayniteId, saves.TargetDisplay);
+        Assert.Contains(game.PlayniteId, saves.FullDescription);
+        Assert.Contains(game.PlayniteId, saves.AutomationDisplayName);
+        var related = items.Single(item => item.Id == "task.open-associated-game");
+        Assert.Contains(task.TaskId, related.TargetDisplay);
+        Assert.Contains(game.Name, related.FullDescription);
+        var search = items.Single(item => item.Id == "workspace.focus-search");
+        Assert.Equal("Ctrl+F", search.ShortcutDisplay);
+        Assert.Equal(Assert.Single(KeyboardShortcutHelpCatalog.Create(WorkspaceKind.Tasks, searchCommand)).Gesture,
+            search.ShortcutDisplay);
+        Assert.Contains("任务中心", search.TargetDisplay);
+        Assert.All(items.Where(item => item.Id != search.Id), item => Assert.Empty(item.ShortcutDisplay));
+    }
+
+    [Fact]
+    public void ObjectSummaryStaysCapturedUntilANewSnapshotAndNotifiesTheRowBindings()
+    {
+        var dashboard = CreateDashboard();
+        var first = new GameStatusDto { PlayniteId = "first-id", Name = "第一合成游戏" };
+        var second = new GameStatusDto { PlayniteId = "second-id", Name = "第二合成游戏" };
+        dashboard.Games.Add(first);
+        dashboard.Games.Add(second);
+        var picker = GetField(dashboard, "gamePicker")!;
+        SetField(picker, "selectedItem", new GamePickerItem(first));
+        CommandDirectoryContextSnapshot? snapshot = CommandDirectoryContextSnapshot.Capture(dashboard);
+        var item = CommandDirectoryCatalog.Create(dashboard, new RecordingCommand(), new RecordingCommand(),
+            new RecordingCommand(), new RecordingCommand(), () => snapshot).Single(command => command.Id == "review.restore");
+        var changed = new System.Collections.Generic.List<string>();
+        item.PropertyChanged += (_, args) => changed.Add(args.PropertyName ?? string.Empty);
+
+        SetField(picker, "selectedItem", new GamePickerItem(second));
+        item.RaiseCanExecuteChanged();
+        Assert.Contains(first.PlayniteId, item.TargetDisplay);
+        Assert.DoesNotContain(second.PlayniteId, item.TargetDisplay);
+        Assert.False(item.IsAvailable);
+        Assert.Contains("选择已变化", item.FullDescription);
+
+        snapshot = CommandDirectoryContextSnapshot.Capture(dashboard);
+        item.RaiseCanExecuteChanged();
+        Assert.True(item.IsAvailable);
+        Assert.Contains(second.PlayniteId, item.TargetDisplay);
+        Assert.DoesNotContain(first.PlayniteId, item.TargetDisplay);
+        Assert.Contains(nameof(CommandDirectoryItem.TargetDisplay), changed);
+        Assert.Contains(nameof(CommandDirectoryItem.FullDescription), changed);
+        snapshot = null;
+        item.RaiseCanExecuteChanged();
+        Assert.Equal("尚未确认作用对象", item.TargetDisplay);
+        Assert.False(item.IsAvailable);
+    }
+
     private static DashboardViewModel CreateDashboard()
     {
         var dashboard = (DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));
