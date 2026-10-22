@@ -140,12 +140,12 @@
     {
       "id": "S00-07",
       "title": "结果精细排版",
-      "state": "实施中",
+      "state": "代码完成待验收",
       "implementationState": "complete",
-      "implementationCommit": "44544b2d + candidate source hashes",
-      "controlledVerificationState": "pending",
+      "implementationCommit": "70e42163",
+      "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[候选证据](evidence/S00-07/README.md)：SDK8 Release编译0/0，215项176 pass/39原有skip；12组排版通过；精确提交复核待运行",
+      "verificationText": "[正式证据](evidence/S00-07/README.md)：70e42163 SDK8.0.423 Release编译0/0；10进程215项176 pass/39原有skip/0 fail；12组双主题/字体/宽度通过",
       "evidence": [
         {
           "label": "候选验证",

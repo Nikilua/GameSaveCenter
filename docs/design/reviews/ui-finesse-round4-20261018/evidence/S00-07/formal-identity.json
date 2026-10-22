@@ -1,0 +1,262 @@
+{
+  "commit": "70e421636ad3be5379058645b7564d5a02b25d61",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "trackedSourceClean": true,
+  "note": "only evidence/docs modified after commit; user existing untracked TRX preserved",
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "productVersion": "0.6.73+70e421636ad3be5379058645b7564d5a02b25d61",
+  "assemblies": [
+    {
+      "path": "artifacts/round4-s00-07/build/bin/GameSaveCenter.Playnite/Release/net462/GameSaveCenter.Playnite.dll",
+      "sha256": "838e83fe071d750317308e940e4730e7e09c4a42354b69d47ac6e9981fc4c9dd"
+    },
+    {
+      "path": "artifacts/round4-s00-07/build/bin/GameSaveCenter.Playnite.Tests/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+      "sha256": "4ac9c695f49d39e3ee7f8e5fe22703c97b94b90d370907ad1c6dc7fece2018b6"
+    }
+  ],
+  "testRuns": [
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/CommandDirectoryBehaviorTests/CommandDirectoryBehaviorTests.trx",
+      "rawSha256": "aac9f1c9fb7d8e2cf72f892ea4fd314500373eeb8b4fe9178c030a86f1016fec",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/CommandDirectoryBehaviorTests.trx",
+      "evidenceSha256": "aa92ae47573c2bb47fbffe5c7ca8bf1c7d1e069b8010497ae5787576f6ee359f",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "5",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/CommandDirectoryKeyboardBehaviorTests/CommandDirectoryKeyboardBehaviorTests.trx",
+      "rawSha256": "5760b9c84f86a0073827df7e3e74a7a98e8bb9f4c5710ede65037f082e77ca8b",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/CommandDirectoryKeyboardBehaviorTests.trx",
+      "evidenceSha256": "39f6d9d76baf066d6a8f799ede882243e25995de0ae6797e2b90fcf8107bff7e",
+      "counters": {
+        "total": "7",
+        "executed": "7",
+        "passed": "7",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/CommandDirectoryPreferencePolicyTests/CommandDirectoryPreferencePolicyTests.trx",
+      "rawSha256": "e92fc664c59685a0bdb50e1fa58f2fe95f99682090aad5f2e10eb63a93d9e3d9",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/CommandDirectoryPreferencePolicyTests.trx",
+      "evidenceSha256": "53cd4e21a7ea2b88481ec67daa06f02da68d3f73a2037d6745d791241cc648f8",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "5",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/CommandDirectoryResultLayoutBehaviorTests/CommandDirectoryResultLayoutBehaviorTests.trx",
+      "rawSha256": "27abafc384e875503191cf2f83d1269bc912320c9ff10350d664af6cd1911b7d",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/CommandDirectoryResultLayoutBehaviorTests.trx",
+      "evidenceSha256": "8fa2105938ab1a36c9dcba9ea872718aff48ee7e3fde96a84e08bd2631114bd4",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/CommandDirectoryReviewBehaviorTests/CommandDirectoryReviewBehaviorTests.trx",
+      "rawSha256": "19d3c839a072522c741c1f0a206ce733f792dcb25dbac80b20df6c01ff4d8f32",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/CommandDirectoryReviewBehaviorTests.trx",
+      "evidenceSha256": "dc9910db5ab5cb4cc8a40a8276e858bb43185a5b0dda7248ac4337cda91cbd4b",
+      "counters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "4",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/CommandDirectorySearchTests/CommandDirectorySearchTests.trx",
+      "rawSha256": "b360980b5de9b482286a57933e0a1ec1f8f5f1f2920f12173522158a3c4140ec",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/CommandDirectorySearchTests.trx",
+      "evidenceSha256": "f3d68435b2012ee811ffd4cd334dfc36b71ecbc0c9609b12a7159d067963049a",
+      "counters": {
+        "total": "6",
+        "executed": "6",
+        "passed": "6",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/R10KeyboardShortcutHelpBehaviorTests/R10KeyboardShortcutHelpBehaviorTests.trx",
+      "rawSha256": "d67134f33779b512e2cfe5b2ee6c2c5cdd94d4f462aba5859cfc0d41871476d9",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/R10KeyboardShortcutHelpBehaviorTests.trx",
+      "evidenceSha256": "3db5a2bcabe30b0d03f8d9f4a23cd1874e1bf66fac6bb2d76b1133d3cdc9e6ac",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "5",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/R10SearchShortcutBehaviorTests/R10SearchShortcutBehaviorTests.trx",
+      "rawSha256": "696907faa3bcf1eae0e25bb7bb52832453a682c1f8cdbf91444a5cae1fad82df",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/R10SearchShortcutBehaviorTests.trx",
+      "evidenceSha256": "105633a566aeeee03bdf9164def2af458fe23a0838c055e3d0632e9a18fe11a0",
+      "counters": {
+        "total": "2",
+        "executed": "2",
+        "passed": "2",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/R10SearchShortcutFocusBehaviorTests/R10SearchShortcutFocusBehaviorTests.trx",
+      "rawSha256": "3382a51aff55c709020ff0559e8b8c11e3fa4235ca58fd87c5b90f2d11b3c7b3",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/R10SearchShortcutFocusBehaviorTests.trx",
+      "evidenceSha256": "99cca5e0a5b642f57dd9ac670e1445e11b6a249cd14646f583202b915ef6ae8f",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "rawPath": "artifacts/round4-s00-07/formal-tests/WpfUiResourceDictionaryTests/WpfUiResourceDictionaryTests.trx",
+      "rawSha256": "5933f7b59e35bbd2ee4f0174b0eb84ecd0e10bc5378bcedeb3591711806c6324",
+      "evidencePath": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-07/formal/WpfUiResourceDictionaryTests.trx",
+      "evidenceSha256": "71e6846bdd73611dbfa92a6020f44fcecb28e153323fdaa225ffdeaf58b1755c",
+      "counters": {
+        "total": "179",
+        "executed": "140",
+        "passed": "140",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ]
+}

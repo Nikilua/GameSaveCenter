@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:TestRun xmlns:ns0="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="be6bef26-b4c8-4a52-87d5-c5f6f2b35d49" name="CommandDirectorySearchTests" runUser="controlled-host">
+  <ns0:Times creation="2026-10-23T00:25:41.1657157+08:00" queuing="2026-10-23T00:25:41.1657161+08:00" start="2026-10-23T00:25:36.5647409+08:00" finish="2026-10-23T00:25:41.1712332+08:00" />
+  <ns0:TestSettings name="default" id="e9d64ef1-3eb9-4f84-910e-5fb6b577d98a">
+    <ns0:Deployment runDeploymentRoot="controlled-user_controlled-host_2026-10-23_00_25_41" />
+  </ns0:TestSettings>
+  <ns0:Results>
+    <ns0:UnitTestResult executionId="261c195c-4183-4379-b785-e8458c7e1ca1" testId="6ed584b1-43ed-b64e-f896-b50410002d1d" testName="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.SuccessfulInvocationRaisesOneUsageEventAndUnavailableItemsRaiseNone" computerName="controlled-host" duration="00:00:00.0010000" startTime="2026-10-23T00:25:40.9560799+08:00" endTime="2026-10-23T00:25:40.9560799+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="261c195c-4183-4379-b785-e8458c7e1ca1" />
+    <ns0:UnitTestResult executionId="f96c9b93-8975-4113-ae78-7f566379cb12" testId="e3e918ea-4913-ec60-ba87-2223c0dadb7d" testName="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.TwoHundredItemFilterCompletesWithinTheControlledLatencyBudget" computerName="controlled-host" duration="00:00:00.0040000" startTime="2026-10-23T00:25:40.8526243+08:00" endTime="2026-10-23T00:25:40.8536263+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f96c9b93-8975-4113-ae78-7f566379cb12">
+      <ns0:Output>
+        <ns0:StdOut>200 项别名搜索：0.674 ms，匹配 200 项</ns0:StdOut>
+      </ns0:Output>
+    </ns0:UnitTestResult>
+    <ns0:UnitTestResult executionId="8d759684-98ec-4b2c-a8ff-1b8155163b32" testId="dd0d2aad-b600-a9fc-b91a-637e2676656e" testName="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.SearchPanelUsesTheInShellOverlayAndVirtualizedResults" computerName="controlled-host" duration="00:00:00.1330000" startTime="2026-10-23T00:25:40.8556230+08:00" endTime="2026-10-23T00:25:40.9520800+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d759684-98ec-4b2c-a8ff-1b8155163b32" />
+    <ns0:UnitTestResult executionId="0eeb58b0-2f32-4363-b6c0-90fd3c251acc" testId="2740e83c-5942-0228-71e6-ef5d7ac3ab4a" testName="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.EmptyQueryShowsOnlyTheFirstEightCommonItems" computerName="controlled-host" duration="00:00:00.0150000" startTime="2026-10-23T00:25:40.8496234+08:00" endTime="2026-10-23T00:25:40.8496234+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0eeb58b0-2f32-4363-b6c0-90fd3c251acc" />
+    <ns0:UnitTestResult executionId="6e4e32ea-aca8-4868-8a83-2fd97c33485a" testId="25cc0bf0-a99c-f4f9-2cb9-914d59ad6e33" testName="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.FilterMatchesNameAliasesAndCategoryWithoutCaseSensitivity" computerName="controlled-host" duration="00:00:00.0020000" startTime="2026-10-23T00:25:40.9540804+08:00" endTime="2026-10-23T00:25:40.9540804+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e4e32ea-aca8-4868-8a83-2fd97c33485a" />
+    <ns0:UnitTestResult executionId="f706e0c7-8cfb-4f48-86b3-a64c1ca4bc1b" testId="4008ba2e-f2dd-4405-b992-90a43baf21e5" testName="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.AvailabilityRefreshNotifiesBoundStatusAndAccessibleName" computerName="controlled-host" duration="00:00:00.0250000" startTime="2026-10-23T00:25:40.8175061+08:00" endTime="2026-10-23T00:25:40.8215078+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f706e0c7-8cfb-4f48-86b3-a64c1ca4bc1b" />
+  </ns0:Results>
+  <ns0:TestDefinitions>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.SearchPanelUsesTheInShellOverlayAndVirtualizedResults" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="dd0d2aad-b600-a9fc-b91a-637e2676656e">
+      <ns0:Execution id="8d759684-98ec-4b2c-a8ff-1b8155163b32" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests" name="SearchPanelUsesTheInShellOverlayAndVirtualizedResults" />
+    </ns0:UnitTest>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.SuccessfulInvocationRaisesOneUsageEventAndUnavailableItemsRaiseNone" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6ed584b1-43ed-b64e-f896-b50410002d1d">
+      <ns0:Execution id="261c195c-4183-4379-b785-e8458c7e1ca1" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests" name="SuccessfulInvocationRaisesOneUsageEventAndUnavailableItemsRaiseNone" />
+    </ns0:UnitTest>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.FilterMatchesNameAliasesAndCategoryWithoutCaseSensitivity" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="25cc0bf0-a99c-f4f9-2cb9-914d59ad6e33">
+      <ns0:Execution id="6e4e32ea-aca8-4868-8a83-2fd97c33485a" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests" name="FilterMatchesNameAliasesAndCategoryWithoutCaseSensitivity" />
+    </ns0:UnitTest>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.EmptyQueryShowsOnlyTheFirstEightCommonItems" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2740e83c-5942-0228-71e6-ef5d7ac3ab4a">
+      <ns0:Execution id="0eeb58b0-2f32-4363-b6c0-90fd3c251acc" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests" name="EmptyQueryShowsOnlyTheFirstEightCommonItems" />
+    </ns0:UnitTest>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.TwoHundredItemFilterCompletesWithinTheControlledLatencyBudget" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="e3e918ea-4913-ec60-ba87-2223c0dadb7d">
+      <ns0:Execution id="f96c9b93-8975-4113-ae78-7f566379cb12" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests" name="TwoHundredItemFilterCompletesWithinTheControlledLatencyBudget" />
+    </ns0:UnitTest>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests.AvailabilityRefreshNotifiesBoundStatusAndAccessibleName" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4008ba2e-f2dd-4405-b992-90a43baf21e5">
+      <ns0:Execution id="f706e0c7-8cfb-4f48-86b3-a64c1ca4bc1b" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectorySearchTests" name="AvailabilityRefreshNotifiesBoundStatusAndAccessibleName" />
+    </ns0:UnitTest>
+  </ns0:TestDefinitions>
+  <ns0:TestEntries>
+    <ns0:TestEntry testId="6ed584b1-43ed-b64e-f896-b50410002d1d" executionId="261c195c-4183-4379-b785-e8458c7e1ca1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestEntry testId="e3e918ea-4913-ec60-ba87-2223c0dadb7d" executionId="f96c9b93-8975-4113-ae78-7f566379cb12" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestEntry testId="dd0d2aad-b600-a9fc-b91a-637e2676656e" executionId="8d759684-98ec-4b2c-a8ff-1b8155163b32" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestEntry testId="2740e83c-5942-0228-71e6-ef5d7ac3ab4a" executionId="0eeb58b0-2f32-4363-b6c0-90fd3c251acc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestEntry testId="25cc0bf0-a99c-f4f9-2cb9-914d59ad6e33" executionId="6e4e32ea-aca8-4868-8a83-2fd97c33485a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestEntry testId="4008ba2e-f2dd-4405-b992-90a43baf21e5" executionId="f706e0c7-8cfb-4f48-86b3-a64c1ca4bc1b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </ns0:TestEntries>
+  <ns0:TestLists>
+    <ns0:TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </ns0:TestLists>
+  <ns0:ResultSummary outcome="Completed">
+    <ns0:Counters total="6" executed="6" passed="6" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <ns0:Output>
+      <ns0:StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.60]   Discovered:  GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.64]   Starting:    GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.88]   Finished:    GameSaveCenter.Playnite.Tests
+
+</ns0:StdOut>
+    </ns0:Output>
+    <ns0:RunInfos>
+      <ns0:RunInfo computerName="controlled-host" outcome="Warning" timestamp="2026-10-23T00:25:41.1219629+08:00">
+        <ns0:Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</ns0:Text>
+      </ns0:RunInfo>
+    </ns0:RunInfos>
+  </ns0:ResultSummary>
+</ns0:TestRun>

@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:TestRun xmlns:ns0="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" id="91622f4f-7829-4b8b-9973-e394cd5d0d06" name="R10SearchShortcutBehaviorTests" runUser="controlled-host">
+  <ns0:Times creation="2026-10-23T00:26:00.9240349+08:00" queuing="2026-10-23T00:26:00.9240354+08:00" start="2026-10-23T00:25:56.3754124+08:00" finish="2026-10-23T00:26:00.9286678+08:00" />
+  <ns0:TestSettings name="default" id="5a0ea3dc-8b8a-47ad-9cc8-3867b8e12768">
+    <ns0:Deployment runDeploymentRoot="controlled-user_controlled-host_2026-10-23_00_26_00" />
+  </ns0:TestSettings>
+  <ns0:Results>
+    <ns0:UnitTestResult executionId="08bc95e6-1ab0-43d8-bd2b-924c1ddce7c3" testId="917b448b-239e-297d-d3da-c4940f19cd2d" testName="GameSaveCenter.Playnite.Tests.R10SearchShortcutBehaviorTests.EditingShortcutsAreNotConsumedByTheSearchRoute" computerName="controlled-host" duration="00:00:00.0090000" startTime="2026-10-23T00:26:00.6893299+08:00" endTime="2026-10-23T00:26:00.6923337+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="08bc95e6-1ab0-43d8-bd2b-924c1ddce7c3" />
+    <ns0:UnitTestResult executionId="42674c36-eac2-467d-beb1-11d2cef353cd" testId="249b0546-af60-569d-f40a-74f975e2babf" testName="GameSaveCenter.Playnite.Tests.R10SearchShortcutBehaviorTests.CtrlFFocusesTheCurrentPageOnlyWhenNoOverlayOwnsInput" computerName="controlled-host" duration="00:00:00.0010000" startTime="2026-10-23T00:26:00.7183299+08:00" endTime="2026-10-23T00:26:00.7183299+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="42674c36-eac2-467d-beb1-11d2cef353cd" />
+  </ns0:Results>
+  <ns0:TestDefinitions>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.R10SearchShortcutBehaviorTests.EditingShortcutsAreNotConsumedByTheSearchRoute" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="917b448b-239e-297d-d3da-c4940f19cd2d">
+      <ns0:Execution id="08bc95e6-1ab0-43d8-bd2b-924c1ddce7c3" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10SearchShortcutBehaviorTests" name="EditingShortcutsAreNotConsumedByTheSearchRoute" />
+    </ns0:UnitTest>
+    <ns0:UnitTest name="GameSaveCenter.Playnite.Tests.R10SearchShortcutBehaviorTests.CtrlFFocusesTheCurrentPageOnlyWhenNoOverlayOwnsInput" storage="d:\workplace\github\gamesavecenter\artifacts\round4-s00-07\build\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="249b0546-af60-569d-f40a-74f975e2babf">
+      <ns0:Execution id="42674c36-eac2-467d-beb1-11d2cef353cd" />
+      <ns0:TestMethod codeBase="D:\workplace\github\GameSaveCenter\artifacts\round4-s00-07\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10SearchShortcutBehaviorTests" name="CtrlFFocusesTheCurrentPageOnlyWhenNoOverlayOwnsInput" />
+    </ns0:UnitTest>
+  </ns0:TestDefinitions>
+  <ns0:TestEntries>
+    <ns0:TestEntry testId="917b448b-239e-297d-d3da-c4940f19cd2d" executionId="08bc95e6-1ab0-43d8-bd2b-924c1ddce7c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestEntry testId="249b0546-af60-569d-f40a-74f975e2babf" executionId="42674c36-eac2-467d-beb1-11d2cef353cd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </ns0:TestEntries>
+  <ns0:TestLists>
+    <ns0:TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <ns0:TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </ns0:TestLists>
+  <ns0:ResultSummary outcome="Completed">
+    <ns0:Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <ns0:Output>
+      <ns0:StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.64]   Discovered:  GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.68]   Starting:    GameSaveCenter.Playnite.Tests
+
+[xUnit.net 00:00:02.81]   Finished:    GameSaveCenter.Playnite.Tests
+
+</ns0:StdOut>
+    </ns0:Output>
+    <ns0:RunInfos>
+      <ns0:RunInfo computerName="controlled-host" outcome="Warning" timestamp="2026-10-23T00:26:00.8817456+08:00">
+        <ns0:Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</ns0:Text>
+      </ns0:RunInfo>
+    </ns0:RunInfos>
+  </ns0:ResultSummary>
+</ns0:TestRun>

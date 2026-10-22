@@ -1,0 +1,7 @@
+{
+  "target": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\round4-s00-07\\temp",
+  "logicalBytes": 0,
+  "kept": "current build, raw diagnostics, layout matrices and referenced evidence",
+  "ownership": "S00-07 TEMP/TMP explicitly set for all owned runs",
+  "processCheck": "Get-Process succeeded; no build/test/render process"
+}
