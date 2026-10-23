@@ -899,3 +899,6 @@ space-budget.ps1新增显式阶段预算、同卷合并与不足/未知拒绝；
 
 ## 2026-10-23 本阶段夹具清理
 已完成space-preflight-diag与t01-ownership-diagnostics经路径/无链接/独占读取检查、逐文件SHA归档后清理，原目录1176603字节。诊断文本在专项T01-CLEANUP，合成DLL/EXE保留本地artifacts/t01-cleanup-fixture-binaries、不提交二进制。清单含前后C/D可用空间；最新bf3b3230构建/包/完整诊断/未知用户TRX均保留。仅清理受控夹具，不宣称清理器或T01-08完成。
+
+## 2026-10-23 T01-07 旧包保护候选
+移除package.ps1按模式批量删除旧ZIP/PEXT，仅替换当前明确版本目标；其他版本可能是回退包/引用证据，默认保留。Test-PackageRetention在PowerShell7/5.1实际执行生产archive分支和Compress-Archive，旧包/未知包SHA不变、本次ZIP/PEXT一致；内容验证器为fixture，最终全链待验。隔离目录已清理。尚未实现hash去重与引用校验，T01-07不记完成。

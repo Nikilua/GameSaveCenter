@@ -423,10 +423,9 @@ if ($packageVersion -ne $sourceVersion) {
 if (-not $SkipPackageArchives) {
     $zip = Join-Path $artifacts "GameSaveCenter-$packageVersion-playnite.zip"
     $pext = Join-Path $artifacts "GameSaveCenter-$packageVersion.pext"
-    Get-ChildItem $artifacts -File -ErrorAction SilentlyContinue |
-        Where-Object { $_.Name -like 'GameSaveCenter-*-playnite.zip' -or $_.Name -like 'GameSaveCenter-*.pext' } |
-        Remove-Item -Force -ErrorAction SilentlyContinue
-    Remove-Item $zip,$pext -Force -ErrorAction SilentlyContinue
+
+    # Other versions may be rollback packages or referenced evidence; retain them.
+    Remove-Item -LiteralPath $zip,$pext -Force -ErrorAction SilentlyContinue
     Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal
     Copy-Item $zip $pext
     Assert-PackageContents -PackagePath $pext -ExpectedVersion $packageVersion -ExpectedSelfContained $SelfContainedWorker
