@@ -1,0 +1,164 @@
+{
+    "schemaVersion":  1,
+    "task":  "T01-04",
+    "runId":  "c3fb711822b24adf9a96bffda6d90837",
+    "powershellVersion":  "5.1.22000.2538",
+    "powershellEdition":  "Desktop",
+    "startedUtc":  "2026-10-23T13:44:59.1253399+00:00",
+    "completedUtc":  "2026-10-23T13:44:59.8806117+00:00",
+    "testScriptSha256":  "41D5BCB3BCACBEA94BD15ED9FE7018C43144BB5DC06799AB1571BCCC24E66301",
+    "productionPreviewScriptSha256":  "F56AA1C26B072C9DF56FCB6E5EBD4BA1858592E0F8B4B3C7A9B5A05A11E53741",
+    "fixture":  {
+                    "path":  "[repo]/.tmp/t01-04-c3fb711822b24adf9a96bffda6d90837",
+                    "createdByThisRun":  true,
+                    "removed":  true,
+                    "sentinelSha256Before":  "F5371CC3A5802F8855EE6BC1FCFC81283CEFFC1A6A8CBA46A7C5D76B34D34274",
+                    "sentinelSha256After":  "F5371CC3A5802F8855EE6BC1FCFC81283CEFFC1A6A8CBA46A7C5D76B34D34274"
+                },
+    "symbolicLink":  {
+                         "state":  "unavailable",
+                         "unavailableReason":  "cmd mklink exited with code 1."
+                     },
+    "cases":  [
+                  {
+                      "name":  "current owner protects an allowed file",
+                      "path":  "[repo]\\.tmp\\t01-04-c3fb711822b24adf9a96bffda6d90837\\sentinel.txt",
+                      "expectedReason":  "Owner process still active",
+                      "actualReason":  "Owner process still active",
+                      "ownerState":  "active",
+                      "estimatedBytes":  23,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "path comparison ignores case",
+                      "path":  "[repo]\\.TMP\\T01-04-C3FB711822B24ADF9A96BFFDA6D90837",
+                      "expectedReason":  "Owner process still active",
+                      "actualReason":  "Owner process still active",
+                      "ownerState":  "active",
+                      "estimatedBytes":  23,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "drive-letter comparison ignores case",
+                      "path":  "[repo]\\.tmp\\t01-04-c3fb711822b24adf9a96bffda6d90837",
+                      "expectedReason":  "Owner process still active",
+                      "actualReason":  "Owner process still active",
+                      "ownerState":  "active",
+                      "estimatedBytes":  23,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "empty path",
+                      "path":  "",
+                      "expectedReason":  "Rejected:*",
+                      "actualReason":  "Rejected: Empty artifact path",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "relative path",
+                      "path":  "artifacts/relative.txt",
+                      "expectedReason":  "Rejected:*",
+                      "actualReason":  "Rejected: Relative artifact path",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "parent traversal",
+                      "path":  "[repo]\\.tmp\\..\\..\\outside.txt",
+                      "expectedReason":  "Rejected:*",
+                      "actualReason":  "Rejected: Outside allowed artifact roots or root itself",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "similar root prefix",
+                      "path":  "[repo]\\.tmp-other\\outside.txt",
+                      "expectedReason":  "Rejected:*",
+                      "actualReason":  "Rejected: Outside allowed artifact roots or root itself",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "allowed root itself",
+                      "path":  "[repo]\\.tmp",
+                      "expectedReason":  "Rejected:*",
+                      "actualReason":  "Rejected: Outside allowed artifact roots or root itself",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "alternate drive",
+                      "path":  "C:\\artifacts\\T01-04-outside.txt",
+                      "expectedReason":  "Rejected:*",
+                      "actualReason":  "Rejected: Outside allowed artifact roots or root itself",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "drive-relative escape",
+                      "path":  "D:..\\GameSaveCenter-T01-04-outside\\file.txt",
+                      "expectedReason":  "Rejected:*",
+                      "actualReason":  "Rejected: Outside allowed artifact roots or root itself",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "unclaimed file ownership",
+                      "path":  "[repo]\\.tmp\\t01-04-c3fb711822b24adf9a96bffda6d90837\\sentinel.txt",
+                      "expectedReason":  "Ownership not claimed",
+                      "actualReason":  "Ownership not claimed",
+                      "ownerState":  "active",
+                      "estimatedBytes":  23,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "junction path",
+                      "path":  "[repo]\\.tmp\\t01-04-c3fb711822b24adf9a96bffda6d90837\\junction",
+                      "expectedReason":  "Rejected:*Linked path boundary*",
+                      "actualReason":  "Rejected: Linked path boundary",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  },
+                  {
+                      "name":  "linked descendant of registered directory",
+                      "path":  "[repo]\\.tmp\\t01-04-c3fb711822b24adf9a96bffda6d90837",
+                      "expectedReason":  "Rejected:*Linked descendant*",
+                      "actualReason":  "Rejected: Linked descendant",
+                      "ownerState":  "active",
+                      "estimatedBytes":  null,
+                      "canDelete":  false,
+                      "passed":  true
+                  }
+              ],
+    "totals":  {
+                   "planned":  14,
+                   "passed":  13,
+                   "skipped":  1,
+                   "failed":  0,
+                   "allCanDeleteFalse":  true
+               },
+    "testFailure":  null,
+    "cleanupFailure":  null,
+    "outcome":  "passed-with-symlink-capability-unavailable"
+}

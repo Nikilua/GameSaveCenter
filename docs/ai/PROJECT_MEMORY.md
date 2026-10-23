@@ -1,3 +1,7 @@
+## 2026-10-23 T01-04 路径边界测试范围
+
+生产 `Get-GscArtifactPreview` 保持只读，`CanDelete=false`。`Test-ArtifactPathBoundaries.ps1` 在PowerShell7/Windows PowerShell5.1均验证空/相对/..越界/类似前缀/盘符与大小写/未认领所有权/junction/链接后代，13项有效断言通过，哨兵未变，隔离 `.tmp` 已清。当前 Windows 令牌不具备创建文件符号链接的权限；这1项必须继续标为skip，不能以junction推断symlink已实际运行。预览无删除操作，T01-04仍待边界验收。
+
 ## 2026-10-23 T02-01 滚动回归实现边界
 
 `T02TableScrollDriftBehaviorTests` 加载生产 DesignTokens/WpfUiProduction/Redesign 资源；在一个 STA 生命周期内顺序检查 Light/Dark，240行数据每主题顶/底/顶8轮，48条实际几何输出。验证单元格留在行内且纵向位置稳定、选中框位置尺寸稳定、行头保持生产模板 Collapsed 状态。代码提交 `9fd1496c` 的标准完整链已通过，证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-01/`。清理990个定向构建/测试中间文件后保留根标准构建/包/诊断，D盘净增可用空间88,653,824字节。这证明受控WPF几何、安装身份与Playnite进程启动，不证明物理滚轮、真实页面交互或DPI。用户旧Round3 TRX/TestResults必须保留。

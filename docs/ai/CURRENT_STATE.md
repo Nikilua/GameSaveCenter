@@ -1,3 +1,7 @@
+## 2026-10-23 T01-04 路径边界矩阵待补符号链接能力
+
+新增 `Test-ArtifactPathBoundaries.ps1`，通过生产只读预览在隔离 `.tmp` 验证空/相对/..越界/相似前缀/盘符/大小写/未声明所有权/junction/链接后代。PowerShell7.6.2 与 Windows PowerShell5.1各13项有效断言通过；所有 CanDelete 均为 false，哨兵哈希不变，夹具已清理。文件符号链接创建因当前令牌权限不足而跳过，记作每环境1 skip；不声称验证了 symlink。证据见[专项 T01-04](../design/reviews/build-ui-reliability-20261022/evidence/T01-04/README.md)。
+
 ## 2026-10-23 T02-01 滚动漂移回归与标准全链通过
 
 提交 `9fd1496c2e82cf57d3ad5e5bda4d28a953800189` 已推送 main。根目录 `GameSaveCenter-Run.cmd` 使用 SDK8.0.423/Release 完整退出0；XAML25/25、solution0警告/0错误、1955项（1898通过、57既有skip、0失败）、148TRX计数一致、145个WPF隔离类。新增 T02-01 在完整链第131类通过；240行生产模板、Light/Dark各8轮顶底往返，48个几何检查点稳定。ZIP/PEXT哈希一致，安装6个插件/Worker程序集SHA一致，Playnite PID26552已启动。证据见[专项 T02-01](../design/reviews/build-ui-reliability-20261022/evidence/T02-01/README.md)。57 skip仍按旧 Today Workspace 架构断言单列；真实页面、物理输入和DPI未验证。清理本批990个中间文件，D盘可用空间增加88,653,824字节；最新构建/包/诊断保留。生产XAML未修改；用户既有未跟踪Round3 TRX/TestResults未动。

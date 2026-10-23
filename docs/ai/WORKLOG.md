@@ -1,3 +1,7 @@
+## 2026-10-23 T01-04 路径边界负例
+
+新增隔离路径测试脚本并在 PowerShell7.6.2/Core、Windows PowerShell5.1 各运行13项有效断言。空、相对、父目录越界、类似根前缀、根本身、不同盘符、盘符相对越界、路径大小写、未声明所有权、junction本身及junction后代均拒绝成为可删候选；所有CanDelete=false，哨兵SHA-256未变，临时夹具清理。文件symlink测试在两个宿主均因系统权限无法创建而跳过，分别记录管理员权限需求/mklink权限不足；没有提权绕过。T01-04尚待 symlink 权限条件或验收边界解决。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/`。
+
 ## 2026-10-23 T02-01 滚动漂移回归实施与全链验收
 
 提交并推送 `9fd1496c`。生产资源WPF回归：240行、Light/Dark各8轮顶/底往返、48个实测检查点；选中框 `(4,2,704,48)` DIP稳定，行高52，单元格顶边相对行0 DIP，纵向偏移0/237、水平偏移0/234，行头按生产模板折叠。SDK8.0.423 Release定向编译0/0、定向测试1/1；根目录 `GameSaveCenter-Run.cmd` 在同一提交完整退出0，XAML25/25、solution0/0、1955项1898通过/57旧架构skip/0失败、148TRX计数一致、145个WPF隔离类。ZIP/PEXT哈希相同、6个关键程序集暂存/安装SHA匹配、Playnite启动成功。完整证据：`docs/design/reviews/build-ui-reliability-20261022/evidence/T02-01/`；真实页面、物理输入、DPI仍未验。归档几何TRX后清理990个中间文件、逻辑86,156,284字节，D盘可用空间增加88,653,824字节；最新标准诊断/包/构建保留，用户旧Round3 TRX/TestResults未动。

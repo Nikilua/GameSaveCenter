@@ -1,3 +1,7 @@
+## 2026-10-23 T01-04 路径边界回归部分完成
+
+PowerShell7.6.2 与 Windows PowerShell5.1 各有13项路径边界断言通过：空/相对/父目录/相似前缀/根本身/不同盘符与盘符相对/路径大小写/未声明所有权/junction本身及其后代；CanDelete 始终 false，哨兵不变，隔离 `.tmp` 已清。文件符号链接创建被当前令牌拒绝（PS7要求管理员权限，PS5 `mklink` 权限不足），每环境各1 skip；不要伪报 symlink 通过或提权重试。证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/`。T01-04保留待验收；可继续独立 T01-05 活跃目录保护。
+
 ## 2026-10-23 T02-01 滚动漂移回归已完成
 
 提交 `9fd1496c` 已推送。标准根入口 `GameSaveCenter-Run.cmd` 在该提交完整退出0；SDK8.0.423 Release、XAML25/25、0警告/0错误、1955项（1898通过/57旧Today Workspace架构skip/0失败）、148TRX计数一致、145个WPF隔离类。240行生产模板Light/Dark各8轮顶/底往返的48个几何观测均稳定；安装6个关键DLL与构建暂存哈希匹配，Playnite启动成功。证据：`docs/design/reviews/build-ui-reliability-20261022/evidence/T02-01/`。归档最终TRX后已删除990个定向编译/测试中间文件，保留标准构建/包/诊断和根控制台日志。下一小批继续 T01-04 路径越界/链接负例；T00-06 Desktop 子进程收尾、T00-07 跨会话和真实页面/物理输入/DPI仍待分别验证，禁止碰用户旧 Round3 TRX/TestResults。
