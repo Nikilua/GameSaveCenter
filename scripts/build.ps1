@@ -80,7 +80,14 @@ try {
     $msbuildArguments = @('-m:1', '-nodeReuse:false', '-p:NuGetAudit=false', '-p:MSBuildEnableWorkloadResolver=false')
     if ($OutputRoot) {
         $isolatedOutputRoot = [System.IO.Path]::GetFullPath($OutputRoot)
+        $outputExisted = Test-Path -LiteralPath $isolatedOutputRoot
         New-Item -ItemType Directory -Path $isolatedOutputRoot -Force | Out-Null
+        $diagnostics.Artifacts.Add(@{
+            Path = $isolatedOutputRoot; Stage = 'build-output'; CreatedByThisRun = -not $outputExisted
+            Retention = $(if ($outputExisted) { 'Pre-existing output; ownership not claimed' } else { 'Latest build output; retain until superseded and reviewed' })
+            Active = $true
+        })
+        Write-GscDiagnosticSummary $diagnostics
         # Keep each project's output separate. A single shared BaseOutputPath would make
         # net8 projects overwrite one another; MSBuildProjectName keeps references intact
         # while isolating this run from old testhost/Worker file locks in repository bin/.

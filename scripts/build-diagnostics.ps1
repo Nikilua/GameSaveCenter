@@ -56,11 +56,14 @@ function New-GscDiagnosticContext {
     $context = @{
         RepoRoot = $RepoRoot; RunRoot = $runRoot; SourceCommit = ($commit -join '').Trim()
         DirtyPaths = $dirtyPaths; Sdk = 'unknown'; StartedUtc = [DateTime]::UtcNow.ToString('o')
+        Owner = @{ ProcessId = $PID; ProcessStartedUtc = (Get-Process -Id $PID).StartTime.ToUniversalTime().ToString('o'); RunId = [IO.Path]::GetFileName($runRoot) }
+        Artifacts = [Collections.Generic.List[object]]::new()
         Steps = [Collections.Generic.List[object]]::new()
         SourceFiles = $sourceFiles; Assemblies = @(); TestSummary = $null; Environment = (Get-GscEnvironmentIdentity)
         Outcome = 'running'; CompletedUtc = $null
         RunType = 'unspecified'; TestsRequested = $null; FailureMessage = $null
     }
+    $context.Artifacts.Add(@{ Path = $runRoot; Stage = 'diagnostics'; CreatedByThisRun = $true; Retention = 'Keep original diagnostics and identity'; Active = $true })
     Write-GscDiagnosticSummary $context
     return $context
 }
@@ -204,6 +207,8 @@ function Write-GscDiagnosticSummary {
     $summary = [ordered]@{
         schemaVersion = 1; sourceCommit = $Context.SourceCommit
         workingTreeClean = $Context.DirtyPaths.Count -eq 0; dirtyPaths = $Context.DirtyPaths
+        owner = $Context.Owner
+        artifacts = @($Context.Artifacts)
         environment = $Context.Environment
         sdk = $Context.Sdk; startedUtc = $Context.StartedUtc; completedUtc = $Context.CompletedUtc
         outcome = $Context.Outcome; steps = @($Context.Steps.ToArray()); assemblies = $Context.Assemblies
@@ -333,6 +338,7 @@ function Complete-GscDiagnostics {
             ($Context.TestSummary.totals.error + $Context.TestSummary.totals.timeout + $Context.TestSummary.totals.aborted),
             $Context.TestSummary.totals.wpfIsolatedClassRunCount) -ForegroundColor DarkCyan
     }
+    foreach ($artifact in $Context.Artifacts) { $artifact.Active = $false }
     $Context.Outcome = if ($Succeeded) { 'passed' } else { 'failed' }
     $Context.CompletedUtc = [DateTime]::UtcNow.ToString('o')
     Write-GscDiagnosticSummary $Context
