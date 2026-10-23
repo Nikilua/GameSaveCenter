@@ -1,0 +1,50 @@
+[
+  {
+    "runId": "20261023T140636880Z-f7f6571e",
+    "sourceCommit": "b55d8d1dcd028f79972f57c9dc92ac902c691535",
+    "outcome": "passed",
+    "summarySha256": "278D6C356DEBA12C2E8ED71FCFA734B809BE8810F891BBEA26EACD39AFEBCE81",
+    "files": 303,
+    "bytes": 4532274.0,
+    "trx": 148,
+    "logs": 154,
+    "dumps": 0,
+    "screenshots": 0,
+    "retention": [
+      {
+        "Stage": "diagnostics",
+        "Retention": "Keep original diagnostics and identity",
+        "Active": false
+      },
+      {
+        "Stage": "build-output",
+        "Retention": "Latest build output; retain until superseded and reviewed",
+        "Active": false
+      }
+    ]
+  },
+  {
+    "runId": "20261023T150002369Z-f20509ae",
+    "sourceCommit": "b55d8d1dcd028f79972f57c9dc92ac902c691535",
+    "outcome": "passed",
+    "summarySha256": "ED70C99640812C7F21575C09F5794D5892AA340AA7AACA0831EF64BAFDF61D67",
+    "files": 303,
+    "bytes": 4520242.0,
+    "trx": 148,
+    "logs": 154,
+    "dumps": 0,
+    "screenshots": 0,
+    "retention": [
+      {
+        "Stage": "diagnostics",
+        "Retention": "Keep original diagnostics and identity",
+        "Active": false
+      },
+      {
+        "Stage": "build-output",
+        "Retention": "Latest build output; retain until superseded and reviewed",
+        "Active": false
+      }
+    ]
+  }
+]
