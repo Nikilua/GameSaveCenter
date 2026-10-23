@@ -97,11 +97,11 @@
                     <Border x:Name="SaveHistoryTableFrame" Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}">
                         <Grid x:Name="SaveHistoryTableLayout">
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                            <Border x:Name="SaveHistorySummaryCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="10,8" Margin="0,0,0,10">
+                            <Border x:Name="SaveHistorySummaryCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="10,4" Margin="0,0,0,2">
                                 <Grid x:Name="SaveHistorySummaryGrid">
-                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="SaveHistorySummaryActionsRow" Height="0"/></Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition x:Name="SaveHistorySummaryActionsColumn" Width="Auto"/></Grid.ColumnDefinitions>
-                                    <StackPanel x:Name="SaveHistorySummaryContentStack" Grid.Row="0" Grid.Column="0" MinWidth="0" VerticalAlignment="Center">
+                                    <!-- Keep both groups finite-width so commands cannot squeeze the summary into a zero-width column. -->
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                    <StackPanel x:Name="SaveHistorySummaryContentStack" Grid.Row="0" MinWidth="0" VerticalAlignment="Top">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="历史版本" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
                                             <Border Style="{DynamicResource GscRedesignContextPill}" Padding="9,4" Margin="10,0,0,0" VerticalAlignment="Center">
@@ -181,15 +181,15 @@
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
-                                    <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="14,0,0,0">
+                                    <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,10,0,0">
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
                                             <TextBlock Text="历史范围" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,5,0"/>
                                             <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupHistoryRangeOptions}" SelectedItem="{Binding BackupHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="108" ToolTip="按本地日历日期筛选历史版本；今天/昨天不按固定 24 小时计算。" AutomationProperties.Name="历史版本日期范围"/>
-                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="清空范围" Command="{Binding ClearBackupHistoryRangeCommand}" Margin="5,0,0,0" ToolTip="恢复显示全部历史版本" AutomationProperties.Name="清空历史版本日期范围"/>
-                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="最近版本" Command="{Binding JumpToRecentBackupCommand}" Margin="5,0,0,0" ToolTip="选择当前日期范围内最新的版本" AutomationProperties.Name="跳到最近历史版本"/>
-                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="较早版本" Command="{Binding JumpToEarlierBackupCommand}" Margin="5,0,0,0" ToolTip="选择当前已载入日期范围内最早的版本" AutomationProperties.Name="跳到较早历史版本"/>
-                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更早版本" Command="{Binding LoadMoreBackupHistoryCommand}" Margin="5,0,0,0" ToolTip="按创建时间继续载入下一段历史；已选版本会保持不变。" AutomationProperties.Name="加载更早的备份历史" AutomationProperties.HelpText="{Binding BackupHistoryRangeSummary, Mode=OneWay}"/>
                                         </StackPanel>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="清空范围" Command="{Binding ClearBackupHistoryRangeCommand}" Margin="0,0,8,0" ToolTip="恢复显示全部历史版本" AutomationProperties.Name="清空历史版本日期范围"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="最近版本" Command="{Binding JumpToRecentBackupCommand}" Margin="0,0,8,0" ToolTip="选择当前日期范围内最新的版本" AutomationProperties.Name="跳到最近历史版本"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="较早版本" Command="{Binding JumpToEarlierBackupCommand}" Margin="0,0,8,0" ToolTip="选择当前已载入日期范围内最早的版本" AutomationProperties.Name="跳到较早历史版本"/>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更早版本" Command="{Binding LoadMoreBackupHistoryCommand}" Margin="0,0,8,0" ToolTip="按创建时间继续载入下一段历史；已选版本会保持不变。" AutomationProperties.Name="加载更早的备份历史" AutomationProperties.HelpText="{Binding BackupHistoryRangeSummary, Mode=OneWay}"/>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewBackupCommand}" MinWidth="100" Margin="0,0,8,0" ToolTip="只扫描当前游戏本次备份范围，不创建归档" AutomationProperties.Name="预览当前游戏备份范围">
                                             <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="预览备份" VerticalAlignment="Center"/></StackPanel>
                                         </ui:Button>

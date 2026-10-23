@@ -34,6 +34,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             InitializeComponent();
             historyActionRowGap = new WrapPanelRowGapController(SaveHistorySummaryActions);
+            historyActionRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap);
             SaveHistoryActionsScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveCandidateInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveHistoryPageScrollViewer.ScrollChanged += PageScrollViewerChanged;
@@ -258,37 +259,6 @@ namespace GameSaveCenter.Playnite.Views
                 var inspectorWidth = SaveHistoryLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl
                     ? gl
                     : new GridLength(1, GridUnitType.Star);
-                // The shell passes the resized PageHost width from its SizeChanged pass;
-                // prefer that current value over this child grid's previous ActualWidth,
-                // which can still describe the old window for one layout turn.
-                var historyLayoutWidth = width > 0 ? width : SaveHistoryLayout.ActualWidth;
-                var historyInspectorSideBySide = !compact && SaveHistoryGrid.SelectedItem != null;
-                var inspectorAllocatedWidth = WorkspaceInspectorWidthPolicy.ResolveWidth(historyLayoutWidth, inspectorWidth, 14);
-                var historySummaryAvailableWidth = Math.Max(0, historyLayoutWidth - (historyInspectorSideBySide ? inspectorAllocatedWidth + 14 : 0));
-                // The summary has a long action strip. Measuring it in an Auto column
-                // beside a narrow selected-version table can consume the entire card
-                // width, forcing the summary copy to wrap to thousands of lines while
-                // the actions remain vertically centered in the resulting empty space.
-                // Stack only this action strip when its actual table column cannot give
-                // the summary content and all actions a stable side-by-side measure.
-                // The inspector now shares the workspace width, so the available
-                // summary column is smaller than the pre-split 1240-DIP baseline.
-                // Keep the command strip alongside its summary once that column can
-                // hold both groups; otherwise place it in its own wrapped row.
-                var historyActionsCompact = ruleCardCompact || historySummaryAvailableWidth < 880;
-                historyActionRowGap.SetRowGap(historyActionsCompact ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0);
-                if (SaveHistorySummaryCard != null)
-                {
-                    // The stacked command row otherwise steals roughly two table-row
-                    // heights from the 1040x700 DIP workspace. Tighten only the
-                    // surrounding whitespace; keep every command and hit target intact.
-                    SaveHistorySummaryCard.Padding = historyActionsCompact
-                        ? new Thickness(10, 4, 10, 4)
-                        : new Thickness(10, 8, 10, 8);
-                    SaveHistorySummaryCard.Margin = historyActionsCompact
-                        ? new Thickness(0, 0, 0, 2)
-                        : new Thickness(0, 0, 0, 10);
-                }
                 if (SaveCurrentRuleActions != null)
                 {
                     SaveCurrentRuleActionsRow.Height = ruleCardCompact
@@ -307,32 +277,6 @@ namespace GameSaveCenter.Playnite.Views
                         ? HorizontalAlignment.Stretch
                         : HorizontalAlignment.Right;
                 }
-                if (SaveHistorySummaryActions != null)
-                {
-                    // Keep the stacked command strip visually distinct from its summary
-                    // even after WPF layout rounding; a 2-DIP gap collapsed to 1.6 DIP
-                    // in the production-size window and made the two groups read as one.
-                    SaveHistorySummaryActionsRow.Height = historyActionsCompact
-                        ? GridLength.Auto
-                        : new GridLength(0);
-                    SaveHistorySummaryActionsColumn.Width = historyActionsCompact
-                        ? new GridLength(0)
-                        : GridLength.Auto;
-                    Grid.SetRow(SaveHistorySummaryActions, historyActionsCompact ? 1 : 0);
-                    Grid.SetColumn(SaveHistorySummaryActions, historyActionsCompact ? 0 : 1);
-                    Grid.SetColumnSpan(SaveHistorySummaryActions, historyActionsCompact ? 2 : 1);
-                    Grid.SetColumnSpan(SaveHistorySummaryContentStack, historyActionsCompact ? 2 : 1);
-                    SaveHistorySummaryActions.Margin = historyActionsCompact
-                        ? new Thickness(0, 10, 0, 0)
-                        : new Thickness(14, 0, 0, 0);
-                    SaveHistorySummaryActions.HorizontalAlignment = historyActionsCompact
-                        ? HorizontalAlignment.Stretch
-                        : HorizontalAlignment.Right;
-                    SaveHistorySummaryActions.VerticalAlignment = historyActionsCompact
-                        ? VerticalAlignment.Top
-                        : VerticalAlignment.Center;
-                }
-
                 // On compact hosts the selected-version inspector is a drawer, not a
                 // permanent second row. The table keeps the finite star row by default;
                 // every action remains one click away through the compact details button.

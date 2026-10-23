@@ -37,3 +37,9 @@
 在工作区 1:1 扩宽后，补充当前游戏媒体 `1*:0.75*` 列权重，保持两图比较在 1280 DIP 并排；将收件箱紧凑断点按实际 800 DIP 表格/520 DIP 详情预算计算，并将存档摘要操作的并排断点调至 880 DIP。图片比较摘要和操作按钮分行，避免窄列文件名逐字换行。此前的累计漂移、任务表格留白、筛选整组换行、表头单行省略与滚动固定圆角结构继续由共享模板和既有回归覆盖。
 
 SDK 8.0.423 Release 编译 0 警告/0 错误；全量测试 1954 项，1886 通过、68 个既有跳过、0 失败，144 个 WPF 隔离类。`ReportedWorkspaceLayoutBehaviorTests` 双主题 54/54；`CompactWorkspaceTableViewportBehaviorTests` 与媒体比较定向用例通过。完整诊断位于本机 `artifacts/build-diagnostics/20261023T033037645Z-3b5ae286`。这一轮打包在未提交源码身份门禁处被正确拒绝，提交后必须重新跑干净提交的标准链，不能将这次测试称为最终安装验收。用户旧 Round3 TRX/TestResults 未暂存或删除。
+
+提交 `f3ac4c743ce50705871e03d074127f89824e11dd` 后，标准链完成 SDK8.0.423 Release solution 0/0、1954 项1886 pass/68 skip/0 fail和144个WPF隔离类，诊断 `artifacts/build-diagnostics/20261023T052656925Z-a06c8358`。发布/身份/打包通过；安装写入被沙箱阻止后，同包续装239文件SHA一致，记录 `artifacts/layout-install-resume-20261023.json`。RenderHarness同提交输出 `artifacts/ui-width-regression-20261023/render-clean-commit` 返回 render-qa OK。真实页面交互尚不据此声明通过。
+
+## 2026-10-23 新截图：存档操作区异常高度
+
+880 DIP断点仍不能代表操作组所需的真实宽度。扩展回归复现摘要宽度0 DIP、卡片高5754 DIP、操作条1604 DIP宽。改为摘要与操作条上下两个Auto行，各自拿到有限卡片宽度；历史导航按钮不再包含在一个不可换行大组内。双主题报告布局54/54已通过，860～2100 DIP往返检查摘要宽度、内容外留白、按钮横向边界，并保留修复前失败与后续TRX：`artifacts/save-summary-reflow-20261023`。当前源码的官方身份构建、资源/缩放/紧凑视口回归和最终安装待本阶段完成后记录，不继承f3ac4c74全量结果。

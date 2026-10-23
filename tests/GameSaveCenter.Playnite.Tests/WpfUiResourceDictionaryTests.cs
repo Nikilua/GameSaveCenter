@@ -1615,11 +1615,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SaveHistoryGrid.MaxHeight = tableViewportHeight", saveCode);
         Assert.Contains("SaveCandidateGrid.MaxHeight = candidateTableViewportHeight", saveCode);
         Assert.Contains("height > 0", saveCode);
-        Assert.Contains("SaveHistorySummaryCard.Padding = historyActionsCompact", saveCode);
-        Assert.Contains("new Thickness(10, 4, 10, 4)", saveCode);
-        Assert.Contains("SaveHistorySummaryActions.Margin = historyActionsCompact", saveCode);
+        Assert.Contains("x:Name=\"SaveHistorySummaryCard\" Grid.Row=\"0\" Style=\"{DynamicResource GscReadingCardStyle}\" Padding=\"10,4\"", save);
+        Assert.Contains("x:Name=\"SaveHistorySummaryActions\" Grid.Row=\"1\" VerticalAlignment=\"Top\" HorizontalAlignment=\"Stretch\" Margin=\"0,10,0,0\"", save);
         // The former 2-DIP gap rounded to 1.6 DIP; 10 DIP now yields a readable 9.6 DIP gap.
-        Assert.Contains("new Thickness(0, 10, 0, 0)", saveCode);
+        Assert.Contains("historyActionRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap)", saveCode);
         Assert.Contains("SaveHistoryRestoreAvailabilityHint.Visibility = compact", saveCode);
         Assert.Contains("SaveHistoryInspectorAvailabilityHint.Visibility = compact", saveCode);
         Assert.Contains("Math.Min(220, Math.Max(0, pageViewportHeight * 0.30))", saveCode);

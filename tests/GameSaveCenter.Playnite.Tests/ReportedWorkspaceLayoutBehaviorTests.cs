@@ -428,6 +428,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var summaryActionsContentGap = 0d;
         var summaryTrailingWhitespace = 0d;
         var summaryGeometryDetails = string.Empty;
+        var resizeSamples = new List<string>();
 
         RunSta(() =>
         {
@@ -441,7 +442,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 ApplyTheme(view, theme);
                 var viewType = typeof(SaveCenterView);
                 var summary = (Border)viewType.GetField("SaveHistorySummaryCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
-                var actions = (FrameworkElement)viewType.GetField("SaveHistorySummaryActions", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var actions = (WrapPanel)viewType.GetField("SaveHistorySummaryActions", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var contentStack = (FrameworkElement)viewType.GetField("SaveHistorySummaryContentStack", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var grid = (DataGrid)viewType.GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var inspector = (ScrollViewer)viewType.GetField("SaveHistoryActionsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
@@ -464,9 +465,28 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 detailsInspectorVisible = inspector.Visibility == Visibility.Visible && inspector.ActualWidth > 0 && inspector.ActualHeight > 0;
                 summaryGeometryDetails = $"summary={summary.ActualWidth:0.##}×{summary.ActualHeight:0.##}, content={contentStack.ActualWidth:0.##}×{contentStack.ActualHeight:0.##}, actions={actions.ActualWidth:0.##}×{actions.ActualHeight:0.##}@row{summaryActionsRow}, selected={grid.SelectedItem != null}, inspector={inspector.Visibility}/{inspector.ActualWidth:0.##}×{inspector.ActualHeight:0.##}";
 
-                window.Width = 2100;
-                view.ApplyResponsiveLayout(2100, 900);
-                FlushLayout(window);
+                // Include both sides of the former inline-action threshold and
+                // return across the inspector breakpoint. A correct row number
+                // alone did not catch a zero-width summary and a huge centered row.
+                foreach (var width in new[] { 2100d, 1280d, 1100d, 1052d, 1040d, 1000d, 960d, 920d, 900d, 880d, 860d, 2100d })
+                {
+                    window.Width = width;
+                    view.ApplyResponsiveLayout(width, 900);
+                    FlushLayout(window);
+                    var actionBounds = BoundsIn(actions, summary);
+                    var content = BoundsIn(contentStack, summary);
+                    resizeSamples.Add($"{width:0}: card={summary.ActualWidth:0.##}×{summary.ActualHeight:0.##}, content={content.Width:0.##}×{content.Height:0.##}, actions={actionBounds.Width:0.##}×{actionBounds.Height:0.##}");
+                    Assert.InRange(summary.ActualWidth - content.Width, 0, 35);
+                    Assert.InRange(summary.ActualHeight - content.Height - actionBounds.Height, 0, 40);
+                    Assert.InRange(actionBounds.Top - content.Bottom, 8, 14);
+                    Assert.InRange(summary.ActualHeight - actionBounds.Bottom, 0, 18);
+                    foreach (var action in actions.Children.OfType<FrameworkElement>().Where(child => child.Visibility == Visibility.Visible))
+                    {
+                        var bounds = BoundsIn(action, actions);
+                        Assert.InRange(bounds.Left, -1, actions.ActualWidth);
+                        Assert.InRange(bounds.Right, 0, actions.ActualWidth + 1);
+                    }
+                }
                 wideActionsRow = Grid.GetRow(actions);
 
                 window.Width = 1400;
@@ -485,10 +505,11 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         });
 
         output.WriteLine($"{theme} Save history: {summaryGeometryDetails}; wideRow={wideActionsRow}, windowedAgainRow={restoredWindowedActionsRow}, action/content gap={summaryActionsContentGap:0.##} DIP, trailing whitespace={summaryTrailingWhitespace:0.##} DIP");
+        output.WriteLine(string.Join("; ", resizeSamples));
         Assert.Null(exception);
         Assert.True(detailsInspectorVisible, $"the synthetic selected-version inspector must be visible to reproduce the reported side-by-side layout ({summaryGeometryDetails})");
         Assert.Equal(1, summaryActionsRow);
-        Assert.Equal(0, wideActionsRow);
+        Assert.Equal(1, wideActionsRow);
         Assert.Equal(1, restoredWindowedActionsRow);
         Assert.InRange(summaryActionsContentGap, 8, 14);
         Assert.InRange(summaryTrailingWhitespace, 0, 18);
@@ -1097,6 +1118,10 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 FlushLayout(saveWindow);
                 (saveCompactRows, saveCompactGap) = MeasureWrapRows(saveActions, saveView);
 
+                // Test margin restoration with enough actual width for one row.
+                // The selected-version inspector otherwise owns half the window;
+                // the former Auto column appeared to fit only by overflowing it.
+                ((DataGrid)saveView.FindName("SaveHistoryGrid")!).SelectedItem = null;
                 saveWindow.Width = 1800;
                 saveView.ApplyResponsiveLayout(1800, 720);
                 FlushLayout(saveWindow);
