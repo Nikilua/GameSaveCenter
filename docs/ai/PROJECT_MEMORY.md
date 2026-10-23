@@ -842,3 +842,6 @@ R13-07 既有 Worker 查询与维护页控件、全局/筛选计数、分页一�
 WPF 测试若新增窗口到另一个 STA thread，`Application.Current` 可能保留已关闭 Dispatcher，影响之后视图；优先将真实控件交互合并到已有的隔离 STA fixture 并完整运行该类，不能只跑新 Fact。外机旧断言来源仍需同次 `summary.json`/程序集 SHA 才能确认，但不阻断其他主线任务。当前先追踪 #1044 和 R13-07 新 Actions 两条 SDK lane 至终态，再做 R13-08；真实插件 IPC refresh、Playnite host、物理 DPI、独立 UIA/IME、最终呈现、ETW/宿主性能仍属未验证边界。
 
 T00-05续：Test-InstallTransaction.ps1受控3/3通过，真实函数验证占用/改名回退/重试，替换前校验DLL；最终标准完整链待跑。
+
+## 2026-10-23 T00-05 标准全链通过
+fc319396标准根.cmd退出0，SDK8.0.423；1954项1897通过、57既有跳过、0失败，144WPF类完成。发布/包身份与安装逐文件SHA一致，启动调用成功；未观察到持续Playnite进程，不宣称真实页面验收。诊断20261023T090041520Z-0f219b68，证据专项evidence/T00-05。保留最新7321bc17构建、包和原始诊断；受控夹具已清理，未知旧TRX未动。
