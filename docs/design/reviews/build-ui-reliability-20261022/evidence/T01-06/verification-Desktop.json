@@ -1,0 +1,12 @@
+{
+    "CanDelete":  false,
+    "DumpTier":  true,
+    "CompleteArchive":  true,
+    "ChangedRefused":  true,
+    "Engine":  "5.1.22000.2538",
+    "Edition":  "Desktop",
+    "TraversalRefused":  true,
+    "VisualDuplicate":  true,
+    "OriginalsUnchanged":  true,
+    "MissingRefused":  true
+}

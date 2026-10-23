@@ -1,0 +1,12 @@
+{
+  "Edition": "Core",
+  "Engine": "7.6.2",
+  "DumpTier": true,
+  "TraversalRefused": true,
+  "CompleteArchive": true,
+  "OriginalsUnchanged": true,
+  "VisualDuplicate": true,
+  "ChangedRefused": true,
+  "CanDelete": false,
+  "MissingRefused": true
+}
