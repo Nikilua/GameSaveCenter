@@ -402,15 +402,33 @@ function Install-ExtensionAtomically {
         throw "暂存扩展版本错误：期望 $ExpectedVersion，实际 $temporaryVersion。"
     }
 
-    if (Test-Path $target) {
-        Write-Host "移除旧扩展：$target" -ForegroundColor DarkYellow
-        Remove-Item $target -Recurse -Force -ErrorAction Stop
-        if (Test-Path $target) {
-            throw "旧扩展目录未能删除：$target"
-        }
+    $stagedDll = Join-Path $temporary 'GameSaveCenter.Playnite.dll'
+    if (-not (Test-Path -LiteralPath $stagedDll)) { throw "暂存扩展缺少插件 DLL：$stagedDll" }
+    $stagedFileVersion = (Get-Item -LiteralPath $stagedDll).VersionInfo.FileVersion
+    if ($stagedFileVersion -and -not $stagedFileVersion.StartsWith("$ExpectedVersion.")) {
+        throw "暂存 DLL 版本错误：$stagedFileVersion"
     }
-
-    Move-Item $temporary $target
+    # Refuse occupied files before changing the old installation. Recursive
+    # deletion can otherwise remove unrelated files before reaching a locked DLL.
+    $backup = "$target.__old-$([Guid]::NewGuid().ToString('N'))"
+    $oldMoved = $false
+    try {
+        if (Test-Path -LiteralPath $target) {
+            foreach ($file in Get-ChildItem -LiteralPath $target -File -Recurse -Force) {
+                $probe = [IO.File]::Open($file.FullName, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::None)
+                $probe.Dispose()
+            }
+            Move-Item -LiteralPath $target -Destination $backup -ErrorAction Stop
+            $oldMoved = $true
+        }
+        Move-Item -LiteralPath $temporary -Destination $target -ErrorAction Stop
+    }
+    catch {
+        if ($oldMoved -and -not (Test-Path -LiteralPath $target)) {
+            Move-Item -LiteralPath $backup -Destination $target -ErrorAction Stop
+        }
+        throw
+    }
 
     $installedManifest = Join-Path $target 'extension.yaml'
     $installedVersion = Read-ManifestVersion $installedManifest
@@ -427,6 +445,10 @@ function Install-ExtensionAtomically {
         throw "安装验证失败：DLL 文件版本应为 $ExpectedVersion.x，实际为 $fileVersion。"
     }
 
+    if ($oldMoved) {
+        try { Remove-Item -LiteralPath $backup -Recurse -Force -ErrorAction Stop }
+        catch { Write-Warning "旧安装备份保留于 $backup ：$($_.Exception.Message)" }
+    }
     return [pscustomobject]@{
         Target = $target
         ManifestVersion = $installedVersion
