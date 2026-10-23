@@ -250,6 +250,28 @@ public sealed class MediaInboxScrollBehaviorTests
                 var restoredTop = GetRect(restoredRow!, viewer).Top;
                 Assert.True(Math.Abs(restoredTop - anchorTop) <= 1.5,
                     $"the production anchor keeps its viewport position after a page append shifts item indices; before={anchorTop:0.##},after={restoredTop:0.##},index={originalIndex}->{shiftedIndex}");
+                var refreshed = CreateSyntheticMedia(1, int.Parse(anchorId.Substring(anchorId.Length - 5)))[0];
+                refreshed.CloudState = "Synced";
+                items[shiftedIndex] = refreshed;
+                RestoreAfterMutation(new HashSet<string>(StringComparer.OrdinalIgnoreCase) { anchorId });
+                Assert.Same(refreshed, grid.SelectedItem);
+                CaptureAndAssert("status-refresh:stable-id");
+
+                // Model a successful classification removing the tracked row from Inbox.
+                items.RemoveAt(shiftedIndex);
+                RestoreAfterMutation(new HashSet<string>(StringComparer.OrdinalIgnoreCase) { anchorId });
+                Assert.DoesNotContain(grid.SelectedItems.Cast<MediaItemDto>(), item => item.MediaId == anchorId);
+                var notice = (TextBlock)viewType.GetField("MediaInboxWindowAnchorNotice", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!;
+                Assert.Equal(Visibility.Visible, notice.Visibility);
+                Assert.False((bool)viewType.GetField("selectionRestoreQueued", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(view)!);
+                CaptureAndAssert("classified-anchor-removed:no-stale-selection");
+
+                void RestoreAfterMutation(HashSet<string> selection)
+                {
+                    viewType.GetMethod("QueueRestore", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+                        .Invoke(view, new object?[] { grid, anchor, selection, true, null, generation });
+                    DrainDispatcher(window!);
+                }
             }
         });
 
