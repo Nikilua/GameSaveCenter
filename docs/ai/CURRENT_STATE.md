@@ -221,3 +221,6 @@ e2e6958d根.cmd退出0，诊断20261023T093647694Z-41438f32，SDK8.0.423、1954�
 
 ## 2026-10-23 T01 标准链与时间类型修复
 893e8973根.cmd退出0，SDK8.0.423，1954项1897通过/57既有skip/0失败、147TRX一致、144WPF类结束；发布打包安装、启动调用成功，诊断20261023T103722036Z-4651ffea。新增Owner/Artifacts真实运行记录正常，结束Active=false；证据T01-01/standard-verification.json。预览真实活跃进程发现JSON自动DateTime后二次Parse丢时区/精度，修复直接保留DateTime/DateTimeOffset，仅字符串按InvariantCulture解析；双PowerShell JSON往返各9/9通过。此后修复不挪用893e8973全链，最终候选待复验。T01共享包/暂存登记和清理集成仍未完成。
+
+## 2026-10-23 T01-03 标准全链通过
+5e194500根.cmd退出0，SDK8.0.423、1954项1897通过/57既有skip/0失败，147TRX计数一致，144WPF类结束。空间预算前置通过并进diagnostics，真实活跃目录预览排除正确；发布/包与安装逐文件SHA一致，Playnite17008新进程观察成功。run20261023T110514941Z-1047dc65，证据专项T01-03/standard-verification.json与active-preview.json。保留bf3b3230最新构建/包/诊断；T01共享包清单/安全清理执行仍待补，旧TRX未动；未将可配置余量称为实测峰值，SDK/NuGet未知项仍保留。

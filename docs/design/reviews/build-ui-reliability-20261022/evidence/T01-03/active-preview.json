@@ -1,0 +1,16 @@
+[
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\build-diagnostics\\20261023T110514941Z-1047dc65",
+    "EstimatedBytes": 417602.0,
+    "OwnerState": "active",
+    "Reason": "Owner process still active",
+    "CanDelete": false
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\bf3b3230",
+    "EstimatedBytes": 163700824.0,
+    "OwnerState": "active",
+    "Reason": "Owner process still active",
+    "CanDelete": false
+  }
+]

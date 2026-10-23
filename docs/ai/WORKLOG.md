@@ -11957,3 +11957,6 @@ space-budget.ps1新增显式阶段预算、同卷合并与不足/未知拒绝；
 
 ## 2026-10-23 T01-03 空间预检集成候选
 标准安装与纯构建写入前调用预检，配置output2GiB/test-temp1GiB/system-temp1GiB/package1GiB保守余量，同卷合并；配置明确非实测峰值，SDK/NuGet/宿主数据未知。真实C/D读取通过，受控4/4通过；预算写入构建诊断。未绕过SDK/断言/skip；最终链待提交运行。
+
+## 2026-10-23 T01-03 标准全链通过
+5e194500根.cmd退出0，SDK8.0.423、1954项1897通过/57既有skip/0失败，147TRX计数一致，144WPF类结束。空间预算前置通过并进diagnostics，真实活跃目录预览排除正确；发布/包与安装逐文件SHA一致，Playnite17008新进程观察成功。run20261023T110514941Z-1047dc65，证据专项T01-03/standard-verification.json与active-preview.json。保留bf3b3230最新构建/包/诊断；T01共享包清单/安全清理执行仍待补，旧TRX未动；未将可配置余量称为实测峰值，SDK/NuGet未知项仍保留。
