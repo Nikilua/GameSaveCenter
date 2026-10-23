@@ -1,3 +1,7 @@
+## 2026-10-23 T00-02 三入口退出码验收
+
+新增scripts/tests/Test-LauncherExitCodes.ps1，复制真实三个.cmd到独立.tmp，实际PowerShell子脚本注入exit 0/7/23，9/9同码，非零无[OK]，默认pause经重定向不阻塞；中文入口转交根安装入口，scripts/build.cmd仅构建。生产入口已满足，无需修改。结果归档专项evidence/T00-02/results.json；临时夹具清理，最新构建/包/诊断保留，未知用户TRX未动。此测试脚本不改变产品代码；最终候选全链仍需按范围执行，955940be成功只绑定其身份。
+
 ## 2026-10-23 T00-01 当前标准全链成功
 
 955940be中文根.cmd完整退出0，run 20261023T080149678Z-90648b13，SDK8.0.423，XAML25/25、编译0/0；1954项1897pass/57既有skip/0fail，147TRX计数一致，144WPF类结束。发布/包/安装版本及DLL哈希复核、Playnite39144启动完成；真实页面未验。证据见docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01。旧未跟踪TRX/TestResults未动；保留本次构建2e8a5b44、包和诊断。T00-02隔离夹具9/9退出码通过，尚待整理可复用验证与清理。无产品源码修改，文档无需重复全链。
