@@ -438,6 +438,52 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         public HistoryScrollDetail SelectedBackup { get; set; } = null!;
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void BulkHistorySelectionSurvivesInspectorBreakpointRoundTrips(bool dark)
+    {
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var rows = Enumerable.Range(0, 120).Select(index => new HistoryScrollDetail { BackupId = "bulk-" + index }).ToArray();
+                var view = new SaveCenterView { DataContext = new HistoryScrollFixture { SelectedBackup = rows[20] } };
+                var type = typeof(SaveCenterView);
+                var theme = dark ? GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Dark : GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Light;
+                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(view, true, 78, theme, false), true, true);
+                var grid = GetField<DataGrid>(type, view, "SaveHistoryGrid");
+                grid.ItemsSource = rows;
+                var host = MeasureInHost(view, 1400, 700);
+                window = new Window { Content = host, Width = 1400, Height = 700, WindowStyle = WindowStyle.None, ShowActivated = false, ShowInTaskbar = false, Opacity = 0.01 };
+                window.Show(); window.UpdateLayout();
+                foreach (var row in rows.Skip(20).Take(40)) grid.SelectedItems.Add(row);
+                grid.CurrentCell = new DataGridCellInfo(rows[20], grid.Columns[0]);
+                type.GetField("historyInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(view, true);
+                System.Windows.Input.FocusManager.SetIsFocusScope(view, true);
+                System.Windows.Input.FocusManager.SetFocusedElement(view, grid);
+                var expected = grid.SelectedItems.Cast<HistoryScrollDetail>().Select(row => row.BackupId).OrderBy(id => id).ToArray();
+                Assert.Equal(40, expected.Length);
+                for (var cycle = 0; cycle < 3; cycle++)
+                {
+                    foreach (var width in new[] { 900d, 1400d })
+                    {
+                        window.Width = width;
+                        ResizeHost(host, width, 700, () => view.ApplyResponsiveLayout(width, 700));
+                        window.UpdateLayout();
+                        Assert.Equal(expected, grid.SelectedItems.Cast<HistoryScrollDetail>().Select(row => row.BackupId).OrderBy(id => id).ToArray());
+                        Assert.Same(rows[20], grid.CurrentItem);
+                        Assert.Same(grid, System.Windows.Input.FocusManager.GetFocusedElement(view));
+                        Assert.Equal(Visibility.Visible, GetField<ScrollViewer>(type, view, "SaveHistoryActionsScrollViewer").Visibility);
+                        Assert.True(double.IsNaN(view.Height), "Responsive measurement must not freeze the root height.");
+                    }
+                }
+            }
+            finally { window?.Close(); }
+        });
+    }
+
     public sealed class HistoryScrollDetail
     {
         public string BackupId { get; set; } = "";
