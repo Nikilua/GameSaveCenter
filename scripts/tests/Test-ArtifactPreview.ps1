@@ -24,6 +24,11 @@ foreach($case in $cases) {
     if($r.Reason -notlike $case.Expected -or $r.CanDelete) {throw "Preview failed: $($case.Path): $($r.Reason)"}
     $rows += $r
 }
+# New PowerShell JSON readers materialize ISO timestamps as DateTime.
+$roundTrip = @{owner=$owner;artifacts=@(@{Path=$root;CreatedByThisRun=$true;Active=$false;Retention=''})} | ConvertTo-Json -Depth 5 | ConvertFrom-Json
+$typed = @(Get-GscArtifactPreview $repo $roundTrip)[0]
+if ($typed.OwnerState -ne 'active') { throw 'JSON owner timestamp lost precision or timezone' }
+$rows += $typed
 # Same PID with a different start time must not be treated as its old owner.
 $m = @{owner=@{ProcessId=$PID;ProcessStartedUtc='2000-01-01T00:00:00Z'};artifacts=@(@{Path=$root;CreatedByThisRun=$true;Active=$false;Retention='current evidence'})}
 $r = @(Get-GscArtifactPreview $repo $m)[0]
@@ -46,4 +51,4 @@ $rows | ConvertTo-Json | Set-Content (Join-Path $evidence ('preview-' + $PSVersi
 $allowed=[IO.Path]::GetFullPath((Join-Path $repo '.tmp'))+[IO.Path]::DirectorySeparatorChar
 if(-not ([IO.Path]::GetFullPath($root)).StartsWith($allowed)) {throw 'Unsafe cleanup'}
 Remove-Item -LiteralPath $root -Recurse -Force
-Write-Host 'Artifact preview: 8/8 passed; sentinel unchanged'
+Write-Host 'Artifact preview: 9/9 passed; sentinel unchanged'

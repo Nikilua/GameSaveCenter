@@ -7,7 +7,10 @@ function Get-GscArtifactPreview {
     if ($Manifest.owner -and $Manifest.owner.ProcessId -and $Manifest.owner.ProcessStartedUtc) {
         try {
             $owner = Get-Process -Id $Manifest.owner.ProcessId -ErrorAction Stop
-            $expected = [DateTime]::Parse($Manifest.owner.ProcessStartedUtc).ToUniversalTime()
+            $rawStarted = $Manifest.owner.ProcessStartedUtc
+            $expected = if ($rawStarted -is [DateTime]) { $rawStarted.ToUniversalTime() }
+            elseif ($rawStarted -is [DateTimeOffset]) { $rawStarted.UtcDateTime }
+            else { [DateTimeOffset]::Parse([string]$rawStarted, [Globalization.CultureInfo]::InvariantCulture).UtcDateTime }
             $ownerState = if ($owner.StartTime.ToUniversalTime().Ticks -eq $expected.Ticks) { 'active' } else { 'different-process' }
         }
         catch [Microsoft.PowerShell.Commands.ProcessCommandException] { $ownerState = 'exited' }

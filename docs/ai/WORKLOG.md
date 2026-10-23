@@ -11948,3 +11948,6 @@ Test-ArtifactOwnership.ps1在PowerShell7/5.1通过：runID唯一、PID/启动时
 
 ## 2026-10-23 T01-02/04 预览负例受控通过
 Test-ArtifactPreview.ps1在PowerShell7/5.1各8/8：活跃PID、空/相对/..越界/相似前缀/根路径、PID重用、junction拒绝，哨兵SHA不变。fixture与junction已按仓库.tmp安全检查清理。预览所有CanDelete=false；不等于删除器或引用/占用检查已实现。证据专项T01-02/preview-{Core,Desktop}.json；双版本范围待源码/最终链复验，不提升实际删除验收。
+
+## 2026-10-23 T01 标准链与时间类型修复
+893e8973根.cmd退出0，SDK8.0.423，1954项1897通过/57既有skip/0失败、147TRX一致、144WPF类结束；发布打包安装、启动调用成功，诊断20261023T103722036Z-4651ffea。新增Owner/Artifacts真实运行记录正常，结束Active=false；证据T01-01/standard-verification.json。预览真实活跃进程发现JSON自动DateTime后二次Parse丢时区/精度，修复直接保留DateTime/DateTimeOffset，仅字符串按InvariantCulture解析；双PowerShell JSON往返各9/9通过。此后修复不挪用893e8973全链，最终候选待复验。T01共享包/暂存登记和清理集成仍未完成。

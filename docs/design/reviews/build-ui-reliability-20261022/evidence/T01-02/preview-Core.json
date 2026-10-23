@@ -1,6 +1,6 @@
 [
   {
-    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-e5219d8a5fb94bff858eccb93cdb1334",
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e875cf7587a4c6faca6a5fa217a8a3c",
     "EstimatedBytes": 8.0,
     "OwnerState": "active",
     "Reason": "Owner process still active",
@@ -42,14 +42,21 @@
     "CanDelete": false
   },
   {
-    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-e5219d8a5fb94bff858eccb93cdb1334",
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e875cf7587a4c6faca6a5fa217a8a3c",
+    "EstimatedBytes": 8.0,
+    "OwnerState": "active",
+    "Reason": "Owner process still active",
+    "CanDelete": false
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e875cf7587a4c6faca6a5fa217a8a3c",
     "EstimatedBytes": 8.0,
     "OwnerState": "different-process",
     "Reason": "Retention: current evidence",
     "CanDelete": false
   },
   {
-    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-e5219d8a5fb94bff858eccb93cdb1334\\junction",
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e875cf7587a4c6faca6a5fa217a8a3c\\junction",
     "EstimatedBytes": null,
     "OwnerState": "different-process",
     "Reason": "Rejected: Linked path boundary",
