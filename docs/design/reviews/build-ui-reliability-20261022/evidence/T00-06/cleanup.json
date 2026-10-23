@@ -1,0 +1,17 @@
+[
+  {
+    "Reason": "Completed isolated fixture; diagnostics retained under artifacts",
+    "Path": ".tmp/t00-06-diagnostics",
+    "Bytes": 586834.0
+  },
+  {
+    "Reason": "Completed isolated fixture; diagnostics retained under artifacts",
+    "Path": ".tmp/t00-06-diagnostics-recheck",
+    "Bytes": 587314.0
+  },
+  {
+    "Reason": "Completed isolated fixture; diagnostics retained under artifacts",
+    "Path": ".tmp/install-lock-20261023",
+    "Bytes": 66.0
+  }
+]

@@ -1,0 +1,5768 @@
+{
+  "ExitCode": 0,
+  "TestSummary": {
+    "schemaVersion": 1,
+    "testCaseCountBasis": "count of TRX UnitTestResult entries",
+    "reportedTotalBasis": "sum of TRX ResultSummary/Counters total; compared with each file entry count",
+    "trxFileCount": 147,
+    "totals": {
+      "testCaseCount": 1954,
+      "passed": 1897,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "skipped": 57,
+      "notRunnable": 0,
+      "inconclusive": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "otherOutcome": 0,
+      "reportedCounterTotal": 1954,
+      "reportedCounterFileCount": 147,
+      "counterMismatchCount": 0,
+      "parseErrorCount": 0,
+      "trxFileCount": 147,
+      "distinctTestClassCount": 360,
+      "wpfIsolatedClassRunCount": 144
+    },
+    "groups": [
+      {
+        "id": "core",
+        "testCaseCount": 157,
+        "passed": 157,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 157,
+        "reportedCounterFileCount": 1,
+        "counterMismatchCount": 0,
+        "parseErrorCount": 0,
+        "trxFileCount": 1,
+        "distinctTestClassCount": 21,
+        "wpfIsolatedClassRunCount": 0
+      },
+      {
+        "id": "playnite-source",
+        "testCaseCount": 562,
+        "passed": 544,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 18,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 562,
+        "reportedCounterFileCount": 1,
+        "counterMismatchCount": 0,
+        "parseErrorCount": 0,
+        "trxFileCount": 1,
+        "distinctTestClassCount": 129,
+        "wpfIsolatedClassRunCount": 0
+      },
+      {
+        "id": "worker",
+        "testCaseCount": 400,
+        "passed": 400,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 400,
+        "reportedCounterFileCount": 1,
+        "counterMismatchCount": 0,
+        "parseErrorCount": 0,
+        "trxFileCount": 1,
+        "distinctTestClassCount": 66,
+        "wpfIsolatedClassRunCount": 0
+      },
+      {
+        "id": "playnite-wpf-isolated",
+        "testCaseCount": 835,
+        "passed": 796,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 39,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 835,
+        "reportedCounterFileCount": 144,
+        "counterMismatchCount": 0,
+        "parseErrorCount": 0,
+        "trxFileCount": 144,
+        "distinctTestClassCount": 144,
+        "wpfIsolatedClassRunCount": 144
+      }
+    ],
+    "files": [
+      {
+        "path": "core/core.trx",
+        "group": "core",
+        "testCaseCount": 157,
+        "passed": 157,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 157,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 21,
+        "wpfIsolatedClassRun": false,
+        "parseError": null
+      },
+      {
+        "path": "playnite-source/playnite-source.trx",
+        "group": "playnite-source",
+        "testCaseCount": 562,
+        "passed": 544,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 18,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 562,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 129,
+        "wpfIsolatedClassRun": false,
+        "parseError": null
+      },
+      {
+        "path": "worker/worker.trx",
+        "group": "worker",
+        "testCaseCount": 400,
+        "passed": 400,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 400,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 66,
+        "wpfIsolatedClassRun": false,
+        "parseError": null
+      },
+      {
+        "path": "wpf.AsyncThumbnailImageTests/wpf.AsyncThumbnailImageTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.AsyncThumbnailLoaderTests/wpf.AsyncThumbnailLoaderTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.CommandDirectoryBehaviorTests/wpf.CommandDirectoryBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.CommandDirectoryKeyboardBehaviorTests/wpf.CommandDirectoryKeyboardBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.CommandDirectoryRegisteredRouteTests/wpf.CommandDirectoryRegisteredRouteTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 36,
+        "passed": 36,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 36,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.CommandDirectoryResultLayoutBehaviorTests/wpf.CommandDirectoryResultLayoutBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.CommandDirectoryReviewBehaviorTests/wpf.CommandDirectoryReviewBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.CompactWorkspaceTableViewportBehaviorTests/wpf.CompactWorkspaceTableViewportBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.DataGridColumnVisibilityBehaviorTests/wpf.DataGridColumnVisibilityBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.DataGridHorizontalWheelBehaviorTests/wpf.DataGridHorizontalWheelBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.DataGridViewConfigurationBehaviorTests/wpf.DataGridViewConfigurationBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.GamePickerFilterBehaviorTests/wpf.GamePickerFilterBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.GamePickerKeyboardBehaviorTests/wpf.GamePickerKeyboardBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.KeyboardFocusSourceTests/wpf.KeyboardFocusSourceTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.MediaComparisonSelectionTests/wpf.MediaComparisonSelectionTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.MediaComparisonViewportBehaviorTests/wpf.MediaComparisonViewportBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.MediaInboxGeometryTests/wpf.MediaInboxGeometryTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.MediaInboxScrollBehaviorTests/wpf.MediaInboxScrollBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 6,
+        "passed": 6,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 6,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.MediaThumbnailConverterTests/wpf.MediaThumbnailConverterTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.MediaWindowAnchorContractTests/wpf.MediaWindowAnchorContractTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 10,
+        "passed": 10,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 10,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.NotificationInboxViewBehaviorTests/wpf.NotificationInboxViewBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.NumericCellReadabilityTests/wpf.NumericCellReadabilityTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.NumericInputTests/wpf.NumericInputTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 12,
+        "passed": 12,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 12,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.OverviewInteractionTests/wpf.OverviewInteractionTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.PasteNormalizationTests/wpf.PasteNormalizationTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.PlayniteGameIconProviderTests/wpf.PlayniteGameIconProviderTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.ProcessMappingInlineActionBehaviorTests/wpf.ProcessMappingInlineActionBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.ProductionShellChromeSourceTests/wpf.ProductionShellChromeSourceTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 22,
+        "passed": 22,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 22,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q06ButtonStateSequenceBehaviorTests/wpf.Q06ButtonStateSequenceBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q06ContinuousButtonBehaviorTests/wpf.Q06ContinuousButtonBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q10CheckBoxHitBehaviorTests/wpf.Q10CheckBoxHitBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q10ToggleSwitchStateBehaviorTests/wpf.Q10ToggleSwitchStateBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q13ColumnResizeBehaviorTests/wpf.Q13ColumnResizeBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q13ScrollBarThumbBehaviorTests/wpf.Q13ScrollBarThumbBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q14FilterLabelBehaviorTests/wpf.Q14FilterLabelBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q14ToolbarAlignmentBehaviorTests/wpf.Q14ToolbarAlignmentBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q23SettingsActionConfirmationBehaviorTests/wpf.Q23SettingsActionConfirmationBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.Q24FractionalDpiTypographyBehaviorTests/wpf.Q24FractionalDpiTypographyBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R02ActionAvailabilityHintTests/wpf.R02ActionAvailabilityHintTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R02ActionPriorityTests/wpf.R02ActionPriorityTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R02BusyStateTests/wpf.R02BusyStateTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R02HitAreaSpacingTests/wpf.R02HitAreaSpacingTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R02OpticalAlignmentTests/wpf.R02OpticalAlignmentTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R03BilingualLengthTests/wpf.R03BilingualLengthTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R03CopySafePunctuationTests/wpf.R03CopySafePunctuationTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R03LongPathTests/wpf.R03LongPathTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R03NumericAlignmentTests/wpf.R03NumericAlignmentTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 10,
+        "passed": 10,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 10,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R03TextScaleTests/wpf.R03TextScaleTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R05FocusBoundaryBehaviorTests/wpf.R05FocusBoundaryBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R05MultiSelectionSummaryBehaviorTests/wpf.R05MultiSelectionSummaryBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R05OptionVirtualizationBehaviorTests/wpf.R05OptionVirtualizationBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R05PopupBoundaryBehaviorTests/wpf.R05PopupBoundaryBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R05PopupLifecycleBehaviorTests/wpf.R05PopupLifecycleBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R05TogglePersistenceBehaviorTests/wpf.R05TogglePersistenceBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R05TooltipTimingBehaviorTests/wpf.R05TooltipTimingBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06ClipboardBehaviorTests/wpf.R06ClipboardBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06ColumnHeaderHelpTests/wpf.R06ColumnHeaderHelpTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06ColumnWidthPersistenceBehaviorTests/wpf.R06ColumnWidthPersistenceBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06DetailsBudgetBehaviorTests/wpf.R06DetailsBudgetBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06EmptyStateBehaviorTests/wpf.R06EmptyStateBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06ResponsiveColumnWidthBehaviorTests/wpf.R06ResponsiveColumnWidthBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06SelectionStateBehaviorTests/wpf.R06SelectionStateBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06SortingBehaviorTests/wpf.R06SortingBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R06TaskProgressBehaviorTests/wpf.R06TaskProgressBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R07DetailsBreakpointBehaviorTests/wpf.R07DetailsBreakpointBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R07FineScrollBehaviorTests/wpf.R07FineScrollBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R07ResizeStressBehaviorTests/wpf.R07ResizeStressBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R07ScrollOwnershipBehaviorTests/wpf.R07ScrollOwnershipBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R07SelectionAnchorBehaviorTests/wpf.R07SelectionAnchorBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R07StatusBannerBudgetBehaviorTests/wpf.R07StatusBannerBudgetBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R08BusinessFeedbackBehaviorTests/wpf.R08BusinessFeedbackBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R08DialogOverlayBehaviorTests/wpf.R08DialogOverlayBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R08MotionHotChangeBehaviorTests/wpf.R08MotionHotChangeBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R08MotionReverseBehaviorTests/wpf.R08MotionReverseBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R08NumericChangeBehaviorTests/wpf.R08NumericChangeBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R08OffscreenMotionBehaviorTests/wpf.R08OffscreenMotionBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R08PageSwitchBehaviorTests/wpf.R08PageSwitchBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R08SystemMotionHotChangeBehaviorTests/wpf.R08SystemMotionHotChangeBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R09BackgroundPressureBehaviorTests/wpf.R09BackgroundPressureBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R09FocusOutlineBehaviorTests/wpf.R09FocusOutlineBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R09HighContrastBehaviorTests/wpf.R09HighContrastBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R09IconSemanticBehaviorTests/wpf.R09IconSemanticBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R09PixelStrokeBehaviorTests/wpf.R09PixelStrokeBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R09ShadowBudgetBehaviorTests/wpf.R09ShadowBudgetBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R09ThemeSwitchBehaviorTests/wpf.R09ThemeSwitchBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R09ThumbnailPlaceholderBehaviorTests/wpf.R09ThumbnailPlaceholderBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R10FilterPresetBehaviorTests/wpf.R10FilterPresetBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 6,
+        "passed": 6,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 6,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R10FilterSourceBehaviorTests/wpf.R10FilterSourceBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R10KeyboardShortcutHelpBehaviorTests/wpf.R10KeyboardShortcutHelpBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R10RecentAccessBehaviorTests/wpf.R10RecentAccessBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R10SearchShortcutBehaviorTests/wpf.R10SearchShortcutBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R10SearchShortcutFocusBehaviorTests/wpf.R10SearchShortcutFocusBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R11BackupPreviewBehaviorTests/wpf.R11BackupPreviewBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R11DiffListSearchBehaviorTests/wpf.R11DiffListSearchBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R11HistoryTimeNavigationBehaviorTests/wpf.R11HistoryTimeNavigationBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 6,
+        "passed": 6,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 6,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R11ProtectionBehaviorTests/wpf.R11ProtectionBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R11VersionComparisonBehaviorTests/wpf.R11VersionComparisonBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R11VersionNoteBehaviorTests/wpf.R11VersionNoteBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R11VersionSummaryBehaviorTests/wpf.R11VersionSummaryBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R12PathRemapBehaviorTests/wpf.R12PathRemapBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R12RemoteStageProgressBehaviorTests/wpf.R12RemoteStageProgressBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 5,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R12RestorePlanDraftBehaviorTests/wpf.R12RestorePlanDraftBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 7,
+        "passed": 7,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 7,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R12RestoreReadinessViewBehaviorTests/wpf.R12RestoreReadinessViewBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R12RestoreWorkflowBehaviorTests/wpf.R12RestoreWorkflowBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 8,
+        "passed": 8,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 8,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R13CloudTransferStageBehaviorTests/wpf.R13CloudTransferStageBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 16,
+        "passed": 16,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 16,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R15TaskFailureCopyTests/wpf.R15TaskFailureCopyTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 6,
+        "passed": 6,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 6,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R16NotificationScheduleBehaviorTests/wpf.R16NotificationScheduleBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R16SettingsSearchBehaviorTests/wpf.R16SettingsSearchBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R18DispatcherVisibilityBenchmarkTests/wpf.R18DispatcherVisibilityBenchmarkTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R18TableContainerBudgetTests/wpf.R18TableContainerBudgetTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R18ThumbnailBudgetTests/wpf.R18ThumbnailBudgetTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R21AsyncCompletionAnnouncementBehaviorTests/wpf.R21AsyncCompletionAnnouncementBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R21AutomationValueBehaviorTests/wpf.R21AutomationValueBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 24,
+        "passed": 24,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 24,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R21DisabledHiddenBehaviorTests/wpf.R21DisabledHiddenBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R21FocusVisualRegressionBehaviorTests/wpf.R21FocusVisualRegressionBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R21KeyboardNavigationTraceTests/wpf.R21KeyboardNavigationTraceTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R21SelectableTechnicalTextBehaviorTests/wpf.R21SelectableTechnicalTextBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R22BatchCountBehaviorTests/wpf.R22BatchCountBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R22ConfirmationStructureBehaviorTests/wpf.R22ConfirmationStructureBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R22CopyFeedbackBehaviorTests/wpf.R22CopyFeedbackBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R22LongTaskLeavePageBehaviorTests/wpf.R22LongTaskLeavePageBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R22MaintenanceActionTimeBehaviorTests/wpf.R22MaintenanceActionTimeBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R22RemoteStageTimeBehaviorTests/wpf.R22RemoteStageTimeBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 3,
+        "passed": 3,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 3,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.R23ProductionResourceStateBehaviorTests/wpf.R23ProductionResourceStateBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 9,
+        "passed": 9,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 9,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.ReportedWorkspaceLayoutBehaviorTests/wpf.ReportedWorkspaceLayoutBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 54,
+        "passed": 54,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 54,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.RetentionScenarioInputBehaviorTests/wpf.RetentionScenarioInputBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.S05StorageBudgetBreakdownBehaviorTests/wpf.S05StorageBudgetBreakdownBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.SettingsDraftLifecycleBehaviorTests/wpf.SettingsDraftLifecycleBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.SettingsValidationNavigationBehaviorTests/wpf.SettingsValidationNavigationBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.StatusGlyphConverterTests/wpf.StatusGlyphConverterTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 9,
+        "passed": 9,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 9,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.TableDensityPolicyTests/wpf.TableDensityPolicyTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 9,
+        "passed": 9,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 9,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.TaskCenterViewResponsiveTests/wpf.TaskCenterViewResponsiveTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 8,
+        "passed": 8,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 8,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.TypographyDiagnosticsTests/wpf.TypographyDiagnosticsTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 11,
+        "passed": 11,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 11,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.UiAuditBlockerTests/wpf.UiAuditBlockerTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 9,
+        "passed": 9,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 9,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.UiAuditCaptureContractTests/wpf.UiAuditCaptureContractTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 8,
+        "passed": 8,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 8,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.UiAuditTruthfulnessTests/wpf.UiAuditTruthfulnessTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 9,
+        "passed": 9,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 9,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.UiDiagnosticsExporterTests/wpf.UiDiagnosticsExporterTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 11,
+        "passed": 11,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 11,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.UiFinesseFoundationTests/wpf.UiFinesseFoundationTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 9,
+        "passed": 9,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 9,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.UiNegativeFixtureRegistryTests/wpf.UiNegativeFixtureRegistryTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 1,
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 1,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.WorklistExportPreviewBehaviorTests/wpf.WorklistExportPreviewBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 4,
+        "passed": 4,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 4,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.WorkspaceStatePresenterBehaviorTests/wpf.WorkspaceStatePresenterBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 8,
+        "passed": 8,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 8,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.WorkspaceTableViewportPolicyTests/wpf.WorkspaceTableViewportPolicyTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 8,
+        "passed": 8,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 8,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.WpfUiResourceDictionaryTests/wpf.WpfUiResourceDictionaryTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 179,
+        "passed": 140,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 39,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 179,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      },
+      {
+        "path": "wpf.WrapPanelRowGapControllerBehaviorTests/wpf.WrapPanelRowGapControllerBehaviorTests.trx",
+        "group": "playnite-wpf-isolated",
+        "testCaseCount": 2,
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 0,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2,
+        "counterMatchesResults": true,
+        "distinctTestClassCount": 1,
+        "wpfIsolatedClassRun": true,
+        "parseError": null
+      }
+    ]
+  },
+  "Outcome": "passed",
+  "Commit": "e2e6958dfe7c2a6aa420a34e83d6bf73eebdf138",
+  "Run": "20261023T093647694Z-41438f32",
+  "InstalledFiles": [
+    {
+      "SHA256": "E3889D342F56C90E111CF2A954C9C9A216E91C88A6D5098092FE27C8548DD0CE",
+      "Path": "extension.yaml"
+    },
+    {
+      "SHA256": "CDEF25E4B8C745DFE4BA655B6DC47B292108A07E1B09541869B4836908439B36",
+      "Path": "GameSaveCenter.Contracts.dll"
+    },
+    {
+      "SHA256": "CE8E78F2B6D1C7B14976465935F2F8059D8B7DD74B6D05AF7236E20C381A8C4B",
+      "Path": "GameSaveCenter.Core.dll"
+    },
+    {
+      "SHA256": "8AC65DB889640B69D16B5395D35974BE5B3981E472C5EFF8903BD0E992024EC1",
+      "Path": "GameSaveCenter.Playnite.dll"
+    },
+    {
+      "SHA256": "454F924A6A922976B03448CC81F0F4667A979DB10525F7B95B360840A9ED8C87",
+      "Path": "icon.png"
+    },
+    {
+      "SHA256": "E1E27AF7B07EEEDF5CE71A9255F0422816A6FC5849A483C6714E1B472044FA9D",
+      "Path": "Newtonsoft.Json.dll"
+    },
+    {
+      "SHA256": "EFD8155CEC6F3683B701FE94F555D225332D283126BB36B36D9A20EA9D7FC724",
+      "Path": "System.ValueTuple.dll"
+    },
+    {
+      "SHA256": "34E652A2D32CD175F3FA917161B4F02422BCA5BCB24BB92C89489C955F6F94ED",
+      "Path": "Worker\\appsettings.json"
+    },
+    {
+      "SHA256": "7A9E40315E2EDD8B3B0BA6486F34CA0D9A204C2AF0BF57BD4364EC65201A1F21",
+      "Path": "Worker\\clretwrc.dll"
+    },
+    {
+      "SHA256": "FBE782D4781E2C8EA7C420318BA3E954639A50B3FC531A65916EA379B6965A21",
+      "Path": "Worker\\clrgc.dll"
+    },
+    {
+      "SHA256": "4E8E72443ECEE874C8DDA010169B4556315D6C2F78A79165B5389E65B5A69F13",
+      "Path": "Worker\\clrjit.dll"
+    },
+    {
+      "SHA256": "048DCE560F81BC412413C106EE29C82625B4A6EB0F278A31913B1AD7C0260F82",
+      "Path": "Worker\\coreclr.dll"
+    },
+    {
+      "SHA256": "388534943FE798112A95BF6946B142FA6C275FA31D2D48FB1DD6A0CB791F6A49",
+      "Path": "Worker\\createdump.exe"
+    },
+    {
+      "SHA256": "DCCBABB2BC7E7D4302C44D9CE41B70721A7D0914FA4D289E2F340D39766AD102",
+      "Path": "Worker\\e_sqlite3.dll"
+    },
+    {
+      "SHA256": "3DF6DDB2394AAE6BBEE741C98DFCFD1EFB067EDB631FB87F05AC240AC80D904F",
+      "Path": "Worker\\GameSaveCenter.Contracts.dll"
+    },
+    {
+      "SHA256": "ACAC31F193ECFD044CDB010D7A04B02959977D238F039B64090BF65A9BDCF431",
+      "Path": "Worker\\GameSaveCenter.Contracts.pdb"
+    },
+    {
+      "SHA256": "CEB86BCCA0DEA704A5B35B77B10F7637BE1737097AD6568059CB8D5B7E725EB6",
+      "Path": "Worker\\GameSaveCenter.Contracts.xml"
+    },
+    {
+      "SHA256": "905755E29A29B7E2D1BF4394D95FE1686D3BCE35BAD21653EB4E58C368E6A32A",
+      "Path": "Worker\\GameSaveCenter.Core.dll"
+    },
+    {
+      "SHA256": "865B4FC69AF5E949275C135D891B95C77A89BC6C54A423376F1366FAC4BA6CF2",
+      "Path": "Worker\\GameSaveCenter.Core.pdb"
+    },
+    {
+      "SHA256": "108AEE6629AE31166E4AF896DC32200058C273210B3D970E51973BA7DF11A6F1",
+      "Path": "Worker\\GameSaveCenter.Core.xml"
+    },
+    {
+      "SHA256": "134ADC03862857AA288C241052436A596C81C769FED3CD5CC6941176B9C59794",
+      "Path": "Worker\\GameSaveCenter.Worker.deps.json"
+    },
+    {
+      "SHA256": "738AA6A270F79B24ABEE5AD61FEA1825AD9C657A8DB186393C8141670B36E13F",
+      "Path": "Worker\\GameSaveCenter.Worker.dll"
+    },
+    {
+      "SHA256": "99E635599E1FFD1DABD8EFA522DF2ABA459826869CFA13174DBC387A3A6D3528",
+      "Path": "Worker\\GameSaveCenter.Worker.exe"
+    },
+    {
+      "SHA256": "29E1471F8FDA7CA5AC3B1A267544415F438FB6014C6F21DB46D43670C925345D",
+      "Path": "Worker\\GameSaveCenter.Worker.pdb"
+    },
+    {
+      "SHA256": "52208BB80976D071967A053D99FA51FA30EA016DCF4CE9A8F2A9C239F1E809DC",
+      "Path": "Worker\\GameSaveCenter.Worker.runtimeconfig.json"
+    },
+    {
+      "SHA256": "83A66293D292B8B1F6BCCC6B0C3B66ABD5759F5C4E856AF7668DA4EA9ECC1025",
+      "Path": "Worker\\GameSaveCenter.Worker.xml"
+    },
+    {
+      "SHA256": "0B644B231BF16B0AF57ABE66EEE54BBA22F42105F16B7FEF327773C432B35426",
+      "Path": "Worker\\hostfxr.dll"
+    },
+    {
+      "SHA256": "93B021E41C227D08BE3FECDCDD958C71199BD05BB8383914806A9DC850D68BB3",
+      "Path": "Worker\\hostpolicy.dll"
+    },
+    {
+      "SHA256": "8D5E9B7F08216957B0B590906EA52ADA2A8001FCE46CE02894DD6756B1499546",
+      "Path": "Worker\\Microsoft.CSharp.dll"
+    },
+    {
+      "SHA256": "C6F0EE080E0430ACD50BE190C4AE1DE90E514134C829F44F6279FF91E325ADE4",
+      "Path": "Worker\\Microsoft.Data.Sqlite.dll"
+    },
+    {
+      "SHA256": "315A61C47C41B8D4C815F4274BB6584C1D24B4640C7EEDC354ED5B03A9A1361E",
+      "Path": "Worker\\Microsoft.DiaSymReader.Native.amd64.dll"
+    },
+    {
+      "SHA256": "FEFCDB267A73099CB90E5AF56B5EF2BCA59BED974339B3A6810352BDE23537A6",
+      "Path": "Worker\\Microsoft.Extensions.Configuration.Abstractions.dll"
+    },
+    {
+      "SHA256": "BEAC12F7BBA4E22CDA2ACD9DDFE944A4ED56ABEC414E084EDD147BD5DAD3C032",
+      "Path": "Worker\\Microsoft.Extensions.Configuration.Binder.dll"
+    },
+    {
+      "SHA256": "688EF791D4BB2E84839CFB28EC83772D561D958F6D0B20CA28BE1C6EFC9EA5F7",
+      "Path": "Worker\\Microsoft.Extensions.Configuration.CommandLine.dll"
+    },
+    {
+      "SHA256": "B5CD9DA2C3364A5B201CECB0C80E25227D27BA44D96343D2894FF8EF3FD81550",
+      "Path": "Worker\\Microsoft.Extensions.Configuration.dll"
+    },
+    {
+      "SHA256": "797B3034FD173CAFF0850CD580428A5F4AEB7DA27BF03369AD7F2B0996019399",
+      "Path": "Worker\\Microsoft.Extensions.Configuration.EnvironmentVariables.dll"
+    },
+    {
+      "SHA256": "ACF5896D0F34FA1A43295797584B3805C24743CE25EE87538EEEC83B012BBF4F",
+      "Path": "Worker\\Microsoft.Extensions.Configuration.FileExtensions.dll"
+    },
+    {
+      "SHA256": "15E1262880F263806A2808D750688739662323B20CCD9835222FFF8C30899A4A",
+      "Path": "Worker\\Microsoft.Extensions.Configuration.Json.dll"
+    },
+    {
+      "SHA256": "206CAD6A76676E1FE74E12CEA23D92AA7AE3EB06217315617F6F267AF1383E58",
+      "Path": "Worker\\Microsoft.Extensions.Configuration.UserSecrets.dll"
+    },
+    {
+      "SHA256": "67FA4325000DB017DC0C35829B416F024F042D24EFB868BCF17A895EE6500A93",
+      "Path": "Worker\\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
+    },
+    {
+      "SHA256": "158761CE778E799949F3A3060C461B1055BB35F1F5A65EFF0E42397849F09ECD",
+      "Path": "Worker\\Microsoft.Extensions.DependencyInjection.dll"
+    },
+    {
+      "SHA256": "9864DBCFDBFE395BBD64DEEC7568FDAF0CBC3850F0CD8F53E7359189BD158082",
+      "Path": "Worker\\Microsoft.Extensions.Diagnostics.Abstractions.dll"
+    },
+    {
+      "SHA256": "31E08B4E0018EE136D65DFCCA8F655A1A74CF8841E6029044C99B2E75D5F59F0",
+      "Path": "Worker\\Microsoft.Extensions.Diagnostics.dll"
+    },
+    {
+      "SHA256": "F08B1F597ABB3647AB6E844282DED763E6078DBEF6DD54B9D956CA419FAC42FE",
+      "Path": "Worker\\Microsoft.Extensions.FileProviders.Abstractions.dll"
+    },
+    {
+      "SHA256": "9F67076C79A953F5068C0792114F9722527CFA17ED7414C73FD14833BFE59918",
+      "Path": "Worker\\Microsoft.Extensions.FileProviders.Physical.dll"
+    },
+    {
+      "SHA256": "ED0855B522F09B5A9DDBB85DE62042C25E07D10044086DA8620C845DE41E473C",
+      "Path": "Worker\\Microsoft.Extensions.FileSystemGlobbing.dll"
+    },
+    {
+      "SHA256": "27F074952005F74BA37FC62756690255E5F743FF3F7426FCDEB65A0D6EC9FF77",
+      "Path": "Worker\\Microsoft.Extensions.Hosting.Abstractions.dll"
+    },
+    {
+      "SHA256": "22CE5576ADEC386F12CC92DE15B38C85405995B4B0E6F610A00C918A72433F62",
+      "Path": "Worker\\Microsoft.Extensions.Hosting.dll"
+    },
+    {
+      "SHA256": "45C22524218541717E4A0ADE36847C1CDA4921F5945B4975A1C78DDFE023D0B1",
+      "Path": "Worker\\Microsoft.Extensions.Logging.Abstractions.dll"
+    },
+    {
+      "SHA256": "372DCB44F6F9243346CB82DB99BB01F27A0F3C8019902481BD45D65C311A732D",
+      "Path": "Worker\\Microsoft.Extensions.Logging.Configuration.dll"
+    },
+    {
+      "SHA256": "D42DA097BB5EF92A3EB9889726E5C231BB5D0D4CA7CA7132ED944514D52BEC01",
+      "Path": "Worker\\Microsoft.Extensions.Logging.Console.dll"
+    },
+    {
+      "SHA256": "3B1DC1ADA5BFEB19FE4BA5225DB9C9950DCA250FB2DAAAC259B537C5D0894A65",
+      "Path": "Worker\\Microsoft.Extensions.Logging.Debug.dll"
+    },
+    {
+      "SHA256": "B2CFBA2E05EE89A91E9BC9CF112468A5F4FA05D1A77EA81C131EA656F3D133C2",
+      "Path": "Worker\\Microsoft.Extensions.Logging.dll"
+    },
+    {
+      "SHA256": "4913C4D4D3837176BCB830A8A76402873ADA8C35050A3A93B29BE092EFDDB335",
+      "Path": "Worker\\Microsoft.Extensions.Logging.EventLog.dll"
+    },
+    {
+      "SHA256": "2C043EA968ECAEFD7B935255A8DB84D5666FB28A791C67D3555A611BC0C8B83C",
+      "Path": "Worker\\Microsoft.Extensions.Logging.EventSource.dll"
+    },
+    {
+      "SHA256": "B9EA7BB70BFECF5C649F2559300FCE232729257CFDB4221DC96F1EA778227353",
+      "Path": "Worker\\Microsoft.Extensions.Options.ConfigurationExtensions.dll"
+    },
+    {
+      "SHA256": "5E01894CBC0661BACB8CA8F485A40D5EE4E02F28FEF58007668A0276431B4693",
+      "Path": "Worker\\Microsoft.Extensions.Options.dll"
+    },
+    {
+      "SHA256": "446FF16E903E7479558816E213A3ADEE9A1C1ADAD65A56D853801B10933E29D7",
+      "Path": "Worker\\Microsoft.Extensions.Primitives.dll"
+    },
+    {
+      "SHA256": "606C1CA3879814E86D7C5B462ABEADE820BA066755711DD58094DC4F651FD45D",
+      "Path": "Worker\\Microsoft.VisualBasic.Core.dll"
+    },
+    {
+      "SHA256": "6B86A1075EACF0DE534433535660D3BA3EF03034984DDC0856FA5A1A3BE80208",
+      "Path": "Worker\\Microsoft.VisualBasic.dll"
+    },
+    {
+      "SHA256": "84A579655C26542FF81208E555362B988E69457121BA7CEDF49DDD85D933854F",
+      "Path": "Worker\\Microsoft.Win32.Primitives.dll"
+    },
+    {
+      "SHA256": "0C6FB02FE3E2FDC9B9E4737586CAEA80331424CD2806459EA49DD78848647E95",
+      "Path": "Worker\\Microsoft.Win32.Registry.dll"
+    },
+    {
+      "SHA256": "0EC371D93798852E36461C8ADDDBEADCE0F963A04752F0B64E54FE19C1C834A7",
+      "Path": "Worker\\Microsoft.Windows.SDK.NET.dll"
+    },
+    {
+      "SHA256": "1564212B9BB55E1DA04FB59C68854C889DECC263B1206CBB42A9CB398D7AF098",
+      "Path": "Worker\\mscordaccore_amd64_amd64_8.0.2926.32403.dll"
+    },
+    {
+      "SHA256": "1564212B9BB55E1DA04FB59C68854C889DECC263B1206CBB42A9CB398D7AF098",
+      "Path": "Worker\\mscordaccore.dll"
+    },
+    {
+      "SHA256": "F67E2BEA0AF686DA56C70176D5646A257A5A1E0FB10772490BBEEDE8AAE8785B",
+      "Path": "Worker\\mscordbi.dll"
+    },
+    {
+      "SHA256": "7481B932184A77B4C570DCF16837847AB4EF13868A836AAC1CB226A66C7089B1",
+      "Path": "Worker\\mscorlib.dll"
+    },
+    {
+      "SHA256": "E3CA1C2BFA3E972625B826745387B550E3A8ED154C9B1CB51FCEB384523FDAE0",
+      "Path": "Worker\\mscorrc.dll"
+    },
+    {
+      "SHA256": "99DAF179EE2DFB5C36493543647B64FC58A24ABA0B16D5E9232B06003FBC9054",
+      "Path": "Worker\\msquic.dll"
+    },
+    {
+      "SHA256": "4796B75AB9FE9A73BB1162D5ECBE75FB6D90B4AF972340EEFAEC7C71C66AD9FA",
+      "Path": "Worker\\netstandard.dll"
+    },
+    {
+      "SHA256": "F2B1D564EDF60DAC57522EB549097B098705774C4EA8589EC1E756C59A5D5A83",
+      "Path": "Worker\\SharpCompress.dll"
+    },
+    {
+      "SHA256": "E2709FDA3EE4137DCEA3398221F0AFCD6241DB0EA6FA55FD31A33610BE78CF02",
+      "Path": "Worker\\SQLitePCLRaw.batteries_v2.dll"
+    },
+    {
+      "SHA256": "C33995427EDD44FA641CF702DF8B63CC82CB7054DD984DC8277D15EE7C958874",
+      "Path": "Worker\\SQLitePCLRaw.core.dll"
+    },
+    {
+      "SHA256": "2E7315A35CB86213200654B717F8CBE3C7643A6BEC4A106F22FC8C744A94906C",
+      "Path": "Worker\\SQLitePCLRaw.provider.e_sqlite3.dll"
+    },
+    {
+      "SHA256": "E9DBD09FC195C609BC737A9562AD376BE587AA3558F1D84AEF9363DE4E200EDF",
+      "Path": "Worker\\System.AppContext.dll"
+    },
+    {
+      "SHA256": "8988E36C90D8174F8984822614AB074679BCBD14232E8B4D1EC218E65A89DF9A",
+      "Path": "Worker\\System.Buffers.dll"
+    },
+    {
+      "SHA256": "E7118198A3A8B22CA39685A273D05DB7B4F6C73E35D8D4CE462F66173E61FA53",
+      "Path": "Worker\\System.Collections.Concurrent.dll"
+    },
+    {
+      "SHA256": "0937F7983C191DBB768C51BB9AE90621575C0A2CC3B185D85E31AC2F87001AF2",
+      "Path": "Worker\\System.Collections.dll"
+    },
+    {
+      "SHA256": "BA92CFA66BC95E7127F0EC88F453708986A9589F1397167FE697649B08F91D50",
+      "Path": "Worker\\System.Collections.Immutable.dll"
+    },
+    {
+      "SHA256": "9D9F9E4FD5FF8F56A86D867A54927705FA77D6C3E0ED94C2A52112F3EC4193BC",
+      "Path": "Worker\\System.Collections.NonGeneric.dll"
+    },
+    {
+      "SHA256": "31E89CAF6D21A20ACC8EBBD390DD74D6C1340FAE3A4ABCF24BBF5DFEF714A67D",
+      "Path": "Worker\\System.Collections.Specialized.dll"
+    },
+    {
+      "SHA256": "D29179FA1FB9E98B4005DC0C764572458DBA96736A9AF7C23F23F865254E7B37",
+      "Path": "Worker\\System.ComponentModel.Annotations.dll"
+    },
+    {
+      "SHA256": "CB44A335CB27213D8670587F11EEF9BFDD4B46C541C1E07E66F9824F362E967A",
+      "Path": "Worker\\System.ComponentModel.DataAnnotations.dll"
+    },
+    {
+      "SHA256": "D0D5DF86A307DB3F7D0D59A39664C04F4FBB581103B6A89AA21395CD3F707AF8",
+      "Path": "Worker\\System.ComponentModel.dll"
+    },
+    {
+      "SHA256": "F022E0B45685FAC64695EA127C51F380E1D81FE4F97306DE20883C1151FB6D76",
+      "Path": "Worker\\System.ComponentModel.EventBasedAsync.dll"
+    },
+    {
+      "SHA256": "7ACE9D079C895F11C8AFE54E420C8CA3A361E7FD7429B333A629094B08F73432",
+      "Path": "Worker\\System.ComponentModel.Primitives.dll"
+    },
+    {
+      "SHA256": "6FFA8C5934389AD34C0B840B87FEFD44FC7605B5215B3188010F2CBC71969F60",
+      "Path": "Worker\\System.ComponentModel.TypeConverter.dll"
+    },
+    {
+      "SHA256": "FB31386DE6858A09ACE6176D31F1D560DE3178BFEE45F833A0EAEA15A29F83EF",
+      "Path": "Worker\\System.Configuration.dll"
+    },
+    {
+      "SHA256": "1C1FE3BC8D89607F8FB59B55FEFA2A842AE97DCF521EDE30FE76637E9FDAA86A",
+      "Path": "Worker\\System.Console.dll"
+    },
+    {
+      "SHA256": "3F0B5AE3D8B354090C97BEEE29A45699C1D0E4ED2BC1790B58C3C55C7D291D48",
+      "Path": "Worker\\System.Core.dll"
+    },
+    {
+      "SHA256": "2448428D9F907D31D49B68F7DE81833F507648A739686372B54FD98A1173374B",
+      "Path": "Worker\\System.Data.Common.dll"
+    },
+    {
+      "SHA256": "F62B99FC80328F3A8068E071CAA8EAAED1FF1E75B5007B8B616C9F8089315166",
+      "Path": "Worker\\System.Data.DataSetExtensions.dll"
+    },
+    {
+      "SHA256": "121CBAAB3C34B43CDFED88AA507E1599D1973D99AB931E25C4C400DFA662BA07",
+      "Path": "Worker\\System.Data.dll"
+    },
+    {
+      "SHA256": "14161BD641030F48B381A9B59B0508078ED542BED655490C22FDCE844B565773",
+      "Path": "Worker\\System.Diagnostics.Contracts.dll"
+    },
+    {
+      "SHA256": "21094470A79E1A69683D3ABE055B8DFB19ED6B23292515E582A35409D957488B",
+      "Path": "Worker\\System.Diagnostics.Debug.dll"
+    },
+    {
+      "SHA256": "E5486EFB2F403BDF64769111C38C1263F3AB07825BDA1583B75ACFE3097FF5C2",
+      "Path": "Worker\\System.Diagnostics.DiagnosticSource.dll"
+    },
+    {
+      "SHA256": "8343020E3752DC8FAE7598816570AA30B041F835412A76DAC7F65B229ED9532B",
+      "Path": "Worker\\System.Diagnostics.EventLog.dll"
+    },
+    {
+      "SHA256": "DBFB7C81FB62A0BD3F77DA92496640F179E96DD0C1A41A0D3C5D2A2445A3BE46",
+      "Path": "Worker\\System.Diagnostics.EventLog.Messages.dll"
+    },
+    {
+      "SHA256": "4293745AB2CDC39991B2F7E287F02B33BF6CE93B7B591924D6788E43B26FE21D",
+      "Path": "Worker\\System.Diagnostics.FileVersionInfo.dll"
+    },
+    {
+      "SHA256": "5E7871E795A2C833FCE3B0D02373F672ECDAFDAAEBD1F459A7E714AC498AF428",
+      "Path": "Worker\\System.Diagnostics.Process.dll"
+    },
+    {
+      "SHA256": "A035326A73E9D98862813D6BE278CAB8B43CA7D5CC22002014421D18B0860A41",
+      "Path": "Worker\\System.Diagnostics.StackTrace.dll"
+    },
+    {
+      "SHA256": "B8573E87667127B4A9C2402FBCDCBDCE09061EEA67E91FD0EAD0DA564E1CD869",
+      "Path": "Worker\\System.Diagnostics.TextWriterTraceListener.dll"
+    },
+    {
+      "SHA256": "B807123C4FE888C4AB8E87CEE20FA7E0B9EDAC7074721F9C10A6F056F030F7B8",
+      "Path": "Worker\\System.Diagnostics.Tools.dll"
+    },
+    {
+      "SHA256": "B1B02E2CB4CD17187C3825F28BEC194EA0EE031F87A5CD97656EFBA3AAD758B7",
+      "Path": "Worker\\System.Diagnostics.TraceSource.dll"
+    },
+    {
+      "SHA256": "AE576E80BE706174FEF86074C7776FDF81DB3DB22EBBD680C91C2085A3DFFC81",
+      "Path": "Worker\\System.Diagnostics.Tracing.dll"
+    },
+    {
+      "SHA256": "BF894ED5FA6610C1A24B09D0B89C8C8B76F0028D430ECE532AB2EDC748656507",
+      "Path": "Worker\\System.dll"
+    },
+    {
+      "SHA256": "11B96E81F0AAC386A70809E840795DA17DC952D60BAE79D7409E42E65238DCD8",
+      "Path": "Worker\\System.Drawing.dll"
+    },
+    {
+      "SHA256": "F7F5AB9F1E8B2DC14E5BBDF1B606A91DD57B8882CD289A68E85EF6E69CCDACF7",
+      "Path": "Worker\\System.Drawing.Primitives.dll"
+    },
+    {
+      "SHA256": "400F9D8A7529154A3B124956CFBDE91A4D0038097E7B9DE6B182AB13C3C025D8",
+      "Path": "Worker\\System.Dynamic.Runtime.dll"
+    },
+    {
+      "SHA256": "A3DC5F43CFBE78C740D14109B908850BF25042DA8E46266CEDDD319973FDA026",
+      "Path": "Worker\\System.Formats.Asn1.dll"
+    },
+    {
+      "SHA256": "AF617E33E2E238109F7720DA30F33D4998ADDDDD82A1FEE4CC2D1A49E613E641",
+      "Path": "Worker\\System.Formats.Tar.dll"
+    },
+    {
+      "SHA256": "02B9ADFD559E805F0AF6B69E060617ADD087505AE39BE4110143588C2567DDD3",
+      "Path": "Worker\\System.Globalization.Calendars.dll"
+    },
+    {
+      "SHA256": "3B13BD484E767DC2C6BBCA7357FF2B2875481E0995EB5C32D371595F31959333",
+      "Path": "Worker\\System.Globalization.dll"
+    },
+    {
+      "SHA256": "A812F856169464818511D9AE6E8D5E29916403B7A109BD80BDFF8AAF5E691D99",
+      "Path": "Worker\\System.Globalization.Extensions.dll"
+    },
+    {
+      "SHA256": "679E4FFE79BC61AB1E16578CDF99B409DFF2B6EB8F02CCA5294464B3698AD32E",
+      "Path": "Worker\\System.IO.Compression.Brotli.dll"
+    },
+    {
+      "SHA256": "18D502E14CD7AC03F7835E550DAE21C802FA5DB85E12F75EC55EC41A7A26242E",
+      "Path": "Worker\\System.IO.Compression.dll"
+    },
+    {
+      "SHA256": "F7B14EF65AB0E16814590662A9241670C42C45C7E68D56F24DF75D8D382D384E",
+      "Path": "Worker\\System.IO.Compression.FileSystem.dll"
+    },
+    {
+      "SHA256": "68DD6E5FBB65AB70060E00F05DF7BE4E34A02C85ED7F851150B96F03172E6C18",
+      "Path": "Worker\\System.IO.Compression.Native.dll"
+    },
+    {
+      "SHA256": "5E5635326F7284FF8867EA6463C4537565F44D8070433ED0CDD38ECA506C89F4",
+      "Path": "Worker\\System.IO.Compression.ZipFile.dll"
+    },
+    {
+      "SHA256": "B6AE0C761F5FA2F0E67B7AADD20379A643523BA69BE4F968E7AFF65D658213F9",
+      "Path": "Worker\\System.IO.dll"
+    },
+    {
+      "SHA256": "5AFA226142F78D2C129D80FDEACED781ADAA60EA045010FC1848628D0090C956",
+      "Path": "Worker\\System.IO.FileSystem.AccessControl.dll"
+    },
+    {
+      "SHA256": "BAC270FACF403C91E35D95BD01D2A57F774638ABE5862417711DAFCA84AF8AEB",
+      "Path": "Worker\\System.IO.FileSystem.dll"
+    },
+    {
+      "SHA256": "F0266B4123AD8E3AE4B15D3B3B1CAFE978C7FF1E2A039BDBBBD854C095DC49A5",
+      "Path": "Worker\\System.IO.FileSystem.DriveInfo.dll"
+    },
+    {
+      "SHA256": "CF992E2777BBE9BE8243428326B41B55C9616F91EF5DA10E629194B0376E9FDC",
+      "Path": "Worker\\System.IO.FileSystem.Primitives.dll"
+    },
+    {
+      "SHA256": "E911BF0F0B0FC6E9BF646B3C7B8CE45F5179237EEE0E4BB6EF7E6C15F89EF2AF",
+      "Path": "Worker\\System.IO.FileSystem.Watcher.dll"
+    },
+    {
+      "SHA256": "6C448F12FFFC0A8B68A00BC06079215E838ABB29BADE8DB971B70126DE3135C0",
+      "Path": "Worker\\System.IO.IsolatedStorage.dll"
+    },
+    {
+      "SHA256": "B6D6B637564F5802A7BFE807F495BC12106A87715C01A17721F827647C8B078D",
+      "Path": "Worker\\System.IO.MemoryMappedFiles.dll"
+    },
+    {
+      "SHA256": "861C4F4BF89B4F80EAB58095C27CF4A16B36EE179EF8DFF395CB9D000EA0C7F8",
+      "Path": "Worker\\System.IO.Pipes.AccessControl.dll"
+    },
+    {
+      "SHA256": "9941714479BD7A77748DE99774EC1FB4F057815672F3FE90F99C5CC32FB60F15",
+      "Path": "Worker\\System.IO.Pipes.dll"
+    },
+    {
+      "SHA256": "98F98C5F00F9DEFDC4BAC577E925D6FCF7BDFEA6748A50CC92553EB6547DACBF",
+      "Path": "Worker\\System.IO.UnmanagedMemoryStream.dll"
+    },
+    {
+      "SHA256": "AD19451AA60C394640B7BF5950102F948C08B61B1D496E4F10D897449F4B18E4",
+      "Path": "Worker\\System.Linq.dll"
+    },
+    {
+      "SHA256": "42902CB85104534692AA6160A2D3C2FF4843640271FA7A6790A7FF74ED8EAFB4",
+      "Path": "Worker\\System.Linq.Expressions.dll"
+    },
+    {
+      "SHA256": "4205A64C5754C3CCDA5E093A41921FFFA89377EE7738DF16E55C0EBC241BE77F",
+      "Path": "Worker\\System.Linq.Parallel.dll"
+    },
+    {
+      "SHA256": "58A4AC5BE4188645AE530D41472C0C2214A783D79F60AE679B0CAB4C8E8863AF",
+      "Path": "Worker\\System.Linq.Queryable.dll"
+    },
+    {
+      "SHA256": "FD29C91EC1AE5EC2D98AD77F2863DA6D583A3BE596A1813959D02877CDE057A0",
+      "Path": "Worker\\System.Memory.dll"
+    },
+    {
+      "SHA256": "DD749BCD576B6FC7B27825B01699BC5CA852C600CEB3BB70B7FBEFA200630849",
+      "Path": "Worker\\System.Net.dll"
+    },
+    {
+      "SHA256": "9AE6470D6C15B56DED0B3C16C1990E140FF08FF534B12D2FF39125D66E8CBE43",
+      "Path": "Worker\\System.Net.Http.dll"
+    },
+    {
+      "SHA256": "2593041CA3DE16FB5CA33EB07FB7C335FD28850FC41D1EED7A152E4814EBC3A8",
+      "Path": "Worker\\System.Net.Http.Json.dll"
+    },
+    {
+      "SHA256": "152D159A3D210D5BA1259DE081428B088211BE8EA15093E99A24D8B16E26E7BF",
+      "Path": "Worker\\System.Net.HttpListener.dll"
+    },
+    {
+      "SHA256": "84CFADB4546EC77917DFF2A5906B28B2F1AAC41CF01FF30BC6A2E7BF660981D1",
+      "Path": "Worker\\System.Net.Mail.dll"
+    },
+    {
+      "SHA256": "592E22636A2AA7B02850DF841E35267104081BA1D29B98EEF812BD89B7A8FE50",
+      "Path": "Worker\\System.Net.NameResolution.dll"
+    },
+    {
+      "SHA256": "BEB762C1AF65C4B320D763BF4DCAD11A0FAD1EC088F12FA93909E9470C835B97",
+      "Path": "Worker\\System.Net.NetworkInformation.dll"
+    },
+    {
+      "SHA256": "33F032E69C45C11500C9DB29A9947F5F5236D9705978C4D31F17EA50BC16DC06",
+      "Path": "Worker\\System.Net.Ping.dll"
+    },
+    {
+      "SHA256": "C0F3F88D0C53BB6D89C172D019C6434FE48A814ACA061CF1AE0DDFBE7A98E793",
+      "Path": "Worker\\System.Net.Primitives.dll"
+    },
+    {
+      "SHA256": "3DD91F9B77C938914059F95027086503241B99FA83C23A53E4F9D56184ECCF81",
+      "Path": "Worker\\System.Net.Quic.dll"
+    },
+    {
+      "SHA256": "35C16D93E024728E149015717008514AEB2FE4713D7EF304B5915CF834EE99FE",
+      "Path": "Worker\\System.Net.Requests.dll"
+    },
+    {
+      "SHA256": "C7985BA5BB7D29A5C29EF25D57CEF0CF8084C57056437EAB81895AAA7199B113",
+      "Path": "Worker\\System.Net.Security.dll"
+    },
+    {
+      "SHA256": "15C1A8EC54D1842764EBCA3A6A39ADCE7D7F86F572BB1398279A1E9AD51FA5D4",
+      "Path": "Worker\\System.Net.ServicePoint.dll"
+    },
+    {
+      "SHA256": "DDBC00D0F56D79372F4AE506057A0B8DD526B6EF03785EB592DC929709AB40B2",
+      "Path": "Worker\\System.Net.Sockets.dll"
+    },
+    {
+      "SHA256": "AFC3A8D9FCCB72CCC85EEDFBBA579F63428A4E7ACF7C49A43114BC97346ACFCE",
+      "Path": "Worker\\System.Net.WebClient.dll"
+    },
+    {
+      "SHA256": "BA6FFE6E59B62A9392E39F0D087D1596C0F0EAB269311CA97BF2E512CC2AA376",
+      "Path": "Worker\\System.Net.WebHeaderCollection.dll"
+    },
+    {
+      "SHA256": "221898E759D47300187D4B5027189CC54B54EBC1C31DFC5AB68758C94D3EE218",
+      "Path": "Worker\\System.Net.WebProxy.dll"
+    },
+    {
+      "SHA256": "EF93170C5C100A595A10ADC7F6A80176513BFD3CDD01B719DFF656B78EA7FCE1",
+      "Path": "Worker\\System.Net.WebSockets.Client.dll"
+    },
+    {
+      "SHA256": "BCDC5C85F2FEC3B71427A4B8AFE283866DD3B9DB408AEA53B1344D1E55ACAA4B",
+      "Path": "Worker\\System.Net.WebSockets.dll"
+    },
+    {
+      "SHA256": "7E331F919FFF63105608D3FCFDF827480C11F0676A7FFD5B5C9F575666608DCB",
+      "Path": "Worker\\System.Numerics.dll"
+    },
+    {
+      "SHA256": "614D9F56192B0058038831D779268C9F9167AE87E444E7540D1B60B589BC975C",
+      "Path": "Worker\\System.Numerics.Vectors.dll"
+    },
+    {
+      "SHA256": "E21FF10BDF7F9F1C035D9AB1BEBDE797611061BF50F9A4F42E8F370A3A8E859A",
+      "Path": "Worker\\System.ObjectModel.dll"
+    },
+    {
+      "SHA256": "8C01F630BB23C2FB142E6559CDCDF147105625DEFB36107019D4AB50D8854CD3",
+      "Path": "Worker\\System.Private.CoreLib.dll"
+    },
+    {
+      "SHA256": "A0D1996D03C45670774129DD0E553998CF85D8225CDAE6F23BB9DF4A9C90C06B",
+      "Path": "Worker\\System.Private.DataContractSerialization.dll"
+    },
+    {
+      "SHA256": "11A057D20D67F3944319094ECD1B08EBDC569FF01C0C66899D9F04E64FB02AA1",
+      "Path": "Worker\\System.Private.Uri.dll"
+    },
+    {
+      "SHA256": "D85C7103BD4AE932D5BA07F53AC357BCE11D09FF72804B78CAF46F7657C7EDC8",
+      "Path": "Worker\\System.Private.Xml.dll"
+    },
+    {
+      "SHA256": "B0EFF460BD81142C848B58315F0E6843C36DBA5DC94F2DFA35C3B62592F6C2B3",
+      "Path": "Worker\\System.Private.Xml.Linq.dll"
+    },
+    {
+      "SHA256": "DDF07AE22EB6E9146245D38E5F8A3E1AFCF2D0FF125371610980B25AB95F8217",
+      "Path": "Worker\\System.Reflection.DispatchProxy.dll"
+    },
+    {
+      "SHA256": "C7AD4268E3ABE3FE36E0FCD6568ED7649DA17A0BF048200043B72C28613E84F4",
+      "Path": "Worker\\System.Reflection.dll"
+    },
+    {
+      "SHA256": "83F5886838A33D40812FE40ED07CECEBA37BA1B934837865F0E3AA00AA67696B",
+      "Path": "Worker\\System.Reflection.Emit.dll"
+    },
+    {
+      "SHA256": "CDEF1923659DABE9D078F7B665EEC81504E417B0BE6666E321C80C4795417DC9",
+      "Path": "Worker\\System.Reflection.Emit.ILGeneration.dll"
+    },
+    {
+      "SHA256": "85D48EA351D828C7E79C41C860B3ED5BCC71A20FAD5E9727A03920DFF9190F91",
+      "Path": "Worker\\System.Reflection.Emit.Lightweight.dll"
+    },
+    {
+      "SHA256": "86C12E7CA53F8F979D59891FB0110A0D32DD4913A3530489FC83769046DC1D37",
+      "Path": "Worker\\System.Reflection.Extensions.dll"
+    },
+    {
+      "SHA256": "7E45D32C6B8D8CAF3C782357C9D18FBBCB98ADC715007841ECE2360E985B6D67",
+      "Path": "Worker\\System.Reflection.Metadata.dll"
+    },
+    {
+      "SHA256": "644182D5E64989C15AB5E3B46C421832A6A4AE952EF9891AAD8529C4AD903113",
+      "Path": "Worker\\System.Reflection.Primitives.dll"
+    },
+    {
+      "SHA256": "C74CDB60AC21BE408028403C76F3D4128A769EC3633ACE4D93135FD6E25CBC75",
+      "Path": "Worker\\System.Reflection.TypeExtensions.dll"
+    },
+    {
+      "SHA256": "3570F33FCB1854195C8D2F8ADB4E84F56C0679BB28DFDBC3EF670CA52D153485",
+      "Path": "Worker\\System.Resources.Reader.dll"
+    },
+    {
+      "SHA256": "55D88A44C2E8CC3834A6584B9EAF928551D01AFDA90E293079F9BD5D6FD4AC40",
+      "Path": "Worker\\System.Resources.ResourceManager.dll"
+    },
+    {
+      "SHA256": "FDCDB598DAA31829DFAB9E5CDCA8B636DFF6560D490E4B852509149BFD760F54",
+      "Path": "Worker\\System.Resources.Writer.dll"
+    },
+    {
+      "SHA256": "D5CFB3B6D4D143C0E08930FFCC8313CAF73EB4E42AEE0385C7A87769C4662953",
+      "Path": "Worker\\System.Runtime.CompilerServices.Unsafe.dll"
+    },
+    {
+      "SHA256": "01E20CB1E6A26CD2E77E55FF4D4FAD896F37A894AAB0F74158A53242DFE6378A",
+      "Path": "Worker\\System.Runtime.CompilerServices.VisualC.dll"
+    },
+    {
+      "SHA256": "F1B8629204B3363722BBD6219C4FD54096CF01D29DB861412C287227C130DECF",
+      "Path": "Worker\\System.Runtime.dll"
+    },
+    {
+      "SHA256": "3D7B27EB28AC02CE977F24A12E2AE264CF2CE2E38870DB9BDEB0805C55EC8ED4",
+      "Path": "Worker\\System.Runtime.Extensions.dll"
+    },
+    {
+      "SHA256": "CC5FA8E388FE9FCCCDD4E79993A1C692FB8E28C665B96123295387CD7808358C",
+      "Path": "Worker\\System.Runtime.Handles.dll"
+    },
+    {
+      "SHA256": "570A8140B838042A5D1135D5A20E39D18CCBFCE13395C73B0B5BEA935D311EA0",
+      "Path": "Worker\\System.Runtime.InteropServices.dll"
+    },
+    {
+      "SHA256": "788CF6A1B118E345A7CF97DBBAED533E16C2FF23B0BA8172EF92428AF64864CA",
+      "Path": "Worker\\System.Runtime.InteropServices.JavaScript.dll"
+    },
+    {
+      "SHA256": "F791B30EACFECA79397D456E836414D35C911DB73471E3A2EB3885BF061D72DD",
+      "Path": "Worker\\System.Runtime.InteropServices.RuntimeInformation.dll"
+    },
+    {
+      "SHA256": "4F4D23294A6BA06BEFAD43E364F7884CEF6F66646F31A8B79FE6D8198D7DBBF7",
+      "Path": "Worker\\System.Runtime.Intrinsics.dll"
+    },
+    {
+      "SHA256": "97F2C61FBA23D9834A3BA3996AF9EA12D04064A91CCDBE6A9741A5E877E2C343",
+      "Path": "Worker\\System.Runtime.Loader.dll"
+    },
+    {
+      "SHA256": "CE08CC1A8418F38E360F17CDB48ABE1E5D5FF5D6AA67540F48EF0444B628C2A8",
+      "Path": "Worker\\System.Runtime.Numerics.dll"
+    },
+    {
+      "SHA256": "D23791C30865CBD04007C3BB133EB367BA64C80179CEBD1F042A9B484E8FDA59",
+      "Path": "Worker\\System.Runtime.Serialization.dll"
+    },
+    {
+      "SHA256": "C44AB84A9CB3F3C1E1FB2437C028AD5CA4DA377F9EA65416FCED65EEBEE44895",
+      "Path": "Worker\\System.Runtime.Serialization.Formatters.dll"
+    },
+    {
+      "SHA256": "57E53DDA2023F1257446FD80BB8AAFACB47013451335066B1F73086C6ABF32B2",
+      "Path": "Worker\\System.Runtime.Serialization.Json.dll"
+    },
+    {
+      "SHA256": "83B155BE90EEC2FE971B7C3F0F19F84E4200F89CDAC07503ED70F39DA5C6C7AE",
+      "Path": "Worker\\System.Runtime.Serialization.Primitives.dll"
+    },
+    {
+      "SHA256": "6D7703AE778FB1DC0D4259F98DB19DAF88FCB0E4DFE64A853A6A1020D0AC8B0F",
+      "Path": "Worker\\System.Runtime.Serialization.Xml.dll"
+    },
+    {
+      "SHA256": "95A298915A09C46D0BA2691D4377082D37B55CAE40F892C32F45E583D90AF55B",
+      "Path": "Worker\\System.Security.AccessControl.dll"
+    },
+    {
+      "SHA256": "C243E259A9D41BDE55E01C1050C6E90A3C845B3FF18F64066F212EBB71BEF35E",
+      "Path": "Worker\\System.Security.Claims.dll"
+    },
+    {
+      "SHA256": "5185BB1FE16E8C7DAF5031F7CE8E2035D7619BF54932BCA7DDF9EDC8276484EB",
+      "Path": "Worker\\System.Security.Cryptography.Algorithms.dll"
+    },
+    {
+      "SHA256": "4578F1194FBBEA63F35A95721BC9DEA92C625A0A72FEFA8317936915FEAB58EB",
+      "Path": "Worker\\System.Security.Cryptography.Cng.dll"
+    },
+    {
+      "SHA256": "1AB0741607BEE02E5E6F45293AE66E39E3804F962CB37C38E6C38779D7F5BE6B",
+      "Path": "Worker\\System.Security.Cryptography.Csp.dll"
+    },
+    {
+      "SHA256": "5D516C9DA108647FDF6F96B5926B59F497B4F0AE84A932512E1E4203C49AA5D2",
+      "Path": "Worker\\System.Security.Cryptography.dll"
+    },
+    {
+      "SHA256": "EE9EA0A057BE774F8F7A1C4204806DB611550DCA930AF05187B9AA2AC3D40193",
+      "Path": "Worker\\System.Security.Cryptography.Encoding.dll"
+    },
+    {
+      "SHA256": "6A5D5FF38C0D28BEB9AF3C8DCD4B7B5C639203BF9D348ABD2872C540EB329E78",
+      "Path": "Worker\\System.Security.Cryptography.OpenSsl.dll"
+    },
+    {
+      "SHA256": "7111536CF9D42907EBD1DA6AC19026519161E95839A9679367E6367F1CD9E670",
+      "Path": "Worker\\System.Security.Cryptography.Primitives.dll"
+    },
+    {
+      "SHA256": "D050A7B12E98AFF8C3B1C1023A7C888EABC50E0FAB0B2D0C4B43300249ED7D25",
+      "Path": "Worker\\System.Security.Cryptography.X509Certificates.dll"
+    },
+    {
+      "SHA256": "27AE1A3A3EC6ECA92DDF98CD5BDE8642EABA5F0789B49F4859D27BAD1FA22D91",
+      "Path": "Worker\\System.Security.dll"
+    },
+    {
+      "SHA256": "843C55B75B0622D63E3684AFB6116FFEC0BB20A9C54FD6BD9228A14CF9689AF2",
+      "Path": "Worker\\System.Security.Principal.dll"
+    },
+    {
+      "SHA256": "F5F284590E72E565A8DE13F7C31ABF57DEFCDB71F32DCBC94152F976115EFCCA",
+      "Path": "Worker\\System.Security.Principal.Windows.dll"
+    },
+    {
+      "SHA256": "54AD93D060E5E84EBF5C0E1DC05A74CC1A84CDC9641AAE82E1D41B12912C66F1",
+      "Path": "Worker\\System.Security.SecureString.dll"
+    },
+    {
+      "SHA256": "18734AC420D610C30416F65F3ED7D01A53EB49FB60E88797CD102EFA65075891",
+      "Path": "Worker\\System.ServiceModel.Web.dll"
+    },
+    {
+      "SHA256": "C5CEB3452BE8C535F46D495191E7224BC11BD8ED61040F3BA2FB27C04B7F5150",
+      "Path": "Worker\\System.ServiceProcess.dll"
+    },
+    {
+      "SHA256": "25A8C8A86F504FAD669412449FEE0D35C730725FE7E8B5F5A9005EDB2ACDAB2A",
+      "Path": "Worker\\System.Text.Encoding.CodePages.dll"
+    },
+    {
+      "SHA256": "09BDA1F72189F6D1760D81E3BE26C14C22B77FEC5AEA3C5BEB7151B71FEF3E3E",
+      "Path": "Worker\\System.Text.Encoding.dll"
+    },
+    {
+      "SHA256": "1776DEB74F88DE69D6B420FC16AA1D4F3AA72AD4B53261C0D4F301BF2F56F87C",
+      "Path": "Worker\\System.Text.Encoding.Extensions.dll"
+    },
+    {
+      "SHA256": "002A9E68F9CD05A0212524970D9CCA06306425805DB47462459ECD90E7EC3550",
+      "Path": "Worker\\System.Text.Encodings.Web.dll"
+    },
+    {
+      "SHA256": "7FD10C4D6112C43AE8B64D131180EED48938DF55FD517AD88CFDC86CAB37C645",
+      "Path": "Worker\\System.Text.Json.dll"
+    },
+    {
+      "SHA256": "39B972D97202524C7DCCD3AD38E37266FB4F16F993928E6B5791D8172781DCEA",
+      "Path": "Worker\\System.Text.RegularExpressions.dll"
+    },
+    {
+      "SHA256": "4803ACD30220FD4792B27942BE159D468E20AFA6F96FBB7E4C99882C458C789D",
+      "Path": "Worker\\System.Threading.Channels.dll"
+    },
+    {
+      "SHA256": "BAAD7F0D2F3EF9A7B4ED7646093464EDDDBEE0937F33DE71BE139A01A86375AC",
+      "Path": "Worker\\System.Threading.dll"
+    },
+    {
+      "SHA256": "9F3F9A9B633C4781AC3FF206BF6E7008ED9A6D19626791473C45D5844ECB8422",
+      "Path": "Worker\\System.Threading.Overlapped.dll"
+    },
+    {
+      "SHA256": "AFEB5E23C69430D58C9FD78E7D20981983005315AF4DFB3513A6472FA5FA0DB5",
+      "Path": "Worker\\System.Threading.Tasks.Dataflow.dll"
+    },
+    {
+      "SHA256": "42B824AA602E8FCB93EC17C57E4C4B9B4C2C7982301E45AB41A89792B7954003",
+      "Path": "Worker\\System.Threading.Tasks.dll"
+    },
+    {
+      "SHA256": "8017247916F5167418423F3B80152097F9C059217C972C6D2F7046959B8A30EA",
+      "Path": "Worker\\System.Threading.Tasks.Extensions.dll"
+    },
+    {
+      "SHA256": "178509C7F18ECF1F6B6FA35090F62456A83DEBF7403899F2C69E92F830730B74",
+      "Path": "Worker\\System.Threading.Tasks.Parallel.dll"
+    },
+    {
+      "SHA256": "58CD39131EC8EE3711A4D1B7C01E0A73792D4C2965195E056F4B4AA5A2319582",
+      "Path": "Worker\\System.Threading.Thread.dll"
+    },
+    {
+      "SHA256": "7C4F4DA70AA737D473B8DDEE9F5F062DBB71DEBB689D5F8F2FA2D7D5235D4E6B",
+      "Path": "Worker\\System.Threading.ThreadPool.dll"
+    },
+    {
+      "SHA256": "725485EC61AED90FC92230958094D3E44AA35437D617C939E68B6552FB56A180",
+      "Path": "Worker\\System.Threading.Timer.dll"
+    },
+    {
+      "SHA256": "1DF4A483A90F535A2377417AF9970F30E71EC05B6E6BB006BE2E5E9ADC1384F9",
+      "Path": "Worker\\System.Transactions.dll"
+    },
+    {
+      "SHA256": "12DABF489A5BD4768656CEE0181A8B099164D5D03F8ACA402117DC56646B8812",
+      "Path": "Worker\\System.Transactions.Local.dll"
+    },
+    {
+      "SHA256": "DAFF0D3611520941B1C25CD810698F19BB89BCC6E5008B927C9B9B2D2532BAB6",
+      "Path": "Worker\\System.ValueTuple.dll"
+    },
+    {
+      "SHA256": "9EECF238A75B7EE5EDAC99FFC76CDA81D099EFEE8B31F8737196673C0311346E",
+      "Path": "Worker\\System.Web.dll"
+    },
+    {
+      "SHA256": "A204F075272C50BF815688CE0A20EA1F0E8BBC0C5D9EB04B8B8C55E08632ED9A",
+      "Path": "Worker\\System.Web.HttpUtility.dll"
+    },
+    {
+      "SHA256": "6957260F1BD7191D59CE74CEE8F5528111639E2E6DDD143409EB8E6CA0D06CC9",
+      "Path": "Worker\\System.Windows.dll"
+    },
+    {
+      "SHA256": "DB528966FBF3A5AA03B1EB1BAD88C1F779F6FC9654D3F7525F76BD7AAC57408A",
+      "Path": "Worker\\System.Xml.dll"
+    },
+    {
+      "SHA256": "59E11C949BC6D313D74C45EC3231196A0933634FA2682F05B69CDA451056EA54",
+      "Path": "Worker\\System.Xml.Linq.dll"
+    },
+    {
+      "SHA256": "EB78EECE0A65AF3EAFA359FE3A3EB0F79B82ABB34DF4E0E44156C227E0D6A319",
+      "Path": "Worker\\System.Xml.ReaderWriter.dll"
+    },
+    {
+      "SHA256": "72E20D12930D0CEE30BD1F9A4B9E7FA63A6420634AE87E939567E473FBAA2359",
+      "Path": "Worker\\System.Xml.Serialization.dll"
+    },
+    {
+      "SHA256": "CF5EB606D17BE4FA508B0B7778AE6E88D888C59C265EF32DED20B30ABE8D06DD",
+      "Path": "Worker\\System.Xml.XDocument.dll"
+    },
+    {
+      "SHA256": "5A5FD7C7C57F134158F5F87F89834988775ECE43098D98B2AD5E6D73A712E00B",
+      "Path": "Worker\\System.Xml.XmlDocument.dll"
+    },
+    {
+      "SHA256": "AE03705BA1F9A5E50703D1C044DC2E1743296E113EB41EEE53B1980DB2FC97C9",
+      "Path": "Worker\\System.Xml.XmlSerializer.dll"
+    },
+    {
+      "SHA256": "BAAEFB29BEF2C685D6C40B52811415C12A2AF69161B684E02C0131A429B25170",
+      "Path": "Worker\\System.Xml.XPath.dll"
+    },
+    {
+      "SHA256": "6E76E812855FA6A0C145DB1406C487A75D45B71F8DEC15DD5616025F75201E23",
+      "Path": "Worker\\System.Xml.XPath.XDocument.dll"
+    },
+    {
+      "SHA256": "9943941BC7E8D36A697048EE9DB4EE99E1FBEECD8F5CBDA9CFA2CDB8D7F773A5",
+      "Path": "Worker\\WindowsBase.dll"
+    },
+    {
+      "SHA256": "BCF3A14E8712A90837FC5C0D8C8A24696AF2BD7F74E9767597EC81EDEDFB23DB",
+      "Path": "Worker\\WinRT.Runtime.dll"
+    }
+  ],
+  "WpfProcesses": [
+    {
+      "id": "playnite-source",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 4760,
+        "ProcessStartedUtc": "2026-10-23T09:39:10.5094992Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.AsyncThumbnailImageTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 5868,
+        "ProcessStartedUtc": "2026-10-23T09:39:23.1374842Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.AsyncThumbnailLoaderTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2360,
+        "ProcessStartedUtc": "2026-10-23T09:39:28.888695Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.CommandDirectoryBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 20828,
+        "ProcessStartedUtc": "2026-10-23T09:39:34.3638296Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.CommandDirectoryKeyboardBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 6136,
+        "ProcessStartedUtc": "2026-10-23T09:39:39.6392524Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.CommandDirectoryRegisteredRouteTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2600,
+        "ProcessStartedUtc": "2026-10-23T09:39:48.0311988Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.CommandDirectoryResultLayoutBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 19268,
+        "ProcessStartedUtc": "2026-10-23T09:39:53.2117016Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.CommandDirectoryReviewBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 15484,
+        "ProcessStartedUtc": "2026-10-23T09:40:02.4461106Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.CompactWorkspaceTableViewportBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 10208,
+        "ProcessStartedUtc": "2026-10-23T09:40:09.2277203Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.DataGridColumnVisibilityBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2780,
+        "ProcessStartedUtc": "2026-10-23T09:40:17.887818Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.DataGridHorizontalWheelBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 7008,
+        "ProcessStartedUtc": "2026-10-23T09:40:23.4746719Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.DataGridViewConfigurationBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 14828,
+        "ProcessStartedUtc": "2026-10-23T09:40:30.2978027Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.GamePickerFilterBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 17004,
+        "ProcessStartedUtc": "2026-10-23T09:40:35.8536945Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.GamePickerKeyboardBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 10208,
+        "ProcessStartedUtc": "2026-10-23T09:40:41.744366Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.KeyboardFocusSourceTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 20592,
+        "ProcessStartedUtc": "2026-10-23T09:40:49.5700351Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.MediaComparisonSelectionTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 16068,
+        "ProcessStartedUtc": "2026-10-23T09:40:56.2063368Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.MediaComparisonViewportBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23608,
+        "ProcessStartedUtc": "2026-10-23T09:41:03.3166469Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.MediaInboxGeometryTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 10756,
+        "ProcessStartedUtc": "2026-10-23T09:41:12.1146355Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.MediaInboxScrollBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13828,
+        "ProcessStartedUtc": "2026-10-23T09:41:18.9306414Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.MediaThumbnailConverterTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13092,
+        "ProcessStartedUtc": "2026-10-23T09:41:57.2939164Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.MediaWindowAnchorContractTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 3484,
+        "ProcessStartedUtc": "2026-10-23T09:42:02.5872574Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.NotificationInboxViewBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 3504,
+        "ProcessStartedUtc": "2026-10-23T09:42:09.809415Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.NumericCellReadabilityTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 5108,
+        "ProcessStartedUtc": "2026-10-23T09:42:16.310074Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.NumericInputTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12452,
+        "ProcessStartedUtc": "2026-10-23T09:42:23.5298995Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.OverviewInteractionTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 10812,
+        "ProcessStartedUtc": "2026-10-23T09:42:29.386259Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.PasteNormalizationTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 4572,
+        "ProcessStartedUtc": "2026-10-23T09:42:35.569592Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.PlayniteGameIconProviderTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23364,
+        "ProcessStartedUtc": "2026-10-23T09:42:41.5015423Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.ProcessMappingInlineActionBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 5108,
+        "ProcessStartedUtc": "2026-10-23T09:42:46.7432739Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.ProductionShellChromeSourceTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 18160,
+        "ProcessStartedUtc": "2026-10-23T09:42:53.9512763Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q06ButtonStateSequenceBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 15856,
+        "ProcessStartedUtc": "2026-10-23T09:43:04.5947759Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q06ContinuousButtonBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 16348,
+        "ProcessStartedUtc": "2026-10-23T09:43:17.1586589Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q10CheckBoxHitBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12020,
+        "ProcessStartedUtc": "2026-10-23T09:43:23.291261Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q10ToggleSwitchStateBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 24228,
+        "ProcessStartedUtc": "2026-10-23T09:43:30.0462038Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q13ColumnResizeBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13256,
+        "ProcessStartedUtc": "2026-10-23T09:43:38.2689227Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q13ScrollBarThumbBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11528,
+        "ProcessStartedUtc": "2026-10-23T09:43:44.8861101Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q14FilterLabelBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2260,
+        "ProcessStartedUtc": "2026-10-23T09:43:50.4846155Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q14ToolbarAlignmentBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 24388,
+        "ProcessStartedUtc": "2026-10-23T09:44:05.8441086Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q23SettingsActionConfirmationBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2712,
+        "ProcessStartedUtc": "2026-10-23T09:44:32.4127553Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.Q24FractionalDpiTypographyBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 15892,
+        "ProcessStartedUtc": "2026-10-23T09:44:40.747363Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R02ActionAvailabilityHintTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 24372,
+        "ProcessStartedUtc": "2026-10-23T09:44:46.3271714Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R02ActionPriorityTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2952,
+        "ProcessStartedUtc": "2026-10-23T09:44:52.3813057Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R02BusyStateTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 10820,
+        "ProcessStartedUtc": "2026-10-23T09:44:59.1027499Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R02HitAreaSpacingTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 1940,
+        "ProcessStartedUtc": "2026-10-23T09:45:05.5354218Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R02OpticalAlignmentTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 1536,
+        "ProcessStartedUtc": "2026-10-23T09:45:11.4715424Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R03BilingualLengthTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23396,
+        "ProcessStartedUtc": "2026-10-23T09:45:17.3171819Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R03CopySafePunctuationTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 24244,
+        "ProcessStartedUtc": "2026-10-23T09:45:23.1704354Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R03LongPathTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 6508,
+        "ProcessStartedUtc": "2026-10-23T09:45:28.9357571Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R03NumericAlignmentTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2824,
+        "ProcessStartedUtc": "2026-10-23T09:45:34.6767029Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R03TextScaleTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 8904,
+        "ProcessStartedUtc": "2026-10-23T09:45:40.2818958Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R05FocusBoundaryBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 17584,
+        "ProcessStartedUtc": "2026-10-23T09:45:46.6626146Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R05MultiSelectionSummaryBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 6132,
+        "ProcessStartedUtc": "2026-10-23T09:45:55.1585666Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R05OptionVirtualizationBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 10076,
+        "ProcessStartedUtc": "2026-10-23T09:46:02.6045277Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R05PopupBoundaryBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23748,
+        "ProcessStartedUtc": "2026-10-23T09:46:09.481575Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R05PopupLifecycleBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 14932,
+        "ProcessStartedUtc": "2026-10-23T09:46:16.620896Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R05TogglePersistenceBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 8428,
+        "ProcessStartedUtc": "2026-10-23T09:46:26.5126409Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R05TooltipTimingBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 16780,
+        "ProcessStartedUtc": "2026-10-23T09:46:34.5338747Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06ClipboardBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23288,
+        "ProcessStartedUtc": "2026-10-23T09:46:43.8521253Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06ColumnHeaderHelpTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 15856,
+        "ProcessStartedUtc": "2026-10-23T09:46:50.2735467Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06ColumnWidthPersistenceBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 24344,
+        "ProcessStartedUtc": "2026-10-23T09:46:56.8538817Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06DetailsBudgetBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 4612,
+        "ProcessStartedUtc": "2026-10-23T09:47:03.181104Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06EmptyStateBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 18168,
+        "ProcessStartedUtc": "2026-10-23T09:47:09.8543529Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06ResponsiveColumnWidthBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 18956,
+        "ProcessStartedUtc": "2026-10-23T09:47:16.4716814Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06SelectionStateBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 8112,
+        "ProcessStartedUtc": "2026-10-23T09:47:22.9881245Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06SortingBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 19492,
+        "ProcessStartedUtc": "2026-10-23T09:47:29.7156995Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R06TaskProgressBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 17776,
+        "ProcessStartedUtc": "2026-10-23T09:47:36.4168934Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R07DetailsBreakpointBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11220,
+        "ProcessStartedUtc": "2026-10-23T09:47:43.6079918Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R07FineScrollBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 17560,
+        "ProcessStartedUtc": "2026-10-23T09:47:50.3903867Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R07ResizeStressBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 16748,
+        "ProcessStartedUtc": "2026-10-23T09:47:56.5713081Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R07ScrollOwnershipBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23420,
+        "ProcessStartedUtc": "2026-10-23T09:48:05.5341507Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R07SelectionAnchorBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23748,
+        "ProcessStartedUtc": "2026-10-23T09:48:11.6539125Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R07StatusBannerBudgetBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 5388,
+        "ProcessStartedUtc": "2026-10-23T09:48:17.6741737Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R08BusinessFeedbackBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 8268,
+        "ProcessStartedUtc": "2026-10-23T09:48:25.5310211Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R08DialogOverlayBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23576,
+        "ProcessStartedUtc": "2026-10-23T09:48:30.7540288Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R08MotionHotChangeBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 1824,
+        "ProcessStartedUtc": "2026-10-23T09:48:38.1464069Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R08MotionReverseBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11520,
+        "ProcessStartedUtc": "2026-10-23T09:48:46.7624187Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R08NumericChangeBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 3708,
+        "ProcessStartedUtc": "2026-10-23T09:48:58.6045725Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R08OffscreenMotionBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 17588,
+        "ProcessStartedUtc": "2026-10-23T09:49:04.4399242Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R08PageSwitchBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 8804,
+        "ProcessStartedUtc": "2026-10-23T09:49:13.4777733Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R08SystemMotionHotChangeBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 7196,
+        "ProcessStartedUtc": "2026-10-23T09:49:25.0496483Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R09BackgroundPressureBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13204,
+        "ProcessStartedUtc": "2026-10-23T09:49:33.7955961Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R09FocusOutlineBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12968,
+        "ProcessStartedUtc": "2026-10-23T09:49:39.0507323Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R09HighContrastBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23356,
+        "ProcessStartedUtc": "2026-10-23T09:49:45.6800439Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R09IconSemanticBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 18184,
+        "ProcessStartedUtc": "2026-10-23T09:50:06.8815107Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R09PixelStrokeBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 16348,
+        "ProcessStartedUtc": "2026-10-23T09:50:12.8311892Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R09ShadowBudgetBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 5872,
+        "ProcessStartedUtc": "2026-10-23T09:50:18.7274812Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R09ThemeSwitchBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11636,
+        "ProcessStartedUtc": "2026-10-23T09:50:24.5578731Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R09ThumbnailPlaceholderBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12392,
+        "ProcessStartedUtc": "2026-10-23T09:50:29.8898839Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R10FilterPresetBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 14276,
+        "ProcessStartedUtc": "2026-10-23T09:50:35.6752663Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R10FilterSourceBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 22532,
+        "ProcessStartedUtc": "2026-10-23T09:50:42.2953515Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R10KeyboardShortcutHelpBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 20428,
+        "ProcessStartedUtc": "2026-10-23T09:50:49.2015582Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R10RecentAccessBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11824,
+        "ProcessStartedUtc": "2026-10-23T09:50:55.6681982Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R10SearchShortcutBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 4904,
+        "ProcessStartedUtc": "2026-10-23T09:51:01.9221777Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R10SearchShortcutFocusBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 8108,
+        "ProcessStartedUtc": "2026-10-23T09:51:07.1262216Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R11BackupPreviewBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 3328,
+        "ProcessStartedUtc": "2026-10-23T09:51:13.6412755Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R11DiffListSearchBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 1380,
+        "ProcessStartedUtc": "2026-10-23T09:51:21.5648481Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R11HistoryTimeNavigationBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 8424,
+        "ProcessStartedUtc": "2026-10-23T09:51:28.2701319Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R11ProtectionBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 24556,
+        "ProcessStartedUtc": "2026-10-23T09:51:35.4304288Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R11VersionComparisonBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 18876,
+        "ProcessStartedUtc": "2026-10-23T09:51:42.4108302Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R11VersionNoteBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 21960,
+        "ProcessStartedUtc": "2026-10-23T09:51:49.1197438Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R11VersionSummaryBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 14776,
+        "ProcessStartedUtc": "2026-10-23T09:51:56.448248Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R12PathRemapBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 19376,
+        "ProcessStartedUtc": "2026-10-23T09:52:03.3196197Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R12RemoteStageProgressBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 1148,
+        "ProcessStartedUtc": "2026-10-23T09:52:10.2857713Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R12RestorePlanDraftBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13160,
+        "ProcessStartedUtc": "2026-10-23T09:52:16.9366859Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R12RestoreReadinessViewBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12776,
+        "ProcessStartedUtc": "2026-10-23T09:52:24.44645Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R12RestoreWorkflowBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 21892,
+        "ProcessStartedUtc": "2026-10-23T09:52:31.3433784Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R13CloudTransferStageBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23020,
+        "ProcessStartedUtc": "2026-10-23T09:52:38.2873517Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R15TaskFailureCopyTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 5004,
+        "ProcessStartedUtc": "2026-10-23T09:52:45.3171999Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R16NotificationScheduleBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2064,
+        "ProcessStartedUtc": "2026-10-23T09:52:51.1121914Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R16SettingsSearchBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 3088,
+        "ProcessStartedUtc": "2026-10-23T09:52:58.2636152Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R18DispatcherVisibilityBenchmarkTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 6488,
+        "ProcessStartedUtc": "2026-10-23T09:53:05.8473241Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R18TableContainerBudgetTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13696,
+        "ProcessStartedUtc": "2026-10-23T09:53:12.7648173Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R18ThumbnailBudgetTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 6908,
+        "ProcessStartedUtc": "2026-10-23T09:53:22.0269223Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R21AsyncCompletionAnnouncementBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2340,
+        "ProcessStartedUtc": "2026-10-23T09:53:28.030685Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R21AutomationValueBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 6724,
+        "ProcessStartedUtc": "2026-10-23T09:53:35.0236532Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R21DisabledHiddenBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 24300,
+        "ProcessStartedUtc": "2026-10-23T09:53:48.8391656Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R21FocusVisualRegressionBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11028,
+        "ProcessStartedUtc": "2026-10-23T09:53:55.893432Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R21KeyboardNavigationTraceTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 16248,
+        "ProcessStartedUtc": "2026-10-23T09:54:02.9834184Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R21SelectableTechnicalTextBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2436,
+        "ProcessStartedUtc": "2026-10-23T09:54:13.7737772Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R22BatchCountBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23032,
+        "ProcessStartedUtc": "2026-10-23T09:54:19.7592742Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R22ConfirmationStructureBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12968,
+        "ProcessStartedUtc": "2026-10-23T09:54:26.4498464Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R22CopyFeedbackBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 16916,
+        "ProcessStartedUtc": "2026-10-23T09:54:31.7192047Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R22LongTaskLeavePageBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 16980,
+        "ProcessStartedUtc": "2026-10-23T09:54:38.0754853Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R22MaintenanceActionTimeBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12648,
+        "ProcessStartedUtc": "2026-10-23T09:54:44.6170757Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R22RemoteStageTimeBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23032,
+        "ProcessStartedUtc": "2026-10-23T09:54:51.2954144Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.R23ProductionResourceStateBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 2404,
+        "ProcessStartedUtc": "2026-10-23T09:54:57.9194593Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.ReportedWorkspaceLayoutBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 19840,
+        "ProcessStartedUtc": "2026-10-23T09:55:12.2464145Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.RetentionScenarioInputBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23780,
+        "ProcessStartedUtc": "2026-10-23T09:56:13.4690967Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.S05StorageBudgetBreakdownBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 10952,
+        "ProcessStartedUtc": "2026-10-23T09:56:21.4965839Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.SettingsDraftLifecycleBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12688,
+        "ProcessStartedUtc": "2026-10-23T09:56:28.9389382Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.SettingsValidationNavigationBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13908,
+        "ProcessStartedUtc": "2026-10-23T09:56:37.4252836Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.StatusGlyphConverterTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13440,
+        "ProcessStartedUtc": "2026-10-23T09:56:44.9780117Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.TableDensityPolicyTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11236,
+        "ProcessStartedUtc": "2026-10-23T09:56:50.1889633Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.TaskCenterViewResponsiveTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 22792,
+        "ProcessStartedUtc": "2026-10-23T09:56:55.4575989Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.TypographyDiagnosticsTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 1244,
+        "ProcessStartedUtc": "2026-10-23T09:57:01.9002927Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.UiAuditBlockerTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 14276,
+        "ProcessStartedUtc": "2026-10-23T09:57:07.3748521Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.UiAuditCaptureContractTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 22992,
+        "ProcessStartedUtc": "2026-10-23T09:57:13.038307Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.UiAuditTruthfulnessTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11156,
+        "ProcessStartedUtc": "2026-10-23T09:57:18.5688708Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.UiDiagnosticsExporterTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 1788,
+        "ProcessStartedUtc": "2026-10-23T09:57:24.6668085Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.UiFinesseFoundationTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 11388,
+        "ProcessStartedUtc": "2026-10-23T09:57:29.907961Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.UiNegativeFixtureRegistryTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 13788,
+        "ProcessStartedUtc": "2026-10-23T09:57:36.5058557Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.WorklistExportPreviewBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 760,
+        "ProcessStartedUtc": "2026-10-23T09:57:43.5088717Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.WorkspaceStatePresenterBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12028,
+        "ProcessStartedUtc": "2026-10-23T09:57:50.1832936Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.WorkspaceTableViewportPolicyTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 6416,
+        "ProcessStartedUtc": "2026-10-23T09:57:57.1983592Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.WpfUiResourceDictionaryTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 12096,
+        "ProcessStartedUtc": "2026-10-23T09:58:02.4372224Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "wpf.WrapPanelRowGapControllerBehaviorTests",
+      "exitCode": 0,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 5092,
+        "ProcessStartedUtc": "2026-10-23T09:58:12.8875196Z",
+        "ProcessExited": true
+      }
+    }
+  ],
+  "Sdk": "8.0.423"
+}
