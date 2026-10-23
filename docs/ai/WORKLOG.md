@@ -11942,3 +11942,9 @@ Test-CheckoutLock.ps1在PowerShell7与5.1各5/5：重入、并发拒绝、释放
 
 ## 2026-10-23 T01-01 所有权生命周期回归
 Test-ArtifactOwnership.ps1在PowerShell7/5.1通过：runID唯一、PID/启动时间、诊断目录活动→结束、成功/失败分离、未知文件SHA不变。隔离夹具已清理。当前只登记diagnostics与build输出，不认领预存在输出；共享包/暂存目录仍待补，本项代码完成待验收。未新增删除器。
+
+## 2026-10-23 T01-02 只读预览候选
+新增artifact-preview.ps1，读取显式登记清单，限定仓库artifacts/.tmp子路径，拒绝根/空/相对/越界/链接，核对PID与启动时间；未知/活跃/保留项均排除，所有输出CanDelete=false，仅估算大小与理由，无删除器。初始隔离夹具验证活跃排除、越界/空拒绝、哨兵SHA不变，结果evidence/T01-02；夹具已清理。完整路径负例/重用PID/链接及双版本待补，尚未提交。
+
+## 2026-10-23 T01-02/04 预览负例受控通过
+Test-ArtifactPreview.ps1在PowerShell7/5.1各8/8：活跃PID、空/相对/..越界/相似前缀/根路径、PID重用、junction拒绝，哨兵SHA不变。fixture与junction已按仓库.tmp安全检查清理。预览所有CanDelete=false；不等于删除器或引用/占用检查已实现。证据专项T01-02/preview-{Core,Desktop}.json；双版本范围待源码/最终链复验，不提升实际删除验收。

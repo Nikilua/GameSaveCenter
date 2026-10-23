@@ -1,0 +1,58 @@
+[
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-e5219d8a5fb94bff858eccb93cdb1334",
+    "EstimatedBytes": 8.0,
+    "OwnerState": "active",
+    "Reason": "Owner process still active",
+    "CanDelete": false
+  },
+  {
+    "Path": "",
+    "EstimatedBytes": null,
+    "OwnerState": "active",
+    "Reason": "Rejected: Empty artifact path",
+    "CanDelete": false
+  },
+  {
+    "Path": "",
+    "EstimatedBytes": null,
+    "OwnerState": "active",
+    "Reason": "Rejected: Relative artifact path",
+    "CanDelete": false
+  },
+  {
+    "Path": "D:\\workplace\\github\\outside",
+    "EstimatedBytes": null,
+    "OwnerState": "active",
+    "Reason": "Rejected: Outside allowed artifact roots or root itself",
+    "CanDelete": false
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp-other\\file",
+    "EstimatedBytes": null,
+    "OwnerState": "active",
+    "Reason": "Rejected: Outside allowed artifact roots or root itself",
+    "CanDelete": false
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp",
+    "EstimatedBytes": null,
+    "OwnerState": "active",
+    "Reason": "Rejected: Outside allowed artifact roots or root itself",
+    "CanDelete": false
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-e5219d8a5fb94bff858eccb93cdb1334",
+    "EstimatedBytes": 8.0,
+    "OwnerState": "different-process",
+    "Reason": "Retention: current evidence",
+    "CanDelete": false
+  },
+  {
+    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-e5219d8a5fb94bff858eccb93cdb1334\\junction",
+    "EstimatedBytes": null,
+    "OwnerState": "different-process",
+    "Reason": "Rejected: Linked path boundary",
+    "CanDelete": false
+  }
+]
