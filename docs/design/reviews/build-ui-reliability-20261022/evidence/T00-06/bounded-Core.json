@@ -1,0 +1,95 @@
+{
+  "UnrelatedProcessPreserved": true,
+  "TimeoutExit": 124,
+  "RetryExit": 0,
+  "Steps": [
+    {
+      "id": "trx-then-hang",
+      "command": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "arguments": [
+        "-NoProfile",
+        "-File",
+        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-154d243aa5d7494f8cdfc69916d4034f\\hang.ps1",
+        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-154d243aa5d7494f8cdfc69916d4034f\\completed.trx"
+      ],
+      "startedUtc": "2026-10-23T09:34:51.1912260Z",
+      "completedUtc": "2026-10-23T09:34:53.2892570Z",
+      "exitCode": 124,
+      "console": "trx-then-hang-console.txt",
+      "launchError": null,
+      "process": {
+        "ExitCode": 124,
+        "TimedOut": true,
+        "ProcessId": 22896,
+        "ProcessStartedUtc": "2026-10-23T09:34:51.2191827Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "retry",
+      "command": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "arguments": [
+        "-NoProfile",
+        "-Command",
+        "Write-Output 'retry completed'; exit 0"
+      ],
+      "startedUtc": "2026-10-23T09:34:53.3029928Z",
+      "completedUtc": "2026-10-23T09:34:53.7128495Z",
+      "exitCode": 0,
+      "console": "retry-console.txt",
+      "launchError": null,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 23756,
+        "ProcessStartedUtc": "2026-10-23T09:34:53.3054828Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "unicode",
+      "command": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "arguments": [
+        "-NoProfile",
+        "-Command",
+        "[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); Write-Output ([char]0x4e2d+[string][char]0x6587); exit 0"
+      ],
+      "startedUtc": "2026-10-23T09:34:53.7226556Z",
+      "completedUtc": "2026-10-23T09:34:54.1873502Z",
+      "exitCode": 0,
+      "console": "unicode-console.txt",
+      "launchError": null,
+      "process": {
+        "ExitCode": 0,
+        "TimedOut": false,
+        "ProcessId": 21088,
+        "ProcessStartedUtc": "2026-10-23T09:34:53.7250674Z",
+        "ProcessExited": true
+      }
+    },
+    {
+      "id": "tree-timeout",
+      "command": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "arguments": [
+        "-NoProfile",
+        "-File",
+        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-154d243aa5d7494f8cdfc69916d4034f\\tree.ps1",
+        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-154d243aa5d7494f8cdfc69916d4034f\\child.pid"
+      ],
+      "startedUtc": "2026-10-23T09:34:54.1966718Z",
+      "completedUtc": "2026-10-23T09:34:57.2400718Z",
+      "exitCode": 124,
+      "console": "tree-timeout-console.txt",
+      "launchError": null,
+      "process": {
+        "ExitCode": 124,
+        "TimedOut": true,
+        "ProcessId": 16716,
+        "ProcessStartedUtc": "2026-10-23T09:34:54.1989500Z",
+        "ProcessExited": true
+      }
+    }
+  ],
+  "TrxBeforeTimeout": true,
+  "Engine": "7.6.2"
+}

@@ -1,4 +1,5 @@
-﻿# Shared by build.ps1 and the standalone Playnite test runner. No target assemblies
+﻿. (Join-Path $PSScriptRoot 'bounded-process.ps1')
+# Shared by build.ps1 and the standalone Playnite test runner. No target assemblies
 # are loaded to inspect identity; diagnostics never replace a native exit code.
 function ConvertTo-GscDiagnosticText {
     param([string]$Text, [hashtable]$Context)
@@ -262,7 +263,7 @@ function Set-GscDiagnosticAssemblies {
 }
 
 function Invoke-GscRecordedCommand {
-    param([hashtable]$Context, [string]$StepId, [string]$FilePath, [string[]]$Arguments, [switch]$EchoOutput)
+    param([hashtable]$Context, [string]$StepId, [string]$FilePath, [string[]]$Arguments, [switch]$EchoOutput, [int]$TimeoutSeconds = 0)
     if ($StepId -notmatch '^[A-Za-z0-9._-]+$') { throw "Invalid diagnostic step ID: $StepId" }
     if (@($Context.Steps | Where-Object { $_.id -eq $StepId }).Count -ne 0) { throw "Duplicate diagnostic step ID: $StepId" }
     $logPath = Join-Path $Context.RunRoot "$StepId-console.txt"
@@ -284,7 +285,14 @@ function Invoke-GscRecordedCommand {
         # command cannot accidentally inherit an earlier successful exit code.
         $global:LASTEXITCODE = $null
         $ErrorActionPreference = 'Continue'
-        & $nativeCommand.Source @Arguments 2>&1 | ForEach-Object {
+        if ($TimeoutSeconds -gt 0) {
+            $bounded = Invoke-GscBoundedProcess $nativeCommand.Source $Arguments $TimeoutSeconds
+            $processEvidence = $bounded | Select-Object ExitCode,TimedOut,ProcessId,ProcessStartedUtc,ProcessExited
+            $global:LASTEXITCODE = $bounded.ExitCode
+            $nativeOutput = $bounded.Output -split '\r?\n'
+        }
+        else { $nativeOutput = & $nativeCommand.Source @Arguments 2>&1 }
+        $nativeOutput | ForEach-Object {
             $line = ConvertTo-GscDiagnosticText ([string]$_) $Context
             $outputLines.Add($line)
             $writer.WriteLine($line)
@@ -300,7 +308,7 @@ function Invoke-GscRecordedCommand {
     $record = [ordered]@{
         id = $StepId; command = $FilePath; arguments = $Arguments
         startedUtc = $started.ToString('o'); completedUtc = [DateTime]::UtcNow.ToString('o')
-        exitCode = $exitCode; console = [IO.Path]::GetFileName($logPath); launchError = $launchError
+        exitCode = $exitCode; console = [IO.Path]::GetFileName($logPath); launchError = $launchError; process = $(if ($TimeoutSeconds -gt 0) { $processEvidence } else { $null })
     }
     $Context.Steps.Add($record)
     Write-GscDiagnosticSummary $Context

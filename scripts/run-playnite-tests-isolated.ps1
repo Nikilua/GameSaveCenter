@@ -80,7 +80,7 @@ function Invoke-PlayniteTestProcess {
             }
         }
     }
-    $result = Invoke-GscRecordedCommand $DiagnosticsContext $StepId dotnet $arguments
+    $result = Invoke-GscRecordedCommand $DiagnosticsContext $StepId dotnet $arguments -TimeoutSeconds 300
     $output = $result.Output
     $exitCode = $result.ExitCode
     Complete-GscTestDiagnostics $DiagnosticsContext (Join-Path $DiagnosticsContext.RunRoot ('tests/' + $StepId))

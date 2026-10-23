@@ -851,3 +851,9 @@ fc319396标准根.cmd退出0，SDK8.0.423；1954项1897通过、57既有跳过�
 
 ## 2026-10-23 T00-06 挂起收尾缺口审计
 VSTest每类2m blame-hang已配置，真实退出码判成功；外层Invoke-GscRecordedCommand仍同步管线，无独立总时限和TRX已写但未退出夹具。不能记已满足。证据专项evidence/T00-06/AUDIT.md；下一步补身份受控超时与无关进程保护负例。本次无临时产物，最新完整链fc319396仍有效。
+
+## 2026-10-23 T00-06 有限进程原型
+新增bounded-process.ps1，WPF外层300秒超时124，记录PID/启动时间/退出事实；Core使用Process.Kill(true)，Desktop仅终止自己启动的直接进程，后代收尾仍待验。Test-BoundedProcess在PowerShell7/5.1均验证先写合成TRX后挂起非零、无关进程保留、重试0；Test-BuildDiagnostics通过。原型尚未提交/完整链，不能记验收；日志Unicode编码和进程树夹具仍需检查。
+
+## 2026-10-23 T00-06 候选受控回归通过
+PowerShell7进程树超时夹具通过，父子进程退出且无关进程保留；PowerShell7/5.1中文UTF8日志、TRX后挂起124和随后重试0通过。诊断完整回归通过。5.1仅直接进程收尾，不能宣称其后代已受控。候选准备提交，最终标准链待跑。
