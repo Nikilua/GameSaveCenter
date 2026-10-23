@@ -917,3 +917,9 @@ b8fad3ee根.cmd退出0，SDK8.0.423，1954项1897通过/57既有skip/0失败、1
 
 ## 2026-10-23 T01 预览命令入口
 新增scripts/preview-artifacts.ps1，可读指定清单或现有package-ownership，输出只读产物/重复包报告。输出仅允许artifacts/.tmp新文件，拒绝覆盖/链接；实际清单运行通过，所有CanDelete=false。双PowerShell重复预览回归通过，源码校验通过。当前交付ZIP/PEXT虽hash相同仍保留；未实现自动删除，不把预览当清理执行验收。
+
+## 2026-10-23 T01 失败打包记录候选
+package catch保留原异常，同时尝试登记失败stage/失败原因；缺失目录明确Exists=false，失败项CreatedByThisRun=false避免收编旧内容，写证据失败仅警告不掩盖原错误。双PowerShell清单夹具新增失败缺失stage负例通过；实际打包失败到catch控制流与最终链仍待验，尚未提交。d048b07e推送已确认。
+
+## 2026-10-23 打包失败catch/finally受控回归
+Test-PackageFailure双PowerShell通过，实际生产catch/finally原样运行，仅try正文替换受控throw：原错误保留、失败清单写入、旧stage SHA不变、环境恢复。失败保留理由与成功交付区分，失败不认领旧stage。夹具清理；新脚本最终标准链待跑。

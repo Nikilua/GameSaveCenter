@@ -1,0 +1,9 @@
+{
+    "PreviousStageUnchanged":  true,
+    "Fixture":  "Only main try body replaced with controlled throw; production catch/finally unchanged",
+    "EnvironmentRestored":  true,
+    "OriginalErrorPreserved":  true,
+    "FailureRecordWritten":  true,
+    "ProductionCatchExecuted":  true,
+    "Engine":  "5.1.22000.2538"
+}

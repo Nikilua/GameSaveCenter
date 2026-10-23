@@ -17,6 +17,9 @@ $records=@($files|ForEach-Object {Get-Content $_.FullName -Raw|ConvertFrom-Json}
 $record=@($records|Where-Object {$_.sourceCommit -eq 'fixture-commit'})[0]
 if($record.artifacts.Count -ne 3 -or $record.owner.ProcessId -ne $PID){throw 'Incomplete package manifest'}
 foreach($entry in $record.artifacts){if($entry.Path -eq $unknown){throw 'Unknown package adopted'};if($entry.SHA256 -and $entry.SHA256 -ne (Get-FileHash $entry.Path).Hash){throw 'Hash mismatch'}}
+Write-GscPackageOwnership $root (Join-Path $artifacts 'missing-stage') @() 'failed-fixture' -FailureMessage 'controlled package failure'
+$failure=@(Get-ChildItem (Join-Path $artifacts 'package-ownership') -Filter *.json|ForEach-Object {Get-Content $_.FullName -Raw|ConvertFrom-Json}|Where-Object {$_.sourceCommit -eq 'failed-fixture'})[0]
+if($failure.outcome -ne 'failed' -or $failure.artifacts[0].CreatedByThisRun -or $failure.artifacts[0].Exists){throw 'Failed package wrongly owns missing output'}
 $refused=$false;try{Write-GscPackageOwnership $root $unknown @((Join-Path $root 'outside')) 'invalid'}catch{$refused=$true}
 if(-not $refused){throw 'Outside artifact allowed'}
 if((Get-FileHash $unknown).Hash -ne $hash){throw 'Unknown changed'}

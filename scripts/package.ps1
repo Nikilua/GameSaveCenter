@@ -441,6 +441,12 @@ else {
 $ownedArchives = if ($SkipPackageArchives) { @() } else { @($zip,$pext) }
 Write-GscPackageOwnership $root $stage $ownedArchives $env:GSC_BUILD_COMMIT
 }
+catch {
+    $packageFailure = $_
+    try { Write-GscPackageOwnership $root $stage @() $env:GSC_BUILD_COMMIT -FailureMessage $packageFailure.Exception.Message }
+    catch { Write-Warning "Package failure evidence could not be written: $($_.Exception.Message)" }
+    throw $packageFailure
+}
 finally {
     if ($null -eq $previousBuildCommit) {
         Remove-Item Env:GSC_BUILD_COMMIT -ErrorAction SilentlyContinue
