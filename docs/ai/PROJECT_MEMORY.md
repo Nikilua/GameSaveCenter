@@ -905,3 +905,6 @@ space-budget.ps1新增显式阶段预算、同卷合并与不足/未知拒绝；
 
 ## 2026-10-23 T01-01 打包清单候选
 package-ownership.ps1在打包成功后登记stage与本次生成ZIP/PEXT，唯一runID、PID/启动时间、源码commit、包SHA与保留理由；SkipPackageArchives只登记stage，不认领旧包。Test-PackageOwnership双PowerShell通过独立重试/显式对象/哈希/未知不变/越界拒绝，隔离目录已清理。失败中间stage与安装临时目录仍待登记；未提交/最终链。
+
+## 2026-10-23 打包清单标准全链与旧构建清理
+b8fad3ee根.cmd退出0，SDK8.0.423，1954项1897通过/57既有skip/0失败、147TRX一致、144WPF类结束；包清单commit/独立runID/ZIP与PEXT哈希一致，安装，Playnite4164新进程观察。run20261023T113953064Z-4b9194a5。持checkout锁、无链接/独占文件检查后删除本对话4个旧构建目录1136506245字节；关键DLL哈希与前后空间见专项T01-07。旧路径仅历史事实，构建副本已清理；原始诊断/TRX、最新6bf33ee4包/构建和未知用户文件均保留。失败暂存登记、hash去重等剩余项仍未完成。

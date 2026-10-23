@@ -1,0 +1,277 @@
+{
+  "Deleted": [
+    {
+      "Assemblies": [
+        {
+          "SHA256": "D3BDC642D1D33C4F0AB153F1C578CB98A06F86451A0AF82A63F4243802366DE8",
+          "Path": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "D3BDC642D1D33C4F0AB153F1C578CB98A06F86451A0AF82A63F4243802366DE8",
+          "Path": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "C1B8055C93720900647041557EDFC4DE1DD551EC3DCE1B27CC15A28A4994CF9E",
+          "Path": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll"
+        },
+        {
+          "SHA256": "48F035F785BAE6E84F553A65E060CBE84AE63811DB185BB9AC326A9AE8B0C074",
+          "Path": "bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "32BE2C8B08B4CC1F81DDD9B7F762CD0C0B3191D8311F11A53904E139C0ACC9D9",
+          "Path": "bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "48F035F785BAE6E84F553A65E060CBE84AE63811DB185BB9AC326A9AE8B0C074",
+          "Path": "bin\\GameSaveCenter.Worker.Tests\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "D3BDC642D1D33C4F0AB153F1C578CB98A06F86451A0AF82A63F4243802366DE8",
+          "Path": "obj\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "C1B8055C93720900647041557EDFC4DE1DD551EC3DCE1B27CC15A28A4994CF9E",
+          "Path": "obj\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll"
+        },
+        {
+          "SHA256": "48F035F785BAE6E84F553A65E060CBE84AE63811DB185BB9AC326A9AE8B0C074",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "313824A23D7FBF2E3FA2FF1709819E03E975CD94F7D4132105A2541CE1CB004A",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\ref\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "313824A23D7FBF2E3FA2FF1709819E03E975CD94F7D4132105A2541CE1CB004A",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\refint\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "32BE2C8B08B4CC1F81DDD9B7F762CD0C0B3191D8311F11A53904E139C0ACC9D9",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "A2F8D2913221C070E6C6D68F81425B5FAE71218CF861A3ED14447DFF72BCAD68",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\ref\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "A2F8D2913221C070E6C6D68F81425B5FAE71218CF861A3ED14447DFF72BCAD68",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\refint\\GameSaveCenter.Worker.dll"
+        }
+      ],
+      "Bytes": 287040325.0,
+      "Reason": "Superseded successful build; original diagnostic/TRX retained, no direct Markdown links, exclusive file probes passed",
+      "Path": "artifacts/gsc-b/7321bc17"
+    },
+    {
+      "Assemblies": [
+        {
+          "SHA256": "8AC65DB889640B69D16B5395D35974BE5B3981E472C5EFF8903BD0E992024EC1",
+          "Path": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "8AC65DB889640B69D16B5395D35974BE5B3981E472C5EFF8903BD0E992024EC1",
+          "Path": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "AF529FBE3515C7250963A2738B6641BE118998295EDD43F90D3E6C8164D1DB34",
+          "Path": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll"
+        },
+        {
+          "SHA256": "81CB8D39A025EF806B5A9E1B14B0A9B7A19FC562D97FEE578E2C8A871435BBA0",
+          "Path": "bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "738AA6A270F79B24ABEE5AD61FEA1825AD9C657A8DB186393C8141670B36E13F",
+          "Path": "bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "81CB8D39A025EF806B5A9E1B14B0A9B7A19FC562D97FEE578E2C8A871435BBA0",
+          "Path": "bin\\GameSaveCenter.Worker.Tests\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "8AC65DB889640B69D16B5395D35974BE5B3981E472C5EFF8903BD0E992024EC1",
+          "Path": "obj\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "AF529FBE3515C7250963A2738B6641BE118998295EDD43F90D3E6C8164D1DB34",
+          "Path": "obj\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll"
+        },
+        {
+          "SHA256": "81CB8D39A025EF806B5A9E1B14B0A9B7A19FC562D97FEE578E2C8A871435BBA0",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "0B567092CD758ADAE3C400CD80D8D0992E8913B4B19B599DC6F055832433EA6A",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\ref\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "0B567092CD758ADAE3C400CD80D8D0992E8913B4B19B599DC6F055832433EA6A",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\refint\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "738AA6A270F79B24ABEE5AD61FEA1825AD9C657A8DB186393C8141670B36E13F",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "94CDB6281BA1CFBD62902B65CE1B23E9CA093AA796F822C3605522F067F049A9",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\ref\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "94CDB6281BA1CFBD62902B65CE1B23E9CA093AA796F822C3605522F067F049A9",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\refint\\GameSaveCenter.Worker.dll"
+        }
+      ],
+      "Bytes": 287040246.0,
+      "Reason": "Superseded successful build; original diagnostic/TRX retained, no direct Markdown links, exclusive file probes passed",
+      "Path": "artifacts/gsc-b/0b7b7421"
+    },
+    {
+      "Assemblies": [
+        {
+          "SHA256": "FCADA77E69C86A04AD6901085D5021AC21A5C928210E5F5591FED06D07353F17",
+          "Path": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "FCADA77E69C86A04AD6901085D5021AC21A5C928210E5F5591FED06D07353F17",
+          "Path": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "6F2EBD5FCECB34610732AD3938620B475C16EAFA61F64C946DDA079B5E8332F8",
+          "Path": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll"
+        },
+        {
+          "SHA256": "6DF56F67BCB5FC92A1A3C124E9C01BBE099FD8622558F85833D9A8F981FA1F96",
+          "Path": "bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "BF68857DF04107607EEFAD32C0A0F11E46EFE6B988194543D301B047A9F1E058",
+          "Path": "bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "6DF56F67BCB5FC92A1A3C124E9C01BBE099FD8622558F85833D9A8F981FA1F96",
+          "Path": "bin\\GameSaveCenter.Worker.Tests\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "FCADA77E69C86A04AD6901085D5021AC21A5C928210E5F5591FED06D07353F17",
+          "Path": "obj\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "6F2EBD5FCECB34610732AD3938620B475C16EAFA61F64C946DDA079B5E8332F8",
+          "Path": "obj\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll"
+        },
+        {
+          "SHA256": "6DF56F67BCB5FC92A1A3C124E9C01BBE099FD8622558F85833D9A8F981FA1F96",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "B065A653AF3C13DF2765DA8544D2B0B0D9DC3E0BC26E8F58CF47E10A24475DA6",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\ref\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "B065A653AF3C13DF2765DA8544D2B0B0D9DC3E0BC26E8F58CF47E10A24475DA6",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\refint\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "BF68857DF04107607EEFAD32C0A0F11E46EFE6B988194543D301B047A9F1E058",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "A46977F5BC388D23B4444B041500A2E7A3BCD571AD33C921C0049FDD09547CB4",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\ref\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "A46977F5BC388D23B4444B041500A2E7A3BCD571AD33C921C0049FDD09547CB4",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\refint\\GameSaveCenter.Worker.dll"
+        }
+      ],
+      "Bytes": 281212846.0,
+      "Reason": "Superseded successful build; original diagnostic/TRX retained, no direct Markdown links, exclusive file probes passed",
+      "Path": "artifacts/gsc-b/3f41e1db"
+    },
+    {
+      "Assemblies": [
+        {
+          "SHA256": "818E61C5EFB03DFE95EC0A543994A8DB37461156BC1865ED344030897CE631CD",
+          "Path": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "818E61C5EFB03DFE95EC0A543994A8DB37461156BC1865ED344030897CE631CD",
+          "Path": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "2D5536920B0354A38C1C20A5F3D086E7B81D79F01869F698B617430AA883DD1F",
+          "Path": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll"
+        },
+        {
+          "SHA256": "A6603D9B0042EA62A28DA1D61D65DE7E82E9B19078FE8FD4FBEF750B6E3A9A0B",
+          "Path": "bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "B68BE0A6543653306A68B210D0406CF26B923B966445FFBF880C018A159868F1",
+          "Path": "bin\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "A6603D9B0042EA62A28DA1D61D65DE7E82E9B19078FE8FD4FBEF750B6E3A9A0B",
+          "Path": "bin\\GameSaveCenter.Worker.Tests\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "818E61C5EFB03DFE95EC0A543994A8DB37461156BC1865ED344030897CE631CD",
+          "Path": "obj\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll"
+        },
+        {
+          "SHA256": "2D5536920B0354A38C1C20A5F3D086E7B81D79F01869F698B617430AA883DD1F",
+          "Path": "obj\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll"
+        },
+        {
+          "SHA256": "A6603D9B0042EA62A28DA1D61D65DE7E82E9B19078FE8FD4FBEF750B6E3A9A0B",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "6BC499AFAE100A0E59C544BDB23F6C56E4F17CBC8728BC72F00B1F04B7D2D993",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\ref\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "6BC499AFAE100A0E59C544BDB23F6C56E4F17CBC8728BC72F00B1F04B7D2D993",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\refint\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "B68BE0A6543653306A68B210D0406CF26B923B966445FFBF880C018A159868F1",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "72D4AAE79171DABE808E02B5BBD9B3FC82DAC61F70D36ED9F6251438D49B84C4",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\ref\\GameSaveCenter.Worker.dll"
+        },
+        {
+          "SHA256": "72D4AAE79171DABE808E02B5BBD9B3FC82DAC61F70D36ED9F6251438D49B84C4",
+          "Path": "obj\\GameSaveCenter.Worker\\Release\\net8.0-windows10.0.19041.0\\win-x64\\refint\\GameSaveCenter.Worker.dll"
+        }
+      ],
+      "Bytes": 281212828.0,
+      "Reason": "Superseded successful build; original diagnostic/TRX retained, no direct Markdown links, exclusive file probes passed",
+      "Path": "artifacts/gsc-b/852e2fdb"
+    }
+  ],
+  "After": [
+    {
+      "Name": "C",
+      "Free": 10001137664
+    },
+    {
+      "Name": "D",
+      "Free": 16360833024
+    }
+  ],
+  "Before": [
+    {
+      "Name": "C",
+      "Free": 10001403904
+    },
+    {
+      "Name": "D",
+      "Free": 15214669824
+    }
+  ],
+  "Retained": "6bf33ee4 current build, current package/install, full original diagnostic runs and all user TRX"
+}

@@ -1,0 +1,64 @@
+{
+  "Sdk": "8.0.423",
+  "Commit": "b8fad3eec6f6525e8f82a39132dadab480d666be",
+  "Run": "20261023T113953064Z-4b9194a5",
+  "PlaynitePid": 4164,
+  "ExitCode": 0,
+  "Totals": {
+    "testCaseCount": 1954,
+    "passed": 1897,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 57,
+    "notRunnable": 0,
+    "inconclusive": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "otherOutcome": 0,
+    "reportedCounterTotal": 1954,
+    "reportedCounterFileCount": 147,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "trxFileCount": 147,
+    "distinctTestClassCount": 360,
+    "wpfIsolatedClassRunCount": 144
+  },
+  "PackageOwnership": {
+    "owner": {
+      "ProcessId": 17584,
+      "ProcessStartedUtc": "2026-10-23T11:39:50.5602935Z",
+      "RunId": "20261023T120131518Z-0072b6a6"
+    },
+    "artifacts": [
+      {
+        "SHA256": null,
+        "Active": false,
+        "CreatedByThisRun": true,
+        "Stage": "package",
+        "Retention": "Current delivery output; keep until superseded and references reviewed",
+        "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec"
+      },
+      {
+        "SHA256": "10E48C8B1A1A134CB682618329EA0D207B303DA601A57EE65DCDEBAE02E37670",
+        "Active": false,
+        "CreatedByThisRun": true,
+        "Stage": "package",
+        "Retention": "Current delivery output; keep until superseded and references reviewed",
+        "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter-0.6.73-playnite.zip"
+      },
+      {
+        "SHA256": "10E48C8B1A1A134CB682618329EA0D207B303DA601A57EE65DCDEBAE02E37670",
+        "Active": false,
+        "CreatedByThisRun": true,
+        "Stage": "package",
+        "Retention": "Current delivery output; keep until superseded and references reviewed",
+        "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter-0.6.73.pext"
+      }
+    ],
+    "sourceCommit": "b8fad3eec6f6525e8f82a39132dadab480d666be",
+    "schemaVersion": 1
+  },
+  "InstalledMatchingFiles": 239
+}
