@@ -902,3 +902,6 @@ space-budget.ps1新增显式阶段预算、同卷合并与不足/未知拒绝；
 
 ## 2026-10-23 T01-07 旧包保护候选
 移除package.ps1按模式批量删除旧ZIP/PEXT，仅替换当前明确版本目标；其他版本可能是回退包/引用证据，默认保留。Test-PackageRetention在PowerShell7/5.1实际执行生产archive分支和Compress-Archive，旧包/未知包SHA不变、本次ZIP/PEXT一致；内容验证器为fixture，最终全链待验。隔离目录已清理。尚未实现hash去重与引用校验，T01-07不记完成。
+
+## 2026-10-23 T01-01 打包清单候选
+package-ownership.ps1在打包成功后登记stage与本次生成ZIP/PEXT，唯一runID、PID/启动时间、源码commit、包SHA与保留理由；SkipPackageArchives只登记stage，不认领旧包。Test-PackageOwnership双PowerShell通过独立重试/显式对象/哈希/未知不变/越界拒绝，隔离目录已清理。失败中间stage与安装临时目录仍待登记；未提交/最终链。

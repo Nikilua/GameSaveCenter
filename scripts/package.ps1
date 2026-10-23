@@ -13,6 +13,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $artifacts = Join-Path $root 'artifacts'
 $previousBuildCommit = [Environment]::GetEnvironmentVariable('GSC_BUILD_COMMIT', 'Process')
 . (Join-Path $PSScriptRoot 'package-dirty-state.ps1')
+. (Join-Path $PSScriptRoot 'package-ownership.ps1')
 
 function Read-AssemblyInformationalVersion {
     param([Parameter(Mandatory = $true)][string]$AssemblyPath)
@@ -437,6 +438,8 @@ if (-not $SkipPackageArchives) {
 else {
     Write-Host "`n安装暂存目录已校验，按隔离审计请求保留现有版本化安装包：$stage" -ForegroundColor Green
 }
+$ownedArchives = if ($SkipPackageArchives) { @() } else { @($zip,$pext) }
+Write-GscPackageOwnership $root $stage $ownedArchives $env:GSC_BUILD_COMMIT
 }
 finally {
     if ($null -eq $previousBuildCommit) {

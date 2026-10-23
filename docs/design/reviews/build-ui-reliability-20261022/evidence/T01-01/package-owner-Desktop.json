@@ -1,0 +1,8 @@
+{
+    "OutsideRejected":  true,
+    "DistinctRetry":  true,
+    "HashVerified":  true,
+    "ExplicitArtifactsOnly":  true,
+    "UnknownUnchanged":  true,
+    "Engine":  "5.1.22000.2538"
+}
