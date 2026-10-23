@@ -1,0 +1,56 @@
+[
+  {
+    "Entry": "GameSaveCenter-Run.cmd",
+    "Injected": 0,
+    "Actual": 0,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-Run.cmd",
+    "Injected": 7,
+    "Actual": 7,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-Run.cmd",
+    "Injected": 23,
+    "Actual": 23,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-一键构建安装运行.cmd",
+    "Injected": 0,
+    "Actual": 0,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-一键构建安装运行.cmd",
+    "Injected": 7,
+    "Actual": 7,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-一键构建安装运行.cmd",
+    "Injected": 23,
+    "Actual": 23,
+    "Passed": true
+  },
+  {
+    "Entry": "scripts/build.cmd",
+    "Injected": 0,
+    "Actual": 0,
+    "Passed": true
+  },
+  {
+    "Entry": "scripts/build.cmd",
+    "Injected": 7,
+    "Actual": 7,
+    "Passed": true
+  },
+  {
+    "Entry": "scripts/build.cmd",
+    "Injected": 23,
+    "Actual": 23,
+    "Passed": true
+  }
+]

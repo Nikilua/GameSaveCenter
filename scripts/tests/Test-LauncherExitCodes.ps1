@@ -1,8 +1,13 @@
-[CmdletBinding()]
-param()
+﻿[CmdletBinding()]
+param([string]$FixtureRoot = '')
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $output = Join-Path $repo ('.tmp/launcher-exit-' + [Guid]::NewGuid().ToString('N'))
+if ($FixtureRoot) {
+    $allowed = [IO.Path]::GetFullPath((Join-Path $repo '.tmp')) + [IO.Path]::DirectorySeparatorChar
+    $output = [IO.Path]::GetFullPath($FixtureRoot)
+    if (-not $output.StartsWith($allowed, [StringComparison]::OrdinalIgnoreCase) -or (Test-Path -LiteralPath $output)) { throw 'Fixture must be a new directory under repository .tmp' }
+}
 New-Item -ItemType Directory -Path (Join-Path $output 'scripts') -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $repo 'GameSaveCenter-Run.cmd'), (Join-Path $repo 'GameSaveCenter-一键构建安装运行.cmd') -Destination $output
 Copy-Item -LiteralPath (Join-Path $repo 'scripts/build.cmd') -Destination (Join-Path $output 'scripts')
