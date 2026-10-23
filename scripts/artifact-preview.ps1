@@ -54,3 +54,28 @@ function Get-GscArtifactPreview {
         [pscustomobject]@{ Path=$path; EstimatedBytes=$bytes; OwnerState=$ownerState; Reason=$reason; CanDelete=$false }
     }
 }
+function Get-GscDuplicateArtifactPreview {
+    param([string]$RepositoryRoot, [object[]]$Manifests)
+    $files=@{}; $rejected=[Collections.Generic.List[object]]::new()
+    $docs=Join-Path $RepositoryRoot 'docs'
+    $references=@(Get-ChildItem -LiteralPath $docs -Recurse -File -ErrorAction Stop | Where-Object {$_.Extension -in '.md','.json'} | ForEach-Object {@{Path=$_.FullName;Text=[IO.File]::ReadAllText($_.FullName)}})
+    foreach($manifest in $Manifests) {
+        foreach($entry in $manifest.artifacts) {
+            if(-not $entry.SHA256){continue}
+            $one=@{owner=$manifest.owner;artifacts=@($entry)}
+            $preview=@(Get-GscArtifactPreview $RepositoryRoot $one)[0]
+            if($preview.Reason -like 'Rejected:*' -or -not (Test-Path -LiteralPath $preview.Path -PathType Leaf)) {
+                $rejected.Add(@{Path=$preview.Path;Reason=$preview.Reason});continue
+            }
+            $actual=(Get-FileHash -LiteralPath $preview.Path -Algorithm SHA256).Hash
+            if($actual -ne $entry.SHA256) {$rejected.Add(@{Path=$preview.Path;Reason='Recorded hash is stale; file ownership is not transferable'});continue}
+            $key=$preview.Path.ToUpperInvariant()
+            $matches=@($references|Where-Object {$_.Text.IndexOf($preview.Path,[StringComparison]::OrdinalIgnoreCase) -ge 0 -or $_.Text.IndexOf([IO.Path]::GetFileName($preview.Path),[StringComparison]::OrdinalIgnoreCase) -ge 0}|ForEach-Object {$_.Path})
+            $files[$key]=@{Path=$preview.Path;SHA256=$actual;Bytes=(Get-Item -LiteralPath $preview.Path).Length;References=$matches;Reason=$preview.Reason;CanDelete=$false}
+        }
+    }
+    foreach($group in @($files.Values|Group-Object SHA256|Where-Object {$_.Count -gt 1})) {
+        [pscustomobject]@{SHA256=$group.Name;Copies=$group.Count;Artifacts=@($group.Group);Action='Review only; current delivery, references, owner and occupancy must remain protected'}
+    }
+    foreach($item in $rejected){[pscustomobject]@{SHA256=$null;Copies=0;Artifacts=@($item);Action='Excluded'}}
+}

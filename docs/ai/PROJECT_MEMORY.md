@@ -911,3 +911,9 @@ b8fad3ee根.cmd退出0，SDK8.0.423，1954项1897通过/57既有skip/0失败、1
 
 ## 2026-10-23 专项事实去重校正
 专项表头不再声称其余31项未开始；链接最新b8fad3ee标准全链，校正T00-06管道已通过/T01-01共享包已登记/T01-02已9项含JSON往返，T01-04复用现有负例记实施中。未提高不完整验收，失败stage/安装暂存、Desktop后代/跨会话等边界保留。纯文档不重跑全链、不追加CI循环记录。
+
+## 2026-10-23 T01-07 哈希重复预览候选
+复用artifact-preview新增实际SHA分组、同路径去重、清单旧SHA失效排除、文档文件名/路径引用索引，所有结果只读。当前ZIP/PEXT相同哈希两份仍为必要交付副本，保留。Test-DuplicateArtifactPreview双PowerShell通过分组/旧hash拒绝/重复路径/引用/内容不变，fixture已清理。未执行自动删除、未覆盖截图归属与符号链接全矩阵；尚未提交。
+
+## 2026-10-23 T01 预览命令入口
+新增scripts/preview-artifacts.ps1，可读指定清单或现有package-ownership，输出只读产物/重复包报告。输出仅允许artifacts/.tmp新文件，拒绝覆盖/链接；实际清单运行通过，所有CanDelete=false。双PowerShell重复预览回归通过，源码校验通过。当前交付ZIP/PEXT虽hash相同仍保留；未实现自动删除，不把预览当清理执行验收。
