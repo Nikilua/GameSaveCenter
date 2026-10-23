@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -16,13 +16,17 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R06EmptyStateBehaviorTests
 {
-    [Fact]
-    public void SaveTablesKeepHeadersAndSeparateLoadingEmptyCompletedAndFailureStates()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void SaveTablesKeepHeadersAndSeparateLoadingEmptyCompletedAndFailureStates(bool dark)
     {
         RunSta(() =>
         {
             var state = new SavePageState();
             var view = new SaveCenterView { DataContext = state };
+            var mode = dark ? GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Dark : GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Light;
+            GameSaveCenter.Playnite.Infrastructure.AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, GameSaveCenter.Playnite.Infrastructure.AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(view, true, 78, mode, false), true, true);
             var window = new Window
             {
                 Width = 1040,
@@ -80,6 +84,28 @@ public sealed class R06EmptyStateBehaviorTests
                 Assert.Same(state.LoadDetailsCommand, candidatePresenter.RetryCommand);
                 historyPresenter.RetryCommand!.Execute(null);
                 Assert.Equal(1, state.RetryCount);
+                for (var index = 0; index < 80; index++) state.Backups.Add(new BackupVersionDto { BackupId = "transition-" + index });
+                state.SetState("Ready", false, false);
+                view.ApplyResponsiveLayout(1040, 700);
+                PumpLayout(window);
+                var scroll = FindScroll(history);
+                Assert.True(scroll.ViewportHeight > 0 && scroll.ScrollableHeight > 0);
+                scroll.ScrollToEnd(); PumpLayout(window);
+                Assert.True(scroll.VerticalOffset >= scroll.ScrollableHeight - 1);
+                state.Backups.Clear();
+                state.SetState("Empty", false, false); PumpLayout(window);
+                Assert.True(scroll.VerticalOffset <= scroll.ScrollableHeight + 1);
+                Assert.True(scroll.ScrollableHeight <= 1, "Empty table must release the old scroll extent.");
+                Assert.Equal(Visibility.Visible, historyEmpty.Visibility);
+                state.SetState("Error", true, false); PumpLayout(window);
+                Assert.Equal(Visibility.Collapsed, historyEmpty.Visibility);
+                Assert.Equal(Visibility.Visible, historyPresenter.Visibility);
+                state.Backups.Add(new BackupVersionDto { BackupId = "cached" });
+                state.SetState("Stale", false, false); PumpLayout(window);
+                Assert.Single(history.Items.Cast<object>());
+                Assert.Equal(Visibility.Collapsed, historyEmpty.Visibility);
+                state.SetState("Ready", false, false); PumpLayout(window);
+                Assert.True(scroll.ViewportHeight > 0 && scroll.VerticalOffset <= scroll.ScrollableHeight + 1);
             }
             finally
             {
@@ -109,6 +135,7 @@ public sealed class R06EmptyStateBehaviorTests
 
     private sealed class SavePageState : INotifyPropertyChanged
     {
+        public int SaveTabIndex { get; set; }
         public ObservableCollection<BackupVersionDto> Backups { get; } = new ObservableCollection<BackupVersionDto>();
         public ObservableCollection<SavePathCandidateDto> SaveCandidates { get; } = new ObservableCollection<SavePathCandidateDto>();
         public object? SelectedGame => null;
@@ -168,6 +195,17 @@ public sealed class R06EmptyStateBehaviorTests
 
     private static string FindRepositoryRoot()
         => TestRepositoryContext.Root;
+
+    private static ScrollViewer FindScroll(DependencyObject root)
+    {
+        for (var index = 0; index < System.Windows.Media.VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            var child = System.Windows.Media.VisualTreeHelper.GetChild(root, index);
+            if (child is ScrollViewer viewer) return viewer;
+            try { return FindScroll(child); } catch (InvalidOperationException) { }
+        }
+        throw new InvalidOperationException("Production table scroll viewer missing");
+    }
 
     private static void PumpLayout(Window window)
     {
