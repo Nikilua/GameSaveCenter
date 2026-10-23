@@ -1,0 +1,34 @@
+{
+    "Rows":  [
+                 {
+                     "ExitCode":  7,
+                     "Files":  2,
+                     "Bytes":  42
+                 },
+                 {
+                     "ExitCode":  124,
+                     "Files":  3,
+                     "Bytes":  62
+                 },
+                 {
+                     "ExitCode":  0,
+                     "Files":  3,
+                     "Bytes":  62
+                 },
+                 {
+                     "ExitCode":  0,
+                     "Files":  3,
+                     "Bytes":  62
+                 },
+                 {
+                     "ExitCode":  0,
+                     "Files":  3,
+                     "Bytes":  62
+                 }
+             ],
+    "Scope":  "Production function with controlled command result; exit124 models timeout, not physical cancellation",
+    "ReleasedLockCleanupRetry":  true,
+    "OccupiedCleanupFailureVisible":  true,
+    "UnknownUnchanged":  true,
+    "Engine":  "5.1.22000.2538"
+}
