@@ -1,3 +1,7 @@
+## 2026-10-23 T02-01 滚动漂移行为回归候选
+
+新增生产资源模板滚动几何用例：240 行，两主题在同一 STA 线程各进行 8 轮顶端/底端/顶端往返，TRX 记录 48 个检查点；行内单元格位置与选中框相对行位置稳定，滚动方向范围均为正。SDK8.0.423 Release 定向编译0警告/0错误，1/1通过。证据见[专项 T02-01](../design/reviews/build-ui-reliability-20261022/evidence/T02-01/README.md)。该候选待提交后运行标准根入口全链；真实 Playnite、物理输入和 DPI 未验证。生产 XAML 未修改，用户既有未跟踪 TRX/TestResults 未动。
+
 ## 2026-10-23 存档历史断点留白修复已构建安装
 
 最新截图已复现为摘要被横向Auto操作列压至0 DIP、卡片高5754 DIP；源码0a91c399改为上下两个有限宽度Auto行并让历史导航按钮正常换行。官方SDK8.0.423 Release solution0/0、XAML25/25；相关6类249项210pass/39既有skip/0fail，含双主题报告布局54/54；同提交RenderHarness render-qa OK、0 PROBLEM。PEXT/程序集身份一致、239文件SHA一致安装、Playnite启动成功。[最终证据](../design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md)。Computer Use窗口捕获被前台进程ID错误阻止，实际页面交互仍未验；无需用户提供反馈来继续本次修复。上阶段f3ac4c74的1954项全量结果不作为新源码全量声明。旧构建5目录已清理，用户旧TRX/TestResults未动。

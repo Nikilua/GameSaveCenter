@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "task": "T02-01",
+  "baselineCommit": "f02db9812fe9c8a3d3192cd7e283b1a863e71718",
+  "exactCandidateCommit": "pending",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "targetedBuild": {
+    "command": "dotnet build tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release -p:GscBuildOutputRoot=<artifacts/gsc-b/t02driftfinal> -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -m:1 -nodeReuse:false",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "targetedTest": {
+    "command": "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release --no-build --no-restore --filter FullyQualifiedName~T02TableScrollDriftBehaviorTests -- RunConfiguration.DisableAppDomain=true",
+    "exitCode": 0,
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "duration": "00:00:02.9510000"
+  },
+  "geometry": {
+    "themes": [
+      "Light",
+      "Dark"
+    ],
+    "cyclesPerTheme": 8,
+    "checkpointsPerTheme": 24,
+    "totalCheckpoints": 48,
+    "repeatedSequence": "top, bottom, top",
+    "rowCount": 240,
+    "rowHeightDip": 52,
+    "verticalOffsetsDip": [
+      0,
+      237
+    ],
+    "horizontalOffsetsDip": [
+      0,
+      234
+    ],
+    "selectionChromeDip": "x=4,y=2,width=704,height=48",
+    "cellBoundsDip": [
+      "column0 x=0,y=0,width=360,height=52",
+      "column1 x=360,y=0,width=360,height=52"
+    ],
+    "productionRowHeader": "Collapsed"
+  },
+  "sha256": {
+    "testSource": "CEC630C0DA0DDCC63FD26BAD59497E098E454E51E8709CE3208F2B5A1E74E194",
+    "testAssembly": "53D7C2B99EC75216B339C776587135E696AC56B1FEFD2E51AFA96DF180A0DE65",
+    "productionResource": "1C245A0389C148A3E992D53660323B68815A308147A16C89FF11EB7DA843681C",
+    "sanitizedTrx": "9C4680CEB4F2F3179042613A09E811750C07EAD5A2D59F93F164CF193383DCB6"
+  },
+  "limits": [
+    "STA WPF window using production resource dictionaries; no physical mouse wheel, real Playnite page, or DPI transition evidence.",
+    "Production row header is Collapsed, so its visible-state contract is checked; row/header visual geometry is not applicable."
+  ]
+}
