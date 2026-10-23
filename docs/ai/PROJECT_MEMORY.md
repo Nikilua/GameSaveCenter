@@ -1,3 +1,7 @@
+## 2026-10-23 T00-03 恢复控制流受控回归
+
+新增Test-SdkBootstrapRecovery.ps1，实际调用官方准备函数与子PowerShell，替换下载运输和SDK观察：下载中断、安装器退出37、两次失败后重试3/3，检查环境回滚、bootstrap临时目录清理、精确SDK后验。仅验证控制流，不声称真实SDK压缩包中断/残缺SDK修复已通过，T00-03代码完成待验收。证据专项evidence/T00-03/results.json；不改系统SDK/证书。最终候选完整链待后续阶段，既有955940be结果不挪用。
+
 ## 2026-10-23 T00-02 三入口退出码验收
 
 新增scripts/tests/Test-LauncherExitCodes.ps1，复制真实三个.cmd到独立.tmp，实际PowerShell子脚本注入exit 0/7/23，9/9同码，非零无[OK]，默认pause经重定向不阻塞；中文入口转交根安装入口，scripts/build.cmd仅构建。生产入口已满足，无需修改。结果归档专项evidence/T00-02/results.json；临时夹具清理，最新构建/包/诊断保留，未知用户TRX未动。此测试脚本不改变产品代码；最终候选全链仍需按范围执行，955940be成功只绑定其身份。
