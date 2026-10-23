@@ -1,6 +1,6 @@
-## 2026-10-23 T02-01 滚动漂移行为回归候选
+## 2026-10-23 T02-01 滚动漂移回归与标准全链通过
 
-新增生产资源模板滚动几何用例：240 行，两主题在同一 STA 线程各进行 8 轮顶端/底端/顶端往返，TRX 记录 48 个检查点；行内单元格位置与选中框相对行位置稳定，滚动方向范围均为正。SDK8.0.423 Release 定向编译0警告/0错误，1/1通过。证据见[专项 T02-01](../design/reviews/build-ui-reliability-20261022/evidence/T02-01/README.md)。该候选待提交后运行标准根入口全链；真实 Playnite、物理输入和 DPI 未验证。生产 XAML 未修改，用户既有未跟踪 TRX/TestResults 未动。
+提交 `9fd1496c2e82cf57d3ad5e5bda4d28a953800189` 已推送 main。根目录 `GameSaveCenter-Run.cmd` 使用 SDK8.0.423/Release 完整退出0；XAML25/25、solution0警告/0错误、1955项（1898通过、57既有skip、0失败）、148TRX计数一致、145个WPF隔离类。新增 T02-01 在完整链第131类通过；240行生产模板、Light/Dark各8轮顶底往返，48个几何检查点稳定。ZIP/PEXT哈希一致，安装6个插件/Worker程序集SHA一致，Playnite PID26552已启动。证据见[专项 T02-01](../design/reviews/build-ui-reliability-20261022/evidence/T02-01/README.md)。57 skip仍按旧 Today Workspace 架构断言单列；真实页面、物理输入和DPI未验证。清理本批990个中间文件，D盘可用空间增加88,653,824字节；最新构建/包/诊断保留。生产XAML未修改；用户既有未跟踪Round3 TRX/TestResults未动。
 
 ## 2026-10-23 存档历史断点留白修复已构建安装
 

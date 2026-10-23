@@ -2,14 +2,16 @@
   "schemaVersion": 1,
   "task": "T02-01",
   "baselineCommit": "f02db9812fe9c8a3d3192cd7e283b1a863e71718",
-  "exactCandidateCommit": "pending",
+  "exactCandidateCommit": "9fd1496c2e82cf57d3ad5e5bda4d28a953800189",
   "sdk": "8.0.423",
   "configuration": "Release",
   "targetedBuild": {
     "command": "dotnet build tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release -p:GscBuildOutputRoot=<artifacts/gsc-b/t02driftfinal> -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -m:1 -nodeReuse:false",
     "exitCode": 0,
     "warnings": 0,
-    "errors": 0
+    "errors": 0,
+    "outputRootRetained": false,
+    "cleanupNote": "Isolated target output archived to TRX/hash evidence, then removed under artifacts/gsc-b after all processes exited."
   },
   "targetedTest": {
     "command": "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release --no-build --no-restore --filter FullyQualifiedName~T02TableScrollDriftBehaviorTests -- RunConfiguration.DisableAppDomain=true",
@@ -55,5 +57,17 @@
   "limits": [
     "STA WPF window using production resource dictionaries; no physical mouse wheel, real Playnite page, or DPI transition evidence.",
     "Production row header is Collapsed, so its visible-state contract is checked; row/header visual geometry is not applicable."
-  ]
+  ],
+  "fullStandardChain": {
+    "runId": "20261023T130830990Z-47fb5a66",
+    "entrypoint": "GameSaveCenter-Run.cmd",
+    "exitCode": 0,
+    "testsTotal": 1955,
+    "passed": 1898,
+    "skipped": 57,
+    "failed": 0,
+    "wpfIsolatedClasses": 145,
+    "assemblySha256": "FB055D823CDB81863FEDFFAFE4C94C07A4DB79AA7240CC2EC81F0B0227A84443",
+    "trx": "standard-verification.json;full-chain-targeted.trx"
+  }
 }

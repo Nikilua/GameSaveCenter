@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "task": "T00-01/T02-01",
+  "sourceCommit": "9fd1496c2e82cf57d3ad5e5bda4d28a953800189",
+  "branch": "main",
+  "pushed": true,
+  "entrypoint": "GameSaveCenter-Run.cmd",
+  "invocation": "cmd.exe /d /c \"GameSaveCenter-Run.cmd < nul > artifacts\\t02-01-standard-console.log 2>&1\"",
+  "exitCode": 0,
+  "outcome": "passed",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "runId": "20261023T130830990Z-47fb5a66",
+  "startedUtc": "2026-10-23T21:08:31.8147486+08:00",
+  "completedUtc": "2026-10-23T21:30:53.329915+08:00",
+  "diagnostics": "artifacts/build-diagnostics/20261023T130830990Z-47fb5a66",
+  "build": {
+    "xamlFiles": 25,
+    "xamlPassed": 25,
+    "solutionWarnings": 0,
+    "solutionErrors": 0,
+    "outputRoot": "artifacts/gsc-b/f278449d",
+    "assembly": {
+      "file": "GameSaveCenter.Playnite.dll",
+      "sha256": "6C98B345A7AC3273FB65229AF9F22FB6ECD9257165DFABA568DE63F1ECE99868",
+      "productVersion": "0.6.73+9fd1496c2e82cf57d3ad5e5bda4d28a953800189",
+      "mvid": "5bfba320-6504-4e5d-8e96-4be858720853"
+    }
+  },
+  "tests": {
+    "total": 1955,
+    "passed": 1898,
+    "skipped": 57,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "trxFiles": 148,
+    "counterMismatches": 0,
+    "wpfIsolatedClasses": 145,
+    "groups": [
+      {
+        "id": "core",
+        "testCaseCount": 157,
+        "passed": 157,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "id": "playnite-source",
+        "testCaseCount": 562,
+        "passed": 544,
+        "skipped": 18,
+        "failed": 0
+      },
+      {
+        "id": "worker",
+        "testCaseCount": 400,
+        "passed": 400,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "id": "playnite-wpf-isolated",
+        "testCaseCount": 836,
+        "passed": 797,
+        "skipped": 39,
+        "failed": 0
+      }
+    ],
+    "skipReason": "57 existing skips: 18 Playnite-source + 39 WPF resource tests, all identify retired Today Workspace UI architecture assertions."
+  },
+  "t02": {
+    "isolatedClass": "GameSaveCenter.Playnite.Tests.T02TableScrollDriftBehaviorTests",
+    "outcome": "Passed",
+    "cases": 1,
+    "observations": 48,
+    "assemblySha256": "FB055D823CDB81863FEDFFAFE4C94C07A4DB79AA7240CC2EC81F0B0227A84443",
+    "sanitizedTrx": "full-chain-targeted.trx",
+    "sanitizedTrxSha256": "AA21AEBF465BBF24E9526AFEB5CD01E69AB9C08E444AB41D91FD11EF58EF9381"
+  },
+  "package": {
+    "version": "0.6.73",
+    "zipSha256": "61823C871395537319ED29128AE3501D5C14B68B6FFD2F30F8185012BB728FAA",
+    "pextSha256": "61823C871395537319ED29128AE3501D5C14B68B6FFD2F30F8185012BB728FAA",
+    "identical": true
+  },
+  "install": {
+    "attemptId": "4a1c365d27484905a5769007884d1da0",
+    "outcome": "passed",
+    "temporaryExists": false,
+    "manifestVersion": "0.6.73",
+    "target": "%APPDATA%\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "assemblies": [
+      {
+        "path": "GameSaveCenter.Playnite.dll",
+        "stageSha256": "6C98B345A7AC3273FB65229AF9F22FB6ECD9257165DFABA568DE63F1ECE99868",
+        "installedSha256": "6C98B345A7AC3273FB65229AF9F22FB6ECD9257165DFABA568DE63F1ECE99868",
+        "match": true
+      },
+      {
+        "path": "GameSaveCenter.Core.dll",
+        "stageSha256": "4F4C00F381E0A3B393DE17DE55AAD445F303E5D423A07FD532739C0FBAFB1234",
+        "installedSha256": "4F4C00F381E0A3B393DE17DE55AAD445F303E5D423A07FD532739C0FBAFB1234",
+        "match": true
+      },
+      {
+        "path": "GameSaveCenter.Contracts.dll",
+        "stageSha256": "34B455727497CFC9785EB420E677FAF5CBB04BEF441AC99078748D7A51ACC04C",
+        "installedSha256": "34B455727497CFC9785EB420E677FAF5CBB04BEF441AC99078748D7A51ACC04C",
+        "match": true
+      },
+      {
+        "path": "Worker/GameSaveCenter.Worker.dll",
+        "stageSha256": "5EA56D55FB90D1FD0758CB301EAB803034991FCF357272FD5DFA4B0CF998DB48",
+        "installedSha256": "5EA56D55FB90D1FD0758CB301EAB803034991FCF357272FD5DFA4B0CF998DB48",
+        "match": true
+      },
+      {
+        "path": "Worker/GameSaveCenter.Core.dll",
+        "stageSha256": "FD6FD6D5AE302F473261E21B39137D664FFCDB9FE30634214E90A3CE1917A060",
+        "installedSha256": "FD6FD6D5AE302F473261E21B39137D664FFCDB9FE30634214E90A3CE1917A060",
+        "match": true
+      },
+      {
+        "path": "Worker/GameSaveCenter.Contracts.dll",
+        "stageSha256": "EB5DBED1EB6E6AD314B49AB9A3C0B8105AFA256FFDE3D37FB1A4DD34480C8562",
+        "installedSha256": "EB5DBED1EB6E6AD314B49AB9A3C0B8105AFA256FFDE3D37FB1A4DD34480C8562",
+        "match": true
+      }
+    ],
+    "playniteStarted": true,
+    "playnitePid": 26552,
+    "playniteStart": "2026-10-23T21:31:38.7583469+08:00"
+  },
+  "limits": [
+    "57 skipped tests remain skips; they are not counted as passes.",
+    "The standard run proves Playnite process startup; it does not prove interactive page layout, physical input, or DPI behavior.",
+    "16 pre-existing untracked Round3 TRX/TestResults entries were preserved; no tracked source changes were present beyond commit 9fd1496c."
+  ],
+  "rootConsoleLogSha256": "F23AFDB9E7A4EA69DC6EA94154F6952F06EE8EDE43ECBC81F85553737B597E21",
+  "cleanup": {
+    "candidateSet": "T02-01 isolated build/test prototypes and intermediate logs",
+    "verification": [
+      "all candidates canonicalized under repository artifacts/",
+      "no candidate/descendant reparse points",
+      "all files opened exclusively before deletion",
+      "no active testhost/MSBuild; only the SDK VBCSCompiler remained",
+      "pre-existing tests/GameSaveCenter.Playnite.Tests/TestResults and Round3 TRX were not candidates"
+    ],
+    "removedPaths": [
+      "artifacts/gsc-b/t02drift",
+      "artifacts/gsc-b/t02mutant",
+      "artifacts/gsc-b/t02driftfinal",
+      "artifacts/t02-drift-results",
+      "artifacts/t02-drift-final-results",
+      "artifacts/t02-drift-final2-results",
+      "artifacts/t02-drift-final3-results",
+      "artifacts/t02-drift-final4-results",
+      "artifacts/t02-drift-build.log",
+      "artifacts/t02-drift-build2.log",
+      "artifacts/t02-drift-test.log",
+      "artifacts/t02-drift-test2.log",
+      "artifacts/t02-drift-final-build.log",
+      "artifacts/t02-drift-final-test.log",
+      "artifacts/t02-drift-final2-build.log",
+      "artifacts/t02-drift-final2-test.log",
+      "artifacts/t02-drift-final3-build.log",
+      "artifacts/t02-drift-final3-test.log",
+      "artifacts/t02-drift-final4-build.log",
+      "artifacts/t02-drift-final4-test.log",
+      "artifacts/t02-mutant-build.log",
+      "artifacts/t02-mutant-test.log"
+    ],
+    "fileCount": 990,
+    "logicalBytes": 86156284,
+    "drive": "D:",
+    "freeBytesBefore": 15668543488,
+    "freeBytesAfter": 15757197312,
+    "freeBytesDelta": 88653824,
+    "kept": [
+      "artifacts/build-diagnostics/20261023T130830990Z-47fb5a66",
+      "artifacts/gsc-b/f278449d",
+      "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "artifacts/GameSaveCenter-0.6.73.pext",
+      "artifacts/last-dev-install.txt",
+      "artifacts/t02-01-standard-console.log",
+      "artifacts/install-attempts/4a1c365d27484905a5769007884d1da0.json"
+    ]
+  }
+}

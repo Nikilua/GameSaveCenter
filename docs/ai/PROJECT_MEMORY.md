@@ -1,6 +1,6 @@
 ## 2026-10-23 T02-01 滚动回归实现边界
 
-`T02TableScrollDriftBehaviorTests` 加载生产 DesignTokens/WpfUiProduction/Redesign 资源；在一个 STA 生命周期内顺序检查 Light/Dark，240 行数据每主题顶/底/顶 8 轮，共48条实际几何输出。验证单元格留在行内且纵向位置稳定、选中框尺寸/位置稳定、行头保持生产模板的 Collapsed 状态。当前只证明离屏受控 WPF 几何，不证明物理滚轮、宿主页面或 DPI；标准完整链需在提交后对候选执行，结果单独绑定确切提交。
+`T02TableScrollDriftBehaviorTests` 加载生产 DesignTokens/WpfUiProduction/Redesign 资源；在一个 STA 生命周期内顺序检查 Light/Dark，240行数据每主题顶/底/顶8轮，48条实际几何输出。验证单元格留在行内且纵向位置稳定、选中框位置尺寸稳定、行头保持生产模板 Collapsed 状态。代码提交 `9fd1496c` 的标准完整链已通过，证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-01/`。清理990个定向构建/测试中间文件后保留根标准构建/包/诊断，D盘净增可用空间88,653,824字节。这证明受控WPF几何、安装身份与Playnite进程启动，不证明物理滚轮、真实页面交互或DPI。用户旧Round3 TRX/TestResults必须保留。
 
 ## 2026-10-23 T00-05 安装占用候选
 
