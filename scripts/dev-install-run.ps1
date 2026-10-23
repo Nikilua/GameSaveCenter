@@ -28,6 +28,9 @@ catch {
 }
 
 $root = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'checkout-lock.ps1')
+$checkoutLock = Enter-GscCheckoutLock $root
+try {
 . (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
 $hostIsolationHelpers = Join-Path $PSScriptRoot 'PlayniteHostIsolation.ps1'
 . $hostIsolationHelpers
@@ -586,3 +589,5 @@ finally {
         try { Stop-Transcript | Out-Null } catch { }
     }
 }
+
+} finally { Exit-GscCheckoutLock $checkoutLock }

@@ -1,0 +1,9 @@
+{
+    "ConcurrentRefused":  true,
+    "Scope":  "Current Windows session",
+    "Reentrant":  true,
+    "ReleasedRetry":  true,
+    "ExitedOwnerRecovery":  true,
+    "OtherCheckoutIndependent":  true,
+    "Engine":  "5.1.22000.2538"
+}

@@ -9,6 +9,9 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'checkout-lock.ps1')
+$checkoutLock = Enter-GscCheckoutLock $root
+try {
 $previousBuildCommit = [Environment]::GetEnvironmentVariable('GSC_BUILD_COMMIT', 'Process')
 $previousSourceRoot = [Environment]::GetEnvironmentVariable('GSC_SOURCE_ROOT', 'Process')
 $previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
@@ -157,3 +160,5 @@ finally {
         Pop-Location
     }
 }
+
+} finally { Exit-GscCheckoutLock $checkoutLock }
