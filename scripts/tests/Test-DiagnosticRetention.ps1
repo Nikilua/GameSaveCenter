@@ -22,6 +22,13 @@ try {
     if(-not $overwriteRejected){throw 'Existing archive was overwritten'}
     if(-not (Test-GscEvidenceArchive $inventory $archive).Verified){throw 'Complete archive rejected'}
     if(-not (Assert-GscEvidenceArchived $source $archive $inventory).Verified){throw 'Preservation guard rejected complete archive'}
+    $sourceFile=Join-Path $source 'failure-console.txt'
+    $originalText=[IO.File]::ReadAllText($sourceFile)
+    [IO.File]::WriteAllText($sourceFile,'new diagnostic after archive')
+    $sourceChangeRejected=$false
+    try { Assert-GscEvidenceArchived $source $archive $inventory|Out-Null } catch {$sourceChangeRejected=$true}
+    if(-not $sourceChangeRejected){throw 'Changed original was accepted for cleanup'}
+    [IO.File]::WriteAllText($sourceFile,$originalText)
     [IO.File]::WriteAllText((Join-Path $archive 'failure.trx'),'corrupted')
     if((Test-GscEvidenceArchive $inventory $archive).Verified){throw 'Changed archive accepted'}
     $cleanupRefused=$false
@@ -45,8 +52,17 @@ try {
     finally { [IO.Directory]::Delete($link, $false) }
     $after=@(Get-GscEvidenceInventory $source)
     if(($inventory|ConvertTo-Json -Compress) -ne ($after|ConvertTo-Json -Compress)){throw 'Original evidence changed'}
+    # Restore this disposable archive before exercising the manual cleanup gate.
+    foreach($entry in $inventory){Copy-Item -LiteralPath (Join-Path $source $entry.Path) -Destination (Join-Path $archive $entry.Path) -Force}
+    Assert-GscEvidenceArchived $source $archive $inventory|Out-Null
+    $sourceFull=[IO.Path]::GetFullPath($source)
+    $fixturePrefix=[IO.Path]::GetFullPath($fixture)+[IO.Path]::DirectorySeparatorChar
+    if(-not $sourceFull.StartsWith($fixturePrefix,[StringComparison]::OrdinalIgnoreCase)){throw 'Unsafe controlled cleanup target'}
+    Remove-Item -LiteralPath $sourceFull -Recurse -Force
+    if(Test-Path -LiteralPath $sourceFull){throw 'Controlled cleanup did not finish'}
+    if(-not (Test-GscEvidenceArchive $inventory $archive).Verified){throw 'Archived evidence lost after original cleanup'}
     $out=Join-Path $repo 'docs/design/reviews/build-ui-reliability-20261022/evidence/T01-06'
-    @{Engine=$PSVersionTable.PSVersion.ToString();Edition=$PSVersionTable.PSEdition;CompleteArchive=$true;ChangedRefused=$true;MissingRefused=$true;TraversalRefused=$true;DumpTier=$true;VisualDuplicate=$true;OriginalsUnchanged=$true;CanDelete=$false}|ConvertTo-Json|ForEach-Object {[IO.File]::WriteAllText((Join-Path $out ('verification-'+$PSVersionTable.PSEdition+'.json')), $_, [Text.UTF8Encoding]::new($false))}
+    @{Engine=$PSVersionTable.PSVersion.ToString();Edition=$PSVersionTable.PSEdition;CompleteArchive=$true;ChangedRefused=$true;MissingRefused=$true;TraversalRefused=$true;DumpTier=$true;VisualDuplicate=$true;OriginalsUnchangedBeforeControlledCleanup=$true;SourceChangeRefused=$sourceChangeRejected;ControlledOriginalRemoved=$true;ArchiveAfterCleanupVerified=$true;CanDelete=$false}|ConvertTo-Json|ForEach-Object {[IO.File]::WriteAllText((Join-Path $out ('verification-'+$PSVersionTable.PSEdition+'.json')), $_, [Text.UTF8Encoding]::new($false))}
 }
 finally {
     $full=[IO.Path]::GetFullPath($fixture)

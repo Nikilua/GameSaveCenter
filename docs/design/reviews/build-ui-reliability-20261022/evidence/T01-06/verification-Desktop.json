@@ -1,12 +1,15 @@
 {
-    "CanDelete":  false,
-    "DumpTier":  true,
+    "TraversalRefused":  true,
     "CompleteArchive":  true,
-    "ChangedRefused":  true,
+    "MissingRefused":  true,
+    "CanDelete":  false,
+    "ControlledOriginalRemoved":  true,
+    "OriginalsUnchangedBeforeControlledCleanup":  true,
+    "VisualDuplicate":  true,
     "Engine":  "5.1.22000.2538",
     "Edition":  "Desktop",
-    "TraversalRefused":  true,
-    "VisualDuplicate":  true,
-    "OriginalsUnchanged":  true,
-    "MissingRefused":  true
+    "DumpTier":  true,
+    "ChangedRefused":  true,
+    "SourceChangeRefused":  true,
+    "ArchiveAfterCleanupVerified":  true
 }

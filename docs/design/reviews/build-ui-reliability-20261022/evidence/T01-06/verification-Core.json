@@ -1,12 +1,15 @@
 {
-  "Edition": "Core",
-  "TraversalRefused": true,
-  "VisualDuplicate": true,
-  "OriginalsUnchanged": true,
-  "Engine": "7.6.2",
-  "ChangedRefused": true,
-  "DumpTier": true,
-  "CompleteArchive": true,
   "CanDelete": false,
-  "MissingRefused": true
+  "ArchiveAfterCleanupVerified": true,
+  "TraversalRefused": true,
+  "DumpTier": true,
+  "ChangedRefused": true,
+  "SourceChangeRefused": true,
+  "ControlledOriginalRemoved": true,
+  "MissingRefused": true,
+  "VisualDuplicate": true,
+  "Engine": "7.6.2",
+  "CompleteArchive": true,
+  "Edition": "Core",
+  "OriginalsUnchangedBeforeControlledCleanup": true
 }
