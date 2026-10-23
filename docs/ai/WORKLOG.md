@@ -11987,3 +11987,6 @@ package catch保留原异常，同时尝试登记失败stage/失败原因；缺�
 
 ## 2026-10-23 打包失败catch/finally受控回归
 Test-PackageFailure双PowerShell通过，实际生产catch/finally原样运行，仅try正文替换受控throw：原错误保留、失败清单写入、旧stage SHA不变、环境恢复。失败保留理由与成功交付区分，失败不认领旧stage。夹具清理；新脚本最终标准链待跑。
+
+## 2026-10-23 安装尝试记录候选通过
+Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts/install-attempts独立JSON，含PID/启动时间/起止/目标/唯一暂存路径/Outcome/FailureMessage/TemporaryExists。诊断失败只警告不掩盖原错误，实际扩展路径不进入仓库清理。Test-InstallTransaction双PowerShell3/3并验证两失败一成功记录、失败原因及成功无暂存，旧安装保护/回退保持。fixture已清理，最终全链待提交运行。

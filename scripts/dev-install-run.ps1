@@ -388,7 +388,8 @@ function Install-ExtensionAtomically {
     param(
         [Parameter(Mandatory = $true)][string]$Source,
         [Parameter(Mandatory = $true)][string]$ExtensionsRoot,
-        [Parameter(Mandatory = $true)][string]$ExpectedVersion
+        [Parameter(Mandatory = $true)][string]$ExpectedVersion,
+        [string]$DiagnosticRoot = ''
     )
 
     New-Item $ExtensionsRoot -ItemType Directory -Force | Out-Null
@@ -399,6 +400,8 @@ function Install-ExtensionAtomically {
     # requesting UAC. The old directory is harmless and is not touched.
     $temporary = "$target.__new-$([Guid]::NewGuid().ToString('N'))"
 
+    $attempt = @{Outcome='failed';StartedUtc=[DateTime]::UtcNow.ToString('o');OwnerPid=$PID;OwnerStart=(Get-Process -Id $PID).StartTime.ToUniversalTime().ToString('o');Temporary=$temporary;Target=$target;ExpectedVersion=$ExpectedVersion}
+    try {
     Copy-Item $Source $temporary -Recurse -Force
 
     $temporaryManifest = Join-Path $temporary 'extension.yaml'
@@ -454,10 +457,25 @@ function Install-ExtensionAtomically {
         try { Remove-Item -LiteralPath $backup -Recurse -Force -ErrorAction Stop }
         catch { Write-Warning "旧安装备份保留于 $backup ：$($_.Exception.Message)" }
     }
+    $attempt.Outcome = 'passed'
     return [pscustomobject]@{
         Target = $target
         ManifestVersion = $installedVersion
         FileVersion = $fileVersion
+    }
+    }
+    catch { $attempt.FailureMessage = $_.Exception.Message; throw }
+    finally {
+        if ($DiagnosticRoot) {
+            try {
+                New-Item -ItemType Directory -Path $DiagnosticRoot -Force | Out-Null
+                $attempt.CompletedUtc = [DateTime]::UtcNow.ToString('o')
+                $attempt.TemporaryExists = Test-Path -LiteralPath $temporary
+                $attempt.Retention = 'Install attempt evidence; external extension paths must never be passed to repository cleanup'
+                $attempt | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $DiagnosticRoot ([guid]::NewGuid().ToString('N')+'.json')) -Encoding UTF8
+            }
+            catch { Write-Warning "Install attempt evidence could not be written: $($_.Exception.Message)" }
+        }
     }
 }
 
@@ -546,7 +564,7 @@ try {
 
     $results = @()
     foreach ($extensionRoot in $extensionRoots) {
-        $results += Install-ExtensionAtomically -Source $stage -ExtensionsRoot $extensionRoot -ExpectedVersion $expectedVersion
+        $results += Install-ExtensionAtomically -Source $stage -ExtensionsRoot $extensionRoot -ExpectedVersion $expectedVersion -DiagnosticRoot (Join-Path $root 'artifacts/install-attempts')
     }
 
     New-Item (Split-Path -Parent $reportPath) -ItemType Directory -Force | Out-Null
