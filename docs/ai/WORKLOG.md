@@ -1,6 +1,8 @@
 ## 2026-10-23 存档历史操作区异常留白修复
 
-新截图补充了断点附近的操作行异常增高。回归复现原 `Auto` 操作列把摘要压到 0 DIP、卡片高达 5754 DIP。取消摘要/操作栏的左右竞争，改为两个有限宽度 Auto 行；历史范围标签和选择器保持一组，其余导航按钮独立参与 WrapPanel 换行。连续覆盖 860～2100 DIP、详情栏断点和宽窄往返，检查摘要宽度、实际内容外空白及按钮横向边界；双主题报告布局类 54/54 通过。资源源码检查首次直接构建缺少 GscBuildCommit，保留失败 TRX，后续必须用官方构建入口完成身份检查。修复前后与定向证据在 `artifacts/save-summary-reflow-20261023`，最终提交构建/安装待本阶段收尾记录。
+新截图补充了断点附近的操作行异常增高。回归复现原 `Auto` 操作列把摘要压到 0 DIP、卡片高达 5754 DIP。取消摘要/操作栏的左右竞争，改为两个有限宽度 Auto 行；历史范围标签和选择器保持一组，其余导航按钮独立参与 WrapPanel 换行。连续覆盖 860～2100 DIP、详情栏断点和宽窄往返，检查摘要宽度、实际内容外空白及按钮横向边界。资源源码检查首次直接构建缺少 GscBuildCommit，失败 TRX 保留，已通过官方入口重建修正运行方式。
+
+最终源码 `0a91c39962b373c2170b31fbe3fd363887465fc2`：SDK8.0.423 Release solution 0 warning/0 error、XAML25/25；6类定向249项，210通过/39既有跳过/0失败，其中报告布局54/54。最终RenderHarness返回render-qa OK、0 PROBLEM；已查看1100/1366/1600存档截图和浅色1366截图。发布/打包身份一致，239文件SHA一致安装并启动Playnite。构建诊断 `20261023T064813849Z-3a7c85a4`；本阶段证据 `artifacts/save-summary-reflow-20261023`；详见[最终构建安装记录](../design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md)。真实页面Computer Use捕获因最小化/前台进程ID错误受阻，未声称实际页面交互通过。清理本轮5个旧构建目录，保留最新a91c3991和诊断证据；用户旧TRX/TestResults未动。本次249项是定向检查，不是对新源码重跑1954项全量。
 
 前一阶段源码 `f3ac4c743ce50705871e03d074127f89824e11dd` 已在 SDK8.0.423 Release 完成 solution 0/0、1954 项（1886 pass、68 skip、0 fail），144 WPF 隔离类；诊断 `20261023T052656925Z-a06c8358`。标准链打包成功，沙箱拒绝安装目录写入后，以同包续装成功，239 文件 SHA256 一致，Playnite 主窗口已出现；记录 `artifacts/layout-install-resume-20261023.json`，PEXT SHA256 `D8EBAA6DFE9E33732E91DF6448A81E77C2ADB208F94BE21ACD8753EBF00B64C6`。同提交 RenderHarness 返回 render-qa OK，输出 `artifacts/ui-width-regression-20261023/render-clean-commit`；这些结果只绑定 f3ac4c74，不代表新留白修复已完成打包。用户旧 Round3 TRX/TestResults 保留。
 

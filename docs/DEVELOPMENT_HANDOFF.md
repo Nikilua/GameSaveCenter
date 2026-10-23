@@ -1,6 +1,6 @@
 ## 2026-10-23 存档历史摘要区上下留白修复
 
-用户新截图的巨大按钮行已定位：880 DIP断点使长操作组占用右侧Auto列，将摘要压成0 DIP，旧回归扩展后实测卡片5754 DIP高。取消该分栏切换，摘要与操作各用有限宽度Auto行，历史范围选择器保持标签成组，其他历史导航按钮独立换行。双主题报告布局54/54通过，覆盖860～2100 DIP、详情断点往返和按钮边界。最终提交需由官方构建写入GscBuildCommit后跑资源、缩放、紧凑视口并打包安装；直接dotnet build遗漏身份元数据的资源测试失败已保留。
+用户新截图的巨大按钮行已定位：880 DIP断点使长操作组占用右侧Auto列，将摘要压成0 DIP，旧回归扩展后实测卡片5754 DIP高。源码0a91c399取消该分栏切换，摘要与操作各用有限宽度Auto行，历史范围选择器保持标签成组，其他历史导航按钮独立换行。官方SDK8.0.423 Release solution0/0、XAML25/25；相关6类249项210pass/39既有skip/0fail，含双主题报告布局54/54及860～2100 DIP往返/按钮边界。RenderHarness同提交render-qa OK、0 PROBLEM；239文件SHA一致安装并启动宿主。[最终记录](design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md)。Computer Use捕获因最小化与前台进程ID错误受阻，真实页面交互不声明通过。直接dotnet build遗漏身份元数据的资源测试失败已保留，后续官方入口资源检查140pass/39既有skip已通过。
 
 前一列宽源码f3ac4c74的标准链SDK8.0.423 Release solution0/0、1954项1886pass/68skip/0fail、144隔离类及打包已完成；安装被沙箱阻止后复用同一包，239文件SHA一致续装，主窗口出现。诊断 `artifacts/build-diagnostics/20261023T052656925Z-a06c8358`、安装 `artifacts/layout-install-resume-20261023.json`。这一全量结果只对应f3ac4c74；新修复验收待收尾。用户旧Round3 TRX/TestResults不动。
 
