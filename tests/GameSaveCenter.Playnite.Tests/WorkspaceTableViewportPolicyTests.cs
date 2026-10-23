@@ -1,4 +1,5 @@
 using GameSaveCenter.Playnite.Infrastructure;
+using System.Windows;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -15,4 +16,22 @@ public sealed class WorkspaceTableViewportPolicyTests
     {
         Assert.Equal(expected, WorkspaceTableViewportPolicy.ResolvePageViewportHeight(hostHeight, measuredViewportHeight));
     }
+
+    [Theory]
+    [InlineData(1600, 14, 793)]
+    [InlineData(1280, 14, 633)]
+    public void EqualStarInspectorUsesHalfOfRemainingDesktopWidth(double availableWidth, double gutterWidth, double expected)
+    {
+        Assert.Equal(expected, WorkspaceInspectorWidthPolicy.ResolveWidth(
+            availableWidth,
+            new GridLength(1, GridUnitType.Star),
+            gutterWidth), 3);
+    }
+
+    [Fact]
+    public void PixelInspectorRetainsItsConfiguredWidth()
+    {
+        Assert.Equal(480, WorkspaceInspectorWidthPolicy.ResolveWidth(1600, new GridLength(480), 14));
+    }
+
 }

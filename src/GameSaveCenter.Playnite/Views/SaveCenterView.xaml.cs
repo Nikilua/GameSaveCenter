@@ -255,20 +255,27 @@ namespace GameSaveCenter.Playnite.Views
                         ? new GridLength(0)
                         : new GridLength(14);
                 }
-                var inspectorWidth = SaveHistoryLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl ? gl : new GridLength(480);
+                var inspectorWidth = SaveHistoryLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl
+                    ? gl
+                    : new GridLength(1, GridUnitType.Star);
                 // The shell passes the resized PageHost width from its SizeChanged pass;
                 // prefer that current value over this child grid's previous ActualWidth,
                 // which can still describe the old window for one layout turn.
                 var historyLayoutWidth = width > 0 ? width : SaveHistoryLayout.ActualWidth;
                 var historyInspectorSideBySide = !compact && SaveHistoryGrid.SelectedItem != null;
-                var historySummaryAvailableWidth = Math.Max(0, historyLayoutWidth - (historyInspectorSideBySide ? inspectorWidth.Value + 14 : 0));
+                var inspectorAllocatedWidth = WorkspaceInspectorWidthPolicy.ResolveWidth(historyLayoutWidth, inspectorWidth, 14);
+                var historySummaryAvailableWidth = Math.Max(0, historyLayoutWidth - (historyInspectorSideBySide ? inspectorAllocatedWidth + 14 : 0));
                 // The summary has a long action strip. Measuring it in an Auto column
                 // beside a narrow selected-version table can consume the entire card
                 // width, forcing the summary copy to wrap to thousands of lines while
                 // the actions remain vertically centered in the resulting empty space.
                 // Stack only this action strip when its actual table column cannot give
                 // the summary content and all actions a stable side-by-side measure.
-                var historyActionsCompact = ruleCardCompact || historySummaryAvailableWidth < 1240;
+                // The inspector now shares the workspace width, so the available
+                // summary column is smaller than the pre-split 1240-DIP baseline.
+                // Keep the command strip alongside its summary once that column can
+                // hold both groups; otherwise place it in its own wrapped row.
+                var historyActionsCompact = ruleCardCompact || historySummaryAvailableWidth < 880;
                 historyActionRowGap.SetRowGap(historyActionsCompact ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0);
                 if (SaveHistorySummaryCard != null)
                 {

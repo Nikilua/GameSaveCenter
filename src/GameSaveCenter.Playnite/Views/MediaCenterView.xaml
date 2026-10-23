@@ -604,7 +604,7 @@
                       VerticalAlignment="Stretch"
                       ClipToBounds="True">
                 <Grid x:Name="MediaCurrentLayout" Margin="0" VerticalAlignment="Stretch" ClipToBounds="True">
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscWorkspaceInspectorWidth}"/></Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscMediaCurrentInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/><RowDefinition Height="0"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border x:Name="MediaCurrentTableFrame" Grid.Row="0" Grid.Column="0" Style="{StaticResource MediaTableFrame}" Padding="14,12">
                         <Grid>
@@ -658,12 +658,12 @@
                         </Grid>
                         <Border Grid.Row="1" Style="{DynamicResource GscRedesignSubCard}" Padding="8" Margin="0,0,0,8" AutomationProperties.Name="图片比较对象集合">
                             <Grid>
-                                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                <StackPanel VerticalAlignment="Center" Margin="0,0,8,0">
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" VerticalAlignment="Center">
                                     <TextBlock x:Name="MediaComparisonSummaryText" Text="{Binding MediaComparisonSummary, Mode=OneWay}" FontWeight="SemiBold" TextWrapping="Wrap" AutomationProperties.Name="图片比较对象"/>
                                     <TextBlock x:Name="MediaComparisonStatusText" Text="{Binding MediaComparisonStatus, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0" AutomationProperties.Name="图片比较状态"/>
                                 </StackPanel>
-                                <WrapPanel Grid.Column="1" VerticalAlignment="Center">
+                                <WrapPanel Grid.Row="1" VerticalAlignment="Center" Margin="0,6,0,0">
                                     <ui:Button x:Name="MediaComparisonHandoffButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding CreateMediaComparisonClassificationPreviewCommand}" Content="生成归类预览" ToolTip="将本次比较中标记的稳定媒体 ID 送入现有归类预览；按当前待归类状态重新核对，关闭比较不会执行操作" AutomationProperties.Name="将比较标记交给归类预览" AutomationProperties.HelpText="{Binding MediaComparisonHandoffStatus, Mode=OneWay}"/>
                                     <ui:Button x:Name="MediaComparisonAddButton" Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding AddSelectedMediaToComparisonCommand}" CommandParameter="{Binding SelectedItems, ElementName=MediaGrid}" Content="加入图片比较" ToolTip="将当前选择中的有效截图加入比较对象，最多两张；筛选变化不会替换已加入对象" AutomationProperties.Name="将所选截图加入图片比较"/>
                                     <ui:Button x:Name="MediaComparisonClearButton" Style="{DynamicResource GscWpfUiMediaBatchButton}" Command="{Binding ClearMediaComparisonCommand}" Content="清空比较" ToolTip="移除当前图片比较对象" AutomationProperties.Name="清空图片比较对象"/>

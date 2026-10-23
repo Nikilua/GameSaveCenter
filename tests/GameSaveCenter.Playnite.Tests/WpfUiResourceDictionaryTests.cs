@@ -4548,7 +4548,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal(GridUnitType.Pixel, emptyStackedRowType);
         Assert.Equal(14, selectedGutterWidth);
         Assert.True(selectedInspectorWidth > 0);
-        Assert.Equal(GridUnitType.Pixel, selectedInspectorUnitType);
+        Assert.Equal(GridUnitType.Star, selectedInspectorUnitType);
     }
 
     [LegacyProductionUiBaselineFact]
@@ -4803,7 +4803,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal(GridUnitType.Pixel, emptyStackedRowType);
         Assert.Equal(14, selectedGutterWidth);
         Assert.True(selectedInspectorWidth > 0);
-        Assert.Equal(GridUnitType.Pixel, selectedInspectorUnitType);
+        Assert.Equal(GridUnitType.Star, selectedInspectorUnitType);
         Assert.Equal(GridUnitType.Pixel, emptyCompactRowType);
         Assert.Equal(GridUnitType.Auto, selectedCompactRowType);
     }

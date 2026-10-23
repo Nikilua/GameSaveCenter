@@ -54,7 +54,7 @@ namespace GameSaveCenter.Playnite.Tests
                     using (var host = new WindowHost(new Window
                     {
                         Content = view,
-                        // The 480-DIP inspector leaves enough comparison width here.
+                        // The current-media star ratio keeps enough comparison width here.
                         // The inner 500-DIP case below still proves stacked behavior.
                         Width = 1280,
                         Height = 700,

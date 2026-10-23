@@ -935,12 +935,16 @@ namespace GameSaveCenter.Playnite.Views
                 // action; opening it moves the same inspector below the table.
                 var inboxInspectorWidth = MediaInboxLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength inboxLength
                     ? inboxLength
-                    : new GridLength(480);
+                    : new GridLength(1, GridUnitType.Star);
                 var inboxAvailableWidth = MediaInboxLayout.ActualWidth > 0
                     ? MediaInboxLayout.ActualWidth
                     : width;
-                const double inboxTableMinimumWidth = 520;
-                var inboxStack = inboxAvailableWidth < inboxTableMinimumWidth + inboxInspectorWidth.Value + 14;
+                // The batch toolbar needs more than the grid's minimum reading width:
+                // its target summary and action buttons must not split into misaligned
+                // rows while the inspector occupies the matching half of the workspace.
+                const double inboxTableMinimumWidth = 800;
+                const double inboxInspectorMinimumWidth = 520;
+                var inboxStack = inboxAvailableWidth < inboxTableMinimumWidth + inboxInspectorMinimumWidth + 14;
                 var hasInboxSelection = MediaInboxGrid.SelectedItem != null;
                 var showInboxInspector = inboxStack
                     ? mediaInboxHistoryOpen || (mediaInboxInspectorOpen && hasInboxSelection)
@@ -1106,7 +1110,9 @@ namespace GameSaveCenter.Playnite.Views
                 }
                 var showInspector = MediaInspectorScrollViewer.Visibility == Visibility.Visible;
                 MediaInspectorFrame.Visibility = showInspector ? Visibility.Visible : Visibility.Collapsed;
-                var inspectorWidth = MediaCurrentLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl ? gl : new GridLength(480);
+                var inspectorWidth = MediaCurrentLayout.TryFindResource("GscMediaCurrentInspectorWidth") is GridLength gl
+                    ? gl
+                    : new GridLength(0.75, GridUnitType.Star);
                 MediaCurrentLayout.ColumnDefinitions[1].Width = showInspector && !stack ? new GridLength(14) : new GridLength(0);
                 MediaCurrentLayout.ColumnDefinitions[2].Width = showInspector && !stack ? inspectorWidth : new GridLength(0);
                 MediaCurrentLayout.RowDefinitions[1].Height = showInspector && stack

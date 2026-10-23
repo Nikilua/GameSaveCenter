@@ -171,15 +171,17 @@
     <!-- Shared severity column width: 92 DIP is the verified content-fit baseline for
          two-character Chinese status words (提示/警告/错误/严重) inside table pills. -->
     <DataGridLength x:Key="GscSeverityColumnWidth">92</DataGridLength>
-    <!-- Demo-aligned side navigation and workspace inspector channels. The dashboard
-         consumes the sidebar width at each breakpoint; workspace inspectors share one
-         width so the right-hand detail column stays consistent across pages. -->
+    <!-- Demo-aligned side navigation and workspace inspector channels. At desktop widths,
+         table and details share the workspace evenly; compact layouts stack the inspector. -->
     <sys:Double x:Key="GscSidebarWidth">228</sys:Double>
     <sys:Double x:Key="GscCompactSidebarWidth">76</sys:Double>
     <!-- GridLength so the resource binds directly to ColumnDefinition.Width without
          runtime conversion. -->
     <GridLength x:Key="GscInspectorWidth">360</GridLength>
-    <GridLength x:Key="GscWorkspaceInspectorWidth">480</GridLength>
+    <GridLength x:Key="GscWorkspaceInspectorWidth">1*</GridLength>
+    <!-- Current-game media keeps the comparison list slightly wider than its inspector
+         so two image previews remain side by side at the established 1280-DIP layout. -->
+    <GridLength x:Key="GscMediaCurrentInspectorWidth">0.75*</GridLength>
     <!-- Form pages keep a readable content column instead of stretching across the host. -->
     <sys:Double x:Key="GscFormMaxWidth">1120</sys:Double>
 

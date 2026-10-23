@@ -8,7 +8,7 @@
 - 任务表格的固定子高度被放进更高的星号行，Stretch 会把固定尺寸居中。回归测得框架高 `703.33`、表格高 `513.33`、表格顶偏移 `94.67` DIP。现在直接测量实际工具区，有限页面 Grid 分配剩余星号行，表格填满框架；短窗口仍保留四行底线与页面溢出通道。
 - 紧凑任务筛选使用水平 WrapPanel，整组标签/选择器一起按实际宽度换行。宽窄往返恢复各行的 Grid 行号和跨列，保留绑定与选值。
 - 表头单行省略，完整标题/说明保留 Tooltip 和 UI Automation HelpText。列拖动、排序目标与缩放柄保留。
-- 三个工作区使用独立 `480 DIP` 详情宽度令牌；通用 Inspector 仍为 `360 DIP`。详情边框移到内容 ScrollViewer 外，固定圆角、留出内边距。任务/存档详情利用整个左侧区域的高度；媒体待归类宽窗口让左侧页脚滚动与右侧详情滚动独立，窄窗口将同一详情移入页面抽屉。
+- 宽屏下任务、存档和媒体待归类工作区将表格与详情按 `1*:1*` 等分，避免右栏固定宽度造成空间浪费；收件箱在宽度不足以容纳 800 DIP 表格、520 DIP 详情和 14 DIP 间隔时切换为紧凑详情。当前游戏媒体用 `1*:0.75*`，保留 1280 DIP 下两张比较图并排的空间，详情仍比原固定 480 DIP 更宽。通用 Inspector 仍为 `360 DIP`。存档摘要操作根据表格列宽在 880 DIP 处切换并排/独立操作行。详情边框在内容 ScrollViewer 外保持固定圆角，滚动不会裁掉卡片上下边缘。任务/存档详情利用页面剩余高度，媒体待归类左右滚动互相独立。
 
 ## 受控验证
 
@@ -17,6 +17,7 @@
 - [初始几何失败](tests/focused-2.trx) 保留真实表格居中与累计文字漂移的失败证据；同批 Q14 两类共进程出现的 Application 跨 Dispatcher 问题通过按类独立进程运行核验，未修改断言或增加 skip。
 - [任务、紧凑视口与媒体几何](tests/focused-4.trx)：20/20；媒体宽详情结构调整后的[最终媒体滚动](tests/media-final.trx)：6/6，包括 100%/125%/150% 输出变换、反复首尾滚动、缩放窗口、分页锚点、滚动条角落、紧凑边界传递，以及宽详情边框在左右两路滚动时保持原位。
 - [任务筛选](tests/Q14FilterLabelBehaviorTests.trx) 1/1（16 个双主题尺寸场景，760 DIP 及以上四组筛选同一行）；[工具栏](tests/Q14ToolbarAlignmentBehaviorTests.trx) 1/1；[表头](tests/R06ColumnHeaderHelpTests.trx) 2/2；[文字缩放](tests/R03TextScaleTests.trx) 2/2。
+- 新增宽屏三页等宽断言，覆盖任务队列、存档历史/候选、媒体待归类/当前游戏媒体；筛选组仍按整组换行，760 DIP 及以上可放在同一行。
 - [资源字典完整类](tests/resources-final.trx)：140 pass / 39 原有历史 skip / 0 fail；未新增 skip。
 - [完整 RenderHarness 报告](render-qa-report.txt)：`render-qa OK`、0 PROBLEM；包含 Light/Dark、多尺寸、生产 PageHost 和抽屉打开后的行数/边界检查。折叠抽屉中尚未实例化的关闭按钮改用 XAML namescope 查找，打开后的可见性和测量断言保留。
 - XAML 25/25；source validation 通过；WPF 静态检查 0 error / 26 warning（已有项目提示）；`git diff --check` 通过。源码验证器现检查任务有限页面根与四行边框预算，并识别显式 MaxHeight=260 的媒体历史列表；未取消有限视口门禁。
@@ -30,3 +31,9 @@
 [初次失败](FIRST_STANDARD_FAILURE.md)、[第二次失败](SECOND_STANDARD_FAILURE.md)、[后续失败与修正](FOLLOWUP_STANDARD_DIAGNOSTICS.md)全部保留；不以通过覆盖失败。最终离屏报告0 PROBLEM，三张截图已更新。固定检出已归档，归档前已逐文件保留诊断、最新构建和包；清理本阶段39个旧目录，详情见完整证据。用户旧Round3 TRX/TestResults未添加、覆盖或删除。
 
 真实Playnite页面交互与物理输入未验证；Round4状态不变，继续独立实现S00-06～08。
+
+## 2026-10-23 详情列宽与紧凑断点复核
+
+在工作区 1:1 扩宽后，补充当前游戏媒体 `1*:0.75*` 列权重，保持两图比较在 1280 DIP 并排；将收件箱紧凑断点按实际 800 DIP 表格/520 DIP 详情预算计算，并将存档摘要操作的并排断点调至 880 DIP。图片比较摘要和操作按钮分行，避免窄列文件名逐字换行。此前的累计漂移、任务表格留白、筛选整组换行、表头单行省略与滚动固定圆角结构继续由共享模板和既有回归覆盖。
+
+SDK 8.0.423 Release 编译 0 警告/0 错误；全量测试 1954 项，1886 通过、68 个既有跳过、0 失败，144 个 WPF 隔离类。`ReportedWorkspaceLayoutBehaviorTests` 双主题 54/54；`CompactWorkspaceTableViewportBehaviorTests` 与媒体比较定向用例通过。完整诊断位于本机 `artifacts/build-diagnostics/20261023T033037645Z-3b5ae286`。这一轮打包在未提交源码身份门禁处被正确拒绝，提交后必须重新跑干净提交的标准链，不能将这次测试称为最终安装验收。用户旧 Round3 TRX/TestResults 未暂存或删除。

@@ -2,6 +2,29 @@ using System;
 
 namespace GameSaveCenter.Playnite.Infrastructure
 {
+    /// <summary>Estimates a right inspector's allocation beside a 1* table column.</summary>
+    internal static class WorkspaceInspectorWidthPolicy
+    {
+        public static double ResolveWidth(double availableWidth, System.Windows.GridLength inspectorColumnWidth, double gutterWidth)
+        {
+            if (inspectorColumnWidth.GridUnitType == System.Windows.GridUnitType.Pixel)
+                return inspectorColumnWidth.Value;
+
+            if (inspectorColumnWidth.GridUnitType != System.Windows.GridUnitType.Star
+                || !IsFinite(availableWidth)
+                || availableWidth <= 0
+                || !IsFinite(inspectorColumnWidth.Value)
+                || inspectorColumnWidth.Value <= 0)
+                return 0;
+
+            var availableColumnsWidth = Math.Max(0, availableWidth - Math.Max(0, gutterWidth));
+            return availableColumnsWidth * inspectorColumnWidth.Value / (1 + inspectorColumnWidth.Value);
+        }
+
+        private static bool IsFinite(double value)
+            => !double.IsNaN(value) && !double.IsInfinity(value);
+    }
+
     /// <summary>
     /// Keeps workspace tables finite while sharing the page's actual remaining height
     /// between fixed page chrome, the table, and an optional stacked inspector.

@@ -31,6 +31,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var saveHost = MeasureInHost(saveView, width, height);
             saveView.ApplyResponsiveLayout(width, height);
             saveHost.UpdateLayout();
+            AssertEqualWorkspaceColumns(GetField<Grid>(saveType, saveView, "SaveHistoryLayout"), "存档历史");
             AssertTableScrollsInsideFrame(historyGrid, GetField<Border>(saveType, saveView, "SaveHistoryTableFrame"));
 
             var tabs = FindVisualDescendant<TabControl>(saveView);
@@ -41,6 +42,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             tabs.SelectedIndex = 1;
             saveView.ApplyResponsiveLayout(width, height);
             saveHost.UpdateLayout();
+            AssertEqualWorkspaceColumns(GetField<Grid>(saveType, saveView, "SaveCandidateLayout"), "存档候选");
             AssertTableScrollsInsideFrame(candidateGrid, GetField<Border>(saveType, saveView, "SaveCandidateTableFrame"));
 
             var taskView = new TaskCenterView();
@@ -52,6 +54,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var taskHost = MeasureInHost(taskView, width, height);
             taskView.ApplyResponsiveLayout(width, height);
             taskHost.UpdateLayout();
+            AssertEqualWorkspaceColumns(GetField<Grid>(taskType, taskView, "TaskWorkspaceLayout"), "任务队列");
             var taskFrame = GetField<Border>(taskType, taskView, "TaskTableFrame");
             AssertTableScrollsInsideFrame(taskGrid, taskFrame);
             var taskBounds = taskGrid.TransformToAncestor(taskFrame)
@@ -72,9 +75,17 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var mediaHost = MeasureInHost(mediaView, width, height);
             mediaView.ApplyResponsiveLayout(width, height);
             mediaHost.UpdateLayout();
+            AssertWorkspaceColumnRatio(GetField<Grid>(mediaType, mediaView, "MediaCurrentLayout"), 1.0 / 0.75, "当前游戏媒体");
             AssertPageFitsViewport(mediaPage);
             AssertWithin(mediaGrid, GetField<Border>(mediaType, mediaView, "MediaCurrentTableFrame"));
             AssertInnerScrolls(mediaGrid);
+
+            GetField<TabControl>(mediaType, mediaView, "MediaTabControl").SelectedIndex = 0;
+            mediaType.GetField("mediaInboxHistoryOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(mediaView, true);
+            var inboxLayout = GetField<Grid>(mediaType, mediaView, "MediaInboxLayout");
+            mediaView.ApplyResponsiveLayout(width, height);
+            mediaHost.UpdateLayout();
+            AssertEqualWorkspaceColumns(inboxLayout, "待归类媒体");
         });
     }
 
@@ -471,6 +482,26 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         var innerScrollViewer = FindVisualDescendant<ScrollViewer>(table);
         Assert.True(innerScrollViewer.ActualHeight <= frame.ActualHeight + 1);
         AssertWithin(innerScrollViewer, frame);
+    }
+
+    private static void AssertEqualWorkspaceColumns(Grid layout, string workspace)
+    {
+        var tableWidth = layout.ColumnDefinitions[0].ActualWidth;
+        var inspectorWidth = layout.ColumnDefinitions[2].ActualWidth;
+        Assert.True(tableWidth > 0 && inspectorWidth > 0,
+            $"{workspace} should allocate space to both the table ({tableWidth:0.##} DIP) and inspector ({inspectorWidth:0.##} DIP).");
+        Assert.True(Math.Abs(tableWidth - inspectorWidth) <= 2,
+            $"{workspace} wide layout should give the inspector the same width as the table; table={tableWidth:0.##} DIP, inspector={inspectorWidth:0.##} DIP.");
+    }
+
+    private static void AssertWorkspaceColumnRatio(Grid layout, double expectedTableToInspectorRatio, string workspace)
+    {
+        var tableWidth = layout.ColumnDefinitions[0].ActualWidth;
+        var inspectorWidth = layout.ColumnDefinitions[2].ActualWidth;
+        Assert.True(tableWidth > 0 && inspectorWidth >= 480,
+            $"{workspace} should keep a useful table and an inspector at least 480 DIP wide; table={tableWidth:0.##} DIP, inspector={inspectorWidth:0.##} DIP.");
+        var actualRatio = tableWidth / inspectorWidth;
+        Assert.InRange(actualRatio, expectedTableToInspectorRatio - 0.02, expectedTableToInspectorRatio + 0.02);
     }
 
     private static void AssertHeaderControlBeforeTable(ScrollViewer page, FrameworkElement element, Border frame)

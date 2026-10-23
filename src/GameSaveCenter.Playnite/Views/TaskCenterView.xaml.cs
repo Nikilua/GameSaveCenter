@@ -444,7 +444,9 @@ namespace GameSaveCenter.Playnite.Views
                 }
                 TaskDetailInspectorFrame.Visibility = TaskDetailScrollViewer.Visibility;
                 var showInspector = TaskDetailScrollViewer.Visibility == Visibility.Visible;
-                var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl ? gl : new GridLength(480);
+                var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl
+                    ? gl
+                    : new GridLength(1, GridUnitType.Star);
                 TaskWorkspaceLayout.ColumnDefinitions[1].Width = showInspector && !stack ? new GridLength(14) : new GridLength(0);
                 TaskWorkspaceLayout.ColumnDefinitions[2].Width = showInspector && !stack ? inspectorWidth : new GridLength(0);
                 TaskWorkspaceLayout.RowDefinitions[4].Height = showInspector && stack
@@ -469,12 +471,13 @@ namespace GameSaveCenter.Playnite.Views
                 // two arranged heights feeds stale star-row space back into this budget.
                 var pageWidth = TaskPageScrollViewer.ViewportWidth > 0
                     ? Math.Min(width, TaskPageScrollViewer.ViewportWidth) : width;
+                var inspectorAllocatedWidth = WorkspaceInspectorWidthPolicy.ResolveWidth(pageWidth, inspectorWidth, 14);
                 var queueInsets = TaskQueuePanel.Padding.Top + TaskQueuePanel.Padding.Bottom
                     + TaskQueuePanel.BorderThickness.Top + TaskQueuePanel.BorderThickness.Bottom;
                 var frameInsets = TaskTableFrame.Padding.Top + TaskTableFrame.Padding.Bottom
                     + TaskTableFrame.BorderThickness.Top + TaskTableFrame.BorderThickness.Bottom;
                 TaskTableFrame.MinHeight = tableMinHeight + frameInsets;
-                var queueWidth = Math.Max(0, pageWidth - (showInspector && !stack ? inspectorWidth.Value + 14 : 0)
+                var queueWidth = Math.Max(0, pageWidth - (showInspector && !stack ? inspectorAllocatedWidth + 14 : 0)
                     - TaskQueuePanel.Padding.Left - TaskQueuePanel.Padding.Right
                     - TaskQueuePanel.BorderThickness.Left - TaskQueuePanel.BorderThickness.Right);
                 var queueChromeHeight = MeasureChromeElement(TaskQueueHeaderLayoutGrid, queueWidth)
