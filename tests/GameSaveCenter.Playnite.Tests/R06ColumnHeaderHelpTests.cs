@@ -18,6 +18,46 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R06ColumnHeaderHelpTests
 {
+    [Theory]
+    [InlineData(false, true, false)]
+    [InlineData(false, false, true)]
+    [InlineData(true, true, false)]
+    [InlineData(true, false, true)]
+    public void ProductionHistoryTableKeepsFullHelpAcrossHeaderAndValueLengthMismatch(bool dark, bool longHeader, bool longValue)
+    {
+        RunSta(() =>
+        {
+            var page = new SaveCenterView();
+            var grid = (DataGrid)typeof(SaveCenterView).GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(page)!;
+            var value = longValue ? string.Join("/", Enumerable.Repeat("archive-directory-with-long-name", 30)) : "a";
+            var heading = longHeader ? "Archive verification lifecycle and detailed coverage information" : "Id";
+            grid.Columns.Clear();
+            var column = new DataGridTextColumn { Header = heading, Width = 140, Binding = new System.Windows.Data.Binding(nameof(HeaderRow.Value)), ElementStyle = (Style)page.FindResource("SaveLongText") };
+            DataGridColumnHeaderHelpBehavior.SetDescription(column, heading);
+            grid.Columns.Add(column);
+            grid.ItemsSource = new[] { new HeaderRow { Value = value } };
+            var mode = dark ? GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Dark : GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Light;
+            AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(page.Resources, AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(page, true, 78, mode, false), true, true);
+            var host = CreateHost(page);
+            try
+            {
+                host.Show(); host.UpdateLayout();
+                var header = FindVisualChildren<DataGridColumnHeader>(grid).Single(item => ReferenceEquals(item.Column, column));
+                var cell = FindVisualChildren<DataGridCell>(grid).First();
+                var text = Assert.Single(FindVisualChildren<TextBlock>(cell));
+                Assert.Equal(value, text.Text);
+                Assert.Equal(value, text.ToolTip as string);
+                Assert.Equal(TextTrimming.CharacterEllipsis, text.TextTrimming);
+                Assert.Equal(TextWrapping.NoWrap, text.TextWrapping);
+                Assert.Equal(heading, header.ToolTip as string);
+                Assert.Equal(heading, AutomationProperties.GetHelpText(header));
+                Assert.True(text.FontSize >= 12, "Long content must not shrink the production font.");
+                Assert.True(text.ActualWidth <= cell.ActualWidth + 1);
+            }
+            finally { host.Close(); }
+        });
+    }
+
     [Fact]
     public void GeneratedHeaderGetsDescriptionWithoutReplacingSortingHeader()
     {
