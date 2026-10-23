@@ -1,3 +1,7 @@
+## 2026-10-23 T01-05 标准完整链成功
+
+提交 `b55d8d1d` 的 `GameSaveCenter-Run.cmd` 完整退出0；SDK8.0.423、Release0警告/0错误，1955项测试1898通过/57既有skip/0失败，148TRX计数一致、145WPF隔离类。发布、六程序集构建身份、打包、安装验证与Playnite启动完成。run `20261023T150002369Z-f20509ae`，证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-05/standard-verification.json`。此前沙箱安装写入失败 run `20261023T140636880Z-f7f6571e` 保留，受控权限同入口重跑成功。受控测试不证明真实页面/物理输入/DPI；继续T01-06。
+
 ## 2026-10-23 T01-05 活跃运行保护实施与双宿主测试
 
 预览结果增加 run ID、所有者和文件占用字段。匹配所有者进程活跃或身份未知时跳过独占文件探测，避免与构建写入竞争；结束后通过只读 `FileShare.None` 打开探测报告 sharing violation，保持 `CanDelete=false`。`capture-ui-audit.ps1` 复用 `checkout-lock.ps1`，在清空目标输出前获得 checkout 锁。Core/7.6.2、Desktop/5.1 都用真实子 PowerShell 验证活跃 PID+启动时间+run ID、进程退出但哨兵仍锁定、释放后的恢复、陈旧启动时间识别，以及持锁启动并行审计时拒绝运行且原输出哨兵不变；共享 `Test-ArtifactPreview.ps1` 两版本各9/9。源码验证和 `git diff --check` 通过。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-05/`；本次脚本提交后的标准根入口完整链待跑。未执行任何真实删除。

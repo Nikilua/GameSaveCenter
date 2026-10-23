@@ -1,0 +1,46 @@
+{
+  "sourceCommit": "b55d8d1dcd028f79972f57c9dc92ac902c691535",
+  "command": "GameSaveCenter-Run.cmd",
+  "exitCode": 0,
+  "sdk": "8.0.423",
+  "runId": "20261023T150002369Z-f20509ae",
+  "diagnosticsOutcome": "passed",
+  "testSummary": {
+    "testCaseCount": 1955,
+    "passed": 1898,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 57,
+    "notRunnable": 0,
+    "inconclusive": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "otherOutcome": 0,
+    "reportedCounterTotal": 1955,
+    "reportedCounterFileCount": 148,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "trxFileCount": 148,
+    "distinctTestClassCount": 361,
+    "wpfIsolatedClassRunCount": 145
+  },
+  "packages": [
+    {
+      "name": "GameSaveCenter-0.6.73-playnite.zip",
+      "sha256": "EFFCDF4278F50348909101283B323601405360472A1EA93360B767BCA7AFBB9B"
+    },
+    {
+      "name": "GameSaveCenter-0.6.73.pext",
+      "sha256": "EFFCDF4278F50348909101283B323601405360472A1EA93360B767BCA7AFBB9B"
+    }
+  ],
+  "installationReport": "时间：2026-10-23 23:22:07\r\n源码版本：0.6.73\r\n隔离构建目录：D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\a0049e53\r\n安装目录：C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\r\n清单版本：0.6.73\r\nDLL 版本：0.6.73.0\r\n",
+  "priorSandboxAttempt": {
+    "runId": "20261023T140636880Z-f7f6571e",
+    "failure": "Sandbox denied writing Playnite extension staging directory; build/tests/package passed",
+    "retained": true,
+    "exitCode": 1
+  }
+}
