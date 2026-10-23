@@ -887,3 +887,9 @@ Test-ArtifactPreview.ps1在PowerShell7/5.1各8/8：活跃PID、空/相对/..越�
 
 ## 2026-10-23 T01 标准链与时间类型修复
 893e8973根.cmd退出0，SDK8.0.423，1954项1897通过/57既有skip/0失败、147TRX一致、144WPF类结束；发布打包安装、启动调用成功，诊断20261023T103722036Z-4651ffea。新增Owner/Artifacts真实运行记录正常，结束Active=false；证据T01-01/standard-verification.json。预览真实活跃进程发现JSON自动DateTime后二次Parse丢时区/精度，修复直接保留DateTime/DateTimeOffset，仅字符串按InvariantCulture解析；双PowerShell JSON往返各9/9通过。此后修复不挪用893e8973全链，最终候选待复验。T01共享包/暂存登记和清理集成仍未完成。
+
+## 2026-10-23 T01-03 空间预算候选
+space-budget.ps1新增显式阶段预算、同卷合并与不足/未知拒绝；无循环重试。Test-SpaceBudget双PowerShell各4/4，模拟卷读取，不实际耗尽磁盘。SDK下载/NuGet缓存/宿主数据标未知，尚未接入标准入口和配置预算，未提交/完整链；不宣称预检已交付。
+
+## 2026-10-23 T01-03 空间预检集成候选
+标准安装与纯构建写入前调用预检，配置output2GiB/test-temp1GiB/system-temp1GiB/package1GiB保守余量，同卷合并；配置明确非实测峰值，SDK/NuGet/宿主数据未知。真实C/D读取通过，受控4/4通过；预算写入构建诊断。未绕过SDK/断言/skip；最终链待提交运行。

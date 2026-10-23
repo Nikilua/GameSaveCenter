@@ -1,0 +1,8 @@
+{
+    "InsufficientRefused":  true,
+    "RetrySucceeded":  true,
+    "Transport":  "Injected volume reader; no real disk exhaustion",
+    "SameVolumeAggregated":  true,
+    "UnknownRefused":  true,
+    "Engine":  "5.1.22000.2538"
+}

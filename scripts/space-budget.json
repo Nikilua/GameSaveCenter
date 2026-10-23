@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "outputBytes": 2147483648,
+  "tempBytes": 1073741824,
+  "packageBytes": 1073741824,
+  "basis": "Conservative configurable headroom, not measured peak usage. SDK downloads, NuGet cache growth and host data are additional unknowns."
+}

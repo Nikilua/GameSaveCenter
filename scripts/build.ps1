@@ -12,6 +12,8 @@ $root = Split-Path -Parent $PSScriptRoot
 . (Join-Path $PSScriptRoot 'checkout-lock.ps1')
 $checkoutLock = Enter-GscCheckoutLock $root
 try {
+. (Join-Path $PSScriptRoot 'space-budget.ps1')
+$spaceBudget = Invoke-GscSpacePreflight $root $OutputRoot $TestTempRoot
 $previousBuildCommit = [Environment]::GetEnvironmentVariable('GSC_BUILD_COMMIT', 'Process')
 $previousSourceRoot = [Environment]::GetEnvironmentVariable('GSC_SOURCE_ROOT', 'Process')
 $previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
@@ -19,6 +21,7 @@ $previousTmp = [Environment]::GetEnvironmentVariable('TMP', 'Process')
 . (Join-Path $PSScriptRoot 'build-diagnostics.ps1')
 . (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
 $diagnostics = New-GscDiagnosticContext -RepoRoot $root -DiagnosticsRoot $DiagnosticsRoot
+$diagnostics.SpaceBudget = $spaceBudget
 $diagnostics.RunType = 'solution-build'
 $diagnostics.TestsRequested = -not $SkipTests
 $succeeded = $false

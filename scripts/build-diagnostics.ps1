@@ -207,6 +207,7 @@ function Write-GscDiagnosticSummary {
     $summary = [ordered]@{
         schemaVersion = 1; sourceCommit = $Context.SourceCommit
         workingTreeClean = $Context.DirtyPaths.Count -eq 0; dirtyPaths = $Context.DirtyPaths
+        spaceBudget = $Context.SpaceBudget
         owner = $Context.Owner
         artifacts = @($Context.Artifacts)
         environment = $Context.Environment
