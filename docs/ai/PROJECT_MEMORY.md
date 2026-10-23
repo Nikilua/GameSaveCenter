@@ -1,3 +1,7 @@
+## 2026-10-23 T00-01 当前标准全链成功
+
+955940be中文根.cmd完整退出0，run 20261023T080149678Z-90648b13，SDK8.0.423，XAML25/25、编译0/0；1954项1897pass/57既有skip/0fail，147TRX计数一致，144WPF类结束。发布/包/安装版本及DLL哈希复核、Playnite39144启动完成；真实页面未验。证据见docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01。旧未跟踪TRX/TestResults未动；保留本次构建2e8a5b44、包和诊断。T00-02隔离夹具9/9退出码通过，尚待整理可复用验证与清理。无产品源码修改，文档无需重复全链。
+
 ## 2026-10-23 旧计划隔离宿主验收前置失败
 
 继续旧计划实际验收：Computer Use初始化返回failed to write kernel assets（os error 3），未取得桌面状态。随后调用现有scripts/real-host-audit.ps1（Release，SeedSyntheticLibrary，明确隔离.tmp/old-plan-host-20261023、artifacts/old-plan-host-20261023、测试临时根.tmp/old-plan-host-tests-20261023及D:/software/Playnite/Playnite.DesktopApp.exe）；退出1，PlayniteHostIsolation.ps1:82要求启动前读取进程命令行，系统拒绝访问，未到宿主启动/安装/测试。没有绕过身份保护、重探CEF/ETW或提升任何旧项状态。本次只读空间C约9.37GB、D约14.93GB；失败在输出创建前，无本次构建副本需清理，用户旧产物未动。旧计划宿主验收仍受环境阻塞；新32项构建可靠性可独立继续，T00-01须针对最新源码补完整根.cmd，不以0a91c399定向构建安装冒充默认全链。
