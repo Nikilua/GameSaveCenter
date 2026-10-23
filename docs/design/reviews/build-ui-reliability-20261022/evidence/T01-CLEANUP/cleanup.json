@@ -1,0 +1,35 @@
+{
+  "Before": [
+    {
+      "Name": "C",
+      "Free": 10002571264
+    },
+    {
+      "Name": "D",
+      "Free": 15509417984
+    }
+  ],
+  "After": [
+    {
+      "Name": "C",
+      "Free": 10002571264
+    },
+    {
+      "Name": "D",
+      "Free": 15509417984
+    }
+  ],
+  "Deleted": [
+    {
+      "Bytes": 588943.0,
+      "Path": ".tmp/space-preflight-diag",
+      "Reason": "Controlled diagnostic fixture finished; every file archived and hash verified"
+    },
+    {
+      "Bytes": 587660.0,
+      "Path": ".tmp/t01-ownership-diagnostics",
+      "Reason": "Controlled diagnostic fixture finished; every file archived and hash verified"
+    }
+  ],
+  "Retained": "Latest bf3b3230 build, current package, full diagnostic runs, unknown user TRX"
+}

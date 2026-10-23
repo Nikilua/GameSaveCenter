@@ -1,0 +1,17 @@
+<TestRun>
+  <Results>
+    <UnitTestResult testId="fixture-test-1" testName="GameSaveCenter.Playnite.Tests.SourceFixtureTests.Case1" outcome="Passed" />
+    <UnitTestResult testId="fixture-test-2" testName="GameSaveCenter.Playnite.Tests.SourceFixtureTests.Case2" outcome="Passed" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest id="fixture-test-1">
+      <TestMethod className="GameSaveCenter.Playnite.Tests.SourceFixtureTests" />
+    </UnitTest>
+    <UnitTest id="fixture-test-2">
+      <TestMethod className="GameSaveCenter.Playnite.Tests.SourceFixtureTests" />
+    </UnitTest>
+  </TestDefinitions>
+  <ResultSummary>
+    <Counters total="2" executed="2" passed="2" failed="0" notExecuted="0" />
+  </ResultSummary>
+</TestRun>

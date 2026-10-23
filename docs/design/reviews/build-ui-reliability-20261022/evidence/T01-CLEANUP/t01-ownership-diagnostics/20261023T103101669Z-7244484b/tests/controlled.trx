@@ -1,0 +1,1 @@
+<TestRun name="redacted-test-run" runUser="redacted-user"><Deployment runDeploymentRoot="redacted-deployment"/><UnitTestResult computerName="redacted-host"><ErrorInfo><Message>Assert.Equal() Failure</Message><StackTrace>at ExampleTests.ControlledFailure():line 42</StackTrace></ErrorInfo><Path>[repo] [user-profile]</Path></UnitTestResult></TestRun>

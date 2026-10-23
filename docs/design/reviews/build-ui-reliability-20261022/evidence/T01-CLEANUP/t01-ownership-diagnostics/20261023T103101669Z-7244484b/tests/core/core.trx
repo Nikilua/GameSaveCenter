@@ -1,0 +1,21 @@
+<TestRun>
+  <Results>
+    <UnitTestResult testId="fixture-test-1" testName="GameSaveCenter.Core.Tests.CoreFixtureTests.Case1" outcome="Passed" />
+    <UnitTestResult testId="fixture-test-2" testName="GameSaveCenter.Core.Tests.CoreFixtureTests.Case2" outcome="Failed" />
+    <UnitTestResult testId="fixture-test-3" testName="GameSaveCenter.Core.Tests.CoreFixtureTests.Case3" outcome="NotExecuted" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest id="fixture-test-1">
+      <TestMethod className="GameSaveCenter.Core.Tests.CoreFixtureTests" />
+    </UnitTest>
+    <UnitTest id="fixture-test-2">
+      <TestMethod className="GameSaveCenter.Core.Tests.CoreFixtureTests" />
+    </UnitTest>
+    <UnitTest id="fixture-test-3">
+      <TestMethod className="GameSaveCenter.Core.Tests.CoreFixtureTests" />
+    </UnitTest>
+  </TestDefinitions>
+  <ResultSummary>
+    <Counters total="3" executed="2" passed="1" failed="1" notExecuted="1" />
+  </ResultSummary>
+</TestRun>

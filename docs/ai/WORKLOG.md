@@ -11960,3 +11960,6 @@ space-budget.ps1新增显式阶段预算、同卷合并与不足/未知拒绝；
 
 ## 2026-10-23 T01-03 标准全链通过
 5e194500根.cmd退出0，SDK8.0.423、1954项1897通过/57既有skip/0失败，147TRX计数一致，144WPF类结束。空间预算前置通过并进diagnostics，真实活跃目录预览排除正确；发布/包与安装逐文件SHA一致，Playnite17008新进程观察成功。run20261023T110514941Z-1047dc65，证据专项T01-03/standard-verification.json与active-preview.json。保留bf3b3230最新构建/包/诊断；T01共享包清单/安全清理执行仍待补，旧TRX未动；未将可配置余量称为实测峰值，SDK/NuGet未知项仍保留。
+
+## 2026-10-23 本阶段夹具清理
+已完成space-preflight-diag与t01-ownership-diagnostics经路径/无链接/独占读取检查、逐文件SHA归档后清理，原目录1176603字节。诊断文本在专项T01-CLEANUP，合成DLL/EXE保留本地artifacts/t01-cleanup-fixture-binaries、不提交二进制。清单含前后C/D可用空间；最新bf3b3230构建/包/完整诊断/未知用户TRX均保留。仅清理受控夹具，不宣称清理器或T01-08完成。
