@@ -30,6 +30,13 @@ try {
         if ($child -and -not $child.HasExited) { throw 'Owned child survived tree timeout' }
         if ($treeResult.ExitCode -ne 124) { throw 'Tree timeout reported success' }
     }
+    # cmd starts a background child inheriting redirected stdout, then exits.
+    # The command process exit alone must not discard the child's later output.
+    $pipeFixture = Join-Path $root 'pipe.cmd'
+    [IO.File]::WriteAllText($pipeFixture, '@echo off' + "`r`n" + 'start "" /b powershell.exe -NoProfile -Command "Start-Sleep 4; Write-Output delayed"' + "`r`n" + 'exit /b 0')
+    $pipe = Invoke-GscRecordedCommand $context 'pipe-held' 'cmd.exe' @('/d','/c',$pipeFixture) -TimeoutSeconds 1
+    if ($pipe.ExitCode -ne 124 -or $context.Steps[$context.Steps.Count-1].process.OutputDrained) { throw 'Inherited pipe incorrectly reported success' }
+    Start-Sleep -Seconds 4
     $evidence = Join-Path $repo 'docs/design/reviews/build-ui-reliability-20261022/evidence/T00-06'
     @{ Engine=$PSVersionTable.PSVersion.ToString(); TrxBeforeTimeout=$true; TimeoutExit=124; UnrelatedProcessPreserved=$true; RetryExit=0; Steps=$context.Steps } | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $evidence ('bounded-' + $PSVersionTable.PSEdition + '.json'))
 } finally { if (-not $unrelated.HasExited) { $unrelated.Kill() }; $unrelated.Dispose() }

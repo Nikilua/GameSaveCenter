@@ -20,6 +20,7 @@ function Invoke-GscBoundedProcess {
         if (-not $process.Start()) { throw 'Native process did not start' }
         $processId = $process.Id
         $startTime = $process.StartTime.ToUniversalTime().ToString('o')
+        $timer = [Diagnostics.Stopwatch]::StartNew()
         $stdout = $process.StandardOutput.ReadToEndAsync()
         $stderr = $process.StandardError.ReadToEndAsync()
         $exited = $process.WaitForExit($TimeoutSeconds * 1000)
@@ -33,10 +34,12 @@ function Invoke-GscBoundedProcess {
             catch { if (-not $process.HasExited) { throw } }
             [void]$process.WaitForExit(5000)
         }
+        $remaining = [Math]::Max(0, ($TimeoutSeconds * 1000) - [int]$timer.ElapsedMilliseconds)
+        $drained = [Threading.Tasks.Task]::WaitAll([Threading.Tasks.Task[]]@($stdout, $stderr), $remaining)
         $text = ''
         if ($stdout.IsCompleted) { $text += $stdout.GetAwaiter().GetResult() }
         if ($stderr.IsCompleted) { $text += $stderr.GetAwaiter().GetResult() }
-        [pscustomobject]@{ ExitCode = $(if ($exited) { $process.ExitCode } else { 124 }); Output = $text; TimedOut = -not $exited; ProcessId = $processId; ProcessStartedUtc = $startTime; ProcessExited = $process.HasExited }
+        [pscustomobject]@{ ExitCode = $(if ($exited -and $drained) { $process.ExitCode } else { 124 }); Output = $text; TimedOut = (-not $exited -or -not $drained); OutputDrained = $drained; ProcessId = $processId; ProcessStartedUtc = $startTime; ProcessExited = $process.HasExited }
     }
     finally { $process.Dispose() }
 }

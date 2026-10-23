@@ -9,19 +9,20 @@
                       "arguments":  [
                                         "-NoProfile",
                                         "-File",
-                                        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-6854c2b43d454250ae2c467d9198b2ce\\hang.ps1",
-                                        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-6854c2b43d454250ae2c467d9198b2ce\\completed.trx"
+                                        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-0dd9a2e88e774fff9bb5558f32bcacc8\\hang.ps1",
+                                        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-0dd9a2e88e774fff9bb5558f32bcacc8\\completed.trx"
                                     ],
-                      "startedUtc":  "2026-10-23T09:34:59.7773451Z",
-                      "completedUtc":  "2026-10-23T09:35:01.8986169Z",
+                      "startedUtc":  "2026-10-23T10:02:46.9326028Z",
+                      "completedUtc":  "2026-10-23T10:02:49.0448452Z",
                       "exitCode":  124,
                       "console":  "trx-then-hang-console.txt",
                       "launchError":  null,
                       "process":  {
                                       "ExitCode":  124,
                                       "TimedOut":  true,
-                                      "ProcessId":  14908,
-                                      "ProcessStartedUtc":  "2026-10-23T09:34:59.8265567Z",
+                                      "OutputDrained":  true,
+                                      "ProcessId":  4488,
+                                      "ProcessStartedUtc":  "2026-10-23T10:02:46.9795877Z",
                                       "ProcessExited":  true
                                   }
                   },
@@ -33,16 +34,17 @@
                                         "-Command",
                                         "Write-Output \u0027retry completed\u0027; exit 0"
                                     ],
-                      "startedUtc":  "2026-10-23T09:35:01.9198135Z",
-                      "completedUtc":  "2026-10-23T09:35:02.9680334Z",
+                      "startedUtc":  "2026-10-23T10:02:49.0647141Z",
+                      "completedUtc":  "2026-10-23T10:02:50.0616504Z",
                       "exitCode":  0,
                       "console":  "retry-console.txt",
                       "launchError":  null,
                       "process":  {
                                       "ExitCode":  0,
                                       "TimedOut":  false,
-                                      "ProcessId":  11820,
-                                      "ProcessStartedUtc":  "2026-10-23T09:35:01.9218497Z",
+                                      "OutputDrained":  true,
+                                      "ProcessId":  5184,
+                                      "ProcessStartedUtc":  "2026-10-23T10:02:49.0666961Z",
                                       "ProcessExited":  true
                                   }
                   },
@@ -54,16 +56,39 @@
                                         "-Command",
                                         "[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); Write-Output ([char]0x4e2d+[string][char]0x6587); exit 0"
                                     ],
-                      "startedUtc":  "2026-10-23T09:35:02.9860332Z",
-                      "completedUtc":  "2026-10-23T09:35:04.0324373Z",
+                      "startedUtc":  "2026-10-23T10:02:50.0803568Z",
+                      "completedUtc":  "2026-10-23T10:02:51.1086015Z",
                       "exitCode":  0,
                       "console":  "unicode-console.txt",
                       "launchError":  null,
                       "process":  {
                                       "ExitCode":  0,
                                       "TimedOut":  false,
-                                      "ProcessId":  6380,
-                                      "ProcessStartedUtc":  "2026-10-23T09:35:02.9881464Z",
+                                      "OutputDrained":  true,
+                                      "ProcessId":  15060,
+                                      "ProcessStartedUtc":  "2026-10-23T10:02:50.0830297Z",
+                                      "ProcessExited":  true
+                                  }
+                  },
+                  {
+                      "id":  "pipe-held",
+                      "command":  "cmd.exe",
+                      "arguments":  [
+                                        "/d",
+                                        "/c",
+                                        "D:\\workplace\\github\\GameSaveCenter\\.tmp\\bounded-test-0dd9a2e88e774fff9bb5558f32bcacc8\\pipe.cmd"
+                                    ],
+                      "startedUtc":  "2026-10-23T10:02:51.1326021Z",
+                      "completedUtc":  "2026-10-23T10:02:52.1757816Z",
+                      "exitCode":  124,
+                      "console":  "pipe-held-console.txt",
+                      "launchError":  null,
+                      "process":  {
+                                      "ExitCode":  124,
+                                      "TimedOut":  true,
+                                      "OutputDrained":  false,
+                                      "ProcessId":  7236,
+                                      "ProcessStartedUtc":  "2026-10-23T10:02:51.1441943Z",
                                       "ProcessExited":  true
                                   }
                   }

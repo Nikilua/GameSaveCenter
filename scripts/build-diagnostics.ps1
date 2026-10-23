@@ -287,7 +287,7 @@ function Invoke-GscRecordedCommand {
         $ErrorActionPreference = 'Continue'
         if ($TimeoutSeconds -gt 0) {
             $bounded = Invoke-GscBoundedProcess $nativeCommand.Source $Arguments $TimeoutSeconds
-            $processEvidence = $bounded | Select-Object ExitCode,TimedOut,ProcessId,ProcessStartedUtc,ProcessExited
+            $processEvidence = $bounded | Select-Object ExitCode,TimedOut,OutputDrained,ProcessId,ProcessStartedUtc,ProcessExited
             $global:LASTEXITCODE = $bounded.ExitCode
             $nativeOutput = $bounded.Output -split '\r?\n'
         }
