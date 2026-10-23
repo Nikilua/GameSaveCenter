@@ -1,6 +1,6 @@
 ## 2026-10-23 T01-04 路径边界回归部分完成
 
-PowerShell7.6.2 与 Windows PowerShell5.1 各有13项路径边界断言通过：空/相对/父目录/相似前缀/根本身/不同盘符与盘符相对/路径大小写/未声明所有权/junction本身及其后代；CanDelete 始终 false，哨兵不变，隔离 `.tmp` 已清。文件符号链接创建被当前令牌拒绝（PS7要求管理员权限，PS5 `mklink` 权限不足），每环境各1 skip；不要伪报 symlink 通过或提权重试。证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/`。T01-04保留待验收；可继续独立 T01-05 活跃目录保护。
+PowerShell7.6.2 与 Windows PowerShell5.1 各有13项路径边界断言通过：空/相对/父目录/相似前缀/根本身/不同盘符与盘符相对/路径大小写/未声明所有权/junction本身及其后代；CanDelete 始终 false，哨兵不变，隔离 `.tmp` 已清。脚本与结果已在 `d2429890` 提交并推送。文件符号链接创建被当前令牌拒绝（PS7要求管理员权限，PS5 `mklink` 权限不足），每环境各1 skip；不要伪报 symlink 通过或提权重试。证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/`。T01-04保留待验收；可继续独立 T01-05 活跃目录保护。
 
 ## 2026-10-23 T02-01 滚动漂移回归已完成
 

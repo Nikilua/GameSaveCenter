@@ -1,6 +1,6 @@
 ## 2026-10-23 T01-04 路径边界负例
 
-新增隔离路径测试脚本并在 PowerShell7.6.2/Core、Windows PowerShell5.1 各运行13项有效断言。空、相对、父目录越界、类似根前缀、根本身、不同盘符、盘符相对越界、路径大小写、未声明所有权、junction本身及junction后代均拒绝成为可删候选；所有CanDelete=false，哨兵SHA-256未变，临时夹具清理。文件symlink测试在两个宿主均因系统权限无法创建而跳过，分别记录管理员权限需求/mklink权限不足；没有提权绕过。T01-04尚待 symlink 权限条件或验收边界解决。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/`。
+新增隔离路径测试脚本并在 PowerShell7.6.2/Core、Windows PowerShell5.1 各运行13项有效断言。空、相对、父目录越界、类似根前缀、根本身、不同盘符、盘符相对越界、路径大小写、未声明所有权、junction本身及junction后代均拒绝成为可删候选；所有CanDelete=false，哨兵SHA-256未变，临时夹具清理。文件symlink测试在两个宿主均因系统权限无法创建而跳过，分别记录管理员权限需求/mklink权限不足；没有提权绕过。脚本及双宿主结果已在 `d2429890` 提交并推送。T01-04尚待 symlink 权限条件或验收边界解决。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/`。
 
 ## 2026-10-23 T02-01 滚动漂移回归实施与全链验收
 

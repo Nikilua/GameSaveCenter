@@ -1,6 +1,6 @@
 ## 2026-10-23 T01-04 路径边界测试范围
 
-生产 `Get-GscArtifactPreview` 保持只读，`CanDelete=false`。`Test-ArtifactPathBoundaries.ps1` 在PowerShell7/Windows PowerShell5.1均验证空/相对/..越界/类似前缀/盘符与大小写/未认领所有权/junction/链接后代，13项有效断言通过，哨兵未变，隔离 `.tmp` 已清。当前 Windows 令牌不具备创建文件符号链接的权限；这1项必须继续标为skip，不能以junction推断symlink已实际运行。预览无删除操作，T01-04仍待边界验收。
+生产 `Get-GscArtifactPreview` 保持只读，`CanDelete=false`。`Test-ArtifactPathBoundaries.ps1` 在PowerShell7/Windows PowerShell5.1均验证空/相对/..越界/类似前缀/盘符与大小写/未认领所有权/junction/链接后代，13项有效断言通过，哨兵未变，隔离 `.tmp` 已清；脚本和结果由 `d2429890` 提交并推送。当前 Windows 令牌不具备创建文件符号链接的权限；这1项必须继续标为skip，不能以junction推断symlink已实际运行。预览无删除操作，T01-04仍待边界验收。
 
 ## 2026-10-23 T02-01 滚动回归实现边界
 
