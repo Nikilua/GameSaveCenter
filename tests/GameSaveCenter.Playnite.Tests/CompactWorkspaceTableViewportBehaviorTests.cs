@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -373,6 +373,76 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
 
     private static T GetField<T>(Type type, object target, string name)
         => (T)type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(target)!;
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void LongHistoryDetailsKeepThreeScrollOffsetsIndependent(bool dark)
+    {
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+            var view = new SaveCenterView();
+            var type = typeof(SaveCenterView);
+            var rows = Enumerable.Range(0, 32).Select(index => new HistoryScrollDetail
+            {
+                BackupId = "cross-scroll-" + index,
+                RestoreReadinessHashCoverageDisplay = string.Join(" ", Enumerable.Repeat("Long archive validation detail with nested path and coverage explanation.", 100))
+            }).ToArray();
+            view.DataContext = new HistoryScrollFixture { SelectedBackup = rows[0] };
+            var theme = dark ? GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Dark : GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Light;
+            var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(view, true, 78, theme, false);
+            AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, true, true);
+            var grid = GetField<DataGrid>(type, view, "SaveHistoryGrid");
+            grid.ItemsSource = rows;
+            grid.SelectedIndex = 0;
+            type.GetField("historyInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(view, true);
+            var host = MeasureInHost(view, 900, 600);
+            window = new Window { Content = host, Width = 900, Height = 600, WindowStyle = WindowStyle.None, ShowActivated = false, ShowInTaskbar = false, Opacity = 0.01 };
+            window.Show();
+            window.UpdateLayout();
+            view.ApplyResponsiveLayout(900, 600);
+            host.UpdateLayout();
+            var page = GetField<ScrollViewer>(type, view, "SaveHistoryPageScrollViewer");
+            var details = GetField<ScrollViewer>(type, view, "SaveHistoryActionsScrollViewer");
+            var list = FindVisualDescendant<ScrollViewer>(grid);
+            Assert.True(details.ScrollableHeight > 0, $"Long detail range missing: visible={details.Visibility}, height={details.ActualHeight}, max={details.MaxHeight}, extent={details.ExtentHeight}, viewport={details.ViewportHeight}, selected={grid.SelectedItem?.GetType().Name}, text={((HistoryScrollFixture)view.DataContext).SelectedBackup?.RestoreReadinessHashCoverageDisplay.Length}.");
+            list.ScrollToEnd(); host.UpdateLayout();
+            var listOffset = list.VerticalOffset;
+            var detailsOffset = details.VerticalOffset;
+            page.ScrollToEnd(); host.UpdateLayout();
+            Assert.Equal(listOffset, list.VerticalOffset, 2);
+            Assert.Equal(detailsOffset, details.VerticalOffset, 2);
+            var pageOffset = page.VerticalOffset;
+            details.ScrollToEnd(); host.UpdateLayout();
+            Assert.Equal(listOffset, list.VerticalOffset, 2);
+            Assert.Equal(pageOffset, page.VerticalOffset, 2);
+            Assert.True(details.VerticalOffset >= details.ScrollableHeight - 1);
+            var bottomAction = ((StackPanel)details.Content).Children.OfType<Button>().Last(button => button.Visibility == Visibility.Visible);
+            bottomAction.BringIntoView(); host.UpdateLayout();
+            var actionBounds = bottomAction.TransformToAncestor(details).TransformBounds(new Rect(0, 0, bottomAction.ActualWidth, bottomAction.ActualHeight));
+            Assert.True(actionBounds.Top >= -1 && actionBounds.Bottom <= details.ActualHeight + 1, $"Bottom action not reachable: {actionBounds}, viewport={details.ActualHeight}.");
+            AssertInnerScrollCanReachEnd(grid);
+            AssertPageCanReachEnd(page);
+            AssertTableScrollsInsideFrame(grid, GetField<Border>(type, view, "SaveHistoryTableFrame"));
+            }
+            finally { window?.Close(); }
+        });
+    }
+
+    public sealed class HistoryScrollFixture
+    {
+        public int SaveTabIndex { get; set; }
+        public HistoryScrollDetail SelectedBackup { get; set; } = null!;
+    }
+
+    public sealed class HistoryScrollDetail
+    {
+        public string BackupId { get; set; } = "";
+        public string RestoreReadinessHashCoverageDisplay { get; set; } = "";
+    }
 
     private static object[] CreateRows()
         => Enumerable.Range(0, 32).Select(_ => new object()).ToArray();
