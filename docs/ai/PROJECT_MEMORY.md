@@ -1,3 +1,7 @@
+## 2026-10-23 旧计划隔离宿主验收前置失败
+
+继续旧计划实际验收：Computer Use初始化返回failed to write kernel assets（os error 3），未取得桌面状态。随后调用现有scripts/real-host-audit.ps1（Release，SeedSyntheticLibrary，明确隔离.tmp/old-plan-host-20261023、artifacts/old-plan-host-20261023、测试临时根.tmp/old-plan-host-tests-20261023及D:/software/Playnite/Playnite.DesktopApp.exe）；退出1，PlayniteHostIsolation.ps1:82要求启动前读取进程命令行，系统拒绝访问，未到宿主启动/安装/测试。没有绕过身份保护、重探CEF/ETW或提升任何旧项状态。本次只读空间C约9.37GB、D约14.93GB；失败在输出创建前，无本次构建副本需清理，用户旧产物未动。旧计划宿主验收仍受环境阻塞；新32项构建可靠性可独立继续，T00-01须针对最新源码补完整根.cmd，不以0a91c399定向构建安装冒充默认全链。
+
 ## 2026-10-23 旧计划优先核对与能力缓存校正
 
 用户要求先继续未完成的旧计划，再实施32项专项。Round4仍40已验收、2已满足、21代码完成待宿主验收、1权限阻塞；P/Q/R旧账本也保留真实宿主、物理输入/DPI及ETW等边界，不宣告全部完成。当前未发现新的独立实现缺口。能力缓存仍沿用10月18日SDK缺失/启动未检查，已按0a91c399构建安装记录及本次SDK文件存在检查校正；真实页面捕获失败、当前无Playnite进程，不提升宿主验收状态。CEF/ETW/分支保护权限未重探。后续优先检查旧项的合法宿主验收入口；真实外部阻塞不妨碍新专项独立任务。未知Round3 TRX/TestResults原样保留。本阶段仅文档/能力事实校正，不运行产品构建，不复制CI通过记录。
