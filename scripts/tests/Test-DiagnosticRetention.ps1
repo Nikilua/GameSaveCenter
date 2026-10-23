@@ -7,7 +7,7 @@ $fixture=Join-Path $repo ('.tmp/retention-'+[guid]::NewGuid().ToString('N'))
 $source=Join-Path $fixture 'source'
 $archive=Join-Path $fixture 'archive'
 try {
-    New-Item -ItemType Directory -Path $source,$archive -Force|Out-Null
+    New-Item -ItemType Directory -Path $source -Force|Out-Null
     foreach($name in @('summary.json','failure-console.txt','failure.trx','failure.dmp','first.png','second.png')) {
         $content=if($name -like '*.png'){'same visual evidence'}else{'unique evidence '+$name}
         [IO.File]::WriteAllText((Join-Path $source $name),$content)
@@ -15,7 +15,11 @@ try {
     $inventory=@(Get-GscEvidenceInventory $source)
     if(@($inventory|Where-Object Tier -eq 'large-diagnostic').Count -ne 1){throw 'Dump tier missing'}
     if(@($inventory|Where-Object DuplicateOf).Count -ne 1){throw 'Visual duplicate identification failed'}
-    Copy-Item -Path (Join-Path $source '*') -Destination $archive
+    $export=& (Join-Path $repo 'scripts/archive-diagnostics.ps1') -SourceRoot $source -DestinationRoot $archive
+    if(-not $export.Verified -or -not $export.OriginalsRetained){throw 'Archive export failed'}
+    $overwriteRejected=$false
+    try { & (Join-Path $repo 'scripts/archive-diagnostics.ps1') -SourceRoot $source -DestinationRoot $archive|Out-Null } catch {$overwriteRejected=$true}
+    if(-not $overwriteRejected){throw 'Existing archive was overwritten'}
     if(-not (Test-GscEvidenceArchive $inventory $archive).Verified){throw 'Complete archive rejected'}
     [IO.File]::WriteAllText((Join-Path $archive 'failure.trx'),'corrupted')
     if((Test-GscEvidenceArchive $inventory $archive).Verified){throw 'Changed archive accepted'}
