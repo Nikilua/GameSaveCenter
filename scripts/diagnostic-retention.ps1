@@ -29,6 +29,22 @@ function Get-GscEvidenceInventory {
     }
 }
 
+function Assert-GscEvidenceArchived {
+    param([Parameter(Mandatory=$true)][string]$SourceRoot, [Parameter(Mandatory=$true)][string]$ArchiveRoot, [Parameter(Mandatory=$true)][object[]]$Inventory)
+    $source=[IO.Path]::GetFullPath($SourceRoot).TrimEnd('\','/')
+    $archive=[IO.Path]::GetFullPath($ArchiveRoot).TrimEnd('\','/')
+    if($source.Equals($archive,[StringComparison]::OrdinalIgnoreCase) -or $archive.StartsWith($source+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'Archive is not independent of its source'}
+    $current=@(Get-GscEvidenceInventory $source)
+    if($current.Count -ne $Inventory.Count){throw 'Source evidence set changed after archival'}
+    $sourceCheck=Test-GscEvidenceArchive $Inventory $source
+    if(-not $sourceCheck.Verified){throw 'Source evidence changed after archival'}
+    $archiveCheck=Test-GscEvidenceArchive $Inventory $archive
+    if(-not $archiveCheck.Verified){throw ('Archive incomplete: '+($archiveCheck.Issues -join '; '))}
+    # This establishes preservation only. Ownership, active processes, references,
+    # path scope and file occupancy remain mandatory before any actual cleanup.
+    return $archiveCheck
+}
+
 function Test-GscEvidenceArchive {
     param([Parameter(Mandatory=$true)][object[]]$Inventory, [Parameter(Mandatory=$true)][string]$ArchiveRoot)
     $actual = @(Get-GscEvidenceInventory -Root $ArchiveRoot)

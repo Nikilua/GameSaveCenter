@@ -21,8 +21,12 @@ try {
     try { & (Join-Path $repo 'scripts/archive-diagnostics.ps1') -SourceRoot $source -DestinationRoot $archive|Out-Null } catch {$overwriteRejected=$true}
     if(-not $overwriteRejected){throw 'Existing archive was overwritten'}
     if(-not (Test-GscEvidenceArchive $inventory $archive).Verified){throw 'Complete archive rejected'}
+    if(-not (Assert-GscEvidenceArchived $source $archive $inventory).Verified){throw 'Preservation guard rejected complete archive'}
     [IO.File]::WriteAllText((Join-Path $archive 'failure.trx'),'corrupted')
     if((Test-GscEvidenceArchive $inventory $archive).Verified){throw 'Changed archive accepted'}
+    $cleanupRefused=$false
+    try { Assert-GscEvidenceArchived $source $archive $inventory|Out-Null } catch {$cleanupRefused=$true}
+    if(-not $cleanupRefused){throw 'Preservation guard accepted corrupted archive'}
     Remove-Item -LiteralPath (Join-Path $archive 'failure.dmp') -Force
     if((Test-GscEvidenceArchive $inventory $archive).Verified){throw 'Missing dump accepted'}
     $rejected=$false
