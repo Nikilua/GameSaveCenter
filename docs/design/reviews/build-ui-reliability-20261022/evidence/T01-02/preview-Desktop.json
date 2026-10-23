@@ -1,64 +1,91 @@
 [
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e5b1c6482324495ae31c0d26b880534",
+        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e30b2db3fdf48b99b07a04276eb2f20",
         "EstimatedBytes":  8,
+        "RunId":  null,
         "OwnerState":  "active",
+        "OccupancyState":  "owner-active",
+        "OccupancyIssue":  null,
         "Reason":  "Owner process still active",
         "CanDelete":  false
     },
     {
         "Path":  "",
         "EstimatedBytes":  null,
+        "RunId":  null,
         "OwnerState":  "active",
+        "OccupancyState":  "not-checked",
+        "OccupancyIssue":  null,
         "Reason":  "Rejected: Empty artifact path",
         "CanDelete":  false
     },
     {
         "Path":  "",
         "EstimatedBytes":  null,
+        "RunId":  null,
         "OwnerState":  "active",
+        "OccupancyState":  "not-checked",
+        "OccupancyIssue":  null,
         "Reason":  "Rejected: Relative artifact path",
         "CanDelete":  false
     },
     {
         "Path":  "D:\\workplace\\github\\outside",
         "EstimatedBytes":  null,
+        "RunId":  null,
         "OwnerState":  "active",
+        "OccupancyState":  "not-checked",
+        "OccupancyIssue":  null,
         "Reason":  "Rejected: Outside allowed artifact roots or root itself",
         "CanDelete":  false
     },
     {
         "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp-other\\file",
         "EstimatedBytes":  null,
+        "RunId":  null,
         "OwnerState":  "active",
+        "OccupancyState":  "not-checked",
+        "OccupancyIssue":  null,
         "Reason":  "Rejected: Outside allowed artifact roots or root itself",
         "CanDelete":  false
     },
     {
         "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp",
         "EstimatedBytes":  null,
+        "RunId":  null,
         "OwnerState":  "active",
+        "OccupancyState":  "not-checked",
+        "OccupancyIssue":  null,
         "Reason":  "Rejected: Outside allowed artifact roots or root itself",
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e5b1c6482324495ae31c0d26b880534",
+        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e30b2db3fdf48b99b07a04276eb2f20",
         "EstimatedBytes":  8,
+        "RunId":  null,
         "OwnerState":  "active",
+        "OccupancyState":  "owner-active",
+        "OccupancyIssue":  null,
         "Reason":  "Owner process still active",
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e5b1c6482324495ae31c0d26b880534",
+        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e30b2db3fdf48b99b07a04276eb2f20",
         "EstimatedBytes":  8,
+        "RunId":  null,
         "OwnerState":  "different-process",
+        "OccupancyState":  "clear",
+        "OccupancyIssue":  null,
         "Reason":  "Retention: current evidence",
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e5b1c6482324495ae31c0d26b880534\\junction",
+        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e30b2db3fdf48b99b07a04276eb2f20\\junction",
         "EstimatedBytes":  null,
+        "RunId":  null,
         "OwnerState":  "different-process",
+        "OccupancyState":  "not-checked",
+        "OccupancyIssue":  null,
         "Reason":  "Rejected: Linked path boundary",
         "CanDelete":  false
     }

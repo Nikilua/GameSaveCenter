@@ -1,3 +1,7 @@
+## 2026-10-23 T01-05 活跃运行保护待标准全链
+
+`artifact-preview.ps1` 在 manifest 预览中回传 run ID、所有者状态和文件占用状态；对活跃或身份未知的所有者跳过独占探测，避免干扰运行中的构建/测试。所有者退出后，以只读独占打开探测报告被占用文件；`CanDelete` 始终为 false。`capture-ui-audit.ps1` 已加入 checkout 互斥锁。PowerShell 7.6.2/Core、Windows PowerShell 5.1 各通过隔离子进程/锁文件/并发审计回归及原预览器 9/9 回归。证据见[专项 T01-05](../design/reviews/build-ui-reliability-20261022/evidence/T01-05/README.md)。本次脚本提交后的标准根入口完整链待复跑。
+
 ## 2026-10-23 T01-04 路径边界矩阵待补符号链接能力
 
 新增 `Test-ArtifactPathBoundaries.ps1`，通过生产只读预览在隔离 `.tmp` 验证空/相对/..越界/相似前缀/盘符/大小写/未声明所有权/junction/链接后代。PowerShell7.6.2 与 Windows PowerShell5.1各13项有效断言通过；所有 CanDelete 均为 false，哨兵哈希不变，夹具已清理。文件符号链接创建因当前令牌权限不足而跳过，记作每环境1 skip；不声称验证了 symlink。脚本与双宿主结果已由 `d2429890` 提交并推送。证据见[专项 T01-04](../design/reviews/build-ui-reliability-20261022/evidence/T01-04/README.md)。

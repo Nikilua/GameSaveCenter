@@ -1,3 +1,7 @@
+## 2026-10-23 T01-05 活跃运行与占用保护
+
+`Get-GscArtifactPreview` 暴露 `RunId`、`OwnerState`、`OccupancyState/Issue`；匹配运行进程仍活跃或身份未知时不做文件独占探测，以免抢占正在构建/测试的文件。运行结束后对清单内文件做只读独占打开探测，Windows sharing violation 标记 `in-use`，其他访问异常保守标记 `unavailable`；不授权删除。`capture-ui-audit.ps1` 与标准构建/安装复用 checkout mutex；并发审计在清空旧输出前明确失败。Core/7.6.2 与 Desktop/5.1 双宿主控制测试通过，证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-05/`。标准根入口完整链尚待本次脚本提交后复跑。
+
 ## 2026-10-23 T01-04 路径边界测试范围
 
 生产 `Get-GscArtifactPreview` 保持只读，`CanDelete=false`。`Test-ArtifactPathBoundaries.ps1` 在PowerShell7/Windows PowerShell5.1均验证空/相对/..越界/类似前缀/盘符与大小写/未认领所有权/junction/链接后代，13项有效断言通过，哨兵未变，隔离 `.tmp` 已清；脚本和结果由 `d2429890` 提交并推送。当前 Windows 令牌不具备创建文件符号链接的权限；这1项必须继续标为skip，不能以junction推断symlink已实际运行。预览无删除操作，T01-04仍待边界验收。

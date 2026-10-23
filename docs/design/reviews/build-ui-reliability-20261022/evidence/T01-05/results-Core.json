@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "engine": "7.6.2",
+  "edition": "Core",
+  "runId": "4e34c0dd35884d76add6f5f53dad26a5",
+  "activeOwner": {
+    "ownerState": "active",
+    "occupancyState": "owner-active",
+    "occupancyIssue": null,
+    "reason": "Owner process still active",
+    "processIdMatches": true,
+    "processStartTimeRecorded": true,
+    "runIdMatches": true,
+    "canDelete": false
+  },
+  "exitedOwnerLockedFile": {
+    "ownerState": "exited",
+    "occupancyState": "in-use",
+    "occupancyIssue": "sentinel.txt",
+    "reason": "Review candidate; references and file occupancy still require verification; file occupancy in-use: sentinel.txt",
+    "filePreserved": true,
+    "canDelete": false
+  },
+  "exitedOwnerReleasedFile": {
+    "ownerState": "exited",
+    "occupancyState": "clear",
+    "reason": "Review candidate; references and file occupancy still require verification",
+    "filePreserved": true,
+    "canDelete": false
+  },
+  "staleStartTime": {
+    "ownerState": "different-process",
+    "runId": "stale-run-id",
+    "canDelete": false
+  },
+  "unavailableOwner": {
+    "ownerState": "unknown",
+    "occupancyState": "owner-unknown",
+    "runId": null,
+    "canDelete": false
+  },
+  "parallelAuditRefused": true,
+  "auditOutputPreserved": true,
+  "sentinelUnchanged": true,
+  "deletionAuthorized": false,
+  "outcome": "passed"
+}

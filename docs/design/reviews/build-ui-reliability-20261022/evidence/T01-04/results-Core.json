@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
   "task": "T01-04",
-  "runId": "f773c4eee02141d29701778c03c5f73d",
+  "runId": "dcd375caebfb4b239b2b5c4fdc8c0e45",
   "powershellVersion": "7.6.2",
   "powershellEdition": "Core",
-  "startedUtc": "2026-10-23T13:44:58.3570189+00:00",
-  "completedUtc": "2026-10-23T13:44:58.6432531+00:00",
+  "startedUtc": "2026-10-23T14:04:23.5429059+00:00",
+  "completedUtc": "2026-10-23T14:04:23.7941793+00:00",
   "testScriptSha256": "41D5BCB3BCACBEA94BD15ED9FE7018C43144BB5DC06799AB1571BCCC24E66301",
-  "productionPreviewScriptSha256": "F56AA1C26B072C9DF56FCB6E5EBD4BA1858592E0F8B4B3C7A9B5A05A11E53741",
+  "productionPreviewScriptSha256": "2D5E7AF6FE5A816CCF415F16CFABD594A024600FCADA078F49A9D138DB19FF7B",
   "fixture": {
-    "path": "[repo]/.tmp/t01-04-f773c4eee02141d29701778c03c5f73d",
+    "path": "[repo]/.tmp/t01-04-dcd375caebfb4b239b2b5c4fdc8c0e45",
     "createdByThisRun": true,
     "removed": true,
     "sentinelSha256Before": "F5371CC3A5802F8855EE6BC1FCFC81283CEFFC1A6A8CBA46A7C5D76B34D34274",
@@ -22,7 +22,7 @@
   "cases": [
     {
       "name": "current owner protects an allowed file",
-      "path": "[repo]\\.tmp\\t01-04-f773c4eee02141d29701778c03c5f73d\\sentinel.txt",
+      "path": "[repo]\\.tmp\\t01-04-dcd375caebfb4b239b2b5c4fdc8c0e45\\sentinel.txt",
       "expectedReason": "Owner process still active",
       "actualReason": "Owner process still active",
       "ownerState": "active",
@@ -32,7 +32,7 @@
     },
     {
       "name": "path comparison ignores case",
-      "path": "[repo]\\.TMP\\T01-04-F773C4EEE02141D29701778C03C5F73D",
+      "path": "[repo]\\.TMP\\T01-04-DCD375CAEBFB4B239B2B5C4FDC8C0E45",
       "expectedReason": "Owner process still active",
       "actualReason": "Owner process still active",
       "ownerState": "active",
@@ -42,7 +42,7 @@
     },
     {
       "name": "drive-letter comparison ignores case",
-      "path": "[repo]\\.tmp\\t01-04-f773c4eee02141d29701778c03c5f73d",
+      "path": "[repo]\\.tmp\\t01-04-dcd375caebfb4b239b2b5c4fdc8c0e45",
       "expectedReason": "Owner process still active",
       "actualReason": "Owner process still active",
       "ownerState": "active",
@@ -122,7 +122,7 @@
     },
     {
       "name": "unclaimed file ownership",
-      "path": "[repo]\\.tmp\\t01-04-f773c4eee02141d29701778c03c5f73d\\sentinel.txt",
+      "path": "[repo]\\.tmp\\t01-04-dcd375caebfb4b239b2b5c4fdc8c0e45\\sentinel.txt",
       "expectedReason": "Ownership not claimed",
       "actualReason": "Ownership not claimed",
       "ownerState": "active",
@@ -132,7 +132,7 @@
     },
     {
       "name": "junction path",
-      "path": "[repo]\\.tmp\\t01-04-f773c4eee02141d29701778c03c5f73d\\junction",
+      "path": "[repo]\\.tmp\\t01-04-dcd375caebfb4b239b2b5c4fdc8c0e45\\junction",
       "expectedReason": "Rejected:*Linked path boundary*",
       "actualReason": "Rejected: Linked path boundary",
       "ownerState": "active",
@@ -142,7 +142,7 @@
     },
     {
       "name": "linked descendant of registered directory",
-      "path": "[repo]\\.tmp\\t01-04-f773c4eee02141d29701778c03c5f73d",
+      "path": "[repo]\\.tmp\\t01-04-dcd375caebfb4b239b2b5c4fdc8c0e45",
       "expectedReason": "Rejected:*Linked descendant*",
       "actualReason": "Rejected: Linked descendant",
       "ownerState": "active",

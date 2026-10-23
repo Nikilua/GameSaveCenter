@@ -1,3 +1,7 @@
+## 2026-10-23 T01-05 活跃运行保护实施与双宿主测试
+
+预览结果增加 run ID、所有者和文件占用字段。匹配所有者进程活跃或身份未知时跳过独占文件探测，避免与构建写入竞争；结束后通过只读 `FileShare.None` 打开探测报告 sharing violation，保持 `CanDelete=false`。`capture-ui-audit.ps1` 复用 `checkout-lock.ps1`，在清空目标输出前获得 checkout 锁。Core/7.6.2、Desktop/5.1 都用真实子 PowerShell 验证活跃 PID+启动时间+run ID、进程退出但哨兵仍锁定、释放后的恢复、陈旧启动时间识别，以及持锁启动并行审计时拒绝运行且原输出哨兵不变；共享 `Test-ArtifactPreview.ps1` 两版本各9/9。源码验证和 `git diff --check` 通过。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-05/`；本次脚本提交后的标准根入口完整链待跑。未执行任何真实删除。
+
 ## 2026-10-23 T01-04 路径边界负例
 
 新增隔离路径测试脚本并在 PowerShell7.6.2/Core、Windows PowerShell5.1 各运行13项有效断言。空、相对、父目录越界、类似根前缀、根本身、不同盘符、盘符相对越界、路径大小写、未声明所有权、junction本身及junction后代均拒绝成为可删候选；所有CanDelete=false，哨兵SHA-256未变，临时夹具清理。文件symlink测试在两个宿主均因系统权限无法创建而跳过，分别记录管理员权限需求/mklink权限不足；没有提权绕过。脚本及双宿主结果已在 `d2429890` 提交并推送。T01-04尚待 symlink 权限条件或验收边界解决。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/`。

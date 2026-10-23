@@ -1,3 +1,7 @@
+## 2026-10-23 T01-05 活跃运行保护已实现，待完整链
+
+产物预览返回 run ID、进程身份和占用状态；活跃或身份未知时跳过独占探测，退出后只读检查锁文件并报告，始终 `CanDelete=false`。UI 审计现在与构建/安装共享 checkout mutex；真实 `capture-ui-audit.ps1` 子进程在锁被持有时非零退出，既有输出哨兵保留。Core/7.6.2 与 Desktop/5.1 的活跃进程、PID 启动时间、锁占用、释放和并发审计测试通过；共享预览回归两边均9/9。证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-05/`。脚本变更后的 `GameSaveCenter-Run.cmd` 标准完整链尚待重跑；通过后继续 T01-06。
+
 ## 2026-10-23 T01-04 路径边界回归部分完成
 
 PowerShell7.6.2 与 Windows PowerShell5.1 各有13项路径边界断言通过：空/相对/父目录/相似前缀/根本身/不同盘符与盘符相对/路径大小写/未声明所有权/junction本身及其后代；CanDelete 始终 false，哨兵不变，隔离 `.tmp` 已清。脚本与结果已在 `d2429890` 提交并推送。文件符号链接创建被当前令牌拒绝（PS7要求管理员权限，PS5 `mklink` 权限不足），每环境各1 skip；不要伪报 symlink 通过或提权重试。证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/`。T01-04保留待验收；可继续独立 T01-05 活跃目录保护。

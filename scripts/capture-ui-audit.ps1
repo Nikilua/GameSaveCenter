@@ -6,6 +6,9 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'checkout-lock.ps1')
+$checkoutLock = Enter-GscCheckoutLock $root
+try {
 $harness = Join-Path $root 'tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj'
 if ([string]::IsNullOrWhiteSpace($Output)) {
     $Output = Join-Path $root 'artifacts\ui-audit'
@@ -13,13 +16,13 @@ if ([string]::IsNullOrWhiteSpace($Output)) {
 $Output = [System.IO.Path]::GetFullPath($Output)
 $zip = Join-Path $root 'artifacts\GameSaveCenter-ui-audit.zip'
 $buildRoot = Join-Path $root ("artifacts\ui-audit-build\{0}\audit-{1}" -f $Configuration, [guid]::NewGuid().ToString('N'))
-New-Item -ItemType Directory -Path $buildRoot -Force | Out-Null
 
 # Never clean a path outside the repository's artifacts directory.
 $artifactsRoot = [System.IO.Path]::GetFullPath((Join-Path $root 'artifacts'))
 if (-not $Output.StartsWith($artifactsRoot + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase)) {
     throw "Output must be inside artifacts: $Output"
 }
+New-Item -ItemType Directory -Path $buildRoot -Force | Out-Null
 if (Test-Path -LiteralPath $Output) {
     Remove-Item -LiteralPath $Output -Recurse -Force
 }
@@ -60,4 +63,8 @@ try {
 }
 finally {
     Pop-Location
+}
+}
+finally {
+    Exit-GscCheckoutLock $checkoutLock
 }

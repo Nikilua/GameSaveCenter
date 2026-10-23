@@ -17,7 +17,7 @@ function Get-GscArtifactPreview {
         catch { $ownerState = 'unknown' }
     }
     foreach ($artifact in $Manifest.artifacts) {
-        $reason = ''; $path = ''; $bytes = $null
+        $reason = ''; $path = ''; $bytes = $null; $occupancyState = 'not-checked'; $occupancyIssue = $null
         try {
             if ([string]::IsNullOrWhiteSpace($artifact.Path)) { throw 'Empty artifact path' }
             $raw = [string]$artifact.Path
@@ -48,10 +48,35 @@ function Get-GscArtifactPreview {
                 if ($items[0].PSIsContainer) { $items = @(Get-ChildItem -LiteralPath $path -Recurse -Force -ErrorAction Stop) }
                 if (@($items | Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint }).Count) { throw 'Linked descendant' }
                 $bytes = ($items | Where-Object { -not $_.PSIsContainer } | Measure-Object Length -Sum).Sum
+                if ($ownerState -eq 'active') { $occupancyState = 'owner-active' }
+                elseif ($ownerState -eq 'unknown') { $occupancyState = 'owner-unknown' }
+                else {
+                    $occupancyState = 'clear'
+                    foreach ($file in @($items | Where-Object { -not $_.PSIsContainer })) {
+                        $probe = $null
+                        try {
+                            $probe = [IO.File]::Open($file.FullName, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::None)
+                        }
+                        catch {
+                            $openException = $_.Exception
+                            while ($openException.InnerException) { $openException = $openException.InnerException }
+                            $win32Code = $openException.HResult -band 0xFFFF
+                            $occupancyState = if ($openException -is [IO.IOException] -and ($win32Code -eq 32 -or $win32Code -eq 33)) { 'in-use' } else { 'unavailable' }
+                            $occupancyIssue = [IO.Path]::GetFileName($file.FullName)
+                            break
+                        }
+                        finally {
+                            if ($probe) { $probe.Dispose() }
+                        }
+                    }
+                }
+                if ($occupancyState -in @('in-use', 'unavailable') -and $reason -notlike 'Rejected:*') {
+                    $reason += "; file occupancy $occupancyState`: $occupancyIssue"
+                }
             }
         }
         catch { $reason = 'Rejected: ' + $_.Exception.Message }
-        [pscustomobject]@{ Path=$path; EstimatedBytes=$bytes; OwnerState=$ownerState; Reason=$reason; CanDelete=$false }
+        [pscustomobject]@{ Path=$path; EstimatedBytes=$bytes; RunId=$Manifest.owner.RunId; OwnerState=$ownerState; OccupancyState=$occupancyState; OccupancyIssue=$occupancyIssue; Reason=$reason; CanDelete=$false }
     }
 }
 function Get-GscDuplicateArtifactPreview {
