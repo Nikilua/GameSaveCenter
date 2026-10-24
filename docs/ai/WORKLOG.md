@@ -1,3 +1,9 @@
+## 2026-10-24 ea926c5e 标准完整链通过；外机CS8300定位
+
+默认 `GameSaveCenter-Run.cmd` 在ea926c5e完整退出0：SDK8.0.423、Release0警告/0错误、1967项1910通过/57跳过/0失败、148份TRX计数一致、145个WPF隔离类；Worker发布、ZIP/PEXT、安装六程序集版本/身份/SHA与Playnite启动成功。原始诊断run `20261024T124042418Z-170b15d4` 保留于本机artifacts；摘要证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-ea926c5e/`。57项跳过均为已撤销架构的同一条skip reason。T00-01最新全链已满足，T00-08根据双PowerShell受控失败后恢复回放与真实根入口成功记已验收；受控下载中断仍不等同真实网络中断。旧用户TRX/TestResults未动。
+
+用户外机新日志在 `GamePickerViewModel.cs` 报9处CS8300，诊断为未解决Git冲突标记；当前ea926c5e源无标记且标准全链通过。由于外机HEAD/status/diff缺失，不直接覆盖或reset。下一步索取该机 `git status --short --branch`、`git rev-parse --short HEAD`、`git diff -- src/GameSaveCenter.Playnite/ViewModels/GamePickerViewModel.cs`，根据本地改动及merge/rebase状态安全解除冲突，然后要求外机复跑默认根入口。详见T00-08 README。
+
 ## 2026-10-24 T02-03 实际键盘焦点回归补正
 
 移除仅设置FocusManager逻辑焦点的做法；每个主题使用可见、激活窗口，检查 `Keyboard.Focus(grid)` 与 `Keyboard.FocusedElement`，并在三轮1400/900 DIP往返中确认焦点对象与DataGrid焦点范围不变。双主题2/2、所在类11/11，SDK8.0.423 Release 0警告/0错误。初始焦点范围断言错误地要求逻辑目标是DataGrid，失败TRX保留；修正后以真实键盘焦点断言通过。首次沙箱内默认入口因阻止写入Playnite用户目录而退出1，构建/测试本身无失败；在获准本机上下文重跑后默认根.cmd退出0：1967项1910通过/57既有跳过/0失败，148份TRX一致、145个WPF类，Worker发布、ZIP/PEXT、安装及Playnite启动成功。证据 evidence/T02-03。

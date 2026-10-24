@@ -10,4 +10,6 @@
 
 提交前在 PowerShell Core 7.6.2 与 Windows PowerShell 5.1 各运行 SDK、安装和构建恢复夹具，六个脚本进程均退出 0。SDK组3个情形、安装组3条尝试均通过。构建夹具记录第一次测试 exit 23，并在下一次独立诊断运行中恢复全部4个测试组；`testsRequested=true`，TRX案例数为0，因为 `dotnet` 是控制流shim，没有编译程序集或执行任何真实测试案例。
 
-上述是提交前回放，不能替代该提交上的干净回放或实际构建。提交后将归档两种PowerShell的摘要/日志，再运行默认 `GameSaveCenter-Run.cmd` 完成真实还原、Release构建、测试、打包、安装身份校验及启动。真实下载中断仍由隔离传输模拟，另一台电脑的失败根因仍需其同次 `artifacts/one-click-install.log` 和 `artifacts/build-diagnostics/<run-id>/summary.json` 才能确认。
+上述是候选回放，受控 `dotnet` shim 本身不执行测试案例。随后在 `ea926c5e36305dc4d67659d98d42e207b71e7439` 上通过默认 `GameSaveCenter-Run.cmd` 完成真实还原、Release构建、测试、Worker发布、ZIP/PEXT打包、安装身份校验及Playnite启动：run `20261024T124042418Z-170b15d4`，SDK `8.0.423`，Release 0警告/0错误，1967项测试1910通过、57跳过、0失败，148份TRX计数一致，145个WPF隔离类全部结束；根入口退出0。57项跳过均为同一条已撤销“今日工作台 UI 架构”断言。安装的六个关键程序集版本/SHA与构建输出一致；未声称该次验证了进程内插件加载路径或真实页面交互。原始诊断在本机 `artifacts/build-diagnostics/20261024T124042418Z-170b15d4`，提交级摘要见 [T00-01全链证据](../T00-01/standard-ea926c5e/README.md)。
+
+用户另一台电脑随后提供的最新失败日志显示，编译器在 `GamePickerViewModel.cs` 多处报 `CS8300`（merge conflict marker encountered）。这说明该次 checkout 中存在未解决的 Git 冲突标记；它不是上述 run 的失败，也不能据此推断 SDK 或网络问题。由于没有该机的 HEAD、状态和差异，先保留其工作区并取证，不建议直接 `reset`、`restore` 或覆盖文件。真实下载中断仍由隔离传输模拟。

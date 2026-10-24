@@ -1,3 +1,9 @@
+## 2026-10-24 ea926c5e 最新标准全链成功；外机源码冲突标记
+
+默认 `GameSaveCenter-Run.cmd` 在 `ea926c5e36305dc4d67659d98d42e207b71e7439` 完整退出0，run `20261024T124042418Z-170b15d4`，SDK8.0.423、Release0警告/0错误，1967项1910通过/57跳过/0失败，148份TRX计数一致、145个WPF隔离类完成；Worker发布、ZIP/PEXT、六程序集安装身份/SHA及Playnite启动成功。本地原始诊断 `artifacts/build-diagnostics/20261024T124042418Z-170b15d4`，摘要与安装清单 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-ea926c5e/`。工作树dirty标志只包含已有用户未跟踪TRX/TestResults，不要清理或提交它们。57个skip均为已撤销架构的同一条跳过原因。
+
+外机最新日志在 `GamePickerViewModel.cs` 报9处CS8300，文件含未解决的Git merge conflict markers；当前ea926c5e源文件无冲突标记，全链通过。没有外机HEAD、状态和文件diff，不能安全地覆盖其源码。先让用户保留该机本地改动并提供 `git status --short --branch`、`git rev-parse --short HEAD` 和 `git diff -- src/GameSaveCenter.Playnite/ViewModels/GamePickerViewModel.cs`；随后确定冲突来自未完成merge/rebase还是文件被带入，再安全恢复并复跑默认入口。详细见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md`。
+
 ## 2026-10-24 T02-08 51641d06 当前宿主滚动补证
 
 51641d06完整标准链安装后，Playnite PID33252在Bongo Cat存档页可见18条历史。桌面自动化分别滚动历史与详情：历史首行到12:40时详情锚点仍为13:05；详情继续滚动后历史仍停12:40，底部校验按钮可见但未触发。保存三张1285×822 JPEG到artifacts/host-audit-51641d06并记录SHA于 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/host-51641d06-index.json`。只覆盖深色常规窗口与自动化滚动；当前Process.Modules未暴露加载程序集路径，浅色/窄短窗/物理输入/DPI仍待验，T02-08不升级完成。

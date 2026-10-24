@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "ea926c5e36305dc4d67659d98d42e207b71e7439",
+  "runId": "20261024T124042418Z-170b15d4",
+  "entry": "GameSaveCenter-Run.cmd",
+  "exitCode": 0,
+  "outcome": "passed",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "build": { "warnings": 0, "errors": 0 },
+  "tests": {
+    "total": 1967,
+    "passed": 1910,
+    "skipped": 57,
+    "failed": 0,
+    "trxFiles": 148,
+    "counterMismatches": 0,
+    "wpfIsolatedClasses": 145,
+    "skipReasons": [
+      "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。"
+    ]
+  },
+  "publish": "worker win-x64 passed",
+  "packages": ["ZIP passed", "PEXT passed"],
+  "installation": {
+    "version": "0.6.73",
+    "assembliesVerified": 6,
+    "playniteStartup": "passed",
+    "playniteProcessId": 6268
+  },
+  "workingTreeClean": false,
+  "workingTreeNote": "Only pre-existing untracked user TRX/TestResults files were present; none were staged or modified by this evidence update."
+}
