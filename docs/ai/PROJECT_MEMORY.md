@@ -22,9 +22,9 @@ T01-02只读清理预览在`f577fd19`代码上双宿主复验各9/9，含活动�
 
 T01-06诊断保留脚本/测试与f577fd19一致；PowerShell Core7.6.2和Windows PowerShell5.1.22000.2538复验双双通过，缺件/篡改/源变化/越界拒绝、归档后隔离清理和再次校验均成立。303文件真实归档SHA匹配且源原件仍保留；当前全链成功满足最终链条件，因此本项已验收。没有通用自动删除授权；详见`design/reviews/build-ui-reliability-20261022/evidence/T01-06/README.md`。
 
-T01-07包去重与回退保护在双PowerShell复验通过；14份manifest/39项包记录中只有当前ZIP/PEXT同hash，按必要格式保留。安全移除两个已归属旧构建输出并保留诊断。后续追溯到三批旧RenderHarness输出的报告提交/时间；仅删除428个无精确/保守文档引用且在文档引用目录留有相同SHA副本的PNG，逻辑58,403,926字节，D盘空闲增加59,301,888字节。唯一图片、其他引用图和报告保留；原索引范围从2,432张减至2,004张，237组重复仍留在引用或未证明安全的路径中，因此T01-07仍实施中。逐文件路径、SHA和保留副本见`design/reviews/build-ui-reliability-20261022/evidence/T01-07/screenshot-dedupe-20261025.json`。
+T01-07包去重与回退保护在双PowerShell复验通过；14份manifest/39项包记录中只有当前ZIP/PEXT同hash，按必要格式保留。安全移除两个已归属旧构建输出并保留诊断。后续追溯到三批旧RenderHarness输出的报告提交/时间；两批删除612个当前文档无引用且在文档引用目录有同SHA副本的PNG（204个hash、83,348,169逻辑字节）。唯一图片、其他引用图和报告保留；原索引范围从2,432张减至1,820张，235组/830个重复副本仍需逐路径确认，因此T01-07仍实施中。两批间第二批独立磁盘空闲增量未记录；累计可用空间变化可能含后台活动。逐文件路径、SHA和保留副本见`design/reviews/build-ui-reliability-20261022/evidence/T01-07/screenshot-dedupe-20261025.json`。
 
-外机最新日志与用户状态显示：另一台电脑HEAD `ea926c5e`、main落后origin/main两个提交且有多个本地源码/测试/文档修改及未跟踪证据。`GamePickerViewModel.cs` 含 `Updated upstream` / `Stashed changes` 标记，导致9处CS8300；这是本地stash合并冲突，不是SDK/NuGet问题。远端76eab05c和f577fd19没有改该ViewModel。已取得部分diff，完整diff与`git stash list`待补；不reset、不覆盖、不丢弃本地工作。详见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md`。
+外机最新日志与用户状态显示：另一台电脑HEAD `ea926c5e`、main落后origin/main两个提交且有多个本地源码/测试/文档修改及未跟踪证据。用户随后回传的 `GamePickerViewModel.cs` diff 直接显示 `Updated upstream` / `Stashed changes` 冲突标记，导致9处CS8300；测试尚未启动。这是工作树冲突，不是SDK/NuGet问题。保留全部现存改动的步骤为stash含未跟踪文件、确认干净、快进拉取，再运行完整根入口；成功结果仍待用户回报。不reset、不覆盖、不丢弃本地工作。详见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md`。
 
 ## 2026-10-24 T02-08 51641d06 当前宿主滚动补证
 

@@ -12213,3 +12213,8 @@ T00-07失败候选隔离输出已在dcbaab13完整标准链与证据归档后清
 T03-08交付清单已完成并标明边界：最新成功产品完整链绑定 `dcbaab13b9464523ffed6d88ca2748b6fb6dd647`，SDK8.0.423/Release 0警告0错误，1967项1910通过/57既有skip/0失败，148份TRX一致、145个WPF隔离类，发布/包/安装/Playnite启动成功。`dcbaab13` 后的 `1fb9975d`、`d258b61c`、`7b251fa4`、`c36f5780` 仅改文档/证据，未重跑完整链，也未改src/tests/scripts。失败候选输出已清理，诊断/当前成功包和用户测试证据保留。
 
 32项计划按账本仍有11项开放：T00-07、T01-04、T01-07、T01-08、T02-02、T02-04至T02-08、T03-05；主要待跨会话/符号链接权限、外机快进构建、未知截图归属、真实Playnite双主题/物理输入DPI与隔离旧包兼容回放。外机 `ea926c5e` 的CS8300来自GamePickerViewModel中的stash冲突标记，需先含未跟踪文件stash、确认clean、`git pull --ff-only origin main`，再运行默认根入口并报告结果。另附R09失败缺同次HEAD/程序集身份，不据本机通过推断外机通过。整体计划未完成。详细身份、清理和手动边界见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-08/README.md`。
+## 2026-10-25 T01-07 第二批截图副本清理与外机故障确认
+
+截图清理第一批的428个文件后，对三个目标RenderHarness目录中剩余277个仍有保留目录同SHA副本的候选重新扫描当前文档：93个文件名命中，全部保留；184个无文件名/目录路径引用的未跟踪PNG逐项核对索引SHA、保留副本SHA、路径边界、reparse point和活动构建/渲染/测试进程后清理。第二批逻辑24,944,243字节；两批累计612文件、204个SHA、83,348,169逻辑字节。删除后612个路径均不存在，204个保留副本重新哈希一致，三份报告和审计唯一图片均存在。初始索引推算剩余1,820张、230,794,845字节、235组/830个重复副本，其中两组降为单份。第二批独立磁盘空闲差未保留；清单只记两批起止观察值，不把整段物理空间变化全归因于删除。证据及逐路径映射见 docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/screenshot-dedupe-20261025.json。用户Round3 TRX和TestResults未动。
+
+用户补充另一台电脑的 git status、HEAD及 GamePickerViewModel.cs diff：HEAD ea926c5e，main落后 origin/main 两个提交，多个源码/测试/文档已修改且有未跟踪证据；源码中有冲突标记 Updated upstream / Stashed changes。对应9个CS8300，日志显示测试未开始。这是外机工作树stash冲突，不是SDK或NuGet诊断。恢复步骤：git stash push --include-untracked -m "保存本机 GamePicker 构建前改动"；确认 git status --short --branch 干净；git pull --ff-only origin main；确认HEAD与拉取后的origin/main一致；从仓库根目录运行 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"。先保留stash直到该完整链退出0；外机结果仍待用户提供。本机最近完整标准链证据仍绑定 dcbaab13，后续产品源码未改；不把本机结果当成外机成功。
