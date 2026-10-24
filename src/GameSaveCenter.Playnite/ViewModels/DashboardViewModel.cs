@@ -5851,6 +5851,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             builder.AppendLine("生成时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss zzz"));
             builder.AppendLine("插件版本：" + (typeof(DashboardViewModel).Assembly.GetName().Version?.ToString() ?? "dev"));
             builder.AppendLine("插件构建身份：" + BuildIdentity.ForAssembly(typeof(DashboardViewModel).Assembly));
+            builder.AppendLine("插件实际加载路径：" + typeof(DashboardViewModel).Assembly.Location);
             builder.AppendLine("Worker：" + (Snapshot.WorkerHealthy ? "正常" : "不可用") + " / " + Snapshot.WorkerVersion);
             builder.AppendLine("Worker 构建身份：" + (string.IsNullOrWhiteSpace(Snapshot.WorkerBuildIdentity) ? "不可用" : Snapshot.WorkerBuildIdentity));
             builder.AppendLine("安全模式：" + (settings.SafeModeEnabled || Snapshot.SafeModeEnabled ? "已开启（自动操作已暂停）" : "未开启"));

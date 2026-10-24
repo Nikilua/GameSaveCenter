@@ -1,0 +1,33 @@
+{
+  "build": {
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "target": "tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj",
+    "sourceHead": "7b714c40",
+    "workingTreeContainsCurrentChanges": true,
+    "warnings": 0,
+    "errors": 0,
+    "exitCode": 0
+  },
+  "dotnetTests": {
+    "filter": "BuildIdentityTests|DiagnosticSummaryNoClipTests",
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0
+  },
+  "powerShellHosts": {
+    "Core": "3/3 passed including actual path/hash and missing/unknown assertions",
+    "Desktop": "3/3 passed including actual path/hash and missing/unknown assertions"
+  },
+  "lastFullStandardSuccess": "b8eedc4797ba39639a771456c86ed1911be0e153",
+  "newCandidateStandardRun": "pending commit and standard entry",
+  "ownedOutputRoots": [
+    ".tmp/t03-04-build",
+    ".tmp/t03-04-results"
+  ],
+  "initialVolumeFreeBytes": {
+    "C": 9058021376,
+    "D": 14629867520
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "File": "GameSaveCenter.Playnite.dll",
+    "Path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Playnite.dll",
+    "Exists": true,
+    "BuildIdentity": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+    "SHA256": "F3BD8BA0EA36BBC2DBF9C54F91BC00415E0223296CDE712CEC0418370732C47C"
+  },
+  {
+    "File": "GameSaveCenter.Core.dll",
+    "Path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Core.dll",
+    "Exists": true,
+    "BuildIdentity": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+    "SHA256": "24CF8E6774F5A864DDAABC4CE9AF1443587746FA41BA3136E7F03B5E16F8DB57"
+  },
+  {
+    "File": "GameSaveCenter.Contracts.dll",
+    "Path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Contracts.dll",
+    "Exists": true,
+    "BuildIdentity": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+    "SHA256": "1F26375CF89C812DCE4C9A394B65007B6BCE88A345F399F2E357984BCD3DB807"
+  },
+  {
+    "File": "Worker/GameSaveCenter.Worker.dll",
+    "Path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.dll",
+    "Exists": true,
+    "BuildIdentity": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+    "SHA256": "64BC450A0031C189C1B43C7C2AD50376F3EF1A09DA75A362C7198E8A2478339E"
+  },
+  {
+    "File": "Worker/GameSaveCenter.Core.dll",
+    "Path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Core.dll",
+    "Exists": true,
+    "BuildIdentity": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+    "SHA256": "D1BB90E07F79BB5BB0B4665A1BFF8DAB1C20A0BE23241204841579F399E27971"
+  },
+  {
+    "File": "Worker/GameSaveCenter.Contracts.dll",
+    "Path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Contracts.dll",
+    "Exists": true,
+    "BuildIdentity": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+    "SHA256": "F4C8B9C199B18157E077C78D445560D57CEC90293A8AF9733E512998EB95E343"
+  }
+]

@@ -384,6 +384,24 @@ function Stop-PlayniteAndOwnedWorkerReliably {
     }
 }
 
+function Get-GscInstalledAssemblyIdentities {
+    param([Parameter(Mandatory = $true)][string]$Target)
+
+    foreach ($relative in @('GameSaveCenter.Playnite.dll', 'GameSaveCenter.Core.dll', 'GameSaveCenter.Contracts.dll',
+        'Worker/GameSaveCenter.Worker.dll', 'Worker/GameSaveCenter.Core.dll', 'Worker/GameSaveCenter.Contracts.dll')) {
+        $path = [IO.Path]::GetFullPath((Join-Path $Target $relative))
+        $exists = Test-Path -LiteralPath $path -PathType Leaf
+        $identity = 'missing'
+        $sha256 = 'unavailable'
+        if ($exists) {
+            $identity = (Get-Item -LiteralPath $path).VersionInfo.ProductVersion
+            if ([string]::IsNullOrWhiteSpace($identity)) { $identity = 'unknown' }
+            $sha256 = (Get-FileHash -LiteralPath $path -Algorithm SHA256 -ErrorAction Stop).Hash
+        }
+        [pscustomobject]@{ File = $relative; Path = $path; Exists = $exists; BuildIdentity = $identity; SHA256 = $sha256 }
+    }
+}
+
 function Install-ExtensionAtomically {
     param(
         [Parameter(Mandatory = $true)][string]$Source,
@@ -452,6 +470,7 @@ function Install-ExtensionAtomically {
     if ($fileVersion -and -not $fileVersion.StartsWith("$ExpectedVersion.")) {
         throw "安装验证失败：DLL 文件版本应为 $ExpectedVersion.x，实际为 $fileVersion。"
     }
+    $installedIdentities = @(Get-GscInstalledAssemblyIdentities -Target $target)
 
     if ($oldMoved) {
         try { Remove-Item -LiteralPath $backup -Recurse -Force -ErrorAction Stop }
@@ -462,6 +481,7 @@ function Install-ExtensionAtomically {
         Target = $target
         ManifestVersion = $installedVersion
         FileVersion = $fileVersion
+        AssemblyIdentities = $installedIdentities
     }
     }
     catch { $attempt.FailureMessage = $_.Exception.Message; throw }
@@ -576,6 +596,12 @@ try {
         $report.Add("安装目录：$($result.Target)")
         $report.Add("清单版本：$($result.ManifestVersion)")
         $report.Add("DLL 版本：$($result.FileVersion)")
+        $report.Add('程序集身份（磁盘读取；不代表运行中已加载）：')
+        foreach ($identity in $result.AssemblyIdentities) {
+            $report.Add("  $($identity.File)：$($identity.BuildIdentity)")
+            $report.Add("  文件路径：$($identity.Path)")
+            $report.Add("  SHA-256：$($identity.SHA256)")
+        }
     }
     $report | Set-Content $reportPath -Encoding UTF8
 

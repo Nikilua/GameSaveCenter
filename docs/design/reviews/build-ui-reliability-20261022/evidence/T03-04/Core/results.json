@@ -1,0 +1,10 @@
+{
+  "ActualInstalledPathAndHashVerified": true,
+  "MissingAndUnknownIdentitiesExplicit": true,
+  "Fixture": "Synthetic files, production functions parsed from AST",
+  "LockedFilePreserved": true,
+  "AttemptRecordsVerified": true,
+  "Timestamp": "2026-10-24T02:30:26.3558755Z",
+  "RenameFailureRolledBack": true,
+  "RetrySucceeded": true
+}

@@ -1,0 +1,10 @@
+{
+    "ActualInstalledPathAndHashVerified":  true,
+    "Timestamp":  "2026-10-24T02:30:27.4267721Z",
+    "RetrySucceeded":  true,
+    "RenameFailureRolledBack":  true,
+    "MissingAndUnknownIdentitiesExplicit":  true,
+    "Fixture":  "Synthetic files, production functions parsed from AST",
+    "AttemptRecordsVerified":  true,
+    "LockedFilePreserved":  true
+}
