@@ -1,0 +1,1161 @@
+{
+  "schemaVersion": 1,
+  "task": "T01-07",
+  "batch": 3,
+  "auditType": "targeted duplicate cleanup with retained SHA peers",
+  "generatedUtc": "2026-10-24T21:54:40.140553Z",
+  "baseCommit": "32e64d6417dc683fd9f9bfa73174ed6efcf194c0",
+  "status": "completed",
+  "candidateDirectory": "artifacts/save-summary-reflow-20261023/render-final/",
+  "retainedPeerDirectories": [
+    "artifacts/ui-layout-fix/render-serial-final/",
+    "artifacts/ui-width-regression-20261023/render-clean-commit/"
+  ],
+  "renderReports": [
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/render-qa-report.txt",
+      "sha256": "F4945457EF62BB442D6156333D87C3428BCA7DE84571EA8272923C46C4A7CCC8",
+      "Generated": "2026-10-23 15:02:52",
+      "Scenario": "render-qa",
+      "EvidenceSource": "OffscreenRenderHarness",
+      "Commit": "0a91c39962b373c2170b31fbe3fd363887465fc2",
+      "WorkingTreeClean": "False",
+      "reportPngReferences": 0
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/render-qa-report.txt",
+      "sha256": "565AB52E9FECDB768B05D04942967B6C4202D9E19611F3C2DBC896B6B2B8823F",
+      "Generated": "2026-10-22 21:32:29",
+      "Scenario": "render-qa",
+      "EvidenceSource": "OffscreenRenderHarness",
+      "Commit": "4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+      "WorkingTreeClean": "False",
+      "reportPngReferences": 0
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/render-qa-report.txt",
+      "sha256": "13DCF80B939E43A2970DAE23466067B6697E377513F905F405BF1DFA906DC2D2",
+      "Generated": "2026-10-23 13:22:26",
+      "Scenario": "render-qa",
+      "EvidenceSource": "OffscreenRenderHarness",
+      "Commit": "f3ac4c743ce50705871e03d074127f89824e11dd",
+      "WorkingTreeClean": "False",
+      "reportPngReferences": 0
+    }
+  ],
+  "referenceAudit": {
+    "root": "docs/",
+    "textFilesScanned": 2296,
+    "excludedInventoryEvidence": [
+      "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/actual-screenshot-audit.json",
+      "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/live-rescan-20261025.json",
+      "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/screenshot-dedupe-20261025.json"
+    ],
+    "candidateFileNameOrPathHitsBeforeDeletion": 0,
+    "storedAuditExactOrConservativeHits": 0,
+    "retainedPeerCopiesHaveExistingDocumentReferences": true
+  },
+  "deletion": {
+    "candidateFiles": 178,
+    "removedFiles": 178,
+    "distinctHashes": 176,
+    "logicalBytes": 24905084,
+    "allTargetsAbsent": true,
+    "allRetainedPeersRehashedAfterDeletion": 178,
+    "allRenderReportsPresentAndSHA256Verified": true,
+    "uniqueImagesMissing": 0,
+    "trackedFilesDeleted": 0,
+    "reparsePointsInSixScopedRenderDirectories": 0,
+    "rendererBuildOrTestProcessesActive": false,
+    "playniteAndWorkerWereRunningButNotAccessed": true,
+    "priorCleanupRetainedCopyPathsSubsequentlyRemoved": 178
+  },
+  "historicalInventoryAfterBatch": {
+    "sourceEvidence": "actual-screenshot-audit.json",
+    "initialImageCount": 2432,
+    "initialBytes": 314143014,
+    "previouslyRemovedFiles": 612,
+    "previouslyRemovedBytes": 83348169,
+    "thisBatchRemovedFiles": 178,
+    "thisBatchRemovedBytes": 24905084,
+    "cumulativeRemovedFiles": 790,
+    "cumulativeDistinctRemovedHashes": 204,
+    "cumulativeRemovedBytes": 108253253,
+    "remainingIndexedImageCount": 1642,
+    "remainingIndexedBytes": 205889761,
+    "remainingDuplicateGroups": 226,
+    "remainingFilesInDuplicateGroups": 643,
+    "groupsReducedToSingleCopyInCumulativeCleanup": 11,
+    "wholeArtifactTreeImageCountNotClaimed": true
+  },
+  "sourceFiles": [
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1280x720-tab1.png",
+      "bytes": 92734,
+      "sha256": "000A263D4CDBA840D70A3FAECD6A67B5142BCB17439E6641F9414477F9539A94",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1280x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab1.png",
+      "bytes": 61081,
+      "sha256": "0070F833EE23FDD818BDC8A349FE5C7E5390588333DF05660985F3A021E84F69",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-2560x1440-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-3840x2160-tab3.png",
+      "bytes": 188148,
+      "sha256": "0164058C897C13D2DEA5D00A01D8AC6E45B1BE350B1911B655E4FE6C312BC684",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-3840x2160-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab0.png",
+      "bytes": 58799,
+      "sha256": "026E9766F60E2BB051856FE7EE52198E33605BF567479CD41C980E305766A135",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1280x720-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab4.png",
+      "bytes": 197613,
+      "sha256": "0296F1FAA94B713972E8B164FBE286F42A8428C9A579B5B5215AC0401EA7DC27",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1920x1080-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab0.png",
+      "bytes": 127616,
+      "sha256": "04C2B79DD57CD33223295B604A17BE175D3F5523025C578C3E97C2DA0749137D",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1536x864-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab1.png",
+      "bytes": 143849,
+      "sha256": "04DDA452D2BD68F094A22267B32B953D2B6250211E77FCA8AC94D33B254F771B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1707x960-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab1.png",
+      "bytes": 181326,
+      "sha256": "05C53046900A8602851FF666385EDBC895E382FB03ADEB51764BE869B1B14549",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1600x900-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab4.png",
+      "bytes": 63716,
+      "sha256": "05EB7A23448A0A7AA438E8A68B18F4CC0467E4FA5C65C86F7DBA607B693A5670",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1040x700-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab4.png",
+      "bytes": 126616,
+      "sha256": "064356E77F715243F9147FA6804F90573016575F6A79C8317387706C6BFE3EC8",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1536x864-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1600x900-tab2.png",
+      "bytes": 127360,
+      "sha256": "06D460A736CF9BB5F08DEC52BAC745BD560590917482617A73703C907C83B628",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1600x900-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1040x700-tab3.png",
+      "bytes": 54663,
+      "sha256": "06E3340AC9EBD43A15BDABEEFD0C36D5C556E2B39283041EFAF7E991A62AC41C",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-1040x700-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-2560x1440-tab2.png",
+      "bytes": 143312,
+      "sha256": "0C10D6B46F141C168138A7EEA6E4CF97BF2D34C88AA5869582357D47673EB1FC",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-2560x1440-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab1.png",
+      "bytes": 79658,
+      "sha256": "103750C3BEF367A12D969D4E52C1DE0531D97A5DAF2D2F8EDCBFD788CB49AA47",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-3840x2160-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1100x720-closed.png",
+      "bytes": 126670,
+      "sha256": "132E4382C23A9FD70A062900608B0C420354465A594995F22DBDD64153F3EE25",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Process-1100x720-closed.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab0.png",
+      "bytes": 198494,
+      "sha256": "134292F8E56713079689BC820792EC9A6692027FE8134D3CB1C19172404A6DD4",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-3840x2160-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab5.png",
+      "bytes": 98470,
+      "sha256": "146D625ABC2FCD4646F191DA58BFC1F68E40149D3A67E58A55B4B2F5925DD50B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1707x960-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab1.png",
+      "bytes": 118974,
+      "sha256": "14EF137844649D8BD0C4119FFB6E8268148AB1889E538B0E04363FFEC7EAAAB2",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1366x768-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab4.png",
+      "bytes": 158621,
+      "sha256": "170CF992DAE8F4FD91D1672CF5AB3A7A4941F38C118B4C5F6991EEA484471368",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1536x864-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab5.png",
+      "bytes": 129840,
+      "sha256": "18022FFC7035F54208AF392BF2927C79108391973635A15281F0C23A9EEBDCEC",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-3840x2160-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab3.png",
+      "bytes": 108663,
+      "sha256": "19071CF272CAFD8A5D3697D8232FA61C076695AE1F0B93CAF7464C2ED593B86F",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1100x720-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab4.png",
+      "bytes": 127509,
+      "sha256": "19444915ACC32A0385A3423E78131E1EBDDE4274BD0DA7EBF2ED7B3371B344B3",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1600x900-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab5.png",
+      "bytes": 96222,
+      "sha256": "1DE840EE0E88A85B016C2BDA3A60C7339B75B8122837C3BD2EBDCB79693972BE",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1600x900-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1280x720-tab2.png",
+      "bytes": 48561,
+      "sha256": "1EDF37E46B33FA91BC7C257B758984066D5A42E350BE603158FA42C7682EBD8D",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1280x720-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab2.png",
+      "bytes": 70008,
+      "sha256": "20C899D70985FB956875745C9776A77A1900D7B4CDF3023B99E5F9AA7F07D26A",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1536x864-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-3840x2160-tab1.png",
+      "bytes": 200350,
+      "sha256": "2209B227DB93B7FD5769EFA69E386E86215442FD28F712974249B20D24759D03",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Save-3840x2160-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab1.png",
+      "bytes": 102922,
+      "sha256": "223EF0C1921061BD62C08D3EF6957D09041C7B92CE0D81796CA3EA864AA59AAB",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1100x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab5.png",
+      "bytes": 95529,
+      "sha256": "23C07A5AFFFD7F077E921C59C0907B5D76B3A1674350C7E644D3509B3EB58C73",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1536x864-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab3.png",
+      "bytes": 145220,
+      "sha256": "250E12F1BC49BD71A0A0E8E2158E2F3840E406318D7C23E391A36B1731BCEFC8",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1600x900-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1920x1080-tab2.png",
+      "bytes": 133023,
+      "sha256": "269EB6110511C0D52BE1A2C582B7F69D505E348A2BD09A04AB7DAB63CDA21D3B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1920x1080-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab0.png",
+      "bytes": 103005,
+      "sha256": "283D07055AC1E07BE43C1A56ECFF9FEF228EBA9704A5FA6A5FB5755F627DBE95",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1707x960-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab1.png",
+      "bytes": 50421,
+      "sha256": "2ACBFC53C2D12B3295C845BD18B033674940FC0BA7CA97DA5539DCA16D57CE7D",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1600x900-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-2048x1152-tab3.png",
+      "bytes": 158008,
+      "sha256": "2B9B11A1F0F36967267B58DD79A98044C6D933619DA6296446739E768DB7482F",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-2048x1152-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-960x640.png",
+      "bytes": 65374,
+      "sha256": "2C42A10BD3CBD1355A4605CD94579D1808A0EC3D433EC89E131F54786ADE6AC0",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-960x640.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab1.png",
+      "bytes": 220677,
+      "sha256": "2C86B288A99F70D975FFEB8916EA476CFFF6715A68E99F8C01C395272512AA98",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1920x1080-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab0.png",
+      "bytes": 282243,
+      "sha256": "2D581E5B94BD291FCF028DAFF45271E259F3BB06D43629C44E7C2AE1BDF293CA",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1920x1080-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab3.png",
+      "bytes": 390445,
+      "sha256": "2F49CB44EE7166C86B6BAE6DA8DD170D5BB2320750FB3EACEBD57C60ECF4A44E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2560x1440-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab3.png",
+      "bytes": 277122,
+      "sha256": "2FF377AE38D88A9C4EDF90FC281C7821E76062AA1DE83A06CF04CF30DFDCE946",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2048x1152-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1366x768-closed.png",
+      "bytes": 159742,
+      "sha256": "32338723ABFFFDE3141D98AB6B1FA9C9716B3B328D4BDD9BF2DDCF6E542795F5",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Process-1366x768-closed.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1366x768.png",
+      "bytes": 159742,
+      "sha256": "32338723ABFFFDE3141D98AB6B1FA9C9716B3B328D4BDD9BF2DDCF6E542795F5",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Process-1366x768-closed.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab0.png",
+      "bytes": 100861,
+      "sha256": "3266A47338116B926B2A957349A139809353146CE406260B742ADC780B83EEB4",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1600x900-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab2.png",
+      "bytes": 239408,
+      "sha256": "32DADB1D65BEF06E8A343AFD4EE318F04D43D8550F2D7DB8169D1CE9F26790F7",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1920x1080-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab3.png",
+      "bytes": 118160,
+      "sha256": "35EAD74CFF9CD3085E1F901D8285A454269950F99E32482910F67A87154298F4",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1366x768-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab3.png",
+      "bytes": 110715,
+      "sha256": "368F9369DC36ACC25641577CC017DF639196B2B2C695FAFFFB48FA6A2673D064",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1280x720-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab0.png",
+      "bytes": 183626,
+      "sha256": "3850792EB282A3C795A6ECB3A49E58DDE3DFBC08E1CA8F8D0E2B8BCAEB11378F",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1536x864-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab2.png",
+      "bytes": 148907,
+      "sha256": "38C6141E9223521F85E7106741DA936F112C9701725EAC1BD3184EE65254D1FA",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-3840x2160-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab1.png",
+      "bytes": 366046,
+      "sha256": "3C479A74FB38FEDC454F3DB77C9E536DAAB288FC57B0327B2146A5E5BE55EAB1",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-3840x2160-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab3.png",
+      "bytes": 168738,
+      "sha256": "3CDB070B4C8C35ABA9409DFC9AF57300EE563190E13F11704F3CC3FF8FDDE34F",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1536x864-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab2.png",
+      "bytes": 108056,
+      "sha256": "3D7DF4CDC87AE6F354F1ACDFA7403C0DFE16EACFA8FEFD1D6A2787AF4C827844",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1100x720-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab3.png",
+      "bytes": 686137,
+      "sha256": "3DDEE15423E3C850229C8BC698BB441BD2887B839C604F66E7A62C53E166F77F",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-3840x2160-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab0.png",
+      "bytes": 135725,
+      "sha256": "3E8F50142464F7289E531997F3E94B9BA66453164FAB93B3380E82E7507DC79B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-3840x2160-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab1.png",
+      "bytes": 112073,
+      "sha256": "4011C5294EC72F3C91541210C2F9CA82438644D0C87F694E8CE49E9ADC2C4475",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1280x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1040x700-tab4.png",
+      "bytes": 94219,
+      "sha256": "405593028F43CE95416193658CF92438C102FAB534F6A06A74F14009161B82C8",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1040x700-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1100x720.png",
+      "bytes": 128406,
+      "sha256": "456681072FC3D0F3D7213DF37BAE0AEEBCDD6CB5E179442991809C210539FC1A",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Diagnostics-1100x720.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1920x1080-tab1.png",
+      "bytes": 165331,
+      "sha256": "495409C6F9CA41025698FAA5CB7E082A29B88489F2D4C34F53917372E78BD7F0",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Save-1920x1080-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab4.png",
+      "bytes": 106554,
+      "sha256": "4C39BBEAC55FD3EFFE0CE8CCEAFECB8190C527A2AF9E73B3F42E80219D8594FD",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1280x720-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab4.png",
+      "bytes": 341478,
+      "sha256": "4C56CF94A6B61F262E814C53A3064F4A97403298447DB962202108C37B0D0837",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-3840x2160-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab4.png",
+      "bytes": 129369,
+      "sha256": "4C693E203D443B036E0A09AAFA73290F75274F5801F30F3C00247A416AF98D26",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1707x960-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-state-normal-1040x700.png",
+      "bytes": 166856,
+      "sha256": "4CAB2838DDFD23F674149A6E52B99C0CE12E360956AED3B66323C04BCD87AFE4",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-state-normal-1040x700.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab2.png",
+      "bytes": 96960,
+      "sha256": "4E2FE65BD87C6D2CDA9AA5B8C23FAA17E5BD20DB5F67BA318E906042B8BE4B1F",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1920x1080-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-1200x720.png",
+      "bytes": 67055,
+      "sha256": "4EA7268B421B5575BB2DB13425F954A6AA091DB94DF6B6994F7AEF933E8BD616",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-1200x720.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1536x864-tab2.png",
+      "bytes": 126546,
+      "sha256": "51FAFBF65D2D0AEEE5E8646EA0752532A3F41AFA0F44C96BBA800BD2DFBC03E8",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1536x864-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1040x700-tab1.png",
+      "bytes": 99209,
+      "sha256": "55BADD3D99E78A2455A93DA26AB0AFE0B3C16D693327505CB3CB1DED81662D37",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1040x700-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab2.png",
+      "bytes": 46334,
+      "sha256": "5723DDD7855C258DF7C195CFAAECD432751321F8F22700F463BF0E6B57B0101C",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1100x720-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab4.png",
+      "bytes": 65391,
+      "sha256": "5813086B500EC44E167FA9D23E33227E17D463AFD45CB83EAD66501EDB0D801B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1280x720-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab0.png",
+      "bytes": 114398,
+      "sha256": "5918946FF5539B9022EC3B616ED6E7BB979FDFCB8754966F38727F08E8E6FEBC",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-2560x1440-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1366x768-closed.png",
+      "bytes": 168980,
+      "sha256": "5D48375E438B1D3AC00D9732F9DF3D1FD143E770383EFFC2E3CAA8E87FF399FC",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Diagnostics-1366x768-closed.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1366x768.png",
+      "bytes": 168980,
+      "sha256": "5D48375E438B1D3AC00D9732F9DF3D1FD143E770383EFFC2E3CAA8E87FF399FC",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Diagnostics-1366x768-closed.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab4.png",
+      "bytes": 117636,
+      "sha256": "5DCC74310EE5CD0C8C9E8F3469E5D9AE60C750846F59ACE9B0C400851CE51619",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1366x768-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1920x1080-tab3.png",
+      "bytes": 155185,
+      "sha256": "624ABF31B01750E1CF7F00ABAB248CF25884860572F4E87547AB4C5E1FE33F48",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-1920x1080-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab0.png",
+      "bytes": 139642,
+      "sha256": "62BDC7E492F2134725CA38D07B9FB65675C26116EC2AF2233D1AD578B7E02215",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1600x900-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab2.png",
+      "bytes": 432856,
+      "sha256": "63CB1BCED0622039B435FC7895B3761764B4B82DC06318B81077C38DFF144C47",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-3840x2160-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab4.png",
+      "bytes": 248592,
+      "sha256": "665E5FCF6B143B974258B8EAA45FB43487B4AC2C21600EDDC421AD173483C933",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2560x1440-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab2.png",
+      "bytes": 334561,
+      "sha256": "68190018955A96ACC309EFE67FEE8B23CFE655608870466FC3D5504AFCD490AB",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2560x1440-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1366x768-tab3.png",
+      "bytes": 120603,
+      "sha256": "68D45F76F068452B72A7A927CAA8E2321F190E6EA4835C93E7B1C9299A7CCBFC",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1366x768-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab2.png",
+      "bytes": 82724,
+      "sha256": "69BBF1114D22CFA11E156B5683FE657D9F4C035C8793CA33C114DE3119EFD6A6",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1707x960-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab2.png",
+      "bytes": 186946,
+      "sha256": "69DB4B22ECDA1064728C865B72D3236C0F1E3726B0BBA03BF056AA98869B23D0",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1600x900-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab1.png",
+      "bytes": 45735,
+      "sha256": "6C7D8637F30C052A0F96DCE962B7650F38829E568335492578280811D75AD29D",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1040x700-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab2.png",
+      "bytes": 217893,
+      "sha256": "6D9807DE061C9287514C1C7376C84C2FCF7E2CEBCE41078494DD6835AF1E1E46",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1707x960-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-2560x1440-tab1.png",
+      "bytes": 177945,
+      "sha256": "6E4C1FD045C8573F272EB8ACF63711B2EF40C07264E8C1A67C77DEF3BFB08E95",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Save-2560x1440-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1536x864-tab1.png",
+      "bytes": 122773,
+      "sha256": "6EDEFC812871DFA5EB04854A429E689CCFAC1F87E1E8AAF650D595F27D31213F",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Save-1536x864-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1100x720-tab2.png",
+      "bytes": 47870,
+      "sha256": "6F3D37782711075B3DB4E7DBBF2579EBF1E5225D2DBDBCD5E5C5D54A6722C365",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1100x720-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab0.png",
+      "bytes": 474094,
+      "sha256": "6F6F0084B287AF1623C8F63961450DF44F456AE7F2B6A542BB071592DB94E2EA",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-3840x2160-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab4.png",
+      "bytes": 131929,
+      "sha256": "70F58C4BE5FFC4D9C9988B02066016B31518E1C35BAF3C9D84477EB3AAEC2E4B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1920x1080-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab1.png",
+      "bytes": 115194,
+      "sha256": "7115C091CF0E86FCD606F69E5DEB2D8EE72568D203E58C55170C5156F68C33D6",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1536x864-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab5.png",
+      "bytes": 101092,
+      "sha256": "718031E512AA88D52F2C772CAE0DD9D0208F7F141A69641781E57F7184F6DDCC",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1920x1080-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1707x960-tab2.png",
+      "bytes": 129383,
+      "sha256": "7376649A4D5857B4D426C9C020157BF8E97B4F834A5A215DC11A9123F62947E0",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1707x960-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab4.png",
+      "bytes": 164892,
+      "sha256": "74DAA830C1C0484AD06B4B715FF250626AEAFE56B01D099F5E2244A64BD1CE0E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-3840x2160-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab1.png",
+      "bytes": 213394,
+      "sha256": "75E683A1BF02B4A1A20D84592D04CC07FDEF22407DC59BB5447457AD50946A84",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-2560x1440-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1707x960-tab3.png",
+      "bytes": 149269,
+      "sha256": "762C7D26FBFBD63856AF2387D8D3E12B62EC8659A24166B6625EA74EC2EFBB34",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-1707x960-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab0.png",
+      "bytes": 118729,
+      "sha256": "78A0B61EF579BF4D38DBA8FCBBFBDFF936CE18E37668B9B3EFA3E36091D7BA55",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1366x768-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab0.png",
+      "bytes": 229021,
+      "sha256": "7AF9523E404000C72F52A8F91597FD967066F3093371DFCCD4C883CB4D0CAD96",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1707x960-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab0.png",
+      "bytes": 107910,
+      "sha256": "7C0742C84B76689B0FD1808DDC256A2B8AA8029B313E220289D59930B72E5FF7",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-2048x1152-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab0.png",
+      "bytes": 192104,
+      "sha256": "7D02809AFA2963B8668BB4B2E7491375FC6871C4F80CED38259D1DE3AE73B5D0",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1600x900-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab1.png",
+      "bytes": 69796,
+      "sha256": "7D02A82334552F966884FDA0FB155D1A3308AE79702D9D2BAA8F04B122601DE3",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1280x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab0.png",
+      "bytes": 164017,
+      "sha256": "7D8B8F710D7CD61191D920EB8DF15116AC6CFF6846EDDF834C1CF6187307849C",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1920x1080-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab3.png",
+      "bytes": 104930,
+      "sha256": "7D8BB5B3C438A4F5F5D3B9942F4A5886CDA7E5FE04468B7CBC4775C824EE9068",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1100x720-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab5.png",
+      "bytes": 109543,
+      "sha256": "7DB90B3BADDFB2A648411545193565176821A31B44271F2C2B9384EC3161657D",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-2560x1440-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab3.png",
+      "bytes": 254742,
+      "sha256": "80BA064EB0A270204BE7C01D631174511067A93C674697AC3A3918D920245437",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1920x1080-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab3.png",
+      "bytes": 208174,
+      "sha256": "822E51FFD9FBD2D2877590523DA87FAFDE092C9090A03404C54C7DBDE3CAD737",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1707x960-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab0.png",
+      "bytes": 67700,
+      "sha256": "8726120FDD143DC69ED3CB0B2CB29B99FC2F1FEB688F2DD4EAF8267DD31B33DE",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1280x720-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1100x720-tab3.png",
+      "bytes": 58650,
+      "sha256": "883D5073CA17EA9E6AE2A4BA7F600F6402234ADD775BDE3267918FA07B251DD4",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-1100x720-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab4.png",
+      "bytes": 143445,
+      "sha256": "89A6B94CEEAC6D021E03FE782C022A69D6A46F358D858FE0FADE7A16E403EC59",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-2560x1440-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1040x700.png",
+      "bytes": 116608,
+      "sha256": "8B2FED5DADCBDB7C4FF6BC3E375088801785CA6DF3E0638CE3281A0FC7199F8A",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Process-1040x700.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab3.png",
+      "bytes": 180707,
+      "sha256": "8B42AA0C7754F9FC9D65D9748D513BA2B7A1143CC538A4FEAD97B44AE3D8EE38",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1600x900-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab1.png",
+      "bytes": 68128,
+      "sha256": "8CEB3E436AD92BB015E1CC570C13E3E52F73937B4DF5DA7D7D7ACE8F39251870",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1100x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-2560x1440-tab3.png",
+      "bytes": 165869,
+      "sha256": "8E8E1EB5D817F74AD93DF4DE9EE55638209AA7A2D8D44A8ED854867607A1BBCC",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-2560x1440-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab0.png",
+      "bytes": 66749,
+      "sha256": "901EC0BABAFAFAFA789A240B20389013647A6FAFDD616CC4BC7D50C92B7431CD",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1100x720-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab5.png",
+      "bytes": 103082,
+      "sha256": "9132C928254DD4653809D4A4C1536D59A22AE12164AF4F10079C616EFFD6CEC5",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-2048x1152-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab1.png",
+      "bytes": 49867,
+      "sha256": "92134B0239A93CB095FAA6D77CECA459B054DF970126953269A7AF5B8E3ED633",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1536x864-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1366x768-tab2.png",
+      "bytes": 57605,
+      "sha256": "92FE30E354AC0F778DCF157A37ED4BBE01E7669F9EC36153FAC977EAB7696919",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1366x768-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab2.png",
+      "bytes": 63488,
+      "sha256": "964F83E476B8DE3718D4109F0764C61036AE3EB921562B8CB3A5599742C3AAE0",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1040x700-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab1.png",
+      "bytes": 230981,
+      "sha256": "9A455E1647A9CF853B92A075ECB75F2616DE61AA4C392F147CB2A0988E9FB62C",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2048x1152-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab1.png",
+      "bytes": 51807,
+      "sha256": "9B329DCB1BF6F09216159A509B0FF31162132997CD029EC06F841DFECFF282BA",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1707x960-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab1.png",
+      "bytes": 181666,
+      "sha256": "9D2A884AE781B76EEBD602DE32938B238C3E848B877FFE5A108C42DBDB017D4D",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1920x1080-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab1.png",
+      "bytes": 55013,
+      "sha256": "9E743F8E037A45C78E6E5AC76FF500BB9B99DB5AA3ED6E6029E26DB8C0D32F13",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-2048x1152-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1280x720-tab1.png",
+      "bytes": 93990,
+      "sha256": "A00D1C4A15DE0D2DB88144D5EED1E5A0025D74C6E4667EBD17065007AFB33603",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Media-1280x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1040x700-closed.png",
+      "bytes": 129041,
+      "sha256": "A2FC2DBB597D032B814D97629315B023FF9089F3EC0FC20F0783A96E01893AAF",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Diagnostics-1040x700-closed.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab4.png",
+      "bytes": 104436,
+      "sha256": "A493700355F3DC00F764FD7800864BC9E1F785746740FC3AAB9ADE7A2FA4E5D8",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1100x720-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab1.png",
+      "bytes": 46518,
+      "sha256": "A538818FE45F6B3A871DB0CBF34A7EB3B64CB6BB2CC3677AE46AE40CCFD381DE",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1280x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-2048x1152-tab1.png",
+      "bytes": 167489,
+      "sha256": "A5398DFA6BC68A9757E8DDB330D2F281CC8F23D4446A5E142019C79E7A0A051C",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Save-2048x1152-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab2.png",
+      "bytes": 71240,
+      "sha256": "A6B34E568AB5D541211A31E35AA46E3DE1C6FE6FA9F328AEE49E9C95CDFADA3F",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1600x900-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab3.png",
+      "bytes": 138722,
+      "sha256": "A72E6BAB5C8D1B32FD9316F7B7C5971542CA346378A086456EDACFD47554B099",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1536x864-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab2.png",
+      "bytes": 45034,
+      "sha256": "A8D6B8A96FAD882224DE31D1D900F8493EEED972B1632259A729E755F8AE358D",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1040x700-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab0.png",
+      "bytes": 175664,
+      "sha256": "ACA5F67C3C2C10D4059A80ABB78BF66C23CA190FC35E3DC2DC56EF10B65B098B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-2560x1440-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab1.png",
+      "bytes": 194122,
+      "sha256": "ACFFC5019C3CD031D20E86160987C7B8283520BD4B4BE050A38D009236DAC040",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-2048x1152-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab0.png",
+      "bytes": 100097,
+      "sha256": "AD0AC078095B00A97416052CA1A3092E4F6E16B8CA0936CD739A90A06ABB855B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1536x864-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab4.png",
+      "bytes": 64344,
+      "sha256": "AE9296646B1F3FF514057041EBA080B0AD8192F3B54628343772D7505D46C9AA",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1100x720-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab0.png",
+      "bytes": 117000,
+      "sha256": "AFC7339D7FA04C3D66E12B2C2DDEF2CB925F495A6A96A1686DA02AA5F05DDB46",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1280x720-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab0.png",
+      "bytes": 370261,
+      "sha256": "AFDB6C791BC9D9F11BFAA664854608B9CF4026753E6A4BF0DFDC537230BF2B81",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2560x1440-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab2.png",
+      "bytes": 175923,
+      "sha256": "B2310D2E3DBA078DFEA2C602B6A9F12B9D44251B037D876DEE0D2030BE7C3C8C",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1536x864-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1100x720-tab1.png",
+      "bytes": 84593,
+      "sha256": "B29BB1B55CD0772BBEE0A04C58EDA3BE556BF24F9041693860269777D98B7D9E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1100x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab2.png",
+      "bytes": 110761,
+      "sha256": "B5233D8FED8B69D72D8EF22A20B8FB064BD8868621D36B85835D5F19C315510E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1280x720-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab4.png",
+      "bytes": 208726,
+      "sha256": "B56B8309D21182E3731CC8B0FA31208956D141A5110ACC384240766BB19D4D73",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2048x1152-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab0.png",
+      "bytes": 105736,
+      "sha256": "B5BAFE52B93A7577724BC9D6BCDDF9B4A034CE75B37EF58F7F2AF5A101CB18B8",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1920x1080-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1100x720-closed.png",
+      "bytes": 135271,
+      "sha256": "B6394AEB8581CA439BFBD782E8CD16A44B7AE0839C23986E4A4DF18474529DE7",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Diagnostics-1100x720-closed.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab1.png",
+      "bytes": 203106,
+      "sha256": "B73A063B20796D2DE2A84432E39056C9DFEDA993F0ED5B121628E3899F523978",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1707x960-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1040x700.png",
+      "bytes": 121597,
+      "sha256": "B75CC03744D19A13CEB768F15934A1D07B06DE10990654C078CD82FED25F7831",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Diagnostics-1040x700.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab1.png",
+      "bytes": 169379,
+      "sha256": "BA3C723EB9D125D6FB2B473D47834038785EEAE0657436D32D578A0EDA7E6C4F",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1536x864-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1280x720-tab3.png",
+      "bytes": 103527,
+      "sha256": "BAB8764A77856A49CF88E2D4D87635AB7EDE108F153B01ECB9690CD0187EEBC4",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-1280x720-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-1279x720.png",
+      "bytes": 67581,
+      "sha256": "BB58DE892F148479E0E364553F6372A91D9E3A2AD06BB816303E73E0C4322C0E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-1279x720.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab3.png",
+      "bytes": 103213,
+      "sha256": "C200D1B87FA4BD06421F652E6DD54BC3AF7076F275FB1B2844C15C22AA742AED",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1040x700-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab2.png",
+      "bytes": 106935,
+      "sha256": "C2301ED519B9C6A180DE113078DCE62F60B71DE86F4D25FAD987B05435627E3A",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-2048x1152-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1536x864-tab3.png",
+      "bytes": 130177,
+      "sha256": "CA81C1ACD12E08284EE700C711098D8DEF0211A6763093FE0D578668280D2252",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-1536x864-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1707x960-tab1.png",
+      "bytes": 153499,
+      "sha256": "CA85055D6FAFC3AEC3A0FDB2AFCEDAEEC5D41F8449C9258ACA82A7B0372C8494",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Save-1707x960-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab2.png",
+      "bytes": 266007,
+      "sha256": "CB23F16C19A66FC5929D294E38D22532BEF840ED86502B83484D07469DCCBD53",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2048x1152-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1366x768-tab2.png",
+      "bytes": 114703,
+      "sha256": "CC0742D5A20779E27E558A483BDEA96516E1E0AA825E75A305179FDBAF345A42",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-1366x768-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab2.png",
+      "bytes": 46917,
+      "sha256": "CD352863DB499A2F1D659D4A61CFC024F9C389DEB7FC5C82127C8AE717CDF8D8",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1280x720-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab4.png",
+      "bytes": 178526,
+      "sha256": "CD764C9B8C90F2C1522CAEE8C81D0B1D4DC754C70D10D4FDA0114D76BFC10A2B",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1707x960-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab2.png",
+      "bytes": 118831,
+      "sha256": "D46518ADCD85993F43FF3450BB14E5E92A67FFE66ABF6165BA848F9DD0DFCF61",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1366x768-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab0.png",
+      "bytes": 167251,
+      "sha256": "D4D2048C4CE261D50DD409A98896A129073266E833C2C9D66758AECEF5121EB5",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-2048x1152-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1366x768-tab1.png",
+      "bytes": 48392,
+      "sha256": "D53C2385654B2BA86DA72215B8B243A807024EAC5C05E80E98BA8C80502212D9",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1366x768-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab5.png",
+      "bytes": 54417,
+      "sha256": "D6180D8E97BD96D75902717FDE3F9D964DBB79FED7426D302D1B6300004D9F4E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1280x720-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1100x720.png",
+      "bytes": 117374,
+      "sha256": "D66918B8FE549484FC5DF263EDE8A45E27103CE96D73DB139C33D6D4D2B4542C",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-Maintenance-Process-1100x720.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab2.png",
+      "bytes": 75655,
+      "sha256": "D671C30BCB6852A4DCD2B6BE8309B4FDFE954CC6F5A7EE2D04510110179C7BC2",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1280x720-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab0.png",
+      "bytes": 65732,
+      "sha256": "DC222F3A41CB5E2772E6869FB3F6FF6AA03583930E6F2060C2BCC2ECD22D0093",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1040x700-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab4.png",
+      "bytes": 134868,
+      "sha256": "E5E96D8A241C02AD4BA24EF93EDC3F94C82E9EA3CE4852066B12CC05E5F53713",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-2048x1152-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab1.png",
+      "bytes": 53686,
+      "sha256": "E8A115974077DD2B5B97A999295BBF57E529A3A0A753EB87EAC58FBF4EE24468",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1920x1080-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1366x768-tab3.png",
+      "bytes": 112982,
+      "sha256": "EA2AEA47D93E5311657D193D5DB0B4811293B4C075AA29BDF8D5FDFE81FFB9C2",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Media-1366x768-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab0.png",
+      "bytes": 110246,
+      "sha256": "EA30240DC64C9E3C1BD4E4B01E08679E9291EFB67CA00B22C927889467F086A2",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1100x720-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Media-1100x720-tab1.png",
+      "bytes": 85781,
+      "sha256": "EA5632A4175F39BE4E1E9D3B2A480CCF4749525BF2073F025470DDAD39F784D5",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Media-1100x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1366x768-tab4.png",
+      "bytes": 108761,
+      "sha256": "EE07C3BD8DD9E6E20AECAD73FDE88F5A31E98C3873EC22444FC020AF0BF69640",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1366x768-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab1.png",
+      "bytes": 272772,
+      "sha256": "EE6E82FB5163B092A3A60E2B5A0E2AEE536FFDCF0D0779F8B068330EFBBFA477",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-2560x1440-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-2048x1152-tab2.png",
+      "bytes": 135128,
+      "sha256": "EE9ABC48480577FE857EFAC72691D24670E19C177BF7CF91196249DD5F0A51C9",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-2048x1152-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab4.png",
+      "bytes": 167733,
+      "sha256": "EFFBB8F1D8B0385EA14B4E2AA45EC1441E71FBDCBAA6817A777A85E6176FA2F6",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1600x900-tab4.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab0.png",
+      "bytes": 151957,
+      "sha256": "F109594C84254C4EF7A046C18ED530CE5F851C359B31FB64952B2FC18FE93407",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1707x960-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-1600x900-tab1.png",
+      "bytes": 135000,
+      "sha256": "F27CD076AD7D8CA618B7712DD89E383CFA33E8849E5AE285C93B60179BAFBD59",
+      "retainedPeer": "artifacts/ui-width-regression-20261023/render-clean-commit/Save-1600x900-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab5.png",
+      "bytes": 53759,
+      "sha256": "F57AC7BFEA342E085BD21548F0A70B27E372F21CFEB913AA14AAD27B44CC2F8E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1100x720-tab5.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab3.png",
+      "bytes": 115743,
+      "sha256": "F58053DDC07E0D8B68367C291CC8B4123F92A91AC1B62B0877AA50E521545C1E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Settings-1280x720-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab3.png",
+      "bytes": 148637,
+      "sha256": "F5EC817A9D03156D2302EC60F454669C97D530E85C6746F8D48D55118C63F49E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1707x960-tab3.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab0.png",
+      "bytes": 58019,
+      "sha256": "F72278B636B9D8D93D7EBC787C65B09CCCAE2CEEEE7A8076124A9F20C8676388",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1100x720-tab0.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab1.png",
+      "bytes": 46062,
+      "sha256": "F7D6537CED48F8EB54FCB71B17BDDC37B6AE9FB3F31C597B3044C6E3B3703A6E",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-1100x720-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab1.png",
+      "bytes": 123962,
+      "sha256": "F9D47FEE97A14F23EF7BD9C56003D024DA07B0CAFF5D47121B5C711D391CE4AA",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1600x900-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Shell-1280x720.png",
+      "bytes": 67502,
+      "sha256": "FAA7B3DEAC7217EF365897530C498A7059A6DE161E3F18DB73840A26F2204B25",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Shell-1280x720.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab2.png",
+      "bytes": 71682,
+      "sha256": "FB783ED422EC0F9CBA4C557F9040FA1E3A0F826C3684F370EB57108503202154",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-1100x720-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab1.png",
+      "bytes": 237776,
+      "sha256": "FBD1A0D5B89E7C5860AC04BD12471314B8C8856F8998CDFEEAC4C804EE4C3CCE",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Maintenance-3840x2160-tab1.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Save-3840x2160-tab2.png",
+      "bytes": 165025,
+      "sha256": "FEA3F19564C58BF266B9D8CD63626FFCAA361E1E0C82C40222AF4A0E0D0CAB65",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Save-3840x2160-tab2.png"
+    },
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab2.png",
+      "bytes": 128813,
+      "sha256": "FEB83F2BCCB19AC36F043AF439EFF82CDA65FC3958E2F018320FC120A4BFEA98",
+      "retainedPeer": "artifacts/ui-layout-fix/render-serial-final/Trainer-2560x1440-tab2.png"
+    }
+  ]
+}

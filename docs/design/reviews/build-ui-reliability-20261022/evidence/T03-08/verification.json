@@ -67,20 +67,24 @@
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
     "markdownFiles": 6,
-    "relativeLinks": 557,
+    "relativeLinks": 561,
     "missingLinks": 0,
-    "round4ProgressCheckPassed": true
+    "round4ProgressCheckPassed": true,
+    "round4ProgressTestsPassed": 5
   },
   "latestDocumentationUpdate": {
-    "baseCommit": "5e63221e5d23c90346876368b26073e61d80ee4d",
-    "markdownFiles": 6,
-    "relativeLinks": 557,
-    "missingLinks": 0,
+    "baseCommit": "32e64d6417dc683fd9f9bfa73174ed6efcf194c0",
+    "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
+    "markdownFiles": 6,
+    "relativeLinks": 561,
+    "missingLinks": 0,
     "round4ProgressCheckPassed": true,
+    "round4ProgressTestsPassed": 5,
     "productBuildOrTestsRerun": false,
-    "documentationOnly": true,
-    "t01_07ReadOnlyRescanEvidence": "../T01-07/live-rescan-20261025.json"
+    "documentationAndGeneratedArtifactCleanupOnly": true,
+    "productCodeTestsScriptsChanged": false,
+    "t01_07Evidence": "../T01-07/duplicate-cleanup-batch3-20261025.json"
   },
   "latestT01_07Cleanup": {
     "evidence": "../T01-07/screenshot-dedupe-20261025.json",
@@ -93,20 +97,25 @@
     "secondBatchHeldByDocumentName": 93,
     "secondBatchRemoved": 184,
     "secondBatchBytes": 24944243,
-    "cumulativeRemoved": 612,
+    "cumulativeRemoved": 790,
     "cumulativeDistinctHashes": 204,
-    "cumulativeLogicalBytes": 83348169,
-    "remainingImageCount": 1820,
-    "remainingBytes": 230794845,
-    "remainingDuplicateGroups": 235,
-    "remainingDuplicateCopies": 830,
-    "groupsReducedToSingleCopy": 2,
+    "cumulativeLogicalBytes": 108253253,
+    "remainingImageCount": 1642,
+    "remainingBytes": 205889761,
+    "remainingDuplicateGroups": 226,
+    "remainingDuplicateCopies": 643,
+    "groupsReducedToSingleCopy": 11,
     "allRemovedPathsAbsent": true,
     "retainedCopiesRehashed": 204,
     "uniqueImagesMissing": 0,
     "renderReportsRetained": 3,
     "observedFreeSpaceDeltaBytes": 83369984,
-    "freeSpaceDeltaIncludesPossibleBackgroundActivity": true
+    "freeSpaceDeltaIncludesPossibleBackgroundActivity": true,
+    "thirdBatchEvidence": "../T01-07/duplicate-cleanup-batch3-20261025.json",
+    "thirdBatchRemoved": 178,
+    "thirdBatchDistinctHashes": 176,
+    "thirdBatchBytes": 24905084,
+    "thirdBatchAlternateCopiesRehashed": 178
   },
   "latestExternalPcDiagnosis": {
     "reportedHead": "ea926c5e",
@@ -184,5 +193,19 @@
     "remainingHistoricalDuplicateGroupsForPathReview": 235,
     "remainingHistoricalDuplicateCopiesForPathReview": 830,
     "wholeHistoricalInventoryReviewed": false
+  },
+  "latestT01_07DuplicateCleanup": {
+    "evidence": "../T01-07/duplicate-cleanup-batch3-20261025.json",
+    "status": "in_progress",
+    "candidateFiles": 178,
+    "filesDeleted": 178,
+    "distinctHashes": 176,
+    "logicalBytes": 24905084,
+    "currentDocumentNameOrPathHits": 0,
+    "alternateReferencedPeersVerified": 178,
+    "reportsRetainedAndRehashed": 3,
+    "remainingIndexedDuplicateGroups": 226,
+    "remainingIndexedDuplicatePaths": 643,
+    "taskComplete": false
   }
 }
