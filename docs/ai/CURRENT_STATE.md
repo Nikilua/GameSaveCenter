@@ -1,15 +1,15 @@
 # GameSaveCenter 当前事实
 
-更新：2026-10-24。历史按当时提交解释，不能覆盖本页当前结论。
+更新：2026-10-25。历史按当时提交解释，不能覆盖本页当前结论。
 
 ## 验证身份
 
-- 当前完整验收代码：`f577fd19`，包含命名WPF测试窗口、真实键盘焦点回归、显式失败阶段诊断与安装暂存/回滚artifact身份记录。
-- 最后完整标准入口成功：源码身份 `f577fd192709d5a312c7bc72fd92249b6b5e31ab`；构建run `20261024T135653993Z-90e04544`，安装run `20261024T135651674Z-ade787f3`。
-- 命令：默认 `GameSaveCenter-Run.cmd`，退出0。SDK8.0.423 / Release，solution0警告/0错误；1967项1910通过、57跳过、0失败，148TRX计数一致、145WPF隔离类全部结束。Worker发布、ZIP/PEXT、安装及Playnite启动完成，六程序集磁盘版本/完整身份/SHA一致；本次未核验进程内插件加载路径。
+- 当前完整验收代码：`fbd8a882`，包含命名WPF测试窗口、真实键盘焦点回归、显式失败阶段诊断、安装暂存/回滚身份记录与中断后的自有进程树收尾。
+- 最后完整标准入口成功：源码身份 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85`；构建run `20261024T154742005Z-e15429e1`，安装run `20261024T154739936Z-bc3e83dc`。
+- 命令：默认 `GameSaveCenter-Run.cmd`，退出0。SDK8.0.423 / Release，solution0警告/0错误；1967项1910通过、57跳过、0失败，148TRX计数一致、145WPF隔离类全部结束。Worker发布、ZIP/PEXT、安装及Playnite启动完成，六程序集磁盘版本/完整身份/SHA一致；本次未核验进程内插件加载路径。[最新完整链证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/README.md)
 - 补充缺 SDK/冷 NuGet 路径：临时隔离 `dotnet` 后官方引导安装8.0.423并完整构建测试退出0；新的 NuGet 包/HTTP/CLI 缓存下还原与Release编译也退出0。此验证限本机网络，不能代替另一台电脑日志；[T00-03证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-03/clean-machine-bootstrap.md)。
 - T02-03定向双主题2/2、所在类11/11；真实WPF键盘焦点、选择ID/当前项和900/1400 DIP往返稳定。全链证据：[T02-03提交级完整验证](../design/reviews/build-ui-reliability-20261022/evidence/T02-03/standard-verification.json)。
-- [当前标准链证据与边界](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-f577fd19/README.md)绑定f577fd19；后续文档提交不改变该产品构建身份。
+- [前次标准链证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-f577fd19/README.md)绑定f577fd19；最新标准链身份见T01-08证据。后续文档提交不改变产品构建身份。
 - T01-01双宿主回归与16份JSON清单证据已归档、校验；清理8个自有`.tmp`夹具目录（逻辑2,363,091字节），D盘可用空间从12,290,236,416增至12,292,726,784字节。用户旧TRX/TestResults保留。
 - T01-02清理预览在f577fd19代码身份上双PowerShell各9/9；结果路径已脱敏，所有预览`CanDelete=false`，人工复核引用/占用仍是后续步骤，不存在自动删除结论。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-02/README.md)。
 - T01-06双PowerShell归档/保留夹具当前重跑均通过，303文件真实归档SHA已核对、源原件保留；f577fd19默认根入口全链成功，补足最终链验收。只认可归档后隔离清理与保留行为，不开放通用自动删除。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-06/README.md)。
@@ -32,7 +32,7 @@
 - 前次f25标准链测试通过，但运行中改文档触发打包保护退出1；[失败保留](../design/reviews/build-ui-reliability-20261022/evidence/T03-01/README.md)。先提交再冻结完整重跑已成功，未绕过保护。
 - 25个本阶段测试结果文件先归档校验，再移除六个原临时目录；原失败、当前包/构建/诊断/宿主图与用户旧Round3 TRX/TestResults保留。详情见T02-08清理记录。
 - 后续源码/测试/脚本/资源改动按影响运行定向检查与标准链；完整链期间不修改任何跟踪文件。纯文档按引用/源码校验，无需为其CI通过再追加记录提交。
-- 另一台电脑日志的HEAD为ea926c5e，`main`落后`origin/main`两个提交，并存在多个本地修改/未跟踪文件；`GamePickerViewModel.cs` 的 `Updated upstream` / `Stashed changes` 冲突标记导致CS8300。后续远端提交76eab05c/f577fd19未改该文件。已取得部分diff，完整冲突diff与 `git stash list` 仍待提供；保留本地所有代码、测试和文档改动，不reset/覆盖。干净main构建可在完整stash（包含未跟踪文件）后快进并运行默认入口，再将本地功能按完整diff合入独立分支。
+- 另一台电脑报告HEAD `ea926c5e`，当时 `main` 落后 `origin/main` 两个提交，并有文档/源码/测试改动和未跟踪文件。`GamePickerViewModel.cs` 含 `Updated upstream` / `Stashed changes` 冲突标记，直接导致CS8300；这是本机未解决的stash合并冲突，不是SDK/NuGet问题。应先 `git stash push --include-untracked`，核对工作树干净，再 `git pull --ff-only origin main`，最后运行默认 `GameSaveCenter-Run.cmd`。不要reset、覆盖或提前pop stash；干净主线构建成功后再按完整diff恢复与合并个人改动。当前最新代码标准链已在 `fbd8a882` 通过；推送后这台电脑需快进到新的远端HEAD。外机同步后的构建尚未取得。
 - T00-04路径与入口环境修复已验收，隔离克隆已归档后清理。外机R09附件期望值对应旧3f7d0b30测试；f13b9e05后主线改为Chrome1 DIP+独立验证描边2 DIP，130cd307当前类2/2。外机具体HEAD/DLL/PDB身份缺失，见专项复核；继续T02-08证据矩阵、SDK故障恢复与回退隔离验证，按32项账本逐项审计剩余条件；不要以受控或启动结果自动升级宿主验收。
 - 旧事实原文见[截至2026-10-24历史](CURRENT_STATE_HISTORY_THROUGH_20261024.md)，更早记录仍可在Git和既有历史页追查。
 

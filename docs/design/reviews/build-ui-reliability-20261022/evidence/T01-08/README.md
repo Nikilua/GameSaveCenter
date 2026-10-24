@@ -1,6 +1,6 @@
 # T01-08 中断后的临时进程收尾
 
-当前仍为“实施中”。本证据覆盖受控等待中断与清理行为；没有声称已通过真实桌面 Ctrl+C 验收。
+当前仍为“实施中”。受控中断和代码提交后的标准构建链已通过；真实桌面 Ctrl+C、另一台电脑同步后的构建仍待核验。
 
 ## 双宿主受控回归
 
@@ -11,12 +11,14 @@
 
 `bounded-*.json` 明确记录 `CancellationSignal=managed-thread wait interruption; physical Ctrl+C not exercised`。测试覆盖取消/中断时的 `finally` 收尾，不等同于真实键盘取消。
 
-## 标准根入口候选运行
+## 提交后标准根入口完整链
 
-候选源码在提交前执行标准 `GameSaveCenter-Run.cmd`：XAML 校验通过、Release 0 警告/0 错误，核心 157/157、Worker 399 通过/1 跳过、Playnite 145 个隔离类全部结束，总计 1,899 通过/68 跳过/0 失败。额外 11 个跳过项来自受限沙箱无法访问 Named Pipe 和系统鼠标。
+代码提交 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 后，默认 `GameSaveCenter-Run.cmd` 完整退出 0。SDK 8.0.423 的 Release solution build 为 0 warnings / 0 errors；1967 项测试中 1910 passed、57 skipped、0 failed，148 份 TRX 计数一致，145 个 WPF 隔离类全部结束。Worker win-x64 发布、ZIP/PEXT、安装事务及 Playnite 启动成功。
 
-根入口随后按设计在打包阶段拒绝未提交的 `scripts/bounded-process.ps1` 与 `scripts/tests/Test-BoundedProcess.ps1` 改动（退出 1）；因此该候选运行没有发布、打包、安装或启动 Playnite。诊断 run `20261024T151721547Z-fc1457c1`、构建目录 `cd302376` 保留。代码提交后仍须重新运行完整标准根入口；成功结果到时再补录。
+构建诊断 run 为 `20261024T154742005Z-e15429e1`，安装 run 为 `20261024T154739936Z-bc3e83dc`；细节见[完整验证摘要](standard-fbd8a882/README.md)和[机器可读结果](standard-fbd8a882/verification.json)。原始本机诊断保留在 `artifacts/build-diagnostics/20261024T154742005Z-e15429e1`，当前构建输出在 `artifacts/gsc-b/20cc996b`。安装报告核验磁盘上的六个程序集版本、源码身份和 SHA；Playnite 已启动，但没有核验其进程内是否加载了这些程序集。
+
+第一次候选根入口在脚本尚未提交时按打包身份保护退出 1；该次没有发布或安装，不能代替也不否定提交后的完整链结果。其诊断 `20261024T151721547Z-fc1457c1` 与构建目录 `cd302376` 保留。
 
 ## 尚未覆盖
 
-真实 PowerShell/桌面 Ctrl+C 物理按键路径、用户电脑上的同步后构建，以及代码提交后的完整构建/发布/安装/启动仍待验证。当前不将 T01-08 提升为已验收。
+真实 PowerShell/桌面 Ctrl+C 物理按键路径，以及用户另一台电脑先保留本地改动、快进到当前 `main` 后的构建仍待验证。当前不将 T01-08 提升为已验收。

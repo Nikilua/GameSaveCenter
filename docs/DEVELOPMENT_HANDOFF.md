@@ -1,3 +1,9 @@
+## 2026-10-25 最新标准全链成功；外机冲突恢复步骤
+
+最新代码提交 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 的默认根入口完整链成功：构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`；SDK8.0.423、Release0/0、1967项1910通过/57既有skip/0失败、148TRX一致、145个WPF隔离类结束，发布/ZIP/PEXT/安装/Playnite启动完成。详细证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/README.md`。安装报告仅证实磁盘程序集身份，未检查进程内加载路径。
+
+用户另一台电脑报告HEAD `ea926c5e` 并存在本地修改/未跟踪文件；`GamePickerViewModel.cs` 包含 `Updated upstream` / `Stashed changes` 冲突标记，导致CS8300。保留全部本地改动，先 `git stash push --include-untracked`，确认 `git status --short --branch` 干净，再 `git pull --ff-only origin main` 并运行 `GameSaveCenter-Run.cmd`。不要reset/覆盖，不要在确认新main构建成功前pop stash。外机同步后的结果待用户反馈；真实桌面Ctrl+C也仍待验，T01-08维持实施中。
+
 ## 2026-10-24 f577fd19 标准全链成功；T01-01产物身份验收
 
 默认 `GameSaveCenter-Run.cmd` 在 `f577fd192709d5a312c7bc72fd92249b6b5e31ab` 完整退出0，build run `20261024T135653993Z-90e04544`、install run `20261024T135651674Z-ade787f3`；SDK8.0.423、Release 0 warning/0 error、1967项1910通过/57同名既有skip/0失败、148 TRX一致、145 WPF隔离类。Worker发布、ZIP/PEXT、安装六程序集身份/SHA及Playnite启动完成。证据 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-f577fd19/README.md`；T00-01、T00-08、T01-01已验收。57项均为已撤销“今日工作台 UI 架构”断言的同一skip reason；未据此次运行宣称真实页面或进程内加载路径通过。

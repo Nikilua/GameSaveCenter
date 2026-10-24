@@ -12142,3 +12142,10 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 `bounded-process.ps1` 增加自有进程树收尾函数，并在 `finally` 中处理等待期间的托管中断。`Test-BoundedProcess.ps1` 在Core7.6.2与Desktop5.1受控注入中断 `Process.WaitForExit`，均确认子PID/启动时刻已退出、无关进程保留、后续命令重试0；超时树、TRX、UTF-8、持管道等原回归仍通过。`Test-IsolatedTempCleanup.ps1` 双宿主7/124/0/0/0、哨兵SHA不变、占用失败可见且释放后清理重试通过。Windows PowerShell进程树测试在本机提升测试上下文运行，沙箱内 `taskkill /T` 被系统拒绝。受控线程中断不等同真实桌面Ctrl+C，T01-08不提升验收。
 
 标准根入口候选运行 `20261024T151721547Z-fc1457c1`：Release 0警告/0错误，核心157通过、Worker399通过/1跳过，Playnite145类结束，总计1899通过/68跳过/0失败；额外11项是沙箱Named Pipe/鼠标权限限制。打包步骤按预期拒绝尚未提交的两个脚本改动并退出1，未发布/安装。该结果只证明编译与测试，不是完整链通过；提交后必须重跑默认根入口，证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/README.md`。
+
+
+## 2026-10-25 T01-08 提交后标准完整链通过
+
+`fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 提交后以默认 `GameSaveCenter-Run.cmd` 重跑完整链并退出0：SDK8.0.423、Release0警告/0错误，1967项1910通过/57既有skip/0失败，148份TRX计数一致，145个WPF隔离类完成；Worker发布、ZIP/PEXT、安装事务和Playnite启动通过。构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`。安装六程序集磁盘身份和SHA一致；没有确认Playnite进程内加载路径。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/`。真实桌面Ctrl+C与外机同步后的构建仍待验证，因此T01-08保持实施中。
+
+另一台电脑 `ea926c5e` 的 `GamePickerViewModel.cs` 中 `Updated upstream` / `Stashed changes` 标记是未解决的stash冲突并造成CS8300。处理顺序固定为先stash（含未跟踪文件）、确认工作树干净、快进同步、运行默认根入口；不要reset或覆盖原工作。干净主线验证后再检查stash和移植个人改动。该机同步后结果尚未回来。

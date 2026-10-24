@@ -1,19 +1,19 @@
 # 构建与界面可靠性专项账本
 
-任务源：[32项实施计划](../../BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)。最后完整标准入口成功与安装身份 `f577fd19`，构建run `20261024T135653993Z-90e04544`、安装run `20261024T135651674Z-ade787f3`：SDK8.0.423、Release0/0、1967项1910通过/57既有skip/0失败、148TRX计数一致、145WPF类；发布/ZIP/PEXT/安装/Playnite启动完成，六程序集身份与SHA一致；[本次完整证据](evidence/T00-01/standard-f577fd19/README.md)。本次安装报告记录磁盘身份；没有据此声称进程内插件加载路径已核验。纯文档不改变该产品安装身份。
+任务源：[32项实施计划](../../BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)。最后完整标准入口成功与安装身份 `fbd8a882`，构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`：SDK8.0.423、Release0/0、1967项1910通过/57既有skip/0失败、148TRX计数一致、145WPF类；发布/ZIP/PEXT/安装/Playnite启动完成，六程序集身份与SHA一致；[本次完整证据](evidence/T01-08/standard-fbd8a882/README.md)。本次安装报告记录磁盘身份；没有据此声称进程内插件加载路径已核验。纯文档不改变该产品安装身份。
 
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。构建、受控交互、真实宿主和清理分别记录，不能用历史成功覆盖当前代码。
 
 | ID | 任务 | 状态 | 实现提交 | 构建/测试/交互证据 | 产物清理与下一步 |
 | --- | --- | --- | --- | --- | --- |
-| T00-01 | 最新修复全链复验 | 已满足 | f577fd19 | [当前完整链](evidence/T00-01/standard-f577fd19/README.md)：默认根入口退出0、SDK8.0.423、Release0/0、1967项（1910通过/57既有跳过/0失败）、148TRX一致、145WPF类；安装6个关键DLL哈希与Playnite启动通过；真实页面未验 | 本次诊断与当前包/构建保留；用户既有未跟踪TRX/TestResults未动 |
+| T00-01 | 最新修复全链复验 | 已满足 | fbd8a882 | [最新完整链](evidence/T01-08/standard-fbd8a882/README.md)：默认根入口退出0、SDK8.0.423、Release0/0、1967项（1910通过/57既有跳过/0失败）、148TRX一致、145WPF类；安装6个关键DLL哈希与Playnite启动通过；真实页面未验。[前次完整链](evidence/T00-01/standard-f577fd19/README.md)保留历史身份 | 本次诊断与当前包/构建保留；用户既有未跟踪TRX/TestResults未动 |
 | T00-02 | 三入口退出码对照 | 已满足 | 本阶段测试脚本 | [运行结果](evidence/T00-02/results.json)：Test-LauncherExitCodes.ps1退出0，真实PowerShell子脚本注入0/7/23，9/9同码，失败无假成功；pause重定向可退出 | 生产入口无需修改；临时夹具归档后清理；最终候选完整链仍按T03-08执行 |
 | T00-03 | SDK 下载中断恢复 | 代码完成待验收 | 本阶段受控测试 | [受控结果](evidence/T00-03/results.json)：中断/安装器37/失败后重试3/3；环境回滚、临时下载清理、精确版本后验通过；[实际缺SDK引导与冷NuGet还原](evidence/T00-03/clean-machine-bootstrap.md)：全测试构建0退出，空缓存还原/Release编译0退出 | 本机实际安装及空NuGet缓存构建已验；真实中断/损坏包恢复仍未实测，暂不提升验收状态 |
 | T00-04 | 仓库路径兼容 | 已验收 | 入口受控复核 | [实际路径构建](evidence/T00-04/actual-path/README.md)：138字符中文空格根、324字符跟踪路径；直接PS及正常Desktop环境CMD均SDK8.0.423、Release0/0、退出0（SkipTests） | PS7经CMD混合模块环境已修复，双宿主入口各9/9；同路径全新输出Release0/0退出0（SkipTests），[130cd307标准完整链通过](evidence/T00-04/standard-130cd307/README.md)；克隆占用释放后6211文件归档清理，105个启动器夹具文件已清理 |
 | T00-05 | 安装文件占用 | 已验收 | fc319396 | [受控3/3](evidence/T00-05/results.json)、[标准全链](evidence/T00-05/verification.json)：退出0，1954项1897通过/57既有跳过/0失败，安装逐文件SHA一致 | 夹具已清理；保留最新构建/包/诊断；真实页面交互未验 |
 | T00-06 | 测试挂起收尾 | 已验收 | 既有有界进程执行及本批Desktop补齐 | [双宿主真实树/管道回归](evidence/T00-06/desktop-tree/README.md)：各5步骤，根/同身份子退出、124、无关进程保留、重试和UTF8通过 | [190bbaea标准完整链与身份核验](evidence/T03-04/standard-190bbaea/README.md)已通过；旧失败分别保留，受控/实际宿主/物理DPI边界分开 |
 | T00-07 | 双启动互斥 | 代码完成待验收 | 本阶段Mutex候选 | evidence/T00-07：PowerShell7/5.1各5/5，重入/拒绝/重试/异常退出恢复/独立checkout | [4b8f3b05标准完整链退出0](evidence/T00-07/standard-verification.json)，真实并发入口拒绝1；跨会话待验 |
-| T00-08 | 失败后成功回归 | 已验收 | 6395fe31 / f577fd19 | [恢复回归及提交级全链](evidence/T00-08/README.md)：双PowerShell恢复夹具通过；核心测试注入exit 23后，新运行恢复；`f577fd19`真实默认根入口完整链0退出、Release0/0、1967项0失败、发布安装及Playnite启动成功 | 原始运行诊断保留于本地`artifacts/build-diagnostics/20261024T135653993Z-90e04544`；57个skip为同一项已撤销架构断言 |
+| T00-08 | 失败后成功回归 | 已验收 | 6395fe31 / fbd8a882 | [恢复回归及提交级全链](evidence/T00-08/README.md)：双PowerShell恢复夹具通过；核心测试注入exit 23后，新运行恢复；`fbd8a882`真实默认根入口完整链0退出、Release0/0、1967项0失败、发布安装及Playnite启动成功 | 原始运行诊断保留于本地`artifacts/build-diagnostics/20261024T154742005Z-e15429e1`；57个skip为同一项已撤销架构断言 |
 | T01-01 | 每次运行产物清单 | 已验收 | f577fd19 | [双宿主阶段与安装暂存清单](evidence/T01-01/artifact-manifest-f577fd19/README.md)：失败运行明确`failedStageId=core`；安装attempt记录Run/Attempt ID、PID/启动时刻、staging/backup归属、存在状态与保留理由 | [同提交默认完整链](evidence/T00-01/standard-f577fd19/README.md)：安装run与构建run可追溯，暂存及回滚目录结束后不存在；外部安装目录不进入仓库清理 |
 | T01-02 | 清理预览 | 已验收 | b55d8d1d；复验f577fd19 | [双宿主只读清理预览](evidence/T01-02/README.md)：PowerShell Core 7.6.2与Desktop 5.1.22000.2538各9/9；路径、链接、活动身份、PID重用、保留理由及JSON时间往返通过；预览输出字节估算/原因，哨兵未变，所有`CanDelete=false` | 只读预览要求人工复核引用和占用；没有自动删除执行器，也不据此授权删除未知产物 |
 | T01-03 | 空间预算预检 | 已验收 | 5e194500 | evidence/T01-03：双PowerShell各4/4；真实C/D预算读取通过，标准入口前置调用 | [标准完整链退出0](evidence/T01-03/standard-verification.json)，1954项0失败；配置余量非峰值，真实磁盘未耗尽 |
@@ -21,7 +21,7 @@
 | T01-05 | 活跃运行保护 | 已验收 | b55d8d1d | [双宿主进程/锁矩阵](evidence/T01-05/README.md)：活动 PID/启动时间/run ID、退出后文件占用报告、PID 重用和并行审计拒绝均通过；共享预览回归双版本通过 | [同提交标准完整链退出0](evidence/T01-05/standard-verification.json)，1955项0失败、安装启动通过；没有通用删除授权，`CanDelete=false` |
 | T01-06 | 失败证据最小保留 | 已验收 | 8d01bd58 / 6c497039 / 956789de；复验f577fd19 | [两轮保留审查、双宿主归档校验及当前完整链](evidence/T01-06/README.md)：各148TRX/154日志；缺件/篡改/源变化/越界拒绝、归档后隔离原件清理与再次校验通过；真实303文件归档报告SHA核对；f577完整链退出0 | 诊断原件与真实源运行保持保留；受控归档后清理已验收，不授权通用自动删除；大转储/截图分级仅受控夹具验证 |
 | T01-07 | 包与截图去重 | 实施中 | 1656c57f / b55d8d1d；复验f577fd19 | [包/截图去重与旧输出清理](evidence/T01-07/README.md)：Core/Desktop重复预览、包保留均通过；当前14份manifest/39条产物，仅ZIP/PEXT同hash且均保留；f577完整链退出0；截图索引2,432张/237组 | 两个已归属旧构建输出在无引用、无占用后删除并保留原诊断；历史截图所有权未建立，索引已记录、0张删除，不能按hash猜测归属 |
-| T01-08 | 中断后清理验收 | 实施中 | 本批有界进程收尾与受控测试 | [双宿主中断/临时目录验收](evidence/T01-08/README.md)：Core/Desktop等待中断后精确子进程退出、无关进程保留、重试0；7/124/0/0/0序列及锁释放后重试通过 | 真实桌面Ctrl+C、用户电脑同步构建及提交后标准完整链待验；当前不会据受控线程中断宣称用户取消已验收 |
+| T01-08 | 中断后清理验收 | 实施中 | fbd8a882 | [双宿主中断与标准链](evidence/T01-08/README.md)：Core/Desktop等待中断后精确子进程退出、无关进程保留、重试0；7/124/0/0/0序列及锁释放后重试通过；提交后标准根入口完整链通过 | 真实桌面Ctrl+C与用户电脑同步构建待验；当前不会据受控线程中断宣称用户取消已验收 |
 | T02-01 | 滚动累积漂移回归 | 已验收 | 9fd1496c | [生产模板双主题几何回归](evidence/T02-01/README.md)与[提交级完整链](evidence/T02-01/standard-verification.json)：240行、每主题8轮顶/底/顶、48个实测检查点；定向1/1且完整链同提交通过 | 受控STA/WPF；真实页面、物理滚轮与DPI仍不包含在本项证据中；990个隔离编译/测试中间文件已清理 |
 | T02-02 | 详情展开交叉滚动 | 代码完成待验收 | 本批生产页夹具 | evidence/T02-02：Light/Dark长详情交叉滚动2/2、所在类9/9；Release0/0 | 190bbaea标准完整链已通过；受控夹具不替代业务端到端，完整双主题宿主/物理DPI仍待验 |
 | T02-03 | 批量选择后收窄 | 已验收 | 51641d06 | [evidence/T02-03](evidence/T02-03/README.md)：双主题120行选40项、三轮断点往返验证真实 `Keyboard.FocusedElement` 保持；定向2/2、所在类及完整链11/11 | 默认根.cmd在51641d06退出0；1967项0失败、148份TRX一致、145个WPF类成功；ZIP/PEXT一致并安装、Playnite启动成功。物理键盘输入、IME、宿主插件加载路径及物理DPI不在本项证据内 |

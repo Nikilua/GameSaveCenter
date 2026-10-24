@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85",
+  "standardEntry": "GameSaveCenter-Run.cmd",
+  "command": "cmd.exe /d /c GameSaveCenter-Run.cmd < nul",
+  "exitCode": 0,
+  "buildRunId": "20261024T154742005Z-e15429e1",
+  "installRunId": "20261024T154739936Z-bc3e83dc",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "solutionBuild": {
+    "warnings": 0,
+    "errors": 0
+  },
+  "tests": {
+    "total": 1967,
+    "passed": 1910,
+    "skipped": 57,
+    "failed": 0,
+    "trxFiles": 148,
+    "trxCounterMismatches": 0,
+    "wpfIsolatedClassesCompleted": 145,
+    "groups": {
+      "core": { "total": 157, "passed": 157, "skipped": 0, "failed": 0 },
+      "worker": { "total": 400, "passed": 400, "skipped": 0, "failed": 0 }
+    }
+  },
+  "workerWinX64Publish": "passed",
+  "zipSha256": "C205F550B1C03F45B90E26625B4D1538CFCA68510FFAE22E104C60A14DE932FC",
+  "pextSha256": "C205F550B1C03F45B90E26625B4D1538CFCA68510FFAE22E104C60A14DE932FC",
+  "installOutcome": "passed",
+  "playniteStartupObserved": true,
+  "inProcessPluginLoadVerified": false,
+  "skippedTestsNote": "All 57 skips have the existing revoked Today's Workspace UI architecture assertion reason."
+}

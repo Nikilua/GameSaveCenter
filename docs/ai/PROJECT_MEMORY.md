@@ -1080,3 +1080,9 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-24 T01-08 有界进程中断收尾候选
 
 `scripts/bounded-process.ps1` 将自有进程树停止逻辑集中到 `Stop-GscOwnedProcessTree`，并在 `finally` 检查等待被中断时的自有进程，避免仅释放 `Process` 句柄后留下运行进程。Core7.6.2与Desktop5.1受控等待中断均验证子进程PID/启动时刻退出、无关进程保留、之后重试0；`Test-IsolatedTempCleanup` 双宿主7/124/0/0/0、哨兵SHA不变、锁失败可见与释放重试通过。真实桌面Ctrl+C仍未验证，T01-08保持实施中。源码提交后标准全链待重跑；首次脏工作树根入口按打包身份保护退出1，没有打包或安装。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/README.md`。
+
+## 2026-10-25 T01-08 提交后标准完整链通过
+
+`fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 上默认 `GameSaveCenter-Run.cmd` 退出0：SDK8.0.423、Release 0 warning/0 error、1967项1910通过/57既有skip/0失败、148 TRX一致、145个WPF隔离类完成；Worker win-x64发布、ZIP/PEXT、安装和Playnite启动通过。构建run `20261024T154742005Z-e15429e1`，安装run `20261024T154739936Z-bc3e83dc`。六个安装目录程序集的版本/源码身份/SHA核对通过，未据此声称进程内插件已加载。脱敏证据在 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/`。真实桌面Ctrl+C和外机快进后的构建仍待核验，T01-08维持实施中。
+
+用户提供另一台电脑 `ea926c5e` 的状态和diff：代码文件内含 `Updated upstream` / `Stashed changes` 合并冲突标记，解释了CS8300；不能通过reset覆盖其本地文档、代码、测试或未跟踪证据。安全恢复顺序是 `git stash push --include-untracked`、确认干净、`git pull --ff-only origin main`、运行默认根入口；外机干净主线通过后再核查stash并逐项移植功能改动。细节见 `docs/ai/CURRENT_STATE.md` 与T00-08证据。此轮尚未取得外机同步后构建结果。
