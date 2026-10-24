@@ -1,0 +1,42 @@
+{
+  "failedSourceCommit": "aefbddfada1f589fbab8a88460bb434775d9822f",
+  "standardCommand": "GameSaveCenter-Run.cmd",
+  "standardExitCode": 1,
+  "runId": "20261024T023430859Z-655cef77",
+  "failedWpfClassOrdinal": 101,
+  "totalWpfClasses": 145,
+  "hostCrashIn": "WindowAutomationPeer.GetNameCore -> UnsafeNativeMethods.GetWindowTextNoThrow/GetWindowTextLength",
+  "nativeErrorCode": null,
+  "nativeErrorCodeNote": "No numeric native error code was captured; localized exception message is encoding-damaged.",
+  "rawSummarySHA256": "5B862F8C6C38A1C90099E2F1624DD4EF2457C06B4AB19313D7661F2761D14912",
+  "originalDllRecheck": {
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "note": "Intermittent crash did not reproduce in this independent rerun."
+  },
+  "namedWindowChange": {
+    "normalWindowAutomationPeerPreserved": true,
+    "assertsPeerName": true,
+    "newBuildWarnings": 0,
+    "newBuildErrors": 0,
+    "independentClassRuns": [
+      {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "newFinalCandidateFullChain": "pending; no installation or startup accepted for failed source"
+}

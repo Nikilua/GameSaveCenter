@@ -1,0 +1,50 @@
+Assembly: PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
+File version: 4.8.9181.0
+0000 ldarg.0
+0001 call System.Windows.Automation.Peers.FrameworkElementAutomationPeer::GetNameCore
+0006 stloc.0
+0007 ldloc.0
+0008 ldsfld System.String::Empty
+000D call System.String::op_Equality
+0012 brfalse.s 6B
+0014 ldarg.0
+0015 call System.Windows.Automation.Peers.UIElementAutomationPeer::get_Owner
+001A castclass ::Window
+001F stloc.1
+0020 ldloc.1
+0021 callvirt System.Windows.Window::get_IsSourceWindowNull
+0026 brtrue.s 57
+0028 call MS.Internal.FrameworkAppContextSwitches::get_OptOutIgnoreWin32SetLastError
+002D brfalse.s 26
+002F ldc.i4 00-02-00-00
+0034 newobj System.Text.StringBuilder::.ctor
+0039 stloc.2
+003A ldnull
+003B ldloc.1
+003C callvirt System.Windows.Window::get_CriticalHandle
+0041 newobj System.Runtime.InteropServices.HandleRef::.ctor
+0046 ldloc.2
+0047 ldloc.2
+0048 callvirt System.Text.StringBuilder::get_Capacity
+004D call MS.Win32.UnsafeNativeMethods::GetWindowText
+0052 pop
+0053 br.s 1A
+0055 newobj System.Text.StringBuilder::.ctor
+005A stloc.2
+005B ldnull
+005C ldloc.1
+005D callvirt System.Windows.Window::get_CriticalHandle
+0062 newobj System.Runtime.InteropServices.HandleRef::.ctor
+0067 ldloc.2
+0068 ldc.i4.0
+0069 call MS.Win32.UnsafeNativeMethods::GetWindowTextNoThrow
+006E pop
+006F ldloc.2
+0070 callvirt System.Object::ToString
+0075 stloc.0
+0076 ldloc.0
+0077 brtrue.s 06
+0079 ldsfld System.String::Empty
+007E stloc.0
+007F ldloc.0
+0080 ret

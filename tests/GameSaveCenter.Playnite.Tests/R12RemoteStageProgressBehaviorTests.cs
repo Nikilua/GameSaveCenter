@@ -103,13 +103,19 @@ public sealed class R12RemoteStageProgressBehaviorTests
             tabs.SelectedIndex=2;
             var window=new Window
             {
+                Title="GameSaveCenter remote-stage progress regression",
                 Content=page,Width=1440,Height=1000,WindowStyle=WindowStyle.None,
                 ShowInTaskbar=false,ShowActivated=false,Opacity=0.01
             };
+            // Keep a meaningful UIA name without the unnamed Window peer's native-title fallback.
+            System.Windows.Automation.AutomationProperties.SetName(window,window.Title);
 
             try
             {
                 window.Show();
+                var windowPeer=Assert.IsType<System.Windows.Automation.Peers.WindowAutomationPeer>(
+                    System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(window));
+                Assert.Equal(window.Title,windowPeer.GetName());
                 PumpLayout(window);
                 var progress=Assert.Single(FindVisualChildren<ProgressBar>(page),
                     item=>System.Windows.Automation.AutomationProperties.GetName(item)=="远端备份隔离下载进度");

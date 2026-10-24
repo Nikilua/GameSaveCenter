@@ -1,0 +1,67 @@
+[repo]\artifacts\gsc-b\26e5d1bd\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.04]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.09]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.OtherTaskTypesDoNotChangeRemoteStageProjection [24 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.CancellationKeepsWorkerCleanupOutcomeInTheStatusProjection [14 ms]
+δ���������쳣:  System.ComponentModel.Win32Exception: ��������
+   �� MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)
+   �� MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)
+   �� System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()
+   �� System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()
+   �� System.Windows.ContextLayoutManager.fireAutomationEvents()
+   �� System.Windows.ContextLayoutManager.UpdateLayout()
+   �� System.Windows.ContextLayoutManager.UpdateLayoutCallback(Object arg)
+   �� System.Windows.Media.MediaContext.FireInvokeOnRenderCallbacks()
+   �� System.Windows.Media.MediaContext.RenderMessageHandlerCore(Object resizedCompositionTarget)
+   �� System.Windows.Media.MediaContext.RenderMessageHandler(Object resizedCompositionTarget)
+   �� System.Windows.Interop.HwndTarget.OnResize()
+   �� System.Windows.Interop.HwndTarget.HandleMessage(WindowMessage msg, IntPtr wparam, IntPtr lparam)
+   �� System.Windows.Interop.HwndSource.HwndTargetFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   �� System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   �� System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   �� System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   �� MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+
+测试总数: 未知
+     通过数: 2
+总时间: 14.2196 秒
+结果文件: [repo]\artifacts\build-diagnostics\20261024T023430859Z-655cef77\tests\wpf.R12RemoteStageProgressBehaviorTests\wpf.R12RemoteStageProgressBehaviorTests.trx
+
+
+附件:
+  [repo]\artifacts\build-diagnostics\20261024T023430859Z-655cef77\tests\wpf.R12RemoteStageProgressBehaviorTests\e27ea483-52c0-4344-8fe4-40202d4d223f\Sequence_71a5be90c885464181beafd8f859d2c6.xml
+活动的测试运行已中止。原因: 测试主机进程崩溃 : δ���������쳣:  System.ComponentModel.Win32Exception: ��������
+   �� MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)
+   �� MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)
+   �� System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()
+   �� System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()
+   �� System.Windows.ContextLayoutManager.fireAutomationEvents()
+   �� System.Windows.ContextLayoutManager.UpdateLayout()
+   �� System.Windows.ContextLayoutManager.UpdateLayoutCallback(Object arg)
+   �� System.Windows.Media.MediaContext.FireInvokeOnRenderCallbacks()
+   �� System.Windows.Media.MediaContext.RenderMessageHandlerCore(Object resizedCompositionTarget)
+   �� System.Windows.Media.MediaContext.RenderMessageHandler(Object resizedCompositionTarget)
+   �� System.Windows.Interop.HwndTarget.OnResize()
+   �� System.Windows.Interop.HwndTarget.HandleMessage(WindowMessage msg, IntPtr wparam, IntPtr lparam)
+   �� System.Windows.Interop.HwndSource.HwndTargetFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   �� System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   �� System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   �� System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   �� MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+
+测试运行已中止。
+活动的测试运行已中止，因为主机进程意外退出。请检查上面的调用堆栈(如果有)，以获取有关异常来源的详细信息。
+发生崩溃时运行的测试:
+GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.ProductionMaintenancePageShowsActiveProgressAndResidualCancellationButHidesCancelAction
+
+此测试可能是(也可能不是)崩溃的来源。

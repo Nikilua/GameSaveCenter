@@ -1,3 +1,7 @@
+## 2026-10-24 标准链UIA窗口标题崩溃与夹具修正
+
+aefbddfa标准链在101/145类R12远端隔离进度testhost因WindowAutomationPeer原生标题读取Win32Exception退出1；未安装，原生码未知，乱码不推断具体错误码。原DLL独立5/5；为夹具设置明确UIA名称并验证正常WindowAutomationPeer，命名后独立三次5/5，编译0/0。保留原失败，不禁用UIA/吞异常/扩大skip；新完整链待跑，最后完整成功仍b8eedc47。证据T03-04/uia-title-failure。
+
 ## 2026-10-24 T03-04 安装与加载身份候选
 
 安装报告新增六关键程序集实际磁盘路径、构建身份和SHA；插件诊断新增实际加载路径，明确磁盘身份不等于进程加载。双PowerShell事务3/3，目标Release0/0、身份/诊断4/4；真实既有安装读取仍正确返回b8eedc47，没有用HEAD伪造。本批提交后完整标准入口待跑，最后完整成功仍b8eedc47。
@@ -710,6 +714,8 @@ Actions #1054/run `38944728502` 已在当前文档 HEAD `79748216` 终态成功�
 - Playnite 退出回收自身 Worker，防止 shutdown 竞态重启。不得按名称杀任意 Worker；安装时路径/归属未知即停止，不默认提权。
 
 ## UI 与性能规则
+
+- 新增或修正的WPF测试宿主窗口提供有意义的AutomationProperties.Name，并保留正常AutomationPeer；避免未命名宿主落入原生标题读取回退。不以关闭UIA、空peer或吞Win32Exception解决测试失败。
 
 - Demo-first 优先于历史生产结构和通用 Apple 风格。Demo 路径当前缺失时沿用已恢复生产资源并明确限制。当前游戏选框与滚动条为明确保留例外。
 - 真实 Binding、命令、错误/取消、键盘与 UI Automation、主题/DPI 和可扩展列表必须保持。当前授权允许整页重构，旧历史“不能替换/不能迁移”不冻结页面。
