@@ -8,6 +8,8 @@ T01-02只读清理预览在`f577fd19`源码身份下以PowerShell Core7.6.2和Wi
 
 T01-06现已验收：诊断归档/保留双宿主复验通过；归档完整性、缺件/篡改/源变化/路径越界拒绝、归档后受控原件清理与再次校验均通过。真实303文件归档SHA匹配、源原件仍留存；当前`f577fd19`标准完整链退出0。通用自动删除仍未启用。证据 `design/reviews/build-ui-reliability-20261022/evidence/T01-06/README.md`。
 
+T01-07包/截图审计与去重进度：双宿主包保留和重复预览通过，当前ZIP/PEXT同hash但两种格式均保留；两个旧构建目录已在确认归属、无引用和无占用后清理，原始诊断仍在。历史截图虽有237组hash重复，所有权不明，保留不删；详细索引和边界见 `design/reviews/build-ui-reliability-20261022/evidence/T01-07/README.md`。
+
 另一台个人电脑提供状态：`main` at `ea926c5e`、`behind 2`，多个文档/源码/测试修改及未跟踪证据。`GamePickerViewModel.cs` 多处 `CS8300` 来自 `Updated upstream` / `Stashed changes` 冲突标记，说明stash合并尚未解决。远端76eab05c/f577fd19未改该ViewModel；本地分支落后本身不是CS8300原因。已取得部分diff；完整diff和`git stash list`还待，未reset/覆盖。建议先安全保存含未跟踪的全部本地改动，快进main验证完整入口，再看完整diff把功能改动合入独立分支。详见T00-08 README。
 
 ## 2026-10-24 T02-03 实际键盘焦点回归补正

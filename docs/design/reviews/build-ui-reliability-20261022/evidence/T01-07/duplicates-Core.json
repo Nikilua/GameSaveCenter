@@ -1,11 +1,11 @@
 {
-  "ScreenshotHashGroup": true,
-  "ReferencesRetained": true,
-  "UnknownScreenshotExcluded": true,
+  "Engine": "7.6.2",
+  "ActualHashGroups": true,
   "ScreenshotReferenceRetained": true,
   "StaleExcluded": true,
+  "ReferencesRetained": true,
+  "ScreenshotHashGroup": true,
   "PathsDeduplicated": true,
-  "ActualHashGroups": true,
-  "Engine": "7.6.2",
+  "UnknownScreenshotExcluded": true,
   "FilesUnchanged": true
 }

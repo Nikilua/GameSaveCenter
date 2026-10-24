@@ -1,0 +1,77 @@
+{
+  "SchemaVersion": 1,
+  "SourceCommit": "f577fd192709d5a312c7bc72fd92249b6b5e31ab",
+  "LatestBuildOutput": "[repo]/artifacts/gsc-b/229ce3b1",
+  "Candidates": [
+    {
+      "Name": "1be2abbc",
+      "Path": "[repo]\\artifacts\\gsc-b\\1be2abbc",
+      "Bytes": 281260077.0,
+      "FileCount": 1014,
+      "SourceCommit": "6395fe314a2e3bf7b71761c652e14609c1052ce0",
+      "SourceRun": "20261024T105946705Z-156e96f5",
+      "Outcome": "passed",
+      "DiagnosticsPath": "[repo]\\artifacts\\build-diagnostics\\20261024T105946705Z-156e96f5",
+      "DiagnosticsFiles": 303,
+      "DiagnosticsSummarySha256": "8FC9C8EAE069FEB03148534DE4902CB4D024D24F89BC3ED83159B852E6D21C5A",
+      "DocReferences": 0,
+      "OwnerProcessAlive": false,
+      "LockedFiles": 0,
+      "LinkedEntries": 0
+    },
+    {
+      "Name": "28e3be46",
+      "Path": "[repo]\\artifacts\\gsc-b\\28e3be46",
+      "Bytes": 174388043.0,
+      "FileCount": 742,
+      "SourceCommit": "6395fe314a2e3bf7b71761c652e14609c1052ce0",
+      "SourceRun": "20261024T120819535Z-9df7edc5",
+      "Outcome": "failed",
+      "DiagnosticsPath": "[repo]\\artifacts\\build-diagnostics\\20261024T120819535Z-9df7edc5",
+      "DiagnosticsFiles": 263,
+      "DiagnosticsSummarySha256": "64ADAC0D613DBF3A57BA2632260B643F41A6BF5FFDFDA84612781E7C681A8BC9",
+      "DocReferences": 0,
+      "OwnerProcessAlive": false,
+      "LockedFiles": 0,
+      "LinkedEntries": 0
+    }
+  ],
+  "Deleted": [
+    {
+      "Name": "1be2abbc",
+      "Path": "[repo]/artifacts/gsc-b/1be2abbc",
+      "Bytes": 281260077.0,
+      "FileCount": 1014,
+      "SourceCommit": "6395fe314a2e3bf7b71761c652e14609c1052ce0",
+      "SourceRun": "20261024T105946705Z-156e96f5",
+      "Outcome": "passed",
+      "DiagnosticsPath": "[repo]/artifacts/build-diagnostics/20261024T105946705Z-156e96f5",
+      "DiagnosticsFiles": 303,
+      "DiagnosticsSummarySha256": "8FC9C8EAE069FEB03148534DE4902CB4D024D24F89BC3ED83159B852E6D21C5A",
+      "DocReferences": 0,
+      "OwnerProcessAlive": false,
+      "LockedFiles": 0,
+      "LinkedEntries": 0
+    },
+    {
+      "Name": "28e3be46",
+      "Path": "[repo]/artifacts/gsc-b/28e3be46",
+      "Bytes": 174388043.0,
+      "FileCount": 742,
+      "SourceCommit": "6395fe314a2e3bf7b71761c652e14609c1052ce0",
+      "SourceRun": "20261024T120819535Z-9df7edc5",
+      "Outcome": "failed",
+      "DiagnosticsPath": "[repo]/artifacts/build-diagnostics/20261024T120819535Z-9df7edc5",
+      "DiagnosticsFiles": 263,
+      "DiagnosticsSummarySha256": "64ADAC0D613DBF3A57BA2632260B643F41A6BF5FFDFDA84612781E7C681A8BC9",
+      "DocReferences": 0,
+      "OwnerProcessAlive": false,
+      "LockedFiles": 0,
+      "LinkedEntries": 0
+    }
+  ],
+  "CurrentBuildOutputRetained": true,
+  "DDriveFreeBeforeBytes": 12289482752,
+  "DDriveFreeAfterBytes": 12749279232,
+  "Error": null
+}

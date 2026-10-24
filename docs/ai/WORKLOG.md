@@ -10,6 +10,8 @@ T01-02清理预览在当前`f577fd19`代码上复验：PowerShell Core7.6.2与Wi
 
 T01-06诊断保留夹具在当前代码上双宿主重跑均退出0；缺件、篡改、源变化、越界拒绝，以及完整归档后才清理隔离原件、清理后再验归档均通过。真实303文件归档报告SHA为`155F1224…D4E040`，原件保留；两轮历史诊断各148 TRX/154日志。归档/保留代码自f577fd19未变，且该提交的默认根入口全链成功，补齐最终链条件后记已验收；仍不授权通用自动删除。详情`docs/design/reviews/build-ui-reliability-20261022/evidence/T01-06/README.md`。
 
+T01-07包重复/保留夹具在Core7.6.2和Desktop5.1.22000.2538各通过；当前只读包索引14份manifest/39项，仅ZIP与PEXT为同hash的必需交付对，均不删除。清理两个已归属、无文档引用且无占用的旧构建输出（1,756文件/455,648,120字节），两份原始诊断摘要SHA保持不变，D盘可用空间增约459,796,480字节；保留最新229ce3b1与全部用户TRX/TestResults。现有截图索引有2,432张、237组重复；其历史所有权未建立，删除0张，T01-07仍待所有权映射后再评估。详情`docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/README.md`。
+
 外机 `HEAD=ea926c5e`、main `[behind 2]`，本地改动含ViewModel、R18测试、多个文档和未跟踪证据；目标文件有 `Updated upstream` / `Stashed changes` merge markers，导致CS8300。当前已收到部分diff；stash列表和完整diff仍待，以便不丢改动地手工合并。远端新增两提交未改ViewModel。未经该机授权不建议reset/覆盖；干净main可先安全stash（含untracked）后fast-forward验证，再另分支恢复功能改动。详见T00-08 README。
 
 ## 2026-10-24 T02-03 实际键盘焦点回归补正

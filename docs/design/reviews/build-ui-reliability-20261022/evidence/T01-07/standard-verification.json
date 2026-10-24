@@ -38,7 +38,7 @@
         "CreatedByThisRun": true,
         "Stage": "package",
         "Retention": "Current delivery output; keep until superseded and references reviewed",
-        "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec"
+        "Path": "[repo]\\artifacts\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec"
       },
       {
         "SHA256": "10E48C8B1A1A134CB682618329EA0D207B303DA601A57EE65DCDEBAE02E37670",
@@ -46,7 +46,7 @@
         "CreatedByThisRun": true,
         "Stage": "package",
         "Retention": "Current delivery output; keep until superseded and references reviewed",
-        "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter-0.6.73-playnite.zip"
+        "Path": "[repo]\\artifacts\\GameSaveCenter-0.6.73-playnite.zip"
       },
       {
         "SHA256": "10E48C8B1A1A134CB682618329EA0D207B303DA601A57EE65DCDEBAE02E37670",
@@ -54,7 +54,7 @@
         "CreatedByThisRun": true,
         "Stage": "package",
         "Retention": "Current delivery output; keep until superseded and references reviewed",
-        "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter-0.6.73.pext"
+        "Path": "[repo]\\artifacts\\GameSaveCenter-0.6.73.pext"
       }
     ],
     "sourceCommit": "b8fad3eec6f6525e8f82a39132dadab480d666be",

@@ -1,0 +1,25 @@
+{
+  "SchemaVersion": 1,
+  "SourceCommit": "f577fd192709d5a312c7bc72fd92249b6b5e31ab",
+  "ReadOnly": true,
+  "OwnershipManifests": 14,
+  "ArtifactRows": 39,
+  "DuplicateReviewRows": 25,
+  "ExcludedRows": 24,
+  "DuplicateGroups": [
+    {
+      "Action": "Review only; current delivery, references, owner and occupancy must remain protected",
+      "Files": [
+        "GameSaveCenter-0.6.73-playnite.zip",
+        "GameSaveCenter-0.6.73.pext"
+      ],
+      "SHA256": "19AF45FC199A9245320BE3216584465B0AB2A71E02D07EDA3A3C68FACC597340",
+      "Copies": 2
+    }
+  ],
+  "CurrentZipPextMatch": true,
+  "CurrentPackageSHA256": "19AF45FC199A9245320BE3216584465B0AB2A71E02D07EDA3A3C68FACC597340",
+  "AllCanDeleteFalse": true,
+  "NoArtifactDeleted": true,
+  "GeneratedUtc": "2026-10-24T14:52:09.3937108Z"
+}

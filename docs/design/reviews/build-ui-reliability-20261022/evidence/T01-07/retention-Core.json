@@ -1,7 +1,7 @@
 {
-  "CurrentZipPextMatch": true,
-  "Engine": "7.6.2",
-  "UnknownPackagePreserved": true,
   "Scope": "Real archive production block and Compress-Archive; package content validator fixture",
-  "RollbackPreserved": true
+  "CurrentZipPextMatch": true,
+  "UnknownPackagePreserved": true,
+  "RollbackPreserved": true,
+  "Engine": "7.6.2"
 }
