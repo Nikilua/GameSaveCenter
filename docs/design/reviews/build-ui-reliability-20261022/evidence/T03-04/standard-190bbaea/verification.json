@@ -1,0 +1,119 @@
+{
+  "sourceCommit": "190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3",
+  "command": "GameSaveCenter-Run.cmd",
+  "exitCode": 0,
+  "sdk": "8.0.423",
+  "runId": "20261024T031835306Z-29399c0f",
+  "xamlPassed": 25,
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "testSummary": {
+    "testCaseCount": 1967,
+    "passed": 1910,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 57,
+    "notRunnable": 0,
+    "inconclusive": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "otherOutcome": 0,
+    "reportedCounterTotal": 1967,
+    "reportedCounterFileCount": 148,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "trxFileCount": 148,
+    "distinctTestClassCount": 361,
+    "wpfIsolatedClassRunCount": 145
+  },
+  "assemblies": [
+    {
+      "buildIdentity": "0.6.73+190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3",
+      "stageInstalledAndReportMatch": true,
+      "sha256": "794EB6139C5777C7AB96110B757843ECB86F68D98AB2B76D775ED63EF04485B2",
+      "file": "GameSaveCenter.Playnite.dll"
+    },
+    {
+      "buildIdentity": "0.6.73+190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3",
+      "stageInstalledAndReportMatch": true,
+      "sha256": "75C4579C38E7726D21755A8E0E3917CB03B5BB7AF28911217D998C1D6BDAD3FF",
+      "file": "GameSaveCenter.Core.dll"
+    },
+    {
+      "buildIdentity": "0.6.73+190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3",
+      "stageInstalledAndReportMatch": true,
+      "sha256": "29DD59003E57ED0D2D8AAA64DE9298CDF2159A78CAB101CCE78F37CBC886FAA9",
+      "file": "GameSaveCenter.Contracts.dll"
+    },
+    {
+      "buildIdentity": "0.6.73+190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3",
+      "stageInstalledAndReportMatch": true,
+      "sha256": "0DCCA04213A618D48F8293A0BA700B721F95C61A4E4FBC5C810CF823EE0AE906",
+      "file": "Worker/GameSaveCenter.Worker.dll"
+    },
+    {
+      "buildIdentity": "0.6.73+190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3",
+      "stageInstalledAndReportMatch": true,
+      "sha256": "CEEAED28766B3C483386E32DC3F89D55FFCDC472DA591A7D9C63F72F434FE760",
+      "file": "Worker/GameSaveCenter.Core.dll"
+    },
+    {
+      "buildIdentity": "0.6.73+190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3",
+      "stageInstalledAndReportMatch": true,
+      "sha256": "33FD54053B2D45B12132A09909C31790F20FDA3F1B61F700FDA0D803F60CB611",
+      "file": "Worker/GameSaveCenter.Contracts.dll"
+    }
+  ],
+  "packages": [
+    {
+      "name": "GameSaveCenter-0.6.73.pext",
+      "bytes": 45728282,
+      "sha256": "77B7D657E778F569C0EA89AA1C340BB8E59BE9E817508F01DC6770DFA5A317C3"
+    },
+    {
+      "name": "GameSaveCenter-0.6.73-playnite.zip",
+      "bytes": 45728282,
+      "sha256": "77B7D657E778F569C0EA89AA1C340BB8E59BE9E817508F01DC6770DFA5A317C3"
+    }
+  ],
+  "diagnosticsPath": "artifacts/build-diagnostics/20261024T031835306Z-29399c0f",
+  "rawSummarySHA256": "6804A9E0CCB08B638067B9270D3BE17F8B898D516E63548102BA193A302B1088",
+  "startup": "Start call completed; application and plugin loaded from expected path at 11:44 in logs. No running process found at later 14:13 query; interactive recheck separate.",
+  "priorFailedRun": "20261024T023430859Z-655cef77",
+  "interactiveRecheck": {
+    "observedWorkerBuildIdentity": "0.6.73+190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3",
+    "fullPathLineExtendsBeyondCurrentTextViewport": true,
+    "keyboardCtrlEndReachesDiagnosticSummary": true,
+    "windowId": 44107612,
+    "processes": [
+      {
+        "path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.exe",
+        "id": 22780,
+        "name": "GameSaveCenter.Worker",
+        "startedUtc": "2026-10-24T06:18:03.8507302Z"
+      },
+      {
+        "path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+        "id": 31436,
+        "name": "Playnite.DesktopApp",
+        "startedUtc": "2026-10-24T06:17:53.7133618Z"
+      }
+    ],
+    "pluginLoadedPathFieldVisible": true,
+    "runtimeWorker": {
+      "exists": true,
+      "matchesInstalled": true,
+      "path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.dll",
+      "sha256": "0DCCA04213A618D48F8293A0BA700B721F95C61A4E4FBC5C810CF823EE0AE906"
+    },
+    "screenshot": {
+      "path": "artifacts/host-audit-190bbaea/maintenance-identity.png",
+      "sha256": "AB4A5377033836ABAD2B152F4A89A585D77DB548A330E37AD49476FD090860F7"
+    },
+    "checkedUtc": "2026-10-24T06:28:12.1206066Z",
+    "physicalDpiVerified": false,
+    "observedPluginBuildIdentity": "0.6.73+190bbaeac1c2b8e0cb871215c76f5cf2f5fa1ec3"
+  }
+}

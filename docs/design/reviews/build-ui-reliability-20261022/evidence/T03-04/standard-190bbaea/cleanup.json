@@ -1,0 +1,263 @@
+{
+  "checkedUtc": "2026-10-24T06:31:00.8251465Z",
+  "records": [
+    {
+      "keyAssemblyIdentities": [
+        {
+          "sha256": "9C42334B423D3D05FF89C723E68D9264E31511D64281AD700F076AFC8566CA04",
+          "file": "bin\\GameSaveCenter.Contracts\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "9C42334B423D3D05FF89C723E68D9264E31511D64281AD700F076AFC8566CA04",
+          "file": "bin\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "A6E46B267D4EA6831CCB6524526A6AC8EA7255A70D85112BA83D5A89BBE88931",
+          "file": "bin\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "9C42334B423D3D05FF89C723E68D9264E31511D64281AD700F076AFC8566CA04",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "A6E46B267D4EA6831CCB6524526A6AC8EA7255A70D85112BA83D5A89BBE88931",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "50F5C820E9DA25DD7749B72A32F892E652E316FBE1F190AEC6F20E33D50E14C0",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "9C42334B423D3D05FF89C723E68D9264E31511D64281AD700F076AFC8566CA04",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "A6E46B267D4EA6831CCB6524526A6AC8EA7255A70D85112BA83D5A89BBE88931",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "50F5C820E9DA25DD7749B72A32F892E652E316FBE1F190AEC6F20E33D50E14C0",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "6AA55784E603C729F3052623DFE77A785548B5DB4AEEAE3046514D654D242411",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "9C42334B423D3D05FF89C723E68D9264E31511D64281AD700F076AFC8566CA04",
+          "file": "obj\\GameSaveCenter.Contracts\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "A6E46B267D4EA6831CCB6524526A6AC8EA7255A70D85112BA83D5A89BBE88931",
+          "file": "obj\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "50F5C820E9DA25DD7749B72A32F892E652E316FBE1F190AEC6F20E33D50E14C0",
+          "file": "obj\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        },
+        {
+          "sha256": "6AA55784E603C729F3052623DFE77A785548B5DB4AEEAE3046514D654D242411",
+          "file": "obj\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+          "productVersion": "0.6.73+7b714c401e7886dfe150168e965e63349c679b70"
+        }
+      ],
+      "ownership": "Owned completed targeted build from this goal; replaced by full verified 190bbaea build",
+      "files": 323,
+      "path": ".tmp/t03-04-build",
+      "removed": true,
+      "linksRejected": true,
+      "bytes": 28728840.0
+    },
+    {
+      "keyAssemblyIdentities": [
+        {
+          "sha256": "5EA1EE54BA3364586029185E12554D3DA8091069283AA4396F9FF4F5DC858F0B",
+          "file": "bin\\GameSaveCenter.Contracts\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "5EA1EE54BA3364586029185E12554D3DA8091069283AA4396F9FF4F5DC858F0B",
+          "file": "bin\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "8C3FA1FFB2B9B042AA375078736E501A50A7023A0C968BC5A4B22B326AB3334B",
+          "file": "bin\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "5EA1EE54BA3364586029185E12554D3DA8091069283AA4396F9FF4F5DC858F0B",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "8C3FA1FFB2B9B042AA375078736E501A50A7023A0C968BC5A4B22B326AB3334B",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "C4928A56D2C00B84EDEC47B2245EC3702792ADDF4B6D5285DDDEC69DE3C52CC4",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "5EA1EE54BA3364586029185E12554D3DA8091069283AA4396F9FF4F5DC858F0B",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "8C3FA1FFB2B9B042AA375078736E501A50A7023A0C968BC5A4B22B326AB3334B",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "C4928A56D2C00B84EDEC47B2245EC3702792ADDF4B6D5285DDDEC69DE3C52CC4",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "7A0DB30CE259E191BDB64384D22EFC8A7454560DB1DB900B35C2CC51E526F3E5",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "5EA1EE54BA3364586029185E12554D3DA8091069283AA4396F9FF4F5DC858F0B",
+          "file": "obj\\GameSaveCenter.Contracts\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "8C3FA1FFB2B9B042AA375078736E501A50A7023A0C968BC5A4B22B326AB3334B",
+          "file": "obj\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "C4928A56D2C00B84EDEC47B2245EC3702792ADDF4B6D5285DDDEC69DE3C52CC4",
+          "file": "obj\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        },
+        {
+          "sha256": "7A0DB30CE259E191BDB64384D22EFC8A7454560DB1DB900B35C2CC51E526F3E5",
+          "file": "obj\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+          "productVersion": "0.6.73+aefbddfada1f589fbab8a88460bb434775d9822f"
+        }
+      ],
+      "ownership": "Owned completed targeted build from this goal; replaced by full verified 190bbaea build",
+      "files": 323,
+      "path": ".tmp/t03-uia-build",
+      "removed": true,
+      "linksRejected": true,
+      "bytes": 28728987.0
+    },
+    {
+      "keyAssemblyIdentities": [
+        {
+          "sha256": "BF35E51140E0C904C2B6659C22AFF5C407473D09D717F693270E5D304A746B7A",
+          "file": "bin\\GameSaveCenter.Contracts\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "BF35E51140E0C904C2B6659C22AFF5C407473D09D717F693270E5D304A746B7A",
+          "file": "bin\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "A7B765AAAF9FF7736A6E6A0A291A1726FD314FE921783CBF2D33E3DDDB28DDB1",
+          "file": "bin\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "BF35E51140E0C904C2B6659C22AFF5C407473D09D717F693270E5D304A746B7A",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "A7B765AAAF9FF7736A6E6A0A291A1726FD314FE921783CBF2D33E3DDDB28DDB1",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "A7FDD3430F6D6D412728B6C1E078A169F064C77ECE27E481C3A64BBDF0EFFF0E",
+          "file": "bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "BF35E51140E0C904C2B6659C22AFF5C407473D09D717F693270E5D304A746B7A",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "A7B765AAAF9FF7736A6E6A0A291A1726FD314FE921783CBF2D33E3DDDB28DDB1",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "A7FDD3430F6D6D412728B6C1E078A169F064C77ECE27E481C3A64BBDF0EFFF0E",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "01EB075649822AD9BA3A45ADAA0157542B43F558AAEF165C8727B839E59B9514",
+          "file": "bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "BF35E51140E0C904C2B6659C22AFF5C407473D09D717F693270E5D304A746B7A",
+          "file": "obj\\GameSaveCenter.Contracts\\Release\\netstandard2.0\\GameSaveCenter.Contracts.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "A7B765AAAF9FF7736A6E6A0A291A1726FD314FE921783CBF2D33E3DDDB28DDB1",
+          "file": "obj\\GameSaveCenter.Core\\Release\\netstandard2.0\\GameSaveCenter.Core.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "A7FDD3430F6D6D412728B6C1E078A169F064C77ECE27E481C3A64BBDF0EFFF0E",
+          "file": "obj\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        },
+        {
+          "sha256": "01EB075649822AD9BA3A45ADAA0157542B43F558AAEF165C8727B839E59B9514",
+          "file": "obj\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+          "productVersion": "0.6.73+7c499b7f8dd078404f7d0f82363a96e13d38a5d2"
+        }
+      ],
+      "ownership": "Owned completed targeted build from this goal; replaced by full verified 190bbaea build",
+      "files": 353,
+      "path": ".tmp/t02-02-build",
+      "removed": true,
+      "linksRejected": true,
+      "bytes": 28747676.0
+    }
+  ],
+  "freeBefore": {
+    "C": 8999661568,
+    "D": 14074683392
+  },
+  "freeAfter": {
+    "C": 9000017920,
+    "D": 14163386368
+  },
+  "processEvidence": "All corresponding owned target build/test sessions were terminal; no current standard or installed runtime references these roots. Exclusive probes are additional protection, not a global process census.",
+  "retained": [
+    "artifacts/gsc-b/eb609571",
+    "artifacts/gsc-b/26e5d1bd",
+    "artifacts/build-diagnostics/20261024T031835306Z-29399c0f",
+    "artifacts/build-diagnostics/20261024T023430859Z-655cef77",
+    "artifacts/host-audit-190bbaea"
+  ],
+  "failedOriginalDllRetained": true,
+  "unknownUserEvidenceTouched": false
+}

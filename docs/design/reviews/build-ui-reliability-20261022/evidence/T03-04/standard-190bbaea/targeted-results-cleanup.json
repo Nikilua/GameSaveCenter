@@ -1,0 +1,45 @@
+{
+  "createdUtc": "2026-10-24T03:17:45.2954491Z",
+  "records": [
+    {
+      "archive": "artifacts/t03-local-evidence-190bbaea/t03-04-results",
+      "source": ".tmp/t03-04-results",
+      "bytes": 7553.0,
+      "files": 1,
+      "archiveVerifiedBeforeAndAfter": true,
+      "removed": true
+    },
+    {
+      "archive": "artifacts/t03-local-evidence-190bbaea/t03-uia-repro",
+      "source": ".tmp/t03-uia-repro",
+      "bytes": 9379.0,
+      "files": 1,
+      "archiveVerifiedBeforeAndAfter": true,
+      "removed": true
+    },
+    {
+      "archive": "artifacts/t03-local-evidence-190bbaea/t03-uia-results",
+      "source": ".tmp/t03-uia-results",
+      "bytes": 27957.0,
+      "files": 3,
+      "archiveVerifiedBeforeAndAfter": true,
+      "removed": true
+    },
+    {
+      "sha256": "26EBE5E7ACC04B7497242518E641FA9FE9D831F977AFBAFB415AB7EBF8D551F4",
+      "archive": "artifacts/t03-local-evidence-190bbaea/uia-name-il.ps1",
+      "source": ".tmp/uia-name-il.ps1",
+      "removed": true
+    }
+  ],
+  "dFreeBefore": 14488911872,
+  "dFreeAfter": 14488903680,
+  "ownership": "Only completed outputs created in this goal; no process-name cleanup or unknown evidence",
+  "retained": [
+    ".tmp/t03-04-build",
+    ".tmp/t03-uia-build",
+    "artifacts/gsc-b/26e5d1bd"
+  ],
+  "retentionReason": "Keep compiled candidates and original failed DLL until final full-chain verification completes",
+  "unknownUserEvidenceTouched": false
+}

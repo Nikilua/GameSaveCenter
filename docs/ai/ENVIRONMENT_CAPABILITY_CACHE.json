@@ -22,8 +22,8 @@
       "status": "available",
       "lastCheck": {
         "checkedOn": "2026-10-24",
-        "method": "Exact-source standard root build, test, package, install and startup run.",
-        "result": "SDK8.0.423 used successfully for b8eedc47 run20261024T014633742Z-7d44e664; 1967 tests, zero failed outcomes. Historical SDK absence no longer blocks this toolchain."
+        "method": "Standard root full build/test/package/install/start call, independently verified against installed identities.",
+        "result": "190bbaea run20261024T031835306Z-29399c0f exited0 with SDK8.0.423; 1967 tests, zero failed outcomes and unchanged57 skips."
       },
       "retryWhen": [
         "SDK 8.0.423 becomes visible to dotnet in this checkout.",
@@ -32,7 +32,8 @@
       "evidence": [
         "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md",
         "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md",
-        "docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/standard-verification.json"
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/standard-verification.json",
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T03-04/standard-190bbaea/verification.json"
       ]
     },
     {
@@ -42,10 +43,10 @@
       "status": "waiting_for_external_evidence",
       "lastCheck": {
         "checkedOn": "2026-10-24",
-        "method": "Standard installation identities, process query, plugin load log and computer-use screenshots/scroll input.",
-        "result": "b8eedc47 installed with six matching assembly hashes; Playnite30712/Worker29420 started. Actual home and SaveCenter displayed; injected list/detail scroll observed independently. Command panel, full dual-theme/resize matrix, physical IME and DPI remain unverified. Settings coordinate targeting drift was observed; no configuration changed."
+        "method": "Installation report/SHA, startup log, later process query and separate computer-use relaunch/maintenance identity view.",
+        "result": "190bbaea full chain succeeded; application/plugin loaded at11:44. No process at14:13 query; separately relaunched and observed actual home/maintenance diagnostics displaying matching plugin/Worker190bbaea identities and plugin loaded path. Runtime Worker DLL SHA matches installed. Full command-panel/dual-theme/resize/IME/physicalDPI gates still pending."
       },
-      "note": "Actual home/SaveCenter observation is now available. This does not accept the S00-02 command-panel host gate or all physical input/DPI conditions.",
+      "note": "Current maintenance identity observation is verified; it does not accept every legacy host gate or imply continuous process lifetime.",
       "retryWhen": [
         "The exact SDK gate passes and the intended Playnite installation is available for the prescribed launcher.",
         "The user explicitly requests the prescribed host gate with its prerequisites prepared."
@@ -53,7 +54,8 @@
       "evidence": [
         "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md",
         "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md",
-        "docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/README.md"
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/README.md",
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T03-04/standard-190bbaea/README.md"
       ]
     },
     {
