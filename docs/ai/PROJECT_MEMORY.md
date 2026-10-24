@@ -1116,3 +1116,7 @@ Test-ArtifactPathBoundaries.ps1在提升测试上下文的PowerShell Core 7.6.2�
 当前最新完整标准入口仍是 `fbd8a882`。后续 `e1127ac0` 根入口run `20261024T165132695Z-aadc0bbd` 编译通过，但WPF在74/145类R08悬停采样失败，未发布/安装。修复工作树中的R08夹具等待初始状态收敛，并把生产按钮模板4个交互故事板在测试副本中延长到400ms；8个动画的连续性/中间状态/方向/终态断言保留，MotionTokens生产默认值不变。SDK8.0.423下R08类5轮共15/15、R09类2/2，证据位于专项T00-01/r08-motion-window-20261025。候选仍需提交后跑默认根入口完整链。
 
 另一台电脑此前 `ea926c5e` 含 `Updated upstream` / `Stashed changes` 冲突标记；用户新附编译日志9个CS8300与该冲突一致。另附R09测试`Thickness(2)`/`Thickness(1)`失败，与当前本机R09 2/2不同；外机同次source/DLL/PDB身份未知，不据本机结果宣称解决。恢复先stash含未跟踪文件、确认clean、`git pull --ff-only origin main`，再跑根入口；成功前不pop、不reset、不覆盖本机改动。
+
+## 2026-10-25 T00-07 Global checkout lock 候选
+
+`scripts/checkout-lock.ps1` 将按规范化 checkout 路径派生的命名 Mutex 从 `Local\` 改为 `Global\`，避免同一工作区跨 Windows 登录会话各自取得独立锁。PowerShell Core 7.6.2 与 Windows PowerShell 5.1.22000.2538 的既有5项锁回归各5/5。跨会话夹具尝试用当前用户S4U计划任务，Task Scheduler WMI/注册权限被拒；未创建任务且临时夹具清理，不能记跨会话通过。候选 `3c8a0854` 默认根入口Release编译0警告/错误、测试1967项1899通过/68跳过/0失败；其中57项为已撤销架构断言、10项Named Pipe受执行环境限制、1项系统鼠标指针限制。打包阶段因源码/测试仍未提交而触发身份保护退出1，未安装。最后完整链仍是 `d0e11929`，候选提交后须用默认根入口重跑全链。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-07/README.md`。

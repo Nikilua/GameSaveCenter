@@ -1,0 +1,13 @@
+﻿{
+    "Engine":  "5.1.22000.2538",
+    "TaskName":  "GameSaveCenterCheckoutLockTest-2160fb1055654923a73d3c0b28b2ab11",
+    "TaskCreated":  false,
+    "CurrentSessionId":  1,
+    "WorkerSessionId":  null,
+    "CrossSession":  false,
+    "LockRefused":  false,
+    "Outcome":  "failed",
+    "Error":  "拒绝访问 ",
+    "TaskRemoved":  true,
+    "FixtureRemoved":  true
+}

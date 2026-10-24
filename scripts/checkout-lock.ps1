@@ -5,7 +5,10 @@ function Enter-GscCheckoutLock {
     $sha = [Security.Cryptography.SHA256]::Create()
     try { $key = [BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($canonical))).Replace('-','') }
     finally { $sha.Dispose() }
-    $mutex = [Threading.Mutex]::new($false, ('Local\GameSaveCenter.Build.' + $key))
+    # A checkout can be opened from more than one Windows logon session. Keep
+    # the lock in the global namespace so those processes cannot write the same
+    # build and install outputs concurrently.
+    $mutex = [Threading.Mutex]::new($false, ('Global\GameSaveCenter.Build.' + $key))
     try {
         $acquired = $false
         try { $acquired = $mutex.WaitOne(0) }

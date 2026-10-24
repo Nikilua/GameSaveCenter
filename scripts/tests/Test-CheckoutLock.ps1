@@ -31,7 +31,7 @@ try { $other = Enter-GscCheckoutLock (Join-Path $fixtureRoot 'other'); Exit-GscC
 finally { Exit-GscCheckoutLock $lock }
 $evidence = Join-Path $repo 'docs/design/reviews/build-ui-reliability-20261022/evidence/T00-07'
 New-Item -ItemType Directory $evidence -Force | Out-Null
-@{ Engine=$PSVersionTable.PSVersion.ToString(); Reentrant=$true; ConcurrentRefused=$true; ReleasedRetry=$true; ExitedOwnerRecovery=$true; OtherCheckoutIndependent=$true; Scope='Current Windows session' } | ConvertTo-Json | Set-Content (Join-Path $evidence ('lock-' + $PSVersionTable.PSEdition + '.json'))
+@{ Engine=$PSVersionTable.PSVersion.ToString(); Reentrant=$true; ConcurrentRefused=$true; ReleasedRetry=$true; ExitedOwnerRecovery=$true; OtherCheckoutIndependent=$true; Scope='Global namespace; same-session process checks' } | ConvertTo-Json | Set-Content (Join-Path $evidence ('lock-' + $PSVersionTable.PSEdition + '.json'))
 $allowed = [IO.Path]::GetFullPath((Join-Path $repo '.tmp')) + [IO.Path]::DirectorySeparatorChar
 if (-not ([IO.Path]::GetFullPath($fixtureRoot)).StartsWith($allowed)) { throw 'Unsafe cleanup' }
 Remove-Item -LiteralPath $fixtureRoot -Recurse -Force

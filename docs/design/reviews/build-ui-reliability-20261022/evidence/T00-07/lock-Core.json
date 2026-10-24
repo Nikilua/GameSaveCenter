@@ -1,9 +1,9 @@
 {
-  "ReleasedRetry": true,
-  "ExitedOwnerRecovery": true,
-  "Scope": "Current Windows session",
-  "Reentrant": true,
   "OtherCheckoutIndependent": true,
+  "Reentrant": true,
+  "Scope": "Global namespace; same-session process checks",
+  "ExitedOwnerRecovery": true,
+  "ConcurrentRefused": true,
   "Engine": "7.6.2",
-  "ConcurrentRefused": true
+  "ReleasedRetry": true
 }

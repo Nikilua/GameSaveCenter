@@ -1,6 +1,6 @@
 {
     "ConcurrentRefused":  true,
-    "Scope":  "Current Windows session",
+    "Scope":  "Global namespace; same-session process checks",
     "Reentrant":  true,
     "ReleasedRetry":  true,
     "ExitedOwnerRecovery":  true,
