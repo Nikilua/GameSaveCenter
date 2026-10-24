@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "f577fd192709d5a312c7bc72fd92249b6b5e31ab",
+  "buildRunId": "20261024T135653993Z-90e04544",
+  "installRunId": "20261024T135651674Z-ade787f3",
+  "entry": "GameSaveCenter-Run.cmd",
+  "exitCode": 0,
+  "outcome": "passed",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "build": { "warnings": 0, "errors": 0 },
+  "tests": {
+    "total": 1967,
+    "passed": 1910,
+    "skipped": 57,
+    "failed": 0,
+    "trxFiles": 148,
+    "counterMismatches": 0,
+    "wpfIsolatedClasses": 145,
+    "skipReasons": [
+      "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。"
+    ]
+  },
+  "publish": "worker win-x64 passed",
+  "packages": {
+    "zipSha256": "19AF45FC199A9245320BE3216584465B0AB2A71E02D07EDA3A3C68FACC597340",
+    "pextSha256": "19AF45FC199A9245320BE3216584465B0AB2A71E02D07EDA3A3C68FACC597340"
+  },
+  "installation": {
+    "runId": "20261024T135651674Z-ade787f3",
+    "version": "0.6.73",
+    "assembliesVerified": 6,
+    "playniteStartup": "passed",
+    "playniteProcessId": 26372,
+    "playniteStartedLocal": "2026-10-24T22:24:18+08:00",
+    "attemptManifestStageCount": 2
+  },
+  "diagnostics": {
+    "runId": "20261024T135653993Z-90e04544",
+    "failedStageId": null,
+    "workingTreeClean": false,
+    "workingTreeNote": "Only pre-existing untracked user TRX/TestResults files were present; none were staged or changed by this run."
+  }
+}

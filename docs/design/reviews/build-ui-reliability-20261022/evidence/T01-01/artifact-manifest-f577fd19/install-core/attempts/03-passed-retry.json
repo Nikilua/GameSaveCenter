@@ -1,0 +1,38 @@
+{
+  "StartedUtc": "2026-10-24T13:55:43.9097490Z",
+  "CompletedUtc": "2026-10-24T13:55:43.9703226Z",
+  "Temporary": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture.__new-c2d7974039bc401b803531d4bbce166c",
+  "SchemaVersion": 2,
+  "RunId": "t01-01-install-run-fixture",
+  "ExpectedVersion": "1.2.3",
+  "OwnerStart": "2026-10-24T13:55:43.0578938Z",
+  "Owner": {
+    "ProcessId": 36540,
+    "ProcessStartedUtc": "2026-10-24T13:55:43.0578938Z"
+  },
+  "Artifacts": [
+    {
+      "Stage": "install-staging",
+      "Retention": "Staging moved or removed; retain this identity record",
+      "Active": false,
+      "CreatedByThisRun": true,
+      "Exists": false,
+      "Path": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture.__new-c2d7974039bc401b803531d4bbce166c"
+    },
+    {
+      "Stage": "install-backup",
+      "Retention": "Backup restored or removed; retain this identity record",
+      "Active": false,
+      "CreatedByThisRun": true,
+      "Exists": false,
+      "Path": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture.__old-39dd01c4b0e24fe9bb1466136506e862"
+    }
+  ],
+  "TemporaryExists": false,
+  "Stage": "install-transaction",
+  "OwnerPid": 36540,
+  "AttemptId": "33a0b2486e29423682508a97db01cb19",
+  "Outcome": "passed",
+  "Target": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture",
+  "Retention": "Install attempt evidence; external extension paths must never be passed to repository cleanup"
+}

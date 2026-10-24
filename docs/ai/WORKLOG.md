@@ -1,8 +1,12 @@
-## 2026-10-24 ea926c5e 标准完整链通过；外机CS8300定位
+## 2026-10-24 f577fd19 标准完整链通过；T01-01清单验收
 
-默认 `GameSaveCenter-Run.cmd` 在ea926c5e完整退出0：SDK8.0.423、Release0警告/0错误、1967项1910通过/57跳过/0失败、148份TRX计数一致、145个WPF隔离类；Worker发布、ZIP/PEXT、安装六程序集版本/身份/SHA与Playnite启动成功。原始诊断run `20261024T124042418Z-170b15d4` 保留于本机artifacts；摘要证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-ea926c5e/`。57项跳过均为已撤销架构的同一条skip reason。T00-01最新全链已满足，T00-08根据双PowerShell受控失败后恢复回放与真实根入口成功记已验收；受控下载中断仍不等同真实网络中断。旧用户TRX/TestResults未动。
+默认 `GameSaveCenter-Run.cmd` 在f577fd19完整退出0：构建run`20261024T135653993Z-90e04544`、安装run`20261024T135651674Z-ade787f3`、SDK8.0.423、Release0警告/0错误、1967项1910通过/57跳过/0失败、148份TRX计数一致、145个WPF隔离类；Worker发布、ZIP/PEXT、六程序集身份/SHA、安装及Playnite启动成功。57项跳过均是已撤销“今日工作台 UI 架构”断言。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-f577fd19/`。T00-01/T00-08/T01-01验收；真实下载中断、真实页面交互和进程内插件加载路径不因此升级。
 
-用户外机新日志在 `GamePickerViewModel.cs` 报9处CS8300，诊断为未解决Git冲突标记；当前ea926c5e源无标记且标准全链通过。由于外机HEAD/status/diff缺失，不直接覆盖或reset。下一步索取该机 `git status --short --branch`、`git rev-parse --short HEAD`、`git diff -- src/GameSaveCenter.Playnite/ViewModels/GamePickerViewModel.cs`，根据本地改动及merge/rebase状态安全解除冲突，然后要求外机复跑默认根入口。详见T00-08 README。
+T01-01新增显式failedStageId及installer attempt artifact list。PowerShell Core7.6.2、Desktop5.1分别验证失败exit23后新run恢复与安装3/3锁失败/改名回滚/成功；双宿主attempt清单均有run/attempt/owner/stage/created/exists/active/retention。提交级完整run实际安装暂存和备份目录都记录为本次创建，结束后不存在；外部Playnite路径不能传仓库清理器。证据`evidence/T01-01/artifact-manifest-f577fd19/`。
+
+归档并校验16份T01-01 JSON证据后，清理本阶段拥有的8个`.tmp/t01-01-*`目录（逻辑文件2,363,091字节）；D盘可用空间从12,290,236,416增至12,292,726,784字节。证据已在仓库下归档，用户Round3 TRX/TestResults未动。纯文档提交不重跑全链；产品源码的最后全链身份仍是f577fd19。
+
+外机 `HEAD=ea926c5e`、main `[behind 2]`，本地改动含ViewModel、R18测试、多个文档和未跟踪证据；目标文件有 `Updated upstream` / `Stashed changes` merge markers，导致CS8300。当前已收到部分diff；stash列表和完整diff仍待，以便不丢改动地手工合并。远端新增两提交未改ViewModel。未经该机授权不建议reset/覆盖；干净main可先安全stash（含untracked）后fast-forward验证，再另分支恢复功能改动。详见T00-08 README。
 
 ## 2026-10-24 T02-03 实际键盘焦点回归补正
 

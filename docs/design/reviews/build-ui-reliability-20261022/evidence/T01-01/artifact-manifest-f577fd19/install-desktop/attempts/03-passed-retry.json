@@ -1,0 +1,38 @@
+{
+    "RunId":  "t01-01-install-run-fixture",
+    "StartedUtc":  "2026-10-24T13:56:11.1915163Z",
+    "SchemaVersion":  2,
+    "AttemptId":  "8fdbdda997b74a8398bc04bf5c9c0523",
+    "OwnerPid":  38228,
+    "Temporary":  "[repo]\\.tmp\\install-transaction-dca14276c9fa486c8ab33e187c0c9f62\\extensions\\fixture.__new-15abd14e6f71453a94f8ba247b1b50fb",
+    "CompletedUtc":  "2026-10-24T13:56:11.3115136Z",
+    "ExpectedVersion":  "1.2.3",
+    "Retention":  "Install attempt evidence; external extension paths must never be passed to repository cleanup",
+    "Owner":  {
+                  "ProcessStartedUtc":  "2026-10-24T13:56:09.4557582Z",
+                  "ProcessId":  38228
+              },
+    "Outcome":  "passed",
+    "OwnerStart":  "2026-10-24T13:56:09.4557582Z",
+    "Artifacts":  [
+                      {
+                          "CreatedByThisRun":  true,
+                          "Active":  false,
+                          "Stage":  "install-staging",
+                          "Path":  "[repo]\\.tmp\\install-transaction-dca14276c9fa486c8ab33e187c0c9f62\\extensions\\fixture.__new-15abd14e6f71453a94f8ba247b1b50fb",
+                          "Retention":  "Staging moved or removed; retain this identity record",
+                          "Exists":  false
+                      },
+                      {
+                          "CreatedByThisRun":  true,
+                          "Active":  false,
+                          "Stage":  "install-backup",
+                          "Path":  "[repo]\\.tmp\\install-transaction-dca14276c9fa486c8ab33e187c0c9f62\\extensions\\fixture.__old-4735a5388f304c4698d79ceb9d0a742a",
+                          "Retention":  "Backup restored or removed; retain this identity record",
+                          "Exists":  false
+                      }
+                  ],
+    "Stage":  "install-transaction",
+    "TemporaryExists":  false,
+    "Target":  "[repo]\\.tmp\\install-transaction-dca14276c9fa486c8ab33e187c0c9f62\\extensions\\fixture"
+}

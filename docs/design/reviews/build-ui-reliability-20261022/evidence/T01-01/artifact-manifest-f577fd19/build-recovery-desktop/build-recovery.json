@@ -1,0 +1,78 @@
+{
+    "HostPowerShell":  "5.1.22000.2538",
+    "SourceCommit":  "f577fd192709d5a312c7bc72fd92249b6b5e31ab",
+    "Runtime":  "Controlled dotnet.cmd shim; command orchestration only, no product build or test case execution.",
+    "ExplicitSkipBaseline":  {
+                                 "Outcome":  "passed",
+                                 "RunId":  "20261024T135553042Z-dd2b2057",
+                                 "TestsRequested":  false
+                             },
+    "InjectedTestFailure":  {
+                                "TestsRequested":  true,
+                                "Evidence":  "build-runs/test-failure",
+                                "Outcome":  "failed",
+                                "RunId":  "20261024T135556009Z-0a700f7d",
+                                "CoreExitCode":  23,
+                                "FailedStageId":  "core"
+                            },
+    "SuccessfulRetry":  {
+                            "TestsRequested":  true,
+                            "RunId":  "20261024T135558269Z-fe79b982",
+                            "Outcome":  "passed",
+                            "TestCaseCount":  0,
+                            "Evidence":  "build-runs/successful-retry",
+                            "Steps":  [
+                                          {
+                                              "Id":  "sdk-list",
+                                              "ExitCode":  0
+                                          },
+                                          {
+                                              "Id":  "sdk-version",
+                                              "ExitCode":  0
+                                          },
+                                          {
+                                              "Id":  "sdk-info",
+                                              "ExitCode":  0
+                                          },
+                                          {
+                                              "Id":  "restore",
+                                              "ExitCode":  0
+                                          },
+                                          {
+                                              "Id":  "build",
+                                              "ExitCode":  0
+                                          },
+                                          {
+                                              "Id":  "core",
+                                              "ExitCode":  0
+                                          },
+                                          {
+                                              "Id":  "worker",
+                                              "ExitCode":  0
+                                          },
+                                          {
+                                              "Id":  "playnite-discovery",
+                                              "ExitCode":  0
+                                          },
+                                          {
+                                              "Id":  "wpf.R05TooltipTimingBehaviorTests",
+                                              "ExitCode":  0
+                                          }
+                                      ]
+                        },
+    "PreviousFailureRetained":  true,
+    "PreviousSkipNotInherited":  true,
+    "EnvironmentRestoredAfterEachRun":  true,
+    "EnvironmentKeysVerified":  [
+                                    "PATH",
+                                    "TEMP",
+                                    "TMP",
+                                    "DOTNET_ROOT",
+                                    "DOTNET_ROOT_X64",
+                                    "GSC_BUILD_COMMIT",
+                                    "GSC_SOURCE_ROOT",
+                                    "GSC_T00_08_MARKER"
+                                ],
+    "SyntheticTestCasesExecuted":  0,
+    "TimestampUtc":  "2026-10-24T13:56:01.2168754Z"
+}

@@ -1,0 +1,1 @@
+controlled dotnet success: build .\GameSaveCenter.sln -c Release --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=[repo]\.tmp\t00-08-build-recovery-84545a0c9636440c804ee01315863a97\output

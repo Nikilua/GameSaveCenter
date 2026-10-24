@@ -1,8 +1,12 @@
-## 2026-10-24 ea926c5e 最新标准全链成功；外机源码冲突标记
+## 2026-10-24 f577fd19 标准全链成功；T01-01产物身份验收
 
-默认 `GameSaveCenter-Run.cmd` 在 `ea926c5e36305dc4d67659d98d42e207b71e7439` 完整退出0，run `20261024T124042418Z-170b15d4`，SDK8.0.423、Release0警告/0错误，1967项1910通过/57跳过/0失败，148份TRX计数一致、145个WPF隔离类完成；Worker发布、ZIP/PEXT、六程序集安装身份/SHA及Playnite启动成功。本地原始诊断 `artifacts/build-diagnostics/20261024T124042418Z-170b15d4`，摘要与安装清单 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-ea926c5e/`。工作树dirty标志只包含已有用户未跟踪TRX/TestResults，不要清理或提交它们。57个skip均为已撤销架构的同一条跳过原因。
+默认 `GameSaveCenter-Run.cmd` 在源码 `f577fd192709d5a312c7bc72fd92249b6b5e31ab` 完整退出0：build run `20261024T135653993Z-90e04544`，install run `20261024T135651674Z-ade787f3`；SDK8.0.423、Release0警告/0错误、1967项1910通过/57跳过/0失败、148份TRX计数一致、145个WPF隔离类；Worker发布、ZIP/PEXT、六程序集磁盘身份/SHA、安装及Playnite启动成功。57个skip均为已撤销“今日工作台 UI 架构”同一跳过原因。本地诊断 `artifacts/build-diagnostics/20261024T135653993Z-90e04544`，证据见 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-f577fd19/`。
 
-外机最新日志在 `GamePickerViewModel.cs` 报9处CS8300，文件含未解决的Git merge conflict markers；当前ea926c5e源文件无冲突标记，全链通过。没有外机HEAD、状态和文件diff，不能安全地覆盖其源码。先让用户保留该机本地改动并提供 `git status --short --branch`、`git rev-parse --short HEAD` 和 `git diff -- src/GameSaveCenter.Playnite/ViewModels/GamePickerViewModel.cs`；随后确定冲突来自未完成merge/rebase还是文件被带入，再安全恢复并复跑默认入口。详细见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md`。
+T01-01已验收：失败阶段`failedStageId`和installer staging/backup artifact元数据在PowerShell Core 7.6.2与Windows PowerShell 5.1受控回归通过；安装run attempt含Run ID、Attempt ID、PID/启动时刻、Created/Exists/Active及保留理由。暂存/备份路径在外部Playnite目录，仅记录，不授权仓库清理。双宿主证据见`design/reviews/build-ui-reliability-20261022/evidence/T01-01/artifact-manifest-f577fd19/`。
+
+T01-01的16份归档JSON均已解析并确认不含本机绝对路径；归档后清理8个本阶段`.tmp`目录，逻辑大小2,363,091字节，D盘可用空间从12,290,236,416增至12,292,726,784字节。用户Round3 TRX/TestResults未动。
+
+外机最新日志与用户状态显示：另一台电脑HEAD `ea926c5e`、main落后origin/main两个提交且有多个本地源码/测试/文档修改及未跟踪证据。`GamePickerViewModel.cs` 含 `Updated upstream` / `Stashed changes` 标记，导致9处CS8300；这是本地stash合并冲突，不是SDK/NuGet问题。远端76eab05c和f577fd19没有改该ViewModel。已取得部分diff，完整diff与`git stash list`待补；不reset、不覆盖、不丢弃本地工作。详见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md`。
 
 ## 2026-10-24 T02-08 51641d06 当前宿主滚动补证
 

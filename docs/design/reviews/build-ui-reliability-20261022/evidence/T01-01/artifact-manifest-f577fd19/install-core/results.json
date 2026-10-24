@@ -1,0 +1,14 @@
+{
+  "Timestamp": "2026-10-24T13:55:44.0371519Z",
+  "LockedFilePreserved": true,
+  "RolledBackBackupLifecycleRecorded": true,
+  "RetrySucceeded": true,
+  "RunIdRecorded": true,
+  "AttemptRecordsVerified": true,
+  "ActualInstalledPathAndHashVerified": true,
+  "RenameFailureRolledBack": true,
+  "CopiedAttemptRecords": 3,
+  "Fixture": "Synthetic files, production functions parsed from AST",
+  "StagingArtifactLifecycleRecorded": true,
+  "MissingAndUnknownIdentitiesExplicit": true
+}

@@ -1,8 +1,10 @@
-## 2026-10-24 ea926c5e 标准全链通过；外机Git冲突待安全恢复
+## 2026-10-24 f577fd19 标准全链成功；T01-01产物身份验收
 
-默认 `GameSaveCenter-Run.cmd` 在 `ea926c5e36305dc4d67659d98d42e207b71e7439` 完整退出0，run `20261024T124042418Z-170b15d4`；SDK8.0.423、Release 0 warning/0 error、1967项1910通过/57同名既有skip/0失败、148 TRX一致、145 WPF隔离类。Worker发布、ZIP/PEXT、安装六程序集身份/SHA及Playnite启动完成。证据 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-ea926c5e/README.md`；T00-01已满足，T00-08受控失败后恢复回放加本次完整链已验收。57项均为已撤销“今日工作台 UI 架构”断言的同一skip reason；未据此次运行宣称真实页面或进程内加载路径通过。
+默认 `GameSaveCenter-Run.cmd` 在 `f577fd192709d5a312c7bc72fd92249b6b5e31ab` 完整退出0，build run `20261024T135653993Z-90e04544`、install run `20261024T135651674Z-ade787f3`；SDK8.0.423、Release 0 warning/0 error、1967项1910通过/57同名既有skip/0失败、148 TRX一致、145 WPF隔离类。Worker发布、ZIP/PEXT、安装六程序集身份/SHA及Playnite启动完成。证据 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-f577fd19/README.md`；T00-01、T00-08、T01-01已验收。57项均为已撤销“今日工作台 UI 架构”断言的同一skip reason；未据此次运行宣称真实页面或进程内加载路径通过。
 
-另一台个人电脑最新失败为 `GamePickerViewModel.cs` 多处 `CS8300`，即源文件存在未解决Git合并冲突标记。当前ea926c5e源码无标记且完整链通过；外机HEAD、status、diff未知。让外机先保留改动并采集：`git status --short --branch`、`git rev-parse --short HEAD`、`git diff -- src/GameSaveCenter.Playnite/ViewModels/GamePickerViewModel.cs`；根据是否正在merge/rebase及diff内容再制定恢复步骤，不要先reset/覆盖。要求解除后在该机重跑默认 `GameSaveCenter-Run.cmd`，并保存新的summary与one-click日志，确认构建成功。详见T00-08 README。
+T01-01已补齐：诊断summary明确失败stage；安装attempt含Run ID、Attempt ID、owner PID/启动时刻和 staging/backup artifact的Created/Exists/Active/Retention。双PowerShell受控失败/重试和安装3/3通过；默认根入口同提交全链安装记录也核实成功，暂存与备份目录事务后不存在。详见 `design/reviews/build-ui-reliability-20261022/evidence/T01-01/artifact-manifest-f577fd19/README.md`。
+
+另一台个人电脑提供状态：`main` at `ea926c5e`、`behind 2`，多个文档/源码/测试修改及未跟踪证据。`GamePickerViewModel.cs` 多处 `CS8300` 来自 `Updated upstream` / `Stashed changes` 冲突标记，说明stash合并尚未解决。远端76eab05c/f577fd19未改该ViewModel；本地分支落后本身不是CS8300原因。已取得部分diff；完整diff和`git stash list`还待，未reset/覆盖。建议先安全保存含未跟踪的全部本地改动，快进main验证完整入口，再看完整diff把功能改动合入独立分支。详见T00-08 README。
 
 ## 2026-10-24 T02-03 实际键盘焦点回归补正
 

@@ -1,0 +1,14 @@
+{
+    "RunIdRecorded":  true,
+    "MissingAndUnknownIdentitiesExplicit":  true,
+    "Fixture":  "Synthetic files, production functions parsed from AST",
+    "Timestamp":  "2026-10-24T13:56:11.4499847Z",
+    "ActualInstalledPathAndHashVerified":  true,
+    "LockedFilePreserved":  true,
+    "AttemptRecordsVerified":  true,
+    "RolledBackBackupLifecycleRecorded":  true,
+    "RenameFailureRolledBack":  true,
+    "CopiedAttemptRecords":  3,
+    "StagingArtifactLifecycleRecorded":  true,
+    "RetrySucceeded":  true
+}

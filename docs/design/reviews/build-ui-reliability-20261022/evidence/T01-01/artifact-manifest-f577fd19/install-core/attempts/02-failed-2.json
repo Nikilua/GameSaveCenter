@@ -1,0 +1,39 @@
+{
+  "StartedUtc": "2026-10-24T13:55:43.8576938Z",
+  "CompletedUtc": "2026-10-24T13:55:43.8926246Z",
+  "Temporary": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture.__new-f36a75d5c9974b4ab7fd184f8898740d",
+  "FailureMessage": "Injected staging rename failure",
+  "SchemaVersion": 2,
+  "RunId": "t01-01-install-run-fixture",
+  "ExpectedVersion": "1.2.3",
+  "OwnerStart": "2026-10-24T13:55:43.0578938Z",
+  "Owner": {
+    "ProcessId": 36540,
+    "ProcessStartedUtc": "2026-10-24T13:55:43.0578938Z"
+  },
+  "Artifacts": [
+    {
+      "Stage": "install-staging",
+      "Retention": "Failed install staging; retain for diagnosis and manual ownership review",
+      "Active": false,
+      "CreatedByThisRun": true,
+      "Exists": true,
+      "Path": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture.__new-f36a75d5c9974b4ab7fd184f8898740d"
+    },
+    {
+      "Stage": "install-backup",
+      "Retention": "Backup restored or removed; retain this identity record",
+      "Active": false,
+      "CreatedByThisRun": true,
+      "Exists": false,
+      "Path": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture.__old-da901d1ce9ed40469f7908ab1724374e"
+    }
+  ],
+  "TemporaryExists": true,
+  "Stage": "install-transaction",
+  "OwnerPid": 36540,
+  "AttemptId": "26f7b90b75bb4f7e844a50ae42a0f12d",
+  "Outcome": "failed",
+  "Target": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture",
+  "Retention": "Install attempt evidence; external extension paths must never be passed to repository cleanup"
+}

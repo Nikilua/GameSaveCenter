@@ -1,0 +1,31 @@
+{
+  "StartedUtc": "2026-10-24T13:55:43.7446647Z",
+  "CompletedUtc": "2026-10-24T13:55:43.8294276Z",
+  "Temporary": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture.__new-b1cef857f9f4429cafb9bdf1ab9d45eb",
+  "FailureMessage": "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file '[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture\\GameSaveCenter.Playnite.dll' because it is being used by another process.\"",
+  "SchemaVersion": 2,
+  "RunId": "t01-01-install-run-fixture",
+  "ExpectedVersion": "1.2.3",
+  "OwnerStart": "2026-10-24T13:55:43.0578938Z",
+  "Owner": {
+    "ProcessId": 36540,
+    "ProcessStartedUtc": "2026-10-24T13:55:43.0578938Z"
+  },
+  "Artifacts": [
+    {
+      "Stage": "install-staging",
+      "Retention": "Failed install staging; retain for diagnosis and manual ownership review",
+      "Active": false,
+      "CreatedByThisRun": true,
+      "Exists": true,
+      "Path": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture.__new-b1cef857f9f4429cafb9bdf1ab9d45eb"
+    }
+  ],
+  "TemporaryExists": true,
+  "Stage": "install-transaction",
+  "OwnerPid": 36540,
+  "AttemptId": "6cc67f1b04c54117a81bfb4a6924d291",
+  "Outcome": "failed",
+  "Target": "[repo]\\.tmp\\install-transaction-d1dd6cacf48a4b05a9d7e7377f8782c0\\extensions\\fixture",
+  "Retention": "Install attempt evidence; external extension paths must never be passed to repository cleanup"
+}

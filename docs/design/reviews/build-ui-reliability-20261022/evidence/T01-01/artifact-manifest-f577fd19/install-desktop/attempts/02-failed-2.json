@@ -1,0 +1,39 @@
+{
+    "RunId":  "t01-01-install-run-fixture",
+    "StartedUtc":  "2026-10-24T13:56:11.1300030Z",
+    "SchemaVersion":  2,
+    "AttemptId":  "3e46abd79f96427f8e0c1754ff2667fb",
+    "FailureMessage":  "Injected staging rename failure",
+    "OwnerPid":  38228,
+    "Temporary":  "[repo]\\.tmp\\install-transaction-dca14276c9fa486c8ab33e187c0c9f62\\extensions\\fixture.__new-856447b2f4fb4172b2138a79be3fd33f",
+    "CompletedUtc":  "2026-10-24T13:56:11.1580033Z",
+    "ExpectedVersion":  "1.2.3",
+    "Retention":  "Install attempt evidence; external extension paths must never be passed to repository cleanup",
+    "Owner":  {
+                  "ProcessStartedUtc":  "2026-10-24T13:56:09.4557582Z",
+                  "ProcessId":  38228
+              },
+    "Outcome":  "failed",
+    "OwnerStart":  "2026-10-24T13:56:09.4557582Z",
+    "Artifacts":  [
+                      {
+                          "CreatedByThisRun":  true,
+                          "Active":  false,
+                          "Stage":  "install-staging",
+                          "Path":  "[repo]\\.tmp\\install-transaction-dca14276c9fa486c8ab33e187c0c9f62\\extensions\\fixture.__new-856447b2f4fb4172b2138a79be3fd33f",
+                          "Retention":  "Failed install staging; retain for diagnosis and manual ownership review",
+                          "Exists":  true
+                      },
+                      {
+                          "CreatedByThisRun":  true,
+                          "Active":  false,
+                          "Stage":  "install-backup",
+                          "Path":  "[repo]\\.tmp\\install-transaction-dca14276c9fa486c8ab33e187c0c9f62\\extensions\\fixture.__old-be6513c03e864421b1d9854b5eebfdeb",
+                          "Retention":  "Backup restored or removed; retain this identity record",
+                          "Exists":  false
+                      }
+                  ],
+    "Stage":  "install-transaction",
+    "TemporaryExists":  true,
+    "Target":  "[repo]\\.tmp\\install-transaction-dca14276c9fa486c8ab33e187c0c9f62\\extensions\\fixture"
+}
