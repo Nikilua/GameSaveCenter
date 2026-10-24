@@ -19,7 +19,7 @@
 - 最近一次真实首页与维护诊断截图来自190bbaea，并确认插件/Worker构建身份、插件实际加载路径与安装报告一致；Ctrl+End可达诊断摘要，未触发业务操作。130cd307随后已通过完整安装/启动，本轮未重拍UI。
 - b8eedc47的存档列表/详情交叉滚动证据保留；不将它替代190bbaea的完整双主题/窄短窗矩阵。
 - 完整双主题/正常窄短窗、命令面板宿主验收、物理键盘/IME及物理DPI仍待验。设置对话框坐标偏差后已停止主题切换，没有改配置。
-- T02-02～07受控回归与当前标准链通过；T02-08实施中。T03已登记共享能力、安装报告缺口、回退候选及证据链接修复，未宣布32项整体完成。
+- T02-03测试补正现已使用活动WPF窗口中的真实 `Keyboard.FocusedElement`，双主题2/2、所在类11/11；本次测试源码提交后的默认完整链待跑。T02-02、04～07受控回归与130cd307标准链通过；T02-08实施中。T03已登记共享能力、安装报告缺口、回退候选及证据链接修复，32项整体未完成。
 - [32项专项账本](../design/reviews/build-ui-reliability-20261022/PROGRESS.md)、[第四轮机器账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_STATUS.json)、[待办](../AUTONOMOUS_BACKLOG.md)是任务入口。
 - SDK缺失为历史；CEF/ETW与S07-03 branch-protection读取权限边界独立保留，按[能力缓存](ENVIRONMENT_CAPABILITY_CACHE.json)重试。
 

@@ -456,13 +456,19 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                 var grid = GetField<DataGrid>(type, view, "SaveHistoryGrid");
                 grid.ItemsSource = rows;
                 var host = MeasureInHost(view, 1400, 700);
-                window = new Window { Content = host, Width = 1400, Height = 700, WindowStyle = WindowStyle.None, ShowActivated = false, ShowInTaskbar = false, Opacity = 0.01 };
+                window = new Window { Content = host, Width = 1400, Height = 700, WindowStyle = WindowStyle.None, ShowActivated = true, ShowInTaskbar = false, Opacity = 0.01 };
                 window.Show(); window.UpdateLayout();
+                Assert.True(grid.IsVisible, "The production history grid must be visible before its keyboard focus is tested.");
+                Assert.True(grid.Focusable && grid.IsEnabled, "The production history grid must accept keyboard focus.");
+                Assert.True(window.IsActive, "The focus fixture window must be the active input window.");
+                Assert.Same(grid, System.Windows.Input.Keyboard.Focus(grid));
+                Assert.Same(grid, System.Windows.Input.Keyboard.FocusedElement);
                 foreach (var row in rows.Skip(20).Take(40)) grid.SelectedItems.Add(row);
                 grid.CurrentCell = new DataGridCellInfo(rows[20], grid.Columns[0]);
                 type.GetField("historyInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(view, true);
-                System.Windows.Input.FocusManager.SetIsFocusScope(view, true);
-                System.Windows.Input.FocusManager.SetFocusedElement(view, grid);
+                var focusedElement = System.Windows.Input.Keyboard.FocusedElement;
+                Assert.NotNull(focusedElement);
+                Assert.True(grid.IsKeyboardFocusWithin, "Keyboard focus must remain inside the production history grid after selection.");
                 var expected = grid.SelectedItems.Cast<HistoryScrollDetail>().Select(row => row.BackupId).OrderBy(id => id).ToArray();
                 Assert.Equal(40, expected.Length);
                 for (var cycle = 0; cycle < 3; cycle++)
@@ -474,7 +480,8 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                         window.UpdateLayout();
                         Assert.Equal(expected, grid.SelectedItems.Cast<HistoryScrollDetail>().Select(row => row.BackupId).OrderBy(id => id).ToArray());
                         Assert.Same(rows[20], grid.CurrentItem);
-                        Assert.Same(grid, System.Windows.Input.FocusManager.GetFocusedElement(view));
+                        Assert.Same(focusedElement, System.Windows.Input.Keyboard.FocusedElement);
+                        Assert.True(grid.IsKeyboardFocusWithin, "Responsive resizing must keep keyboard focus inside the production history grid.");
                         Assert.Equal(Visibility.Visible, GetField<ScrollViewer>(type, view, "SaveHistoryActionsScrollViewer").Visibility);
                         Assert.True(double.IsNaN(view.Height), "Responsive measurement must not freeze the root height.");
                     }

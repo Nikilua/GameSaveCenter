@@ -1,0 +1,19 @@
+{
+  "baseCommit": "b711a820b726c25053596ece18988c720078bbf3",
+  "builtSourceTree": "base commit plus the one modified test fixture listed below",
+  "sdk": "8.0.423",
+  "outcome": "passed",
+  "run": "20261024T075732605Z-acc2104f",
+  "testsRequested": false,
+  "testSourceSHA256": "10FA947B00606AC39B85E201C1D37943BF8FF8EEBE6835F044594D983119222A",
+  "testAssemblySHA256": "F27B2E65B96BD3D1059BF5EF542F5B12FCCC57C86E7D9B0219E942982E6FA22F",
+  "testPdbSHA256": "B3AB6EBD7D5049DE0648927BA1DF1E1989BEB1D7934041567C3E46BDF6DDF95E",
+  "productVersion": "0.6.73+b711a820b726c25053596ece18988c720078bbf3",
+  "classFilter": "FullyQualifiedName~CompactWorkspaceTableViewportBehaviorTests",
+  "testEngine": "VSTest 17.11.1; RunConfiguration.DisableAppDomain=true",
+  "modifiedSourceFiles": [
+    "tests/GameSaveCenter.Playnite.Tests/CompactWorkspaceTableViewportBehaviorTests.cs"
+  ],
+  "historicalUntrackedPathsPresentButUnchanged": 16,
+  "untrackedArtifactsStaged": false
+}

@@ -1,3 +1,7 @@
+## 2026-10-24 T02-03 实际键盘焦点回归补正
+
+T02-03夹具不再伪造FocusManager逻辑焦点；Light/Dark分别在可见激活窗口取得DataGrid键盘焦点，三轮断点往返后同一 `Keyboard.FocusedElement` 仍位于DataGrid内。定向2/2、所在类11/11，SDK8.0.423 Release 0警告/0错误。保存第一次错误逻辑焦点预期失败及修正后的TRX。测试改动提交后默认完整根.cmd尚待执行；本项受控测试不等同物理键盘/IME/宿主DPI。
+
 ## 2026-10-24 外机R09失败日志与主线对照
 
 粘贴日志line151 Expected2/Actual1精确吻合旧3f7d0b30对errorChrome.BorderThickness的2 DIP断言。f13b9e05将Chrome设为1 DIP、独立ValidationStroke设为2 DIP，源和测试契约修正；130cd307标准完整链当前R09类2/2。外机提交/源码/DLL/PDB身份缺，确认输入版本不一致，不能仅此定位旧checkout或旧testhost二进制。详情docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014。建议先保留改动并查看status/HEAD，再快进到130cd307，核对源断言与诊断ProductVersion，不直接reset。

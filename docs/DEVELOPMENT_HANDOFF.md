@@ -1,3 +1,7 @@
+## 2026-10-24 T02-03 实际键盘焦点回归补正
+
+批量选择断点测试现在使用真实WPF键盘焦点：Light/Dark可见激活窗口内验证DataGrid获焦，三轮900/1400 DIP往返保留同一 `Keyboard.FocusedElement`、焦点范围及选中状态。定向2/2、所在类11/11，Release编译0警告/0错误。只改测试，未改产品页。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-03/`。本次源码提交后的默认完整链待跑；物理输入、IME、宿主DPI仍未验。
+
 ## 2026-10-24 外机WPF失败日志比对
 
 用户附R09失败的line151/Expected2/Actual1与历史3f7d0b30断言Chrome.BorderThickness=2完全吻合；f13b9e05已令Chrome维持1 DIP，独立ValidationStroke绘制2 DIP。当前130cd307完整全链R09类2/2，整体1967项1910通过/57既有skip/0失败，安装和启动也成功。故外机日志测试输入与当前main不一致；日志缺HEAD/dirty source/test DLL/PDB身份，旧checkout与旧二进制无法区分。详细边界见T00-04/standard-130cd307及CI-R09复核包。
@@ -951,6 +955,7 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 
 - 当前 `main` 代码基线 `5c81a07056d64482767d546efe043012abc1e6fc`；Render QA 报告 commit `01efb189488e6d6323d9386f7ff68057c0030cbe`。R00/R01 full RenderHarness 在仓库 SDK `8.0.423` Release build/运行通过，`render-qa OK / 0 PROBLEM`、14 fresh / 0 stale / 0 matched source paths / 2,919 compared paths。旧 Task/Settings 13 个问题未复现；13 MEDIUM toolbar audit 风险仍保留。
 - #1053/run `38937972835` 对 `01efb189` 已终态 success。SDK8.0.423 job `117098144434`、SDK10.0.401 job `117098144743` 均 Release `0/0`、Core125、Worker362、WPF隔离125类成功（含 R09/R21）；SDK10 完整日志确认 `dotnet --version 10.0.401`。SDK8 Render QA `0 PROBLEM`，WPF 静态审查 30 XAML 为 `0 errors / 27 warnings / 177 info`，`0.6.73` 包与诊断 artifact 上传成功。当前仍有未提交 R00/R01 文档更新和精简证据，提交只纳入本阶段明确文件；status 中其余 Q/R TRX 与 TestResults 属其它任务，保留。
+
 - 外机失败是真实且独立：日志 R09 `1/2`、整体 exit `1`，WPF 类 `116`。第151行 `Thickness(2/1)` 与历史旧断言吻合，不对应当前源码 line151 颜色断言；测试源码或其配套符号/程序集输入至少一项与当前 main 不一致。具体是旧 checkout、旧测试 DLL、旧 PDB 或其他构建输入尚未确认。本机 SDK9 `2/2`、#1047、#1053 双 SDK成功都不覆盖外机失败。确切失败诊断目录 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4` 不在本工作区；无需重跑，明日用户方便时直接附加此目录（优先 `summary.json` 与 R09 TRX/console）。采集器已有 sourceCommit/dirtyPaths/sourceFiles/SDK/test DLL hash/MVID 信息；PDB SHA 可从失败输出下读取。
 - 通过 `scripts/validate-source.py` 与 `git diff --check`；本批仅文档与小型证据摘要，无产品代码变化。R23-08 当前准入复核未发现新代码缺口；下一步中文 commit/push 本次文档校正，查询对应 Actions run 并双 SDK 追至终态，再重扫 ledger 选择首个依赖已满足的现有 Q/R 项。若没有可独立执行项则记录明确环境门禁，不发明实现。
 - 未验证：外机的真实 checkout/test DLL/PDB/plugin DLL 身份、外机安装结果、真实 Playnite/UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能。合成数据/隔离目录之外的真实存档、媒体和云端未访问。已经清理本任务生成的 RenderHarness `.tmp`；保留 SDK、R08/R21 其它任务目录及其他未跟踪证据。

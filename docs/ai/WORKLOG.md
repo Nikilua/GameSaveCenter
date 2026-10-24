@@ -1,3 +1,7 @@
+## 2026-10-24 T02-03 实际键盘焦点回归补正
+
+移除仅设置FocusManager逻辑焦点的做法；每个主题使用可见、激活窗口，检查 `Keyboard.Focus(grid)` 与 `Keyboard.FocusedElement`，并在三轮1400/900 DIP往返中确认焦点对象与DataGrid焦点范围不变。双主题2/2、所在类11/11，SDK8.0.423 Release 0警告/0错误。初始焦点范围断言错误地要求逻辑目标是DataGrid，失败TRX保留；修正后以真实键盘焦点断言通过。证据 evidence/T02-03。修改仅为测试；默认根.cmd需在提交后重跑。
+
 ## 2026-10-24 外机WPF失败日志比对
 
 用户附R09失败的line151/Expected2/Actual1与历史3f7d0b30断言Chrome.BorderThickness=2完全吻合；f13b9e05已令Chrome维持1 DIP，独立ValidationStroke绘制2 DIP。当前130cd307完整全链R09类2/2，整体1967项1910通过/57既有skip/0失败，安装和启动也成功。故外机日志测试输入与当前main不一致；日志缺HEAD/dirty source/test DLL/PDB身份，旧checkout与旧二进制无法区分。详细边界见T00-04/standard-130cd307及CI-R09复核包。
