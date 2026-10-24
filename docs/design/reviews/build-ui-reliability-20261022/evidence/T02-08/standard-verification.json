@@ -1,0 +1,97 @@
+{
+  "sourceCommit": "b8eedc4797ba39639a771456c86ed1911be0e153",
+  "command": "GameSaveCenter-Run.cmd",
+  "exitCode": 0,
+  "runId": "20261024T014633742Z-7d44e664",
+  "sdk": "8.0.423",
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "xamlPassed": 25,
+  "testSummary": {
+    "testCaseCount": 1967,
+    "passed": 1910,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 57,
+    "notRunnable": 0,
+    "inconclusive": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "otherOutcome": 0,
+    "reportedCounterTotal": 1967,
+    "reportedCounterFileCount": 148,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "trxFileCount": 148,
+    "distinctTestClassCount": 361,
+    "wpfIsolatedClassRunCount": 145
+  },
+  "packages": [
+    {
+      "name": "GameSaveCenter-0.6.73.pext",
+      "bytes": 45728315,
+      "sha256": "851B415D08271D6B397A66BA983E267F42682130E71ADB869073D90A8521F357"
+    },
+    {
+      "name": "GameSaveCenter-0.6.73-playnite.zip",
+      "bytes": 45728315,
+      "sha256": "851B415D08271D6B397A66BA983E267F42682130E71ADB869073D90A8521F357"
+    }
+  ],
+  "assemblies": [
+    {
+      "installedSHA256": "F3BD8BA0EA36BBC2DBF9C54F91BC00415E0223296CDE712CEC0418370732C47C",
+      "file": "GameSaveCenter.Playnite.dll",
+      "productVersion": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+      "stageSHA256": "F3BD8BA0EA36BBC2DBF9C54F91BC00415E0223296CDE712CEC0418370732C47C"
+    },
+    {
+      "installedSHA256": "24CF8E6774F5A864DDAABC4CE9AF1443587746FA41BA3136E7F03B5E16F8DB57",
+      "file": "GameSaveCenter.Core.dll",
+      "productVersion": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+      "stageSHA256": "24CF8E6774F5A864DDAABC4CE9AF1443587746FA41BA3136E7F03B5E16F8DB57"
+    },
+    {
+      "installedSHA256": "1F26375CF89C812DCE4C9A394B65007B6BCE88A345F399F2E357984BCD3DB807",
+      "file": "GameSaveCenter.Contracts.dll",
+      "productVersion": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+      "stageSHA256": "1F26375CF89C812DCE4C9A394B65007B6BCE88A345F399F2E357984BCD3DB807"
+    },
+    {
+      "installedSHA256": "64BC450A0031C189C1B43C7C2AD50376F3EF1A09DA75A362C7198E8A2478339E",
+      "file": "Worker/GameSaveCenter.Worker.dll",
+      "productVersion": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+      "stageSHA256": "64BC450A0031C189C1B43C7C2AD50376F3EF1A09DA75A362C7198E8A2478339E"
+    },
+    {
+      "installedSHA256": "D1BB90E07F79BB5BB0B4665A1BFF8DAB1C20A0BE23241204841579F399E27971",
+      "file": "Worker/GameSaveCenter.Core.dll",
+      "productVersion": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+      "stageSHA256": "D1BB90E07F79BB5BB0B4665A1BFF8DAB1C20A0BE23241204841579F399E27971"
+    },
+    {
+      "installedSHA256": "F4C8B9C199B18157E077C78D445560D57CEC90293A8AF9733E512998EB95E343",
+      "file": "Worker/GameSaveCenter.Contracts.dll",
+      "productVersion": "0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153",
+      "stageSHA256": "F4C8B9C199B18157E077C78D445560D57CEC90293A8AF9733E512998EB95E343"
+    }
+  ],
+  "processes": [
+    {
+      "startTimeUtc": "2026-10-24T02:10:47.6523184Z",
+      "path": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.exe",
+      "id": 29420
+    },
+    {
+      "startTimeUtc": "2026-10-24T02:10:37.4116309Z",
+      "path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+      "id": 30712
+    }
+  ],
+  "hostVerification": "Actual Playnite home and SaveCenter displayed; injected list/detail scroll observed independently; physical DPI/dual-theme/window-size matrix pending",
+  "priorFailureRun": "20261024T011955949Z-373356e8",
+  "diagnosticsPath": "artifacts/build-diagnostics/20261024T014633742Z-7d44e664",
+  "rawSummarySHA256": "5DDE31ACB7A0BA071CC06553E1C955DE29C21925FE5A7801C90BA9C05E4F5035"
+}

@@ -1,0 +1,1 @@
+24-10 10:10:43.571|INFO |GameSaveCenter.Playnite#GameSaveCenterPlugin:GameSaveCenter 0.6.73.0 loaded from [user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll; observed 3 Playnite games.

@@ -1,0 +1,59 @@
+{
+  "checkedUtc": "2026-10-24T02:16:23.785495Z",
+  "records": [
+    {
+      "removed": true,
+      "bytes": 51499.0,
+      "source": ".tmp/t02-02-results",
+      "files": 7,
+      "archive": "artifacts/t02-targeted-evidence-b8eedc47/t02-02-results",
+      "archiveVerifiedBeforeAndAfterRemoval": true
+    },
+    {
+      "removed": true,
+      "bytes": 26858.0,
+      "source": ".tmp/t02-03-results",
+      "files": 3,
+      "archive": "artifacts/t02-targeted-evidence-b8eedc47/t02-03-results",
+      "archiveVerifiedBeforeAndAfterRemoval": true
+    },
+    {
+      "removed": true,
+      "bytes": 41571.0,
+      "source": ".tmp/t02-04-results",
+      "files": 6,
+      "archive": "artifacts/t02-targeted-evidence-b8eedc47/t02-04-results",
+      "archiveVerifiedBeforeAndAfterRemoval": true
+    },
+    {
+      "removed": true,
+      "bytes": 311019.0,
+      "source": ".tmp/t02-05-results",
+      "files": 3,
+      "archive": "artifacts/t02-targeted-evidence-b8eedc47/t02-05-results",
+      "archiveVerifiedBeforeAndAfterRemoval": true
+    },
+    {
+      "removed": true,
+      "bytes": 14252.0,
+      "source": ".tmp/t02-06-results",
+      "files": 3,
+      "archive": "artifacts/t02-targeted-evidence-b8eedc47/t02-06-results",
+      "archiveVerifiedBeforeAndAfterRemoval": true
+    },
+    {
+      "removed": true,
+      "bytes": 22190.0,
+      "source": ".tmp/t02-07-results",
+      "files": 3,
+      "archive": "artifacts/t02-targeted-evidence-b8eedc47/t02-07-results",
+      "archiveVerifiedBeforeAndAfterRemoval": true
+    }
+  ],
+  "dFreeBefore": 14631174144,
+  "dFreeAfter": 14631145472,
+  "unknownUserEvidenceTouched": false,
+  "latestBuildRetained": "artifacts/gsc-b/b520fbea",
+  "targetedBuildRetained": ".tmp/t02-02-build",
+  "processEnumeration": "Win32_Process CIM query returned Access denied; it did not establish absence. Cleanup relied on completed owned test sessions, checkout mutex, archive source verification and successful exclusive-file probes. No build output was removed."
+}

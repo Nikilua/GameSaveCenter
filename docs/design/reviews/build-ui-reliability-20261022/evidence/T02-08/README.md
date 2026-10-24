@@ -1,0 +1,19 @@
+# T02-08 当前标准全链与真实宿主初步交互
+
+源码身份 `b8eedc4797ba39639a771456c86ed1911be0e153`，最新测试实现为其祖先f25be527，本次之间只变更文档。标准 `GameSaveCenter-Run.cmd` 完整退出0；无SkipTests/NoStart等替代选项。[交付身份](standard-verification.json)：SDK8.0.423、XAML25/25、Release0警告/0错误；1967项、1910通过、57跳过、0失败/error/timeout/abort，148份TRX计数一致、145个WPF隔离类结束。
+
+57个跳过用例与b55d8d1d标准成功逐名相同，[无新增跳过](skip-comparison.json)。六份本轮关键生产页面/表格回归TRX在tests目录；全部原始TRX与控制台保留在 `artifacts/build-diagnostics/20261024T014633742Z-7d44e664`。
+
+发布、ZIP/PEXT、安装和启动均成功。两个包SHA一致；六个关键程序集stage/安装SHA逐项相同，产品版本全部为 `0.6.73+b8eedc4797ba39639a771456c86ed1911be0e153`。Playnite PID30712、Worker PID29420在本轮启动；[实际插件加载日志](plugin-load-log.txt)确认目标扩展路径。磁盘身份、进程启动、界面观察分别记录。
+
+## 实际宿主观察
+
+通过computer-use取得真实Playnite窗口28838274，打开GameSaveCenter首页及存档页；18条历史数据，当前深色主题。桌面注入滚动后观察：历史列表由13:05首行滚至12:40首行，详情仍显示13:05版本；再滚动右侧详情，左表首行保持12:40，详情底部“验证可恢复性”按钮可见。没有点击备份、恢复、删除或校验业务动作。
+
+本地截图与SHA见[索引](host-screenshot-index.json)，图片保留在 `artifacts/host-audit-b8eedc47`，没有加入Git。当前自动化树仅提供EmptyWindowAutomationPeer；设置对话框坐标点击出现偏差，停止主题切换，未修改配置并关闭设置。不能把此初步观察升级为完整双主题/正常窄短窗口矩阵、物理键盘/IME或不同物理DPI验收。T02-08保持实施中。
+
+## 保留与清理
+
+前次f25be527完整测试通过后，因Agent在运行期间改动两份跟踪文档，打包保护退出1；原失败在T03-01保留。本轮先提交再冻结跟踪文件，完整重跑成功，未绕过保护。
+
+六个本阶段临时测试结果目录共25文件、467389字节，包含初始失败，先导出到 `artifacts/t02-targeted-evidence-b8eedc47`，逐文件SHA及源不变校验通过；移除原临时目录后再次验证归档。[清理记录](cleanup.json)同时保留CIM枚举拒绝的限制；不把它描述为进程枚举成功。只清理已结束的本任务结果，持checkout锁并通过独占文件探测；没有删除构建输出。最新标准构建、定向构建、原始诊断、包和当前宿主图仍保留，用户旧TRX/TestResults未动。归档使证据保留，不宣称磁盘净释放。

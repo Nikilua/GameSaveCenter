@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-10-23",
+  "updatedOn": "2026-10-24",
   "scope": "Record external prerequisites and safe retry gates. This cache does not grant permission or prove host behavior.",
   "retryPolicy": {
     "retryOnlyWhen": [
@@ -21,9 +21,9 @@
       "scope": "S00-02 UI gate",
       "status": "available",
       "lastCheck": {
-        "checkedOn": "2026-10-23",
-        "method": "Read the official SDK executable and the exact-source build evidence.",
-        "result": "Official per-user SDK 8.0.423 executable exists. Source 0a91c399 Release build passed; missing SDK on 2026-10-18 is historical."
+        "checkedOn": "2026-10-24",
+        "method": "Exact-source standard root build, test, package, install and startup run.",
+        "result": "SDK8.0.423 used successfully for b8eedc47 run20261024T014633742Z-7d44e664; 1967 tests, zero failed outcomes. Historical SDK absence no longer blocks this toolchain."
       },
       "retryWhen": [
         "SDK 8.0.423 becomes visible to dotnet in this checkout.",
@@ -31,7 +31,8 @@
       ],
       "evidence": [
         "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md",
-        "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md"
+        "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md",
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/standard-verification.json"
       ]
     },
     {
@@ -40,18 +41,19 @@
       "scope": "S00-02 UI gate",
       "status": "waiting_for_external_evidence",
       "lastCheck": {
-        "checkedOn": "2026-10-23",
-        "method": "Review exact-source installation/startup and Computer Use capture evidence; query current Playnite process.",
-        "result": "Source 0a91c399 installed with 239 matching file hashes and started PID 36620/window 9047204 in the recorded run. Capture failed with foreground process ID error. Current process query found no Playnite.DesktopApp. Actual page interaction, physical input and DPI remain unverified."
+        "checkedOn": "2026-10-24",
+        "method": "Standard installation identities, process query, plugin load log and computer-use screenshots/scroll input.",
+        "result": "b8eedc47 installed with six matching assembly hashes; Playnite30712/Worker29420 started. Actual home and SaveCenter displayed; injected list/detail scroll observed independently. Command panel, full dual-theme/resize matrix, physical IME and DPI remain unverified. Settings coordinate targeting drift was observed; no configuration changed."
       },
-      "note": "Recorded process startup is verified; it does not establish page rendering or interaction. SDK missing is no longer a host prerequisite blocker.",
+      "note": "Actual home/SaveCenter observation is now available. This does not accept the S00-02 command-panel host gate or all physical input/DPI conditions.",
       "retryWhen": [
         "The exact SDK gate passes and the intended Playnite installation is available for the prescribed launcher.",
         "The user explicitly requests the prescribed host gate with its prerequisites prepared."
       ],
       "evidence": [
         "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md",
-        "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md"
+        "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md",
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/README.md"
       ]
     },
     {

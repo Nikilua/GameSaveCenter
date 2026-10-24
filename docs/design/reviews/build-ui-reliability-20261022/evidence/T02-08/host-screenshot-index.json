@@ -1,0 +1,22 @@
+[
+  {
+    "file": "artifacts/host-audit-b8eedc47/home.png",
+    "bytes": 103269,
+    "sha256": "EC693F9185462A860D1CE7D8287C6CF5AEDC031479B423AE0B444703FA41F080"
+  },
+  {
+    "file": "artifacts/host-audit-b8eedc47/save-after-details-scroll.png",
+    "bytes": 116449,
+    "sha256": "6517A833B5F75F466EEF025319B87F71C188DDC74CE59747F4ED34BB1DCAAE33"
+  },
+  {
+    "file": "artifacts/host-audit-b8eedc47/save-after-list-scroll.png",
+    "bytes": 114601,
+    "sha256": "ED441EE9E6E13B082A82D2C8E98DA9FF9A01ED346D2B2B13FFC6A42DD074F829"
+  },
+  {
+    "file": "artifacts/host-audit-b8eedc47/save-before-scroll.png",
+    "bytes": 116328,
+    "sha256": "2627EE89B4DF2F4CDB60B524696499754F5B1F11A214F6A0B3CD16D00DF2ECAE"
+  }
+]
