@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-10-24",
+  "updatedOn": "2026-10-25",
   "scope": "Record external prerequisites and safe retry gates. This cache does not grant permission or prove host behavior.",
   "retryPolicy": {
     "retryOnlyWhen": [
@@ -21,9 +21,9 @@
       "scope": "S00-02 UI gate",
       "status": "available",
       "lastCheck": {
-        "checkedOn": "2026-10-24",
-        "method": "Standard root full build/test/package/install/start call, independently verified against installed identities.",
-        "result": "190bbaea run20261024T031835306Z-29399c0f exited0 with SDK8.0.423; 1967 tests, zero failed outcomes and unchanged57 skips."
+        "checkedOn": "2026-10-25",
+        "method": "Default GameSaveCenter-Run.cmd full build/test/package/install/start call, independently verified against installed identities.",
+        "result": "fbd8a882 run20261024T154742005Z-e15429e1 exited0 with SDK8.0.423; 1967 tests, 1910 passed, 57 skipped, 0 failed; install run 20261024T154739936Z-bc3e83dc passed. Playnite startup observed; in-process plugin load not verified."
       },
       "retryWhen": [
         "SDK 8.0.423 becomes visible to dotnet in this checkout.",
@@ -33,7 +33,8 @@
         "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-02/README.md",
         "docs/design/reviews/UI-TABLE-DETAILS-REPAIR-20261022/FINAL_BUILD_20261023.md",
         "docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/standard-verification.json",
-        "docs/design/reviews/build-ui-reliability-20261022/evidence/T03-04/standard-190bbaea/verification.json"
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T03-04/standard-190bbaea/verification.json",
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/verification.json"
       ]
     },
     {

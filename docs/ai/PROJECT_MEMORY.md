@@ -1090,3 +1090,7 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-25 T03-01 成功证据范围校准
 
 将当前产品代码身份 `fbd8a882`、提交级标准根入口/安装run `20261024T154742005Z-e15429e1` / `20261024T154739936Z-bc3e83dc`、最近T01-08定向验证和未验的物理Ctrl+C分开列示。`CURRENT_STATE.md`说明源码/测试/脚本/资源改动的复验范围，纯文档只需源码/链接校验。T03-01记为已满足，旧失败run仍保留失败身份。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-01/README.md`。
+
+## 2026-10-25 T03-02 历史阻塞说明校准
+
+环境能力缓存的SDK8.0.423条目更新到 `fbd8a882` 标准根入口完整链：Release构建/测试/安装/启动0退出；对应run为20261024T154742005Z-e15429e1。标准测试中的 `R05TooltipTimingBehaviorTests` 3/3，旧GetCursorPos error 5不再描述为当前构建阻断。真实Playnite页面/加载路径仍只绑定上次实际观察；CEF/ETW/branch protection没有新权限变化，不重试。T03-02记为已满足，证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-02/COVERAGE.md`。

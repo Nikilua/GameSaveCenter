@@ -12153,3 +12153,7 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-25 T03-01 成功证据适用范围校准
 
 CURRENT_STATE、专项PROGRESS与T03-01证据现区分产品源码提交、最近完整标准.cmd成功、定向脚本回归及尚未验证的真实Ctrl+C。fbd8a882的根入口结果继续绑定20261024T154742005Z-e15429e1/安装run20261024T154739936Z-bc3e83dc；后续纯文档commit不改变产品身份。验证源码校验、Markdown本地链接与diff check通过；没有重跑产品构建。T03-01标记已满足。
+
+## 2026-10-25 T03-02 过时阻塞说明校准
+
+将环境能力缓存的SDK8.0.423成功证据更新为fbd8a882全链。当前标准测试的R05TooltipTimingBehaviorTests为3/3，旧GetCursorPos error 5保留历史身份，不再作为当前构建门禁阻断；物理指针/Playnite页面、CEF/ETW和branch-protection读取权限仍分开标待验/阻塞，没有重复探测或冒称通过。T03-02记为已满足。
