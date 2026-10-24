@@ -1,3 +1,7 @@
+## 2026-10-24 T00-06 Desktop进程树回归通过
+
+Desktop超时分支改用本次Process对象PID的系统树终止，非零清理结果不再因父进程退出被吞掉。Core7.6.2/标准执行环境Desktop5.1均通过5步骤真实夹具：子PID加启动时刻消失、根退出、124、无关进程保留、重试/UTF8/持管负例；沙箱taskkill退出1的原失败保留且不推断原生原因。证据T00-06/desktop-tree；新最终候选标准全链待执行，期间冻结跟踪文件。
+
 ## 2026-10-24 标准链UIA窗口标题崩溃与夹具修正
 
 aefbddfa标准链在101/145类R12远端隔离进度testhost因WindowAutomationPeer原生标题读取Win32Exception退出1；未安装，原生码未知，乱码不推断具体错误码。原DLL独立5/5；为夹具设置明确UIA名称并验证正常WindowAutomationPeer，命名后独立三次5/5，编译0/0。保留原失败，不禁用UIA/吞异常/扩大skip；新完整链待跑，最后完整成功仍b8eedc47。证据T03-04/uia-title-failure。

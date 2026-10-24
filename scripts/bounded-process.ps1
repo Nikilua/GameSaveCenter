@@ -27,11 +27,22 @@ function Invoke-GscBoundedProcess {
         if (-not $exited) {
             # Kill only the process object created above. Retain evidence and
             # report failure even if the process races to exit after the deadline.
+            $treeStopFailed = $false
             try {
                 if ($PSVersionTable.PSEdition -eq 'Core') { $process.Kill($true) }
-                else { $process.Kill() }
+                else {
+                    # .NET Framework has no Kill(entireProcessTree). The PID is
+                    # from our still-running Process object, never a name lookup.
+                    $treeStopOutput = @(& (Join-Path $env:SystemRoot 'System32/taskkill.exe') /PID $processId /T /F 2>&1)
+                    $treeStopExitCode = $LASTEXITCODE
+                    if ($treeStopExitCode -ne 0) {
+                        $treeStopFailed = $true
+                        if (-not $process.HasExited) { $process.Kill() }
+                        throw "Owned tree cleanup could not be verified; taskkill exit=$treeStopExitCode : $($treeStopOutput -join ' ')"
+                    }
+                }
             }
-            catch { if (-not $process.HasExited) { throw } }
+            catch { if ($treeStopFailed -or -not $process.HasExited) { throw } }
             [void]$process.WaitForExit(5000)
         }
         $remaining = [Math]::Max(0, ($TimeoutSeconds * 1000) - [int]$timer.ElapsedMilliseconds)

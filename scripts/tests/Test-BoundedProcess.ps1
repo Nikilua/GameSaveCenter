@@ -1,5 +1,5 @@
 ﻿[CmdletBinding()]
-param()
+param([string]$EvidenceRoot = '')
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 . (Join-Path $repo 'scripts/build-diagnostics.ps1')
@@ -19,17 +19,20 @@ try {
     if ($success.ExitCode -ne 0) { throw 'Retry inherited timeout' }
     $unicode = Invoke-GscRecordedCommand $context 'unicode' $engine @('-NoProfile','-Command','[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); Write-Output ([char]0x4e2d+[string][char]0x6587); exit 0') -TimeoutSeconds 10
     if (($unicode.Output -join '') -notmatch ([string][char]0x4e2d+[string][char]0x6587)) { throw 'Unicode output corrupted' }
-    if ($PSVersionTable.PSEdition -eq 'Core') {
-        $pidFile = Join-Path $root 'child.pid'
-        $tree = Join-Path $root 'tree.ps1'
-        [IO.File]::WriteAllText($tree, 'param($PidFile); $p=Start-Process (Get-Process -Id $PID).Path -ArgumentList ''-NoProfile -Command "Start-Sleep 60"'' -WindowStyle Hidden -PassThru; [IO.File]::WriteAllText($PidFile,[string]$p.Id); Start-Sleep 60')
-        $treeResult = Invoke-GscRecordedCommand $context 'tree-timeout' $engine @('-NoProfile','-File',$tree,$pidFile) -TimeoutSeconds 3
-        if (-not (Test-Path $pidFile)) { throw 'Child fixture did not start' }
-        $childId = [int](Get-Content $pidFile)
-        $child = Get-Process -Id $childId -ErrorAction SilentlyContinue
-        if ($child -and -not $child.HasExited) { throw 'Owned child survived tree timeout' }
-        if ($treeResult.ExitCode -ne 124) { throw 'Tree timeout reported success' }
-    }
+    # Both PowerShell editions must stop an owned descendant, not only its parent.
+    $pidFile = Join-Path $root 'child.pid'
+    $tree = Join-Path $root 'tree.ps1'
+    [IO.File]::WriteAllText($tree, 'param($PidFile); $p=Start-Process (Get-Process -Id $PID).Path -ArgumentList ''-NoProfile -Command "Start-Sleep 60"'' -WindowStyle Hidden -PassThru; [IO.File]::WriteAllText($PidFile,([string]$p.Id+","+[string]$p.StartTime.ToUniversalTime().Ticks)); Start-Sleep 60')
+    $treeResult = Invoke-GscRecordedCommand $context 'tree-timeout' $engine @('-NoProfile','-File',$tree,$pidFile) -TimeoutSeconds 3
+    if (-not (Test-Path $pidFile)) { throw 'Child fixture did not start' }
+    $witness = (Get-Content -LiteralPath $pidFile -Raw).Trim().Split(',')
+    $childId = [int]$witness[0]
+    $childStartTicks = [long]$witness[1]
+    $child = Get-Process -Id $childId -ErrorAction SilentlyContinue
+    if ($child -and -not $child.HasExited -and $child.StartTime.ToUniversalTime().Ticks -eq $childStartTicks) { throw 'Owned child survived tree timeout' }
+    if ($treeResult.ExitCode -ne 124) { throw 'Tree timeout reported success' }
+    if ($unrelated.HasExited) { throw 'Tree cleanup terminated an unrelated process' }
+    if (@($context.Steps | Where-Object id -EQ 'tree-timeout').Count -ne 1) { throw 'Owned tree fixture was not executed' }
     # cmd starts a background child inheriting redirected stdout, then exits.
     # The command process exit alone must not discard the child's later output.
     $pipeFixture = Join-Path $root 'pipe.cmd'
@@ -37,8 +40,9 @@ try {
     $pipe = Invoke-GscRecordedCommand $context 'pipe-held' 'cmd.exe' @('/d','/c',$pipeFixture) -TimeoutSeconds 1
     if ($pipe.ExitCode -ne 124 -or $context.Steps[$context.Steps.Count-1].process.OutputDrained) { throw 'Inherited pipe incorrectly reported success' }
     Start-Sleep -Seconds 4
-    $evidence = Join-Path $repo 'docs/design/reviews/build-ui-reliability-20261022/evidence/T00-06'
-    @{ Engine=$PSVersionTable.PSVersion.ToString(); TrxBeforeTimeout=$true; TimeoutExit=124; UnrelatedProcessPreserved=$true; RetryExit=0; Steps=$context.Steps } | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $evidence ('bounded-' + $PSVersionTable.PSEdition + '.json'))
+    $evidence = if ($EvidenceRoot) { [IO.Path]::GetFullPath($EvidenceRoot) } else { Join-Path $repo 'docs/design/reviews/build-ui-reliability-20261022/evidence/T00-06' }
+    New-Item -ItemType Directory -Path $evidence -Force | Out-Null
+    @{ Engine=$PSVersionTable.PSVersion.ToString(); TrxBeforeTimeout=$true; TimeoutExit=124; OwnedDescendantStopped=$true; OwnedDescendantPid=$childId; OwnedDescendantStartedUtcTicks=$childStartTicks; UnrelatedProcessPreserved=$true; RetryExit=0; Steps=$context.Steps } | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $evidence ('bounded-' + $PSVersionTable.PSEdition + '.json'))
 } finally { if (-not $unrelated.HasExited) { $unrelated.Kill() }; $unrelated.Dispose() }
 if (-not ([IO.Path]::GetFullPath($root)).StartsWith([IO.Path]::GetFullPath((Join-Path $repo '.tmp')) + [IO.Path]::DirectorySeparatorChar)) { throw 'Unsafe cleanup' }
 Remove-Item -LiteralPath $root -Recurse -Force
