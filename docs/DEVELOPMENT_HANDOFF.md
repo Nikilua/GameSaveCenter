@@ -1,6 +1,6 @@
 ## 2026-10-25 最新标准全链成功；外机冲突恢复步骤
 
-最新代码提交 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 的默认根入口完整链成功：构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`；SDK8.0.423、Release0/0、1967项1910通过/57既有skip/0失败、148TRX一致、145个WPF隔离类结束，发布/ZIP/PEXT/安装/Playnite启动完成。详细证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/README.md`。安装报告仅证实磁盘程序集身份，未检查进程内加载路径。
+最新代码提交 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 的默认根入口完整链成功：构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`；SDK8.0.423、Release0/0、1967项1910通过/57既有skip/0失败、148TRX一致、145个WPF隔离类结束，发布/ZIP/PEXT/安装/Playnite启动完成。T03-01成功证据适用范围已满足；最近定向验证和未验边界见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-01/README.md`。标准链详细证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/README.md`。安装报告仅证实磁盘程序集身份，未检查进程内加载路径。
 
 用户另一台电脑报告HEAD `ea926c5e` 并存在本地修改/未跟踪文件；`GamePickerViewModel.cs` 包含 `Updated upstream` / `Stashed changes` 冲突标记，导致CS8300。保留全部本地改动，先 `git stash push --include-untracked`，确认 `git status --short --branch` 干净，再 `git pull --ff-only origin main` 并运行 `GameSaveCenter-Run.cmd`。不要reset/覆盖，不要在确认新main构建成功前pop stash。外机同步后的结果待用户反馈；真实桌面Ctrl+C也仍待验，T01-08维持实施中。
 

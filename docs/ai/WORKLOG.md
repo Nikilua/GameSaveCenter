@@ -12149,3 +12149,7 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 提交后以默认 `GameSaveCenter-Run.cmd` 重跑完整链并退出0：SDK8.0.423、Release0警告/0错误，1967项1910通过/57既有skip/0失败，148份TRX计数一致，145个WPF隔离类完成；Worker发布、ZIP/PEXT、安装事务和Playnite启动通过。构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`。安装六程序集磁盘身份和SHA一致；没有确认Playnite进程内加载路径。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/`。真实桌面Ctrl+C与外机同步后的构建仍待验证，因此T01-08保持实施中。
 
 另一台电脑 `ea926c5e` 的 `GamePickerViewModel.cs` 中 `Updated upstream` / `Stashed changes` 标记是未解决的stash冲突并造成CS8300。处理顺序固定为先stash（含未跟踪文件）、确认工作树干净、快进同步、运行默认根入口；不要reset或覆盖原工作。干净主线验证后再检查stash和移植个人改动。该机同步后结果尚未回来。
+
+## 2026-10-25 T03-01 成功证据适用范围校准
+
+CURRENT_STATE、专项PROGRESS与T03-01证据现区分产品源码提交、最近完整标准.cmd成功、定向脚本回归及尚未验证的真实Ctrl+C。fbd8a882的根入口结果继续绑定20261024T154742005Z-e15429e1/安装run20261024T154739936Z-bc3e83dc；后续纯文档commit不改变产品身份。验证源码校验、Markdown本地链接与diff check通过；没有重跑产品构建。T03-01标记已满足。

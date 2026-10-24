@@ -1086,3 +1086,7 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 上默认 `GameSaveCenter-Run.cmd` 退出0：SDK8.0.423、Release 0 warning/0 error、1967项1910通过/57既有skip/0失败、148 TRX一致、145个WPF隔离类完成；Worker win-x64发布、ZIP/PEXT、安装和Playnite启动通过。构建run `20261024T154742005Z-e15429e1`，安装run `20261024T154739936Z-bc3e83dc`。六个安装目录程序集的版本/源码身份/SHA核对通过，未据此声称进程内插件已加载。脱敏证据在 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/`。真实桌面Ctrl+C和外机快进后的构建仍待核验，T01-08维持实施中。
 
 用户提供另一台电脑 `ea926c5e` 的状态和diff：代码文件内含 `Updated upstream` / `Stashed changes` 合并冲突标记，解释了CS8300；不能通过reset覆盖其本地文档、代码、测试或未跟踪证据。安全恢复顺序是 `git stash push --include-untracked`、确认干净、`git pull --ff-only origin main`、运行默认根入口；外机干净主线通过后再核查stash并逐项移植功能改动。细节见 `docs/ai/CURRENT_STATE.md` 与T00-08证据。此轮尚未取得外机同步后构建结果。
+
+## 2026-10-25 T03-01 成功证据范围校准
+
+将当前产品代码身份 `fbd8a882`、提交级标准根入口/安装run `20261024T154742005Z-e15429e1` / `20261024T154739936Z-bc3e83dc`、最近T01-08定向验证和未验的物理Ctrl+C分开列示。`CURRENT_STATE.md`说明源码/测试/脚本/资源改动的复验范围，纯文档只需源码/链接校验。T03-01记为已满足，旧失败run仍保留失败身份。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-01/README.md`。
