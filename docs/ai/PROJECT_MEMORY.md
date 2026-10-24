@@ -1,3 +1,7 @@
+## 2026-10-25 T00-03 SDK 恢复矩阵复验
+
+扩展 `Test-SdkBootstrapRecovery.ps1`，在原下载中断/安装器失败后重试矩阵外，增加真实截断 PowerShell 安装脚本解析失败，以及安装器退出0但SDK观察仍为9.0.302时必须失败的负例；随后重试仅接受精确8.0.423。PowerShell Core7.6.2与Windows PowerShell5.1.22000.2538各4/4、退出0，失败后环境恢复且本次bootstrap临时目录清除。测试JSON用UTF-8一致写出。脚本SHA `AEA80E4C034CF91BC88D0164CC94E0993FA1922C318AA6C4B6261A71DCFC20C3`；具体命令、逐项边界和结果哈希见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/recovery-20261025-verified/README.md`。属于受控注入，未实测真实外网中断或真实SDK压缩包损坏；T00-03控制流现记已验收。本批标准完整根入口需在提交后复跑，旧fbd8a882链不能替代新测试脚本身份的复验。用户外机CS8300仍是其GamePickerViewModel中的stash冲突标记；同步后构建待用户反馈。
+
 ## 2026-10-24 f577fd19 标准全链成功；T01-01产物身份验收
 
 默认 `GameSaveCenter-Run.cmd` 在源码 `f577fd192709d5a312c7bc72fd92249b6b5e31ab` 完整退出0：build run `20261024T135653993Z-90e04544`，install run `20261024T135651674Z-ade787f3`；SDK8.0.423、Release0警告/0错误、1967项1910通过/57跳过/0失败、148份TRX计数一致、145个WPF隔离类；Worker发布、ZIP/PEXT、六程序集磁盘身份/SHA、安装及Playnite启动成功。57个skip均为已撤销“今日工作台 UI 架构”同一跳过原因。本地诊断 `artifacts/build-diagnostics/20261024T135653993Z-90e04544`，证据见 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-f577fd19/`。

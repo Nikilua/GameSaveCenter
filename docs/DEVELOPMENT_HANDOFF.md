@@ -1,3 +1,7 @@
+## 2026-10-25 T00-03 SDK 恢复矩阵更新
+
+`Test-SdkBootstrapRecovery.ps1` 增加截断安装脚本解析失败及安装器假报成功、实际只观察到SDK9.0.302的负例。PowerShell Core7.6.2和Windows PowerShell5.1.22000.2538各4/4、退出0；失败后进程环境恢复，bootstrap临时文件清理，后续重试精确验证8.0.423。JSON结果统一UTF-8，证据和测试脚本身份见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/recovery-20261025-verified/README.md`。这些是隔离故障注入，不是实际网络或真实SDK归档损坏测试。T00-03控制流验收完成；本阶段提交后需重新跑默认标准根入口全链，不能沿用fbd8a882的旧脚本证据。外机最新失败仍来自 `GamePickerViewModel.cs` 未解决stash冲突标记；用户尚未提供快进后构建结果。
+
 ## 2026-10-25 最新标准全链成功；外机冲突恢复步骤
 
 最新代码提交 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 的默认根入口完整链成功：构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`；SDK8.0.423、Release0/0、1967项1910通过/57既有skip/0失败、148TRX一致、145个WPF隔离类结束，发布/ZIP/PEXT/安装/Playnite启动完成。T03-01成功证据适用范围已满足；最近定向验证和未验边界见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-01/README.md`。标准链详细证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/standard-fbd8a882/README.md`。安装报告仅证实磁盘程序集身份，未检查进程内加载路径。

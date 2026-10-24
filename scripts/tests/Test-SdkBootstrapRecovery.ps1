@@ -32,28 +32,40 @@ function Invoke-WebRequest {
         Set-Content -LiteralPath $OutFile -Value 'partial download'
         throw 'Injected connection interruption'
     }
-    if ($mode -eq 'corrupt') { Set-Content -LiteralPath $OutFile -Value 'exit 37'; return }
+    if ($mode -eq 'corrupt') { Set-Content -LiteralPath $OutFile -Value 'function Installer {'; return }
+    if ($mode -eq 'installer-reports-success-without-sdk') { Set-Content -LiteralPath $OutFile -Value 'exit 0'; return }
     Set-Content -LiteralPath $OutFile -Value ("Set-Content -LiteralPath '" + $marker.Replace("'", "''") + "' -Value ready`nexit 0")
 }
 $results = @()
 try {
     $env:TEMP = $fixture
     $env:TMP = $fixture
-    foreach ($mode in @('interrupted', 'corrupt')) {
+    foreach ($mode in @('interrupted', 'corrupt', 'installer-reports-success-without-sdk')) {
         $failure = ''
         try { Initialize-GscSdkBaseline -ProjectRoot $fixture -InstallDirectory $install | Out-Null }
         catch { $failure = $_.Exception.Message }
-        $expected = if ($mode -eq 'interrupted') { 'Injected connection interruption' } else { '37' }
+        $expected = switch ($mode) {
+            'interrupted' { 'Injected connection interruption' }
+            'corrupt' { 'installer exited with code 1' }
+            default { '9.0.302' }
+        }
         if (-not $failure.Contains($expected)) { throw "Missing actionable failure: $mode : $failure" }
+        if ($mode -eq 'installer-reports-success-without-sdk' -and -not $failure.Contains($required)) { throw 'Failed SDK verification did not report the required version' }
         if ($env:PATH -ne $initialPath -or $env:DOTNET_ROOT -ne $initialRoot -or $env:DOTNET_ROOT_X64 -ne $initialRootX64) { throw 'Failed bootstrap leaked SDK environment' }
         if (@(Get-ChildItem -LiteralPath $fixture -Directory -Filter 'gsc-sdk-bootstrap-*').Count) { throw 'Partial download directory leaked' }
+        if ($mode -eq 'installer-reports-success-without-sdk' -and (Test-Path -LiteralPath $marker)) { throw 'A failed SDK verification was incorrectly marked as installed' }
         $results += [pscustomobject]@{Case=$mode;Passed=$true;Diagnostic=$failure}
     }
     $mode = 'retry'
     $result = Initialize-GscSdkBaseline -ProjectRoot $fixture -InstallDirectory $install
-    if (-not $result.Bootstrapped -or $result.SelectedVersion -ne $required -or $attempts -ne 3) { throw 'Retry did not validate the exact SDK' }
-    $results += [pscustomobject]@{Case='retry-after-two-failures';Passed=$true;Diagnostic='Exact SDK observation required after installer exit 0; installer payload is simulated.'}
-    $results | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $fixture 'results.json')
+    if (-not $result.Bootstrapped -or $result.SelectedVersion -ne $required -or $attempts -ne 4) { throw 'Retry did not validate the exact SDK' }
+    $results += [pscustomobject]@{Case='retry-after-failures';Passed=$true;Diagnostic='Interrupted download, failed installer, and installer exit 0 without the exact SDK were rejected before retry; installer payload is simulated.'}
+    $json = ConvertTo-Json -InputObject @($results) -Depth 4
+    [IO.File]::WriteAllText(
+        (Join-Path $fixture 'results.json'),
+        $json + [Environment]::NewLine,
+        [Text.UTF8Encoding]::new($false)
+    )
     $results | Format-Table | Out-Host
     if (-not [string]::IsNullOrWhiteSpace($EvidenceRoot)) {
         $resolvedEvidenceRoot = [IO.Path]::GetFullPath($EvidenceRoot)

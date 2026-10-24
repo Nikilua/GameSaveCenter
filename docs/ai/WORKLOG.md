@@ -1,3 +1,7 @@
+## 2026-10-25 T00-03 SDK 恢复矩阵补强
+
+扩展 `scripts/tests/Test-SdkBootstrapRecovery.ps1`：下载中断后写入的部分文件、截断的安装脚本、安装器退出0但SDK仍只见9.0.302三种失败均须给出可诊断错误并恢复环境/清理本次bootstrap目录；后续重试必须准确观察到8.0.423。Core7.6.2和Desktop5.1.22000.2538各4/4、退出0。证据含两宿主结构化结果及SHA，Windows PowerShell输出也统一写为UTF-8：`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/recovery-20261025-verified/README.md`。仅为故障注入，不称真实网络或SDK归档故障已复现。T00-03记已验收；最终标准根入口需在本阶段提交后跑完整链。初次试验揭示的夹具分支错误和PS5输出编码差异已修正，未改产品源码或系统SDK。
+
 ## 2026-10-24 f577fd19 标准完整链通过；T01-01清单验收
 
 默认 `GameSaveCenter-Run.cmd` 在f577fd19完整退出0：构建run`20261024T135653993Z-90e04544`、安装run`20261024T135651674Z-ade787f3`、SDK8.0.423、Release0警告/0错误、1967项1910通过/57跳过/0失败、148份TRX计数一致、145个WPF隔离类；Worker发布、ZIP/PEXT、六程序集身份/SHA、安装及Playnite启动成功。57项跳过均是已撤销“今日工作台 UI 架构”断言。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-f577fd19/`。T00-01/T00-08/T01-01验收；真实下载中断、真实页面交互和进程内插件加载路径不因此升级。

@@ -1,0 +1,22 @@
+[
+  {
+    "Case": "interrupted",
+    "Passed": true,
+    "Diagnostic": "无法准备 global.json 要求的 .NET SDK 8.0.423。不会用其他 SDK 替代。当前可见 SDK：\n9.0.302 [isolated observation]\n详细原因：下载 Microsoft 的 .NET SDK 安装脚本失败。请检查网络/代理，或手动安装 SDK 8.0.423 后重试。下载源：https://dot.net/v1/dotnet-install.ps1。原因：Injected connection interruption"
+  },
+  {
+    "Case": "corrupt",
+    "Passed": true,
+    "Diagnostic": "无法准备 global.json 要求的 .NET SDK 8.0.423。不会用其他 SDK 替代。当前可见 SDK：\n9.0.302 [isolated observation]\n详细原因：Microsoft SDK installer exited with code 1."
+  },
+  {
+    "Case": "installer-reports-success-without-sdk",
+    "Passed": true,
+    "Diagnostic": "无法准备 global.json 要求的 .NET SDK 8.0.423。不会用其他 SDK 替代。当前可见 SDK：\n9.0.302 [isolated observation]\n详细原因：SDK 安装完成后仍未选择到准确版本 8.0.423；dotnet --version exit=1，selected=unavailable；已安装 SDK：\n9.0.302 [isolated observation]"
+  },
+  {
+    "Case": "retry-after-failures",
+    "Passed": true,
+    "Diagnostic": "Interrupted download, failed installer, and installer exit 0 without the exact SDK were rejected before retry; installer payload is simulated."
+  }
+]
