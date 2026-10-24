@@ -1,6 +1,6 @@
 ## 2026-10-24 T02-03 实际键盘焦点回归补正
 
-T02-03夹具不再伪造FocusManager逻辑焦点；Light/Dark分别在可见激活窗口取得DataGrid键盘焦点，三轮断点往返后同一 `Keyboard.FocusedElement` 仍位于DataGrid内。定向2/2、所在类11/11，SDK8.0.423 Release 0警告/0错误。保存第一次错误逻辑焦点预期失败及修正后的TRX。测试改动提交后默认完整根.cmd尚待执行；本项受控测试不等同物理键盘/IME/宿主DPI。
+T02-03夹具不再伪造FocusManager逻辑焦点；Light/Dark分别在可见激活窗口取得DataGrid键盘焦点，三轮断点往返后同一 `Keyboard.FocusedElement` 仍位于DataGrid内。定向2/2、所在类11/11。首次沙箱内默认入口在写Playnite用户目录时被拒；同提交在获准本机上下文重跑后 `GameSaveCenter-Run.cmd` 完整退出0，SDK8.0.423 Release0警告/0错误、1967项1910通过/57既有跳过/0失败、148份TRX一致、145个WPF类。ZIP/PEXT构建身份一致，安装六程序集版本/哈希正确，Playnite启动成功。保留第一次错误逻辑焦点预期失败及修正后TRX；证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-03/`。不代表物理键盘/IME/实际加载路径/宿主DPI验收。
 
 ## 2026-10-24 外机R09失败日志与主线对照
 

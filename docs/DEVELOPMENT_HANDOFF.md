@@ -1,6 +1,6 @@
 ## 2026-10-24 T02-03 实际键盘焦点回归补正
 
-批量选择断点测试现在使用真实WPF键盘焦点：Light/Dark可见激活窗口内验证DataGrid获焦，三轮900/1400 DIP往返保留同一 `Keyboard.FocusedElement`、焦点范围及选中状态。定向2/2、所在类11/11，Release编译0警告/0错误。只改测试，未改产品页。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-03/`。本次源码提交后的默认完整链待跑；物理输入、IME、宿主DPI仍未验。
+批量选择断点测试现在使用真实WPF键盘焦点：Light/Dark可见激活窗口内验证DataGrid获焦，三轮900/1400 DIP往返保留同一 `Keyboard.FocusedElement`、焦点范围及选中状态。定向2/2、所在类11/11。首次受限沙箱的完整入口在写Playnite用户目录时退出1，构建与测试无失败；提交51641d06在获准本机上下文重跑后默认完整根.cmd退出0：SDK8.0.423，Release0警告/0错误，1967项1910通过/57既有跳过/0失败、148份TRX一致、145个WPF类；Worker发布、ZIP/PEXT、安装及Playnite启动成功。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-03/standard-verification.json`。不声称物理键盘输入、IME、实际加载路径或宿主DPI已验。
 
 ## 2026-10-24 外机WPF失败日志比对
 

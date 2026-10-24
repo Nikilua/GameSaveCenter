@@ -4,5 +4,24 @@
   "locked": [],
   "deleted": true,
   "freeBefore": 13690621952,
-  "freeAfter": 13690695680
+  "freeAfter": 13690695680,
+  "removedOwnedBuildOutputs": [
+    {
+      "path": "artifacts/gsc-b/t02-03-keyboard-focus",
+      "files": 727,
+      "bytes": 167941814,
+      "reparsePoints": 0,
+      "lockedFiles": 0,
+      "deleted": true
+    },
+    {
+      "path": "artifacts/gsc-b/d0f7796d",
+      "files": 1014,
+      "bytes": 281260085,
+      "reparsePoints": 0,
+      "lockedFiles": 0,
+      "deleted": true
+    }
+  ],
+  "retainedLatestStandardBuild": "artifacts/gsc-b/74cedf9c"
 }

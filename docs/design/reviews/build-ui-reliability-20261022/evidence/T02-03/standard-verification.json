@@ -1,0 +1,103 @@
+{
+  "sourceCommit": "51641d06dc17e0d2638a5fafe25d8f68660515bc",
+  "branch": "main",
+  "command": "GameSaveCenter-Run.cmd (default entry)",
+  "exitCode": 0,
+  "runId": "20261024T084629122Z-63a925f0",
+  "sdk": "8.0.423",
+  "startedUtc": "2026-10-24T08:46:30.0989422Z",
+  "completedUtc": "2026-10-24T09:13:04.9315418Z",
+  "solutionBuild": {
+    "configuration": "Release",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "outputRoot": "artifacts/gsc-b/74cedf9c"
+  },
+  "tests": {
+    "total": 1967,
+    "passed": 1910,
+    "skipped": 57,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "trxFiles": 148,
+    "trxCounterMismatches": 0,
+    "wpfIsolatedClasses": 145,
+    "compactViewportClass": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "pipeline": {
+    "outcome": "passed",
+    "steps": 154,
+    "nonzeroSteps": 0,
+    "workingTreeClean": false,
+    "trackedSourceClean": true,
+    "preExistingUntrackedFilesPreserved": true
+  },
+  "priorSandboxAttempt": {
+    "runId": "20261024T080951054Z-f0a47fb7",
+    "rootExitCode": 1,
+    "solutionBuildExitCode": 0,
+    "tests": {
+      "total": 1967,
+      "failed": 0,
+      "environmentGatedSkipped": 11
+    },
+    "installCopyDeniedByWorkspaceSandbox": true,
+    "supersededByRunId": "20261024T084629122Z-63a925f0",
+    "rawSummaryPath": "artifacts/build-diagnostics/20261024T080951054Z-f0a47fb7/summary.json",
+    "rawConsolePath": "artifacts/standard-51641d06-console.txt"
+  },
+  "package": {
+    "version": "0.6.73",
+    "zip": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "zipSha256": "8F32E7192A4E7F94E923B00460EC2BA6B978D4168718FA211951C2EB42C56F12",
+    "pext": "artifacts/GameSaveCenter-0.6.73.pext",
+    "pextSha256": "8F32E7192A4E7F94E923B00460EC2BA6B978D4168718FA211951C2EB42C56F12"
+  },
+  "install": {
+    "outcome": "success",
+    "extensionManifestVersion": "0.6.73",
+    "pluginFileVersion": "0.6.73.0",
+    "assemblies": {
+      "GameSaveCenter.Playnite.dll": {
+        "productVersion": "0.6.73+51641d06dc17e0d2638a5fafe25d8f68660515bc",
+        "sha256": "EBFBBBEA350C705A324D1F71530CAA6CCAFF290C9AF6F92D263D7A548F4B4FB3"
+      },
+      "GameSaveCenter.Contracts.dll": {
+        "productVersion": "0.6.73+51641d06dc17e0d2638a5fafe25d8f68660515bc",
+        "sha256": "595068E32CA8B585DD1B97BF0F0E525A07D3AF5CF92B003EFEBB622BE3B92542"
+      },
+      "Worker/GameSaveCenter.Core.dll": {
+        "productVersion": "0.6.73+51641d06dc17e0d2638a5fafe25d8f68660515bc",
+        "sha256": "50C025C39EA24A265B5B3140441C0C797EBCD4AE3C5B0675FB13D9622FD43F22"
+      },
+      "Worker/GameSaveCenter.Worker.dll": {
+        "productVersion": "0.6.73+51641d06dc17e0d2638a5fafe25d8f68660515bc",
+        "sha256": "2E07B7B8907481942C9F84F5653E3517E8FA50BF67A05E426191778DF1D220E8"
+      },
+      "Worker/GameSaveCenter.Contracts.dll": {
+        "productVersion": "0.6.73+51641d06dc17e0d2638a5fafe25d8f68660515bc",
+        "sha256": "6833EC423C24D931CF937671E3047005B9DE10D374EB0CE72690DF1C3C72C1D8"
+      },
+      "GameSaveCenter.Core.dll": {
+        "productVersion": "0.6.73+51641d06dc17e0d2638a5fafe25d8f68660515bc",
+        "sha256": "A41A70462C138798FD3DA5353EAEC1913095B021F26077666DFB25017468B3B8"
+      }
+    },
+    "report": "artifacts/last-dev-install.txt"
+  },
+  "playniteStartup": "default launcher reported successful build, verification, installation and Playnite startup",
+  "rawEvidence": {
+    "summaryPath": "artifacts/build-diagnostics/20261024T084629122Z-63a925f0/summary.json",
+    "summarySha256": "400C93FC7F66C374C2859221F123C600E4CAF54B3C9B4AF6440483C3E8262D95",
+    "consolePath": "artifacts/standard-51641d06-full-console.txt",
+    "consoleSha256": "7B520BC5F1AAAADB62AED5B9C995770699107B0A927CCF6BA1E6894069D89E48"
+  }
+}

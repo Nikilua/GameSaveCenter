@@ -4,13 +4,13 @@
 
 ## 验证身份
 
-- 当前完整验收代码：`130cd307`，包含安装身份报告、诊断加载路径、命名测试窗口、Desktop超时进程树收尾及CMD模块环境修复。
-- 最后完整标准入口成功/实际安装身份：`130cd3073a19a7c262e34d4ac1f1c9a5da19b3e4`。
-- 命令：默认 `GameSaveCenter-Run.cmd`，退出0；run `20261024T071312317Z-8b9a34fd`。
-- SDK8.0.423 / Release，XAML25/25、0警告/0错误；1967项1910通过、57既有跳过、0失败，148TRX一致、145WPF隔离类结束。
-- 发布、ZIP/PEXT、安装六程序集SHA与构建身份一致；Playnite/Worker新进程及插件加载路径已确认。
-- 最后定向验证：最终CRLF入口在双PowerShell三入口各9/9、真实中文空格长路径Release0/0；当前提交完整标准链通过。
-- [完整结果/交付身份/边界](../design/reviews/build-ui-reliability-20261022/evidence/T00-04/standard-130cd307/README.md)。后续文档提交不是新产品构建身份。
+- 当前完整验收代码：`51641d06`，本轮补入真实WPF键盘焦点断言；并包含安装身份报告、诊断加载路径、命名测试窗口、Desktop超时进程树收尾及CMD模块环境修复。
+- 最后完整标准入口成功/安装身份：`51641d06dc17e0d2638a5fafe25d8f68660515bc`。
+- 命令：默认 `GameSaveCenter-Run.cmd`，退出0；run `20261024T084629122Z-63a925f0`。
+- SDK8.0.423 / Release，solution0警告/0错误；1967项1910通过、57既有跳过、0失败，148TRX计数一致、145WPF隔离类全部结束。
+- 发布、ZIP/PEXT、安装六程序集SHA与构建身份一致；默认入口报告Playnite启动成功。本轮未核实进程内插件加载路径。
+- T02-03定向双主题2/2、所在类11/11；真实WPF键盘焦点、选择ID/当前项和900/1400 DIP往返稳定。全链证据：[T02-03提交级完整验证](../design/reviews/build-ui-reliability-20261022/evidence/T02-03/standard-verification.json)。
+- [之前完整链/交付身份/边界](../design/reviews/build-ui-reliability-20261022/evidence/T00-04/standard-130cd307/README.md)仍绑定130cd307；后续文档提交不改变51641d06产品构建身份。
 
 - 前次aefbddfa的第101类崩溃保留；130cd307当前同类5/5、完整链0失败，不关闭UIA或扩大skip。真实诊断已显示190bbaea插件/Worker身份及实际加载路径。
 
@@ -19,7 +19,7 @@
 - 最近一次真实首页与维护诊断截图来自190bbaea，并确认插件/Worker构建身份、插件实际加载路径与安装报告一致；Ctrl+End可达诊断摘要，未触发业务操作。130cd307随后已通过完整安装/启动，本轮未重拍UI。
 - b8eedc47的存档列表/详情交叉滚动证据保留；不将它替代190bbaea的完整双主题/窄短窗矩阵。
 - 完整双主题/正常窄短窗、命令面板宿主验收、物理键盘/IME及物理DPI仍待验。设置对话框坐标偏差后已停止主题切换，没有改配置。
-- T02-03测试补正现已使用活动WPF窗口中的真实 `Keyboard.FocusedElement`，双主题2/2、所在类11/11；本次测试源码提交后的默认完整链待跑。T02-02、04～07受控回归与130cd307标准链通过；T02-08实施中。T03已登记共享能力、安装报告缺口、回退候选及证据链接修复，32项整体未完成。
+- T02-03已验收：活动WPF窗口真实 `Keyboard.FocusedElement` 双主题稳定，所在类11/11，51641d06默认完整链退出0。T02-02、04～07受控回归与全链通过；T02-08实施中。T03已登记共享能力、安装报告缺口、回退候选及证据链接修复，32项整体未完成。
 - [32项专项账本](../design/reviews/build-ui-reliability-20261022/PROGRESS.md)、[第四轮机器账本](../design/reviews/ui-finesse-round4-20261018/ROUND4_STATUS.json)、[待办](../AUTONOMOUS_BACKLOG.md)是任务入口。
 - SDK缺失为历史；CEF/ETW与S07-03 branch-protection读取权限边界独立保留，按[能力缓存](ENVIRONMENT_CAPABILITY_CACHE.json)重试。
 

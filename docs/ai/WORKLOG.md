@@ -1,6 +1,6 @@
 ## 2026-10-24 T02-03 实际键盘焦点回归补正
 
-移除仅设置FocusManager逻辑焦点的做法；每个主题使用可见、激活窗口，检查 `Keyboard.Focus(grid)` 与 `Keyboard.FocusedElement`，并在三轮1400/900 DIP往返中确认焦点对象与DataGrid焦点范围不变。双主题2/2、所在类11/11，SDK8.0.423 Release 0警告/0错误。初始焦点范围断言错误地要求逻辑目标是DataGrid，失败TRX保留；修正后以真实键盘焦点断言通过。证据 evidence/T02-03。修改仅为测试；默认根.cmd需在提交后重跑。
+移除仅设置FocusManager逻辑焦点的做法；每个主题使用可见、激活窗口，检查 `Keyboard.Focus(grid)` 与 `Keyboard.FocusedElement`，并在三轮1400/900 DIP往返中确认焦点对象与DataGrid焦点范围不变。双主题2/2、所在类11/11，SDK8.0.423 Release 0警告/0错误。初始焦点范围断言错误地要求逻辑目标是DataGrid，失败TRX保留；修正后以真实键盘焦点断言通过。首次沙箱内默认入口因阻止写入Playnite用户目录而退出1，构建/测试本身无失败；在获准本机上下文重跑后默认根.cmd退出0：1967项1910通过/57既有跳过/0失败，148份TRX一致、145个WPF类，Worker发布、ZIP/PEXT、安装及Playnite启动成功。证据 evidence/T02-03。
 
 ## 2026-10-24 外机WPF失败日志比对
 
