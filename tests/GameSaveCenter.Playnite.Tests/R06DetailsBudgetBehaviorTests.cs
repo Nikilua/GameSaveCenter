@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -13,6 +13,7 @@ using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.Tests;
 
@@ -55,8 +56,12 @@ public sealed class R06DetailsBudgetBehaviorTests
         Assert.Same(refreshed[0], fallback);
     }
 
-    [Fact]
-    public void LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject()
+    [Theory]
+    [InlineData(1120, false)]
+    [InlineData(1120, true)]
+    [InlineData(1400, false)]
+    [InlineData(1400, true)]
+    public void LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(double width, bool dark)
     {
         Exception? exception = null;
         var detailScrolls = false;
@@ -109,6 +114,8 @@ public sealed class R06DetailsBudgetBehaviorTests
                 }
                 var probe = new TaskDetailsProbe(items, first);
                 var view = new TaskCenterView { DataContext = probe };
+                var mode = dark ? GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Dark : GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Light;
+                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(view, true, 78, mode, false), true, true);
                 var viewType = typeof(TaskCenterView);
                 var grid = (DataGrid)viewType.GetField("TaskGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var detailViewer = view.TaskDetailScrollViewerElement;
@@ -118,7 +125,7 @@ public sealed class R06DetailsBudgetBehaviorTests
                 window = new Window
                 {
                     Content = view,
-                    Width = 1120,
+                    Width = width,
                     Height = 700,
                     ShowInTaskbar = false,
                     ShowActivated = false,
@@ -126,7 +133,7 @@ public sealed class R06DetailsBudgetBehaviorTests
                     Opacity = 0.01
                 };
                 window.Show();
-                view.ApplyResponsiveLayout(1120, 700);
+                view.ApplyResponsiveLayout(width, 700);
                 window.UpdateLayout();
 
                 grid.SelectedIndex = 0;
@@ -140,6 +147,13 @@ public sealed class R06DetailsBudgetBehaviorTests
                 detailText = string.Join("\n", FindVisualChildren<TextBlock>(detailCard).Select(textBlock => textBlock.Text));
                 detailExpanderExpanded = expander.IsExpanded;
                 detailScrolls = detailViewer.ScrollableHeight > 0.5;
+                var longTexts = FindVisualChildren<TextBlock>(detailCard).Where(text => text.Text.Contains("远端校验失败")).ToArray();
+                Assert.NotEmpty(longTexts);
+                foreach (var text in longTexts)
+                {
+                    var bounds = text.TransformToAncestor(detailCard).TransformBounds(new Rect(0, 0, text.ActualWidth, text.ActualHeight));
+                    Assert.True(bounds.Left >= -1 && bounds.Right <= detailCard.ActualWidth + 1, $"Long detail overflow at {width}: {bounds}, card={detailCard.ActualWidth}.");
+                }
                 var rows = FindVisualChildren<DataGridRow>(grid)
                     .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
                     .ToArray();
