@@ -38,16 +38,30 @@ T03-05现已用真实的旧/当前PEXT在仓库 `.tmp` 回放生产原子安装�
 | T02-08 | 实施中 | 当前证据仅深色常规窗口；浅色、窄短窗、物理滚轮/键盘/IME/DPI及当前进程内程序集路径仍待验。 |
 | T03-05 | 实施中 | 实际旧/当前包文件事务失败回退与重试已通过；隔离Playnite配置加载、设置兼容/迁移仍待验。真实安装和数据未动。 |
 
+### 当前主线复验
+
+2026-10-25在 `c9cc5a995524af55af743599ca9fdd2628d357d1` 上运行完整 `scripts/build.ps1`，使用全新的 `.tmp/gsc-build-verify-20261025` 输出根目录。SDK `8.0.423`，Release编译0警告/0错误；Core、Worker及145个WPF隔离类全部完成，TRX统计1967项、1899通过、68跳过、0失败，构建与测试退出0，诊断run `20261024T210330731Z-c5892b90`。包含 `R09FocusOutlineBehaviorTests` 的隔离类通过。此前单类日志中的 `2,2,2,2` / `1,1,1,1` 差异在当前源码干净全量复验中未重现，尚无证据支持修改主题样式。
+
+此次只编译并运行测试。Playnite PID 38376与Worker PID 33740仍在运行，故没有重复真实安装/启动；完整安装链仍由上文 `dcbaab13` 的证据覆盖。`dcbaab13..c9cc5a99` 的 `src/tests/scripts` 差异为空，当前文档提交不改变此前打包的产品源码身份。
+
 ### 用户另一台电脑的构建
 
-当时外机报告HEAD `ea926c5e`、本地有多份文档/源码/测试改动及未跟踪文件；`GamePickerViewModel.cs` 含 `<<<<<<< Updated upstream` / `>>>>>>> Stashed changes`，对应9个CS8300编译错误。这是本地stash合并冲突标记，不能用本机成功结果代替外机全链。
+用户较早提供的日志有一项R09焦点样式测试失败（2项中1项失败，期望 `2,2,2,2`、实际 `1,1,1,1`）；当前提交的干净全量构建中该类通过，不能据此断言外机已经成功。
 
-安全恢复顺序仍是先 `git stash push --include-untracked -m "保存本机 GamePicker 构建前改动"`，确认工作树干净，再 `git pull --ff-only origin main`，之后从仓库根目录运行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`。保留stash直到完整链通过；不reset、不覆盖文件、不提前pop。外机另报的R09 `Thickness(2)`/`Thickness(1)`失败缺少同次HEAD和测试程序集身份，当前本机R09通过不构成外机复验。
+后续根入口日志显示HEAD `ea926c5e`，分支为 `main...origin/main [behind 2]`，工作树有多项本地源码/测试/文档改动及未跟踪证据。用户提供的 `GamePickerViewModel.cs` diff含 `<<<<<<< Updated upstream` / `=======` / `>>>>>>> Stashed changes`，导致9个 `CS8300`，TRX为0且测试未启动。这是外机工作树的stash合并冲突，和本机已通过构建是两个独立结果。
 
-用户随后确认外机 `main` 仍停在 `ea926c5e`、落后 `origin/main` 两个提交，且工作树有源码/测试/文档修改及未跟踪文件；提供的 `GamePickerViewModel.cs` diff 显示真实 `Updated upstream` / `Stashed changes` 冲突标记。这解释了9个 `CS8300` 且测试未开始。保留改动的恢复步骤仍为先 `git stash push --include-untracked`、确认干净、`git pull --ff-only origin main`，通过根入口完整链后再决定是否恢复stash。
+先保留本地工作，再在干净主线上验证：
 
-本次更新以 `e0c46c6d` 为main基线；T01-07清理及文档校验结果随本轮中文文档提交推送。产品代码未变化，最后完整标准链仍绑定 `dcbaab13`。完整32项计划仍有上述11项待验，不宣称整体完成。
+```powershell
+git stash push --include-untracked -m "保存本机 GamePicker 构建前改动"
+git status --short --branch
+git pull --ff-only origin main
+git rev-parse --short HEAD
+cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"
+```
+
+确认stash已保存、工作树干净且快进完成后再运行根入口。完整链退出0前保留stash，不执行 `reset`、覆盖文件或 `stash pop`；成功后再逐项审阅并移植本机改动。外机同步后的实际构建结果仍待用户提供。完整32项计划仍有11项待验，未标为整体完成。
 
 ## 文档校验
 
-初版清单的文档范围12份、715个本地Markdown链接、0个失效；本次增量更新复核6份Markdown的551个本地链接，0个失效；源码结构校验和 `python scripts/render-round4-progress.py --check` 均通过。该文档更新不替代产品构建；最近完整标准链仍是上述 `dcbaab13`。
+本次T03-05文档更新复核6份Markdown的545个本地链接，0个失效；源码结构校验、Round4 64项状态检查及其5项生成器测试均通过。当前外机诊断追加后会再次校验链接并更新计数。上述文档校验不替代前述产品构建/测试与完整安装链证据。

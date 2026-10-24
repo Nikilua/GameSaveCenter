@@ -23,7 +23,7 @@
 - T01-02清理预览在f577fd19代码身份上双PowerShell各9/9；结果路径已脱敏，所有预览`CanDelete=false`，人工复核引用/占用仍是后续步骤，不存在自动删除结论。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-02/README.md)。
 - T01-06双PowerShell归档/保留夹具当前重跑均通过，303文件真实归档SHA已核对、源原件保留；f577fd19默认根入口全链成功，补足最终链验收。只认可归档后隔离清理与保留行为，不开放通用自动删除。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-06/README.md)。
 - T01-07双宿主包保留/重复预览通过；另追溯三批旧RenderHarness目录并分两批清理612个当前文档无引用、且在保留目录有同SHA副本的PNG（83,348,169逻辑字节）。唯一图、被引用图和报告保留；索引范围1,820张，235组/830个副本仍需逐路径审查。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-07/README.md)。
-- 外机当前故障已由用户回传状态/diff确认：HEAD `ea926c5e`、分支落后远端2个提交、工作树有本地修改及未跟踪文件；`GamePickerViewModel.cs` 含stash冲突标记，导致9个 `CS8300`，测试没有启动。应先 stash（含未跟踪文件）、确认clean、快进拉取，再运行默认根入口；外机全链尚未回报成功。
+- 本机 `c9cc5a99` 全新隔离 Release 输出编译及完整测试通过：0警告/0错误，1967项1899通过、68跳过、0失败，145个WPF类全结束，R09焦点类通过。完整安装链仍绑定 `dcbaab13`（其后产品源码/测试/脚本无变化）。外机较早R09单类失败在当前提交未重现；其后外机根入口因 `GamePickerViewModel.cs` 的stash冲突标记报9个 `CS8300`，测试没有启动。HEAD `ea926c5e`、落后远端2个提交且有本地/未跟踪改动；先 stash含未跟踪项、确认clean、快进拉取并完整重跑，外机成功仍待回报。[诊断及恢复步骤](../design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md)
 
 - 前次aefbddfa的第101类崩溃保留；130cd307当前同类5/5、完整链0失败，不关闭UIA或扩大skip。真实诊断已显示190bbaea插件/Worker身份及实际加载路径。
 

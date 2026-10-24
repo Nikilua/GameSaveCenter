@@ -12223,3 +12223,9 @@ T03-08交付清单已完成并标明边界：最新成功产品完整链绑定 `
 复核旧包 02119729651ae687f2f1e5316ba4e48a3da69045 与当前完整链包 dcbaab13b9464523ffed6d88ca2748b6fb6dd647：均为0.6.73；旧/新 PEXT SHA 分别为 70E12F2E4F9CE5CCEB4E2AE11D5BF3FCE525A5AC8B8D149FF9DB28F30F196318 与 A085FFC7DEDF2CF799A0F65410E984F22D2E68B565DE3C80FB3D650B17AC1A2B；各自ZIP/PEXT哈希一致。源提交有祖先关系，Core源码无差异。将真实包解压至本仓库 .tmp，AST提取生产 Install-ExtensionAtomically 函数：先安装旧包，注入当前包暂存提升失败，旧包239文件逐路径/大小/SHA完整恢复；再重试新版，当前包239文件与源包一致。失败暂存经SHA核验后清理，旧/新归档哈希未变，所有 .tmp 目录清理。Playnite PID 38376与Worker PID 33740当时运行，但测试未与它们交互。
 
 这是安装器文件事务回退证据，不是Playnite隔离用户配置的实际插件加载、设置兼容或迁移验证；未回退真实安装、未打开游戏数据。T03-05继续实施中。详见 docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/ROLLBACK.md 与 rollback-replay-20261025.json。
+
+## 2026-10-25 外机失败诊断与当前主线构建复验
+
+用户回传的较早R09单类测试日志为2项中1项失败（期望2,2,2,2，实际1,1,1,1）；当前提交 `c9cc5a99` 用新隔离输出根目录运行完整 `scripts/build.ps1`，Release编译0警告/0错误，1967项1899通过、68跳过、0失败，145个WPF隔离类全部结束，R09类通过。诊断run `20261024T210330731Z-c5892b90`；构建输出与诊断临时目录已按规则清理。Playnite及Worker正在运行，因此本次未重跑安装启动；完整安装链由同产品源码的 `dcbaab13` 记录。
+
+用户后续外机日志及状态/diff确认HEAD `ea926c5e`、落后 `origin/main` 两个提交、多个本地修改和未跟踪文件；`GamePickerViewModel.cs` 含 `Updated upstream` / `Stashed changes` 字面冲突标记，造成9个CS8300，测试未启动。不能把本机通过当作外机通过。外机下一步先执行含未跟踪项的stash，确认clean后快进拉取，再运行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`；完整链退出0前保留stash，不reset、覆盖或pop。详细证据和命令见 T00-08 README 与 T03-08 verification.json。

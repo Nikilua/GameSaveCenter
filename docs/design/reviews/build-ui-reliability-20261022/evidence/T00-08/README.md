@@ -10,6 +10,18 @@
 
 提交前在 PowerShell Core 7.6.2 与 Windows PowerShell 5.1 各运行 SDK、安装和构建恢复夹具，六个脚本进程均退出 0。SDK组3个情形、安装组3条尝试均通过。构建夹具记录第一次测试 exit 23，并在下一次独立诊断运行中恢复全部4个测试组；`testsRequested=true`，TRX案例数为0，因为 `dotnet` 是控制流shim，没有编译程序集或执行任何真实测试案例。
 
-上述是候选回放，受控 `dotnet` shim 本身不执行测试案例。之后在 `fbd8a8828b2fac8e19dc1ef714b9bbd97ccbff85` 上通过默认 `GameSaveCenter-Run.cmd` 完成真实还原、Release构建、测试、Worker发布、ZIP/PEXT打包、安装身份校验及Playnite启动：构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`，SDK `8.0.423`，Release 0警告/0错误，1967项测试1910通过、57跳过、0失败，148份TRX计数一致，145个WPF隔离类全部结束；根入口退出0。57项跳过均为同一条已撤销“今日工作台 UI 架构”断言。安装的六个关键程序集版本/SHA与构建输出一致；未声称该次验证了进程内插件加载路径或真实页面交互。原始诊断在本机 `artifacts/build-diagnostics/20261024T154742005Z-e15429e1`，详细见 [T01-08完整链证据](../T01-08/standard-fbd8a882/README.md)。
+上述是候选回放，受控 `dotnet` shim 本身不执行测试案例。随后 `dcbaab13b9464523ffed6d88ca2748b6fb6dd647` 通过默认 `GameSaveCenter-Run.cmd` 完成真实还原、Release构建、测试、Worker发布、ZIP/PEXT打包、安装身份校验及Playnite启动：构建run `20261024T192816167Z-276884c0`、安装run `20261024T192814223Z-736788e1`，SDK `8.0.423`，Release 0警告/0错误，1967项测试1910通过、57跳过、0失败，148份TRX计数一致，145个WPF隔离类全部结束；根入口退出0。安装的六个关键程序集版本/SHA与构建输出一致；未声称该次验证了进程内插件加载路径或真实页面交互。最新完整链摘要见 [T03-08验证记录](../T03-08/verification.json)。
 
-外机输出进一步确认 `git status` 为 `main...origin/main [behind 2]`、HEAD `ea926c5e`，工作树包含多项跟踪修改和未跟踪证据。其 `GamePickerViewModel.cs` diff 可见 `<<<<<<< Updated upstream` / `=======` / `>>>>>>> Stashed changes`，直接对应构建日志中的9个CS8300编译错误；这是该文件未解决的 stash 合并冲突。当前主线构建已在 `fbd8a882` 成功，诊断和账本提交已推送至 `main`。外机应先用 `git stash push --include-untracked` 保存所有本地修改和新文件，确认工作树干净，再 `git pull --ff-only origin main`，然后运行默认 `GameSaveCenter-Run.cmd`。可用 `git rev-list --count ea926c5e..origin/main` 查询需快进的提交数。不得reset/覆盖，也不要在干净主线构建通过前pop stash；之后再审阅stash并逐项移植自己的改动。外机同步后的实际构建结果仍未收到。真实下载中断仍由隔离传输模拟。
+2026-10-24外机先前另有一份单类日志：`R09FocusOutlineBehaviorTests` 2项中1项失败，报告期望 `2,2,2,2`、实际 `1,1,1,1`。2026-10-25在当前 `c9cc5a99` 用全新的隔离输出目录重新还原、Release编译并运行完整 `scripts/build.ps1`：0警告/0错误，1967项测试1899通过、68跳过、0失败，145个WPF隔离类全部结束；该R09类也通过。旧失败在当前源码复验中没有重现，未据旧日志改动样式。此次只运行解决方案构建和测试；Playnite/Worker仍在运行，因此没有重复安装/启动步骤。源码、测试、脚本自 `dcbaab13` 后无变化，完整安装链仍由上段提交级证据覆盖。
+
+另一台电脑随后回传的根入口日志显示：HEAD `ea926c5e`、`main...origin/main [behind 2]`，多项本地修改和未跟踪证据；`GamePickerViewModel.cs` 有 `<<<<<<< Updated upstream` / `=======` / `>>>>>>> Stashed changes`。因此出现9个 `CS8300`，测试数为0且没有开始测试；这次失败是未解决的 stash 合并冲突，不是 SDK/NuGet。先按以下步骤保留本地工作并在干净主线上验证：
+
+```powershell
+git stash push --include-untracked -m "保存本机 GamePicker 构建前改动"
+git status --short --branch
+git pull --ff-only origin main
+git rev-parse --short HEAD
+cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"
+```
+
+确认 stash 后工作树干净、快进成功且 HEAD 与 `origin/main` 一致，再运行根入口。保持 stash 不动，直到完整链退出0；不要 `reset`、覆盖文件或 `stash pop`。构建通过后可逐项审阅stash并移植需要的改动。外机同步后的实际构建结果仍未收到，不能标为成功。真实下载中断仍由隔离传输模拟。

@@ -66,19 +66,21 @@
   "documentationValidation": {
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
-    "markdownFiles": 6,
-    "relativeLinks": 545,
+    "markdownFiles": 7,
+    "relativeLinks": 547,
     "missingLinks": 0,
     "round4ProgressCheckPassed": true
   },
   "latestDocumentationUpdate": {
-    "baseCommit": "c9cc5a995524af55af743599ca9fdd2628d357d1",
-    "markdownFiles": 6,
-    "relativeLinks": 545,
+    "baseCommit": "3aa21a977fbb0ff32231b2284b6098283970f04e",
+    "markdownFiles": 7,
+    "relativeLinks": 547,
     "missingLinks": 0,
     "sourceValidatorPassed": true,
     "round4ProgressCheckPassed": true,
-    "productBuildOrTestsRerun": false,
+    "productBuildOrTestsRerun": true,
+    "productBuildRun": "20261024T210330731Z-c5892b90",
+    "productBuildExitCode": 0,
     "t01_07CleanupEvidence": "../T01-07/screenshot-dedupe-20261025.json"
   },
   "latestT01_07Cleanup": {
@@ -116,7 +118,18 @@
     "compileErrors": "CS8300 x9",
     "testsStarted": false,
     "recoveryPending": true,
-    "externalBuildVerified": false
+    "externalBuildVerified": false,
+    "earlierR09TestRun": {
+      "run": "20261024T061159509Z-23ab63d2",
+      "total": 2,
+      "passed": 1,
+      "failed": 1,
+      "reportedExpected": "2,2,2,2",
+      "reportedActual": "1,1,1,1",
+      "reproducedOnCurrentCommit": false,
+      "currentCommit": "c9cc5a995524af55af743599ca9fdd2628d357d1",
+      "currentFullRun": "20261024T210330731Z-c5892b90"
+    }
   },
   "latestT03_05Replay": {
     "evidence": "../T03-05/rollback-replay-20261025.json",
@@ -131,5 +144,28 @@
     "runtimePluginLoadVerified": false,
     "isolatedPlayniteConfigVerified": false,
     "taskComplete": false
+  },
+  "latestIsolatedBuild": {
+    "run": "20261024T210330731Z-c5892b90",
+    "commit": "c9cc5a995524af55af743599ca9fdd2628d357d1",
+    "command": "scripts/build.ps1 -OutputRoot .tmp/gsc-build-verify-20261025 -TestTempRoot .tmp/gsc-build-verify-20261025/test-temp -DiagnosticsRoot .tmp/gsc-build-diagnostics-20261025",
+    "exitCode": 0,
+    "configuration": "Release",
+    "sdk": "8.0.423",
+    "warnings": 0,
+    "errors": 0,
+    "tests": {
+      "total": 1967,
+      "passed": 1899,
+      "skipped": 68,
+      "failed": 0
+    },
+    "wpfIsolatedClasses": 145,
+    "r09FocusClassPassed": true,
+    "sourceTestsScriptsUnchangedSinceFullChainCommit": true,
+    "packageInstallStartupRun": false,
+    "activePlaynitePid": 38376,
+    "activeWorkerPid": 33740,
+    "temporaryOutputCleaned": true
   }
 }
