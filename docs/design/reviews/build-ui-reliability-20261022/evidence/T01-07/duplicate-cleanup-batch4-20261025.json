@@ -1,0 +1,389 @@
+{
+  "schemaVersion": 1,
+  "task": "T01-07",
+  "batch": 4,
+  "auditType": "unreferenced triplicate reduction, retaining one copy in the latest report run",
+  "generatedUtc": "2026-10-24T22:05:11.297155Z",
+  "baseCommit": "22e81c0bc9171880e986f15493552dddf5d0d873",
+  "status": "completed",
+  "retainedDirectory": "artifacts/save-summary-reflow-20261023/render-final/",
+  "candidateDirectories": [
+    "artifacts/ui-layout-fix/render-serial-final/",
+    "artifacts/ui-width-regression-20261023/render-clean-commit/"
+  ],
+  "renderReports": [
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final/render-qa-report.txt",
+      "sha256": "F4945457EF62BB442D6156333D87C3428BCA7DE84571EA8272923C46C4A7CCC8",
+      "Generated": "2026-10-23 15:02:52",
+      "Scenario": "render-qa",
+      "EvidenceSource": "OffscreenRenderHarness",
+      "Commit": "0a91c39962b373c2170b31fbe3fd363887465fc2",
+      "WorkingTreeClean": "False",
+      "reportPngReferences": 0
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/render-qa-report.txt",
+      "sha256": "565AB52E9FECDB768B05D04942967B6C4202D9E19611F3C2DBC896B6B2B8823F",
+      "Generated": "2026-10-22 21:32:29",
+      "Scenario": "render-qa",
+      "EvidenceSource": "OffscreenRenderHarness",
+      "Commit": "4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+      "WorkingTreeClean": "False",
+      "reportPngReferences": 0
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/render-qa-report.txt",
+      "sha256": "13DCF80B939E43A2970DAE23466067B6697E377513F905F405BF1DFA906DC2D2",
+      "Generated": "2026-10-23 13:22:26",
+      "Scenario": "render-qa",
+      "EvidenceSource": "OffscreenRenderHarness",
+      "Commit": "f3ac4c743ce50705871e03d074127f89824e11dd",
+      "WorkingTreeClean": "False",
+      "reportPngReferences": 0
+    }
+  ],
+  "referenceAudit": {
+    "root": "docs/",
+    "textFilesScanned": 2296,
+    "inventoryEvidenceExcluded": [
+      "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/actual-screenshot-audit.json",
+      "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/duplicate-cleanup-batch3-20261025.json",
+      "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/live-rescan-20261025.json",
+      "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/screenshot-dedupe-20261025.json"
+    ],
+    "candidateTriplicateGroups": 24,
+    "candidateFilesWithCurrentNameExactPathOrImmediateDirectoryReference": 0,
+    "candidateFilesWithStoredExactOrConservativeReference": 0,
+    "remainingDuplicatePathsWithStoredReferenceRecords": 571,
+    "remainingDuplicatePathsWhoseReferenceSourceFileStillExists": 571,
+    "remainingDuplicatePathsWithCurrentTextMatchingReferenceSource": 571,
+    "distinctCurrentReferenceSourceDocumentsRead": 21,
+    "remainingDuplicatePathsWithoutCurrentTextMatchingReferenceSource": 0
+  },
+  "deletion": {
+    "triplicateGroupsReduced": 24,
+    "filesDeleted": 48,
+    "distinctHashes": 24,
+    "logicalBytes": 5729172,
+    "retainedCopiesOnePerGroup": 24,
+    "retainedCopiesRehashed": 48,
+    "allTargetsAbsent": true,
+    "reportsPresentAndSHA256Verified": 3,
+    "uniqueImagesMissing": 0,
+    "gitTrackedFilesDeleted": 0,
+    "reparsePointsInSixScopedDirectories": 0,
+    "activeRendererBuildOrTestProcesses": false,
+    "playniteAndWorkerWereRunningButNotAccessed": true
+  },
+  "historicalInventoryAfterBatch": {
+    "sourceEvidence": "actual-screenshot-audit.json",
+    "initialImageCount": 2432,
+    "initialBytes": 314143014,
+    "previousCleanupFiles": 790,
+    "previousCleanupBytes": 108253253,
+    "thisBatchFiles": 48,
+    "thisBatchBytes": 5729172,
+    "cumulativeRemovedFiles": 838,
+    "cumulativeDistinctRemovedHashes": 204,
+    "cumulativeRemovedBytes": 113982425,
+    "remainingIndexedImageCount": 1594,
+    "remainingIndexedBytes": 200160589,
+    "remainingDuplicateGroups": 202,
+    "remainingFilesInDuplicateGroups": 571,
+    "remainingGroupsReducedToSingleCopy": 35,
+    "remainingDuplicatePathsAllHaveLiveStoredReferenceSources": true,
+    "wholeArtifactTreeImageCountNotClaimed": true,
+    "remainingDuplicatePathsAllMatchCurrentReferenceText": true
+  },
+  "files": [
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Trainer-1100x720.png",
+      "bytes": 78145,
+      "sha256": "0660A7BC09F6566625F5FC4819FCDEF8D90DA91342D1C608A46AC70155F14F66",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Trainer-1100x720.png",
+      "bytes": 78145,
+      "sha256": "0660A7BC09F6566625F5FC4819FCDEF8D90DA91342D1C608A46AC70155F14F66",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Maintenance-CloudQueue-1040x700.png",
+      "bytes": 73441,
+      "sha256": "0A43FA8914FADEB210C027A40C3BF047C170D377B24FD5621709F86C8D6892AA",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-CloudQueue-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Maintenance-CloudQueue-1040x700.png",
+      "bytes": 73441,
+      "sha256": "0A43FA8914FADEB210C027A40C3BF047C170D377B24FD5621709F86C8D6892AA",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-CloudQueue-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Trainer-2560x1440.png",
+      "bytes": 179481,
+      "sha256": "0A8C3F37EFB43034322309482AD35BD16F8ACFF56049DEBDAA853D5106ADBD1C",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Trainer-2560x1440.png",
+      "bytes": 179481,
+      "sha256": "0A8C3F37EFB43034322309482AD35BD16F8ACFF56049DEBDAA853D5106ADBD1C",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Settings-1100x720.png",
+      "bytes": 89483,
+      "sha256": "1414F3D6EACC3B59F7900CD9A1249E86ADBBD9CC285B1DA0F3654EA5A8D1675F",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Settings-1100x720.png",
+      "bytes": 89483,
+      "sha256": "1414F3D6EACC3B59F7900CD9A1249E86ADBBD9CC285B1DA0F3654EA5A8D1675F",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Trainer-1100x720.png",
+      "bytes": 74959,
+      "sha256": "1C1DEA1DBC7C07211356D237B2502A34E8B7C85201D7B20C14128B1422C6B539",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Trainer-1100x720.png",
+      "bytes": 74959,
+      "sha256": "1C1DEA1DBC7C07211356D237B2502A34E8B7C85201D7B20C14128B1422C6B539",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Settings-1366x768.png",
+      "bytes": 116026,
+      "sha256": "1DBC34D8885B95663F43DE108633495A6F326F25630306C0E63023CA5D26D672",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Settings-1366x768.png",
+      "bytes": 116026,
+      "sha256": "1DBC34D8885B95663F43DE108633495A6F326F25630306C0E63023CA5D26D672",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Shell-Background-1040x700.png",
+      "bytes": 76205,
+      "sha256": "3A0BD6CBEEFF9D3311D70E36EC83967557CD37D413C1BCF05F6ADE0AE80E6235",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Shell-Background-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Shell-Background-1040x700.png",
+      "bytes": 76205,
+      "sha256": "3A0BD6CBEEFF9D3311D70E36EC83967557CD37D413C1BCF05F6ADE0AE80E6235",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Shell-Background-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Settings-2560x1440.png",
+      "bytes": 294298,
+      "sha256": "55F0EFD685C362E93CECA384DADDB85ECED88BBB48AAB4BC44F8019D2DE0E6B7",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Settings-2560x1440.png",
+      "bytes": 294298,
+      "sha256": "55F0EFD685C362E93CECA384DADDB85ECED88BBB48AAB4BC44F8019D2DE0E6B7",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Maintenance-2560x1440.png",
+      "bytes": 118222,
+      "sha256": "56E26DCA733E57FBC24D0BA28B20DCD699DDBD43DB05A7C7C048C55D2B844B85",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Maintenance-2560x1440.png",
+      "bytes": 118222,
+      "sha256": "56E26DCA733E57FBC24D0BA28B20DCD699DDBD43DB05A7C7C048C55D2B844B85",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Trainer-1366x768.png",
+      "bytes": 107532,
+      "sha256": "59972B451AA72946D613187C170F48C9AEC364739D1A35328061326576EB2FEF",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Trainer-1366x768.png",
+      "bytes": 107532,
+      "sha256": "59972B451AA72946D613187C170F48C9AEC364739D1A35328061326576EB2FEF",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Shell-Background-1040x700.png",
+      "bytes": 59921,
+      "sha256": "64F8D303E1AC3737752F0F551F9CF9B9996C40FEE0AFBC0E5A8021F6059B858E",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Shell-Background-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Shell-Background-1040x700.png",
+      "bytes": 59921,
+      "sha256": "64F8D303E1AC3737752F0F551F9CF9B9996C40FEE0AFBC0E5A8021F6059B858E",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Shell-Background-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Settings-1040x700.png",
+      "bytes": 76300,
+      "sha256": "690FA98F7543AF5090A141FC944083289A073C3B09FFEECC8B855D24EF489441",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Settings-1040x700.png",
+      "bytes": 76300,
+      "sha256": "690FA98F7543AF5090A141FC944083289A073C3B09FFEECC8B855D24EF489441",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Trainer-1366x768.png",
+      "bytes": 112994,
+      "sha256": "6D921748289BD193FB826428DD745DCABBA6DDB3A36A87535F1F59208AE3EFEA",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Trainer-1366x768.png",
+      "bytes": 112994,
+      "sha256": "6D921748289BD193FB826428DD745DCABBA6DDB3A36A87535F1F59208AE3EFEA",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Settings-2560x1440.png",
+      "bytes": 370238,
+      "sha256": "77821D992B33E33E2F836219B2085D7A2D6FC50BE654C87A3AF44852B796E2F3",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Settings-2560x1440.png",
+      "bytes": 370238,
+      "sha256": "77821D992B33E33E2F836219B2085D7A2D6FC50BE654C87A3AF44852B796E2F3",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Settings-1040x700.png",
+      "bytes": 94875,
+      "sha256": "861A0853F94E5BDB44EFA1F8B57160B200270F9EF0C479270DB02BC751BF6DB6",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Settings-1040x700.png",
+      "bytes": 94875,
+      "sha256": "861A0853F94E5BDB44EFA1F8B57160B200270F9EF0C479270DB02BC751BF6DB6",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Settings-1100x720.png",
+      "bytes": 108670,
+      "sha256": "8838D64F0D2AC1D3ABD452DC1E921A0705A9E424AA5F454C3E4E0D793E709162",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Settings-1100x720.png",
+      "bytes": 108670,
+      "sha256": "8838D64F0D2AC1D3ABD452DC1E921A0705A9E424AA5F454C3E4E0D793E709162",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Maintenance-1366x768.png",
+      "bytes": 90715,
+      "sha256": "9584C60F7EC6001E7E41C15B71BF38ED990D8185776FE7DDBE2CF11F51B48C0A",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Maintenance-1366x768.png",
+      "bytes": 90715,
+      "sha256": "9584C60F7EC6001E7E41C15B71BF38ED990D8185776FE7DDBE2CF11F51B48C0A",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Trainer-2560x1440.png",
+      "bytes": 190138,
+      "sha256": "978E642E94B6EB1BC0B4DAE876232ED0F5740A246068E76BB844D2F75BD37FF3",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Trainer-2560x1440.png",
+      "bytes": 190138,
+      "sha256": "978E642E94B6EB1BC0B4DAE876232ED0F5740A246068E76BB844D2F75BD37FF3",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Settings-1366x768.png",
+      "bytes": 141437,
+      "sha256": "978F41C05B862172DBA36B7531F4DF4AD884245E198FF8005F41751107693663",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Settings-1366x768.png",
+      "bytes": 141437,
+      "sha256": "978F41C05B862172DBA36B7531F4DF4AD884245E198FF8005F41751107693663",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Maintenance-CloudQueue-1040x700.png",
+      "bytes": 69715,
+      "sha256": "9A1184A138CEDA0E31D46EB745E6FD2F900008F052AAC4781348A15DA34E451A",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-CloudQueue-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Maintenance-CloudQueue-1040x700.png",
+      "bytes": 69715,
+      "sha256": "9A1184A138CEDA0E31D46EB745E6FD2F900008F052AAC4781348A15DA34E451A",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-CloudQueue-1040x700.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Maintenance-1100x720.png",
+      "bytes": 63609,
+      "sha256": "CA1BA66ABF99321C216920DE983B3DA09CDF2423680868B91BB497CE8512C6C0",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Maintenance-1100x720.png",
+      "bytes": 63609,
+      "sha256": "CA1BA66ABF99321C216920DE983B3DA09CDF2423680868B91BB497CE8512C6C0",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Maintenance-2560x1440.png",
+      "bytes": 121649,
+      "sha256": "CC1EAABD67D51BE3164696C264E19896D53637287227C051D335B5A740B8269E",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Maintenance-2560x1440.png",
+      "bytes": 121649,
+      "sha256": "CC1EAABD67D51BE3164696C264E19896D53637287227C051D335B5A740B8269E",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-2560x1440.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/dark/Maintenance-1366x768.png",
+      "bytes": 94494,
+      "sha256": "F1FB3399D836AC9B9A88E95FE979EB818721275B676CCA4DCF330FB8C0601E93",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/dark/Maintenance-1366x768.png",
+      "bytes": 94494,
+      "sha256": "F1FB3399D836AC9B9A88E95FE979EB818721275B676CCA4DCF330FB8C0601E93",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1366x768.png"
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final/theme/light/Maintenance-1100x720.png",
+      "bytes": 62039,
+      "sha256": "FFD6355B7D536AB8C222401933FB96B1AD4C481338022AEBFCEF9A2BADD9C6F4",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1100x720.png"
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit/theme/light/Maintenance-1100x720.png",
+      "bytes": 62039,
+      "sha256": "FFD6355B7D536AB8C222401933FB96B1AD4C481338022AEBFCEF9A2BADD9C6F4",
+      "retainedPeer": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1100x720.png"
+    }
+  ]
+}

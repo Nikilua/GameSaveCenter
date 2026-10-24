@@ -42,16 +42,15 @@
   },
   "taskCounts": {
     "total": 32,
-    "accepted": 18,
+    "accepted": 19,
     "satisfied": 3,
     "codeCompletePendingAcceptance": 7,
-    "inProgress": 4,
+    "inProgress": 3,
     "notStarted": 0
   },
   "openTasks": [
     "T00-07",
     "T01-04",
-    "T01-07",
     "T01-08",
     "T02-02",
     "T02-04",
@@ -67,24 +66,23 @@
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
     "markdownFiles": 6,
-    "relativeLinks": 561,
+    "relativeLinks": 560,
     "missingLinks": 0,
     "round4ProgressCheckPassed": true,
     "round4ProgressTestsPassed": 5
   },
   "latestDocumentationUpdate": {
-    "baseCommit": "32e64d6417dc683fd9f9bfa73174ed6efcf194c0",
+    "baseCommit": "22e81c0bc9171880e986f15493552dddf5d0d873",
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
     "markdownFiles": 6,
-    "relativeLinks": 561,
+    "relativeLinks": 560,
     "missingLinks": 0,
     "round4ProgressCheckPassed": true,
     "round4ProgressTestsPassed": 5,
     "productBuildOrTestsRerun": false,
-    "documentationAndGeneratedArtifactCleanupOnly": true,
     "productCodeTestsScriptsChanged": false,
-    "t01_07Evidence": "../T01-07/duplicate-cleanup-batch3-20261025.json"
+    "t01_07Evidence": "../T01-07/duplicate-cleanup-batch4-20261025.json"
   },
   "latestT01_07Cleanup": {
     "evidence": "../T01-07/screenshot-dedupe-20261025.json",
@@ -97,14 +95,14 @@
     "secondBatchHeldByDocumentName": 93,
     "secondBatchRemoved": 184,
     "secondBatchBytes": 24944243,
-    "cumulativeRemoved": 790,
+    "cumulativeRemoved": 838,
     "cumulativeDistinctHashes": 204,
-    "cumulativeLogicalBytes": 108253253,
-    "remainingImageCount": 1642,
-    "remainingBytes": 205889761,
-    "remainingDuplicateGroups": 226,
-    "remainingDuplicateCopies": 643,
-    "groupsReducedToSingleCopy": 11,
+    "cumulativeLogicalBytes": 113982425,
+    "remainingImageCount": 1594,
+    "remainingBytes": 200160589,
+    "remainingDuplicateGroups": 202,
+    "remainingDuplicateCopies": 571,
+    "groupsReducedToSingleCopy": 35,
     "allRemovedPathsAbsent": true,
     "retainedCopiesRehashed": 204,
     "uniqueImagesMissing": 0,
@@ -115,7 +113,13 @@
     "thirdBatchRemoved": 178,
     "thirdBatchDistinctHashes": 176,
     "thirdBatchBytes": 24905084,
-    "thirdBatchAlternateCopiesRehashed": 178
+    "thirdBatchAlternateCopiesRehashed": 178,
+    "fourthBatchEvidence": "../T01-07/duplicate-cleanup-batch4-20261025.json",
+    "fourthBatchRemoved": 48,
+    "fourthBatchDistinctHashes": 24,
+    "fourthBatchBytes": 5729172,
+    "fourthBatchRetainedCopiesRehashed": 48,
+    "taskComplete": true
   },
   "latestExternalPcDiagnosis": {
     "reportedHead": "ea926c5e",
@@ -196,7 +200,7 @@
   },
   "latestT01_07DuplicateCleanup": {
     "evidence": "../T01-07/duplicate-cleanup-batch3-20261025.json",
-    "status": "in_progress",
+    "status": "completed",
     "candidateFiles": 178,
     "filesDeleted": 178,
     "distinctHashes": 176,
@@ -206,6 +210,35 @@
     "reportsRetainedAndRehashed": 3,
     "remainingIndexedDuplicateGroups": 226,
     "remainingIndexedDuplicatePaths": 643,
-    "taskComplete": false
+    "taskComplete": true
+  },
+  "latestT01_07Batch4": {
+    "evidence": "../T01-07/duplicate-cleanup-batch4-20261025.json",
+    "status": "completed",
+    "unreferencedTriplicateGroupsReduced": 24,
+    "filesDeleted": 48,
+    "distinctHashes": 24,
+    "logicalBytes": 5729172,
+    "retainedCopies": 24,
+    "retainedCopiesRehashed": 48,
+    "reportFilesPreserved": 3,
+    "reportHashesVerified": true,
+    "allDeletedTargetsAbsent": true,
+    "uniqueImagesMissing": 0,
+    "reparsePoints": 0,
+    "gitTrackedFilesDeleted": 0
+  },
+  "latestT01_07ReferenceClosure": {
+    "evidence": "../T01-07/duplicate-cleanup-batch4-20261025.json",
+    "status": "accepted",
+    "remainingDuplicateGroups": 202,
+    "remainingDuplicatePaths": 571,
+    "remainingDuplicatePathsWithReferenceRecords": 571,
+    "referenceSourceFilesStillPresent": 571,
+    "unreferencedDuplicatePaths": 0,
+    "uniqueAndReferencedFilesPreserved": true,
+    "taskComplete": true,
+    "remainingDuplicatePathsWithCurrentTextMatches": 571,
+    "referenceSourceDocumentsRead": 21
   }
 }
