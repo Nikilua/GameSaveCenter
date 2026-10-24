@@ -12189,3 +12189,7 @@ CURRENT_STATE、专项PROGRESS与T03-01证据现区分产品源码提交、最�
 ## 2026-10-25 dcbaab13 提交后标准完整链通过
 
 将checkout Mutex改为Global命名空间并提交 `dcbaab13b9464523ffed6d88ca2748b6fb6dd647` 后，默认根入口完整退出0：SDK8.0.423，Release0/0，1967项1910通过/57同一既有架构skip/0失败，148TRX一致，145个WPF类；Core157/157、Worker400/400。Worker win-x64发布、ZIP/PEXT、安装六程序集版本/源码身份/SHA和Playnite启动成功。构建run `20261024T192816167Z-276884c0`，安装run `20261024T192814223Z-736788e1`。证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-dcbaab13/`。跨Windows登录会话实测仍因Task Scheduler权限未能运行，T00-07保持代码完成待验收；现有未跟踪Round3 TRX/TestResults未动。
+
+## 2026-10-25 T00-07 隔离输出清理
+
+dcbaab13完整标准链和提交级证据完成后，按路径归属/规范化、reparse point、进程使用和文档引用检查，清理失败候选的自有隔离输出 `artifacts/gsc-b/7a8f6d32`；文件逻辑168,565,900字节，D盘可用空间增加170,020,864字节。失败诊断、当前成功输出 `ae74f424`、最新包与用户未跟踪Round3 TRX/TestResults保留。清理结果和边界记入T00-07 README；跨会话锁运行仍待Task Scheduler权限。

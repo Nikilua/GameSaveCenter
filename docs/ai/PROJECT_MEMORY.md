@@ -1124,3 +1124,7 @@ Test-ArtifactPathBoundaries.ps1在提升测试上下文的PowerShell Core 7.6.2�
 ## 2026-10-25 dcbaab13 提交后标准完整链
 
 `dcbaab13b9464523ffed6d88ca2748b6fb6dd647` 的默认 `GameSaveCenter-Run.cmd` 经 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"` 退出0。build run `20261024T192816167Z-276884c0`、install run `20261024T192814223Z-736788e1`，SDK8.0.423 / Release 0警告0错误；1967项1910通过/57跳过/0失败，148份TRX计数一致，145个WPF类结束。Worker win-x64发布、ZIP/PEXT、安装、六程序集身份/SHA和Playnite启动通过。未跟踪Round3 TRX/TestResults未动；未核验进程内插件加载路径。完整证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-dcbaab13/README.md`。T00-07仍待真实跨会话锁测试；Task Scheduler权限拒绝，不能将代码语义等同实测通过。
+
+## 2026-10-25 T00-07 本阶段失败输出清理
+
+`dcbaab13`提交级完整根入口退出0且证据归档后，删除本阶段未完成候选输出 `artifacts/gsc-b/7a8f6d32`。清理前核实规范化路径位于仓库`artifacts/`、目标不是链接且无子reparse point、无活动进程引用、无文档引用；逻辑文件168,565,900字节，D盘可用空间由11,096,580,096增至11,266,600,960字节。失败诊断run `20261024T185640550Z-8d576492`、最新成功构建输出 `ae74f424`、当前包及用户Round3 TRX/TestResults保留。T00-07跨会话实测仍待权限足够的Windows环境。

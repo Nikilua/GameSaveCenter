@@ -10,6 +10,7 @@
 - `scripts/tests/Test-CheckoutLockCrossSession.ps1` 尝试通过同一用户的 S4U 临时计划任务进入另一会话。本机账号无权访问 Task Scheduler WMI / 注册任务；运行记录为 `TaskCreated=false`、`TaskRemoved=true`、`FixtureRemoved=true`，没有留下计划任务或 `.tmp` 夹具。跨会话实际互斥仍待有权限的 Windows 会话验证，不以 Global 名称本身冒充运行时证据。
 - 候选源码 `3c8a0854` 上，默认根入口完成 Release 编译（0 警告、0 错误）及 1967 项测试编排（1899 通过、68 跳过、0 失败；148 TRX 计数一致、145 个 WPF 类结束）。68 项跳过分别为 57 个已撤销架构断言、10 个本执行环境不允许的 Named Pipe 行为、1 个系统指针访问限制。打包器检测到尚未提交的锁源码/测试更改后按身份保护退出1，未发布、打包、安装或启动；run `20261024T185640550Z-8d576492` 的原始诊断保留于本地 `artifacts/build-diagnostics/`。这不构成该候选的完整链验收；锁源码提交后仍须重跑默认根入口全链。
 - 提交 `dcbaab13b9464523ffed6d88ca2748b6fb6dd647` 后，在跟踪文件干净的源码身份上重跑默认根入口，退出码0；SDK8.0.423、Release0/0，1967项1910通过/57跳过/0失败，148份TRX计数一致、145个WPF类结束。Worker发布、ZIP/PEXT、安装和Playnite启动通过，六程序集安装身份及SHA一致。完整数据见[提交级全链证据](../T00-01/standard-dcbaab13/README.md)。本次未核验Playnite进程内程序集加载路径。
+- 提交级全链通过并留存上述失败诊断后，删除本阶段失败候选隔离输出 `artifacts/gsc-b/7a8f6d32`：规范路径位于 `artifacts/`、本身及子项无reparse point、无进程使用、无文档引用；删除前168,565,900字节，D盘可用空间由11,096,580,096增至11,266,600,960字节。失败诊断、当前成功隔离输出 `ae74f424`、最新包及用户未跟踪TRX/TestResults保留。
 
 ## 当前边界
 
