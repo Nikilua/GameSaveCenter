@@ -1,3 +1,7 @@
+## 2026-10-24 T00-03 实际 SDK 引导与冷缓存复验
+
+为排查另一台个人电脑从未构建成功的反馈，在当前源码提交 `64492e5b` 上先移除进程 PATH 中的 dotnet，通过官方安装器把精确 SDK `8.0.423` 装入仓库 `.tmp`，再跑 Release 构建和完整测试：1967项，1909通过/58环境跳过/0失败，148份TRX计数一致，145个WPF隔离类完成，退出0。另以隔离的空 NuGet 包缓存/HTTP缓存/CLI home 完成依赖还原和Release编译，0警告/0错误/退出0。唯一新增跳过项是当前桌面不向测试WPF窗口分发指针事件；不是编译失败。归档两份脱敏摘要后清理8个本批 `.tmp` 目录，共9730个文件、1,978,685,641字节；D盘可用空间约10.75升至12.61GiB，用户旧TRX/TestResults未动。上述只证明本机网络与缓存路径可用，不能替代外机网络/代理/安全软件/磁盘/Playnite条件。T00-03仍待真实中断/损坏包恢复验证；详细身份与边界见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/clean-machine-bootstrap.md`。
+
 ## 2026-10-24 T02-03 实际键盘焦点回归补正
 
 T02-03夹具不再伪造FocusManager逻辑焦点；Light/Dark分别在可见激活窗口取得DataGrid键盘焦点，三轮断点往返后同一 `Keyboard.FocusedElement` 仍位于DataGrid内。定向2/2、所在类11/11。首次沙箱内默认入口在写Playnite用户目录时被拒；同提交在获准本机上下文重跑后 `GameSaveCenter-Run.cmd` 完整退出0，SDK8.0.423 Release0警告/0错误、1967项1910通过/57既有跳过/0失败、148份TRX一致、145个WPF类。ZIP/PEXT构建身份一致，安装六程序集版本/哈希正确，Playnite启动成功。保留第一次错误逻辑焦点预期失败及修正后TRX；证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-03/`。不代表物理键盘/IME/实际加载路径/宿主DPI验收。

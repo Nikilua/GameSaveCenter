@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "64492e5b197352087d22a00239efa02fc204a762",
+  "productCodeCommit": "51641d06dc17e0d2638a5fafe25d8f68660515bc",
+  "sdkVersion": "8.0.423",
+  "runs": [
+    {
+      "id": "official-sdk-bootstrap-full-build-test",
+      "runId": "20261024T093843439Z-09ff982e",
+      "outcome": "passed",
+      "dotnetInitiallyOnPath": false,
+      "sdkInstallScope": "repository .tmp only; no machine-wide SDK changed",
+      "steps": {
+        "sdkBootstrap": 0,
+        "restore": 0,
+        "releaseBuild": 0,
+        "coreTests": 0,
+        "workerTests": 0,
+        "playniteTests": 0
+      },
+      "testSummary": {
+        "total": 1967,
+        "passed": 1909,
+        "skipped": 58,
+        "failed": 0,
+        "errorsTimeoutsAborts": 0,
+        "trxFiles": 148,
+        "counterMismatches": 0,
+        "wpfIsolatedClassRuns": 145
+      },
+      "additionalSkip": "The interactive tooltip pointer test was skipped because this Windows desktop session did not route pointer events to the test WPF window.",
+      "diagnosticSummaryFile": "sdk-bootstrap-full-run.json",
+      "diagnosticSummarySha256": "892CE9F4D813F5F77D4EDBFB81481AFDC0C855293D2290A74206D3A381ECC646"
+    },
+    {
+      "id": "empty-nuget-cache-release-build",
+      "runId": "20261024T100815065Z-57d971fc",
+      "outcome": "passed",
+      "nugetPackagesHttpCacheAndDotnetCliHomeIsolated": true,
+      "restoreExitCode": 0,
+      "releaseBuildExitCode": 0,
+      "testsRequested": false,
+      "diagnosticSummaryFile": "cold-nuget-build-run.json",
+      "diagnosticSummarySha256": "1E4624B1E037023681F6F50EABE98F07402CF2EEB6024427CA587EBE3311D645"
+    }
+  ],
+  "limits": [
+    "This verifies SDK bootstrap and cold NuGet restore on this machine only; it does not reproduce another PC's network, proxy, security software, disk, or Playnite installation state.",
+    "The empty-NuGet-cache run intentionally skipped tests; the separate first run ran the full Release build and tests."
+  ],
+  "cleanup": {
+    "removedPathsUnderTmp": [
+      "pc2-sdk-bootstrap-sdk",
+      "pc2-sdk-bootstrap-output",
+      "pc2-sdk-bootstrap-diagnostics",
+      "pc2-cold-nuget-output",
+      "pc2-cold-nuget-diagnostics",
+      "pc2-cold-nuget-packages",
+      "pc2-cold-nuget-http-cache",
+      "pc2-cold-dotnet-cli-home"
+    ],
+    "filesRemoved": 9730,
+    "bytesRemoved": 1978685641,
+    "dFreeGiBBeforeRounded": 10.75,
+    "dFreeGiBAfterRounded": 12.61,
+    "preDeleteChecks": [
+      "all resolved paths were below repository .tmp",
+      "no target or descendant was a reparse point",
+      "no live process path pointed into a cleanup target"
+    ],
+    "retained": [
+      "two sanitized diagnostic summaries in this evidence folder",
+      "latest standard package, build, installation, and diagnostic artifacts",
+      "all pre-existing user TRX and TestResults files"
+    ]
+  }
+}

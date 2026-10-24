@@ -8,6 +8,7 @@
 - 最后完整标准入口成功/安装身份：`51641d06dc17e0d2638a5fafe25d8f68660515bc`。
 - 命令：默认 `GameSaveCenter-Run.cmd`，退出0；run `20261024T084629122Z-63a925f0`。
 - SDK8.0.423 / Release，solution0警告/0错误；1967项1910通过、57既有跳过、0失败，148TRX计数一致、145WPF隔离类全部结束。
+- 补充缺 SDK/冷 NuGet 路径：临时隔离 `dotnet` 后官方引导安装8.0.423并完整构建测试退出0；新的 NuGet 包/HTTP/CLI 缓存下还原与Release编译也退出0。此验证限本机网络，不能代替另一台电脑日志；[T00-03证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-03/clean-machine-bootstrap.md)。
 - 发布、ZIP/PEXT、安装六程序集SHA与构建身份一致；默认入口报告Playnite启动成功。本轮未核实进程内插件加载路径。
 - T02-03定向双主题2/2、所在类11/11；真实WPF键盘焦点、选择ID/当前项和900/1400 DIP往返稳定。全链证据：[T02-03提交级完整验证](../design/reviews/build-ui-reliability-20261022/evidence/T02-03/standard-verification.json)。
 - [之前完整链/交付身份/边界](../design/reviews/build-ui-reliability-20261022/evidence/T00-04/standard-130cd307/README.md)仍绑定130cd307；后续文档提交不改变51641d06产品构建身份。

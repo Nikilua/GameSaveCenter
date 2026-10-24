@@ -12110,3 +12110,6 @@ Test-PackageFailure双PowerShell通过，实际生产catch/finally原样运行�
 
 ## 2026-10-23 安装尝试记录候选通过
 Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts/install-attempts独立JSON，含PID/启动时间/起止/目标/唯一暂存路径/Outcome/FailureMessage/TemporaryExists。诊断失败只警告不掩盖原错误，实际扩展路径不进入仓库清理。Test-InstallTransaction双PowerShell3/3并验证两失败一成功记录、失败原因及成功无暂存，旧安装保护/回退保持。fixture已清理，最终全链待提交运行。
+## 2026-10-24 T00-03 实际 SDK 引导与冷 NuGet 缓存复验
+
+在当前源码提交64492e5b上以当前用户临时路径清空进程PATH中的dotnet，官方Microsoft安装器成功引导精确SDK8.0.423；之后Release还原、编译、核心/Worker/Playnite测试退出0，1967项1909通过/58跳过/0失败，148份TRX计数一致，145个WPF隔离类完成。唯一比标准根入口多的跳过项在TRX中说明当前桌面不向测试窗口路由鼠标事件。第二轮隔离NUGET_PACKAGES、NuGet HTTP缓存与DOTNET_CLI_HOME后，全新NuGet还原和Release编译退出0/0警告/0错误，按范围未跑测试。汇总证据见`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/clean-machine-bootstrap.md`及JSON。该结果证明本机SDK下载和NuGet源可用，不证明另一台电脑的网络/代理/安全软件/磁盘/Playnite条件；仍需对方日志，T00-03真实中断/残缺包恢复也未验收。归档两份脱敏诊断摘要后，清理8个本批.tmp目录共9730个文件/1,978,685,641字节，D盘可用空间约10.75升至12.61GiB；用户旧TRX/TestResults未动。
