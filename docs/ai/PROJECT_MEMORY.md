@@ -26,6 +26,8 @@ T01-07包去重与回退保护在双PowerShell复验通过；14份manifest/39项
 
 外机最新日志与用户状态显示：另一台电脑HEAD `ea926c5e`、main落后origin/main两个提交且有多个本地源码/测试/文档修改及未跟踪证据。用户随后回传的 `GamePickerViewModel.cs` diff 直接显示 `Updated upstream` / `Stashed changes` 冲突标记，导致9处CS8300；测试尚未启动。这是工作树冲突，不是SDK/NuGet问题。保留全部现存改动的步骤为stash含未跟踪文件、确认干净、快进拉取，再运行完整根入口；成功结果仍待用户回报。不reset、不覆盖、不丢弃本地工作。详见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md`。
 
+T03-05补充使用旧包 `02119729` 和当前完整链包 `dcbaab13` 的真实PEXT，在仓库 `.tmp` 隔离扩展目录调用生产原子安装函数：旧包239文件安装后，新包提升阶段注入失败，旧包逐文件SHA恢复；随后新包重试与归档逐文件一致。归档ZIP/PEXT SHA一致，失败暂存留证核验后清理。该受控回放没有启动/加载Playnite、打开用户配置或触碰存档；隔离配置插件加载及设置兼容/迁移仍待验。证据见 `design/reviews/build-ui-reliability-20261022/evidence/T03-05/rollback-replay-20261025.json`。
+
 ## 2026-10-24 T02-08 51641d06 当前宿主滚动补证
 
 51641d06完整标准链安装后，Playnite PID33252在Bongo Cat存档页可见18条历史。桌面自动化分别滚动历史与详情：历史首行到12:40时详情锚点仍为13:05；详情继续滚动后历史仍停12:40，底部校验按钮可见但未触发。保存三张1285×822 JPEG到artifacts/host-audit-51641d06并记录SHA于 `docs/design/reviews/build-ui-reliability-20261022/evidence/T02-08/host-51641d06-index.json`。只覆盖深色常规窗口与自动化滚动；当前Process.Modules未暴露加载程序集路径，浅色/窄短窗/物理输入/DPI仍待验，T02-08不升级完成。

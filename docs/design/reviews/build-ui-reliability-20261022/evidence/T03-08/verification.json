@@ -67,14 +67,14 @@
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
     "markdownFiles": 6,
-    "relativeLinks": 550,
+    "relativeLinks": 545,
     "missingLinks": 0,
     "round4ProgressCheckPassed": true
   },
   "latestDocumentationUpdate": {
-    "baseCommit": "e0c46c6d10be90268a8a7ec27c9875f395d42dbf",
+    "baseCommit": "c9cc5a995524af55af743599ca9fdd2628d357d1",
     "markdownFiles": 6,
-    "relativeLinks": 550,
+    "relativeLinks": 545,
     "missingLinks": 0,
     "sourceValidatorPassed": true,
     "round4ProgressCheckPassed": true,
@@ -117,5 +117,19 @@
     "testsStarted": false,
     "recoveryPending": true,
     "externalBuildVerified": false
+  },
+  "latestT03_05Replay": {
+    "evidence": "../T03-05/rollback-replay-20261025.json",
+    "status": "controlled-package-file-rollback-passed",
+    "oldPackageCommit": "02119729651ae687f2f1e5316ba4e48a3da69045",
+    "oldPackageSha256": "70E12F2E4F9CE5CCEB4E2AE11D5BF3FCE525A5AC8B8D149FF9DB28F30F196318",
+    "currentPackageCommit": "dcbaab13b9464523ffed6d88ca2748b6fb6dd647",
+    "currentPackageSha256": "A085FFC7DEDF2CF799A0F65410E984F22D2E68B565DE3C80FB3D650B17AC1A2B",
+    "packageFilesEach": 239,
+    "oldPackageRestoredExactly": true,
+    "currentPackageRetryMatched": true,
+    "runtimePluginLoadVerified": false,
+    "isolatedPlayniteConfigVerified": false,
+    "taskComplete": false
   }
 }

@@ -12218,3 +12218,8 @@ T03-08交付清单已完成并标明边界：最新成功产品完整链绑定 `
 截图清理第一批的428个文件后，对三个目标RenderHarness目录中剩余277个仍有保留目录同SHA副本的候选重新扫描当前文档：93个文件名命中，全部保留；184个无文件名/目录路径引用的未跟踪PNG逐项核对索引SHA、保留副本SHA、路径边界、reparse point和活动构建/渲染/测试进程后清理。第二批逻辑24,944,243字节；两批累计612文件、204个SHA、83,348,169逻辑字节。删除后612个路径均不存在，204个保留副本重新哈希一致，三份报告和审计唯一图片均存在。初始索引推算剩余1,820张、230,794,845字节、235组/830个重复副本，其中两组降为单份。第二批独立磁盘空闲差未保留；清单只记两批起止观察值，不把整段物理空间变化全归因于删除。证据及逐路径映射见 docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/screenshot-dedupe-20261025.json。用户Round3 TRX和TestResults未动。
 
 用户补充另一台电脑的 git status、HEAD及 GamePickerViewModel.cs diff：HEAD ea926c5e，main落后 origin/main 两个提交，多个源码/测试/文档已修改且有未跟踪证据；源码中有冲突标记 Updated upstream / Stashed changes。对应9个CS8300，日志显示测试未开始。这是外机工作树stash冲突，不是SDK或NuGet诊断。恢复步骤：git stash push --include-untracked -m "保存本机 GamePicker 构建前改动"；确认 git status --short --branch 干净；git pull --ff-only origin main；确认HEAD与拉取后的origin/main一致；从仓库根目录运行 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"。先保留stash直到该完整链退出0；外机结果仍待用户提供。本机最近完整标准链证据仍绑定 dcbaab13，后续产品源码未改；不把本机结果当成外机成功。
+## 2026-10-25 T03-05 真实包隔离文件回退回放
+
+复核旧包 02119729651ae687f2f1e5316ba4e48a3da69045 与当前完整链包 dcbaab13b9464523ffed6d88ca2748b6fb6dd647：均为0.6.73；旧/新 PEXT SHA 分别为 70E12F2E4F9CE5CCEB4E2AE11D5BF3FCE525A5AC8B8D149FF9DB28F30F196318 与 A085FFC7DEDF2CF799A0F65410E984F22D2E68B565DE3C80FB3D650B17AC1A2B；各自ZIP/PEXT哈希一致。源提交有祖先关系，Core源码无差异。将真实包解压至本仓库 .tmp，AST提取生产 Install-ExtensionAtomically 函数：先安装旧包，注入当前包暂存提升失败，旧包239文件逐路径/大小/SHA完整恢复；再重试新版，当前包239文件与源包一致。失败暂存经SHA核验后清理，旧/新归档哈希未变，所有 .tmp 目录清理。Playnite PID 38376与Worker PID 33740当时运行，但测试未与它们交互。
+
+这是安装器文件事务回退证据，不是Playnite隔离用户配置的实际插件加载、设置兼容或迁移验证；未回退真实安装、未打开游戏数据。T03-05继续实施中。详见 docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/ROLLBACK.md 与 rollback-replay-20261025.json。

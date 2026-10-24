@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "task": "T03-05",
+  "status": "controlled-package-rollback-passed",
+  "generatedUtc": "2026-10-24T20:59:47.3816608Z",
+  "oldPackage": {
+    "archive": "artifacts/round4-final-standard/package/GameSaveCenter-0.6.73.pext",
+    "sha256": "70E12F2E4F9CE5CCEB4E2AE11D5BF3FCE525A5AC8B8D149FF9DB28F30F196318",
+    "sourceCommit": "02119729651ae687f2f1e5316ba4e48a3da69045",
+    "sourceRootExitCode": 0,
+    "productVersion": "0.6.73+02119729651ae687f2f1e5316ba4e48a3da69045",
+    "manifestVersion": "0.6.73",
+    "zipAndPextSameHash": true,
+    "fileCount": 239,
+    "totalBytes": 111717538.0
+  },
+  "currentPackage": {
+    "archive": "artifacts/GameSaveCenter-0.6.73.pext",
+    "sha256": "A085FFC7DEDF2CF799A0F65410E984F22D2E68B565DE3C80FB3D650B17AC1A2B",
+    "sourceCommit": "dcbaab13b9464523ffed6d88ca2748b6fb6dd647",
+    "sourceOutcome": "passed",
+    "productVersion": "0.6.73+dcbaab13b9464523ffed6d88ca2748b6fb6dd647",
+    "manifestVersion": "0.6.73",
+    "zipAndPextSameHash": true,
+    "fileCount": 239,
+    "totalBytes": 111716346.0
+  },
+  "sourceDiff": {
+    "oldCommitAncestorOfCurrent": true,
+    "coreFilesChanged": 0
+  },
+  "replay": {
+    "isolatedExtensionsRoot": ".tmp",
+    "installedOldPackage": true,
+    "oldPackageTreeMatched": true,
+    "injectedUpdatePromotionFailure": true,
+    "oldPackageRestoredExactly": true,
+    "currentPackageRetrySucceeded": true,
+    "currentPackageTreeMatched": true,
+    "failedStagingRetainedAndVerified": true,
+    "failedStagingCleanedAfterEvidence": true,
+    "noStagingOrBackupLeftovers": true,
+    "archiveHashesUnchanged": true,
+    "playniteWasRunning": true,
+    "workerWasRunning": true,
+    "runningProcessesInteractedWith": false
+  },
+  "boundary": "Production file-install transaction was extracted by AST and run only against a repository .tmp extension root. No Playnite UI/config/profile or game data was opened. Runtime plugin load, settings migration and UI compatibility remain unverified."
+}
