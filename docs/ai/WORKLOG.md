@@ -12136,3 +12136,9 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-24 T00-08 失败后成功回归候选
 
 扩展 SDK恢复夹具：支持保存模拟下载中断、损坏安装器和成功重试的JSON，并在归档完成后清理自己创建的临时目录。安装事务夹具现在保留逐次失败/成功尝试记录，路径脱敏。新增 `Test-BuildFailureRecovery.ps1` 驱动真实 `build.ps1` 的三个运行：显式跳测基线、测试exit 23失败、无`-SkipTests`的完整测试编排重试。PowerShell Core 7.6.2与Windows PowerShell 5.1各自SDK/安装/构建三组回放均exit 0；受控shim的重试覆盖Core、Worker、Playnite discovery及一个WPF进程，0条测试案例明确标为不代表真实执行。环境恢复断言覆盖PATH/TEMP/TMP/DOTNET_ROOT和源码身份变量。当前为候选，清洁提交复验、标准根.cmd真实全链与证据归档待完成；用户另一台电脑的问题仍需其失败日志定位，不能由本机模拟结论代替。
+
+## 2026-10-24 T01-08 有界进程中断收尾候选
+
+`bounded-process.ps1` 增加自有进程树收尾函数，并在 `finally` 中处理等待期间的托管中断。`Test-BoundedProcess.ps1` 在Core7.6.2与Desktop5.1受控注入中断 `Process.WaitForExit`，均确认子PID/启动时刻已退出、无关进程保留、后续命令重试0；超时树、TRX、UTF-8、持管道等原回归仍通过。`Test-IsolatedTempCleanup.ps1` 双宿主7/124/0/0/0、哨兵SHA不变、占用失败可见且释放后清理重试通过。Windows PowerShell进程树测试在本机提升测试上下文运行，沙箱内 `taskkill /T` 被系统拒绝。受控线程中断不等同真实桌面Ctrl+C，T01-08不提升验收。
+
+标准根入口候选运行 `20261024T151721547Z-fc1457c1`：Release 0警告/0错误，核心157通过、Worker399通过/1跳过，Playnite145类结束，总计1899通过/68跳过/0失败；额外11项是沙箱Named Pipe/鼠标权限限制。打包步骤按预期拒绝尚未提交的两个脚本改动并退出1，未发布/安装。该结果只证明编译与测试，不是完整链通过；提交后必须重跑默认根入口，证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/README.md`。

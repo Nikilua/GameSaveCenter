@@ -1076,3 +1076,7 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-24 T00-08 失败后成功回归候选
 
 新控制流夹具在PowerShell Core 7.6.2与Windows PowerShell 5.1都通过：SDK下载中断/损坏后模拟精确版本成功，安装事务保留两条失败与一条成功记录；真实 `build.ps1` 在受控dotnet shim下经历显式跳测、测试exit 23、再不带SkipTests重跑所有测试组。shim不运行真实测试案例，摘要保持0案例且有明确标注。已验证失败摘要保留、下次run独立、测试请求未被SkipTests污染以及临时/SDK/源码身份环境变量恢复。提交后clean-run和默认根.cmd全链仍待验；另一台电脑的真实失败仍缺该机同次摘要/console身份，不能据本机复验推断原因。
+
+## 2026-10-24 T01-08 有界进程中断收尾候选
+
+`scripts/bounded-process.ps1` 将自有进程树停止逻辑集中到 `Stop-GscOwnedProcessTree`，并在 `finally` 检查等待被中断时的自有进程，避免仅释放 `Process` 句柄后留下运行进程。Core7.6.2与Desktop5.1受控等待中断均验证子进程PID/启动时刻退出、无关进程保留、之后重试0；`Test-IsolatedTempCleanup` 双宿主7/124/0/0/0、哨兵SHA不变、锁失败可见与释放重试通过。真实桌面Ctrl+C仍未验证，T01-08保持实施中。源码提交后标准全链待重跑；首次脏工作树根入口按打包身份保护退出1，没有打包或安装。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-08/README.md`。

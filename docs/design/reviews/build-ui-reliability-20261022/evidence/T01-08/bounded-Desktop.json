@@ -1,0 +1,152 @@
+{
+    "InterruptedProcessStopped":  true,
+    "CancellationSignal":  "managed-thread wait interruption; physical Ctrl+C not exercised",
+    "WaitInterruptedBeforeTimeout":  true,
+    "RetryAfterInterruptionExit":  0,
+    "UnrelatedProcessPreserved":  true,
+    "RetryExit":  0,
+    "TrxBeforeTimeout":  true,
+    "InterruptedProcessStartedUtcTicks":  639284517238213913,
+    "InterruptedProcessId":  39268,
+    "Steps":  [
+                  {
+                      "id":  "trx-then-hang",
+                      "command":  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                      "arguments":  [
+                                        "-NoProfile",
+                                        "-File",
+                                        "[repo]\\.tmp\\bounded-test-37a8cc6a614f4aa0b417ad2bc29d8d6c\\hang.ps1",
+                                        "[repo]\\.tmp\\bounded-test-37a8cc6a614f4aa0b417ad2bc29d8d6c\\completed.trx"
+                                    ],
+                      "startedUtc":  "2026-10-24T15:15:16.1974354Z",
+                      "completedUtc":  "2026-10-24T15:15:18.4933935Z",
+                      "exitCode":  124,
+                      "console":  "trx-then-hang-console.txt",
+                      "launchError":  null,
+                      "process":  {
+                                      "ExitCode":  124,
+                                      "TimedOut":  true,
+                                      "OutputDrained":  true,
+                                      "ProcessId":  35460,
+                                      "ProcessStartedUtc":  "2026-10-24T15:15:16.2297984Z",
+                                      "ProcessExited":  true
+                                  }
+                  },
+                  {
+                      "id":  "retry",
+                      "command":  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                      "arguments":  [
+                                        "-NoProfile",
+                                        "-Command",
+                                        "Write-Output \u0027retry completed\u0027; exit 0"
+                                    ],
+                      "startedUtc":  "2026-10-24T15:15:18.5113951Z",
+                      "completedUtc":  "2026-10-24T15:15:19.5089595Z",
+                      "exitCode":  0,
+                      "console":  "retry-console.txt",
+                      "launchError":  null,
+                      "process":  {
+                                      "ExitCode":  0,
+                                      "TimedOut":  false,
+                                      "OutputDrained":  true,
+                                      "ProcessId":  39568,
+                                      "ProcessStartedUtc":  "2026-10-24T15:15:18.5140155Z",
+                                      "ProcessExited":  true
+                                  }
+                  },
+                  {
+                      "id":  "unicode",
+                      "command":  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                      "arguments":  [
+                                        "-NoProfile",
+                                        "-Command",
+                                        "[Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); Write-Output ([char]0x4e2d+[string][char]0x6587); exit 0"
+                                    ],
+                      "startedUtc":  "2026-10-24T15:15:19.5375421Z",
+                      "completedUtc":  "2026-10-24T15:15:20.4310440Z",
+                      "exitCode":  0,
+                      "console":  "unicode-console.txt",
+                      "launchError":  null,
+                      "process":  {
+                                      "ExitCode":  0,
+                                      "TimedOut":  false,
+                                      "OutputDrained":  true,
+                                      "ProcessId":  40528,
+                                      "ProcessStartedUtc":  "2026-10-24T15:15:19.5401065Z",
+                                      "ProcessExited":  true
+                                  }
+                  },
+                  {
+                      "id":  "tree-timeout",
+                      "command":  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                      "arguments":  [
+                                        "-NoProfile",
+                                        "-File",
+                                        "[repo]\\.tmp\\bounded-test-37a8cc6a614f4aa0b417ad2bc29d8d6c\\tree.ps1",
+                                        "[repo]\\.tmp\\bounded-test-37a8cc6a614f4aa0b417ad2bc29d8d6c\\child.pid"
+                                    ],
+                      "startedUtc":  "2026-10-24T15:15:20.4470448Z",
+                      "completedUtc":  "2026-10-24T15:15:23.6711381Z",
+                      "exitCode":  124,
+                      "console":  "tree-timeout-console.txt",
+                      "launchError":  null,
+                      "process":  {
+                                      "ExitCode":  124,
+                                      "TimedOut":  true,
+                                      "OutputDrained":  true,
+                                      "ProcessId":  38708,
+                                      "ProcessStartedUtc":  "2026-10-24T15:15:20.4506504Z",
+                                      "ProcessExited":  true
+                                  }
+                  },
+                  {
+                      "id":  "retry-after-wait-interruption",
+                      "command":  "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                      "arguments":  [
+                                        "-NoProfile",
+                                        "-Command",
+                                        "exit 0"
+                                    ],
+                      "startedUtc":  "2026-10-24T15:15:25.4527642Z",
+                      "completedUtc":  "2026-10-24T15:15:26.0832743Z",
+                      "exitCode":  0,
+                      "console":  "retry-after-wait-interruption-console.txt",
+                      "launchError":  null,
+                      "process":  {
+                                      "ExitCode":  0,
+                                      "TimedOut":  false,
+                                      "OutputDrained":  true,
+                                      "ProcessId":  38144,
+                                      "ProcessStartedUtc":  "2026-10-24T15:15:25.4551273Z",
+                                      "ProcessExited":  true
+                                  }
+                  },
+                  {
+                      "id":  "pipe-held",
+                      "command":  "cmd.exe",
+                      "arguments":  [
+                                        "/d",
+                                        "/c",
+                                        "[repo]\\.tmp\\bounded-test-37a8cc6a614f4aa0b417ad2bc29d8d6c\\pipe.cmd"
+                                    ],
+                      "startedUtc":  "2026-10-24T15:15:26.0959442Z",
+                      "completedUtc":  "2026-10-24T15:15:27.1339181Z",
+                      "exitCode":  124,
+                      "console":  "pipe-held-console.txt",
+                      "launchError":  null,
+                      "process":  {
+                                      "ExitCode":  124,
+                                      "TimedOut":  true,
+                                      "OutputDrained":  false,
+                                      "ProcessId":  32900,
+                                      "ProcessStartedUtc":  "2026-10-24T15:15:26.1078744Z",
+                                      "ProcessExited":  true
+                                  }
+                  }
+              ],
+    "OwnedDescendantStopped":  true,
+    "Engine":  "5.1.22000.2538",
+    "OwnedDescendantPid":  40132,
+    "OwnedDescendantStartedUtcTicks":  639284517215050473,
+    "TimeoutExit":  124
+}
