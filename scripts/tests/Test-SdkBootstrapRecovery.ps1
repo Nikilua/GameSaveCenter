@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param()
+param([string]$EvidenceRoot = '')
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 . (Join-Path $repo 'scripts/sdk-baseline.ps1')
@@ -16,6 +16,7 @@ $initialTemp = $env:TEMP
 $initialTmp = $env:TMP
 $mode = 'interrupted'
 $attempts = 0
+$completed = $false
 # Replace only the transport and SDK observation in this test process. The real
 # bootstrap function, child PowerShell invocation and failure cleanup still run.
 function Get-GscDotNetSdkSelection {
@@ -54,7 +55,23 @@ try {
     $results += [pscustomobject]@{Case='retry-after-two-failures';Passed=$true;Diagnostic='Exact SDK observation required after installer exit 0; installer payload is simulated.'}
     $results | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $fixture 'results.json')
     $results | Format-Table | Out-Host
-    Write-Host "Evidence: $fixture"
+    if (-not [string]::IsNullOrWhiteSpace($EvidenceRoot)) {
+        $resolvedEvidenceRoot = [IO.Path]::GetFullPath($EvidenceRoot)
+        $repoPrefix = [IO.Path]::GetFullPath($repo).TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
+        if (-not $resolvedEvidenceRoot.StartsWith($repoPrefix, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "EvidenceRoot must be inside the repository: $resolvedEvidenceRoot"
+        }
+        if (Test-Path -LiteralPath (Join-Path $resolvedEvidenceRoot 'sdk-bootstrap-recovery.json')) {
+            throw "Refusing to overwrite existing SDK recovery evidence: $resolvedEvidenceRoot"
+        }
+        New-Item -ItemType Directory -Path $resolvedEvidenceRoot -Force | Out-Null
+        Copy-Item -LiteralPath (Join-Path $fixture 'results.json') -Destination (Join-Path $resolvedEvidenceRoot 'sdk-bootstrap-recovery.json')
+        $completed = $true
+        Write-Host "Evidence: $resolvedEvidenceRoot"
+    }
+    else {
+        Write-Host "Evidence: $fixture"
+    }
 }
 finally {
     $env:PATH = $initialPath
@@ -62,4 +79,16 @@ finally {
     $env:DOTNET_ROOT_X64 = $initialRootX64
     $env:TEMP = $initialTemp
     $env:TMP = $initialTmp
+    if ($completed) {
+        $resolvedFixture = [IO.Path]::GetFullPath($fixture)
+        $allowedPrefix = [IO.Path]::GetFullPath((Join-Path $repo '.tmp')).TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
+        if (-not $resolvedFixture.StartsWith($allowedPrefix, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Unsafe SDK recovery fixture cleanup: $resolvedFixture"
+        }
+        $fixtureItem = Get-Item -LiteralPath $resolvedFixture -Force
+        if ($fixtureItem.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Refusing to clean SDK recovery fixture link: $resolvedFixture"
+        }
+        Remove-Item -LiteralPath $resolvedFixture -Recurse -Force
+    }
 }

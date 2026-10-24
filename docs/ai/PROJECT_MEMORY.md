@@ -1056,3 +1056,7 @@ Test-PackageFailure双PowerShell通过，实际生产catch/finally原样运行�
 
 ## 2026-10-23 安装尝试记录候选通过
 Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts/install-attempts独立JSON，含PID/启动时间/起止/目标/唯一暂存路径/Outcome/FailureMessage/TemporaryExists。诊断失败只警告不掩盖原错误，实际扩展路径不进入仓库清理。Test-InstallTransaction双PowerShell3/3并验证两失败一成功记录、失败原因及成功无暂存，旧安装保护/回退保持。fixture已清理，最终全链待提交运行。
+
+## 2026-10-24 T00-08 失败后成功回归候选
+
+新控制流夹具在PowerShell Core 7.6.2与Windows PowerShell 5.1都通过：SDK下载中断/损坏后模拟精确版本成功，安装事务保留两条失败与一条成功记录；真实 `build.ps1` 在受控dotnet shim下经历显式跳测、测试exit 23、再不带SkipTests重跑所有测试组。shim不运行真实测试案例，摘要保持0案例且有明确标注。已验证失败摘要保留、下次run独立、测试请求未被SkipTests污染以及临时/SDK/源码身份环境变量恢复。提交后clean-run和默认根.cmd全链仍待验；另一台电脑的真实失败仍缺该机同次摘要/console身份，不能据本机复验推断原因。

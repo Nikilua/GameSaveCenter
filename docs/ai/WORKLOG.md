@@ -12116,3 +12116,7 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-24 T02-08 51641d06 当前宿主滚动补证
 
 51641d06标准安装后，在Playnite PID33252、Bongo Cat 18条历史页做只读实际宿主观察。第一次滚动使列表首行13:05→12:40，详情继续13:05；第二次滚动右侧详情后，列表仍为12:40，详情底部校验按钮可见但未触发。导航/滚动之外没有点击业务动作。三张1285×822 JPEG及SHA索引在T02-08/host-51641d06-index.json，图片保留本地artifacts/host-audit-51641d06。磁盘安装身份与51641d06一致，但当前Process.Modules未暴露加载程序集路径；浅色、窄短窗、物理滚轮/键盘/IME/DPI未验，维持实施中。
+
+## 2026-10-24 T00-08 失败后成功回归候选
+
+扩展 SDK恢复夹具：支持保存模拟下载中断、损坏安装器和成功重试的JSON，并在归档完成后清理自己创建的临时目录。安装事务夹具现在保留逐次失败/成功尝试记录，路径脱敏。新增 `Test-BuildFailureRecovery.ps1` 驱动真实 `build.ps1` 的三个运行：显式跳测基线、测试exit 23失败、无`-SkipTests`的完整测试编排重试。PowerShell Core 7.6.2与Windows PowerShell 5.1各自SDK/安装/构建三组回放均exit 0；受控shim的重试覆盖Core、Worker、Playnite discovery及一个WPF进程，0条测试案例明确标为不代表真实执行。环境恢复断言覆盖PATH/TEMP/TMP/DOTNET_ROOT和源码身份变量。当前为候选，清洁提交复验、标准根.cmd真实全链与证据归档待完成；用户另一台电脑的问题仍需其失败日志定位，不能由本机模拟结论代替。

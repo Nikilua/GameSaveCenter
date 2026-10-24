@@ -48,8 +48,23 @@ if($attempts.Count -ne 3 -or @($attempts|Where-Object {$_.Outcome -eq 'failed'})
 if(@($attempts|Where-Object {$_.Outcome -eq 'failed' -and -not $_.FailureMessage}).Count){throw 'Failure reason not retained'}
 if(@($attempts|Where-Object {$_.Outcome -eq 'passed' -and $_.TemporaryExists}).Count){throw 'Successful staging still present'}
 $evidence = if ($EvidenceRoot) { [IO.Path]::GetFullPath($EvidenceRoot) } else { Join-Path $repo 'docs/design/reviews/build-ui-reliability-20261022/evidence/T00-05' }
+if ($EvidenceRoot -and (Test-Path -LiteralPath $evidence -PathType Container) -and @(Get-ChildItem -LiteralPath $evidence -Force).Count -gt 0) {
+    throw "Refusing to overwrite existing install transaction evidence: $evidence"
+}
 New-Item -ItemType Directory -Path $evidence -Force | Out-Null
-@{ ActualInstalledPathAndHashVerified = $true; MissingAndUnknownIdentitiesExplicit = $true; LockedFilePreserved = $true; RenameFailureRolledBack = $true; AttemptRecordsVerified = $true; RetrySucceeded = $true; Fixture = 'Synthetic files, production functions parsed from AST'; Timestamp = [DateTime]::UtcNow.ToString('o') } | ConvertTo-Json | Set-Content (Join-Path $evidence 'results.json')
+$attemptEvidenceRoot = Join-Path $evidence 'attempts'
+New-Item -ItemType Directory -Path $attemptEvidenceRoot -Force | Out-Null
+$attemptRows = @(Get-ChildItem -LiteralPath $diagnostics -Filter '*.json' | ForEach-Object {
+    [pscustomobject]@{ Path = $_.FullName; Data = (Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json) }
+} | Sort-Object { [DateTime]$_.Data.StartedUtc })
+for ($index = 0; $index -lt $attemptRows.Count; $index++) {
+    $row = $attemptRows[$index]
+    $label = if ($row.Data.Outcome -eq 'passed') { 'passed-retry' } else { 'failed-' + ($index + 1) }
+    $text = [IO.File]::ReadAllText($row.Path)
+    $text = $text.Replace($repo, '[repo]').Replace($repo.Replace('\', '/'), '[repo]')
+    [IO.File]::WriteAllText((Join-Path $attemptEvidenceRoot ('{0:D2}-{1}.json' -f ($index + 1), $label)), $text, [Text.UTF8Encoding]::new($false))
+}
+@{ ActualInstalledPathAndHashVerified = $true; MissingAndUnknownIdentitiesExplicit = $true; LockedFilePreserved = $true; RenameFailureRolledBack = $true; AttemptRecordsVerified = $true; CopiedAttemptRecords = $attemptRows.Count; RetrySucceeded = $true; Fixture = 'Synthetic files, production functions parsed from AST'; Timestamp = [DateTime]::UtcNow.ToString('o') } | ConvertTo-Json | Set-Content (Join-Path $evidence 'results.json')
 $resolved = [IO.Path]::GetFullPath($output)
 if (-not $resolved.StartsWith([IO.Path]::GetFullPath((Join-Path $repo '.tmp')) + [IO.Path]::DirectorySeparatorChar)) { throw 'Unsafe cleanup' }
 Remove-Item -LiteralPath $resolved -Recurse -Force

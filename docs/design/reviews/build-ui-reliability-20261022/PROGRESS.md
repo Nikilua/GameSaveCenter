@@ -13,7 +13,7 @@
 | T00-05 | 安装文件占用 | 已验收 | fc319396 | [受控3/3](evidence/T00-05/results.json)、[标准全链](evidence/T00-05/verification.json)：退出0，1954项1897通过/57既有跳过/0失败，安装逐文件SHA一致 | 夹具已清理；保留最新构建/包/诊断；真实页面交互未验 |
 | T00-06 | 测试挂起收尾 | 已验收 | 既有有界进程执行及本批Desktop补齐 | [双宿主真实树/管道回归](evidence/T00-06/desktop-tree/README.md)：各5步骤，根/同身份子退出、124、无关进程保留、重试和UTF8通过 | [190bbaea标准完整链与身份核验](evidence/T03-04/standard-190bbaea/README.md)已通过；旧失败分别保留，受控/实际宿主/物理DPI边界分开 |
 | T00-07 | 双启动互斥 | 代码完成待验收 | 本阶段Mutex候选 | evidence/T00-07：PowerShell7/5.1各5/5，重入/拒绝/重试/异常退出恢复/独立checkout | [4b8f3b05标准完整链退出0](evidence/T00-07/standard-verification.json)，真实并发入口拒绝1；跨会话待验 |
-| T00-08 | 失败后成功回归 | 待开始 | — | 待验；适用范围按计划 | 先去重；仅清理本阶段明确拥有的无用产物 |
+| T00-08 | 失败后成功回归 | 实施中 | 本阶段回归脚本候选 | [候选范围与边界](evidence/T00-08/README.md)：SDK中断/损坏后重试、测试失败后新运行全组通过、安装事务失败后成功；双PowerShell受控回放通过 | 受控dotnet shim不执行真实测试案例；精确提交复跑、真实标准根.cmd全链与证据归档待做 |
 | T01-01 | 每次运行产物清单 | 代码完成待验收 | 本阶段诊断扩展 | evidence/T01-01：双PowerShell运行身份/生命周期/未知文件SHA通过 | [共享包清单及当前完整链已验证](evidence/T01-07/standard-verification.json)；失败stage与安装暂存目录仍待登记 |
 | T01-02 | 清理预览 | 代码完成待验收 | 本阶段只读函数 | evidence/T01-02：双PowerShell各9/9，含JSON时间往返、路径/进程保护及哨兵SHA通过 | 只读函数已在真实活跃构建验证排除；无删除能力，自动删除集成未实施 |
 | T01-03 | 空间预算预检 | 已验收 | 5e194500 | evidence/T01-03：双PowerShell各4/4；真实C/D预算读取通过，标准入口前置调用 | [标准完整链退出0](evidence/T01-03/standard-verification.json)，1954项0失败；配置余量非峰值，真实磁盘未耗尽 |
