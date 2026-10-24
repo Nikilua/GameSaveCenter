@@ -1,10 +1,14 @@
+## 2026-10-25 d0e11929 标准完整链通过
+
+提交 `d0e1192935e7e161a1592d86eccbba3995419146` 运行默认 `GameSaveCenter-Run.cmd` 退出0；构建run `20261024T180031697Z-d82ddccb`、安装run `20261024T180029755Z-13c00e79`。SDK8.0.423、Release0警告/0错误、Core157/157、Worker400/400，TRX汇总1967项1910通过/57跳过/0失败、148份计数一致、145个WPF类全部结束。Worker win-x64发布、ZIP/PEXT、Playnite安装和启动通过；ZIP/PEXT SHA相同，六个安装目录程序集源码身份和SHA已独立复核。完整证据 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-d0e11929/README.md`。摘要的 `workingTreeClean=false` 来自现有未跟踪用户TRX及 `TestResults`；跟踪文件干净，用户证据未暂存/删除。没有核验进程内插件加载路径。外机 `ea926c5e` 的stash冲突快进后结果仍待用户反馈。
+
 ## 2026-10-25 Q14窗口自动化收尾候选复核
 
-`100429d0` 标准完整入口run `20261024T173618477Z-d107dea1` 在第35/145个WPF类的 `Q14FilterLabelBehaviorTests` 中遇到一次 `WindowAutomationPeer.GetNameCore` / `GetWindowTextLength` Win32参数错误，发布/安装未开始。该类针对16个关闭/重建窗口场景；夹具现于每次 `Window.Close()` 后等待同Dispatcher到 `ApplicationIdle`。SDK8.0.423、显式 `GscBuildCommit=100429d0` 重新编译后，首次运行及五次独立 `--no-build` 复跑全部1/1，TRX位于 `evidence/T00-01/q14-automation-drain-20261025/patched-repeats/`。少数进程在VSTest报告通过后仍打印WPF TextServices COM清理异常；VSTest每次均退出0。该候选完整根入口还未重跑，不能据定向测试宣称全链成功。
+`100429d0` 标准完整入口run `20261024T173618477Z-d107dea1` 在第35/145个WPF类的 `Q14FilterLabelBehaviorTests` 中遇到一次 `WindowAutomationPeer.GetNameCore` / `GetWindowTextLength` Win32参数错误，发布/安装未开始。该类针对16个关闭/重建窗口场景；夹具现于每次 `Window.Close()` 后等待同Dispatcher到 `ApplicationIdle`。SDK8.0.423、显式 `GscBuildCommit=100429d0` 重新编译后，首次运行及五次独立 `--no-build` 复跑全部1/1，TRX位于 `evidence/T00-01/q14-automation-drain-20261025/patched-repeats/`。少数进程在VSTest报告通过后仍打印WPF TextServices COM清理异常；VSTest每次均退出0。修正提交 `d0e11929` 的默认根入口随后完整通过，最终证据见 `evidence/T00-01/standard-d0e11929/README.md`。
 
 ## 2026-10-25 T00-03 SDK 恢复矩阵复验
 
-扩展 `Test-SdkBootstrapRecovery.ps1`，在原下载中断/安装器失败后重试矩阵外，增加真实截断 PowerShell 安装脚本解析失败，以及安装器退出0但SDK观察仍为9.0.302时必须失败的负例；随后重试仅接受精确8.0.423。PowerShell Core7.6.2与Windows PowerShell5.1.22000.2538各4/4、退出0，失败后环境恢复且本次bootstrap临时目录清除。测试JSON用UTF-8一致写出。脚本SHA `AEA80E4C034CF91BC88D0164CC94E0993FA1922C318AA6C4B6261A71DCFC20C3`；具体命令、逐项边界和结果哈希见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/recovery-20261025-verified/README.md`。属于受控注入，未实测真实外网中断或真实SDK压缩包损坏；T00-03控制流现记已验收。本批标准完整根入口需在提交后复跑，旧fbd8a882链不能替代新测试脚本身份的复验。用户外机CS8300仍是其GamePickerViewModel中的stash冲突标记；同步后构建待用户反馈。
+扩展 `Test-SdkBootstrapRecovery.ps1`，在原下载中断/安装器失败后重试矩阵外，增加真实截断 PowerShell 安装脚本解析失败，以及安装器退出0但SDK观察仍为9.0.302时必须失败的负例；随后重试仅接受精确8.0.423。PowerShell Core7.6.2与WindowsPowerShell5.1.22000.2538各4/4、退出0，失败后环境恢复且本次bootstrap临时目录清除。测试JSON用UTF-8一致写出。脚本SHA `AEA80E4C034CF91BC88D0164CC94E0993FA1922C318AA6C4B6261A71DCFC20C3`；具体命令、逐项边界和结果哈希见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/recovery-20261025-verified/README.md`。属于受控注入，未实测真实外网中断或真实SDK压缩包损坏；T00-03控制流现记已验收，后续提交 `d0e11929` 的标准完整根入口已按要求重跑并成功。用户外机CS8300仍是其GamePickerViewModel中的stash冲突标记；同步后构建待用户反馈。
 
 ## 2026-10-24 f577fd19 标准全链成功；T01-01产物身份验收
 

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "d0e1192935e7e161a1592d86eccbba3995419146",
+  "standardEntry": "GameSaveCenter-Run.cmd",
+  "command": "cmd.exe /d /c GameSaveCenter-Run.cmd < nul",
+  "exitCode": 0,
+  "buildRunId": "20261024T180031697Z-d82ddccb",
+  "installRunId": "20261024T180029755Z-13c00e79",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "environment": {
+    "windowsVersion": "10.0.22000",
+    "powershellVersion": "7.6.2",
+    "edition": "Core"
+  },
+  "solutionBuild": {
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "tests": {
+    "total": 1967,
+    "passed": 1910,
+    "skipped": 57,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "trxFiles": 148,
+    "trxCounterMismatches": 0,
+    "wpfIsolatedClassesCompleted": 145,
+    "groups": {
+      "core": { "total": 157, "passed": 157, "skipped": 0, "failed": 0 },
+      "worker": { "total": 400, "passed": 400, "skipped": 0, "failed": 0 },
+      "playniteSource": { "total": 562, "passed": 544, "skipped": 18, "failed": 0 },
+      "playniteWpfIsolated": { "total": 848, "passed": 809, "skipped": 39, "failed": 0 }
+    },
+    "skippedReason": "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。"
+  },
+  "workerWinX64Publish": "passed",
+  "zipSha256": "5FABC650E8FDFB30A2385FAD0A15AEC467C917DCFDE13811CFB1D87DA08B0D80",
+  "pextSha256": "5FABC650E8FDFB30A2385FAD0A15AEC467C917DCFDE13811CFB1D87DA08B0D80",
+  "installOutcome": "passed",
+  "installedAssembliesIdentityAndShaVerified": true,
+  "playniteStartupObserved": true,
+  "inProcessPluginLoadVerified": false,
+  "workingTreeClean": false,
+  "trackedFilesClean": true,
+  "untrackedUserTestEvidencePreserved": true
+}

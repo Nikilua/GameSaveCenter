@@ -14,4 +14,4 @@ Release solution 0警告/0错误，Core157/157，Worker400/400；WPF第35/145类
 
 修正后，SDK8.0.423、`GscBuildCommit=100429d0` 下重新编译测试项目，并以独立测试进程运行Q14六次：首次编译运行1/1，随后五次 `--no-build` 均1/1，合计6/6。每次均退出0、无失败/跳过。逐次TRX及五次console见 [patched-repeats](patched-repeats/)，SHA-256见目录内 `SHA256SUMS.txt`。归档文件已将用户名、主机名和本机绝对构建/结果路径替换为中性值；原始文件保留在本机忽略的 `artifacts/` 目录供本阶段复核。部分进程在测试成功后打印WPF TextServices COM清理异常；VSTest均报告成功并退出0。
 
-这些重复运行只覆盖Q14定向类，不能证明完整构建、发布、安装或Playnite启动。修正候选仍须重新运行默认 `GameSaveCenter-Run.cmd` 完整链。
+这些重复运行本身只覆盖Q14定向类。随后提交 `d0e1192935e7e161a1592d86eccbba3995419146` 的默认 `GameSaveCenter-Run.cmd` 完整链退出0；1967项测试0失败、145个WPF隔离类结束，Worker发布、ZIP/PEXT、安装和Playnite启动均成功。完整结果见[提交级根入口证据](../standard-d0e11929/README.md)。另一台电脑的stash冲突恢复及快进后的完整链仍待用户验证。
