@@ -1120,3 +1120,7 @@ Test-ArtifactPathBoundaries.ps1在提升测试上下文的PowerShell Core 7.6.2�
 ## 2026-10-25 T00-07 Global checkout lock 候选
 
 `scripts/checkout-lock.ps1` 将按规范化 checkout 路径派生的命名 Mutex 从 `Local\` 改为 `Global\`，避免同一工作区跨 Windows 登录会话各自取得独立锁。PowerShell Core 7.6.2 与 Windows PowerShell 5.1.22000.2538 的既有5项锁回归各5/5。跨会话夹具尝试用当前用户S4U计划任务，Task Scheduler WMI/注册权限被拒；未创建任务且临时夹具清理，不能记跨会话通过。候选 `3c8a0854` 默认根入口Release编译0警告/错误、测试1967项1899通过/68跳过/0失败；其中57项为已撤销架构断言、10项Named Pipe受执行环境限制、1项系统鼠标指针限制。打包阶段因源码/测试仍未提交而触发身份保护退出1，未安装。最后完整链仍是 `d0e11929`，候选提交后须用默认根入口重跑全链。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-07/README.md`。
+
+## 2026-10-25 dcbaab13 提交后标准完整链
+
+`dcbaab13b9464523ffed6d88ca2748b6fb6dd647` 的默认 `GameSaveCenter-Run.cmd` 经 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"` 退出0。build run `20261024T192816167Z-276884c0`、install run `20261024T192814223Z-736788e1`，SDK8.0.423 / Release 0警告0错误；1967项1910通过/57跳过/0失败，148份TRX计数一致，145个WPF类结束。Worker win-x64发布、ZIP/PEXT、安装、六程序集身份/SHA和Playnite启动通过。未跟踪Round3 TRX/TestResults未动；未核验进程内插件加载路径。完整证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-dcbaab13/README.md`。T00-07仍待真实跨会话锁测试；Task Scheduler权限拒绝，不能将代码语义等同实测通过。

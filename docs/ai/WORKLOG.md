@@ -12185,3 +12185,7 @@ CURRENT_STATE、专项PROGRESS与T03-01证据现区分产品源码提交、最�
 ## 2026-10-25 T00-07 Global checkout lock 候选
 
 按 checkout 路径命名的 Mutex 改为 `Global\`，因为 `Local\` 会使不同 Windows 登录会话看到不同锁。双PowerShell现有5项锁测试各5/5。新增跨会话计划任务夹具后，本机会话因Task Scheduler WMI/注册权限被拒，未注册任务，`.tmp` 夹具删除；因此仅记录为阻塞的跨会话实测，不宣称已验。默认完整根入口在未提交候选上Release0/0、测试1967项1899通过/68跳过/0失败，但打包器正确按dirty source/test身份保护退出1，未发布/安装。跳过项为57个撤销架构断言、10个Named Pipe环境限制、1个鼠标指针权限限制。提交锁源码和测试后还需在获准环境重新运行标准完整链。详见专项T00-07 README。
+
+## 2026-10-25 dcbaab13 提交后标准完整链通过
+
+将checkout Mutex改为Global命名空间并提交 `dcbaab13b9464523ffed6d88ca2748b6fb6dd647` 后，默认根入口完整退出0：SDK8.0.423，Release0/0，1967项1910通过/57同一既有架构skip/0失败，148TRX一致，145个WPF类；Core157/157、Worker400/400。Worker win-x64发布、ZIP/PEXT、安装六程序集版本/源码身份/SHA和Playnite启动成功。构建run `20261024T192816167Z-276884c0`，安装run `20261024T192814223Z-736788e1`。证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-dcbaab13/`。跨Windows登录会话实测仍因Task Scheduler权限未能运行，T00-07保持代码完成待验收；现有未跟踪Round3 TRX/TestResults未动。
