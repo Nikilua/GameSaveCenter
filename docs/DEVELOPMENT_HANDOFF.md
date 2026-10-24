@@ -4,6 +4,8 @@
 
 T01-01已补齐：诊断summary明确失败stage；安装attempt含Run ID、Attempt ID、owner PID/启动时刻和 staging/backup artifact的Created/Exists/Active/Retention。双PowerShell受控失败/重试和安装3/3通过；默认根入口同提交全链安装记录也核实成功，暂存与备份目录事务后不存在。详见 `design/reviews/build-ui-reliability-20261022/evidence/T01-01/artifact-manifest-f577fd19/README.md`。
 
+T01-02只读清理预览在`f577fd19`源码身份下以PowerShell Core7.6.2和Windows PowerShell5.1.22000.2538各9/9通过；所有输出均`CanDelete=false`，候选仍需人工检查引用与占用，没有自动删除器。证据 `design/reviews/build-ui-reliability-20261022/evidence/T01-02/README.md`。
+
 另一台个人电脑提供状态：`main` at `ea926c5e`、`behind 2`，多个文档/源码/测试修改及未跟踪证据。`GamePickerViewModel.cs` 多处 `CS8300` 来自 `Updated upstream` / `Stashed changes` 冲突标记，说明stash合并尚未解决。远端76eab05c/f577fd19未改该ViewModel；本地分支落后本身不是CS8300原因。已取得部分diff；完整diff和`git stash list`还待，未reset/覆盖。建议先安全保存含未跟踪的全部本地改动，快进main验证完整入口，再看完整diff把功能改动合入独立分支。详见T00-08 README。
 
 ## 2026-10-24 T02-03 实际键盘焦点回归补正

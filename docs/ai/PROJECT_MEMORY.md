@@ -6,6 +6,8 @@ T01-01已验收：失败阶段`failedStageId`和installer staging/backup artifac
 
 T01-01的16份归档JSON均已解析并确认不含本机绝对路径；归档后清理8个本阶段`.tmp`目录，逻辑大小2,363,091字节，D盘可用空间从12,290,236,416增至12,292,726,784字节。用户Round3 TRX/TestResults未动。
 
+T01-02只读清理预览在`f577fd19`代码上双宿主复验各9/9，含活动进程/时间身份、PID重用、路径/junction边界、Retention与哨兵SHA；每条预览均`CanDelete=false`，三份 JSON 路径已脱敏。只验收预览，不宣称已有自动删除器；详见`design/reviews/build-ui-reliability-20261022/evidence/T01-02/README.md`。
+
 外机最新日志与用户状态显示：另一台电脑HEAD `ea926c5e`、main落后origin/main两个提交且有多个本地源码/测试/文档修改及未跟踪证据。`GamePickerViewModel.cs` 含 `Updated upstream` / `Stashed changes` 标记，导致9处CS8300；这是本地stash合并冲突，不是SDK/NuGet问题。远端76eab05c和f577fd19没有改该ViewModel。已取得部分diff，完整diff与`git stash list`待补；不reset、不覆盖、不丢弃本地工作。详见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md`。
 
 ## 2026-10-24 T02-08 51641d06 当前宿主滚动补证

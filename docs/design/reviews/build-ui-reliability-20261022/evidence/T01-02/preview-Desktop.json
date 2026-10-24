@@ -1,6 +1,6 @@
 [
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e30b2db3fdf48b99b07a04276eb2f20",
+        "Path":  "[repo]\\.tmp\\preview-534616e4d85c4d0b8fcc563f7ba3a47a",
         "EstimatedBytes":  8,
         "RunId":  null,
         "OwnerState":  "active",
@@ -30,7 +30,7 @@
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\outside",
+        "Path":  "[outside]",
         "EstimatedBytes":  null,
         "RunId":  null,
         "OwnerState":  "active",
@@ -40,7 +40,7 @@
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp-other\\file",
+        "Path":  "[repo]\\.tmp-other\\file",
         "EstimatedBytes":  null,
         "RunId":  null,
         "OwnerState":  "active",
@@ -50,7 +50,7 @@
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp",
+        "Path":  "[repo]\\.tmp",
         "EstimatedBytes":  null,
         "RunId":  null,
         "OwnerState":  "active",
@@ -60,7 +60,7 @@
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e30b2db3fdf48b99b07a04276eb2f20",
+        "Path":  "[repo]\\.tmp\\preview-534616e4d85c4d0b8fcc563f7ba3a47a",
         "EstimatedBytes":  8,
         "RunId":  null,
         "OwnerState":  "active",
@@ -70,7 +70,7 @@
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e30b2db3fdf48b99b07a04276eb2f20",
+        "Path":  "[repo]\\.tmp\\preview-534616e4d85c4d0b8fcc563f7ba3a47a",
         "EstimatedBytes":  8,
         "RunId":  null,
         "OwnerState":  "different-process",
@@ -80,7 +80,7 @@
         "CanDelete":  false
     },
     {
-        "Path":  "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-9e30b2db3fdf48b99b07a04276eb2f20\\junction",
+        "Path":  "[repo]\\.tmp\\preview-534616e4d85c4d0b8fcc563f7ba3a47a\\junction",
         "EstimatedBytes":  null,
         "RunId":  null,
         "OwnerState":  "different-process",

@@ -1,13 +1,13 @@
 [
   {
-    "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\preview-check-20261023",
+    "Path": "[repo]\\.tmp\\preview-check-20261023",
     "EstimatedBytes": 9.0,
     "OwnerState": "active",
     "Reason": "Owner process still active",
     "CanDelete": false
   },
   {
-    "Path": "D:\\workplace\\github\\outside",
+    "Path": "[outside]",
     "EstimatedBytes": null,
     "OwnerState": "active",
     "Reason": "Rejected: Outside allowed artifact roots or root itself",
