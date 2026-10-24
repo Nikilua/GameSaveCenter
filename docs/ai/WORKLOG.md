@@ -12229,3 +12229,7 @@ T03-08交付清单已完成并标明边界：最新成功产品完整链绑定 `
 用户回传的较早R09单类测试日志为2项中1项失败（期望2,2,2,2，实际1,1,1,1）；当前提交 `c9cc5a99` 用新隔离输出根目录运行完整 `scripts/build.ps1`，Release编译0警告/0错误，1967项1899通过、68跳过、0失败，145个WPF隔离类全部结束，R09类通过。诊断run `20261024T210330731Z-c5892b90`；构建输出与诊断临时目录已按规则清理。Playnite及Worker正在运行，因此本次未重跑安装启动；完整安装链由同产品源码的 `dcbaab13` 记录。
 
 用户后续外机日志及状态/diff确认HEAD `ea926c5e`、落后 `origin/main` 两个提交、多个本地修改和未跟踪文件；`GamePickerViewModel.cs` 含 `Updated upstream` / `Stashed changes` 字面冲突标记，造成9个CS8300，测试未启动。不能把本机通过当作外机通过。外机下一步先执行含未跟踪项的stash，确认clean后快进拉取，再运行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`；完整链退出0前保留stash，不reset、覆盖或pop。详细证据和命令见 T00-08 README 与 T03-08 verification.json。
+
+## 2026-10-25 T01-07 剩余截图候选只读复扫
+
+重新逐项哈希三个 `ui-width-regression-20261023` 目标目录的570张PNG，并与三个指定保留目录比较；509个不同SHA中有31组目录内重复（92个文件项）。93个与保留目录同SHA的目标副本，其文件名均命中874份跟踪Markdown中的57个目标basename；未引用的同SHA副本、reparse point、Git跟踪候选和精确候选目录引用均为0。三个RenderHarness报告存在且SHA一致。没有删除任何文件；其余历史图像路径归属未明，继续保留。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/live-rescan-20261025.json`。

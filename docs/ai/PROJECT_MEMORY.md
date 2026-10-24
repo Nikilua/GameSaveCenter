@@ -1144,3 +1144,5 @@ T03-01至T03-08共享S07能力及额外条件已登记并逐项核对；Round4�
 最终交付检查单将产品代码的最后标准成功链与之后的文档提交分开：完整链绑定dcbaab13，后续文档没有修改src/tests/scripts，不把文档校验说成新构建。清理记录、关键UI验证、真实宿主限制和失败历史均列明。32项计划仍有11项未完成，主要受Task Scheduler/符号链接权限、用户外机、截图所有权、真实宿主物理输入/DPI及旧包隔离兼容回放影响；外机冲突文件需stash备份后快进并运行标准入口。未宣称总体目标完成。
 
 2026-10-25在当前 `c9cc5a99` 运行全新隔离Release构建和完整测试：SDK 8.0.423，0警告/0错误，1967项中1899通过、68跳过、0失败，145个WPF隔离类全部完成；较早外机R09焦点样式失败未重现，当前R09类通过。当前产品源码/测试/脚本与dcbaab13完整安装链相同。外机最新根入口日志则在编译阶段发现 `GamePickerViewModel.cs` stash冲突标记，9个CS8300且测试未启动；HEAD ea926c5e、behind2并有本地/未跟踪改动。先stash含未跟踪项、确认干净、快进拉取、运行完整根入口；stash留存到成功后再审阅，外机仍待实测回报。诊断和命令见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md` 与 `design/reviews/build-ui-reliability-20261022/evidence/T03-08/verification.json`。
+
+T01-07于2026-10-25重新盘点三个旧RenderHarness目录：570张PNG中509个不同SHA、31组内部重复；93张与指定保留目录同SHA的候选全部命中跟踪Markdown文件名，0张满足新增删除条件。三个OffscreenRenderHarness报告身份/哈希已复核，无reparse或Git跟踪项；未删除文件。该扫描只覆盖这三个目录及三处保留副本，原索引其余路径仍需逐项审核。[复扫证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-07/live-rescan-20261025.json)。

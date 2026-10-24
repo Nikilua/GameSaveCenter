@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "task": "T01-07",
+  "auditType": "read-only targeted rescan",
+  "generatedUtc": "2026-10-24T21:43:41Z",
+  "baseCommit": "5e63221e5d23c90346876368b26073e61d80ee4d",
+  "candidateDirectories": [
+    {
+      "path": "artifacts/ui-width-regression-20261023/render",
+      "fileCount": 191,
+      "pngCount": 190,
+      "totalBytes": 24746634,
+      "report": {
+        "path": "artifacts/ui-width-regression-20261023/render/render-qa-report.txt",
+        "generated": "2026-10-23 10:15:20",
+        "evidenceSource": "OffscreenRenderHarness",
+        "sourceCommit": "78095d53667e78fb6c19dbdf62cee705738b7e30",
+        "workingTreeClean": false,
+        "sha256": "2DD45E4CA5A7A51D04C6776190E7214A132C3B0118724F5178F20BDF1FC5BE20"
+      }
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-final",
+      "fileCount": 191,
+      "pngCount": 190,
+      "totalBytes": 24876998,
+      "report": {
+        "path": "artifacts/ui-width-regression-20261023/render-final/render-qa-report.txt",
+        "generated": "2026-10-23 10:25:16",
+        "evidenceSource": "OffscreenRenderHarness",
+        "sourceCommit": "78095d53667e78fb6c19dbdf62cee705738b7e30",
+        "workingTreeClean": false,
+        "sha256": "AC9A21A8CD0DFE3132EE2BD5B7CD6E661816E67A3A9B38F2E9A4BDC6C8C0EEF1"
+      }
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-ratio-final",
+      "fileCount": 191,
+      "pngCount": 190,
+      "totalBytes": 24878564,
+      "report": {
+        "path": "artifacts/ui-width-regression-20261023/render-ratio-final/render-qa-report.txt",
+        "generated": "2026-10-23 10:49:25",
+        "evidenceSource": "OffscreenRenderHarness",
+        "sourceCommit": "78095d53667e78fb6c19dbdf62cee705738b7e30",
+        "workingTreeClean": false,
+        "sha256": "E66E807A48E08B1F268D97E30C0BDE55EA3DBCF53A41A757F534C289672521EA"
+      }
+    }
+  ],
+  "retainedCopyDirectories": [
+    {
+      "path": "artifacts/save-summary-reflow-20261023/render-final",
+      "pngCount": 394
+    },
+    {
+      "path": "artifacts/ui-layout-fix/render-serial-final",
+      "pngCount": 394
+    },
+    {
+      "path": "artifacts/ui-width-regression-20261023/render-clean-commit",
+      "pngCount": 394
+    }
+  ],
+  "imageHashAudit": {
+    "targetPngCount": 570,
+    "targetDistinctHashes": 509,
+    "duplicateGroupsWithinTargetDirectories": 31,
+    "filesInThoseGroups": 92,
+    "excessCopiesWithinThoseGroups": 61,
+    "targetFilesMatchingRetainedCopyHashes": 93,
+    "matchingRetainedHashGroups": 32
+  },
+  "referenceAudit": {
+    "trackedMarkdownFilesScanned": 874,
+    "distinctTargetBasenamesMentioned": 57,
+    "retainedHashMatchingFilesWithBasenameMention": 93,
+    "retainedHashMatchingFilesWithoutBasenameMention": 0,
+    "candidateDirectoryPathReferences": 0,
+    "trackedCandidateFiles": 0
+  },
+  "safetyChecks": {
+    "reparsePointsInCandidateAndRetainedPaths": 0,
+    "reportsPresentAndShaVerified": true,
+    "buildRendererOrTestProcessesUsingTheseDirectories": false,
+    "playniteAndWorkerWereRunningButNotAccessed": true,
+    "newSafeDeletionCandidates": 0,
+    "filesDeleted": 0
+  },
+  "limitation": "This rescan covers only the three named ui-width-regression directories and their three retained-copy directories. Other groups/paths in the 2,432-image historical inventory remain unaudited and are retained; T01-07 stays in progress."
+}

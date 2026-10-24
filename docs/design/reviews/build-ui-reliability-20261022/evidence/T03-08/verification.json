@@ -66,22 +66,21 @@
   "documentationValidation": {
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
-    "markdownFiles": 7,
-    "relativeLinks": 547,
+    "markdownFiles": 6,
+    "relativeLinks": 557,
     "missingLinks": 0,
     "round4ProgressCheckPassed": true
   },
   "latestDocumentationUpdate": {
-    "baseCommit": "3aa21a977fbb0ff32231b2284b6098283970f04e",
-    "markdownFiles": 7,
-    "relativeLinks": 547,
+    "baseCommit": "5e63221e5d23c90346876368b26073e61d80ee4d",
+    "markdownFiles": 6,
+    "relativeLinks": 557,
     "missingLinks": 0,
     "sourceValidatorPassed": true,
     "round4ProgressCheckPassed": true,
-    "productBuildOrTestsRerun": true,
-    "productBuildRun": "20261024T210330731Z-c5892b90",
-    "productBuildExitCode": 0,
-    "t01_07CleanupEvidence": "../T01-07/screenshot-dedupe-20261025.json"
+    "productBuildOrTestsRerun": false,
+    "documentationOnly": true,
+    "t01_07ReadOnlyRescanEvidence": "../T01-07/live-rescan-20261025.json"
   },
   "latestT01_07Cleanup": {
     "evidence": "../T01-07/screenshot-dedupe-20261025.json",
@@ -167,5 +166,23 @@
     "activePlaynitePid": 38376,
     "activeWorkerPid": 33740,
     "temporaryOutputCleaned": true
+  },
+  "latestT01_07ReadOnlyRescan": {
+    "evidence": "../T01-07/live-rescan-20261025.json",
+    "status": "in_progress",
+    "candidateDirectories": 3,
+    "targetPngCount": 570,
+    "distinctHashes": 509,
+    "duplicateGroupsWithinTargetDirectories": 31,
+    "filesInThoseGroups": 92,
+    "excessCopiesWithinThoseGroups": 61,
+    "targetFilesMatchingRetainedCopyHashes": 93,
+    "matchingRetainedFilesWithMarkdownBasenameReferences": 93,
+    "matchingRetainedFilesWithoutBasenameReferences": 0,
+    "newSafeDeletionCandidates": 0,
+    "filesDeleted": 0,
+    "remainingHistoricalDuplicateGroupsForPathReview": 235,
+    "remainingHistoricalDuplicateCopiesForPathReview": 830,
+    "wholeHistoricalInventoryReviewed": false
   }
 }
