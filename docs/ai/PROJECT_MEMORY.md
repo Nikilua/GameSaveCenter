@@ -1094,3 +1094,7 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-25 T03-02 历史阻塞说明校准
 
 环境能力缓存的SDK8.0.423条目更新到 `fbd8a882` 标准根入口完整链：Release构建/测试/安装/启动0退出；对应run为20261024T154742005Z-e15429e1。标准测试中的 `R05TooltipTimingBehaviorTests` 3/3，旧GetCursorPos error 5不再描述为当前构建阻断。真实Playnite页面/加载路径仍只绑定上次实际观察；CEF/ETW/branch protection没有新权限变化，不重试。T03-02记为已满足，证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-02/COVERAGE.md`。
+
+## 2026-10-25 T01-04 提升上下文符号链接重试
+
+Test-ArtifactPathBoundaries.ps1在提升测试上下文的PowerShell Core 7.6.2下重跑，仍因操作系统返回“Administrator privilege required”无法创建文件符号链接；其他13项通过，0失败，CanDelete全false，哨兵SHA不变，本次.tmp fixture清理成功。结果 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/results-Core-elevated-20261025.json`。系统权限未变化，不重复尝试或调整系统设置；T01-04保持代码完成待验收。

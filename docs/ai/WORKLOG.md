@@ -12157,3 +12157,7 @@ CURRENT_STATE、专项PROGRESS与T03-01证据现区分产品源码提交、最�
 ## 2026-10-25 T03-02 过时阻塞说明校准
 
 将环境能力缓存的SDK8.0.423成功证据更新为fbd8a882全链。当前标准测试的R05TooltipTimingBehaviorTests为3/3，旧GetCursorPos error 5保留历史身份，不再作为当前构建门禁阻断；物理指针/Playnite页面、CEF/ETW和branch-protection读取权限仍分开标待验/阻塞，没有重复探测或冒称通过。T03-02记为已满足。
+
+## 2026-10-25 T01-04 提升上下文回归
+
+在提升测试上下文重跑Core路径边界夹具，文件符号链接仍因管理员权限不可用而跳过（1）；其他13项通过、0失败，预览均不授权删除、哨兵SHA一致，夹具清理成功。没有重复尝试Windows PowerShell或更改系统权限；T01-04维持代码完成待验收。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/results-Core-elevated-20261025.json`。
