@@ -246,6 +246,11 @@ public sealed class Q14FilterLabelBehaviorTests
         {
             if (window.IsVisible)
                 window.Close();
+
+            // Drain deferred layout/automation callbacks for this HWND before the next
+            // scenario creates another Window; otherwise WPF can query a closed window
+            // through WindowAutomationPeer while processing the next layout pass.
+            window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
         }
     }
 

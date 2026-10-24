@@ -1,0 +1,100 @@
+[repo]\artifacts\gsc-b\de4ca510\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.41]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.06]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.11]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:05.78]       Assert.Null() Failure: Value is not null
+[xUnit.net 00:00:05.78]       Expected: null
+[xUnit.net 00:00:05.78]       Actual:   System.ComponentModel.Win32Exception (0x80004005): 参数错误。
+[xUnit.net 00:00:05.78]          在 MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)
+[xUnit.net 00:00:05.78]          在 MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)
+[xUnit.net 00:00:05.78]          在 System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()
+[xUnit.net 00:00:05.78]          在 System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()
+[xUnit.net 00:00:05.78]          在 System.Windows.ContextLayoutManager.fireAutomationEvents()
+[xUnit.net 00:00:05.78]          在 System.Windows.ContextLayoutManager.UpdateLayout()
+[xUnit.net 00:00:05.78]          在 System.Windows.ContextLayoutManager.UpdateLayoutCallback(Object arg)
+[xUnit.net 00:00:05.78]          在 System.Windows.Media.MediaContext.FireInvokeOnRenderCallbacks()
+[xUnit.net 00:00:05.78]          在 System.Windows.Media.MediaContext.RenderMessageHandlerCore(Object resizedCompositionTarget)
+[xUnit.net 00:00:05.78]          在 System.Windows.Media.MediaContext.RenderMessageHandler(Object resizedCompositionTarget)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+[xUnit.net 00:00:05.78]          在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+[xUnit.net 00:00:05.78]          在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+[xUnit.net 00:00:05.78]          在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+[xUnit.net 00:00:05.78]          在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+[xUnit.net 00:00:05.78]          在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.DispatcherOperation.Invoke()
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.Dispatcher.ProcessQueue()
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+[xUnit.net 00:00:05.78]          在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+[xUnit.net 00:00:05.78]          在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+[xUnit.net 00:00:05.78]          在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+[xUnit.net 00:00:05.78]          在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.DispatcherOperation.Wait(TimeSpan timeout)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherOperation operation, CancellationToken cancellationToken, TimeSpan timeout)
+[xUnit.net 00:00:05.78]          在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+[xUnit.net 00:00:05.78]          在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.FlushLayout(Window window) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 307
+[xUnit.net 00:00:05.78]          在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.VerifyScenario(GameSaveCenterThemeMode theme, Double width, Double height) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 116
+[xUnit.net 00:00:05.78]          在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.<>c__DisplayClass3_0.<ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 60
+[xUnit.net 00:00:05.78]       Stack Trace:
+[xUnit.net 00:00:05.78]            在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 73
+[xUnit.net 00:00:05.81]   Finished:    GameSaveCenter.Playnite.Tests
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+  失败 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups [2 s]
+  错误消息:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   System.ComponentModel.Win32Exception (0x80004005): 参数错误。
+   在 MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)
+   在 MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)
+   在 System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()
+   在 System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()
+   在 System.Windows.ContextLayoutManager.fireAutomationEvents()
+   在 System.Windows.ContextLayoutManager.UpdateLayout()
+   在 System.Windows.ContextLayoutManager.UpdateLayoutCallback(Object arg)
+   在 System.Windows.Media.MediaContext.FireInvokeOnRenderCallbacks()
+   在 System.Windows.Media.MediaContext.RenderMessageHandlerCore(Object resizedCompositionTarget)
+   在 System.Windows.Media.MediaContext.RenderMessageHandler(Object resizedCompositionTarget)
+   在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+   在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Windows.Threading.DispatcherOperation.Invoke()
+   在 System.Windows.Threading.Dispatcher.ProcessQueue()
+   在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   在 System.Windows.Threading.DispatcherOperation.Wait(TimeSpan timeout)
+   在 System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherOperation operation, CancellationToken cancellationToken, TimeSpan timeout)
+   在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.FlushLayout(Window window) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 307
+   在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.VerifyScenario(GameSaveCenterThemeMode theme, Double width, Double height) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 116
+   在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.<>c__DisplayClass3_0.<ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 60
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 73
+
+测试总数: 1
+     失败数: 1
+总时间: 7.3881 秒
+结果文件: [repo]\artifacts\build-diagnostics\20261024T173618477Z-d107dea1\tests\wpf.Q14FilterLabelBehaviorTests\wpf.Q14FilterLabelBehaviorTests.trx
+[xUnit.net 00:00:05.78]     GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups [FAIL]
+测试运行失败。

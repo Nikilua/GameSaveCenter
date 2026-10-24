@@ -1,3 +1,11 @@
+## 2026-10-25 外机本地stash冲突确认与Q14复测
+
+用户外机命令输出显示PowerShell 7.6.7、`main...origin/main [behind 2]`，并有多份改动文件和未跟踪证据。其 `GamePickerViewModel.cs` diff 明确含 `<<<<<<< Updated upstream`、`=======`、`>>>>>>> Stashed changes`，直接触发CS8300；当前输入的完整diff命令粘连了两次，但展示出来的冲突片段已足以确认该文件未解决冲突。保留这些本地源码、文档、测试及未跟踪文件，不要reset、checkout覆盖或清理。
+
+外机安全步骤仍是先执行 `git stash push --include-untracked -m "保存本地GamePicker改动"`，确认 `git status --short --branch` 干净后再 `git pull --ff-only origin main`，并从快进后的HEAD运行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`。stash先保留；只有完整链成功并另行检查stash完整diff后，才恢复个人改动。R09日志的Expected2/Actual1是独立测试失败，且缺少外机HEAD/DLL身份，不能与本机当前源码2/2结果等同。
+
+本机 `100429d0` 默认根入口run `20261024T173618477Z-d107dea1` 在Q14第35类失败（Win32标题读取参数错误，1308项1289通过/18跳过/1失败）。Q14在每个合成窗口关闭后增加dispatcher `ApplicationIdle` 排空；使用SDK8.0.423及该候选提交身份重编后，六次独立定向运行6/6。失败根链和定向TRX见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q14-automation-drain-20261025/README.md`。修正后的默认根入口完整链仍待提交候选后验证；外机快进后的根链也未收到。
+
 ## 2026-10-25 T00-03 SDK 恢复矩阵更新
 
 `Test-SdkBootstrapRecovery.ps1` 增加截断安装脚本解析失败及安装器假报成功、实际只观察到SDK9.0.302的负例。PowerShell Core7.6.2和Windows PowerShell5.1.22000.2538各4/4、退出0；失败后进程环境恢复，bootstrap临时文件清理，后续重试精确验证8.0.423。JSON结果统一UTF-8，证据和测试脚本身份见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/recovery-20261025-verified/README.md`。这些是隔离故障注入，不是实际网络或真实SDK归档损坏测试。T00-03控制流验收完成；本阶段提交后需重新跑默认标准根入口全链，不能沿用fbd8a882的旧脚本证据。外机最新失败仍来自 `GamePickerViewModel.cs` 未解决stash冲突标记；用户尚未提供快进后构建结果。

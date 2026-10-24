@@ -1,3 +1,9 @@
+## 2026-10-25 标准入口Q14时序失败与夹具收尾复测
+
+默认根.cmd候选 `100429d0`（build run `20261024T173618477Z-d107dea1`）通过XAML、Release编译、Core157/157、Worker400/400，在WPF第35/145类Q14中遇到一次 `WindowAutomationPeer.GetNameCore` / `GetWindowTextLength` Win32参数错误，累计1308项1289通过/18跳过/1失败；未发布、安装或启动。保留失败summary/TRX/console于 `evidence/T00-01/q14-automation-drain-20261025/`。
+
+在合成窗口关闭后等待Dispatcher `ApplicationIdle`，让待处理窗口布局/UIA回调在下一场景创建前排空。SDK8.0.423与显式源码根/提交身份下重编测试程序集，Q14首次运行1/1，随后五个独立VSTest进程各1/1，共6/6，结果TRX已归档；没有跳过UIA或放松断言。VSTest成功结束后，部分进程输出WPF TextServices `InvalidComObjectException` 收尾消息，但exit code仍为0。源码和证据已归档，标准根入口需在提交后重跑；T00-01保持实施中。外机 `ea926c5e` 的 `GamePickerViewModel.cs` 中 `Updated upstream`/`Stashed changes` 冲突标记确证CS8300编译失败的直接原因，改动未清理或覆盖。
+
 ## 2026-10-25 T00-03 SDK 恢复矩阵补强
 
 扩展 `scripts/tests/Test-SdkBootstrapRecovery.ps1`：下载中断后写入的部分文件、截断的安装脚本、安装器退出0但SDK仍只见9.0.302三种失败均须给出可诊断错误并恢复环境/清理本次bootstrap目录；后续重试必须准确观察到8.0.423。Core7.6.2和Desktop5.1.22000.2538各4/4、退出0。证据含两宿主结构化结果及SHA，Windows PowerShell输出也统一写为UTF-8：`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/recovery-20261025-verified/README.md`。仅为故障注入，不称真实网络或SDK归档故障已复现。T00-03记已验收；最终标准根入口需在本阶段提交后跑完整链。初次试验揭示的夹具分支错误和PS5输出编码差异已修正，未改产品源码或系统SDK。
