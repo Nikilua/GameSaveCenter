@@ -1,0 +1,192 @@
+{
+  "scope": "Current fact/memory/worklog/handoff/backlog and reliability evidence Markdown relative links; code literals, images and external URLs excluded",
+  "markdownFiles": 18,
+  "relativeLinks": 763,
+  "missing": [
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../artifacts/ui-host-audit-round2-fp-data2-20260915/host-startup-blocker.json"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../artifacts/ui-host-audit-round2-fp-final6-20260915/"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../.tmp/ui-finesse-qa-final-20260913/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../artifacts/ui-host-audit-current-20260913/"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../.tmp/icon-qa-clean-20260910/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../.tmp/qa-table-ambient-20260910/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../.tmp/render-qa-head-clean-20260910/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "../../artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md"
+    },
+    {
+      "file": "docs/ai/WORKLOG.md",
+      "target": "docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/STANDARD_BUILD_20261022.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/DEV-INSTALL-009-20261020/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-05/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md"
+    },
+    {
+      "file": "docs/DEVELOPMENT_HANDOFF.md",
+      "target": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-05/verification-identity.json"
+    }
+  ],
+  "deletesPerformed": 0
+}

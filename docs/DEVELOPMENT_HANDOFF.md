@@ -1,3 +1,7 @@
+## 2026-10-24 T03审查与标准入口打包拒绝
+
+f25be527标准入口run20261024T011955949Z-373356e8：Release0警告/0错误、1967项1910通过/57既有skip/0失败，145WPF类全部结束；运行期间修正两份跟踪文档触发打包身份保护，根入口退出1，未安装/启动。失败原摘要与脱敏控制台见专项T03-01，最后完整成功仍b55d8d1d。T03审查复用S07能力，修正33处相对链接、13处标注历史输出当前不可用；750链接复核0失效，失败历史未删。先提交再重跑默认完整链，期间冻结所有跟踪文件。真实宿主/DPI等未验边界保留。
+
 ## 2026-10-24 T02-07 详情内容预算回归通过
 
 既有生产任务详情夹具扩展1120/1400 DIP×Light/Dark四种组合，长诊断文本实际非空、横向不越出详情卡，独立详情滚动与至少四行主表可读通过；详情类5/5。复用960×540横图/720×1200竖图比较工具栏、适配/1:1/归一化平移1/1通过。Release0警告/0错误，专项T02-07 TRX已脱敏；最终标准全链及宿主DPI仍待验。
@@ -131,11 +135,11 @@ Round4现为40已验收、2已满足、19代码完成待验收、2待开始、1�
 
 ## 2026-10-22 S00-05 当前 main 标准全链复验
 
-当前源码提交 `5974742f4bea03d4975ff3a447eabe13d52a0e0e` 的根目录 `GameSaveCenter-Run.cmd` 已完整退出 `0`（SDK8.0.423/Release）：XAML 25/25、solution 0/0、Core 157/157、Worker 400/400、Playnite source 567（549 pass、18 skip）、WPF 隔离 782（743 pass、39 skip；140 类）；合计 1,906 项，1,849 pass、57 skip、0 fail/error/timeout/abort，143 份 TRX 计数一致。R08 3/3、R09 2/2。Worker 发布、构建身份、ZIP/PEXT、扩展安装身份和 Playnite 启动全部成功。诊断 run `20261022T012309056Z-3ccfe8e5`；完整阶段、散列和首次 R08 testhost 挂起/复跑记录见 [S00-05 标准全链验收](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md)。首次同提交整链在 R08 挂起，随后同 DLL 独立复跑和完整根命令复跑通过；两次结果分别记录，没有覆盖首次失败。原 Round3 TRX/TestResults 保留。
+当前源码提交 `5974742f4bea03d4975ff3a447eabe13d52a0e0e` 的根目录 `GameSaveCenter-Run.cmd` 已完整退出 `0`（SDK8.0.423/Release）：XAML 25/25、solution 0/0、Core 157/157、Worker 400/400、Playnite source 567（549 pass、18 skip）、WPF 隔离 782（743 pass、39 skip；140 类）；合计 1,906 项，1,849 pass、57 skip、0 fail/error/timeout/abort，143 份 TRX 计数一致。R08 3/3、R09 2/2。Worker 发布、构建身份、ZIP/PEXT、扩展安装身份和 Playnite 启动全部成功。诊断 run `20261022T012309056Z-3ccfe8e5`；完整阶段、散列和首次 R08 testhost 挂起/复跑记录见 [S00-05 标准全链验收](design/reviews/ui-finesse-round4-20261018/evidence/S00-05/STANDARD_BUILD_20261022.md)。首次同提交整链在 R08 挂起，随后同 DLL 独立复跑和完整根命令复跑通过；两次结果分别记录，没有覆盖首次失败。原 Round3 TRX/TestResults 保留。
 
 ## 2026-10-22 当前 S00-04 构建交付
 
-最新源提交 `f8b3144e36d190663f760a98aa0602bec6bda2f8` 的完整 `GameSaveCenter-Run.cmd` 已退出 `0`（SDK8.0.423/Release）：XAML 25/25、solution 0 warning/0 error、Core 157/157、Worker 400/400、总计 1,904 项（1,847 通过、57 跳过、0 失败）、WPF 隔离类 140/140。R09 附件所示宽度差异在当前提交的 R09 2/2 未复现。Worker 发布、包身份、ZIP/PEXT、安装版本与 DLL SHA、Playnite 启动均成功；详细身份及诊断 run `20261021T195442896Z-4faecb49` 见 [S00-04 证据](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md)。
+最新源提交 `f8b3144e36d190663f760a98aa0602bec6bda2f8` 的完整 `GameSaveCenter-Run.cmd` 已退出 `0`（SDK8.0.423/Release）：XAML 25/25、solution 0 warning/0 error、Core 157/157、Worker 400/400、总计 1,904 项（1,847 通过、57 跳过、0 失败）、WPF 隔离类 140/140。R09 附件所示宽度差异在当前提交的 R09 2/2 未复现。Worker 发布、包身份、ZIP/PEXT、安装版本与 DLL SHA、Playnite 启动均成功；详细身份及诊断 run `20261021T195442896Z-4faecb49` 见 [S00-04 证据](design/reviews/ui-finesse-round4-20261018/evidence/S00-04/STANDARD_BUILD_20261022.md)。
 
 S00-04 固定/最近命令已实现并受控验证，但真实页面交互、视觉、物理键盘和 IME 候选未验，host verification 保持 pending。Round4 尚未整体完成；继续按 `ROUND4_STATUS.json` 与 `AUTONOMOUS_BACKLOG.md` 处理下一项。用户原有 Round3 TRX/TestResults 不要暂存、修改或清理。
 
@@ -143,7 +147,7 @@ S00-04 固定/最近命令已实现并受控验证，但真实页面交互、视
 
 用户反馈构建反复失败后，完成命令目录键盘交互，并在提交 `22cec5976ee066b32bda07df00eab6d0002f440c` 上从仓库根运行 `GameSaveCenter-Run.cmd`。整链退出码 `0`：SDK8.0.423 Release，XAML `25/25`、solution `0 warning/0 error`、Core `157/157`、Worker `400/400`、Playnite `1,339` 项（1,282 pass、57 skip、0 fail）、WPF 隔离类 `140/140`；全局 TRX 共 1,896 项，1,839 pass、0 fail、57 skip、0 error/timeout/abort。R09 焦点描边 `2/2`。
 
-win-x64 Worker 发布、程序集身份校验、ZIP/PEXT 打包、插件目录清单版本 `0.6.73` / DLL `0.6.73.0` 验证及 Playnite 启动均成功；已安装插件 DLL 与 Release 构建 DLL SHA 相同。诊断 run `20261021T171031616Z-c05bcf5a` 和原始证据哈希见 [S00-03 标准一键验收](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/STANDARD_BUILD_20261022.md)。57 个 skip 是退役“今日工作台”结构断言，都是有原因的跳过项。
+win-x64 Worker 发布、程序集身份校验、ZIP/PEXT 打包、插件目录清单版本 `0.6.73` / DLL `0.6.73.0` 验证及 Playnite 启动均成功；已安装插件 DLL 与 Release 构建 DLL SHA 相同。诊断 run `20261021T171031616Z-c05bcf5a` 和原始证据哈希见 [S00-03 标准一键验收](design/reviews/ui-finesse-round4-20261018/evidence/S00-03/STANDARD_BUILD_20261022.md)。57 个 skip 是退役“今日工作台”结构断言，都是有原因的跳过项。
 
 首次提交后的一次 run 曾在 R11 类输出 `3/3` 后没有继续；该类用两种 TEMP 配置单独复跑均通过，完整 run 重启后该停滞没有复现，140 类全数结束。用户贴出的旧 R09 run 缺失诊断目录，无法识别其 DLL/PDB；当前提交的 R09 已在标准链通过。
 
@@ -151,45 +155,45 @@ win-x64 Worker 发布、程序集身份校验、ZIP/PEXT 打包、插件目录�
 
 ## 2026-10-22 S00-03 键盘交互与标准构建复验
 
-用户反馈一键构建连续失败后，已补命令目录方向键选择、Enter 执行与禁用态防护、IME composition guard、关闭后的焦点返回和插件 UserControl 范围 `Ctrl+Shift+P`；代码提交 `0968309c`，SDK8.0.423 Release 定向测试 `12/12`。SHA-256、TRX 和验证范围见 [S00-03 实施证据](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md)。所附 R09 旧失败因原诊断目录缺失无法确认其源码/DLL/PDB 身份，当前测试源行也与旧堆栈不吻合；最终以本轮当前提交的标准一键运行记录为准。
+用户反馈一键构建连续失败后，已补命令目录方向键选择、Enter 执行与禁用态防护、IME composition guard、关闭后的焦点返回和插件 UserControl 范围 `Ctrl+Shift+P`；代码提交 `0968309c`，SDK8.0.423 Release 定向测试 `12/12`。SHA-256、TRX 和验证范围见 [S00-03 实施证据](design/reviews/ui-finesse-round4-20261018/evidence/S00-03/IMPLEMENTATION.md)。所附 R09 旧失败因原诊断目录缺失无法确认其源码/DLL/PDB 身份，当前测试源行也与旧堆栈不吻合；最终以本轮当前提交的标准一键运行记录为准。
 
 代码提交前跑过一次完整默认链：Release solution 编译 0 warning/0 error、Core 157/157、Worker 400/400、WPF 140 类（1,895 项中 1,838 通过、57 跳过、0 失败），随后 package identity gate 因源文件未提交退出 1。这是干净打包保护，不是构建或测试失败。后续完整标准链通过，见本文件上方的最新记录。真实物理键盘、IME 候选和最终 Playnite 呈现仍须单独验收。用户已有 Round3 未跟踪 TRX 与 `TestResults/` 保留。
 
 ## 2026-10-21 用户滚动问题与本地默认构建结论
 
-已对存档表格滚动条越过详情、任务队列滚动边界和路径候选数据裁切继续复核。当前本机官方 SDK8.0.423 `scripts/build.ps1 -Configuration Release` 默认全流程成功：XAML `25/25`、Release solution `0 warning / 0 error`、1,891 项结果中 `1,823 pass / 0 fail / 68 skip`；RenderHarness 离屏布局报告 `render-qa OK`。原始阶段日志、逐项 TRX 与离屏报告见 [证据包](docs/design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。68 个跳过的原因已逐项分类记录；此结论不包含 Playnite 真机/安装/物理屏幕验收，也不代表 Round4 完成。S00-01 仍为已满足，当前无依赖已满足的 READY 项。原有 Round3 未跟踪 TRX/TestResults 保持未提交。
+已对存档表格滚动条越过详情、任务队列滚动边界和路径候选数据裁切继续复核。当前本机官方 SDK8.0.423 `scripts/build.ps1 -Configuration Release` 默认全流程成功：XAML `25/25`、Release solution `0 warning / 0 error`、1,891 项结果中 `1,823 pass / 0 fail / 68 skip`；RenderHarness 离屏布局报告 `render-qa OK`。原始阶段日志、逐项 TRX 与离屏报告见 [证据包](design/reviews/ui-finesse-round4-20261018/evidence/SCROLL-DEFAULT-SDK8-20261021/README.md)。68 个跳过的原因已逐项分类记录；此结论不包含 Playnite 真机/安装/物理屏幕验收，也不代表 Round4 完成。S00-01 仍为已满足，当前无依赖已满足的 READY 项。原有 Round3 未跟踪 TRX/TestResults 保持未提交。
 
 ## 2026-10-21 当前进展：SDK8 S02 复核、滚动视口修正，宿主门禁待验
 
-本轮用 SDK `8.0.423` 通过官方 Release solution restore/build（`-SkipTests`）：XAML `25/25`、编译 `0 warning / 0 error`。S02-04 至 S02-08 通知/上下文定向回归在同一构建输出通过；S02-04 controlled verification 已登记为 passed，S02-04 至 S02-08 仍保持“代码完成待验收”，真实 Playnite及完整 WPF 独立循环未验。R05 鼠标用例 2 pass/1 skip，skip 原因是当前 Windows 会话不允许读取系统鼠标位置。详情：[SDK8 S02 当前源码复核](docs/design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。滚动几何、任务筛选行、R22 时间显示与本地回归边界见[本地 UI 复核](docs/design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。原 Round3 未跟踪 TRX 与 `TestResults/` 保留。
+本轮用 SDK `8.0.423` 通过官方 Release solution restore/build（`-SkipTests`）：XAML `25/25`、编译 `0 warning / 0 error`。S02-04 至 S02-08 通知/上下文定向回归在同一构建输出通过；S02-04 controlled verification 已登记为 passed，S02-04 至 S02-08 仍保持“代码完成待验收”，真实 Playnite及完整 WPF 独立循环未验。R05 鼠标用例 2 pass/1 skip，skip 原因是当前 Windows 会话不允许读取系统鼠标位置。详情：[SDK8 S02 当前源码复核](design/reviews/ui-finesse-round4-20261018/evidence/SDK8-S02-RECHECK-20261021/README.md)。滚动几何、任务筛选行、R22 时间显示与本地回归边界见[本地 UI 复核](design/reviews/ui-finesse-round4-20261018/evidence/LOCAL-UI-RECHECK-20261021/README.md)。原 Round3 未跟踪 TRX 与 `TestResults/` 保留。
 
-用户截图指出存档历史、路径校验和任务队列表格内部滚动条进入下方详情区域，部分数据被遮挡。此前 `43b869d1` 收拢紧凑工具区并移出表格框架内的详情入口；后续 `a1a86e41` 修复页面高度输入，已测量的页面 ScrollViewer 视口优先限制表格空间。SDK9.0.302 Release solution `0 warning / 0 error`；页面/表格几何与清单入口测试 `23/23`。证据：[滚动视口修复](docs/design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。测试为离屏 WPF，未在真实 Playnite 或物理 DPI 下验屏。
+用户截图指出存档历史、路径校验和任务队列表格内部滚动条进入下方详情区域，部分数据被遮挡。此前 `43b869d1` 收拢紧凑工具区并移出表格框架内的详情入口；后续 `a1a86e41` 修复页面高度输入，已测量的页面 ScrollViewer 视口优先限制表格空间。SDK9.0.302 Release solution `0 warning / 0 error`；页面/表格几何与清单入口测试 `23/23`。证据：[滚动视口修复](design/reviews/UI-SCROLL-VIEWPORT-REPAIR-20261021/README.md)。测试为离屏 WPF，未在真实 Playnite 或物理 DPI 下验屏。
 
-S06-06 `fb33cd11` 按稳定 ID 刷新清单当前对象和父游戏摘要，只保存在瞬时 UI 投影中；Worker `3/3`。完整证据：[S06-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)。源文件 ACL/物理可读性仍不从 Worker 索引状态推断。S06-07 `96a3eab3` 提供脱敏只读清单预览和显式复制；SDK9 Release solution `0/0`，定向测试 `13/13`。证据：[S06-07](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。S06-08 `09ec3c84` 补原生清单 JSON 跨会话与损坏字段恢复回归；Playnite.Tests Rebuild `0/0`、设置/清单定向测试 `27/27`。证据：[S06-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。S00-03 审计确认方向键/Enter 行为仍缺，且必须等待 S00-02 SDK8 WPF 与安装/版本门禁；前置在 R05 `GetCursorPos` Win32 error 5 停止。详见 [S00-03 审计](docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md)。SDK8.0.423 已用于本轮受控构建和定向测试；完整 WPF/安装、真实 Playnite 启停及宿主磁盘原子性未验证；原 Round3 未跟踪 TRX/TestResults 保留。S00-03 与 S07-03 仍为外部阻塞，S00-04～08 仍待依赖准入，计划内没有依赖已满足的 READY 项。
+S06-06 `fb33cd11` 按稳定 ID 刷新清单当前对象和父游戏摘要，只保存在瞬时 UI 投影中；Worker `3/3`。完整证据：[S06-06](design/reviews/ui-finesse-round4-20261018/evidence/S06-06/README.md)。源文件 ACL/物理可读性仍不从 Worker 索引状态推断。S06-07 `96a3eab3` 提供脱敏只读清单预览和显式复制；SDK9 Release solution `0/0`，定向测试 `13/13`。证据：[S06-07](design/reviews/ui-finesse-round4-20261018/evidence/S06-07/README.md)。S06-08 `09ec3c84` 补原生清单 JSON 跨会话与损坏字段恢复回归；Playnite.Tests Rebuild `0/0`、设置/清单定向测试 `27/27`。证据：[S06-08](design/reviews/ui-finesse-round4-20261018/evidence/S06-08/README.md)。S00-03 审计确认方向键/Enter 行为仍缺，且必须等待 S00-02 SDK8 WPF 与安装/版本门禁；前置在 R05 `GetCursorPos` Win32 error 5 停止。详见 [S00-03 审计](design/reviews/ui-finesse-round4-20261018/evidence/S00-03/AUDIT.md)。SDK8.0.423 已用于本轮受控构建和定向测试；完整 WPF/安装、真实 Playnite 启停及宿主磁盘原子性未验证；原 Round3 未跟踪 TRX/TestResults 保留。S00-03 与 S07-03 仍为外部阻塞，S00-04～08 仍待依赖准入，计划内没有依赖已满足的 READY 项。
 
 ## 2026-10-21 Round4 S05-08 情景性能验证已验收
 
-提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 为维护中心保留策略页增加有界命名情景设置；支持选择载入、保存/更新、复制、重命名、删除和最近成功快照时间。它与生效策略分离；结果与清理预览句柄不缓存。旧设置缺字段仍可读取，便携设置包含命名情景。精确提交 SDK `8.0.423` Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation/diff check 通过。完整证据：[S05-06](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验；保留旧 Round3 TRX/TestResults。
+提交 `313fabc18b9a7f3b627da748cc4dd6c3bd6f0cda` 为维护中心保留策略页增加有界命名情景设置；支持选择载入、保存/更新、复制、重命名、删除和最近成功快照时间。它与生效策略分离；结果与清理预览句柄不缓存。旧设置缺字段仍可读取，便携设置包含命名情景。精确提交 SDK `8.0.423` Release solution `0/0`、XAML `25/25`、定向测试 `13/13`、双主题 RenderHarness `0 PROBLEM`、source validation/diff check 通过。完整证据：[S05-06](design/reviews/ui-finesse-round4-20261018/evidence/S05-06/README.md)。真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验；保留旧 Round3 TRX/TestResults。
 
-提交 `dc696fb0` 加入维护页情景比较的取消入口、10,000 版本硬上限和结束前版本/有效策略重验；超限明确拒绝，过期返回空结果并提示重算，不触碰清理 Apply。SDK9 Worker 29/29、维护页 Light/Dark 2/2、Release solution 0 error。详情、TRX 和构建边界：[S05-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。本机没有 SDK8.0.423；真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验。
+提交 `dc696fb0` 加入维护页情景比较的取消入口、10,000 版本硬上限和结束前版本/有效策略重验；超限明确拒绝，过期返回空结果并提示重算，不触碰清理 Apply。SDK9 Worker 29/29、维护页 Light/Dark 2/2、Release solution 0 error。详情、TRX 和构建边界：[S05-08](design/reviews/ui-finesse-round4-20261018/evidence/S05-08/README.md)。本机没有 SDK8.0.423；真实 Playnite/完整 WPF 隔离/物理 DPI/CEF 未验。
 
 ## 历史：2026-10-21 Round4 S06-01/S06-02 已验收；S06-03 当时准入
 
-`40a82b15` 完成 S06-01 有界清单契约；`85400645` 为存档版本、媒体、任务和校验问题详情接入确认后保存稳定引用的待办入口。Release solution `0 warning/0 error`，Playnite `8/8`、Worker `2/2`，source validation 通过，WPF 静态审查 `0 errors`。完整证据：[S06-02](docs/design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md)。真实 Playnite 未运行；现有 CEF/权限边界未重试或绕过。
+`40a82b15` 完成 S06-01 有界清单契约；`85400645` 为存档版本、媒体、任务和校验问题详情接入确认后保存稳定引用的待办入口。Release solution `0 warning/0 error`，Playnite `8/8`、Worker `2/2`，source validation 通过，WPF 静态审查 `0 errors`。完整证据：[S06-02](design/reviews/ui-finesse-round4-20261018/evidence/S06-02/README.md)。真实 Playnite 未运行；现有 CEF/权限边界未重试或绕过。
 
 当时 S06-03 审计确认最近访问、筛选预设、校验 triage 和各页面队列不是异构人工清单；该项后续已由提交 `0fc43773` 完成，当前验收与下一项见本交接顶部。
 
 ## 历史：2026-10-21 Round4 S05-03 至 S05-05 已验收
 
-S05-03 `e6279b7d` 将历史逻辑增长作为样本观察范围/未知，分开用户假设、本地卷与未知远端容量，不推算耗尽日期。S05-04 `cf50643c` 在维护中心当前可见的存储卡分别展示本地存档、镜像、恢复 staging、媒体目录的文件长度/文件数和可用 SQLite 逻辑量；无合计，空目录为 0、不可用为未知、重复路径提示勿相加。S05-05 `2fd0aa04` 将当前/候选策略总量比较下钻到逐游戏和变化版本，展示锁定、PreRestore、健康恢复点保护；只读确认符合归档路径安全条件的文件，不生成清理句柄。SDK `8.0.423` 精确提交 Release solution `0/0`，Worker `2/2`、生产维护页 Light/Dark 双层滚动行为 `2/2`、RenderHarness 无问题。证据：[S05-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)、[S05-04](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)、[S05-05](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI/卷簇实占与宿主滚动未验；保留用户的 Round3 TRX/TestResults。随后 S05-06 已验收，当前下一步审计 S05-07。
+S05-03 `e6279b7d` 将历史逻辑增长作为样本观察范围/未知，分开用户假设、本地卷与未知远端容量，不推算耗尽日期。S05-04 `cf50643c` 在维护中心当前可见的存储卡分别展示本地存档、镜像、恢复 staging、媒体目录的文件长度/文件数和可用 SQLite 逻辑量；无合计，空目录为 0、不可用为未知、重复路径提示勿相加。S05-05 `2fd0aa04` 将当前/候选策略总量比较下钻到逐游戏和变化版本，展示锁定、PreRestore、健康恢复点保护；只读确认符合归档路径安全条件的文件，不生成清理句柄。SDK `8.0.423` 精确提交 Release solution `0/0`，Worker `2/2`、生产维护页 Light/Dark 双层滚动行为 `2/2`、RenderHarness 无问题。证据：[S05-03](design/reviews/ui-finesse-round4-20261018/evidence/S05-03/README.md)、[S05-04](design/reviews/ui-finesse-round4-20261018/evidence/S05-04/README.md)、[S05-05](design/reviews/ui-finesse-round4-20261018/evidence/S05-05/README.md)。真实 Playnite、完整 WPF 隔离循环、物理 DPI/卷簇实占与宿主滚动未验；保留用户的 Round3 TRX/TestResults。随后 S05-06 已验收，当前下一步审计 S05-07。
 
 ## 2026-10-20 用户反馈：页面滚动区域回归修复
 
-存档历史、路径候选与任务队列的整页根容器不再用旧 `ActualHeight` 固定高度；表格和详情继续使用有限内部滚动，额外页面内容由 PageHost 外层承载。SDK8 Release solution `0/0`，几何回归 `5/5`，资源/源码契约 `4 pass / 1 historical skip`。证据：[滚动修复](docs/design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。验证为离屏 STA/WPF，不代表真实 Playnite 或物理 DPI。后续已完成 S05-03 至 S05-05。
+存档历史、路径候选与任务队列的整页根容器不再用旧 `ActualHeight` 固定高度；表格和详情继续使用有限内部滚动，额外页面内容由 PageHost 外层承载。SDK8 Release solution `0/0`，几何回归 `5/5`，资源/源码契约 `4 pass / 1 historical skip`。证据：[滚动修复](design/reviews/UI-SCROLL-LAYOUT-REPAIR-20261020/README.md)。验证为离屏 STA/WPF，不代表真实 Playnite 或物理 DPI。后续已完成 S05-03 至 S05-05。
 
 ## 2026-10-20 Round4 S05-02 已受控验收
 
-提交 `5f1431f2` 为维护中心保留策略页增加当前逐游戏策略与统一候选策略的只读对比。审计确认既有全局清理模拟器只有当前策略，存储趋势没有候选规则侧。版本和当前策略经一条 SQLite 查询读取，两边使用同一快照与 UTC 截止时间，复用 `RetentionPlanner`；增长范围标为用户假设，不参与保留计数，对比没有清理预览或 Apply 授权。SDK `8.0.423` 精确提交 Release 一键隔离 no-start 构建/Worker 发布/安装 `0/0`，Worker 对账 `14/14`、生产 WPF 双主题行为 `2/2`、RenderHarness `0 PROBLEM`。完整证据见 [S05-02](docs/design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。实际 Playnite 页面、物理 DPI、完整 WPF 隔离循环未验。之后 S05-03 与 S05-04 已验收；旧 Round3 未跟踪 TRX 和 TestResults 保留。
+提交 `5f1431f2` 为维护中心保留策略页增加当前逐游戏策略与统一候选策略的只读对比。审计确认既有全局清理模拟器只有当前策略，存储趋势没有候选规则侧。版本和当前策略经一条 SQLite 查询读取，两边使用同一快照与 UTC 截止时间，复用 `RetentionPlanner`；增长范围标为用户假设，不参与保留计数，对比没有清理预览或 Apply 授权。SDK `8.0.423` 精确提交 Release 一键隔离 no-start 构建/Worker 发布/安装 `0/0`，Worker 对账 `14/14`、生产 WPF 双主题行为 `2/2`、RenderHarness `0 PROBLEM`。完整证据见 [S05-02](design/reviews/ui-finesse-round4-20261018/evidence/S05-02/README.md)。实际 Playnite 页面、物理 DPI、完整 WPF 隔离循环未验。之后 S05-03 与 S05-04 已验收；旧 Round3 未跟踪 TRX 和 TestResults 保留。
 
 ## 2026-10-20 一键构建、安装、启动默认流程已验证通过
 
@@ -197,19 +201,19 @@ S05-03 `e6279b7d` 将历史逻辑增长作为样本观察范围/未知，分开�
 
 本机从默认入口 `GameSaveCenter-Run.cmd` 跑完默认全链，退出码 `0`。SDK `8.0.423`，Release solution `0 warning / 0 error`；Core `157/157`、Worker `383/383`、Playnite `1812` 项中 `1754` 通过、`58` 跳过、0 失败/错误/超时/中断；WPF 隔离 `137/137` 类完成。R09 `2/2`、R10 `5/5`。自包含 Worker 发布、包生成、扩展安装和 Playnite 启动成功；安装 manifest `0.6.73`、插件 DLL `0.6.73.0`，安装 DLL 与本次构建哈希一致，Playnite PID `11068` 已启动且响应。
 
-此前全量流程还暴露出隔离 WPF 测试的 shadow-copy 临时目录累积并耗尽磁盘，以及帮助 Popup 阻止测试进程退出；前者按类清理本轮新增的隔离 TEMP 项，后者在清理阶段关闭 Popup 并设置 2 分钟挂起诊断。诊断 ID `20261019T184725162Z-607fe456`，运行提交 `f70b806e21277f257f5b7b0f3eb7ae572cc66768`；分组结果和本地日志位置见 [DEV-INSTALL-009 全链验收记录](docs/design/reviews/DEV-INSTALL-009-20261020/README.md)。此次验证了构建、测试、安装与进程启动；没有声称已检查真实 Playnite 窗口的页面视觉效果。
+此前全量流程还暴露出隔离 WPF 测试的 shadow-copy 临时目录累积并耗尽磁盘，以及帮助 Popup 阻止测试进程退出；前者按类清理本轮新增的隔离 TEMP 项，后者在清理阶段关闭 Popup 并设置 2 分钟挂起诊断。诊断 ID `20261019T184725162Z-607fe456`，运行提交 `f70b806e21277f257f5b7b0f3eb7ae572cc66768`；分组结果和本地日志位置见 [DEV-INSTALL-009 全链验收记录](design/reviews/DEV-INSTALL-009-20261020/README.md)。此次验证了构建、测试、安装与进程启动；没有声称已检查真实 Playnite 窗口的页面视觉效果。
 
 ## 2026-10-20 用户反馈：页面与表格滚动区修复
 
-存档历史、候选路径、任务中心和当前媒体页采用 PageHost 视口内的页面滚动，加上限高的表格/列表内部滚动。数据仍可通过内层表格滚动查看，页面向下滚动可到达详情；收件箱尺寸算法保持原状。SDK8 Release solution `0/0`，定向 WPF `9/9`，全尺寸双主题 RenderHarness `0 PROBLEM`；合成截图和几何/TRX 见 [滚动区证据](docs/design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。RenderHarness 为合成数据、逻辑 DPI 1.0，不代表真实 Playnite 呈现。滚动修复后续接 S04-04 和 S04-05；当前下一项 READY 为 S04-06。
+存档历史、候选路径、任务中心和当前媒体页采用 PageHost 视口内的页面滚动，加上限高的表格/列表内部滚动。数据仍可通过内层表格滚动查看，页面向下滚动可到达详情；收件箱尺寸算法保持原状。SDK8 Release solution `0/0`，定向 WPF `9/9`，全尺寸双主题 RenderHarness `0 PROBLEM`；合成截图和几何/TRX 见 [滚动区证据](design/reviews/UI-SCROLL-VIEWPORT-20261020/README.md)。RenderHarness 为合成数据、逻辑 DPI 1.0，不代表真实 Playnite 呈现。滚动修复后续接 S04-04 和 S04-05；当前下一项 READY 为 S04-06。
 
 ## 2026-10-20 Round4 S04-05 已验收，下一项 S04-06
 
-S00-01 已由当前账本和既有行为证据标为满足；S00-02 的完整 UI 门禁仍受 R05 `GetCursorPos` 权限边界阻挡。S04-03 使用既有 `f51e5c9e` 同步缩放/平移能力，详细受控证据见 [S04-03](docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。
+S00-01 已由当前账本和既有行为证据标为满足；S00-02 的完整 UI 门禁仍受 R05 `GetCursorPos` 权限边界阻挡。S04-03 使用既有 `f51e5c9e` 同步缩放/平移能力，详细受控证据见 [S04-03](design/reviews/ui-finesse-round4-20261018/evidence/S04-03/README.md)。
 
-S04-04 提交 `9e0af12b` 加入图片擦除对照、A 左/B 右、透明棋盘背景和键盘位置调整；复用现有异步缩略图源。SDK8.0.423 Release solution `0/0`，媒体比较生产 WPF 行为 `2/2`；证据、TRX、合成渲染截图和哈希见 [S04-04](docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。VSTest 成功，但 WPF 关闭阶段输出 `TextServicesContext.InvalidComObjectException`。真实 Playnite、真实媒体、物理 DPI 和物理鼠标拖动未验证；此功能只供人工视觉比较，不判断内容一致性。
+S04-04 提交 `9e0af12b` 加入图片擦除对照、A 左/B 右、透明棋盘背景和键盘位置调整；复用现有异步缩略图源。SDK8.0.423 Release solution `0/0`，媒体比较生产 WPF 行为 `2/2`；证据、TRX、合成渲染截图和哈希见 [S04-04](design/reviews/ui-finesse-round4-20261018/evidence/S04-04/README.md)。VSTest 成功，但 WPF 关闭阶段输出 `TextServicesContext.InvalidComObjectException`。真实 Playnite、真实媒体、物理 DPI 和物理鼠标拖动未验证；此功能只供人工视觉比较，不判断内容一致性。
 
-S04-05 后续已在 `4d0bfd3c` 完成并推送：比较页新增上一/下一候选与当前位置，固定 A，只在已加载筛选结果内切换 B，保持详情选择和按钮焦点；损坏/缺失图跳过并按边界回退，沿用现有缩略图取消和 generation guard。SDK `8.0.423` Release solution `0/0`，候选导航、生产 WPF 与缩略图迟到行为 `6/6`；受控证据见 [S04-05](docs/design/reviews/ui-finesse-round4-20261018/evidence/S04-05/README.md)。真实 Playnite/物理输入和完整 WPF 隔离循环未验。
+S04-05 后续已在 `4d0bfd3c` 完成并推送：比较页新增上一/下一候选与当前位置，固定 A，只在已加载筛选结果内切换 B，保持详情选择和按钮焦点；损坏/缺失图跳过并按边界回退，沿用现有缩略图取消和 generation guard。SDK `8.0.423` Release solution `0/0`，候选导航、生产 WPF 与缩略图迟到行为 `6/6`；受控证据见 [S04-05](design/reviews/ui-finesse-round4-20261018/evidence/S04-05/README.md)。真实 Playnite/物理输入和完整 WPF 隔离循环未验。
 
 S04-06 已审查为 READY：生产代码只有正式收藏/备注和正式忽略/归类，没有比较会话内可撤销的人工意见标记。建议本轮标记限于比较会话，清空/关闭后不持久化，也不改媒体元数据或文件。
 
@@ -227,7 +231,7 @@ S04-06 已审查为 READY：生产代码只有正式收藏/备注和正式忽略
 
 ## 2026-10-19 Round4 S03-08 来源与方案验收
 
-验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 已受控完成，没有生产代码变化。SDK9.0.302 Release solution build `0/0`，Core 来源图 `10/10`，Playnite `15/15`（含 R09 `2/2`）；覆盖明确父 ID、两设备分叉、同指纹、时钟偏差、41 天 readiness、只读合成文件、草稿重验与原 Restore guard。source validation 通过。当前机器缺少 global.json 要求的 SDK8.0.423，SDK9 结果不替代 SDK8 正式基线；完整 WPF 循环、真实 Playnite与真实恢复未运行。证据：[S03-08](docs/design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项核对 S04-01。
+验收测试提交 `37f42cc2e9920574d43d13cf8018ad6dcf114158` 已受控完成，没有生产代码变化。SDK9.0.302 Release solution build `0/0`，Core 来源图 `10/10`，Playnite `15/15`（含 R09 `2/2`）；覆盖明确父 ID、两设备分叉、同指纹、时钟偏差、41 天 readiness、只读合成文件、草稿重验与原 Restore guard。source validation 通过。当前机器缺少 global.json 要求的 SDK8.0.423，SDK9 结果不替代 SDK8 正式基线；完整 WPF 循环、真实 Playnite与真实恢复未运行。证据：[S03-08](design/reviews/ui-finesse-round4-20261018/evidence/S03-08/README.md)。下一项核对 S04-01。
 
 ## 2026-10-19 Round4 S03-07 脱敏方案导出
 
@@ -319,7 +323,7 @@ S01-08 后按 64 项计划审查 S02-02 收件箱入口的依赖与现有能力�
 
 S00-01 已满足；S01-01 至 S01-05 与 S02-01 均完成 SDK8 受控验证，详见各自 evidence README。S01-02 的密度/设置资源 `14/14`、R09 `2/2`、MediaInbox 几何 `3/3`、R23 双主题生产资源 `9/9`；S01-05 构建 `0 warning / 0 error`、定向隔离测试 `29/29`。完整 WPF 隔离此前在第 45/126 类的 R05 `GetCursorPos` 系统指针读取 Win32 error 5 处停止；剩余 WPF 类及安装/版本核验未运行。不要绕过指针权限；前置条件变化后继续 UI 门禁。
 
-用户最新 R09 日志所示 `Expected 2 DIP / Actual 1 DIP` 与旧测试 `3f7d0b30` 相符；当前 `origin/main` 已含 `f13b9e05` 的 Chrome 1 DIP / ValidationStroke 2 DIP 修正，本机 SDK8 提交 `dcfca235` 当前 R09 `2/2`。用户表示暂时没有外机同次 summary/TRX，不能区分旧 checkout、旧测试 DLL 或旧 PDB 源映射；身份对照详见 [S01-05](docs/design/reviews/ui-finesse-round4-20261018/evidence/S01-05/verification-identity.json)。
+用户最新 R09 日志所示 `Expected 2 DIP / Actual 1 DIP` 与旧测试 `3f7d0b30` 相符；当前 `origin/main` 已含 `f13b9e05` 的 Chrome 1 DIP / ValidationStroke 2 DIP 修正，本机 SDK8 提交 `dcfca235` 当前 R09 `2/2`。用户表示暂时没有外机同次 summary/TRX，不能区分旧 checkout、旧测试 DLL 或旧 PDB 源映射；身份对照详见 [S01-05](design/reviews/ui-finesse-round4-20261018/evidence/S01-05/verification-identity.json)。
 
 ## 2026-10-18 Round4 S02-01 通知记录代码完成
 

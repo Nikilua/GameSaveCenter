@@ -1,3 +1,7 @@
+## 2026-10-24 T03审查与标准入口打包拒绝
+
+f25be527标准入口run20261024T011955949Z-373356e8：Release0警告/0错误、1967项1910通过/57既有skip/0失败，145WPF类全部结束；运行期间修正两份跟踪文档触发打包身份保护，根入口退出1，未安装/启动。失败原摘要与脱敏控制台见专项T03-01，最后完整成功仍b55d8d1d。T03审查复用S07能力，修正33处相对链接、13处标注历史输出当前不可用；750链接复核0失效，失败历史未删。先提交再重跑默认完整链，期间冻结所有跟踪文件。真实宿主/DPI等未验边界保留。
+
 ## 2026-10-24 T02-07 详情内容预算回归通过
 
 既有生产任务详情夹具扩展1120/1400 DIP×Light/Dark四种组合，长诊断文本实际非空、横向不越出详情卡，独立详情滚动与至少四行主表可读通过；详情类5/5。复用960×540横图/720×1200竖图比较工具栏、适配/1:1/归一化平移1/1通过。Release0警告/0错误，专项T02-07 TRX已脱敏；最终标准全链及宿主DPI仍待验。
@@ -1232,7 +1236,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 
 - 盘点并复用现有 `ToggleSwitch`、Binding 和设置模型；`9ec0ab83` 增加实例独占的滑块位移、当前值接续、动效关闭/高对比度回退，并补默认 motion 资源。没有新增服务、DTO、命令或持久化字段。
 - `9ec0ab83` 提交后 Release solution `0 warning / 0 error`、XAML `24/24`；source validation 通过；WPF 静态审查 `0 errors / 30 warnings / 177 info`。精确程序集身份 `0.6.73+9ec0ab8300e3c2ca90d7aaaaf2e3b6eadaa7dd5a`，SHA-256 `F0C628AEF9292AC2FE81BDD1EBFC18DB604C81DD69948E41F5185AF09C91A6BA`。
-- 隔离 WPF 类按各自 testhost 顺序 `1+1+2+1=5/5`：Q10 行为测试覆盖双主题、绑定拒绝、disabled 键盘焦点/UIA 负例、真实动画中间值、连续反向后最新目标、关闭动效清时钟；相邻 R05/R08 和资源契约回归通过。原始 TRX：[Q10-06](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md)。
+- 隔离 WPF 类按各自 testhost 顺序 `1+1+2+1=5/5`：Q10 行为测试覆盖双主题、绑定拒绝、disabled 键盘焦点/UIA 负例、真实动画中间值、连续反向后最新目标、关闭动效清时钟；相邻 R05/R08 和资源契约回归通过。原始 TRX：[Q10-06](../design/reviews/ui-finesse-round3-20260915/evidence/Q10-06-TOGGLE-STATE-20260928.md)。
 - 没有安装或启动真实 Playnite；自动行为不证明宿主最终呈现/物理 DPI，Q10-06 最终视觉仍待验。Round2 进度行和 R ledger 状态按边界保留。
 - 下一步转到用户报告的 Media Inbox 滚动错位，先通过隔离 Playnite 流程复现并记录 build/DPI/theme 和同坐标诊断。旧日志不是这次复现；暂不先验改 DataGrid 模板、虚拟化或锚点恢复。
 
@@ -3614,13 +3618,13 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 ## 2026-09-15 非空隔离库宿主边界复核
 
 - 为补强 Q20 首页统计/活动数据，在当前文档 HEAD `0fb597e` 上以隔离 `games.db`（3 个游戏）重跑 `scripts/real-host-audit.ps1 -Configuration Release`；第一次整目录复制带入旧 `safestart.flag`，第二次改用成功启动过的干净配置、主题、扩展数据与非空 library。
-- 两次均未生成 `summary.json`：第二次在 Playnite 主窗口前再次命中 CEF `mojo platform_channel` `Access denied (0x5)`，产物 [`host-startup-blocker.json`](../../artifacts/ui-host-audit-round2-fp-data2-20260915/host-startup-blocker.json) 明确 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`。
+- 两次均未生成 `summary.json`：第二次在 Playnite 主窗口前再次命中 CEF `mojo platform_channel` `Access denied (0x5)`，产物 `host-startup-blocker.json`（历史输出当前不可用：`../../artifacts/ui-host-audit-round2-fp-data2-20260915/host-startup-blocker.json`；保留当时结论，不作为当前可重查证据） 明确 `VisualEvidenceCaptured=false`、`CountsAsVisualPass=false`。
 - 没有把这次失败当作 Q20 视觉通过，也没有修改用户库或结束用户 Worker `23304`；`37f92f7` 的空库 Embedded Dashboard/Settings 成功证据仍是当前唯一真实像素来源。
 
 ## 2026-09-15 当前提交真实宿主嵌入复核
 
 - 在 `37f92f7` 上用全新隔离 UserData/扩展目录/Worker IPC 运行 `scripts/real-host-audit.ps1 -Configuration Release`，构建、全量测试、打包、安装和真实 Playnite 捕获均成功；XAML `24/24`、构建 `0/0`、Core `83/83`、Worker `311/311`、Playnite `501/558`（57 skip）、失败 `0`。
-- 当前产物 [`artifacts/ui-host-audit-round2-fp-final6-20260915`](../../artifacts/ui-host-audit-round2-fp-final6-20260915/) 的 summary 为 Dashboard/Settings `EmbeddedPlaynite=true`、`HighGateCount=0`，capture manifest 为 29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口；34 张 PNG 中代表 Overview、维护诊断概览和 Settings 已人工检查，150% DPI 与完整 SHA 均写入 metadata。
+- 当前产物 `artifacts/ui-host-audit-round2-fp-final6-20260915`（历史输出当前不可用：`../../artifacts/ui-host-audit-round2-fp-final6-20260915/`；保留当时结论，不作为当前可重查证据） 的 summary 为 Dashboard/Settings `EmbeddedPlaynite=true`、`HighGateCount=0`，capture manifest 为 29 个 Dashboard 视口、2 个滚动面、1 个 Settings 视口；34 张 PNG 中代表 Overview、维护诊断概览和 Settings 已人工检查，150% DPI 与完整 SHA 均写入 metadata。
 - Settings 资源快照确认 `GscPrimaryTextBrush=#FFF2F4F8`、`GscSecondaryTextBrush=#FFB9C0CC`，说明 Q00 暗色前景修复在当前真实嵌入路径得到宿主资源证据。`overflow-classification.json` 仍是唯一分类文件且 `AuditFalsePositive=[]`，不计阻断门禁。
 - Playnite/隔离 Worker 已用官方 shutdown 清理，用户 Worker `23304` 未结束。第二物理屏、低于 560 DIP 短窗、IME/读屏、真实输入组合、ETW 帧与耐久仍按账本保留外部边界。
 
@@ -3885,7 +3889,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 ## 2026-09-13 UI 精修 P03 / P05～P11 证据收口
 
 - 在当前提交 `6c3c238b8ba0c7ce3a010e4234e18cfc34f10ee1` 复用了既有 WPF-UI、Redesign、IconPack、WorkspaceStatePresenter、真实页面命令/绑定和 U12 页面结构；没有新增第二套控件、业务状态或页面滚动模型。P03、P05、P07～P09 的代码项因此按“代码完成待验收”登记，真实宿主交互边界保持单列。
-- 当前 RenderHarness Release 构建为 `0 warning / 0 error`。最终 [`ui-finesse-qa-final-20260913`](../.tmp/ui-finesse-qa-final-20260913/render-qa-report.txt) 返回 `render-qa OK`，覆盖双主题、多尺寸、八入口、状态/筛选/表格、resize 和壳层 PageHost/footer/Inspector 几何；报告中的 `DpiScale=1.00` 是离屏逻辑 DIP。
+- 当前 RenderHarness Release 构建为 `0 warning / 0 error`。最终 `ui-finesse-qa-final-20260913`（历史输出当前不可用：`../.tmp/ui-finesse-qa-final-20260913/render-qa-report.txt`；保留当时结论，不作为当前可重查证据） 返回 `render-qa OK`，覆盖双主题、多尺寸、八入口、状态/筛选/表格、resize 和壳层 PageHost/footer/Inspector 几何；报告中的 `DpiScale=1.00` 是离屏逻辑 DIP。
 - 当前探针全部通过：`statefixtures OK`（6 状态 × 4 入口 × 双主题 × 4 尺寸）；`gridprobe OK`（50/400/2000/4468 行，端点/滑块/滚轮/PageUp/PageDown/Ctrl+End、Item/Recycling、表头 resize）；`thumbnailprobe OK`（120 项、100 次窗口、peak=3、active=0、cache=96/96、取消/坏图/陈旧路径）；`shellqa OK`（720～1040 壳层、Media/Maintenance/Task PageHost 和终态）。对应报告均在 `.tmp/ui-finesse-*` 的 `*-report.txt`。
 - 大数据夹具已实际扩大为 backend `1000/5000/20000`、Media UI window `2000`；scaleprobe 的离屏 `ScrollIntoView` 基线明确为 inconclusive，不能替代真实宿主端点。Render QA 的 rapid-toggle、layout/render 和 shell maxFrameGap 仍是代理字段，不能写成屏幕 presented-frame p50/p95/max。
 - P10-01/P10-02/P10-04、P08-03 和 P11-03 继续外部阻塞：没有可枚举的 Playnite 主窗口（`MainWindowHandle=0`、无 `summary.json`，自动审计 PNG 为 `DedicatedAuditWindow`），没有真实 30 分钟耐久或物理 DPI/键盘/读屏/滚轮采样；安全打包仍被用户现有未跟踪 `src.zip` 阻止。本轮不删除、移动或提交该文件。
@@ -3920,7 +3924,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 - Playnite 原后台进程已退出；使用短路径隔离源码快照运行 `dev-install-run.ps1 -Configuration Release -NoStart`，XAML 24 文件、Release 构建和测试全部通过：Core `76/76`、Worker `311/311`、Playnite `453/510`（57 skip、0 fail）。
 - 安全安装器已将 `GameSaveCenter 0.6.73` 写入当前用户扩展目录，并生成 `artifacts/last-dev-install-current-20260913.txt`；Playnite `playnite.log` 随后记录 `Loaded plugin: GameSaveCenter, version 0.6.73`。
 - 本轮包文件已同步到 `artifacts/GameSaveCenter-0.6.73.pext` 与 `GameSaveCenter-0.6.73-playnite.zip`，均为 `43,809,213` 字节、SHA-256 `20C8FA5D19A61D4378FFDE9E93BBAFAD889F40C9C0F93FEBA3E92E62F376D4C3`；安装 DLL 构建身份为 `0.6.73+a81403478539ec1036aa135198c88e752e7d41d8`。
-- `real-host-audit.ps1` 生成 [`artifacts/ui-host-audit-current-20260913`](../../artifacts/ui-host-audit-current-20260913/) 的真实宿主/受控证据，但 `MainWindowHandle=0` 导致 UI Automation 找不到侧栏、未生成 `summary.json`；审计后已用官方 `--shutdown` 优雅关闭宿主。不得把该轮受控矩阵写成真实嵌入 Dashboard 或物理交互通过。
+- `real-host-audit.ps1` 生成 `artifacts/ui-host-audit-current-20260913`（历史输出当前不可用：`../../artifacts/ui-host-audit-current-20260913/`；保留当时结论，不作为当前可重查证据） 的真实宿主/受控证据，但 `MainWindowHandle=0` 导致 UI Automation 找不到侧栏、未生成 `summary.json`；审计后已用官方 `--shutdown` 优雅关闭宿主。不得把该轮受控矩阵写成真实嵌入 Dashboard 或物理交互通过。
 
 ## 2026-09-13 开发提示词包全量门禁复核
 
@@ -4012,7 +4016,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 - 复核用户反馈后确认，上一轮只新增了 `ButtonStyles.xaml` 的语义别名，而生产页面仍使用既有 `GscWpfUi...` 样式，因此用户看不到明显变化；本轮直接修复共享 `GscWpfUiButton` 基础模板，将现有按钮表面和边框切换到 `GscGlassFillBrush` / `GscGlassStrokeBrush`，并让 Primary/Danger 使用已有自适应效果资源，未改命令、Binding、尺寸布局或焦点语义。
 - 侧边栏插件图标采用用户 ZIP 中 `plugin-main.svg` 的手柄线稿 Geometry，`SidebarItem.Icon` 改为 WPF `Path`，描边通过 DynamicResource `GlyphBrush` 交给 Playnite 主题提供，因此浅色/深色主题切换时会自动使用对应的黑/白色；`src/GameSaveCenter.Playnite/icon.png` 同步替换为压缩包的 `plugin-main-256.png` 透明黑色线稿，`extension.yaml` 继续指向该文件。
 - 新增 WPF 回归断言，确认现有按钮使用玻璃令牌、侧栏图标使用主题画笔且 PNG 资产存在。Release 解决方案构建 `0 warning / 0 error`；Core `76/76`、Worker `310/311`（1 skip）、Playnite `434/497`（63 skip），0 失败；源码校验、XAML `21/21`、WPF 静态审查 `0 error / 22 warnings / 172 info` 通过。
-- 代码阶段提交为 `83dc1c4`（中文提交“按钮样式与插件图标跟随主题”）。提交后 RenderHarness 双主题、多尺寸、窗口缩放及生产壳层检查通过，干净报告 [`.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`](../../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。随后已完成真实扩展目录安装，但真实 Playnite/FusionX、用户主题、DPI 和侧栏人工截图仍需用户重启宿主后确认。
+- 代码阶段提交为 `83dc1c4`（中文提交“按钮样式与插件图标跟随主题”）。提交后 RenderHarness 双主题、多尺寸、窗口缩放及生产壳层检查通过，干净报告 `.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`（历史输出当前不可用：`../../.tmp/icon-button-qa-clean-20260910/render-qa-report.txt`；保留当时结论，不作为当前可重查证据） 为 `WorkingTreeClean: True`、`render-qa OK`。随后已完成真实扩展目录安装，但真实 Playnite/FusionX、用户主题、DPI 和侧栏人工截图仍需用户重启宿主后确认。
 
 ## 2026-09-10 主题感知线性图标包接入
 
@@ -4020,8 +4024,8 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 - 导航、设置分类/标题（含常规与目录、设置迁移）、首页活动状态、媒体来源、维护目录操作、修改器列表、任务搜索、共享游戏图标 fallback、Disclosure chevron 和兼容 Dashboard 操作图标统一改为 `Path` 线稿；`Foreground` 由父控件/主题 DynamicResource 提供，保留选中态、状态色、命令、Binding、虚拟化和 UI Automation。
 - 未替换扩展清单的 `icon.png`：压缩包中的 plugin PNG 是透明线稿导出，作为 Playnite 扩展图标存在不可见/黑底风险；当前只将 plugin-main 作为界面内主题感知 fallback 使用。
 - 根据同一 ZIP 补齐 `section-general-directory` 与 `section-migration` 两个设置分类映射，未改变设置字段绑定或迁移命令。
-- Release Playnite 构建 `0 warning / 0 error`；Playnite 测试 `432 passed / 63 skipped / 0 failed`；`validate-source.py`、XAML 结构检查和 `git diff --check` 通过。提交 `460b992` 后重跑的 RenderHarness 双主题、多尺寸和 resize 报告 [`.tmp/icon-qa-clean-20260910/render-qa-report.txt`](../../.tmp/icon-qa-clean-20260910/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。
-- 离屏报告 [`.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt`](../../.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt) 通过；它不替代真实 Playnite 中的 Light/Dark/Follow、用户主题色、125%/150% DPI、键盘焦点和插件清单图标人工验收。
+- Release Playnite 构建 `0 warning / 0 error`；Playnite 测试 `432 passed / 63 skipped / 0 failed`；`validate-source.py`、XAML 结构检查和 `git diff --check` 通过。提交 `460b992` 后重跑的 RenderHarness 双主题、多尺寸和 resize 报告 `.tmp/icon-qa-clean-20260910/render-qa-report.txt`（历史输出当前不可用：`../../.tmp/icon-qa-clean-20260910/render-qa-report.txt`；保留当时结论，不作为当前可重查证据） 为 `WorkingTreeClean: True`、`render-qa OK`。
+- 离屏报告 `.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt`（历史输出当前不可用：`../../.tmp/icon-qa-settings-icons-20260910/render-qa-report.txt`；保留当时结论，不作为当前可重查证据） 通过；它不替代真实 Playnite 中的 Light/Dark/Follow、用户主题色、125%/150% DPI、键盘焦点和插件清单图标人工验收。
 
 ## 2026-09-10 统一 Glass 按钮组件语义
 
@@ -4052,7 +4056,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 
 - 复核第二张图后确认，页面外围的长方形不是图片本身，而是每个生产页面都挂载的 `AmbientMaterialLayer` 绘制的圆角宽域渐变；生产壳层已经有一个跨侧栏、页面和 footer 的统一环境层，两个坐标系叠加后就会出现边界。
 - 新增 `AmbientMaterialLayer.IsShellLayer`：页面实例继续保留以维持现有兼容性和游戏材质路由，但通过 `GscAmbientPageOpacity=0` 透明；唯一可见的 Shell 实例通过该标记跳过页面透明度，并继续使用 `GscShellAmbientOpacity`。背景图片、遮罩、命令、绑定和页面布局未改。
-- 定向 WPF 资源/壳层测试 `176` 项中通过 `137`、跳过 `39`；Release 构建 `0 warning/0 error`，全量回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），失败 `0`。源码、XAML `19/19`、WPF 静态审计（0 error）和 RenderHarness 均通过；干净报告 [`.tmp/qa-table-ambient-20260910/render-qa-report.txt`](../../.tmp/qa-table-ambient-20260910/render-qa-report.txt) 的提交为 `fc3c7d5`、`WorkingTreeClean: True`、`render-qa OK`。真实 Playnite/FusionX、DPI 和物理滚动仍待宿主人工验收。
+- 定向 WPF 资源/壳层测试 `176` 项中通过 `137`、跳过 `39`；Release 构建 `0 warning/0 error`，全量回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `429/492`（63 skip），失败 `0`。源码、XAML `19/19`、WPF 静态审计（0 error）和 RenderHarness 均通过；干净报告 `.tmp/qa-table-ambient-20260910/render-qa-report.txt`（历史输出当前不可用：`../../.tmp/qa-table-ambient-20260910/render-qa-report.txt`；保留当时结论，不作为当前可重查证据） 的提交为 `fc3c7d5`、`WorkingTreeClean: True`、`render-qa OK`。真实 Playnite/FusionX、DPI 和物理滚动仍待宿主人工验收。
 
 ## 2026-09-10 让选中游戏背景覆盖整个生产壳层
 
@@ -4064,7 +4068,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 
 - 从当前 HEAD `8657654` 运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260910-head`；XAML `19/19`，Release 构建 0 warning/0 error，Core `76/76`、Worker `310/311`（1 skip）、Playnite `428/491`（63 skip），Worker `win-x64` 发布、程序集身份和 self-contained 检查均通过。
 - 六份程序集身份统一为 `0.6.73+8657654310d99e349c120f3bb0484b65ac9f4dc2`；`.pext/.zip` 均 `43,837,912` 字节，SHA-256 均为 `E136B5C6465A5A8933C72B0F9707CFF64D91A02D35115B9A007BF6A749B62AB0`。
-- 本次只在测试文件增加运行时覆盖，生产 XAML 未变；随后从当前干净 HEAD 重跑 RenderHarness，报告为 [`.tmp/render-qa-head-clean-20260910/render-qa-report.txt`](../../.tmp/render-qa-head-clean-20260910/render-qa-report.txt)，提交元数据 `5c53e59`、`WorkingTreeClean: True`、`render-qa OK`。隔离构建目录和 Worker staging 已按规则清理，候选包未安装真实 Playnite。
+- 本次只在测试文件增加运行时覆盖，生产 XAML 未变；随后从当前干净 HEAD 重跑 RenderHarness，报告为 `.tmp/render-qa-head-clean-20260910/render-qa-report.txt`（历史输出当前不可用：`../../.tmp/render-qa-head-clean-20260910/render-qa-report.txt`；保留当时结论，不作为当前可重查证据），提交元数据 `5c53e59`、`WorkingTreeClean: True`、`render-qa OK`。隔离构建目录和 Worker staging 已按规则清理，候选包未安装真实 Playnite。
 
 ## 2026-09-10 游戏选择器视觉树运行时回归补强
 
@@ -4076,7 +4080,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 
 - 源码审计确认壳层 `GameContextButton` 与 Dashboard 紧凑选择器都把复合 `Grid` 作为 Button 内容；`GscRedesignGameContextButton` 现在显式设置 `ContentTemplate={x:Null}`，避免宿主隐式文本模板把视觉树显示成 `System.Windows.Controls.Grid`。
 - `WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode` 增加两处选择器实例和共享样式契约断言；定向测试 `1/1`，当时完整 Release 回归为 Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），失败 `0`。
-- `validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors / 22 warnings / 172 info`、`git diff --check` 均通过；干净 RenderHarness 报告为 [`.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt`](../../.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt)，提交 `248d28e`、`WorkingTreeClean: True`、`render-qa OK`。
+- `validate-source.py`、XAML `19/19`、WPF 静态审查 `0 errors / 22 warnings / 172 info`、`git diff --check` 均通过；干净 RenderHarness 报告为 `.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt`（历史输出当前不可用：`../../.tmp/render-qa-gamecontext-clean-20260910/render-qa-report.txt`；保留当时结论，不作为当前可重查证据），提交 `248d28e`、`WorkingTreeClean: True`、`render-qa OK`。
 - 从 `248d28e` 重新生成候选包：程序集身份 `0.6.73+248d28eff8c595516a803f8db356952cef54c166`，`.pext/.zip` 均 `43,837,966` 字节，SHA-256 `628F34B01C478CD30A26260650703C8B77F558561E103D78B24C8A390949DDD3`；staging/隔离构建目录已清理，未安装真实 Playnite。
 
 ## 2026-09-09 首页活动与云端队列实际 WPF 交互回归
@@ -4161,14 +4165,14 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 - 旧 `<236 DIP` 固定阈值把 `MediaInboxGrid=230 DIP` 误报为失败；报告中的实际行高为约 `44 DIP`，该视口仍能完整容纳 `4/4` 行。门禁现在以 DataGrid 行容器相对表格边界的完整可见数判断，数据量足够时要求至少 `4` 行，不用高度常数替代内容视口证据。
 - `MediaClassificationPreviewItems` 和 `MediaClassificationHistoryList` 位于可独立滚动的媒体 Inspector，当前夹具分别为 `2`/`3` 条内容，不是主工作区列表；不再套用主表四行门禁，但仍保留报告中的尺寸和条目记录。
 - resize 探针此前把外层窗口高度 `720` 传给 Media，跳过了生产 PageHost 的紧凑路径并得到错误的 `86 DIP`；现传入 `contentH`，Media resize 表格恢复为 `300 DIP`、`readableRows=6/4`。
-- 提交 `d777e65` 后干净报告 [`.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt) 为 `WorkingTreeClean: True`、`render-qa OK`。这完成了离屏质量门禁，但不把它扩大为真实 Playnite/FusionX 或视频式宿主验收。
+- 提交 `d777e65` 后干净报告 `.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`（历史输出当前不可用：`../../.tmp/render-qa-media-gate-clean-20260909/render-qa-report.txt`；保留当时结论，不作为当前可重查证据） 为 `WorkingTreeClean: True`、`render-qa OK`。这完成了离屏质量门禁，但不把它扩大为真实 Playnite/FusionX 或视频式宿主验收。
 
 ## 2026-09-09 缩略图并发测试与离屏审计夹具修正
 
 - 完整 Playnite 测试曾在 `AsyncThumbnailLoaderTests.LoadAsync_ConcurrentScrollWindowStaysWithinDecodeAndCacheBounds` 报 `Expected 120 / Actual 122`。复核确认生产加载器的 `requestCount`、缓存和信号量是进程级静态状态，`AsyncThumbnailImageTests` 可与它并行修改诊断计数；不是缩略图生产逻辑多发了请求。提交 `c0197e5` 用 `[Collection("ThumbnailLoader", DisableParallelization=true)]` 隔离两个共享状态测试类。
 - 定向缩略图回归 `1/1`，Playnite 全量 `425/488`（63 skip、0 fail）。没有放宽 `120` 断言，也没有改动生产并发上限或缓存上限。
 - 提交 `559d64f` 修正 RenderHarness：Settings 状态夹具使用可访问的临时目录并在结束时清理；Sidebar 完成计时器不再被 Render 优先级的动画 tick 饿死；Media 主题探针使用实际 PageHost 内容高度，避免把外层窗口高度误传给响应式布局。RenderHarness Release 构建 `0 warning/0 error`。
-- 最新干净报告为 [`.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`](../../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt)：Settings normal/dirty/invalid 三态正确，Sidebar rapid-toggle `secondClick=True/finalWidth=270/settled=True`，生产壳层 Media 1040/1100 的表格为 `300 DIP` 且底部区域可达。完整 render-qa 仍被 Media 嵌套预览 `126 DIP`、独立表格 `230 DIP` 和 resize `86 DIP` 门禁判失败；不将这些离屏组合直接当作真实宿主根因。
+- 最新干净报告为 `.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`（历史输出当前不可用：`../../.tmp/render-qa-harness-clean-20260909/render-qa-report.txt`；保留当时结论，不作为当前可重查证据）：Settings normal/dirty/invalid 三态正确，Sidebar rapid-toggle `secondClick=True/finalWidth=270/settled=True`，生产壳层 Media 1040/1100 的表格为 `300 DIP` 且底部区域可达。完整 render-qa 仍被 Media 嵌套预览 `126 DIP`、独立表格 `230 DIP` 和 resize `86 DIP` 门禁判失败；不将这些离屏组合直接当作真实宿主根因。
 
 ## 2026-09-09 浅色主题背景边界与下拉文字对比度修复
 
@@ -4204,7 +4208,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 - 隔离只读数据库快照为 `games=3`、`media=4645`、`tasks=4551`、`game_tools=4`；MediaInbox 本次页面加载 `Items.Count=200`，是分页首批，不等于 4645 条全部进入表格。宿主 DPI 为 `1.5`，Dashboard 为 `1365.33×868 DIP`，主题为 `FollowPlaynite`。
 - 实际 `MediaInboxGrid`/`TaskGrid` 日志均找到负责行滚动的 `ScrollViewer`，`IScrollInfo=ScrollContentPresenter|DataGridRowsPresenter`，`CanContentScroll=True`，`ScrollUnit=Item`。水平滚动条出现时，行内容 Presenter 使用缩小后的实际矩形：Media `0,36,604×279.33`、水平条 `0,315.33,604×12`；Task `0,36,637.33×456`、水平条 `0,492,637.33×12`。
 - 真实宿主采集记录了“正常→呈现过渡→恢复”：Media 在 `10:53:16.509` 的尺寸/滚动过渡帧已有 `rows=7/7`、首末行 `@36/44` 到 `@300/44`、`firstGap=0`、`lastBottom=344`、`clip=0`，但 `visual=5,text=0`；约 32 ms 后恢复为 `visual=5,text=5`、`clip=0`、`state=normal`。Task 也有同类初始帧 `visual=6,text=0`，随后恢复为 `visual=6,text=6`。这些帧均为 `blank=False/gap=False/hOverlap=False`，不能直接等同视频中的持续空白或空选中框。
-- 本次真实嵌入日志没有出现 `anomaly=blank:True`、`gap:True`、`hOverlap:True`，没有记录到行从底部漂回表头；因此当前证据不足以认定视频根因，更不能把瞬态文本尚未绘制写成最终根因。诊断原文和结论见 [`artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md`](../../artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md)。
+- 本次真实嵌入日志没有出现 `anomaly=blank:True`、`gap:True`、`hOverlap:True`，没有记录到行从底部漂回表头；因此当前证据不足以认定视频根因，更不能把瞬态文本尚未绘制写成最终根因。诊断原文和结论见 `artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md`（历史输出当前不可用：`../../artifacts/ui-host-audit-isolated-l36/diagnostics-summary.md`；保留当时结论，不作为当前可重查证据）。
 - `capture-manifest.json` 中媒体收件箱 Inspector、当前游戏媒体列表和 Inspector 的宿主滚动面均为 `CapturedAndValidated`；这证明嵌入滚动面采集完整，但本轮没有通过人工拖动验证“MediaInboxGrid 已加载末项在底部完整可见”。由于当前 Computer Use 没有可识别原生窗口，视频中的滑块 20 次往返、滚轮/PageUp/PageDown/Ctrl+End、选择尾部、水平条显示/隐藏及真实录屏仍标记为 `MANUAL QA REQUIRED`，不能写成已解决。
 - 为使真实宿主启动，修正了 `TrainerCenterView.xaml` 对只读 `TrainerDownloadProgress` 的错误 TwoWay 默认绑定，显式设为 `Mode=OneWay`；这是宿主启动前置错误，不是表格滚动根因。该修复保留在 `e98eba2`，编码读取修正保留在 `99bc976`。
 - L36 运行器已停止隔离 Playnite/Worker；旧 L32/L33/L34/L35 审计目录和克隆数据属于失败/过渡产物，后续清理时只允许删除仓库 `.tmp/`、`artifacts/` 下对应路径，保留 L36 当前证据。
@@ -10805,7 +10809,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 # 2026-09-29 Q13-01 失焦选中当前 main 复核
 
 - 对照 Q13 条件先查已有能力，没有重建共享 selected/focus 模板。当前 `d46d6be5` Release solution/XAML build 成功 `0 warning / 0 error`、XAML `24/24`；`R06SelectionStateBehaviorTests 2/2`、四个生产 DataGrid 浅/深主题状态几何用例 `1/1` 均 exit 0。行为实际从成功行焦点切到外部 TextBox，selection 继续存在且变成 inactive fill/muted border；失败行状态单元格与选中层、透明 cell 内容层保持；生产四表状态下 cell/TextBlock 坐标误差 `<=0.25 DIP`。
-- 结果、当前 test assembly SHA 与两份 TRX：[Q13-01 recheck](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)。复用 `R06-03` 的 Light/Dark RenderHarness 与 Media Inbox 212 DIP 证据，但本次没有重跑 screenshot/render，也没有 Playnite OS input/physical DPI/UIA/presented frame；Q13-01 仍保留外部阻塞/最终未完成。下一项 Q13-02 多选：先盘点 Extended/计数/半选现状，再补 Ctrl/Shift 实际 routed input 与负例。
+- 结果、当前 test assembly SHA 与两份 TRX：[Q13-01 recheck](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-01-RECHECK-20260929/README.md)。复用 `R06-03` 的 Light/Dark RenderHarness 与 Media Inbox 212 DIP 证据，但本次没有重跑 screenshot/render，也没有 Playnite OS input/physical DPI/UIA/presented frame；Q13-01 仍保留外部阻塞/最终未完成。下一项 Q13-02 多选：先盘点 Extended/计数/半选现状，再补 Ctrl/Shift 实际 routed input 与负例。
 
 # 2026-09-29 Q13-02 多选反馈边界核对
 
@@ -10815,18 +10819,18 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 # 2026-09-29 Q13-07 Inbox Inspector 滚动边界集成回归
 
 - 先复核已存在的生产 `ScrollBoundaryRoutingBehavior`、MediaCenter Inbox 页面/Inspector 有界滚动及 R07 通用边界测试；缺口是缺少真实生产页面与 compact-details 打开流程的组合行为。提交 `8e4c32a7` 仅补 `ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary`，无生产 UI/业务代码变更。
-- Release solution/XAML `0 warning / 0 error`、XAML `24/24`、source validation 通过；生产 Media Inbox `5/5`、R07 scroll ownership `2/2`、R07 fine-scroll `2/2` 在独立 testhost exit 0。860×620 DIP synthetic WPF window；Inspector 中段不转移，顶/底分别把 16 DIP 步进传给页面，双顶端负例消费事件。证据与三份 TRX：[Q13-07](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。
+- Release solution/XAML `0 warning / 0 error`、XAML `24/24`、source validation 通过；生产 Media Inbox `5/5`、R07 scroll ownership `2/2`、R07 fine-scroll `2/2` 在独立 testhost exit 0。860×620 DIP synthetic WPF window；Inspector 中段不转移，顶/底分别把 16 DIP 步进传给页面，双顶端负例消费事件。证据与三份 TRX：[Q13-07](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-07-MEDIA-INBOX-SCROLL-CHAIN-20260929/README.md)。
 - 仅合成 routed PreviewMouseWheel，不代表 OS 鼠标/触控板惯性或真实 Playnite；Q13-07 自动行为补证完成，宿主栏仍外部阻塞/最终未完成。下一步核对 Q13-08 稳定分页锚点既有能力。Media Inbox 用户报告的大块空白仍须取得安全真实宿主滚动前后同进程几何，才能选原因和修复。
 
 # 2026-09-29 R08 one-click 间歇失败再次复核
 
 - 用户再次提供 `R08MotionReverseBehaviorTests 1 passed / 1 failed / 2 total` 摘要，没有失败用例名、断言、堆栈或 TRX。本机 `artifacts/one-click-install.log` 最后修改于 9/24，不能用来诊断这次输出。
-- 当前代码身份 `8e4c32a7` Release solution/XAML build `0 warning / 0 error`、`24/24`。在该精确隔离输出中独立串行启动 12 个 VSTest 进程，每轮单跑 R08 类；12 轮均 `2/2`，总 `24/24`、0 failed/skipped、所有 exit `0`。每个 console 都在 xUnit 完成后出现 TextServicesHost `InvalidComObjectException` 清理异常，TRX 随后为通过；根因未知。逐轮原始日志/TRX：[R08 复核](docs/design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
+- 当前代码身份 `8e4c32a7` Release solution/XAML build `0 warning / 0 error`、`24/24`。在该精确隔离输出中独立串行启动 12 个 VSTest 进程，每轮单跑 R08 类；12 轮均 `2/2`，总 `24/24`、0 failed/skipped、所有 exit `0`。每个 console 都在 xUnit 完成后出现 TextServicesHost `InvalidComObjectException` 清理异常，TRX 随后为通过；根因未知。逐轮原始日志/TRX：[R08 复核](../design/reviews/ui-finesse-round3-20260915/evidence/R08-RECHECK-8E4C32A7-20260929/README.md)。
 - 本机未复现，未改动画/测试或放宽断言，不宣称已解决用户失败。继续定位需要失败机器完整 R08 log 段或 TRX（具体测试、错误消息/堆栈及构建身份）。下项按账本核对 Q13-08；Media Inbox 真实滚动空白仍待同进程宿主诊断。
 # 2026-09-29 Q13-08 分页锚点与总数当前身份复核
 
 - 复查既有实现后未发现应新增生产功能的证据：加载更多已捕获/恢复稳定 ID、MediaPageAccumulator 使用有界 ID 去重窗口并保留选中项、Worker 返回分页 TotalCount/HasMore。没有修改生产代码或放宽测试。
-- `2333361ecc38b16d00559a8fb91e551c89e0a17c` Release solution build `0 warning / 0 error`、XAML `24/24`、源码验证通过；MediaInboxScroll `5/5`、MediaWindowAnchorContract `10/10`、R07SelectionAnchor `4/4`、MediaPageAccumulator `6/6`、Worker MediaQueryPersistence `4/4`，共 `29/29`、0 failed/skipped、各独立 VSTest 进程 exit 0。五份 TRX/console、构建日志与二进制 SHA/MVID：[Q13-08 证据](docs/design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。
+- `2333361ecc38b16d00559a8fb91e551c89e0a17c` Release solution build `0 warning / 0 error`、XAML `24/24`、源码验证通过；MediaInboxScroll `5/5`、MediaWindowAnchorContract `10/10`、R07SelectionAnchor `4/4`、MediaPageAccumulator `6/6`、Worker MediaQueryPersistence `4/4`，共 `29/29`、0 failed/skipped、各独立 VSTest 进程 exit 0。五份 TRX/console、构建日志与二进制 SHA/MVID：[Q13-08 证据](../design/reviews/ui-finesse-round3-20260915/evidence/Q13-08-PAGING-ANCHOR-20260929/README.md)。
 - 已覆盖稳定锚点滚动位置、行被淘汰时邻项负例、有界/去重/选中项缓存，以及 fake SQLite 下稳定游标与实际 TotalCount。没有测真实 Playnite 的追加/刷新/删项端到端及 VM 绑定总数；“返回最新”主动回顶为预期。Q13-08 仍保留外部阻塞/未完成，不将离屏行为冒充宿主呈现。
 - 下一可执行项 Q14-01 工具栏同高。Media Inbox 用户滚动缺陷仍需安全真实宿主同进程几何诊断；R08 用户 `1/2` 失败仍缺失败方法/错误/堆栈和构建身份。
 
@@ -10865,7 +10869,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 
 - 用户截图提出数据出现后应收起通用说明，并减少蓝色装饰色。`OverviewView` 的“今日工作台”改成只在快照未加载时显示短句；浅/深色生产 WPF 回归逐步切换状态，验证提示可见→折叠→恢复、header 节省 `20 DIP`，且刷新/备份/媒体同步命令保持绑定。
 - 首页管理游戏数改用主题强调色；Maintenance 动作分类从信息色改用主题次级文字。语义 info 色仍用于云端/运行中等真实状态。实际资源测量对比度为首页大号数值 Light/Dark `4.13/4.77:1`，普通分类文字 `6.43/7.86:1`。
-- Release `0 warnings / 0 errors`，XAML `24/24`，定向 WPF `8/8`；`scripts/validate-source.py` 通过；RenderHarness Light/Dark 全矩阵 `render-qa OK`，无 PROBLEM。WPF 静态审查 `0 errors / 30 warnings / 177 info`。DLL 身份、证据截图和 TRX：[Overview copy/color](docs/design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md)。
+- Release `0 warnings / 0 errors`，XAML `24/24`，定向 WPF `8/8`；`scripts/validate-source.py` 通过；RenderHarness Light/Dark 全矩阵 `render-qa OK`，无 PROBLEM。WPF 静态审查 `0 errors / 30 warnings / 177 info`。DLL 身份、证据截图和 TRX：[Overview copy/color](../design/reviews/ui-finesse-round3-20260915/evidence/USER-REPORTED-OVERVIEW-COPY-COLOR-20260929/README.md)。
 - 未启动 Playnite、未测物理 DPI、OS 输入或宿主呈现；未改变 192 项状态。下一任务跨页审阅数据加载后仍显示的静态说明，只收起确认冗余文本，并保留必要数据解释和真正空状态提示。
 
 # 2026-09-29 Task Center 辅助说明与队列按钮（已满足）
