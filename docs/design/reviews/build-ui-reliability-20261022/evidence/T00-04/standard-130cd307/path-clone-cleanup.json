@@ -1,0 +1,10 @@
+{
+  "path": "[repo]\\.tmp\\路径兼容 空格\\long-build-root-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\\checkout",
+  "files": 6211,
+  "bytes": 546327316.0,
+  "locked": [],
+  "deleted": true,
+  "reason": "All clone builds terminal; relevant failed and successful logs/source identity archived; current standard output retained separately",
+  "beforeFree": 13303349248,
+  "afterFree": 13864587264
+}

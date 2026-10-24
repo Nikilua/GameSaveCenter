@@ -1,3 +1,11 @@
+## 2026-10-24 外机R09失败日志与主线对照
+
+粘贴日志line151 Expected2/Actual1精确吻合旧3f7d0b30对errorChrome.BorderThickness的2 DIP断言。f13b9e05将Chrome设为1 DIP、独立ValidationStroke设为2 DIP，源和测试契约修正；130cd307标准完整链当前R09类2/2。外机提交/源码/DLL/PDB身份缺，确认输入版本不一致，不能仅此定位旧checkout或旧testhost二进制。详情docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R09-OTHER-MACHINE-FAILURE-RECHECK-20261014。建议先保留改动并查看status/HEAD，再快进到130cd307，核对源断言与诊断ProductVersion，不直接reset。
+
+## 2026-10-24 130cd307标准完整链与路径验收通过
+
+默认根.cmd退出0，run20261024T071312317Z-8b9a34fd，SDK8.0.423、XAML25/25、Release0/0，1967项1910通过/57与190bbaea同名既有跳过/0失败，148TRX一致、145WPF类，前次崩溃R12本轮5/5。发布/包/安装六程序集SHA与完整身份匹配，新Playnite/Worker进程及插件实际加载路径已核验；无新增页面/物理输入/DPI结论。T00-04结合真实中文空格长路径与双宿主入口各9/9记已验收。克隆6211文件独占复查无占用、无链接，证据归档后删除；当前构建/包/诊断及用户旧TRX保留。证据T00-04/standard-130cd307。32项尚未整体完成，下一批补实际键盘焦点与SDK恢复等剩余条件。
+
 ## 2026-10-24 T00-04 CMD模块环境修复
 
 共享build.cmd在setlocal内让Desktop初始化自己的PSModulePath，保留调用者环境和原生退出码。双宿主三入口各9/9（含真实Get-FileHash与父环境不变）；原失败中文空格长根中新输出真实Release0/0、SDK8.0.423、退出0（SkipTests）。证据actual-path/fixed-summary标明05072195加build.cmd唯一dirty，修复提交后冻结标准全链待跑。45个自有启动器夹具文件归档后删除；克隆17个分析器占用，保留不强删。
