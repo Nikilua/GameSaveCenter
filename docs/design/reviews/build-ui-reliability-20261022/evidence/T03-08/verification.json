@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-25",
+  "codeCommit": "dcbaab13b9464523ffed6d88ca2748b6fb6dd647",
+  "documentHeadBeforeChecklist": "c36f578034c2e9a1ed93642f3dbba910326f423d",
+  "trackedCodeDiffAfterBuildEmpty": true,
+  "fullChain": {
+    "command": "cmd.exe /d /c \"GameSaveCenter-Run.cmd < nul\"",
+    "exitCode": 0,
+    "buildRun": "20261024T192816167Z-276884c0",
+    "installRun": "20261024T192814223Z-736788e1",
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "warnings": 0,
+    "errors": 0,
+    "tests": {
+      "total": 1967,
+      "passed": 1910,
+      "skipped": 57,
+      "failed": 0
+    },
+    "trxFiles": 148,
+    "wpfIsolatedClassesEnded": 145,
+    "workerPublishZipPextInstallAndPlayniteStartup": true,
+    "zipPextSha256": "A085FFC7DEDF2CF799A0F65410E984F22D2E68B565DE3C80FB3D650B17AC1A2B",
+    "installedAssembliesIdentityAndShaVerified": 6,
+    "playniteInProcessPluginLoadPathVerified": false
+  },
+  "postBuildCommitsAreDocumentationOnly": [
+    "1fb9975d",
+    "d258b61c",
+    "7b251fa4",
+    "c36f5780"
+  ],
+  "cleanup": {
+    "removed": "artifacts/gsc-b/7a8f6d32",
+    "logicalBytes": 168565900,
+    "diskFreeBefore": 11096580096,
+    "diskFreeAfter": 11266600960,
+    "failureDiagnosticsRetained": true,
+    "latestSuccessfulOutputRetained": true,
+    "userTrxAndTestResultsModified": false
+  },
+  "taskCounts": {
+    "total": 32,
+    "accepted": 18,
+    "satisfied": 3,
+    "codeCompletePendingAcceptance": 7,
+    "inProgress": 4,
+    "notStarted": 0
+  },
+  "openTasks": [
+    "T00-07",
+    "T01-04",
+    "T01-07",
+    "T01-08",
+    "T02-02",
+    "T02-04",
+    "T02-05",
+    "T02-06",
+    "T02-07",
+    "T02-08",
+    "T03-05"
+  ],
+  "externalPcBuildVerified": false,
+  "overallPlanComplete": false,
+  "documentationValidation": {
+    "sourceValidator": "python scripts/validate-source.py",
+    "sourceValidatorPassed": true,
+    "markdownFiles": 12,
+    "relativeLinks": 715,
+    "missingLinks": 0,
+    "round4ProgressCheckPassed": true
+  }
+}
