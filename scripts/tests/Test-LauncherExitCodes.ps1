@@ -14,19 +14,26 @@ Copy-Item -LiteralPath (Join-Path $repo 'scripts/build.cmd') -Destination (Join-
 Set-Content -LiteralPath (Join-Path $output 'scripts/dev-install-run.ps1') -Value '# DEV-INSTALL-009 isolated fixture'
 Set-Content -LiteralPath (Join-Path $output 'scripts/build.ps1') -Value '# isolated fixture'
 $results = @()
+$parentModulePath = $env:PSModulePath
 foreach ($entry in @('GameSaveCenter-Run.cmd', 'GameSaveCenter-一键构建安装运行.cmd', 'scripts/build.cmd')) {
     foreach ($code in @(0, 7, 23)) {
         $scriptName = if ($entry -eq 'scripts/build.cmd') { 'build.ps1' } else { 'dev-install-run.ps1' }
-        Set-Content -LiteralPath (Join-Path $output ('scripts/' + $scriptName)) -Value "# DEV-INSTALL-009 isolated fixture`nexit $code"
+        $moduleProbe = if ($entry -eq 'scripts/build.cmd') {
+            '$ErrorActionPreference = ''Stop''; $hash = Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256; if ($hash.Hash.Length -ne 64) { throw ''Hash probe failed'' }; Write-Output ''DESKTOP_HASH_OK'''
+        } else { '' }
+        Set-Content -LiteralPath (Join-Path $output ('scripts/' + $scriptName)) -Value "# DEV-INSTALL-009 isolated fixture`n$moduleProbe`nexit $code"
         $log = Join-Path $output (($entry -replace '[/\\]', '-') + "-$code.log")
         & cmd.exe /d /c ('"' + (Join-Path $output $entry) + '" < nul > "' + $log + '" 2>&1')
         $actual = $LASTEXITCODE
         $text = Get-Content -LiteralPath $log -Raw
         $falseSuccess = $code -ne 0 -and $text -match '\[OK\]'
-        $results += [pscustomobject]@{ Entry = $entry; Injected = $code; Actual = $actual; Passed = ($actual -eq $code -and -not $falseSuccess) }
+        $modulePassed = $entry -ne 'scripts/build.cmd' -or $text -match 'DESKTOP_HASH_OK'
+        $parentUnchanged = $env:PSModulePath -ceq $parentModulePath
+        $results += [pscustomobject]@{ Entry = $entry; Injected = $code; Actual = $actual; ModuleProbePassed = $modulePassed; ParentEnvironmentUnchanged = $parentUnchanged; Passed = ($actual -eq $code -and -not $falseSuccess -and $modulePassed -and $parentUnchanged) }
     }
 }
-$results | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $output 'results.json')
+[IO.File]::WriteAllText((Join-Path $output 'results.json'), ($results | ConvertTo-Json), [Text.UTF8Encoding]::new($false))
 $results | Format-Table | Out-Host
 Write-Host "Evidence: $output"
 if (@($results | Where-Object { -not $_.Passed }).Count) { throw 'Launcher exit-code propagation failed; evidence retained.' }
+exit 0

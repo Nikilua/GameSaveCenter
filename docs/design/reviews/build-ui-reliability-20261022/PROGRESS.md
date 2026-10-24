@@ -9,7 +9,7 @@
 | T00-01 | 最新修复全链复验 | 已满足 | 9fd1496c | [当前完整链](evidence/T02-01/standard-verification.json)：根入口退出0、SDK8.0.423、1955项（1898通过/57既有跳过/0失败）、148TRX一致、145WPF类；安装6个关键DLL哈希与Playnite启动通过；真实页面未验 | 当前构建/包/诊断已保留；归档TRX后清理990个本批中间文件，逻辑86,156,284字节，D盘可用空间增加88,653,824字节 |
 | T00-02 | 三入口退出码对照 | 已满足 | 本阶段测试脚本 | [运行结果](evidence/T00-02/results.json)：Test-LauncherExitCodes.ps1退出0，真实PowerShell子脚本注入0/7/23，9/9同码，失败无假成功；pause重定向可退出 | 生产入口无需修改；临时夹具归档后清理；最终候选完整链仍按T03-08执行 |
 | T00-03 | SDK 下载中断恢复 | 代码完成待验收 | 本阶段受控测试 | [结果](evidence/T00-03/results.json)：中断/安装器37/失败后重试3/3；环境回滚、临时下载清理、精确版本后验通过 | 运输和SDK观察为模拟；真实压缩包中断/残缺SDK修复仍待验；生产SDK未修改 |
-| T00-04 | 仓库路径兼容 | 代码完成待验收 | 入口受控复核 | [实际路径构建](evidence/T00-04/actual-path/README.md)：138字符中文空格根、324字符跟踪路径；直接PS及正常Desktop环境CMD均SDK8.0.423、Release0/0、退出0（SkipTests） | 原27/27夹具保留；PS7经CMD混合模块环境失败在原仓库亦复现，入口修复待验；隔离克隆暂留.tmp，原工作区未移动 |
+| T00-04 | 仓库路径兼容 | 代码完成待验收 | 入口受控复核 | [实际路径构建](evidence/T00-04/actual-path/README.md)：138字符中文空格根、324字符跟踪路径；直接PS及正常Desktop环境CMD均SDK8.0.423、Release0/0、退出0（SkipTests） | PS7经CMD混合模块环境已修复，双宿主入口各9/9；同路径全新输出Release0/0退出0（SkipTests），修复提交后标准全链待跑；克隆分析器占用暂留，45个夹具文件已清理 |
 | T00-05 | 安装文件占用 | 已验收 | fc319396 | [受控3/3](evidence/T00-05/results.json)、[标准全链](evidence/T00-05/verification.json)：退出0，1954项1897通过/57既有跳过/0失败，安装逐文件SHA一致 | 夹具已清理；保留最新构建/包/诊断；真实页面交互未验 |
 | T00-06 | 测试挂起收尾 | 已验收 | 既有有界进程执行及本批Desktop补齐 | [双宿主真实树/管道回归](evidence/T00-06/desktop-tree/README.md)：各5步骤，根/同身份子退出、124、无关进程保留、重试和UTF8通过 | [190bbaea标准完整链与身份核验](evidence/T03-04/standard-190bbaea/README.md)已通过；旧失败分别保留，受控/实际宿主/物理DPI边界分开 |
 | T00-07 | 双启动互斥 | 代码完成待验收 | 本阶段Mutex候选 | evidence/T00-07：PowerShell7/5.1各5/5，重入/拒绝/重试/异常退出恢复/独立checkout | [4b8f3b05标准完整链退出0](evidence/T00-07/standard-verification.json)，真实并发入口拒绝1；跨会话待验 |

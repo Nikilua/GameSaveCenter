@@ -1,3 +1,7 @@
+## 2026-10-24 T00-04 CMD模块环境修复
+
+共享build.cmd在setlocal内让Desktop初始化自己的PSModulePath，保留调用者环境和原生退出码。双宿主三入口各9/9（含真实Get-FileHash与父环境不变）；原失败中文空格长根中新输出真实Release0/0、SDK8.0.423、退出0（SkipTests）。证据actual-path/fixed-summary标明05072195加build.cmd唯一dirty，修复提交后冻结标准全链待跑。45个自有启动器夹具文件归档后删除；克隆17个分析器占用，保留不强删。
+
 ## 2026-10-24 T00-04真实中文空格长路径构建
 
 隔离克隆05072195根138字符、最长跟踪路径324字符；直接build.ps1及正常Desktop环境scripts/build.cmd均SDK8.0.423、Release0警告0错误、退出0（SkipTests）。PowerShell7经CMD继承混合PSModulePath时Get-FileHash不可用，原仓库亦复现；不误判为路径失败，入口修复待做。证据T00-04/actual-path，克隆暂留.tmp供复核；产品完整验收身份仍190bbaea，未替代完整测试/安装。

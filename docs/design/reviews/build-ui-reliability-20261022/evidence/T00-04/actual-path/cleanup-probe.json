@@ -1,0 +1,48 @@
+[
+  {
+    "path": "[repo]\\.tmp\\路径兼容 空格\\long-build-root-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\\checkout",
+    "fileCount": 6204,
+    "bytes": 546089895.0,
+    "locked": [
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\04263cb8-bfe4-4c0a-a089-e4cd54613002\\Microsoft.Interop.JavaScript.JSImportGenerator.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\1999ecde-f2e6-4591-a95e-e6f1190191dc\\WinRT.SourceGenerator.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\3ac5feb8-76db-49ce-9e31-8e29be2e8d92\\System.Text.RegularExpressions.Generator.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\3ac5feb8-76db-49ce-9e31-8e29be2e8d92\\zh-Hans\\System.Text.RegularExpressions.Generator.resources.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\4b90f78f-7aa8-4eea-99fc-86154935d465\\Microsoft.Extensions.Logging.Generators.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\6675c5fc-d671-41f3-9ca6-5c273211c8ed\\xunit.analyzers.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\920563ca-83d9-455f-a55f-9f2c192b1f25\\xunit.analyzers.fixes.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\a09e7d4b-8a07-4da1-8f0e-3067c11b7123\\System.Text.Json.SourceGeneration.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\a43a0b68-8f89-41d8-a0b1-0a2e6e58d141\\Microsoft.Interop.SourceGeneration.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\b32f6d02-bf7e-49cd-b238-5c2f434cd1e9\\Microsoft.Interop.LibraryImportGenerator.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\b32f6d02-bf7e-49cd-b238-5c2f434cd1e9\\zh-Hans\\Microsoft.Interop.LibraryImportGenerator.resources.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\b542a1e4-19d7-4fce-a4fe-2c7d9f9c1024\\Microsoft.Interop.ComInterfaceGenerator.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\b542a1e4-19d7-4fce-a4fe-2c7d9f9c1024\\zh-Hans\\Microsoft.Interop.ComInterfaceGenerator.resources.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\c8cf9776-b638-4b55-9540-63b52a5c828d\\Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\cdddc6bb-cf21-4cf9-8819-e440b40bc7b6\\Microsoft.Extensions.Options.SourceGeneration.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\ff497007-e43d-4c2a-b6c4-71ae403fdeb2\\Microsoft.CodeAnalysis.NetAnalyzers.dll",
+      "[isolated-checkout]\\artifacts\\path-fixed-build\\test-temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\44d74b860145407195f0e31ae6906c12\\ff497007-e43d-4c2a-b6c4-71ae403fdeb2\\zh-Hans\\Microsoft.CodeAnalysis.NetAnalyzers.resources.dll"
+    ],
+    "deleted": false
+  },
+  {
+    "path": "[repo]\\.tmp\\launcher-exit-7689ee246c3845a8a08bf7c34d572644",
+    "fileCount": 15,
+    "bytes": 5637.0,
+    "locked": [],
+    "deleted": true
+  },
+  {
+    "path": "[repo]\\.tmp\\launcher-exit-c12337d9fc304197ae20273e2ce2c826",
+    "fileCount": 15,
+    "bytes": 5919.0,
+    "locked": [],
+    "deleted": true
+  },
+  {
+    "path": "[repo]\\.tmp\\launcher-exit-6ea2cf22fa534d0eae921190296e64ba",
+    "fileCount": 15,
+    "bytes": 5637.0,
+    "locked": [],
+    "deleted": true
+  }
+]
