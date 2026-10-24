@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "productCodeCommit": "51641d06dc17e0d2638a5fafe25d8f68660515bc",
+  "standardRunId": "20261024T084629122Z-63a925f0",
+  "installedProductVersion": "0.6.73+51641d06dc17e0d2638a5fafe25d8f68660515bc",
+  "installedPluginPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+  "playniteProcess": {
+    "pid": 33252,
+    "startedLocal": "2026-10-24 17:13:20",
+    "windowTitle": "Playnite"
+  },
+  "hostView": {
+    "page": "存档中心 / 历史版本",
+    "game": "Bongo Cat",
+    "theme": "dark",
+    "historyEntries": 18,
+    "screenshotWidth": 1285,
+    "screenshotHeight": 822
+  },
+  "observations": [
+    "Before scroll, the first visible history row and selected inspector version were both 13:05.",
+    "A desktop-injected scroll in the history list moved its first visible row to 12:40 while the inspector remained on 13:05.",
+    "A desktop-injected scroll in the inspector kept the history list at 12:40 and exposed the bottom restorability-validation button."
+  ],
+  "actions": {
+    "navigationAndScrollOnly": true,
+    "backupRestoreDeleteOrValidationTriggered": false
+  },
+  "screenshots": [
+    {
+      "file": "artifacts/host-audit-51641d06/save-before-scroll.jpg",
+      "bytes": 116314,
+      "sha256": "C0CEC7B099672339C65165D55C710600C4B9564C218E2C91FCF8E8D8B115498D",
+      "width": 1285,
+      "height": 822
+    },
+    {
+      "file": "artifacts/host-audit-51641d06/save-after-list-scroll.jpg",
+      "bytes": 114537,
+      "sha256": "C628AFFF1B37AEFDE07F80ACE7393CEC5C46ACB503510C8249C760768211E7CE",
+      "width": 1285,
+      "height": 822
+    },
+    {
+      "file": "artifacts/host-audit-51641d06/save-after-inspector-scroll.jpg",
+      "bytes": 115472,
+      "sha256": "FBB1D3F3F8DE051480ACE92C2F9A66C11EA876318A0063D7B51586031183E745",
+      "width": 1285,
+      "height": 822
+    }
+  ],
+  "limits": [
+    "Only the dark theme at the normal host size was observed; light theme and narrow/short window states remain unverified.",
+    "The installed DLL identity is recorded, but Process.Modules did not expose the loaded extension assembly path for this process.",
+    "Injected scroll is real host interaction through automation, not a physical mouse-wheel test or physical DPI audit."
+  ]
+}

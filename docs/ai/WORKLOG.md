@@ -12113,3 +12113,6 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-24 T00-03 实际 SDK 引导与冷 NuGet 缓存复验
 
 在当前源码提交64492e5b上以当前用户临时路径清空进程PATH中的dotnet，官方Microsoft安装器成功引导精确SDK8.0.423；之后Release还原、编译、核心/Worker/Playnite测试退出0，1967项1909通过/58跳过/0失败，148份TRX计数一致，145个WPF隔离类完成。唯一比标准根入口多的跳过项在TRX中说明当前桌面不向测试窗口路由鼠标事件。第二轮隔离NUGET_PACKAGES、NuGet HTTP缓存与DOTNET_CLI_HOME后，全新NuGet还原和Release编译退出0/0警告/0错误，按范围未跑测试。汇总证据见`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-03/clean-machine-bootstrap.md`及JSON。该结果证明本机SDK下载和NuGet源可用，不证明另一台电脑的网络/代理/安全软件/磁盘/Playnite条件；仍需对方日志，T00-03真实中断/残缺包恢复也未验收。归档两份脱敏诊断摘要后，清理8个本批.tmp目录共9730个文件/1,978,685,641字节，D盘可用空间约10.75升至12.61GiB；用户旧TRX/TestResults未动。
+## 2026-10-24 T02-08 51641d06 当前宿主滚动补证
+
+51641d06标准安装后，在Playnite PID33252、Bongo Cat 18条历史页做只读实际宿主观察。第一次滚动使列表首行13:05→12:40，详情继续13:05；第二次滚动右侧详情后，列表仍为12:40，详情底部校验按钮可见但未触发。导航/滚动之外没有点击业务动作。三张1285×822 JPEG及SHA索引在T02-08/host-51641d06-index.json，图片保留本地artifacts/host-audit-51641d06。磁盘安装身份与51641d06一致，但当前Process.Modules未暴露加载程序集路径；浅色、窄短窗、物理滚轮/键盘/IME/DPI未验，维持实施中。
