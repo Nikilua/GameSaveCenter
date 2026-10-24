@@ -60,7 +60,7 @@ function New-GscDiagnosticContext {
         Artifacts = [Collections.Generic.List[object]]::new()
         Steps = [Collections.Generic.List[object]]::new()
         SourceFiles = $sourceFiles; Assemblies = @(); TestSummary = $null; Environment = (Get-GscEnvironmentIdentity)
-        Outcome = 'running'; CompletedUtc = $null
+        Outcome = 'running'; CompletedUtc = $null; FailedStageId = $null
         RunType = 'unspecified'; TestsRequested = $null; FailureMessage = $null
     }
     $context.Artifacts.Add(@{ Path = $runRoot; Stage = 'diagnostics'; CreatedByThisRun = $true; Retention = 'Keep original diagnostics and identity'; Active = $true })
@@ -215,7 +215,7 @@ function Write-GscDiagnosticSummary {
         outcome = $Context.Outcome; steps = @($Context.Steps.ToArray()); assemblies = $Context.Assemblies
         testSummary = $Context.TestSummary
         runType = $Context.RunType; testsRequested = $Context.TestsRequested
-        failureMessage = $Context.FailureMessage; sourceFiles = $Context.SourceFiles
+        failedStageId = $Context.FailedStageId; failureMessage = $Context.FailureMessage; sourceFiles = $Context.SourceFiles
     }
     $json = ConvertTo-GscDiagnosticText ($summary | ConvertTo-Json -Depth 10) $Context
     [IO.File]::WriteAllText((Join-Path $Context.RunRoot 'summary.json'), $json, [Text.UTF8Encoding]::new($false))
@@ -317,6 +317,7 @@ function Invoke-GscRecordedCommand {
         exitCode = $exitCode; console = [IO.Path]::GetFileName($logPath); launchError = $launchError; process = $(if ($TimeoutSeconds -gt 0) { $processEvidence } else { $null })
     }
     $Context.Steps.Add($record)
+    if ($exitCode -ne 0 -or $launchError) { $Context.FailedStageId = $StepId }
     Write-GscDiagnosticSummary $Context
     return [pscustomobject]@{ ExitCode = $exitCode; Output = $outputLines.ToArray() }
 }

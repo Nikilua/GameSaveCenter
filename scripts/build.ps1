@@ -153,6 +153,9 @@ try {
     else { Write-Host "`n构建与测试全部成功。下一步可运行 scripts/package.ps1" -ForegroundColor Green }
 }
 catch {
+    if ([string]::IsNullOrWhiteSpace([string]$diagnostics.FailedStageId)) {
+        $diagnostics.FailedStageId = 'orchestration'
+    }
     $diagnostics.FailureMessage = ConvertTo-GscDiagnosticText $_.Exception.ToString() $diagnostics
     throw
 }

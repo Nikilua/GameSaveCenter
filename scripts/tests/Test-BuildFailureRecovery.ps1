@@ -151,8 +151,9 @@ try {
     $failed = Invoke-T00_08Build -Name 'test-failure'
     $failedCore = @($failed.Summary.steps | Where-Object id -EQ 'core') | Select-Object -First 1
     if (-not $failed.Caught -or $failed.Summary.outcome -ne 'failed' -or $failed.Summary.testsRequested -ne $true -or
+        $failed.Summary.failedStageId -ne 'core' -or
         -not $failedCore -or $failedCore.exitCode -ne 23 -or -not (Test-Path -LiteralPath $markerPath -PathType Leaf)) {
-        throw 'The controlled test failure was not preserved in the failed build diagnostics.'
+        throw 'The controlled test failure or explicit failed stage was not preserved in the build diagnostics.'
     }
 
     $retry = Invoke-T00_08Build -Name 'successful-retry'
@@ -184,7 +185,7 @@ try {
         SourceCommit = (& git -C $repo rev-parse HEAD).Trim()
         Runtime = 'Controlled dotnet.cmd shim; command orchestration only, no product build or test case execution.'
         ExplicitSkipBaseline = @{ Outcome = $skipped.Summary.outcome; TestsRequested = $skipped.Summary.testsRequested; RunId = $skipped.Summary.owner.RunId }
-        InjectedTestFailure = @{ Outcome = $failed.Summary.outcome; TestsRequested = $failed.Summary.testsRequested; CoreExitCode = $failedCore.exitCode; RunId = $failed.Summary.owner.RunId; Evidence = 'build-runs/test-failure' }
+        InjectedTestFailure = @{ Outcome = $failed.Summary.outcome; TestsRequested = $failed.Summary.testsRequested; FailedStageId = $failed.Summary.failedStageId; CoreExitCode = $failedCore.exitCode; RunId = $failed.Summary.owner.RunId; Evidence = 'build-runs/test-failure' }
         SuccessfulRetry = @{ Outcome = $retry.Summary.outcome; TestsRequested = $retry.Summary.testsRequested; Steps = @($retry.Summary.steps | ForEach-Object { @{ Id = $_.id; ExitCode = $_.exitCode } }); TestCaseCount = $retry.Summary.testSummary.totals.testCaseCount; RunId = $retry.Summary.owner.RunId; Evidence = 'build-runs/successful-retry' }
         PreviousFailureRetained = (Test-Path -LiteralPath (Join-Path $runsEvidenceRoot 'test-failure/summary.json'))
         PreviousSkipNotInherited = ($skipped.Summary.testsRequested -eq $false -and $retry.Summary.testsRequested -eq $true -and $requiredSteps.Count -eq 4)

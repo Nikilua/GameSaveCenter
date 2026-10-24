@@ -58,6 +58,7 @@ New-Item $artifactsPath -ItemType Directory -Force | Out-Null
 # The configuration is already passed to build.ps1, so it does not need to be
 # repeated in the filesystem path.
 $buildToken = ([Guid]::NewGuid().ToString('N')).Substring(0, 8)
+$installRunId = [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ') + '-' + [Guid]::NewGuid().ToString('N').Substring(0, 8)
 $buildOutputRoot = if ([string]::IsNullOrWhiteSpace($BuildOutputRoot)) {
     Join-Path $artifactsPath ("gsc-b\{0}" -f $buildToken)
 }
@@ -98,6 +99,7 @@ catch {
 
 Write-Host "一键安装器：$installerRevision" -ForegroundColor DarkCyan
 Write-Host "安装脚本：$PSCommandPath" -ForegroundColor DarkCyan
+Write-Host "安装运行 ID：$installRunId" -ForegroundColor DarkCyan
 
 $extensionId = 'GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec'
 
@@ -407,7 +409,8 @@ function Install-ExtensionAtomically {
         [Parameter(Mandatory = $true)][string]$Source,
         [Parameter(Mandatory = $true)][string]$ExtensionsRoot,
         [Parameter(Mandatory = $true)][string]$ExpectedVersion,
-        [string]$DiagnosticRoot = ''
+        [string]$DiagnosticRoot = '',
+        [string]$RunId = ''
     )
 
     New-Item $ExtensionsRoot -ItemType Directory -Force | Out-Null
@@ -418,9 +421,23 @@ function Install-ExtensionAtomically {
     # requesting UAC. The old directory is harmless and is not touched.
     $temporary = "$target.__new-$([Guid]::NewGuid().ToString('N'))"
 
-    $attempt = @{Outcome='failed';StartedUtc=[DateTime]::UtcNow.ToString('o');OwnerPid=$PID;OwnerStart=(Get-Process -Id $PID).StartTime.ToUniversalTime().ToString('o');Temporary=$temporary;Target=$target;ExpectedVersion=$ExpectedVersion}
+    $attemptId = [Guid]::NewGuid().ToString('N')
+    $ownerStart = (Get-Process -Id $PID).StartTime.ToUniversalTime().ToString('o')
+    $effectiveRunId = if ([string]::IsNullOrWhiteSpace($RunId)) {
+        [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfffZ') + '-' + $attemptId.Substring(0, 8)
+    } else { $RunId }
+    $backup = "$target.__old-$([Guid]::NewGuid().ToString('N'))"
+    $stagingCreatedByThisRun = $false
+    $backupCreatedByThisRun = $false
+    $attempt = @{
+        SchemaVersion=2; RunId=$effectiveRunId; AttemptId=$attemptId; Stage='install-transaction'
+        Outcome='failed'; StartedUtc=[DateTime]::UtcNow.ToString('o')
+        Owner=@{ProcessId=$PID;ProcessStartedUtc=$ownerStart}; OwnerPid=$PID; OwnerStart=$ownerStart
+        Temporary=$temporary; Target=$target; ExpectedVersion=$ExpectedVersion
+    }
     try {
     Copy-Item $Source $temporary -Recurse -Force
+    $stagingCreatedByThisRun = $true
 
     $temporaryManifest = Join-Path $temporary 'extension.yaml'
     $temporaryVersion = Read-ManifestVersion $temporaryManifest
@@ -436,7 +453,6 @@ function Install-ExtensionAtomically {
     }
     # Refuse occupied files before changing the old installation. Recursive
     # deletion can otherwise remove unrelated files before reaching a locked DLL.
-    $backup = "$target.__old-$([Guid]::NewGuid().ToString('N'))"
     $oldMoved = $false
     try {
         if (Test-Path -LiteralPath $target) {
@@ -446,6 +462,7 @@ function Install-ExtensionAtomically {
             }
             Move-Item -LiteralPath $target -Destination $backup -ErrorAction Stop
             $oldMoved = $true
+            $backupCreatedByThisRun = $true
         }
         Move-Item -LiteralPath $temporary -Destination $target -ErrorAction Stop
     }
@@ -490,7 +507,24 @@ function Install-ExtensionAtomically {
             try {
                 New-Item -ItemType Directory -Path $DiagnosticRoot -Force | Out-Null
                 $attempt.CompletedUtc = [DateTime]::UtcNow.ToString('o')
-                $attempt.TemporaryExists = Test-Path -LiteralPath $temporary
+                $temporaryExists = Test-Path -LiteralPath $temporary
+                $backupExists = Test-Path -LiteralPath $backup
+                $stagingCreatedByThisRun = $stagingCreatedByThisRun -or $temporaryExists
+                $attempt.TemporaryExists = $temporaryExists
+                $attempt.Artifacts = @(
+                    @{
+                        Path=$temporary; Stage='install-staging'; CreatedByThisRun=$stagingCreatedByThisRun
+                        Exists=$temporaryExists; Active=$false
+                        Retention=$(if ($temporaryExists) { 'Failed install staging; retain for diagnosis and manual ownership review' } else { 'Staging moved or removed; retain this identity record' })
+                    }
+                )
+                if ($backupCreatedByThisRun -or $backupExists) {
+                    $attempt.Artifacts += @{
+                        Path=$backup; Stage='install-backup'; CreatedByThisRun=$backupCreatedByThisRun
+                        Exists=$backupExists; Active=$false
+                        Retention=$(if ($backupExists) { 'Prior installation backup; preserve for rollback and manual review' } else { 'Backup restored or removed; retain this identity record' })
+                    }
+                }
                 $attempt.Retention = 'Install attempt evidence; external extension paths must never be passed to repository cleanup'
                 $attempt | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $DiagnosticRoot ([guid]::NewGuid().ToString('N')+'.json')) -Encoding UTF8
             }
@@ -584,12 +618,13 @@ try {
 
     $results = @()
     foreach ($extensionRoot in $extensionRoots) {
-        $results += Install-ExtensionAtomically -Source $stage -ExtensionsRoot $extensionRoot -ExpectedVersion $expectedVersion -DiagnosticRoot (Join-Path $root 'artifacts/install-attempts')
+        $results += Install-ExtensionAtomically -Source $stage -ExtensionsRoot $extensionRoot -ExpectedVersion $expectedVersion -DiagnosticRoot (Join-Path $root 'artifacts/install-attempts') -RunId $installRunId
     }
 
     New-Item (Split-Path -Parent $reportPath) -ItemType Directory -Force | Out-Null
     $report = [System.Collections.Generic.List[string]]::new()
     $report.Add("时间：$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
+    $report.Add("安装运行 ID：$installRunId")
     $report.Add("源码版本：$expectedVersion")
     $report.Add("隔离构建目录：$buildOutputRoot")
     foreach ($result in $results) {

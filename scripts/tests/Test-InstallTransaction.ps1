@@ -12,6 +12,7 @@ foreach ($name in @('Read-ManifestVersion','Get-GscInstalledAssemblyIdentities',
 $extensionId = 'fixture'
 $output = Join-Path $repo ('.tmp/install-transaction-' + [Guid]::NewGuid().ToString('N'))
 $diagnostics = Join-Path $output 'attempts'
+$installRunId = 't01-01-install-run-fixture'
 $source = Join-Path $output 'source'; $extensions = Join-Path $output 'extensions'; $target = Join-Path $extensions $extensionId
 New-Item -ItemType Directory -Path $source,$target -Force | Out-Null
 Set-Content (Join-Path $source 'extension.yaml') 'Version: 1.2.3'
@@ -21,7 +22,7 @@ Set-Content (Join-Path $target 'sentinel') 'preserve'
 $lock = [IO.File]::Open((Join-Path $target 'GameSaveCenter.Playnite.dll'),'Open','Read','None')
 try {
     $failed = $false
-    try { Install-ExtensionAtomically $source $extensions '1.2.3' -DiagnosticRoot $diagnostics } catch { $failed = $true }
+    try { Install-ExtensionAtomically $source $extensions '1.2.3' -DiagnosticRoot $diagnostics -RunId $installRunId } catch { $failed = $true }
     if (-not $failed -or -not (Test-Path (Join-Path $target 'sentinel'))) { throw 'Occupied installation was modified' }
 } finally { $lock.Dispose() }
 if ((Get-Content (Join-Path $target 'GameSaveCenter.Playnite.dll') -Raw).Trim() -ne 'old fixture') { throw 'Old DLL changed' }
@@ -32,10 +33,10 @@ function Move-Item {
     Microsoft.PowerShell.Management\Move-Item -LiteralPath $LiteralPath -Destination $Destination -ErrorAction Stop
 }
 $failed = $false
-try { Install-ExtensionAtomically $source $extensions '1.2.3' -DiagnosticRoot $diagnostics } catch { $failed = $true }
+try { Install-ExtensionAtomically $source $extensions '1.2.3' -DiagnosticRoot $diagnostics -RunId $installRunId } catch { $failed = $true }
 Remove-Item Function:Move-Item
 if (-not $failed -or -not (Test-Path (Join-Path $target 'sentinel'))) { throw 'Rollback failed' }
-$result = Install-ExtensionAtomically $source $extensions '1.2.3' -DiagnosticRoot $diagnostics
+$result = Install-ExtensionAtomically $source $extensions '1.2.3' -DiagnosticRoot $diagnostics -RunId $installRunId
 if ((Get-Content (Join-Path $target 'GameSaveCenter.Playnite.dll') -Raw).Trim() -ne 'new fixture') { throw 'Retry failed' }
 $identities = @($result.AssemblyIdentities)
 $pluginIdentity = $identities | Where-Object File -EQ 'GameSaveCenter.Playnite.dll'
@@ -47,6 +48,12 @@ $attempts=@(Get-ChildItem -LiteralPath $diagnostics -Filter *.json|ForEach-Objec
 if($attempts.Count -ne 3 -or @($attempts|Where-Object {$_.Outcome -eq 'failed'}).Count -ne 2 -or @($attempts|Where-Object {$_.Outcome -eq 'passed'}).Count -ne 1){throw 'Install attempt outcomes missing'}
 if(@($attempts|Where-Object {$_.Outcome -eq 'failed' -and -not $_.FailureMessage}).Count){throw 'Failure reason not retained'}
 if(@($attempts|Where-Object {$_.Outcome -eq 'passed' -and $_.TemporaryExists}).Count){throw 'Successful staging still present'}
+$stagingArtifacts=@($attempts|ForEach-Object {@($_.Artifacts|Where-Object Stage -EQ 'install-staging')})
+if(@($attempts|Where-Object {$_.RunId -ne $installRunId -or -not $_.AttemptId -or -not $_.Owner.ProcessStartedUtc}).Count){throw 'Install run/attempt owner identity missing or inconsistent'}
+if($stagingArtifacts.Count -ne 3 -or @($stagingArtifacts|Where-Object {$_.Active -or -not $_.CreatedByThisRun}).Count){throw 'Install staging ownership/lifecycle manifest incomplete'}
+if(@($stagingArtifacts|Where-Object {$_.Exists -and $_.Retention -notlike 'Failed install staging*'}).Count -or @($stagingArtifacts|Where-Object {-not $_.Exists -and $_.Retention -notlike 'Staging moved or removed*'}).Count){throw 'Install staging retention reason does not match its final state'}
+$backupArtifacts=@($attempts|ForEach-Object {@($_.Artifacts|Where-Object Stage -EQ 'install-backup')})
+if(@($backupArtifacts|Where-Object {$_.Active -or -not $_.CreatedByThisRun -or $_.Exists}).Count){throw 'Rolled-back backup path lifecycle was not recorded safely'}
 $evidence = if ($EvidenceRoot) { [IO.Path]::GetFullPath($EvidenceRoot) } else { Join-Path $repo 'docs/design/reviews/build-ui-reliability-20261022/evidence/T00-05' }
 if ($EvidenceRoot -and (Test-Path -LiteralPath $evidence -PathType Container) -and @(Get-ChildItem -LiteralPath $evidence -Force).Count -gt 0) {
     throw "Refusing to overwrite existing install transaction evidence: $evidence"
@@ -64,7 +71,7 @@ for ($index = 0; $index -lt $attemptRows.Count; $index++) {
     $text = $text.Replace($repo, '[repo]').Replace($repo.Replace('\', '/'), '[repo]')
     [IO.File]::WriteAllText((Join-Path $attemptEvidenceRoot ('{0:D2}-{1}.json' -f ($index + 1), $label)), $text, [Text.UTF8Encoding]::new($false))
 }
-@{ ActualInstalledPathAndHashVerified = $true; MissingAndUnknownIdentitiesExplicit = $true; LockedFilePreserved = $true; RenameFailureRolledBack = $true; AttemptRecordsVerified = $true; CopiedAttemptRecords = $attemptRows.Count; RetrySucceeded = $true; Fixture = 'Synthetic files, production functions parsed from AST'; Timestamp = [DateTime]::UtcNow.ToString('o') } | ConvertTo-Json | Set-Content (Join-Path $evidence 'results.json')
+@{ ActualInstalledPathAndHashVerified = $true; MissingAndUnknownIdentitiesExplicit = $true; LockedFilePreserved = $true; RenameFailureRolledBack = $true; AttemptRecordsVerified = $true; RunIdRecorded = $true; StagingArtifactLifecycleRecorded = $true; RolledBackBackupLifecycleRecorded = $true; CopiedAttemptRecords = $attemptRows.Count; RetrySucceeded = $true; Fixture = 'Synthetic files, production functions parsed from AST'; Timestamp = [DateTime]::UtcNow.ToString('o') } | ConvertTo-Json | Set-Content (Join-Path $evidence 'results.json')
 $resolved = [IO.Path]::GetFullPath($output)
 if (-not $resolved.StartsWith([IO.Path]::GetFullPath((Join-Path $repo '.tmp')) + [IO.Path]::DirectorySeparatorChar)) { throw 'Unsafe cleanup' }
 Remove-Item -LiteralPath $resolved -Recurse -Force
