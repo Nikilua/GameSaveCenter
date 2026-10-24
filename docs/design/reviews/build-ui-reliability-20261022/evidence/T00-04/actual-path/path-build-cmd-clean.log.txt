@@ -1,0 +1,80 @@
+Space preflight D:\: available 13766422528 bytes, configured headroom 3221225472 bytes
+Space preflight C:\: available 8986853376 bytes, configured headroom 1073741824 bytes
+Budget basis: Conservative configurable headroom, not measured peak usage. SDK downloads, NuGet cache growth and host data are additional unknowns.
+.NET SDK 8.0.423 已从当前用户缓存选择：[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423
+当前可用 SDK：
+  8.0.423 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk]
+
+==> 检查 XAML 结构
+XAML structural validation passed for 25 file(s).
+
+==> 显示当前 SDK 信息
+.NET SDK:
+ Version:           8.0.423
+ Commit:            62e3aa2c1f
+ Workload version:  8.0.400-manifests.a04bdf47
+ MSBuild version:   17.11.48+02bf66295
+
+运行时环境:
+ OS Name:     Windows
+ OS Version:  10.0.22000
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   [user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk\8.0.423\
+
+已安装 .NET 工作负载:
+配置为在安装新清单时使用 loose manifests。
+没有要显示的已安装工作负载。
+
+Host:
+  Version:      8.0.29
+  Architecture: x64
+  Commit:       18fd75c847
+
+.NET SDKs installed:
+  8.0.423 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  DOTNET_ROOT       [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423]
+  DOTNET_ROOT_X64   [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423]
+
+global.json file:
+  D:\workplace\github\GameSaveCenter\.tmp\???? ??\long-build-root-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\checkout\global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+
+==> 还原 NuGet 依赖
+  正在确定要还原的项目…
+  所有项目均是最新的，无法还原。
+
+==> 编译解决方案（Release）
+  GameSaveCenter.Contracts -> [repo]\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\src\GameSaveCenter.Worker\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> [repo]\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> [repo]\tests\GameSaveCenter.Core.Tests\bin\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> [repo]\tests\GameSaveCenter.Worker.Tests\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\tests\GameSaveCenter.Playnite.HostAuditSeeder\bin\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:01.87
+
+构建成功；本次跳过测试。
+诊断目录：[isolated-checkout]\artifacts\build-diagnostics\20261024T065927689Z-e03e34be

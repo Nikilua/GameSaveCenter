@@ -1,0 +1,12 @@
+Space preflight D:\: available 13932240896 bytes, configured headroom 3221225472 bytes
+Space preflight C:\: available 8992821248 bytes, configured headroom 1073741824 bytes
+Budget basis: Conservative configurable headroom, not measured peak usage. SDK downloads, NuGet cache growth and host data are additional unknowns.
+ForEach-Object : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable 
+program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At D:\workplace\github\GameSaveCenter\.tmp\路径兼容 空格\long-build-root-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxx\checkout\scripts\build-diagnostics.ps1:50 char:9
++         ForEach-Object {
++         ~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [ForEach-Object], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException,Microsoft.PowerShell.Commands.ForEachObjectCommand
+ 

@@ -1,3 +1,7 @@
+## 2026-10-24 T00-04真实中文空格长路径构建
+
+隔离克隆05072195根138字符、最长跟踪路径324字符；直接build.ps1及正常Desktop环境scripts/build.cmd均SDK8.0.423、Release0警告0错误、退出0（SkipTests）。PowerShell7经CMD继承混合PSModulePath时Get-FileHash不可用，原仓库亦复现；不误判为路径失败，入口修复待做。证据T00-04/actual-path，克隆暂留.tmp供复核；产品完整验收身份仍190bbaea，未替代完整测试/安装。
+
 ## 2026-10-24 190bbaea完整链与实际身份核验通过
 
 默认根.cmd退出0，SDK8.0.423、XAML25/25、Release0/0、1967项1910通过/57同名既有skip/0失败，148TRX一致、145WPF类。前次崩溃R12本轮5/5。包/安装六程序集与新报告SHA/身份一致；11:44启动日志保留，14:13无进程后另通过computer-use重开，真实诊断显示插件/Worker完整190bbaea及实际加载路径，运行缓存WorkerDLL与安装SHA一致。三旧定向build已移除，原失败DLL/诊断/当前包与截图保留，用户旧TRX未动。证据T03-04/standard-190bbaea；32项仍未整体完成。
