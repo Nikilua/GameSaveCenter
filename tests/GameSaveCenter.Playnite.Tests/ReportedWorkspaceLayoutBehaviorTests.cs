@@ -2852,6 +2852,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         => new()
         {
             Content = content,
+            // Avoid a native HWND name lookup while WPF is still initializing the source.
+            Title = "GameSaveCenter layout test",
             Width = width,
             Height = height,
             ShowInTaskbar = false,
