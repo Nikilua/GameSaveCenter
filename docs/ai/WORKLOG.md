@@ -1,3 +1,9 @@
+## 2026-10-25 T01-07 离屏截图重复副本清理
+
+复核初始截图索引后，从 `ui-width-regression-20261023` 的三个旧输出目录追溯到 RenderHarness 报告（记录提交分别为78095d53、78095d53、78095d53，生成于2026-10-23 10:15、10:25、10:49；报告均注明源码工作树不干净）。当前文档扫描覆盖190个候选文件名，0命中，候选子目录引用0；三个报告没有PNG路径。清理前无dotnet/RenderHarness/testhost进程。
+
+删除仅限428个已在文档引用目录找到同SHA副本的PNG（200个hash，逻辑58,403,926字节），所有唯一文件、报告及引用/保守引用项保持原样。D盘可用空间从11,262,414,848增至11,321,716,736字节。清理清单和保留副本映射：`docs/design/reviews/build-ui-reliability-20261022/evidence/T01-07/screenshot-dedupe-20261025.json`。237个重复组仍在引用或未证明可清理的目录，T01-07不结项。
+
 ## 2026-10-25 d0e11929 标准构建、测试、打包安装全链通过
 
 提交 `d0e1192935e7e161a1592d86eccbba3995419146` 的默认 `GameSaveCenter-Run.cmd` 退出0；build run `20261024T180031697Z-d82ddccb`、install run `20261024T180029755Z-13c00e79`。SDK8.0.423、Release solution 0 warning/0 error；Core157/157、Worker400/400、Playnite source/WPF均无失败；TRX一致汇总1967项1910通过/57跳过/0失败、148 TRX、145 WPF隔离类。Worker win-x64 publish、ZIP/PEXT、Playnite安装验证和启动完成，ZIP/PEXT SHA一致，安装的六个程序集身份与SHA复核一致。摘要及脱敏身份见 `design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-d0e11929/`。`workingTreeClean=false` 仅反映已有的未跟踪TRX/TestResults；跟踪文件保持干净，未跟踪用户文件未暂存/清理。本次未核验进程内程序集加载路径。外机CS8300已明确是其stash冲突标记；待推送后由用户保全stash、快进并验证新主线。

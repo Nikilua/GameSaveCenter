@@ -70,5 +70,15 @@
     "relativeLinks": 715,
     "missingLinks": 0,
     "round4ProgressCheckPassed": true
+  },
+  "latestDocumentationUpdate": {
+    "baseCommit": "e0c46c6d10be90268a8a7ec27c9875f395d42dbf",
+    "markdownFiles": 6,
+    "relativeLinks": 551,
+    "missingLinks": 0,
+    "sourceValidatorPassed": true,
+    "round4ProgressCheckPassed": true,
+    "productBuildOrTestsRerun": false,
+    "t01_07CleanupEvidence": "../T01-07/screenshot-dedupe-20261025.json"
   }
 }

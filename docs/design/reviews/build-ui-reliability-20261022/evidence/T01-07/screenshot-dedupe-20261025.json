@@ -1,0 +1,3103 @@
+{
+  "task": "T01-07",
+  "generatedUtc": "2026-10-24T20:28:08.7398007Z",
+  "baseCommit": "e0c46c6d10be90268a8a7ec27c9875f395d42dbf",
+  "status": "completed",
+  "reason": "Removed only indexed PNGs whose exact SHA256 survives in a retained, document-linked render directory; nonduplicate images and render reports retained.",
+  "candidateDirectories": [
+    "artifacts/ui-width-regression-20261023/render/",
+    "artifacts/ui-width-regression-20261023/render-final/",
+    "artifacts/ui-width-regression-20261023/render-ratio-final/"
+  ],
+  "retainedCopyDirectories": [
+    "artifacts/save-summary-reflow-20261023/render-final/",
+    "artifacts/ui-layout-fix/render-serial-final/",
+    "artifacts/ui-width-regression-20261023/render-clean-commit/"
+  ],
+  "candidateCount": 428,
+  "removedCount": 428,
+  "removedBytes": 58403926,
+  "distinctRemovedHashes": 200,
+  "availableBytesBefore": 11262414848,
+  "availableBytesAfter": 11321716736,
+  "availableBytesIncrease": 59301888,
+  "docReferenceChecks": {
+    "priorAuditExactReferences": 0,
+    "priorAuditConservativeReferences": 0,
+    "currentDocsUniqueBasenameCount": 190,
+    "currentDocsBasenameHits": 0,
+    "currentDocsCandidateDirectoryReferences": 0
+  },
+  "renderRuns": [
+    {
+      "directory": "render",
+      "report": "artifacts/ui-width-regression-20261023/render/render-qa-report.txt",
+      "generated": "2026-10-23 10:15:20",
+      "evidenceSource": "OffscreenRenderHarness",
+      "commit": "78095d53667e78fb6c19dbdf62cee705738b7e30",
+      "workingTreeClean": "False",
+      "reportPngReferences": 0
+    },
+    {
+      "directory": "render-final",
+      "report": "artifacts/ui-width-regression-20261023/render-final/render-qa-report.txt",
+      "generated": "2026-10-23 10:25:16",
+      "evidenceSource": "OffscreenRenderHarness",
+      "commit": "78095d53667e78fb6c19dbdf62cee705738b7e30",
+      "workingTreeClean": "False",
+      "reportPngReferences": 0
+    },
+    {
+      "directory": "render-ratio-final",
+      "report": "artifacts/ui-width-regression-20261023/render-ratio-final/render-qa-report.txt",
+      "generated": "2026-10-23 10:49:25",
+      "evidenceSource": "OffscreenRenderHarness",
+      "commit": "78095d53667e78fb6c19dbdf62cee705738b7e30",
+      "workingTreeClean": "False",
+      "reportPngReferences": 0
+    }
+  ],
+  "removedFiles": [
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1280x720-tab1.png",
+      "Bytes": 92734,
+      "SHA256": "000A263D4CDBA840D70A3FAECD6A67B5142BCB17439E6641F9414477F9539A94",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1280x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1280x720-tab1.png",
+      "Bytes": 92734,
+      "SHA256": "000A263D4CDBA840D70A3FAECD6A67B5142BCB17439E6641F9414477F9539A94",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1280x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-2560x1440-tab1.png",
+      "Bytes": 61081,
+      "SHA256": "0070F833EE23FDD818BDC8A349FE5C7E5390588333DF05660985F3A021E84F69",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-2560x1440-tab1.png",
+      "Bytes": 61081,
+      "SHA256": "0070F833EE23FDD818BDC8A349FE5C7E5390588333DF05660985F3A021E84F69",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-3840x2160-tab3.png",
+      "Bytes": 188148,
+      "SHA256": "0164058C897C13D2DEA5D00A01D8AC6E45B1BE350B1911B655E4FE6C312BC684",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-3840x2160-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-3840x2160-tab3.png",
+      "Bytes": 188148,
+      "SHA256": "0164058C897C13D2DEA5D00A01D8AC6E45B1BE350B1911B655E4FE6C312BC684",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-3840x2160-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1280x720-tab0.png",
+      "Bytes": 58799,
+      "SHA256": "026E9766F60E2BB051856FE7EE52198E33605BF567479CD41C980E305766A135",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1280x720-tab0.png",
+      "Bytes": 58799,
+      "SHA256": "026E9766F60E2BB051856FE7EE52198E33605BF567479CD41C980E305766A135",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1920x1080-tab4.png",
+      "Bytes": 197613,
+      "SHA256": "0296F1FAA94B713972E8B164FBE286F42A8428C9A579B5B5215AC0401EA7DC27",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1920x1080-tab4.png",
+      "Bytes": 197613,
+      "SHA256": "0296F1FAA94B713972E8B164FBE286F42A8428C9A579B5B5215AC0401EA7DC27",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1536x864-tab0.png",
+      "Bytes": 127616,
+      "SHA256": "04C2B79DD57CD33223295B604A17BE175D3F5523025C578C3E97C2DA0749137D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1536x864-tab0.png",
+      "Bytes": 127616,
+      "SHA256": "04C2B79DD57CD33223295B604A17BE175D3F5523025C578C3E97C2DA0749137D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1707x960-tab1.png",
+      "Bytes": 143849,
+      "SHA256": "04DDA452D2BD68F094A22267B32B953D2B6250211E77FCA8AC94D33B254F771B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1707x960-tab1.png",
+      "Bytes": 143849,
+      "SHA256": "04DDA452D2BD68F094A22267B32B953D2B6250211E77FCA8AC94D33B254F771B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1600x900-tab1.png",
+      "Bytes": 181326,
+      "SHA256": "05C53046900A8602851FF666385EDBC895E382FB03ADEB51764BE869B1B14549",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1600x900-tab1.png",
+      "Bytes": 181326,
+      "SHA256": "05C53046900A8602851FF666385EDBC895E382FB03ADEB51764BE869B1B14549",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1040x700-tab4.png",
+      "Bytes": 63716,
+      "SHA256": "05EB7A23448A0A7AA438E8A68B18F4CC0467E4FA5C65C86F7DBA607B693A5670",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1040x700-tab4.png",
+      "Bytes": 63716,
+      "SHA256": "05EB7A23448A0A7AA438E8A68B18F4CC0467E4FA5C65C86F7DBA607B693A5670",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1536x864-tab4.png",
+      "Bytes": 126616,
+      "SHA256": "064356E77F715243F9147FA6804F90573016575F6A79C8317387706C6BFE3EC8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1536x864-tab4.png",
+      "Bytes": 126616,
+      "SHA256": "064356E77F715243F9147FA6804F90573016575F6A79C8317387706C6BFE3EC8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Trainer-1100x720.png",
+      "Bytes": 78145,
+      "SHA256": "0660A7BC09F6566625F5FC4819FCDEF8D90DA91342D1C608A46AC70155F14F66",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1100x720.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Trainer-1100x720.png",
+      "Bytes": 78145,
+      "SHA256": "0660A7BC09F6566625F5FC4819FCDEF8D90DA91342D1C608A46AC70155F14F66",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1100x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Trainer-1100x720.png",
+      "Bytes": 78145,
+      "SHA256": "0660A7BC09F6566625F5FC4819FCDEF8D90DA91342D1C608A46AC70155F14F66",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1100x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1600x900-tab2.png",
+      "Bytes": 127360,
+      "SHA256": "06D460A736CF9BB5F08DEC52BAC745BD560590917482617A73703C907C83B628",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1600x900-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1600x900-tab2.png",
+      "Bytes": 127360,
+      "SHA256": "06D460A736CF9BB5F08DEC52BAC745BD560590917482617A73703C907C83B628",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1600x900-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1040x700-tab3.png",
+      "Bytes": 54663,
+      "SHA256": "06E3340AC9EBD43A15BDABEEFD0C36D5C556E2B39283041EFAF7E991A62AC41C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1040x700-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1040x700-tab3.png",
+      "Bytes": 54663,
+      "SHA256": "06E3340AC9EBD43A15BDABEEFD0C36D5C556E2B39283041EFAF7E991A62AC41C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1040x700-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Maintenance-CloudQueue-1040x700.png",
+      "Bytes": 73441,
+      "SHA256": "0A43FA8914FADEB210C027A40C3BF047C170D377B24FD5621709F86C8D6892AA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-CloudQueue-1040x700.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Maintenance-CloudQueue-1040x700.png",
+      "Bytes": 73441,
+      "SHA256": "0A43FA8914FADEB210C027A40C3BF047C170D377B24FD5621709F86C8D6892AA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-CloudQueue-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Maintenance-CloudQueue-1040x700.png",
+      "Bytes": 73441,
+      "SHA256": "0A43FA8914FADEB210C027A40C3BF047C170D377B24FD5621709F86C8D6892AA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-CloudQueue-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Trainer-2560x1440.png",
+      "Bytes": 179481,
+      "SHA256": "0A8C3F37EFB43034322309482AD35BD16F8ACFF56049DEBDAA853D5106ADBD1C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-2560x1440.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Trainer-2560x1440.png",
+      "Bytes": 179481,
+      "SHA256": "0A8C3F37EFB43034322309482AD35BD16F8ACFF56049DEBDAA853D5106ADBD1C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-2560x1440.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Trainer-2560x1440.png",
+      "Bytes": 179481,
+      "SHA256": "0A8C3F37EFB43034322309482AD35BD16F8ACFF56049DEBDAA853D5106ADBD1C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-2560x1440.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-2560x1440-tab2.png",
+      "Bytes": 143312,
+      "SHA256": "0C10D6B46F141C168138A7EEA6E4CF97BF2D34C88AA5869582357D47673EB1FC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-2560x1440-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-2560x1440-tab2.png",
+      "Bytes": 143312,
+      "SHA256": "0C10D6B46F141C168138A7EEA6E4CF97BF2D34C88AA5869582357D47673EB1FC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-2560x1440-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-3840x2160-tab1.png",
+      "Bytes": 79658,
+      "SHA256": "103750C3BEF367A12D969D4E52C1DE0531D97A5DAF2D2F8EDCBFD788CB49AA47",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-3840x2160-tab1.png",
+      "Bytes": 79658,
+      "SHA256": "103750C3BEF367A12D969D4E52C1DE0531D97A5DAF2D2F8EDCBFD788CB49AA47",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Process-1100x720-closed.png",
+      "Bytes": 126670,
+      "SHA256": "132E4382C23A9FD70A062900608B0C420354465A594995F22DBDD64153F3EE25",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1100x720-closed.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Process-1100x720-closed.png",
+      "Bytes": 126670,
+      "SHA256": "132E4382C23A9FD70A062900608B0C420354465A594995F22DBDD64153F3EE25",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1100x720-closed.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-3840x2160-tab0.png",
+      "Bytes": 198494,
+      "SHA256": "134292F8E56713079689BC820792EC9A6692027FE8134D3CB1C19172404A6DD4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-3840x2160-tab0.png",
+      "Bytes": 198494,
+      "SHA256": "134292F8E56713079689BC820792EC9A6692027FE8134D3CB1C19172404A6DD4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Settings-1100x720.png",
+      "Bytes": 89483,
+      "SHA256": "1414F3D6EACC3B59F7900CD9A1249E86ADBBD9CC285B1DA0F3654EA5A8D1675F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1100x720.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Settings-1100x720.png",
+      "Bytes": 89483,
+      "SHA256": "1414F3D6EACC3B59F7900CD9A1249E86ADBBD9CC285B1DA0F3654EA5A8D1675F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1100x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Settings-1100x720.png",
+      "Bytes": 89483,
+      "SHA256": "1414F3D6EACC3B59F7900CD9A1249E86ADBBD9CC285B1DA0F3654EA5A8D1675F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1100x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1707x960-tab5.png",
+      "Bytes": 98470,
+      "SHA256": "146D625ABC2FCD4646F191DA58BFC1F68E40149D3A67E58A55B4B2F5925DD50B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1707x960-tab5.png",
+      "Bytes": 98470,
+      "SHA256": "146D625ABC2FCD4646F191DA58BFC1F68E40149D3A67E58A55B4B2F5925DD50B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1366x768-tab1.png",
+      "Bytes": 118974,
+      "SHA256": "14EF137844649D8BD0C4119FFB6E8268148AB1889E538B0E04363FFEC7EAAAB2",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1366x768-tab1.png",
+      "Bytes": 118974,
+      "SHA256": "14EF137844649D8BD0C4119FFB6E8268148AB1889E538B0E04363FFEC7EAAAB2",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1536x864-tab4.png",
+      "Bytes": 158621,
+      "SHA256": "170CF992DAE8F4FD91D1672CF5AB3A7A4941F38C118B4C5F6991EEA484471368",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1536x864-tab4.png",
+      "Bytes": 158621,
+      "SHA256": "170CF992DAE8F4FD91D1672CF5AB3A7A4941F38C118B4C5F6991EEA484471368",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-3840x2160-tab5.png",
+      "Bytes": 129840,
+      "SHA256": "18022FFC7035F54208AF392BF2927C79108391973635A15281F0C23A9EEBDCEC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-3840x2160-tab5.png",
+      "Bytes": 129840,
+      "SHA256": "18022FFC7035F54208AF392BF2927C79108391973635A15281F0C23A9EEBDCEC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1100x720-tab3.png",
+      "Bytes": 108663,
+      "SHA256": "19071CF272CAFD8A5D3697D8232FA61C076695AE1F0B93CAF7464C2ED593B86F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1100x720-tab3.png",
+      "Bytes": 108663,
+      "SHA256": "19071CF272CAFD8A5D3697D8232FA61C076695AE1F0B93CAF7464C2ED593B86F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1600x900-tab4.png",
+      "Bytes": 127509,
+      "SHA256": "19444915ACC32A0385A3423E78131E1EBDDE4274BD0DA7EBF2ED7B3371B344B3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1600x900-tab4.png",
+      "Bytes": 127509,
+      "SHA256": "19444915ACC32A0385A3423E78131E1EBDDE4274BD0DA7EBF2ED7B3371B344B3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Trainer-1100x720.png",
+      "Bytes": 74959,
+      "SHA256": "1C1DEA1DBC7C07211356D237B2502A34E8B7C85201D7B20C14128B1422C6B539",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1100x720.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Trainer-1100x720.png",
+      "Bytes": 74959,
+      "SHA256": "1C1DEA1DBC7C07211356D237B2502A34E8B7C85201D7B20C14128B1422C6B539",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1100x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Trainer-1100x720.png",
+      "Bytes": 74959,
+      "SHA256": "1C1DEA1DBC7C07211356D237B2502A34E8B7C85201D7B20C14128B1422C6B539",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1100x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Settings-1366x768.png",
+      "Bytes": 116026,
+      "SHA256": "1DBC34D8885B95663F43DE108633495A6F326F25630306C0E63023CA5D26D672",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1366x768.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Settings-1366x768.png",
+      "Bytes": 116026,
+      "SHA256": "1DBC34D8885B95663F43DE108633495A6F326F25630306C0E63023CA5D26D672",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1366x768.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Settings-1366x768.png",
+      "Bytes": 116026,
+      "SHA256": "1DBC34D8885B95663F43DE108633495A6F326F25630306C0E63023CA5D26D672",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1366x768.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1600x900-tab5.png",
+      "Bytes": 96222,
+      "SHA256": "1DE840EE0E88A85B016C2BDA3A60C7339B75B8122837C3BD2EBDCB79693972BE",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1600x900-tab5.png",
+      "Bytes": 96222,
+      "SHA256": "1DE840EE0E88A85B016C2BDA3A60C7339B75B8122837C3BD2EBDCB79693972BE",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1280x720-tab2.png",
+      "Bytes": 48561,
+      "SHA256": "1EDF37E46B33FA91BC7C257B758984066D5A42E350BE603158FA42C7682EBD8D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1280x720-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1280x720-tab2.png",
+      "Bytes": 48561,
+      "SHA256": "1EDF37E46B33FA91BC7C257B758984066D5A42E350BE603158FA42C7682EBD8D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1280x720-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1536x864-tab2.png",
+      "Bytes": 70008,
+      "SHA256": "20C899D70985FB956875745C9776A77A1900D7B4CDF3023B99E5F9AA7F07D26A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1536x864-tab2.png",
+      "Bytes": 70008,
+      "SHA256": "20C899D70985FB956875745C9776A77A1900D7B4CDF3023B99E5F9AA7F07D26A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-3840x2160-tab1.png",
+      "Bytes": 200350,
+      "SHA256": "2209B227DB93B7FD5769EFA69E386E86215442FD28F712974249B20D24759D03",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-3840x2160-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-3840x2160-tab1.png",
+      "Bytes": 200350,
+      "SHA256": "2209B227DB93B7FD5769EFA69E386E86215442FD28F712974249B20D24759D03",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-3840x2160-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1100x720-tab1.png",
+      "Bytes": 102922,
+      "SHA256": "223EF0C1921061BD62C08D3EF6957D09041C7B92CE0D81796CA3EA864AA59AAB",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1100x720-tab1.png",
+      "Bytes": 102922,
+      "SHA256": "223EF0C1921061BD62C08D3EF6957D09041C7B92CE0D81796CA3EA864AA59AAB",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1536x864-tab5.png",
+      "Bytes": 95529,
+      "SHA256": "23C07A5AFFFD7F077E921C59C0907B5D76B3A1674350C7E644D3509B3EB58C73",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1536x864-tab5.png",
+      "Bytes": 95529,
+      "SHA256": "23C07A5AFFFD7F077E921C59C0907B5D76B3A1674350C7E644D3509B3EB58C73",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1600x900-tab3.png",
+      "Bytes": 145220,
+      "SHA256": "250E12F1BC49BD71A0A0E8E2158E2F3840E406318D7C23E391A36B1731BCEFC8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1600x900-tab3.png",
+      "Bytes": 145220,
+      "SHA256": "250E12F1BC49BD71A0A0E8E2158E2F3840E406318D7C23E391A36B1731BCEFC8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1920x1080-tab2.png",
+      "Bytes": 133023,
+      "SHA256": "269EB6110511C0D52BE1A2C582B7F69D505E348A2BD09A04AB7DAB63CDA21D3B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1920x1080-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1920x1080-tab2.png",
+      "Bytes": 133023,
+      "SHA256": "269EB6110511C0D52BE1A2C582B7F69D505E348A2BD09A04AB7DAB63CDA21D3B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1920x1080-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1707x960-tab0.png",
+      "Bytes": 103005,
+      "SHA256": "283D07055AC1E07BE43C1A56ECFF9FEF228EBA9704A5FA6A5FB5755F627DBE95",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1707x960-tab0.png",
+      "Bytes": 103005,
+      "SHA256": "283D07055AC1E07BE43C1A56ECFF9FEF228EBA9704A5FA6A5FB5755F627DBE95",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1600x900-tab1.png",
+      "Bytes": 50421,
+      "SHA256": "2ACBFC53C2D12B3295C845BD18B033674940FC0BA7CA97DA5539DCA16D57CE7D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1600x900-tab1.png",
+      "Bytes": 50421,
+      "SHA256": "2ACBFC53C2D12B3295C845BD18B033674940FC0BA7CA97DA5539DCA16D57CE7D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-2048x1152-tab3.png",
+      "Bytes": 158008,
+      "SHA256": "2B9B11A1F0F36967267B58DD79A98044C6D933619DA6296446739E768DB7482F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-2048x1152-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-2048x1152-tab3.png",
+      "Bytes": 158008,
+      "SHA256": "2B9B11A1F0F36967267B58DD79A98044C6D933619DA6296446739E768DB7482F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-2048x1152-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-960x640.png",
+      "Bytes": 65374,
+      "SHA256": "2C42A10BD3CBD1355A4605CD94579D1808A0EC3D433EC89E131F54786ADE6AC0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-960x640.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-960x640.png",
+      "Bytes": 65374,
+      "SHA256": "2C42A10BD3CBD1355A4605CD94579D1808A0EC3D433EC89E131F54786ADE6AC0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-960x640.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1920x1080-tab1.png",
+      "Bytes": 220677,
+      "SHA256": "2C86B288A99F70D975FFEB8916EA476CFFF6715A68E99F8C01C395272512AA98",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1920x1080-tab1.png",
+      "Bytes": 220677,
+      "SHA256": "2C86B288A99F70D975FFEB8916EA476CFFF6715A68E99F8C01C395272512AA98",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1920x1080-tab0.png",
+      "Bytes": 282243,
+      "SHA256": "2D581E5B94BD291FCF028DAFF45271E259F3BB06D43629C44E7C2AE1BDF293CA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1920x1080-tab0.png",
+      "Bytes": 282243,
+      "SHA256": "2D581E5B94BD291FCF028DAFF45271E259F3BB06D43629C44E7C2AE1BDF293CA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2560x1440-tab3.png",
+      "Bytes": 390445,
+      "SHA256": "2F49CB44EE7166C86B6BAE6DA8DD170D5BB2320750FB3EACEBD57C60ECF4A44E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2560x1440-tab3.png",
+      "Bytes": 390445,
+      "SHA256": "2F49CB44EE7166C86B6BAE6DA8DD170D5BB2320750FB3EACEBD57C60ECF4A44E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2048x1152-tab3.png",
+      "Bytes": 277122,
+      "SHA256": "2FF377AE38D88A9C4EDF90FC281C7821E76062AA1DE83A06CF04CF30DFDCE946",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2048x1152-tab3.png",
+      "Bytes": 277122,
+      "SHA256": "2FF377AE38D88A9C4EDF90FC281C7821E76062AA1DE83A06CF04CF30DFDCE946",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Process-1366x768-closed.png",
+      "Bytes": 159742,
+      "SHA256": "32338723ABFFFDE3141D98AB6B1FA9C9716B3B328D4BDD9BF2DDCF6E542795F5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1366x768-closed.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Process-1366x768.png",
+      "Bytes": 159742,
+      "SHA256": "32338723ABFFFDE3141D98AB6B1FA9C9716B3B328D4BDD9BF2DDCF6E542795F5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1366x768-closed.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Process-1366x768-closed.png",
+      "Bytes": 159742,
+      "SHA256": "32338723ABFFFDE3141D98AB6B1FA9C9716B3B328D4BDD9BF2DDCF6E542795F5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1366x768-closed.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Process-1366x768.png",
+      "Bytes": 159742,
+      "SHA256": "32338723ABFFFDE3141D98AB6B1FA9C9716B3B328D4BDD9BF2DDCF6E542795F5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1366x768-closed.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1600x900-tab0.png",
+      "Bytes": 100861,
+      "SHA256": "3266A47338116B926B2A957349A139809353146CE406260B742ADC780B83EEB4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1600x900-tab0.png",
+      "Bytes": 100861,
+      "SHA256": "3266A47338116B926B2A957349A139809353146CE406260B742ADC780B83EEB4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1920x1080-tab2.png",
+      "Bytes": 239408,
+      "SHA256": "32DADB1D65BEF06E8A343AFD4EE318F04D43D8550F2D7DB8169D1CE9F26790F7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1920x1080-tab2.png",
+      "Bytes": 239408,
+      "SHA256": "32DADB1D65BEF06E8A343AFD4EE318F04D43D8550F2D7DB8169D1CE9F26790F7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1366x768-tab3.png",
+      "Bytes": 118160,
+      "SHA256": "35EAD74CFF9CD3085E1F901D8285A454269950F99E32482910F67A87154298F4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1366x768-tab3.png",
+      "Bytes": 118160,
+      "SHA256": "35EAD74CFF9CD3085E1F901D8285A454269950F99E32482910F67A87154298F4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1280x720-tab3.png",
+      "Bytes": 110715,
+      "SHA256": "368F9369DC36ACC25641577CC017DF639196B2B2C695FAFFFB48FA6A2673D064",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1280x720-tab3.png",
+      "Bytes": 110715,
+      "SHA256": "368F9369DC36ACC25641577CC017DF639196B2B2C695FAFFFB48FA6A2673D064",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1536x864-tab0.png",
+      "Bytes": 183626,
+      "SHA256": "3850792EB282A3C795A6ECB3A49E58DDE3DFBC08E1CA8F8D0E2B8BCAEB11378F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1536x864-tab0.png",
+      "Bytes": 183626,
+      "SHA256": "3850792EB282A3C795A6ECB3A49E58DDE3DFBC08E1CA8F8D0E2B8BCAEB11378F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-3840x2160-tab2.png",
+      "Bytes": 148907,
+      "SHA256": "38C6141E9223521F85E7106741DA936F112C9701725EAC1BD3184EE65254D1FA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-3840x2160-tab2.png",
+      "Bytes": 148907,
+      "SHA256": "38C6141E9223521F85E7106741DA936F112C9701725EAC1BD3184EE65254D1FA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-3840x2160-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Shell-Background-1040x700.png",
+      "Bytes": 76205,
+      "SHA256": "3A0BD6CBEEFF9D3311D70E36EC83967557CD37D413C1BCF05F6ADE0AE80E6235",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Shell-Background-1040x700.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Shell-Background-1040x700.png",
+      "Bytes": 76205,
+      "SHA256": "3A0BD6CBEEFF9D3311D70E36EC83967557CD37D413C1BCF05F6ADE0AE80E6235",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Shell-Background-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Shell-Background-1040x700.png",
+      "Bytes": 76205,
+      "SHA256": "3A0BD6CBEEFF9D3311D70E36EC83967557CD37D413C1BCF05F6ADE0AE80E6235",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Shell-Background-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-3840x2160-tab1.png",
+      "Bytes": 366046,
+      "SHA256": "3C479A74FB38FEDC454F3DB77C9E536DAAB288FC57B0327B2146A5E5BE55EAB1",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-3840x2160-tab1.png",
+      "Bytes": 366046,
+      "SHA256": "3C479A74FB38FEDC454F3DB77C9E536DAAB288FC57B0327B2146A5E5BE55EAB1",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1536x864-tab3.png",
+      "Bytes": 168738,
+      "SHA256": "3CDB070B4C8C35ABA9409DFC9AF57300EE563190E13F11704F3CC3FF8FDDE34F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1536x864-tab3.png",
+      "Bytes": 168738,
+      "SHA256": "3CDB070B4C8C35ABA9409DFC9AF57300EE563190E13F11704F3CC3FF8FDDE34F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1100x720-tab2.png",
+      "Bytes": 108056,
+      "SHA256": "3D7DF4CDC87AE6F354F1ACDFA7403C0DFE16EACFA8FEFD1D6A2787AF4C827844",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1100x720-tab2.png",
+      "Bytes": 108056,
+      "SHA256": "3D7DF4CDC87AE6F354F1ACDFA7403C0DFE16EACFA8FEFD1D6A2787AF4C827844",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-3840x2160-tab3.png",
+      "Bytes": 686137,
+      "SHA256": "3DDEE15423E3C850229C8BC698BB441BD2887B839C604F66E7A62C53E166F77F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-3840x2160-tab3.png",
+      "Bytes": 686137,
+      "SHA256": "3DDEE15423E3C850229C8BC698BB441BD2887B839C604F66E7A62C53E166F77F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-3840x2160-tab0.png",
+      "Bytes": 135725,
+      "SHA256": "3E8F50142464F7289E531997F3E94B9BA66453164FAB93B3380E82E7507DC79B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-3840x2160-tab0.png",
+      "Bytes": 135725,
+      "SHA256": "3E8F50142464F7289E531997F3E94B9BA66453164FAB93B3380E82E7507DC79B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1280x720-tab1.png",
+      "Bytes": 112073,
+      "SHA256": "4011C5294EC72F3C91541210C2F9CA82438644D0C87F694E8CE49E9ADC2C4475",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1280x720-tab1.png",
+      "Bytes": 112073,
+      "SHA256": "4011C5294EC72F3C91541210C2F9CA82438644D0C87F694E8CE49E9ADC2C4475",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1040x700-tab4.png",
+      "Bytes": 94219,
+      "SHA256": "405593028F43CE95416193658CF92438C102FAB534F6A06A74F14009161B82C8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1040x700-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1040x700-tab4.png",
+      "Bytes": 94219,
+      "SHA256": "405593028F43CE95416193658CF92438C102FAB534F6A06A74F14009161B82C8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1040x700-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Diagnostics-1100x720.png",
+      "Bytes": 128406,
+      "SHA256": "456681072FC3D0F3D7213DF37BAE0AEEBCDD6CB5E179442991809C210539FC1A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1100x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Diagnostics-1100x720.png",
+      "Bytes": 128406,
+      "SHA256": "456681072FC3D0F3D7213DF37BAE0AEEBCDD6CB5E179442991809C210539FC1A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1100x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1920x1080-tab1.png",
+      "Bytes": 165331,
+      "SHA256": "495409C6F9CA41025698FAA5CB7E082A29B88489F2D4C34F53917372E78BD7F0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1920x1080-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1920x1080-tab1.png",
+      "Bytes": 165331,
+      "SHA256": "495409C6F9CA41025698FAA5CB7E082A29B88489F2D4C34F53917372E78BD7F0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1920x1080-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1280x720-tab4.png",
+      "Bytes": 106554,
+      "SHA256": "4C39BBEAC55FD3EFFE0CE8CCEAFECB8190C527A2AF9E73B3F42E80219D8594FD",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1280x720-tab4.png",
+      "Bytes": 106554,
+      "SHA256": "4C39BBEAC55FD3EFFE0CE8CCEAFECB8190C527A2AF9E73B3F42E80219D8594FD",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-3840x2160-tab4.png",
+      "Bytes": 341478,
+      "SHA256": "4C56CF94A6B61F262E814C53A3064F4A97403298447DB962202108C37B0D0837",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-3840x2160-tab4.png",
+      "Bytes": 341478,
+      "SHA256": "4C56CF94A6B61F262E814C53A3064F4A97403298447DB962202108C37B0D0837",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1707x960-tab4.png",
+      "Bytes": 129369,
+      "SHA256": "4C693E203D443B036E0A09AAFA73290F75274F5801F30F3C00247A416AF98D26",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1707x960-tab4.png",
+      "Bytes": 129369,
+      "SHA256": "4C693E203D443B036E0A09AAFA73290F75274F5801F30F3C00247A416AF98D26",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-state-normal-1040x700.png",
+      "Bytes": 166856,
+      "SHA256": "4CAB2838DDFD23F674149A6E52B99C0CE12E360956AED3B66323C04BCD87AFE4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-state-normal-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-state-normal-1040x700.png",
+      "Bytes": 166856,
+      "SHA256": "4CAB2838DDFD23F674149A6E52B99C0CE12E360956AED3B66323C04BCD87AFE4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-state-normal-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1920x1080-tab2.png",
+      "Bytes": 96960,
+      "SHA256": "4E2FE65BD87C6D2CDA9AA5B8C23FAA17E5BD20DB5F67BA318E906042B8BE4B1F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1920x1080-tab2.png",
+      "Bytes": 96960,
+      "SHA256": "4E2FE65BD87C6D2CDA9AA5B8C23FAA17E5BD20DB5F67BA318E906042B8BE4B1F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-1200x720.png",
+      "Bytes": 67055,
+      "SHA256": "4EA7268B421B5575BB2DB13425F954A6AA091DB94DF6B6994F7AEF933E8BD616",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-1200x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-1200x720.png",
+      "Bytes": 67055,
+      "SHA256": "4EA7268B421B5575BB2DB13425F954A6AA091DB94DF6B6994F7AEF933E8BD616",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-1200x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1536x864-tab2.png",
+      "Bytes": 126546,
+      "SHA256": "51FAFBF65D2D0AEEE5E8646EA0752532A3F41AFA0F44C96BBA800BD2DFBC03E8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1536x864-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1536x864-tab2.png",
+      "Bytes": 126546,
+      "SHA256": "51FAFBF65D2D0AEEE5E8646EA0752532A3F41AFA0F44C96BBA800BD2DFBC03E8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1536x864-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1040x700-tab1.png",
+      "Bytes": 99209,
+      "SHA256": "55BADD3D99E78A2455A93DA26AB0AFE0B3C16D693327505CB3CB1DED81662D37",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1040x700-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1040x700-tab1.png",
+      "Bytes": 99209,
+      "SHA256": "55BADD3D99E78A2455A93DA26AB0AFE0B3C16D693327505CB3CB1DED81662D37",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1040x700-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Settings-2560x1440.png",
+      "Bytes": 294298,
+      "SHA256": "55F0EFD685C362E93CECA384DADDB85ECED88BBB48AAB4BC44F8019D2DE0E6B7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-2560x1440.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Settings-2560x1440.png",
+      "Bytes": 294298,
+      "SHA256": "55F0EFD685C362E93CECA384DADDB85ECED88BBB48AAB4BC44F8019D2DE0E6B7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-2560x1440.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Settings-2560x1440.png",
+      "Bytes": 294298,
+      "SHA256": "55F0EFD685C362E93CECA384DADDB85ECED88BBB48AAB4BC44F8019D2DE0E6B7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-2560x1440.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Maintenance-2560x1440.png",
+      "Bytes": 118222,
+      "SHA256": "56E26DCA733E57FBC24D0BA28B20DCD699DDBD43DB05A7C7C048C55D2B844B85",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-2560x1440.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Maintenance-2560x1440.png",
+      "Bytes": 118222,
+      "SHA256": "56E26DCA733E57FBC24D0BA28B20DCD699DDBD43DB05A7C7C048C55D2B844B85",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-2560x1440.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Maintenance-2560x1440.png",
+      "Bytes": 118222,
+      "SHA256": "56E26DCA733E57FBC24D0BA28B20DCD699DDBD43DB05A7C7C048C55D2B844B85",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-2560x1440.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1100x720-tab2.png",
+      "Bytes": 46334,
+      "SHA256": "5723DDD7855C258DF7C195CFAAECD432751321F8F22700F463BF0E6B57B0101C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1100x720-tab2.png",
+      "Bytes": 46334,
+      "SHA256": "5723DDD7855C258DF7C195CFAAECD432751321F8F22700F463BF0E6B57B0101C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1280x720-tab4.png",
+      "Bytes": 65391,
+      "SHA256": "5813086B500EC44E167FA9D23E33227E17D463AFD45CB83EAD66501EDB0D801B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1280x720-tab4.png",
+      "Bytes": 65391,
+      "SHA256": "5813086B500EC44E167FA9D23E33227E17D463AFD45CB83EAD66501EDB0D801B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-2560x1440-tab0.png",
+      "Bytes": 114398,
+      "SHA256": "5918946FF5539B9022EC3B616ED6E7BB979FDFCB8754966F38727F08E8E6FEBC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-2560x1440-tab0.png",
+      "Bytes": 114398,
+      "SHA256": "5918946FF5539B9022EC3B616ED6E7BB979FDFCB8754966F38727F08E8E6FEBC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Trainer-1366x768.png",
+      "Bytes": 107532,
+      "SHA256": "59972B451AA72946D613187C170F48C9AEC364739D1A35328061326576EB2FEF",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1366x768.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Trainer-1366x768.png",
+      "Bytes": 107532,
+      "SHA256": "59972B451AA72946D613187C170F48C9AEC364739D1A35328061326576EB2FEF",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1366x768.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Trainer-1366x768.png",
+      "Bytes": 107532,
+      "SHA256": "59972B451AA72946D613187C170F48C9AEC364739D1A35328061326576EB2FEF",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Trainer-1366x768.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Diagnostics-1366x768-closed.png",
+      "Bytes": 168980,
+      "SHA256": "5D48375E438B1D3AC00D9732F9DF3D1FD143E770383EFFC2E3CAA8E87FF399FC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1366x768-closed.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Diagnostics-1366x768.png",
+      "Bytes": 168980,
+      "SHA256": "5D48375E438B1D3AC00D9732F9DF3D1FD143E770383EFFC2E3CAA8E87FF399FC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1366x768-closed.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Diagnostics-1366x768-closed.png",
+      "Bytes": 168980,
+      "SHA256": "5D48375E438B1D3AC00D9732F9DF3D1FD143E770383EFFC2E3CAA8E87FF399FC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1366x768-closed.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Diagnostics-1366x768.png",
+      "Bytes": 168980,
+      "SHA256": "5D48375E438B1D3AC00D9732F9DF3D1FD143E770383EFFC2E3CAA8E87FF399FC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1366x768-closed.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1366x768-tab4.png",
+      "Bytes": 117636,
+      "SHA256": "5DCC74310EE5CD0C8C9E8F3469E5D9AE60C750846F59ACE9B0C400851CE51619",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1366x768-tab4.png",
+      "Bytes": 117636,
+      "SHA256": "5DCC74310EE5CD0C8C9E8F3469E5D9AE60C750846F59ACE9B0C400851CE51619",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1920x1080-tab3.png",
+      "Bytes": 155185,
+      "SHA256": "624ABF31B01750E1CF7F00ABAB248CF25884860572F4E87547AB4C5E1FE33F48",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1920x1080-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1920x1080-tab3.png",
+      "Bytes": 155185,
+      "SHA256": "624ABF31B01750E1CF7F00ABAB248CF25884860572F4E87547AB4C5E1FE33F48",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1920x1080-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1600x900-tab0.png",
+      "Bytes": 139642,
+      "SHA256": "62BDC7E492F2134725CA38D07B9FB65675C26116EC2AF2233D1AD578B7E02215",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1600x900-tab0.png",
+      "Bytes": 139642,
+      "SHA256": "62BDC7E492F2134725CA38D07B9FB65675C26116EC2AF2233D1AD578B7E02215",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-3840x2160-tab2.png",
+      "Bytes": 432856,
+      "SHA256": "63CB1BCED0622039B435FC7895B3761764B4B82DC06318B81077C38DFF144C47",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-3840x2160-tab2.png",
+      "Bytes": 432856,
+      "SHA256": "63CB1BCED0622039B435FC7895B3761764B4B82DC06318B81077C38DFF144C47",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Shell-Background-1040x700.png",
+      "Bytes": 59921,
+      "SHA256": "64F8D303E1AC3737752F0F551F9CF9B9996C40FEE0AFBC0E5A8021F6059B858E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Shell-Background-1040x700.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Shell-Background-1040x700.png",
+      "Bytes": 59921,
+      "SHA256": "64F8D303E1AC3737752F0F551F9CF9B9996C40FEE0AFBC0E5A8021F6059B858E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Shell-Background-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Shell-Background-1040x700.png",
+      "Bytes": 59921,
+      "SHA256": "64F8D303E1AC3737752F0F551F9CF9B9996C40FEE0AFBC0E5A8021F6059B858E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Shell-Background-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2560x1440-tab4.png",
+      "Bytes": 248592,
+      "SHA256": "665E5FCF6B143B974258B8EAA45FB43487B4AC2C21600EDDC421AD173483C933",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2560x1440-tab4.png",
+      "Bytes": 248592,
+      "SHA256": "665E5FCF6B143B974258B8EAA45FB43487B4AC2C21600EDDC421AD173483C933",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2560x1440-tab2.png",
+      "Bytes": 334561,
+      "SHA256": "68190018955A96ACC309EFE67FEE8B23CFE655608870466FC3D5504AFCD490AB",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2560x1440-tab2.png",
+      "Bytes": 334561,
+      "SHA256": "68190018955A96ACC309EFE67FEE8B23CFE655608870466FC3D5504AFCD490AB",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1366x768-tab3.png",
+      "Bytes": 120603,
+      "SHA256": "68D45F76F068452B72A7A927CAA8E2321F190E6EA4835C93E7B1C9299A7CCBFC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1366x768-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1366x768-tab3.png",
+      "Bytes": 120603,
+      "SHA256": "68D45F76F068452B72A7A927CAA8E2321F190E6EA4835C93E7B1C9299A7CCBFC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1366x768-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Settings-1040x700.png",
+      "Bytes": 76300,
+      "SHA256": "690FA98F7543AF5090A141FC944083289A073C3B09FFEECC8B855D24EF489441",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1040x700.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Settings-1040x700.png",
+      "Bytes": 76300,
+      "SHA256": "690FA98F7543AF5090A141FC944083289A073C3B09FFEECC8B855D24EF489441",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Settings-1040x700.png",
+      "Bytes": 76300,
+      "SHA256": "690FA98F7543AF5090A141FC944083289A073C3B09FFEECC8B855D24EF489441",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Settings-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1707x960-tab2.png",
+      "Bytes": 82724,
+      "SHA256": "69BBF1114D22CFA11E156B5683FE657D9F4C035C8793CA33C114DE3119EFD6A6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1707x960-tab2.png",
+      "Bytes": 82724,
+      "SHA256": "69BBF1114D22CFA11E156B5683FE657D9F4C035C8793CA33C114DE3119EFD6A6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1600x900-tab2.png",
+      "Bytes": 186946,
+      "SHA256": "69DB4B22ECDA1064728C865B72D3236C0F1E3726B0BBA03BF056AA98869B23D0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1600x900-tab2.png",
+      "Bytes": 186946,
+      "SHA256": "69DB4B22ECDA1064728C865B72D3236C0F1E3726B0BBA03BF056AA98869B23D0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1040x700-tab1.png",
+      "Bytes": 45735,
+      "SHA256": "6C7D8637F30C052A0F96DCE962B7650F38829E568335492578280811D75AD29D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1040x700-tab1.png",
+      "Bytes": 45735,
+      "SHA256": "6C7D8637F30C052A0F96DCE962B7650F38829E568335492578280811D75AD29D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Trainer-1366x768.png",
+      "Bytes": 112994,
+      "SHA256": "6D921748289BD193FB826428DD745DCABBA6DDB3A36A87535F1F59208AE3EFEA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1366x768.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Trainer-1366x768.png",
+      "Bytes": 112994,
+      "SHA256": "6D921748289BD193FB826428DD745DCABBA6DDB3A36A87535F1F59208AE3EFEA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1366x768.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Trainer-1366x768.png",
+      "Bytes": 112994,
+      "SHA256": "6D921748289BD193FB826428DD745DCABBA6DDB3A36A87535F1F59208AE3EFEA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-1366x768.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1707x960-tab2.png",
+      "Bytes": 217893,
+      "SHA256": "6D9807DE061C9287514C1C7376C84C2FCF7E2CEBCE41078494DD6835AF1E1E46",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1707x960-tab2.png",
+      "Bytes": 217893,
+      "SHA256": "6D9807DE061C9287514C1C7376C84C2FCF7E2CEBCE41078494DD6835AF1E1E46",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-2560x1440-tab1.png",
+      "Bytes": 177945,
+      "SHA256": "6E4C1FD045C8573F272EB8ACF63711B2EF40C07264E8C1A67C77DEF3BFB08E95",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-2560x1440-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-2560x1440-tab1.png",
+      "Bytes": 177945,
+      "SHA256": "6E4C1FD045C8573F272EB8ACF63711B2EF40C07264E8C1A67C77DEF3BFB08E95",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-2560x1440-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1536x864-tab1.png",
+      "Bytes": 122773,
+      "SHA256": "6EDEFC812871DFA5EB04854A429E689CCFAC1F87E1E8AAF650D595F27D31213F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1536x864-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1536x864-tab1.png",
+      "Bytes": 122773,
+      "SHA256": "6EDEFC812871DFA5EB04854A429E689CCFAC1F87E1E8AAF650D595F27D31213F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1536x864-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1100x720-tab2.png",
+      "Bytes": 47870,
+      "SHA256": "6F3D37782711075B3DB4E7DBBF2579EBF1E5225D2DBDBCD5E5C5D54A6722C365",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1100x720-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1100x720-tab2.png",
+      "Bytes": 47870,
+      "SHA256": "6F3D37782711075B3DB4E7DBBF2579EBF1E5225D2DBDBCD5E5C5D54A6722C365",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1100x720-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-3840x2160-tab0.png",
+      "Bytes": 474094,
+      "SHA256": "6F6F0084B287AF1623C8F63961450DF44F456AE7F2B6A542BB071592DB94E2EA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-3840x2160-tab0.png",
+      "Bytes": 474094,
+      "SHA256": "6F6F0084B287AF1623C8F63961450DF44F456AE7F2B6A542BB071592DB94E2EA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-3840x2160-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1920x1080-tab4.png",
+      "Bytes": 131929,
+      "SHA256": "70F58C4BE5FFC4D9C9988B02066016B31518E1C35BAF3C9D84477EB3AAEC2E4B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1920x1080-tab4.png",
+      "Bytes": 131929,
+      "SHA256": "70F58C4BE5FFC4D9C9988B02066016B31518E1C35BAF3C9D84477EB3AAEC2E4B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1536x864-tab1.png",
+      "Bytes": 115194,
+      "SHA256": "7115C091CF0E86FCD606F69E5DEB2D8EE72568D203E58C55170C5156F68C33D6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1536x864-tab1.png",
+      "Bytes": 115194,
+      "SHA256": "7115C091CF0E86FCD606F69E5DEB2D8EE72568D203E58C55170C5156F68C33D6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1920x1080-tab5.png",
+      "Bytes": 101092,
+      "SHA256": "718031E512AA88D52F2C772CAE0DD9D0208F7F141A69641781E57F7184F6DDCC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1920x1080-tab5.png",
+      "Bytes": 101092,
+      "SHA256": "718031E512AA88D52F2C772CAE0DD9D0208F7F141A69641781E57F7184F6DDCC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1707x960-tab2.png",
+      "Bytes": 129383,
+      "SHA256": "7376649A4D5857B4D426C9C020157BF8E97B4F834A5A215DC11A9123F62947E0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1707x960-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1707x960-tab2.png",
+      "Bytes": 129383,
+      "SHA256": "7376649A4D5857B4D426C9C020157BF8E97B4F834A5A215DC11A9123F62947E0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1707x960-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-3840x2160-tab4.png",
+      "Bytes": 164892,
+      "SHA256": "74DAA830C1C0484AD06B4B715FF250626AEAFE56B01D099F5E2244A64BD1CE0E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-3840x2160-tab4.png",
+      "Bytes": 164892,
+      "SHA256": "74DAA830C1C0484AD06B4B715FF250626AEAFE56B01D099F5E2244A64BD1CE0E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-2560x1440-tab1.png",
+      "Bytes": 213394,
+      "SHA256": "75E683A1BF02B4A1A20D84592D04CC07FDEF22407DC59BB5447457AD50946A84",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-2560x1440-tab1.png",
+      "Bytes": 213394,
+      "SHA256": "75E683A1BF02B4A1A20D84592D04CC07FDEF22407DC59BB5447457AD50946A84",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1707x960-tab3.png",
+      "Bytes": 149269,
+      "SHA256": "762C7D26FBFBD63856AF2387D8D3E12B62EC8659A24166B6625EA74EC2EFBB34",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1707x960-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1707x960-tab3.png",
+      "Bytes": 149269,
+      "SHA256": "762C7D26FBFBD63856AF2387D8D3E12B62EC8659A24166B6625EA74EC2EFBB34",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1707x960-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Settings-2560x1440.png",
+      "Bytes": 370238,
+      "SHA256": "77821D992B33E33E2F836219B2085D7A2D6FC50BE654C87A3AF44852B796E2F3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-2560x1440.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Settings-2560x1440.png",
+      "Bytes": 370238,
+      "SHA256": "77821D992B33E33E2F836219B2085D7A2D6FC50BE654C87A3AF44852B796E2F3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-2560x1440.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Settings-2560x1440.png",
+      "Bytes": 370238,
+      "SHA256": "77821D992B33E33E2F836219B2085D7A2D6FC50BE654C87A3AF44852B796E2F3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-2560x1440.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1366x768-tab0.png",
+      "Bytes": 118729,
+      "SHA256": "78A0B61EF579BF4D38DBA8FCBBFBDFF936CE18E37668B9B3EFA3E36091D7BA55",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1366x768-tab0.png",
+      "Bytes": 118729,
+      "SHA256": "78A0B61EF579BF4D38DBA8FCBBFBDFF936CE18E37668B9B3EFA3E36091D7BA55",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1707x960-tab0.png",
+      "Bytes": 229021,
+      "SHA256": "7AF9523E404000C72F52A8F91597FD967066F3093371DFCCD4C883CB4D0CAD96",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1707x960-tab0.png",
+      "Bytes": 229021,
+      "SHA256": "7AF9523E404000C72F52A8F91597FD967066F3093371DFCCD4C883CB4D0CAD96",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-2048x1152-tab0.png",
+      "Bytes": 107910,
+      "SHA256": "7C0742C84B76689B0FD1808DDC256A2B8AA8029B313E220289D59930B72E5FF7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-2048x1152-tab0.png",
+      "Bytes": 107910,
+      "SHA256": "7C0742C84B76689B0FD1808DDC256A2B8AA8029B313E220289D59930B72E5FF7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1600x900-tab0.png",
+      "Bytes": 192104,
+      "SHA256": "7D02809AFA2963B8668BB4B2E7491375FC6871C4F80CED38259D1DE3AE73B5D0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1600x900-tab0.png",
+      "Bytes": 192104,
+      "SHA256": "7D02809AFA2963B8668BB4B2E7491375FC6871C4F80CED38259D1DE3AE73B5D0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1280x720-tab1.png",
+      "Bytes": 69796,
+      "SHA256": "7D02A82334552F966884FDA0FB155D1A3308AE79702D9D2BAA8F04B122601DE3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1280x720-tab1.png",
+      "Bytes": 69796,
+      "SHA256": "7D02A82334552F966884FDA0FB155D1A3308AE79702D9D2BAA8F04B122601DE3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1920x1080-tab0.png",
+      "Bytes": 164017,
+      "SHA256": "7D8B8F710D7CD61191D920EB8DF15116AC6CFF6846EDDF834C1CF6187307849C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1920x1080-tab0.png",
+      "Bytes": 164017,
+      "SHA256": "7D8B8F710D7CD61191D920EB8DF15116AC6CFF6846EDDF834C1CF6187307849C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1100x720-tab3.png",
+      "Bytes": 104930,
+      "SHA256": "7D8BB5B3C438A4F5F5D3B9942F4A5886CDA7E5FE04468B7CBC4775C824EE9068",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1100x720-tab3.png",
+      "Bytes": 104930,
+      "SHA256": "7D8BB5B3C438A4F5F5D3B9942F4A5886CDA7E5FE04468B7CBC4775C824EE9068",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-2560x1440-tab5.png",
+      "Bytes": 109543,
+      "SHA256": "7DB90B3BADDFB2A648411545193565176821A31B44271F2C2B9384EC3161657D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-2560x1440-tab5.png",
+      "Bytes": 109543,
+      "SHA256": "7DB90B3BADDFB2A648411545193565176821A31B44271F2C2B9384EC3161657D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1920x1080-tab3.png",
+      "Bytes": 254742,
+      "SHA256": "80BA064EB0A270204BE7C01D631174511067A93C674697AC3A3918D920245437",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1920x1080-tab3.png",
+      "Bytes": 254742,
+      "SHA256": "80BA064EB0A270204BE7C01D631174511067A93C674697AC3A3918D920245437",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1920x1080-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1707x960-tab3.png",
+      "Bytes": 208174,
+      "SHA256": "822E51FFD9FBD2D2877590523DA87FAFDE092C9090A03404C54C7DBDE3CAD737",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1707x960-tab3.png",
+      "Bytes": 208174,
+      "SHA256": "822E51FFD9FBD2D2877590523DA87FAFDE092C9090A03404C54C7DBDE3CAD737",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Settings-1040x700.png",
+      "Bytes": 94875,
+      "SHA256": "861A0853F94E5BDB44EFA1F8B57160B200270F9EF0C479270DB02BC751BF6DB6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1040x700.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Settings-1040x700.png",
+      "Bytes": 94875,
+      "SHA256": "861A0853F94E5BDB44EFA1F8B57160B200270F9EF0C479270DB02BC751BF6DB6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Settings-1040x700.png",
+      "Bytes": 94875,
+      "SHA256": "861A0853F94E5BDB44EFA1F8B57160B200270F9EF0C479270DB02BC751BF6DB6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1280x720-tab0.png",
+      "Bytes": 67700,
+      "SHA256": "8726120FDD143DC69ED3CB0B2CB29B99FC2F1FEB688F2DD4EAF8267DD31B33DE",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1280x720-tab0.png",
+      "Bytes": 67700,
+      "SHA256": "8726120FDD143DC69ED3CB0B2CB29B99FC2F1FEB688F2DD4EAF8267DD31B33DE",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Settings-1100x720.png",
+      "Bytes": 108670,
+      "SHA256": "8838D64F0D2AC1D3ABD452DC1E921A0705A9E424AA5F454C3E4E0D793E709162",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1100x720.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Settings-1100x720.png",
+      "Bytes": 108670,
+      "SHA256": "8838D64F0D2AC1D3ABD452DC1E921A0705A9E424AA5F454C3E4E0D793E709162",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1100x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Settings-1100x720.png",
+      "Bytes": 108670,
+      "SHA256": "8838D64F0D2AC1D3ABD452DC1E921A0705A9E424AA5F454C3E4E0D793E709162",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1100x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1100x720-tab3.png",
+      "Bytes": 58650,
+      "SHA256": "883D5073CA17EA9E6AE2A4BA7F600F6402234ADD775BDE3267918FA07B251DD4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1100x720-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1100x720-tab3.png",
+      "Bytes": 58650,
+      "SHA256": "883D5073CA17EA9E6AE2A4BA7F600F6402234ADD775BDE3267918FA07B251DD4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1100x720-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-2560x1440-tab4.png",
+      "Bytes": 143445,
+      "SHA256": "89A6B94CEEAC6D021E03FE782C022A69D6A46F358D858FE0FADE7A16E403EC59",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-2560x1440-tab4.png",
+      "Bytes": 143445,
+      "SHA256": "89A6B94CEEAC6D021E03FE782C022A69D6A46F358D858FE0FADE7A16E403EC59",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2560x1440-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Process-1040x700.png",
+      "Bytes": 116608,
+      "SHA256": "8B2FED5DADCBDB7C4FF6BC3E375088801785CA6DF3E0638CE3281A0FC7199F8A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Process-1040x700.png",
+      "Bytes": 116608,
+      "SHA256": "8B2FED5DADCBDB7C4FF6BC3E375088801785CA6DF3E0638CE3281A0FC7199F8A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1600x900-tab3.png",
+      "Bytes": 180707,
+      "SHA256": "8B42AA0C7754F9FC9D65D9748D513BA2B7A1143CC538A4FEAD97B44AE3D8EE38",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1600x900-tab3.png",
+      "Bytes": 180707,
+      "SHA256": "8B42AA0C7754F9FC9D65D9748D513BA2B7A1143CC538A4FEAD97B44AE3D8EE38",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1100x720-tab1.png",
+      "Bytes": 68128,
+      "SHA256": "8CEB3E436AD92BB015E1CC570C13E3E52F73937B4DF5DA7D7D7ACE8F39251870",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1100x720-tab1.png",
+      "Bytes": 68128,
+      "SHA256": "8CEB3E436AD92BB015E1CC570C13E3E52F73937B4DF5DA7D7D7ACE8F39251870",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-2560x1440-tab3.png",
+      "Bytes": 165869,
+      "SHA256": "8E8E1EB5D817F74AD93DF4DE9EE55638209AA7A2D8D44A8ED854867607A1BBCC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-2560x1440-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-2560x1440-tab3.png",
+      "Bytes": 165869,
+      "SHA256": "8E8E1EB5D817F74AD93DF4DE9EE55638209AA7A2D8D44A8ED854867607A1BBCC",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-2560x1440-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1100x720-tab0.png",
+      "Bytes": 66749,
+      "SHA256": "901EC0BABAFAFAFA789A240B20389013647A6FAFDD616CC4BC7D50C92B7431CD",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1100x720-tab0.png",
+      "Bytes": 66749,
+      "SHA256": "901EC0BABAFAFAFA789A240B20389013647A6FAFDD616CC4BC7D50C92B7431CD",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-2048x1152-tab5.png",
+      "Bytes": 103082,
+      "SHA256": "9132C928254DD4653809D4A4C1536D59A22AE12164AF4F10079C616EFFD6CEC5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-2048x1152-tab5.png",
+      "Bytes": 103082,
+      "SHA256": "9132C928254DD4653809D4A4C1536D59A22AE12164AF4F10079C616EFFD6CEC5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1536x864-tab1.png",
+      "Bytes": 49867,
+      "SHA256": "92134B0239A93CB095FAA6D77CECA459B054DF970126953269A7AF5B8E3ED633",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1536x864-tab1.png",
+      "Bytes": 49867,
+      "SHA256": "92134B0239A93CB095FAA6D77CECA459B054DF970126953269A7AF5B8E3ED633",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1536x864-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1366x768-tab2.png",
+      "Bytes": 57605,
+      "SHA256": "92FE30E354AC0F778DCF157A37ED4BBE01E7669F9EC36153FAC977EAB7696919",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1366x768-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1366x768-tab2.png",
+      "Bytes": 57605,
+      "SHA256": "92FE30E354AC0F778DCF157A37ED4BBE01E7669F9EC36153FAC977EAB7696919",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1366x768-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Maintenance-1366x768.png",
+      "Bytes": 90715,
+      "SHA256": "9584C60F7EC6001E7E41C15B71BF38ED990D8185776FE7DDBE2CF11F51B48C0A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1366x768.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Maintenance-1366x768.png",
+      "Bytes": 90715,
+      "SHA256": "9584C60F7EC6001E7E41C15B71BF38ED990D8185776FE7DDBE2CF11F51B48C0A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1366x768.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Maintenance-1366x768.png",
+      "Bytes": 90715,
+      "SHA256": "9584C60F7EC6001E7E41C15B71BF38ED990D8185776FE7DDBE2CF11F51B48C0A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1366x768.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1040x700-tab2.png",
+      "Bytes": 63488,
+      "SHA256": "964F83E476B8DE3718D4109F0764C61036AE3EB921562B8CB3A5599742C3AAE0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1040x700-tab2.png",
+      "Bytes": 63488,
+      "SHA256": "964F83E476B8DE3718D4109F0764C61036AE3EB921562B8CB3A5599742C3AAE0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Trainer-2560x1440.png",
+      "Bytes": 190138,
+      "SHA256": "978E642E94B6EB1BC0B4DAE876232ED0F5740A246068E76BB844D2F75BD37FF3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-2560x1440.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Trainer-2560x1440.png",
+      "Bytes": 190138,
+      "SHA256": "978E642E94B6EB1BC0B4DAE876232ED0F5740A246068E76BB844D2F75BD37FF3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-2560x1440.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Trainer-2560x1440.png",
+      "Bytes": 190138,
+      "SHA256": "978E642E94B6EB1BC0B4DAE876232ED0F5740A246068E76BB844D2F75BD37FF3",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Trainer-2560x1440.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Settings-1366x768.png",
+      "Bytes": 141437,
+      "SHA256": "978F41C05B862172DBA36B7531F4DF4AD884245E198FF8005F41751107693663",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1366x768.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Settings-1366x768.png",
+      "Bytes": 141437,
+      "SHA256": "978F41C05B862172DBA36B7531F4DF4AD884245E198FF8005F41751107693663",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1366x768.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Settings-1366x768.png",
+      "Bytes": 141437,
+      "SHA256": "978F41C05B862172DBA36B7531F4DF4AD884245E198FF8005F41751107693663",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Settings-1366x768.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Maintenance-CloudQueue-1040x700.png",
+      "Bytes": 69715,
+      "SHA256": "9A1184A138CEDA0E31D46EB745E6FD2F900008F052AAC4781348A15DA34E451A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-CloudQueue-1040x700.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Maintenance-CloudQueue-1040x700.png",
+      "Bytes": 69715,
+      "SHA256": "9A1184A138CEDA0E31D46EB745E6FD2F900008F052AAC4781348A15DA34E451A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-CloudQueue-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Maintenance-CloudQueue-1040x700.png",
+      "Bytes": 69715,
+      "SHA256": "9A1184A138CEDA0E31D46EB745E6FD2F900008F052AAC4781348A15DA34E451A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-CloudQueue-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2048x1152-tab1.png",
+      "Bytes": 230981,
+      "SHA256": "9A455E1647A9CF853B92A075ECB75F2616DE61AA4C392F147CB2A0988E9FB62C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2048x1152-tab1.png",
+      "Bytes": 230981,
+      "SHA256": "9A455E1647A9CF853B92A075ECB75F2616DE61AA4C392F147CB2A0988E9FB62C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1707x960-tab1.png",
+      "Bytes": 51807,
+      "SHA256": "9B329DCB1BF6F09216159A509B0FF31162132997CD029EC06F841DFECFF282BA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1707x960-tab1.png",
+      "Bytes": 51807,
+      "SHA256": "9B329DCB1BF6F09216159A509B0FF31162132997CD029EC06F841DFECFF282BA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1920x1080-tab1.png",
+      "Bytes": 181666,
+      "SHA256": "9D2A884AE781B76EEBD602DE32938B238C3E848B877FFE5A108C42DBDB017D4D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1920x1080-tab1.png",
+      "Bytes": 181666,
+      "SHA256": "9D2A884AE781B76EEBD602DE32938B238C3E848B877FFE5A108C42DBDB017D4D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-2048x1152-tab1.png",
+      "Bytes": 55013,
+      "SHA256": "9E743F8E037A45C78E6E5AC76FF500BB9B99DB5AA3ED6E6029E26DB8C0D32F13",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-2048x1152-tab1.png",
+      "Bytes": 55013,
+      "SHA256": "9E743F8E037A45C78E6E5AC76FF500BB9B99DB5AA3ED6E6029E26DB8C0D32F13",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1280x720-tab1.png",
+      "Bytes": 93990,
+      "SHA256": "A00D1C4A15DE0D2DB88144D5EED1E5A0025D74C6E4667EBD17065007AFB33603",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1280x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1280x720-tab1.png",
+      "Bytes": 93990,
+      "SHA256": "A00D1C4A15DE0D2DB88144D5EED1E5A0025D74C6E4667EBD17065007AFB33603",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1280x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Diagnostics-1040x700-closed.png",
+      "Bytes": 129041,
+      "SHA256": "A2FC2DBB597D032B814D97629315B023FF9089F3EC0FC20F0783A96E01893AAF",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1040x700-closed.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Diagnostics-1040x700-closed.png",
+      "Bytes": 129041,
+      "SHA256": "A2FC2DBB597D032B814D97629315B023FF9089F3EC0FC20F0783A96E01893AAF",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1040x700-closed.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1100x720-tab4.png",
+      "Bytes": 104436,
+      "SHA256": "A493700355F3DC00F764FD7800864BC9E1F785746740FC3AAB9ADE7A2FA4E5D8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1100x720-tab4.png",
+      "Bytes": 104436,
+      "SHA256": "A493700355F3DC00F764FD7800864BC9E1F785746740FC3AAB9ADE7A2FA4E5D8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1280x720-tab1.png",
+      "Bytes": 46518,
+      "SHA256": "A538818FE45F6B3A871DB0CBF34A7EB3B64CB6BB2CC3677AE46AE40CCFD381DE",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1280x720-tab1.png",
+      "Bytes": 46518,
+      "SHA256": "A538818FE45F6B3A871DB0CBF34A7EB3B64CB6BB2CC3677AE46AE40CCFD381DE",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-2048x1152-tab1.png",
+      "Bytes": 167489,
+      "SHA256": "A5398DFA6BC68A9757E8DDB330D2F281CC8F23D4446A5E142019C79E7A0A051C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-2048x1152-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-2048x1152-tab1.png",
+      "Bytes": 167489,
+      "SHA256": "A5398DFA6BC68A9757E8DDB330D2F281CC8F23D4446A5E142019C79E7A0A051C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-2048x1152-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1600x900-tab2.png",
+      "Bytes": 71240,
+      "SHA256": "A6B34E568AB5D541211A31E35AA46E3DE1C6FE6FA9F328AEE49E9C95CDFADA3F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1600x900-tab2.png",
+      "Bytes": 71240,
+      "SHA256": "A6B34E568AB5D541211A31E35AA46E3DE1C6FE6FA9F328AEE49E9C95CDFADA3F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1600x900-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1536x864-tab3.png",
+      "Bytes": 138722,
+      "SHA256": "A72E6BAB5C8D1B32FD9316F7B7C5971542CA346378A086456EDACFD47554B099",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1536x864-tab3.png",
+      "Bytes": 138722,
+      "SHA256": "A72E6BAB5C8D1B32FD9316F7B7C5971542CA346378A086456EDACFD47554B099",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1040x700-tab2.png",
+      "Bytes": 45034,
+      "SHA256": "A8D6B8A96FAD882224DE31D1D900F8493EEED972B1632259A729E755F8AE358D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1040x700-tab2.png",
+      "Bytes": 45034,
+      "SHA256": "A8D6B8A96FAD882224DE31D1D900F8493EEED972B1632259A729E755F8AE358D",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-2560x1440-tab0.png",
+      "Bytes": 175664,
+      "SHA256": "ACA5F67C3C2C10D4059A80ABB78BF66C23CA190FC35E3DC2DC56EF10B65B098B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-2560x1440-tab0.png",
+      "Bytes": 175664,
+      "SHA256": "ACA5F67C3C2C10D4059A80ABB78BF66C23CA190FC35E3DC2DC56EF10B65B098B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-2048x1152-tab1.png",
+      "Bytes": 194122,
+      "SHA256": "ACFFC5019C3CD031D20E86160987C7B8283520BD4B4BE050A38D009236DAC040",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-2048x1152-tab1.png",
+      "Bytes": 194122,
+      "SHA256": "ACFFC5019C3CD031D20E86160987C7B8283520BD4B4BE050A38D009236DAC040",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1536x864-tab0.png",
+      "Bytes": 100097,
+      "SHA256": "AD0AC078095B00A97416052CA1A3092E4F6E16B8CA0936CD739A90A06ABB855B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1536x864-tab0.png",
+      "Bytes": 100097,
+      "SHA256": "AD0AC078095B00A97416052CA1A3092E4F6E16B8CA0936CD739A90A06ABB855B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1536x864-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1100x720-tab4.png",
+      "Bytes": 64344,
+      "SHA256": "AE9296646B1F3FF514057041EBA080B0AD8192F3B54628343772D7505D46C9AA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1100x720-tab4.png",
+      "Bytes": 64344,
+      "SHA256": "AE9296646B1F3FF514057041EBA080B0AD8192F3B54628343772D7505D46C9AA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1280x720-tab0.png",
+      "Bytes": 117000,
+      "SHA256": "AFC7339D7FA04C3D66E12B2C2DDEF2CB925F495A6A96A1686DA02AA5F05DDB46",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1280x720-tab0.png",
+      "Bytes": 117000,
+      "SHA256": "AFC7339D7FA04C3D66E12B2C2DDEF2CB925F495A6A96A1686DA02AA5F05DDB46",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2560x1440-tab0.png",
+      "Bytes": 370261,
+      "SHA256": "AFDB6C791BC9D9F11BFAA664854608B9CF4026753E6A4BF0DFDC537230BF2B81",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2560x1440-tab0.png",
+      "Bytes": 370261,
+      "SHA256": "AFDB6C791BC9D9F11BFAA664854608B9CF4026753E6A4BF0DFDC537230BF2B81",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1536x864-tab2.png",
+      "Bytes": 175923,
+      "SHA256": "B2310D2E3DBA078DFEA2C602B6A9F12B9D44251B037D876DEE0D2030BE7C3C8C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1536x864-tab2.png",
+      "Bytes": 175923,
+      "SHA256": "B2310D2E3DBA078DFEA2C602B6A9F12B9D44251B037D876DEE0D2030BE7C3C8C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1100x720-tab1.png",
+      "Bytes": 84593,
+      "SHA256": "B29BB1B55CD0772BBEE0A04C58EDA3BE556BF24F9041693860269777D98B7D9E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1100x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1100x720-tab1.png",
+      "Bytes": 84593,
+      "SHA256": "B29BB1B55CD0772BBEE0A04C58EDA3BE556BF24F9041693860269777D98B7D9E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1100x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1280x720-tab2.png",
+      "Bytes": 110761,
+      "SHA256": "B5233D8FED8B69D72D8EF22A20B8FB064BD8868621D36B85835D5F19C315510E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1280x720-tab2.png",
+      "Bytes": 110761,
+      "SHA256": "B5233D8FED8B69D72D8EF22A20B8FB064BD8868621D36B85835D5F19C315510E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2048x1152-tab4.png",
+      "Bytes": 208726,
+      "SHA256": "B56B8309D21182E3731CC8B0FA31208956D141A5110ACC384240766BB19D4D73",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2048x1152-tab4.png",
+      "Bytes": 208726,
+      "SHA256": "B56B8309D21182E3731CC8B0FA31208956D141A5110ACC384240766BB19D4D73",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1920x1080-tab0.png",
+      "Bytes": 105736,
+      "SHA256": "B5BAFE52B93A7577724BC9D6BCDDF9B4A034CE75B37EF58F7F2AF5A101CB18B8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1920x1080-tab0.png",
+      "Bytes": 105736,
+      "SHA256": "B5BAFE52B93A7577724BC9D6BCDDF9B4A034CE75B37EF58F7F2AF5A101CB18B8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1920x1080-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Diagnostics-1100x720-closed.png",
+      "Bytes": 135271,
+      "SHA256": "B6394AEB8581CA439BFBD782E8CD16A44B7AE0839C23986E4A4DF18474529DE7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1100x720-closed.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Diagnostics-1100x720-closed.png",
+      "Bytes": 135271,
+      "SHA256": "B6394AEB8581CA439BFBD782E8CD16A44B7AE0839C23986E4A4DF18474529DE7",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1100x720-closed.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1707x960-tab1.png",
+      "Bytes": 203106,
+      "SHA256": "B73A063B20796D2DE2A84432E39056C9DFEDA993F0ED5B121628E3899F523978",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1707x960-tab1.png",
+      "Bytes": 203106,
+      "SHA256": "B73A063B20796D2DE2A84432E39056C9DFEDA993F0ED5B121628E3899F523978",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Diagnostics-1040x700.png",
+      "Bytes": 121597,
+      "SHA256": "B75CC03744D19A13CEB768F15934A1D07B06DE10990654C078CD82FED25F7831",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1040x700.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Diagnostics-1040x700.png",
+      "Bytes": 121597,
+      "SHA256": "B75CC03744D19A13CEB768F15934A1D07B06DE10990654C078CD82FED25F7831",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Diagnostics-1040x700.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1536x864-tab1.png",
+      "Bytes": 169379,
+      "SHA256": "BA3C723EB9D125D6FB2B473D47834038785EEAE0657436D32D578A0EDA7E6C4F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1536x864-tab1.png",
+      "Bytes": 169379,
+      "SHA256": "BA3C723EB9D125D6FB2B473D47834038785EEAE0657436D32D578A0EDA7E6C4F",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1536x864-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1280x720-tab3.png",
+      "Bytes": 103527,
+      "SHA256": "BAB8764A77856A49CF88E2D4D87635AB7EDE108F153B01ECB9690CD0187EEBC4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1280x720-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1280x720-tab3.png",
+      "Bytes": 103527,
+      "SHA256": "BAB8764A77856A49CF88E2D4D87635AB7EDE108F153B01ECB9690CD0187EEBC4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1280x720-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-1279x720.png",
+      "Bytes": 67581,
+      "SHA256": "BB58DE892F148479E0E364553F6372A91D9E3A2AD06BB816303E73E0C4322C0E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-1279x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-1279x720.png",
+      "Bytes": 67581,
+      "SHA256": "BB58DE892F148479E0E364553F6372A91D9E3A2AD06BB816303E73E0C4322C0E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-1279x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1040x700-tab3.png",
+      "Bytes": 103213,
+      "SHA256": "C200D1B87FA4BD06421F652E6DD54BC3AF7076F275FB1B2844C15C22AA742AED",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1040x700-tab3.png",
+      "Bytes": 103213,
+      "SHA256": "C200D1B87FA4BD06421F652E6DD54BC3AF7076F275FB1B2844C15C22AA742AED",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1040x700-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-2048x1152-tab2.png",
+      "Bytes": 106935,
+      "SHA256": "C2301ED519B9C6A180DE113078DCE62F60B71DE86F4D25FAD987B05435627E3A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-2048x1152-tab2.png",
+      "Bytes": 106935,
+      "SHA256": "C2301ED519B9C6A180DE113078DCE62F60B71DE86F4D25FAD987B05435627E3A",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Maintenance-1100x720.png",
+      "Bytes": 63609,
+      "SHA256": "CA1BA66ABF99321C216920DE983B3DA09CDF2423680868B91BB497CE8512C6C0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1100x720.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Maintenance-1100x720.png",
+      "Bytes": 63609,
+      "SHA256": "CA1BA66ABF99321C216920DE983B3DA09CDF2423680868B91BB497CE8512C6C0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1100x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Maintenance-1100x720.png",
+      "Bytes": 63609,
+      "SHA256": "CA1BA66ABF99321C216920DE983B3DA09CDF2423680868B91BB497CE8512C6C0",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1100x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1536x864-tab3.png",
+      "Bytes": 130177,
+      "SHA256": "CA81C1ACD12E08284EE700C711098D8DEF0211A6763093FE0D578668280D2252",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1536x864-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1536x864-tab3.png",
+      "Bytes": 130177,
+      "SHA256": "CA81C1ACD12E08284EE700C711098D8DEF0211A6763093FE0D578668280D2252",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1536x864-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1707x960-tab1.png",
+      "Bytes": 153499,
+      "SHA256": "CA85055D6FAFC3AEC3A0FDB2AFCEDAEEC5D41F8449C9258ACA82A7B0372C8494",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1707x960-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1707x960-tab1.png",
+      "Bytes": 153499,
+      "SHA256": "CA85055D6FAFC3AEC3A0FDB2AFCEDAEEC5D41F8449C9258ACA82A7B0372C8494",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1707x960-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2048x1152-tab2.png",
+      "Bytes": 266007,
+      "SHA256": "CB23F16C19A66FC5929D294E38D22532BEF840ED86502B83484D07469DCCBD53",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2048x1152-tab2.png",
+      "Bytes": 266007,
+      "SHA256": "CB23F16C19A66FC5929D294E38D22532BEF840ED86502B83484D07469DCCBD53",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2048x1152-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1366x768-tab2.png",
+      "Bytes": 114703,
+      "SHA256": "CC0742D5A20779E27E558A483BDEA96516E1E0AA825E75A305179FDBAF345A42",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1366x768-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1366x768-tab2.png",
+      "Bytes": 114703,
+      "SHA256": "CC0742D5A20779E27E558A483BDEA96516E1E0AA825E75A305179FDBAF345A42",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1366x768-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Maintenance-2560x1440.png",
+      "Bytes": 121649,
+      "SHA256": "CC1EAABD67D51BE3164696C264E19896D53637287227C051D335B5A740B8269E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-2560x1440.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Maintenance-2560x1440.png",
+      "Bytes": 121649,
+      "SHA256": "CC1EAABD67D51BE3164696C264E19896D53637287227C051D335B5A740B8269E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-2560x1440.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Maintenance-2560x1440.png",
+      "Bytes": 121649,
+      "SHA256": "CC1EAABD67D51BE3164696C264E19896D53637287227C051D335B5A740B8269E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-2560x1440.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1280x720-tab2.png",
+      "Bytes": 46917,
+      "SHA256": "CD352863DB499A2F1D659D4A61CFC024F9C389DEB7FC5C82127C8AE717CDF8D8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1280x720-tab2.png",
+      "Bytes": 46917,
+      "SHA256": "CD352863DB499A2F1D659D4A61CFC024F9C389DEB7FC5C82127C8AE717CDF8D8",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1280x720-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1707x960-tab4.png",
+      "Bytes": 178526,
+      "SHA256": "CD764C9B8C90F2C1522CAEE8C81D0B1D4DC754C70D10D4FDA0114D76BFC10A2B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1707x960-tab4.png",
+      "Bytes": 178526,
+      "SHA256": "CD764C9B8C90F2C1522CAEE8C81D0B1D4DC754C70D10D4FDA0114D76BFC10A2B",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1707x960-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1366x768-tab2.png",
+      "Bytes": 118831,
+      "SHA256": "D46518ADCD85993F43FF3450BB14E5E92A67FFE66ABF6165BA848F9DD0DFCF61",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1366x768-tab2.png",
+      "Bytes": 118831,
+      "SHA256": "D46518ADCD85993F43FF3450BB14E5E92A67FFE66ABF6165BA848F9DD0DFCF61",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1366x768-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-2048x1152-tab0.png",
+      "Bytes": 167251,
+      "SHA256": "D4D2048C4CE261D50DD409A98896A129073266E833C2C9D66758AECEF5121EB5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-2048x1152-tab0.png",
+      "Bytes": 167251,
+      "SHA256": "D4D2048C4CE261D50DD409A98896A129073266E833C2C9D66758AECEF5121EB5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2048x1152-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1366x768-tab1.png",
+      "Bytes": 48392,
+      "SHA256": "D53C2385654B2BA86DA72215B8B243A807024EAC5C05E80E98BA8C80502212D9",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1366x768-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1366x768-tab1.png",
+      "Bytes": 48392,
+      "SHA256": "D53C2385654B2BA86DA72215B8B243A807024EAC5C05E80E98BA8C80502212D9",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1366x768-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1280x720-tab5.png",
+      "Bytes": 54417,
+      "SHA256": "D6180D8E97BD96D75902717FDE3F9D964DBB79FED7426D302D1B6300004D9F4E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1280x720-tab5.png",
+      "Bytes": 54417,
+      "SHA256": "D6180D8E97BD96D75902717FDE3F9D964DBB79FED7426D302D1B6300004D9F4E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-Maintenance-Process-1100x720.png",
+      "Bytes": 117374,
+      "SHA256": "D66918B8FE549484FC5DF263EDE8A45E27103CE96D73DB139C33D6D4D2B4542C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1100x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-Maintenance-Process-1100x720.png",
+      "Bytes": 117374,
+      "SHA256": "D66918B8FE549484FC5DF263EDE8A45E27103CE96D73DB139C33D6D4D2B4542C",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-Maintenance-Process-1100x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1280x720-tab2.png",
+      "Bytes": 75655,
+      "SHA256": "D671C30BCB6852A4DCD2B6BE8309B4FDFE954CC6F5A7EE2D04510110179C7BC2",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1280x720-tab2.png",
+      "Bytes": 75655,
+      "SHA256": "D671C30BCB6852A4DCD2B6BE8309B4FDFE954CC6F5A7EE2D04510110179C7BC2",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1280x720-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1040x700-tab0.png",
+      "Bytes": 65732,
+      "SHA256": "DC222F3A41CB5E2772E6869FB3F6FF6AA03583930E6F2060C2BCC2ECD22D0093",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1040x700-tab0.png",
+      "Bytes": 65732,
+      "SHA256": "DC222F3A41CB5E2772E6869FB3F6FF6AA03583930E6F2060C2BCC2ECD22D0093",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1040x700-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-2048x1152-tab4.png",
+      "Bytes": 134868,
+      "SHA256": "E5E96D8A241C02AD4BA24EF93EDC3F94C82E9EA3CE4852066B12CC05E5F53713",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-2048x1152-tab4.png",
+      "Bytes": 134868,
+      "SHA256": "E5E96D8A241C02AD4BA24EF93EDC3F94C82E9EA3CE4852066B12CC05E5F53713",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-2048x1152-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1920x1080-tab1.png",
+      "Bytes": 53686,
+      "SHA256": "E8A115974077DD2B5B97A999295BBF57E529A3A0A753EB87EAC58FBF4EE24468",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1920x1080-tab1.png",
+      "Bytes": 53686,
+      "SHA256": "E8A115974077DD2B5B97A999295BBF57E529A3A0A753EB87EAC58FBF4EE24468",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1920x1080-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1366x768-tab3.png",
+      "Bytes": 112982,
+      "SHA256": "EA2AEA47D93E5311657D193D5DB0B4811293B4C075AA29BDF8D5FDFE81FFB9C2",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1366x768-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1366x768-tab3.png",
+      "Bytes": 112982,
+      "SHA256": "EA2AEA47D93E5311657D193D5DB0B4811293B4C075AA29BDF8D5FDFE81FFB9C2",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1366x768-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1100x720-tab0.png",
+      "Bytes": 110246,
+      "SHA256": "EA30240DC64C9E3C1BD4E4B01E08679E9291EFB67CA00B22C927889467F086A2",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1100x720-tab0.png",
+      "Bytes": 110246,
+      "SHA256": "EA30240DC64C9E3C1BD4E4B01E08679E9291EFB67CA00B22C927889467F086A2",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1100x720-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Media-1100x720-tab1.png",
+      "Bytes": 85781,
+      "SHA256": "EA5632A4175F39BE4E1E9D3B2A480CCF4749525BF2073F025470DDAD39F784D5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1100x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Media-1100x720-tab1.png",
+      "Bytes": 85781,
+      "SHA256": "EA5632A4175F39BE4E1E9D3B2A480CCF4749525BF2073F025470DDAD39F784D5",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Media-1100x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1366x768-tab4.png",
+      "Bytes": 108761,
+      "SHA256": "EE07C3BD8DD9E6E20AECAD73FDE88F5A31E98C3873EC22444FC020AF0BF69640",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1366x768-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1366x768-tab4.png",
+      "Bytes": 108761,
+      "SHA256": "EE07C3BD8DD9E6E20AECAD73FDE88F5A31E98C3873EC22444FC020AF0BF69640",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1366x768-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-2560x1440-tab1.png",
+      "Bytes": 272772,
+      "SHA256": "EE6E82FB5163B092A3A60E2B5A0E2AEE536FFDCF0D0779F8B068330EFBBFA477",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-2560x1440-tab1.png",
+      "Bytes": 272772,
+      "SHA256": "EE6E82FB5163B092A3A60E2B5A0E2AEE536FFDCF0D0779F8B068330EFBBFA477",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-2560x1440-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-2048x1152-tab2.png",
+      "Bytes": 135128,
+      "SHA256": "EE9ABC48480577FE857EFAC72691D24670E19C177BF7CF91196249DD5F0A51C9",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-2048x1152-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-2048x1152-tab2.png",
+      "Bytes": 135128,
+      "SHA256": "EE9ABC48480577FE857EFAC72691D24670E19C177BF7CF91196249DD5F0A51C9",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-2048x1152-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1600x900-tab4.png",
+      "Bytes": 167733,
+      "SHA256": "EFFBB8F1D8B0385EA14B4E2AA45EC1441E71FBDCBAA6817A777A85E6176FA2F6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab4.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1600x900-tab4.png",
+      "Bytes": 167733,
+      "SHA256": "EFFBB8F1D8B0385EA14B4E2AA45EC1441E71FBDCBAA6817A777A85E6176FA2F6",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1600x900-tab4.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1707x960-tab0.png",
+      "Bytes": 151957,
+      "SHA256": "F109594C84254C4EF7A046C18ED530CE5F851C359B31FB64952B2FC18FE93407",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1707x960-tab0.png",
+      "Bytes": 151957,
+      "SHA256": "F109594C84254C4EF7A046C18ED530CE5F851C359B31FB64952B2FC18FE93407",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1707x960-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/dark/Maintenance-1366x768.png",
+      "Bytes": 94494,
+      "SHA256": "F1FB3399D836AC9B9A88E95FE979EB818721275B676CCA4DCF330FB8C0601E93",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1366x768.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/dark/Maintenance-1366x768.png",
+      "Bytes": 94494,
+      "SHA256": "F1FB3399D836AC9B9A88E95FE979EB818721275B676CCA4DCF330FB8C0601E93",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1366x768.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/dark/Maintenance-1366x768.png",
+      "Bytes": 94494,
+      "SHA256": "F1FB3399D836AC9B9A88E95FE979EB818721275B676CCA4DCF330FB8C0601E93",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/dark/Maintenance-1366x768.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-1600x900-tab1.png",
+      "Bytes": 135000,
+      "SHA256": "F27CD076AD7D8CA618B7712DD89E383CFA33E8849E5AE285C93B60179BAFBD59",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1600x900-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-1600x900-tab1.png",
+      "Bytes": 135000,
+      "SHA256": "F27CD076AD7D8CA618B7712DD89E383CFA33E8849E5AE285C93B60179BAFBD59",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-1600x900-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1100x720-tab5.png",
+      "Bytes": 53759,
+      "SHA256": "F57AC7BFEA342E085BD21548F0A70B27E372F21CFEB913AA14AAD27B44CC2F8E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab5.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1100x720-tab5.png",
+      "Bytes": 53759,
+      "SHA256": "F57AC7BFEA342E085BD21548F0A70B27E372F21CFEB913AA14AAD27B44CC2F8E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab5.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Settings-1280x720-tab3.png",
+      "Bytes": 115743,
+      "SHA256": "F58053DDC07E0D8B68367C291CC8B4123F92A91AC1B62B0877AA50E521545C1E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Settings-1280x720-tab3.png",
+      "Bytes": 115743,
+      "SHA256": "F58053DDC07E0D8B68367C291CC8B4123F92A91AC1B62B0877AA50E521545C1E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Settings-1280x720-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1707x960-tab3.png",
+      "Bytes": 148637,
+      "SHA256": "F5EC817A9D03156D2302EC60F454669C97D530E85C6746F8D48D55118C63F49E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab3.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1707x960-tab3.png",
+      "Bytes": 148637,
+      "SHA256": "F5EC817A9D03156D2302EC60F454669C97D530E85C6746F8D48D55118C63F49E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1707x960-tab3.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1100x720-tab0.png",
+      "Bytes": 58019,
+      "SHA256": "F72278B636B9D8D93D7EBC787C65B09CCCAE2CEEEE7A8076124A9F20C8676388",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab0.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1100x720-tab0.png",
+      "Bytes": 58019,
+      "SHA256": "F72278B636B9D8D93D7EBC787C65B09CCCAE2CEEEE7A8076124A9F20C8676388",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab0.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-1100x720-tab1.png",
+      "Bytes": 46062,
+      "SHA256": "F7D6537CED48F8EB54FCB71B17BDDC37B6AE9FB3F31C597B3044C6E3B3703A6E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-1100x720-tab1.png",
+      "Bytes": 46062,
+      "SHA256": "F7D6537CED48F8EB54FCB71B17BDDC37B6AE9FB3F31C597B3044C6E3B3703A6E",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-1100x720-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1600x900-tab1.png",
+      "Bytes": 123962,
+      "SHA256": "F9D47FEE97A14F23EF7BD9C56003D024DA07B0CAFF5D47121B5C711D391CE4AA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1600x900-tab1.png",
+      "Bytes": 123962,
+      "SHA256": "F9D47FEE97A14F23EF7BD9C56003D024DA07B0CAFF5D47121B5C711D391CE4AA",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1600x900-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Shell-1280x720.png",
+      "Bytes": 67502,
+      "SHA256": "FAA7B3DEAC7217EF365897530C498A7059A6DE161E3F18DB73840A26F2204B25",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-1280x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Shell-1280x720.png",
+      "Bytes": 67502,
+      "SHA256": "FAA7B3DEAC7217EF365897530C498A7059A6DE161E3F18DB73840A26F2204B25",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Shell-1280x720.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-1100x720-tab2.png",
+      "Bytes": 71682,
+      "SHA256": "FB783ED422EC0F9CBA4C557F9040FA1E3A0F826C3684F370EB57108503202154",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-1100x720-tab2.png",
+      "Bytes": 71682,
+      "SHA256": "FB783ED422EC0F9CBA4C557F9040FA1E3A0F826C3684F370EB57108503202154",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-1100x720-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Maintenance-3840x2160-tab1.png",
+      "Bytes": 237776,
+      "SHA256": "FBD1A0D5B89E7C5860AC04BD12471314B8C8856F8998CDFEEAC4C804EE4C3CCE",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab1.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Maintenance-3840x2160-tab1.png",
+      "Bytes": 237776,
+      "SHA256": "FBD1A0D5B89E7C5860AC04BD12471314B8C8856F8998CDFEEAC4C804EE4C3CCE",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Maintenance-3840x2160-tab1.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Save-3840x2160-tab2.png",
+      "Bytes": 165025,
+      "SHA256": "FEA3F19564C58BF266B9D8CD63626FFCAA361E1E0C82C40222AF4A0E0D0CAB65",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-3840x2160-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Save-3840x2160-tab2.png",
+      "Bytes": 165025,
+      "SHA256": "FEA3F19564C58BF266B9D8CD63626FFCAA361E1E0C82C40222AF4A0E0D0CAB65",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Save-3840x2160-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/Trainer-2560x1440-tab2.png",
+      "Bytes": 128813,
+      "SHA256": "FEB83F2BCCB19AC36F043AF439EFF82CDA65FC3958E2F018320FC120A4BFEA98",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab2.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/Trainer-2560x1440-tab2.png",
+      "Bytes": 128813,
+      "SHA256": "FEB83F2BCCB19AC36F043AF439EFF82CDA65FC3958E2F018320FC120A4BFEA98",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/Trainer-2560x1440-tab2.png",
+      "RenderRun": "render-ratio-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render/theme/light/Maintenance-1100x720.png",
+      "Bytes": 62039,
+      "SHA256": "FFD6355B7D536AB8C222401933FB96B1AD4C481338022AEBFCEF9A2BADD9C6F4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1100x720.png",
+      "RenderRun": "render"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-final/theme/light/Maintenance-1100x720.png",
+      "Bytes": 62039,
+      "SHA256": "FFD6355B7D536AB8C222401933FB96B1AD4C481338022AEBFCEF9A2BADD9C6F4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1100x720.png",
+      "RenderRun": "render-final"
+    },
+    {
+      "Path": "artifacts/ui-width-regression-20261023/render-ratio-final/theme/light/Maintenance-1100x720.png",
+      "Bytes": 62039,
+      "SHA256": "FFD6355B7D536AB8C222401933FB96B1AD4C481338022AEBFCEF9A2BADD9C6F4",
+      "RetainedCopy": "artifacts/save-summary-reflow-20261023/render-final/theme/light/Maintenance-1100x720.png",
+      "RenderRun": "render-ratio-final"
+    }
+  ],
+  "postCleanupInventory": {
+    "basis": "Original committed screenshot audit minus verified removed files; nonduplicate image file contents were not rescanned.",
+    "imageCount": 2004,
+    "totalBytes": 255739088,
+    "remainingDuplicateGroups": 237,
+    "remainingCopiesWithinDuplicateGroups": 1016,
+    "groupsReducedToSingleCopy": 0
+  },
+  "postDeleteChecks": {
+    "allRemovedPathsAbsent": true,
+    "retainedCopiesRehashed": true,
+    "reportsRetained": true,
+    "uniqueImagesRetained": true,
+    "noBuildRenderTestProcesses": true
+  },
+  "retainedCopyRuns": [
+    {
+      "directory": "artifacts/save-summary-reflow-20261023/render-final",
+      "report": "artifacts\\save-summary-reflow-20261023\\render-final\\render-qa-report.txt",
+      "generated": "2026-10-23 15:02:52",
+      "evidenceSource": "OffscreenRenderHarness",
+      "commit": "0a91c39962b373c2170b31fbe3fd363887465fc2",
+      "workingTreeClean": "False",
+      "reportPngReferences": 0
+    },
+    {
+      "directory": "artifacts/ui-layout-fix/render-serial-final",
+      "report": "artifacts\\ui-layout-fix\\render-serial-final\\render-qa-report.txt",
+      "generated": "2026-10-22 21:32:29",
+      "evidenceSource": "OffscreenRenderHarness",
+      "commit": "4f40e01670ddfb90a10d5dedc7d59bee4adc318f",
+      "workingTreeClean": "False",
+      "reportPngReferences": 0
+    },
+    {
+      "directory": "artifacts/ui-width-regression-20261023/render-clean-commit",
+      "report": "artifacts\\ui-width-regression-20261023\\render-clean-commit\\render-qa-report.txt",
+      "generated": "2026-10-23 13:22:26",
+      "evidenceSource": "OffscreenRenderHarness",
+      "commit": "f3ac4c743ce50705871e03d074127f89824e11dd",
+      "workingTreeClean": "False",
+      "reportPngReferences": 0
+    }
+  ],
+  "interpretation": "Removed paths listed here are a historical deletion record, not active document references. Exact hash preservation is verified; source report commits identify the recorded render run, but all three source reports say WorkingTreeClean=False, so this cleanup makes no clean-source claim."
+}
