@@ -1,15 +1,15 @@
 {
-  "CanDelete": false,
-  "ArchiveAfterCleanupVerified": true,
+  "CompleteArchive": true,
   "TraversalRefused": true,
-  "DumpTier": true,
+  "OriginalsUnchangedBeforeControlledCleanup": true,
   "ChangedRefused": true,
-  "SourceChangeRefused": true,
+  "CanDelete": false,
   "ControlledOriginalRemoved": true,
   "MissingRefused": true,
   "VisualDuplicate": true,
+  "SourceChangeRefused": true,
   "Engine": "7.6.2",
-  "CompleteArchive": true,
-  "Edition": "Core",
-  "OriginalsUnchangedBeforeControlledCleanup": true
+  "ArchiveAfterCleanupVerified": true,
+  "DumpTier": true,
+  "Edition": "Core"
 }

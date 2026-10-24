@@ -8,6 +8,8 @@ T01-01新增显式failedStageId及installer attempt artifact list。PowerShell C
 
 T01-02清理预览在当前`f577fd19`代码上复验：PowerShell Core7.6.2与Windows PowerShell5.1.22000.2538各9/9，覆盖活动/过期身份、时间往返、路径与junction拒绝、保留原因；结果JSON均未授权删除，哨兵SHA不变。本项验收仅针对只读预览，不含自动删除执行器；三份旧/新预览JSON路径已脱敏。详见`docs/design/reviews/build-ui-reliability-20261022/evidence/T01-02/README.md`。
 
+T01-06诊断保留夹具在当前代码上双宿主重跑均退出0；缺件、篡改、源变化、越界拒绝，以及完整归档后才清理隔离原件、清理后再验归档均通过。真实303文件归档报告SHA为`155F1224…D4E040`，原件保留；两轮历史诊断各148 TRX/154日志。归档/保留代码自f577fd19未变，且该提交的默认根入口全链成功，补齐最终链条件后记已验收；仍不授权通用自动删除。详情`docs/design/reviews/build-ui-reliability-20261022/evidence/T01-06/README.md`。
+
 外机 `HEAD=ea926c5e`、main `[behind 2]`，本地改动含ViewModel、R18测试、多个文档和未跟踪证据；目标文件有 `Updated upstream` / `Stashed changes` merge markers，导致CS8300。当前已收到部分diff；stash列表和完整diff仍待，以便不丢改动地手工合并。远端新增两提交未改ViewModel。未经该机授权不建议reset/覆盖；干净main可先安全stash（含untracked）后fast-forward验证，再另分支恢复功能改动。详见T00-08 README。
 
 ## 2026-10-24 T02-03 实际键盘焦点回归补正

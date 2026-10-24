@@ -8,6 +8,8 @@ T01-01的16份归档JSON均已解析并确认不含本机绝对路径；归档�
 
 T01-02只读清理预览在`f577fd19`代码上双宿主复验各9/9，含活动进程/时间身份、PID重用、路径/junction边界、Retention与哨兵SHA；每条预览均`CanDelete=false`，三份 JSON 路径已脱敏。只验收预览，不宣称已有自动删除器；详见`design/reviews/build-ui-reliability-20261022/evidence/T01-02/README.md`。
 
+T01-06诊断保留脚本/测试与f577fd19一致；PowerShell Core7.6.2和Windows PowerShell5.1.22000.2538复验双双通过，缺件/篡改/源变化/越界拒绝、归档后隔离清理和再次校验均成立。303文件真实归档SHA匹配且源原件仍保留；当前全链成功满足最终链条件，因此本项已验收。没有通用自动删除授权；详见`design/reviews/build-ui-reliability-20261022/evidence/T01-06/README.md`。
+
 外机最新日志与用户状态显示：另一台电脑HEAD `ea926c5e`、main落后origin/main两个提交且有多个本地源码/测试/文档修改及未跟踪证据。`GamePickerViewModel.cs` 含 `Updated upstream` / `Stashed changes` 标记，导致9处CS8300；这是本地stash合并冲突，不是SDK/NuGet问题。远端76eab05c和f577fd19没有改该ViewModel。已取得部分diff，完整diff与`git stash list`待补；不reset、不覆盖、不丢弃本地工作。详见 `design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md`。
 
 ## 2026-10-24 T02-08 51641d06 当前宿主滚动补证
