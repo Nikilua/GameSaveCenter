@@ -1128,3 +1128,7 @@ Test-ArtifactPathBoundaries.ps1在提升测试上下文的PowerShell Core 7.6.2�
 ## 2026-10-25 T00-07 本阶段失败输出清理
 
 `dcbaab13`提交级完整根入口退出0且证据归档后，删除本阶段未完成候选输出 `artifacts/gsc-b/7a8f6d32`。清理前核实规范化路径位于仓库`artifacts/`、目标不是链接且无子reparse point、无活动进程引用、无文档引用；逻辑文件168,565,900字节，D盘可用空间由11,096,580,096增至11,266,600,960字节。失败诊断run `20261024T185640550Z-8d576492`、最新成功构建输出 `ae74f424`、当前包及用户Round3 TRX/TestResults保留。T00-07跨会话实测仍待权限足够的Windows环境。
+
+## 2026-10-25 T03-06 清理与引用审计完成
+
+T00-07失败候选隔离输出清理已按归属、reparse point、进程占用和引用检查留存记录；失败诊断和最新成功输出保留，用户TRX/TestResults未动。T03-06既有18份文档750个链接0失效，本轮11份当前文档706个本地链接0失效。源码结构校验先发现`cross-session-current.json`带UTF-8 BOM，去除后`python scripts/validate-source.py`通过。该阶段仅文档与JSON编码变更，产品完整链继续绑定dcbaab13；不因此声称另一台电脑已构建。
