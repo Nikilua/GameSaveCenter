@@ -1,12 +1,12 @@
 # 构建与界面可靠性专项账本
 
-任务源：[32项实施计划](../../BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)。最后完整标准入口成功与安装身份 `fbd8a882`，构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`：SDK8.0.423、Release0/0、1967项1910通过/57既有skip/0失败、148TRX计数一致、145WPF类；发布/ZIP/PEXT/安装/Playnite启动完成，六程序集身份与SHA一致；[本次完整证据](evidence/T01-08/standard-fbd8a882/README.md)。本次安装报告记录磁盘身份；没有据此声称进程内插件加载路径已核验。纯文档不改变该产品安装身份。
+任务源：[32项实施计划](../../BUILD_UI_RELIABILITY_32_TASKS_2026-10-22.md)。最后完整标准入口成功与安装身份 `fbd8a882`，构建run `20261024T154742005Z-e15429e1`、安装run `20261024T154739936Z-bc3e83dc`：SDK8.0.423、Release0/0、1967项1910通过/57既有skip/0失败、148TRX计数一致、145WPF类；发布/ZIP/PEXT/安装/Playnite启动完成，六程序集身份与SHA一致；[本次完整证据](evidence/T01-08/standard-fbd8a882/README.md)。本次安装报告记录磁盘身份；没有据此声称进程内插件加载路径已核验。e1127ac0候选根入口run `20261024T165132695Z-aadc0bbd` 后在R08悬停动画测试失败，未进入发布/安装；修复后的R08类5轮15/15和R09类2/2见[专项证据](evidence/T00-01/r08-motion-window-20261025/README.md)，候选的完整根入口仍待提交后复跑。纯文档不改变产品安装身份。
 
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。构建、受控交互、真实宿主和清理分别记录，不能用历史成功覆盖当前代码。
 
 | ID | 任务 | 状态 | 实现提交 | 构建/测试/交互证据 | 产物清理与下一步 |
 | --- | --- | --- | --- | --- | --- |
-| T00-01 | 最新修复全链复验 | 已满足 | fbd8a882 | [最新完整链](evidence/T01-08/standard-fbd8a882/README.md)：默认根入口退出0、SDK8.0.423、Release0/0、1967项（1910通过/57既有跳过/0失败）、148TRX一致、145WPF类；安装6个关键DLL哈希与Playnite启动通过；真实页面未验。[前次完整链](evidence/T00-01/standard-f577fd19/README.md)保留历史身份 | 本次诊断与当前包/构建保留；用户既有未跟踪TRX/TestResults未动 |
+| T00-01 | 最新修复全链复验 | 实施中 | e1127ac0 + 本轮R08夹具修复 | `fbd8a882`最后完整链见[evidence](evidence/T01-08/standard-fbd8a882/README.md)；`e1127ac0`根入口`20261024T165132695Z-aadc0bbd`因R08失败，后续发布/安装未运行。修复后的R08类5轮15/15、R09类2/2见[定向证据](evidence/T00-01/r08-motion-window-20261025/README.md)；外机旧日志的合并冲突和R09 2/1未绑定同一源码/DLL身份 | 修复候选提交后重跑默认根入口完整链；失败根诊断/TRX已归档；用户未跟踪TRX/TestResults不动 |
 | T00-02 | 三入口退出码对照 | 已满足 | 本阶段测试脚本 | [运行结果](evidence/T00-02/results.json)：Test-LauncherExitCodes.ps1退出0，真实PowerShell子脚本注入0/7/23，9/9同码，失败无假成功；pause重定向可退出 | 生产入口无需修改；临时夹具归档后清理；最终候选完整链仍按T03-08执行 |
 | T00-03 | SDK 下载中断恢复 | 已验收 | 本阶段测试脚本 | [双宿主恢复矩阵](evidence/T00-03/recovery-20261025-verified/README.md)：Core7.6.2 与 Desktop5.1.22000.2538 各4/4；部分下载中断、损坏安装脚本、安装器假成功但 SDK 仍为9.0.302均安全失败，随后只接受精确8.0.423；环境恢复与临时下载清理通过。[本机缺SDK引导/冷NuGet](evidence/T00-03/clean-machine-bootstrap.md)另有全测试构建与冷缓存Release构建退出0 | 注入测试覆盖控制流；真实网络中断及真实SDK归档损坏未运行，不作该层结论；最新候选标准全链在本阶段提交后复跑 |
 | T00-04 | 仓库路径兼容 | 已验收 | 入口受控复核 | [实际路径构建](evidence/T00-04/actual-path/README.md)：138字符中文空格根、324字符跟踪路径；直接PS及正常Desktop环境CMD均SDK8.0.423、Release0/0、退出0（SkipTests） | PS7经CMD混合模块环境已修复，双宿主入口各9/9；同路径全新输出Release0/0退出0（SkipTests），[130cd307标准完整链通过](evidence/T00-04/standard-130cd307/README.md)；克隆占用释放后6211文件归档清理，105个启动器夹具文件已清理 |

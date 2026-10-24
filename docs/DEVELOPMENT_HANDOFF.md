@@ -983,3 +983,10 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 - 外机失败是真实且独立：日志 R09 `1/2`、整体 exit `1`，WPF 类 `116`。第151行 `Thickness(2/1)` 与历史旧断言吻合，不对应当前源码 line151 颜色断言；测试源码或其配套符号/程序集输入至少一项与当前 main 不一致。具体是旧 checkout、旧测试 DLL、旧 PDB 或其他构建输入尚未确认。本机 SDK9 `2/2`、#1047、#1053 双 SDK成功都不覆盖外机失败。确切失败诊断目录 `D:\workplace\Github\GameSaveCenter\artifacts\build-diagnostics\20261016T052146719Z-d9d99ac4` 不在本工作区；无需重跑，明日用户方便时直接附加此目录（优先 `summary.json` 与 R09 TRX/console）。采集器已有 sourceCommit/dirtyPaths/sourceFiles/SDK/test DLL hash/MVID 信息；PDB SHA 可从失败输出下读取。
 - 通过 `scripts/validate-source.py` 与 `git diff --check`；本批仅文档与小型证据摘要，无产品代码变化。R23-08 当前准入复核未发现新代码缺口；下一步中文 commit/push 本次文档校正，查询对应 Actions run 并双 SDK 追至终态，再重扫 ledger 选择首个依赖已满足的现有 Q/R 项。若没有可独立执行项则记录明确环境门禁，不发明实现。
 - 未验证：外机的真实 checkout/test DLL/PDB/plugin DLL 身份、外机安装结果、真实 Playnite/UIA/IME/读屏、物理 DPI/跨屏/最终呈现、ETW/宿主性能。合成数据/隔离目录之外的真实存档、媒体和云端未访问。已经清理本任务生成的 RenderHarness `.tmp`；保留 SDK、R08/R21 其它任务目录及其他未跟踪证据。
+
+## 2026-10-25 T00-01 最新接续
+
+- 当前本地提交 `e1127ac0` 之后的默认根入口run `20261024T165132695Z-aadc0bbd` 因R08动画采样失败退出，Release编译0警告/错误、Core157/157、Worker400/400，WPF 74/145类，未发布/安装。修复后R08隔离类连续5轮各3/3，R09类2/2；修复前和五轮TRX归档于 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-motion-window-20261025/README.md`。
+- R08测试夹具先等待初始悬停离开动效结束，再把生产模板的4个按钮 hover/press故事板克隆到测试副本并延长8个DoubleAnimation至400ms。真实生产Storyboards的目标/曲线保留，连续性、中间态、方向、最终值断言没有删除；生产MotionTokens仍是fast120ms/press100ms。当前R08源变更提交后必须立即执行默认 `GameSaveCenter-Run.cmd` 并完整核对发布、ZIP/PEXT、安装DLL身份、启动。
+- 外机日志确认旧 `ea926c5e` 源码包含stash冲突标记并有9个CS8300；另一附件R09实际Thickness1而期望2的run未附同次HEAD/程序集符号身份。当前本机R09在SDK8.0.423隔离输出2/2，不覆盖外机诊断。推送新main后外机安全同步仍为先 `git stash push --include-untracked`、核对clean、`git pull --ff-only origin main`，再跑标准根入口，用户本机stash保留到主线链路成功后逐项审查。
+- 32项专项继续按T00-01、T01、T02、T03账本推进；T00-01保持实施中直到新提交默认根入口完整链成功。真实外机快进后全链、用户stash移植、桌面Ctrl+C、真实宿主/UIA/IME/物理DPI仍未验。

@@ -252,6 +252,8 @@ public sealed class R08MotionReverseBehaviorTests
             {
                 EnsureApplication();
                 var resources = LoadProductionResources();
+                var buttonStyle = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]);
+                var animationSamplingWindow = ExtendProductionButtonMotionSamplingWindow(buttonStyle);
                 var root = new Grid
                 {
                     Width = 420,
@@ -267,7 +269,7 @@ public sealed class R08MotionReverseBehaviorTests
                 var button = new UiButton
                 {
                     Content = "执行安全操作",
-                    Style = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]),
+                    Style = buttonStyle,
                     Width = 220,
                     Height = 44,
                     HorizontalAlignment = HorizontalAlignment.Center,
@@ -285,6 +287,10 @@ public sealed class R08MotionReverseBehaviorTests
                 var chrome = Assert.IsType<Border>(button.Template.FindName("ButtonChrome", button));
                 var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
                 var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
+
+                PumpDispatcher(animationSamplingWindow + TimeSpan.FromMilliseconds(40));
+                Assert.False(button.IsMouseOver, "button unexpectedly entered hover before the synthetic probe");
+                Assert.Equal(0, hoverOverlay.Opacity, 3);
 
                 Assert.True(SetMouseOverProbe(button, true));
                 hoverMidpointSampled = PumpDispatcherUntilFast(
@@ -365,7 +371,7 @@ public sealed class R08MotionReverseBehaviorTests
         thread.Start();
         thread.Join();
 
-        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; afterLeave={hoverAfterLeave:0.###}; exitProgress={hoverExitProgress:0.###}; beforeReenter={hoverBeforeReenter:0.###}; afterReenter={hoverAfterReenter:0.###}; reenterProgress={hoverReenterProgress:0.###}; final={hoverFinal:0.###}; midpointSampled={hoverMidpointSampled}; exitProgressSampled={hoverExitProgressSampled}; reenterProgressSampled={hoverReenterProgressSampled}; press scale midpoint={pressMidpoint:0.###}; afterRelease={pressAfterRelease:0.###}; releaseProgress={pressReleaseProgressSampled}; beforeRepress={pressBeforeRepress:0.###}; afterRepress={pressAfterRepress:0.###}; re-pressProgress={pressRepressProgressSampled}; finalPressed={pressFinal:0.###}; finalReleased={pressReleasedFinal:0.###}; overlay midpoint={pressedOverlayMidpoint:0.###}; afterRelease={pressedOverlayAfterRelease:0.###}; releaseProgress={pressedOverlayReleaseProgress:0.###}; beforeRepress={pressedOverlayBeforeRepress:0.###}; afterRepress={pressedOverlayAfterRepress:0.###}; re-pressProgress={pressedOverlayRepressProgress:0.###}; finalPressed={pressedOverlayFinal:0.###}; finalReleased={pressedOverlayReleasedFinal:0.###}; sampled={pressMidpointSampled}; scaleReleaseContinuous={pressReleasedContinuously}; overlayReleaseContinuous={pressedOverlayReleasedContinuously}; scaleRepressContinuous={pressReversedContinuously}; overlayRepressContinuous={pressedOverlayReversedContinuously}");
+        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; press midpoint={pressMidpoint:0.###}; release={pressAfterRelease:0.###}->{pressBeforeRepress:0.###}; re-press={pressAfterRepress:0.###}->{pressFinal:0.###}; overlay={pressedOverlayMidpoint:0.###}->{pressedOverlayAfterRelease:0.###}->{pressedOverlayFinal:0.###}; releaseFinal={pressReleasedFinal:0.###}/{pressedOverlayReleasedFinal:0.###}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}");
         Assert.Null(exception);
         Assert.True(hoverMidpointSampled, "production hover opacity did not expose an in-flight sample");
         Assert.InRange(Math.Abs(hoverAfterLeave - hoverMidpoint), 0, 0.08);
@@ -403,6 +409,48 @@ public sealed class R08MotionReverseBehaviorTests
     <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/Redesign.xaml""/>
     <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/AcrylicProductionResources.xaml""/>
 </ResourceDictionary.MergedDictionaries></ResourceDictionary>"));
+
+    private static TimeSpan ExtendProductionButtonMotionSamplingWindow(Style style)
+    {
+        Setter? templateSetter = null;
+        for (var currentStyle = style; currentStyle != null && templateSetter == null; currentStyle = currentStyle.BasedOn)
+        {
+            templateSetter = currentStyle.Setters.OfType<Setter>()
+                .FirstOrDefault(setter => setter.Property == Control.TemplateProperty);
+        }
+
+        Assert.NotNull(templateSetter);
+        var template = Assert.IsType<ControlTemplate>(templateSetter.Value);
+        var adjustedStoryboards = 0;
+        var adjustedAnimations = 0;
+        var animationSamplingWindow = TimeSpan.FromMilliseconds(400);
+
+        foreach (TriggerBase trigger in template.Triggers)
+        {
+            foreach (var beginStoryboard in trigger.EnterActions.OfType<BeginStoryboard>())
+            {
+                var animations = beginStoryboard.Storyboard.Children.OfType<DoubleAnimation>().ToArray();
+                if (animations.Length == 0)
+                    continue;
+
+                // Keep the production storyboards, targets and easing, but lengthen their
+                // timelines in this fixture so reversals remain observable on coarse render ticks.
+                var sampledStoryboard = beginStoryboard.Storyboard.Clone();
+                foreach (var animation in sampledStoryboard.Children.OfType<DoubleAnimation>())
+                {
+                    animation.Duration = new Duration(animationSamplingWindow);
+                    adjustedAnimations++;
+                }
+
+                beginStoryboard.Storyboard = sampledStoryboard;
+                adjustedStoryboards++;
+            }
+        }
+
+        Assert.Equal(4, adjustedStoryboards);
+        Assert.Equal(8, adjustedAnimations);
+        return animationSamplingWindow;
+    }
 
     private static void EnsureApplication()
     {

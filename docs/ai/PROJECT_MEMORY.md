@@ -1102,3 +1102,9 @@ Install-ExtensionAtomically新增可选DiagnosticRoot，标准入口写artifacts
 ## 2026-10-25 T01-04 提升上下文符号链接重试
 
 Test-ArtifactPathBoundaries.ps1在提升测试上下文的PowerShell Core 7.6.2下重跑，仍因操作系统返回“Administrator privilege required”无法创建文件符号链接；其他13项通过，0失败，CanDelete全false，哨兵SHA不变，本次.tmp fixture清理成功。结果 `docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/results-Core-elevated-20261025.json`。系统权限未变化，不重复尝试或调整系统设置；T01-04保持代码完成待验收。
+
+## 2026-10-25 当前恢复点：T00-01 R08测试夹具稳定性
+
+当前最新完整标准入口仍是 `fbd8a882`。后续 `e1127ac0` 根入口run `20261024T165132695Z-aadc0bbd` 编译通过，但WPF在74/145类R08悬停采样失败，未发布/安装。修复工作树中的R08夹具等待初始状态收敛，并把生产按钮模板4个交互故事板在测试副本中延长到400ms；8个动画的连续性/中间状态/方向/终态断言保留，MotionTokens生产默认值不变。SDK8.0.423下R08类5轮共15/15、R09类2/2，证据位于专项T00-01/r08-motion-window-20261025。候选仍需提交后跑默认根入口完整链。
+
+另一台电脑此前 `ea926c5e` 含 `Updated upstream` / `Stashed changes` 冲突标记；用户新附编译日志9个CS8300与该冲突一致。另附R09测试`Thickness(2)`/`Thickness(1)`失败，与当前本机R09 2/2不同；外机同次source/DLL/PDB身份未知，不据本机结果宣称解决。恢复先stash含未跟踪文件、确认clean、`git pull --ff-only origin main`，再跑根入口；成功前不pop、不reset、不覆盖本机改动。

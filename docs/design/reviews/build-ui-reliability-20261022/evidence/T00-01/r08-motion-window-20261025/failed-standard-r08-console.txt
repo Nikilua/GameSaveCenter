@@ -1,0 +1,37 @@
+[repo]\artifacts\gsc-b\d055f5fa\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.41]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.01]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.05]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock [3 s]
+[xUnit.net 00:00:10.82]       production hover opacity did not expose an in-flight sample
+[xUnit.net 00:00:10.82]       Stack Trace:
+[xUnit.net 00:00:10.82]            在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+[xUnit.net 00:00:10.82]            在 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R08MotionReverseBehaviorTests.cs:行号 371
+[xUnit.net 00:00:10.82]       Output:
+[xUnit.net 00:00:10.82]         button hover midpoint=0; afterLeave=0; exitProgress=0; beforeReenter=0; afterReenter=0; reenterProgress=0; final=0; midpointSampled=False; exitProgressSampled=False; reenterProgressSampled=False; press scale midpoint=0.988; afterRelease=0.988; releaseProgress=True; beforeRepress=0.994; afterRepress=0.994; re-pressProgress=True; finalPressed=0.97; finalReleased=1; overlay midpoint=0.41; afterRelease=0.41; releaseProgress=0.184; beforeRepress=0.184; afterRepress=0.184; re-pressProgress=0.322; finalPressed=0.999; finalReleased=0; sampled=True; scaleReleaseContinuous=True; overlayReleaseContinuous=True; scaleRepressContinuous=True; overlayRepressContinuous=True
+[xUnit.net 00:00:10.83]   Finished:    GameSaveCenter.Playnite.Tests
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+  失败 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues [2 s]
+  错误消息:
+   production hover opacity did not expose an in-flight sample
+  堆栈跟踪:
+     在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R08MotionReverseBehaviorTests.cs:行号 371
+  标准输出消息:
+ button hover midpoint=0; afterLeave=0; exitProgress=0; beforeReenter=0; afterReenter=0; reenterProgress=0; final=0; midpointSampled=False; exitProgressSampled=False; reenterProgressSampled=False; press scale midpoint=0.988; afterRelease=0.988; releaseProgress=True; beforeRepress=0.994; afterRepress=0.994; re-pressProgress=True; finalPressed=0.97; finalReleased=1; overlay midpoint=0.41; afterRelease=0.41; releaseProgress=0.184; beforeRepress=0.184; afterRepress=0.184; re-pressProgress=0.322; finalPressed=0.999; finalReleased=0; sampled=True; scaleReleaseContinuous=True; overlayReleaseContinuous=True; scaleRepressContinuous=True; overlayRepressContinuous=True
+
+
+
+测试总数: 3
+     通过数: 2
+     失败数: 1
+总时间: 12.4764 秒
+结果文件: [repo]\artifacts\build-diagnostics\20261024T165132695Z-aadc0bbd\tests\wpf.R08MotionReverseBehaviorTests\wpf.R08MotionReverseBehaviorTests.trx
+[xUnit.net 00:00:10.82]     GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues [FAIL]
+测试运行失败。
