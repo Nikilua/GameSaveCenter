@@ -12,6 +12,8 @@
 - 最后定向验证：T02-07提交前最终详情夹具5/5、横竖图比较1/1；本次标准全链已覆盖当前实现。见[定向TRX](../design/reviews/build-ui-reliability-20261022/evidence/T02-07/t02-07-details-final.trx)。
 - [完整结果/交付身份/边界](../design/reviews/build-ui-reliability-20261022/evidence/T02-08/README.md)。后续文档提交不是新产品构建身份。
 
+- 新诊断改进：T03-03只读预览首屏已通过双PowerShell压力/旧TRX/脱敏回归；不改变上述产品安装身份，新最终候选完整链仍待统一执行。
+
 ## 当前范围
 
 - 真实Playnite首页与存档页已显示；注入列表/详情滚动观察到各自位置独立，底部校验动作可见，未触发业务操作。

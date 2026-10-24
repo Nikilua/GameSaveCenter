@@ -1,0 +1,27 @@
+{
+  "scope": "Read-only diagnostics preview and its existing PowerShell tests; no product/build/install behavior changed",
+  "hosts": [
+    {
+      "command": "pwsh -NoProfile -File scripts/tests/Test-DiagnosticPreview.ps1",
+      "exitCode": 0
+    },
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/tests/Test-DiagnosticPreview.ps1",
+      "exitCode": 0
+    }
+  ],
+  "checks": [
+    "First twelve lines retain run identity, diagnostic path, source/working-tree state, SDK, outcome, failed step and test totals with 100 dirty paths, 100 assembly records and 100 TRX details",
+    "Full detail remains available after reordering",
+    "Running outcome is retained without full-success claim",
+    "Missing legacy run ID is explicitly identified by directory name",
+    "Original historical TRX recount and redaction regression remain passing"
+  ],
+  "actualReadOnlyRuns": [
+    "20261024T014633742Z-7d44e664",
+    "20261024T011955949Z-373356e8"
+  ],
+  "lastStandardFullSuccess": "b8eedc4797ba39639a771456c86ed1911be0e153",
+  "fullStandardRunForNewCandidate": "pending final candidate",
+  "generatedTempArtifacts": 0
+}

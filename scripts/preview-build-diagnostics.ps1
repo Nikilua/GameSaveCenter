@@ -46,7 +46,14 @@ function Get-GscDiagnosticPreviewLines {
 
     $lines = [Collections.Generic.List[string]]::new()
     $lines.Add('GameSaveCenter 构建诊断预览（只读；不访问网络或用户存档）')
-    $lines.Add("摘要文件：$([IO.Path]::GetFileName($SummaryPath))")
+    $recordedRunId = Get-GscPreviewProperty $Summary 'runId'
+    $runIdentity = if ([string]::IsNullOrWhiteSpace([string]$recordedRunId)) {
+        '目录名：' + (Split-Path -Leaf (Split-Path -Parent $SummaryPath))
+    } else { [string]$recordedRunId }
+    $lines.Add("运行标识：$runIdentity")
+    $previewContext = @{ RepoRoot = (Split-Path -Parent $PSScriptRoot) }
+    $safeSummaryPath = ConvertTo-GscDiagnosticText -Text $SummaryPath -Context $previewContext
+    $lines.Add("诊断入口：$safeSummaryPath")
     $lines.Add("源码提交：$(Get-GscPreviewProperty $Summary 'sourceCommit' '未记录')")
     $clean = Get-GscPreviewProperty $Summary 'workingTreeClean'
     if ($null -eq $clean) {
@@ -58,24 +65,11 @@ function Get-GscDiagnosticPreviewLines {
     else {
         $dirtyPaths = @(Get-GscPreviewProperty $Summary 'dirtyPaths' @())
         $lines.Add("工作树：有 $($dirtyPaths.Count) 条改动路径")
-        foreach ($dirtyPath in $dirtyPaths) { $lines.Add("  改动：$dirtyPath") }
     }
 
-    $environment = Get-GscPreviewProperty $Summary 'environment'
-    if ($null -eq $environment) {
-        $lines.Add('运行环境：旧格式摘要没有 OS/PowerShell/位数记录；不能从当前机器状态补推历史环境。')
-    }
-    else {
-        $osVersion = Get-GscPreviewProperty $environment 'osVersion' '未记录'
-        $osBitness = Get-GscPreviewProperty $environment 'osBitness' '未记录'
-        $processBitness = Get-GscPreviewProperty $environment 'processBitness' '未记录'
-        $powershell = Get-GscPreviewProperty $environment 'powershellVersion' '未记录'
-        $edition = Get-GscPreviewProperty $environment 'powershellEdition' '未记录'
-        $runtime = Get-GscPreviewProperty $environment 'dotnetRuntimeVersion' '未记录'
-        $lines.Add("运行环境：Windows $osVersion / OS ${osBitness}-bit / 进程 ${processBitness}-bit / PowerShell $powershell ($edition) / .NET $runtime")
-    }
     $lines.Add("SDK：$(Get-GscPreviewProperty $Summary 'sdk' '未记录')")
     $lines.Add("运行结果：$(Get-GscPreviewProperty $Summary 'outcome' '未记录')；类型：$(Get-GscPreviewProperty $Summary 'runType' '未记录')")
+    $lines.Add('范围：仅此诊断运行；发布、安装与启动结果须另查标准入口终态。')
 
     $steps = @(Get-GscPreviewProperty $Summary 'steps' @())
     $failedSteps = @($steps | Where-Object { $null -ne $_.exitCode -and $_.exitCode -ne 0 })
@@ -85,30 +79,6 @@ function Get-GscDiagnosticPreviewLines {
     else {
         $failedIds = @($failedSteps | ForEach-Object { "$($_.id)=$($_.exitCode)" }) -join ', '
         $lines.Add("诊断步骤：$($steps.Count) 项；非零步骤：$failedIds")
-    }
-
-    $assemblies = @(Get-GscPreviewProperty $Summary 'assemblies' @())
-    if ($assemblies.Count -eq 0) {
-        $lines.Add('程序集/PDB：没有身份记录；构建可能未到达程序集扫描阶段。')
-    }
-    else {
-        $lines.Add("程序集/PDB：$($assemblies.Count) 个程序集记录")
-        foreach ($assembly in $assemblies) {
-            $lines.Add("  $($assembly.file)：DLL SHA-256=$($assembly.sha256)；MVID=$(Get-GscPreviewProperty $assembly 'mvid' '未记录')")
-            $pdb = Get-GscPreviewProperty $assembly 'pdb'
-            if ($null -eq $pdb) {
-                $lines.Add('    PDB：未记录或同目录 PDB 不存在')
-            }
-            elseif (Get-GscPreviewProperty $pdb 'sha256') {
-                $lines.Add("    PDB SHA-256=$(Get-GscPreviewProperty $pdb 'sha256')")
-            }
-            elseif (Get-GscPreviewProperty $pdb 'unavailableReason') {
-                $lines.Add("    PDB：读取失败 ($(Get-GscPreviewProperty $pdb 'unavailableReason'))")
-            }
-            else {
-                $lines.Add('    PDB：没有可用身份')
-            }
-        }
     }
 
     $testSummary = Get-GscPreviewProperty $Summary 'testSummary'
@@ -152,6 +122,48 @@ function Get-GscDiagnosticPreviewLines {
         }
         if ($testSummary.trxFileCount -eq 0) {
             $lines.Add('  没有找到原始 TRX；查看 testsRequested 与失败步骤以判断测试是否尚未启动。')
+        }
+    }
+
+    $lines.Add('环境、工作树与程序集明细：')
+    if ($null -ne $clean -and -not $clean) {
+        foreach ($dirtyPath in $dirtyPaths) { $lines.Add("  改动：$dirtyPath") }
+    }
+
+    $environment = Get-GscPreviewProperty $Summary 'environment'
+    if ($null -eq $environment) {
+        $lines.Add('运行环境：旧格式摘要没有 OS/PowerShell/位数记录；不能从当前机器状态补推历史环境。')
+    }
+    else {
+        $osVersion = Get-GscPreviewProperty $environment 'osVersion' '未记录'
+        $osBitness = Get-GscPreviewProperty $environment 'osBitness' '未记录'
+        $processBitness = Get-GscPreviewProperty $environment 'processBitness' '未记录'
+        $powershell = Get-GscPreviewProperty $environment 'powershellVersion' '未记录'
+        $edition = Get-GscPreviewProperty $environment 'powershellEdition' '未记录'
+        $runtime = Get-GscPreviewProperty $environment 'dotnetRuntimeVersion' '未记录'
+        $lines.Add("运行环境：Windows $osVersion / OS ${osBitness}-bit / 进程 ${processBitness}-bit / PowerShell $powershell ($edition) / .NET $runtime")
+    }
+    $assemblies = @(Get-GscPreviewProperty $Summary 'assemblies' @())
+    if ($assemblies.Count -eq 0) {
+        $lines.Add('程序集/PDB：没有身份记录；构建可能未到达程序集扫描阶段。')
+    }
+    else {
+        $lines.Add("程序集/PDB：$($assemblies.Count) 个程序集记录")
+        foreach ($assembly in $assemblies) {
+            $lines.Add("  $($assembly.file)：DLL SHA-256=$($assembly.sha256)；MVID=$(Get-GscPreviewProperty $assembly 'mvid' '未记录')")
+            $pdb = Get-GscPreviewProperty $assembly 'pdb'
+            if ($null -eq $pdb) {
+                $lines.Add('    PDB：未记录或同目录 PDB 不存在')
+            }
+            elseif (Get-GscPreviewProperty $pdb 'sha256') {
+                $lines.Add("    PDB SHA-256=$(Get-GscPreviewProperty $pdb 'sha256')")
+            }
+            elseif (Get-GscPreviewProperty $pdb 'unavailableReason') {
+                $lines.Add("    PDB：读取失败 ($(Get-GscPreviewProperty $pdb 'unavailableReason'))")
+            }
+            else {
+                $lines.Add('    PDB：没有可用身份')
+            }
         }
     }
 

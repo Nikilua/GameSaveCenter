@@ -1,0 +1,193 @@
+GameSaveCenter 构建诊断预览（只读；不访问网络或用户存档）
+运行标识：目录名：20261024T014633742Z-7d44e664
+诊断入口：[repo]\artifacts\build-diagnostics\20261024T014633742Z-7d44e664\summary.json
+源码提交：b8eedc4797ba39639a771456c86ed1911be0e153
+工作树：有 16 条改动路径
+SDK：8.0.423
+运行结果：passed；类型：solution-build
+范围：仅此诊断运行；发布、安装与启动结果须另查标准入口终态。
+诊断步骤：154 项；未记录非零退出码
+TRX 测试用例：1967 total / 1910 passed / 0 failed / 57 skipped；TRX 文件 148
+TRX 计数核对：0 个 Counter 不匹配；0 个解析失败
+  core：157 cases / 21 classes / 0 WPF isolated class runs
+  playnite-source：562 cases / 129 classes / 0 WPF isolated class runs
+  worker：400 cases / 66 classes / 0 WPF isolated class runs
+  playnite-wpf-isolated：848 cases / 145 classes / 145 WPF isolated class runs
+  TRX available：core/core.trx
+  TRX available：playnite-source/playnite-source.trx
+  TRX available：worker/worker.trx
+  TRX available：wpf.AsyncThumbnailImageTests/wpf.AsyncThumbnailImageTests.trx
+  TRX available：wpf.AsyncThumbnailLoaderTests/wpf.AsyncThumbnailLoaderTests.trx
+  TRX available：wpf.CommandDirectoryBehaviorTests/wpf.CommandDirectoryBehaviorTests.trx
+  TRX available：wpf.CommandDirectoryKeyboardBehaviorTests/wpf.CommandDirectoryKeyboardBehaviorTests.trx
+  TRX available：wpf.CommandDirectoryRegisteredRouteTests/wpf.CommandDirectoryRegisteredRouteTests.trx
+  TRX available：wpf.CommandDirectoryResultLayoutBehaviorTests/wpf.CommandDirectoryResultLayoutBehaviorTests.trx
+  TRX available：wpf.CommandDirectoryReviewBehaviorTests/wpf.CommandDirectoryReviewBehaviorTests.trx
+  TRX available：wpf.CompactWorkspaceTableViewportBehaviorTests/wpf.CompactWorkspaceTableViewportBehaviorTests.trx
+  TRX available：wpf.DataGridColumnVisibilityBehaviorTests/wpf.DataGridColumnVisibilityBehaviorTests.trx
+  TRX available：wpf.DataGridHorizontalWheelBehaviorTests/wpf.DataGridHorizontalWheelBehaviorTests.trx
+  TRX available：wpf.DataGridViewConfigurationBehaviorTests/wpf.DataGridViewConfigurationBehaviorTests.trx
+  TRX available：wpf.GamePickerFilterBehaviorTests/wpf.GamePickerFilterBehaviorTests.trx
+  TRX available：wpf.GamePickerKeyboardBehaviorTests/wpf.GamePickerKeyboardBehaviorTests.trx
+  TRX available：wpf.KeyboardFocusSourceTests/wpf.KeyboardFocusSourceTests.trx
+  TRX available：wpf.MediaComparisonSelectionTests/wpf.MediaComparisonSelectionTests.trx
+  TRX available：wpf.MediaComparisonViewportBehaviorTests/wpf.MediaComparisonViewportBehaviorTests.trx
+  TRX available：wpf.MediaInboxGeometryTests/wpf.MediaInboxGeometryTests.trx
+  TRX available：wpf.MediaInboxScrollBehaviorTests/wpf.MediaInboxScrollBehaviorTests.trx
+  TRX available：wpf.MediaThumbnailConverterTests/wpf.MediaThumbnailConverterTests.trx
+  TRX available：wpf.MediaWindowAnchorContractTests/wpf.MediaWindowAnchorContractTests.trx
+  TRX available：wpf.NotificationInboxViewBehaviorTests/wpf.NotificationInboxViewBehaviorTests.trx
+  TRX available：wpf.NumericCellReadabilityTests/wpf.NumericCellReadabilityTests.trx
+  TRX available：wpf.NumericInputTests/wpf.NumericInputTests.trx
+  TRX available：wpf.OverviewInteractionTests/wpf.OverviewInteractionTests.trx
+  TRX available：wpf.PasteNormalizationTests/wpf.PasteNormalizationTests.trx
+  TRX available：wpf.PlayniteGameIconProviderTests/wpf.PlayniteGameIconProviderTests.trx
+  TRX available：wpf.ProcessMappingInlineActionBehaviorTests/wpf.ProcessMappingInlineActionBehaviorTests.trx
+  TRX available：wpf.ProductionShellChromeSourceTests/wpf.ProductionShellChromeSourceTests.trx
+  TRX available：wpf.Q06ButtonStateSequenceBehaviorTests/wpf.Q06ButtonStateSequenceBehaviorTests.trx
+  TRX available：wpf.Q06ContinuousButtonBehaviorTests/wpf.Q06ContinuousButtonBehaviorTests.trx
+  TRX available：wpf.Q10CheckBoxHitBehaviorTests/wpf.Q10CheckBoxHitBehaviorTests.trx
+  TRX available：wpf.Q10ToggleSwitchStateBehaviorTests/wpf.Q10ToggleSwitchStateBehaviorTests.trx
+  TRX available：wpf.Q13ColumnResizeBehaviorTests/wpf.Q13ColumnResizeBehaviorTests.trx
+  TRX available：wpf.Q13ScrollBarThumbBehaviorTests/wpf.Q13ScrollBarThumbBehaviorTests.trx
+  TRX available：wpf.Q14FilterLabelBehaviorTests/wpf.Q14FilterLabelBehaviorTests.trx
+  TRX available：wpf.Q14ToolbarAlignmentBehaviorTests/wpf.Q14ToolbarAlignmentBehaviorTests.trx
+  TRX available：wpf.Q23SettingsActionConfirmationBehaviorTests/wpf.Q23SettingsActionConfirmationBehaviorTests.trx
+  TRX available：wpf.Q24FractionalDpiTypographyBehaviorTests/wpf.Q24FractionalDpiTypographyBehaviorTests.trx
+  TRX available：wpf.R02ActionAvailabilityHintTests/wpf.R02ActionAvailabilityHintTests.trx
+  TRX available：wpf.R02ActionPriorityTests/wpf.R02ActionPriorityTests.trx
+  TRX available：wpf.R02BusyStateTests/wpf.R02BusyStateTests.trx
+  TRX available：wpf.R02HitAreaSpacingTests/wpf.R02HitAreaSpacingTests.trx
+  TRX available：wpf.R02OpticalAlignmentTests/wpf.R02OpticalAlignmentTests.trx
+  TRX available：wpf.R03BilingualLengthTests/wpf.R03BilingualLengthTests.trx
+  TRX available：wpf.R03CopySafePunctuationTests/wpf.R03CopySafePunctuationTests.trx
+  TRX available：wpf.R03LongPathTests/wpf.R03LongPathTests.trx
+  TRX available：wpf.R03NumericAlignmentTests/wpf.R03NumericAlignmentTests.trx
+  TRX available：wpf.R03TextScaleTests/wpf.R03TextScaleTests.trx
+  TRX available：wpf.R05FocusBoundaryBehaviorTests/wpf.R05FocusBoundaryBehaviorTests.trx
+  TRX available：wpf.R05MultiSelectionSummaryBehaviorTests/wpf.R05MultiSelectionSummaryBehaviorTests.trx
+  TRX available：wpf.R05OptionVirtualizationBehaviorTests/wpf.R05OptionVirtualizationBehaviorTests.trx
+  TRX available：wpf.R05PopupBoundaryBehaviorTests/wpf.R05PopupBoundaryBehaviorTests.trx
+  TRX available：wpf.R05PopupLifecycleBehaviorTests/wpf.R05PopupLifecycleBehaviorTests.trx
+  TRX available：wpf.R05TogglePersistenceBehaviorTests/wpf.R05TogglePersistenceBehaviorTests.trx
+  TRX available：wpf.R05TooltipTimingBehaviorTests/wpf.R05TooltipTimingBehaviorTests.trx
+  TRX available：wpf.R06ClipboardBehaviorTests/wpf.R06ClipboardBehaviorTests.trx
+  TRX available：wpf.R06ColumnHeaderHelpTests/wpf.R06ColumnHeaderHelpTests.trx
+  TRX available：wpf.R06ColumnWidthPersistenceBehaviorTests/wpf.R06ColumnWidthPersistenceBehaviorTests.trx
+  TRX available：wpf.R06DetailsBudgetBehaviorTests/wpf.R06DetailsBudgetBehaviorTests.trx
+  TRX available：wpf.R06EmptyStateBehaviorTests/wpf.R06EmptyStateBehaviorTests.trx
+  TRX available：wpf.R06ResponsiveColumnWidthBehaviorTests/wpf.R06ResponsiveColumnWidthBehaviorTests.trx
+  TRX available：wpf.R06SelectionStateBehaviorTests/wpf.R06SelectionStateBehaviorTests.trx
+  TRX available：wpf.R06SortingBehaviorTests/wpf.R06SortingBehaviorTests.trx
+  TRX available：wpf.R06TaskProgressBehaviorTests/wpf.R06TaskProgressBehaviorTests.trx
+  TRX available：wpf.R07DetailsBreakpointBehaviorTests/wpf.R07DetailsBreakpointBehaviorTests.trx
+  TRX available：wpf.R07FineScrollBehaviorTests/wpf.R07FineScrollBehaviorTests.trx
+  TRX available：wpf.R07ResizeStressBehaviorTests/wpf.R07ResizeStressBehaviorTests.trx
+  TRX available：wpf.R07ScrollOwnershipBehaviorTests/wpf.R07ScrollOwnershipBehaviorTests.trx
+  TRX available：wpf.R07SelectionAnchorBehaviorTests/wpf.R07SelectionAnchorBehaviorTests.trx
+  TRX available：wpf.R07StatusBannerBudgetBehaviorTests/wpf.R07StatusBannerBudgetBehaviorTests.trx
+  TRX available：wpf.R08BusinessFeedbackBehaviorTests/wpf.R08BusinessFeedbackBehaviorTests.trx
+  TRX available：wpf.R08DialogOverlayBehaviorTests/wpf.R08DialogOverlayBehaviorTests.trx
+  TRX available：wpf.R08MotionHotChangeBehaviorTests/wpf.R08MotionHotChangeBehaviorTests.trx
+  TRX available：wpf.R08MotionReverseBehaviorTests/wpf.R08MotionReverseBehaviorTests.trx
+  TRX available：wpf.R08NumericChangeBehaviorTests/wpf.R08NumericChangeBehaviorTests.trx
+  TRX available：wpf.R08OffscreenMotionBehaviorTests/wpf.R08OffscreenMotionBehaviorTests.trx
+  TRX available：wpf.R08PageSwitchBehaviorTests/wpf.R08PageSwitchBehaviorTests.trx
+  TRX available：wpf.R08SystemMotionHotChangeBehaviorTests/wpf.R08SystemMotionHotChangeBehaviorTests.trx
+  TRX available：wpf.R09BackgroundPressureBehaviorTests/wpf.R09BackgroundPressureBehaviorTests.trx
+  TRX available：wpf.R09FocusOutlineBehaviorTests/wpf.R09FocusOutlineBehaviorTests.trx
+  TRX available：wpf.R09HighContrastBehaviorTests/wpf.R09HighContrastBehaviorTests.trx
+  TRX available：wpf.R09IconSemanticBehaviorTests/wpf.R09IconSemanticBehaviorTests.trx
+  TRX available：wpf.R09PixelStrokeBehaviorTests/wpf.R09PixelStrokeBehaviorTests.trx
+  TRX available：wpf.R09ShadowBudgetBehaviorTests/wpf.R09ShadowBudgetBehaviorTests.trx
+  TRX available：wpf.R09ThemeSwitchBehaviorTests/wpf.R09ThemeSwitchBehaviorTests.trx
+  TRX available：wpf.R09ThumbnailPlaceholderBehaviorTests/wpf.R09ThumbnailPlaceholderBehaviorTests.trx
+  TRX available：wpf.R10FilterPresetBehaviorTests/wpf.R10FilterPresetBehaviorTests.trx
+  TRX available：wpf.R10FilterSourceBehaviorTests/wpf.R10FilterSourceBehaviorTests.trx
+  TRX available：wpf.R10KeyboardShortcutHelpBehaviorTests/wpf.R10KeyboardShortcutHelpBehaviorTests.trx
+  TRX available：wpf.R10RecentAccessBehaviorTests/wpf.R10RecentAccessBehaviorTests.trx
+  TRX available：wpf.R10SearchShortcutBehaviorTests/wpf.R10SearchShortcutBehaviorTests.trx
+  TRX available：wpf.R10SearchShortcutFocusBehaviorTests/wpf.R10SearchShortcutFocusBehaviorTests.trx
+  TRX available：wpf.R11BackupPreviewBehaviorTests/wpf.R11BackupPreviewBehaviorTests.trx
+  TRX available：wpf.R11DiffListSearchBehaviorTests/wpf.R11DiffListSearchBehaviorTests.trx
+  TRX available：wpf.R11HistoryTimeNavigationBehaviorTests/wpf.R11HistoryTimeNavigationBehaviorTests.trx
+  TRX available：wpf.R11ProtectionBehaviorTests/wpf.R11ProtectionBehaviorTests.trx
+  TRX available：wpf.R11VersionComparisonBehaviorTests/wpf.R11VersionComparisonBehaviorTests.trx
+  TRX available：wpf.R11VersionNoteBehaviorTests/wpf.R11VersionNoteBehaviorTests.trx
+  TRX available：wpf.R11VersionSummaryBehaviorTests/wpf.R11VersionSummaryBehaviorTests.trx
+  TRX available：wpf.R12PathRemapBehaviorTests/wpf.R12PathRemapBehaviorTests.trx
+  TRX available：wpf.R12RemoteStageProgressBehaviorTests/wpf.R12RemoteStageProgressBehaviorTests.trx
+  TRX available：wpf.R12RestorePlanDraftBehaviorTests/wpf.R12RestorePlanDraftBehaviorTests.trx
+  TRX available：wpf.R12RestoreReadinessViewBehaviorTests/wpf.R12RestoreReadinessViewBehaviorTests.trx
+  TRX available：wpf.R12RestoreWorkflowBehaviorTests/wpf.R12RestoreWorkflowBehaviorTests.trx
+  TRX available：wpf.R13CloudTransferStageBehaviorTests/wpf.R13CloudTransferStageBehaviorTests.trx
+  TRX available：wpf.R15TaskFailureCopyTests/wpf.R15TaskFailureCopyTests.trx
+  TRX available：wpf.R16NotificationScheduleBehaviorTests/wpf.R16NotificationScheduleBehaviorTests.trx
+  TRX available：wpf.R16SettingsSearchBehaviorTests/wpf.R16SettingsSearchBehaviorTests.trx
+  TRX available：wpf.R18DispatcherVisibilityBenchmarkTests/wpf.R18DispatcherVisibilityBenchmarkTests.trx
+  TRX available：wpf.R18TableContainerBudgetTests/wpf.R18TableContainerBudgetTests.trx
+  TRX available：wpf.R18ThumbnailBudgetTests/wpf.R18ThumbnailBudgetTests.trx
+  TRX available：wpf.R21AsyncCompletionAnnouncementBehaviorTests/wpf.R21AsyncCompletionAnnouncementBehaviorTests.trx
+  TRX available：wpf.R21AutomationValueBehaviorTests/wpf.R21AutomationValueBehaviorTests.trx
+  TRX available：wpf.R21DisabledHiddenBehaviorTests/wpf.R21DisabledHiddenBehaviorTests.trx
+  TRX available：wpf.R21FocusVisualRegressionBehaviorTests/wpf.R21FocusVisualRegressionBehaviorTests.trx
+  TRX available：wpf.R21KeyboardNavigationTraceTests/wpf.R21KeyboardNavigationTraceTests.trx
+  TRX available：wpf.R21SelectableTechnicalTextBehaviorTests/wpf.R21SelectableTechnicalTextBehaviorTests.trx
+  TRX available：wpf.R22BatchCountBehaviorTests/wpf.R22BatchCountBehaviorTests.trx
+  TRX available：wpf.R22ConfirmationStructureBehaviorTests/wpf.R22ConfirmationStructureBehaviorTests.trx
+  TRX available：wpf.R22CopyFeedbackBehaviorTests/wpf.R22CopyFeedbackBehaviorTests.trx
+  TRX available：wpf.R22LongTaskLeavePageBehaviorTests/wpf.R22LongTaskLeavePageBehaviorTests.trx
+  TRX available：wpf.R22MaintenanceActionTimeBehaviorTests/wpf.R22MaintenanceActionTimeBehaviorTests.trx
+  TRX available：wpf.R22RemoteStageTimeBehaviorTests/wpf.R22RemoteStageTimeBehaviorTests.trx
+  TRX available：wpf.R23ProductionResourceStateBehaviorTests/wpf.R23ProductionResourceStateBehaviorTests.trx
+  TRX available：wpf.ReportedWorkspaceLayoutBehaviorTests/wpf.ReportedWorkspaceLayoutBehaviorTests.trx
+  TRX available：wpf.RetentionScenarioInputBehaviorTests/wpf.RetentionScenarioInputBehaviorTests.trx
+  TRX available：wpf.S05StorageBudgetBreakdownBehaviorTests/wpf.S05StorageBudgetBreakdownBehaviorTests.trx
+  TRX available：wpf.SettingsDraftLifecycleBehaviorTests/wpf.SettingsDraftLifecycleBehaviorTests.trx
+  TRX available：wpf.SettingsValidationNavigationBehaviorTests/wpf.SettingsValidationNavigationBehaviorTests.trx
+  TRX available：wpf.StatusGlyphConverterTests/wpf.StatusGlyphConverterTests.trx
+  TRX available：wpf.T02TableScrollDriftBehaviorTests/wpf.T02TableScrollDriftBehaviorTests.trx
+  TRX available：wpf.TableDensityPolicyTests/wpf.TableDensityPolicyTests.trx
+  TRX available：wpf.TaskCenterViewResponsiveTests/wpf.TaskCenterViewResponsiveTests.trx
+  TRX available：wpf.TypographyDiagnosticsTests/wpf.TypographyDiagnosticsTests.trx
+  TRX available：wpf.UiAuditBlockerTests/wpf.UiAuditBlockerTests.trx
+  TRX available：wpf.UiAuditCaptureContractTests/wpf.UiAuditCaptureContractTests.trx
+  TRX available：wpf.UiAuditTruthfulnessTests/wpf.UiAuditTruthfulnessTests.trx
+  TRX available：wpf.UiDiagnosticsExporterTests/wpf.UiDiagnosticsExporterTests.trx
+  TRX available：wpf.UiFinesseFoundationTests/wpf.UiFinesseFoundationTests.trx
+  TRX available：wpf.UiNegativeFixtureRegistryTests/wpf.UiNegativeFixtureRegistryTests.trx
+  TRX available：wpf.WorklistExportPreviewBehaviorTests/wpf.WorklistExportPreviewBehaviorTests.trx
+  TRX available：wpf.WorkspaceStatePresenterBehaviorTests/wpf.WorkspaceStatePresenterBehaviorTests.trx
+  TRX available：wpf.WorkspaceTableViewportPolicyTests/wpf.WorkspaceTableViewportPolicyTests.trx
+  TRX available：wpf.WpfUiResourceDictionaryTests/wpf.WpfUiResourceDictionaryTests.trx
+  TRX available：wpf.WrapPanelRowGapControllerBehaviorTests/wpf.WrapPanelRowGapControllerBehaviorTests.trx
+环境、工作树与程序集明细：
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/CI-R07-08-RESIZE-FAILURE-20261013/tests/R07ResizeStressBehaviorTests-sdk9302-current-main.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-01-CURRENT-MAIN-LOGICAL-DPI-RECHECK-20261013/tests/Q24-01-fractional-dpi-8546acab.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/Combined-after-tooltip-guard-worktree.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/MediaInboxScrollBehaviorTests-5fcd6856.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/Q24-02-pagehost-and-scroll-20261014.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/R05-transient-surface-regression-74815b2b.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/R07ResizeStressBehaviorTests-5fcd6856.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/Q24-02-CURRENT-MAIN-PAGEHOST-RECHECK-20261014/tests/TooltipCrossDispatcher-worktree.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R04-01-CURRENT-MAIN-RECHECK-20261012/tests/GamePickerKeyboardBehaviorTests-current-main.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R04-01-CURRENT-MAIN-RECHECK-20261012/tests/current-main-generated-test-run.txt
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev2.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev3.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev4.trx
+  改动：?? docs/design/reviews/ui-finesse-round3-20260915/evidence/R05-01-CURRENT-MAIN-RECHECK-20261013/tests/R05-01-dashboard-dev5.trx
+  改动：?? tests/GameSaveCenter.Playnite.Tests/TestResults/
+运行环境：Windows 10.0.22000.0 / OS 64-bit / 进程 64-bit / PowerShell 7.6.2 (Core) / .NET 10.0.8
+程序集/PDB：5 个程序集记录
+  GameSaveCenter.Playnite.dll：DLL SHA-256=F3BD8BA0EA36BBC2DBF9C54F91BC00415E0223296CDE712CEC0418370732C47C；MVID=6db40bff-ac79-4924-b2fe-4b3c46b8355c
+    PDB SHA-256=C5B3A043244B5E15663B505FAAF12282A12C53237A88D56E189BB8714DA19B14
+  GameSaveCenter.Playnite.Tests.dll：DLL SHA-256=374240274A8A3B9FD3BFFE96F2BEF1C93DFB456E8D081746CE993C1571542E02；MVID=15deda83-6877-4e07-8e98-36b174be5b22
+    PDB SHA-256=EEFD3573212278FD173507D01B63DD99A148338E914B84EE897CFB5C0B539270
+  GameSaveCenter.Worker.dll：DLL SHA-256=28D42BDD1BC5E8BE047C3E8BC218B06F1F9565454E3B726AF7EF60395971F4DF；MVID=0f8c64b9-aaf2-44a2-b354-ccb3a8577691
+    PDB SHA-256=E07D1CDF93A832AF7D564B002F6CB87B00A5D20F80F7CE372C715776F46FFFA5
+  GameSaveCenter.Worker.Tests.dll：DLL SHA-256=8AB13C795E2E0CA6D9751F55DC4B420168B6AA8E93EFFD652D770A136504E2ED；MVID=d1750173-3d4a-40f8-ba48-82d8ecacc663
+    PDB SHA-256=275898C3960D15E8CB48BD6C5DFD7795C97D53BAD2F5FFC3ED992CF6B5DA1513
+  GameSaveCenter.Core.Tests.dll：DLL SHA-256=8AF051881136DD0888A9FDA88926D991727BCE5A01B9503ED7B6CF5C3FEE84EF；MVID=2faab8e2-4304-4a9e-9a94-d4ecca9e1848
+    PDB SHA-256=FE49EFC4E76901F50735D6DFE1347C69F5C73F613BBB3FA8AF2D3AFA7B870726
+安装包身份不由该诊断摘要采集；若需核对安装目录，请另提供包哈希和实际加载路径。
