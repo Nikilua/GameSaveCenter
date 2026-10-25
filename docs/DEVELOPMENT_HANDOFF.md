@@ -1087,3 +1087,6 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 用户外机10月25日附件的Q06失败run 20261025T040600037Z-ec604b91没有同次HEAD/sourceCommit，不能对应到当前源码。外机复跑仍待用户执行；此前stash保留，先安全保存所有本地修改并快进，禁止reset、覆盖或提前stash pop。回报同次HEAD、根命令退出码及artifacts/build-diagnostics/<runId>/summary.json后再判断。
 
 32项专项仍有T00-07跨会话ACL、T01-04真实symlink权限、T01-08真实桌面Ctrl+C与外机复跑、T02-08真实宿主物理输入/DPI、T03-05隔离旧包/设置迁移五项未验。T02-02、T02-04至T02-07现已受控生产夹具验收，但不取代T02-08。不要关闭或终止当前Playnite/Worker会话来执行旧包审计；需在用户明确的独立隔离宿主条件下操作。
+## 2026-10-26 T01-04 权限状态交接
+
+审核提升执行上下文的Core 7.6.2路径边界复核中，13项通过、文件symlink因Windows要求Administrator privilege跳过、0失败；哨兵SHA相同，隔离.tmp已清除，未改变系统安全设置。只有当管理员或Developer Mode权限对测试进程可用后才重试，记录见docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/results-Core-elevated-20261026.json及docs/ai/ENVIRONMENT_CAPABILITY_CACHE.json。

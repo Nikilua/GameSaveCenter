@@ -69,8 +69,8 @@
   "documentationValidation": {
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
-    "markdownFiles": 7,
-    "relativeLinks": 638,
+    "markdownFiles": 8,
+    "relativeLinks": 643,
     "missingLinks": 0,
     "productBuildOrTestsRerun": false
   },
@@ -79,8 +79,8 @@
     "baseProductSourceCommit": "b29c39a541ba92461e167f14f64917d889293161",
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
-    "markdownFiles": 7,
-    "relativeLinks": 638,
+    "markdownFiles": 8,
+    "relativeLinks": 643,
     "missingLinks": 0,
     "productBuildOrTestsRerun": false,
     "productCodeTestsScriptsChanged": false

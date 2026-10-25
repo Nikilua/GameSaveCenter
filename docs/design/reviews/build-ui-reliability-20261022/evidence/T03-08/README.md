@@ -81,4 +81,4 @@ cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"
 32项计划现有5项待验：T00-07跨会话互斥/ACL，T01-04文件symlink权限，T01-08真实桌面Ctrl+C及外机最新主线构建，T02-08真实宿主/物理输入/DPI矩阵，T03-05隔离旧包加载与设置迁移。T02-02、T02-04至T02-07的受控生产夹具已验收，限定在各自受控场景，不把它们扩展为T02-08的真实宿主结论。
 ## 2026-10-26 文档证据校验
 
-本次变更的7份Markdown共638个相对本地链接，0失效；python scripts/validate-source.py .通过，git diff --check通过。只修改文档与证据，未改产品源码、测试或脚本；产品完整链仍绑定b29c39a5，不为文档提交重跑产品构建。
+本次变更的8份Markdown共643个相对本地链接，0失效；python scripts/validate-source.py .通过，git diff --check通过。只修改文档与证据，未改产品源码、测试或脚本；产品完整链仍绑定b29c39a5，不为文档提交重跑产品构建。

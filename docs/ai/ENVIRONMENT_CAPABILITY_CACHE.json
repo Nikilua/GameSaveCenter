@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-10-25",
+  "updatedOn": "2026-10-26",
   "scope": "Record external prerequisites and safe retry gates. This cache does not grant permission or prove host behavior.",
   "retryPolicy": {
     "retryOnlyWhen": [
@@ -113,6 +113,25 @@
       ],
       "evidence": [
         "docs/design/reviews/ui-finesse-round4-20261018/evidence/S07-03/README.md"
+      ]
+    },
+    {
+      "id": "windows-file-symlink-creation",
+      "kind": "permission",
+      "scope": "T01-04",
+      "status": "blocked_by_permission",
+      "lastCheck": {
+        "checkedOn": "2026-10-26",
+        "method": "Approved elevated PowerShell Core 7.6.2 run of scripts/tests/Test-ArtifactPathBoundaries.ps1 using an isolated repository .tmp fixture; no Windows security settings changed.",
+        "result": "13 path-boundary assertions passed; file symlink creation was skipped because Windows returned Administrator privilege required. CanDelete remained false, sentinel SHA remained unchanged, fixture was removed."
+      },
+      "retryWhen": [
+        "An administrator or Developer Mode-enabled token becomes available to this test process.",
+        "The user explicitly requests a retry after the permission prerequisite changes."
+      ],
+      "evidence": [
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/results-Core-elevated-20261026.json",
+        "docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/README.md"
       ]
     }
   ]
