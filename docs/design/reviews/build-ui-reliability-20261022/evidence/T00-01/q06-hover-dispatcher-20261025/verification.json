@@ -87,7 +87,8 @@
     },
     "q06ExitCode": 0,
     "q06Trx": "full-isolated-q06.trx",
-    "wpfClassesComplete": 145
+    "wpfClassesComplete": 145,
+    "summary": "isolated-summary.json"
   },
   "standardRootChain": {
     "status": "pending",
