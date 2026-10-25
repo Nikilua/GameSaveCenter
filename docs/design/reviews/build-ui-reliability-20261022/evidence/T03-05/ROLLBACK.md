@@ -38,3 +38,9 @@
 对旧候选到 `53ee9381` 做完整产品源码差异检查，共8个变更文件，均为Playnite界面/视口代码；`GameSaveCenter.Playnite/Settings`、Contracts、Core、Worker和数据库迁移源码没有改动。因此这段提交范围没有引入新的设置序列化字段、设置迁移或Worker数据库迁移。这是源码层的兼容性依据，不等价于旧包在Playnite中的加载或设置往返验证。[机器可读差异与包身份](source-compat-53ee9381.json)。
 
 本机当前 Playnite PID `50020` 与 GameSaveCenter Worker PID `50908` 正在使用正常配置。为避免将隔离参数转发到活动实例或改动用户配置，本轮没有启动第二个宿主、安装旧包或操作当前进程。T03-05 仍待在隔离用户数据目录实际加载旧包、升级到 `53ee9381` 并验证设置往返/迁移；此前文件事务回放仍只绑定 `23cf1c6e`。
+
+## 2026-10-25 53ee9381 当前宿主回退前基线
+
+Playnite PID `50020` 于 `17:41:56+08:00` 启动；同次 `extensions.log` 在 `17:42:05+08:00` 记录 GameSaveCenter 插件从当前扩展目录加载。日志报告的 `GameSaveCenter.Playnite.dll` 磁盘文件 ProductVersion 为 `0.6.73+53ee9381d23772a60ebaf7ff16aeb81d6584d28a`、SHA-256 为 `23C8F0EA0229156832E318970EEBE0855EEAE632D5F79E7EEF4F858A0D2AF9C9`，与安装报告和包身份一致。Worker PID `50908` 也从同一扩展目录运行；Worker EXE/DLL 均带完整 `53ee9381` 身份，DLL SHA 与安装报告一致。[当前宿主基线](host-53ee9381.json)。
+
+这为后续回退测试记录了当前安装包、加载路径与运行进程基线；没有读取或更改设置内容。旧包在隔离配置中的实际加载、升级后的设置往返/迁移仍待验证。

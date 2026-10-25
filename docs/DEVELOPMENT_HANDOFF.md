@@ -1,3 +1,7 @@
+## 2026-10-25 T03-05 53ee9381当前宿主回退前基线
+
+当前Playnite PID 50020的`extensions.log`在17:42:05+08:00记录插件加载自实际扩展目录；安装目录中的插件DLL ProductVersion为完整`53ee9381`身份、SHA与53ee9381安装/包记录相符。Worker PID 50908运行同扩展目录下的Worker EXE，进程EXE与Worker DLL的ProductVersion也带完整源码身份，Worker DLL SHA匹配安装报告。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/host-53ee9381.json`。这是当前包回退前基线；未读取或修改用户设置。旧包隔离加载及设置往返/迁移仍待验。
+
 ## 2026-10-25 T03-05 53ee9381候选兼容性审查
 
 当前产品全链身份为 `53ee9381d23772a60ebaf7ff16aeb81d6584d28a`，build/install run `20261025T091123674Z-d1fdc06a` / `20261025T091121578Z-c93b09da`，当前PEXT SHA-256 `1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48`。与旧包源提交 `02119729651ae687f2f1e5316ba4e48a3da69045` 的产品代码差异只有8个Playnite界面/视口文件；Settings、Contracts、Core、Worker、数据库迁移代码没有变化。这是源码兼容性证据，不代表旧包已在隔离Playnite加载或设置迁移已实测；完整差异和包身份见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-53ee9381.json`。

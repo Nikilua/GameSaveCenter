@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "current-package-host-baseline-before-isolated-rollback",
+  "observedAtUtc": "2026-10-25T14:49:52Z",
+  "sourceCommit": "53ee9381d23772a60ebaf7ff16aeb81d6584d28a",
+  "buildRunId": "20261025T091123674Z-d1fdc06a",
+  "installRunId": "20261025T091121578Z-c93b09da",
+  "packagePextSha256": "1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48",
+  "playnite": {
+    "processId": 50020,
+    "startedAt": "2026-10-25T17:41:56.4030733+08:00",
+    "executablePath": "D:/software/Playnite/Playnite.DesktopApp.exe",
+    "startupLogPath": "%APPDATA%/Playnite/extensions.log",
+    "loadEventAtLocal": "2026-10-25T17:42:05.164+08:00",
+    "reportedAssemblyPath": "%APPDATA%/Playnite/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec/GameSaveCenter.Playnite.dll",
+    "reportedFileVersion": "0.6.73.0"
+  },
+  "pluginAssembly": {
+    "productVersion": "0.6.73+53ee9381d23772a60ebaf7ff16aeb81d6584d28a",
+    "fileVersion": "0.6.73.0",
+    "sha256": "23C8F0EA0229156832E318970EEBE0855EEAE632D5F79E7EEF4F858A0D2AF9C9",
+    "matchesInstallIdentity": true,
+    "matchesPackageIdentity": true
+  },
+  "workerProcess": {
+    "processId": 50908,
+    "startedAt": "2026-10-25T17:42:09.2637959+08:00",
+    "executablePath": "%APPDATA%/Playnite/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec/Worker/GameSaveCenter.Worker.exe",
+    "productVersion": "0.6.73+53ee9381d23772a60ebaf7ff16aeb81d6584d28a",
+    "fileVersion": "0.6.73.0",
+    "sha256": "A3C7BFFF76459A9EBCB97E2F2950D00463D91B1908829A333B67AD538912E847"
+  },
+  "workerAssembly": {
+    "path": "%APPDATA%/Playnite/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec/Worker/GameSaveCenter.Worker.dll",
+    "productVersion": "0.6.73+53ee9381d23772a60ebaf7ff16aeb81d6584d28a",
+    "fileVersion": "0.6.73.0",
+    "sha256": "92526B6A4116C1828F70E2DE0888E78D5CAAF1DBC33593F57DA9D9D7C5200CA6",
+    "matchesInstallIdentity": true
+  },
+  "verificationLimits": "The extension startup log records the loaded plugin assembly path and the disk assembly identity matches the verified 53ee9381 package. This establishes the current installed host baseline, not old-package loading or settings migration. No user settings, saves, media or cloud data were changed."
+}

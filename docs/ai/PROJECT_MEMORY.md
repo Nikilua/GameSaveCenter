@@ -1,3 +1,7 @@
+## 2026-10-25 T03-05 53ee9381当前宿主回退前基线
+
+Playnite PID 50020的启动日志于17:42:05+08:00记录GameSaveCenter插件从扩展目录加载；当前插件DLL ProductVersion完整带`53ee9381`，SHA与安装身份匹配。Worker PID 50908的EXE/DLL也带`53ee9381`身份，Worker DLL SHA与安装报告一致。详见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/host-53ee9381.json`。这是旧包回退前的当前安装基线，不代表旧包已在隔离配置加载或设置迁移/往返已验；活动Playnite/Worker期间不触碰正常用户配置。
+
 ## 2026-10-25 T03-05 最新53ee9381候选源码审查
 
 最新默认标准链产品身份为 `53ee9381d23772a60ebaf7ff16aeb81d6584d28a`，PEXT SHA-256 `1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48`。与旧回退候选 `02119729651ae687f2f1e5316ba4e48a3da69045` 的产品源码差异共8个Playnite界面/视口文件，Settings、Contracts、Core、Worker及数据库迁移代码无变化。见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-53ee9381.json`。此差异检查不能代替隔离Playnite实际加载和设置往返；23cf1c6e的生产文件事务回放不能冒充53ee9381宿主验证。当前Playnite与Worker活动时不要启动可能转发到正常用户配置的隔离实例。
