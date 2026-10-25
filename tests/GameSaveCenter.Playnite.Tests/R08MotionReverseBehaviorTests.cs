@@ -293,24 +293,24 @@ public sealed class R08MotionReverseBehaviorTests
                 Assert.Equal(0, hoverOverlay.Opacity, 3);
 
                 Assert.True(SetMouseOverProbe(button, true));
-                hoverMidpointSampled = PumpDispatcherUntilFast(
+                hoverMidpointSampled = PumpMouseOverProbeUntil(button, true,
                     () => hoverOverlay.Opacity > 0.05 && hoverOverlay.Opacity < 0.95,
                     TimeSpan.FromMilliseconds(500));
                 hoverMidpoint = hoverOverlay.Opacity;
                 Assert.True(SetMouseOverProbe(button, false));
                 hoverAfterLeave = hoverOverlay.Opacity;
-                hoverExitProgressSampled = PumpDispatcherUntilFast(
+                hoverExitProgressSampled = PumpMouseOverProbeUntil(button, false,
                     () => hoverOverlay.Opacity < hoverAfterLeave - 0.002 && hoverOverlay.Opacity > 0,
                     TimeSpan.FromMilliseconds(250));
                 hoverExitProgress = hoverOverlay.Opacity;
                 Assert.True(SetMouseOverProbe(button, true));
                 hoverBeforeReenter = hoverOverlay.Opacity;
                 hoverAfterReenter = hoverOverlay.Opacity;
-                hoverReenterProgressSampled = PumpDispatcherUntilFast(
+                hoverReenterProgressSampled = PumpMouseOverProbeUntil(button, true,
                     () => hoverOverlay.Opacity > hoverAfterReenter + 0.002 && hoverOverlay.Opacity < 1,
                     TimeSpan.FromMilliseconds(250));
                 hoverReenterProgress = hoverOverlay.Opacity;
-                PumpDispatcherUntilFast(() => Math.Abs(hoverOverlay.Opacity - 1) < 0.001, TimeSpan.FromMilliseconds(500));
+                PumpMouseOverProbeUntil(button, true, () => Math.Abs(hoverOverlay.Opacity - 1) < 0.001, TimeSpan.FromMilliseconds(500));
                 hoverFinal = hoverOverlay.Opacity;
 
                 SetPressedStateProbe(button, true);
@@ -465,6 +465,16 @@ public sealed class R08MotionReverseBehaviorTests
         changeMouseOver.Invoke(Mouse.PrimaryDevice, new object?[] { value ? element : null, Environment.TickCount });
         return element.IsMouseOver == value;
     }
+
+    private static bool PumpMouseOverProbeUntil(UIElement element, bool value, Func<bool> condition, TimeSpan timeout)
+        => PumpDispatcherUntilFast(() =>
+        {
+            // Native pointer synchronization can replace a synthetic hover while the
+            // dispatcher renders. Keep the fixture's requested input state active.
+            if (element.IsMouseOver != value)
+                Assert.True(SetMouseOverProbe(element, value));
+            return condition();
+        }, timeout);
 
     private static void SetPressedStateProbe(ButtonBase button, bool value)
     {

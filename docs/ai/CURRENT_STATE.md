@@ -2,7 +2,11 @@
 
 更新：2026-10-25。历史按当时提交解释，不能覆盖本页当前结论。
 
-## 最新构建状态（2026-10-25）
+## 最新根入口复验（2026-10-25）
+
+- 8e517cb4默认标准根入口Release0/0、Core157/157、Worker400/400且Q06通过；第74/145类R08合成hover被真实指针同步替换，根入口退出1，未发布安装。R08夹具保持所请求的输入状态后五轮15/15通过，新提交标准根入口待重跑。[失败和修正证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-input-state-20261025/README.md)
+
+## 前次构建状态（2026-10-25）
 
 - 最近一次成功的标准根入口完整链仍是 `dcbaab13`，见下方历史身份记录。用户另一台电脑在快进到 `d6a401af` 后的完整根入口中，Release编译0警告/0错误，但第29/145个WPF类 `Q06ButtonStateSequenceBehaviorTests` 失败；1299项中1280通过、18跳过、1失败，未进入发布、安装或Playnite启动。
 - Q06失败是合成悬停后立即读取120 ms动画属性的测试采样竞态。提交 `ccfe4cbf546c0688f171ad5a24d35cc2d4308921` 仅在测试夹具读取前推进Dispatcher 180 ms，生产样式与断言不变。SDK8.0.423下定向类连续3/3通过；完整隔离Release构建0警告/0错误，1967项1899通过、68跳过、0失败，148份TRX计数一致，145个WPF类全部完成。[失败、修正和证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/README.md)

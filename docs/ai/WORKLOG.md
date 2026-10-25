@@ -1,3 +1,7 @@
+## 2026-10-25 标准根入口R08合成悬停复核
+
+`8e517cb4` 默认根入口run `20261025T052254336Z-9c3bdb7b` 的Release编译0警告/0错误、Core157/157、Worker400/400，Q06已通过；第74/145个WPF类R08因hover动画采样始终0而失败，累计1437项1418通过/18跳过/1失败，未发布安装。夹具现在采样前保持所请求的合成IsMouseOver状态，避免Dispatcher真实指针同步替换输入；生产资源和所有动画断言保留。隔离Release0/0，R08五轮15/15通过；新提交默认根入口完整链待立即复跑。失败及定向证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-input-state-20261025/README.md`。标准安装器的正常关闭及重启Playnite流程属于用户已授权的完整链验收范围，不能仅以已有Playnite进程为由永久停止验收。
+
 ## 2026-10-25 T00-01 外机Q06悬停采样竞态复核
 
 外机在stash安全保全、快进至 `d6a401af` 后已可编译，但标准根入口在第29/145个WPF隔离类 `Q06ButtonStateSequenceBehaviorTests` 失败；Release编译0警告/0错误，失败时累计1299项1280通过/18跳过/1失败，未进入打包安装。日志显示Dark合成hover `IsMouseOver=true` 但动画属性`HoverOverlay.Opacity=0`。测试重新施加hover后增加180 ms Dispatcher推进再采样，没有改生产样式或放宽断言。

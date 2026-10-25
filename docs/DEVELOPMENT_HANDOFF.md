@@ -1,3 +1,7 @@
+## 2026-10-25 标准根入口R08合成悬停复核
+
+`8e517cb4` 默认根入口run `20261025T052254336Z-9c3bdb7b` 的Release编译0警告/0错误、Core157/157、Worker400/400，Q06已通过；第74/145个WPF类R08因hover动画采样始终0而失败，累计1437项1418通过/18跳过/1失败，未发布安装。夹具现在采样前保持所请求的合成IsMouseOver状态，避免Dispatcher真实指针同步替换输入；生产资源和所有动画断言保留。隔离Release0/0，R08五轮15/15通过；新提交默认根入口完整链待立即复跑。失败及定向证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-input-state-20261025/README.md`。标准安装器的正常关闭及重启Playnite流程属于用户已授权的完整链验收范围，不能仅以已有Playnite进程为由永久停止验收。
+
 ## 2026-10-25 外机Q06失败后的测试时序补丁
 
 外机在保留 stash 并快进到 `d6a401af` 后运行 `GameSaveCenter-Run.cmd`：SDK8.0.423 Release编译0警告/0错误；第29/145个WPF类Q06测试失败，Dark合成hover `IsMouseOver=true` 但 `hoverOverlay=0`。失败run `20261025T022508878Z-409c39f7`，1299项1280通过/18跳过/1失败，未打包、安装或启动。该问题和先前 `GamePickerViewModel.cs` stash冲突引起的CS8300不同。
