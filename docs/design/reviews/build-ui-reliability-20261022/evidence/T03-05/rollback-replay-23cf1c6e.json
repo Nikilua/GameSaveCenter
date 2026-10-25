@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "task": "T03-05",
+  "status": "current-package-rollback-replay-passed",
+  "generatedUtc": "2026-10-25T08:06:39.0214147Z",
+  "currentBuildRunId": "20261025T071958125Z-8a088839",
+  "currentInstallRunId": "20261025T071955792Z-606d204b",
+  "currentBuildSourceCommit": "23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+  "oldPackage": {
+    "archive": "artifacts/round4-final-standard/package/GameSaveCenter-0.6.73.pext",
+    "sha256": "70E12F2E4F9CE5CCEB4E2AE11D5BF3FCE525A5AC8B8D149FF9DB28F30F196318",
+    "sourceCommit": "02119729651ae687f2f1e5316ba4e48a3da69045",
+    "pluginProductVersion": "0.6.73+02119729651ae687f2f1e5316ba4e48a3da69045",
+    "manifestVersion": "0.6.73",
+    "zipSha256": "70E12F2E4F9CE5CCEB4E2AE11D5BF3FCE525A5AC8B8D149FF9DB28F30F196318",
+    "zipMatchesPext": true,
+    "fileCount": 239,
+    "totalBytes": 111717538,
+    "treeSha256": "C826631B055FA86CCAA1FD9B3DB2BD649D4667473CA19AF14907966CCA70EDB9"
+  },
+  "currentPackage": {
+    "archive": "artifacts/GameSaveCenter-0.6.73.pext",
+    "sha256": "AB6AC438A55963E843F1EE43C172124FBC63987CBF7C4596564F0AFDD2AC3910",
+    "sourceCommit": "23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+    "pluginProductVersion": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+    "manifestVersion": "0.6.73",
+    "zipSha256": "AB6AC438A55963E843F1EE43C172124FBC63987CBF7C4596564F0AFDD2AC3910",
+    "zipMatchesPext": true,
+    "fileCount": 239,
+    "totalBytes": 111716346,
+    "treeSha256": "82FBD6ECB73C1C819691488D62F69BCD1A22657CF8F9423D819424BC3DBED637"
+  },
+  "sourceDiff": {
+    "oldCommitAncestorOfCurrent": true,
+    "changedSourceFileCount": 8,
+    "coreContractsWorkerChangedSourceFileCount": 0
+  },
+  "replay": {
+    "productionInstallerFunction": true,
+    "isolatedExtensionsRoot": ".tmp",
+    "installedOldPackage": true,
+    "oldPackageTreeMatched": true,
+    "injectedUpdatePromotionFailure": true,
+    "failureMessage": "Injected current-package promotion failure.",
+    "oldPackageRestoredExactly": true,
+    "currentPackageRetrySucceeded": true,
+    "currentPackageTreeMatched": true,
+    "sixInstalledAssemblyIdentitiesMatched": true,
+    "failedStagingRetainedAndVerified": true,
+    "failedStagingCleanedAfterEvidence": true,
+    "noStagingOrBackupLeftovers": true,
+    "archiveHashesUnchanged": true,
+    "testRootRemoved": true,
+    "playniteWorkerProcessIdentityUnchanged": true
+  },
+  "installedIdentities": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "buildIdentity": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "sha256": "EAEFD44F2FF679B7EFE2FAE396B7B8F4743B823DA4E58FE5528EA69F82278D8B"
+    },
+    {
+      "file": "GameSaveCenter.Core.dll",
+      "buildIdentity": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "sha256": "73F8B63D6D1717A651D6B9E47E264072D44CA9032EEC77A77760E93D38DEC55C"
+    },
+    {
+      "file": "GameSaveCenter.Contracts.dll",
+      "buildIdentity": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "sha256": "4E15999FD93A8A7B0D4AA81AC1B26BE8936035A74AE0E97F4B8D72FF4B94A988"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Worker.dll",
+      "buildIdentity": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "sha256": "79B8441F7225CC52CB1F67176B02EA7CABB939123FF451F4929E0F3A7B6F63CA"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Core.dll",
+      "buildIdentity": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "sha256": "D108A9A182ACBB5828B7920F865C85D9836F0FDDF81911B536AA436871094912"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Contracts.dll",
+      "buildIdentity": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "sha256": "4F3FEF571A4D9784BFE3AA7E6B2B78231948951DB26C4F0FA6BF2AD68BE2E812"
+    }
+  ],
+  "cleanup": {
+    "scratchPath": ".tmp/gsc-t03-05-rollback-23cf1c6e-20261025T080631816Z",
+    "fileCount": 1198,
+    "logicalBytes": 558589369,
+    "dFreeBytesBefore": 10472796160,
+    "dFreeBytesAfter": 11034361856,
+    "runnerFileCleanupPending": false,
+    "runnerFileRemoved": true,
+    "dFreeBytesAfterRunnerCleanup": 11034378240
+  },
+  "boundary": "Production atomic installer transaction replayed only against repository .tmp. No live Playnite process, user extension path, user configuration, settings or game data was accessed. Runtime plugin loading and isolated-profile settings compatibility remain unverified.",
+  "processesBefore": [
+    {
+      "processName": "GameSaveCenter.Worker",
+      "processId": 50376,
+      "startTime": "2026-10-25T07:51:45.3182636Z"
+    },
+    {
+      "processName": "Playnite.DesktopApp",
+      "processId": 47380,
+      "startTime": "2026-10-25T07:51:34.9309388Z"
+    }
+  ],
+  "processesAfter": [
+    {
+      "processName": "GameSaveCenter.Worker",
+      "processId": 50376,
+      "startTime": "2026-10-25T07:51:45.3182636Z"
+    },
+    {
+      "processName": "Playnite.DesktopApp",
+      "processId": 47380,
+      "startTime": "2026-10-25T07:51:34.9309388Z"
+    }
+  ]
+}

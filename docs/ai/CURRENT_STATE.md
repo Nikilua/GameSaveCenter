@@ -5,6 +5,7 @@
 ## 最新构建状态（2026-10-25）
 
 - 当前成功标准完整链：`23cf1c6e136d9c1551ad1aad5179249ccad9b14d`，build run `20261025T071958125Z-8a088839`、install run `20261025T071955792Z-606d204b`。默认根.cmd退出0，SDK8.0.423、Release0警告/0错误，1968项1911通过/57既有skip/0失败、149TRX计数一致、146WPF类完成。Worker发布、ZIP/PEXT、安装六程序集独立身份/SHA及新Playnite/Worker进程启动均通过。[完整证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-23cf1c6e/README.md)
+- T03-05已将回退事务复验更新到当前23cf1c6e包：旧/当前真实包在隔离`.tmp`执行失败回滚与重试，239文件逐项匹配、六程序集身份/SHA匹配；无活动Playnite/Worker交互。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/rollback-replay-23cf1c6e.json)。隔离Playnite配置中的插件加载、设置兼容和迁移仍待验，不能据此记整项完成。
 - 用户新外机日志run20261025T040600037Z-ec604b91未附HEAD，Q06 Light hover的mouseOver=False说明合成输入被重置。修复现保持输入并在双主题主动注入Dispatcher重置，五轮5/5及上述标准完整链均通过。[外机失败和针对性证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-input-resync-20261025/README.md)。本机通过不能替代外机实际结果，外机应保留stash、快进至含23cf1c6e的main再运行完整入口。
 - T00-01本机完整链已验收；32项计划整体未完成，仍有外机、权限、真实宿主和物理输入验收条件。本次只证实磁盘安装身份和进程启动，未核验进程内插件实际加载路径或完整页面矩阵。
 - 两批清理15个自有失败/定向/被替代输出目录，5600文件、1310756993逻辑字节；最新9cbb9757构建、包、全部原始失败/成功诊断及用户旧TRX/TestResults保留。各批磁盘观测与逐路径清单在对应标准链cleanup.json。

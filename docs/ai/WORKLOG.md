@@ -1,3 +1,7 @@
+## 2026-10-25 T03-05 当前包回退事务复验
+
+对旧包02119729651ae687f2f1e5316ba4e48a3da69045与当前23cf1c6e PEXT运行生产原子安装函数：239个文件逐项SHA树一致，注入升级提升失败后旧包完全恢复，当前包重试和六程序集身份/SHA核对通过。只使用仓库`.tmp`；活动Playnite/Worker未改变，1198文件/558589369逻辑字节的自有临时输出已清理。证据`docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/rollback-replay-23cf1c6e.json`。隔离配置加载/设置兼容与迁移仍待验，T03-05保持实施中。
+
 ## 2026-10-25 23cf1c6e标准完整链成功
 
 外机Q06输入重置修复提交 `23cf1c6e136d9c1551ad1aad5179249ccad9b14d` 的默认 `GameSaveCenter-Run.cmd` 完整退出0，build run `20261025T071958125Z-8a088839`、install run `20261025T071955792Z-606d204b`。SDK8.0.423、Release0警告/0错误，1968项1911通过/57撤销Today架构的既有skip/0失败，149TRX一致、146WPF类全部结束。Q06双主题强制输入重置通过；发布、ZIP/PEXT、安装六程序集独立SHA/完整身份及Playnite/Worker新进程启动通过。未核验本次进程内插件实际加载路径。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-23cf1c6e/README.md`。
