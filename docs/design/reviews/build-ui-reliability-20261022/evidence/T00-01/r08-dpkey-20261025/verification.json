@@ -1,0 +1,71 @@
+{
+  "rootFailure": {
+    "sourceCommit": "7525f8c98da6e8b6794127c0f96731fc209a1f26",
+    "buildRunId": "20261025T084235278Z-4336836a",
+    "installRunId": "20261025T084233114Z-c25c6284",
+    "failedStage": "wpf.R08MotionReverseBehaviorTests",
+    "wpfClassesCompleted": 74,
+    "wpfClassesTotal": 146,
+    "tests": 1437,
+    "passed": 1418,
+    "failed": 1,
+    "skipped": 18,
+    "probe": "press midpoint=0.998; release=0.998->1; pressReleaseProgressSampled=False",
+    "publishPackageInstall": "not reached",
+    "playniteWorkerProcesses": "unchanged"
+  },
+  "candidate": {
+    "baseCommit": "7525f8c98da6e8b6794127c0f96731fc209a1f26",
+    "sourceSha256": "90A71A1C2044BE445654E1BFABD2A333D12ED5094C297A0E49E14AA839975EA8",
+    "testAssemblySha256": "E9D74E78A30B3BBE99B7D6088A5C2C12FAE29F2DF568B5C767EF83FD7A533783",
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "solutionBuildWarnings": 0,
+    "solutionBuildErrors": 0,
+    "solutionBuildOutcome": "passed",
+    "targetRuns": [
+      {
+        "run": 1,
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "run": 2,
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "run": 3,
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "run": 4,
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "run": 5,
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "probe": {
+      "mechanism": "Direct WPF UIElement.IsMouseOverPropertyKey on non-hit-testable fixture",
+      "processWideMouseDevice": false,
+      "pressSampleCondition": "ScaleTransform.ScaleX <= 0.99 before release",
+      "productionResourcesChanged": false
+    },
+    "standardRoot": "pending after candidate commit"
+  }
+}

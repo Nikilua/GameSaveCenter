@@ -5,7 +5,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -21,6 +20,12 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R08MotionReverseBehaviorTests
 {
+    private static readonly DependencyPropertyKey IsMouseOverPropertyKey =
+        (DependencyPropertyKey)(typeof(UIElement).GetField(
+            "IsMouseOverPropertyKey",
+            BindingFlags.Static | BindingFlags.NonPublic)?.GetValue(null)
+            ?? throw new InvalidOperationException("WPF UIElement.IsMouseOverPropertyKey is unavailable."));
+
     private readonly ITestOutputHelper output;
 
     public R08MotionReverseBehaviorTests(ITestOutputHelper output)
@@ -259,7 +264,8 @@ public sealed class R08MotionReverseBehaviorTests
                     Width = 420,
                     Height = 128,
                     Resources = resources,
-                    Background = Brushes.Transparent
+                    Background = Brushes.Transparent,
+                    IsHitTestVisible = false
                 };
                 var palette = AdaptiveThemePaletteFactory.Create(root, true, 78, GameSaveCenterThemeMode.Light);
                 AdaptiveThemePaletteFactory.SetHighContrastActive(root, palette.IsHighContrast);
@@ -289,7 +295,7 @@ public sealed class R08MotionReverseBehaviorTests
                 var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
 
                 PumpDispatcher(animationSamplingWindow + TimeSpan.FromMilliseconds(40));
-                Assert.False(button.IsMouseOver, "button unexpectedly entered hover before the synthetic probe");
+                Assert.False(ReadMouseOverProbe(button), "button unexpectedly entered hover before the synthetic probe");
                 Assert.Equal(0, hoverOverlay.Opacity, 3);
 
                 Assert.True(SetMouseOverProbe(button, true));
@@ -316,7 +322,7 @@ public sealed class R08MotionReverseBehaviorTests
                 SetPressedStateProbe(button, true);
                 Assert.True(button.IsPressed, "synthetic state probe did not enter the production button's pressed state.");
                 pressMidpointSampled = PumpDispatcherUntilFast(
-                    () => scale.ScaleX < 0.999 && scale.ScaleX > 0.9701
+                    () => scale.ScaleX <= 0.99 && scale.ScaleX > 0.9701
                         && pressedOverlay.Opacity > 0.01 && pressedOverlay.Opacity < 0.99,
                     TimeSpan.FromMilliseconds(1000));
                 pressMidpoint = scale.ScaleX;
@@ -460,18 +466,21 @@ public sealed class R08MotionReverseBehaviorTests
 
     private static bool SetMouseOverProbe(UIElement element, bool value)
     {
-        var changeMouseOver = typeof(MouseDevice).GetMethod("ChangeMouseOver", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("WPF MouseDevice.ChangeMouseOver is unavailable.");
-        changeMouseOver.Invoke(Mouse.PrimaryDevice, new object?[] { value ? element : null, Environment.TickCount });
-        return element.IsMouseOver == value;
+        // Drive the production IsMouseOver style trigger without mutating the global
+        // MouseDevice. The fixture root is non-hit-testable to exclude desktop input.
+        element.SetValue(IsMouseOverPropertyKey, value);
+        return ReadMouseOverProbe(element) == value;
     }
+
+    private static bool ReadMouseOverProbe(UIElement element)
+        => (bool)element.GetValue(UIElement.IsMouseOverProperty);
 
     private static bool PumpMouseOverProbeUntil(UIElement element, bool value, Func<bool> condition, TimeSpan timeout)
         => PumpDispatcherUntilFast(() =>
         {
             // Native pointer synchronization can replace a synthetic hover while the
             // dispatcher renders. Keep the fixture's requested input state active.
-            if (element.IsMouseOver != value)
+            if (ReadMouseOverProbe(element) != value)
                 Assert.True(SetMouseOverProbe(element, value));
             return condition();
         }, timeout);

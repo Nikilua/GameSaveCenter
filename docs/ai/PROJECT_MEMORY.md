@@ -1,3 +1,7 @@
+## 2026-10-25 R08动画采样候选
+
+提交`7525f8c9`默认完整根入口run `20261025T084235278Z-4336836a`在WPF第74/146类R08失败：1437总、1418通过、18跳过、1失败，未发布/安装；Q06第29类已通过。失败样本press midpoint为ScaleX0.998，给回弹断言留下不足0.002的可采样区间。当前候选将测试采样起点要求收紧到ScaleX<=0.99，并把R08合成悬停改用不可命中测试窗口上的`IsMouseOverPropertyKey`，不操作全局MouseDevice。Release解决方案0警告/0错误，R08类五个独立进程各3/3。[失败与候选证据](docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/README.md)。下一步只提交本轮候选，随后冻结源码跑默认根入口；外机改动与stash继续保留。
+
 ## 2026-10-25 Q06 悬停视觉夹具候选
 
 2caafef1的默认根入口再次在Q06 Light hover失败，显示合成`MouseDevice.ChangeMouseOver`受桌面指针同步覆盖；失败run `20261025T081807812Z-6979bbcf`保留。当前候选不再调用全局MouseDevice：对不可命中测试的夹具设置WPF只读`IsMouseOver` DP键，让生产共享模板的状态触发器/动画运行。Release解决方案0警告/0错误，Q06隔离进程5轮各1/1，双主题五态及十张截图通过；[证据](docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-dpkey-20261025/README.md)。这只是视觉状态回归，未模拟物理输入。后续须提交候选，再跑默认`GameSaveCenter-Run.cmd`完整构建、测试、打包、安装和启动；外机完整验证仍待。

@@ -1,3 +1,7 @@
+## 2026-10-25 R08候选待完整链
+
+当前提交`7525f8c9`的默认根入口run `20261025T084235278Z-4336836a`在第74/146个WPF类R08失败（1437项1418通过/18跳过/1失败），Q06通过。保留`artifacts/build-diagnostics/20261025T084235278Z-4336836a`；未进入发布/打包/安装，Playnite/Worker仍是原进程。修复候选令R08按压态到ScaleX<=0.99后才采样释放，并改为不可命中测试窗口中的WPF只读`IsMouseOverPropertyKey`探针，隔离全局MouseDevice。候选SDK8.0.423 Release方案构建0/0；R08类5次各3/3。证据`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/README.md`。当前只提交本轮源/文档/证据，不包括用户TRX/TestResults；随后工作树冻结运行`cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`。若完整链成功再分开更新验收记录并中文提交/推送。外机stash及冲突内容不动，等待最终提交再安全快进验证。
+
 ## 2026-10-25 Q06 夹具候选待完整链
 
 当前根入口HEAD `2caafef1` Q06失败，失败诊断 `artifacts/build-diagnostics/20261025T081807812Z-6979bbcf`保留。Q06测试候选已改为对不可命中测试的视觉夹具设置`UIElement.IsMouseOverPropertyKey`，不再借全局MouseDevice；SDK8.0.423 Release方案编译0警告/0错误，隔离类五轮5/5。双主题HoverOverlay均到1.0；完整证据在`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-dpkey-20261025/README.md`。此状态不是物理鼠标输入验收。下步：只提交本轮源、文档、证据（不暂存已有用户TRX/TestResults），推送中文提交；随后工作树冻结，执行`cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`完整链。若完整链成功，再单独更新验收记录并提交。外机冲突与本地stash必须保留，待最终修复提交后再按安全快进流程验证，不要pop stash。

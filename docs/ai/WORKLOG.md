@@ -1,3 +1,7 @@
+## 2026-10-25 R08 hover/press动效采样稳定性
+
+提交`7525f8c9`默认根入口 `20261025T084235278Z-4336836a`：Release0/0，Core157/157、Worker400/400，Q06所在类通过；第74/146个WPF类R08失败，1437项1418通过/18跳过/1失败，未到发布/安装。失败观测ScaleX press sample=0.998，无法再回弹0.002而仍低于1。测试先等ScaleX<=0.99再释放，并将悬停输入从进程级MouseDevice换成只读DP键，在不可命中测试的根节点上激活生产模板状态。生产动效与方向/连续性/终态断言保持。SDK8.0.423 Release方案0/0，R08隔离全类五轮15/15。源码SHA `90A71A1C2044BE445654E1BFABD2A333D12ED5094C297A0E49E14AA839975EA8`。证据`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/`。修复提交后仍需完整根.cmd链；用户旧TRX、TestResults、外机stash不暂存不删除。
+
 ## 2026-10-25 Q06 悬停视觉夹具候选
 
 2caafef1标准根入口复现Q06失败（run `20261025T081807812Z-6979bbcf`：Light hover `mouseOver=False`/overlay 0；1299总项、1280通过、18跳过、1失败，未到打包安装）。将测试探针从进程级`MouseDevice.ChangeMouseOver`改为WPF `IsMouseOverPropertyKey`只读DP设置，并让normal/hover夹具不参与OS命中测试；生产样式和opacity阈值未变。SDK8.0.423 Release解决方案编译0/0；隔离完整Q06测试5轮5/5，每轮1/1，双主题十状态图与报告已归档。代码SHA `0EC744C45E50C1AF25638699170C13CE4A4DB5C8D86A04D39D3C081F87906D5F`。见`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-dpkey-20261025/`。候选提交后须重新跑标准完整根入口；当前T00-01代码完成待验收。
