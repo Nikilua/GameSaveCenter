@@ -248,6 +248,9 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             {
                 // Reapply WPF's own mouse-over transition after layout has recomputed device state.
                 hoverSet = SetMouseOverProbe(button, true) && hoverSet;
+                // Motion-enabled themes keep the resting overlay at zero and animate it to one.
+                // Drain that second enter transition before reading the animated dependency property.
+                PumpDispatcher(TimeSpan.FromMilliseconds(180));
             }
 
             var chrome = Assert.IsType<Border>(button.Template!.FindName("ButtonChrome", button));

@@ -2,6 +2,12 @@
 
 更新：2026-10-25。历史按当时提交解释，不能覆盖本页当前结论。
 
+## 最新构建状态（2026-10-25）
+
+- 最近一次成功的标准根入口完整链仍是 `dcbaab13`，见下方历史身份记录。用户另一台电脑在快进到 `d6a401af` 后的完整根入口中，Release编译0警告/0错误，但第29/145个WPF类 `Q06ButtonStateSequenceBehaviorTests` 失败；1299项中1280通过、18跳过、1失败，未进入发布、安装或Playnite启动。
+- Q06失败是合成悬停后立即读取120 ms动画属性的测试采样竞态。当前工作树仅在测试夹具读取前推进Dispatcher 180 ms，生产样式与断言不变。SDK8.0.423下定向类连续3/3通过；完整隔离Release构建0警告/0错误，1967项1899通过、68跳过、0失败，148份TRX计数一致，145个WPF类全部完成。[失败、修正和证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/README.md)
+- 当前本机Playnite Desktop及Worker正在运行，未执行会安装/启动宿主的根入口。修复候选仍需在提交后由外机运行默认 `GameSaveCenter-Run.cmd` 完整链；成功结果未收到前，不把T00-01恢复为已验收。外机stash已保存并且工作树快进至 `d6a401af`，保持stash不pop。
+
 ## 验证身份
 
 - 当前完整验收代码：`dcbaab13`，在Q14/R08等可靠性修复后将同一checkout互斥锁扩至Windows全局命名空间。
@@ -23,7 +29,7 @@
 - T01-02清理预览在f577fd19代码身份上双PowerShell各9/9；结果路径已脱敏，所有预览`CanDelete=false`，人工复核引用/占用仍是后续步骤，不存在自动删除结论。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-02/README.md)。
 - T01-06双PowerShell归档/保留夹具当前重跑均通过，303文件真实归档SHA已核对、源原件保留；f577fd19默认根入口全链成功，补足最终链验收。只认可归档后隔离清理与保留行为，不开放通用自动删除。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-06/README.md)。
 - T01-07已验收：包保留与预览回归通过；四批清理838个未引用重复PNG（113,982,425逻辑字节），无引用三份输出中的24组重复降为单份；剩余202组/571个重复路径均由当前引用源文档命中文件名/路径或目录并予以保留。索引范围为1,594张、200,160,589字节。[清理与引用复核](../design/reviews/build-ui-reliability-20261022/evidence/T01-07/README.md)。
-- 本机 `c9cc5a99` 全新隔离 Release 输出编译及完整测试通过：0警告/0错误，1967项1899通过、68跳过、0失败，145个WPF类全结束，R09焦点类通过。完整安装链仍绑定 `dcbaab13`（其后产品源码/测试/脚本无变化）。外机较早R09单类失败在当前提交未重现；其后外机根入口因 `GamePickerViewModel.cs` 的stash冲突标记报9个 `CS8300`，测试没有启动。HEAD `ea926c5e`、落后远端2个提交且有本地/未跟踪改动；先 stash含未跟踪项、确认clean、快进拉取并完整重跑，外机成功仍待回报。[诊断及恢复步骤](../design/reviews/build-ui-reliability-20261022/evidence/T00-08/README.md)
+- 本机 `c9cc5a99` 全新隔离 Release 输出编译及完整测试通过：0警告/0错误，1967项1899通过、68跳过、0失败，145个WPF类全结束，R09焦点类通过。完整安装链当时仍绑定 `dcbaab13`。外机后续已保全 stash 并从 `ea926c5e` 快进到 `d6a401af`；其标准根入口编译通过但在Q06深色hover失败，后续的测试夹具时序修复及隔离全量通过情况见本页最新状态和[Q06证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/README.md)。
 
 - 前次aefbddfa的第101类崩溃保留；130cd307当前同类5/5、完整链0失败，不关闭UIA或扩大skip。真实诊断已显示190bbaea插件/Worker身份及实际加载路径。
 
@@ -42,8 +48,7 @@
 - 前次f25标准链测试通过，但运行中改文档触发打包保护退出1；[失败保留](../design/reviews/build-ui-reliability-20261022/evidence/T03-01/README.md)。先提交再冻结完整重跑已成功，未绕过保护。
 - 25个本阶段测试结果文件先归档校验，再移除六个原临时目录；原失败、当前包/构建/诊断/宿主图与用户旧Round3 TRX/TestResults保留。详情见T02-08清理记录。
 - 后续源码/测试/脚本/资源改动按影响范围运行定向检查，并对当前候选执行标准根入口完整链；完整链期间不修改任何跟踪文件。纯文档运行源码/链接校验，不触发产品构建，也不为其CI通过再追加记录提交。
-- 另一台电脑报告HEAD `ea926c5e`，当时 `main` 落后 `origin/main` 两个提交，并有文档/源码/测试改动和未跟踪文件。`GamePickerViewModel.cs` 含 `Updated upstream` / `Stashed changes` 冲突标记，直接导致CS8300；这是本机未解决的stash合并冲突，不是SDK/NuGet问题。应先 `git stash push --include-untracked`，核对工作树干净，再 `git pull --ff-only origin main`，最后运行默认 `GameSaveCenter-Run.cmd`。不要reset、覆盖或提前pop stash；干净主线构建成功后再按完整diff恢复与合并个人改动。本机最新代码 `d0e11929` 默认标准完整链已成功；待推送后，外机快进并运行完整链的结果仍需用户回报。
-- 新附外机日志中的编译失败与R09断言失败是两种不同诊断：前者9个CS8300对应同一文件内的合并冲突标记；后者R09报`Thickness(2)`/`Thickness(1)`且测试源码行151。当前本机SDK8.0.423隔离Release输出R09为2/2，当前源码第151行为颜色断言，第154行为独立验证描边2 DIP；外机该R09 run的HEAD、源文件、DLL/PDB身份缺失，根因仍不能确证。本机结果不覆盖外机，也未收到其清理工作树后的完整链结果。
+- 外机此前的CS8300来自 `GamePickerViewModel.cs` stash冲突标记；用户已用含未跟踪文件的stash保全改动、快进至 `d6a401af`。快进后的新根入口确实启动测试，但第29/145类Q06因Dark合成hover采样时序失败，未打包/安装。该新失败与更早R09旧断言身份缺失是不同事件；新候选的完整标准链仍待修复提交后的外机复验。
 - T00-04路径与入口环境修复已验收，隔离克隆已归档后清理。外机R09附件期望值对应旧3f7d0b30测试；f13b9e05后主线改为Chrome1 DIP+独立验证描边2 DIP，130cd307当前类2/2。外机具体HEAD/DLL/PDB身份缺失，见专项复核；继续T02-08证据矩阵、SDK故障恢复与回退隔离验证，按32项账本逐项审计剩余条件；不要以受控或启动结果自动升级宿主验收。
 - 旧事实原文见[截至2026-10-24历史](CURRENT_STATE_HISTORY_THROUGH_20261024.md)，更早记录仍可在Git和既有历史页追查。
 

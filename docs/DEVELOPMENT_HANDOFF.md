@@ -1,3 +1,20 @@
+## 2026-10-25 外机Q06失败后的测试时序补丁
+
+外机在保留 stash 并快进到 `d6a401af` 后运行 `GameSaveCenter-Run.cmd`：SDK8.0.423 Release编译0警告/0错误；第29/145个WPF类Q06测试失败，Dark合成hover `IsMouseOver=true` 但 `hoverOverlay=0`。失败run `20261025T022508878Z-409c39f7`，1299项1280通过/18跳过/1失败，未打包、安装或启动。该问题和先前 `GamePickerViewModel.cs` stash冲突引起的CS8300不同。
+
+当前测试夹具在布局后重新合成hover后，将Dispatcher推进180 ms再读取120 ms动画属性；生产资源与断言未变。SDK8.0.423定向Q06三次3/3，完整隔离构建/测试0警告/0错误、1967项1899通过/68跳过/0失败、145/145 WPF类完成。证据及脱敏TRX/截图见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/README.md`。
+
+本机Playnite Desktop与Worker仍在运行，因此没有执行默认入口的包/安装/启动阶段。当前T00-01代码完成待验收。推送修复提交后，外机执行：
+
+```powershell
+git status --short --branch
+git pull --ff-only origin main
+git rev-parse --short HEAD
+cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"
+```
+
+stash继续保留；完整根入口退出0并确认安装/启动结果前，不要`stash pop`、reset或覆盖本机个人改动。回传run ID、完整摘要及最终退出码，以确认新候选是否通过标准链。
+
 ## 2026-10-25 d0e11929 标准完整链通过；外机快进待验证
 
 `d0e1192935e7e161a1592d86eccbba3995419146` 默认 `GameSaveCenter-Run.cmd` 全链退出0；构建run `20261024T180031697Z-d82ddccb`、安装run `20261024T180029755Z-13c00e79`。SDK8.0.423、Release0/0，Core157/157、Worker400/400、总测试1967项1910通过/57既有skip/0失败、148份TRX计数一致、145个WPF类结束；发布、ZIP/PEXT、安装和Playnite启动均成功。六个安装目录程序集身份和SHA已复核；本次未检查进程内插件加载路径。[完整证据](design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-d0e11929/README.md)。诊断摘要因已有未跟踪用户TRX/TestResults记录 `workingTreeClean=false`；跟踪文件干净，用户文件未暂存或清理。

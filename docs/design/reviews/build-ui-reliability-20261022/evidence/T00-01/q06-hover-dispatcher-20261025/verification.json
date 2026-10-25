@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "externalStandardFailure": {
+    "sourceCommit": "d6a401af6151760dda32c772e43fed02d6f68929",
+    "runId": "20261025T022508878Z-409c39f7",
+    "sdk": "8.0.423",
+    "powershell": "7.6.7",
+    "windows": "10.0.26200",
+    "failedStage": "wpf.Q06ButtonStateSequenceBehaviorTests, class 29/145",
+    "totals": {
+      "tests": 1299,
+      "passed": 1280,
+      "failed": 1,
+      "skipped": 18
+    },
+    "failure": "Dark hover probe: IsMouseOver=true, hoverOverlay=0",
+    "packageInstallStart": "not reached"
+  },
+  "patch": {
+    "file": "tests/GameSaveCenter.Playnite.Tests/Q06ButtonStateSequenceBehaviorTests.cs",
+    "sha256": "FF40E6EAF1064B15F01EA7A1DC047003FEF2AB561D59BF7849F18ED2E9CB25E7",
+    "change": "After the post-layout synthetic mouse-over reapplication, pump the dispatcher for 180 ms before reading the animated overlay. Production theme resources and the assertion remain unchanged."
+  },
+  "targeted": {
+    "sdk": "8.0.423",
+    "class": "Q06ButtonStateSequenceBehaviorTests",
+    "runs": 3,
+    "passed": 3,
+    "failures": 0,
+    "themes": [
+      "Light",
+      "Dark"
+    ],
+    "visualProbe": "both hover overlays reached 1"
+  },
+  "isolatedFullRun": {
+    "sourceCommit": "d6a401af6151760dda32c772e43fed02d6f68929",
+    "runId": "20261025T030714205Z-ab08ddf5",
+    "command": "scripts/build.ps1 -Configuration Release -OutputRoot .tmp/gsc-build-q06-fix-d6a401af -TestTempRoot .tmp/gsc-build-q06-fix-d6a401af/test-temp -DiagnosticsRoot .tmp/gsc-diag-q06-fix-d6a401af",
+    "startedUtc": "2026-10-25T03:07:15.1488746Z",
+    "completedUtc": "2026-10-25T03:37:54.2357806Z",
+    "sdk": "8.0.423",
+    "environment": {
+      "osVersion": "10.0.22000.0",
+      "osBitness": 64,
+      "processBitness": 64,
+      "powershellVersion": "7.6.2",
+      "powershellEdition": "Core",
+      "dotnetRuntimeVersion": "10.0.8"
+    },
+    "outcome": "passed",
+    "buildExitCode": 0,
+    "solutionWarnings": 0,
+    "solutionErrors": 0,
+    "testSummary": {
+      "testCaseCount": 1967,
+      "passed": 1899,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "skipped": 68,
+      "notRunnable": 0,
+      "inconclusive": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "otherOutcome": 0,
+      "reportedCounterTotal": 1967,
+      "reportedCounterFileCount": 148,
+      "counterMismatchCount": 0,
+      "parseErrorCount": 0,
+      "trxFileCount": 148,
+      "distinctTestClassCount": 361,
+      "wpfIsolatedClassRunCount": 145
+    },
+    "core": {
+      "testCaseCount": 157,
+      "passed": 157,
+      "failed": 0,
+      "skipped": 0
+    },
+    "worker": {
+      "testCaseCount": 400,
+      "passed": 399,
+      "failed": 0,
+      "skipped": 1
+    },
+    "q06ExitCode": 0,
+    "q06Trx": "full-isolated-q06.trx",
+    "wpfClassesComplete": 145
+  },
+  "standardRootChain": {
+    "status": "pending",
+    "reason": "Local Playnite Desktop and Worker processes were active, so the root install/start chain was not run; the external machine must rerun it on the patched commit."
+  }
+}
