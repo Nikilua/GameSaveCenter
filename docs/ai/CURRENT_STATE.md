@@ -4,9 +4,10 @@
 
 ## 最新构建状态（2026-10-25）
 
-- 最近成功标准完整链：`576b689b88f0f141c75def40b4fb601157045fcb`，build run `20261025T063456418Z-21cff7b5`、install run `20261025T063454422Z-7a7fb984`。SDK8.0.423、Release0/0、1968项1911通过/57既有skip/0失败、149TRX一致、146WPF类，Worker发布、包、安装六程序集身份/SHA与新进程启动通过。未验证本次进程内插件实际加载路径。[完整证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-576b689b/README.md)
-- 新外机日志run `20261025T040600037Z-ec604b91` 未附HEAD，Q06 Light hover采样为mouseOver=False/opacity0。当前Q06修正保持合成输入直到采样通过，并在双主题强制注入Dispatcher输入重置，五轮5/5、十个hover报告全部通过；新候选标准根入口待立即复跑。T00-01仍代码完成待验收，不能以576b成功覆盖新测试变更。[外机失败与输入保持证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-input-resync-20261025/README.md)
-- 已清理本轮11个自有失败候选/定向目录，3788文件、860738000逻辑字节；保留最新成功输出/包、全部原诊断、用户Round3 TRX/TestResults。外机stash保留；32项中的真实宿主、物理输入、权限及外机验收边界继续有效。
+- 当前成功标准完整链：`23cf1c6e136d9c1551ad1aad5179249ccad9b14d`，build run `20261025T071958125Z-8a088839`、install run `20261025T071955792Z-606d204b`。默认根.cmd退出0，SDK8.0.423、Release0警告/0错误，1968项1911通过/57既有skip/0失败、149TRX计数一致、146WPF类完成。Worker发布、ZIP/PEXT、安装六程序集独立身份/SHA及新Playnite/Worker进程启动均通过。[完整证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-23cf1c6e/README.md)
+- 用户新外机日志run20261025T040600037Z-ec604b91未附HEAD，Q06 Light hover的mouseOver=False说明合成输入被重置。修复现保持输入并在双主题主动注入Dispatcher重置，五轮5/5及上述标准完整链均通过。[外机失败和针对性证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-input-resync-20261025/README.md)。本机通过不能替代外机实际结果，外机应保留stash、快进至含23cf1c6e的main再运行完整入口。
+- T00-01本机完整链已验收；32项计划整体未完成，仍有外机、权限、真实宿主和物理输入验收条件。本次只证实磁盘安装身份和进程启动，未核验进程内插件实际加载路径或完整页面矩阵。
+- 两批清理15个自有失败/定向/被替代输出目录，5600文件、1310756993逻辑字节；最新9cbb9757构建、包、全部原始失败/成功诊断及用户旧TRX/TestResults保留。各批磁盘观测与逐路径清单在对应标准链cleanup.json。
 
 ## 历史验证身份
 

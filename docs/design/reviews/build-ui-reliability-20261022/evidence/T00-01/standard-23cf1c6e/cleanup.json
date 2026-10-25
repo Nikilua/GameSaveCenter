@@ -1,0 +1,36 @@
+{
+  "targets": [
+    {
+      "path": ".tmp/gsc-q06-hold-576b689b",
+      "files": 710,
+      "bytes": 162120208
+    },
+    {
+      "path": ".tmp/gsc-q06-hold-diag-576b689b",
+      "files": 6,
+      "bytes": 175104
+    },
+    {
+      "path": ".tmp/gsc-q06-hold-repeats",
+      "files": 65,
+      "bytes": 624845
+    },
+    {
+      "path": "artifacts/gsc-b/b85fe05f",
+      "files": 1031,
+      "bytes": 287098836
+    }
+  ],
+  "filesRemoved": 1812.0,
+  "logicalBytesRemoved": 450018993.0,
+  "dFreeBefore": 10577145856,
+  "dFreeAfter": 11031363584,
+  "dFreeDelta": 454217728,
+  "exclusiveFileProbePassed": true,
+  "preserved": [
+    "latest build artifacts/gsc-b/9cbb9757",
+    "latest package stage and ZIP/PEXT",
+    "all original failed/successful diagnostics",
+    "user Round3 TRX/TestResults"
+  ]
+}

@@ -1,3 +1,9 @@
+## 2026-10-25 23cf1c6e标准完整链成功
+
+外机Q06输入重置修复提交 `23cf1c6e136d9c1551ad1aad5179249ccad9b14d` 的默认 `GameSaveCenter-Run.cmd` 完整退出0，build run `20261025T071958125Z-8a088839`、install run `20261025T071955792Z-606d204b`。SDK8.0.423、Release0警告/0错误，1968项1911通过/57撤销Today架构的既有skip/0失败，149TRX一致、146WPF类全部结束。Q06双主题强制输入重置通过；发布、ZIP/PEXT、安装六程序集独立SHA/完整身份及Playnite/Worker新进程启动通过。未核验本次进程内插件实际加载路径。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-23cf1c6e/README.md`。
+
+两批共清理15个本轮自有输出目录、5600文件、1310756993逻辑字节；最新构建/包、所有原失败与成功诊断和用户Round3 TRX/TestResults保留。归档文本按LF规范化后重算SHA。T00-01本机标准链已验收；32项整体未完成，外机完整重跑及真实宿主/物理输入/权限边界继续保留。外机新日志未附HEAD；保留原stash，拉取含23cf1c6e的main后运行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`，不要提前stash pop。
+
 ## 2026-10-25 标准完整链成功后收到外机Q06输入重置证据
 
 576b689b默认根入口完整退出0：构建run `20261025T063456418Z-21cff7b5`、安装run `20261025T063454422Z-7a7fb984`，SDK8.0.423 Release0/0，1968项1911通过/57既有skip/0失败、149TRX一致、146WPF类；发布、ZIP/PEXT、六程序集独立SHA/完整身份校验、安装及Playnite/Worker新进程启动均成功，未核验进程内实际加载路径。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-576b689b/README.md`。已归档后清理11个本轮自有输出目录，3788文件860738000逻辑字节，D空闲10168287232→11038715904；当前成功包/构建、所有原失败诊断及用户TRX/TestResults保留。证据文本统一LF并重算本轮SHA清单，避免Git换行转换使归档哈希不一致。

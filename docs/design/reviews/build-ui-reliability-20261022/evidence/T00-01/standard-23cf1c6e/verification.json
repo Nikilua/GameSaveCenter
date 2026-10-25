@@ -1,0 +1,109 @@
+{
+  "sourceCommit": "23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+  "command": "cmd.exe /d /c \"GameSaveCenter-Run.cmd < nul\"",
+  "exitCode": 0,
+  "buildRunId": "20261025T071958125Z-8a088839",
+  "installRunId": "20261025T071955792Z-606d204b",
+  "sdk": "8.0.423",
+  "environment": {
+    "osVersion": "10.0.22000.0",
+    "osBitness": 64,
+    "processBitness": 64,
+    "powershellVersion": "7.6.2",
+    "powershellEdition": "Core",
+    "dotnetRuntimeVersion": "10.0.8"
+  },
+  "releaseWarnings": 0,
+  "releaseErrors": 0,
+  "steps": 155,
+  "failedSteps": 0,
+  "tests": {
+    "testCaseCount": 1968,
+    "passed": 1911,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 57,
+    "notRunnable": 0,
+    "inconclusive": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "otherOutcome": 0,
+    "reportedCounterTotal": 1968,
+    "reportedCounterFileCount": 149,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "trxFileCount": 149,
+    "distinctTestClassCount": 362,
+    "wpfIsolatedClassRunCount": 146
+  },
+  "skipReason": "57 existing assertions belong to the revoked Today Workspace UI architecture",
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "sha256": "EAEFD44F2FF679B7EFE2FAE396B7B8F4743B823DA4E58FE5528EA69F82278D8B",
+      "installedSha256": "EAEFD44F2FF679B7EFE2FAE396B7B8F4743B823DA4E58FE5528EA69F82278D8B",
+      "productVersion": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "matches": true
+    },
+    {
+      "file": "GameSaveCenter.Core.dll",
+      "sha256": "73F8B63D6D1717A651D6B9E47E264072D44CA9032EEC77A77760E93D38DEC55C",
+      "installedSha256": "73F8B63D6D1717A651D6B9E47E264072D44CA9032EEC77A77760E93D38DEC55C",
+      "productVersion": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "matches": true
+    },
+    {
+      "file": "GameSaveCenter.Contracts.dll",
+      "sha256": "4E15999FD93A8A7B0D4AA81AC1B26BE8936035A74AE0E97F4B8D72FF4B94A988",
+      "installedSha256": "4E15999FD93A8A7B0D4AA81AC1B26BE8936035A74AE0E97F4B8D72FF4B94A988",
+      "productVersion": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "matches": true
+    },
+    {
+      "file": "Worker/GameSaveCenter.Worker.dll",
+      "sha256": "79B8441F7225CC52CB1F67176B02EA7CABB939123FF451F4929E0F3A7B6F63CA",
+      "installedSha256": "79B8441F7225CC52CB1F67176B02EA7CABB939123FF451F4929E0F3A7B6F63CA",
+      "productVersion": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "matches": true
+    },
+    {
+      "file": "Worker/GameSaveCenter.Core.dll",
+      "sha256": "D108A9A182ACBB5828B7920F865C85D9836F0FDDF81911B536AA436871094912",
+      "installedSha256": "D108A9A182ACBB5828B7920F865C85D9836F0FDDF81911B536AA436871094912",
+      "productVersion": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "matches": true
+    },
+    {
+      "file": "Worker/GameSaveCenter.Contracts.dll",
+      "sha256": "4F3FEF571A4D9784BFE3AA7E6B2B78231948951DB26C4F0FA6BF2AD68BE2E812",
+      "installedSha256": "4F3FEF571A4D9784BFE3AA7E6B2B78231948951DB26C4F0FA6BF2AD68BE2E812",
+      "productVersion": "0.6.73+23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+      "matches": true
+    }
+  ],
+  "packageSha256": "AB6AC438A55963E843F1EE43C172124FBC63987CBF7C4596564F0AFDD2AC3910",
+  "publish": true,
+  "package": true,
+  "install": true,
+  "playniteStarted": true,
+  "processes": [
+    {
+      "ProcessName": "GameSaveCenter.Worker",
+      "Id": 50376,
+      "StartTime": "2026-10-25T15:51:45.3182636+08:00"
+    },
+    {
+      "ProcessName": "Playnite.DesktopApp",
+      "Id": 47380,
+      "StartTime": "2026-10-25T15:51:34.9309388+08:00"
+    }
+  ],
+  "inProcessPluginLoadedPathVerified": false,
+  "originalSummary": "artifacts/build-diagnostics/20261025T071958125Z-8a088839/summary.json",
+  "originalSummarySha256": "6DDCB99CD2529D94EEEED6D531FB6CA6FADC93A819F963CCF420400370278267",
+  "trackedFilesCleanDuringRun": true,
+  "preExistingUntrackedUserEvidencePreserved": true,
+  "externalMachineOutcome": "pending rerun on this source commit"
+}

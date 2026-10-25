@@ -23,5 +23,7 @@
   "repeatRuns": 5,
   "repeatPassed": 5,
   "forcedDispatcherResetPerTheme": true,
-  "standardRootOnNewCandidate": "pending"
+  "standardRootOnNewCandidate": "passed on 23cf1c6e136d9c1551ad1aad5179249ccad9b14d",
+  "localStandardBuildRunId": "20261025T071958125Z-8a088839",
+  "fixCommit": "23cf1c6e136d9c1551ad1aad5179249ccad9b14d"
 }
