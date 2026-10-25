@@ -1,3 +1,9 @@
+## 2026-10-25 T03-05 53ee9381候选兼容性审查
+
+当前产品全链身份为 `53ee9381d23772a60ebaf7ff16aeb81d6584d28a`，build/install run `20261025T091123674Z-d1fdc06a` / `20261025T091121578Z-c93b09da`，当前PEXT SHA-256 `1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48`。与旧包源提交 `02119729651ae687f2f1e5316ba4e48a3da69045` 的产品代码差异只有8个Playnite界面/视口文件；Settings、Contracts、Core、Worker、数据库迁移代码没有变化。这是源码兼容性证据，不代表旧包已在隔离Playnite加载或设置迁移已实测；完整差异和包身份见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-53ee9381.json`。
+
+T03-05的生产文件事务回放仍绑定23cf1c6e。检查时正常Playnite PID 50020及Worker PID 50908活动，未尝试第二实例、旧包安装或修改用户配置。下一步需在不与正常Playnite冲突的隔离配置中加载旧包、升级至53ee9381并核对设置往返；真实存档不参与测试。
+
 ## 2026-10-25 R08候选待完整链
 
 当前提交`7525f8c9`的默认根入口run `20261025T084235278Z-4336836a`在第74/146个WPF类R08失败（1437项1418通过/18跳过/1失败），Q06通过。保留`artifacts/build-diagnostics/20261025T084235278Z-4336836a`；未进入发布/打包/安装，Playnite/Worker仍是原进程。修复候选令R08按压态到ScaleX<=0.99后才采样释放，并改为不可命中测试窗口中的WPF只读`IsMouseOverPropertyKey`探针，隔离全局MouseDevice。候选SDK8.0.423 Release方案构建0/0；R08类5次各3/3。证据`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/README.md`。当前只提交本轮源/文档/证据，不包括用户TRX/TestResults；随后工作树冻结运行`cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`。若完整链成功再分开更新验收记录并中文提交/推送。外机stash及冲突内容不动，等待最终提交再安全快进验证。

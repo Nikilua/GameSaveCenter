@@ -6,11 +6,11 @@
 
 - 最新产品源码身份 `53ee9381d23772a60ebaf7ff16aeb81d6584d28a` 的默认 `GameSaveCenter-Run.cmd` 全链退出0：build run `20261025T091123674Z-d1fdc06a`、install run `20261025T091121578Z-c93b09da`。SDK8.0.423 / Release，solution 0警告/0错误；Core157/157、Worker400/400；总计1968项、1911通过、57个既有skip、0失败/错误/超时/中止，149份TRX计数一致，146个WPF隔离类全部完成。[本次完整链证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/README.md)。
 - Worker `win-x64`发布、ZIP/PEXT、安装身份检查与Playnite重启通过。六个已安装程序集的ProductVersion均带`53ee9381`完整身份；Playnite启动后PID 50020。包/程序集SHA与安装路径见证据目录。未验证当前进程内插件实际加载路径或真实页面/物理输入矩阵。
-- 本机全链中Q06双主题状态、R08动效反向类均通过。用户最近贴出的外机run `20261025T022508878Z-409c39f7` 在Q06 Dark hover报告`hoverOverlay=0`并在打包前失败；其终端记录显示该次从`ea926c5e`快进到`d6a401af`后运行，早于当前产品源码身份。外机在最新 `main` 上的完整重跑仍待回报，不能把本机通过当作双机通过。
+- 本机全链中Q06双主题状态、R08动效反向类均通过。外机日志run `20261025T022508878Z-409c39f7` 在较早`d6a401af`上Q06 Dark hover失败；随后 `20261025T040600037Z-ec604b91` 的Q06 Light hover也失败（`mouseOver=False`、`hoverOverlay=0`）。后一日志的探针文本对应`23cf1c6e`之前的旧测试实现，且未附同次HEAD；两次都早于当前`53ee9381`完整链。外机在最新 `main` 上的完整重跑仍待回报，不能把本机通过当作双机通过。
 - 外机已有 stash `保存本机 GamePicker 构建前改动`，继续保留并暂不pop/drop。需要在外机先确认工作树、`git pull --ff-only origin main`到最新主线，然后从仓库根执行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`；若fast-forward拒绝，停止并回报状态，不做reset/强制覆盖。
 - 标准全链前后跟踪文件无改动；已有未跟踪Round3 TRX与`tests/GameSaveCenter.Playnite.Tests/TestResults/`均保留。归档完整链后清理5个本任务`.tmp`夹具目录，共1456个文件、324453441逻辑字节；当前构建输出、完整诊断、ZIP/PEXT和安装报告保留，见[清理记录](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/cleanup.json)。
 - T00-01本机默认入口验收完成；32项专项整体仍未完成，外机同步构建、跨会话/符号链接权限及真实Playnite宿主、物理输入/DPI等边界继续单独跟踪。
-- T03-05已将回退事务复验更新到当前23cf1c6e包：旧/当前真实包在隔离`.tmp`执行失败回滚与重试，239文件逐项匹配、六程序集身份/SHA匹配；无活动Playnite/Worker交互。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/rollback-replay-23cf1c6e.json)。隔离Playnite配置中的插件加载、设置兼容和迁移仍待验，不能据此记整项完成。
+- T03-05最近的实际文件事务回放仍绑定`23cf1c6e`包；最新全链`53ee9381`包SHA为`1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48`。旧提交到53ee源码差异仅8个Playnite界面/视口文件，Settings、Contracts、Core、Worker及数据库迁移无变化；此为源码层依据，不代替隔离Playnite加载和设置往返。[审查](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-53ee9381.json)。实际宿主验证仍待，当前活动Playnite/Worker未被操作。
 - 既有两批清理15个自有失败/定向/被替代输出目录，5600文件、1310756993逻辑字节；保留2caafef1与7525f8c9失败诊断、修复候选验证、用户旧TRX/TestResults。各历史批次磁盘观测与逐路径清单在对应standard链cleanup.json。
 
 ## 历史验证身份

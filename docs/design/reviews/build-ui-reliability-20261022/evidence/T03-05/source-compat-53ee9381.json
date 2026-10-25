@@ -1,0 +1,33 @@
+{
+  "task": "T03-05",
+  "reviewType": "source-and-package-identity-only",
+  "oldCandidate": {
+    "sourceCommit": "02119729651ae687f2f1e5316ba4e48a3da69045",
+    "packagePath": "artifacts/round4-final-standard/package/GameSaveCenter-0.6.73.pext",
+    "packageSha256": "70E12F2E4F9CE5CCEB4E2AE11D5BF3FCE525A5AC8B8D149FF9DB28F30F196318"
+  },
+  "currentCandidate": {
+    "sourceCommit": "53ee9381d23772a60ebaf7ff16aeb81d6584d28a",
+    "buildRunId": "20261025T091123674Z-d1fdc06a",
+    "installRunId": "20261025T091121578Z-c93b09da",
+    "packagePath": "artifacts/GameSaveCenter-0.6.73.pext",
+    "packageSha256": "1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48"
+  },
+  "diff": {
+    "changedProductFiles": [
+      "src/GameSaveCenter.Playnite/Infrastructure/WorkspaceTableViewportPolicy.cs",
+      "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml",
+      "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs",
+      "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml",
+      "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs",
+      "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml",
+      "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+      "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml.cs"
+    ],
+    "settingsDirectoryChanged": false,
+    "contractsChanged": false,
+    "coreChanged": false,
+    "workerOrDatabaseChanged": false
+  },
+  "verificationLimit": "This confirms source scope and package identity only. The 53ee9381 package has not been loaded in an isolated Playnite profile; settings round-trip and migration behavior remain unverified. The existing file-transaction replay is bound to 23cf1c6e."
+}

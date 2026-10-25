@@ -1,3 +1,7 @@
+## 2026-10-25 T03-05 最新53ee9381候选源码审查
+
+最新默认标准链产品身份为 `53ee9381d23772a60ebaf7ff16aeb81d6584d28a`，PEXT SHA-256 `1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48`。与旧回退候选 `02119729651ae687f2f1e5316ba4e48a3da69045` 的产品源码差异共8个Playnite界面/视口文件，Settings、Contracts、Core、Worker及数据库迁移代码无变化。见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-53ee9381.json`。此差异检查不能代替隔离Playnite实际加载和设置往返；23cf1c6e的生产文件事务回放不能冒充53ee9381宿主验证。当前Playnite与Worker活动时不要启动可能转发到正常用户配置的隔离实例。
+
 ## 2026-10-25 R08动画采样候选
 
 提交`7525f8c9`默认完整根入口run `20261025T084235278Z-4336836a`在WPF第74/146类R08失败：1437总、1418通过、18跳过、1失败，未发布/安装；Q06第29类已通过。失败样本press midpoint为ScaleX0.998，给回弹断言留下不足0.002的可采样区间。当前候选将测试采样起点要求收紧到ScaleX<=0.99，并把R08合成悬停改用不可命中测试窗口上的`IsMouseOverPropertyKey`，不操作全局MouseDevice。Release解决方案0警告/0错误，R08类五个独立进程各3/3。[失败与候选证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/README.md)。下一步只提交本轮候选，随后冻结源码跑默认根入口；外机改动与stash继续保留。
