@@ -1,0 +1,65 @@
+[repo]\.tmp\gsc-r08-probe-8e517cb4\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.80]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.86]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.OtherTaskTypesDoNotChangeRemoteStageProjection [21 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.CancellationKeepsWorkerCleanupOutcomeInTheStatusProjection [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.ProductionMaintenancePageShowsActiveProgressAndResidualCancellationButHidesCancelAction [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.DownloadVerificationAndReadyStatesRemainDistinct [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.CancellationAndFailureAreTerminalAndDoNotAdvertiseRestore [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.PageSizingTracksCurrentHostHeightAndKeepsDetailsReachableAfterResize [965 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.LongHistoryDetailsKeepThreeScrollOffsetsIndependent(dark: True) [898 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.LongHistoryDetailsKeepThreeScrollOffsetsIndependent(dark: False) [434 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.BulkHistorySelectionSurvivesInspectorBreakpointRoundTrips(dark: True) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.BulkHistorySelectionSurvivesInspectorBreakpointRoundTrips(dark: False) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.SaveHistoryAndPathTablesKeepFiniteInnerScrollbarsInsideScrollablePages [226 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.CompactTaskQueueFrameFitsInsideItsInitialPageViewport [227 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.WideWorkspacesKeepNestedScrollbarsWithinTheirSurfaces [704 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.CurrentMediaListAndInspectorKeepFiniteScrollbarsInsideScrollablePage [121 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.ScreenshotSizedCompactWorkspacesKeepFourRowsAndReachLowerDetails [532 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.TaskQueueAndCompactInspectorKeepTheirOwnScrollbarsInsideScrollablePage [84 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WindowAutomationLifecycleTests.StandardWindowPeerKeepsItsNameAfterNativeWindowCloses [594 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: False) [456 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True) [369 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: True) [337 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: False) [378 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.SaveCandidateSelectionRestoresStablePathBeforePendingFallback [2 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues [3 s]
+[xUnit.net 00:00:24.25]     GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups [FAIL]
+[xUnit.net 00:00:24.25]       Assert.Null() Failure: Value is not null
+[xUnit.net 00:00:24.25]       Expected: null
+[xUnit.net 00:00:24.25]       Actual:   System.InvalidOperationException: 调用线程无法访问此对象，因为另一个线程拥有该对象。
+[xUnit.net 00:00:24.25]          在 System.Windows.Threading.Dispatcher.VerifyAccess()
+[xUnit.net 00:00:24.25]          在 System.Windows.Application.set_ShutdownMode(ShutdownMode value)
+[xUnit.net 00:00:24.25]          在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.EnsureApplication() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 318
+[xUnit.net 00:00:24.25]          在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.VerifyScenario(GameSaveCenterThemeMode theme, Double width, Double height) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 82
+[xUnit.net 00:00:24.25]          在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.<>c__DisplayClass3_0.<ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 60
+[xUnit.net 00:00:24.25]       Stack Trace:
+[xUnit.net 00:00:24.25]            在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 73
+[xUnit.net 00:00:24.26]   Finished:    GameSaveCenter.Playnite.Tests
+  失败 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups [135 ms]
+  错误消息:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   System.InvalidOperationException: 调用线程无法访问此对象，因为另一个线程拥有该对象。
+   在 System.Windows.Threading.Dispatcher.VerifyAccess()
+   在 System.Windows.Application.set_ShutdownMode(ShutdownMode value)
+   在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.EnsureApplication() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 318
+   在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.VerifyScenario(GameSaveCenterThemeMode theme, Double width, Double height) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 82
+   在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.<>c__DisplayClass3_0.<ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 60
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests.ProductionTaskFiltersKeepLabelsAttachedAndWrapWholeGroups() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q14FilterLabelBehaviorTests.cs:行号 73
+
+测试运行失败。
+测试总数: 26
+     通过数: 25
+     失败数: 1
+总时间: 25.6317 秒
+结果文件: [repo]\.tmp\gsc-window-lifecycle-repeats\lifecycle-1.trx

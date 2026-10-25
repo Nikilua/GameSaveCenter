@@ -4,6 +4,10 @@
 
 ## 最新根入口复验（2026-10-25）
 
+- c7640d1f根入口第8类Compact再次触发原生UIA标题读取失败。现测试程序集统一为未显式命名的测试Window提供稳定名称，标准Peer保持开启；六类三轮78/78通过，新候选完整链待跑。证据：design/reviews/build-ui-reliability-20261022/evidence/T00-01/window-automation-lifecycle-20261025/README.md
+
+## 前次R06根入口复验
+
 - 0832aca8标准根入口run 20261025T054600655Z-8ab0ccc5编译0/0且Q06通过，但第59/145类R06因WindowAutomationPeer原生标题读取参数错误退出1，未发布安装。明确窗口UIA名称和关闭后排空后定向五轮25/25；新提交标准全链待重跑。证据：design/reviews/build-ui-reliability-20261022/evidence/T00-01/r06-window-automation-20261025/README.md
 
 ## 前次R08根入口复验

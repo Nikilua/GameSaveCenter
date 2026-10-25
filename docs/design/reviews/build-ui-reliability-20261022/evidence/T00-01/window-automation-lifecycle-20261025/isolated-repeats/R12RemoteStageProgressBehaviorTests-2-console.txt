@@ -1,0 +1,21 @@
+[repo]\.tmp\gsc-r08-probe-8e517cb4\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.81]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.85]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.OtherTaskTypesDoNotChangeRemoteStageProjection [20 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.CancellationKeepsWorkerCleanupOutcomeInTheStatusProjection [6 ms]
+[xUnit.net 00:00:05.31]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.ProductionMaintenancePageShowsActiveProgressAndResidualCancellationButHidesCancelAction [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.DownloadVerificationAndReadyStatesRemainDistinct [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests.CancellationAndFailureAreTerminalAndDoNotAdvertiseRestore [1 ms]
+
+测试运行成功。
+测试总数: 5
+     通过数: 5
+总时间: 6.7253 秒
+结果文件: [repo]\.tmp\gsc-window-lifecycle-isolated\R12RemoteStageProgressBehaviorTests-2.trx

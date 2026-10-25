@@ -1,3 +1,7 @@
+## 2026-10-25 测试窗口UIA名称统一初始化
+
+c7640d1f标准根入口run `20261025T060407085Z-304dd11f` 在第8/145类Compact再次发生WindowAutomationPeer原生标题读取参数错误；Release0/0、Core157/157、Worker400/400，1193项1174通过/18跳过/1失败，未发布安装。跨类重复证据确认需统一处理测试窗口：测试程序集Loaded时仅为未显式命名的Window提供标题或稳定测试名称，保留标准WindowAutomationPeer。新增真实窗口关闭后Peer.GetName生命周期测试，包含空标题、标题和显式名称。按标准逐类隔离方式六类三轮18进程共78/78通过；曾合并六类的非标准进程因Application跨STA所有权失败，不计通过并保留。SDK8.0.423 Release0/0、源码校验通过。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/window-automation-lifecycle-20261025/README.md`。新候选须重新默认根入口完整验证。
+
 ## 2026-10-25 R06详情窗口自动化时序修正
 
 0832aca8默认根入口run `20261025T054600655Z-8ab0ccc5` 编译0/0、Core157/157、Worker400/400、Q06通过；第59/145类R06在布局中由WindowAutomationPeer读取旧HWND标题触发Win32参数错误，1395项1376通过/18跳过/1失败，未发布安装。窗口明确UIA名称并在Close后排空ApplicationIdle；保留UIA及全部布局断言。SDK8.0.423 Release0/0，R06五轮25/25通过，源码校验通过。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r06-window-automation-20261025/README.md`。新修复提交须立即默认根入口完整复跑，跟踪文件冻结。

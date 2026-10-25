@@ -1,0 +1,7 @@
+# 统一测试窗口 UIA 名称生命周期
+
+c7640d1f默认根入口run `20261025T060407085Z-304dd11f`、安装run `20261025T060404780Z-5881f8c2`，SDK8.0.423 Release0/0、Core157/157、Worker400/400。第8/145类Compact在LongHistoryDetails场景再次遇到WindowAutomationPeer.GetWindowTextLength原生参数错误。累计1193项1174通过、18跳过、1失败；发布安装未开始。与此前R06相同的跨类异常支持统一修正夹具窗口生命周期。
+
+仅测试程序集在模块初始化中登记Window.Loaded类事件处理器，为未显式设置AutomationProperties.Name的窗口使用标题或稳定测试名称。显式名称保持，标准WindowAutomationPeer保持开启，生产代码与UIA实现不变。新测试用九个真实窗口覆盖空标题、标题及显式名称，并在Close销毁原生窗口后继续读取标准Peer名称，排空Dispatcher后再创建下个窗口。
+
+SDK8.0.423隔离Release0警告/0错误，源码校验通过。WindowAutomationLifecycle、Compact、R06、Q14、R12、R08六类按标准逐类独立进程各跑三轮，18进程78/78通过。TRX与console见isolated-repeats。第一次将六类合并进程的非标准运行25/26，Q14因Application跨STA所有权失败；该失败保留在combined-process-failure，不计入通过结论。后续仍须默认根入口完整链验证。

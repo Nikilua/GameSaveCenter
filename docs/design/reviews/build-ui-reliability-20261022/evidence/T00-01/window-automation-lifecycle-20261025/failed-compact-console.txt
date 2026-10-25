@@ -1,0 +1,57 @@
+[repo]\artifacts\gsc-b\9f42985a\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.24]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.30]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.PageSizingTracksCurrentHostHeightAndKeepsDetailsReachableAfterResize [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.LongHistoryDetailsKeepThreeScrollOffsetsIndependent(dark: True) [2 s]
+[xUnit.net 00:00:09.64]       System.InvalidOperationException : Compact workspace table layout test failed.
+[xUnit.net 00:00:09.64]       ---- System.ComponentModel.Win32Exception : 参数错误。
+[xUnit.net 00:00:09.64]       Stack Trace:
+[xUnit.net 00:00:09.64]            在 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\CompactWorkspaceTableViewportBehaviorTests.cs:行号 725
+[xUnit.net 00:00:09.64]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:09.64]            在 MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)
+[xUnit.net 00:00:09.64]            在 MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)
+[xUnit.net 00:00:09.64]            在 System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()
+[xUnit.net 00:00:09.64]            在 System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()
+[xUnit.net 00:00:09.64]            在 System.Windows.ContextLayoutManager.fireAutomationEvents()
+[xUnit.net 00:00:09.64]            在 System.Windows.ContextLayoutManager.UpdateLayout()
+[xUnit.net 00:00:09.64]            在 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.<>c__DisplayClass8_0.<LongHistoryDetailsKeepThreeScrollOffsetsIndependent>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\CompactWorkspaceTableViewportBehaviorTests.cs:行号 412
+[xUnit.net 00:00:09.64]            在 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.<>c__DisplayClass31_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\CompactWorkspaceTableViewportBehaviorTests.cs:行号 714
+  失败 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.LongHistoryDetailsKeepThreeScrollOffsetsIndependent(dark: False) [1 s]
+  错误消息:
+   System.InvalidOperationException : Compact workspace table layout test failed.
+---- System.ComponentModel.Win32Exception : 参数错误。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\CompactWorkspaceTableViewportBehaviorTests.cs:行号 725
+----- Inner Stack Trace -----
+   在 MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)
+   在 MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)
+   在 System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()
+   在 System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()
+   在 System.Windows.ContextLayoutManager.fireAutomationEvents()
+   在 System.Windows.ContextLayoutManager.UpdateLayout()
+   在 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.<>c__DisplayClass8_0.<LongHistoryDetailsKeepThreeScrollOffsetsIndependent>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\CompactWorkspaceTableViewportBehaviorTests.cs:行号 412
+   在 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.<>c__DisplayClass31_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\CompactWorkspaceTableViewportBehaviorTests.cs:行号 714
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.BulkHistorySelectionSurvivesInspectorBreakpointRoundTrips(dark: True) [3 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.BulkHistorySelectionSurvivesInspectorBreakpointRoundTrips(dark: False) [3 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.SaveHistoryAndPathTablesKeepFiniteInnerScrollbarsInsideScrollablePages [288 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.CompactTaskQueueFrameFitsInsideItsInitialPageViewport [276 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.WideWorkspacesKeepNestedScrollbarsWithinTheirSurfaces [770 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.CurrentMediaListAndInspectorKeepFiniteScrollbarsInsideScrollablePage [178 ms]
+[xUnit.net 00:00:18.02]   Finished:    GameSaveCenter.Playnite.Tests
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.ScreenshotSizedCompactWorkspacesKeepFourRowsAndReachLowerDetails [553 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.TaskQueueAndCompactInspectorKeepTheirOwnScrollbarsInsideScrollablePage [139 ms]
+
+测试总数: 11
+     通过数: 10
+     失败数: 1
+总时间: 19.8693 秒
+结果文件: [repo]\artifacts\build-diagnostics\20261025T060407085Z-304dd11f\tests\wpf.CompactWorkspaceTableViewportBehaviorTests\wpf.CompactWorkspaceTableViewportBehaviorTests.trx
+[xUnit.net 00:00:09.63]     GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.LongHistoryDetailsKeepThreeScrollOffsetsIndependent(dark: False) [FAIL]
+测试运行失败。
