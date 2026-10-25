@@ -1,0 +1,84 @@
+{
+  "priorFailedRun": {
+    "sourceCommit": "2caafef153f368034b6232f4ab6eb3db1e9d0687",
+    "runId": "20261025T081807812Z-6979bbcf",
+    "failedClass": "GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests",
+    "theme": "Light",
+    "state": "hover",
+    "isMouseOver": false,
+    "hoverOpacity": 0,
+    "tests": 1299,
+    "passed": 1280,
+    "failed": 1,
+    "skipped": 18,
+    "packageInstall": "not reached"
+  },
+  "candidate": {
+    "baseCommit": "2caafef153f368034b6232f4ab6eb3db1e9d0687",
+    "testSourceSha256": "0EC744C45E50C1AF25638699170C13CE4A4DB5C8D86A04D39D3C081F87906D5F",
+    "testAssemblySha256": "C85228427EEC29F123C8652152C76756F48FF48A0CEE8073FFF7D29C46E0EEB5",
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "solutionBuildWarnings": 0,
+    "solutionBuildErrors": 0,
+    "solutionBuildOutcome": "passed",
+    "targetRuns": [
+      {
+        "run": 2,
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "run": 3,
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "run": 4,
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "run": 5,
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "run": 6,
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "captures": {
+      "count": 10,
+      "themes": [
+        "Light",
+        "Dark"
+      ],
+      "states": [
+        "normal",
+        "hover",
+        "pressed",
+        "focus",
+        "disabled"
+      ]
+    }
+  },
+  "hoverProbe": {
+    "mechanism": "Reflect private UIElement.IsMouseOverPropertyKey and set the read-only DP value on a non-hit-testable fixture",
+    "usesProcessWideMouseDevice": false,
+    "physicalMouseInput": false,
+    "assertions": "Production shared button template hover overlay > 0.9 in both themes"
+  },
+  "acceptance": "Targeted evidence only; standard root build/install chain pending"
+}

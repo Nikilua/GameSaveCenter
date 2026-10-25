@@ -1,3 +1,7 @@
+## 2026-10-25 Q06 夹具候选待完整链
+
+当前根入口HEAD `2caafef1` Q06失败，失败诊断 `artifacts/build-diagnostics/20261025T081807812Z-6979bbcf`保留。Q06测试候选已改为对不可命中测试的视觉夹具设置`UIElement.IsMouseOverPropertyKey`，不再借全局MouseDevice；SDK8.0.423 Release方案编译0警告/0错误，隔离类五轮5/5。双主题HoverOverlay均到1.0；完整证据在`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-dpkey-20261025/README.md`。此状态不是物理鼠标输入验收。下步：只提交本轮源、文档、证据（不暂存已有用户TRX/TestResults），推送中文提交；随后工作树冻结，执行`cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`完整链。若完整链成功，再单独更新验收记录并提交。外机冲突与本地stash必须保留，待最终修复提交后再按安全快进流程验证，不要pop stash。
+
 ## 2026-10-25 T03-05 当前包回退事务复验
 
 旧包02119729651ae687f2f1e5316ba4e48a3da69045与23cf1c6e标准成功链当前包已在仓库`.tmp`完成生产原子安装回放：239个文件树逐项SHA匹配；注入当前包提升失败后旧包恢复完整，当前包重试通过，六程序集身份/SHA一致。Playnite PID 47380、Worker PID 50376前后保持原进程；没有启动、关闭或操作它们。自有临时目录和脚本已清理。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/rollback-replay-23cf1c6e.json`。T03-05仍需隔离Playnite配置下的旧包插件加载、设置兼容/迁移；该步骤未做，真实配置/存档未触碰。

@@ -1,3 +1,7 @@
+## 2026-10-25 Q06 悬停视觉夹具候选
+
+2caafef1的默认根入口再次在Q06 Light hover失败，显示合成`MouseDevice.ChangeMouseOver`受桌面指针同步覆盖；失败run `20261025T081807812Z-6979bbcf`保留。当前候选不再调用全局MouseDevice：对不可命中测试的夹具设置WPF只读`IsMouseOver` DP键，让生产共享模板的状态触发器/动画运行。Release解决方案0警告/0错误，Q06隔离进程5轮各1/1，双主题五态及十张截图通过；[证据](docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-dpkey-20261025/README.md)。这只是视觉状态回归，未模拟物理输入。后续须提交候选，再跑默认`GameSaveCenter-Run.cmd`完整构建、测试、打包、安装和启动；外机完整验证仍待。
+
 ## 2026-10-25 T03-05 当前包回退事务复验
 
 将旧包02119729651ae687f2f1e5316ba4e48a3da69045与当前23cf1c6e标准链包在仓库`.tmp`重放生产原子安装：239个文件逐项匹配，注入提升失败后旧包完整恢复，当前包重试成功；六程序集身份/SHA匹配，Playnite/Worker进程前后未变。本次释放1198文件/558589369逻辑字节，详见`docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/rollback-replay-23cf1c6e.json`。只验证文件事务，不代表隔离Playnite加载、设置兼容/迁移；T03-05保持实施中。

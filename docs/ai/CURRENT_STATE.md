@@ -4,11 +4,12 @@
 
 ## 最新构建状态（2026-10-25）
 
-- 当前成功标准完整链：`23cf1c6e136d9c1551ad1aad5179249ccad9b14d`，build run `20261025T071958125Z-8a088839`、install run `20261025T071955792Z-606d204b`。默认根.cmd退出0，SDK8.0.423、Release0警告/0错误，1968项1911通过/57既有skip/0失败、149TRX计数一致、146WPF类完成。Worker发布、ZIP/PEXT、安装六程序集独立身份/SHA及新Playnite/Worker进程启动均通过。[完整证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-23cf1c6e/README.md)
+- 上一次完整链在 `23cf1c6e136d9c1551ad1aad5179249ccad9b14d` 通过，build run `20261025T071958125Z-8a088839`、install run `20261025T071955792Z-606d204b`。但后续根入口 HEAD `2caafef153f368034b6232f4ab6eb3db1e9d0687` 的 run `20261025T081807812Z-6979bbcf` 在第29/146个WPF类Q06失败（1299项1280通过/18跳过/1失败），未发布、打包或安装。因此23cf链不能代表当前HEAD已通过。[此前完整链](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-23cf1c6e/README.md)。
+- Q06候选夹具改为直接设置只读 `IsMouseOver` DP值，并禁用normal/hover夹具的OS命中测试；生产共享模板和原hover opacity阈值保持不变。SDK8.0.423 Release解决方案构建0警告/0错误；隔离单类五轮5/5，每轮完整十状态、HoverOverlay双主题均为1。[候选验证](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-dpkey-20261025/README.md)。标准根入口尚待候选提交后完整复跑，T00-01为代码完成待验收。
 - T03-05已将回退事务复验更新到当前23cf1c6e包：旧/当前真实包在隔离`.tmp`执行失败回滚与重试，239文件逐项匹配、六程序集身份/SHA匹配；无活动Playnite/Worker交互。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/rollback-replay-23cf1c6e.json)。隔离Playnite配置中的插件加载、设置兼容和迁移仍待验，不能据此记整项完成。
-- 用户新外机日志run20261025T040600037Z-ec604b91未附HEAD，Q06 Light hover的mouseOver=False说明合成输入被重置。修复现保持输入并在双主题主动注入Dispatcher重置，五轮5/5及上述标准完整链均通过。[外机失败和针对性证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-input-resync-20261025/README.md)。本机通过不能替代外机实际结果，外机应保留stash、快进至含23cf1c6e的main再运行完整入口。
-- T00-01本机完整链已验收；32项计划整体未完成，仍有外机、权限、真实宿主和物理输入验收条件。本次只证实磁盘安装身份和进程启动，未核验进程内插件实际加载路径或完整页面矩阵。
-- 两批清理15个自有失败/定向/被替代输出目录，5600文件、1310756993逻辑字节；最新9cbb9757构建、包、全部原始失败/成功诊断及用户旧TRX/TestResults保留。各批磁盘观测与逐路径清单在对应标准链cleanup.json。
+- 用户外机日志run `20261025T040600037Z-ec604b91` 同样出现Q06 Light hover `mouseOver=False`；外机本地 `GamePickerViewModel.cs` 还保留未解决stash冲突，改动与stash均须保护。[外机证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-input-resync-20261025/README.md)。外机的未提交代码/文档/测试/证据不覆盖；须先完整stash保存并快进到最终修复提交，再运行默认入口。
+- 23cf1c6e的T00-01本机完整链曾通过，但当前2caafef1根入口在Q06失败，后续修复候选只完成解决方案构建和Q06五轮定向测试；完整链再次成功前，T00-01保持代码完成待验收。32项计划整体未完成，仍有外机、权限、真实宿主和物理输入验收条件。
+- 既有两批清理15个自有失败/定向/被替代输出目录，5600文件、1310756993逻辑字节；后续保留2caafef1失败诊断、当前候选验证、用户旧TRX/TestResults。各历史批次磁盘观测与逐路径清单在对应standard链cleanup.json。
 
 ## 历史验证身份
 

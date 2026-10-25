@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -25,10 +24,16 @@ namespace GameSaveCenter.Playnite.Tests;
 [Collection("Q06ButtonStateSequenceWpf")]
 public sealed class Q06ButtonStateSequenceBehaviorTests
 {
+    private static readonly DependencyPropertyKey IsMouseOverPropertyKey =
+        (DependencyPropertyKey)(typeof(UIElement).GetField(
+            "IsMouseOverPropertyKey",
+            BindingFlags.Static | BindingFlags.NonPublic)?.GetValue(null)
+            ?? throw new InvalidOperationException("WPF UIElement.IsMouseOverPropertyKey is unavailable."));
+
     private static readonly IReadOnlyList<ButtonStateSpec> States = new[]
     {
         new ButtonStateSpec("normal", "默认可用，未输入"),
-        new ButtonStateSpec("hover", "WPF 合成悬停状态探针（非物理鼠标）"),
+        new ButtonStateSpec("hover", "WPF IsMouseOver 只读属性键（样式状态探针，非物理鼠标）"),
         new ButtonStateSpec("pressed", "合成 Space 键按下"),
         new ButtonStateSpec("focus", "Keyboard.Focus 程序化焦点"),
         new ButtonStateSpec("disabled", "假命令 CanExecute=false")
@@ -55,7 +60,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 Directory.CreateDirectory(outputRoot!);
                 var report = new StringBuilder();
                 report.AppendLine("Q06-08 production button state probe; STA WPF Window; 96-DPI logical capture.");
-                report.AppendLine("Hover uses WPF MouseDevice.ChangeMouseOver(button); it is a controlled state probe, not physical mouse input.");
+                report.AppendLine("Hover sets the WPF IsMouseOver dependency property through its read-only key on a non-hit-testable fixture; this exercises the production style trigger without physical or global mouse input.");
                 foreach (var capture in captures)
                     report.AppendLine(capture.ToReportLine());
                 File.WriteAllText(Path.Combine(outputRoot!, "button-state-probe-report.txt"), report.ToString());
@@ -214,6 +219,11 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             Assert.True(Keyboard.Focus(focusProxy) == focusProxy);
             FlushLayout(window);
 
+            // Normal/hover are visual-state captures. Keep OS hit testing out of this fixture
+            // so a desktop pointer cannot replace the controlled IsMouseOver dependency value.
+            if (state.Name is "normal" or "hover")
+                root.IsHitTestVisible = false;
+
             var hoverSet = false;
             switch (state.Name)
             {
@@ -247,16 +257,9 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             FlushLayout(window);
             if (state.Name == "hover")
             {
-                // Reapply WPF's own mouse-over transition after layout has recomputed device state.
-                hoverSet = SetMouseOverProbe(button, true) && hoverSet;
                 var overlay = Assert.IsType<Border>(button.Template!.FindName("HoverOverlay", button));
-                var pointerResynchronized = false;
-                // Reproduce native pointer synchronization replacing a synthetic enter.
-                button.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() =>
-                    pointerResynchronized = SetMouseOverProbe(button, false)));
-                hoverSet = PumpHoverProbeUntil(button,
-                    () => pointerResynchronized && overlay.Opacity > 0.9,
-                    TimeSpan.FromSeconds(2)) && hoverSet;
+                PumpDispatcher(TimeSpan.FromMilliseconds(180));
+                hoverSet = ReadMouseOverProbe(button) && hoverSet && overlay.Opacity > 0.9;
             }
 
             var chrome = Assert.IsType<Border>(button.Template!.FindName("ButtonChrome", button));
@@ -267,11 +270,11 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
 
             var statePassed = state.Name switch
             {
-                "normal" => button.IsEnabled && !button.IsMouseOver && !button.IsPressed
+                "normal" => button.IsEnabled && !ReadMouseOverProbe(button) && !button.IsPressed
                     && !button.IsKeyboardFocusWithin && hoverOverlay.Opacity == 0
                     && pressedOverlay.Opacity == 0 && focusOverlay.Opacity == 0
                     && Math.Abs(scale.ScaleX - 1) < 0.01 && Math.Abs(chrome.Opacity - 1) < 0.01,
-                "hover" => hoverSet && button.IsMouseOver && hoverOverlay.Opacity > 0.9
+                "hover" => hoverSet && ReadMouseOverProbe(button) && hoverOverlay.Opacity > 0.9
                     && !button.IsPressed && chrome.BorderBrush != null,
                 "pressed" => button.IsPressed && pressedOverlay.Opacity > 0.9
                     && scale.ScaleX < 0.99 && button.IsKeyboardFocusWithin,
@@ -302,7 +305,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 state.Activation,
                 statePassed,
                 button.IsEnabled,
-                button.IsMouseOver,
+                ReadMouseOverProbe(button),
                 button.IsPressed,
                 button.IsKeyboardFocusWithin,
                 hoverOverlay.Opacity,
@@ -327,27 +330,14 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
 
     private static bool SetMouseOverProbe(UIElement element, bool value)
     {
-        // Drive WPF's own hover state transition without moving the user's OS cursor.
-        var changeMouseOver = typeof(MouseDevice).GetMethod("ChangeMouseOver", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new InvalidOperationException("WPF MouseDevice.ChangeMouseOver is unavailable.");
-        changeMouseOver.Invoke(Mouse.PrimaryDevice, new object?[] { value ? element : null, Environment.TickCount });
-        return element is FrameworkElement frameworkElement
-            && frameworkElement.IsMouseOver == value;
+        // Set only the read-only dependency value consumed by the production style trigger.
+        // This keeps a visual-state capture independent from the process-wide MouseDevice.
+        element.SetValue(IsMouseOverPropertyKey, value);
+        return ReadMouseOverProbe(element) == value;
     }
 
-    private static bool PumpHoverProbeUntil(UIElement element, Func<bool> condition, TimeSpan timeout)
-    {
-        var elapsed = Stopwatch.StartNew();
-        while (elapsed.Elapsed < timeout)
-        {
-            if (!element.IsMouseOver && !SetMouseOverProbe(element, true))
-                return false;
-            if (condition())
-                return true;
-            PumpDispatcher(TimeSpan.FromMilliseconds(5));
-        }
-        return element.IsMouseOver && condition();
-    }
+    private static bool ReadMouseOverProbe(UIElement element)
+        => (bool)element.GetValue(UIElement.IsMouseOverProperty);
 
     private static Brush CreateOpaqueSampleBackground(AdaptiveThemePalette palette)
     {
