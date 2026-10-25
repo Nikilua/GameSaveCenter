@@ -94,5 +94,22 @@
     "status": "pending",
     "reason": "Local Playnite Desktop and Worker processes were active, so the root install/start chain was not run; the external machine must rerun it on the patched commit."
   },
-  "fixCommit": "ccfe4cbf546c0688f171ad5a24d35cc2d4308921"
+  "fixCommit": "ccfe4cbf546c0688f171ad5a24d35cc2d4308921",
+  "cleanup": {
+    "roots": [
+      "gsc-q06-build-d6a401af",
+      "gsc-q06-diag-d6a401af",
+      "gsc-q06-targeted-d6a401af",
+      "gsc-build-q06-fix-d6a401af",
+      "gsc-diag-q06-fix-d6a401af"
+    ],
+    "filesRemoved": 1780,
+    "logicalBytesRemoved": 335812780,
+    "dFreeBytesBefore": 11020021760,
+    "dFreeBytesAfter": 11361181696,
+    "dFreeBytesDelta": 341159936,
+    "activeBuildTestProcesses": 0,
+    "reparsePoints": 0,
+    "userRound3TrxTestResultsTouched": false
+  }
 }

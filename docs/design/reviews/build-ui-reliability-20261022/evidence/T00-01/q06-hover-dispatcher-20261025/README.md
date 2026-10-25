@@ -21,3 +21,7 @@
 这次完整验证使用 `scripts/build.ps1` 隔离构建/测试链，不包含打包、Playnite 安装或宿主启动。本机已有 Playnite Desktop 和 Worker 进程，因此没有运行会替换安装并启动宿主的默认根入口。T00-01 保持“代码完成待验收”，须由外机在本修复提交上运行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"` 并回传完整结果后，才能恢复标准全链验收状态。原外机 stash 保留，不执行 `stash pop`。
 
 验证数据与归档文件哈希见 [verification.json](verification.json) 和 [SHA256SUMS.txt](SHA256SUMS.txt)。测试 TRX 和控制台输出已将用户名、主机名及仓库绝对路径替换为中性值。
+
+## 临时输出清理
+
+证据归档和哈希复核后，清理本轮创建的五个仓库 `.tmp` 目录：`gsc-q06-build-d6a401af`、`gsc-q06-diag-d6a401af`、`gsc-q06-targeted-d6a401af`、`gsc-build-q06-fix-d6a401af`、`gsc-diag-q06-fix-d6a401af`。清理前确认目标均在 `.tmp` 内、没有重解析点或活动构建/测试进程。共移除 1780 个文件、335,812,780 逻辑字节；D 盘可用空间由 11,020,021,760 增至 11,361,181,696 字节，观测增加 341,159,936 字节。用户已有 Round3 TRX 与 `TestResults` 未更改。
