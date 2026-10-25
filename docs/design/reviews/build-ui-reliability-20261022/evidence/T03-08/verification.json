@@ -1,29 +1,38 @@
 {
   "date": "2026-10-25",
-  "codeCommit": "dcbaab13b9464523ffed6d88ca2748b6fb6dd647",
+  "codeCommit": "b29c39a541ba92461e167f14f64917d889293161",
   "documentHeadBeforeChecklist": "c36f578034c2e9a1ed93642f3dbba910326f423d",
   "trackedCodeDiffAfterBuildEmpty": true,
   "fullChain": {
     "command": "cmd.exe /d /c \"GameSaveCenter-Run.cmd < nul\"",
     "exitCode": 0,
-    "buildRun": "20261024T192816167Z-276884c0",
-    "installRun": "20261024T192814223Z-736788e1",
+    "buildRun": "20261025T152449622Z-e85af693",
+    "installRun": "20261025T152447580Z-d50774fa",
     "sdk": "8.0.423",
     "configuration": "Release",
     "warnings": 0,
     "errors": 0,
+    "steps": 155,
+    "failedSteps": 0,
     "tests": {
-      "total": 1967,
-      "passed": 1910,
+      "total": 1968,
+      "passed": 1911,
       "skipped": 57,
-      "failed": 0
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0
     },
-    "trxFiles": 148,
-    "wpfIsolatedClassesEnded": 145,
+    "trxFiles": 149,
+    "trxCounterMismatches": 0,
+    "wpfIsolatedClassesEnded": 146,
     "workerPublishZipPextInstallAndPlayniteStartup": true,
-    "zipPextSha256": "A085FFC7DEDF2CF799A0F65410E984F22D2E68B565DE3C80FB3D650B17AC1A2B",
+    "zipPextSha256": "E6F5F836E2FA59ACBC6BE5D6EBC9351F79A72C95B4EDCFBFE4422C36E6213C77",
     "installedAssembliesIdentityAndShaVerified": 6,
-    "playniteInProcessPluginLoadPathVerified": false
+    "playniteInProcessPluginLoadPathVerified": true,
+    "playnitePid": 53100,
+    "workerPid": 52832,
+    "rawDiagnosticsRetained": "artifacts/build-diagnostics/20261025T152449622Z-e85af693"
   },
   "postBuildCommitsAreDocumentationOnly": [
     "1fb9975d",
@@ -42,9 +51,9 @@
   },
   "taskCounts": {
     "total": 32,
-    "accepted": 19,
+    "accepted": 24,
     "satisfied": 3,
-    "codeCompletePendingAcceptance": 7,
+    "codeCompletePendingAcceptance": 2,
     "inProgress": 3,
     "notStarted": 0
   },
@@ -52,11 +61,6 @@
     "T00-07",
     "T01-04",
     "T01-08",
-    "T02-02",
-    "T02-04",
-    "T02-05",
-    "T02-06",
-    "T02-07",
     "T02-08",
     "T03-05"
   ],
@@ -65,24 +69,21 @@
   "documentationValidation": {
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
-    "markdownFiles": 6,
-    "relativeLinks": 560,
+    "markdownFiles": 7,
+    "relativeLinks": 638,
     "missingLinks": 0,
-    "round4ProgressCheckPassed": true,
-    "round4ProgressTestsPassed": 5
+    "productBuildOrTestsRerun": false
   },
   "latestDocumentationUpdate": {
-    "baseCommit": "22e81c0bc9171880e986f15493552dddf5d0d873",
+    "date": "2026-10-26",
+    "baseProductSourceCommit": "b29c39a541ba92461e167f14f64917d889293161",
     "sourceValidator": "python scripts/validate-source.py .",
     "sourceValidatorPassed": true,
-    "markdownFiles": 6,
-    "relativeLinks": 560,
+    "markdownFiles": 7,
+    "relativeLinks": 638,
     "missingLinks": 0,
-    "round4ProgressCheckPassed": true,
-    "round4ProgressTestsPassed": 5,
     "productBuildOrTestsRerun": false,
-    "productCodeTestsScriptsChanged": false,
-    "t01_07Evidence": "../T01-07/duplicate-cleanup-batch4-20261025.json"
+    "productCodeTestsScriptsChanged": false
   },
   "latestT01_07Cleanup": {
     "evidence": "../T01-07/screenshot-dedupe-20261025.json",
@@ -240,5 +241,14 @@
     "taskComplete": true,
     "remainingDuplicatePathsWithCurrentTextMatches": 571,
     "referenceSourceDocumentsRead": 21
-  }
+  },
+  "latestExternalPcBuild": {
+    "reportedBuildRun": "20261025T040600037Z-ec604b91",
+    "reportedInstallRun": "20261025T040558033Z-0b75781f",
+    "q06Failure": "Light hover mouseOver=False before package/install",
+    "sameRunHeadProvided": false,
+    "currentMainlineExternalRunReceived": false
+  },
+  "updatedDate": "2026-10-26",
+  "originalChecklistCodeCommit": "dcbaab13b9464523ffed6d88ca2748b6fb6dd647"
 }

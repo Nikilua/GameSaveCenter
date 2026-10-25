@@ -1079,3 +1079,11 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 - 外机先保留 stash“保存本机 GamePicker 构建前改动”。在外机查看 git status --short --branch、git stash list -n 2；若工作树不干净，另用 git stash push --include-untracked 保存当前改动，再 git fetch origin / git pull --ff-only origin main。核对 git rev-parse HEAD 与 git rev-parse origin/main 一致，再从仓库根运行 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"。若只允许 fast-forward 的拉取拒绝，停止，不reset/merge/覆盖，返回分支与状态供诊断。保留所有stash直到最新完整链成功且逐项审阅。
 - 外机验收还需要同次命令的exit code、HEAD、artifacts/build-diagnostics/<runId>/summary.json、失败/成功阶段日志与Playnite启动结果；不要只提供旧Q06 TRX。Round3用户未跟踪TRX和tests/GameSaveCenter.Playnite.Tests/TestResults/不要清理或暂存。
 - 本阶段清理本机5个Q06/R08候选.tmp目录共1456文件/324453441逻辑字节，当前 artifacts/gsc-b/44f15e66、run 20261025T091123674Z-d1fdc06a完整诊断、ZIP/PEXT与安装报告保留。32项计划、真实宿主/物理输入/DPI与外机链均未整体验收。
+
+## 2026-10-26 最新构建交接：当前主线本机全链通过
+
+截至本次交接，产品源码身份为 b29c39a541ba92461e167f14f64917d889293161。默认根命令 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul" 已以退出码0完成；build run 20261025T152449622Z-e85af693、install run 20261025T152447580Z-d50774fa，SDK8.0.423 Release 0警告/0错误，1968项1911通过/57既有skip/0失败，149 TRX一致、146 WPF类，发布/打包/安装/Playnite启动均成功。插件加载路径由同一Playnite会话extensions.log确认。完整证据见 docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/README.md。
+
+用户外机10月25日附件的Q06失败run 20261025T040600037Z-ec604b91没有同次HEAD/sourceCommit，不能对应到当前源码。外机复跑仍待用户执行；此前stash保留，先安全保存所有本地修改并快进，禁止reset、覆盖或提前stash pop。回报同次HEAD、根命令退出码及artifacts/build-diagnostics/<runId>/summary.json后再判断。
+
+32项专项仍有T00-07跨会话ACL、T01-04真实symlink权限、T01-08真实桌面Ctrl+C与外机复跑、T02-08真实宿主物理输入/DPI、T03-05隔离旧包/设置迁移五项未验。T02-02、T02-04至T02-07现已受控生产夹具验收，但不取代T02-08。不要关闭或终止当前Playnite/Worker会话来执行旧包审计；需在用户明确的独立隔离宿主条件下操作。

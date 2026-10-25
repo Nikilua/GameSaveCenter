@@ -72,7 +72,7 @@ c7640d1f标准根入口run `20261025T060407085Z-304dd11f` 在第8/145类Compact�
 
 T01-01新增显式failedStageId及installer attempt artifact list。PowerShell Core7.6.2、Desktop5.1分别验证失败exit23后新run恢复与安装3/3锁失败/改名回滚/成功；双宿主attempt清单均有run/attempt/owner/stage/created/exists/active/retention。提交级完整run实际安装暂存和备份目录都记录为本次创建，结束后不存在；外部Playnite路径不能传仓库清理器。证据`evidence/T01-01/artifact-manifest-f577fd19/`。
 
-归档并校验16份T01-01 JSON证据后，清理本阶段拥有的8个`.tmp/t01-01-*`目录（逻辑文件2,363,091字节）；D盘可用空间从12,290,236,416增至12,292,726,784字节。证据已在仓库下归档，用户Round3 TRX/TestResults未动。纯文档提交不重跑全链；产品源码的最后全链身份仍是f577fd19。
+归档并校验16份T01-01 JSON证据后，清理本阶段拥有的8个`.tmp/t01-01-*`目录（逻辑文件2,363,091字节）；D盘可用空间从12,290,236,416增至12,292,726,784字节。证据已在仓库下归档，用户Round3未跟踪证据/TRX及TestResults未动。纯文档提交不重跑全链；产品源码的最后全链身份仍是f577fd19。
 
 T01-02清理预览在当前`f577fd19`代码上复验：PowerShell Core7.6.2与Windows PowerShell5.1.22000.2538各9/9，覆盖活动/过期身份、时间往返、路径与junction拒绝、保留原因；结果JSON均未授权删除，哨兵SHA不变。本项验收仅针对只读预览，不含自动删除执行器；三份旧/新预览JSON路径已脱敏。详见`docs/design/reviews/build-ui-reliability-20261022/evidence/T01-02/README.md`。
 
@@ -12250,7 +12250,7 @@ dcbaab13完整标准链和提交级证据完成后，按路径归属/规范化�
 
 ## 2026-10-25 T03-06 清理与引用审计完成
 
-T00-07失败候选隔离输出已在dcbaab13完整标准链与证据归档后清理；路径归属、reparse point、活动进程、文档引用、168,565,900字节清理量、磁盘空间前后值及保留的失败诊断/最新成功输出均有T00-07持久记录，用户Round3 TRX/TestResults未动。既有T03-06范围18份文档750个相对链接仍为0失效；本轮对11份当前入口和专项文档复核706个本地链接，0失效。首次`python scripts/validate-source.py`发现本阶段跨会话JSON的UTF-8 BOM，移除BOM后复跑通过。仅文档/证据变更，最近产品完整链仍绑定dcbaab13，不以本次文档校验替代构建。
+T00-07失败候选隔离输出已在dcbaab13完整标准链与证据归档后清理；路径归属、reparse point、活动进程、文档引用、168,565,900字节清理量、磁盘空间前后值及保留的失败诊断/最新成功输出均有T00-07持久记录，用户Round3未跟踪证据/TRX及TestResults未动。既有T03-06范围18份文档750个相对链接仍为0失效；本轮对11份当前入口和专项文档复核706个本地链接，0失效。首次`python scripts/validate-source.py`发现本阶段跨会话JSON的UTF-8 BOM，移除BOM后复跑通过。仅文档/证据变更，最近产品完整链仍绑定dcbaab13，不以本次文档校验替代构建。
 
 ## 2026-10-25 T03-07 专项与第四轮去重验收
 
@@ -12304,3 +12304,9 @@ T03-08交付清单已完成并标明边界：最新成功产品完整链绑定 `
 ## 2026-10-25 T03-05 当前宿主回退前基线
 
 当前Playnite PID 50020的启动日志记录插件DLL从安装扩展目录加载；该文件ProductVersion完整带`53ee9381`身份，SHA `23C8F0EA0229156832E318970EEBE0855EEAE632D5F79E7EEF4F858A0D2AF9C9`与安装报告和当前包身份相符。Worker PID 50908从同一扩展根运行，EXE/DLL均为`53ee9381`；Worker DLL SHA `92526B6A4116C1828F70E2DE0888E78D5CAAF1DBC33593F57DA9D9D7C5200CA6`与安装报告相符。机器可读进程、日志、路径和身份见`docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/host-53ee9381.json`。这是当前安装基线，不代表旧包加载或设置迁移通过；没有触碰用户设置。纯证据文档更新，产品代码身份不变。
+
+## 2026-10-26 b29c39a5 默认根入口完整验收
+
+2026-10-25晚在产品源码提交 b29c39a541ba92461e167f14f64917d889293161 执行默认标准根入口，build run 20261025T152449622Z-e85af693、install run 20261025T152447580Z-d50774fa，SDK8.0.423/Release、155阶段无失败、编译0警告/0错误。总计1968项1911通过/57既有skip/0失败，149份TRX一致、146个WPF隔离类结束。Q06ButtonStateSequenceBehaviorTests与R05TooltipTimingBehaviorTests均通过。Worker win-x64发布、ZIP/PEXT同SHA、安装身份验证通过；Playnite PID53100的extensions.log确认从当前安装目录加载插件，Worker PID52832从同目录运行。获准的默认根命令退出码0。证据见 docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/README.md。此前受限沙箱安装失败及权限跳过没有纳入成功结果；全部原始诊断/TRX留在本地artifacts，不进Git。
+
+用户2026-10-25外机附件run 20261025T040600037Z-ec604b91显示Q06 Light hover失败，但没有同次HEAD/sourceCommit，探针仍用MouseDevice.ChangeMouseOver；无法确认该失败输入对应的确切提交。当前主线完整链Q06通过，外机快进后的完整根入口仍待用户提供，不能用本机通过推断外机通过。用户stash继续保留。T02-02、T02-04至T02-07的受控生产夹具已经全覆盖并在完整链复验，状态更新为受控范围已验收；物理输入、真实宿主与DPI边界仍属于T02-08。完整32项计划当前5项未结：T00-07、T01-04、T01-08、T02-08、T03-05。

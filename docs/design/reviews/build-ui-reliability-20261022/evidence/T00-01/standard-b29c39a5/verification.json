@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-25",
+  "sourceCommit": "b29c39a541ba92461e167f14f64917d889293161",
+  "command": "cmd.exe /d /c \"GameSaveCenter-Run.cmd < nul\"",
+  "commandExitCode": 0,
+  "buildRunId": "20261025T152449622Z-e85af693",
+  "installRunId": "20261025T152447580Z-d50774fa",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "environment": {
+    "osVersion": "10.0.22000.0",
+    "powershellVersion": "7.6.2",
+    "powershellEdition": "Core",
+    "osBitness": 64,
+    "processBitness": 64
+  },
+  "release": {
+    "warnings": 0,
+    "errors": 0,
+    "steps": 155,
+    "failedSteps": 0
+  },
+  "tests": {
+    "total": 1968,
+    "passed": 1911,
+    "skipped": 57,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "trxFiles": 149,
+    "reportedCounterFileCount": 149,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "wpfIsolatedClassRunCount": 146,
+    "skipReason": "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。"
+  },
+  "groups": [
+    {
+      "id": "core",
+      "total": 157,
+      "passed": 157,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "id": "playnite-source",
+      "total": 562,
+      "passed": 544,
+      "skipped": 18,
+      "failed": 0
+    },
+    {
+      "id": "worker",
+      "total": 400,
+      "passed": 400,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "id": "playnite-wpf-isolated",
+      "total": 849,
+      "passed": 810,
+      "skipped": 39,
+      "failed": 0,
+      "isolatedClasses": 146
+    }
+  ],
+  "package": {
+    "zip": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "pext": "artifacts/GameSaveCenter-0.6.73.pext",
+    "zipSha256": "E6F5F836E2FA59ACBC6BE5D6EBC9351F79A72C95B4EDCFBFE4422C36E6213C77",
+    "pextSha256": "E6F5F836E2FA59ACBC6BE5D6EBC9351F79A72C95B4EDCFBFE4422C36E6213C77",
+    "hashesMatch": true
+  },
+  "install": {
+    "version": "0.6.73",
+    "dllVersion": "0.6.73.0",
+    "identityCount": 6,
+    "identitiesMatchSourceCommit": true,
+    "report": "artifacts/last-dev-install.txt",
+    "extensionPath": "C:UserslopmatuAppDataRoamingPlayniteExtensionsGameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec"
+  },
+  "host": {
+    "playnitePid": 53100,
+    "playniteStarted": "2026-10-25T23:52:27+08:00",
+    "workerPid": 52832,
+    "workerStarted": "2026-10-25T23:52:38+08:00",
+    "pluginLoadLog": "extensions.log 2026-10-25 23:52:34.784",
+    "pluginLoadPathVerified": true,
+    "observedGames": 3
+  },
+  "diagnostics": {
+    "summary": "artifacts/build-diagnostics/20261025T152449622Z-e85af693/summary.json",
+    "rawTrxCount": 149,
+    "originalDiagnosticsRetained": true
+  },
+  "priorSandboxAttempt": {
+    "runId": "20261025T145344536Z-d01d2e6f",
+    "diagnosticRunId": "20261025T145346471Z-37ae3ae2",
+    "issue": "默认沙箱阻止写入Playnite用户安装目录，安装返回Access denied；额外11项因命名管道/系统指针权限限制被跳过",
+    "countsAsSuccessfulRun": false
+  },
+  "externalLatest": {
+    "buildRunId": "20261025T040600037Z-ec604b91",
+    "installRunId": "20261025T040558033Z-0b75781f",
+    "q06": "Light hover failed before package/install",
+    "sameRunHeadProvided": false,
+    "externalBuildVerified": false
+  },
+  "trackedProductChangesDuringRun": false,
+  "overallPlanComplete": false
+}

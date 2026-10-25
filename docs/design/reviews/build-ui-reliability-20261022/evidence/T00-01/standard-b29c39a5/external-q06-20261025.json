@@ -1,0 +1,9 @@
+{
+  "buildRunId": "20261025T040600037Z-ec604b91",
+  "installRunId": "20261025T040558033Z-0b75781f",
+  "observed": "Q06 Light hover sampled mouseOver=False and hover opacity=0; package/install stages were not reached",
+  "testProbeShown": "MouseDevice.ChangeMouseOver synthetic input",
+  "headOrSourceCommitInSameRun": null,
+  "relation": "This run predates the local b29c39a5 standard-root run and does not identify its tested source. The current mainline Q06 TRX passes.",
+  "externalLatestMainBuildVerified": false
+}

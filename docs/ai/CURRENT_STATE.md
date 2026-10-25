@@ -1,18 +1,18 @@
 # GameSaveCenter 当前事实
 
-更新：2026-10-25。历史按当时提交解释，不能覆盖本页当前结论。
+更新：2026-10-26。历史按当时提交解释，不能覆盖本页当前结论。
 
 ## 最新构建状态（2026-10-25）
 
-- 最新产品源码身份 `53ee9381d23772a60ebaf7ff16aeb81d6584d28a` 的默认 `GameSaveCenter-Run.cmd` 全链退出0：build run `20261025T091123674Z-d1fdc06a`、install run `20261025T091121578Z-c93b09da`。SDK8.0.423 / Release，solution 0警告/0错误；Core157/157、Worker400/400；总计1968项、1911通过、57个既有skip、0失败/错误/超时/中止，149份TRX计数一致，146个WPF隔离类全部完成。[本次完整链证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/README.md)。
-- Worker `win-x64`发布、ZIP/PEXT、安装身份检查与Playnite重启通过。六个已安装程序集的ProductVersion均带`53ee9381`完整身份；Playnite PID 50020的`extensions.log`记录插件从当前扩展目录加载，插件DLL SHA与安装身份一致；Worker PID 50908的EXE/DLL也带完整`53ee9381`身份。[运行时回退基线](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/host-53ee9381.json)。未验证真实页面交互/物理输入矩阵。
-- 本机全链中Q06双主题状态、R08动效反向类均通过。外机日志run `20261025T022508878Z-409c39f7` 在较早`d6a401af`上Q06 Dark hover失败；随后 `20261025T040600037Z-ec604b91` 的Q06 Light hover也失败（`mouseOver=False`、`hoverOverlay=0`）。后一日志的探针文本对应`23cf1c6e`之前的旧测试实现，且未附同次HEAD；两次都早于当前`53ee9381`完整链。外机在最新 `main` 上的完整重跑仍待回报，不能把本机通过当作双机通过。
-- 外机已有 stash `保存本机 GamePicker 构建前改动`，继续保留并暂不pop/drop。需要在外机先确认工作树、`git pull --ff-only origin main`到最新主线，然后从仓库根执行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`；若fast-forward拒绝，停止并回报状态，不做reset/强制覆盖。
-- 标准全链前后跟踪文件无改动；已有未跟踪Round3 TRX与`tests/GameSaveCenter.Playnite.Tests/TestResults/`均保留。归档完整链后清理5个本任务`.tmp`夹具目录，共1456个文件、324453441逻辑字节；当前构建输出、完整诊断、ZIP/PEXT和安装报告保留，见[清理记录](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/cleanup.json)。
-- T00-01本机默认入口验收完成；32项专项整体仍未完成，外机同步构建、跨会话/符号链接权限及真实Playnite宿主、物理输入/DPI等边界继续单独跟踪。
-- T03-05最近的实际文件事务回放仍绑定`23cf1c6e`包；当前`53ee9381`插件加载路径及插件/Worker身份已有运行时日志和SHA证据，旧提交到53ee源码差异仅8个Playnite界面/视口文件，Settings、Contracts、Core、Worker及数据库迁移无变化。[源码审查](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-53ee9381.json)、[当前宿主基线](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/host-53ee9381.json)。隔离旧包加载及设置往返/迁移仍待验。
-- 既有两批清理15个自有失败/定向/被替代输出目录，5600文件、1310756993逻辑字节；保留2caafef1与7525f8c9失败诊断、修复候选验证、用户旧TRX/TestResults。各历史批次磁盘观测与逐路径清单在对应standard链cleanup.json。
-
+- 当前产品源码身份 b29c39a541ba92461e167f14f64917d889293161 的默认根入口 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul" 已退出0：build run 20261025T152449622Z-e85af693、install run 20261025T152447580Z-d50774fa。SDK8.0.423 / Release，solution 0警告/0错误、155阶段无失败。Core157/157、Worker400/400；总计1968项1911通过/57跳过/0失败、错误、超时或中止，149份TRX一致、146个WPF隔离类全部完成。[最新完整链证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/README.md)。
+- 57个跳过项逐一标注为已撤销的“今日工作台 UI 架构”断言。Worker win-x64发布成功，ZIP/PEXT SHA-256均为 E6F5F836E2FA59ACBC6BE5D6EBC9351F79A72C95B4EDCFBFE4422C36E6213C77。安装清单0.6.73，六个程序集身份和SHA均与b29c39a5一致。
+- Playnite PID53100启动后，extensions.log在23:52:34.784记录插件从实际扩展目录加载并观察到3个游戏；Worker PID52832从该目录下Worker路径启动。[当前安装身份](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/install-identities.txt)。这不覆盖真实页面、浅色/窄短窗、物理输入或DPI验收。
+- 用户本轮外机附件 build run 20261025T040600037Z-ec604b91 / install run 20261025T040558033Z-0b75781f在Q06 Light hover失败，未到打包/安装；附件没有同次HEAD/sourceCommit，控制台探针仍使用MouseDevice.ChangeMouseOver。该日志早于当前b29c39a5本机完整链，不能确定其精确源身份或代表当前main结果。当前main Q06 TRX本轮通过；外机快进到最新main后的默认根入口完整重跑仍待用户回传。[外机日志边界](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/external-q06-20261025.json)。
+- 外机已有stash“保存本机 GamePicker 构建前改动”，继续保留并暂不pop/drop。同步前保存所有未提交及未跟踪改动，确认clean后仅执行git pull --ff-only origin main；若fast-forward拒绝，停止回报，不reset/覆盖。快进后核对HEAD与origin/main一致，再从仓库根执行 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"，保留stash直到完整链退出0并逐项审查。
+- 构建summary的workingTreeClean=false只由预存的未跟踪Round3测试证据/TRX及tests/GameSaveCenter.Playnite.Tests/TestResults/造成；跟踪源码、测试、脚本未变。用户已有Round3证据/TRX和TestResults未暂存、修改或删除。149份完整TRX及summary保留于本机artifacts/build-diagnostics/20261025T152449622Z-e85af693；包、隔离输出和安装报告也保留于artifacts。
+- 同日较早默认沙箱根入口因写入Playnite用户安装目录被拒并有11项权限相关额外跳过，不计入成功结论。获准的标准根入口完整链已实际完成；最终构建、测试、打包、安装和启动均成功。
+- T00-01本机当前源码完整根入口验收完成。T02-02、T02-04至T02-07的受控生产夹具和当前完整链对应WPF类均通过；它们不替代T02-08真实宿主/物理输入/DPI证据。32项计划仍有5项待验：T00-07、T01-04、T01-08、T02-08、T03-05。
+- T03-05当前安装的插件实际加载路径已核实；旧包隔离配置加载与设置往返/迁移仍未完成。
 ## 历史验证身份
 
 - 此前完整验收代码：`dcbaab13`，在Q14/R08等可靠性修复后将同一checkout互斥锁扩至Windows全局命名空间。
@@ -25,7 +25,7 @@
 - T00-07锁名已从`Local\`改为`Global\`。`dcbaab13`提交后的默认根入口全链退出0，SDK8.0.423、Release0/0、1967项1910通过/57跳过/0失败，发布/打包/安装/Playnite启动及六程序集身份/SHA通过。双PowerShell同会话锁回归各5/5；Task Scheduler权限拒绝跨会话实测，跨会话及跨用户ACL仍未验。失败候选隔离输出清理释放D盘约170MB，失败诊断与最新成功输出保留。[T00-07证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-07/README.md)
 - T03-06 清理与证据引用校验已验收：T00-07失败输出有持久清理记录，用户TRX/TestResults未动；本轮11份文档706个本地Markdown链接0失效，`validate-source.py`通过。[审计记录](../design/reviews/build-ui-reliability-20261022/evidence/T03-06/README.md)
 - T03-07 与第四轮去重已验收：映射提交、证据和额外条件；Round4 64项渲染校验及7项已实现/1项外部阻塞与backlog一致。S07-03权限阻塞不变，未升级宿主待验。[映射与校验记录](../design/reviews/build-ui-reliability-20261022/evidence/T03-07/OVERLAP.md)
-- T03-08最终交付检查单已验收：完整链绑定dcbaab13；后续main提交只含文档/证据。T01-07验收后32项中仍有10项待权限、外机或真实宿主验收，计划未整体完成。[检查单](../design/reviews/build-ui-reliability-20261022/evidence/T03-08/README.md)
+- 历史的T03-08初版交付检查单（2026-10-25）曾绑定dcbaab13，后续main提交只含文档/证据；当时T01-07验收后32项中有10项待权限、外机或真实宿主验收。当前清单状态以本页最新构建状态及T03-08更新版为准。[检查单](../design/reviews/build-ui-reliability-20261022/evidence/T03-08/README.md)
 - T00-03恢复控制流现已在PowerShell Core 7.6.2与Windows PowerShell 5.1.22000.2538各4/4通过：中断下载、截断安装脚本、安装器退出0但仍只见SDK9.0.302均被拒绝，之后只接受global.json锁定的8.0.423；失败环境回滚和bootstrap临时目录清理通过。[双宿主证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-03/recovery-20261025-verified/README.md)。这是受控故障注入，不代表真实网络/SDK压缩包损坏复验；后续 `d0e11929` 标准完整链已成功。
 - e1127ac0候选的历史标准根入口run `20261024T165132695Z-aadc0bbd` 在R08悬停测试失败，未进入发布/安装；R08夹具等待初始动效完成，并延长测试副本故事板采样时间，同时保留连续性、中间态、方向、终态断言。修复后R08类连续5轮15/15、R09类2/2，见[专项证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-motion-window-20261025/README.md)；后续提交 `d0e11929` 的标准完整根入口已通过，见[本次完整证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-d0e11929/README.md)。
 - T02-03定向双主题2/2、所在类11/11；真实WPF键盘焦点、选择ID/当前项和900/1400 DIP往返稳定。全链证据：[T02-03提交级完整验证](../design/reviews/build-ui-reliability-20261022/evidence/T02-03/standard-verification.json)。

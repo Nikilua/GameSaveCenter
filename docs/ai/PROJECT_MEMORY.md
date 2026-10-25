@@ -1210,3 +1210,11 @@ T01-07于2026-10-25完成验收。第四批将24组无文档引用的三份相�
 产品源码提交 53ee9381d23772a60ebaf7ff16aeb81d6584d28a 使用默认根入口完整退出0：build run 20261025T091123674Z-d1fdc06a、install run 20261025T091121578Z-c93b09da。SDK8.0.423、Release0/0、155步无失败；Core157/157、Worker400/400、全套1968项1911通过/57既有skip/0失败或错误，149份TRX计数一致，146个WPF隔离类完成。Worker win-x64发布、ZIP/PEXT、安装六程序集版本与SHA、Playnite PID50020启动均通过。当前进程内插件加载路径没有核验。完整证据 design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/。
 
 全链仅见已有未跟踪用户Round3 TRX与tests/GameSaveCenter.Playnite.Tests/TestResults/，均未更改。保留当前诊断/构建/包/安装报告，归档后清理本阶段5个自有.tmp目录1456文件、324453441逻辑字节。用户外机附加run 20261025T022508878Z-409c39f7在较早d6a401af checkout上Q06 Dark hover失败；不能用本机53ee9381成功覆盖外机结果。用户stash保持原样，待其在最新main独立完整重跑后审阅。32项计划与其他宿主/权限验收边界仍开放。
+
+## 2026-10-26 当前恢复点：b29c39a5 标准完整链已通过，外机复跑待回报
+
+- 当前产品源码 b29c39a541ba92461e167f14f64917d889293161 的默认 GameSaveCenter-Run.cmd 完整链于10月25日晚退出0：build run 20261025T152449622Z-e85af693、install run 20261025T152447580Z-d50774fa。SDK8.0.423 Release，155阶段0失败、solution0警告/0错误；1968项1911通过/57既有skip/0失败，149 TRX计数一致，146 WPF隔离类结束。57个skip全部逐项说明为已撤销“今日工作台 UI 架构”断言。Worker发布、ZIP/PEXT同SHA、六程序集安装身份核对和Playnite启动成功；extensions.log在同一新宿主周期确认插件从本次安装目录加载。证据 docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/README.md。
+- 受限沙箱第一次根命令在安装用户目录遇到Access denied，且比最终全权限重跑多11个环境权限skip；那次不计成功。获准的同一标准根命令最终完整通过，原始诊断和TRX保留于本地artifacts，不提交生成物。此前已有Round3 TRX/TestResults没有暂存或清理。
+- 用户10月25日新附件的外机Q06 run 20261025T040600037Z-ec604b91没有同次HEAD/sourceCommit，Q06 Light hover失败，控制台仍出现MouseDevice.ChangeMouseOver；不能将其与当前b29源码精确绑定。当前本机完整链的Q06 TRX通过，仍不等价于外机成功。外机应保留stash，安全快进至最新main后从根运行 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"，回报HEAD、退出码和同次diagnostics目录。
+- T02-02、T02-04至T02-07的受控生产夹具已按专项范围验收，最新完整链覆盖相关WPF类；真实宿主/物理输入/DPI仍单独留在T02-08。32项计划当前仍有5项待验：T00-07、T01-04、T01-08、T02-08、T03-05。
+- 本次构建后只更新文档与新验收证据，源代码、测试、脚本未修改；因此没有因纯文档更改重跑产品构建。
