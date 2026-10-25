@@ -1,6 +1,6 @@
 ## 2026-10-25 Q06外机失败与测试夹具时序修正
 
-另一台电脑在 `d6a401af` 上运行默认根入口，SDK8.0.423 Release编译0警告/0错误，但WPF第29/145类 `Q06ButtonStateSequenceBehaviorTests` 失败：Dark合成hover时 `IsMouseOver=true` 而动画中的 `HoverOverlay.Opacity=0`。stash冲突文件已按安全步骤保全并快进；这次不是此前CS8300冲突，而是独立的动画采样时序问题。测试在布局后重新施加hover，并立即采样120 ms故事板属性；现于该处推进Dispatcher 180 ms，未改生产资源/动画/断言。补丁文件SHA、外机失败身份、三次Q06定向复测和完整隔离Release测试证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/`。完整隔离链SDK8.0.423、编译0/0、1967项1899通过/68跳过/0失败、148 TRX一致、145 WPF类完成。标准根入口的包/安装/宿主启动尚未在新候选上验证：本机Playnite Desktop和Worker仍运行，外机需拉取修复提交后完整运行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`，保留stash并回传日志；不要stash pop或覆盖个人改动。T00-01维持代码完成待验收。
+另一台电脑在 `d6a401af` 上运行默认根入口，SDK8.0.423 Release编译0警告/0错误，但WPF第29/145类 `Q06ButtonStateSequenceBehaviorTests` 失败：Dark合成hover时 `IsMouseOver=true` 而动画中的 `HoverOverlay.Opacity=0`。stash冲突文件已按安全步骤保全并快进；这次不是此前CS8300冲突，而是独立的动画采样时序问题。测试在布局后重新施加hover，并立即采样120 ms故事板属性；提交 `ccfe4cbf546c0688f171ad5a24d35cc2d4308921` 于该处推进Dispatcher 180 ms，未改生产资源/动画/断言。补丁文件SHA、外机失败身份、三次Q06定向复测和完整隔离Release测试证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/`。完整隔离链SDK8.0.423、编译0/0、1967项1899通过/68跳过/0失败、148 TRX一致、145 WPF类完成。标准根入口的包/安装/宿主启动尚未在新候选上验证：本机Playnite Desktop和Worker仍运行，外机需拉取修复提交后完整运行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`，保留stash并回传日志；不要stash pop或覆盖个人改动。T00-01维持代码完成待验收。
 
 ## 2026-10-25 d0e11929 标准完整链通过
 

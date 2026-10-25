@@ -2,7 +2,7 @@
 
 外机在stash安全保全、快进至 `d6a401af` 后已可编译，但标准根入口在第29/145个WPF隔离类 `Q06ButtonStateSequenceBehaviorTests` 失败；Release编译0警告/0错误，失败时累计1299项1280通过/18跳过/1失败，未进入打包安装。日志显示Dark合成hover `IsMouseOver=true` 但动画属性`HoverOverlay.Opacity=0`。测试重新施加hover后增加180 ms Dispatcher推进再采样，没有改生产样式或放宽断言。
 
-SDK8.0.423下Q06类隔离运行3次3/3通过；完整隔离Release构建/测试退出0，0警告/0错误，1967项1899通过/68跳过/0失败，148份TRX计数一致、145个WPF类全部完成。证据及脱敏TRX、状态探针截图见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/`。本机Playnite Desktop与Worker正在运行，未启动会替换安装的根入口；新候选默认根入口打包/安装/启动仍待外机复验，T00-01保持代码完成待验收。用户未跟踪Round3 TRX/TestResults未暂存、修改或删除。
+修复提交 `ccfe4cbf546c0688f171ad5a24d35cc2d4308921`。SDK8.0.423下Q06类隔离运行3次3/3通过；完整隔离Release构建/测试退出0，0警告/0错误，1967项1899通过/68跳过/0失败，148份TRX计数一致、145个WPF类全部完成。证据及脱敏TRX、状态探针截图见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/`。本机Playnite Desktop与Worker正在运行，未启动会替换安装的根入口；新候选默认根入口打包/安装/启动仍待外机复验，T00-01保持代码完成待验收。用户未跟踪Round3 TRX/TestResults未暂存、修改或删除。
 
 ## 2026-10-25 T01-07 离屏截图重复副本清理
 

@@ -92,5 +92,6 @@
   "standardRootChain": {
     "status": "pending",
     "reason": "Local Playnite Desktop and Worker processes were active, so the root install/start chain was not run; the external machine must rerun it on the patched commit."
-  }
+  },
+  "fixCommit": "ccfe4cbf546c0688f171ad5a24d35cc2d4308921"
 }

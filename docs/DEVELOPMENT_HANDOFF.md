@@ -2,7 +2,7 @@
 
 外机在保留 stash 并快进到 `d6a401af` 后运行 `GameSaveCenter-Run.cmd`：SDK8.0.423 Release编译0警告/0错误；第29/145个WPF类Q06测试失败，Dark合成hover `IsMouseOver=true` 但 `hoverOverlay=0`。失败run `20261025T022508878Z-409c39f7`，1299项1280通过/18跳过/1失败，未打包、安装或启动。该问题和先前 `GamePickerViewModel.cs` stash冲突引起的CS8300不同。
 
-当前测试夹具在布局后重新合成hover后，将Dispatcher推进180 ms再读取120 ms动画属性；生产资源与断言未变。SDK8.0.423定向Q06三次3/3，完整隔离构建/测试0警告/0错误、1967项1899通过/68跳过/0失败、145/145 WPF类完成。证据及脱敏TRX/截图见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/README.md`。
+修复已提交为 `ccfe4cbf546c0688f171ad5a24d35cc2d4308921`。当前测试夹具在布局后重新合成hover后，将Dispatcher推进180 ms再读取120 ms动画属性；生产资源与断言未变。SDK8.0.423定向Q06三次3/3，完整隔离构建/测试0警告/0错误、1967项1899通过/68跳过/0失败、145/145 WPF类完成。证据及脱敏TRX/截图见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/README.md`。
 
 本机Playnite Desktop与Worker仍在运行，因此没有执行默认入口的包/安装/启动阶段。当前T00-01代码完成待验收。推送修复提交后，外机执行：
 
