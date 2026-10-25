@@ -1,10 +1,10 @@
 ## 2026-10-25 R08动画采样候选
 
-提交`7525f8c9`默认完整根入口run `20261025T084235278Z-4336836a`在WPF第74/146类R08失败：1437总、1418通过、18跳过、1失败，未发布/安装；Q06第29类已通过。失败样本press midpoint为ScaleX0.998，给回弹断言留下不足0.002的可采样区间。当前候选将测试采样起点要求收紧到ScaleX<=0.99，并把R08合成悬停改用不可命中测试窗口上的`IsMouseOverPropertyKey`，不操作全局MouseDevice。Release解决方案0警告/0错误，R08类五个独立进程各3/3。[失败与候选证据](docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/README.md)。下一步只提交本轮候选，随后冻结源码跑默认根入口；外机改动与stash继续保留。
+提交`7525f8c9`默认完整根入口run `20261025T084235278Z-4336836a`在WPF第74/146类R08失败：1437总、1418通过、18跳过、1失败，未发布/安装；Q06第29类已通过。失败样本press midpoint为ScaleX0.998，给回弹断言留下不足0.002的可采样区间。当前候选将测试采样起点要求收紧到ScaleX<=0.99，并把R08合成悬停改用不可命中测试窗口上的`IsMouseOverPropertyKey`，不操作全局MouseDevice。Release解决方案0警告/0错误，R08类五个独立进程各3/3。[失败与候选证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/README.md)。下一步只提交本轮候选，随后冻结源码跑默认根入口；外机改动与stash继续保留。
 
 ## 2026-10-25 Q06 悬停视觉夹具候选
 
-2caafef1的默认根入口再次在Q06 Light hover失败，显示合成`MouseDevice.ChangeMouseOver`受桌面指针同步覆盖；失败run `20261025T081807812Z-6979bbcf`保留。当前候选不再调用全局MouseDevice：对不可命中测试的夹具设置WPF只读`IsMouseOver` DP键，让生产共享模板的状态触发器/动画运行。Release解决方案0警告/0错误，Q06隔离进程5轮各1/1，双主题五态及十张截图通过；[证据](docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-dpkey-20261025/README.md)。这只是视觉状态回归，未模拟物理输入。后续须提交候选，再跑默认`GameSaveCenter-Run.cmd`完整构建、测试、打包、安装和启动；外机完整验证仍待。
+2caafef1的默认根入口再次在Q06 Light hover失败，显示合成`MouseDevice.ChangeMouseOver`受桌面指针同步覆盖；失败run `20261025T081807812Z-6979bbcf`保留。当前候选不再调用全局MouseDevice：对不可命中测试的夹具设置WPF只读`IsMouseOver` DP键，让生产共享模板的状态触发器/动画运行。Release解决方案0警告/0错误，Q06隔离进程5轮各1/1，双主题五态及十张截图通过；[证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-dpkey-20261025/README.md)。这只是视觉状态回归，未模拟物理输入。后续须提交候选，再跑默认`GameSaveCenter-Run.cmd`完整构建、测试、打包、安装和启动；外机完整验证仍待。
 
 ## 2026-10-25 T03-05 当前包回退事务复验
 
@@ -1196,3 +1196,9 @@ T01-07随后对 `save-summary-reflow-20261023/render-final` 再清理178个未�
 
 
 T01-07于2026-10-25完成验收。第四批将24组无文档引用的三份相同PNG保留最新报告目录一份，清理另外48个副本；四批累计838项/113,982,425逻辑字节，204个不同SHA。初始索引现为1,594张/200,160,589字节，剩余202组/571个重复路径均在当前引用源文档中命中文件名/路径或目录并保留，35组降为单份。证据 `design/reviews/build-ui-reliability-20261022/evidence/T01-07/duplicate-cleanup-batch4-20261025.json`；其余任务仍开放。
+
+## 2026-10-25 T00-01 当前代码标准全链通过
+
+产品源码提交 53ee9381d23772a60ebaf7ff16aeb81d6584d28a 使用默认根入口完整退出0：build run 20261025T091123674Z-d1fdc06a、install run 20261025T091121578Z-c93b09da。SDK8.0.423、Release0/0、155步无失败；Core157/157、Worker400/400、全套1968项1911通过/57既有skip/0失败或错误，149份TRX计数一致，146个WPF隔离类完成。Worker win-x64发布、ZIP/PEXT、安装六程序集版本与SHA、Playnite PID50020启动均通过。当前进程内插件加载路径没有核验。完整证据 design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/。
+
+全链仅见已有未跟踪用户Round3 TRX与tests/GameSaveCenter.Playnite.Tests/TestResults/，均未更改。保留当前诊断/构建/包/安装报告，归档后清理本阶段5个自有.tmp目录1456文件、324453441逻辑字节。用户外机附加run 20261025T022508878Z-409c39f7在较早d6a401af checkout上Q06 Dark hover失败；不能用本机53ee9381成功覆盖外机结果。用户stash保持原样，待其在最新main独立完整重跑后审阅。32项计划与其他宿主/权限验收边界仍开放。

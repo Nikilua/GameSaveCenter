@@ -4,11 +4,13 @@
 
 ## 最新构建状态（2026-10-25）
 
-- 上一次完整链在 `23cf1c6e136d9c1551ad1aad5179249ccad9b14d` 通过，build run `20261025T071958125Z-8a088839`、install run `20261025T071955792Z-606d204b`。其后 `2caafef1` 根入口 Q06 失败（run `20261025T081807812Z-6979bbcf`）。Q06 修复提交 `7525f8c9` 的完整入口 `20261025T084235278Z-4336836a` 已通过编译、Core/Worker 和 Q06，但在第74/146个WPF类R08失败，1437项1418通过/18跳过/1失败；未发布、打包或安装。因此此前完整链均不能代表当前候选已通过。[此前完整链](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-23cf1c6e/README.md)。
-- R08候选让press视觉样本到达`ScaleX <= 0.99`再释放，并将悬停DP探针隔离于不可命中测试的窗口，生产资源和完整动画断言不变。SDK8.0.423 Release解决方案构建0警告/0错误；R08五个独立进程各3/3。[失败与修复证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/README.md)。默认根入口仍须在修复提交后完整复跑，T00-01保持代码完成待验收。
+- 最新产品源码身份 `53ee9381d23772a60ebaf7ff16aeb81d6584d28a` 的默认 `GameSaveCenter-Run.cmd` 全链退出0：build run `20261025T091123674Z-d1fdc06a`、install run `20261025T091121578Z-c93b09da`。SDK8.0.423 / Release，solution 0警告/0错误；Core157/157、Worker400/400；总计1968项、1911通过、57个既有skip、0失败/错误/超时/中止，149份TRX计数一致，146个WPF隔离类全部完成。[本次完整链证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/README.md)。
+- Worker `win-x64`发布、ZIP/PEXT、安装身份检查与Playnite重启通过。六个已安装程序集的ProductVersion均带`53ee9381`完整身份；Playnite启动后PID 50020。包/程序集SHA与安装路径见证据目录。未验证当前进程内插件实际加载路径或真实页面/物理输入矩阵。
+- 本机全链中Q06双主题状态、R08动效反向类均通过。用户最近贴出的外机run `20261025T022508878Z-409c39f7` 在Q06 Dark hover报告`hoverOverlay=0`并在打包前失败；其终端记录显示该次从`ea926c5e`快进到`d6a401af`后运行，早于当前产品源码身份。外机在最新 `main` 上的完整重跑仍待回报，不能把本机通过当作双机通过。
+- 外机已有 stash `保存本机 GamePicker 构建前改动`，继续保留并暂不pop/drop。需要在外机先确认工作树、`git pull --ff-only origin main`到最新主线，然后从仓库根执行 `cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"`；若fast-forward拒绝，停止并回报状态，不做reset/强制覆盖。
+- 标准全链前后跟踪文件无改动；已有未跟踪Round3 TRX与`tests/GameSaveCenter.Playnite.Tests/TestResults/`均保留。归档完整链后清理5个本任务`.tmp`夹具目录，共1456个文件、324453441逻辑字节；当前构建输出、完整诊断、ZIP/PEXT和安装报告保留，见[清理记录](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/cleanup.json)。
+- T00-01本机默认入口验收完成；32项专项整体仍未完成，外机同步构建、跨会话/符号链接权限及真实Playnite宿主、物理输入/DPI等边界继续单独跟踪。
 - T03-05已将回退事务复验更新到当前23cf1c6e包：旧/当前真实包在隔离`.tmp`执行失败回滚与重试，239文件逐项匹配、六程序集身份/SHA匹配；无活动Playnite/Worker交互。[证据](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/rollback-replay-23cf1c6e.json)。隔离Playnite配置中的插件加载、设置兼容和迁移仍待验，不能据此记整项完成。
-- 用户外机日志run `20261025T040600037Z-ec604b91` 同样出现Q06 Light hover `mouseOver=False`；外机本地 `GamePickerViewModel.cs` 还保留未解决stash冲突，改动与stash均须保护。[外机证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-input-resync-20261025/README.md)。外机的未提交代码/文档/测试/证据不覆盖；须先完整stash保存并快进到最终修复提交，再运行默认入口。
-- 23cf1c6e的T00-01本机完整链曾通过，但当前7525f8c9根入口在R08失败；Q06与R08修复候选已通过定向构建/测试，完整链再次成功前T00-01保持代码完成待验收。32项计划整体未完成，仍有外机、权限、真实宿主和物理输入验收条件。
 - 既有两批清理15个自有失败/定向/被替代输出目录，5600文件、1310756993逻辑字节；保留2caafef1与7525f8c9失败诊断、修复候选验证、用户旧TRX/TestResults。各历史批次磁盘观测与逐路径清单在对应standard链cleanup.json。
 
 ## 历史验证身份

@@ -1061,3 +1061,11 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 - R08测试夹具先等待初始悬停离开动效结束，再把生产模板的4个按钮 hover/press故事板克隆到测试副本并延长8个DoubleAnimation至400ms。真实生产Storyboards的目标/曲线保留，连续性、中间态、方向、最终值断言没有删除；生产MotionTokens仍是fast120ms/press100ms。当前R08源变更提交后必须立即执行默认 `GameSaveCenter-Run.cmd` 并完整核对发布、ZIP/PEXT、安装DLL身份、启动。
 - 外机日志确认旧 `ea926c5e` 源码包含stash冲突标记并有9个CS8300；另一附件R09实际Thickness1而期望2的run未附同次HEAD/程序集符号身份。当前本机R09在SDK8.0.423隔离输出2/2，不覆盖外机诊断。推送新main后外机安全同步仍为先 `git stash push --include-untracked`、核对clean、`git pull --ff-only origin main`，再跑标准根入口，用户本机stash保留到主线链路成功后逐项审查。
 - 32项专项继续按T00-01、T01、T02、T03账本推进；T00-01保持实施中直到新提交默认根入口完整链成功。真实外机快进后全链、用户stash移植、桌面Ctrl+C、真实宿主/UIA/IME/物理DPI仍未验。
+
+## 2026-10-25 最新交接：标准全链已通过，外机待同步复跑
+
+- 当前产品源码身份 53ee9381d23772a60ebaf7ff16aeb81d6584d28a 的默认根命令 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul" 本机退出0。build run 20261025T091123674Z-d1fdc06a，install run 20261025T091121578Z-c93b09da；SDK8.0.423、Release0/0、Core157/157、Worker400/400、总1968项1911通过/57既有skip/0失败、149 TRX一致、146 WPF类。Worker发布、ZIP/PEXT、六程序集安装身份/SHA及Playnite PID50020启动完成。证据：docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-53ee9381/README.md。没有核验进程内插件加载路径。
+- 用户外机最近附件中的root run 20261025T022508878Z-409c39f7 在Q06 Dark hover失败（mouseOver=true但hoverOverlay=0），未进入发布/安装。该日志发生于终端显示从ea926c5e快进至d6a401af之后，早于当前53ee9381。本机通过不能代替外机通过。
+- 外机先保留 stash“保存本机 GamePicker 构建前改动”。在外机查看 git status --short --branch、git stash list -n 2；若工作树不干净，另用 git stash push --include-untracked 保存当前改动，再 git fetch origin / git pull --ff-only origin main。核对 git rev-parse HEAD 与 git rev-parse origin/main 一致，再从仓库根运行 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul"。若只允许 fast-forward 的拉取拒绝，停止，不reset/merge/覆盖，返回分支与状态供诊断。保留所有stash直到最新完整链成功且逐项审阅。
+- 外机验收还需要同次命令的exit code、HEAD、artifacts/build-diagnostics/<runId>/summary.json、失败/成功阶段日志与Playnite启动结果；不要只提供旧Q06 TRX。Round3用户未跟踪TRX和tests/GameSaveCenter.Playnite.Tests/TestResults/不要清理或暂存。
+- 本阶段清理本机5个Q06/R08候选.tmp目录共1456文件/324453441逻辑字节，当前 artifacts/gsc-b/44f15e66、run 20261025T091123674Z-d1fdc06a完整诊断、ZIP/PEXT与安装报告保留。32项计划、真实宿主/物理输入/DPI与外机链均未整体验收。

@@ -1,0 +1,55 @@
+{
+  "runId": "20261025T091123674Z-d1fdc06a",
+  "completedAfter": "build-tests-publish-package-install-startup",
+  "removedRoot": ".tmp",
+  "selectionPolicy": "Only the five allowlisted scratch directories created for the Q06/R08 candidate runs were removed. Each normalized to a direct child of repository .tmp, had no reparse points, and had no Markdown path reference. The root build chain had exited successfully. Raw TRX and console evidence remain archived unchanged.",
+  "removed": [
+    {
+      "path": ".tmp/q06-hover-dpkey-candidate",
+      "files": 710,
+      "logicalBytes": 162121541
+    },
+    {
+      "path": ".tmp/q06-hover-dpkey-tests",
+      "files": 22,
+      "logicalBytes": 146348
+    },
+    {
+      "path": ".tmp/r08-press-sample-candidate",
+      "files": 710,
+      "logicalBytes": 162122970
+    },
+    {
+      "path": ".tmp/r08-press-sample-tests",
+      "files": 4,
+      "logicalBytes": 20463
+    },
+    {
+      "path": ".tmp/r08-direct-dp-tests",
+      "files": 10,
+      "logicalBytes": 42119
+    }
+  ],
+  "removedFileCount": 1456,
+  "removedLogicalBytes": 324453441,
+  "volumeFreeBytesObserved": {
+    "before": {
+      "D": 10037760000,
+      "C": 7936282624
+    },
+    "after": {
+      "D": 10366058496,
+      "C": 7936282624
+    },
+    "note": "These are before/after observations; concurrent host activity can affect the physical difference."
+  },
+  "retained": [
+    "artifacts/gsc-b/44f15e66",
+    "artifacts/build-diagnostics/20261025T091123674Z-d1fdc06a",
+    "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "artifacts/GameSaveCenter-0.6.73.pext",
+    "artifacts/last-dev-install.txt",
+    "existing Q06/R08 failure and targeted-test evidence",
+    "pre-existing untracked user TRX and tests/GameSaveCenter.Playnite.Tests/TestResults/"
+  ]
+}

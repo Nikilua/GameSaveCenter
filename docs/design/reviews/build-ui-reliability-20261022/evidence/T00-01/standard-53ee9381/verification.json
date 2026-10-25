@@ -1,0 +1,93 @@
+{
+  "sourceCommit": "53ee9381d23772a60ebaf7ff16aeb81d6584d28a",
+  "command": "cmd.exe /d /c \"GameSaveCenter-Run.cmd < nul\"",
+  "exitCode": 0,
+  "buildRunId": "20261025T091123674Z-d1fdc06a",
+  "installRunId": "20261025T091121578Z-c93b09da",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "environment": {
+    "osVersion": "10.0.22000.0",
+    "osBitness": 64,
+    "processBitness": 64,
+    "powershellVersion": "7.6.2",
+    "powershellEdition": "Core",
+    "dotnetRuntimeVersion": "10.0.8"
+  },
+  "build": {
+    "warnings": 0,
+    "errors": 0,
+    "steps": 155,
+    "failedSteps": 0,
+    "workerPublish": "win-x64 succeeded"
+  },
+  "tests": {
+    "total": 1968,
+    "passed": 1911,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "skipped": 57,
+    "skipReason": "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。",
+    "trxFileCount": 149,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "wpfIsolatedClassRuns": 146,
+    "groups": {
+      "core": {
+        "total": 157,
+        "passed": 157,
+        "skipped": 0
+      },
+      "playniteSource": {
+        "total": 562,
+        "passed": 544,
+        "skipped": 18
+      },
+      "worker": {
+        "total": 400,
+        "passed": 400,
+        "skipped": 0
+      },
+      "playniteWpfIsolated": {
+        "total": 849,
+        "passed": 810,
+        "skipped": 39
+      }
+    }
+  },
+  "packages": [
+    {
+      "path": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "sha256": "1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48"
+    },
+    {
+      "path": "artifacts/GameSaveCenter-0.6.73.pext",
+      "sha256": "1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48"
+    }
+  ],
+  "installation": {
+    "verified": true,
+    "extensionId": "GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "manifestVersion": "0.6.73",
+    "dllVersion": "0.6.73.0",
+    "assemblyIdentity": "0.6.73+53ee9381d23772a60ebaf7ff16aeb81d6584d28a",
+    "assemblyIdentityCount": 6,
+    "identitiesMatchPackage": true,
+    "installReport": "artifacts/last-dev-install.txt"
+  },
+  "playnite": {
+    "started": true,
+    "processId": 50020,
+    "startTime": "2026-10-25T17:41:56.4030733+08:00",
+    "processPath": "D:/software/Playnite/Playnite.DesktopApp.exe",
+    "inProcessPluginLoadedPathVerified": false
+  },
+  "workspace": {
+    "trackedFilesChangedDuringRun": false,
+    "preExistingUntrackedUserEvidencePreserved": true
+  },
+  "diagnostics": "artifacts/build-diagnostics/20261025T091123674Z-d1fdc06a/summary.json",
+  "externalMachineRerun": "pending on current main; product code baseline is 53ee9381d23772a60ebaf7ff16aeb81d6584d28a and any later commit in this handoff is documentation-only"
+}

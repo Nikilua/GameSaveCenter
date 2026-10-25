@@ -1,0 +1,22 @@
+Product version: 0.6.73
+Source commit identity: 53ee9381d23772a60ebaf7ff16aeb81d6584d28a
+Extension: GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+Manifest version: 0.6.73
+Installed DLL version: 0.6.73.0
+
+Package SHA-256:
+  ZIP  1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48
+  PEXT 1C777A613BE72D87B232D8216329AAC753BF3F5DF41516DD90EBB0A682033C48
+
+Installed assembly identity: 0.6.73+53ee9381d23772a60ebaf7ff16aeb81d6584d28a
+
+Assembly                                                   Installed SHA-256
+GameSaveCenter.Playnite.dll                                23C8F0EA0229156832E318970EEBE0855EEAE632D5F79E7EEF4F858A0D2AF9C9
+GameSaveCenter.Core.dll                                    7238EA95E0876713BDD9854CFC626A981F4F87A642AAB08D315B753D59C50F03
+GameSaveCenter.Contracts.dll                               66B4E033C228DC8456C1B682F800FFCC73BC74BF24410F202E9C033F5CED2C73
+Worker/GameSaveCenter.Worker.dll                           92526B6A4116C1828F70E2DE0888E78D5CAAF1DBC33593F57DA9D9D7C5200CA6
+Worker/GameSaveCenter.Core.dll                             0E38FF464FB99A8631A1E17E910AF8957EAE8990EE59EA4CD963B835E304D375
+Worker/GameSaveCenter.Contracts.dll                        42200980C35AB3107A80C39E88E5BC04E6A0FB6AEE1590B7B9692847FC77943B
+
+The full local installation path is retained in artifacts/last-dev-install.txt.
+These hashes are disk identities; they do not assert which assembly path a running Playnite process loaded.
