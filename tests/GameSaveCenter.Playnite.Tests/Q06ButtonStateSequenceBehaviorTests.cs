@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -248,9 +249,14 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             {
                 // Reapply WPF's own mouse-over transition after layout has recomputed device state.
                 hoverSet = SetMouseOverProbe(button, true) && hoverSet;
-                // Motion-enabled themes keep the resting overlay at zero and animate it to one.
-                // Drain that second enter transition before reading the animated dependency property.
-                PumpDispatcher(TimeSpan.FromMilliseconds(180));
+                var overlay = Assert.IsType<Border>(button.Template!.FindName("HoverOverlay", button));
+                var pointerResynchronized = false;
+                // Reproduce native pointer synchronization replacing a synthetic enter.
+                button.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() =>
+                    pointerResynchronized = SetMouseOverProbe(button, false)));
+                hoverSet = PumpHoverProbeUntil(button,
+                    () => pointerResynchronized && overlay.Opacity > 0.9,
+                    TimeSpan.FromSeconds(2)) && hoverSet;
             }
 
             var chrome = Assert.IsType<Border>(button.Template!.FindName("ButtonChrome", button));
@@ -327,6 +333,20 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         changeMouseOver.Invoke(Mouse.PrimaryDevice, new object?[] { value ? element : null, Environment.TickCount });
         return element is FrameworkElement frameworkElement
             && frameworkElement.IsMouseOver == value;
+    }
+
+    private static bool PumpHoverProbeUntil(UIElement element, Func<bool> condition, TimeSpan timeout)
+    {
+        var elapsed = Stopwatch.StartNew();
+        while (elapsed.Elapsed < timeout)
+        {
+            if (!element.IsMouseOver && !SetMouseOverProbe(element, true))
+                return false;
+            if (condition())
+                return true;
+            PumpDispatcher(TimeSpan.FromMilliseconds(5));
+        }
+        return element.IsMouseOver && condition();
     }
 
     private static Brush CreateOpaqueSampleBackground(AdaptiveThemePalette palette)

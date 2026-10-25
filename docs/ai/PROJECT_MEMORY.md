@@ -1,3 +1,9 @@
+## 2026-10-25 标准完整链成功后收到外机Q06输入重置证据
+
+576b689b默认根入口完整退出0：构建run `20261025T063456418Z-21cff7b5`、安装run `20261025T063454422Z-7a7fb984`，SDK8.0.423 Release0/0，1968项1911通过/57既有skip/0失败、149TRX一致、146WPF类；发布、ZIP/PEXT、六程序集独立SHA/完整身份校验、安装及Playnite/Worker新进程启动均成功，未核验进程内实际加载路径。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-576b689b/README.md`。已归档后清理11个本轮自有输出目录，3788文件860738000逻辑字节，D空闲10168287232→11038715904；当前成功包/构建、所有原失败诊断及用户TRX/TestResults保留。证据文本统一LF并重算本轮SHA清单，避免Git换行转换使归档哈希不一致。
+
+随后用户新日志run `20261025T040600037Z-ec604b91`（未附HEAD）在第29/145类Q06 Light hover报mouseOver=False、opacity0，证明固定等待不能保持合成输入。当前Q06夹具以有界条件循环保持合成hover，并在每个主题注入一次Dispatcher重置来覆盖该失败；生产样式和原阈值断言不变。Release0/0、五轮5/5，十个hover报告均mouseOver=True且原阈值通过；源码校验通过。新候选默认根入口仍须复跑，不能沿用576b成功替代。新证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-input-resync-20261025/README.md`。外机stash继续保留。
+
 ## 2026-10-25 Tooltip指针测试驱动时序修正
 
 118ce65c默认根入口run `20261025T061639270Z-46bad3c2` Release0/0、Core157/157、Worker400/400，Compact及Q06通过；第55/146类Tooltip快速掠过用例出现一次意外打开事件，未发布安装。测试驱动将短停留计时器从Background改为Send，避免布局/自动化积压延长80ms停留；指针进入检查同时确认Mouse.DirectlyOver等于目标点InputHitTest，避免父容器IsMouseOver误判离开子按钮。产品350ms延迟、快速掠过0打开、停留1打开及全部断言保留。SDK8.0.423 Release0/0，同桌面上下文真实指针五轮15/15通过、0跳过；源码校验见本轮。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/tooltip-driver-priority-20261025/README.md`。新候选标准完整链待跑。

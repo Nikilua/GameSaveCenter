@@ -1,0 +1,110 @@
+{
+  "sourceCommit": "576b689b88f0f141c75def40b4fb601157045fcb",
+  "command": "cmd.exe /d /c \"GameSaveCenter-Run.cmd < nul\"",
+  "exitCode": 0,
+  "buildRunId": "20261025T063456418Z-21cff7b5",
+  "installRunId": "20261025T063454422Z-7a7fb984",
+  "sdk": "8.0.423",
+  "environment": {
+    "osVersion": "10.0.22000.0",
+    "osBitness": 64,
+    "processBitness": 64,
+    "powershellVersion": "7.6.2",
+    "powershellEdition": "Core",
+    "dotnetRuntimeVersion": "10.0.8"
+  },
+  "releaseWarnings": 0,
+  "releaseErrors": 0,
+  "steps": 155,
+  "failedSteps": 0,
+  "tests": {
+    "testCaseCount": 1968,
+    "passed": 1911,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 57,
+    "notRunnable": 0,
+    "inconclusive": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "otherOutcome": 0,
+    "reportedCounterTotal": 1968,
+    "reportedCounterFileCount": 149,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "trxFileCount": 149,
+    "distinctTestClassCount": 362,
+    "wpfIsolatedClassRunCount": 146
+  },
+  "skipReasons": [
+    "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。"
+  ],
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "sha256": "F7FAB6737E27C9DC23855557079CD20342AEA9819D629A31DA618C06874E9A28",
+      "installedSha256": "F7FAB6737E27C9DC23855557079CD20342AEA9819D629A31DA618C06874E9A28",
+      "productVersion": "0.6.73+576b689b88f0f141c75def40b4fb601157045fcb",
+      "matches": true
+    },
+    {
+      "file": "GameSaveCenter.Core.dll",
+      "sha256": "2FFE0EF3FA3347D775AA55B07468838EC929A1CBBDC39C7C96624AB943E0F02A",
+      "installedSha256": "2FFE0EF3FA3347D775AA55B07468838EC929A1CBBDC39C7C96624AB943E0F02A",
+      "productVersion": "0.6.73+576b689b88f0f141c75def40b4fb601157045fcb",
+      "matches": true
+    },
+    {
+      "file": "GameSaveCenter.Contracts.dll",
+      "sha256": "459F45F021389F3037165D433151B06B51D9CDA7EB96476EAC2F7AF21AB36D22",
+      "installedSha256": "459F45F021389F3037165D433151B06B51D9CDA7EB96476EAC2F7AF21AB36D22",
+      "productVersion": "0.6.73+576b689b88f0f141c75def40b4fb601157045fcb",
+      "matches": true
+    },
+    {
+      "file": "Worker/GameSaveCenter.Worker.dll",
+      "sha256": "399C3818ECA742DEE409A69C288A25353DDDF2A7C2A27DBF03E86BEEC6901D33",
+      "installedSha256": "399C3818ECA742DEE409A69C288A25353DDDF2A7C2A27DBF03E86BEEC6901D33",
+      "productVersion": "0.6.73+576b689b88f0f141c75def40b4fb601157045fcb",
+      "matches": true
+    },
+    {
+      "file": "Worker/GameSaveCenter.Core.dll",
+      "sha256": "ABA955C8090627BF3B75C52540CC1C66260D8351135EAC6638BCDBE8693BD000",
+      "installedSha256": "ABA955C8090627BF3B75C52540CC1C66260D8351135EAC6638BCDBE8693BD000",
+      "productVersion": "0.6.73+576b689b88f0f141c75def40b4fb601157045fcb",
+      "matches": true
+    },
+    {
+      "file": "Worker/GameSaveCenter.Contracts.dll",
+      "sha256": "CF8B91A8F0B99BC65A51FB90CD7F7667A9F5CF678FD3D2451C126A7142D377EA",
+      "installedSha256": "CF8B91A8F0B99BC65A51FB90CD7F7667A9F5CF678FD3D2451C126A7142D377EA",
+      "productVersion": "0.6.73+576b689b88f0f141c75def40b4fb601157045fcb",
+      "matches": true
+    }
+  ],
+  "packageSha256": "7F1804D5D93E0F928F42E90EAC2E04700B8126D19DA03D532339C5F1AD61BDA4",
+  "publish": true,
+  "package": true,
+  "install": true,
+  "playniteStarted": true,
+  "processes": [
+    {
+      "ProcessName": "GameSaveCenter.Worker",
+      "Id": 47656,
+      "StartTime": "2026-10-25T15:03:31.0979494+08:00"
+    },
+    {
+      "ProcessName": "Playnite.DesktopApp",
+      "Id": 47304,
+      "StartTime": "2026-10-25T15:03:20.1091448+08:00"
+    }
+  ],
+  "inProcessPluginLoadedPathVerified": false,
+  "originalSummary": "artifacts/build-diagnostics/20261025T063456418Z-21cff7b5/summary.json",
+  "originalSummarySha256": "5AFDF320C9BA141656BC7C4574BAB649E390D5053179451DA78D059A8C038D29",
+  "trackedFilesCleanDuringRun": true,
+  "preExistingUntrackedUserEvidencePreserved": true
+}

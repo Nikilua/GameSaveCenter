@@ -1,0 +1,88 @@
+WPF isolated process [29/145] GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests
+[repo]\artifacts\gsc-b\aa32a058\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9221.0)
+[xUnit.net 00:00:01.07]   Discovering: GameSaveCenter.Playnite.Tests
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+[xUnit.net 00:00:04.52]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:04.58]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:18.15]       Assert.All() Failure: 1 out of 10 items in the collection did not pass.
+[xUnit.net 00:00:18.15]       [1]: Item:  StateCapture { Activation = "WPF 合成悬停状态探针（非物理鼠标）", ChromeOpacity = 1, Enabled = True, FocusOpacity = 0, FocusWithin = False, ··· }
+[xUnit.net 00:00:18.15]            Error: theme=Light; state=hover; activation=WPF 合成悬停状态探针（非物理鼠标）; passed=False; enabled=True; mouseOver=False; pressed=False; focus=False; hoverOverlay=0; pressedOverlay=0; focusOverlay=0; chromeOpacity=1; scaleX=1; png=not-requested
+[xUnit.net 00:00:18.15]       Stack Trace:
+[xUnit.net 00:00:18.16]            在 Xunit.Assert.All[T](IEnumerable`1 collection, Action`2 action) 位置 /_/src/xunit.assert/Asserts/CollectionAsserts.cs:行号 90
+[xUnit.net 00:00:18.16]            在 GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q06ButtonStateSequenceBehaviorTests.cs:行号 68
+[xUnit.net 00:00:18.20]   Finished:    GameSaveCenter.Playnite.Tests
+  失败 GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark [13 s]
+  错误消息:
+   Assert.All() Failure: 1 out of 10 items in the collection did not pass.
+[1]: Item:  StateCapture { Activation = "WPF 合成悬停状态探针（非物理鼠标）", ChromeOpacity = 1, Enabled = True, FocusOpacity = 0, FocusWithin = False, ··· }
+     Error: theme=Light; state=hover; activation=WPF 合成悬停状态探针（非物理鼠标）; passed=False; enabled=True; mouseOver=False; pressed=False; focus=False; hoverOverlay=0; pressedOverlay=0; focusOverlay=0; chromeOpacity=1; scaleX=1; png=not-requested
+  堆栈跟踪:
+     在 Xunit.Assert.All[T](IEnumerable`1 collection, Action`2 action) 位置 /_/src/xunit.assert/Asserts/CollectionAsserts.cs:行号 90
+   在 GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q06ButtonStateSequenceBehaviorTests.cs:行号 68
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+
+测试总数: 1
+     失败数: 1
+总时间: 20.6031 秒
+结果文件: [repo]\artifacts\build-diagnostics\20261025T040600037Z-ec604b91\tests\wpf.Q06ButtonStateSequenceBehaviorTests\wpf.Q06ButtonStateSequenceBehaviorTests.trx
+[xUnit.net 00:00:18.15]     GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark [FAIL]
+测试运行失败。
+
+TRX test cases: 1299 total; 1280 passed; 1 failed outcomes; 18 skipped; 0 errors/timeouts/aborts; 29 WPF isolated class runs.
+诊断目录：[repo]\artifacts\build-diagnostics\20261025T040600037Z-ec604b91
+
+一键构建安装失败：class GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests failed; dotnet exit code: 1
+完整日志：[repo]\artifacts\one-click-install.log
+Exception: [repo]\scripts\run-playnite-tests-isolated.ps1:89
+Line |
+  89 |          throw "$Label failed; dotnet exit code: $exitCode"
+     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | class GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests failed; dotnet exit code: 1
+
+[FAILED] Build or installation did not complete. Exit code: 1
+See artifacts\one-click-install.log for details.
+Press any key to continue . . .

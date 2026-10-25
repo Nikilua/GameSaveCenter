@@ -1,0 +1,26 @@
+时间：2026-10-25 15:03:20
+安装运行 ID：20261025T063454422Z-7a7fb984
+源码版本：0.6.73
+隔离构建目录：[repo]\artifacts\gsc-b\b85fe05f
+安装目录：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+576b689b88f0f141c75def40b4fb601157045fcb
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：F7FAB6737E27C9DC23855557079CD20342AEA9819D629A31DA618C06874E9A28
+  GameSaveCenter.Core.dll：0.6.73+576b689b88f0f141c75def40b4fb601157045fcb
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：2FFE0EF3FA3347D775AA55B07468838EC929A1CBBDC39C7C96624AB943E0F02A
+  GameSaveCenter.Contracts.dll：0.6.73+576b689b88f0f141c75def40b4fb601157045fcb
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：459F45F021389F3037165D433151B06B51D9CDA7EB96476EAC2F7AF21AB36D22
+  Worker/GameSaveCenter.Worker.dll：0.6.73+576b689b88f0f141c75def40b4fb601157045fcb
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：399C3818ECA742DEE409A69C288A25353DDDF2A7C2A27DBF03E86BEEC6901D33
+  Worker/GameSaveCenter.Core.dll：0.6.73+576b689b88f0f141c75def40b4fb601157045fcb
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：ABA955C8090627BF3B75C52540CC1C66260D8351135EAC6638BCDBE8693BD000
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+576b689b88f0f141c75def40b4fb601157045fcb
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：CF8B91A8F0B99BC65A51FB90CD7F7667A9F5CF678FD3D2451C126A7142D377EA

@@ -2,32 +2,16 @@
 
 更新：2026-10-25。历史按当时提交解释，不能覆盖本页当前结论。
 
-## 最新根入口复验（2026-10-25）
+## 最新构建状态（2026-10-25）
 
-- 118ce65c标准链第55/146类Tooltip快速掠过因测试驱动停留/命中同步失败。驱动计时优先级和实际命中同步修正后，真实指针五轮15/15、0跳过，新候选完整链待跑。证据：design/reviews/build-ui-reliability-20261022/evidence/T00-01/tooltip-driver-priority-20261025/README.md
+- 最近成功标准完整链：`576b689b88f0f141c75def40b4fb601157045fcb`，build run `20261025T063456418Z-21cff7b5`、install run `20261025T063454422Z-7a7fb984`。SDK8.0.423、Release0/0、1968项1911通过/57既有skip/0失败、149TRX一致、146WPF类，Worker发布、包、安装六程序集身份/SHA与新进程启动通过。未验证本次进程内插件实际加载路径。[完整证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-576b689b/README.md)
+- 新外机日志run `20261025T040600037Z-ec604b91` 未附HEAD，Q06 Light hover采样为mouseOver=False/opacity0。当前Q06修正保持合成输入直到采样通过，并在双主题强制注入Dispatcher输入重置，五轮5/5、十个hover报告全部通过；新候选标准根入口待立即复跑。T00-01仍代码完成待验收，不能以576b成功覆盖新测试变更。[外机失败与输入保持证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-input-resync-20261025/README.md)
+- 已清理本轮11个自有失败候选/定向目录，3788文件、860738000逻辑字节；保留最新成功输出/包、全部原诊断、用户Round3 TRX/TestResults。外机stash保留；32项中的真实宿主、物理输入、权限及外机验收边界继续有效。
 
-## 前次窗口生命周期根入口复验
+## 历史验证身份
 
-- c7640d1f根入口第8类Compact再次触发原生UIA标题读取失败。现测试程序集统一为未显式命名的测试Window提供稳定名称，标准Peer保持开启；六类三轮78/78通过，新候选完整链待跑。证据：design/reviews/build-ui-reliability-20261022/evidence/T00-01/window-automation-lifecycle-20261025/README.md
-
-## 前次R06根入口复验
-
-- 0832aca8标准根入口run 20261025T054600655Z-8ab0ccc5编译0/0且Q06通过，但第59/145类R06因WindowAutomationPeer原生标题读取参数错误退出1，未发布安装。明确窗口UIA名称和关闭后排空后定向五轮25/25；新提交标准全链待重跑。证据：design/reviews/build-ui-reliability-20261022/evidence/T00-01/r06-window-automation-20261025/README.md
-
-## 前次R08根入口复验
-
-- 8e517cb4默认标准根入口Release0/0、Core157/157、Worker400/400且Q06通过；第74/145类R08合成hover被真实指针同步替换，根入口退出1，未发布安装。R08夹具保持所请求的输入状态后五轮15/15通过，新提交标准根入口待重跑。[失败和修正证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-input-state-20261025/README.md)
-
-## 前次构建状态（2026-10-25）
-
-- 最近一次成功的标准根入口完整链仍是 `dcbaab13`，见下方历史身份记录。用户另一台电脑在快进到 `d6a401af` 后的完整根入口中，Release编译0警告/0错误，但第29/145个WPF类 `Q06ButtonStateSequenceBehaviorTests` 失败；1299项中1280通过、18跳过、1失败，未进入发布、安装或Playnite启动。
-- Q06失败是合成悬停后立即读取120 ms动画属性的测试采样竞态。提交 `ccfe4cbf546c0688f171ad5a24d35cc2d4308921` 仅在测试夹具读取前推进Dispatcher 180 ms，生产样式与断言不变。SDK8.0.423下定向类连续3/3通过；完整隔离Release构建0警告/0错误，1967项1899通过、68跳过、0失败，148份TRX计数一致，145个WPF类全部完成。[失败、修正和证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/q06-hover-dispatcher-20261025/README.md)
-- 当前本机Playnite Desktop及Worker正在运行，未执行会安装/启动宿主的根入口。修复候选仍需在提交后由外机运行默认 `GameSaveCenter-Run.cmd` 完整链；成功结果未收到前，不把T00-01恢复为已验收。外机stash已保存并且工作树快进至 `d6a401af`，保持stash不pop。
-
-## 验证身份
-
-- 当前完整验收代码：`dcbaab13`，在Q14/R08等可靠性修复后将同一checkout互斥锁扩至Windows全局命名空间。
-- 最后完整标准入口成功：源码身份 `dcbaab13b9464523ffed6d88ca2748b6fb6dd647`；构建run `20261024T192816167Z-276884c0`，安装run `20261024T192814223Z-736788e1`。
+- 此前完整验收代码：`dcbaab13`，在Q14/R08等可靠性修复后将同一checkout互斥锁扩至Windows全局命名空间。
+- 此前完整标准入口成功：源码身份 `dcbaab13b9464523ffed6d88ca2748b6fb6dd647`；构建run `20261024T192816167Z-276884c0`，安装run `20261024T192814223Z-736788e1`。
 - 命令：默认 `GameSaveCenter-Run.cmd`，退出0。SDK8.0.423 / Release，solution0警告/0错误；1967项1910通过、57跳过、0失败，148TRX计数一致、145WPF隔离类全部结束。Worker发布、ZIP/PEXT、安装及Playnite启动完成，六程序集磁盘版本/源码身份/SHA一致；本次未核验进程内插件加载路径。[本次完整链证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-dcbaab13/README.md)
 - 最新定向验证：T01-08 `Test-BoundedProcess.ps1` 在PowerShell Core 7.6.2和Windows PowerShell 5.1受控中断均通过，精确自有子进程退出、无关进程保留、重试0；`Test-IsolatedTempCleanup.ps1` 双宿主失败/重试序列通过。该证据不覆盖真实键盘Ctrl+C。[T01-08回归证据](../design/reviews/build-ui-reliability-20261022/evidence/T01-08/README.md)
 - 旧 R05 `GetCursorPos` error 5 未再中断最新完整链：`R05TooltipTimingBehaviorTests` 在 `fbd8a882` 的标准测试入口中3/3通过。该测试类结果不替代物理指针/真实宿主验收。

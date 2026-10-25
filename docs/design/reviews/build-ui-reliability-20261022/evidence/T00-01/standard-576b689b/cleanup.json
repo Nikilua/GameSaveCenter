@@ -1,0 +1,72 @@
+{
+  "targets": [
+    {
+      "path": ".tmp/gsc-r08-probe-8e517cb4",
+      "files": 728,
+      "bytes": 162130959
+    },
+    {
+      "path": ".tmp/gsc-r08-probe-diag-8e517cb4",
+      "files": 24,
+      "bytes": 642795
+    },
+    {
+      "path": ".tmp/gsc-r08-repeats-8e517cb4",
+      "files": 10,
+      "bytes": 41941
+    },
+    {
+      "path": ".tmp/gsc-r06-repeats-0832aca8",
+      "files": 10,
+      "bytes": 56450
+    },
+    {
+      "path": ".tmp/gsc-window-lifecycle-repeats",
+      "files": 2,
+      "bytes": 54681
+    },
+    {
+      "path": ".tmp/gsc-window-lifecycle-isolated",
+      "files": 36,
+      "bytes": 191611
+    },
+    {
+      "path": ".tmp/gsc-tooltip-repeats-118ce65c",
+      "files": 10,
+      "bytes": 37671
+    },
+    {
+      "path": "artifacts/gsc-b/f0e041ea",
+      "files": 742,
+      "bytes": 174393339
+    },
+    {
+      "path": "artifacts/gsc-b/eb77b329",
+      "files": 742,
+      "bytes": 174394561
+    },
+    {
+      "path": "artifacts/gsc-b/9f42985a",
+      "files": 742,
+      "bytes": 174394633
+    },
+    {
+      "path": "artifacts/gsc-b/dcaa43a0",
+      "files": 742,
+      "bytes": 174399359
+    }
+  ],
+  "filesRemoved": 3788.0,
+  "logicalBytesRemoved": 860738000.0,
+  "dFreeBefore": 10168287232,
+  "dFreeAfter": 11038715904,
+  "dFreeDelta": 870428672,
+  "exclusiveFileProbePassed": true,
+  "compilerServerRetained": "SDK VBCSCompiler PID 48468; no file lock in targets",
+  "preserved": [
+    "latest standard output artifacts/gsc-b/b85fe05f",
+    "current ZIP/PEXT and package stage",
+    "all failed and successful raw diagnostics",
+    "user Round3 TRX/TestResults"
+  ]
+}
