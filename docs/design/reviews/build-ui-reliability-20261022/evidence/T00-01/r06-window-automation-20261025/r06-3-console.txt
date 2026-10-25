@@ -1,0 +1,21 @@
+[repo]\.tmp\gsc-r08-probe-8e517cb4\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.65]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.71]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: False) [3 s]
+[xUnit.net 00:00:06.92]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True) [388 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: True) [367 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: False) [341 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.SaveCandidateSelectionRestoresStablePathBeforePendingFallback [2 ms]
+
+测试运行成功。
+测试总数: 5
+     通过数: 5
+总时间: 8.3568 秒
+结果文件: [repo]\.tmp\gsc-r06-repeats-0832aca8\r06-3.trx

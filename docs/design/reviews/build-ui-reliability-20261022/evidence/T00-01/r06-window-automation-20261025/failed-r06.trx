@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="44c1fcc8-e33a-4813-a35e-a34e65755451" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-25T13:59:05.6336513+08:00" queuing="2026-10-25T13:59:05.6336518+08:00" start="2026-10-25T13:58:56.6898982+08:00" finish="2026-10-25T13:59:08.5227748+08:00" />
+  <TestSettings name="default" id="51bacba0-5a8c-46bb-896c-f46816d954b6">
+    <Deployment runDeploymentRoot="redacted-run" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="0e6d831f-3544-49ec-838c-0aff9f8c27b0" testId="bb836e0b-0732-9f6b-a238-cd78fae73a43" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.SaveCandidateSelectionRestoresStablePathBeforePendingFallback" computerName="redacted-host" duration="00:00:00.0020000" startTime="2026-10-25T13:59:08.3321252+08:00" endTime="2026-10-25T13:59:08.3321252+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0e6d831f-3544-49ec-838c-0aff9f8c27b0" />
+    <UnitTestResult executionId="98f5de52-b7a0-4950-9f79-0ae2fd3ea40e" testId="2c059097-2d84-70ba-0502-254e9210362d" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: True)" computerName="redacted-host" duration="00:00:00.8240000" startTime="2026-10-25T13:59:06.9527458+08:00" endTime="2026-10-25T13:59:07.7488285+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="98f5de52-b7a0-4950-9f79-0ae2fd3ea40e" />
+    <UnitTestResult executionId="55751089-26a9-4c71-9ce9-6168fd51d85c" testId="7e759d9f-cf3c-d5f0-b289-1ab00ccd60f5" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: False)" computerName="redacted-host" duration="00:00:03.7860000" startTime="2026-10-25T13:59:01.8349991+08:00" endTime="2026-10-25T13:59:05.5795910+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55751089-26a9-4c71-9ce9-6168fd51d85c" />
+    <UnitTestResult executionId="492331f3-6e58-425b-bab3-21c311f827e6" testId="29d13afc-01bb-7773-b1f8-e1de8b1d0922" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True)" computerName="redacted-host" duration="00:00:01.3430000" startTime="2026-10-25T13:59:05.6175936+08:00" endTime="2026-10-25T13:59:06.9257449+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="492331f3-6e58-425b-bab3-21c311f827e6">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Null() Failure: Value is not null&#xD;
+Expected: null&#xD;
+Actual:   System.ComponentModel.Win32Exception (0x80004005): 参数错误。&#xD;
+   在 MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)&#xD;
+   在 MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)&#xD;
+   在 System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()&#xD;
+   在 System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()&#xD;
+   在 System.Windows.ContextLayoutManager.fireAutomationEvents()&#xD;
+   在 System.Windows.ContextLayoutManager.UpdateLayout()&#xD;
+   在 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.&lt;&gt;c__DisplayClass1_0.&lt;LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06DetailsBudgetBehaviorTests.cs:行号 143</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(Double width, Boolean dark) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06DetailsBudgetBehaviorTests.cs:行号 177</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="104f0b4c-bf39-47a2-be22-bda66d157771" testId="140ffc38-b07b-c930-d8a1-ca0658b1f3e8" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: False)" computerName="redacted-host" duration="00:00:00.5800000" startTime="2026-10-25T13:59:07.7508261+08:00" endTime="2026-10-25T13:59:08.3291284+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="104f0b4c-bf39-47a2-be22-bda66d157771" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: False)" storage="[repo]\artifacts\gsc-b\eb77b329\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="140ffc38-b07b-c930-d8a1-ca0658b1f3e8">
+      <Execution id="104f0b4c-bf39-47a2-be22-bda66d157771" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\eb77b329\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True)" storage="[repo]\artifacts\gsc-b\eb77b329\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="29d13afc-01bb-7773-b1f8-e1de8b1d0922">
+      <Execution id="492331f3-6e58-425b-bab3-21c311f827e6" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\eb77b329\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: True)" storage="[repo]\artifacts\gsc-b\eb77b329\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2c059097-2d84-70ba-0502-254e9210362d">
+      <Execution id="98f5de52-b7a0-4950-9f79-0ae2fd3ea40e" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\eb77b329\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: False)" storage="[repo]\artifacts\gsc-b\eb77b329\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7e759d9f-cf3c-d5f0-b289-1ab00ccd60f5">
+      <Execution id="55751089-26a9-4c71-9ce9-6168fd51d85c" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\eb77b329\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.SaveCandidateSelectionRestoresStablePathBeforePendingFallback" storage="[repo]\artifacts\gsc-b\eb77b329\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="bb836e0b-0732-9f6b-a238-cd78fae73a43">
+      <Execution id="0e6d831f-3544-49ec-838c-0aff9f8c27b0" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\eb77b329\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="SaveCandidateSelectionRestoresStablePathBeforePendingFallback" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="bb836e0b-0732-9f6b-a238-cd78fae73a43" executionId="0e6d831f-3544-49ec-838c-0aff9f8c27b0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2c059097-2d84-70ba-0502-254e9210362d" executionId="98f5de52-b7a0-4950-9f79-0ae2fd3ea40e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7e759d9f-cf3c-d5f0-b289-1ab00ccd60f5" executionId="55751089-26a9-4c71-9ce9-6168fd51d85c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="29d13afc-01bb-7773-b1f8-e1de8b1d0922" executionId="492331f3-6e58-425b-bab3-21c311f827e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="140ffc38-b07b-c930-d8a1-ca0658b1f3e8" executionId="104f0b4c-bf39-47a2-be22-bda66d157771" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="4" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.52]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.59]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:08.79]       Assert.Null() Failure: Value is not null&#xD;
+[xUnit.net 00:00:08.79]       Expected: null&#xD;
+[xUnit.net 00:00:08.79]       Actual:   System.ComponentModel.Win32Exception (0x80004005): 参数错误。&#xD;
+[xUnit.net 00:00:08.79]          在 MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)&#xD;
+[xUnit.net 00:00:08.79]          在 MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)&#xD;
+[xUnit.net 00:00:08.79]          在 System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()&#xD;
+[xUnit.net 00:00:08.79]          在 System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()&#xD;
+[xUnit.net 00:00:08.79]          在 System.Windows.ContextLayoutManager.fireAutomationEvents()&#xD;
+[xUnit.net 00:00:08.79]          在 System.Windows.ContextLayoutManager.UpdateLayout()&#xD;
+[xUnit.net 00:00:08.79]          在 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.&lt;&gt;c__DisplayClass1_0.&lt;LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06DetailsBudgetBehaviorTests.cs:行号 143&#xD;
+[xUnit.net 00:00:08.80]       Stack Trace:&#xD;
+[xUnit.net 00:00:08.80]            在 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(Double width, Boolean dark) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06DetailsBudgetBehaviorTests.cs:行号 177&#xD;
+[xUnit.net 00:00:10.19]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-25T13:59:06.9460656+08:00">
+        <Text>[xUnit.net 00:00:08.79]     GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-25T13:59:08.4825158+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

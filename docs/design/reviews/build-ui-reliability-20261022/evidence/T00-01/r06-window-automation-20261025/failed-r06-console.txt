@@ -1,0 +1,49 @@
+[repo]\artifacts\gsc-b\eb77b329\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.52]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.59]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: False) [3 s]
+[xUnit.net 00:00:08.79]       Assert.Null() Failure: Value is not null
+[xUnit.net 00:00:08.79]       Expected: null
+[xUnit.net 00:00:08.79]       Actual:   System.ComponentModel.Win32Exception (0x80004005): 参数错误。
+[xUnit.net 00:00:08.79]          在 MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)
+[xUnit.net 00:00:08.79]          在 MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)
+[xUnit.net 00:00:08.79]          在 System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()
+[xUnit.net 00:00:08.79]          在 System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()
+[xUnit.net 00:00:08.79]          在 System.Windows.ContextLayoutManager.fireAutomationEvents()
+[xUnit.net 00:00:08.79]          在 System.Windows.ContextLayoutManager.UpdateLayout()
+[xUnit.net 00:00:08.79]          在 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.<>c__DisplayClass1_0.<LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06DetailsBudgetBehaviorTests.cs:行号 143
+[xUnit.net 00:00:08.80]       Stack Trace:
+[xUnit.net 00:00:08.80]            在 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(Double width, Boolean dark) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06DetailsBudgetBehaviorTests.cs:行号 177
+  失败 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True) [1 s]
+  错误消息:
+   Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   System.ComponentModel.Win32Exception (0x80004005): 参数错误。
+   在 MS.Win32.UnsafeNativeMethods.GetWindowTextLength(HandleRef hWnd)
+   在 MS.Win32.UnsafeNativeMethods.GetWindowTextNoThrow(HandleRef hWnd, StringBuilder lpString, Int32 nMaxCount)
+   在 System.Windows.Automation.Peers.WindowAutomationPeer.GetNameCore()
+   在 System.Windows.Automation.Peers.AutomationPeer.UpdateSubtree()
+   在 System.Windows.ContextLayoutManager.fireAutomationEvents()
+   在 System.Windows.ContextLayoutManager.UpdateLayout()
+   在 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.<>c__DisplayClass1_0.<LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06DetailsBudgetBehaviorTests.cs:行号 143
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(Double width, Boolean dark) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06DetailsBudgetBehaviorTests.cs:行号 177
+[xUnit.net 00:00:10.19]   Finished:    GameSaveCenter.Playnite.Tests
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: True) [824 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: False) [580 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.SaveCandidateSelectionRestoresStablePathBeforePendingFallback [2 ms]
+
+测试总数: 5
+     通过数: 4
+     失败数: 1
+总时间: 11.8222 秒
+结果文件: [repo]\artifacts\build-diagnostics\20261025T054600655Z-8ab0ccc5\tests\wpf.R06DetailsBudgetBehaviorTests\wpf.R06DetailsBudgetBehaviorTests.trx
+[xUnit.net 00:00:08.79]     GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True) [FAIL]
+测试运行失败。

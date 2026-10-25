@@ -6,9 +6,11 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
@@ -132,6 +134,7 @@ public sealed class R06DetailsBudgetBehaviorTests
                     WindowStyle = WindowStyle.None,
                     Opacity = 0.01
                 };
+                AutomationProperties.SetName(window, "R06 task details layout fixture");
                 window.Show();
                 view.ApplyResponsiveLayout(width, 700);
                 window.UpdateLayout();
@@ -167,6 +170,8 @@ public sealed class R06DetailsBudgetBehaviorTests
             finally
             {
                 window?.Close();
+                if (window != null)
+                    window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
             }
         });
 

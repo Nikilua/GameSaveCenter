@@ -1,3 +1,7 @@
+## 2026-10-25 R06详情窗口自动化时序修正
+
+0832aca8默认根入口run `20261025T054600655Z-8ab0ccc5` 编译0/0、Core157/157、Worker400/400、Q06通过；第59/145类R06在布局中由WindowAutomationPeer读取旧HWND标题触发Win32参数错误，1395项1376通过/18跳过/1失败，未发布安装。窗口明确UIA名称并在Close后排空ApplicationIdle；保留UIA及全部布局断言。SDK8.0.423 Release0/0，R06五轮25/25通过，源码校验通过。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r06-window-automation-20261025/README.md`。新修复提交须立即默认根入口完整复跑，跟踪文件冻结。
+
 ## 2026-10-25 标准根入口R08合成悬停复核
 
 `8e517cb4` 默认根入口run `20261025T052254336Z-9c3bdb7b` 的Release编译0警告/0错误、Core157/157、Worker400/400，Q06已通过；第74/145个WPF类R08因hover动画采样始终0而失败，累计1437项1418通过/18跳过/1失败，未发布安装。夹具现在采样前保持所请求的合成IsMouseOver状态，避免Dispatcher真实指针同步替换输入；生产资源和所有动画断言保留。隔离Release0/0，R08五轮15/15通过；新提交默认根入口完整链待立即复跑。失败及定向证据见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-input-state-20261025/README.md`。标准安装器的正常关闭及重启Playnite流程属于用户已授权的完整链验收范围，不能仅以已有Playnite进程为由永久停止验收。

@@ -4,6 +4,10 @@
 
 ## 最新根入口复验（2026-10-25）
 
+- 0832aca8标准根入口run 20261025T054600655Z-8ab0ccc5编译0/0且Q06通过，但第59/145类R06因WindowAutomationPeer原生标题读取参数错误退出1，未发布安装。明确窗口UIA名称和关闭后排空后定向五轮25/25；新提交标准全链待重跑。证据：design/reviews/build-ui-reliability-20261022/evidence/T00-01/r06-window-automation-20261025/README.md
+
+## 前次R08根入口复验
+
 - 8e517cb4默认标准根入口Release0/0、Core157/157、Worker400/400且Q06通过；第74/145类R08合成hover被真实指针同步替换，根入口退出1，未发布安装。R08夹具保持所请求的输入状态后五轮15/15通过，新提交标准根入口待重跑。[失败和修正证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-input-state-20261025/README.md)
 
 ## 前次构建状态（2026-10-25）
