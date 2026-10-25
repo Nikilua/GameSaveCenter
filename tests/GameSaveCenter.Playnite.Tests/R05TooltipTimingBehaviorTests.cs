@@ -337,7 +337,9 @@ public sealed class R05TooltipTimingBehaviorTests
     private static void PumpDispatcherFor(TimeSpan duration)
     {
         var frame = new DispatcherFrame();
-        var timer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher.CurrentDispatcher)
+        // The pointer driver must leave a short dwell on schedule even when layout
+        // and automation work is queued ahead of Background priority.
+        var timer = new DispatcherTimer(DispatcherPriority.Send, Dispatcher.CurrentDispatcher)
         {
             Interval = duration
         };
@@ -366,7 +368,7 @@ public sealed class R05TooltipTimingBehaviorTests
         while (timeout.Elapsed < TimeSpan.FromSeconds(2))
         {
             PumpDispatcherFor(TimeSpan.FromMilliseconds(10));
-            if (!target.IsMouseOver)
+            if (!target.IsMouseOver || !ReferenceEquals(Mouse.DirectlyOver, target.InputHitTest(point)))
                 continue;
 
             var current = new NativePoint();

@@ -4,6 +4,10 @@
 
 ## 最新根入口复验（2026-10-25）
 
+- 118ce65c标准链第55/146类Tooltip快速掠过因测试驱动停留/命中同步失败。驱动计时优先级和实际命中同步修正后，真实指针五轮15/15、0跳过，新候选完整链待跑。证据：design/reviews/build-ui-reliability-20261022/evidence/T00-01/tooltip-driver-priority-20261025/README.md
+
+## 前次窗口生命周期根入口复验
+
 - c7640d1f根入口第8类Compact再次触发原生UIA标题读取失败。现测试程序集统一为未显式命名的测试Window提供稳定名称，标准Peer保持开启；六类三轮78/78通过，新候选完整链待跑。证据：design/reviews/build-ui-reliability-20261022/evidence/T00-01/window-automation-lifecycle-20261025/README.md
 
 ## 前次R06根入口复验

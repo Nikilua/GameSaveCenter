@@ -1,0 +1,39 @@
+[repo]\artifacts\gsc-b\dcaa43a0\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.38]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:04.03]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ProductionTooltipWrapsLongPathsAndEscClosesWithoutMovingFocus [2 s]
+[xUnit.net 00:00:10.93]       Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:10.93]       Expected: 0
+[xUnit.net 00:00:10.93]       Actual:   1
+[xUnit.net 00:00:10.93]          在 Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/EqualityAsserts.cs:行号 154
+[xUnit.net 00:00:10.93]          在 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.<>c.<QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt>b__1_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05TooltipTimingBehaviorTests.cs:行号 203
+[xUnit.net 00:00:10.93]          在 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.<>c__DisplayClass15_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05TooltipTimingBehaviorTests.cs:行号 437
+[xUnit.net 00:00:10.93]       Stack Trace:
+[xUnit.net 00:00:10.93]            在 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05TooltipTimingBehaviorTests.cs:行号 449
+  失败 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt [4 s]
+  错误消息:
+   Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+   在 Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/EqualityAsserts.cs:行号 154
+   在 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.<>c.<QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt>b__1_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05TooltipTimingBehaviorTests.cs:行号 203
+   在 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.<>c__DisplayClass15_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05TooltipTimingBehaviorTests.cs:行号 437
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05TooltipTimingBehaviorTests.cs:行号 449
+[xUnit.net 00:00:11.07]   Finished:    GameSaveCenter.Playnite.Tests
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+  已通过 GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.RefreshIgnoresPresentationRootsOwnedByAnotherDispatcher [150 ms]
+
+测试总数: 3
+     通过数: 2
+     失败数: 1
+总时间: 12.7447 秒
+结果文件: [repo]\artifacts\build-diagnostics\20261025T061639270Z-46bad3c2\tests\wpf.R05TooltipTimingBehaviorTests\wpf.R05TooltipTimingBehaviorTests.trx
+[xUnit.net 00:00:10.93]     GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt [FAIL]
+测试运行失败。

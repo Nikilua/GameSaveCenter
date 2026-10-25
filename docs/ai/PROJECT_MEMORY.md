@@ -1,3 +1,7 @@
+## 2026-10-25 Tooltip指针测试驱动时序修正
+
+118ce65c默认根入口run `20261025T061639270Z-46bad3c2` Release0/0、Core157/157、Worker400/400，Compact及Q06通过；第55/146类Tooltip快速掠过用例出现一次意外打开事件，未发布安装。测试驱动将短停留计时器从Background改为Send，避免布局/自动化积压延长80ms停留；指针进入检查同时确认Mouse.DirectlyOver等于目标点InputHitTest，避免父容器IsMouseOver误判离开子按钮。产品350ms延迟、快速掠过0打开、停留1打开及全部断言保留。SDK8.0.423 Release0/0，同桌面上下文真实指针五轮15/15通过、0跳过；源码校验见本轮。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/tooltip-driver-priority-20261025/README.md`。新候选标准完整链待跑。
+
 ## 2026-10-25 测试窗口UIA名称统一初始化
 
 c7640d1f标准根入口run `20261025T060407085Z-304dd11f` 在第8/145类Compact再次发生WindowAutomationPeer原生标题读取参数错误；Release0/0、Core157/157、Worker400/400，1193项1174通过/18跳过/1失败，未发布安装。跨类重复证据确认需统一处理测试窗口：测试程序集Loaded时仅为未显式命名的Window提供标题或稳定测试名称，保留标准WindowAutomationPeer。新增真实窗口关闭后Peer.GetName生命周期测试，包含空标题、标题和显式名称。按标准逐类隔离方式六类三轮18进程共78/78通过；曾合并六类的非标准进程因Application跨STA所有权失败，不计通过并保留。SDK8.0.423 Release0/0、源码校验通过。证据 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/window-automation-lifecycle-20261025/README.md`。新候选须重新默认根入口完整验证。
