@@ -1080,7 +1080,7 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 - 外机验收还需要同次命令的exit code、HEAD、artifacts/build-diagnostics/<runId>/summary.json、失败/成功阶段日志与Playnite启动结果；不要只提供旧Q06 TRX。Round3用户未跟踪TRX和tests/GameSaveCenter.Playnite.Tests/TestResults/不要清理或暂存。
 - 本阶段清理本机5个Q06/R08候选.tmp目录共1456文件/324453441逻辑字节，当前 artifacts/gsc-b/44f15e66、run 20261025T091123674Z-d1fdc06a完整诊断、ZIP/PEXT与安装报告保留。32项计划、真实宿主/物理输入/DPI与外机链均未整体验收。
 
-## 2026-10-26 最新构建交接：当前主线本机全链通过
+## 2026-10-26 默认根入口历史全链（已由下方中文入口验收更新）
 
 截至本次交接，产品源码身份为 b29c39a541ba92461e167f14f64917d889293161。默认根命令 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul" 已以退出码0完成；build run 20261025T152449622Z-e85af693、install run 20261025T152447580Z-d50774fa，SDK8.0.423 Release 0警告/0错误，1968项1911通过/57既有skip/0失败，149 TRX一致、146 WPF类，发布/打包/安装/Playnite启动均成功。插件加载路径由同一Playnite会话extensions.log确认。完整证据见 docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/README.md。
 

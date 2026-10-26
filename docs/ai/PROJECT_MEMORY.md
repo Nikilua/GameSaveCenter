@@ -1229,3 +1229,5 @@ T01-04 隔离路径边界脚本在审核通过的提升上下文中仍无法创�
 `InteractivePointerFact` 标记的真实桌面鼠标Tooltip测试会移动用户系统指针；标准构建默认在发现阶段跳过，只有设置 `GSC_RUN_INTERACTIVE_POINTER_TESTS=1` 才参与，适合用户明确安排的交互桌面复验。当前xUnit v2/VSTest组合会把执行中的动态SkipException记为失败，因此不要用运行时动态跳过。
 
 本地最后一次指定入口完整成功绑定提交 b05e569667925b6747f5f588d1c69ef50f84a772：SDK8.0.423 / Release，155阶段无失败，Core157/157、Worker400/400、总计1968项1910通过/58跳过/0失败，146个WPF隔离类；ZIP/PEXT、安装身份与Playnite启动通过。build run 20261026T033415954Z-814046fa，install run 20261026T033414003Z-2c4989e0。物理指针测试是其中新增的唯一skip，并可用 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 单独开启。不要把磁盘身份描述为运行进程加载证据。
+
+2026-10-26 已将 T00-01/T03-08 专项台账同步到上述 b05e5696 候选；HEAD b7f32d1c 是文档/证据更新，`src/tests/scripts` 相对 b05e5696 无跟踪变更。三入口0/7/23退出码转交证据在T00-02，最新全链诊断及安装信息在T03-08 `latest-candidate-20261026.json`。当前仍有五项外部/宿主验收待完成，不把本机一键链成功描述为整体完成或进程内插件加载验证。

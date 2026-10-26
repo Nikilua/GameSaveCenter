@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-26",
+  "productSourceCommit": "b05e569667925b6747f5f588d1c69ef50f84a772",
+  "repositoryHeadAtDocumentationUpdate": "b7f32d1c543c5568e0abc157560c2601774b9c4d",
+  "trackedSourceTestsScriptsUnchangedAfterBuild": true,
+  "command": "cmd.exe /d /c \"GameSaveCenter-一键构建安装运行.cmd < nul\"",
+  "exitCode": 0,
+  "buildRun": "20261026T033415954Z-814046fa",
+  "installRun": "20261026T033414003Z-2c4989e0",
+  "startedUtc": "2026-10-26T03:34:16.702525Z",
+  "completedUtc": "2026-10-26T05:04:39.9136482Z",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "steps": 155,
+  "failedSteps": 0,
+  "warnings": 0,
+  "errors": 0,
+  "xaml": {
+    "passed": 25,
+    "total": 25
+  },
+  "tests": {
+    "total": 1968,
+    "passed": 1910,
+    "skipped": 58,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "trxFiles": 149,
+    "trxCounterMismatches": 0,
+    "core": "157/157",
+    "worker": "400/400",
+    "wpfIsolatedClassRuns": 146
+  },
+  "skips": {
+    "count": 58,
+    "newDefaultSkip": "InteractivePointerFact real system-pointer tooltip test; explicitly opt in with GSC_RUN_INTERACTIVE_POINTER_TESTS=1",
+    "remaining": "Existing environment and architecture skips; unchanged product test assertions were retained"
+  },
+  "releaseAndInstall": {
+    "workerPublish": true,
+    "zipAndPextCreatedAndIdentityVerified": true,
+    "installedAssembliesVerified": 6,
+    "installedIdentity": "0.6.73+b05e569667925b6747f5f588d1c69ef50f84a772",
+    "gameSaveCenterPlayniteDllSha256": "3ED5F52F4E036666089AA5181E761C8C3ED6A692B3FAC2241F44E9B915FE8024",
+    "playniteStartup": true,
+    "inProcessPluginLoadPathVerified": false
+  },
+  "launcherTransferEvidence": {
+    "evidence": "../T00-02/results.json",
+    "entries": [
+      "GameSaveCenter-Run.cmd",
+      "GameSaveCenter-一键构建安装运行.cmd",
+      "scripts/build.cmd"
+    ],
+    "injectedExitCodes": [
+      0,
+      7,
+      23
+    ],
+    "casesPassed": 9,
+    "casesTotal": 9
+  },
+  "workingTree": {
+    "clean": false,
+    "preExistingUntrackedRound3EvidenceAndTestResultsPreserved": true,
+    "trackedSourceTestsScriptsChangedDuringBuild": false
+  },
+  "outputs": {
+    "diagnostics": "artifacts/build-diagnostics/20261026T033415954Z-814046fa",
+    "buildRoot": "artifacts/gsc-b/4607b9b3",
+    "retainedAsLatestCandidate": true,
+    "createdByDocumentationUpdate": false
+  },
+  "spaceBytesAtBuildStart": {
+    "C": 8661860352,
+    "D": 12153270272
+  },
+  "spaceBytesBeforeDocumentationUpdate": {
+    "C": 4200017920,
+    "D": 12080762880
+  },
+  "openTasks": [
+    "T00-07",
+    "T01-04",
+    "T01-08",
+    "T02-08",
+    "T03-05"
+  ],
+  "overallPlanComplete": false
+}
