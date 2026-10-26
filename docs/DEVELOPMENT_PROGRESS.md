@@ -1727,3 +1727,10 @@ CLOSE-IPC-01已完成：生产IOException/EOF取消分类、独立管道握手�
 - 新增独立的 `可下载版本` 工作区页签，左侧保留虚拟化版本列表，右侧提供当前目录/版本信息和下载绑定入口。
 - Expanded/Standard 使用列表 + 下载检查器双栏；Compact/Narrow 自动把检查器堆叠到列表下方，避免出现居中小区域和大块空白。
 - 保留 `SearchTrainerCatalogCommand`、`SyncTrainerCatalogCommand`、`LoadTrainerReleasesCommand`、`DownloadTrainerCommand` 以及导入确认链路，不改变 Worker、IPC 或下载安全逻辑。
+
+## CLOSE-UI-01：存档中心历史版本表格随高分辨率宿主扩展
+
+- 根因为历史 DataGrid 的剩余视口预算仍被 560 DIP 上限截断；现改为使用当前 PageHost 扣除摘要、框架与详情后的完整预算。
+- 复用 `UI-SCROLL-LAYOUT-REPAIR-20261020` 的视口预算与内外滚动结构，只处理剩余固定上限；当前游戏选框、滚动条、真实命令/绑定、虚拟化和恢复安全语义保持不变。候选路径表未改。
+- 提交前WPF几何回归11/11；Render QA重跑 `OK`，3840×2160逻辑DIP历史表格1741×1695、2560×1440为1101×899，双主题和窗口缩放序列通过。
+- 状态：代码/测试完成；中文根 `.cmd` 完整链及用户外机真实4K/物理DPI复核待验。见 [证据与边界](design/reviews/ui-history-table-4k-20261026/README.md)。

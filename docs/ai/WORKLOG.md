@@ -12331,3 +12331,13 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 复核 `b7f32d1c` 后确认其相对 `b05e5696` 仅有文档/证据提交，`src`、`tests`、`scripts` 无跟踪变更。将专项账本最新完整链更新为 b05 候选：中文根入口退出0、155步、SDK8.0.423 Release、solution 0/0、XAML25/25、Core157/157、Worker400/400、1968项1910通过/58跳过/0失败、149份TRX计数一致、146个WPF隔离类；发布、ZIP/PEXT、六程序集安装身份和Playnite启动通过。58个skip单列真实鼠标指针发现期skip与既有环境/架构skip；进程内插件加载路径仍未确认。T00-02现有0/7/23注入矩阵覆盖三个入口的退出码转交，本阶段未重复运行产品链。
 
 本阶段只更新T00-01/T03-08记录和长期记忆；开始时C盘可用4,200,017,920字节、D盘12,080,762,880字节。没有新建或删除artifacts/.tmp输出，保留最新完整链诊断`artifacts/build-diagnostics/20261026T033415954Z-814046fa`及构建根`artifacts/gsc-b/4607b9b3`。其他任务已有未跟踪Round3 TRX/TestResults保持原样。32项专项尚有T00-07、T01-04、T01-08、T02-08、T03-05五项未完成，不据此更新为整体完成。
+
+## 2026-10-26 外机4K存档历史表格伸缩修复（提交前）
+
+用户报告在另一台4K电脑中，存档中心“历史版本”表格不会随宿主拉伸。检查复用2026-10-20/21滚动布局修复：既有页面预算已正确扣摘要、框架和详情，但SaveHistoryGrid仍有560 DIP上限；RenderHarness旧记录也显示2560×1440下视口正好560 DIP。
+
+仅移除历史表格的固定上限，仍用WorkspaceTableViewportPolicy计算的historyTableBudget设置Height/MaxHeight。候选表暂未改；游戏选框、滚动条、真实绑定和命令、错误/取消/恢复安全语义以及Recycle虚拟化保持不变。新增高窗和短窗恢复测试。与UI-SCROLL-LAYOUT-REPAIR-20261020复用视口预算，不重复实现此前已完成的根裁切与嵌套滚动调整。
+
+提交前验证：global.json锁定SDK8.0.423；validate-source通过；WPF静态审查31个XAML、0错误（26 warnings/179 info）；CompactWorkspaceTableViewportBehaviorTests 11/11；选中布局合同的两个定向断言2/2。RenderHarness首次完整矩阵只在侧栏rapid-toggle探针超时，报告保留；同一代码完整重跑退出0、render-qa OK，两个主题与resize序列通过。3840×2160窗口的历史DataGrid为1741×1695 DIP，2560×1440窗口为1101×899 DIP；现有旧记录对应560 DIP。该测量为100%逻辑DPI离屏数据，不是用户外机或真实Playnite验证。
+
+代码和测试已经具备；中文标准根入口的全构建/全测试/发布打包/安装身份/启动链将在候选提交后运行。标准链和目标外机复核通过前不把问题记为已在用户机器关闭。诊断、TRX、身份和截图先保留于本轮.tmp，完整链归档后按路径/所有权规则清理；未动其他任务TRX/TestResults。

@@ -1098,3 +1098,11 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 ## 2026-10-26 指定中文一键入口完整链通过
 
 提交 b05e569667925b6747f5f588d1c69ef50f84a772 后，从仓库根直接运行 cmd.exe /d /c "GameSaveCenter-一键构建安装运行.cmd < nul"，完整退出码0。build run 20261026T033415954Z-814046fa、install run 20261026T033414003Z-2c4989e0。SDK8.0.423/Release、0警告/0错误、Core157/157、Worker400/400、1968总计1910通过/58跳过/0失败、146 WPF类；Worker发布、ZIP/PEXT、六程序集安装身份核验和Playnite启动成功。58个skip包含真实桌面指针Tooltip用例；需要物理输入复测时设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1。安装报告仅确认落盘身份，未读取运行进程的插件程序集加载路径。完整证据见 docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r05-pointer-optin-20261026/README.md。
+
+## 2026-10-26 外机4K存档历史表格问题接续
+
+用户报告另一台4K电脑中，存档中心“历史版本”表格在窗口拉伸后仍停留原尺寸。根因为 `SaveHistoryGrid` 仍有 `560 DIP` 固定上限；本轮只移除历史表这项上限，按当前页面视口预算计算表格高度。候选表、当前游戏选择器、共享滚动条、真实命令/绑定、虚拟化和恢复安全语义未改。
+
+提交前验证：SDK8.0.423；历史/详情/页面几何类11/11；完整 Render QA 重跑退出0，3840×2160逻辑DIP下历史表格为1741×1695 DIP、2560×1440为1101×899 DIP，两主题和缩放矩阵无PROBLEM。首轮仅侧栏快速动画探针超时，重跑到达目标；两份诊断保存在本轮临时输出，待归档后清理。离屏结果不是外机物理DPI或Playnite实机证据。
+
+下一步：候选代码/测试提交后，直接从仓库根运行 `GameSaveCenter-一键构建安装运行.cmd` 完成标准构建、全测试、发布、打包、安装身份核验与启动；然后归档同次summary/TRX/身份信息并清理本轮自有临时产物。用户外机4K复核仍待回报。详细记录见 `docs/design/reviews/ui-history-table-4k-20261026/README.md`。

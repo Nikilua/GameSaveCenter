@@ -94,6 +94,8 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
     {
         RunSta(() =>
         {
+            const double fourKWidth = 3840;
+            const double fourKHeight = 2160;
             var saveView = new SaveCenterView();
             var saveType = typeof(SaveCenterView);
             var saveRows = CreateRows();
@@ -104,9 +106,21 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var saveHost = MeasureInHost(saveView, 900, 900);
             saveView.ApplyResponsiveLayout(900, 900);
             saveHost.UpdateLayout();
+            var historyHeightAt900 = historyGrid.ActualHeight;
+            ResizeHost(saveHost, fourKWidth, fourKHeight, () => saveView.ApplyResponsiveLayout(fourKWidth, fourKHeight));
+            // The off-screen host is not loaded, so explicitly run the settled pass
+            // that the production PageScrollViewer raises after its viewport changes.
+            saveView.ApplyResponsiveLayout(fourKWidth, fourKHeight);
+            saveHost.UpdateLayout();
+            var historyHeightAt2160 = historyGrid.ActualHeight;
+            Assert.True(historyHeightAt2160 > historyHeightAt900 + 300,
+                $"The history table should use the taller host viewport: 900x900 DIP={historyHeightAt900:0.0}, 3840x2160 DIP={historyHeightAt2160:0.0}.");
+            Assert.True(historyHeightAt2160 > 560,
+                $"The history table must grow past the former fixed 560-DIP cap on a tall host: {historyHeightAt2160:0.0}.");
             ResizeHost(saveHost, 900, 600, () => saveView.ApplyResponsiveLayout(900, 600));
 
-            Assert.True(historyGrid.Height >= historyGrid.MinHeight && historyGrid.Height <= 560d);
+            Assert.True(historyGrid.Height >= historyGrid.MinHeight && historyGrid.ActualHeight < historyHeightAt2160 - 300,
+                $"The history table should contract with a short host: minimum={historyGrid.MinHeight:0.0}, short={historyGrid.ActualHeight:0.0}, tall={historyHeightAt2160:0.0}.");
             AssertPageContentMeasuredWithinHost(GetField<ScrollViewer>(saveType, saveView, "SaveHistoryPageScrollViewer"), saveHost);
             AssertTableScrollsInsideFrame(historyGrid, GetField<Border>(saveType, saveView, "SaveHistoryTableFrame"));
             AssertContentBoundsFit(GetField<ScrollViewer>(saveType, saveView, "SaveHistoryPageScrollViewer"),

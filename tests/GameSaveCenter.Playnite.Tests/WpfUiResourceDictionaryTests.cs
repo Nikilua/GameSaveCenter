@@ -1614,6 +1614,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("SaveCandidatePageSurface.Height =", saveCode);
         Assert.Contains("SaveHistoryGrid.MaxHeight = tableViewportHeight", saveCode);
         Assert.Contains("SaveCandidateGrid.MaxHeight = candidateTableViewportHeight", saveCode);
+        Assert.DoesNotContain("Math.Min(560d, historyTableBudget)", saveCode);
         Assert.Contains("height > 0", saveCode);
         Assert.Contains("x:Name=\"SaveHistorySummaryCard\" Grid.Row=\"0\" Style=\"{DynamicResource GscReadingCardStyle}\" Padding=\"10,4\"", save);
         Assert.Contains("x:Name=\"SaveHistorySummaryActions\" Grid.Row=\"1\" VerticalAlignment=\"Top\" HorizontalAlignment=\"Stretch\" Margin=\"0,10,0,0\"", save);

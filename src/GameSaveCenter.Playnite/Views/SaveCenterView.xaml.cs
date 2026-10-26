@@ -350,7 +350,9 @@ namespace GameSaveCenter.Playnite.Views
                 tableMinHeight,
                 historyFrameChromeHeight,
                 historyInspectorBudget);
-            var tableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, historyTableBudget));
+            // Let the history grid use the complete height left by the current PageHost.
+            // A fixed desktop-sized cap left large 4K workspaces with unused vertical space.
+            var tableViewportHeight = Math.Max(tableMinHeight, historyTableBudget);
             SaveHistoryGrid.Height = tableViewportHeight;
             SaveHistoryGrid.MaxHeight = tableViewportHeight;
             SaveHistoryInspectorFrame.MaxHeight = showHistoryInspector

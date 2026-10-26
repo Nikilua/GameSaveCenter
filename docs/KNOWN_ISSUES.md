@@ -14,6 +14,7 @@
 | CLOSE-EVID-01 | 原8项及共享输入模板追加R00-01-02/R00-05；candidate 4 fresh/10 stale | READY；全量回归后补证，baseline未改 |
 | CLOSE-HOST-01 / ENV-001 | 用户Media Inbox滚动偏移仍缺当前同宿主诊断；历史WMI/CEF隔离阻塞 | BLOCKED_ENVIRONMENT |
 | CLOSE-REG-01 | Q06/R08用户原失败缺断言、堆栈和DLL身份 | BLOCKED_ENVIRONMENT；未关闭 |
+| CLOSE-UI-01 | 外机4K下存档历史表格未随宿主扩展；源码已改为使用当前剩余视口，几何/Render QA通过 | IN_PROGRESS；候选完整根链及外机物理DPI待验 |
 
 下面条目为历史实现/回归记录；“已修复待验证”不能直接解释为当前候选验证通过。
 
@@ -23,6 +24,8 @@
 目标版本：`0.6.73-development-preview`
 
 2026-09-26 ENV-001（工程环境门禁，非产品回归）：隔离 Playnite runner 已增加 profile/路径/reparse/进程/output fail-closed 保护；当前 Codex 执行身份无法查询 `Win32_Process` 命令行，入口因此在创建 profile/output 前拒绝。本机 2026-09-24 fresh isolated bootstrap 已记录 CEF `platform_channel 0x5` 拒绝访问，环境状态未变化，不重试。自动验证已收口：Release `--no-restore` build `0/0`、Playnite 源码 `465/483`（18 项既有 skip）、WPF `105/105` 类隔离通过；未启动 Playnite，真实扩展加载、AppData/库访问边界和 UIA 仍未验，任务保持 `BLOCKED_ENVIRONMENT`。详见 `docs/design/reviews/ui-finesse-round3-20260915/evidence/ENV-001-ISOLATED-RUNNER-20260926.md`。
+
+2026-10-26 CLOSE-UI-01：存档历史表格因 `SaveHistoryGrid` 仍被固定为 `560 DIP`，在高窗口下未消费剩余 PageHost 高度；已去掉该表的常量上限并补高窗/短窗恢复回归。提交前 WPF 几何 `11/11`、Render QA 重跑 `OK`；完整根入口链与用户外机物理 DPI 尚待验证。详见 [存档历史高分辨率回归](design/reviews/ui-history-table-4k-20261026/README.md)。
 
 > **编号说明（2026-08-31）**：本台账经过多轮 AI 协作后存在少量编号复用冲突：`GSC-012`、`GSC-024`、`GSC-025`、`GSC-026`、`GSC-027`、`GSC-049`、`GSC-093`、`GSC-094`、`GSC-104` 各出现在两条不同问题上。同一编号下的多条记录均为独立问题，互不合并；后续引用请以「问题文字」为准，而不是只凭编号。待真机回归阶段统一重编号时，会在此处登记新旧编号映射。
 
