@@ -65,6 +65,10 @@
 - 行为矩阵入口 `scripts/e01-behavior-matrix.ps1`；`MANUAL QA REQUIRED` 项仍需对应人工证据，自动测试不替代。
 - 开发启动继续阅读[PROJECT_MEMORY.md](PROJECT_MEMORY.md)、[WORKLOG.md](WORKLOG.md)、[DEVELOPMENT_HANDOFF.md](../DEVELOPMENT_HANDOFF.md)，按记忆协议推进。
 
-## 2026-10-26 指定一键构建入口验证进行中
+## 2026-10-26 指定一键构建入口中间结果（提交后已完成）
 
 用户日常运行的入口为仓库根目录 `GameSaveCenter-一键构建安装运行.cmd`；验收必须实际运行该包装器，不以单独 `dotnet build` 代替。R05真实鼠标测试改为默认在发现阶段跳过，只有显式设置 `GSC_RUN_INTERACTIVE_POINTER_TESTS=1` 才控制桌面指针。当前该入口第二次运行的 Release、Core/Worker 与全部146个WPF测试组通过；打包器因源码尚未提交而按身份保护退出，尚未发布、安装或启动。提交后重新运行完整入口，结果以同次 `artifacts/build-diagnostics/<runId>/summary.json` 和命令退出码为准。详见 [T00-01 R05入口证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/r05-pointer-optin-20261026/README.md)。
+
+## 2026-10-26 指定中文一键入口完整链通过
+
+在提交 b05e569667925b6747f5f588d1c69ef50f84a772 上，直接运行用户指定的 GameSaveCenter-一键构建安装运行.cmd，build run 20261026T033415954Z-814046fa / install run 20261026T033414003Z-2c4989e0，完整退出0。SDK8.0.423、Release 0警告/0错误，Core157/157、Worker400/400，总计1968项1910通过、58跳过、0失败，146 WPF隔离类；Worker发布、ZIP/PEXT身份、安装验证及Playnite启动全部成功。真实鼠标Tooltip测试默认skip的原因及单独开启方式见入口修复证据。安装报告证明磁盘文件身份，不代表本次已确认进程内插件加载路径。

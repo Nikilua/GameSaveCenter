@@ -1091,6 +1091,10 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 
 审核提升执行上下文的Core 7.6.2路径边界复核中，13项通过、文件symlink因Windows要求Administrator privilege跳过、0失败；哨兵SHA相同，隔离.tmp已清除，未改变系统安全设置。只有当管理员或Developer Mode权限对测试进程可用后才重试，记录见docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/results-Core-elevated-20261026.json及docs/ai/ENVIRONMENT_CAPABILITY_CACHE.json。
 
-## 2026-10-26 指定一键构建入口待最终重跑
+## 2026-10-26 指定一键构建入口中间结果（已完成）
 
 用户确认日常使用仓库根目录 `GameSaveCenter-一键构建安装运行.cmd`，后续构建验收必须直接运行该入口。真实系统指针Tooltip测试已改为默认发现阶段跳过；要验证物理指针时，显式设置 `GSC_RUN_INTERACTIVE_POINTER_TESTS=1` 单独运行。build `20261026T025648945Z-1b7d3b5c` 已完成Release0/0、Core157/157、Worker400/400、1968总计1910通过/58跳过/0失败、146 WPF类，但打包器因未提交测试源码按身份保护停止。提交此候选后必须再次运行中文 `.cmd` 完整链，确认发布、ZIP/PEXT、安装身份与Playnite启动均完成后才能报告入口通过。详细诊断身份见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r05-pointer-optin-20261026/README.md`。
+
+## 2026-10-26 指定中文一键入口完整链通过
+
+提交 b05e569667925b6747f5f588d1c69ef50f84a772 后，从仓库根直接运行 cmd.exe /d /c "GameSaveCenter-一键构建安装运行.cmd < nul"，完整退出码0。build run 20261026T033415954Z-814046fa、install run 20261026T033414003Z-2c4989e0。SDK8.0.423/Release、0警告/0错误、Core157/157、Worker400/400、1968总计1910通过/58跳过/0失败、146 WPF类；Worker发布、ZIP/PEXT、六程序集安装身份核验和Playnite启动成功。58个skip包含真实桌面指针Tooltip用例；需要物理输入复测时设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1。安装报告仅确认落盘身份，未读取运行进程的插件程序集加载路径。完整证据见 docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r05-pointer-optin-20261026/README.md。

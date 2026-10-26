@@ -12319,3 +12319,9 @@ T03-08交付清单已完成并标明边界：最新成功产品完整链绑定 `
 用户明确日常入口是仓库根目录 `GameSaveCenter-一键构建安装运行.cmd`，本轮按这个包装器实跑。第一次完整运行 build `20261026T024235113Z-020dae12` 在 R05TooltipTimingBehaviorTests 失败：运行中的桌面鼠标落到其他应用窗口；xUnit v2 将动态 SkipException 标为失败。修正为真实系统指针用例默认在发现阶段跳过，设置 `GSC_RUN_INTERACTIVE_POINTER_TESTS=1` 可单独显式运行；生产 Tooltip 和其余断言未变。定向类结果2通过、1跳过、0失败，源码校验与 `git diff --check` 通过。
 
 第二次指定入口 build `20261026T025648945Z-1b7d3b5c` 编译0警告/0错误，Core157/157、Worker400/400，Playnite测试1968项1910通过/58跳过/0失败，146个WPF隔离类全部结束。打包器按源码身份保护发现测试文件未提交，故在发布/安装前正确退出；该次不是完整链成功。入口下一步必须在提交候选后重跑，成功证据追加在 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r05-pointer-optin-20261026/README.md`。失败和中止诊断均保留在本机 `artifacts/build-diagnostics/`，不纳入Git。
+
+## 2026-10-26 指定中文一键入口完整链通过
+
+提交 b05e569667925b6747f5f588d1c69ef50f84a772 后，原样运行 cmd.exe /d /c "GameSaveCenter-一键构建安装运行.cmd < nul"，外层退出码0。build run 20261026T033415954Z-814046fa、install run 20261026T033414003Z-2c4989e0，SDK8.0.423 / Release，155阶段全部成功、0警告/0错误，XAML25/25，Core157/157、Worker400/400；1968项1910通过、58跳过、0失败/错误/超时/中止，146个WPF隔离类完成。58项包含原有环境/架构skip及新增的真实桌面指针用例默认skip。
+
+Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程序集均带 0.6.73+b05e569667925b6747f5f588d1c69ef50f84a772；安装事务验证成功，Playnite启动成功。磁盘插件DLL SHA-256 3ED5F52F4E036666089AA5181E761C8C3ED6A692B3FAC2241F44E9B915FE8024。这证明指定入口完整执行成功，不声称已观察运行中的Playnite实际加载了该程序集。完整摘要和边界见 R05一键入口证据；诊断与生成物留在本机 artifacts。

@@ -17,6 +17,14 @@
 
 - 两次原始摘要、TRX与完整日志保留在本机 `artifacts/build-diagnostics/` 和 `artifacts/one-click-install.log`，这些生成物不提交。
 
-## 最终验收
+## 提交前的待验状态
 
-待提交当前修正后，使用完全相同的中文一键入口重新执行完整构建、测试、发布、打包、Playnite安装及启动。只有脚本退出码为0并核对同次诊断摘要后，才在此补记最终成功身份。
+该段记录提交前的待验状态，最终验收结果见下节。
+
+## 最终验收：指定入口完整通过
+
+提交 b05e569667925b6747f5f588d1c69ef50f84a772 后，执行 cmd.exe /d /c "GameSaveCenter-一键构建安装运行.cmd < nul>"，脚本退出码0。build run 20261026T033415954Z-814046fa；summary记录sourceCommit相同、SDK 8.0.423、outcome passed、155步且没有失败步骤。外层安装 run 20261026T033414003Z-2c4989e0。
+
+Release solution 0警告/0错误，XAML25/25，Core157/157、Worker400/400；Playnite总计1968，1910通过、58跳过、0失败/错误/超时/中止，146个WPF隔离类完成。真实鼠标测试是新增的一项发现期skip；其余跳过为既有环境/架构限制。Worker win-x64发布，ZIP和PEXT生成并通过身份校验；六个安装程序集均标记 0.6.73+b05e569667925b6747f5f588d1c69ef50f84a772。安装验证成功，Playnite于本次结束后启动。磁盘 GameSaveCenter.Playnite.dll SHA-256为 3ED5F52F4E036666089AA5181E761C8C3ED6A692B3FAC2241F44E9B915FE8024。安装报告明确该身份读取自磁盘，不等同于观察到进程内程序集加载。
+
+原始summary、TRX、日志、安装报告与构建/包产物保留在本机 artifacts；不把生成物提交。此前两次未完成尝试继续保留各自诊断身份，不覆盖为成功。

@@ -1227,3 +1227,5 @@ T01-04 隔离路径边界脚本在审核通过的提升上下文中仍无法创�
 此仓库的用户验收入口是根目录 `GameSaveCenter-一键构建安装运行.cmd`（转调 `GameSaveCenter-Run.cmd`）。用户明确要求时，必须调用该中文包装器并以完整脚本退出码及同次构建诊断确认，不用单独 `dotnet build` 替代。打包脚本会拒绝把未提交的测试/源码修改标成HEAD身份；先提交，再冻结跟踪文件执行全链。
 
 `InteractivePointerFact` 标记的真实桌面鼠标Tooltip测试会移动用户系统指针；标准构建默认在发现阶段跳过，只有设置 `GSC_RUN_INTERACTIVE_POINTER_TESTS=1` 才参与，适合用户明确安排的交互桌面复验。当前xUnit v2/VSTest组合会把执行中的动态SkipException记为失败，因此不要用运行时动态跳过。
+
+本地最后一次指定入口完整成功绑定提交 b05e569667925b6747f5f588d1c69ef50f84a772：SDK8.0.423 / Release，155阶段无失败，Core157/157、Worker400/400、总计1968项1910通过/58跳过/0失败，146个WPF隔离类；ZIP/PEXT、安装身份与Playnite启动通过。build run 20261026T033415954Z-814046fa，install run 20261026T033414003Z-2c4989e0。物理指针测试是其中新增的唯一skip，并可用 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 单独开启。不要把磁盘身份描述为运行进程加载证据。
