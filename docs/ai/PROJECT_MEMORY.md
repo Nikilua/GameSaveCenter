@@ -1221,3 +1221,9 @@ T01-07于2026-10-25完成验收。第四批将24组无文档引用的三份相�
 ## 2026-10-26 当前系统权限复核
 
 T01-04 隔离路径边界脚本在审核通过的提升上下文中仍无法创建文件symlink（Windows返回Administrator privilege required）。13个其他边界断言通过，1项跳过、0失败，临时夹具清理和哨兵SHA均通过；未改Windows设置。权限缓存及证据已更新，权限状态改变前不再重试。
+
+## 2026-10-26 用户指定的一键构建入口
+
+此仓库的用户验收入口是根目录 `GameSaveCenter-一键构建安装运行.cmd`（转调 `GameSaveCenter-Run.cmd`）。用户明确要求时，必须调用该中文包装器并以完整脚本退出码及同次构建诊断确认，不用单独 `dotnet build` 替代。打包脚本会拒绝把未提交的测试/源码修改标成HEAD身份；先提交，再冻结跟踪文件执行全链。
+
+`InteractivePointerFact` 标记的真实桌面鼠标Tooltip测试会移动用户系统指针；标准构建默认在发现阶段跳过，只有设置 `GSC_RUN_INTERACTIVE_POINTER_TESTS=1` 才参与，适合用户明确安排的交互桌面复验。当前xUnit v2/VSTest组合会把执行中的动态SkipException记为失败，因此不要用运行时动态跳过。

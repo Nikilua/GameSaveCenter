@@ -13,6 +13,15 @@ internal sealed class InteractivePointerFactAttribute : FactAttribute
 {
     public InteractivePointerFactAttribute()
     {
+        if (!string.Equals(
+                Environment.GetEnvironmentVariable("GSC_RUN_INTERACTIVE_POINTER_TESTS"),
+                "1",
+                StringComparison.Ordinal))
+        {
+            Skip = "该测试会移动系统鼠标指针；默认跳过。设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 后可单独运行。";
+            return;
+        }
+
         if (!CanReadAndSetPointer())
         {
             Skip = "当前 Windows 会话不允许访问系统鼠标指针；该 Tooltip 交互用例只在可交互桌面运行。";

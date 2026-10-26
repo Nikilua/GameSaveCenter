@@ -12313,3 +12313,9 @@ T03-08交付清单已完成并标明边界：最新成功产品完整链绑定 `
 ## 2026-10-26 T01-04 symlink 权限复核
 
 在审核通过的提升执行上下文运行 Test-ArtifactPathBoundaries.ps1（PowerShell Core 7.6.2，独立EvidenceName），结果13项路径边界断言通过、文件symlink 1项因“Administrator privilege required”跳过、0失败；CanDelete全false、哨兵SHA一致、.tmp夹具已删除。没有改变Windows安全设置。执行令牌仍无法创建文件symlink，已记入 ENVIRONMENT_CAPABILITY_CACHE.json；仅在管理员/Developer Mode权限对该进程变得可用后重试。结果 docs/design/reviews/build-ui-reliability-20261022/evidence/T01-04/results-Core-elevated-20261026.json。
+
+## 2026-10-26 指定一键入口的 Tooltip 鼠标测试稳定性
+
+用户明确日常入口是仓库根目录 `GameSaveCenter-一键构建安装运行.cmd`，本轮按这个包装器实跑。第一次完整运行 build `20261026T024235113Z-020dae12` 在 R05TooltipTimingBehaviorTests 失败：运行中的桌面鼠标落到其他应用窗口；xUnit v2 将动态 SkipException 标为失败。修正为真实系统指针用例默认在发现阶段跳过，设置 `GSC_RUN_INTERACTIVE_POINTER_TESTS=1` 可单独显式运行；生产 Tooltip 和其余断言未变。定向类结果2通过、1跳过、0失败，源码校验与 `git diff --check` 通过。
+
+第二次指定入口 build `20261026T025648945Z-1b7d3b5c` 编译0警告/0错误，Core157/157、Worker400/400，Playnite测试1968项1910通过/58跳过/0失败，146个WPF隔离类全部结束。打包器按源码身份保护发现测试文件未提交，故在发布/安装前正确退出；该次不是完整链成功。入口下一步必须在提交候选后重跑，成功证据追加在 `docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r05-pointer-optin-20261026/README.md`。失败和中止诊断均保留在本机 `artifacts/build-diagnostics/`，不纳入Git。
