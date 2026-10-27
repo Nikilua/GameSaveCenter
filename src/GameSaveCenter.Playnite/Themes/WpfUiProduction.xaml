@@ -175,7 +175,9 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
                 </Grid.ColumnDefinitions>
-                <ContentPresenter Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}"
+                <ContentPresenter x:Name="SelectedItemContent"
+                                  Visibility="Collapsed"
+                                  Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}"
                                   ContentTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
                                   ContentTemplateSelector="{Binding ItemTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
                                   ContentStringFormat="{Binding ItemStringFormat, RelativeSource={RelativeSource TemplatedParent}}"
@@ -184,22 +186,10 @@
                                   TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
                                   TextElement.FontFamily="{Binding FontFamily, RelativeSource={RelativeSource TemplatedParent}}"
                                   TextElement.FontSize="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}"
-                                  TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource TemplatedParent}}">
-                    <ContentPresenter.Style>
-                        <Style TargetType="ContentPresenter">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ContentPresenter.Style>
-                </ContentPresenter>
-                <TextBlock Grid.Column="0"
+                                  TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource TemplatedParent}}"/>
+                <TextBlock x:Name="DisplayMemberText"
+                           Grid.Column="0"
+                           Visibility="Visible"
                            Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="NoWrap"
@@ -209,21 +199,7 @@
                            TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
                            TextElement.FontFamily="{Binding FontFamily, RelativeSource={RelativeSource TemplatedParent}}"
                            TextElement.FontSize="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}"
-                           TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource TemplatedParent}}">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                           TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource TemplatedParent}}"/>
             </Grid>
             <Popup x:Name="PART_Popup"
                    Placement="Bottom"
@@ -261,6 +237,14 @@
                 <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
             </MultiTrigger>
+            <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                <Setter TargetName="SelectedItemContent" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="DisplayMemberText" Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                <Setter TargetName="SelectedItemContent" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="DisplayMemberText" Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 

@@ -478,7 +478,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                 $"{theme} {width}x{height}: preset row tops={string.Join(",", presetBounds.Select(x => x.Top.ToString("0.###")))}");
 
             var presetContentCenters = presetControls
-                .Select(control => ContentCenterY(control, presetRow))
+                .Select(control => ContentCenterY(control, presetRow, $"{theme} {width}x{height} preset row"))
                 .ToArray();
             Assert.True(presetContentCenters.Max() - presetContentCenters.Min() <= 1.5,
                 $"{theme} {width}x{height}: preset text centers={string.Join(",", presetContentCenters.Select(x => x.ToString("0.###")))}");
@@ -578,7 +578,7 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         return bounds.Top + bounds.Height / 2;
     }
 
-    private static double ContentCenterY(Control control, FrameworkElement ancestor)
+    private static double ContentCenterY(Control control, FrameworkElement ancestor, string diagnosticContext = "")
     {
         Rect localBounds;
         if (control is TextBox textBox)
@@ -602,7 +602,20 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
 
             var presenter = FindVisualChildren<ContentPresenter>(comboBox).FirstOrDefault(item =>
                 item.IsVisible && item.ActualWidth > 0 && item.ActualHeight > 0);
-            Assert.True(presenter is not null, "The production filter ComboBox did not apply its selection content presenter.");
+            if (presenter is null)
+            {
+                var namedPresenter = comboBox.Template?.FindName("SelectedItemContent", comboBox) as ContentPresenter;
+                var namedText = comboBox.Template?.FindName("DisplayMemberText", comboBox) as TextBlock;
+                var candidates = string.Join(";", FindVisualChildren<FrameworkElement>(comboBox)
+                    .Where(element => element is TextBlock || element is ContentPresenter)
+                    .Select(element => $"{element.GetType().Name}[{element.Visibility},{element.ActualWidth:0.###}x{element.ActualHeight:0.###},text={(element is TextBlock block ? block.Text : "")}]"));
+                throw new Xunit.Sdk.XunitException(
+                    $"{diagnosticContext}: the production filter ComboBox did not apply its selected content. " +
+                    $"Text='{comboBox.Text}', DisplayMemberPath='{comboBox.DisplayMemberPath}', SelectedIndex={comboBox.SelectedIndex}, " +
+                    $"namedPresenter={namedPresenter?.Visibility}/{namedPresenter?.ActualWidth:0.###}x{namedPresenter?.ActualHeight:0.###}, " +
+                    $"namedText={namedText?.Visibility}/{namedText?.ActualWidth:0.###}x{namedText?.ActualHeight:0.###}/'{namedText?.Text}', " +
+                    $"visuals={candidates}");
+            }
             var presenterBounds = GetBounds(presenter!, ancestor);
             return presenterBounds.Top + presenterBounds.Height / 2;
         }

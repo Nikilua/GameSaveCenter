@@ -6412,8 +6412,12 @@ public sealed class WpfUiResourceDictionaryTests
         var productionComboBoxTemplateEnd = production.IndexOf("<!-- Implicit item styling", productionComboBoxTemplateStart, StringComparison.Ordinal);
         Assert.True(productionComboBoxTemplateEnd > productionComboBoxTemplateStart);
         var productionComboBoxTemplate = production.Substring(productionComboBoxTemplateStart, productionComboBoxTemplateEnd - productionComboBoxTemplateStart);
+        Assert.Contains("x:Name=\"SelectedItemContent\"", productionComboBoxTemplate);
+        Assert.Contains("x:Name=\"DisplayMemberText\"", productionComboBoxTemplate);
         Assert.Contains("Content=\"{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
         Assert.Contains("Text=\"{Binding Text, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
+        Assert.Contains("TargetName=\"SelectedItemContent\" Property=\"Visibility\" Value=\"Visible\"", productionComboBoxTemplate);
+        Assert.Contains("TargetName=\"DisplayMemberText\" Property=\"Visibility\" Value=\"Collapsed\"", productionComboBoxTemplate);
         Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
         Assert.Contains("TextElement.Foreground=\"{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
         Assert.Contains("TextElement.FontFamily=\"{Binding FontFamily, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
