@@ -1,6 +1,6 @@
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 
-用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01提交 `ac18a918` 与 SDK环境修正提交 `3b97af01` 的两个精确workflow run都失败；第二个run已确认SDK10.0.401和仓库基线8.0.423均安装成功，两个job均失败于相同的媒体比较宽度断言。远端ActualWidth没有被日志采集；测试夹具改为显式设置640/500 DIP测同一个生产断点，本机SDK8.0.423测试1/1通过。详细job/artifact见[run 40453690050](../design/reviews/ui-polish-round5-20261027/evidence/U00-01/ci-run-40453690050.json)与[run 40456945529](../design/reviews/ui-polish-round5-20261027/evidence/U00-01/ci-run-40456945529.json)，候选修正提交的精确远端CI待验。required-checks端点403不可读。阶段`.tmp`清理仍被执行策略拒绝，395文件/53,094,868字节保留。当前继续U00-02/U00-03，旧S/T宿主/权限/物理输入状态不变。详见[U00-01基线](../design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md)。
+用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01提交`ac18a918`、SDK修正`3b97af01`均有失败CI；U00-02/U00-03源码提交`58872f2c`的run `40461606378`两job最终都失败于旧测试仍期待内容标题`历史版本`。已将断言改为同时检查保留的页签标题和新内容标题，SDK8定向测试1/1通过，后续提交CI待验。证据及两组artifact见[本批CI记录](../design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40461606378.json)。required-checks端点403不可读；`.tmp`清理曾被执行策略拒绝，仍保留既有输出。旧S/T宿主/权限/物理输入状态不变。
 
 提示词明确标准中文一键入口转英文根入口的完整构建/测试/发布/打包/安装身份/启动验收，以及scripts/build.cmd职责、GitHub精确提交所有适用job（含SDK基线与SDK10）通过、每阶段安全清理自有无用产物。无远端权限不得称CI成功；不改保护/跳过测试求绿。本次仅新增本地文档，未重跑全链或查询远端CI；产品全链事实仍以90bf0405证据为准。按源码结构、80项计数、链接与diff校验交付，不创建新对话，不清理用户旧TRX/TestResults。
 

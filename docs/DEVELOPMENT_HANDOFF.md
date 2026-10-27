@@ -1,6 +1,6 @@
 ## 2026-10-27 Round5 U00-01 基线盘点
 
-第五轮的 U00-01 已完成离屏双主题/双窗口尺寸基线与80项去重，记录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md`。Render QA 使用 SDK 8.0.423，报告零 PROBLEM；仓库没有当前 Demo 源文件，因此本轮以实际生产 Themes/Views 为比较对象。`ac18a918` 的run `40453690050` 与SDK环境修正提交 `3b97af01` 的run `40456945529`均失败。后者原始日志确认 SDK10.0.401 与 8.0.423 已安装，但两个job重复在媒体比较测试 `workspaceGrid.ActualWidth >= 560` 失败；runner实际宽度没有写入日志，故根因判断是测试依赖顶层窗口请求尺寸。现改用显式640/500 DIP测试生产断点，本机SDK8定向测试1/1通过，候选精确CI待验。详情见 `evidence/U00-01/ci-run-40453690050.json` 和 `ci-run-40456945529.json`。临时输出 `.tmp/ui-polish-round5-u00-01` 的 `Remove-Item` 被执行策略拒绝；目录保留，未用其他删除方式。U00-02资源所有权与U00-03存档页层级示范正在推进，旧宿主权限待验保持原状。
+第五轮的 U00-01 已完成离屏双主题/双窗口尺寸基线与80项去重，记录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md`。Render QA 使用 SDK 8.0.423，报告零 PROBLEM；仓库没有当前 Demo 源文件，因此本轮以实际生产 Themes/Views 为比较对象。`ac18a918` 和 `3b97af01` 两次CI失败已记录。U00-02/U00-03源码提交 `58872f2c` 的run `40461606378`两job最终均因`SaveCenterUsesTheRestoredBackupPolicySections`期待旧内容标题而失败，source测试门禁阻断后续WPF隔离/渲染/静态审查/打包。现将断言改为同时验证页签`Header="历史版本"`及内容`Text="存档清单"`，SDK8定向1/1通过，等待新提交CI。快照见 `evidence/U00-02-03/ci-run-40461606378.json`。之前媒体比较宽度断言已改为固定640/500 DIP并保留双分支验证。临时输出 `.tmp/ui-polish-round5-u00-01` 的 `Remove-Item` 被执行策略拒绝；目录保留，未用其他删除方式。
 
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 

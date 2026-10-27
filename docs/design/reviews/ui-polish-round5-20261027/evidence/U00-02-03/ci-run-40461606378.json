@@ -1,0 +1,41 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "run_id": 40461606378,
+  "run_number": 1299,
+  "event": "push",
+  "head_sha": "58872f2c579ea1e4da3003881aa55cbd687cbdb0",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "job_id": 122047282031,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "failure",
+      "sdk10_core": { "total": 157, "passed": 157 },
+      "worker": { "total": 400, "passed": 400 },
+      "playnite_source": { "total": 562, "passed": 543, "failed": 1, "skipped": 18 },
+      "failed_test": "RestoredAcrylicForkBaselineTests.SaveCenterUsesTheRestoredBackupPolicySections expected the old content Text=\"历史版本\"; the page now correctly keeps Header=\"历史版本\" and uses Text=\"存档清单\" for the content heading.",
+      "artifact": {
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "id": 12715220861,
+        "size_bytes": 398854,
+        "sha256": "4ab2856f850d6dd20dbb0e378457e9357014af8acdbe081cbaad6d3afd6857da"
+      }
+    },
+    {
+      "job_id": 122047282362,
+      "name": "编译、测试与打包",
+      "conclusion": "failure",
+      "playnite_source": { "total": 1119, "passed": 1100, "failed": 1, "skipped": 18 },
+      "failed_test": "RestoredAcrylicForkBaselineTests.SaveCenterUsesTheRestoredBackupPolicySections expected Text=\"历史版本\" at tests/GameSaveCenter.Playnite.Tests/RestoredAcrylicForkBaselineTests.cs:99.",
+      "artifact": {
+        "name": "GameSaveCenter-build-diagnostics",
+        "id": 12714384326,
+        "size_bytes": 492773,
+        "sha256": "a199fefa9198ecb3885071b4cd9340e790c13414aae4e406a425014bafb41c00"
+      }
+    }
+  ],
+  "remediation": "Update the source assertion to verify both the retained history tab header and the distinct content heading. The focused SDK8.0.423 test passed 1/1; the original assertion was not removed or weakened.",
+  "note": "Both jobs terminated after the same stale source test assertion. The failure blocked WPF isolated classes, render-qa, static audit and packaging in this run; the corrected assertion is in the next source commit."
+}

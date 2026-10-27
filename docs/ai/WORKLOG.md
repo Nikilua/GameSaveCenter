@@ -25,6 +25,11 @@
 - 原始日志：job `122032373270`、`122032373032`。Artifacts：`12712573336`（545282 bytes，SHA-256 `05933bde628ee3fec908288566ff71410130cdf7e28dc493669c6b4a5f22f254`）与`12712279869`（453714 bytes，SHA-256 `a4bab73e5d601504e7aee9c434b8b9a85b053a309da61ce63eb63e91d5055917`）。结构化记录见 `evidence/U00-01/ci-run-40456945529.json`。
 - 两个远端job均没有采集失败时的ActualWidth。测试先请求1280-DIP顶层窗口，然后把子Grid宽度误当作稳定的宽屏输入；据此诊断为夹具窗口尺寸假设，不是确认的生产布局缺陷。现在显式设置被测Grid为640 DIP和500 DIP，保留宽/窄双分支断言，并增加失败时实际宽度消息。SDK8.0.423本机定向测试1/1通过；修正和存档页U00-02/U00-03一同进入候选提交并等待精确CI。旧失败run保留历史，不反复rerun。
 
+## 2026-10-27 U00-03 标题合同的CI回归修正
+
+- U00-02/U00-03候选提交 `58872f2c579ea1e4da3003881aa55cbd687cbdb0` 的run `40461606378`，SDK10 job `122047282031` 失败在 `RestoredAcrylicForkBaselineTests.SaveCenterUsesTheRestoredBackupPolicySections`：旧测试把内容标题“历史版本”硬编码为合同，未接受本批将重复内容标题改为“存档清单”。真实页签仍是“历史版本”；更新断言同时验证 `Header="历史版本"` 和 `Text="存档清单"`，本机SDK8.0.423定向测试1/1通过，不删断言。失败artifact `12715220861`（398854 bytes，SHA-256 `4ab2856f850d6dd20dbb0e378457e9357014af8acdbe081cbaad6d3afd6857da`），job/测试信息见 `evidence/U00-02-03/ci-run-40461606378.json`。
+- 同run SDK8主job最终也在source test group以同一旧字符串断言失败：1119项中1100 pass / 1 fail / 18 skip；远端没有运行WPF隔离类、render-qa、静态审查或打包。主job `122047282362` artifact `12714384326`（492773 bytes，SHA-256 `a199fefa9198ecb3885071b4cd9340e790c13414aae4e406a425014bafb41c00`）。第二个job `122047282031` SDK10 core 157/157、Worker 400/400，Playnite source 562项543 pass / 1 fail / 18 skip；artifact `12715220861`。完整记录见 `evidence/U00-02-03/ci-run-40461606378.json`。修正标题合同后续提交需重新检查两job。
+
 ## 2026-10-25 R08 hover/press动效采样稳定性
 
 提交`7525f8c9`默认根入口 `20261025T084235278Z-4336836a`：Release0/0，Core157/157、Worker400/400，Q06所在类通过；第74/146个WPF类R08失败，1437项1418通过/18跳过/1失败，未到发布/安装。失败观测ScaleX press sample=0.998，无法再回弹0.002而仍低于1。测试先等ScaleX<=0.99再释放，并将悬停输入从进程级MouseDevice换成只读DP键，在不可命中测试的根节点上激活生产模板状态。生产动效与方向/连续性/终态断言保持。SDK8.0.423 Release方案0/0，R08隔离全类五轮15/15。源码SHA `90A71A1C2044BE445654E1BFABD2A333D12ED5094C297A0E49E14AA839975EA8`。证据`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/`。修复提交后仍需完整根.cmd链；用户旧TRX、TestResults、外机stash不暂存不删除。

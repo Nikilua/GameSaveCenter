@@ -95,7 +95,8 @@ public sealed class RestoredAcrylicForkBaselineTests
         var save = ReadSource("Views", "SaveCenterView.xaml");
 
         Assert.Contains("x:Name=\"SaveHistorySummaryCard\"", save);
-        Assert.Contains("Text=\"历史版本\"", save);
+        Assert.Contains("Header=\"历史版本\"", save);
+        Assert.Contains("Text=\"存档清单\"", save);
         Assert.Contains("Text=\"{Binding Backups.Count, Mode=OneWay, StringFormat={}{0} 个版本}\"", save);
         Assert.Contains("Command=\"{Binding DetectPathsCommand}\"", save);
         Assert.Contains("Command=\"{Binding ValidateCommand}\"", save);
