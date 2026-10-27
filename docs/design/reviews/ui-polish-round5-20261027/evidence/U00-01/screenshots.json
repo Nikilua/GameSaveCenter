@@ -1,0 +1,130 @@
+[
+  {
+    "File": "Save-light-1040x700.png",
+    "Theme": "light",
+    "Page": "Save",
+    "WindowDip": "1040x700",
+    "Bytes": 71173,
+    "Sha256": "82372E236F678BC579B1514CBCFD150F7FEE071E9AB7732894C825EDAC0C468C"
+  },
+  {
+    "File": "Save-light-1366x768.png",
+    "Theme": "light",
+    "Page": "Save",
+    "WindowDip": "1366x768",
+    "Bytes": 105230,
+    "Sha256": "2C8B1590B52B7C114224A35AFD2B805E83573DC55A7B84BA85CD025BEE3C1728"
+  },
+  {
+    "File": "Task-light-1040x700.png",
+    "Theme": "light",
+    "Page": "Task",
+    "WindowDip": "1040x700",
+    "Bytes": 66267,
+    "Sha256": "22DD78C4D0EEACD46A5431082260C176A9D695129432BB6953EB61929BBD5E37"
+  },
+  {
+    "File": "Task-light-1366x768.png",
+    "Theme": "light",
+    "Page": "Task",
+    "WindowDip": "1366x768",
+    "Bytes": 99083,
+    "Sha256": "C106BC1D2098B968987342EADCB7708D9FF714804E3E790B6E011F84EB9E6A2E"
+  },
+  {
+    "File": "Media-light-1040x700.png",
+    "Theme": "light",
+    "Page": "Media",
+    "WindowDip": "1040x700",
+    "Bytes": 70078,
+    "Sha256": "D2415D64090FE90A271887D6E4FF7A0FF1B152733271827E0FCD6739FA656FC1"
+  },
+  {
+    "File": "Media-light-1366x768.png",
+    "Theme": "light",
+    "Page": "Media",
+    "WindowDip": "1366x768",
+    "Bytes": 97435,
+    "Sha256": "456A987812FB254658E6DB54765D3542020E40B6F913B5FAFECCC993608D4475"
+  },
+  {
+    "File": "Settings-light-1040x700.png",
+    "Theme": "light",
+    "Page": "Settings",
+    "WindowDip": "1040x700",
+    "Bytes": 76300,
+    "Sha256": "690FA98F7543AF5090A141FC944083289A073C3B09FFEECC8B855D24EF489441"
+  },
+  {
+    "File": "Settings-light-1366x768.png",
+    "Theme": "light",
+    "Page": "Settings",
+    "WindowDip": "1366x768",
+    "Bytes": 116026,
+    "Sha256": "1DBC34D8885B95663F43DE108633495A6F326F25630306C0E63023CA5D26D672"
+  },
+  {
+    "File": "Save-dark-1040x700.png",
+    "Theme": "dark",
+    "Page": "Save",
+    "WindowDip": "1040x700",
+    "Bytes": 75648,
+    "Sha256": "DFF173ADE2141E2AB2670F268EC1B8D804F684F6B486789E5F4CD6DF5EAEE262"
+  },
+  {
+    "File": "Save-dark-1366x768.png",
+    "Theme": "dark",
+    "Page": "Save",
+    "WindowDip": "1366x768",
+    "Bytes": 112307,
+    "Sha256": "07B043706EB7789A28067CF62FDE97F7F131DDEC5D4A16CCF4BAE692FD8EB2ED"
+  },
+  {
+    "File": "Task-dark-1040x700.png",
+    "Theme": "dark",
+    "Page": "Task",
+    "WindowDip": "1040x700",
+    "Bytes": 70467,
+    "Sha256": "63AEE170AA8011F91A03335795ABC7378EFDECCE9F25309BCAD77A664716BB66"
+  },
+  {
+    "File": "Task-dark-1366x768.png",
+    "Theme": "dark",
+    "Page": "Task",
+    "WindowDip": "1366x768",
+    "Bytes": 102325,
+    "Sha256": "66A3BD92F5A611094EB6DE2B0FA2B79151F49ED1838110AC36E4652370EEEA64"
+  },
+  {
+    "File": "Media-dark-1040x700.png",
+    "Theme": "dark",
+    "Page": "Media",
+    "WindowDip": "1040x700",
+    "Bytes": 73420,
+    "Sha256": "0D05575FCA910D42CFB7B67329B157D515AF5F491B8B6991494F3382A03572A9"
+  },
+  {
+    "File": "Media-dark-1366x768.png",
+    "Theme": "dark",
+    "Page": "Media",
+    "WindowDip": "1366x768",
+    "Bytes": 102135,
+    "Sha256": "E0F743E278E7927C871F8630C4AD0F2CA58A9FF25B35AB9CF3A91037FC936B19"
+  },
+  {
+    "File": "Settings-dark-1040x700.png",
+    "Theme": "dark",
+    "Page": "Settings",
+    "WindowDip": "1040x700",
+    "Bytes": 94875,
+    "Sha256": "861A0853F94E5BDB44EFA1F8B57160B200270F9EF0C479270DB02BC751BF6DB6"
+  },
+  {
+    "File": "Settings-dark-1366x768.png",
+    "Theme": "dark",
+    "Page": "Settings",
+    "WindowDip": "1366x768",
+    "Bytes": 141437,
+    "Sha256": "978F41C05B862172DBA36B7531F4DF4AD884245E198FF8005F41751107693663"
+  }
+]

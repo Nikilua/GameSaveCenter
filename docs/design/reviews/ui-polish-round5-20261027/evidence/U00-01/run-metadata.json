@@ -1,0 +1,87 @@
+{
+  "baselineId": "U00-01-20261027T112617+0800",
+  "generatedLocal": "2026-10-27 11:26:17 +08:00",
+  "sourceCommit": "f5cddfe960668fbb06653d553c0a2bf316ce137d",
+  "productSourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "sourceWorkingTreeClean": false,
+  "dirtyPaths": "Existing untracked Round3 TRX/TestResults only; preserved",
+  "sdk": "8.0.423",
+  "python": "Python 3.14.3",
+  "renderQa": {
+    "problemCount": 0,
+    "reportSha256": "7C161802F8ED82731E2AFBE901328F4D51ED35214520BBE245BD8AC3A2BD96D3",
+    "reportBytes": 1141754,
+    "result": "render-qa OK",
+    "exitCode": 0
+  },
+  "renderHarness": {
+    "windowDips": [
+      "1040x700",
+      "1366x768"
+    ],
+    "themes": [
+      "Light",
+      "Dark"
+    ],
+    "fakeData": true,
+    "configuration": "Release",
+    "buildErrors": 0,
+    "logicalDpiScale": 1.0,
+    "buildWarnings": 0,
+    "playniteHost": false
+  },
+  "wpfStaticAudit": {
+    "errors": 0,
+    "mediaStackPanelWarnings": [
+      "MediaCenterView.xaml:162",
+      "MediaCenterView.xaml:270",
+      "MediaCenterView.xaml:385",
+      "MediaCenterView.xaml:442",
+      "MediaCenterView.xaml:962",
+      "MediaCenterView.xaml:991",
+      "MediaCenterView.xaml:1056",
+      "MediaCenterView.xaml:1071"
+    ],
+    "information": 179,
+    "warnings": 26,
+    "xamlFiles": 31
+  },
+  "output": {
+    "unarchivedFiles": 379,
+    "unarchivedBytes": 51620662,
+    "archivedScreenshots": 16,
+    "pngFiles": 394,
+    "bytes": 53094868,
+    "archivedScreenshotBytes": 1474206,
+    "reportFiles": 1,
+    "files": 395
+  },
+  "diskFreeObserved": {
+    "dBeforeCleanupPreflight": 7376445440,
+    "dBeforeRender": 8857903104,
+    "cBeforeRender": 5996015616,
+    "cBeforeCleanup": 5985894400,
+    "dAfterRender": 6086529024,
+    "interpretation": "Values are point-in-time observations. D free space rose between post-run and cleanup preflight; do not attribute that change to this task."
+  },
+  "performanceProxy": {
+    "boundary": "Offscreen dispatcher/render proxy only, not Playnite presented-frame measurement",
+    "singleToggleP95FrameGapMs": 30.6,
+    "rapidToggleMaxFrameGapMs": 125.5,
+    "hostDip": "2000x1100",
+    "animationDisabledFinalMs": 109.4,
+    "singleToggleSlowFrameRatio": 0.15,
+    "rapidToggleP95FrameGapMs": 22.1,
+    "singleToggleMaxFrameGapMs": 143.7,
+    "rapidToggleSlowFrameRatio": 0.129
+  },
+  "entrypointExistence": {
+    "buildCmd": true,
+    "englishRoot": true,
+    "chineseWrapper": true
+  },
+  "demoSourcesPresent": {
+    "wpfUiDemoV31": false,
+    "acrylicForkDesign": false
+  }
+}

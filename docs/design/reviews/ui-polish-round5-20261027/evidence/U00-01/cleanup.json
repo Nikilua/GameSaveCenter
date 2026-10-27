@@ -1,0 +1,23 @@
+{
+  "cleanupId": "U00-01-20261027",
+  "stageOwnedTarget": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\ui-polish-round5-u00-01",
+  "targetWithinRepositoryTmp": true,
+  "reparsePoints": 0,
+  "activeRenderHarnessProcesses": 0,
+  "exclusiveReadFailures": 0,
+  "archivedScreenshots": 16,
+  "archivedScreenshotHashesVerified": true,
+  "generatedFilesStillPresent": 395,
+  "logicalBytesStillPresent": 53094868,
+  "deleteAttempt": "PowerShell Remove-Item -LiteralPath <verified target> -Recurse -Force",
+  "deleteAttemptResult": "Rejected by execution policy before PowerShell executed; no files removed",
+  "targetRetained": true,
+  "freeSpaceObserved": {
+    "cBeforeAttempt": 5985894400,
+    "cAfterAttempt": 6010806272,
+    "dAfterAttempt": 7375695872,
+    "dBeforeAttempt": 7376445440
+  },
+  "preserve": "All other .tmp/artifacts/bin/obj outputs and user Round3 TRX/TestResults remain untouched",
+  "followUp": "Run the repository-approved cleanup in an execution context that permits the explicitly scoped PowerShell Remove-Item command; verify path and ownership again first."
+}

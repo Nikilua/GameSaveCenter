@@ -1,8 +1,16 @@
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 
-用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01为READY，其余PROPOSED，按依赖每批2～4项；先共享排版/主题/控件与示范页，再连续动效和跨页精修。该授权替代旧“没有独立新实现/不新增计划”的排期结论；旧S/T权限、真实宿主和物理输入待验状态仍保留，不能由新计划自动结项。
+用户明确要求新增界面与动画优化任务，新增[80项计划](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)与[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01 本地基线已完成，下一批 U00-02 + U00-03；提交 CI 与清理状态待验。旧 S/T 权限、宿主和物理输入状态不自动结项。
 
-提示词明确标准中文一键入口转英文根入口的完整构建/测试/发布/打包/安装身份/启动验收，以及scripts/build.cmd职责、GitHub精确提交所有适用job（含SDK基线与SDK10）通过、每阶段安全清理自有无用产物。无远端权限不得称CI成功；不改保护/跳过测试求绿。本次仅新增本地文档，未重跑全链或查询远端CI；产品全链事实仍以90bf0405证据为准。按源码结构、80项计数、链接与diff校验交付，不创建新对话，不清理用户旧TRX/TestResults。
+提示词继续要求中文根入口完整链、`scripts/build.cmd`职责、GitHub双 SDK job 及逐阶段安全清理。本轮产品源码仍以 `90bf0405` 为基线；已核对三个实际入口均存在，不创建假入口。Round 3 用户 TRX/TestResults 不清理、不暂存。
+
+## 2026-10-27 Round5 U00-01 离屏基线和去重
+
+- 基线提交 `f5cddfe960668fbb06653d553c0a2bf316ce137d`，产品源码身份 `90bf040567f013f3a8d9ed8667028a4edb2ec524`。直接运行 `render-qa.ps1` 初次发现当前 shell 未选中 SDK；按仓库 `sdk-baseline.ps1` 选择用户缓存中的精确 `8.0.423`，没有修改 `global.json` 或 SDK 基线。
+- `scripts/render-qa.ps1 -Configuration Release -Output .tmp/ui-polish-round5-u00-01`：RenderHarness Release build 0 warning/0 error，render exit 0、`render-qa OK`、0 `PROBLEM`；Light/Dark、1040×700/1366×768、logical DPI 1.00。静态审查 31 XAML、0 errors/26 warnings/179 info。详见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md` 与配套 JSON。
+- 16 张同条件四页截图归档并复核 SHA；设置页样本处于 3 项校验错误状态，没有干净默认配置或真实 Playnite 截图。Demo `AcrylicFork/Design` 与 `GameSaveCenter.WpfUiDemo.v3.1` checkout 缺失，未捏造 Demo 对照。90bf 的历史表高窗修复记为已去重，不重做；Round4 S01 的密度/列/保存仍保留其真实宿主待验边界。
+- Render QA 输出 395 文件/53,094,868 字节；只准备清理本阶段新建 `.tmp` 子目录，其他 `.tmp/artifacts/bin/obj` 及用户 TRX/TestResults 保留。经过路径、reparse、进程和独占读取核验后，PowerShell `Remove-Item -LiteralPath ... -Recurse -Force` 被执行策略拒绝，目标仍在；清理记录标 pending，没有用替代命令绕开。证据见 `evidence/U00-01/cleanup.json`。
+- 当前 `PROGRESS.md` U00-01 标为代码完成待验收，等待该精确提交 CI 终态并保留清理待办。下一批 U00-02 控件资源归属 + U00-03 存档页信息主次示范；源码/资源批次按门禁定向构建与行为验证，逐批中文提交推送。真实存档恢复、媒体删除、云写入没有执行。
 
 ## 2026-10-25 R08 hover/press动效采样稳定性
 

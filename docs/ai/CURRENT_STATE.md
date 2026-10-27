@@ -1,6 +1,6 @@
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 
-用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01为READY，其余PROPOSED，按依赖每批2～4项；先共享排版/主题/控件与示范页，再连续动效和跨页精修。该授权替代旧“没有独立新实现/不新增计划”的排期结论；旧S/T权限、真实宿主和物理输入待验状态仍保留，不能由新计划自动结项。
+用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01 已在源码 `f5cddfe9` 完成离屏视觉基线与旧任务去重；RenderHarness Release 0 warning/0 error，SDK8.0.423，render-qa exit 0/0 PROBLEM。远端精确提交 CI 待推送后核验；本阶段 395 个、53,094,868 字节 `.tmp` 输出因 `Remove-Item -Recurse -Force` 被执行策略拒绝而保留。下一批 U00-02 + U00-03，按依赖每批2～4项；旧S/T权限、真实宿主和物理输入待验状态不因新计划自动结项。详细发现、截图与清理边界见[U00-01基线](../design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md)。
 
 提示词明确标准中文一键入口转英文根入口的完整构建/测试/发布/打包/安装身份/启动验收，以及scripts/build.cmd职责、GitHub精确提交所有适用job（含SDK基线与SDK10）通过、每阶段安全清理自有无用产物。无远端权限不得称CI成功；不改保护/跳过测试求绿。本次仅新增本地文档，未重跑全链或查询远端CI；产品全链事实仍以90bf0405证据为准。按源码结构、80项计数、链接与diff校验交付，不创建新对话，不清理用户旧TRX/TestResults。
 
