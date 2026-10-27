@@ -588,6 +588,10 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         }
         else if (control is ComboBox comboBox)
         {
+            // WPF can defer a ComboBox template in an offscreen/isolated host.
+            // Force the normal template and layout lifecycle before measuring its text.
+            comboBox.ApplyTemplate();
+            comboBox.UpdateLayout();
             var selectedText = FindVisualChildren<TextBlock>(comboBox).FirstOrDefault(block =>
                 block.IsVisible
                 && block.ActualWidth > 0
@@ -612,6 +616,8 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
                 throw new Xunit.Sdk.XunitException(
                     $"{diagnosticContext}: the production filter ComboBox did not apply its selected content. " +
                     $"Text='{comboBox.Text}', DisplayMemberPath='{comboBox.DisplayMemberPath}', SelectedIndex={comboBox.SelectedIndex}, " +
+                    $"styleTarget={comboBox.Style?.TargetType.Name}, templateTarget={comboBox.Template?.TargetType.Name}, " +
+                    $"loaded={comboBox.IsLoaded}, visualChildren={VisualTreeHelper.GetChildrenCount(comboBox)}, " +
                     $"namedPresenter={namedPresenter?.Visibility}/{namedPresenter?.ActualWidth:0.###}x{namedPresenter?.ActualHeight:0.###}, " +
                     $"namedText={namedText?.Visibility}/{namedText?.ActualWidth:0.###}x{namedText?.ActualHeight:0.###}/'{namedText?.Text}', " +
                     $"visuals={candidates}");
