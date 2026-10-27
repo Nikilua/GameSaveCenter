@@ -37,3 +37,5 @@
 ## 未验证边界
 
 真实Playnite呈现、跟随宿主主题、系统物理DPI/100–200%缩放、UIA树与键盘/IME实操、实际呈现帧及完整启动安装链未由离屏检查覆盖。恢复存档、媒体删除和云端写入均未触发。首次环境变量缺失的TRX和四项既有skip都不视为通过。
+
+- 2026-10-27精确提交20be80738a97539376dca07b0be1599ffdb59c84的workflow run 40462741496两job均通过core 157/157、worker 400/400，但在Playnite隔离类MediaInboxScrollBehaviorTests第18/146类同败：测试请求1400 DIP窗口，GitHub runner实测MediaInboxLayout.ActualWidth=1014，低于生产1334 DIP宽屏门槛，因而代码按预期将Inspector移至窄屏页面表面；旧测试仍假设宽屏并Assert.Same(layout, frame.Parent)。本批不改生产布局，夹具现显式设1360 DIP并断言实际宽度至少1334；SDK8.0.423该类本机6/6通过。CI阶段后续render QA、WPF静态审查、打包被测试失败门禁跳过。详见[run/jobs/artifacts](ci-run-40462741496.json)。

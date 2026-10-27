@@ -1,6 +1,6 @@
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 
-用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01提交`ac18a918`、SDK修正`3b97af01`均有失败CI；U00-02/U00-03源码提交`58872f2c`的run `40461606378`两job最终都失败于旧测试仍期待内容标题`历史版本`。已将断言改为同时检查保留的页签标题和新内容标题，SDK8定向测试1/1通过，后续提交CI待验。证据及两组artifact见[本批CI记录](../design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40461606378.json)。required-checks端点403不可读；`.tmp`清理曾被执行策略拒绝，仍保留既有输出。旧S/T宿主/权限/物理输入状态不变。
+用户明确要求新增界面与动画优化任务，新增[80项计划](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)与[进度账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01完成；U00-02/U00-03生产改动提交`58872f2c`，标题断言修正`20be8073`的run `40462741496`两job均失败于`WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll`：测试窗口请求1400 DIP但runner实际视口1014 DIP，低于1334 DIP宽屏门槛，故测试意外进入窄屏抽屉分支。Core 157/157、Worker 400/400；Playnite 1233项1214通过/1失败/18既有skip。夹具现固定布局1360 DIP并验证实际宽度门槛，本机SDK8该类6/6通过，待精确提交CI。证据与两个artifact身份见[run记录](../design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40462741496.json)。required-checks端点403不可读；`.tmp`历史清理遭拒仍保留；旧S/T宿主/权限/物理输入状态不变，接续U00-04/05。
 
 提示词明确标准中文一键入口转英文根入口的完整构建/测试/发布/打包/安装身份/启动验收，以及scripts/build.cmd职责、GitHub精确提交所有适用job（含SDK基线与SDK10）通过、每阶段安全清理自有无用产物。无远端权限不得称CI成功；不改保护/跳过测试求绿。本次仅新增本地文档，未重跑全链或查询远端CI；产品全链事实仍以90bf0405证据为准。按源码结构、80项计数、链接与diff校验交付，不创建新对话，不清理用户旧TRX/TestResults。
 

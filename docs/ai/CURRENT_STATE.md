@@ -1,6 +1,6 @@
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 
-用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01提交`ac18a918`与SDK修正提交`3b97af01`均有失败CI记录；U00-02/U00-03源码提交`58872f2c`的run `40461606378`最终两job均失败于回归测试仍期待内容标题“历史版本”。SDK8 job测试1119项为1100通过、1失败、18跳过；SDK10 source组562项为543通过、1失败、18跳过（core157/157、Worker400/400通过）。错误测试已改为同时断言页签Header“历史版本”和内容Text“存档清单”，SDK8定向测试1/1通过。WPF隔离、render QA、静态审查和打包因此未运行；修复提交精确CI待验。身份与artifacts见[CI记录](../design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40461606378.json)。required-checks端点403不可读。阶段临时输出保持原目录，旧S/T宿主/权限/物理输入待验状态不变。
+用户明确要求新增界面与动画优化任务，新增[80项计划](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)与[进度账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01完成；U00-02/U00-03生产改动提交`58872f2c`，标题回归断言修正提交`20be8073`。精确run `40462741496`两job均因媒体收件箱宽屏测试夹具失败：CI实际排布宽1014 DIP、生产宽屏门槛1334 DIP，测试请求窗口尺寸不代表实际视口。SDK8与SDK10均Core 157/157、Worker 400/400；Playnite 1233项1214通过/1失败/18既有skip。修正夹具显式1360 DIP并断言门槛，本机SDK8该类6/6通过，等修复提交远端CI。render QA、静态审查、打包被失败门禁阻断。run/job/artifact见[CI证据](../design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40462741496.json)。required-checks端点此前403不可读；`.tmp`清理此前遭执行策略拒绝，保留输出；旧S/T宿主/权限/物理输入状态不变。U00-04/05接续推进。
 
 提示词明确标准中文一键入口转英文根入口的完整构建/测试/发布/打包/安装身份/启动验收，以及scripts/build.cmd职责、GitHub精确提交所有适用job（含SDK基线与SDK10）通过、每阶段安全清理自有无用产物。无远端权限不得称CI成功；不改保护/跳过测试求绿。本次仅新增本地文档，未重跑全链或查询远端CI；产品全链事实仍以90bf0405证据为准。按源码结构、80项计数、链接与diff校验交付，不创建新对话，不清理用户旧TRX/TestResults。
 

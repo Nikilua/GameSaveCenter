@@ -12399,3 +12399,9 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 ## 2026-10-27 T01-04账本列校正
 
 对照32项计划和T01-04证据发现 `PROGRESS.md` 该行缺少“路径越界负例”标题，原状态列因此错位。已恢复任务列，仍为代码完成待验收、实现提交`d2429890`；权限边界和结果不变：Windows文件符号链接权限仍未满足，最新13项通过/1项权限skip。结构检查确认32条任务行均含6列。本批纯文档，无产品变更和新临时产物。
+
+## 2026-10-27 媒体收件箱宽屏测试夹具修正
+
+- 标题回归修正提交20be80738a97539376dca07b0be1599ffdb59c84的run 40462741496（#1300）两适用job均失败在 MediaInboxScrollBehaviorTests.WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll。主SDK8 job 122050912738，SDK10.0.401 job 122050913048；两边Core 157/157、Worker 400/400，Playnite均1233项1214通过、1失败、18既有skip。原始输出显示测试请求Window 1400 DIP，但GitHub Windows 2025 runner的实际MediaInboxLayout宽1014 DIP，低于生产宽屏门槛1334，响应式逻辑正确走窄屏抽屉分支；旧测试错误地断言Inspector必须仍为MediaInboxLayout子项。Assert.Same失败观测到expected Grid 1014×540、actual parent Grid 998×594。ender-qa、WPF静态审查和打包被测试门禁跳过。
+- 修正测试夹具直接设置MediaInboxLayout.Width=1360并断言排布后宽度至少1334 DIP，原有Inspector固定、圆角裁剪、页面/详情滚动与尺寸关系断言保留。本机global.json SDK8.0.423定向类6/6通过，TRX见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/tests/MediaInboxScrollBehavior-sdk8423-20be-test-fix.trx。没有改变生产布局，也不以失败提交CI为通过。
+- Artifact 12715695277（560383 bytes，SHA-256 9a418bba14c15d75cff4cf68075319e746fbec3f2ec3e786ea9a8e1a39282572）及 12715124302（468931 bytes，SHA-256 53db689e72e3f11a8bef06416e3993a390017f8ecf78c89c63fdb408a68aab0f）；完整run/job/日志链接见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40462741496.json。

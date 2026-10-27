@@ -1,0 +1,55 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "run_id": 40462741496,
+  "run_number": 1300,
+  "event": "push",
+  "head_sha": "20be80738a97539376dca07b0be1599ffdb59c84",
+  "conclusion": "failure",
+  "runner": "windows-2025-vs2026, Windows Server 2025, .NET Framework 4.8.9363",
+  "jobs": [
+    {
+      "job_id": 122050912738,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "conclusion": "failure",
+      "core": { "total": 157, "passed": 157 },
+      "worker": { "total": 400, "passed": 400 },
+      "playnite": { "total": 1233, "passed": 1214, "failed": 1, "skipped": 18 },
+      "failed_test": "GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll",
+      "failure": "Assert.Same(layout, frame.Parent) failed. The test window requested 1400 DIP, but the actual MediaInboxLayout was 1014 DIP wide; the production threshold is 1334 DIP, so responsive layout correctly moved the inspector into the compact page surface. Expected Grid was 1014x540; actual parent Grid was 998x594.",
+      "job_url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40462741496/job/122050912738",
+      "artifact": {
+        "name": "GameSaveCenter-build-diagnostics",
+        "id": 12715695277,
+        "size_bytes": 560383,
+        "sha256": "9a418bba14c15d75cff4cf68075319e746fbec3f2ec3e786ea9a8e1a39282572"
+      }
+    },
+    {
+      "job_id": 122050913048,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "core": { "total": 157, "passed": 157 },
+      "worker": { "total": 400, "passed": 400 },
+      "playnite": { "total": 1233, "passed": 1214, "failed": 1, "skipped": 18 },
+      "failed_test": "GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll",
+      "failure": "Same Assert.Same failure and observed layout sizes as the SDK baseline job; isolated WPF process [18/146].",
+      "job_url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40462741496/job/122050913048",
+      "artifact": {
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "id": 12715124302,
+        "size_bytes": 468931,
+        "sha256": "53db689e72e3f11a8bef06416e3993a390017f8ecf78c89c63fdb408a68aab0f"
+      }
+    }
+  ],
+  "raw_logs": {
+    "run": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40462741496",
+    "sdk_baseline_job_id": 122050912738,
+    "sdk10_job_id": 122050913048
+  },
+  "remediation": "Make the wide-layout test deterministic by explicitly setting MediaInboxLayout.Width to 1360 DIP and asserting its arranged width is at least 1334 DIP. The SDK8.0.423 local test class passed 6/6 with all existing layout, scroll, clipping and rounded-inspector assertions intact.",
+  "note": "Both jobs reached Playnite tests; render-qa, WPF static audit and packaging were skipped by the test-failure gate. The change is a responsive-test fixture correction, not a production layout change. Existing 18 skips are not counted as passes."
+}

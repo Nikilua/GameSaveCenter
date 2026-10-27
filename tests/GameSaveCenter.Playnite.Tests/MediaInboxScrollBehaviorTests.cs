@@ -435,6 +435,10 @@ public sealed class MediaInboxScrollBehaviorTests
             grid.SelectedIndex = 0;
             var page = Field<ScrollViewer>("MediaInboxPageScrollViewer");
             var layout = Field<Grid>("MediaInboxLayout");
+            // The hosted test desktop can be narrower than the requested Window size.
+            // Control the responsive input directly so this case always exercises the
+            // wide, sibling-inspector layout rather than the compact drawer branch.
+            layout.Width = 1360;
             var frame = Field<Border>("MediaInboxInspectorFrame");
             var inspector = Field<ScrollViewer>("MediaInboxInspectorScrollViewer");
             var content = Assert.IsType<StackPanel>(inspector.Content);
@@ -452,6 +456,8 @@ public sealed class MediaInboxScrollBehaviorTests
                 grid.SelectedIndex = 0;
                 view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
                 DrainDispatcher(window);
+                Assert.True(layout.ActualWidth >= 1334,
+                    $"the wide inbox fixture requires at least 1334 DIP; actual layout width={layout.ActualWidth}");
                 Assert.Same(layout, frame.Parent);
                 Assert.True(frame.ClipToBounds && frame.CornerRadius.TopLeft > 0 && frame.CornerRadius.BottomLeft > 0);
                 var before = GetRect(frame, view);

@@ -1,3 +1,7 @@
+## 2026-10-27 Round5 最新CI与测试夹具修正
+
+20be8073对应run 40462741496的SDK基线job 122050912738与SDK10 job 122050913048均在媒体收件箱宽屏测试失败。runner实际视口1014 DIP低于生产宽屏门槛1334，旧夹具只请求1400 DIP窗口，未约束内容视口。现在固定测试布局1360 DIP并检查门槛，SDK8.0.423该类6/6通过；等待新提交的完整精确CI。Core/Worker两组均通过；本run后续render QA、静态审查、打包未运行。Artifact和日志身份见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40462741496.json。
+
 ## 2026-10-27 Round5 U00-01 基线盘点
 
 第五轮的 U00-01 已完成离屏双主题/双窗口尺寸基线与80项去重，记录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md`。Render QA 使用 SDK 8.0.423，报告零 PROBLEM；仓库没有当前 Demo 源文件，因此本轮以实际生产 Themes/Views 为比较对象。`ac18a918` 和 `3b97af01` 两次CI失败已记录。U00-02/U00-03源码提交 `58872f2c` 的run `40461606378`两job最终均因`SaveCenterUsesTheRestoredBackupPolicySections`期待旧内容标题而失败，source测试门禁阻断后续WPF隔离/渲染/静态审查/打包。现将断言改为同时验证页签`Header="历史版本"`及内容`Text="存档清单"`，SDK8定向1/1通过，等待新提交CI。快照见 `evidence/U00-02-03/ci-run-40461606378.json`。之前媒体比较宽度断言已改为固定640/500 DIP并保留双分支验证。临时输出 `.tmp/ui-polish-round5-u00-01` 的 `Remove-Item` 被执行策略拒绝；目录保留，未用其他删除方式。
