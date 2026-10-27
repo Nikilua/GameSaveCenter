@@ -1,3 +1,11 @@
+## 2026-10-28 Round5 U02最新交接
+
+当前main已包含并推送 `504562a7f0dad88454dde57b290b7862f91c93e6`（`校准概览任务语义状态色`）。U02-01～04本地SDK8定向15/15、0 skip；source validation、XAML、WPF静态审查和提交身份Render QA通过。U02-01/02是核验既有Light/Dark自适应表面层次后去重，不改已有达标表面值；U02-03/04修正概览普通强调色及任务状态图标/颜色不一致。
+
+远端run `40541712897` 为该SHA的 `windows-build.yml` push run；主job `122321530415`和SDK10.0.401 job `122321530884`上次观察仍为in_progress，尚无终态/artifact。required checks endpoint 403，必须记录远端待验，使用有权限的GitHub Actions API/页面核对后续状态和required checks。证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U02-01-04/`。下一批可推进U02-05～08，不要等待旧S/T宿主权限阻塞；不要重复试探被拒权限。
+
+整轮根链仍未运行：确认仓库中文入口和英文入口映射，中文根入口运行完整build/test/publish/package/install身份/启动，另按职责运行`scripts/build.cmd`。每批中文commit并push；纯文档只做源码/链接检查。保持未跟踪Round3 TRX/TestResults和U01证据不变，不清理未知文件。
+
 ## 2026-10-27 Round5 最新CI与测试夹具修正
 
 20be8073对应run 40462741496的SDK基线job 122050912738与SDK10 job 122050913048均在媒体收件箱宽屏测试失败。runner实际视口1014 DIP低于生产宽屏门槛1334，旧夹具只请求1400 DIP窗口，未约束内容视口。现在固定测试布局1360 DIP并检查门槛，SDK8.0.423该类6/6通过；等待新提交的完整精确CI。Core/Worker两组均通过；本run后续render QA、静态审查、打包未运行。Artifact和日志身份见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40462741496.json。

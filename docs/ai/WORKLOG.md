@@ -1,3 +1,10 @@
+## 2026-10-28 Round5 U02-01～04 主题层次去重与状态语义
+
+- U02-01/02经U00-01生产主题基线与`AdaptiveThemePaletteContrastGuard`去重：页面/卡片/控件分层及轻描边阈值已有实现，Light/Dark复核通过，本批没有无依据地重写表面色。U02-03/04修正概览最近访问图标的普遍强调色，以及任务成功复用历史图标、运行/失败/取消共用强调色的问题；六种状态使用一致语义图标、文字和浅底。
+- 提交并推送源码 `504562a7f0dad88454dde57b290b7862f91c93e6`（中文提交`校准概览任务语义状态色`）。SDK8.0.423提交身份复测15/15、0失败、0跳过；source validation、XAML 25/25、WPF静态审查31文件/0 error/26 warning/179 info通过；提交后 Render QA exit 0、0 PROBLEM。报告、TRX、SHA、截图与边界见`docs/design/reviews/ui-polish-round5-20261027/evidence/U02-01-04/`。
+- GitHub push run `40541712897` 对应 `.github/workflows/windows-build.yml`，观察时仍 `in_progress`。主job `122321530415`在编译测试，SDK10.0.401 job `122321530884`在装SDK；尚无终态或artifact。required-checks API返回403；禁止据此称远端通过，待有权限读取run/job/artifact及required checks。完整标准入口链与独立`scripts/build.cmd`留待整轮最终候选；真实Playnite/UIA/IME/物理DPI待验。
+- 清理：本批Render QA目录创建前确认不存在，现395文件/53,143,705字节作为当前审计保留；只归档一张代表图。空间前后值及既有U01目录仍受PowerShell执行策略阻止的记录见`evidence/U02-01-04/cleanup.json`。其他用户TRX/TestResults未动。
+
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 
 用户明确要求新增界面与动画优化任务，新增[80项计划](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)与[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01 本地基线已完成，下一批 U00-02 + U00-03；提交 CI 与清理状态待验。旧 S/T 权限、宿主和物理输入状态不自动结项。

@@ -1,0 +1,18 @@
+{
+  "output": "artifacts/ui-qa/round5-20261028-u02-01-04",
+  "createdByThisBatch": true,
+  "outputPreviouslyAbsent": true,
+  "diskBeforeBytesFree": {
+    "C": 4125679616,
+    "D": 7191068672
+  },
+  "diskAfterBytesFree": {
+    "C": 4106625024,
+    "D": 7039217664
+  },
+  "outputFiles": 395,
+  "outputBytes": 53143705,
+  "deleted": [],
+  "retainedReason": "这是 Round5 当前最近一批的 Render QA 审计输出，报告和截图仍在被引用；本批无可删除的自有旧包或截图副本。只将一张代表截图归档到证据目录。",
+  "olderOutput": "artifacts/ui-qa/round5-20261028-u01-05-06 仍在；此前按要求执行 Remove-Item 时被 PowerShell 执行策略拒绝，未改用其他 shell。"
+}

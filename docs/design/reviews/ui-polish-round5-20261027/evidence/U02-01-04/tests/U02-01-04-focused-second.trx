@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <TestRun id="a2533b3b-c1d4-44fc-82fa-e4be83781026" name="lopmatu@SULT 2026-10-28 00:16:06" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-10-28T00:16:06.4795480+08:00" queuing="2026-10-28T00:16:06.4795487+08:00" start="2026-10-28T00:16:02.7082339+08:00" finish="2026-10-28T00:16:26.2916968+08:00" />
   <TestSettings name="default" id="8b114ff6-cba5-4f40-a2e6-588962844720">

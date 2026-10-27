@@ -1,0 +1,94 @@
+{
+  "sourceCommit": "504562a7f0dad88454dde57b290b7862f91c93e6",
+  "branch": "main",
+  "pushed": true,
+  "sdk": "8.0.423",
+  "localChecks": {
+    "targetedBehaviorTests": {
+      "exitCode": 0,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "trx": "tests/U02-01-04-committed-504562a7.trx",
+      "trxSha256": "85E65C6AA52E5457EF3283889461D228C4585090D6B2EFC234BA650F45D46E01",
+      "runLog": "tests/U02-01-04-committed-504562a7-run.txt",
+      "runLogSha256": "47847E8F86BB4755679E356669EB20E29E1CCD25A4F510657A3073A6EA94AB45"
+    },
+    "sourceValidation": {
+      "exitCode": 0,
+      "file": "source-validation.txt",
+      "sha256": "77F4BEDED9CF425FB763B9619B28231640A35746BFFDA882195FCE8787CB8A9B"
+    },
+    "documentationSourceValidation": {
+      "exitCode": 0,
+      "file": "document-source-validation.txt",
+      "sha256": "77F4BEDED9CF425FB763B9619B28231640A35746BFFDA882195FCE8787CB8A9B"
+    },
+    "markdownLinkCheck": {
+      "files": 6,
+      "checkedLinks": 650,
+      "missing": 0,
+      "file": "document-link-check.txt",
+      "sha256": "7ECEF32C0080C533C83063CB01E20394E295A242A6C1E0E066B0F655186FDB77"
+    },
+    "xamlCheck": {
+      "exitCode": 0,
+      "file": "xaml-check.txt",
+      "sha256": "438EB6FA6429A075CB516ABD347B4CBCDA886E5081B742F1FAEEE8A05CF7CE3C"
+    },
+    "wpfStaticAudit": {
+      "exitCode": 0,
+      "xamlFiles": 31,
+      "errors": 0,
+      "warnings": 26,
+      "info": 179,
+      "file": "wpf-static-audit.txt",
+      "sha256": "9796EF605E1D63F15C97187A211FC4818A15F2D8C27C0DBC1BE47099CE01965E"
+    },
+    "renderQa": {
+      "exitCode": 0,
+      "problems": 0,
+      "report": "render-qa-report.txt",
+      "reportSha256": "25864CB57CC76F92A138CEEF32576D4491BD3D287A0B85F846ED0ADE612A8F34",
+      "runLog": "render-qa-run.txt",
+      "runLogSha256": "7A36B7BADE553E49F4A725AEC1EE992D94B995A7598131BB25BA9E3EB01136BE",
+      "sampleScreenshot": "screenshots/Overview-1100x720.png",
+      "sampleScreenshotSha256": "5A185EA3A4F96F56AB2BC46CC6B6902272A1A9FC304A3B2E00FE4D66DD09710C",
+      "dpiEvidence": "Offscreen logical DIP 1.00; physical host DPI is unverified"
+    }
+  },
+  "github": {
+    "workflow": ".github/workflows/windows-build.yml",
+    "runId": 40541712897,
+    "runNumber": 1317,
+    "event": "push",
+    "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40541712897",
+    "observedStatus": "in_progress",
+    "jobs": [
+      {
+        "id": 122321530415,
+        "name": "编译、测试与打包",
+        "sdk": "repository SDK baseline",
+        "observedStatus": "in_progress",
+        "completedSteps": ["检出代码", "安装 .NET SDK", "源码结构检查", "诊断采集自测", "SDK 基线与缺失负例"],
+        "activeStep": "编译与测试"
+      },
+      {
+        "id": 122321530884,
+        "name": ".NET SDK 10.0.401 编译与测试复核",
+        "sdk": "10.0.401",
+        "observedStatus": "in_progress",
+        "completedSteps": ["检出代码", "安装 .NET SDK 10.0.401"],
+        "activeStep": "隔离工作树并运行 Release 编译与测试"
+      }
+    ],
+    "artifacts": "not available while run is in progress",
+    "requiredChecks": {
+      "status": "unreadable",
+      "httpStatus": 403,
+      "message": "Resource not accessible by integration"
+    },
+    "conclusion": "远端待验；必须在该 run/job 全部完成后复查各 job、步骤与 artifacts。Required checks 需用有权限的 GitHub Actions/页面读取。"
+  },
+  "installIdentity": "整轮最终候选根入口门禁尚未运行"
+}
