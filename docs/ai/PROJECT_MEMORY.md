@@ -1,3 +1,9 @@
+## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
+
+用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01为READY，其余PROPOSED，按依赖每批2～4项；先共享排版/主题/控件与示范页，再连续动效和跨页精修。该授权替代旧“没有独立新实现/不新增计划”的排期结论；旧S/T权限、真实宿主和物理输入待验状态仍保留，不能由新计划自动结项。
+
+提示词明确标准中文一键入口转英文根入口的完整构建/测试/发布/打包/安装身份/启动验收，以及scripts/build.cmd职责、GitHub精确提交所有适用job（含SDK基线与SDK10）通过、每阶段安全清理自有无用产物。无远端权限不得称CI成功；不改保护/跳过测试求绿。本次仅新增本地文档，未重跑全链或查询远端CI；产品全链事实仍以90bf0405证据为准。按源码结构、80项计数、链接与diff校验交付，不创建新对话，不清理用户旧TRX/TestResults。
+
 ## 2026-10-25 T03-05 53ee9381当前宿主回退前基线
 
 Playnite PID 50020的启动日志于17:42:05+08:00记录GameSaveCenter插件从扩展目录加载；当前插件DLL ProductVersion完整带`53ee9381`，SHA与安装身份匹配。Worker PID 50908的EXE/DLL也带`53ee9381`身份，Worker DLL SHA与安装报告一致。详见 `docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/host-53ee9381.json`。这是旧包回退前的当前安装基线，不代表旧包已在隔离配置加载或设置迁移/往返已验；活动Playnite/Worker期间不触碰正常用户配置。
