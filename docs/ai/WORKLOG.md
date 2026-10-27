@@ -12455,4 +12455,4 @@ U01-05复用现有12 DIP Caption和Muted Brush；发现共享WPF-UI按钮普通�
 
 ## 2026-10-27 Round5 U01-07/08 双语长度与200%文本
 
-U01-07经现有生产实现和行为测试去重后标为已满足：按钮文本模板完整换行、不省略；双语长标签、路径、错误详情、键盘复制与可选技术文本已有覆盖。U01-08将R03TextScaleTests改为生产字号的两倍（Body 14→28、Caption/按钮12→24 DIP），并验证输入/按钮/表头/可滚动技术详情及精确全文选择，不使用Viewbox缩小；没有改生产资源。SDK8.0.423专项2/2和七类组合21/21、0 skip，TRX/SHA与字号校准失败记录见`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-07-08/`。真实Playnite/UIA/键盘/IME/物理DPI未验；push CI权限限制及整轮根入口和独立build.cmd继续待验。不清理其他任务TRX/TestResults。
+U01-07经现有生产实现和行为测试去重：按钮文本模板完整换行、不省略；双语长标签、路径、错误详情、键盘复制与可选技术文本已有覆盖。U01-08将R03TextScaleTests改为生产字号的两倍（Body 14→28、Caption/按钮12→24 DIP），并验证输入/按钮/表头/可滚动技术详情及精确全文选择，不使用Viewbox缩小；没有改生产资源。实现/测试提交`11c1411e4dc5b673ccaa1ab1d05a1c8ae114ce5c`已推送；SDK8.0.423专项2/2和七类组合21/21、0 skip，TRX/SHA与字号校准失败记录见`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-07-08/`。GitHub插件仅列PR触发的workflow run，本SHA返回空列表；combined status为空；公开Actions API查询30秒超时，所以远端待验，下一步用认证API/CLI或Actions网页按完整SHA核查SDK8、SDK10全部job及artifact。真实Playnite/UIA/键盘/IME/物理DPI和整轮根入口、独立build.cmd继续待验。不清理其他任务TRX/TestResults。
