@@ -1,0 +1,26 @@
+[
+  {
+    "file": "screenshots/Save-light-1040x700.png",
+    "theme": "light",
+    "size_bytes": 70665,
+    "sha256": "07126D0F0BFAD1247A3F312ED84081BE906D6BFC6D71C09A826E3A95822D1736"
+  },
+  {
+    "file": "screenshots/Save-dark-1040x700.png",
+    "theme": "dark",
+    "size_bytes": 75126,
+    "sha256": "85C31E94BD4D73C278164A349EF61DEC5EEA6A19F3CC5BED4FA507564C639184"
+  },
+  {
+    "file": "screenshots/Save-light-1366x768.png",
+    "theme": "light",
+    "size_bytes": 105704,
+    "sha256": "FC267D0D2F75DB37A452F72FF28BBCB87303F4130984F25F7AB180F1502C4997"
+  },
+  {
+    "file": "screenshots/Save-dark-1366x768.png",
+    "theme": "dark",
+    "size_bytes": 112453,
+    "sha256": "34A86BFA3D9090A63BB768484A25F4DBD5B6D6F361DCD3ABB0A69AC3FBF30880"
+  }
+]

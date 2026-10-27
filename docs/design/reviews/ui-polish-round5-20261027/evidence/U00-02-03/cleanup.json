@@ -1,0 +1,29 @@
+{
+  "stage": "U00-02/U00-03",
+  "repositoryTmpPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\ui-polish-round5-u00-01",
+  "newTemporaryDirectoriesCreated": 0,
+  "outputReuse": {
+    "starting_snapshot_from_previous_stage": {
+      "file_count": 395,
+      "bytes": 53094868,
+      "drive_d_free_bytes_last_observed": 7375695872,
+      "source": "U00-01/evidence/cleanup.json; the U00-02/03 pre-run free-space value was not sampled independently."
+    },
+    "after_render_and_review": {
+      "file_count": 395,
+      "bytes": 53058496,
+      "drive_d_free_bytes": 12544065536
+    }
+  },
+  "archived_current_evidence": {
+    "screenshots": 4,
+    "bytes": 363948,
+    "sha256_manifest": "screenshots.json"
+  },
+  "cleanup": {
+    "remove_item_retried": false,
+    "reason": "The same explicit PowerShell Remove-Item was rejected by execution policy in U00-01; avoid repeating the identical denial. The shared output now contains the latest RenderHarness report used by the current review.",
+    "retained": true,
+    "other_user_or_task_outputs_touched": false
+  }
+}

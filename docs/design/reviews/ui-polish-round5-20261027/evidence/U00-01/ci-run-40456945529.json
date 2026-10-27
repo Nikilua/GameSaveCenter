@@ -1,0 +1,49 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "run_id": 40456945529,
+  "run_number": 1298,
+  "event": "push",
+  "head_sha": "3b97af01ca8d1dab991b0b72cac543361b8751c3",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "job_id": 122032373270,
+      "name": "编译、测试与打包",
+      "conclusion": "failure",
+      "tests": { "total": 1220, "passed": 1201, "failed": 1, "skipped": 18 },
+      "failed_test": "MediaComparisonSelectionTests.ProductionButtonsKeepSelectedPairAcrossFilterChangesAndClearItOnRequest; Assert.True(workspaceGrid.ActualWidth >= 560) failed at MediaComparisonSelectionTests.cs:105.",
+      "artifact": {
+        "name": "GameSaveCenter-build-diagnostics",
+        "id": 12712573336,
+        "size_bytes": 545282,
+        "sha256": "05933bde628ee3fec908288566ff71410130cdf7e28dc493669c6b4a5f22f254"
+      }
+    },
+    {
+      "job_id": 122032373032,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "failure",
+      "sdk_setup": "Both SDK 10.0.401 and exact global.json SDK 8.0.423 installed successfully; dotnet --list-sdks confirmed 8.0.423.",
+      "tests": {
+        "sdk10_source": { "total": 157, "passed": 157 },
+        "worker": { "total": 400, "passed": 400 },
+        "isolated_wpf_class": { "total": 5, "passed": 4, "failed": 1 }
+      },
+      "failed_test": "MediaComparisonSelectionTests.ProductionButtonsKeepSelectedPairAcrossFilterChangesAndClearItOnRequest; same workspaceGrid.ActualWidth >= 560 assertion failed at MediaComparisonSelectionTests.cs:105.",
+      "artifact": {
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "id": 12712279869,
+        "size_bytes": 453714,
+        "sha256": "a4bab73e5d601504e7aee9c434b8b9a85b053a309da61ce63eb63e91d5055917"
+      }
+    }
+  ],
+  "diagnosis": "The test requests a 1280-DIP top-level window and assumes its nested comparison grid therefore has at least 560 DIP. The remote log does not capture ActualWidth; the assertion depends on the runner's available desktop/window layout. Treating this as a test-fixture sizing assumption is an evidence-based diagnosis, not a measured remote width.",
+  "remediation_candidate": "Exercise the same production 560-DIP breakpoint by explicitly setting the comparison grid to 640 DIP and 500 DIP in the fixture, keeping both wide and stacked assertions. Local isolated test passed 1/1 on SDK 8.0.423 with GSC_BUILD_COMMIT=3b97af01. Candidate still requires exact-commit GitHub CI.",
+  "required_checks_read": {
+    "result": "denied",
+    "http_status": 403,
+    "meaning": "Required-check and branch-protection settings remain unreadable through the connected GitHub integration."
+  }
+}

@@ -8,7 +8,11 @@
              Background="Transparent" UseLayoutRounding="True" SnapsToDevicePixels="True">
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml"/><ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Redesign.xaml"/></ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml"/>
+                <!-- Redesign already merges WpfUiProduction and its component dictionaries. -->
+                <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Redesign.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 <Style x:Key="SaveDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"/>
             <Style x:Key="SaveTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="SaveLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
@@ -74,12 +78,6 @@
             </Style>
             <Style x:Key="SaveFirstHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"><Setter Property="Tag"><Setter.Value><CornerRadius>11,0,0,0</CornerRadius></Setter.Value></Setter></Style>
             <Style x:Key="SaveLastHeader" TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"><Setter Property="Tag"><Setter.Value><CornerRadius>0,11,0,0</CornerRadius></Setter.Value></Setter></Style>
-            <Style x:Key="SaveTabControl" TargetType="TabControl" BasedOn="{StaticResource GscRedesignWorkspaceTabControl}">
-                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                <Setter Property="VerticalAlignment" Value="Stretch"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            </Style>
             <Style x:Key="SaveTabItem" TargetType="TabItem" BasedOn="{StaticResource GscRedesignWorkspaceTabItem}">
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="VerticalContentAlignment" Value="Stretch"/>
@@ -88,7 +86,7 @@
     </UserControl.Resources>
     <Grid Margin="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <ui:AmbientMaterialLayer Panel.ZIndex="-1"/>
-        <TabControl Grid.Row="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource SaveTabControl}" SelectedIndex="{Binding SaveTabIndex, Mode=TwoWay}"><TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource SaveTabItem}"/></TabControl.Resources>
+        <TabControl Grid.Row="0" MinWidth="0" MinHeight="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Style="{StaticResource GscRedesignWorkspaceTabControl}" SelectedIndex="{Binding SaveTabIndex, Mode=TwoWay}"><TabControl.Resources><Style TargetType="TabItem" BasedOn="{StaticResource SaveTabItem}"/></TabControl.Resources>
             <TabItem Header="历史版本">
                 <ScrollViewer x:Name="SaveHistoryPageScrollViewer" Style="{DynamicResource GscPageScrollViewer}" HorizontalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="False">
                 <Grid x:Name="SaveHistoryLayout" Margin="0,4,0,0">
@@ -103,7 +101,7 @@
                                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                     <StackPanel x:Name="SaveHistorySummaryContentStack" Grid.Row="0" MinWidth="0" VerticalAlignment="Top">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="历史版本" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
+                                            <TextBlock Text="存档清单" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
                                             <Border Style="{DynamicResource GscRedesignContextPill}" Padding="9,4" Margin="10,0,0,0" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Backups.Count, Mode=OneWay, StringFormat={}{0} 个版本}" Foreground="{DynamicResource GscAccentBrush}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold"/>
                                             </Border>
@@ -182,6 +180,18 @@
                                         </Border>
                                     </StackPanel>
                                     <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,10,0,0">
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="立即扫描存档路径">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBrowseFolder}"/><TextBlock Text="立即扫描" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewBackupCommand}" MinWidth="100" Margin="0,0,8,0" ToolTip="只扫描当前游戏本次备份范围，不创建归档" AutomationProperties.Name="预览当前游戏备份范围">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="预览备份" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="重新校验存档路径">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="重新校验" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
+                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" MinWidth="100" AutomationProperties.Name="重新加载存档详情" Margin="0,0,8,0">
+                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRefresh}"/><TextBlock Text="重新加载详情" VerticalAlignment="Center"/></StackPanel>
+                                        </ui:Button>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
                                             <TextBlock Text="历史范围" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,5,0"/>
                                             <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupHistoryRangeOptions}" SelectedItem="{Binding BackupHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="108" ToolTip="按本地日历日期筛选历史版本；今天/昨天不按固定 24 小时计算。" AutomationProperties.Name="历史版本日期范围"/>
@@ -190,18 +200,6 @@
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="最近版本" Command="{Binding JumpToRecentBackupCommand}" Margin="0,0,8,0" ToolTip="选择当前日期范围内最新的版本" AutomationProperties.Name="跳到最近历史版本"/>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="较早版本" Command="{Binding JumpToEarlierBackupCommand}" Margin="0,0,8,0" ToolTip="选择当前已载入日期范围内最早的版本" AutomationProperties.Name="跳到较早历史版本"/>
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更早版本" Command="{Binding LoadMoreBackupHistoryCommand}" Margin="0,0,8,0" ToolTip="按创建时间继续载入下一段历史；已选版本会保持不变。" AutomationProperties.Name="加载更早的备份历史" AutomationProperties.HelpText="{Binding BackupHistoryRangeSummary, Mode=OneWay}"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding PreviewBackupCommand}" MinWidth="100" Margin="0,0,8,0" ToolTip="只扫描当前游戏本次备份范围，不创建归档" AutomationProperties.Name="预览当前游戏备份范围">
-                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="预览备份" VerticalAlignment="Center"/></StackPanel>
-                                        </ui:Button>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="立即扫描存档路径">
-                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBrowseFolder}"/><TextBlock Text="立即扫描" VerticalAlignment="Center"/></StackPanel>
-                                        </ui:Button>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ValidateCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="重新校验存档路径">
-                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="重新校验" VerticalAlignment="Center"/></StackPanel>
-                                        </ui:Button>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" MinWidth="100" AutomationProperties.Name="重新加载存档详情" Margin="0,0,8,0">
-                                            <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRefresh}"/><TextBlock Text="重新加载详情" VerticalAlignment="Center"/></StackPanel>
-                                        </ui:Button>
                                         <ui:Button x:Name="SaveHistoryColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择存档历史表格显示的列；时间、类型和状态始终显示。" AutomationProperties.Name="设置存档历史表格显示列"/>
                                         <ComboBox x:Name="SaveHistoryViewConfigurationComboBox" Width="132" Style="{DynamicResource GscWpfUiFilterComboBox}" ToolTip="选择默认或已保存的存档历史表格布局" AutomationProperties.Name="存档历史表格视图"/>
                                         <TextBox x:Name="SaveHistoryViewConfigurationNameBox" Width="110" MaxLength="48" Style="{DynamicResource GscWpfUiTextBox}" ToolTip="输入视图名称，最多 48 个字符" AutomationProperties.Name="存档历史视图名称"/>

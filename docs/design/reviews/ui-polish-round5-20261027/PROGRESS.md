@@ -1,14 +1,14 @@
 # 第五轮 UI 与动画精修进度
 
-任务源：[80项计划与实施提示词](../../UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)。U00-01 已完成本地离屏基线盘点并推送；run `40453690050` 的SDK8与SDK10适用job均失败，失败诊断及修正提交待验见[CI原始结果索引](evidence/U00-01/ci-run-40453690050.json)。阶段自有 `.tmp` 清理因执行策略拒绝而待执行。其余任务仍按依赖准入，排期不等于完成。
+任务源：[80项计划与实施提示词](../../UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)。U00-01 已完成本地离屏基线盘点并推送；`ac18a918` 与SDK修正提交 `3b97af01` 的对应run均失败。SDK10已成功安装8.0.423，第二个run两job都在媒体比较控件宽度断言失败；两次run的job/artifact身份和诊断见[40453690050](evidence/U00-01/ci-run-40453690050.json)、[40456945529](evidence/U00-01/ci-run-40456945529.json)。现以固定640/500 DIP验证该生产断点，本机SDK8精确测试1/1通过；候选远端CI待验。阶段自有 `.tmp` 清理因执行策略拒绝而待执行。其余任务仍按依赖准入，排期不等于完成。
 
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。先注明旧能力/本轮增量；视觉行为、本地构建、远端CI、清理分别留证，真实宿主与受控验证分开。
 
 | ID | 任务 | 状态 | 旧能力/本轮增量 | 实现提交与视觉/行为证据 | 构建/CI/清理及下一步 |
 | --- | --- | --- | --- | --- | --- |
-| U00-01 | 视觉基线盘点 | 代码完成待验收 | 继承现有生产主题、RenderHarness 与历史证据；本项新增存档/任务/媒体/设置 Light/Dark、1040/1366 DIP 同条件基线、逐页候选差异及旧任务去重 | [基线与逐页观察](evidence/U00-01/BASELINE.md)，16 张截图 SHA-256 在同目录 `screenshots.json`；提交 `ac18a918`，产品代码身份 `90bf0405` | SDK8.0.423；RenderHarness Release 0/0，render-qa exit 0 / 0 PROBLEM；WPF静态审查31 XAML / 0 error / 26 warning / 179 info。run `40453690050` 两适用job均失败：SDK8媒体比较布局断言本地单测1/1通过、CI差异待定位；SDK10隔离测试因缺少global.json锁定的SDK8.0.423而未启动。job/artifact ID及诊断见[CI记录](evidence/U00-01/ci-run-40453690050.json)，SDK10环境安装修正待新CI。清理命令遭执行策略拒绝，395个本阶段输出/53,094,868字节仍在`.tmp`；见`cleanup.json`。下一步U00-02 + U00-03；真实宿主/有效默认设置截图仍待验。 |
-| U00-02 | 控件资源归属 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
-| U00-03 | 信息主次示范 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
+| U00-01 | 视觉基线盘点 | 代码完成待验收 | 继承现有生产主题、RenderHarness 与历史证据；本项新增存档/任务/媒体/设置 Light/Dark、1040/1366 DIP 同条件基线、逐页候选差异及旧任务去重 | [基线与逐页观察](evidence/U00-01/BASELINE.md)，16张截图SHA-256在同目录`screenshots.json`；提交`ac18a918`，产品代码身份`90bf0405` | SDK8.0.423；RenderHarness Release 0/0，render-qa exit 0 / 0 PROBLEM；WPF静态审查31 XAML / 0 error / 26 warning / 179 info。run `40453690050`与SDK修正提交run `40456945529`仍为失败历史；后者确认SDK8.0.423已装，两job重复失败于媒体比较测试的控件宽度假设。候选用固定640/500 DIP修正夹具并本机1/1通过，等新提交CI；原始job/artifact身份见两个CI JSON。清理命令遭执行策略拒绝，395个本阶段输出/53,094,868字节仍在`.tmp`；见`cleanup.json`。当前示范批U00-02/U00-03同步进行；真实宿主/有效默认设置截图仍待验。 |
+| U00-02 | 控件资源归属 | 代码完成待验收 | `SaveCenterView`原先重复合并`WpfUiProduction`（`Redesign`已合并）；页面TabControl别名样式重复实例已声明的Stretch属性。移除重复项，直接应用共享模板，不动宿主资源 | [资源来源、变更与验证](evidence/U00-02-03/BASELINE.md)；双主题/双尺寸截图及SHA见[evidence](evidence/U00-02-03/screenshots.json)；本批源码候选待提交登记 | source validation通过；SDK8.0.423 RenderHarness Release 0/0、exit0、0 PROBLEM；WPF静态审查31 XAML / 0 error / 26 warning / 179 info。UIA、真实宿主、物理DPI和完整根链待验。 |
+| U00-03 | 信息主次示范 | 代码完成待验收 | 重复标题改为“存档清单”；主要扫描/预览/校验/详情操作前置，保留筛选、配置、表格、详情、命令与安全语义 | [信息层级和前后证据](evidence/U00-02-03/BASELINE.md)；1040/1366 DIP Light/Dark截图见[evidence](evidence/U00-02-03/screenshots.json)；本批源码候选待提交登记 | SDK8.0.423定向测试3 passed / 4既有skip；媒体比较选中行为1/1 passed；初次build identity缺失的失败TRX已注明。精确提交CI、中文入口完整链待验。 |
 | U00-04 | 间距节奏示范 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
 | U00-05 | 状态样张集 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
 | U00-06 | 改动前性能基线 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |

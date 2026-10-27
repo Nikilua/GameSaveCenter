@@ -102,15 +102,20 @@ namespace GameSaveCenter.Playnite.Tests
                         host.UpdateLayout();
                         Assert.True(dashboard.MediaComparisonWorkspaceOpen);
                         Assert.Equal(Visibility.Visible, workspace.Visibility);
-                        Assert.True(workspaceGrid.ActualWidth >= 560);
+                        // Exercise the production breakpoint at a controlled element width. The
+                        // hosted runner may clamp the top-level window to its desktop resolution,
+                        // even when the test requests a 1280-DIP window.
+                        workspaceGrid.Width = 640;
+                        host.UpdateLayout();
+                        Assert.True(workspaceGrid.ActualWidth >= 560, $"Expected the controlled comparison workspace to remain wide; actual width was {workspaceGrid.ActualWidth:F1} DIP.");
                         Assert.Equal(1, Grid.GetRow(secondCard));
                         Assert.Equal(1, Grid.GetColumn(secondCard));
                         workspaceGrid.Width = 500;
                         host.UpdateLayout();
-                        Assert.True(workspaceGrid.ActualWidth < 560);
+                        Assert.True(workspaceGrid.ActualWidth < 560, $"Expected the controlled comparison workspace to stack; actual width was {workspaceGrid.ActualWidth:F1} DIP.");
                         Assert.Equal(2, Grid.GetRow(secondCard));
                         Assert.Equal(0, Grid.GetColumn(secondCard));
-                        workspaceGrid.Width = double.NaN;
+                        workspaceGrid.Width = 640;
                         host.UpdateLayout();
                         Assert.Equal(1, Grid.GetRow(secondCard));
                         Assert.Equal(1, Grid.GetColumn(secondCard));
