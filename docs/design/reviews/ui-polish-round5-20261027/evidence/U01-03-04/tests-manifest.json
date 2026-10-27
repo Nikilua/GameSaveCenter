@@ -1,0 +1,12 @@
+[
+  {
+    "path": "tests/U01-03-04-time-typography-path-clipboard.trx",
+    "bytes": 76852,
+    "sha256": "3670a5f12633c3ca7aa00e0ea37ac34b08070100855a8e8e8ba2ba0986f5f40c"
+  },
+  {
+    "path": "tests/U01-03-capacity-units.trx",
+    "bytes": 21133,
+    "sha256": "6244bbb63218646bc66b296563ee7c892a7bef9a91c3ef1da9122187639ae596"
+  }
+]
