@@ -9,10 +9,11 @@
     { "name": "RenderHarness Release compile", "result": "passed", "count": "0 warnings; 0 errors" },
     { "name": "render-qa", "result": "passed", "report": "reports/render-qa-report.txt", "matrix": "all harness pages, light/dark themes, multiple logical-DIP sizes" },
     { "name": "targeted behavior tests", "result": "passed", "count": "37 passed; 0 failed; 0 skipped", "trx": "tests/U01-01-02-final-targeted.trx" },
+    { "name": "compact-layout markup assertion repair", "result": "passed", "count": "1 passed; 0 failed; 0 skipped", "trx": "tests/U01-01-02-R07-compact-layout-assertion.trx" },
     { "name": "R07 compact-spacing regression", "result": "passed", "count": "4 passed; 0 failed; 0 skipped", "trx": "local shared TestResults output; intentionally not copied or cleaned" },
     { "name": "GitHub CI for base revision", "result": "failed and repaired in candidate", "record": "ci-run-40490978543.json" }
   ],
-  "candidateCommit": "pending source commit",
+  "candidateCommit": "7e61bba3f99f202122a01ce96d6944e78f45abf8 (GitHub run 40505231943 failed on stale source-test literals; repair pending new commit)",
   "fullRootBuild": "not run for this intermediate batch; required at final candidate after tracked files freeze",
   "independentScriptsBuildCmd": "not run yet; required by final delivery gate"
 }

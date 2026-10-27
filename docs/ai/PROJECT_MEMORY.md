@@ -1292,3 +1292,5 @@ run 40486014630（提交 5d0a2448d6315af61571d0d3fbecfd902e5344fc）中SDK8 job 
 ## 2026-10-27 Round5 U01当前恢复点
 
 当前分支从 `0447237a` 继续，先修复CI已证实的存档表格高度回归：恢复紧凑垂直参数，保留U00-04横向节奏；随后U01-01/02共享生产Typography资源，不建平行字体系统。按钮与DataGrid真实样本基线稳定（spread 0），Shell页标题和四页分组标题使用现有动态样式。工作流run `40490978543` 双SDK原失败在本地R07 4/4修复验证后仍需新提交CI确认。下一步继续U01-03起的独立任务；最终仍必须运行中文根入口完整构建安装启动链、独立 `scripts/build.cmd`，且核对候选sha对应的SDK8/SDK10 CI；宿主/可选字体/物理DPI与UIA、IME未验证不宣称验收。保留用户Round3 TRX和共享TestResults目录。
+
+U01候选`7e61bba3`的GitHub run `40505231943`双SDK均失败于 `SaveAndTrainerStackedInspectorsReserveAReadableListViewport` 中过时的XAML留白字面量（SDK8 job `122192726746`，SDK10 job `122192727275`）；当前紧凑布局经SDK8本地精确断言1/1通过。修复提交及其CI待确认前不要推进候选为验收；失败历史、原始日志摘要与两份诊断artifact SHA记录在Round5 U01 evidence。后续批次仍按2～4项推进，先确保当前单批CI闭合。

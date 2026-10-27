@@ -22,6 +22,8 @@
 
 RenderHarness 快速双击探针原用 Background DispatcherTimer，在渲染负载下可能晚于原有 1.5 秒观察期限。计时器切到 Input 优先级，60 ms 间隔、1.5 秒期限和最终状态断言均不变；当前 render-qa 得到 `secondClick=True`、最终展开宽度 270 DIP、状态稳定。此项是探针调度修复，不是降低门槛。
 
+后续候选 `7e61bba3` 的 GitHub run `40505231943` 两个 SDK job 又因 `SaveAndTrainerStackedInspectorsReserveAReadableListViewport` 保留旧 Padding/Margin 字面量而失败；本地修正后按当前 compact XAML 值继续做严格字符串断言，SDK8精确用例1/1通过。该远端结果和job/artifact身份见 [CI诊断](ci-run-40505231943.json)；新候选CI仍待验。此次无运行时布局故障，不更改274 DIP表格底线，也不放宽测试。
+
 本批门禁：source validation 通过；XAML 检查 25/25；WPF 静态审查 31 个 XAML、0 errors、26 warnings、179 info（与既有基线一致）；RenderHarness Release 编译 0 warnings/0 errors；全矩阵 render-qa 通过；定向测试 37/37 且无 skip。具体命令和 SDK 记录在 `validation.json`。
 
 ## 未验边界

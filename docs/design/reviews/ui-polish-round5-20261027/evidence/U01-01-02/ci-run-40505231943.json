@@ -1,0 +1,58 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "runId": 40505231943,
+  "runNumber": 1310,
+  "event": "push",
+  "headRevision": "7e61bba3f99f202122a01ce96d6944e78f45abf8",
+  "conclusion": "failure",
+  "failureClassification": "stale-source-test-expectation",
+  "rootCause": "The source-only geometry regression test still asserted the previous cozy spacing literals (Padding 12,8; bottom margin 8; action top margin 12) after the production XAML was deliberately restored to compact spacing to recover the established 274 DIP table floor. The test failed on markup substring matching; it did not detect a runtime layout failure.",
+  "failureEvidence": {
+    "test": "GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport",
+    "file": "tests/GameSaveCenter.Playnite.Tests/WpfUiResourceDictionaryTests.cs",
+    "line": 1620,
+    "logExcerpt": "Assert.Contains() Failure: Sub-string not found; expected SaveHistorySummaryCard markup with the old Padding=12,8 and Margin=0,0,0,8 values.",
+    "observedTestTotals": "1966 total; 1907 passed; 1 failed; 58 skipped; 0 errors/timeouts/aborts; 146 WPF isolated class runs"
+  },
+  "jobs": [
+    {
+      "jobId": 122192726746,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423 baseline",
+      "conclusion": "failure",
+      "failureStage": "compile/tests",
+      "renderQa": "skipped",
+      "wpfStaticAudit": "skipped",
+      "package": "skipped",
+      "testSummary": "Core 157/157; Worker 400/400; one WPF source assertion failed; 58 existing skips"
+    },
+    {
+      "jobId": 122192727275,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "failureStage": "Release compile/tests",
+      "testSummary": "1966 total; 1907 passed; 1 failed; 58 existing skips"
+    }
+  ],
+  "diagnosticArtifacts": [
+    {
+      "artifactId": 12735269151,
+      "name": "GameSaveCenter-build-diagnostics",
+      "bytes": 1024570,
+      "sha256": "83233bb730b4a2952525202766cf83c32186290a6695f2531f6a3108353693b0"
+    },
+    {
+      "artifactId": 12736171935,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "bytes": 934848,
+      "sha256": "ce0a1ac594380e0b34ef2dbb1d8f954d9a2d80e79d9576e0345119c8324c8e97"
+    }
+  ],
+  "repair": "Updated the source assertion to enforce the current compact Padding=12,4, card bottom margin 2, and actions top margin 10 values. Local SDK 8.0.423 targeted test passed 1/1 with 0 skips; thresholds and runtime behavior assertions were not loosened. The repairing commit and its exact SHA-bound CI are pending.",
+  "requiredChecksRead": {
+    "branchProtectionEndpoint": "403 Resource not accessible by integration",
+    "repositoryRulesetsEndpoint": "[]",
+    "meaning": "Required status checks could not be confirmed from the connected GitHub permission; this run's workflow job identities are available."
+  }
+}
