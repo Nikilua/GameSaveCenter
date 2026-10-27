@@ -12479,3 +12479,7 @@ U01-07经现有生产实现和行为测试去重：按钮文本模板完整换�
 检查生产共享令牌、主题工厂、行模板与R09行为后，U02-07/08没有未覆盖的生产资源增量：有限阴影层级、低透明降级、DynamicResource主题连续性、高对比和宿主跟随已有测试。SDK8.0.423 Release专项9/9、0 skip；TRX SHA 3CC9A7165F8E31DFBAF1573CE96659076D5A491373831A4C2EDAABA64DF7A3C8。90秒受控探针82轮、351动作、0失败，总动作P95 714.46ms；U00对照933.16ms。跨提交/离屏数据仅为逻辑WPF代理，不能证明Playnite渲染或物理输入性能。生产源码无需改动，继承U02-05/06双主题Render QA 334 PNG/0 PROBLEM。二项记为代码完成待验收，真实宿主/UIA/实体DPI待验。
 
 CI快照run 40554157661：baseline job 122365585853已过Render QA和WPF静态审查、正在生成扩展包，SDK10 job 122365586753成功，artifact 12758905811；f59源码run 40555566776和纯文档run 40557567716双job仍运行，详细身份见evidence/U02-05-06/ci-runs.json。required-checks仍403。纯文档检查后中文提交并push，不另跑本地产品构建；接续推进U03-01～03按钮状态/忙碌稳定/图标命中区，并按其源码影响执行定向编译、行为及Render QA。
+
+## 2026-10-28 Round5 U03-01/02/03 按钮状态与图标目标
+
+去重检查生产 GscWpfUiButton 共享模板：五态图层、忙碌延迟覆盖与重复执行门禁、命令恢复/焦点保持、34/36 DIP图标目标和窄工具栏WrapPanel已有实现。没有发现生产资源缺口；本批仅新增 AccessibilitySourceTests.ProductionIconOnlyActionsExposeAutomationNamesAndSharedKeyboardFocus，约束生产图标动作的UIA名称、Command/Click和共享键盘焦点。提交 8c927a93cff92b923a8efbedbdf28aadbc10d00b 已推送，SDK8.0.423精确SHA Release定向13/13、0 skip；证据含浅深主题五态10图、TRX SHA及测试范围/身份失败诊断，见Round5 evidence/U03-01-03/。GitHub run 40561836233 baseline job 122392618285、SDK10.0.401 job 122392618705截至18:43 UTC均在编译/测试；run 1321/1322/1323的SDK10 job完成成功、artifact ID见CI清单，但基线job仍在生成包；run1324仍编译测试。CI未结。真实Playnite、实体UIA/鼠标/DPI待验；接续U03-04/05。

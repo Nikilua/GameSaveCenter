@@ -1,7 +1,7 @@
 {
   "repository": "Nikilua/GameSaveCenter",
   "workflow": ".github/workflows/windows-build.yml",
-  "capturedAt": "2026-10-27T18:24:03Z",
+  "capturedAt": "2026-10-27T18:43:01Z",
   "requiredChecks": "远端待验；branch-protection/required-checks 接口此前返回 HTTP 403，不推断保护状态。",
   "runs": [
     {
@@ -31,10 +31,18 @@
       "commitMessage": "统一生产界面的边框线宽",
       "statusAtCapture": "in_progress",
       "jobs": [
-        { "jobId": 122370590922, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
-        { "jobId": 122370591760, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
+        { "jobId": 122370590922, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "生成 Playnite 扩展包" },
+        { "jobId": 122370591760, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "completed", "conclusion": "success" }
       ],
-      "artifactsAtCapture": []
+      "artifactsAtCapture": [
+        {
+          "artifactId": 12760160901,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "sizeBytes": 941391,
+          "sha256": "dc2339573f8f6266de78b050c8c773f450bd116c19c8dc382b4c5acc65787df1",
+          "expired": false
+        }
+      ]
     },
     {
       "runId": 40557567716,
@@ -43,11 +51,43 @@
       "commitMessage": "记录第五轮共享线宽与圆角进度",
       "statusAtCapture": "in_progress",
       "jobs": [
-        { "jobId": 122377601813, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" },
-        { "jobId": 122377602327, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" }
+        { "jobId": 122377601813, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "completed", "conclusion": "success" },
+        { "jobId": 122377602327, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "生成 Playnite 扩展包" }
+      ],
+      "artifactsAtCapture": [
+        {
+          "artifactId": 12760896261,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "sizeBytes": 941098,
+          "sha256": "328e13f032cf68149179be45fa57ef6ea8acc71fc4eb87112c422558b33bb272",
+          "expired": false
+        }
+      ]
+    },
+    {
+      "runId": 40560233057,
+      "runNumber": 1324,
+      "commit": "e7c0b057ddbfa33b00ead9a3b8a5e1ec89cae90f",
+      "commitMessage": "记录第五轮阴影预算与主题切换",
+      "statusAtCapture": "in_progress",
+      "jobs": [
+        { "jobId": 122386947995, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
+        { "jobId": 122386948131, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
+      ],
+      "artifactsAtCapture": []
+    },
+    {
+      "runId": 40561836233,
+      "runNumber": 1325,
+      "commit": "8c927a93cff92b923a8efbedbdf28aadbc10d00b",
+      "commitMessage": "补齐图标按钮无障碍名称回归",
+      "statusAtCapture": "in_progress",
+      "jobs": [
+        { "jobId": 122392618285, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
+        { "jobId": 122392618705, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
       ],
       "artifactsAtCapture": []
     }
   ],
-  "note": "Run 1321 is an intermediate U02-05/06 candidate; at capture its baseline job had passed render QA and WPF static review and was generating the package, while its SDK10 job succeeded. Run 1322 verifies expanded source candidate f59fe4; its baseline job was at render QA and SDK10 job at compile/test. Run 1323 is documentation-only and both jobs were active. Pending/in-progress jobs are not passes; query exact jobs and artifacts before closing CI."
+  "note": "Run 1321 is an intermediate U02-05/06 candidate; the baseline job was generating the package while SDK10 succeeded. Run 1322 verifies expanded source candidate f59fe4; SDK10 succeeded and baseline was generating the package. Run 1323 is documentation-only; SDK10 succeeded and baseline was generating the package. Run 1324 is the U02-07/08 documentation commit with both jobs in compile/test. Run 1325 verifies the U03-01/02/03 UIA regression test and both jobs were in compile/test. Pending/in-progress jobs are not passes; query exact jobs and artifacts before closing CI."
 }

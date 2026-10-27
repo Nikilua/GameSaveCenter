@@ -1,0 +1,127 @@
+{
+  "taskIds": [
+    "U03-01",
+    "U03-02",
+    "U03-03"
+  ],
+  "productionSourceCommit": "f59fe4c86c78cb2fc11414a431aceb49821910ee",
+  "regressionTestCommit": "8c927a93cff92b923a8efbedbdf28aadbc10d00b",
+  "sdk": "8.0.423",
+  "finalTest": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "trx": "tests/U03-01-03-8c927a93-focused.trx",
+    "sha256": "249014D5A7DA4D7152FBD5E7D52533B3316EA1A508CD0E462047603119461739"
+  },
+  "precommitTest": {
+    "baseCommit": "e7c0b057ddbfa33b00ead9a3b8a5e1ec89cae90f",
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "workingTreeContainedOnlyTheAutomationSourceTestChange": true,
+    "trx": "tests/U03-01-03-precommit-focused.trx",
+    "sha256": "D04676286C660B5E78EAE40B4F096F7E250BC8AB92B3C1588198ADF16E301BA7"
+  },
+  "retainedDiagnostics": [
+    {
+      "file": "tests/U03-01-03-precommit-scope-failure.trx",
+      "reason": "The first accessibility scan included a Development probe button with no action; production view scope corrected.",
+      "sha256": "6CFD61674BED19322FF5BB10FFF30E99093A1607514D992F701EA4FE23D9DCC8"
+    },
+    {
+      "file": "tests/U03-01-03-postcommit-identity-mismatch.trx",
+      "reason": "The first post-commit invocation used a mistyped full SHA in GSC_BUILD_COMMIT; rerun used git rev-parse HEAD.",
+      "sha256": "B945F2CFCC891C6AA7A7F3B5A8FA22910B2858CBC3F4BE6DF728718917182AC2"
+    }
+  ],
+  "capture": {
+    "source": "Q06ButtonStateSequenceBehaviorTests",
+    "host": "STA WPF Window",
+    "dpi": "96-DPI logical capture",
+    "stateCount": 5,
+    "themes": [
+      "Light",
+      "Dark"
+    ],
+    "physicalMouse": "not used; hover uses WPF IsMouseOver state probe"
+  },
+  "report": {
+    "file": "button-states/button-state-probe-report.txt",
+    "sha256": "028FCBE7554B9C48FA270EE3BA5E2A671FBF104D722A4BFD4FE618896C6575D8"
+  },
+  "images": [
+    {
+      "file": "dark-disabled.png",
+      "theme": "dark",
+      "state": "disabled",
+      "bytes": 12867,
+      "sha256": "839848C61CB2916ECD96F55715C1164913BB2285DB8918BE19B659B5A010F2CF"
+    },
+    {
+      "file": "dark-focus.png",
+      "theme": "dark",
+      "state": "focus",
+      "bytes": 11720,
+      "sha256": "5A66651874167A04849AE1A023B2E32198814251B3560A6CBFA24ABBC3208D3A"
+    },
+    {
+      "file": "dark-hover.png",
+      "theme": "dark",
+      "state": "hover",
+      "bytes": 14903,
+      "sha256": "2D863D677E7D15C44B154F57F78C0C6E99A7DC45A3095CF19FF847942C5AB457"
+    },
+    {
+      "file": "dark-normal.png",
+      "theme": "dark",
+      "state": "normal",
+      "bytes": 10670,
+      "sha256": "3EB5B1842AFAB1BCCAF8BFDF245690A7200C6DBB875510A46C5439DFC104F0F8"
+    },
+    {
+      "file": "dark-pressed.png",
+      "theme": "dark",
+      "state": "pressed",
+      "bytes": 11607,
+      "sha256": "F2FE07BB551B88546EF68EA9E2C50B33F9A38793EB7E916A3E205726002E236E"
+    },
+    {
+      "file": "light-disabled.png",
+      "theme": "light",
+      "state": "disabled",
+      "bytes": 12632,
+      "sha256": "5A0AF51CEAD42D8606305D6EE68370563EBE39FF7BDEEF49854FCDC1C681FC3C"
+    },
+    {
+      "file": "light-focus.png",
+      "theme": "light",
+      "state": "focus",
+      "bytes": 11581,
+      "sha256": "ADE7AFE6DD9097F59FCD639ABCF951E1F47A8B29910549B72E0AFED00D4779DD"
+    },
+    {
+      "file": "light-hover.png",
+      "theme": "light",
+      "state": "hover",
+      "bytes": 14769,
+      "sha256": "3A1CD6E0B982D6F48A72429CDDB5D2CB4C609674ADDEB4875A5BDA8969227052"
+    },
+    {
+      "file": "light-normal.png",
+      "theme": "light",
+      "state": "normal",
+      "bytes": 10754,
+      "sha256": "7B28D4F7FD16FD7C3892FD6FECCE535561EF7455927F2E33BF922CD7F171127C"
+    },
+    {
+      "file": "light-pressed.png",
+      "theme": "light",
+      "state": "pressed",
+      "bytes": 11466,
+      "sha256": "2034D33A2578EA88433A878955A69AC47C8940DF71D3A887CF38785432CC4EDB"
+    }
+  ]
+}

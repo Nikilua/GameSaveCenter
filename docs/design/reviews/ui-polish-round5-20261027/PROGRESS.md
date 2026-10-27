@@ -6,6 +6,8 @@
 
 2026-10-28 U02-07/08 去重后确认生产资源与 R09 行为已覆盖阴影层级、低透明降级、动态主题切换、高对比模式及宿主跟随；本批未改产品代码。SDK8.0.423专项9/9、0 skip、0失败；受控90秒探针82轮/351动作/0失败，总动作P95 714.46 ms，对照U00代理基线933.16 ms，但不据此声称Playnite/呈现帧性能无回退。详情与TRX、报告SHA见[U02-07/08证据](evidence/U02-07-08/BASELINE.md)。两项保持“代码完成待验收”，等待真实宿主与本轮远端门禁。CI最近快照与artifact身份见[U02-05/06 CI清单](evidence/U02-05-06/ci-runs.json)：run `40554157661` 的SDK10 job `122365586753`已成功、artifact `12758905811`，baseline已过Render QA/WPF静态审查并在生成扩展包；`40555566776` baseline job `122370590922`在Render QA、SDK10 job `122370591760`在编译/测试；文档run `40557567716`两job也在运行。接下来进入 U03 按钮共享样式小批，不等待上述已有宿主待验项。
 
+2026-10-28 U03-01～03 去重确认共享按钮模板已覆盖主/次/危险/图标按钮五态、稳定忙碌覆盖、34/36 DIP图标目标及窄空间换行。本批无生产资源改动；新增生产XAML图标动作 UIA 名称/命令和共享键盘焦点的源码回归检查。精确提交`8c927a93cff92b923a8efbedbdf28aadbc10d00b` SDK8.0.423 Release 定向13/13、0 skip；五态双主题10图、忙碌与命中区探针和两份失败诊断归档见[evidence/U03-01-03](evidence/U03-01-03/BASELINE.md)。run `40561836233` baseline job `122392618285`与SDK10.0.401 job `122392618705`截至18:43 UTC仍在编译/测试；旧源码/文档run状态及artifact身份更新于[CI清单](evidence/U02-05-06/ci-runs.json)。U03-01～03保留“代码完成待验收”，真实 Playnite/UIA、Narrator、物理鼠标与实体DPI未验；进入U03-04/05，不等待这些边界。
+
 状态：待开始、实施中、代码完成待验收、已验收、已满足、外部阻塞、不适用。先注明旧能力/本轮增量；视觉行为、本地构建、远端CI、清理分别留证，真实宿主与受控验证分开。
 
 | ID | 任务 | 状态 | 旧能力/本轮增量 | 实现提交与视觉/行为证据 | 构建/CI/清理及下一步 |
@@ -34,9 +36,9 @@
 | U02-06 | 圆角与裁切 | 代码完成待验收 | 新增按实际尺寸、CornerRadius 与消费者原Clip裁切的共享行为；按层级复用圆角，覆盖卡片、表格、壳层、按钮、状态/空态面板及现有游戏选框样式，不引入负Margin | [去重、实现与验证边界](evidence/U02-05-06/BASELINE.md)；[334张截图SHA索引](evidence/U02-05-06/screenshots.json)；提交`417bed51`、扩展提交`f59fe4c8` | 圆角像素行为在100/125/150/175/200%缩放探针通过；SDK8精确SHA聚焦组165通过/39既有skip/0失败；双主题 Render QA 334 PNG、0 PROBLEM。`40554157661` baseline正在生成扩展包、SDK10成功；`40555566776` baseline在Render QA、SDK10在编译/测试。离屏验证不代表真实Playnite、UIA或物理DPI；当前保持代码完成待验收。 |
 | U02-07 | 阴影与透明预算 | 代码完成待验收 | 共享资源已有有限阴影层级、关闭透明降级和无列表行Blur；本轮去重并复核，没有发现需改生产样式的缺口 | [去重、行为与性能证据](evidence/U02-07-08/BASELINE.md)；[专项TRX](evidence/U02-07-08/tests/U02-07-08-r09-focused.trx)；[受控探针](evidence/U02-07-08/performance/enduranceprobe-report.txt)；代码基线`f59fe4c8` | SDK8.0.423定向9/9、0 skip；90秒受控WPF探针82轮/351动作/0失败，总动作P95 714.46 ms（U00代理基线933.16 ms）。趋势仅作代理观察，不代表呈现帧或真实宿主；Render QA继承U02-05/06双主题334图、0 PROBLEM。远端CI按关联提交跟踪；真实Playnite/UIA/实体DPI待验。 |
 | U02-08 | 主题切换连续性 | 代码完成待验收 | 既有DynamicResource切换在下一次Render前更新弹层Brush/图标/占位符；高对比/宿主跟随/效果降级与恢复已有R09覆盖，本轮复核未发现需改生产资源的缺口 | [去重、行为与性能证据](evidence/U02-07-08/BASELINE.md)；[专项TRX](evidence/U02-07-08/tests/U02-07-08-r09-focused.trx)；代码基线`f59fe4c8` | SDK8.0.423主题/高对比/背景组9/9、0 skip；继承双主题 Render QA。实现候选run `40555566776`两job仍运行，required-checks接口权限此前403，记“远端待验”；真实Playnite主题切换、UIA及实体DPI待验。 |
-| U03-01 | 按钮五态一致 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
-| U03-02 | 忙碌按钮稳定 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
-| U03-03 | 图标按钮命中区 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
+| U03-01 | 按钮五态一致 | 代码完成待验收 | 生产主/次/危险/图标按钮共享Normal/Hover/Pressed/Disabled/Focus态且不改尺寸；本轮复核并留存双主题五态图，无生产样式增量 | [去重与证据](evidence/U03-01-03/BASELINE.md)；10图及SHA见[screenshots.json](evidence/U03-01-03/screenshots.json)；测试提交`8c927a93` | SDK8.0.423精确SHA定向13/13、0 skip；run `40561836233` baseline `122392618285`与SDK10 `122392618705`仍在编译/测试，未通过门禁。真实Playnite/鼠标/UIA待验。 |
+| U03-02 | 忙碌按钮稳定 | 代码完成待验收 | 沿用共享延迟忙碌层，保留内容/宽度/焦点并阻止重复执行；失败/取消后恢复CanExecute已有行为覆盖，本轮精确复验 | [去重与证据](evidence/U03-01-03/BASELINE.md)；TRX与SHA见[screenshots.json](evidence/U03-01-03/screenshots.json)；测试提交`8c927a93` | SDK8.0.423精确SHA定向13/13、0 skip；五态探针与R02忙碌行为通过。对应GitHub run仍运行，SDK10与baseline结论待取；真实宿主仍待验。 |
+| U03-03 | 图标按钮命中区 | 代码完成待验收 | 主样式34×34、工具栏36×36 DIP并保留6 DIP间距，窄宽换行；新增生产XAML图标操作UIA名称+Command/Click+共享键盘焦点源码断言 | [去重、回归与边界](evidence/U03-01-03/BASELINE.md)；按钮矩阵及SHA见[screenshots.json](evidence/U03-01-03/screenshots.json)；测试提交`8c927a93` | SDK8.0.423精确SHA定向13/13、0 skip，图标边界与VisualTree命中检查通过。物理鼠标/实际UIA客户端未测；run `40561836233`两个适用job编译/测试中、required-checks接口此前403，远端待验。 |
 | U03-04 | 输入框复合状态 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
 | U03-05 | 搜索与清除入口 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
 | U03-06 | 下拉与选项排版 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |

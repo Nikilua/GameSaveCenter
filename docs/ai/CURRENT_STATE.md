@@ -126,3 +126,7 @@ U01-07通过既有生产按钮换行/无省略和长文案、路径、错误、�
 ## 2026-10-28 Round5 U02-07/08
 
 U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重复行无BlurEffect，低透明模式关闭阴影/透明弹层；DynamicResource主题切换、高对比/宿主跟随和效果恢复由R09行为覆盖。SDK8.0.423专项9/9、0 skip；90秒受控WPF探针82轮/351动作/0失败，总动作P95 714.46ms，对照U00代理基线933.16ms，但不是Playnite帧率/输入延迟证据。没有生产代码缺口，本批不重复造样式；两项保持“代码完成待验收”。原始报告、TRX与界限见Round5 U02-07/08 BASELINE。U02-05/06 CI快照显示417bed51的SDK10 job成功但baseline已通过render-qa与WPF静态审查、正在生成扩展包；f59fe4c8 baseline在Render QA、SDK10仍在编译测试；文档提交的双job仍运行，required-checks权限403；真实Playnite/UIA/实体DPI继续待验。下一独立小批进入U03共享按钮状态；旧S/T宿主/权限边界不阻挡推进。
+
+## Round5 当前进度（2026-10-28）：U03-01～03
+
+8c927a93cff92b923a8efbedbdf28aadbc10d00b已推送。共享按钮模板现状已盘点，五态、忙碌稳定和图标目标已有生产能力；本批未改生产资源，只加生产图标动作UIA名称/命令与键盘焦点的回归断言。SDK8.0.423精确SHA聚焦13/13、0 skip；证据见docs/design/reviews/ui-polish-round5-20261027/evidence/U03-01-03/。run 40561836233的baseline 122392618285与SDK10 122392618705仍在编译测试，任务状态为“代码完成待验收”，不可记为CI通过。旧S/T宿主或权限待验不阻断接续U03-04/05。真实Playnite/UIA/物理DPI未验；整轮中文根入口完整链、独立scripts/build.cmd和最终CI仍待候选提交后完成。

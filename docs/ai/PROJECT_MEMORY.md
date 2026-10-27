@@ -1320,3 +1320,7 @@ U01-07去重后沿用生产按钮完整换行/无省略模板与现有长路径�
 ## 2026-10-28 Round5 U02-07/08 接续
 
 阴影/透明和主题切换任务先核对 DesignTokens.xaml、AdaptiveThemePalette 及R09覆盖：已有有限阴影档、低成本模式清空阴影并关闭弹层透明、重复列表行不应用Blur；弹层Brush/图标在下一Render前随DynamicResource更新，高对比与宿主跟随已有覆盖。若证据充分且无增量，不复制生产样式，记录“代码完成待验收”及精确证据。受控enduranceprobe只可作逻辑布局代理，不能等价Playnite呈现帧/键盘/IME。U02-07/08 SDK8专项9/9、0 skip，性能报告/TRX位于evidence/U02-07-08/。接下来执行独立U03按钮共享样式批；未结的真实宿主或权限项不构成停止其它独立任务的理由。
+
+## Round5 U03 输入控件基线（2026-10-28）
+
+生产共享按钮样式 GscWpfUiButton 已有Normal/Hover/Pressed/Disabled/Focus状态图层及忙碌覆盖，图标按钮复用共享焦点样式；主图标目标34 DIP，工具栏36 DIP，窄布局WrapPanel换行。Q06探针的hover通过WPF只读IsMouseOver状态，press合成Space，focus用Keyboard.Focus；不是物理输入/UIA客户端证明。R02已有忙碌门禁、宽度内容焦点稳定、失败/取消恢复和命中区测试。本轮新加生产XAML UIA名称/动作/键盘焦点源码断言后13/13通过。做U03-04/05优先查找并复用现有TextBox/搜索样式与页面Escape/IME契约，再决定是否有共享资源增量；测试名称应限定production scope，排除Development探针和宿主非隔离资源。证据与限制见Round5 evidence/U03-01-03/BASELINE.md。

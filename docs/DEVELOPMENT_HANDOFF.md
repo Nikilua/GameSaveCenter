@@ -1163,3 +1163,9 @@ GitHub `windows-build.yml` run `40554157661`（初始候选）和 `40555566776`�
 U02-07/08已检查共享阴影/主题资源与R09测试，现有实现满足计划要点，本批无生产代码差异。SDK8专项9/9、0 skip；受控90秒 WPF 探针82轮/351动作/0失败，总动作P95 714.46ms；相较U00代理基线933.16ms仅能作逻辑布局参考。证据在docs/design/reviews/ui-polish-round5-20261027/evidence/U02-07-08/，任务状态保留“代码完成待验收”，真实Playnite、UIA/键盘/IME、实体DPI待验。Render QA继承U02-05/06双主题334 PNG、0 PROBLEM。
 
 GitHub windows-build.yml：run 40554157661 SDK10 job 122365586753成功/artifact 12758905811，baseline已过render-qa与WPF静态审查、正在生成扩展包；run 40555566776（f59fe4源码）与40557567716（文档）双job仍运行。required-checks端点此前403；不推断保护状态。状态清单：docs/design/reviews/ui-polish-round5-20261027/evidence/U02-05-06/ci-runs.json。下一批继续U03-01～03共享按钮状态/忙碌/图标命中区，独立于旧S/T宿主和权限待验。最终整轮仍须提交候选后运行中文根入口完整链、单独核对scripts/build.cmd职责，并验证候选SHA的双SDK所有适用CI job。
+
+## 2026-10-28 Round5 U03-01/02/03接续
+
+当前HEAD为 8c927a93cff92b923a8efbedbdf28aadbc10d00b（“补齐图标按钮无障碍名称回归”），已push。U03-01～03已有共享按钮五态、忙碌状态稳定与34/36 DIP图标目标；新回归断言扫描生产XAML图标操作的AutomationProperties.Name、Command/Click与共享FocusVisual。SDK8.0.423精确SHA13/13、0 skip，双主题五态10图及TRX、失败诊断清单见 docs/design/reviews/ui-polish-round5-20261027/evidence/U03-01-03/。状态保留“代码完成待验收”，不能把合成hover/press或源码UIA断言称作物理鼠标、Narrator或真实Playnite验证。
+
+Actions run 40561836233（baseline job 122392618285、SDK10 job 122392618705）截至2026-10-27 18:43 UTC都在编译/测试；U02源码与文档run及SDK10 artifact记录在Round5 evidence/U02-05-06/ci-runs.json，required-checks endpoint之前403。接下来推进U03-04/05：先读共享TextBox/搜索控件资源和页面输入绑定，保持IME composing不触发提交、Escape遵循各页面契约、结果数量不挤压输入；已获用户授权，无需再次询问。完整中文根入口、独立 scripts/build.cmd及整轮CI待最终候选阶段执行。保留用户/其他任务TRX、TestResults，不对既有清理策略拒绝换shell重试。
