@@ -10,7 +10,7 @@
 
 ## Round5 U01-05/06 最新本地状态
 
-共享禁用按钮普通态已从整体Chrome 0.72透明改为动态禁用文字、控制填色和描边；说明文字与禁用标签的对比度通过Light/Dark层叠背景检查。U01-06沿用16/24 DIP图标系统与现有125–200% DPI回归，已满足。SDK8.0.423组合测试26/26、0 skip；源码校验、WPF静态审查和双主题render-qa均通过，render-qa报告0 PROBLEM。详情、TRX、哈希与清理结果见Round5进度`docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md`的U01-05/06及其evidence。精确实现提交的GitHub SDK8/SDK10 CI、真实Playnite宿主和最终根入口完整构建安装启动链/独立`scripts/build.cmd`仍待完成；未将离屏结果当作真实宿主验收。
+共享禁用按钮普通态已从整体Chrome 0.72透明改为动态禁用文字、控制填色和描边；说明文字与禁用标签的对比度通过Light/Dark层叠背景检查。U01-06沿用16/24 DIP图标系统与现有125–200% DPI回归，已满足。SDK8.0.423组合测试26/26、0 skip；源码校验、WPF静态审查和双主题render-qa均通过，render-qa报告0 PROBLEM。详情、TRX、哈希与清理结果见Round5进度`docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md`的U01-05/06及其evidence。提交813adb09的GitHub Actions push run远端待验（无run/job/artifact可读；需Actions读取权限查询，详见verification.json）；真实Playnite宿主和最终根入口完整构建安装启动链/独立`scripts/build.cmd`仍待完成；未将离屏结果当作真实宿主验收。
 
 ## 2026-10-27 存档历史表格高分辨率伸缩修复与标准全链
 

@@ -1,6 +1,8 @@
 {
   "batch": "U01-05-06",
   "sourceBase": "50e8002d34fcc6775ebe59f306d26c93563d5e97",
+  "implementationCommit": "813adb09284f3400cd07a758d3eca4d23c34155d",
+  "pushedTo": "origin/main",
   "sdk": "8.0.423",
   "tests": {
     "file": "tests/U01-05-06-focused-final.trx",
@@ -37,5 +39,13 @@
     "真实 Playnite 宿主渲染、物理 DPI、UI Automation/读屏器",
     "整轮最终中文根入口完整安装启动链和独立 scripts/build.cmd",
     "本批实现提交对应的 GitHub SDK8/SDK10 workflow jobs"
-  ]
+  ],
+  "remoteCi": {
+    "status": "远端待验",
+    "githubAppWorkflowLookup": "fetch_commit_workflow_runs only returns pull-request-triggered runs; exact-SHA query returned no runs",
+    "combinedStatus": "returned no status entries",
+    "localGhCli": "not installed",
+    "publicApiFallback": "Actions API URL was inaccessible in the browser tool",
+    "nextStep": "Use an authenticated Actions-capable API or CLI to GET /repos/Nikilua/GameSaveCenter/actions/runs?head_sha=813adb09284f3400cd07a758d3eca4d23c34155d; inspect .github/workflows/windows-build.yml and all applicable SDK 8.0.423/SDK 10.0.401 jobs, including run/job/artifact identities and raw diagnostics."
+  }
 }
