@@ -639,11 +639,23 @@
                                 SnapsToDevicePixels="True"
                                 UseLayoutRounding="True"
                                 ClipToBounds="False">
-                            <ContentPresenter ContentSource="Header"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              RecognizesAccessKey="True"
-                                              SnapsToDevicePixels="True"/>
+                            <Grid>
+                                <Border x:Name="SelectionIndicator"
+                                        Width="3"
+                                        Height="16"
+                                        Margin="4,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Background="{DynamicResource GscAccentBrush}"
+                                        CornerRadius="2"
+                                        Opacity="0"
+                                        IsHitTestVisible="False"/>
+                                <ContentPresenter ContentSource="Header"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  RecognizesAccessKey="True"
+                                                  SnapsToDevicePixels="True"/>
+                            </Grid>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -657,6 +669,58 @@
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                             <Setter Property="FontWeight" Value="SemiBold"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="GscTabSelectionExitStoryboard"/>
+                                <BeginStoryboard x:Name="GscTabSelectionEnterStoryboard">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectionIndicator"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="{StaticResource GscMotionNormal}"
+                                                         EasingFunction="{StaticResource GscMotionEaseOut}"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiTrigger.EnterActions>
+                            <MultiTrigger.ExitActions>
+                                <RemoveStoryboard BeginStoryboardName="GscTabSelectionEnterStoryboard"/>
+                                <BeginStoryboard x:Name="GscTabSelectionExitStoryboard">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectionIndicator"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0"
+                                                         Duration="{StaticResource GscMotionNormal}"
+                                                         EasingFunction="{StaticResource GscMotionEaseOut}"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </MultiTrigger.ExitActions>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="SelectionIndicator" Property="Opacity" Value="1"/>
+                            <MultiTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="GscTabSelectionEnterStoryboard"/>
+                                <RemoveStoryboard BeginStoryboardName="GscTabSelectionExitStoryboard"/>
+                            </MultiTrigger.EnterActions>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="SelectionIndicator" Property="Opacity" Value="0"/>
+                            <MultiTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="GscTabSelectionEnterStoryboard"/>
+                                <RemoveStoryboard BeginStoryboardName="GscTabSelectionExitStoryboard"/>
+                            </MultiTrigger.EnterActions>
+                        </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Chrome" Property="Opacity" Value="0.42"/>
                         </Trigger>

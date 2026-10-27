@@ -259,7 +259,6 @@ public sealed class R08MotionReverseBehaviorTests
             Window? window = null;
             try
             {
-                EnsureApplication();
                 var resources = LoadProductionResources();
                 var buttonStyle = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]);
                 var animationSamplingWindow = ExtendProductionButtonMotionSamplingWindow(buttonStyle);
@@ -598,12 +597,6 @@ public sealed class R08MotionReverseBehaviorTests
         Assert.Equal(4, adjustedStoryboards);
         Assert.Equal(8, adjustedAnimations);
         return animationSamplingWindow;
-    }
-
-    private static void EnsureApplication()
-    {
-        var application = Application.Current ?? new Application();
-        application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
     }
 
     private static bool SetMouseOverProbe(UIElement element, bool value)

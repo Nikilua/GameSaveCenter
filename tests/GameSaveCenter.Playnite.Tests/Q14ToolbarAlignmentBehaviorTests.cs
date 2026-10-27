@@ -146,7 +146,6 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
 
     private static string MeasurePresetWrapRows(GameSaveCenterThemeMode theme, double width)
     {
-        EnsureApplication();
         var fixture = new TaskToolbarFixture();
         fixture.SelectedTaskFilterPreset = fixture.TaskFilterPresets[0];
         var view = new TaskCenterView { DataContext = fixture };
@@ -278,7 +277,6 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
 
     private static string MeasureSearchViewport(GameSaveCenterThemeMode theme, double width)
     {
-        EnsureApplication();
         var view = new TaskCenterView { DataContext = new TaskToolbarFixture() };
         var palette = AdaptiveThemePaletteFactory.Create(view, glassEnabled: true, strengthPercent: 78, theme);
         AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: true);
@@ -382,7 +380,6 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
 
     private static string CaptureToolbarGeometry(GameSaveCenterThemeMode theme, double width, double height)
     {
-        EnsureApplication();
         var fixture = new TaskToolbarFixture();
         fixture.SelectedTaskFilterPreset = fixture.TaskFilterPresets[0];
         var view = new TaskCenterView
@@ -700,16 +697,6 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
         window.UpdateLayout();
         window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
         window.UpdateLayout();
-    }
-
-    private static void EnsureApplication()
-    {
-        var application = Application.Current ?? new Application();
-        application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-        // A pre-existing dictionary may hold unrelated resources. Confirm the
-        // production control style this fixture needs instead of relying on count.
-        if (application.TryFindResource("GscWpfUiFilterComboBox") is null)
-            application.Resources.MergedDictionaries.Add(LoadProductionResources());
     }
 
     private static ResourceDictionary LoadProductionResources()

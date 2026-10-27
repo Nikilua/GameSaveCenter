@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -380,6 +381,123 @@ public sealed class R23ProductionResourceStateBehaviorTests
                 {
                     Assert.True(Math.Abs(lightWidths[index] - darkWidths[index]) <= 0.25,
                         $"Tab {index} width changed across themes: light={lightWidths[index]}, dark={darkWidths[index]}.");
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes()
+    {
+        RunSta(() =>
+        {
+            var resources = LoadProductionResources();
+            var root = new Grid { Resources = resources };
+            AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, false);
+
+            var tabs = new TabControl
+            {
+                Style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabControl"]),
+                Width = 620,
+                Height = 210,
+                SelectedIndex = 0
+            };
+            var items = new[]
+            {
+                new TabItem { Style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabItem"]), Header = "存档历史", Content = new Border { Height = 32 } },
+                new TabItem { Style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabItem"]), Header = "候选路径", Content = new Border { Height = 32 } },
+                new TabItem { Style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabItem"]), Header = "恢复详情", Content = new Border { Height = 32 } }
+            };
+            foreach (var item in items)
+                tabs.Items.Add(item);
+
+            var focusTarget = new Button { Content = "独立焦点目标", Width = 120, Height = 32 };
+            root.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            root.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            Grid.SetRow(focusTarget, 1);
+            root.Children.Add(tabs);
+            root.Children.Add(focusTarget);
+            var window = CreateWindow(root, 700, 320);
+
+            try
+            {
+                window.Show();
+                FlushLayout(window);
+                var indicators = items.Select(item =>
+                {
+                    item.ApplyTemplate();
+                    return Assert.IsType<Border>(item.Template!.FindName("SelectionIndicator", item));
+                }).ToArray();
+
+                foreach (var mode in Themes)
+                {
+                    ApplyTheme(root, mode);
+                    AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, false);
+                    tabs.SelectedIndex = 0;
+                    FlushLayout(window);
+                    Assert.Equal(1, indicators[0].Opacity);
+                    Assert.Equal(0, indicators[1].Opacity);
+                    Assert.Equal(0, indicators[2].Opacity);
+
+                    AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, true);
+                    Assert.True(PumpDispatcherUntilFast(
+                        () => Math.Abs(indicators[0].Opacity - 1) < 0.001,
+                        TimeSpan.FromMilliseconds(500)),
+                        $"{mode}: initial selected tab did not finish its motion-enabled entry.");
+                    tabs.SelectedIndex = 1;
+                    Assert.Equal(1, tabs.SelectedIndex);
+                    Assert.False(items[0].IsSelected);
+                    Assert.True(items[1].IsSelected);
+                    Assert.InRange(Math.Abs(indicators[0].Opacity - 1), 0, 0.08);
+                    Assert.InRange(Math.Abs(indicators[1].Opacity), 0, 0.08);
+                    Assert.True(PumpDispatcherUntilFast(
+                        () => indicators[0].Opacity > 0.01 && indicators[0].Opacity < 0.99
+                            && indicators[1].Opacity > 0.01 && indicators[1].Opacity < 0.99,
+                        TimeSpan.FromMilliseconds(250)),
+                        $"{mode}: selection change did not expose both entry and exit animation samples.");
+                    FlushLayout(window);
+                    var firstExitMidpoint = indicators[0].Opacity;
+                    var secondEnterMidpoint = indicators[1].Opacity;
+                    Assert.True(firstExitMidpoint > 0.01 && firstExitMidpoint < 0.99,
+                        $"{mode}: previous selection did not expose an exit sample; opacity={firstExitMidpoint}; selected0={items[0].IsSelected}; selected1={items[1].IsSelected}; index={tabs.SelectedIndex}; motion={AdaptiveThemePaletteFactory.GetMotionEnabledActive(items[0])}.");
+                    Assert.True(secondEnterMidpoint > 0.01 && secondEnterMidpoint < 0.99,
+                        $"{mode}: current selection did not expose an enter sample; opacity={secondEnterMidpoint}; selected={items[1].IsSelected}; motion={AdaptiveThemePaletteFactory.GetMotionEnabledActive(items[1])}; duration={resources["GscMotionNormal"]}.");
+
+                    var secondBeforeRapidSwitch = indicators[1].Opacity;
+                    tabs.SelectedIndex = 2;
+                    var secondAfterRapidSwitch = indicators[1].Opacity;
+                    Assert.InRange(Math.Abs(secondAfterRapidSwitch - secondBeforeRapidSwitch), 0, 0.08);
+                    Assert.Equal(2, tabs.SelectedIndex);
+
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(300));
+                    FlushLayout(window);
+                    Assert.Equal(0, indicators[0].Opacity, 2);
+                    Assert.Equal(0, indicators[1].Opacity, 2);
+                    Assert.Equal(1, indicators[2].Opacity, 2);
+                    var settledOpacities = indicators.Select(indicator => indicator.Opacity).ToArray();
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(60));
+                    Assert.Equal(settledOpacities[0], indicators[0].Opacity, 3);
+                    Assert.Equal(settledOpacities[1], indicators[1].Opacity, 3);
+                    Assert.Equal(settledOpacities[2], indicators[2].Opacity, 3);
+
+                    Assert.Same(focusTarget, Keyboard.Focus(focusTarget));
+                    FlushLayout(window);
+                    Assert.Equal(2, tabs.SelectedIndex);
+                    Assert.False(items[2].IsKeyboardFocusWithin);
+                    Assert.Equal(1, indicators[2].Opacity, 2);
+
+                    AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, false);
+                    tabs.SelectedIndex = 0;
+                    FlushLayout(window);
+                    Assert.Equal(1, indicators[0].Opacity);
+                    Assert.Equal(0, indicators[1].Opacity);
+                    Assert.Equal(0, indicators[2].Opacity);
+                    Assert.All(indicators, indicator =>
+                        Assert.False(DependencyPropertyHelper.GetValueSource(indicator, UIElement.OpacityProperty).IsAnimated));
                 }
             }
             finally
@@ -1147,6 +1265,33 @@ public sealed class R23ProductionResourceStateBehaviorTests
         window.UpdateLayout();
         window.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
         window.UpdateLayout();
+    }
+
+    private static void PumpDispatcherFor(TimeSpan duration)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Background) { Interval = duration };
+        timer.Tick += (_, _) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
+    }
+
+    private static bool PumpDispatcherUntilFast(Func<bool> condition, TimeSpan timeout)
+    {
+        var timeoutWatch = Stopwatch.StartNew();
+        while (timeoutWatch.Elapsed < timeout)
+        {
+            if (condition())
+                return true;
+
+            PumpDispatcherFor(TimeSpan.FromMilliseconds(5));
+        }
+
+        return condition();
     }
 
     private static void ChangeMouseOverForTest(System.Windows.IInputElement target)

@@ -5675,8 +5675,8 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("x:Key=\"GscDisclosureCardExpander\"", tokens);
         Assert.Contains("Storyboard.TargetName=\"Chevron\"", tokens);
-        Assert.Contains("To=\"0\" Duration=\"0:0:0.15\"", tokens);
-        Assert.Contains("To=\"-90\" Duration=\"0:0:0.15\"", tokens);
+        Assert.Contains("To=\"0\" Duration=\"{StaticResource GscMotionFast}\"", tokens);
+        Assert.Contains("To=\"-90\" Duration=\"{StaticResource GscMotionFast}\"", tokens);
         Assert.Contains("GscDisclosureCard", tokens);
         Assert.Contains("<Setter Property=\"Background\" Value=\"{DynamicResource GscControlFillBrush}\"/>", tokens);
         Assert.Contains("Background=\"{TemplateBinding Background}\"", tokens);
