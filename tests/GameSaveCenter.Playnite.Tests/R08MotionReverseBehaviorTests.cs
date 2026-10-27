@@ -250,6 +250,9 @@ public sealed class R08MotionReverseBehaviorTests
         var pressedOverlayReversedContinuously = false;
         var pressRepressProgressSampled = false;
         var pressReleasedFinal = 0d;
+        var hoverSweepVisitedCount = 0;
+        var hoverSweepMaximumResidualOpacity = 0d;
+        var hoverSweepReentered = false;
         var thread = new Thread(() =>
         {
             Window? window = null;
@@ -362,6 +365,9 @@ public sealed class R08MotionReverseBehaviorTests
                 pressReleasedFinal = scale.ScaleX;
                 PumpDispatcherUntil(() => Math.Abs(pressedOverlay.Opacity) < 0.001, TimeSpan.FromMilliseconds(500));
                 pressedOverlayReleasedFinal = pressedOverlay.Opacity;
+
+                hoverSweepReentered = RunProductionButtonHoverSweep(resources, buttonStyle,
+                    out hoverSweepVisitedCount, out hoverSweepMaximumResidualOpacity);
             }
             catch (Exception caught)
             {
@@ -377,7 +383,7 @@ public sealed class R08MotionReverseBehaviorTests
         thread.Start();
         thread.Join();
 
-        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; press midpoint={pressMidpoint:0.###}; release={pressAfterRelease:0.###}->{pressBeforeRepress:0.###}; re-press={pressAfterRepress:0.###}->{pressFinal:0.###}; overlay={pressedOverlayMidpoint:0.###}->{pressedOverlayAfterRelease:0.###}->{pressedOverlayFinal:0.###}; releaseFinal={pressReleasedFinal:0.###}/{pressedOverlayReleasedFinal:0.###}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}");
+        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; press midpoint={pressMidpoint:0.###}; release={pressAfterRelease:0.###}->{pressBeforeRepress:0.###}; re-press={pressAfterRepress:0.###}->{pressFinal:0.###}; overlay={pressedOverlayMidpoint:0.###}->{pressedOverlayAfterRelease:0.###}->{pressedOverlayFinal:0.###}; releaseFinal={pressReleasedFinal:0.###}/{pressedOverlayReleasedFinal:0.###}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}; sibling sweep visited={hoverSweepVisitedCount}; max residual={hoverSweepMaximumResidualOpacity:0.####}; hover re-entry={hoverSweepReentered}");
         Assert.Null(exception);
         Assert.True(hoverMidpointSampled, "production hover opacity did not expose an in-flight sample");
         Assert.InRange(Math.Abs(hoverAfterLeave - hoverMidpoint), 0, 0.08);
@@ -404,122 +410,135 @@ public sealed class R08MotionReverseBehaviorTests
         Assert.True(pressedOverlayRepressProgress > pressedOverlayAfterRepress, "pressed overlay re-press did not continue toward one");
         Assert.Equal(1, pressedOverlayFinal, 2);
         Assert.Equal(0, pressedOverlayReleasedFinal, 2);
+        Assert.Equal(24, hoverSweepVisitedCount);
+        Assert.True(hoverSweepReentered, "production hover did not respond after a rapid sibling sweep");
+        Assert.InRange(hoverSweepMaximumResidualOpacity, 0, 0.001);
     }
 
-    [Fact]
-    public void ProductionButtonHoverSweepAcrossSiblingsLeavesNoResidualOverlay()
+    private static bool RunProductionButtonHoverSweep(
+        ResourceDictionary resources,
+        Style buttonStyle,
+        out int visitedCount,
+        out double maximumResidualOpacity)
     {
-        Exception? exception = null;
-        var visitedCount = 0;
-        var maximumResidualOpacity = 0d;
-        var hoverReentered = false;
-        var thread = new Thread(() =>
+        visitedCount = 0;
+        maximumResidualOpacity = 0;
+        Window? window = null;
+        try
         {
-            Window? window = null;
-            try
+            var root = new Grid
             {
-                EnsureApplication();
-                var resources = LoadProductionResources();
-                var buttonStyle = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]);
-                var root = new Grid
-                {
-                    Width = 820,
-                    Height = 72,
-                    Resources = resources,
-                    Background = Brushes.Transparent,
-                    IsHitTestVisible = false
-                };
-                var palette = AdaptiveThemePaletteFactory.Create(root, true, 78, GameSaveCenterThemeMode.Light);
-                AdaptiveThemePaletteFactory.SetHighContrastActive(root, palette.IsHighContrast);
-                AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, !palette.IsHighContrast);
-                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(root.Resources, palette, true, true);
+                Width = 820,
+                Height = 72,
+                Resources = resources,
+                Background = Brushes.Transparent,
+                IsHitTestVisible = false
+            };
+            var palette = AdaptiveThemePaletteFactory.Create(root, true, 78, GameSaveCenterThemeMode.Light);
+            AdaptiveThemePaletteFactory.SetHighContrastActive(root, palette.IsHighContrast);
+            AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, !palette.IsHighContrast);
+            AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(root.Resources, palette, true, true);
 
-                var row = new StackPanel
+            var row = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            var buttons = new UiButton[8];
+            var overlays = new Border[buttons.Length];
+            for (var index = 0; index < buttons.Length; index++)
+            {
+                buttons[index] = new UiButton
                 {
-                    Orientation = Orientation.Horizontal,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
+                    Content = $"操作 {index + 1}",
+                    Style = buttonStyle,
+                    Width = 96,
+                    Height = 44,
+                    Margin = new Thickness(2, 0, 2, 0)
                 };
-                var buttons = new UiButton[8];
-                var overlays = new Border[buttons.Length];
+                row.Children.Add(buttons[index]);
+            }
+
+            root.Children.Add(row);
+            window = CreateWindow(root, 860, 112);
+            window.Show();
+            window.UpdateLayout();
+            root.UpdateLayout();
+            for (var index = 0; index < buttons.Length; index++)
+            {
+                buttons[index].ApplyTemplate();
+                overlays[index] = Assert.IsType<Border>(buttons[index].Template!.FindName("HoverOverlay", buttons[index]));
+            }
+
+            PumpDispatcher(TimeSpan.FromMilliseconds(40));
+            foreach (var overlay in overlays)
+                Assert.Equal(0, overlay.Opacity, 3);
+
+            UiButton? previous = null;
+            for (var pass = 0; pass < 3; pass++)
+            {
                 for (var index = 0; index < buttons.Length; index++)
                 {
-                    buttons[index] = new UiButton
-                    {
-                        Content = $"操作 {index + 1}",
-                        Style = buttonStyle,
-                        Width = 96,
-                        Height = 44,
-                        Margin = new Thickness(2, 0, 2, 0)
-                    };
-                    row.Children.Add(buttons[index]);
+                    if (previous != null)
+                        Assert.True(SetMouseOverProbe(previous, false));
+
+                    Assert.True(SetMouseOverProbe(buttons[index], true));
+                    previous = buttons[index];
+                    visitedCount++;
+                    PumpDispatcher(TimeSpan.FromMilliseconds(4));
                 }
-
-                root.Children.Add(row);
-                window = CreateWindow(root, 860, 112);
-                window.Show();
-                window.UpdateLayout();
-                root.UpdateLayout();
-                for (var index = 0; index < buttons.Length; index++)
-                {
-                    buttons[index].ApplyTemplate();
-                    overlays[index] = Assert.IsType<Border>(buttons[index].Template!.FindName("HoverOverlay", buttons[index]));
-                }
-
-                PumpDispatcher(TimeSpan.FromMilliseconds(40));
-                foreach (var overlay in overlays)
-                    Assert.Equal(0, overlay.Opacity, 3);
-
-                UiButton? previous = null;
-                for (var pass = 0; pass < 3; pass++)
-                {
-                    for (var index = 0; index < buttons.Length; index++)
-                    {
-                        if (previous != null)
-                            Assert.True(SetMouseOverProbe(previous, false));
-
-                        Assert.True(SetMouseOverProbe(buttons[index], true));
-                        previous = buttons[index];
-                        visitedCount++;
-                        PumpDispatcher(TimeSpan.FromMilliseconds(4));
-                    }
-                }
-
-                if (previous != null)
-                    Assert.True(SetMouseOverProbe(previous, false));
-
-                // Allow more than two shared fast-transition durations for every exit.
-                PumpDispatcher(TimeSpan.FromMilliseconds(300));
-                for (var index = 0; index < overlays.Length; index++)
-                    maximumResidualOpacity = Math.Max(maximumResidualOpacity, overlays[index].Opacity);
-
-                hoverReentered = PumpMouseOverProbeUntil(buttons[3], true,
-                    () => overlays[3].Opacity > 0.05 && overlays[3].Opacity < 0.95,
-                    TimeSpan.FromMilliseconds(500));
-                Assert.True(SetMouseOverProbe(buttons[3], false));
-                PumpDispatcher(TimeSpan.FromMilliseconds(300));
-                for (var index = 0; index < overlays.Length; index++)
-                    maximumResidualOpacity = Math.Max(maximumResidualOpacity, overlays[index].Opacity);
             }
-            catch (Exception caught)
+
+            if (previous != null)
+                Assert.True(SetMouseOverProbe(previous, false));
+
+            Assert.True(PumpSiblingHoverUntilRest(buttons, overlays, TimeSpan.FromSeconds(1)),
+                "a synthetic or native hover state remained active after the sibling sweep");
+            for (var index = 0; index < overlays.Length; index++)
+                maximumResidualOpacity = Math.Max(maximumResidualOpacity, overlays[index].Opacity);
+
+            var hoverReentered = PumpMouseOverProbeUntil(buttons[3], true,
+                () => overlays[3].Opacity > 0.05 && overlays[3].Opacity < 0.95,
+                TimeSpan.FromMilliseconds(500));
+            Assert.True(SetMouseOverProbe(buttons[3], false));
+            Assert.True(PumpSiblingHoverUntilRest(buttons, overlays, TimeSpan.FromSeconds(1)),
+                "a hover overlay remained active after its final exit");
+            for (var index = 0; index < overlays.Length; index++)
+                maximumResidualOpacity = Math.Max(maximumResidualOpacity, overlays[index].Opacity);
+
+            return hoverReentered;
+        }
+        finally
+        {
+            window?.Close();
+        }
+    }
+
+    private static bool PumpSiblingHoverUntilRest(UiButton[] buttons, Border[] overlays, TimeSpan timeout)
+    {
+        var settledFor = Stopwatch.StartNew();
+        return PumpDispatcherUntilFast(() =>
+        {
+            // A native WPF pointer sync can overwrite the synthetic IsMouseOver probe while
+            // the fixture renders. Keep every sibling explicitly out of hover while exits run.
+            foreach (var button in buttons)
             {
-                exception = caught;
+                if (ReadMouseOverProbe(button))
+                    Assert.True(SetMouseOverProbe(button, false));
             }
-            finally
+
+            if (settledFor.Elapsed < TimeSpan.FromMilliseconds(300))
+                return false;
+
+            foreach (var overlay in overlays)
             {
-                window?.Close();
+                if (overlay.Opacity >= 0.001)
+                    return false;
             }
-        });
 
-        thread.SetApartmentState(ApartmentState.STA);
-        thread.Start();
-        thread.Join();
-
-        output.WriteLine($"synthetic sibling hover sweep visited={visitedCount}; max residual opacity={maximumResidualOpacity:0.####}; hover re-entry sampled={hoverReentered}");
-        Assert.Null(exception);
-        Assert.Equal(24, visitedCount);
-        Assert.True(hoverReentered, "production hover did not respond after a rapid sibling sweep");
-        Assert.InRange(maximumResidualOpacity, 0, 0.001);
+            return true;
+        }, timeout);
     }
 
     private static ResourceDictionary LoadProductionResources()
