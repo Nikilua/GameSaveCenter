@@ -1,0 +1,25 @@
+{
+  "cleanupId": "U01-05-06-render-qa-20261027",
+  "stageOwnedTarget": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-qa\\round5-20261027-u01-05-06",
+  "targetWithinRepositoryArtifacts": true,
+  "reparsePoints": 0,
+  "activeRenderHarnessProcessesBeforeDelete": 0,
+  "generatedEntries": 398,
+  "generatedFiles": 395,
+  "generatedPngs": 394,
+  "pngBytes": 51935979,
+  "totalBytes": 53077824,
+  "archivedReport": "docs/design/reviews/ui-polish-round5-20261027/evidence/U01-05-06/render-qa-report.txt",
+  "archivedReportSha256Verified": true,
+  "reportReferencesPngFiles": false,
+  "deleteAttempt": "PowerShell Remove-Item -LiteralPath <verified target> -Recurse -Force",
+  "deleteAttemptResult": "Rejected by execution policy before PowerShell executed; no files removed. Do not retry or use another shell.",
+  "targetRetained": true,
+  "diskSpaceGB": {
+    "cBeforeRenderApproxObserved": 3.9,
+    "cAfterRenderAndCleanupAttempt": 3.89,
+    "dBeforeRender": "not recorded",
+    "dAfterRenderAndCleanupAttempt": 6.7
+  },
+  "preserve": "用户Round3 TRX与共享 tests/GameSaveCenter.Playnite.Tests/TestResults 均未访问或修改。"
+}

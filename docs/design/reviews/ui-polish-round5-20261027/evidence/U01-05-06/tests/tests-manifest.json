@@ -1,0 +1,45 @@
+{
+  "sdk": "8.0.423",
+  "runs": [
+    {
+      "file": "U01-05-06-focused-final.trx",
+      "total": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "bytes": 41967,
+      "sha256": "00dd08c826c51a7c1f6a6ad1bb5329efd166ec7d2bd12371a5680cf31df45d21",
+      "purpose": "合并禁用态、辅助文字、对比、图标和DPI验证"
+    },
+    {
+      "file": "U01-05-06-disabled-brush.trx",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "bytes": 10129,
+      "sha256": "66655a7a1b78c0e03cdef0d9541da52380481b5ca2d22a69c2dadd63cec08887",
+      "purpose": "语义禁用态与高对比模板回归"
+    },
+    {
+      "file": "U01-05-06-current.trx",
+      "total": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "bytes": 36564,
+      "sha256": "4c27accb7298392b51da5b5b75f825bb090f3f767f8813962ce9665a83f1639c",
+      "purpose": "辅助文字、图标和DPI基线组合回归"
+    },
+    {
+      "file": "U01-05-caption-contrast.trx",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "bytes": 3188,
+      "sha256": "2bbcd2a741a7187a2e21c30ed1fbd3e9d34e40d5d9c14f42ec7a6d862399eb70",
+      "purpose": "辅助说明文字跨四类宿主背景对比回归"
+    }
+  ]
+}

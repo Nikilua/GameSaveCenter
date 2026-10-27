@@ -52,6 +52,8 @@ public sealed class R09BackgroundPressureBehaviorTests
                 Assert.Contains(surfaceColors, color => color.A > 0 && color.A < 255);
 
                 var samples = new List<AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample>();
+                var captionSamples = new List<AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample>();
+                var disabledButtonSamples = new List<AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample>();
                 foreach (var backdropColor in backdropColors)
                 {
                     foreach (var ambientColor in ambientColors)
@@ -66,6 +68,22 @@ public sealed class R09BackgroundPressureBehaviorTests
                                 SurfaceLayers = new[] { backdropColor, ambientColor, surfaceColor },
                                 Minimum = 4.5
                             });
+                            disabledButtonSamples.Add(new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+                            {
+                                Check = $"{scenario.Name}:disabled-button:{backdropColor}:{ambientColor}:{surfaceColor}",
+                                Foreground = palette.DisabledText,
+                                Backdrop = scenario.Background,
+                                SurfaceLayers = new[] { backdropColor, ambientColor, surfaceColor, palette.ControlFill },
+                                Minimum = 4.5
+                            });
+                            captionSamples.Add(new AdaptiveThemePaletteContrastGuard.LayeredTextContrastSample
+                            {
+                                Check = $"{scenario.Name}:caption:{backdropColor}:{ambientColor}:{surfaceColor}",
+                                Foreground = palette.MutedText,
+                                Backdrop = scenario.Background,
+                                SurfaceLayers = new[] { backdropColor, ambientColor, surfaceColor },
+                                Minimum = 4.5
+                            });
                         }
                     }
                 }
@@ -76,6 +94,20 @@ public sealed class R09BackgroundPressureBehaviorTests
                     Assert.True(
                         measurement.Actual + 0.001 >= measurement.Minimum,
                         $"{measurement.Check} measured {measurement.Actual:0.###}, expected {measurement.Minimum:0.###}."));
+
+                var captionMeasurements = AdaptiveThemePaletteContrastGuard.MeasureLayeredTextContrast(captionSamples);
+                Assert.NotEmpty(captionMeasurements);
+                Assert.All(captionMeasurements, measurement =>
+                    Assert.True(
+                        measurement.Actual + 0.001 >= measurement.Minimum,
+                        $"Small helper text {measurement.Check} measured {measurement.Actual:0.###}, expected {measurement.Minimum:0.###}."));
+
+                var disabledButtonMeasurements = AdaptiveThemePaletteContrastGuard.MeasureLayeredTextContrast(disabledButtonSamples);
+                Assert.NotEmpty(disabledButtonMeasurements);
+                Assert.All(disabledButtonMeasurements, measurement =>
+                    Assert.True(
+                        measurement.Actual + 0.001 >= measurement.Minimum,
+                        $"Disabled button text {measurement.Check} measured {measurement.Actual:0.###}, expected {measurement.Minimum:0.###}."));
             }
         });
     }

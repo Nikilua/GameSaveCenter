@@ -1128,22 +1128,11 @@
                             <Setter TargetName="BusyIndicatorHost" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <!-- Keep disabled labels readable after the chrome alpha is
-                                 composited over a dark surface. Context actions use this
-                                 same template, so the shared value must be sufficient on
-                                 its own rather than relying on a second control opacity. -->
-                            <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.72"/>
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsEnabled" Value="False"/>
-                                <Condition Property="infra:AdaptiveThemePaletteFactory.HighContrastActive" Value="True"/>
-                            </MultiTrigger.Conditions>
                             <Setter TargetName="ButtonChrome" Property="Opacity" Value="1"/>
                             <Setter TargetName="ButtonChrome" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
-                        </MultiTrigger>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

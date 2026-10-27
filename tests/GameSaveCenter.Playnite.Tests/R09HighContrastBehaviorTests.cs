@@ -284,7 +284,10 @@ public sealed class R09HighContrastBehaviorTests
                         Assert.IsType<PopupAnimation>(resources["GscPopupAnimation"]));
                     Assert.Equal(motionRequested ? TimeSpan.FromMilliseconds(120) : TimeSpan.Zero,
                         Assert.IsType<Duration>(resources["GscMotionFast"]).TimeSpan);
-                    Assert.Equal(0.72d, disabledChrome.Opacity);
+                    Assert.Equal(1d, disabledChrome.Opacity);
+                    Assert.Equal(BrushColor(Assert.IsAssignableFrom<Brush>(resources["GscControlFillBrush"])), BrushColor(disabledChrome.Background));
+                    Assert.Equal(BrushColor(Assert.IsAssignableFrom<Brush>(resources["GscControlStrokeBrush"])), BrushColor(disabledChrome.BorderBrush));
+                    Assert.Equal(BrushColor(Assert.IsAssignableFrom<Brush>(resources["GscDisabledTextBrush"])), BrushColor(disabledButton.Foreground));
                     Assert.False(AdaptiveThemePaletteFactory.GetHighContrastActive(disabledButton));
                     Assert.Equal(motionRequested, AdaptiveThemePaletteFactory.GetMotionEnabledActive(disabledButton));
                 }

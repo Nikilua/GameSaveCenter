@@ -251,7 +251,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 PrimaryText = primaryText,
                 SecondaryText = highContrast ? SystemColors.ControlTextColor : EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.74),
                 MutedText = highContrast ? SystemColors.GrayTextColor : EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.56),
-                DisabledText = highContrast ? SystemColors.GrayTextColor : WithAlpha(primaryText, 0.38),
+                DisabledText = highContrast
+                    ? SystemColors.GrayTextColor
+                    : EnsureTextContrast(primaryText, stableBase, 4.5, isDark, 0.56),
                 ControlFill = WithAlpha(controlFill, highContrast ? 1 : glassEnabled
                     ? 0.78 + (0.10 * (1 - strength))
                     : 1),
@@ -724,7 +726,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             // light value was a decorative gray (roughly 3:1 on white), not ordinary 12 DIP
             // text. Keep dark mode calm while giving light mode enough luminance separation.
             var tertiaryText = isDark ? Color.FromRgb(0xA8, 0xB0, 0xBE) : Color.FromRgb(0x65, 0x70, 0x86);
-            var disabledText = isDark ? Color.FromRgb(0x70, 0x79, 0x89) : Color.FromRgb(0x8B, 0x93, 0xA0);
+            var disabledText = tertiaryText;
             var divider = isDark ? Color.FromArgb(0x12, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x12, 0x00, 0x00, 0x00);
             var tableHeader = isDark ? Color.FromArgb(0x0D, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x0A, 0x00, 0x00, 0x00);
             var rowHover = isDark ? Color.FromArgb(0x0C, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x08, 0x00, 0x00, 0x00);

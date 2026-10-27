@@ -1,0 +1,41 @@
+{
+  "batch": "U01-05-06",
+  "sourceBase": "50e8002d34fcc6775ebe59f306d26c93563d5e97",
+  "sdk": "8.0.423",
+  "tests": {
+    "file": "tests/U01-05-06-focused-final.trx",
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0,
+    "bytes": 41967,
+    "sha256": "00DD08C826C51A7C1F6A6AD1BB5329EFD166EC7D2BD12371A5680CF31DF45D21"
+  },
+  "sourceValidation": {
+    "command": "python scripts/validate-source.py",
+    "result": "passed"
+  },
+  "wpfStaticAudit": {
+    "command": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .",
+    "xamlFiles": 31,
+    "errors": 0,
+    "warnings": 26,
+    "information": 179
+  },
+  "renderQa": {
+    "command": "scripts/render-qa.ps1 -Configuration Release",
+    "renderHarnessBuildWarnings": 0,
+    "renderHarnessBuildErrors": 0,
+    "result": "render-qa OK",
+    "problemCount": 0,
+    "report": "render-qa-report.txt",
+    "reportBytes": 1141845,
+    "reportSha256": "9F46EE7098FC61540EFF44D64D1D975EDA9FB0C7E3B414A7023ED591D6F4D086",
+    "reportHead": "50e8002d34fcc6775ebe59f306d26c93563d5e97",
+    "workingTreeClean": false
+  },
+  "notVerified": [
+    "真实 Playnite 宿主渲染、物理 DPI、UI Automation/读屏器",
+    "整轮最终中文根入口完整安装启动链和独立 scripts/build.cmd",
+    "本批实现提交对应的 GitHub SDK8/SDK10 workflow jobs"
+  ]
+}
