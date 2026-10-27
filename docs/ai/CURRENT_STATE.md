@@ -1,3 +1,9 @@
+## Round5 U02-05/06 最新本地状态（2026-10-28）
+
+共享 `GeometryTokens.xaml` 提供圆角、1 DIP hairline 与分隔线令牌；`RoundedClipBehavior` 根据 Border 当前尺寸/圆角裁切并相交保留消费者原 Clip。`f59fe4c86c78cb2fc11414a431aceb49821910ee` 已推送，所有当前 Playnite 项目 XAML 的 1 DIP 边框已统一引用令牌。SDK8.0.423精确SHA聚焦组165通过、39个既有skip、0失败；source validation、26 XAML结构检查、37 XAML WPF静态审查0 errors通过。最终 Render QA 双主题334 PNG、0 PROBLEM，报告/逐图SHA见[U02-05/06证据](../design/reviews/ui-polish-round5-20261027/evidence/U02-05-06/BASELINE.md)。
+
+run `40554157661`（初始批）与最终源码run `40555566776`的baseline/SDK10.0.401 jobs均仍在测试；身份见`evidence/U02-05-06/ci-runs.json`，尚无结果或artifact。required-checks读取此前为403，远端待验。真实Playnite、UIA/键盘/IME、物理DPI未验；中文根入口完整链和独立`scripts/build.cmd`留待整轮最终候选。旧S/T宿主/权限拒绝保持原状态，不重复探测；不触碰真实存档恢复、媒体删除或云端写入。
+
 ## Round5 U02-01～04 最新本地状态（2026-10-28）
 
 源码提交`504562a7f0dad88454dde57b290b7862f91c93e6`已推送。U02-01/02复用生产自适应层次和对比守卫，Light/Dark达标且未重调无缺陷表面值；U02-03/04将概览普通行回归中性色，并统一成功、警告、错误、运行、排队、取消六态状态图标/前景/浅底/标签。SDK8.0.423精确身份行为回归15/15、0跳过；source validation、XAML检查25文件、WPF静态31文件0 error、Render QA双主题exit0/0 PROBLEM。报告、测试、截图与哈希见[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)及`evidence/U02-01-04/`。

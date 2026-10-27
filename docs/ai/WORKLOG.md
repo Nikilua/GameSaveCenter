@@ -12464,3 +12464,11 @@ U01-05复用现有12 DIP Caption和Muted Brush；发现共享WPF-UI按钮普通�
 ## 2026-10-27 Round5 U01-07/08 双语长度与200%文本
 
 U01-07经现有生产实现和行为测试去重：按钮文本模板完整换行、不省略；双语长标签、路径、错误详情、键盘复制与可选技术文本已有覆盖。U01-08将R03TextScaleTests改为生产字号的两倍（Body 14→28、Caption/按钮12→24 DIP），并验证输入/按钮/表头/可滚动技术详情及精确全文选择，不使用Viewbox缩小；没有改生产资源。实现/测试提交`11c1411e4dc5b673ccaa1ab1d05a1c8ae114ce5c`已推送；SDK8.0.423专项2/2和七类组合21/21、0 skip，TRX/SHA与字号校准失败记录见`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-07-08/`。GitHub插件仅列PR触发的workflow run，本SHA返回空列表；combined status为空；公开Actions API查询30秒超时，所以远端待验，下一步用认证API/CLI或Actions网页按完整SHA核查SDK8、SDK10全部job及artifact。真实Playnite/UIA/键盘/IME/物理DPI和整轮根入口、独立build.cmd继续待验。不清理其他任务TRX/TestResults。
+
+## 2026-10-28 Round5 U02-05/06 边框令牌与圆角裁切
+
+去重后发现 1 DIP 边框在 WPF-UI、Acrylic、设置与多个工作区 XAML 重复书写，圆角散落在共享样式；本轮引入 `GeometryTokens.xaml` 与 `RoundedClipBehavior`，由共享控件按实时尺寸/圆角裁切并保留外部 Clip。首个实现提交 `417bed510806f965122554beb4419082443b905e` 推送后继续盘点，发现尚有更多生产字面量；扩展提交 `f59fe4c86c78cb2fc11414a431aceb49821910ee` 已把全部 Playnite 项目 XAML 1 DIP边框统一引用共享令牌，并加源回归检查。没有更改业务命令、Binding、选择/滚动行为或页面架构。
+
+精确 `f59fe4c8` SDK8.0.423 定向 WPF组204项：165通过、39个既有skip、0失败；`validate-source.py`、XAML 26文件与 WPF 静态37文件/0 error 检查通过。RenderHarness Release 0 warning/0 error，双主题 334 PNG，报告 `render-qa OK`、0 `PROBLEM`；圆角像素探针覆盖100/125/150/175/200%。报告、逐图SHA、TRX与实现边界见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U02-05-06/`。这是离屏渲染证据，不代表真实Playnite/UIA或物理DPI。
+
+最终候选run `40555566776`（SDK基线job `122370590922`、SDK10.0.401 job `122370591760`）与首个候选run `40554157661`（job `122365585853`、`122365586753`）最近都在编译/测试，结果及artifact尚待查询； required-checks 接口此前403。D盘可用空间本阶段截图前7,550,947,328、截图后6,532,808,704字节；当前证据目录约54MB，其中334 PNG为44,987,438字节。保留被文档引用的Render QA和TRX；此前阶段临时目录的规定PowerShell清理遭策略拒绝，未换shell或删除其他任务TRX/TestResults。中文根入口完整构建安装启动链和独立 `scripts/build.cmd` 留到整轮最终候选。

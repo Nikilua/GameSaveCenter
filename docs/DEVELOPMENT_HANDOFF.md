@@ -1150,3 +1150,11 @@ T03-05仍实施中：启动器的`Win32_Process.CommandLine`身份预检有历�
 ## 2026-10-27 T01-04进度表校正
 
 32项进度表原T01-04行缺失任务标题，导致列错位。已按实施计划和 [T01-04证据](design/reviews/build-ui-reliability-20261022/evidence/T01-04/README.md) 补为“路径越界负例”。状态仍为代码完成待验收，提交`d2429890`；符号链接权限阻塞未改变。32条任务行的列数已统一核对。
+
+## 2026-10-28 当前接续：Round5 U02-05/06
+
+当前 `main` 已推送实现提交 `417bed510806f965122554beb4419082443b905e` 与完整覆盖修正 `f59fe4c86c78cb2fc11414a431aceb49821910ee`。本轮将所有 Playnite 项目 XAML 的 1 DIP 边框改用共享 `GscHairlineThickness`，增加共享圆角令牌与按 Border 实际尺寸生成、保留既有消费者Clip的圆角裁切行为。精确 SHA 的 SDK8.0.423定向测试165通过、39既有skip、0失败；source validation、XAML 26文件、WPF静态37文件/0 error和双主题 render-qa 334 PNG/0 PROBLEM通过。当前截图审计输出、逐图SHA、报告、TRX与实现摘要见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U02-05-06/`。
+
+GitHub `windows-build.yml` run `40554157661`（初始候选）和 `40555566776`（最终源SHA）最近均在SDK基线与SDK10.0.401测试阶段；job ID和当时状态见 `ci-runs.json`。下一步查询完成状态，读取失败日志与artifact身份；若失败，按原始诊断修复并推送新代码提交。required-checks读取403，远端仍待验。真实Playnite、UIA/键盘/IME和物理DPI没有验证；不触及真实存档恢复、媒体删除或云端写入。
+
+接续按计划进入U02-07/08独立小批。整轮最终候选提交后，以实际根入口 `GameSaveCenter-一键构建安装运行.cmd` 完成构建/测试/发布/打包/安装身份核验/启动，并按职责单独验证 `scripts/build.cmd`；当前不要用历史全链代替。本阶段的D盘空间与证据体量见U02-05/06 `BASELINE.md`；保留用户和其他任务TRX/TestResults，既有 `.tmp` 清理被策略拒绝，不换shell绕过。

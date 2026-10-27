@@ -1,3 +1,9 @@
+## 2026-10-28 Round5 U02-05/06 共享线宽与圆角裁切
+
+U02-05/06去重后在真实生产样式统一 1 DIP 边框和分隔线；共享圆角令牌与附加裁切行为保留已有外部Clip，并覆盖卡片、按钮、表格、壳层及状态/空态样式。全 Playnite 项目 XAML 单 DIP边框静态检查防回流。实现提交`417bed510806f965122554beb4419082443b905e`及扩展提交`f59fe4c86c78cb2fc11414a431aceb49821910ee`已推送。
+
+精确SHA `f59fe4c8` SDK8.0.423聚焦测试165通过/39既有skip/0失败；source、XAML与WPF静态检查通过；RenderHarness Release 0 warning/0 error，双主题334截图、`render-qa OK`。证据见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U02-05-06/`。远端run `40554157661`为初始候选、`40555566776`为最终代码候选；截至最近快照两run的SDK基线和SDK10.0.401 job均在测试，无artifact。下一步查询两run所有job与artifact，确认完整性；required-checks端点此前403，不推断保护状态。真实宿主与物理DPI仍待验；中文根入口完整安装启动链和独立`scripts/build.cmd`只在80项最终候选上运行。后续继续U02-07/08，不等待旧S/T权限条件；保留当前渲染输出与用户/其他任务TRX。
+
 ## 2026-10-28 Round5 U02-01～04 推送与远端待验
 
 实现提交 `504562a7f0dad88454dde57b290b7862f91c93e6` 已推送main。该批按80项任务做了U00既有Light/Dark主题与表面层次去重，没有重复重做已有表面色；浅/深模式语义对比守卫通过。概览最近访问普通图标改中性，任务成功/警告/失败/运行/排队/取消六状态修正为同语义文字、图标、浅底，并针对小字和自身浅底测4.5:1。SDK8.0.423精确SHA定向15/15、0 skip，Render QA exit0/0 PROBLEM，源码/XAML/WPF静态检查通过。详见 `docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md` 和 `evidence/U02-01-04/`。

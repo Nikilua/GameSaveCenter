@@ -1,0 +1,32 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "requiredChecks": "远端待验；branch-protection/required-checks 接口此前返回 HTTP 403，不推断保护状态。",
+  "runs": [
+    {
+      "runId": 40554157661,
+      "runNumber": 1321,
+      "commit": "417bed510806f965122554beb4419082443b905e",
+      "commitMessage": "收敛共享圆角与边框裁切",
+      "statusAtCapture": "in_progress",
+      "jobs": [
+        { "jobId": 122365585853, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
+        { "jobId": 122365586753, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
+      ],
+      "artifactsAtCapture": []
+    },
+    {
+      "runId": 40555566776,
+      "runNumber": 1322,
+      "commit": "f59fe4c86c78cb2fc11414a431aceb49821910ee",
+      "commitMessage": "统一生产界面的边框线宽",
+      "statusAtCapture": "in_progress",
+      "jobs": [
+        { "jobId": 122370590922, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
+        { "jobId": 122370591760, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
+      ],
+      "artifactsAtCapture": []
+    }
+  ],
+  "note": "No CI result is claimed while either run is queued or in progress. Read raw job logs and artifact identities on completion; the 417bed run is an initial same-batch candidate and f59fe4 is the expanded final source candidate."
+}
