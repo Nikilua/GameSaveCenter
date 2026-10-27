@@ -1,0 +1,106 @@
+[
+  {
+    "path": "screenshots/finesse-light.png",
+    "theme": "light",
+    "scenario": "mixed-button-and-table",
+    "windowDip": "1120x980",
+    "sha256": "558a75f84ba52b2acffcb9ed5af1e74932326c2a95f81fa91bb16c4f0cec70e6",
+    "bytes": 180036
+  },
+  {
+    "path": "screenshots/finesse-dark.png",
+    "theme": "dark",
+    "scenario": "mixed-button-and-table",
+    "windowDip": "1120x980",
+    "sha256": "09f9eef0280d09fa0345844d6f409862d836ae9858e9760939d4681fa3a32e85",
+    "bytes": 186981
+  },
+  {
+    "path": "screenshots/save-light-1040x700.png",
+    "theme": "light",
+    "scenario": "save-page",
+    "windowDip": "1040x700",
+    "sha256": "ee7ed057060335731daa5d2b309a5f0dd87ff789a659ef1888b5e1252f95f68d",
+    "bytes": 70252
+  },
+  {
+    "path": "screenshots/save-dark-1040x700.png",
+    "theme": "dark",
+    "scenario": "save-page",
+    "windowDip": "1040x700",
+    "sha256": "87ee33c3adde5ff565079f7574d666a8360a55683a2ad39d849d44eeedc9b114",
+    "bytes": 74865
+  },
+  {
+    "path": "screenshots/task-light-1040x700.png",
+    "theme": "light",
+    "scenario": "task-page",
+    "windowDip": "1040x700",
+    "sha256": "3bad89904ace0b2eec0b6e727b62eaad11b72b0a76b40becefe2613fa3cfdd3d",
+    "bytes": 66034
+  },
+  {
+    "path": "screenshots/task-dark-1040x700.png",
+    "theme": "dark",
+    "scenario": "task-page",
+    "windowDip": "1040x700",
+    "sha256": "72dffe1824c9ec0136d7e1750a457ae364799c838e3d7107ce6bb3bdfd80cc15",
+    "bytes": 70042
+  },
+  {
+    "path": "screenshots/media-light-1040x700.png",
+    "theme": "light",
+    "scenario": "media-page",
+    "windowDip": "1040x700",
+    "sha256": "0cd0afa0981427f2f89c2f024f1a057f0298d2262229f39589f819b6ff510a5d",
+    "bytes": 69458
+  },
+  {
+    "path": "screenshots/media-dark-1040x700.png",
+    "theme": "dark",
+    "scenario": "media-page",
+    "windowDip": "1040x700",
+    "sha256": "3eeae10c2d4930e60d45f4bcae3876f76d420f130fb3be94987f44fb5f1999d8",
+    "bytes": 72749
+  },
+  {
+    "path": "screenshots/trainer-light-1040x700.png",
+    "theme": "light",
+    "scenario": "trainer-page",
+    "windowDip": "1040x700",
+    "sha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f",
+    "bytes": 74124
+  },
+  {
+    "path": "screenshots/trainer-dark-1040x700.png",
+    "theme": "dark",
+    "scenario": "trainer-page",
+    "windowDip": "1040x700",
+    "sha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d",
+    "bytes": 77160
+  },
+  {
+    "path": "screenshots/notifications-light-1040x700.png",
+    "theme": "light",
+    "scenario": "notifications-page",
+    "windowDip": "1040x700",
+    "sha256": "67a739980a89d49f204208043f3399ce56b5ca419a7ca91919dc161edeafffaf",
+    "bytes": 56620
+  },
+  {
+    "path": "screenshots/notifications-dark-1040x700.png",
+    "theme": "dark",
+    "scenario": "notifications-page",
+    "windowDip": "1040x700",
+    "sha256": "b4d4dd7f655f95b9312155adef648c0f40fa978456dc316464d09ea6b1f6eabd",
+    "bytes": 59258
+  },
+  {
+    "path": "screenshots/shell-dark-1040x700.png",
+    "theme": "dark",
+    "scenario": "production-shell-title",
+    "windowDip": "1040x700",
+    "sha256": "dbcee8608b21ddfce6063f1404d3a621ac9e6522711d0fb6a57ba0c4c81674ca",
+    "bytes": 64799
+  }
+]

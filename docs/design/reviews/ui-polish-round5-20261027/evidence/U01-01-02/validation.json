@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-27",
+  "baseRevision": "0447237a582eb20c22320657c981245cdfe624a6",
+  "sdk": "8.0.423",
+  "checks": [
+    { "name": "source validation", "result": "passed", "command": "python scripts/validate-source.py" },
+    { "name": "XAML static check", "result": "passed", "count": "25/25", "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-xaml.ps1" },
+    { "name": "WPF quality audit", "result": "passed with baseline warnings", "count": "31 XAML; 0 errors; 26 warnings; 179 info", "command": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py ." },
+    { "name": "RenderHarness Release compile", "result": "passed", "count": "0 warnings; 0 errors" },
+    { "name": "render-qa", "result": "passed", "report": "reports/render-qa-report.txt", "matrix": "all harness pages, light/dark themes, multiple logical-DIP sizes" },
+    { "name": "targeted behavior tests", "result": "passed", "count": "37 passed; 0 failed; 0 skipped", "trx": "tests/U01-01-02-final-targeted.trx" },
+    { "name": "R07 compact-spacing regression", "result": "passed", "count": "4 passed; 0 failed; 0 skipped", "trx": "local shared TestResults output; intentionally not copied or cleaned" },
+    { "name": "GitHub CI for base revision", "result": "failed and repaired in candidate", "record": "ci-run-40490978543.json" }
+  ],
+  "candidateCommit": "pending source commit",
+  "fullRootBuild": "not run for this intermediate batch; required at final candidate after tracked files freeze",
+  "independentScriptsBuildCmd": "not run yet; required by final delivery gate"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "path": "reports/render-qa-report.txt",
+    "sha256": "a4308ff444529b2f4ac9516ffb9591756dbd1ec0e4f8c3ed12b77abe05607621",
+    "bytes": 1159879
+  },
+  {
+    "path": "reports/finesse-light-report.txt",
+    "sha256": "ff25f306856f9c60f44679cb52d62c0a684a739ff8259a91224c8baa81d34e20",
+    "sourceSha256": "84c10c0e481b5a428ec5c22a1a0913196851434aaa6b4a96d0ccfb176e95d4a2",
+    "normalization": "Repointed absolute .tmp screenshot path to archived relative screenshot; other report content unchanged.",
+    "bytes": 12406
+  },
+  {
+    "path": "reports/finesse-dark-report.txt",
+    "sha256": "9faefed204900f33bbd974ac53d06369fa8c64f6a9baa8bc22f909d1c45e4ac7",
+    "sourceSha256": "7609f3ff78324b09aaca96a9f13910cb87815aa5efbff01eac225d7d11a99393",
+    "normalization": "Repointed absolute .tmp screenshot path to archived relative screenshot; other report content unchanged.",
+    "bytes": 12403
+  },
+  {
+    "path": "reports/motion-reentry-probe-report.txt",
+    "sha256": "0dd777bd53fa1b42ffe7e63cf668bf43987b475feaf7cfac10a9b2665f3a8044",
+    "bytes": 1187
+  }
+]

@@ -12434,3 +12434,7 @@ run 40486014630（提交 5d0a2448d6315af61571d0d3fbecfd902e5344fc）中SDK8 job 
 
 同一工作树U00-04/05/06本地验证：RenderHarness Release编译SDK8.0.423、0警告/0错误；source validation通过；XAML检查25/25；WPF静态审查31 XAML、0 error/26 warning/179 info（与基线一致）；git diff --check通过。U00-04/05先前render-qa exit0/0 PROBLEM、状态夹具56图和主题/尺寸行为证据仍有效；本次没有改生产XAML，仅修正行为测试的宽度夹具并添加Harness性能探针。
 本批中文提交、GitHub新提交双SDK检查、标准中文入口全链、独立scripts/build.cmd尚待。真实Playnite宿主、UIA/IME和物理DPI仍未验；不触碰真实存档恢复、媒体删除或云写入。受策略拒绝的阶段自有临时输出仍按cleanup.json保持待执行；没有动用户Round3 TRX/TestResults。
+
+## 2026-10-27 Round5 U00-04回归修复与U01-01/02
+
+基于 `0447237a582eb20c22320657c981245cdfe624a6` 继续，修复其存档摘要纵向扩张导致R07表格高度少14 DIP的回归，并实施U01-01/02：在生产按钮与DataGrid样式夹具中测量实际中英/数字GlyphRun基线；标题使用既有 `GscPageTitleStyle` / `GscSectionTitleStyle`。浅深主题控件探针、存档/任务/媒体/工具/通知截图、render-qa报告和定向TRX归档于 `docs/design/reviews/ui-polish-round5-20261027/evidence/U01-01-02/`。当前SDK8定向37/37通过、0 skip；R07 4/4、0 skip；render-qa、source validation、XAML 25/25、WPF静态审查通过。远端run `40490978543` 双SDK失败的准确job和diagnostic artifact身份在该目录 `ci-run-40490978543.json`；该失败保留为历史，新候选需推送后重新查询。可选字体未安装场景、Playnite宿主、UIA/IME/物理DPI及最终中文根入口链和独立 `scripts/build.cmd` 仍未验。当前工作树不包含测试阈值改动。

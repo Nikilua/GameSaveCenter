@@ -301,7 +301,7 @@
                 <Grid x:Name="TaskQueueHeaderLayoutGrid" Grid.Row="0" Margin="12,2,12,8">
                     <Grid.RowDefinitions><RowDefinition x:Name="TaskQueuePrimaryHeaderRow" Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="任务队列" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="任务队列" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
                     <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding OpenWorklistBrowserCommand}" Content="人工待办" ToolTip="浏览和整理跨页面保存的人工待办；不会改变源对象" AutomationProperties.Name="打开人工待办清单" Margin="0,0,10,0" VerticalAlignment="Center"/>
                         <ui:Button x:Name="TaskQueueRetryAllButton" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RetryAllTasksCommand}" Content="重试可恢复" ToolTip="只处理当前已加载且符合筛选的记录；按游戏和任务类型各重试一次" AutomationProperties.Name="批量重试当前结果中的可恢复任务" Margin="0,0,10,0" VerticalAlignment="Center"/>
@@ -578,7 +578,7 @@
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                        <TextBlock Text="人工待办" FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock Text="人工待办" Style="{DynamicResource GscSectionTitleStyle}"/>
                         <TextBlock Grid.Row="1" Text="这里整理跨页面保存的稳定对象引用；移除只影响清单。" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0"/>
                     </Grid>
                     <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding CloseWorklistBrowserCommand}" Content="返回任务队列" AutomationProperties.Name="返回后台任务队列"/>

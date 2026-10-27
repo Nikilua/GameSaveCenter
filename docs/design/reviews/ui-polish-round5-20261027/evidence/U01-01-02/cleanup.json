@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-27",
+  "workspace": "D:/workplace/github/GameSaveCenter",
+  "drive": "D:",
+  "freeBytesBeforeAttempt": 8528023552,
+  "freeBytesAfterAttempt": 8528162816,
+  "removed": [],
+  "targets": [
+    { "path": ".tmp/round5-u01-01-02-render-qa", "files": 395, "bytes": 53094206 },
+    { "path": ".tmp/round5-u01-finesse-light", "files": 2, "bytes": 192497 },
+    { "path": ".tmp/round5-u01-finesse-dark", "files": 2, "bytes": 199439 },
+    { "path": ".tmp/round5-u01-motionreentry", "files": 9, "bytes": 822830 }
+  ],
+  "preflight": {
+    "allTargetsResolveInsideRepoTmp": true,
+    "targetDirectoriesAreReparsePoints": false,
+    "tmpRootIsReparsePoint": false,
+    "matchingRenderHarnessOrGameSaveCenterProcesses": 0,
+    "activeEvidenceReferencesAfterReportPathNormalizationExcludingThisCleanupLog": 0,
+    "screenshotsAndReportsArchived": true
+  },
+  "cleanupAttempt": "PowerShell Remove-Item -LiteralPath <four exact stage-owned paths> -Recurse -Force",
+  "result": "rejected-before-execution-by-command-policy",
+  "followUp": "Per the no-retry rule, the same deletion was not retried and no alternate shell was used. The four stage-owned directories remain intact; unrelated artifacts, .tmp outputs, TestResults and user TRXs were not touched."
+}

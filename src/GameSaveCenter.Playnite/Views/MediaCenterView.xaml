@@ -188,8 +188,7 @@
                             <StackPanel>
                                 <TextBlock x:Name="MediaInboxTitleText"
                                            Text="{Binding MediaInboxTitle, Mode=OneWay}"
-                                           FontSize="16"
-                                           FontWeight="SemiBold"
+                                           Style="{DynamicResource GscSectionTitleStyle}"
                                            ToolTip="只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。"
                                            AutomationProperties.Name="{Binding MediaInboxTitle, Mode=OneWay}"
                                            AutomationProperties.HelpText="只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。"/>
@@ -964,7 +963,7 @@
                             <Grid>
                                 <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                 <StackPanel>
-                                    <TextBlock Text="当前游戏媒体重复识别" FontSize="16" FontWeight="SemiBold"/>
+                                    <TextBlock Text="当前游戏媒体重复识别" Style="{DynamicResource GscSectionTitleStyle}"/>
                                     <TextBlock Text="只检查已归档媒体；确定重复使用相同 SHA-256，疑似重复使用同类型、文件名和大小。这里仅供查看和选择，不会删除或移动真实媒体。" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" Margin="0,4,12,0"/>
                                 </StackPanel>
                                 <Border Grid.Column="1" Style="{StaticResource MediaStatusPill}" VerticalAlignment="Center"><TextBlock Text="{Binding MediaDuplicateGroupsSummary}" TextWrapping="Wrap" MaxWidth="260" TextAlignment="Right"/></Border>
@@ -1010,7 +1009,7 @@
                             </Border>
                             <Border Grid.Column="2" Style="{DynamicResource GscRedesignSectionCard}" Padding="12" VerticalAlignment="Top">
                                 <StackPanel>
-                                    <TextBlock Text="组内媒体" FontSize="15" FontWeight="SemiBold"/>
+                                    <TextBlock Text="组内媒体" Style="{DynamicResource GscSectionTitleStyle}"/>
                                     <TextBlock Text="{Binding MediaDuplicateSelectionSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,8"/>
                                     <ListBox x:Name="MediaDuplicateItemsList" Tag="FiniteViewport" ItemsSource="{Binding SelectedMediaDuplicateGroup.Items}" MaxHeight="330" BorderThickness="0" Background="Transparent" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" AutomationProperties.Name="重复组媒体列表">
                                         <ListBox.ItemContainerStyle>

@@ -67,7 +67,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                 <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource GscSelectedGameIconControl}" Width="36" Height="36" Content="{Binding SelectedGameIcon}" Margin="0,0,10,0"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="当前游戏工具" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="当前游戏工具"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="当前游戏工具" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="当前游戏工具"/>
                 <StackPanel x:Name="TrainerToolsToolbar" Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportTrainerCommand}" Content="导入修改器" AutomationProperties.Name="导入修改器" Margin="0,0,8,0"/>
                     <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ImportToolFolderCommand}" Content="导入目录" AutomationProperties.Name="导入工具目录" Margin="0,0,8,0"/>
@@ -196,7 +196,7 @@
                 <Border x:Name="TrainerReleaseInfoPanel" Grid.Column="2" Style="{DynamicResource GscRedesignSectionCard}" Padding="18">
                     <ScrollViewer x:Name="TrainerReleaseInfoScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel>
-                            <TextBlock Text="下载任务" FontSize="16" FontWeight="SemiBold"/>
+                            <TextBlock Text="下载任务" Style="{DynamicResource GscSectionTitleStyle}"/>
                             <TextBlock Text="{Binding SelectedTrainerCatalogItem.Title, TargetNullValue=尚未选择目录结果}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTrainerCatalogItem.Title}" Margin="0,4,0,0"/>
                             <Separator/>
                             <TextBlock Text="{Binding SelectedTrainerRelease.VersionDisplay, TargetNullValue=请选择版本}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedTrainerRelease.VersionDisplay}"/>

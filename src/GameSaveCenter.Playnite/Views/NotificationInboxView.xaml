@@ -77,7 +77,7 @@
                         <TextBlock Text="未读通知" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,3,0,0"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <TextBlock Text="通知记录" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                        <TextBlock Text="通知记录" Style="{DynamicResource GscSectionTitleStyle}" HorizontalAlignment="Right"/>
                         <TextBlock Text="{Binding NotificationInboxCountSummary, Mode=OneWay}" FontSize="{DynamicResource GscCaptionFontSize}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,5,0,0" HorizontalAlignment="Right"/>
                     </StackPanel>
                 </Grid>
@@ -142,12 +142,12 @@
                     <Grid>
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                         <StackPanel Grid.Row="0" Margin="0,0,0,7">
-                            <TextBlock Text="通知详情" FontSize="16" FontWeight="SemiBold"/>
+                            <TextBlock Text="通知详情" Style="{DynamicResource GscSectionTitleStyle}"/>
                             <TextBlock Text="{Binding SelectedNotification.SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0"/>
                         </StackPanel>
                         <ScrollViewer x:Name="NotificationDetailScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
                             <StackPanel>
-                                <TextBlock Text="{Binding SelectedNotification.Title, Mode=OneWay}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding SelectedNotification.Title, Mode=OneWay}" Style="{DynamicResource GscSectionTitleStyle}" TextWrapping="Wrap"/>
                                 <TextBlock Text="{Binding SelectedNotification.Summary, Mode=OneWay}" Margin="0,7,0,7" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap"/>
                                 <StackPanel Visibility="{Binding SelectedNotification.HasIssue, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding SelectedNotification.OccurrenceDisplay, Mode=OneWay}" FontWeight="SemiBold"/>

@@ -95,7 +95,7 @@
                     <Border x:Name="SaveHistoryTableFrame" Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}">
                         <Grid x:Name="SaveHistoryTableLayout">
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                            <Border x:Name="SaveHistorySummaryCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="12,8" Margin="0,0,0,8">
+                            <Border x:Name="SaveHistorySummaryCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="12,4" Margin="0,0,0,2">
                                 <Grid x:Name="SaveHistorySummaryGrid">
                                     <!-- Keep both groups finite-width so commands cannot squeeze the summary into a zero-width column. -->
                                     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
@@ -179,7 +179,7 @@
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
-                                    <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,12,0,0">
+                                    <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,10,0,0">
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="立即扫描存档路径">
                                             <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBrowseFolder}"/><TextBlock Text="立即扫描" VerticalAlignment="Center"/></StackPanel>
                                         </ui:Button>

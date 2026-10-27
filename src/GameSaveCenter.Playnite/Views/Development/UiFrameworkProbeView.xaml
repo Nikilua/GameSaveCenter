@@ -91,7 +91,7 @@
                                 </ComboBox>
                             </Grid>
                             <WrapPanel Grid.Row="3" Margin="0,12,0,0">
-                                <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="主操作" ToolTip="正常、Hover、Pressed 和焦点状态" AutomationProperties.Name="校对主操作">
+                                <ui:Button Style="{StaticResource GscWpfUiPrimaryButton}" Content="校验 Verify (9)" ToolTip="正常、Hover、Pressed 和焦点状态" AutomationProperties.Name="校对主操作">
                                 </ui:Button>
                                 <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="次要操作" Margin="8,0,0,0" AutomationProperties.Name="校对次要操作"/>
                                 <ui:Button Style="{StaticResource GscWpfUiSecondaryButton}" Content="禁用操作" IsEnabled="False" Margin="8,0,0,0" ToolTip="禁用原因仍需可读" AutomationProperties.Name="校对禁用操作"/>

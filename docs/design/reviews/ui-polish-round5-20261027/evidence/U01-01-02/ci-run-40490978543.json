@@ -1,0 +1,37 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "runId": 40490978543,
+  "headRevision": "0447237a582eb20c22320657c981245cdfe624a6",
+  "conclusion": "failure",
+  "failureClassification": "source-layout-regression",
+  "failure": "R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor measured 260 DIP, below its unchanged 274 DIP minimum (14 DIP deficit). Both SDK jobs failed in their test stage; render, static checks and packaging were skipped by workflow dependencies.",
+  "jobs": [
+    {
+      "jobId": 122144529973,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "failureStage": "Release compile/tests"
+    },
+    {
+      "jobId": 122144530388,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423 baseline",
+      "conclusion": "failure",
+      "failureStage": "compile/tests"
+    }
+  ],
+  "diagnosticArtifacts": [
+    {
+      "artifactId": 12728824576,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sha256": "0594d5c6804034ad0d93e4b9740094a309441ff62b54fa7b30e9e825866fa9d3"
+    },
+    {
+      "artifactId": 12728084837,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sha256": "9d570d8b0b5ce347e8e57889276baa41a50136e165e07c3664a58a1b5604dc7e"
+    }
+  ],
+  "repair": "Restored only compact vertical summary spacing in SaveCenterView.xaml. Local R07 targeted class passed 4/4 with 0 skips. New candidate CI is pending; this historical run remains failed and is not represented as green."
+}

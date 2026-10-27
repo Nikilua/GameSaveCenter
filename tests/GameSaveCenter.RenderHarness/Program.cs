@@ -3700,6 +3700,8 @@ public static class Program
 
         var mixedBaselineSamples = new[]
         {
+            "校验 Verify (9)",
+            "存档 2077 / Save 9 (DLC)",
             "存档中心 Save Center",
             "日期：2026-09-17 · 时间 03:02",
             "容量：1.71 GiB · 24.6 MiB",
@@ -3719,6 +3721,38 @@ public static class Program
                 + $"stable={evidence.IsStable} unpairedSurrogate={evidence.HasUnpairedSurrogate}");
             if (!evidence.IsStable)
                 throw new InvalidOperationException("Mixed typography baseline probe detected vertical drift.");
+        }
+
+        var probe = resourceScope as GameSaveCenter.Playnite.Views.Development.UiFrameworkProbeView;
+        var primaryButton = FindVisualChildren<ButtonBase>(resourceScope)
+            .OfType<ContentControl>()
+            .FirstOrDefault(button => AutomationProperties.GetName(button) == "校对主操作");
+        var tableSample = probe?.ProbeRows.FirstOrDefault()?.Name;
+        var tableText = string.IsNullOrWhiteSpace(tableSample)
+            ? null
+            : FindVisualChildren<TextBlock>(resourceScope)
+                .FirstOrDefault(text => string.Equals(text.Text, tableSample, StringComparison.Ordinal));
+        var controlSamples = new[]
+        {
+            (Label: "Button", Text: primaryButton?.Content as string, FontSize: primaryButton?.FontSize ?? 14, FontWeight: primaryButton?.FontWeight ?? FontWeights.Normal),
+            (Label: "DataGridName", Text: tableSample, FontSize: tableText?.FontSize ?? 14, FontWeight: tableText?.FontWeight ?? FontWeights.Normal)
+        };
+        foreach (var sample in controlSamples)
+        {
+            if (string.IsNullOrWhiteSpace(sample.Text))
+                throw new InvalidOperationException($"Mixed typography {sample.Label} sample was not realized.");
+
+            var evidence = TypographyDiagnostics.CaptureMixedBaseline(
+                sample.Text!,
+                TypographyDiagnostics.UiFontChain,
+                sample.FontSize,
+                sample.FontWeight);
+            report.AppendLine(
+                $"ControlMixedBaseline control={sample.Label} text={sample.Text} fontSize={sample.FontSize:0.##} "
+                + $"weight={sample.FontWeight} line={evidence.LineBaseline:0.###} spread={evidence.BaselineSpread:0.###} "
+                + $"stable={evidence.IsStable}");
+            if (!evidence.IsStable)
+                throw new InvalidOperationException($"Mixed typography baseline probe detected drift in {sample.Label}.");
         }
     }
 
@@ -9234,7 +9268,7 @@ public static class Program
         DispatcherTimer? rapidTimer = null;
         if (rapidToggle)
         {
-            rapidTimer = new DispatcherTimer(DispatcherPriority.Background)
+            rapidTimer = new DispatcherTimer(DispatcherPriority.Input)
             {
                 Interval = TimeSpan.FromMilliseconds(60)
             };
@@ -9248,11 +9282,9 @@ public static class Program
         }
 
         var frame = new DispatcherFrame();
-        // Keep the completion timer at the same priority as the rapid-toggle timer. A
-        // continuously scheduled Render-priority timer can starve the 60ms second click,
-        // making this probe report the first collapsed state instead of testing the latest
-        // requested expanded state.
-        var endTimer = new DispatcherTimer(DispatcherPriority.Background)
+        // Treat the timed click and completion poll like UI input so a busy Rendering
+        // queue cannot postpone either past the probe's unchanged 1.5s completion limit.
+        var endTimer = new DispatcherTimer(DispatcherPriority.Input)
         {
             Interval = TimeSpan.FromMilliseconds(16)
         };

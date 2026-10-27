@@ -1288,3 +1288,7 @@ run 40486014630（提交 5d0a2448d6315af61571d0d3fbecfd902e5344fc）中SDK8 job 
 
 同一工作树U00-04/05/06本地验证：RenderHarness Release编译SDK8.0.423、0警告/0错误；source validation通过；XAML检查25/25；WPF静态审查31 XAML、0 error/26 warning/179 info（与基线一致）；git diff --check通过。U00-04/05先前render-qa exit0/0 PROBLEM、状态夹具56图和主题/尺寸行为证据仍有效；本次没有改生产XAML，仅修正行为测试的宽度夹具并添加Harness性能探针。
 本批中文提交、GitHub新提交双SDK检查、标准中文入口全链、独立scripts/build.cmd尚待。真实Playnite宿主、UIA/IME和物理DPI仍未验；不触碰真实存档恢复、媒体删除或云写入。受策略拒绝的阶段自有临时输出仍按cleanup.json保持待执行；没有动用户Round3 TRX/TestResults。
+
+## 2026-10-27 Round5 U01当前恢复点
+
+当前分支从 `0447237a` 继续，先修复CI已证实的存档表格高度回归：恢复紧凑垂直参数，保留U00-04横向节奏；随后U01-01/02共享生产Typography资源，不建平行字体系统。按钮与DataGrid真实样本基线稳定（spread 0），Shell页标题和四页分组标题使用现有动态样式。工作流run `40490978543` 双SDK原失败在本地R07 4/4修复验证后仍需新提交CI确认。下一步继续U01-03起的独立任务；最终仍必须运行中文根入口完整构建安装启动链、独立 `scripts/build.cmd`，且核对候选sha对应的SDK8/SDK10 CI；宿主/可选字体/物理DPI与UIA、IME未验证不宣称验收。保留用户Round3 TRX和共享TestResults目录。
