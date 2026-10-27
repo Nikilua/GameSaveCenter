@@ -406,6 +406,122 @@ public sealed class R08MotionReverseBehaviorTests
         Assert.Equal(0, pressedOverlayReleasedFinal, 2);
     }
 
+    [Fact]
+    public void ProductionButtonHoverSweepAcrossSiblingsLeavesNoResidualOverlay()
+    {
+        Exception? exception = null;
+        var visitedCount = 0;
+        var maximumResidualOpacity = 0d;
+        var hoverReentered = false;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                EnsureApplication();
+                var resources = LoadProductionResources();
+                var buttonStyle = Assert.IsType<Style>(resources["GscWpfUiPrimaryButton"]);
+                var root = new Grid
+                {
+                    Width = 820,
+                    Height = 72,
+                    Resources = resources,
+                    Background = Brushes.Transparent,
+                    IsHitTestVisible = false
+                };
+                var palette = AdaptiveThemePaletteFactory.Create(root, true, 78, GameSaveCenterThemeMode.Light);
+                AdaptiveThemePaletteFactory.SetHighContrastActive(root, palette.IsHighContrast);
+                AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, !palette.IsHighContrast);
+                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(root.Resources, palette, true, true);
+
+                var row = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                var buttons = new UiButton[8];
+                var overlays = new Border[buttons.Length];
+                for (var index = 0; index < buttons.Length; index++)
+                {
+                    buttons[index] = new UiButton
+                    {
+                        Content = $"操作 {index + 1}",
+                        Style = buttonStyle,
+                        Width = 96,
+                        Height = 44,
+                        Margin = new Thickness(2, 0, 2, 0)
+                    };
+                    row.Children.Add(buttons[index]);
+                }
+
+                root.Children.Add(row);
+                window = CreateWindow(root, 860, 112);
+                window.Show();
+                window.UpdateLayout();
+                root.UpdateLayout();
+                for (var index = 0; index < buttons.Length; index++)
+                {
+                    buttons[index].ApplyTemplate();
+                    overlays[index] = Assert.IsType<Border>(buttons[index].Template!.FindName("HoverOverlay", buttons[index]));
+                }
+
+                PumpDispatcher(TimeSpan.FromMilliseconds(40));
+                foreach (var overlay in overlays)
+                    Assert.Equal(0, overlay.Opacity, 3);
+
+                UiButton? previous = null;
+                for (var pass = 0; pass < 3; pass++)
+                {
+                    for (var index = 0; index < buttons.Length; index++)
+                    {
+                        if (previous != null)
+                            Assert.True(SetMouseOverProbe(previous, false));
+
+                        Assert.True(SetMouseOverProbe(buttons[index], true));
+                        previous = buttons[index];
+                        visitedCount++;
+                        PumpDispatcher(TimeSpan.FromMilliseconds(4));
+                    }
+                }
+
+                if (previous != null)
+                    Assert.True(SetMouseOverProbe(previous, false));
+
+                // Allow more than two shared fast-transition durations for every exit.
+                PumpDispatcher(TimeSpan.FromMilliseconds(300));
+                for (var index = 0; index < overlays.Length; index++)
+                    maximumResidualOpacity = Math.Max(maximumResidualOpacity, overlays[index].Opacity);
+
+                hoverReentered = PumpMouseOverProbeUntil(buttons[3], true,
+                    () => overlays[3].Opacity > 0.05 && overlays[3].Opacity < 0.95,
+                    TimeSpan.FromMilliseconds(500));
+                Assert.True(SetMouseOverProbe(buttons[3], false));
+                PumpDispatcher(TimeSpan.FromMilliseconds(300));
+                for (var index = 0; index < overlays.Length; index++)
+                    maximumResidualOpacity = Math.Max(maximumResidualOpacity, overlays[index].Opacity);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        output.WriteLine($"synthetic sibling hover sweep visited={visitedCount}; max residual opacity={maximumResidualOpacity:0.####}; hover re-entry sampled={hoverReentered}");
+        Assert.Null(exception);
+        Assert.Equal(24, visitedCount);
+        Assert.True(hoverReentered, "production hover did not respond after a rapid sibling sweep");
+        Assert.InRange(maximumResidualOpacity, 0, 0.001);
+    }
+
     private static ResourceDictionary LoadProductionResources()
         => Assert.IsType<ResourceDictionary>(XamlReader.Parse(@"
 <ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""

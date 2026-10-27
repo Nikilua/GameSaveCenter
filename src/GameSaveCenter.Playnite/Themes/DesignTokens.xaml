@@ -504,7 +504,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="Chevron"
                                                                          Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
-                                                                         To="0" Duration="0:0:0.15"/>
+                                                                         To="0" Duration="{StaticResource GscMotionFast}"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </MultiTrigger.EnterActions>
@@ -523,7 +523,7 @@
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetName="Chevron"
                                                                          Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
-                                                                         To="-90" Duration="0:0:0.15"/>
+                                                                         To="-90" Duration="{StaticResource GscMotionFast}"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </MultiTrigger.EnterActions>
@@ -1333,6 +1333,7 @@
                              the indeterminate state supplies a fixed sliding chunk and animates
                              it across the track.  The trigger width is removed again when the
                              bar returns to a determinate value. -->
+                        <!-- A full two-second sweep communicates ongoing progress; it is not a brief interaction-state transition. -->
                         <Trigger Property="IsIndeterminate" Value="True">
                             <Setter TargetName="PART_Indicator" Property="Width" Value="24"/>
                             <Trigger.EnterActions>

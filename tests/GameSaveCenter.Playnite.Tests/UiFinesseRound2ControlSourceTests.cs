@@ -178,6 +178,30 @@ public sealed class UiFinesseRound2ControlSourceTests
     }
 
     [Fact]
+    public void ProductionInteractionStoryboardsUseSharedMotionTokensAndKeepProgressCadenceSeparate()
+    {
+        var motion = Read("src", "GameSaveCenter.Playnite", "Themes", "MotionTokens.xaml");
+        var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");
+        var acrylic = Read("src", "GameSaveCenter.Playnite", "Themes", "AcrylicReferenceControls.xaml");
+        var production = Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
+
+        Assert.Contains("<Duration x:Key=\"GscMotionFast\">0:0:0.12</Duration>", motion);
+        Assert.Contains("<Duration x:Key=\"GscMotionPress\">0:0:0.10</Duration>", motion);
+        Assert.Contains("Themes/MotionTokens.xaml", acrylic.Replace('\\', '/'));
+        Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", acrylic);
+        Assert.Contains("Duration=\"{StaticResource GscMotionPress}\"", acrylic);
+        Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", tokens);
+        Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", production);
+        Assert.Contains("Duration=\"{StaticResource GscMotionPress}\"", production);
+
+        foreach (var activeDictionary in new[] { tokens, acrylic, production })
+            Assert.DoesNotContain("Duration=\"0:0:0.", activeDictionary);
+
+        Assert.Contains("Duration=\"0:0:2\"", tokens);
+        Assert.Contains("full two-second sweep communicates ongoing progress", tokens);
+    }
+
+    [Fact]
     public void CrossScreenSurfaceStaysHostOwnedAndPopupResourcesRemainReflowSafe()
     {
         var dashboard = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml");

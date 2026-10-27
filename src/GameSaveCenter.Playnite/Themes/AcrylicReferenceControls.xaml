@@ -6,6 +6,7 @@
          必须在自身字典作用域内可解析，不能依赖宿主/页面合并的 Resources。 -->
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GeometryTokens.xaml"/>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/MotionTokens.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceTokens.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
@@ -166,7 +167,7 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity"
-                                                         To="1" Duration="0:0:0.12"/>
+                                                         To="1" Duration="{StaticResource GscMotionFast}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -174,7 +175,7 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity"
-                                                         To="0" Duration="0:0:0.16"/>
+                                                         To="0" Duration="{StaticResource GscMotionFast}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -184,7 +185,7 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="Press" Storyboard.TargetProperty="Opacity"
-                                                         To="1" Duration="0:0:0.06"/>
+                                                         To="1" Duration="{StaticResource GscMotionPress}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -192,7 +193,7 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="Press" Storyboard.TargetProperty="Opacity"
-                                                         To="0" Duration="0:0:0.12"/>
+                                                         To="0" Duration="{StaticResource GscMotionPress}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -421,14 +422,14 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                        <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity" To="1" Duration="{StaticResource GscMotionFast}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.16"/>
+                                        <DoubleAnimation Storyboard.TargetName="Hover" Storyboard.TargetProperty="Opacity" To="0" Duration="{StaticResource GscMotionFast}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -945,14 +946,14 @@
                                             <Trigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetName="Chevron" Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" To="0" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="Chevron" Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" To="0" Duration="{StaticResource GscMotionFast}"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </Trigger.EnterActions>
                                             <Trigger.ExitActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetName="Chevron" Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" To="-90" Duration="0:0:0.15"/>
+                                                        <DoubleAnimation Storyboard.TargetName="Chevron" Storyboard.TargetProperty="(TextBlock.RenderTransform).(RotateTransform.Angle)" To="-90" Duration="{StaticResource GscMotionFast}"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </Trigger.ExitActions>
