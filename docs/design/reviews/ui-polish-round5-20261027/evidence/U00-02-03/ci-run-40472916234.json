@@ -1,0 +1,50 @@
+{
+  "runId": 40472916234,
+  "attempt": 1,
+  "workflow": ".github/workflows/windows-build.yml",
+  "headSha": "67effd28a19db5f33c3ad9f70619f84e33db4db4",
+  "branch": "main",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "jobId": 122084078063,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "status": "completed",
+      "conclusion": "failure",
+      "framework": ".NET Framework 4.8.9363",
+      "testSummary": "1309 total; 1290 passed; 1 failed; 18 skipped; 0 errors/timeouts/aborts; 36 isolated WPF classes",
+      "artifact": {
+        "id": 12719369878,
+        "name": "GameSaveCenter-build-diagnostics",
+        "sizeBytes": 617626,
+        "sha256": "fecf4761f9c0cf2e0b2b42f2a8d2ead806ac68161b6696d23e2b8cc604c8e6dd"
+      }
+    },
+    {
+      "jobId": 122084078336,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "failure",
+      "framework": ".NET Framework 4.8.9363",
+      "testSummary": "1309 total; 1290 passed; 1 failed; 18 skipped; 0 errors/timeouts/aborts; 36 isolated WPF classes",
+      "artifact": {
+        "id": 12718789068,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "sizeBytes": 524160,
+        "sha256": "2978737c25fbed2b50592dde794b20ed129ccdd54773e2fa0517c6b8e52f881f"
+      }
+    }
+  ],
+  "failure": {
+    "test": "GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters",
+    "scenario": "Light 1500x720 preset row",
+    "diagnostic": "The requested-width pass hid the compact disclosure before Window.Show; the settled client width then crossed into compact layout, but the fixture did not re-open the disclosure before measuring its selected ComboBox text.",
+    "classification": "test fixture did not follow the second responsive-layout pass; production height, text-center, and state assertions were not reached"
+  },
+  "jobLogs": {
+    "sdk10": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40472916234/job/122084078336",
+    "primary": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40472916234/job/122084078063"
+  }
+}

@@ -440,6 +440,16 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             FlushLayout(window);
             view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
             FlushLayout(window);
+            // The Window's settled client width can round just below the requested
+            // breakpoint (notably at 1500 DIP). Re-check after the real layout pass
+            // so controls moved into the compact disclosure are measured while that
+            // disclosure is open, rather than as zero-sized children of a collapsed
+            // tree.
+            if (moreFilters.Visibility == Visibility.Visible && !moreFilters.IsExpanded)
+            {
+                moreFilters.IsExpanded = true;
+                FlushLayout(window);
+            }
 
             var mainRow = new System.Collections.Generic.List<Control> { search, status, refresh };
             foreach (var filter in new[]
