@@ -252,7 +252,8 @@ public sealed class R08MotionReverseBehaviorTests
         var pressReleasedFinal = 0d;
         var hoverSweepVisitedCount = 0;
         var hoverSweepMaximumResidualOpacity = 0d;
-        var hoverSweepReentered = false;
+        var hoverSweepLightReentered = false;
+        var hoverSweepDarkReentered = false;
         var thread = new Thread(() =>
         {
             Window? window = null;
@@ -366,8 +367,12 @@ public sealed class R08MotionReverseBehaviorTests
                 PumpDispatcherUntil(() => Math.Abs(pressedOverlay.Opacity) < 0.001, TimeSpan.FromMilliseconds(500));
                 pressedOverlayReleasedFinal = pressedOverlay.Opacity;
 
-                hoverSweepReentered = RunProductionButtonHoverSweep(resources, buttonStyle,
-                    out hoverSweepVisitedCount, out hoverSweepMaximumResidualOpacity);
+                hoverSweepLightReentered = RunProductionButtonHoverSweep(resources, buttonStyle,
+                    GameSaveCenterThemeMode.Light, out var lightVisitedCount, out var lightResidualOpacity);
+                hoverSweepDarkReentered = RunProductionButtonHoverSweep(resources, buttonStyle,
+                    GameSaveCenterThemeMode.Dark, out var darkVisitedCount, out var darkResidualOpacity);
+                hoverSweepVisitedCount = lightVisitedCount + darkVisitedCount;
+                hoverSweepMaximumResidualOpacity = Math.Max(lightResidualOpacity, darkResidualOpacity);
             }
             catch (Exception caught)
             {
@@ -383,7 +388,7 @@ public sealed class R08MotionReverseBehaviorTests
         thread.Start();
         thread.Join();
 
-        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; press midpoint={pressMidpoint:0.###}; release={pressAfterRelease:0.###}->{pressBeforeRepress:0.###}; re-press={pressAfterRepress:0.###}->{pressFinal:0.###}; overlay={pressedOverlayMidpoint:0.###}->{pressedOverlayAfterRelease:0.###}->{pressedOverlayFinal:0.###}; releaseFinal={pressReleasedFinal:0.###}/{pressedOverlayReleasedFinal:0.###}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}; sibling sweep visited={hoverSweepVisitedCount}; max residual={hoverSweepMaximumResidualOpacity:0.####}; hover re-entry={hoverSweepReentered}");
+        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; press midpoint={pressMidpoint:0.###}; release={pressAfterRelease:0.###}->{pressBeforeRepress:0.###}; re-press={pressAfterRepress:0.###}->{pressFinal:0.###}; overlay={pressedOverlayMidpoint:0.###}->{pressedOverlayAfterRelease:0.###}->{pressedOverlayFinal:0.###}; releaseFinal={pressReleasedFinal:0.###}/{pressedOverlayReleasedFinal:0.###}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}; light/dark sibling sweep visited={hoverSweepVisitedCount}; max residual={hoverSweepMaximumResidualOpacity:0.####}; re-entry={hoverSweepLightReentered}/{hoverSweepDarkReentered}");
         Assert.Null(exception);
         Assert.True(hoverMidpointSampled, "production hover opacity did not expose an in-flight sample");
         Assert.InRange(Math.Abs(hoverAfterLeave - hoverMidpoint), 0, 0.08);
@@ -410,14 +415,16 @@ public sealed class R08MotionReverseBehaviorTests
         Assert.True(pressedOverlayRepressProgress > pressedOverlayAfterRepress, "pressed overlay re-press did not continue toward one");
         Assert.Equal(1, pressedOverlayFinal, 2);
         Assert.Equal(0, pressedOverlayReleasedFinal, 2);
-        Assert.Equal(24, hoverSweepVisitedCount);
-        Assert.True(hoverSweepReentered, "production hover did not respond after a rapid sibling sweep");
+        Assert.Equal(48, hoverSweepVisitedCount);
+        Assert.True(hoverSweepLightReentered, "light theme production hover did not respond after a rapid sibling sweep");
+        Assert.True(hoverSweepDarkReentered, "dark theme production hover did not respond after a rapid sibling sweep");
         Assert.InRange(hoverSweepMaximumResidualOpacity, 0, 0.001);
     }
 
     private static bool RunProductionButtonHoverSweep(
         ResourceDictionary resources,
         Style buttonStyle,
+        GameSaveCenterThemeMode themeMode,
         out int visitedCount,
         out double maximumResidualOpacity)
     {
@@ -434,7 +441,7 @@ public sealed class R08MotionReverseBehaviorTests
                 Background = Brushes.Transparent,
                 IsHitTestVisible = false
             };
-            var palette = AdaptiveThemePaletteFactory.Create(root, true, 78, GameSaveCenterThemeMode.Light);
+            var palette = AdaptiveThemePaletteFactory.Create(root, true, 78, themeMode);
             AdaptiveThemePaletteFactory.SetHighContrastActive(root, palette.IsHighContrast);
             AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, !palette.IsHighContrast);
             AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(root.Resources, palette, true, true);
