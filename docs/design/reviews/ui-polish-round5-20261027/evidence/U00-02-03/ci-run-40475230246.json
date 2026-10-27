@@ -1,0 +1,50 @@
+{
+  "runId": 40475230246,
+  "attempt": 1,
+  "workflow": ".github/workflows/windows-build.yml",
+  "headSha": "7d50aa9201c59c97bf4f016d13df3a2823a376cd",
+  "branch": "main",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "jobId": 122091706940,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "status": "completed",
+      "conclusion": "failure",
+      "framework": ".NET Framework 4.8.9363",
+      "testSummary": "1447 total; 1427 passed; 1 failed; 19 skipped; 0 errors/timeouts/aborts; 77 isolated WPF classes reached",
+      "artifact": {
+        "id": 12721506931,
+        "name": "GameSaveCenter-build-diagnostics",
+        "sizeBytes": 741593,
+        "sha256": "f6611f77f7235929e8ab57a9a59174d9e65445451e4f152b88385430c032d33c"
+      }
+    },
+    {
+      "jobId": 122091706779,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "failure",
+      "framework": ".NET Framework 4.8.9363",
+      "testSummary": "1447 total; 1427 passed; 1 failed; 19 skipped; 0 errors/timeouts/aborts; 77 isolated WPF classes reached",
+      "artifact": {
+        "id": 12721282586,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "sizeBytes": 650597,
+        "sha256": "63577f1c3c256fb8c927e31399c7e2728107c3bf4e41005da273f199e8f2d0a2"
+      }
+    }
+  ],
+  "failure": {
+    "test": "GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedProductionPagesPreserveBindingSelectionAndScrollAcrossNavigation",
+    "scenario": "same-page navigation after restoring cached workspace page",
+    "diagnostic": "Expected 6 measure passes after a same-page navigation; actual 7. NavigateTo reapplied the full responsive layout even though the cached page and activation were unchanged.",
+    "classification": "production shell performed an unnecessary same-page layout pass; local SDK 8.0.423 R08 class passed 4/4 after guarding that pass"
+  },
+  "jobLogs": {
+    "sdk10": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40475230246/job/122091706779",
+    "primary": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40475230246/job/122091706940"
+  }
+}

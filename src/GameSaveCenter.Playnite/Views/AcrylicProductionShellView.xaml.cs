@@ -620,7 +620,12 @@ namespace GameSaveCenter.Playnite.Views
             {
                 suppressNavigation = false;
             }
-            ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            // The cached workspace already receives live size changes from the shell's
+            // responsive handlers. Reapplying its layout for an identical navigation
+            // request adds an avoidable measure pass while a refresh or selection is
+            // settling; first activation and actual page changes still get a full pass.
+            if (contentChanged || firstActivation)
+                ApplyResponsiveLayout(ActualWidth, ActualHeight);
             timer.Stop();
             Logger.Debug($"[PERF] WorkspaceActivation workspace={workspace} phase={(firstActivation ? "first" : "revisit")} page={(contentChanged ? "attach" : "reuse")} layout={timer.Elapsed.TotalMilliseconds:F3}ms");
         }
