@@ -1158,3 +1158,8 @@ T03-05仍实施中：启动器的`Win32_Process.CommandLine`身份预检有历�
 GitHub `windows-build.yml` run `40554157661`（初始候选）和 `40555566776`（最终源SHA）最近均在SDK基线与SDK10.0.401测试阶段；job ID和当时状态见 `ci-runs.json`。下一步查询完成状态，读取失败日志与artifact身份；若失败，按原始诊断修复并推送新代码提交。required-checks读取403，远端仍待验。真实Playnite、UIA/键盘/IME和物理DPI没有验证；不触及真实存档恢复、媒体删除或云端写入。
 
 接续按计划进入U02-07/08独立小批。整轮最终候选提交后，以实际根入口 `GameSaveCenter-一键构建安装运行.cmd` 完成构建/测试/发布/打包/安装身份核验/启动，并按职责单独验证 `scripts/build.cmd`；当前不要用历史全链代替。本阶段的D盘空间与证据体量见U02-05/06 `BASELINE.md`；保留用户和其他任务TRX/TestResults，既有 `.tmp` 清理被策略拒绝，不换shell绕过。
+## 2026-10-28 Round5 U02-07/08恢复点
+
+U02-07/08已检查共享阴影/主题资源与R09测试，现有实现满足计划要点，本批无生产代码差异。SDK8专项9/9、0 skip；受控90秒 WPF 探针82轮/351动作/0失败，总动作P95 714.46ms；相较U00代理基线933.16ms仅能作逻辑布局参考。证据在docs/design/reviews/ui-polish-round5-20261027/evidence/U02-07-08/，任务状态保留“代码完成待验收”，真实Playnite、UIA/键盘/IME、实体DPI待验。Render QA继承U02-05/06双主题334 PNG、0 PROBLEM。
+
+GitHub windows-build.yml：run 40554157661 SDK10 job 122365586753成功/artifact 12758905811，baseline已过render-qa与WPF静态审查、正在生成扩展包；run 40555566776（f59fe4源码）与40557567716（文档）双job仍运行。required-checks端点此前403；不推断保护状态。状态清单：docs/design/reviews/ui-polish-round5-20261027/evidence/U02-05-06/ci-runs.json。下一批继续U03-01～03共享按钮状态/忙碌/图标命中区，独立于旧S/T宿主和权限待验。最终整轮仍须提交候选后运行中文根入口完整链、单独核对scripts/build.cmd职责，并验证候选SHA的双SDK所有适用CI job。

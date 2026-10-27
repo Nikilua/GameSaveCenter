@@ -12472,3 +12472,10 @@ U01-07经现有生产实现和行为测试去重：按钮文本模板完整换�
 精确 `f59fe4c8` SDK8.0.423 定向 WPF组204项：165通过、39个既有skip、0失败；`validate-source.py`、XAML 26文件与 WPF 静态37文件/0 error 检查通过。RenderHarness Release 0 warning/0 error，双主题 334 PNG，报告 `render-qa OK`、0 `PROBLEM`；圆角像素探针覆盖100/125/150/175/200%。报告、逐图SHA、TRX与实现边界见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U02-05-06/`。这是离屏渲染证据，不代表真实Playnite/UIA或物理DPI。
 
 最终候选run `40555566776`（SDK基线job `122370590922`、SDK10.0.401 job `122370591760`）与首个候选run `40554157661`（job `122365585853`、`122365586753`）最近都在编译/测试，结果及artifact尚待查询； required-checks 接口此前403。D盘可用空间本阶段截图前7,550,947,328、截图后6,532,808,704字节；当前证据目录约54MB，其中334 PNG为44,987,438字节。保留被文档引用的Render QA和TRX；此前阶段临时目录的规定PowerShell清理遭策略拒绝，未换shell或删除其他任务TRX/TestResults。中文根入口完整构建安装启动链和独立 `scripts/build.cmd` 留到整轮最终候选。
+## 2026-10-28 Round5 U02-07/08 去重复核
+
+本批开始时D盘可用空间记为6,532,808,704字节（继承前一批Render QA结束快照）；本次探针后观测为7,025,397,760字节，不把期间差值归因于本批。只新增/保留enduranceprobe报告37,143字节与专项TRX16,110字节，共53,253字节；均为当前任务引用证据，没有删除文件，未触碰 .tmp/、artifacts/、用户/其他任务TRX/TestResults。此前阶段自有临时目录清理命令被执行策略拒绝，遵守不换shell绕过。
+
+检查生产共享令牌、主题工厂、行模板与R09行为后，U02-07/08没有未覆盖的生产资源增量：有限阴影层级、低透明降级、DynamicResource主题连续性、高对比和宿主跟随已有测试。SDK8.0.423 Release专项9/9、0 skip；TRX SHA 3CC9A7165F8E31DFBAF1573CE96659076D5A491373831A4C2EDAABA64DF7A3C8。90秒受控探针82轮、351动作、0失败，总动作P95 714.46ms；U00对照933.16ms。跨提交/离屏数据仅为逻辑WPF代理，不能证明Playnite渲染或物理输入性能。生产源码无需改动，继承U02-05/06双主题Render QA 334 PNG/0 PROBLEM。二项记为代码完成待验收，真实宿主/UIA/实体DPI待验。
+
+CI快照run 40554157661：baseline job 122365585853已过Render QA和WPF静态审查、正在生成扩展包，SDK10 job 122365586753成功，artifact 12758905811；f59源码run 40555566776和纯文档run 40557567716双job仍运行，详细身份见evidence/U02-05-06/ci-runs.json。required-checks仍403。纯文档检查后中文提交并push，不另跑本地产品构建；接续推进U03-01～03按钮状态/忙碌稳定/图标命中区，并按其源码影响执行定向编译、行为及Render QA。

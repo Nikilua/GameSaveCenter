@@ -1316,3 +1316,7 @@ U01-05已统一共享WPF-UI按钮普通禁用态与高对比态：使用`GscDisa
 ## 2026-10-27 Round5 U01-07/08恢复点
 
 U01-07去重后沿用生产按钮完整换行/无省略模板与现有长路径、错误详情、剪贴板、选择和UIA键盘行为测试。U01-08加强`R03TextScaleTests`到生产Body 14→28、Caption与按钮12→24 DIP，测量控件扩展、技术详情可滚动且完整选择；SDK8.0.423专项2/2、组合21/21、0 skip。唯一源码改动是测试夹具，提交`11c1411e4dc5b673ccaa1ab1d05a1c8ae114ce5c`已推送，未更改生产XAML/资源；详细记录及TRX/SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-07-08/`。GitHub workflow插件只返回PR runs，combined status为空，公开Actions API请求30秒超时；状态“远端待验”，需认证后按该SHA查SDK8、SDK10全部job/artifact。真实Playnite、UIA/键盘/IME和物理DPI仍待验；整轮中文入口链与独立`scripts/build.cmd`留待最终候选。保留所有Round3 TRX和共享TestResults；本批没有新临时构建或渲染输出。
+
+## 2026-10-28 Round5 U02-07/08 接续
+
+阴影/透明和主题切换任务先核对 DesignTokens.xaml、AdaptiveThemePalette 及R09覆盖：已有有限阴影档、低成本模式清空阴影并关闭弹层透明、重复列表行不应用Blur；弹层Brush/图标在下一Render前随DynamicResource更新，高对比与宿主跟随已有覆盖。若证据充分且无增量，不复制生产样式，记录“代码完成待验收”及精确证据。受控enduranceprobe只可作逻辑布局代理，不能等价Playnite呈现帧/键盘/IME。U02-07/08 SDK8专项9/9、0 skip，性能报告/TRX位于evidence/U02-07-08/。接下来执行独立U03按钮共享样式批；未结的真实宿主或权限项不构成停止其它独立任务的理由。

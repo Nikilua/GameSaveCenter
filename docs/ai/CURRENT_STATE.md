@@ -122,3 +122,7 @@ T01-04账本记录发现任务标题列缺失，已按计划补为“路径越�
 ## 2026-10-27 Round5 U01-07/08
 
 U01-07通过既有生产按钮换行/无省略和长文案、路径、错误、复制行为覆盖去重；U01-08测试夹具升级到生产字号200%（Body 28、Caption/按钮24 DIP），覆盖输入、操作按钮、表头、可滚动技术详情及精确文本选择；SDK8.0.423专项2/2与组合21/21、0 skip。唯一源码改动在测试夹具，提交`11c1411e4dc5b673ccaa1ab1d05a1c8ae114ce5c`已推送。GitHub插件返回空workflow/status，公开Actions API超时，故SDK8/SDK10远端状态待认证查询，不按空结果判通过。真实Playnite/UIA/键盘/IME/物理DPI仍未验。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-07-08/`。整轮中文根入口完整链、独立`scripts/build.cmd`和GitHub适用job仍待最终候选；不删除用户Round3 TRX或共享TestResults。
+
+## 2026-10-28 Round5 U02-07/08
+
+U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重复行无BlurEffect，低透明模式关闭阴影/透明弹层；DynamicResource主题切换、高对比/宿主跟随和效果恢复由R09行为覆盖。SDK8.0.423专项9/9、0 skip；90秒受控WPF探针82轮/351动作/0失败，总动作P95 714.46ms，对照U00代理基线933.16ms，但不是Playnite帧率/输入延迟证据。没有生产代码缺口，本批不重复造样式；两项保持“代码完成待验收”。原始报告、TRX与界限见Round5 U02-07/08 BASELINE。U02-05/06 CI快照显示417bed51的SDK10 job成功但baseline已通过render-qa与WPF静态审查、正在生成扩展包；f59fe4c8 baseline在Render QA、SDK10仍在编译测试；文档提交的双job仍运行，required-checks权限403；真实Playnite/UIA/实体DPI继续待验。下一独立小批进入U03共享按钮状态；旧S/T宿主/权限边界不阻挡推进。
