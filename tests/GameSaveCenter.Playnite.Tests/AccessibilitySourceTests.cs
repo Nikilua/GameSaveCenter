@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -38,6 +39,45 @@ public sealed class AccessibilitySourceTests
         Assert.Contains("Padding=\"12,3,38,3\"", mediaXaml);
         Assert.Contains("Padding=\"30,7,38,7\"", taskXaml);
         Assert.Contains("Padding=\"12,3,38,3\"", trainerXaml);
+    }
+
+    [Fact]
+    public void ProductionIconOnlyActionsExposeAutomationNamesAndSharedKeyboardFocus()
+    {
+        var root = FindRepositoryRoot();
+        var viewRoot = Path.Combine(root, "src", "GameSaveCenter.Playnite");
+        var developmentViewRoot = Path.GetFullPath(Path.Combine(viewRoot, "Views", "Development"))
+                                  + Path.DirectorySeparatorChar;
+        var buttonTag = new Regex(
+            @"<(?:(?:[A-Za-z_][\w.]*):)?Button\b(?<attributes>[^>]*GscIconOnly[^>]*)>",
+            RegexOptions.CultureInvariant);
+        var iconButtonCount = 0;
+
+        foreach (var path in Directory.GetFiles(viewRoot, "*.xaml", SearchOption.AllDirectories))
+        {
+            if (Path.GetFullPath(path).StartsWith(developmentViewRoot, StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            var markup = File.ReadAllText(path);
+            foreach (Match match in buttonTag.Matches(markup))
+            {
+                var attributes = match.Groups["attributes"].Value;
+                iconButtonCount++;
+                Assert.Contains("AutomationProperties.Name=", attributes);
+                Assert.True(
+                    Regex.IsMatch(attributes, @"\b(?:Command|Click)=", RegexOptions.CultureInvariant),
+                    $"Icon-only action has no command or click binding: {path}: {match.Value}");
+            }
+        }
+
+        var production = File.ReadAllText(Path.Combine(viewRoot, "Themes", "WpfUiProduction.xaml"));
+        Assert.True(iconButtonCount >= 10, $"Expected production icon actions, found {iconButtonCount}.");
+        Assert.Contains(
+            "<Style x:Key=\"GscIconOnlyButtonBase\" TargetType=\"{x:Type ui:Button}\" BasedOn=\"{StaticResource GscWpfUiButton}\">",
+            production);
+        Assert.Contains(
+            "<Setter Property=\"FocusVisualStyle\" Value=\"{DynamicResource GscSharedFocusVisual}\"/>",
+            production);
     }
 
     [Fact]
