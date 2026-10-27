@@ -1324,3 +1324,11 @@ U01-07去重后沿用生产按钮完整换行/无省略模板与现有长路径�
 ## Round5 U03 输入控件基线（2026-10-28）
 
 生产共享按钮样式 GscWpfUiButton 已有Normal/Hover/Pressed/Disabled/Focus状态图层及忙碌覆盖，图标按钮复用共享焦点样式；主图标目标34 DIP，工具栏36 DIP，窄布局WrapPanel换行。Q06探针的hover通过WPF只读IsMouseOver状态，press合成Space，focus用Keyboard.Focus；不是物理输入/UIA客户端证明。R02已有忙碌门禁、宽度内容焦点稳定、失败/取消恢复和命中区测试。本轮新加生产XAML UIA名称/动作/键盘焦点源码断言后13/13通过。做U03-04/05优先查找并复用现有TextBox/搜索样式与页面Escape/IME契约，再决定是否有共享资源增量；测试名称应限定production scope，排除Development探针和宿主非隔离资源。证据与限制见Round5 evidence/U03-01-03/BASELINE.md。
+
+## 2026-10-28 Round5 U03-04/05/06/07 恢复点
+
+当前main已推送 `d1fc1308317fb805d61d67a7dda77d71e0afff18`（TextBox禁用与验证语义、搜索布局回归）和 `5300a2b5c70f7736f1f46617667de73749b8d883`（ComboBox长选中项源码守护）。U03-04/05精确SHA SDK8.0.423隔离行为32/32；source validation、XAML26/26、WPF静态37文件/0 error、RenderHarness编译0/0、Render QA双主题394 PNG/0 PROBLEM。U03-06/07精确SHA测试13/13；复用已有下拉边缘/scroll行为及CheckBox双主题命中、Space、禁用回归，未变更生产资源/游戏选择框。详细TRX和SHA、失败诊断、截图与限制见Round5 `evidence/U03-04-05/`、`evidence/U03-06-07/`。
+
+截至2026-10-27 19:21 UTC，GitHub runs 1321–1323双SDK成功；1324–1326的SDK10 job成功但baseline在生成PEXT；1327（d1fc）和1328（5300）双job正在编译测试，不能当作通过。状态/artifact id在 `evidence/U02-05-06/ci-runs.json`。required-checks API此前403；不推断branch protection。等待job完成时可按用户要求继续独立小批，不反复试S/T权限问题。U03-06/07只改C#测试，因此不单独生成重复UI快照；对应生产资源render-qa使用d1fc精确源码。
+
+U03-04/05 Render QA全量临时目录仍在`.tmp/round5-u03-04-05-render-d1fc1308`，395文件/53,147,489字节；报告和浅深主题任务页已复制到Round5证据，PowerShell Remove-Item调用因执行策略拒绝未执行。不要换Shell、脚本或其它删除路径；按cleanup.json记录处理，保留这个输出直到命令授权发生变化。其它用户/其他任务TRX与共享TestResults均未删除。

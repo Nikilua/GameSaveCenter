@@ -1,0 +1,165 @@
+{
+  "evidenceSet": "U03-04-05",
+  "tests": [
+    {
+      "file": "U03-04-05-final-source.trx",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "total": 5,
+      "sha256": "FD027356F4466ED73045E738A2B6C1C5864DFF99728D2421C6CCC73AA8CA273D"
+    },
+    {
+      "file": "U03-04-05-final-textbox-states.trx",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "total": 2,
+      "sha256": "A6B32C376E3842E684052AE5B0B79793F79349A6388B8C27D2420C14196A9D2D"
+    },
+    {
+      "file": "U03-04-05-postcommit-command-ime.trx",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "total": 7,
+      "sha256": "455790265468286CC2C2F4BD363A3E3D68BD06A2336D8FD7111B5D18DF7C9494"
+    },
+    {
+      "file": "U03-04-05-postcommit-game-picker-ime.trx",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "total": 7,
+      "sha256": "D1AE781EBD44ECC95271D3CD9C9F07898E0E3EF2450A7FA3B4BCE8B019CD2E0E"
+    },
+    {
+      "file": "U03-04-05-postcommit-search-focus.trx",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "E15DA5D0CD1D27E8957BD3A27B5950DDEC7D3AEEB9334E8B1D4874FEAE8F89F5"
+    },
+    {
+      "file": "U03-04-05-postcommit-search-viewport.trx",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "CD4B83EE821B481D50B6AB48CEEA6DF83A8E2CB830C0397FE082CDC189A4D958"
+    },
+    {
+      "file": "U03-04-05-postcommit-settings-search.trx",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "81C9C429036AC0F153580D94A1D44614386B6CF8992EEA69D880BC6B722DA361"
+    },
+    {
+      "file": "U03-04-05-postcommit-source.trx",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "total": 5,
+      "sha256": "955BD26CEBEF9094E9E510692C0B5DE86D2404DC85034510D7AC0866137FAA93"
+    },
+    {
+      "file": "U03-04-05-postcommit-task-layout.trx",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "total": 8,
+      "sha256": "8AC356EEE1646166596671FF0654939B6C289DBB69B8F373935BB4ADFDCF7AB8"
+    },
+    {
+      "file": "U03-04-05-postcommit-textbox-states.trx",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "total": 2,
+      "sha256": "366F77B0BACB7E4CBB740B889E5E4DB72FA41430613A57B9B86B62C11B8293E6"
+    },
+    {
+      "file": "U03-04-05-precommit-command-ime.trx",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "total": 7,
+      "sha256": "0F5251F7BE8929CDD714A43AC44D95486289E8D35AEF4EE271261848541F849B"
+    },
+    {
+      "file": "U03-04-05-precommit-focused.trx",
+      "passed": 29,
+      "failed": 3,
+      "skipped": 0,
+      "total": 32,
+      "sha256": "05FFBE484FB1189DF3D5D4A6B2BFC1DD3429311013B01B8DF60BB6E21DE146A4"
+    },
+    {
+      "file": "U03-04-05-precommit-game-picker-ime.trx",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "total": 7,
+      "sha256": "8406441AE1F6DA283C6885F867CAA8403C3D55389AD19E02AA0DFB0C8CD8C455"
+    },
+    {
+      "file": "U03-04-05-precommit-media-search-layout.trx",
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "FE3E652539E82CF1D915DDCE33D8064BB515298C43C4ECDC49088EAAB8E3AF79"
+    },
+    {
+      "file": "U03-04-05-precommit-search-focus.trx",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "1EFB7ED7271AE874D281563383AAB1B28D3B8C0F43957898E08562A92DE83D5C"
+    },
+    {
+      "file": "U03-04-05-precommit-search-viewport.trx",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "C728DE13A84C91C5174EF43D470C26AB8888A382B844AB64B168894EF1F47AEA"
+    },
+    {
+      "file": "U03-04-05-precommit-settings-search.trx",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "1BC082F5A85B5C06C5E3A156CB0ACAF2EB9DAB6298F78F6F07994FED83CBB5C3"
+    },
+    {
+      "file": "U03-04-05-precommit-source.trx",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "total": 5,
+      "sha256": "9832F56D5A48A025281B5583A00178EA6483B9F05881DBA315D3361FDE2716FA"
+    },
+    {
+      "file": "U03-04-05-precommit-task-layout.trx",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "total": 8,
+      "sha256": "30DA45C8C6F72E6166B9015BA7B4AF5123134F93070321EDB342E65F0000CC1F"
+    },
+    {
+      "file": "U03-04-05-precommit-textbox-states.trx",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "total": 2,
+      "sha256": "39641B196CC69BF7093DF044F9BCE9A77EC7C298E95AA8B90C87FF9BC41BE4A2"
+    }
+  ]
+}

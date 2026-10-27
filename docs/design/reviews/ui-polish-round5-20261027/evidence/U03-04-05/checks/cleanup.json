@@ -1,0 +1,21 @@
+{
+  "phase": "U03-04-05",
+  "capturedAt": "2026-10-28T03:21:32+08:00",
+  "temporaryOutput": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u03-04-05-render-d1fc1308",
+  "fileCount": 395,
+  "bytes": 53147489,
+  "diskFreeBeforeCleanupAttemptBytes": 5287464960,
+  "removed": false,
+  "reason": "PowerShell Remove-Item cleanup request was rejected by the execution policy before the process started. No alternate shell or deletion route was attempted.",
+  "retainedEvidence": [
+    "checks/render-qa-postcommit-report.txt",
+    "render/Task-1040x700-light.png",
+    "render/Task-1040x700-dark.png"
+  ],
+  "pathChecks": {
+    "canonicalPathInsideRepositoryTmp": true,
+    "reparsePoint": false,
+    "activeRendererProcess": false,
+    "sourceOrEvidenceReferencesOutsideArchivedRunLog": false
+  }
+}

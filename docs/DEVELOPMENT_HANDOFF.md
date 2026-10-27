@@ -1169,3 +1169,9 @@ GitHub windows-build.yml：run 40554157661 SDK10 job 122365586753成功/artifact
 当前HEAD为 8c927a93cff92b923a8efbedbdf28aadbc10d00b（“补齐图标按钮无障碍名称回归”），已push。U03-01～03已有共享按钮五态、忙碌状态稳定与34/36 DIP图标目标；新回归断言扫描生产XAML图标操作的AutomationProperties.Name、Command/Click与共享FocusVisual。SDK8.0.423精确SHA13/13、0 skip，双主题五态10图及TRX、失败诊断清单见 docs/design/reviews/ui-polish-round5-20261027/evidence/U03-01-03/。状态保留“代码完成待验收”，不能把合成hover/press或源码UIA断言称作物理鼠标、Narrator或真实Playnite验证。
 
 Actions run 40561836233（baseline job 122392618285、SDK10 job 122392618705）截至2026-10-27 18:43 UTC都在编译/测试；U02源码与文档run及SDK10 artifact记录在Round5 evidence/U02-05-06/ci-runs.json，required-checks endpoint之前403。接下来推进U03-04/05：先读共享TextBox/搜索控件资源和页面输入绑定，保持IME composing不触发提交、Escape遵循各页面契约、结果数量不挤压输入；已获用户授权，无需再次询问。完整中文根入口、独立 scripts/build.cmd及整轮CI待最终候选阶段执行。保留用户/其他任务TRX、TestResults，不对既有清理策略拒绝换shell重试。
+
+## 2026-10-28 Round5 当前接续：U03-04/05/06/07
+
+当前main已push `d1fc1308317fb805d61d67a7dda77d71e0afff18` 与 `5300a2b5c70f7736f1f46617667de73749b8d883`。U03-04/05已完成输入禁用/错误可达语义和搜索/清除布局回归，SDK8.0.423精确SHA 32/32、Render QA双主题394 PNG、0 PROBLEM；U03-06/07复用现有下拉/勾选控件，只加ComboBox长选中项源码守护，SDK8精确SHA 13/13。证据与边界见`docs/design/reviews/ui-polish-round5-20261027/evidence/U03-04-05/BASELINE.md`和`U03-06-07/BASELINE.md`。
+
+CI：run `40566121765`（1327，d1fc）与 `40567683673`（1328，5300）两套SDK job仍运行；1325/1326 baseline job仍在包阶段而SDK10成功。准确job/artifact id见`evidence/U02-05-06/ci-runs.json`。required-checks接口403，不能声称保护状态。先继续U03-08/U04独立小批；不重试旧S/T权限拒绝、不动游戏选框、滚动条或安全语义。最终整轮候选仍必须运行中文根入口完整构建/测试/发布/打包/安装身份/启动、单独验证`scripts/build.cmd`并查询该源码SHA的双SDK所有适用CI job。U03-04/05临时Render QA副本因执行策略拒绝清理，未换Shell，见`evidence/U03-04-05/checks/cleanup.json`；保留其它任务TRX与共享TestResults。

@@ -1,7 +1,7 @@
 {
   "repository": "Nikilua/GameSaveCenter",
   "workflow": ".github/workflows/windows-build.yml",
-  "capturedAt": "2026-10-27T18:43:01Z",
+  "capturedAt": "2026-10-27T19:21:32Z",
   "requiredChecks": "远端待验；branch-protection/required-checks 接口此前返回 HTTP 403，不推断保护状态。",
   "runs": [
     {
@@ -9,19 +9,16 @@
       "runNumber": 1321,
       "commit": "417bed510806f965122554beb4419082443b905e",
       "commitMessage": "收敛共享圆角与边框裁切",
-      "statusAtCapture": "in_progress",
+      "statusAtCapture": "completed",
+      "conclusion": "success",
       "jobs": [
-        { "jobId": 122365585853, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "生成 Playnite 扩展包" },
+        { "jobId": 122365585853, "name": "编译、测试与打包", "statusAtCapture": "completed", "conclusion": "success" },
         { "jobId": 122365586753, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "completed", "conclusion": "success" }
       ],
       "artifactsAtCapture": [
-        {
-          "artifactId": 12758905811,
-          "name": "GameSaveCenter-sdk10-build-diagnostics",
-          "sizeBytes": 942058,
-          "sha256": "9f953138148f07da4fab4f5d1f10aaec81c0c46d0e0d5bb3c0f171991c81f466",
-          "expired": false
-        }
+        { "artifactId": 12761552467, "name": "GameSaveCenter-windows-preview", "sizeBytes": 90776530, "sha256": "282eae9253de37d4dc6a1d90056682c9a712e42dbe11f97874a20ff341d30159", "expired": false },
+        { "artifactId": 12761088073, "name": "GameSaveCenter-build-diagnostics", "sizeBytes": 1966970, "sha256": "f9407b749c1ce9e4bebe22bbef0a7c0b0fc0f70d3f9ab04c0750d9a860e2f343", "expired": false },
+        { "artifactId": 12758905811, "name": "GameSaveCenter-sdk10-build-diagnostics", "sizeBytes": 942058, "sha256": "9f953138148f07da4fab4f5d1f10aaec81c0c46d0e0d5bb3c0f171991c81f466", "expired": false }
       ]
     },
     {
@@ -29,19 +26,16 @@
       "runNumber": 1322,
       "commit": "f59fe4c86c78cb2fc11414a431aceb49821910ee",
       "commitMessage": "统一生产界面的边框线宽",
-      "statusAtCapture": "in_progress",
+      "statusAtCapture": "completed",
+      "conclusion": "success",
       "jobs": [
-        { "jobId": 122370590922, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "生成 Playnite 扩展包" },
+        { "jobId": 122370590922, "name": "编译、测试与打包", "statusAtCapture": "completed", "conclusion": "success" },
         { "jobId": 122370591760, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "completed", "conclusion": "success" }
       ],
       "artifactsAtCapture": [
-        {
-          "artifactId": 12760160901,
-          "name": "GameSaveCenter-sdk10-build-diagnostics",
-          "sizeBytes": 941391,
-          "sha256": "dc2339573f8f6266de78b050c8c773f450bd116c19c8dc382b4c5acc65787df1",
-          "expired": false
-        }
+        { "artifactId": 12761808081, "name": "GameSaveCenter-windows-preview", "sizeBytes": 90778024, "sha256": "1777d400b5ff4f66d5e141a915b0f18d27adabf4d5f92c9622a77613d3595930", "expired": false },
+        { "artifactId": 12761317922, "name": "GameSaveCenter-build-diagnostics", "sizeBytes": 1965504, "sha256": "79aa9cc48b43726cff790994427cb38bffed8b9e8d87a1aa049dfce45698a755", "expired": false },
+        { "artifactId": 12760160901, "name": "GameSaveCenter-sdk10-build-diagnostics", "sizeBytes": 941391, "sha256": "dc2339573f8f6266de78b050c8c773f450bd116c19c8dc382b4c5acc65787df1", "expired": false }
       ]
     },
     {
@@ -49,19 +43,16 @@
       "runNumber": 1323,
       "commit": "31dc41d947abb8a221d09753181f40888a7fb87b",
       "commitMessage": "记录第五轮共享线宽与圆角进度",
-      "statusAtCapture": "in_progress",
+      "statusAtCapture": "completed",
+      "conclusion": "success",
       "jobs": [
         { "jobId": 122377601813, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "completed", "conclusion": "success" },
-        { "jobId": 122377602327, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "生成 Playnite 扩展包" }
+        { "jobId": 122377602327, "name": "编译、测试与打包", "statusAtCapture": "completed", "conclusion": "success" }
       ],
       "artifactsAtCapture": [
-        {
-          "artifactId": 12760896261,
-          "name": "GameSaveCenter-sdk10-build-diagnostics",
-          "sizeBytes": 941098,
-          "sha256": "328e13f032cf68149179be45fa57ef6ea8acc71fc4eb87112c422558b33bb272",
-          "expired": false
-        }
+        { "artifactId": 12762264229, "name": "GameSaveCenter-build-diagnostics", "sizeBytes": 1967286, "sha256": "58d9dff3c7291cafa14a33b858a4b7c71ea723d4ca1581b391ca91526e36cc6e", "expired": false },
+        { "artifactId": 12761679488, "name": "GameSaveCenter-windows-preview", "sizeBytes": 90778032, "sha256": "0431edba300abc966b5207bfec95972141785f2667bc0848238a54297b45a599", "expired": false },
+        { "artifactId": 12760896261, "name": "GameSaveCenter-sdk10-build-diagnostics", "sizeBytes": 941098, "sha256": "328e13f032cf68149179be45fa57ef6ea8acc71fc4eb87112c422558b33bb272", "expired": false }
       ]
     },
     {
@@ -71,10 +62,12 @@
       "commitMessage": "记录第五轮阴影预算与主题切换",
       "statusAtCapture": "in_progress",
       "jobs": [
-        { "jobId": 122386947995, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
-        { "jobId": 122386948131, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
+        { "jobId": 122386947995, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "生成 Playnite 扩展包" },
+        { "jobId": 122386948131, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "completed", "conclusion": "success" }
       ],
-      "artifactsAtCapture": []
+      "artifactsAtCapture": [
+        { "artifactId": 12762575915, "name": "GameSaveCenter-sdk10-build-diagnostics", "sizeBytes": 942117, "sha256": "28f2448fb2195798f434ea850835773067c0d76e4a32ec24a002783870506475", "expired": false }
+      ]
     },
     {
       "runId": 40561836233,
@@ -83,11 +76,51 @@
       "commitMessage": "补齐图标按钮无障碍名称回归",
       "statusAtCapture": "in_progress",
       "jobs": [
-        { "jobId": 122392618285, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
-        { "jobId": 122392618705, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
+        { "jobId": 122392618285, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "生成 Playnite 扩展包" },
+        { "jobId": 122392618705, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "completed", "conclusion": "success" }
+      ],
+      "artifactsAtCapture": [
+        { "artifactId": 12762447495, "name": "GameSaveCenter-sdk10-build-diagnostics", "sizeBytes": 941488, "sha256": "073c554698dfc3b3741de806cd42679a2f6caab188253db3bc27ac35706603b6", "expired": false }
+      ]
+    },
+    {
+      "runId": 40563297174,
+      "runNumber": 1326,
+      "commit": "88e1e8f3ceb50d6d9f76e9df3b7f593602253c89",
+      "commitMessage": "记录第五轮按钮状态与可达性验证",
+      "statusAtCapture": "in_progress",
+      "jobs": [
+        { "jobId": 122397776032, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "生成 Playnite 扩展包" },
+        { "jobId": 122397776096, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "completed", "conclusion": "success" }
+      ],
+      "artifactsAtCapture": [
+        { "artifactId": 12763895957, "name": "GameSaveCenter-sdk10-build-diagnostics", "sizeBytes": 942498, "sha256": "038e120e59564ac3c38a084e88a8b7196b2dad21e0f0509b52503fdd960b059b", "expired": false }
+      ]
+    },
+    {
+      "runId": 40566121765,
+      "runNumber": 1327,
+      "commit": "d1fc1308317fb805d61d67a7dda77d71e0afff18",
+      "commitMessage": "完善输入框禁用与错误反馈",
+      "statusAtCapture": "in_progress",
+      "jobs": [
+        { "jobId": 122407721274, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
+        { "jobId": 122407720730, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
+      ],
+      "artifactsAtCapture": []
+    },
+    {
+      "runId": 40567683673,
+      "runNumber": 1328,
+      "commit": "5300a2b5c70f7736f1f46617667de73749b8d883",
+      "commitMessage": "补充下拉与勾选控件回归",
+      "statusAtCapture": "in_progress",
+      "jobs": [
+        { "jobId": 122413211080, "name": "编译、测试与打包", "statusAtCapture": "in_progress", "activeStep": "编译与测试" },
+        { "jobId": 122413210438, "name": ".NET SDK 10.0.401 编译与测试复核", "statusAtCapture": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试" }
       ],
       "artifactsAtCapture": []
     }
   ],
-  "note": "Run 1321 is an intermediate U02-05/06 candidate; the baseline job was generating the package while SDK10 succeeded. Run 1322 verifies expanded source candidate f59fe4; SDK10 succeeded and baseline was generating the package. Run 1323 is documentation-only; SDK10 succeeded and baseline was generating the package. Run 1324 is the U02-07/08 documentation commit with both jobs in compile/test. Run 1325 verifies the U03-01/02/03 UIA regression test and both jobs were in compile/test. Pending/in-progress jobs are not passes; query exact jobs and artifacts before closing CI."
+  "note": "Pending/in-progress jobs are not passes. Run 1321-1323 now have both applicable jobs successful. Runs 1324-1326 have successful SDK10 reviews but their baseline jobs are still generating extension packages. Runs 1327 (U03-04/05) and 1328 (U03-06/07) have both SDK jobs in compile/test with no artifacts yet. Continue querying exact jobs and artifacts before closing CI. Historical failed runs remain preserved in their original evidence; do not rerun without a diagnosis."
 }

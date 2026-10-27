@@ -130,3 +130,7 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## Round5 当前进度（2026-10-28）：U03-01～03
 
 8c927a93cff92b923a8efbedbdf28aadbc10d00b已推送。共享按钮模板现状已盘点，五态、忙碌稳定和图标目标已有生产能力；本批未改生产资源，只加生产图标动作UIA名称/命令与键盘焦点的回归断言。SDK8.0.423精确SHA聚焦13/13、0 skip；证据见docs/design/reviews/ui-polish-round5-20261027/evidence/U03-01-03/。run 40561836233的baseline 122392618285与SDK10 122392618705仍在编译测试，任务状态为“代码完成待验收”，不可记为CI通过。旧S/T宿主或权限待验不阻断接续U03-04/05。真实Playnite/UIA/物理DPI未验；整轮中文根入口完整链、独立scripts/build.cmd和最终CI仍待候选提交后完成。
+
+## Round5 当前进度（2026-10-28）：U03-04～07
+
+`d1fc1308317fb805d61d67a7dda77d71e0afff18`和`5300a2b5c70f7736f1f46617667de73749b8d883`已推送。U03-04/05改共享TextBox禁用/验证错误语义和搜索区域源码回归，SDK8.0.423隔离32/32，XAML26/26、WPF静态37文件/0 error、Render QA双主题394 PNG/0 PROBLEM。U03-06/07通过去重复用既有ComboBox与CheckBox模板，仅加长选中项/箭头分栏源码守护测试，专项13/13。精确TRX、报告与摘要在Round5 evidence/U03-04-05及U03-06-07。CI run `40566121765`和`40567683673`截至19:21 UTC均未完结；更早run `40561836233`baseline仍在打包，SDK10成功。真实Playnite/实际UIA/鼠标/实体DPI待验。临时Render QA删除请求被执行策略拦截，未换Shell，见checks/cleanup.json。旧S/T权限待验不阻止继续独立控件批。整轮最终根入口构建安装启动、独立scripts/build.cmd和所有候选CI门禁未完成。

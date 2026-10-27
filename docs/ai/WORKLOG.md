@@ -12483,3 +12483,11 @@ CI快照run 40554157661：baseline job 122365585853已过Render QA和WPF静态�
 ## 2026-10-28 Round5 U03-01/02/03 按钮状态与图标目标
 
 去重检查生产 GscWpfUiButton 共享模板：五态图层、忙碌延迟覆盖与重复执行门禁、命令恢复/焦点保持、34/36 DIP图标目标和窄工具栏WrapPanel已有实现。没有发现生产资源缺口；本批仅新增 AccessibilitySourceTests.ProductionIconOnlyActionsExposeAutomationNamesAndSharedKeyboardFocus，约束生产图标动作的UIA名称、Command/Click和共享键盘焦点。提交 8c927a93cff92b923a8efbedbdf28aadbc10d00b 已推送，SDK8.0.423精确SHA Release定向13/13、0 skip；证据含浅深主题五态10图、TRX SHA及测试范围/身份失败诊断，见Round5 evidence/U03-01-03/。GitHub run 40561836233 baseline job 122392618285、SDK10.0.401 job 122392618705截至18:43 UTC均在编译/测试；run 1321/1322/1323的SDK10 job完成成功、artifact ID见CI清单，但基线job仍在生成包；run1324仍编译测试。CI未结。真实Playnite、实体UIA/鼠标/DPI待验；接续U03-04/05。
+
+## 2026-10-28 Round5 U03-04/05 输入状态、搜索和清除
+
+在生产 `WpfUiProduction.xaml` 中移除TextBox禁用时整控件0.45透明，改为语义化禁用文字/填色/描边；验证错误保持最高边框优先级，并将错误文本绑定至Automation HelpText。搜索、清除按钮、结果计数独立布局和IME/Escape契约只补生产源码回归约束，不改变业务命令或安全语义。`d1fc1308317fb805d61d67a7dda77d71e0afff18` 已push；SDK8.0.423精确提交隔离行为32/32、0 skip，Source Validation、XAML26/26、WPF静态37/0 errors、RenderHarness 0/0以及双主题394 PNG Render QA exit0/0 PROBLEM通过。失败TRX保留，混合WPF进程的两项焦点失败之后独立隔离通过；复核跳过项是已撤销的“今日工作台”旧断言，不计pass。报告、代表截图、TRX与SHA见 `evidence/U03-04-05/BASELINE.md`。GitHub run `40566121765` baseline `122407721274`、SDK10 `122407720730`仍在编译测试，不能记CI通过。render-qa临时输出约53,147,489字节的删除请求遭执行策略拒绝；证据已精简归档，没有换Shell或绕过，见`checks/cleanup.json`。真实Playnite/实际UIA/实体DPI待验。
+
+## 2026-10-28 Round5 U03-06/07 下拉与勾选去重
+
+既有共享ComboBox已分离20 DIP箭头列与选中值，长选中项有省略和提示，Popup限高/边缘翻转/竖向滚动/方向键导航有行为覆盖。`GscCheckBox`已有不确定标记、长标签换行和同一命中面；Q10已验证Light/Dark命中、Space、禁用行为。本批只增加长选中项/箭头列源码守护测试，不改生产XAML、游戏选框、DropDownClosed语义或保存时机。提交`5300a2b5c70f7736f1f46617667de73749b8d883`已push；SDK8.0.423精确提交13/13、0 skip，Source Validation、XAML26/26、WPF静态37/0 errors通过。CI run `40567683673` baseline `122413211080`与SDK10 `122413210438`均在编译测试。所有记录见`evidence/U03-06-07/BASELINE.md`；真实Playnite/UIA/物理输入/DPI仍待验。

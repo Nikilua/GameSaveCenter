@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0da10f19-586f-488d-8eeb-0d371e966c05" name="lopmatu@SULT 2026-10-28 02:59:09" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-28T02:59:09.6134042+08:00" queuing="2026-10-28T02:59:09.6134046+08:00" start="2026-10-28T02:59:04.8004296+08:00" finish="2026-10-28T02:59:26.0644046+08:00" />
+  <TestSettings name="default" id="ab7c296c-8ebb-4aef-8a58-a956431bf4ee">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-28_02_59_09" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="90154de1-4c93-4e75-824c-3e1570059b08" testId="24784125-168b-e6a3-e5f4-3418cda16bdd" testName="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" computerName="SULT" duration="00:00:00.8750000" startTime="2026-10-28T02:59:09.5993017+08:00" endTime="2026-10-28T02:59:10.4503604+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="90154de1-4c93-4e75-824c-3e1570059b08" />
+    <UnitTestResult executionId="224a2a74-bd19-4cbf-8200-93206260dc6f" testId="656cb48b-6117-db47-8114-749aedae68d4" testName="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" computerName="SULT" duration="00:00:02.3150000" startTime="2026-10-28T02:59:07.2761482+08:00" endTime="2026-10-28T02:59:09.5753006+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="224a2a74-bd19-4cbf-8200-93206260dc6f" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="24784125-168b-e6a3-e5f4-3418cda16bdd">
+      <Execution id="90154de1-4c93-4e75-824c-3e1570059b08" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests" name="SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="656cb48b-6117-db47-8114-749aedae68d4">
+      <Execution id="224a2a74-bd19-4cbf-8200-93206260dc6f" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests" name="FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="24784125-168b-e6a3-e5f4-3418cda16bdd" executionId="90154de1-4c93-4e75-824c-3e1570059b08" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="656cb48b-6117-db47-8114-749aedae68d4" executionId="224a2a74-bd19-4cbf-8200-93206260dc6f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.39]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.42]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.48]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.73]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,69 @@
+{
+  "evidenceSet": "U03-06-07",
+  "tests": [
+    {
+      "file": "U03-06-07-AccessibilitySourceTests.trx",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "total": 6,
+      "sha256": "1E7E894B0F5FBC2D51C17977398AB00C3F4C4B23C8F9F3843D0F5DE71B923E49"
+    },
+    {
+      "file": "U03-06-07-CheckboxHit.trx",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "total": 4,
+      "sha256": "B9B2DC803A12BDE4B0DAF3780F7857C249C8A63083274607AABC9E7C798A57A2"
+    },
+    {
+      "file": "U03-06-07-PopupBoundary.trx",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "total": 2,
+      "sha256": "5C2B220E3957A84142E5CAEB4876792BE44983A47ED45F16F4203D4D757A0DE6"
+    },
+    {
+      "file": "U03-06-07-PopupSource.trx",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "97B6A791C873A556F1D067956B87FB84688C9B189D077116F211B06D55D2D8EA"
+    },
+    {
+      "file": "U03-06-07-postcommit-accessibility.trx",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "total": 6,
+      "sha256": "6E379B05635B89C6F49B642F9A5375603C318172DCF5D18D0BB0CC635816BB18"
+    },
+    {
+      "file": "U03-06-07-postcommit-checkbox.trx",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "total": 4,
+      "sha256": "BA3E1947C05F4BAE95D541622C6CB6A09879CB0193E69AE3B5ECC621F99C2789"
+    },
+    {
+      "file": "U03-06-07-postcommit-popup-source.trx",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "total": 1,
+      "sha256": "D3237287A2C3398CA77D7123CDF8E6B55E5A21952665B9428E88D90615D93293"
+    },
+    {
+      "file": "U03-06-07-postcommit-popup.trx",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "total": 2,
+      "sha256": "844ADFADA5E7B24AB54CBE583AF51FC1B089669E33B0E8AF9AAB44B64E465410"
+    }
+  ]
+}
