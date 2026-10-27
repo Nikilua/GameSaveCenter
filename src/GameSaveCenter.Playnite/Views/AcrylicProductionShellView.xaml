@@ -23,7 +23,8 @@
     <Border x:Name="DemoShell" Margin="0"
             Background="{DynamicResource GscBackdropBrush}"
             BorderThickness="0"
-            CornerRadius="16"
+            CornerRadius="{StaticResource GscGeometryCornerCard}"
+            infra:RoundedClipBehavior.ClipToRoundedCorners="True"
             ClipToBounds="True">
         <Grid MinWidth="0" ClipToBounds="True">
             <Grid.RowDefinitions>
@@ -91,6 +92,7 @@
                     CornerRadius="16,0,0,16"
                     BorderBrush="Transparent"
                     BorderThickness="0"
+                    infra:RoundedClipBehavior.ClipToRoundedCorners="True"
                     ClipToBounds="True"
                     Panel.ZIndex="2">
                 <Grid x:Name="SidebarLayout" Background="Transparent">
@@ -107,7 +109,7 @@
                                 Grid.Row="0"
                                 Background="Transparent"
                                 BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                                BorderThickness="0,0,0,1"
+                                BorderThickness="{StaticResource GscBottomHairlineThickness}"
                                 MinHeight="44">
                             <Grid x:Name="SidebarHeaderLayout" Margin="14,0,8,0">
                                 <StackPanel x:Name="SidebarBrandContent" Orientation="Horizontal" VerticalAlignment="Center">
@@ -169,7 +171,7 @@
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Maintenance" Checked="OnNavChecked" ToolTip="维护中心" AutomationProperties.Name="打开维护中心">
                                             <StackPanel x:Name="NavMaintenanceContent" Orientation="Horizontal" VerticalAlignment="Center"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconNavMaintenance}" Width="26" Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/><TextBlock x:Name="NavMaintenanceLabel" Text="维护中心" VerticalAlignment="Center"/></StackPanel>
                                         </RadioButton>
-                                        <Rectangle Height="1" Fill="{DynamicResource GscDividerBrush}" Margin="4,8,4,12"/>
+                                        <Rectangle Height="{StaticResource GscDividerThickness}" Fill="{DynamicResource GscDividerBrush}" Margin="4,8,4,12"/>
                                         <RadioButton x:Name="NavSettings" GroupName="DemoWorkspaceNavigation"
                                                      Style="{StaticResource AcrylicNavItem}" Tag="Settings" Checked="OnNavChecked" ToolTip="设置"
                                                      AutomationProperties.Name="打开 GameSaveCenter 设置">
@@ -490,7 +492,7 @@
                                                     <Trigger Property="IsSelected" Value="True">
                                                         <Setter TargetName="CommandResultSelectionChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                                                         <Setter TargetName="CommandResultSelectionChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                                                        <Setter TargetName="CommandResultSelectionChrome" Property="BorderThickness" Value="1"/>
+                                                        <Setter TargetName="CommandResultSelectionChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -734,7 +736,7 @@
             <!-- A one-DIP sheen makes the translucent shell read as glass without adding a
                  hit-test surface, changing layout, or blurring the real page content. -->
             <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                    Height="1" Margin="1,0,1,0" VerticalAlignment="Top"
+                    Height="{StaticResource GscDividerThickness}" Margin="1,0,1,0" VerticalAlignment="Top"
                     Background="{DynamicResource GscGlassHighlightBrush}"
                     IsHitTestVisible="False" Panel.ZIndex="20"/>
         </Grid>

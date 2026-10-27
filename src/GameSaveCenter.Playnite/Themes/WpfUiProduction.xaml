@@ -1215,10 +1215,8 @@
         <Setter Property="Margin" Value="0,0,8,8"/>
         <!-- Keep unavailable contextual actions in the layout. Collapsing them made a
              row jump when selection changed and hid the existence of a safe next step.
-             Disabled chrome opacity is owned once by the shared template below; a
-             control-level opacity here would multiply the label, icon and explanation
-             alpha a second time. The shared template's 0.72 chrome layer is the one
-             disabled treatment for this whole contextual action family. -->
+             The shared template keeps disabled controls fully opaque and uses semantic
+             fill, stroke and text brushes, so labels and icons retain readable contrast. -->
     </Style>
 
     <!-- Action-role variants keep the geometry of their existing primary/context

@@ -1,8 +1,9 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls">
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GeometryTokens.xaml"/>
         <!-- Keep the WPF-UI adapters in this dictionary's parse scope.  The color/material
              tokens remain page-local and are consumed through DynamicResource. -->
         <!-- Redesign's semantic aliases use StaticResource, so Typography must be in this
@@ -15,11 +16,13 @@
 
     <!-- Final redesign geometry.  These values intentionally form a small, reusable scale
          rather than page-specific magic numbers. -->
+    <!-- Compatibility aliases. Shared production styles below consume GeometryTokens. -->
     <CornerRadius x:Key="GscRedesignShellCorner">20</CornerRadius>
     <CornerRadius x:Key="GscRedesignSidebarCorner">18</CornerRadius>
     <CornerRadius x:Key="GscRedesignCardCorner">16</CornerRadius>
     <CornerRadius x:Key="GscRedesignControlCorner">10</CornerRadius>
     <CornerRadius x:Key="GscRedesignHeaderCorner">18</CornerRadius>
+    <CornerRadius x:Key="GscRedesignTableCorner">12</CornerRadius>
     <Thickness x:Key="GscRedesignPagePadding">18</Thickness>
     <Thickness x:Key="GscRedesignCardPadding">16</Thickness>
 
@@ -111,15 +114,16 @@
     <Style x:Key="GscRedesignShellSurface" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="{StaticResource GscRedesignShellCorner}"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerPanel}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <Style x:Key="GscRedesignSidebarSurface" TargetType="Border" BasedOn="{StaticResource GscRedesignShellSurface}">
         <Setter Property="Background" Value="{DynamicResource GscSidebarMaterialBrush}"/>
-        <Setter Property="CornerRadius" Value="{StaticResource GscRedesignSidebarCorner}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerHeader}"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="Effect" Value="{DynamicResource GscSidebarEffect}"/>
     </Style>
@@ -130,8 +134,9 @@
              header look square even when only the outer border has a radius. -->
         <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="{StaticResource GscRedesignHeaderCorner}"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerHeader}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="ClipToBounds" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
@@ -143,11 +148,12 @@
              becoming low-contrast glass panels when the host window is resized. -->
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <!-- Keep ordinary production cards identical to Demo's GscReadingCardStyle.
              Special surfaces (table, hero, metric and floating cards) override these
              values below, so this shared change does not alter their layout contracts. -->
-        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerCard}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="ClipToBounds" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -159,14 +165,14 @@
          the existing Demo-first surfaces instead of introducing a second glass
          rendering system. -->
     <Style x:Key="GscGlassSurface" TargetType="Border" BasedOn="{StaticResource GscRedesignShellSurface}">
-        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerPanel}"/>
     </Style>
     <Style x:Key="GscGlassCard" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
-        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerPanel}"/>
         <Setter Property="Padding" Value="20"/>
     </Style>
     <Style x:Key="GscGlassPanel" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
-        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerCard}"/>
         <Setter Property="Padding" Value="12"/>
     </Style>
 
@@ -176,8 +182,8 @@
     <Style x:Key="GscRedesignTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerTable}"/>
         <Setter Property="Padding" Value="0"/>
         <!-- Clip the DataGrid viewport to the rounded frame so the first/last header and
              scrollbar never leak square pixels over the Apple-style corners. -->
@@ -268,7 +274,7 @@
     <Style x:Key="GscRedesignFloatingPickerCard" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerPanel}"/>
         <Setter Property="Effect" Value="{DynamicResource GscDialogEffect}"/>
         <Setter Property="ClipToBounds" Value="True"/>
     </Style>
@@ -279,7 +285,7 @@
     <Style x:Key="GscRedesignFeedbackToastCard" TargetType="Border" BasedOn="{StaticResource GscRedesignFloatingPickerCard}">
         <Setter Property="Width" Value="360"/>
         <Setter Property="MaxWidth" Value="360"/>
-        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerCard}"/>
         <Setter Property="Padding" Value="14,12,10,12"/>
         <Setter Property="Margin" Value="0,0,0,10"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
@@ -311,7 +317,7 @@
     <Style x:Key="GscRedesignFeedbackDialogCard" TargetType="Border" BasedOn="{StaticResource GscRedesignFloatingPickerCard}">
         <Setter Property="Width" Value="480"/>
         <Setter Property="MaxWidth" Value="640"/>
-        <Setter Property="CornerRadius" Value="22"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerDialog}"/>
         <Setter Property="Padding" Value="22"/>
         <Setter Property="Opacity" Value="0"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
@@ -335,7 +341,7 @@
 
     <Style x:Key="GscRedesignMetricCard" TargetType="{x:Type ui:Card}" BasedOn="{StaticResource GscWpfUiCard}">
         <Setter Property="Padding" Value="16"/>
-        <Setter Property="Border.CornerRadius" Value="18"/>
+        <Setter Property="Border.CornerRadius" Value="{StaticResource GscGeometryCornerHeader}"/>
         <Setter Property="MinHeight" Value="84"/>
         <Setter Property="Margin" Value="0,0,12,0"/>
         <Setter Property="Effect" Value="{x:Null}"/>
@@ -349,7 +355,7 @@
 
     <Style x:Key="GscRedesignMetricBorder" TargetType="Border" BasedOn="{StaticResource GscRedesignSectionCard}">
         <Setter Property="Padding" Value="16"/>
-        <Setter Property="CornerRadius" Value="18"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerHeader}"/>
         <Setter Property="MinHeight" Value="84"/>
         <Setter Property="Margin" Value="0,0,12,0"/>
         <Setter Property="Effect" Value="{x:Null}"/>
@@ -413,7 +419,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <!-- The active-game button owns a Grid visual tree. Keep any host-level
              text template from stringifying it as System.Windows.Controls.Grid. -->
         <Setter Property="ContentTemplate" Value="{x:Null}"/>
@@ -424,6 +430,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Chrome" CornerRadius="14" Padding="{TemplateBinding Padding}"
+                            infra:RoundedClipBehavior.ClipToRoundedCorners="True"
                             Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -445,17 +452,18 @@
     <Style x:Key="GscRedesignStatusCard" TargetType="Border">
         <Setter Property="MinHeight" Value="58"/>
         <Setter Property="Padding" Value="12,10"/>
-        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerCard}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
 
     <Style x:Key="GscRedesignContextPill" TargetType="Border">
         <Setter Property="Padding" Value="8,2"/>
         <Setter Property="MinHeight" Value="22"/>
-        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerPill}"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <!-- Context/stat cards are reading surfaces, not primary actions.  Keep their
              default neutral and let status-specific cards opt into a semantic tint. -->
@@ -469,8 +477,9 @@
     <Style x:Key="GscRedesignInfoBand" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerButton}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="Padding" Value="14,11"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
@@ -483,7 +492,7 @@
     <Style x:Key="GscDiagnosticHintBubble" TargetType="Border" BasedOn="{StaticResource GscRedesignInfoBand}">
         <Setter Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscRestoreInfoStrokeBrush}"/>
-        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerTable}"/>
         <Setter Property="Padding" Value="12,10"/>
         <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
         <Setter Property="TextElement.FontWeight" Value="Normal"/>
@@ -503,8 +512,9 @@
     <Style x:Key="GscRedesignSubCard" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerButton}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="Padding" Value="12"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
@@ -601,7 +611,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscSecondaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="14,7"/>
         <Setter Property="Margin" Value="0"/>
         <Setter Property="MinHeight" Value="36"/>
@@ -761,7 +771,7 @@
                                 UseLayoutRounding="True"
                                 Background="{DynamicResource GscControlFillBrush}"
                                 BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                                BorderThickness="1">
+                                BorderThickness="{StaticResource GscHairlineThickness}">
                             <ContentPresenter ContentSource="Header"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -824,11 +834,11 @@
     <Style x:Key="GscShellStyle" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <!-- This dictionary is merged independently inside Playnite.  Do not reference a
-             CornerRadius resource owned by the sibling DesignTokens dictionary: WPF may defer
-             that StaticResource as UnsetValue and crash while the host arranges the Border. -->
-        <Setter Property="CornerRadius" Value="{StaticResource GscRedesignShellCorner}"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <!-- GeometryTokens is merged in this dictionary so its value is available while the
+             style is parsed independently by Playnite. -->
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerPanel}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
@@ -846,8 +856,9 @@
     <Style x:Key="GscReadingCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerCard}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="Padding" Value="18"/>
         <Setter Property="Effect" Value="{x:Null}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -856,8 +867,9 @@
     <Style x:Key="GscSubCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="13"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerDenseCard}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="Padding" Value="14"/>
         <Setter Property="Effect" Value="{x:Null}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -868,8 +880,9 @@
     <Style x:Key="GscRedesignEmptyStateSurface" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerTable}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="Padding" Value="24"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
@@ -877,8 +890,9 @@
     <Style x:Key="GscFloatingCardStyle" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="18"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerHeader}"/>
+        <Setter Property="infra:RoundedClipBehavior.ClipToRoundedCorners" Value="True"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="Effect" Value="{DynamicResource GscPopupEffect}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -888,7 +902,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscButtonGlassBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscButtonGlassBorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Padding" Value="12,8"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -900,7 +914,9 @@
                     <Border x:Name="Root" Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="13" Padding="{TemplateBinding Padding}">
+                            CornerRadius="{StaticResource GscGeometryCornerDenseCard}"
+                            infra:RoundedClipBehavior.ClipToRoundedCorners="True"
+                            Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           RecognizesAccessKey="True"/>

@@ -6,6 +6,7 @@
                     xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls">
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GeometryTokens.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Typography.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/MotionTokens.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -136,6 +137,8 @@
     <SolidColorBrush x:Key="GscOverlayBrush" Color="#6C0D0F14"/>
     <SolidColorBrush x:Key="GscPickerScrimBrush" Color="#440D0F14"/>
 
+    <!-- Compatibility aliases retained for older pages; shared production surfaces use
+         GeometryTokens directly so this scale has one authoritative source. -->
     <CornerRadius x:Key="GscCornerSmall">8</CornerRadius>
     <CornerRadius x:Key="GscCornerControl">10</CornerRadius>
     <CornerRadius x:Key="GscCornerCard">16</CornerRadius>
@@ -257,7 +260,7 @@
     <Style x:Key="GscSurface" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="CornerRadius" Value="{StaticResource GscCornerCard}"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
@@ -294,7 +297,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
@@ -415,7 +418,7 @@
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -443,7 +446,7 @@
                                     <Border x:Name="HeaderChrome"
                                             Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="1"
+                                            BorderThickness="{StaticResource GscHairlineThickness}"
                                             CornerRadius="10"
                                             Padding="{TemplateBinding Padding}"
                                             SnapsToDevicePixels="True">
@@ -552,7 +555,7 @@
                                 Margin="0,4,0,0"
                                 Background="{DynamicResource GscControlFillBrush}"
                                 BorderBrush="{DynamicResource GscControlStrokeBrush}"
-                                BorderThickness="1"
+                                BorderThickness="{StaticResource GscHairlineThickness}"
                                 CornerRadius="10"
                                 Padding="12"
                                 Visibility="Collapsed">
@@ -601,7 +604,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscButtonGlassBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscButtonGlassBorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="15,8"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Margin" Value="0,0,8,8"/>
@@ -651,7 +654,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Chrome" CornerRadius="14" Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{StaticResource GscHairlineThickness}"
                             Padding="{TemplateBinding Padding}" RenderTransformOrigin="0.5,0.5"
                             Effect="{DynamicResource GscPrimaryButtonEffect}">
                         <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
@@ -701,7 +704,7 @@
                                     <Thumb.Template>
                                         <ControlTemplate TargetType="Thumb">
                                             <Border x:Name="ThumbChrome" Width="18" Height="18" CornerRadius="9" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{TemplateBinding Background}"
-                                                    BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="1"
+                                                    BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}"
                                                     Effect="{DynamicResource GscSliderThumbEffect}">
                                             </Border>
                                             <ControlTemplate.Triggers>
@@ -750,7 +753,7 @@
                     </ControlTemplate.Resources>
                     <Grid Background="Transparent">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="20"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                        <Border x:Name="Box" Width="17" Height="17" CornerRadius="5" BorderThickness="1"
+                        <Border x:Name="Box" Width="17" Height="17" CornerRadius="5" BorderThickness="{StaticResource GscHairlineThickness}"
                                 BorderBrush="{DynamicResource GscControlStrokeBrush}" Background="{DynamicResource GscControlFillBrush}" VerticalAlignment="Center">
                             <Grid>
                                 <Path x:Name="Check" Data="M 3 8 L 7 12 L 14 4" Stretch="None" Stroke="{DynamicResource GscOnAccentTextBrush}" StrokeThickness="2"
@@ -807,7 +810,7 @@
                                 Width="18"
                                 Height="18"
                                 CornerRadius="5"
-                                BorderThickness="1"
+                                BorderThickness="{StaticResource GscHairlineThickness}"
                                 BorderBrush="{DynamicResource GscControlStrokeBrush}"
                                 Background="{DynamicResource GscControlFillBrush}">
                             <Grid>
@@ -861,7 +864,7 @@
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="11,4"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="Height" Value="{DynamicResource GscButtonHeight}"/>
@@ -1018,7 +1021,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="11,7"/>
         <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -1065,7 +1068,7 @@
                                StaysOpen="False"
                                PopupAnimation="{DynamicResource GscPopupAnimation}">
                             <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="320" Margin="0,6,0,8" Padding="5"
-                                    Background="{DynamicResource GscPopupBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" CornerRadius="11"
+                                    Background="{DynamicResource GscPopupBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}" CornerRadius="11"
                                     Effect="{DynamicResource GscPopupEffect}">
                                 <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto"><ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/></ScrollViewer>
                             </Border>
@@ -1279,7 +1282,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
         <Setter Property="Padding" Value="10,7"/>

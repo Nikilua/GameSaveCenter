@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using GameSaveCenter.Playnite.Diagnostics;
+using GameSaveCenter.Playnite.Infrastructure;
 using IoPath = System.IO.Path;
 using Xunit;
 
@@ -160,6 +161,99 @@ public sealed class R09PixelStrokeBehaviorTests
         Assert.Contains("SnapsToDevicePixels=\"True\" UseLayoutRounding=\"True\"", acrylic);
         Assert.DoesNotContain("SnapsToDevicePixels=\"False\"", redesign);
         Assert.DoesNotContain("SnapsToDevicePixels=\"False\"", dashboard);
+    }
+
+    [Fact]
+    public void ProductionSharedSurfacesClipChildrenToTheirRoundedGeometryAtFractionalDpi()
+    {
+        RunSta(() =>
+        {
+            var resources = LoadProductionResources();
+            var hairline = Assert.IsType<Thickness>(resources["GscHairlineThickness"]);
+            var dividerThickness = Assert.IsType<double>(resources["GscDividerThickness"]);
+            var sectionStyle = Assert.IsType<Style>(resources["GscRedesignSectionCard"]);
+            Assert.Equal(new Thickness(1), hairline);
+            Assert.Equal(1d, dividerThickness);
+
+            var root = new Canvas
+            {
+                Width = 220,
+                Height = 120,
+                Background = Brushes.Black,
+                Resources = resources,
+                UseLayoutRounding = true,
+                SnapsToDevicePixels = true
+            };
+            var surface = new Border
+            {
+                Width = 120,
+                Height = 52,
+                Padding = new Thickness(0),
+                BorderBrush = Brushes.Transparent,
+                Background = Brushes.Black,
+                Style = sectionStyle,
+                Child = new Border { Background = Brushes.White }
+            };
+            root.Children.Add(surface);
+            Canvas.SetLeft(surface, 14);
+            Canvas.SetTop(surface, 32);
+
+            var window = new Window
+            {
+                Content = root,
+                Width = 240,
+                Height = 140,
+                WindowStyle = WindowStyle.None,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Opacity = 1
+            };
+
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                Assert.True(RoundedClipBehavior.GetClipToRoundedCorners(surface));
+                Assert.Equal(1d, surface.BorderThickness.Left);
+                Assert.Equal(16d, surface.CornerRadius.TopLeft);
+
+                var origin = surface.TransformToAncestor(root).Transform(new Point(0, 0));
+                foreach (var scale in SimulatedDpiScales)
+                {
+                    var path = IoPath.Combine(
+                        IoPath.GetTempPath(),
+                        "gsc-r09-rounded-clip-" + scale.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture) + "-" + Guid.NewGuid().ToString("N") + ".png");
+                    try
+                    {
+                        UiDiagnosticsExporters.SavePng(root, path, scale);
+                        using var stream = File.OpenRead(path);
+                        var frame = BitmapDecoder.Create(
+                            stream,
+                            BitmapCreateOptions.PreservePixelFormat,
+                            BitmapCacheOption.OnLoad).Frames[0];
+                        var pixels = ReadPixels(frame);
+                        var cornerX = (int)Math.Round((origin.X + 3) * scale);
+                        var cornerY = (int)Math.Round((origin.Y + 3) * scale);
+                        var centerX = (int)Math.Round((origin.X + 42) * scale);
+                        var centerY = (int)Math.Round((origin.Y + 26) * scale);
+
+                        Assert.False(IsBright(pixels, frame.PixelWidth, cornerX, cornerY),
+                            $"A child rendered outside the rounded surface at scale={scale:0.00}.");
+                        Assert.True(IsBright(pixels, frame.PixelWidth, centerX, centerY),
+                            $"The surface content was clipped at its center at scale={scale:0.00}.");
+                    }
+                    finally
+                    {
+                        if (File.Exists(path))
+                            File.Delete(path);
+                    }
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
     }
 
     private static ResourceDictionary LoadProductionResources()

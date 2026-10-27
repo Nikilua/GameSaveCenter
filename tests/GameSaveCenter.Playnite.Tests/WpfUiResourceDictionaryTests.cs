@@ -1090,7 +1090,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscInspectorScrollViewer\"", designTokens);
 
         Assert.Contains("x:Key=\"GscRedesignTableFrame\"", redesign);
-        Assert.Contains("CornerRadius\" Value=\"16\"", redesign);
+        Assert.Contains("CornerRadius\" Value=\"{StaticResource GscGeometryCornerTable}\"", redesign);
+        var geometryTokens = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "GeometryTokens.xaml"));
+        Assert.Contains("x:Key=\"GscGeometryCornerTable\">12</CornerRadius>", geometryTokens);
+        Assert.Contains("x:Key=\"GscHairlineThickness\">1</Thickness>", geometryTokens);
 
         // Dashboard keeps a compatibility-scope row style while the extracted workspaces use
         // the shared dictionary. Both templates must retain the same WPF selective-scrolling
@@ -1805,16 +1808,22 @@ public sealed class WpfUiResourceDictionaryTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void ContextActionsUseSingleDisabledChromeOpacityAcrossDerivedStyles(GameSaveCenterThemeMode mode)
+    public void ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(GameSaveCenterThemeMode mode)
     {
         Exception? exception = null;
         var controlOpacities = new double[3];
         var chromeOpacities = new double[3];
+        var controlForegroundColors = new Color[3];
         var enabledHeights = new double[3];
         var disabledHeights = new double[3];
         var labelColors = new Color[3];
+        var chromeBackgroundColors = new Color[3];
+        var chromeBorderColors = new Color[3];
         var explanationColor = Colors.Transparent;
         var minimumLabelContrast = double.MaxValue;
+        var expectedDisabledTextColor = Colors.Transparent;
+        var expectedControlFillColor = Colors.Transparent;
+        var expectedControlStrokeColor = Colors.Transparent;
 
         var thread = new Thread(() =>
         {
@@ -1831,6 +1840,9 @@ public sealed class WpfUiResourceDictionaryTests
                 var host = new StackPanel { Width = 420, Resources = resources };
                 var palette = AdaptiveThemePaletteFactory.Create(host, true, 50, mode);
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(resources, palette, true, true);
+                expectedDisabledTextColor = ((SolidColorBrush)resources["GscDisabledTextBrush"]).Color;
+                expectedControlFillColor = ((SolidColorBrush)resources["GscControlFillBrush"]).Color;
+                expectedControlStrokeColor = ((SolidColorBrush)resources["GscControlStrokeBrush"]).Color;
 
                 var styles = new[]
                 {
@@ -1850,8 +1862,7 @@ public sealed class WpfUiResourceDictionaryTests
                     });
                     content.Children.Add(new TextBlock
                     {
-                        Text = labels[index],
-                        Foreground = new SolidColorBrush(palette.PrimaryText)
+                        Text = labels[index]
                     });
 
                     return new GameSaveCenter.Playnite.Controls.Button
@@ -1901,23 +1912,25 @@ public sealed class WpfUiResourceDictionaryTests
                     button.ApplyTemplate();
 
                     controlOpacities[index] = button.Opacity;
+                    controlForegroundColors[index] = ((SolidColorBrush)button.Foreground).Color;
                     var chrome = Assert.IsType<Border>(button.Template.FindName("ButtonChrome", button));
                     chromeOpacities[index] = chrome.Opacity;
-                    var label = FindVisualDescendant<TextBlock>(button);
-                    Assert.NotNull(label);
-                    labelColors[index] = ((SolidColorBrush)label!.Foreground).Color;
+                    chromeBackgroundColors[index] = ((SolidColorBrush)chrome.Background).Color;
+                    chromeBorderColors[index] = ((SolidColorBrush)chrome.BorderBrush).Color;
+                    var label = Assert.Single(((StackPanel)button.Content).Children.OfType<TextBlock>(), text => text.Text == labels[index]);
+                    labelColors[index] = ((SolidColorBrush)label.Foreground).Color;
                 }
 
                 explanationColor = ((SolidColorBrush)explanation.Foreground).Color;
                 var glass = Assert.IsType<LinearGradientBrush>(resources["GscButtonGlassBrush"]);
                 minimumLabelContrast = AdaptiveThemePaletteContrastGuard.MeasureGradientTextContrast(
                     "context-disabled",
-                    palette.PrimaryText,
+                    labelColors[0],
                     palette.Background,
                     glass.GradientStops,
                     Colors.Transparent,
                     Colors.Transparent,
-                    0.72,
+                    1.0,
                     3.0).Min(measurement => measurement.Actual);
             }
             catch (Exception caught)
@@ -1936,8 +1949,11 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Null(exception);
         Assert.All(controlOpacities, opacity => Assert.Equal(1d, opacity, 3));
-        Assert.All(chromeOpacities, opacity => Assert.Equal(0.72d, opacity, 3));
+        Assert.All(chromeOpacities, opacity => Assert.Equal(1d, opacity, 3));
+        Assert.All(chromeBackgroundColors, color => Assert.Equal(expectedControlFillColor, color));
+        Assert.All(chromeBorderColors, color => Assert.Equal(expectedControlStrokeColor, color));
         Assert.Equal(new[] { 1, 1, 1 }, enabledHeights.Zip(disabledHeights, (enabled, disabled) => Math.Abs(enabled - disabled) < 0.01 ? 1 : 0));
+        Assert.All(controlForegroundColors, color => Assert.Equal(expectedDisabledTextColor, color));
         Assert.All(labelColors, color => Assert.NotEqual(Colors.Transparent, color));
         Assert.NotEqual(Colors.Transparent, explanationColor);
         Assert.True(minimumLabelContrast >= 3.0, $"Disabled context label contrast fell below 3.0: {minimumLabelContrast:0.###}.");
@@ -1956,7 +1972,10 @@ public sealed class WpfUiResourceDictionaryTests
         var contextStyle = production.Substring(contextStyleStart, Math.Min(900, production.Length - contextStyleStart));
         Assert.DoesNotContain("<Setter Property=\"Opacity\" Value=\"0.48\"/>", contextStyle);
         Assert.DoesNotContain("<Setter Property=\"Visibility\" Value=\"Collapsed\"/>", contextStyle);
-        Assert.Contains("<Setter TargetName=\"ButtonChrome\" Property=\"Opacity\" Value=\"0.72\"/>", production);
+        Assert.Contains("<Setter TargetName=\"ButtonChrome\" Property=\"Opacity\" Value=\"1\"/>", production);
+        Assert.Contains("<Setter TargetName=\"ButtonChrome\" Property=\"Background\" Value=\"{DynamicResource GscControlFillBrush}\"/>", production);
+        Assert.Contains("<Setter TargetName=\"ButtonChrome\" Property=\"BorderBrush\" Value=\"{DynamicResource GscControlStrokeBrush}\"/>", production);
+        Assert.Contains("<Setter Property=\"Foreground\" Value=\"{DynamicResource GscDisabledTextBrush}\"/>", production);
     }
 
     private static T? FindVisualDescendant<T>(DependencyObject root) where T : DependencyObject
@@ -3131,7 +3150,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("IsShellLayer=\"True\"", productionShell);
         Assert.Contains("GscSidebarMaterialBrush", productionShell);
         Assert.Contains("x:Name=\"SidebarSurface\"", productionShell);
-        Assert.Contains("Property=\"CornerRadius\" Value=\"{StaticResource GscRedesignSidebarCorner}\"", redesign);
+        Assert.Contains("Property=\"CornerRadius\" Value=\"{StaticResource GscGeometryCornerHeader}\"", redesign);
         Assert.Contains("x:Name=\"FooterSurface\"", productionShell);
         Assert.Contains("CornerRadius=\"0\"", productionShell);
         Assert.Contains("x:Name=\"SidebarLayout\"", productionShell);
@@ -5615,7 +5634,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Color.FromArgb(0xF5, 0xFF, 0xFF, 0xFF)", palette);
         Assert.Contains("resources[\"GscTableHeaderBrush\"] = Brush(tableHeader);", palette);
         Assert.Contains("resources[\"GscScrollThumbBrush\"] = Brush(scrollThumb);", palette);
-        Assert.Contains("resources[\"GscErrorTintBrush\"] = Brush(errorFill);", palette);
+        Assert.Contains("resources[\"GscErrorTintBrush\"] = Brush(WithAlpha(error, isDark ? 0.20 : 0.12));", palette);
     }
 
     [Fact]
@@ -5727,14 +5746,15 @@ public sealed class WpfUiResourceDictionaryTests
         var redesign = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml"));
 
         Assert.Contains("x:Key=\"GscReadingCardStyle\"", redesign);
-        Assert.Contains("CornerRadius\" Value=\"16\"", redesign);
+        Assert.Contains("CornerRadius\" Value=\"{StaticResource GscGeometryCornerCard}\"", redesign);
+        Assert.Contains("RoundedClipBehavior.ClipToRoundedCorners\" Value=\"True\"", redesign);
         Assert.Contains("Padding\" Value=\"18\"", redesign);
         Assert.Contains("Effect\" Value=\"{x:Null}\"", redesign);
         Assert.Contains("x:Key=\"GscSubCardStyle\"", redesign);
-        Assert.Contains("CornerRadius\" Value=\"13\"", redesign);
+        Assert.Contains("CornerRadius\" Value=\"{StaticResource GscGeometryCornerDenseCard}\"", redesign);
         Assert.Contains("x:Key=\"GscFloatingCardStyle\"", redesign);
-        Assert.Contains("CornerRadius\" Value=\"18\"", redesign);
-        Assert.Contains("CornerRadius=\"13\" Padding=\"{TemplateBinding Padding}\"", redesign);
+        Assert.Contains("CornerRadius\" Value=\"{StaticResource GscGeometryCornerHeader}\"", redesign);
+        Assert.Contains("CornerRadius=\"{StaticResource GscGeometryCornerDenseCard}\"", redesign);
     }
 
     [Fact]
@@ -6166,7 +6186,8 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.True(sectionEnd > sectionStart);
         var section = redesign.Substring(sectionStart, sectionEnd - sectionStart);
 
-        Assert.Contains("CornerRadius\" Value=\"16\"", section);
+        Assert.Contains("CornerRadius\" Value=\"{StaticResource GscGeometryCornerCard}\"", section);
+        Assert.Contains("RoundedClipBehavior.ClipToRoundedCorners\" Value=\"True\"", section);
         Assert.Contains("Padding\" Value=\"16\"", section);
         Assert.Contains("ClipToBounds\" Value=\"True\"", section);
         Assert.Contains("Effect\" Value=\"{x:Null}\"", section);
