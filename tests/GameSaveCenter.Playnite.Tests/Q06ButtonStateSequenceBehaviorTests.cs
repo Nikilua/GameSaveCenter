@@ -267,6 +267,12 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
             var focusOverlay = Assert.IsType<Border>(button.Template.FindName("FocusOverlay", button));
             var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
+            var disabledTextMatches = state.Name != "disabled"
+                || HasSameSolidColor(button.Foreground, root.TryFindResource("GscDisabledTextBrush"));
+            var disabledFillMatches = state.Name != "disabled"
+                || HasSameSolidColor(chrome.Background, root.TryFindResource("GscControlFillBrush"));
+            var disabledBorderMatches = state.Name != "disabled"
+                || HasSameSolidColor(chrome.BorderBrush, root.TryFindResource("GscControlStrokeBrush"));
 
             var statePassed = state.Name switch
             {
@@ -281,7 +287,8 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 "focus" => button.IsKeyboardFocusWithin && focusOverlay.Opacity == 1
                     && button.FocusVisualStyle != null,
                 "disabled" => !button.IsEnabled && !button.Command!.CanExecute(null)
-                    && Math.Abs(chrome.Opacity - 0.72) < 0.01,
+                    && Math.Abs(chrome.Opacity - 1) < 0.01
+                    && disabledTextMatches && disabledFillMatches && disabledBorderMatches,
                 _ => false
             };
 
@@ -313,6 +320,9 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 focusOverlay.Opacity,
                 chrome.Opacity,
                 scale.ScaleX,
+                disabledTextMatches,
+                disabledFillMatches,
+                disabledBorderMatches,
                 path);
 
             if (pressedCommand != null)
@@ -356,6 +366,11 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         using var stream = File.Create(path);
         encoder.Save(stream);
     }
+
+    private static bool HasSameSolidColor(Brush? actual, object? expected)
+        => actual is SolidColorBrush actualBrush
+            && expected is SolidColorBrush expectedBrush
+            && actualBrush.Color == expectedBrush.Color;
 
     private static void InvokeFrameworkClick(UiButton button)
         => typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
@@ -454,6 +469,9 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             double focusOpacity,
             double chromeOpacity,
             double scaleX,
+            bool disabledTextMatches,
+            bool disabledFillMatches,
+            bool disabledBorderMatches,
             string? path)
         {
             Theme = theme;
@@ -469,6 +487,9 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             FocusOpacity = focusOpacity;
             ChromeOpacity = chromeOpacity;
             ScaleX = scaleX;
+            DisabledTextMatches = disabledTextMatches;
+            DisabledFillMatches = disabledFillMatches;
+            DisabledBorderMatches = disabledBorderMatches;
             Path = path;
         }
 
@@ -485,13 +506,18 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         public double FocusOpacity { get; }
         public double ChromeOpacity { get; }
         public double ScaleX { get; }
+        public bool DisabledTextMatches { get; }
+        public bool DisabledFillMatches { get; }
+        public bool DisabledBorderMatches { get; }
         public string? Path { get; }
 
         public string ToReportLine()
             => $"theme={Theme}; state={State}; activation={Activation}; passed={StatePassed}; enabled={Enabled}; "
                 + $"mouseOver={MouseOver}; pressed={Pressed}; focus={FocusWithin}; hoverOverlay={HoverOpacity:0.###}; "
                 + $"pressedOverlay={PressedOpacity:0.###}; focusOverlay={FocusOpacity:0.###}; "
-                + $"chromeOpacity={ChromeOpacity:0.###}; scaleX={ScaleX:0.###}; png={Path ?? "not-requested"}";
+                + $"chromeOpacity={ChromeOpacity:0.###}; scaleX={ScaleX:0.###}; "
+                + $"disabledTextMatch={DisabledTextMatches}; disabledFillMatch={DisabledFillMatches}; "
+                + $"disabledBorderMatch={DisabledBorderMatches}; png={Path ?? "not-requested"}";
     }
 
     private sealed class DeniedCommand : ICommand
