@@ -1,0 +1,40 @@
+{
+  "sourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "owner": {
+    "ProcessId": 39240,
+    "RunId": "20261027T012406316Z-c7e3272f",
+    "ProcessStartedUtc": "2026-10-27T01:03:17.0248091Z"
+  },
+  "schemaVersion": 1,
+  "failureMessage": "",
+  "outcome": "passed",
+  "artifacts": [
+    {
+      "Exists": true,
+      "Active": false,
+      "SHA256": null,
+      "Retention": "Current delivery output; keep until superseded and references reviewed",
+      "Stage": "package",
+      "CreatedByThisRun": true,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec"
+    },
+    {
+      "Exists": true,
+      "Active": false,
+      "SHA256": "D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A",
+      "Retention": "Current delivery output; keep until superseded and references reviewed",
+      "Stage": "package",
+      "CreatedByThisRun": true,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter-0.6.73-playnite.zip"
+    },
+    {
+      "Exists": true,
+      "Active": false,
+      "SHA256": "D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A",
+      "Retention": "Current delivery output; keep until superseded and references reviewed",
+      "Stage": "package",
+      "CreatedByThisRun": true,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\GameSaveCenter-0.6.73.pext"
+    }
+  ]
+}

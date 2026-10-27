@@ -1,0 +1,39 @@
+{
+  "sourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "installRunId": "20261027T010317740Z-96e7b91b",
+  "productVersion": "0.6.73+90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "installPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+  "assemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "bytes": 2250752,
+      "sha256": "A835A6061B47916F96F6C9B9AAC72CB52F0403B726027B9E03C497C707BAE707"
+    },
+    {
+      "file": "GameSaveCenter.Core.dll",
+      "bytes": 79872,
+      "sha256": "BAC2B50226994FE1527065E6BFFF17559FF877CC97E3CC29C16A86C57963F78A"
+    },
+    {
+      "file": "GameSaveCenter.Contracts.dll",
+      "bytes": 316416,
+      "sha256": "87528F08A22BCB50E593A59AD3911BD0799136DA4D6958E1445429D0074899DA"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Worker.dll",
+      "bytes": 1544704,
+      "sha256": "654AC3B54707AEA93992899C2B1C06EF79FCCF58D60C0AF6F1C255F072222833"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Core.dll",
+      "bytes": 79360,
+      "sha256": "A63EEEAFAFA02A1E9A0566EE25D3C263096535F4B316133972A46FDCF213E55C"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Contracts.dll",
+      "bytes": 315904,
+      "sha256": "BFC39D14870FCDBBD2C5AFDE8293A97325804552911EE8F7018395C6698B09F8"
+    }
+  ],
+  "verification": "Each listed file's installed ProductVersion and SHA-256 were read independently from the installed extension directory; values match the current commit and installation report."
+}

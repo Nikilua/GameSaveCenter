@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "normalization": "Text evidence normalized to LF before hashing.",
+  "files": [
+    {
+      "path": "cleanup.json",
+      "bytes": 2619,
+      "sha256": "E5B7306934FA19C79A07649122BCD7B5BAE7A419CB84FF3A384DF8E140965E64"
+    },
+    {
+      "path": "initial-failed-run-summary.json",
+      "bytes": 158914,
+      "sha256": "B5CA124CC6CEEF899D904BD1320179F687E26449B24D34C9D0F4C1B72263F59E"
+    },
+    {
+      "path": "initial-worker-cleanup-build-console.txt",
+      "bytes": 1259,
+      "sha256": "1032AE474654B3641B7E2C3AF920DBF4A0DD5AB457714DD71DBCDF48CA465A9C"
+    },
+    {
+      "path": "initial-worker-cleanup-worker-console.txt",
+      "bytes": 58602,
+      "sha256": "02E45EA08839A7C9C7DC48251469A3849532404230E50D4EAFE05B9ABE00E43F"
+    },
+    {
+      "path": "installed-assemblies.json",
+      "bytes": 1531,
+      "sha256": "3031E17BA4350609135BC827AF4467F4B9DEB26332FD7F012F4E0F7CB412A2C4"
+    },
+    {
+      "path": "package-ownership.json",
+      "bytes": 1427,
+      "sha256": "A058B6E76C709188FB6D2BC85A2E90553A332388AC009A88EE59182FC5D7BF82"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4934,
+      "sha256": "0D202E7DAD18F13446E39766502551075946D50D1D13D64E65D2D2BE0CCF2F0B"
+    },
+    {
+      "path": "render-qa-first-attempt-failure.txt",
+      "bytes": 1136569,
+      "sha256": "6C3AE44CB6CD0557372ECB60C5B0A7C94ADA75F54D8B9840C8682A4FD2641B9B"
+    },
+    {
+      "path": "render-qa-report.txt",
+      "bytes": 1136391,
+      "sha256": "5FC09C687AA2902AE0214D67D9CDD2B7149D23E70A232D6F7A61B36E92DE2E2E"
+    },
+    {
+      "path": "stage-ownership-and-triage.txt",
+      "bytes": 2085,
+      "sha256": "3083D5215007C57F70F4B33EB5BCB4EEF902DB7D4853570C0EE25852F787D50F"
+    },
+    {
+      "path": "standard-run-summary.json",
+      "bytes": 476370,
+      "sha256": "5B3F6B99C2B6C0DBE7E11B260D92D09693EB66C318CA037A2386A5061EFEF6A0"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 5075,
+      "sha256": "3DCAAB73DF7FD09281C3EE83664C468DF1C3FFC6AFCA58FB0682E2E61D8E5B3C"
+    },
+    {
+      "path": "tests/early-identity-guard-and-candidate-growth-recheck.trx",
+      "bytes": 615423,
+      "sha256": "EE496E41943D1C288053B0FABA7E1EE383084AD5DB12132C37A8BEDFE608590D"
+    },
+    {
+      "path": "tests/full-worker-recheck.trx",
+      "bytes": 618164,
+      "sha256": "3DBC62E6BD663E4F144B031A27550777686D3F802E75945F872813196D807203"
+    },
+    {
+      "path": "tests/initial-worker-cleanup-failure.trx",
+      "bytes": 601557,
+      "sha256": "5A3068672A93AC1F917BA6FD5C13C4DC684F17655CA4106B5ACE6D46FC9C9123"
+    },
+    {
+      "path": "tests/standard-root-compact-viewport.trx",
+      "bytes": 18639,
+      "sha256": "7F23D1636DC771F1B47D687D0652BDA76898E2A957B8494AA6F7454251C06FCE"
+    },
+    {
+      "path": "tests/standard-root-worker.trx",
+      "bytes": 599334,
+      "sha256": "0F04C871314016B7D6A2123A428A57106CFFC52660878DADC585772A04EF1834"
+    },
+    {
+      "path": "tests/targeted-worker-recheck.trx",
+      "bytes": 3189,
+      "sha256": "8A863FB83BF8E346CB625FB31AAB06E8BA01317E225B4B25B0918EB7E6E53858"
+    }
+  ]
+}

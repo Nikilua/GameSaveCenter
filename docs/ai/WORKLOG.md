@@ -12341,3 +12341,12 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 提交前验证：global.json锁定SDK8.0.423；validate-source通过；WPF静态审查31个XAML、0错误（26 warnings/179 info）；CompactWorkspaceTableViewportBehaviorTests 11/11；选中布局合同的两个定向断言2/2。RenderHarness首次完整矩阵只在侧栏rapid-toggle探针超时，报告保留；同一代码完整重跑退出0、render-qa OK，两个主题与resize序列通过。3840×2160窗口的历史DataGrid为1741×1695 DIP，2560×1440窗口为1101×899 DIP；现有旧记录对应560 DIP。该测量为100%逻辑DPI离屏数据，不是用户外机或真实Playnite验证。
 
 代码和测试已经具备；中文标准根入口的全构建/全测试/发布打包/安装身份/启动链将在候选提交后运行。标准链和目标外机复核通过前不把问题记为已在用户机器关闭。诊断、TRX、身份和截图先保留于本轮.tmp，完整链归档后按路径/所有权规则清理；未动其他任务TRX/TestResults。
+## 2026-10-27 存档历史表格伸缩修复全链复验（90bf0405）
+
+产品修复提交 `90bf040567f013f3a8d9ed8667028a4edb2ec524` 已推送。移除历史DataGrid的560 DIP高度上限，继续按PageHost扣除摘要/框架/详情后的剩余预算布局；列表Recycle虚拟化、表格内部与页面滚动、当前游戏选框、命令/Binding、错误取消、安全恢复保持。
+
+标准根命令 `cmd.exe /d /c "GameSaveCenter-一键构建安装运行.cmd < nul"` 退出0。build/install/package run `20261027T010319835Z-7b052459` / `20261027T010317740Z-96e7b91b` / `20261027T012406316Z-c7e3272f`，源码均为90bf0405。global.json SDK8.0.423，Release；155步骤退出0，XAML25/25、方案0 warning/0 error；Core157/157、Worker400/400、总计1968项1910 pass/58 skip/0 fail，149 TRX计数吻合、146个WPF隔离类。58项skip与前一已记录链为同一用例集合（1项系统指针默认发现期skip、57项既有环境/架构skip），不计通过。Worker win-x64发布、ZIP/PEXT同SHA、六程序集版本/身份/SHA安装核对、Playnite启动及插件实际加载路径均完成；无存档/媒体/云端操作。
+
+首轮同源码根链在Worker `NotificationRecordPersistenceTests.Dispose()` 清理临时SQLite目录时遇到文件占用，399/400，真实失败保留。相同测试程序集重测目标1/1、Worker全组400/400，随后标准完整链再通过；失败与成功间无源码变化。摘要、失败TRX和控制台日志归档在 `docs/design/reviews/ui-history-table-4k-20261026/evidence/standard-90bf0405/`。RenderHarness首轮只因侧栏快速切换settle探针失败，首轮报告归档；重跑无PROBLEM。历史表格Light/Dark、3840×2160逻辑DIP与收缩恢复通过；用户另一台物理4K机器未验。
+
+三入口退出转交证据仍有效：`GameSaveCenter-Run.cmd`、中文全链入口和`scripts/build.cmd`注入0/7/23均原样返回，9/9；入口自T00-02证据后未变。本轮清理2211个自有文件、341,640,816逻辑字节，C盘可用空间清理前/后为6,162,194,432/6,162,190,336字节，D盘为6,845,612,032/7,192,395,776字节；[删除清单与边界复核](../design/reviews/ui-history-table-4k-20261026/evidence/standard-90bf0405/cleanup.json)。当前成功构建/包/诊断保留，已归档的本轮临时RenderHarness/失败构建副本完成清理。文档阶段`validate-source.py`通过，10份Markdown的766个本地链接0失效、7份JSON可解析、证据SHA逐项核对，`git diff --check`退出0；没有因纯文档记录再跑产品构建。T00-01验收；其他五个T任务及Round4宿主边界保持未验，未绕过权限。

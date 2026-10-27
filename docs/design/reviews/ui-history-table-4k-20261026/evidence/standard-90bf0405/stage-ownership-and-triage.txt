@@ -1,0 +1,11 @@
+Task: SaveCenter history table responsiveness follow-up; date 2026-10-26 Asia/Shanghai
+Starting free space: D: 12,435,509,248 bytes; C: 6,356,209,664 bytes.
+Owned temporary output root: D:\workplace\github\GameSaveCenter\.tmp\ui-history-stretch-20261026
+Build script generated output ownership: artifacts/build-diagnostics/<UTC run id> and artifacts/gsc-b/<source hash>; only this run may be cleaned after evidence is archived.
+Preserve: existing T00-01 build artifacts, all unrelated untracked Round3 TRX evidence, and tests/GameSaveCenter.Playnite.Tests/TestResults/.
+Initial process check: no dotnet, GameSaveCenter, or Playnite process was running.
+Targeted test attempt 1: exit 1 due an incorrect BaseOutputPath override; diagnostic was CS0006 missing references in the temporary WPF project output, not application source. Kept under targeted-bin for diagnosis.
+Targeted test attempt 2: build succeeded on SDK 8.0.423; test run was not a valid result because direct invocation omitted GSC_BUILD_COMMIT/GSC_SOURCE_ROOT, so repository-identity guards failed (121/190); one newly added out-of-scope candidate-table growth assertion also failed at 2160 DIP and has been removed with the candidate code change reverted. Original TRX retained under targeted-results-corrected.
+Render QA attempt 1: SDK 8.0.423 harness build succeeded 0 warnings/0 errors; 4K Save tab0 measured SaveHistoryGrid 1741x1695 at 3840x2160 and 899 DIP viewport at 2560x1440; layout matrix had exactly two PROBLEM lines from unrelated Sidebar rapid-toggle probe (latest target expanded, finalWidth=72, settled=false). Full 53,057,397-byte report/images retained in render-qa pending retry/archival.
+Pre-full-chain: candidate=90bf040567f013f3a8d9ed8667028a4edb2ec524; origin/main matches; D: 11,729,244,160 bytes free; C: 6,330,712,064 bytes free; candidate artifacts/gsc-b/90bf0405 did not exist; own .tmp root was 165,098,380 bytes; no dotnet/GameSaveCenter/Playnite/RenderHarness process active. Existing untracked Round3 evidence/TRX and TestResults were preserved.
+Standard root Chinese entry exit code: 1

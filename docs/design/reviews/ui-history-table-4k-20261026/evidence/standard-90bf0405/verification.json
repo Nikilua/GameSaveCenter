@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "entrypoint": {
+    "command": "cmd.exe /d /c \"GameSaveCenter-一键构建安装运行.cmd < nul\"",
+    "exitCode": 0,
+    "buildRunId": "20261027T010319835Z-7b052459",
+    "installRunId": "20261027T010317740Z-96e7b91b",
+    "packageRunId": "20261027T012406316Z-c7e3272f"
+  },
+  "build": {
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "summaryOutcome": "passed",
+    "stepCount": 155,
+    "nonzeroStepCount": 0,
+    "xamlPassed": 25,
+    "xamlTotal": 25,
+    "solutionWarnings": 0,
+    "solutionErrors": 0,
+    "workerPublishRuntime": "win-x64",
+    "workerPublishPassed": true
+  },
+  "tests": {
+    "total": 1968,
+    "passed": 1910,
+    "skipped": 58,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "trxFileCount": 149,
+    "trxCounterMismatchCount": 0,
+    "wpfIsolatedClassRuns": 146,
+    "groups": {
+      "core": { "total": 157, "passed": 157, "skipped": 0, "failed": 0 },
+      "worker": { "total": 400, "passed": 400, "skipped": 0, "failed": 0 },
+      "playniteSource": { "total": 562, "passed": 544, "skipped": 18, "failed": 0 },
+      "playniteWpfIsolated": { "total": 849, "passed": 809, "skipped": 40, "failed": 0 }
+    },
+    "skipSetMatchesPreviousB05Run": true,
+    "skipExplanation": "The same 58 test names were skipped as in the b05e5696 run: one real system-pointer test is skipped at discovery by default; 57 existing environment/architecture skips remain separately counted."
+  },
+  "package": {
+    "zipBytes": 45728328,
+    "pextBytes": 45728328,
+    "zipSha256": "D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A",
+    "pextSha256": "D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A",
+    "hashesMatch": true
+  },
+  "installation": {
+    "manifestVersion": "0.6.73",
+    "assemblyVersion": "0.6.73.0",
+    "productVersion": "0.6.73+90bf040567f013f3a8d9ed8667028a4edb2ec524",
+    "extensionPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "assemblies": "installed-assemblies.json"
+  },
+  "startup": {
+    "playniteStarted": true,
+    "playnitePid": 39152,
+    "workerStarted": true,
+    "workerPid": 42800,
+    "pluginLoadObservedInExtensionsLog": true,
+    "pluginLoadVersion": "0.6.73+90bf040567f013f3a8d9ed8667028a4edb2ec524",
+    "savesMediaOrCloudActionsTriggered": false
+  },
+  "entrypointHandoff": {
+    "evidence": "../../../build-ui-reliability-20261022/evidence/T00-02/results.json",
+    "testedEntries": [
+      "GameSaveCenter-Run.cmd",
+      "GameSaveCenter-一键构建安装运行.cmd",
+      "scripts/build.cmd"
+    ],
+    "injectedAndObservedExitCodes": [0, 7, 23],
+    "passed": 9,
+    "total": 9,
+    "launcherFilesUnchangedSinceBaseline": "34516933"
+  },
+  "initialWorkerCleanupFailure": {
+    "runId": "20261027T005203485Z-e7ab9c56",
+    "sourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+    "failedStage": "worker",
+    "workerTotal": 400,
+    "workerPassed": 399,
+    "workerFailed": 1,
+    "test": "GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.MarkReadChangesOnlyRequestedUnreadIdsAndPersistsAcrossRestart",
+    "failure": "NotificationRecordPersistenceTests.Dispose could not recursively delete its per-test directory because gamesavecenter.db was temporarily held open.",
+    "targetedRecheck": "1/1 passed",
+    "fullWorkerRecheck": "400/400 passed",
+    "finalStandardRunWorker": "400/400 passed",
+    "sourceChangedBeforeSuccessfulReruns": false,
+    "failureArtifacts": [
+      "initial-failed-run-summary.json",
+      "initial-worker-cleanup-build-console.txt",
+      "initial-worker-cleanup-worker-console.txt",
+      "tests/initial-worker-cleanup-failure.trx"
+    ]
+  },
+  "earlyInvestigation": {
+    "stageOwnershipAndTriage": "stage-ownership-and-triage.txt",
+    "earlyFailedAttemptTrx": "tests/early-identity-guard-and-candidate-growth-recheck.trx",
+    "summary": "An early targeted build used a bad BaseOutputPath; a later direct test invocation omitted repository identity variables and reached an out-of-scope candidate-table growth assertion. That assertion was reverted before the committed candidate. Neither attempt is counted as the final standard run."
+  },
+  "renderQa": {
+    "outcome": "passed",
+    "historyGridAt2560x1440Dip": "1101x899",
+    "historyGridAt3840x2160Dip": "1741x1695",
+    "themes": ["light", "dark"],
+    "dpiEvidence": "Offscreen logical-DPI RenderHarness; not the user's other physical 4K computer.",
+    "report": "render-qa-report.txt",
+    "representativeScreenshot": "Save-3840x2160-tab0.png"
+  },
+  "retainedCurrentArtifacts": {
+    "diagnostics": "[repo]\\artifacts\\build-diagnostics\\20261027T010319835Z-7b052459",
+    "buildOutput": "[repo]\\artifacts\\gsc-b\\48144df5",
+    "package": "[repo]\\artifacts\\GameSaveCenter-0.6.73.pext"
+  },
+  "cleanupRecord": "cleanup.json",
+  "archiveSha256Manifest": "archive-sha256.json",
+  "physical4kValidation": "Pending confirmation from the user's other computer."
+}

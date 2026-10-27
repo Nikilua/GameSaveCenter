@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "cleanupLocalTime": "2026-10-27T09:44:50+08:00",
+  "sourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "evidenceArchive": "docs/design/reviews/ui-history-table-4k-20261026/evidence/standard-90bf0405/",
+  "minimumRequiredArchiveFilesVerified": 14,
+  "preDeleteFreeBytes": {
+    "D": 6845612032,
+    "C": 6162194432
+  },
+  "postDeleteFreeBytes": {
+    "D": 7192395776,
+    "C": 6162190336
+  },
+  "deletedTargets": [
+    {
+      "path": ".tmp/ui-history-stretch-20261026",
+      "normalizedAbsolutePath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\ui-history-stretch-20261026",
+      "fileCount": 1458,
+      "logicalBytes": 165726506,
+      "ownership": "This task run only; recorded in stage-ownership-and-triage.txt",
+      "removalVerified": true
+    },
+    {
+      "path": "artifacts/gsc-b/e313f466",
+      "normalizedAbsolutePath": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\e313f466",
+      "fileCount": 743,
+      "logicalBytes": 174834098,
+      "ownership": "This task run only; recorded in stage-ownership-and-triage.txt",
+      "removalVerified": true
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261027T005203485Z-e7ab9c56",
+      "normalizedAbsolutePath": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\build-diagnostics\\20261027T005203485Z-e7ab9c56",
+      "fileCount": 10,
+      "logicalBytes": 1080212,
+      "ownership": "This task run only; recorded in stage-ownership-and-triage.txt",
+      "removalVerified": true
+    }
+  ],
+  "boundaryChecks": {
+    "normalizedUnderTmpOrArtifacts": true,
+    "targetAncestorAndNestedReparsePointCount": 0,
+    "directMarkdownReferences": 0,
+    "activeProcessPathReferences": 0,
+    "activeBuildOrTestProcesses": 0,
+    "originalRound3TrxAndTestResultsTouched": false
+  },
+  "retainedOutputs": [
+    {
+      "RelativePath": "artifacts/gsc-b/48144df5",
+      "Exists": true,
+      "Reason": "Latest successful standard build output or complete diagnostics/TRX; retained as current evidence."
+    },
+    {
+      "RelativePath": "artifacts/build-diagnostics/20261027T010319835Z-7b052459",
+      "Exists": true,
+      "Reason": "Latest successful standard build output or complete diagnostics/TRX; retained as current evidence."
+    }
+  ],
+  "retainedReasons": [
+    "Current successful build output and full diagnostics/TRX remain available.",
+    "Latest ZIP/PEXT, package staging, install report and one-click log remain as current release evidence.",
+    "Current RenderHarness report, representative screenshot and relevant failed-run evidence are archived in the documentation bundle."
+  ]
+}
