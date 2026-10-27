@@ -1119,3 +1119,8 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 S02-04 实现 `1b17e4a0` 已包含在 `90bf0405` 全链源码中。共享 T00-01 根入口结果退出0，SDK8.0.423；R10 上下文6/6、通知收件箱2/2、Worker精确任务查询10/10、R09焦点2/2。原始TRX与hash见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/sdk8-standard-90bf0405.json`；机器账本的 `hostVerificationState` 仍 pending，因为没有真实通知页面导航/返回交互证据。
 
 本次完整进程名只读检查发现 `Playnite.DesktopApp` PID 39152（2026-10-27 09:24:11 启动）和 `GameSaveCenter.Worker` PID 42800（09:24:21 启动）仍在运行。前一次 `Get-Process -Name Playnite` 查询没有匹配带 `.DesktopApp` 后缀的进程名，不能据此称 Playnite 已退出。两个进程均未终止；T03-05 仍须等它们正常退出后，才可沿隔离配置流程验证旧包和设置，避免接触正常用户设置、存档或媒体。
+## 2026-10-27 T03-05 90bf0405隔离启动前置复核
+
+用户确认Playnite已退出。2026-10-27 10:36+08:00目标Playnite与Worker进程数为0；进程冲突条件解除。旧候选 `02119729651ae687f2f1e5316ba4e48a3da69045` 至当前 `90bf040567f013f3a8d9ed8667028a4edb2ec524` 的产品源码变化仅8个Playnite页面/视口文件，Settings、Contracts、Core、Worker及数据库迁移路径无变化。当前PEXT SHA-256 `D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A`，对应完整中文根入口 build/install/package run `20261027T010319835Z-7b052459` / `20261027T010317740Z-96e7b91b` / `20261027T012406316Z-c7e3272f`，外层退出0。详细证据：`docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-90bf0405.json`。
+
+T03-05仍实施中：启动器的`Win32_Process.CommandLine`身份预检有历史Access Denied，本批按不重复探测规则未重试或绕过。没有启动隔离宿主、安装旧包或访问正常用户配置/真实存档。下一步需要该身份预检具备新的授权条件，再在独立用户数据和扩展目录完成旧包加载、升级和设置往返。

@@ -12358,3 +12358,8 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 ## 2026-10-27 T03-05 宿主进程状态纠正
 
 完整进程名扫描查到 Playnite.DesktopApp PID 39152（09:24:11 启动）和 GameSaveCenter.Worker PID 42800（09:24:21 启动）仍运行；前次 `Get-Process -Name Playnite` 漏掉 `.DesktopApp` 后缀，不能据此称宿主已退出。没有结束这两个进程，也没有启动隔离副本。C/D盘开始可用空间为6,153,490,432 / 7,187,152,896字节；本阶段只改文档，无 artifacts/.tmp 输出或清理。
+## 2026-10-27 T03-05 隔离启动前置与最新包兼容性核对
+
+用户确认Playnite已退出。10:36+08:00按完整进程名复核目标Playnite/Worker均为0；旧提交`02119729651ae687f2f1e5316ba4e48a3da69045`至最新`90bf040567f013f3a8d9ed8667028a4edb2ec524`产品源码仅8个Playnite页面/视口文件，Settings、Contracts、Core、Worker/数据库迁移路径无差异。最新中文根入口run build/install/package分别为`20261027T010319835Z-7b052459`、`20261027T010317740Z-96e7b91b`、`20261027T012406316Z-c7e3272f`，外层0；PEXT 45,728,328字节，SHA-256 `D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A`。差异和身份见`docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-90bf0405.json`。
+
+隔离Playnite仍不能安全启动：启动器要求的`Win32_Process.CommandLine`身份预检此前多次Access Denied，本批遵守不重复探测旧权限阻塞，未绕过检查、启动宿主或接触正常用户设置/真实存档。T03-05保持实施中，待命令行读取前置有新授权证据后实测旧包加载与设置往返。本批只新增跟踪文档证据；C盘/D盘10:36可用空间分别6,133,506,048/7,185,780,736字节，输出根为`artifacts/`、`.tmp/`与T03-05文档证据目录；未创建或删除临时产物。保留当前PEXT作为最新交付包、保留旧PEXT作为回退候选。

@@ -1248,3 +1248,8 @@ T01-04 隔离路径边界脚本在审核通过的提升上下文中仍无法创�
 Round4 S02-04 的实现 `1b17e4a0` 是 `90bf0405` 的祖先。复用 T00-01 的中文标准根入口同次证据，不重复做上下文跳转实现或构建：R10稳定ID上下文6/6、通知收件箱2/2、Worker精确任务查询10/10、R09焦点2/2；SDK8.0.423完整链、安装身份和Playnite插件加载路径均有记录。原始TRX与SHA在 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/sdk8-standard-90bf0405.json`。Backlog 标为 `IMPLEMENTED`，Round4仍为“代码完成待验收”；真实通知详情导航、返回与失效对象呈现留在宿主验收。该批只同步证据和状态，不改产品源码。
 
 2026-10-27 宿主状态纠正：完整进程名扫描显示 Playnite.DesktopApp PID 39152 与 GameSaveCenter.Worker PID 42800 仍运行。先前 `Get-Process -Name Playnite` 没匹配 `.DesktopApp` 后缀，因此“未发现 Playnite GUI”不准确。不要终止或在正常实例活动时运行旧包隔离宿主；等两个进程正常退出后再核实 T03-05 条件。
+## 2026-10-27 T03-05 90bf0405隔离启动前置复核
+
+用户确认Playnite已退出，10:36+08:00完整进程名快照中目标Playnite/Worker均为0，进程冲突条件解除。旧包源提交`02119729651ae687f2f1e5316ba4e48a3da69045`到当前候选`90bf040567f013f3a8d9ed8667028a4edb2ec524`仅有8个Playnite页面/视口源码变化；Settings、Contracts、Core、Worker/数据库迁移路径无变化。最新PEXT SHA-256 `D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A`，绑定2026-10-27 build/install/package run `20261027T010319835Z-7b052459` / `20261027T010317740Z-96e7b91b` / `20261027T012406316Z-c7e3272f`。机器可读差异和身份见`docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-90bf0405.json`。
+
+宿主隔离启动仍未执行：历史`Win32_Process.CommandLine`身份检查Access Denied，本批未重复探测且未绕过门禁。仅进程冲突前置解除不足以验证旧包加载/设置往返；T03-05保持实施中，正常配置与真实存档未触碰。

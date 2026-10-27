@@ -1,0 +1,62 @@
+{
+  "task": "T03-05",
+  "reviewType": "source-and-package-identity-only",
+  "observedAtLocal": "2026-10-27T10:36:45.1326229+08:00",
+  "oldCandidate": {
+    "sourceCommit": "02119729651ae687f2f1e5316ba4e48a3da69045",
+    "packagePath": "artifacts/round4-final-standard/package/GameSaveCenter-0.6.73.pext",
+    "packageSha256": "70E12F2E4F9CE5CCEB4E2AE11D5BF3FCE525A5AC8B8D149FF9DB28F30F196318"
+  },
+  "currentCandidate": {
+    "sourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+    "buildRunId": "20261027T010319835Z-7b052459",
+    "installRunId": "20261027T010317740Z-96e7b91b",
+    "packageRunId": "20261027T012406316Z-c7e3272f",
+    "standardEntry": "GameSaveCenter-一键构建安装运行.cmd",
+    "outerExitCode": 0,
+    "packagePath": "artifacts/GameSaveCenter-0.6.73.pext",
+    "packageSizeBytes": 45728328,
+    "packageSha256": "D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A"
+  },
+  "diff": {
+    "changedProductFiles": [
+      "src/GameSaveCenter.Playnite/Infrastructure/WorkspaceTableViewportPolicy.cs",
+      "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml",
+      "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs",
+      "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml",
+      "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml.cs",
+      "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml",
+      "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+      "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml.cs"
+    ],
+    "settingsDirectoryChanged": false,
+    "contractsChanged": false,
+    "coreChanged": false,
+    "workerOrDatabaseChanged": false
+  },
+  "processSnapshot": {
+    "observedAtLocal": "2026-10-27T10:36:45.1326229+08:00",
+    "targetPlayniteAndWorkerCount": 0,
+    "meaning": "The process-conflict prerequisite was clear; no isolated Playnite host was launched."
+  },
+  "launchPreflight": {
+    "guard": "scripts/PlayniteHostIsolation.ps1 / scripts/real-host-audit.ps1",
+    "commandLineInspection": "Not retried in this checkpoint. Historical WORKLOG records Win32_Process.CommandLine access denied; no guard bypass was used.",
+    "hostLaunchAttempted": false
+  },
+  "artifactHandling": {
+    "outputRoots": [
+      "artifacts/",
+      ".tmp/",
+      "docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/"
+    ],
+    "newTransientArtifacts": [],
+    "deletedArtifacts": [],
+    "retainedReason": "The current package is the latest delivery output; the old PEXT remains referenced as the T03-05 rollback candidate.",
+    "freeSpaceBytesAtObservation": {
+      "C:": 6133506048,
+      "D:": 7185780736
+    }
+  },
+  "verificationLimit": "This confirms source scope, package identity, and a clear process-conflict prerequisite only. The old package has not been loaded in an isolated Playnite profile; settings round-trip and migration remain unverified."
+}
