@@ -1253,3 +1253,7 @@ Round4 S02-04 的实现 `1b17e4a0` 是 `90bf0405` 的祖先。复用 T00-01 的�
 用户确认Playnite已退出，10:36+08:00完整进程名快照中目标Playnite/Worker均为0，进程冲突条件解除。旧包源提交`02119729651ae687f2f1e5316ba4e48a3da69045`到当前候选`90bf040567f013f3a8d9ed8667028a4edb2ec524`仅有8个Playnite页面/视口源码变化；Settings、Contracts、Core、Worker/数据库迁移路径无变化。最新PEXT SHA-256 `D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A`，绑定2026-10-27 build/install/package run `20261027T010319835Z-7b052459` / `20261027T010317740Z-96e7b91b` / `20261027T012406316Z-c7e3272f`。机器可读差异和身份见`docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-90bf0405.json`。
 
 宿主隔离启动仍未执行：历史`Win32_Process.CommandLine`身份检查Access Denied，本批未重复探测且未绕过门禁。仅进程冲突前置解除不足以验证旧包加载/设置往返；T03-05保持实施中，正常配置与真实存档未触碰。
+
+## 2026-10-27 T01-04账本字段修正
+
+`PROGRESS.md` 中T01-04行漏掉任务标题“路径越界负例”，导致状态/提交单元格错位；现已依据32项计划与T01-04证据补齐。验收状态仍为代码完成待验收、提交`d2429890`，原因仍是文件符号链接创建受Windows权限限制。所有32行现为统一6列。

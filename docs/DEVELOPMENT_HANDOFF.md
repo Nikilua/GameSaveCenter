@@ -1124,3 +1124,7 @@ S02-04 实现 `1b17e4a0` 已包含在 `90bf0405` 全链源码中。共享 T00-01
 用户确认Playnite已退出。2026-10-27 10:36+08:00目标Playnite与Worker进程数为0；进程冲突条件解除。旧候选 `02119729651ae687f2f1e5316ba4e48a3da69045` 至当前 `90bf040567f013f3a8d9ed8667028a4edb2ec524` 的产品源码变化仅8个Playnite页面/视口文件，Settings、Contracts、Core、Worker及数据库迁移路径无变化。当前PEXT SHA-256 `D5A4970893497134188308978E111897FA3AB8E0F9AB074EA451B26CB4A48F6A`，对应完整中文根入口 build/install/package run `20261027T010319835Z-7b052459` / `20261027T010317740Z-96e7b91b` / `20261027T012406316Z-c7e3272f`，外层退出0。详细证据：`docs/design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-90bf0405.json`。
 
 T03-05仍实施中：启动器的`Win32_Process.CommandLine`身份预检有历史Access Denied，本批按不重复探测规则未重试或绕过。没有启动隔离宿主、安装旧包或访问正常用户配置/真实存档。下一步需要该身份预检具备新的授权条件，再在独立用户数据和扩展目录完成旧包加载、升级和设置往返。
+
+## 2026-10-27 T01-04进度表校正
+
+32项进度表原T01-04行缺失任务标题，导致列错位。已按实施计划和 [T01-04证据](design/reviews/build-ui-reliability-20261022/evidence/T01-04/README.md) 补为“路径越界负例”。状态仍为代码完成待验收，提交`d2429890`；符号链接权限阻塞未改变。32条任务行的列数已统一核对。

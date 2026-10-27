@@ -18,6 +18,8 @@ T00-01以当前90bf全链验收。清理本轮自有输出2211文件/341,640,816
 
 用户随后确认Playnite已退出；10:36+08:00再次按完整进程名扫描，目标Playnite/Worker均为0，进程冲突条件解除。隔离启动仍需通过 `Win32_Process.CommandLine` 身份预检；历史记录为Access Denied，本次遵守不重复探测规则，未启动宿主或接触正常用户设置/真实存档。最新包与旧包源码差异、身份和本次边界见T03-05 [复核证据](../design/reviews/build-ui-reliability-20261022/evidence/T03-05/source-compat-90bf0405.json)。
 
+T01-04账本记录发现任务标题列缺失，已按计划补为“路径越界负例”；实现提交、完成状态和符号链接权限边界未变。32项表格字段现已通过结构核对。
+
 ## 2026-10-25 本机默认根入口历史成功基线（后续中文入口见末尾）
 
 - 当前产品源码身份 b29c39a541ba92461e167f14f64917d889293161 的默认根入口 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul" 已退出0：build run 20261025T152449622Z-e85af693、install run 20261025T152447580Z-d50774fa。SDK8.0.423 / Release，solution 0警告/0错误、155阶段无失败。Core157/157、Worker400/400；总计1968项1911通过/57跳过/0失败、错误、超时或中止，149份TRX一致、146个WPF隔离类全部完成。[最新完整链证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/README.md)。
