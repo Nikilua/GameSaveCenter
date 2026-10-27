@@ -2,7 +2,7 @@
 
 源码提交`504562a7f0dad88454dde57b290b7862f91c93e6`已推送。U02-01/02复用生产自适应层次和对比守卫，Light/Dark达标且未重调无缺陷表面值；U02-03/04将概览普通行回归中性色，并统一成功、警告、错误、运行、排队、取消六态状态图标/前景/浅底/标签。SDK8.0.423精确身份行为回归15/15、0跳过；source validation、XAML检查25文件、WPF静态31文件0 error、Render QA双主题exit0/0 PROBLEM。报告、测试、截图与哈希见[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)及`evidence/U02-01-04/`。
 
-GitHub精确push run `40541712897`：主job `122321530415`和SDK10.0.401 job `122321530884`观察时仍运行，暂未取得终态或artifact；required-checks读取403，远端待验。真实Playnite宿主、UIA/键盘/IME、高对比宿主表现、物理DPI、完整中文根入口链和独立`scripts/build.cmd`仍待验。U01-07/08也保持远端待验，不因当前本地结果结项。旧S/T权限/宿主阻塞保留且不重复探测。
+GitHub精确push run `40541712897`（SHA `504562a7`）及随后的文档run `40543778584`（SHA `0f21ac7b`）均由基线SDK与SDK10 job复现Q06过时禁用态opacity 0.72期望；实际生产控件已由U01-05改成opacity 1并使用语义Brush。两run原始作业日志已读取，run/job/artifact和摘要见`evidence/U02-01-04/ci-run-40541712897.json`及`ci-run-40543778584.json`。测试修复提交`bf7540e29a1852552784f4d2ad62c5dcd707cc60`已推送；SDK8.0.423精确SHA Release定向16/16、0 skip、source validation通过。新run `40545849867`基线job `122336135430`与SDK10.0.401 job `122336135080`仍在编译测试；目前无artifact。required-checks读取403，远端待验；不得重跑两个旧失败run。真实Playnite宿主、UIA/键盘/IME、高对比宿主表现、物理DPI、完整中文根入口链和独立`scripts/build.cmd`仍待验。U01-07/08也保持远端待验，不因当前本地结果结项。旧S/T权限/宿主阻塞保留且不重复探测。
 
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 

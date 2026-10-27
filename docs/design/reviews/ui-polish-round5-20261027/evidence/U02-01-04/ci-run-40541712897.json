@@ -1,0 +1,73 @@
+{
+  "run": {
+    "id": 40541712897,
+    "number": 1317,
+    "workflow": ".github/workflows/windows-build.yml",
+    "event": "push",
+    "headSha": "504562a7f0dad88454dde57b290b7862f91c93e6",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40541712897"
+  },
+  "jobs": [
+    {
+      "id": 122321530415,
+      "name": "编译、测试与打包",
+      "sdk": "repository SDK baseline",
+      "conclusion": "failure",
+      "failedStep": "编译与测试",
+      "tests": {
+        "total": 1302,
+        "passed": 1283,
+        "failed": 1,
+        "preExistingSkipped": 18,
+        "wpfIsolatedClassesCompletedBeforeFailure": "30/148"
+      },
+      "failedTest": "GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark",
+      "diagnostic": "Light and Dark disabled samples both reported chromeOpacity=1 while the stale fixture expected 0.72. The production style had already been updated in commit 813adb09 to keep disabled chrome opacity at 1 and use GscDisabledTextBrush, GscControlFillBrush, and GscControlStrokeBrush.",
+      "renderQa": "skipped because compile/test step failed",
+      "wpfStaticAudit": "skipped because compile/test step failed",
+      "package": "skipped because compile/test step failed",
+      "artifact": {
+        "id": 12750977910,
+        "name": "GameSaveCenter-build-diagnostics",
+        "sizeBytes": 599382,
+        "sha256": "ba912a1c557f3c8204a6e58d29eeac2c767615928a7e3cf7a808fa3846d99255",
+        "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40541712897/artifacts/12750977910"
+      }
+    },
+    {
+      "id": 122321530884,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "failedStep": "隔离工作树并运行 Release 编译与测试",
+      "tests": {
+        "total": 1302,
+        "passed": 1283,
+        "failed": 1,
+        "preExistingSkipped": 18,
+        "wpfIsolatedClassesCompletedBeforeFailure": "30/148"
+      },
+      "failedTest": "GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark",
+      "diagnostic": "The same stale 0.72 opacity expectation failed in Light and Dark; actual chromeOpacity was 1.",
+      "renderQa": "not reached after compile/test failure",
+      "wpfStaticAudit": "not reached after compile/test failure",
+      "package": "not applicable to SDK review job",
+      "artifact": {
+        "id": 12751436514,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "sizeBytes": 508351,
+        "sha256": "08c50a4f729311f8ddde18ce524cecdb2cb7b776e6c094ccf4f5b1e10495daad",
+        "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40541712897/artifacts/12751436514"
+      }
+    }
+  ],
+  "rootCause": "Stale test expectation after the previously approved U01-05 disabled-button readability change; no product failure was reported by the CI test. The test is being repaired to assert opacity 1 plus the actual disabled foreground, control fill, and border resources. Existing assertions for IsEnabled=false, CanExecute=false, no command execution, and all other four button states remain.",
+  "requiredChecks": {
+    "status": "unreadable",
+    "httpStatus": 403,
+    "message": "Resource not accessible by integration"
+  },
+  "followUp": "A new commit with the behavior-aligned disabled-state assertions must pass both SDK jobs; do not rerun this failed run."
+}

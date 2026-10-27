@@ -59,36 +59,80 @@
   },
   "github": {
     "workflow": ".github/workflows/windows-build.yml",
-    "runId": 40541712897,
-    "runNumber": 1317,
-    "event": "push",
-    "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40541712897",
-    "observedStatus": "in_progress",
-    "jobs": [
+    "runs": [
       {
-        "id": 122321530415,
-        "name": "编译、测试与打包",
-        "sdk": "repository SDK baseline",
-        "observedStatus": "in_progress",
-        "completedSteps": ["检出代码", "安装 .NET SDK", "源码结构检查", "诊断采集自测", "SDK 基线与缺失负例"],
-        "activeStep": "编译与测试"
+        "runId": 40541712897,
+        "runNumber": 1317,
+        "headSha": "504562a7f0dad88454dde57b290b7862f91c93e6",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40541712897",
+        "jobs": [122321530415, 122321530884],
+        "artifacts": [12750977910, 12751436514],
+        "failure": "Both SDK jobs failed the stale Q06 disabled opacity 0.72 expectation; actual ChromeOpacity was 1. Details and artifact SHA-256 values are in ci-run-40541712897.json."
       },
       {
-        "id": 122321530884,
-        "name": ".NET SDK 10.0.401 编译与测试复核",
-        "sdk": "10.0.401",
-        "observedStatus": "in_progress",
-        "completedSteps": ["检出代码", "安装 .NET SDK 10.0.401"],
-        "activeStep": "隔离工作树并运行 Release 编译与测试"
+        "runId": 40543778584,
+        "runNumber": 1318,
+        "headSha": "0f21ac7b516c70c229781ba143aa976c861b90c2",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40543778584",
+        "jobs": [122328805842, 122328804650],
+        "artifacts": [12752182776, 12751403439],
+        "failure": "Same stale Q06 assertion failed in both SDK jobs. Raw log excerpts and artifact identities are in ci-run-40543778584.json. This historical document-only run was not rerun."
+      },
+      {
+        "runId": 40545849867,
+        "runNumber": 1319,
+        "headSha": "bf7540e29a1852552784f4d2ad62c5dcd707cc60",
+        "event": "push",
+        "status": "in_progress",
+        "conclusion": null,
+        "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40545849867",
+        "jobs": [
+          {"id": 122336135430, "name": "编译、测试与打包", "sdk": "repository SDK baseline", "status": "in_progress", "activeStep": "编译与测试"},
+          {"id": 122336135080, "name": ".NET SDK 10.0.401 编译与测试复核", "sdk": "10.0.401", "status": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试"}
+        ],
+        "artifacts": [],
+        "requiredChecks": {
+          "status": "unreadable",
+          "httpStatus": 403,
+          "message": "Resource not accessible by integration"
+        },
+        "conclusionNote": "修复SHA双SDK CI仍在运行，远端待验；无权限读取required checks。用有权限的GitHub Actions API/页面核对所有适用job、artifact与required checks。"
       }
-    ],
-    "artifacts": "not available while run is in progress",
-    "requiredChecks": {
-      "status": "unreadable",
-      "httpStatus": 403,
-      "message": "Resource not accessible by integration"
+    ]
+  },
+  "repairValidation": {
+    "commit": "bf7540e29a1852552784f4d2ad62c5dcd707cc60",
+    "sdk": "8.0.423",
+    "targetedBehaviorTests": {
+      "exitCode": 0,
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "trx": "tests/repair-bf7540e2-sdk8423/U02-01-04-repair-bf7540e2-sdk8423.trx",
+      "trxSha256": "E67A9A47DEFC13A372F67E9B668058566C87E51A8453E551EF90FDDC41C7464E",
+      "runLog": "tests/U02-01-04-repair-bf7540e2-sdk8423-run.txt",
+      "runLogSha256": "76C34D1D5D1629E86423D26FB648A3CBD635A89328812448896D2157009412D0"
     },
-    "conclusion": "远端待验；必须在该 run/job 全部完成后复查各 job、步骤与 artifacts。Required checks 需用有权限的 GitHub Actions/页面读取。"
+    "sourceValidation": {
+      "exitCode": 0,
+      "file": "ci-fix-source-validation.txt",
+      "sha256": "77F4BEDED9CF425FB763B9619B28231640A35746BFFDA882195FCE8787CB8A9B"
+    },
+    "documentationLinkCheck": {
+      "files": 6,
+      "checkedLinks": 654,
+      "missing": 0,
+      "file": "document-link-check-repair.txt",
+      "sha256": "88DB1CB2B61CA168B28FB9D0AD015A8C7E067AD486769BFB0E9CF2CEEBAD1130"
+    },
+    "visualChecksRepeated": false,
+    "visualChecksReason": "The repair changed only the test fixture contract; no production XAML or shared resources changed. The U02 UI commit's exact-SHA render QA and WPF static audit remain recorded above."
   },
   "installIdentity": "整轮最终候选根入口门禁尚未运行"
 }

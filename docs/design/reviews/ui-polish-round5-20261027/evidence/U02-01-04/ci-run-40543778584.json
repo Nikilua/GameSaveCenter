@@ -1,0 +1,67 @@
+{
+  "run": {
+    "id": 40543778584,
+    "number": 1318,
+    "workflow": ".github/workflows/windows-build.yml",
+    "event": "push",
+    "headSha": "0f21ac7b516c70c229781ba143aa976c861b90c2",
+    "status": "completed",
+    "conclusion": "failure",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40543778584"
+  },
+  "jobs": [
+    {
+      "id": 122328805842,
+      "name": "编译、测试与打包",
+      "sdk": "repository SDK baseline",
+      "conclusion": "failure",
+      "failedStep": "编译与测试",
+      "tests": {
+        "total": 1302,
+        "passed": 1283,
+        "failed": 1,
+        "preExistingSkipped": 18,
+        "wpfIsolatedClassesCompletedBeforeFailure": "30/148"
+      },
+      "failedTest": "GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark",
+      "rawLogExcerpt": "Disabled Light and Dark samples reported ChromeOpacity=1 while the test still expected 0.72; job failed during compile/test, so render QA, WPF static audit, and package steps were skipped.",
+      "artifact": {
+        "id": 12752182776,
+        "name": "GameSaveCenter-build-diagnostics",
+        "sizeBytes": 599998,
+        "sha256": "1c5189b22b25c9ba02155488950b79a795499b20c1615652ed8a761de4b732a1",
+        "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40543778584/artifacts/12752182776"
+      }
+    },
+    {
+      "id": 122328804650,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "failedStep": "隔离工作树并运行 Release 编译与测试",
+      "tests": {
+        "total": 1302,
+        "passed": 1283,
+        "failed": 1,
+        "preExistingSkipped": 18,
+        "wpfIsolatedClassesCompletedBeforeFailure": "30/148"
+      },
+      "failedTest": "GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark",
+      "rawLogExcerpt": "Disabled Light and Dark samples reported ChromeOpacity=1 while the test still expected 0.72; job failed during compile/test and did not reach later validation steps.",
+      "artifact": {
+        "id": 12751403439,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "sizeBytes": 508646,
+        "sha256": "b281a11c4fc5d55e5c0498699caefbdc9c667426f75eeeee179c511dadb058d0",
+        "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40543778584/artifacts/12751403439"
+      }
+    }
+  ],
+  "rootCause": "Same stale Q06 fixture contract already seen in run 40541712897: U01-05 had aligned production disabled controls to opacity 1 and semantic foreground/fill/border brushes; the old assertion still expected opacity 0.72. Raw job logs were read. This run is retained as a historical document-push failure; it was not rerun.",
+  "requiredChecks": {
+    "status": "unreadable",
+    "httpStatus": 403,
+    "message": "Resource not accessible by integration"
+  },
+  "followUp": "Repair commit bf7540e29a1852552784f4d2ad62c5dcd707cc60 was pushed; exact-SHA workflow run 40545849867 must pass both SDK jobs. Do not rerun this failed historical run."
+}

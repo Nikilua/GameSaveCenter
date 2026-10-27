@@ -14,7 +14,11 @@
 - `scripts/render-qa.ps1 -Configuration Release -Output artifacts/ui-qa/round5-20261028-u02-01-04` 在提交后复跑退出码 0，报告 `0 PROBLEM`，报告源码身份为 `504562a7f0dad88454dde57b290b7862f91c93e6`。覆盖 Light/Dark、1040×700 至 3840×2160 窗口样本、生产 Shell 页和侧栏转场探针。完整报告、运行输出与 SHA-256 见 `render-qa-report.txt`、`render-qa-run.txt`、`verification.json`；审计输出保留在 `artifacts/ui-qa/round5-20261028-u02-01-04`。
 - 代表性概览渲染见 `screenshots/Overview-1100x720.png`。离屏报告的 DPI 为逻辑 DIP 1.00，不代表物理 DPI 或 Playnite 宿主。
 - 第一次定向编译因新增测试文件缺少 `GameSaveCenter.Playnite.ViewModels` 命名空间引用而失败；补入引用后同一测试批通过。原失败属于测试夹具编译错误，保留说明，不计通过或产品回归。
+- GitHub run `40541712897`（`windows-build.yml`，SHA `504562a7f0dad88454dde57b290b7862f91c93e6`）的基线与SDK10.0.401 jobs 均完成失败：Q06禁用按钮测试仍断言Chrome opacity为0.72，与更早U01-05生产样式（opacity为1，使用禁用前景/控制底色/描边Brush）不一致。两job均为1302项中1283通过、1失败、18既有skip；render QA、静态审查与打包未执行。原始job日志已读，run/job/artifact ID、SHA-256与根因见`ci-run-40541712897.json`。没有重跑该失败run。
+- 纯文档提交`0f21ac7b516c70c229781ba143aa976c861b90c2`对应run `40543778584`的两SDK jobs 也因同一旧断言失败；读取了两份原始job日志，并保留artifact身份于`ci-run-40543778584.json`。这条文档run按要求不重跑。
+- 修复只更新Q06测试的禁用态期望，并补充其语义前景、底色和描边匹配；仍检查CanExecute=false、不执行命令及其余四态。测试提交`bf7540e29a1852552784f4d2ad62c5dcd707cc60`已推送；SDK8.0.423精确SHA定向组16/16、0失败、0跳过，TRX与日志见`tests/repair-bf7540e2-sdk8423/`及`tests/U02-01-04-repair-bf7540e2-sdk8423-run.txt`，source validation通过。复测前观察到系统只有SDK9.0.302，未修改仓库SDK基线，依`scripts/sdk-baseline.ps1`将SDK8.0.423安装在`.tmp/round5-u02-sdk8.0.423`；无SDK的首次尝试原始输出仍在`tests/U02-01-04-repair-bf7540e2-run.txt`，不计为测试通过。Render QA和WPF资源静态审查没有重跑，因为生产XAML/资源未变。修复SHA的双SDK CI run `40545849867`仍运行。
+- 修复run `40545849867`当前基线job `122336135430`、SDK10.0.401 job `122336135080`仍运行中、尚无artifact；精确状态见`ci-run-40545849867.json`。文档源码检查通过，6份修改说明共检查654个本地Markdown链接、缺失0；数据见`document-link-check-repair.txt`。
 
 ## 验收边界
 
-本地代码与离屏视觉行为完成，状态为“代码完成待验收”。真实 Playnite 宿主、UIA/键盘/IME、物理 DPI 与 GitHub 当前提交工作流尚待验；`verification.json` 记录精确 push run/job 当前状态及 required-checks API 的 403，不据本地通过推断远端 CI 通过。完整根入口安装启动链及独立 `scripts/build.cmd` 属整轮最终门禁。没有触及存档恢复、媒体删除或云端写入。
+本地代码与离屏视觉行为完成，状态为“代码完成待验收”。真实 Playnite 宿主、UIA/键盘/IME、物理 DPI 与修复提交的GitHub工作流尚待验；`verification.json`记录精确push run/job/artifact和required-checks API的403，不据本地通过推断远端CI通过。完整根入口安装启动链及独立`scripts/build.cmd`属整轮最终门禁。没有触及存档恢复、媒体删除或云端写入。

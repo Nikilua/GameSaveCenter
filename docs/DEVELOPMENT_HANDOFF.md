@@ -2,7 +2,7 @@
 
 当前main已包含并推送 `504562a7f0dad88454dde57b290b7862f91c93e6`（`校准概览任务语义状态色`）。U02-01～04本地SDK8定向15/15、0 skip；source validation、XAML、WPF静态审查和提交身份Render QA通过。U02-01/02是核验既有Light/Dark自适应表面层次后去重，不改已有达标表面值；U02-03/04修正概览普通强调色及任务状态图标/颜色不一致。
 
-远端run `40541712897` 为该SHA的 `windows-build.yml` push run；主job `122321530415`和SDK10.0.401 job `122321530884`上次观察仍为in_progress，尚无终态/artifact。required checks endpoint 403，必须记录远端待验，使用有权限的GitHub Actions API/页面核对后续状态和required checks。证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U02-01-04/`。下一批可推进U02-05～08，不要等待旧S/T宿主权限阻塞；不要重复试探被拒权限。
+远端run `40541712897`（SHA `504562a7`）与文档run `40543778584`（SHA `0f21ac7b`）的基线job及SDK10.0.401 job均失败于Q06禁用按钮测试旧opacity 0.72预期，与U01-05生产控件opacity 1及语义Brush不符。两次run原始日志、测试统计和artifact ID/SHA-256分别见`docs/design/reviews/ui-polish-round5-20261027/evidence/U02-01-04/ci-run-40541712897.json`和`ci-run-40543778584.json`。修复提交`bf7540e29a1852552784f4d2ad62c5dcd707cc60`已推送；SDK8.0.423精确SHA Release定向16/16、0 skip，source validation通过。新run `40545849867`基线job `122336135430`及SDK10 job `122336135080`仍运行。required checks endpoint 403，继续标远端待验；由有权限的GitHub Actions API/页面核对修复SHA全部jobs、artifacts和required checks。下一批可推进U02-05～08，不要等待旧S/T宿主权限阻塞；不要重复试探被拒权限。
 
 整轮根链仍未运行：确认仓库中文入口和英文入口映射，中文根入口运行完整build/test/publish/package/install身份/启动，另按职责运行`scripts/build.cmd`。每批中文commit并push；纯文档只做源码/链接检查。保持未跟踪Round3 TRX/TestResults和U01证据不变，不清理未知文件。
 

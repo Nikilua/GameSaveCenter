@@ -1,0 +1,35 @@
+{
+  "run": {
+    "id": 40545849867,
+    "number": 1319,
+    "workflow": ".github/workflows/windows-build.yml",
+    "event": "push",
+    "headSha": "bf7540e29a1852552784f4d2ad62c5dcd707cc60",
+    "status": "in_progress",
+    "conclusion": null,
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40545849867"
+  },
+  "jobs": [
+    {
+      "id": 122336135430,
+      "name": "编译、测试与打包",
+      "sdk": "repository SDK baseline",
+      "status": "in_progress",
+      "activeStep": "编译与测试"
+    },
+    {
+      "id": 122336135080,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "in_progress",
+      "activeStep": "隔离工作树并运行 Release 编译与测试"
+    }
+  ],
+  "artifacts": [],
+  "requiredChecks": {
+    "status": "unreadable",
+    "httpStatus": 403,
+    "message": "Resource not accessible by integration"
+  },
+  "note": "Run is for exact source/test repair commit bf7540e29a1852552784f4d2ad62c5dcd707cc60. The committed SDK 8.0.423 focused group passed 16/16 with zero skips. Await both jobs and artifacts; required checks must be queried through a connection with appropriate permissions."
+}

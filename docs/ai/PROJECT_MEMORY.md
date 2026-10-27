@@ -2,7 +2,7 @@
 
 实现提交 `504562a7f0dad88454dde57b290b7862f91c93e6` 已推送main。该批按80项任务做了U00既有Light/Dark主题与表面层次去重，没有重复重做已有表面色；浅/深模式语义对比守卫通过。概览最近访问普通图标改中性，任务成功/警告/失败/运行/排队/取消六状态修正为同语义文字、图标、浅底，并针对小字和自身浅底测4.5:1。SDK8.0.423精确SHA定向15/15、0 skip，Render QA exit0/0 PROBLEM，源码/XAML/WPF静态检查通过。详见 `docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md` 和 `evidence/U02-01-04/`。
 
-GitHub精确push run `40541712897`（workflow `windows-build.yml`）观察中仍运行：基线job `122321530415`、SDK10.0.401 job `122321530884`，无终态/artifact。required-checks端点403，远端保持待验。下一步继续U02-05～08等独立批，不重复探测旧S/T拒绝权限；整轮最终仍需实际中文根入口完整安装启动链、独立`scripts/build.cmd`和精确SHA CI通过，并将真实Playnite/UIA/IME/物理DPI边界分别记录。
+GitHub run `40541712897`（`504562a7`）与纯文档run `40543778584`（`0f21ac7b`）的基线/SDK10 job均失败于Q06过时禁用态opacity 0.72断言。两个run的原始日志摘要、job、artifact ID及SHA-256已分别写入`evidence/U02-01-04/ci-run-40541712897.json`和`ci-run-40543778584.json`；不重跑历史失败run。测试契约修复commit `bf7540e29a1852552784f4d2ad62c5dcd707cc60`已推送；按仓库SDK脚本将SDK8.0.423装入本批`.tmp`，以精确SHA Release定向16/16、0 skip，source validation通过。该修复的run `40545849867`基线job `122336135430`及SDK10 job `122336135080`仍运行；required-checks API 403，远端待验。下一步继续U02-05～08独立批，不重复探测旧S/T拒绝权限；整轮最终仍需中文根入口完整安装启动链、独立`scripts/build.cmd`和精确SHA CI通过，并记录真实Playnite/UIA/IME/物理DPI边界。
 
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 
