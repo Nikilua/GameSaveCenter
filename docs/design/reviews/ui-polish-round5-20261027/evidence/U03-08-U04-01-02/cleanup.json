@@ -1,0 +1,17 @@
+{
+  "outputPath": ".tmp/round5-u03-08-u04-01-02-render-95b5dbf9",
+  "canonicalPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u03-08-u04-01-02-render-95b5dbf9",
+  "insideRepositoryTmp": true,
+  "renderProcessRunningAtReview": false,
+  "files": 395,
+  "bytes": 53183890,
+  "pngCount": 394,
+  "pngBytes": 52042066,
+  "archivedReport": "render-qa/render-qa-report.txt",
+  "archivedReportSha256": "567a6fe8fd2f98d8b996527e54b270cdc25597c40b077cab24ecabfacdc10971",
+  "removed": false,
+  "reason": "A prior PowerShell Remove-Item for another Round5 .tmp output was rejected before launch. Per the instruction not to repeat the same denied action, this stage output remains in place; no alternate shell or deletion route was used.",
+  "freeBytesBeforeRender": {"C": 1582723072, "D": 6429085696},
+  "freeBytesAfterRender": {"C": 1569579008, "D": 5419372544},
+  "spaceDeltaAttribution": "unattributed; no other outputs were removed"
+}

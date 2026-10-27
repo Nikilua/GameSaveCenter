@@ -1,0 +1,100 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "requiredJobs": [
+    "编译、测试与打包",
+    ".NET SDK 10.0.401 编译与测试复核"
+  ],
+  "runs": [
+    {
+      "runNumber": 1330,
+      "runId": 40570767550,
+      "sha": "631b218e48cf2fb3d2be9be02ebf680551398db1",
+      "baselineJob": {
+        "id": 122424019673,
+        "status": "completed",
+        "step": "编译与测试",
+        "conclusion": "failure",
+        "failedStep": "编译与测试",
+        "tests": {
+          "total": 1445,
+          "passed": 1425,
+          "failed": 1,
+          "skipped": 19
+        },
+        "failure": "R08MotionReverseBehaviorTests ProductionButtonHoverAndPressReverseFromTheirRenderedValues could not access Application.set_ShutdownMode because another thread owns the WPF Application",
+        "artifact": {
+          "id": 12767366434,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 738991,
+          "sha256": "d3fe80b3267c55515af4d5057ce0cf978fc1557c7e10f0ed447b24e3fc7d2913"
+        }
+      },
+      "sdk10Job": {
+        "id": 122424019068,
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "隔离工作树并运行 Release 编译与测试",
+        "tests": {
+          "total": 1445,
+          "passed": 1425,
+          "failed": 1,
+          "skipped": 19
+        },
+        "failure": "R08MotionReverseBehaviorTests separate STA facts reused a WPF Application owned by another thread",
+        "artifact": {
+          "id": 12765473491,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 645803,
+          "sha256": "477d13c3bd5a3bf5f13ce0e5d9ed61d10d22258221de3016b2f0ddf42e603fa0"
+        }
+      },
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40570767550",
+      "baselineArtifact": {
+        "id": 12767366434,
+        "name": "GameSaveCenter-build-diagnostics",
+        "bytes": 738991,
+        "sha256": "d3fe80b3267c55515af4d5057ce0cf978fc1557c7e10f0ed447b24e3fc7d2913"
+      }
+    },
+    {
+      "runNumber": 1331,
+      "runId": 40571484630,
+      "sha": "95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7",
+      "baselineJob": {
+        "id": 122426545328,
+        "status": "in_progress",
+        "step": "编译与测试"
+      },
+      "sdk10Job": {
+        "id": 122426544757,
+        "status": "in_progress",
+        "step": "隔离工作树并运行 Release 编译与测试"
+      },
+      "artifacts": [],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40571484630"
+    },
+    {
+      "runNumber": 1332,
+      "runId": 40572542627,
+      "sha": "0c7c42687bd3be6f1f97192c50b5ca580e6f4545",
+      "baselineJob": {
+        "id": 122430277192,
+        "status": "in_progress",
+        "step": "编译与测试"
+      },
+      "sdk10Job": {
+        "id": 122430276522,
+        "status": "in_progress",
+        "step": "隔离工作树并运行 Release 编译与测试"
+      },
+      "artifacts": [],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40572542627"
+    }
+  ],
+  "branchProtection": {
+    "requiredStatusChecks": "unverified",
+    "api": "GET /repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks",
+    "result": "HTTP 403 Resource not accessible by integration; no assumption is made about required checks"
+  },
+  "snapshotUtc": "2026-10-27T20:07:25Z"
+}

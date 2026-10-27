@@ -1,0 +1,48 @@
+{
+  "sdk": "8.0.423",
+  "finalSourceSha": "0c7c42687bd3be6f1f97192c50b5ca580e6f4545",
+  "acceptedRuns": [
+    {
+      "file": "tests/U03-08-numeric-path-sdk8-0c7c4268.trx",
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "7ecde028c198e11e59ac8b77eea814400243885ef53672788fd4c8522ecae02a"
+    },
+    {
+      "file": "tests/U04-01-02-motion-sdk8-0c7c4268.trx",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "8c7d3db1a43a5ccbc45839dd720ce4205515a624ad156078d058ef4343ee5814"
+    }
+  ],
+  "diagnosticRuns": [
+    {
+      "file": "tests/U03-08-numeric-path-sdk8.trx",
+      "result": "16 passed, 5 failed before source assertions because GscBuildCommit metadata was absent",
+      "sha256": "5257792e2e7a2ede869da4cf25683ae235240a1277f2d7e947165f1128075e3d"
+    },
+    {
+      "file": "tests/U03-08-numeric-path-sdk8-95b5dbf9.trx",
+      "result": "16 passed, 5 failed because a manually entered build SHA did not match HEAD; rerun with the exact SHA passed 21/21",
+      "sha256": "ebbc82757c84a90885ad2c4824edd1ed02f80d7a8b7ec0c15388eb807a5f02e8"
+    },
+    {
+      "file": "tests/U04-01-02-motion-sdk8-631b218e.trx",
+      "result": "2 passed, 1 failed because separate STA facts reused an Application owned by another thread; the sweep was merged into the existing STA fact",
+      "sha256": "f7c0d2353cbccfa29f78d48a5465e00998705da69f9683f96c7108d232a5afea"
+    },
+    {
+      "file": "tests/U04-01-02-combined-sweep-precommit.trx",
+      "result": "1 failed; final sampled residual opacity was 0.01194. The test now actively clears native/synthetic hover probes while waiting for settled zero opacity.",
+      "sha256": "ac5db7c28bf51be32784b744c5020e3870d04498d27d970b2cd9e6ce084d76d4"
+    }
+  ],
+  "testOnlyFollowUps": [
+    "95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7",
+    "0c7c42687bd3be6f1f97192c50b5ca580e6f4545"
+  ]
+}

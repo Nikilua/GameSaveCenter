@@ -1,3 +1,9 @@
+## 2026-10-28 Round5 U03-08/U04-01/02接续
+
+当前实现提交 `631b218e48cf2fb3d2be9be02ebf680551398db1`，后续测试整合/双主题覆盖提交 `95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7`、`0c7c42687bd3be6f1f97192c50b5ca580e6f4545` 已推送。U03-08数值/路径无新缺口；U04-01统一共享hover/press/disclosure转场令牌、明示进度扫动例外；U04-02合成hover双主题快速扫过行为覆盖。SDK8精确SHA定向23/23、0 skip，source/XAML/WPF静态和Render QA通过。证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U03-08-U04-01-02/`；Windows CI最终候选`40572542627`双job仍运行，required-checks仍403。
+
+下一小批依赖满足项为U04-03/04/05：按压释放沿用已通过R08/Q06连续性与取消/禁用安全行为覆盖；在生产共享Tab模板中对选中指示加入受MotionEnabledActive/Reduced Motion控制的克制过渡，并验收快速切换/焦点分离；输入焦点、验证错误与清除反馈继续即时，不加阻塞等待。勿修改游戏选框、滚动条、业务命令或安全语义；旧S/T宿主/权限阻塞不重复探测。每批源码/资源须先做相关编译与行为检查、源码/XAML/WPF静态审查及render-qa；最终候选另跑中文根入口完整链和独立`scripts/build.cmd`。
+
 ## 2026-10-28 Round5 U02-05/06 共享线宽与圆角裁切
 
 U02-05/06去重后在真实生产样式统一 1 DIP 边框和分隔线；共享圆角令牌与附加裁切行为保留已有外部Clip，并覆盖卡片、按钮、表格、壳层及状态/空态样式。全 Playnite 项目 XAML 单 DIP边框静态检查防回流。实现提交`417bed510806f965122554beb4419082443b905e`及扩展提交`f59fe4c86c78cb2fc11414a431aceb49821910ee`已推送。

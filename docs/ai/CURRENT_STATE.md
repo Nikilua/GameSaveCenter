@@ -1,3 +1,9 @@
+## Round5 U03-08/U04-01/02 最新本地状态（2026-10-28）
+
+当前 `main` 为 `0c7c42687bd3be6f1f97192c50b5ca580e6f4545`。U03-08去重确认数值范围/溢出/滚轮边界、路径预览/类型验证/缺失目录说明及本地打开保护已有实现与行为测试，无产品改动。U04-01将生产共享交互时长映射到 `MotionTokens.xaml`，保留并解释不确定进度的2秒扫动例外；U04-02补按钮快速hover扫过Light/Dark合成状态验证。SDK8.0.423精确测试21/21+2/2、0 skip；Source validation、XAML26/26、WPF静态37 XAML/0 error、RenderHarness编译0/0、双主题394 PNG Render QA无PROBLEM。证据见`../design/reviews/ui-polish-round5-20261027/evidence/U03-08-U04-01-02/BASELINE.md`。
+
+run `40572542627`的baseline job `122430277192`与SDK10 job `122430276522`仍在编译/测试；required-checks API为403，远端待验。真实Playnite/UIA客户端、物理鼠标、IME与实体DPI未验。继续独立推进U04-03/04/05，不等待旧S/T宿主/权限状态；暂不运行整轮完整入口或删除被本机策略拒绝清理的阶段`.tmp`图像。最终候选仍须以中文根入口跑构建/测试/发布/打包/安装身份核验/启动，并独立按职责验证`scripts/build.cmd`。
+
 ## Round5 U02-05/06 最新本地状态（2026-10-28）
 
 共享 `GeometryTokens.xaml` 提供圆角、1 DIP hairline 与分隔线令牌；`RoundedClipBehavior` 根据 Border 当前尺寸/圆角裁切并相交保留消费者原 Clip。`f59fe4c86c78cb2fc11414a431aceb49821910ee` 已推送，所有当前 Playnite 项目 XAML 的 1 DIP 边框已统一引用令牌。SDK8.0.423精确SHA聚焦组165通过、39个既有skip、0失败；source validation、26 XAML结构检查、37 XAML WPF静态审查0 errors通过。最终 Render QA 双主题334 PNG、0 PROBLEM，报告/逐图SHA见[U02-05/06证据](../design/reviews/ui-polish-round5-20261027/evidence/U02-05-06/BASELINE.md)。

@@ -1175,3 +1175,11 @@ Actions run 40561836233（baseline job 122392618285、SDK10 job 122392618705）�
 当前main已push `d1fc1308317fb805d61d67a7dda77d71e0afff18` 与 `5300a2b5c70f7736f1f46617667de73749b8d883`。U03-04/05已完成输入禁用/错误可达语义和搜索/清除布局回归，SDK8.0.423精确SHA 32/32、Render QA双主题394 PNG、0 PROBLEM；U03-06/07复用现有下拉/勾选控件，只加ComboBox长选中项源码守护，SDK8精确SHA 13/13。证据与边界见`docs/design/reviews/ui-polish-round5-20261027/evidence/U03-04-05/BASELINE.md`和`U03-06-07/BASELINE.md`。
 
 CI：run `40566121765`（1327，d1fc）与 `40567683673`（1328，5300）两套SDK job仍运行；1325/1326 baseline job仍在包阶段而SDK10成功。准确job/artifact id见`evidence/U02-05-06/ci-runs.json`。required-checks接口403，不能声称保护状态。先继续U03-08/U04独立小批；不重试旧S/T权限拒绝、不动游戏选框、滚动条或安全语义。最终整轮候选仍必须运行中文根入口完整构建/测试/发布/打包/安装身份/启动、单独验证`scripts/build.cmd`并查询该源码SHA的双SDK所有适用CI job。U03-04/05临时Render QA副本因执行策略拒绝清理，未换Shell，见`evidence/U03-04-05/checks/cleanup.json`；保留其它任务TRX与共享TestResults。
+
+## 2026-10-28 Round5 U03-08/U04-01/02恢复点
+
+当前已推送到`main`的最终源码/测试身份为`0c7c42687bd3be6f1f97192c50b5ca580e6f4545`。U03-08去重无生产差异；U04-01共享动效令牌收敛、U04-02按钮Light/Dark快速hover合成扫过与清尾行为覆盖。SDK8精确组21/21+2/2、0 skip；source validation、XAML26/26、WPF静态37文件/0 error、RenderHarness Release 0/0、Render QA双主题394 PNG/0 PROBLEM。实现/回归提交为`631b218e`、`95b5dbf9`、`0c7c4268`，报告/TRX/清理/CI身份见`docs/design/reviews/ui-polish-round5-20261027/evidence/U03-08-U04-01-02/`。
+
+最新Windows Actions run `40572542627` 的baseline job `122430277192`和SDK10 job `122430276522`均仍在编译/测试；required-checks接口403，不能推断分支保护。下一批继续U04-03/04/05：已存在的按压逆转和取消/禁用行为复用测试；只在共享生产Tab模板加轻量可降低动态效果的选中指示过渡，并验证快速切换及焦点独立；输入焦点、校验和清除保持即时反馈。真实Playnite、Narrator/UIA、物理鼠标、IME、实体DPI及真实恢复/媒体删除/云端写入均不在视觉验收内。
+
+阶段Render QA截图副本位于本仓库`.tmp/round5-u03-08-u04-01-02-render-95b5dbf9`，共394 PNG；有先前Remove-Item权限拒绝，因此不重试、不换Shell。只保留一份截图副本并已归档核验报告，完整记录与磁盘空间见对应`cleanup.json`。当前工作树还有先前任务/其他过程遗留的未跟踪TRX、TestResults和证据目录；不清理或纳入本次文档提交。最终Round5候选必须先提交，再由`GameSaveCenter-一键构建安装运行.cmd`执行全链、单独核验`scripts/build.cmd`，并查询候选SHA的基线SDK与SDK10所有适用job/artifact。

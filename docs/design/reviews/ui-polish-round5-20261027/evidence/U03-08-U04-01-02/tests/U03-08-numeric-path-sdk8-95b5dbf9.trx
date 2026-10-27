@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2c43ebda-93e7-4a85-9d8c-a6f44f313aa9" name="lopmatu@SULT 2026-10-28 03:42:31" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-28T03:42:31.7164761+08:00" queuing="2026-10-28T03:42:31.7164763+08:00" start="2026-10-28T03:42:28.9543169+08:00" finish="2026-10-28T03:42:34.0657218+08:00" />
+  <TestSettings name="default" id="567d6df5-ced2-4977-a386-1bb294a818d5">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-28_03_42_31" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="0935294c-05a2-4e4b-b6dd-82b6564b8df4" testId="988447a8-cecd-e7d8-46a0-52c44440f167" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;0&quot;, expectedValid: False)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:31.6752083+08:00" endTime="2026-10-28T03:42:31.6895788+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0935294c-05a2-4e4b-b6dd-82b6564b8df4" />
+    <UnitTestResult executionId="7a89ff2c-9ad9-47ee-b6a2-6ca6c39d07f9" testId="cf61e045-8a2c-15d7-e142-bba8a8390a7c" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;&quot;, expectedValid: False)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:31.6905770+08:00" endTime="2026-10-28T03:42:31.6915738+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a89ff2c-9ad9-47ee-b6a2-6ca6c39d07f9" />
+    <UnitTestResult executionId="c5524be0-de17-45ef-98ec-f55292d23394" testId="05887905-cb96-a234-bb36-7aeb05aca849" testName="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests.VerifySettingsAllowsMissingChildDirectoryWhenItsDriveIsAvailable" computerName="SULT" duration="00:00:00.0240000" startTime="2026-10-28T03:42:33.8364563+08:00" endTime="2026-10-28T03:42:33.8583407+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c5524be0-de17-45ef-98ec-f55292d23394" />
+    <UnitTestResult executionId="965a45dc-3cbb-48ac-9ab7-bf224cdeaa03" testId="0d83bba8-db34-ec1b-a105-2d5dd6724fb7" testName="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests.VerifySettingsRejectsDirectorySettingThatPointsToAFile" computerName="SULT" duration="00:00:00.0040000" startTime="2026-10-28T03:42:33.8628587+08:00" endTime="2026-10-28T03:42:33.8648584+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="965a45dc-3cbb-48ac-9ab7-bf224cdeaa03" />
+    <UnitTestResult executionId="4528c1df-4cc7-4959-82ca-4e6b6760a0a0" testId="7ba77ad1-19df-6fc9-5156-b228338fb5cd" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;12x&quot;, expectedValid: False)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:31.6732081+08:00" endTime="2026-10-28T03:42:31.6742123+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4528c1df-4cc7-4959-82ca-4e6b6760a0a0" />
+    <UnitTestResult executionId="00d6f380-71a3-4f91-b043-89dac8e26ca7" testId="df7ae6db-686a-9e46-440e-0b09195df04d" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;2147483648&quot;, expectedValid: False)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:31.6602082+08:00" endTime="2026-10-28T03:42:31.6612078+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="00d6f380-71a3-4f91-b043-89dac8e26ca7" />
+    <UnitTestResult executionId="fc8e1d4b-ff27-45d7-851a-baf5b03cc85a" testId="6a0cbe70-d833-667f-f853-d64a93b938f4" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ExplainsEmptyAndOverflowValues" computerName="SULT" duration="00:00:00.0130000" startTime="2026-10-28T03:42:33.8304600+08:00" endTime="2026-10-28T03:42:33.8314574+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fc8e1d4b-ff27-45d7-851a-baf5b03cc85a" />
+    <UnitTestResult executionId="0815d11f-8b26-4c31-9736-a366fcef4e83" testId="cab20288-6759-4caf-843d-96739e19b471" testName="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorBehaviorTests.ProbeDistinguishesValidFileDirectoryMissingPathAndFileAsDirectory" computerName="SULT" duration="00:00:00.0060000" startTime="2026-10-28T03:42:33.8895579+08:00" endTime="2026-10-28T03:42:33.8907247+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0815d11f-8b26-4c31-9736-a366fcef4e83" />
+    <UnitTestResult executionId="373333d6-d59f-4a04-b8e0-44be8237dfb0" testId="5e468f49-15d7-bd0d-4e90-a65da6b1e50c" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;-2147483649&quot;, expectedValid: False)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:31.6672075+08:00" endTime="2026-10-28T03:42:31.6682077+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="373333d6-d59f-4a04-b8e0-44be8237dfb0" />
+    <UnitTestResult executionId="ea5fd778-1565-41ba-9d3e-a9628af5f497" testId="5a70057c-ca33-5193-bed1-7ee07998b81f" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown" computerName="SULT" duration="00:00:00.1070000" startTime="2026-10-28T03:42:31.5029220+08:00" endTime="2026-10-28T03:42:31.6302081+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ea5fd778-1565-41ba-9d3e-a9628af5f497">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.get_Root() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 20&#xD;
+   在 GameSaveCenter.Playnite.Tests.NumericInputTests.FindRepositoryRoot() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\NumericInputTests.cs:行号 129&#xD;
+   在 GameSaveCenter.Playnite.Tests.NumericInputTests.KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\NumericInputTests.cs:行号 121</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="02cbac54-9832-4691-8b46-7654ad0b5dcf" testId="7c19e2d0-01b9-52c1-3a4f-2898776747e6" testName="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests.DisabledHealthInspectionFieldsDoNotBlockSettingsValidation" computerName="SULT" duration="00:00:00.0030000" startTime="2026-10-28T03:42:33.8598601+08:00" endTime="2026-10-28T03:42:33.8618622+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02cbac54-9832-4691-8b46-7654ad0b5dcf" />
+    <UnitTestResult executionId="03fcc889-b7bf-41dd-9338-65a02f55b0fd" testId="5a745ab4-0efd-de05-c53a-db73a6d8ddf3" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.WheelUsesTheSameRangeAndDoesNotClampAtTheBoundary" computerName="SULT" duration="00:00:02.1720000" startTime="2026-10-28T03:42:31.7005745+08:00" endTime="2026-10-28T03:42:33.8164581+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="03fcc889-b7bf-41dd-9338-65a02f55b0fd" />
+    <UnitTestResult executionId="57c280ac-bb56-42b8-a5c7-b74989432bc7" testId="9a6945c9-c8b9-a967-65af-6fd7a791ab81" testName="GameSaveCenter.Playnite.Tests.R03LongPathTests.ProductionPathEntrancesKeepPreviewAndExactCopySeparate" computerName="SULT" duration="00:00:00.0050000" startTime="2026-10-28T03:42:33.8788573+08:00" endTime="2026-10-28T03:42:33.8798571+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57c280ac-bb56-42b8-a5c7-b74989432bc7">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.AssertAssemblyMatchesSource() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 24&#xD;
+   在 GameSaveCenter.Playnite.Tests.R03LongPathTests.ProductionPathEntrancesKeepPreviewAndExactCopySeparate() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R03LongPathTests.cs:行号 80</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="39065937-0674-4e6b-8e42-b81159ceacdb" testId="d9649810-435f-647b-c7dc-5115af745d02" testName="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorSourceTests.SettingsSurfaceUsesOneCurrentFieldEditorAndStrictOpenGuard" computerName="SULT" duration="00:00:00.0020000" startTime="2026-10-28T03:42:33.8820014+08:00" endTime="2026-10-28T03:42:33.8830008+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="39065937-0674-4e6b-8e42-b81159ceacdb">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.get_Root() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 20&#xD;
+   在 GameSaveCenter.Playnite.Tests.R16SettingsPathEditorSourceTests.SettingsSurfaceUsesOneCurrentFieldEditorAndStrictOpenGuard() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R16SettingsPathEditorSourceTests.cs:行号 12</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7c2ccaf6-f0e0-4998-8afb-275f9b736b26" testId="5fcb6040-68f2-4077-64fe-cfff2fa4a420" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1&quot;, expectedValid: True)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:31.6642074+08:00" endTime="2026-10-28T03:42:31.6652075+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7c2ccaf6-f0e0-4998-8afb-275f9b736b26" />
+    <UnitTestResult executionId="39d8a9f4-9ec2-4bef-ba09-11d21cf8c32a" testId="325cbce0-803d-8228-554e-31c4c3181d6c" testName="GameSaveCenter.Playnite.Tests.R03LongPathTests.PreviewKeepsDriveAndFileNameWithoutChangingTheSource" computerName="SULT" duration="00:00:00.0020000" startTime="2026-10-28T03:42:33.8768616+08:00" endTime="2026-10-28T03:42:33.8768616+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="39d8a9f4-9ec2-4bef-ba09-11d21cf8c32a" />
+    <UnitTestResult executionId="e248b1f2-cc1c-46c2-b97b-eac9bcdae1dc" testId="8e0a9370-9c22-63cd-a9c3-fa84a8714ef5" testName="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorBehaviorTests.EditorCatalogKeepsRemoteTargetOutOfLocalOpenActions" computerName="SULT" duration="00:00:00.0040000" startTime="2026-10-28T03:42:33.8865561+08:00" endTime="2026-10-28T03:42:33.8875534+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e248b1f2-cc1c-46c2-b97b-eac9bcdae1dc" />
+    <UnitTestResult executionId="4c4d13f3-e45f-4606-b3aa-4e6b37783fab" testId="23e5f235-7201-3f34-3663-d80877a3cdb8" testName="GameSaveCenter.Playnite.Tests.R03LongPathTests.DetailTextBoxStaysWithinFiniteViewportAndKeepsSelectableExactText" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:33.8678572+08:00" endTime="2026-10-28T03:42:33.8738571+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4c4d13f3-e45f-4606-b3aa-4e6b37783fab">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.AssertAssemblyMatchesSource() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 24&#xD;
+   在 GameSaveCenter.Playnite.Tests.R03LongPathTests.DetailTextBoxStaysWithinFiniteViewportAndKeepsSelectableExactText() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R03LongPathTests.cs:行号 35</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="666e4c0c-9127-4589-9a4f-6054296c9fc7" testId="8b2781b9-f457-953a-7852-f7ea19281964" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1441&quot;, expectedValid: False)" computerName="SULT" duration="00:00:00.0160000" startTime="2026-10-28T03:42:31.6552076+08:00" endTime="2026-10-28T03:42:31.6572105+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="666e4c0c-9127-4589-9a4f-6054296c9fc7" />
+    <UnitTestResult executionId="7e86c000-d05b-4832-ae47-4c1666b8ccbe" testId="1763ee5f-fbcd-c86a-0072-e352563f3501" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1440&quot;, expectedValid: True)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:31.6622083+08:00" endTime="2026-10-28T03:42:31.6632075+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7e86c000-d05b-4832-ae47-4c1666b8ccbe" />
+    <UnitTestResult executionId="cc1838bb-433f-4c93-ba24-0b8e713ae705" testId="1afd0400-0342-4ec1-7ca7-42397a920b70" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-28T03:42:33.8264580+08:00" endTime="2026-10-28T03:42:33.8274558+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc1838bb-433f-4c93-ba24-0b8e713ae705">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.get_Root() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 20&#xD;
+   在 GameSaveCenter.Playnite.Tests.NumericInputTests.FindRepositoryRoot() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\NumericInputTests.cs:行号 129&#xD;
+   在 GameSaveCenter.Playnite.Tests.NumericInputTests.ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\NumericInputTests.cs:行号 100</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03LongPathTests.ProductionPathEntrancesKeepPreviewAndExactCopySeparate" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="9a6945c9-c8b9-a967-65af-6fd7a791ab81">
+      <Execution id="57c280ac-bb56-42b8-a5c7-b74989432bc7" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03LongPathTests" name="ProductionPathEntrancesKeepPreviewAndExactCopySeparate" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;-2147483649&quot;, expectedValid: False)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="5e468f49-15d7-bd0d-4e90-a65da6b1e50c">
+      <Execution id="373333d6-d59f-4a04-b8e0-44be8237dfb0" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;2147483648&quot;, expectedValid: False)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="df7ae6db-686a-9e46-440e-0b09195df04d">
+      <Execution id="00d6f380-71a3-4f91-b043-89dac8e26ca7" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests.VerifySettingsRejectsDirectorySettingThatPointsToAFile" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="0d83bba8-db34-ec1b-a105-2d5dd6724fb7">
+      <Execution id="965a45dc-3cbb-48ac-9ab7-bf224cdeaa03" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests" name="VerifySettingsRejectsDirectorySettingThatPointsToAFile" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="5a70057c-ca33-5193-bed1-7ee07998b81f">
+      <Execution id="ea5fd778-1565-41ba-9d3e-a9628af5f497" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests.VerifySettingsAllowsMissingChildDirectoryWhenItsDriveIsAvailable" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="05887905-cb96-a234-bb36-7aeb05aca849">
+      <Execution id="c5524be0-de17-45ef-98ec-f55292d23394" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests" name="VerifySettingsAllowsMissingChildDirectoryWhenItsDriveIsAvailable" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;&quot;, expectedValid: False)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="cf61e045-8a2c-15d7-e142-bba8a8390a7c">
+      <Execution id="7a89ff2c-9ad9-47ee-b6a2-6ca6c39d07f9" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03LongPathTests.PreviewKeepsDriveAndFileNameWithoutChangingTheSource" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="325cbce0-803d-8228-554e-31c4c3181d6c">
+      <Execution id="39d8a9f4-9ec2-4bef-ba09-11d21cf8c32a" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03LongPathTests" name="PreviewKeepsDriveAndFileNameWithoutChangingTheSource" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ExplainsEmptyAndOverflowValues" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="6a0cbe70-d833-667f-f853-d64a93b938f4">
+      <Execution id="fc8e1d4b-ff27-45d7-851a-baf5b03cc85a" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ExplainsEmptyAndOverflowValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1441&quot;, expectedValid: False)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="8b2781b9-f457-953a-7852-f7ea19281964">
+      <Execution id="666e4c0c-9127-4589-9a4f-6054296c9fc7" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1&quot;, expectedValid: True)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="5fcb6040-68f2-4077-64fe-cfff2fa4a420">
+      <Execution id="7c2ccaf6-f0e0-4998-8afb-275f9b736b26" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R03LongPathTests.DetailTextBoxStaysWithinFiniteViewportAndKeepsSelectableExactText" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="23e5f235-7201-3f34-3663-d80877a3cdb8">
+      <Execution id="4c4d13f3-e45f-4606-b3aa-4e6b37783fab" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R03LongPathTests" name="DetailTextBoxStaysWithinFiniteViewportAndKeepsSelectableExactText" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorSourceTests.SettingsSurfaceUsesOneCurrentFieldEditorAndStrictOpenGuard" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="d9649810-435f-647b-c7dc-5115af745d02">
+      <Execution id="39065937-0674-4e6b-8e42-b81159ceacdb" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorSourceTests" name="SettingsSurfaceUsesOneCurrentFieldEditorAndStrictOpenGuard" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests.DisabledHealthInspectionFieldsDoNotBlockSettingsValidation" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="7c19e2d0-01b9-52c1-3a4f-2898776747e6">
+      <Execution id="02cbac54-9832-4691-8b46-7654ad0b5dcf" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.SettingsPathValidationTests" name="DisabledHealthInspectionFieldsDoNotBlockSettingsValidation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;0&quot;, expectedValid: False)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="988447a8-cecd-e7d8-46a0-52c44440f167">
+      <Execution id="0935294c-05a2-4e4b-b6dd-82b6564b8df4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1440&quot;, expectedValid: True)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="1763ee5f-fbcd-c86a-0072-e352563f3501">
+      <Execution id="7e86c000-d05b-4832-ae47-4c1666b8ccbe" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;12x&quot;, expectedValid: False)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="7ba77ad1-19df-6fc9-5156-b228338fb5cd">
+      <Execution id="4528c1df-4cc7-4959-82ca-4e6b6760a0a0" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorBehaviorTests.ProbeDistinguishesValidFileDirectoryMissingPathAndFileAsDirectory" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="cab20288-6759-4caf-843d-96739e19b471">
+      <Execution id="0815d11f-8b26-4c31-9736-a366fcef4e83" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorBehaviorTests" name="ProbeDistinguishesValidFileDirectoryMissingPathAndFileAsDirectory" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorBehaviorTests.EditorCatalogKeepsRemoteTargetOutOfLocalOpenActions" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="8e0a9370-9c22-63cd-a9c3-fa84a8714ef5">
+      <Execution id="e248b1f2-cc1c-46c2-b97b-eac9bcdae1dc" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R16SettingsPathEditorBehaviorTests" name="EditorCatalogKeepsRemoteTargetOutOfLocalOpenActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.WheelUsesTheSameRangeAndDoesNotClampAtTheBoundary" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="5a745ab4-0efd-de05-c53a-db73a6d8ddf3">
+      <Execution id="03fcc889-b7bf-41dd-9338-65a02f55b0fd" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="WheelUsesTheSameRangeAndDoesNotClampAtTheBoundary" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\debug\net472\gamesavecenter.playnite.tests.dll" id="1afd0400-0342-4ec1-7ca7-42397a920b70">
+      <Execution id="cc1838bb-433f-4c93-ba24-0b8e713ae705" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Debug\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="988447a8-cecd-e7d8-46a0-52c44440f167" executionId="0935294c-05a2-4e4b-b6dd-82b6564b8df4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cf61e045-8a2c-15d7-e142-bba8a8390a7c" executionId="7a89ff2c-9ad9-47ee-b6a2-6ca6c39d07f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="05887905-cb96-a234-bb36-7aeb05aca849" executionId="c5524be0-de17-45ef-98ec-f55292d23394" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0d83bba8-db34-ec1b-a105-2d5dd6724fb7" executionId="965a45dc-3cbb-48ac-9ab7-bf224cdeaa03" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7ba77ad1-19df-6fc9-5156-b228338fb5cd" executionId="4528c1df-4cc7-4959-82ca-4e6b6760a0a0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df7ae6db-686a-9e46-440e-0b09195df04d" executionId="00d6f380-71a3-4f91-b043-89dac8e26ca7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6a0cbe70-d833-667f-f853-d64a93b938f4" executionId="fc8e1d4b-ff27-45d7-851a-baf5b03cc85a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cab20288-6759-4caf-843d-96739e19b471" executionId="0815d11f-8b26-4c31-9736-a366fcef4e83" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e468f49-15d7-bd0d-4e90-a65da6b1e50c" executionId="373333d6-d59f-4a04-b8e0-44be8237dfb0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5a70057c-ca33-5193-bed1-7ee07998b81f" executionId="ea5fd778-1565-41ba-9d3e-a9628af5f497" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7c19e2d0-01b9-52c1-3a4f-2898776747e6" executionId="02cbac54-9832-4691-8b46-7654ad0b5dcf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5a745ab4-0efd-de05-c53a-db73a6d8ddf3" executionId="03fcc889-b7bf-41dd-9338-65a02f55b0fd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9a6945c9-c8b9-a967-65af-6fd7a791ab81" executionId="57c280ac-bb56-42b8-a5c7-b74989432bc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d9649810-435f-647b-c7dc-5115af745d02" executionId="39065937-0674-4e6b-8e42-b81159ceacdb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5fcb6040-68f2-4077-64fe-cfff2fa4a420" executionId="7c2ccaf6-f0e0-4998-8afb-275f9b736b26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="325cbce0-803d-8228-554e-31c4c3181d6c" executionId="39d8a9f4-9ec2-4bef-ba09-11d21cf8c32a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e0a9370-9c22-63cd-a9c3-fa84a8714ef5" executionId="e248b1f2-cc1c-46c2-b97b-eac9bcdae1dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="23e5f235-7201-3f34-3663-d80877a3cdb8" executionId="4c4d13f3-e45f-4606-b3aa-4e6b37783fab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8b2781b9-f457-953a-7852-f7ea19281964" executionId="666e4c0c-9127-4589-9a4f-6054296c9fc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1763ee5f-fbcd-c86a-0072-e352563f3501" executionId="7e86c000-d05b-4832-ae47-4c1666b8ccbe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1afd0400-0342-4ec1-7ca7-42397a920b70" executionId="cc1838bb-433f-4c93-ba24-0b8e713ae705" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="21" executed="21" passed="16" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.52]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.59]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.79]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:01.79]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.79]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+[xUnit.net 00:00:01.79]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.get_Root() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 20&#xD;
+[xUnit.net 00:00:01.79]            在 GameSaveCenter.Playnite.Tests.NumericInputTests.FindRepositoryRoot() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\NumericInputTests.cs:行号 129&#xD;
+[xUnit.net 00:00:01.79]            在 GameSaveCenter.Playnite.Tests.NumericInputTests.KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\NumericInputTests.cs:行号 121&#xD;
+[xUnit.net 00:00:03.98]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:03.98]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.98]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+[xUnit.net 00:00:03.98]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.get_Root() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 20&#xD;
+[xUnit.net 00:00:03.98]            在 GameSaveCenter.Playnite.Tests.NumericInputTests.FindRepositoryRoot() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\NumericInputTests.cs:行号 129&#xD;
+[xUnit.net 00:00:03.98]            在 GameSaveCenter.Playnite.Tests.NumericInputTests.ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\NumericInputTests.cs:行号 100&#xD;
+[xUnit.net 00:00:04.03]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:04.03]       Stack Trace:&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.AssertAssemblyMatchesSource() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 24&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.R03LongPathTests.DetailTextBoxStaysWithinFiniteViewportAndKeepsSelectableExactText() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R03LongPathTests.cs:行号 35&#xD;
+[xUnit.net 00:00:04.03]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:04.03]       Stack Trace:&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.AssertAssemblyMatchesSource() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 24&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.R03LongPathTests.ProductionPathEntrancesKeepPreviewAndExactCopySeparate() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R03LongPathTests.cs:行号 80&#xD;
+[xUnit.net 00:00:04.03]       System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=95b5dbf9259f978a2978802bf8d5c2a24ee00fd0，源码根 HEAD=95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\ed29733e-22f6-4089-a48b-d9c143b050a9\ed29733e-22f6-4089-a48b-d9c143b050a9\assembly\dl3\0cdb8330\86e8c54c_4b66dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。&#xD;
+[xUnit.net 00:00:04.03]       Stack Trace:&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 49&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.get_Root() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 20&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.R16SettingsPathEditorSourceTests.SettingsSurfaceUsesOneCurrentFieldEditorAndStrictOpenGuard() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R16SettingsPathEditorSourceTests.cs:行号 12&#xD;
+[xUnit.net 00:00:04.05]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-28T03:42:31.6353899+08:00">
+        <Text>[xUnit.net 00:00:01.79]     GameSaveCenter.Playnite.Tests.NumericInputTests.KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-28T03:42:33.8281833+08:00">
+        <Text>[xUnit.net 00:00:03.98]     GameSaveCenter.Playnite.Tests.NumericInputTests.ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-28T03:42:33.8747196+08:00">
+        <Text>[xUnit.net 00:00:04.02]     GameSaveCenter.Playnite.Tests.R03LongPathTests.DetailTextBoxStaysWithinFiniteViewportAndKeepsSelectableExactText [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-28T03:42:33.8806470+08:00">
+        <Text>[xUnit.net 00:00:04.03]     GameSaveCenter.Playnite.Tests.R03LongPathTests.ProductionPathEntrancesKeepPreviewAndExactCopySeparate [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-28T03:42:33.8842035+08:00">
+        <Text>[xUnit.net 00:00:04.03]     GameSaveCenter.Playnite.Tests.R16SettingsPathEditorSourceTests.SettingsSurfaceUsesOneCurrentFieldEditorAndStrictOpenGuard [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

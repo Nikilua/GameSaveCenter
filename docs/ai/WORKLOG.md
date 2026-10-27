@@ -12491,3 +12491,7 @@ CI快照run 40554157661：baseline job 122365585853已过Render QA和WPF静态�
 ## 2026-10-28 Round5 U03-06/07 下拉与勾选去重
 
 既有共享ComboBox已分离20 DIP箭头列与选中值，长选中项有省略和提示，Popup限高/边缘翻转/竖向滚动/方向键导航有行为覆盖。`GscCheckBox`已有不确定标记、长标签换行和同一命中面；Q10已验证Light/Dark命中、Space、禁用行为。本批只增加长选中项/箭头列源码守护测试，不改生产XAML、游戏选框、DropDownClosed语义或保存时机。提交`5300a2b5c70f7736f1f46617667de73749b8d883`已push；SDK8.0.423精确提交13/13、0 skip，Source Validation、XAML26/26、WPF静态37/0 errors通过。CI run `40567683673` baseline `122413211080`与SDK10 `122413210438`均在编译测试。所有记录见`evidence/U03-06-07/BASELINE.md`；真实Playnite/UIA/物理输入/DPI仍待验。
+
+## 2026-10-28 Round5 U03-08/U04-01/02
+
+U03-08盘点确认数值范围/溢出/滚轮、路径预览/校验/缺失目录以及本地打开防护已有实现，故不重造生产控件。U04-01在`AcrylicReferenceControls.xaml`与既有生产共享模板使用共享120ms hover、100ms press令牌，DisclosureCard转场用fast令牌；不确定进度的2秒扫动保留并注明语义。U04-02在生产WPF-UI按钮状态模板上补双主题8兄弟×3轮快速合成hover扫过、归零与重新进入验证。生产实现`631b218e`，STA合并测试`95b5dbf9`，双主题测试`0c7c4268`，均已推送。SDK8.0.423定向21/21+2/2、0 skip；source validation、XAML26/26、WPF静态37/0 error、RenderHarness 0/0和Render QA 394 PNG/0 PROBLEM通过。原先跨STA事实隔离失败诊断被修正，保留TRX；最新CI run `40572542627` baseline/SDK10 jobs `122430277192`/`122430276522`仍运行，required-checks接口403。真实Playnite/UIA客户端/物理鼠标/实体DPI未验。阶段Render QA输出清理因先前PowerShell操作遭拒，未重试或换Shell；保留`.tmp`目录，只归档并核对报告。
