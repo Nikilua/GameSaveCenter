@@ -1,0 +1,45 @@
+{
+  "sdk": "8.0.423",
+  "sourceBaseline": "e23f3a384485142de45f51a58377ac711f2f4de1",
+  "changedSource": "tests/GameSaveCenter.Playnite.Tests/R03TextScaleTests.cs",
+  "runs": [
+    {
+      "file": "U01-07-08-focused-final.trx",
+      "sha256": "55c565ce892924cd6078c194619a0427bf5040f61ed830cc33c89f0fc0f7a8cb",
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "result": "passed",
+      "coverage": "R03BilingualLengthTests|R03LongPathTests|R03TextScaleTests|R06ClipboardBehaviorTests|R15TaskFailureCopyTests|R21SelectableTechnicalTextBehaviorTests|Q24FractionalDpiTypographyBehaviorTests"
+    },
+    {
+      "file": "U01-07-08-text-scale-200-final.trx",
+      "sha256": "0bd07f5a631e6ac540aa802a124952cb0f83826c61a9977f3800a39dd101fce5",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "result": "passed",
+      "coverage": "production body/caption/button 200% logical font size, wrapped technical details and exact SelectAll text"
+    },
+    {
+      "file": "U01-07-08-text-scale-200.trx",
+      "sha256": "a28974231d7232de7f39ffb926c030ee2157ae9c3d8e4db512aa23b3f58614b2",
+      "total": 2,
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "result": "calibration failure; initial button-size assumption was wrong"
+    },
+    {
+      "file": "U01-07-08-text-scale-200-fixed.trx",
+      "sha256": "8933adecab8d896bcde2f53e47483ea9324919a986c94ecea58435efc7ef1b65",
+      "total": 2,
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "result": "calibration failure; observed production button baseline is 12 DIP, so 200% is 24 DIP"
+    }
+  ]
+}

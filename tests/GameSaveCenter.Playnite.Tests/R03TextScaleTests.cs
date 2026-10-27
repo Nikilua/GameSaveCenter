@@ -17,19 +17,21 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R03TextScaleTests
 {
     [Fact]
-    public void ProductionInputButtonAndHeaderGrowWithLargerTypography()
+    public void ProductionInputButtonAndHeaderGrowAtTwoHundredPercentTypography()
     {
         TestRepositoryContext.AssertAssemblyMatchesSource();
         Exception? failure = null;
         var measurements = new List<ControlMeasurement>();
+        const string fullTechnicalText = "错误码：BACKUP_FAILED\r\n路径：D:\\GameSaveCenter\\profiles\\中文游戏\\存档槽位-0001\\save.dat\r\n下一步：检查目录权限后重新验证。";
+        var selectedTechnicalText = string.Empty;
 
         var thread = new Thread(() =>
         {
             try
             {
                 var resources = LoadProductionResources();
-                resources["GscBodyFontSize"] = 24d;
-                resources["GscCaptionFontSize"] = 20d;
+                resources["GscBodyFontSize"] = 28d;
+                resources["GscCaptionFontSize"] = 24d;
 
                 var textBox = new TextBox
                 {
@@ -44,13 +46,27 @@ public sealed class R03TextScaleTests
                 {
                     Style = Assert.IsType<Style>(resources["GscWpfUiMediaBatchButton"]),
                     Content = "应用当前备注",
+                    // The production action baseline is 12 DIP; double that baseline with the other text tokens.
+                    FontSize = 24d,
+                    Margin = new Thickness(0, 0, 0, 8)
+                };
+                var technicalText = new TextBox
+                {
+                    Style = Assert.IsType<Style>(resources["GscWpfUiTechnicalTextBox"]),
+                    Text = fullTechnicalText,
+                    TextWrapping = TextWrapping.Wrap,
+                    AcceptsReturn = true,
+                    VerticalContentAlignment = VerticalAlignment.Top,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    Width = 260,
+                    MaxHeight = 110,
                     Margin = new Thickness(0, 0, 0, 8)
                 };
                 var grid = new DataGrid
                 {
                     Style = Assert.IsType<Style>(resources["GscRedesignWorkspaceDataGrid"]),
-                    Width = 120,
-                    Height = 150,
+                    Width = 180,
+                    Height = 180,
                     ItemsSource = new[] { "样本" },
                     AutoGenerateColumns = false,
                     HeadersVisibility = DataGridHeadersVisibility.Column
@@ -59,19 +75,20 @@ public sealed class R03TextScaleTests
                 {
                     Header = "本地时间",
                     Binding = new Binding("."),
-                    Width = new DataGridLength(96)
+                    Width = new DataGridLength(150)
                 });
 
-                var host = new StackPanel { Width = 260 };
+                var host = new StackPanel { Width = 280 };
                 host.Children.Add(textBox);
                 host.Children.Add(button);
+                host.Children.Add(technicalText);
                 host.Children.Add(grid);
                 using var window = new WindowHost(new Window
                 {
                     Resources = resources,
                     Content = host,
-                    Width = 300,
-                    Height = 420,
+                    Width = 320,
+                    Height = 540,
                     ShowInTaskbar = false,
                     ShowActivated = false,
                     WindowStyle = WindowStyle.None,
@@ -86,15 +103,25 @@ public sealed class R03TextScaleTests
                 var textBoxHost = FindVisualChildren<ScrollViewer>(textBox).Single();
                 measurements.Add(new ControlMeasurement("input", textBox.ActualHeight, textBox.DesiredSize.Height, textBoxHost.ActualHeight, textBoxHost.DesiredSize.Height));
                 measurements.Add(new ControlMeasurement("button", button.ActualHeight, button.DesiredSize.Height, FindVisualChildren<TextBlock>(button).Single(text => text.Text == "应用当前备注").ActualHeight, button.ActualHeight));
+                measurements.Add(new ControlMeasurement("technical details", technicalText.ActualHeight, technicalText.DesiredSize.Height, technicalText.FontSize, technicalText.ActualHeight));
                 measurements.Add(new ControlMeasurement("header", header.ActualHeight, header.DesiredSize.Height, headerText.ActualHeight, headerText.DesiredSize.Height));
+
+                Assert.Equal(28d, textBox.FontSize);
+                Assert.Equal(24d, FindVisualChildren<TextBlock>(button).Single(text => text.Text == "应用当前备注").FontSize);
+                Assert.Equal(28d, technicalText.FontSize);
+                Assert.Equal(24d, headerText.FontSize);
 
                 Assert.True(textBox.ActualHeight > 36, Describe(measurements[0]));
                 Assert.True(button.ActualHeight > 30, Describe(measurements[1]));
-                Assert.True(header.ActualHeight >= 42, Describe(measurements[2]));
+                Assert.True(technicalText.ActualHeight > 60 && technicalText.ActualHeight <= 110.5, Describe(measurements[2]));
+                Assert.True(header.ActualHeight >= 42, Describe(measurements[3]));
                 Assert.True(textBoxHost.ActualHeight >= textBoxHost.DesiredSize.Height - 0.5, Describe(measurements[0]));
-                Assert.True(headerText.ActualHeight >= headerText.DesiredSize.Height - 0.5, Describe(measurements[2]));
+                Assert.True(headerText.ActualHeight >= headerText.DesiredSize.Height - 0.5, Describe(measurements[3]));
                 Assert.Equal(TextWrapping.Wrap, FindVisualChildren<TextBlock>(button).Single(text => text.Text == "应用当前备注").TextWrapping);
                 Assert.Equal(TextTrimming.None, FindVisualChildren<TextBlock>(button).Single(text => text.Text == "应用当前备注").TextTrimming);
+                technicalText.SelectAll();
+                selectedTechnicalText = technicalText.SelectedText;
+                Assert.True(technicalText.IsReadOnly);
             }
             catch (Exception caught)
             {
@@ -106,7 +133,8 @@ public sealed class R03TextScaleTests
         thread.Join();
 
         Assert.Null(failure);
-        Assert.Equal(3, measurements.Count);
+        Assert.Equal(4, measurements.Count);
+        Assert.Equal(fullTechnicalText, selectedTechnicalText);
     }
 
     [Fact]

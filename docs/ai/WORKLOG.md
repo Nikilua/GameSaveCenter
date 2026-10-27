@@ -12452,3 +12452,7 @@ U01-03/04按当前真实实现去重并标已满足，无生产代码变更：�
 ## 2026-10-27 Round5 U01-05/06 辅助文字与图标批
 
 U01-05复用现有12 DIP Caption和Muted Brush；发现共享WPF-UI按钮普通禁用态仍将Chrome整体透明度降至0.72，语义Disabled Brush仅在高对比态生效。已改成普通/高对比共用动态禁用前景、控制底色和描边；palette禁用文字使用与辅助文字一致的4.5:1对比算法，更新Demo核心资源与静态备用令牌。测试覆盖普通/高对比语义、Light/Dark/跟随主题、层叠背景、控制填色、禁用行为和图标/DPI回归。U01-06复用既有16/24 DIP图标系统及光学/DPI探针，无产品改动。SDK8.0.423组合测试26/26、0 skip；`validate-source.py`通过；WPF静态31 XAML、0 errors/26 warnings/179 info；RenderHarness Release 0/0，render-qa双主题 `render-qa OK`、0 PROBLEM。证据位于`evidence/U01-05-06/`。真实Playnite/UIA/物理DPI未验；实现提交813adb09已推送；GitHub Actions push run远端待验，工具限制和下一步见`verification.json`；最终标准中文根入口和独立`scripts/build.cmd`仍待整轮最终候选。生成的398项临时渲染输出已复制报告并验证哈希，PowerShell定点清理遭执行策略拒绝，没有换shell或重试；详情见`cleanup.json`。
+
+## 2026-10-27 Round5 U01-07/08 双语长度与200%文本
+
+U01-07经现有生产实现和行为测试去重后标为已满足：按钮文本模板完整换行、不省略；双语长标签、路径、错误详情、键盘复制与可选技术文本已有覆盖。U01-08将R03TextScaleTests改为生产字号的两倍（Body 14→28、Caption/按钮12→24 DIP），并验证输入/按钮/表头/可滚动技术详情及精确全文选择，不使用Viewbox缩小；没有改生产资源。SDK8.0.423专项2/2和七类组合21/21、0 skip，TRX/SHA与字号校准失败记录见`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-07-08/`。真实Playnite/UIA/键盘/IME/物理DPI未验；push CI权限限制及整轮根入口和独立build.cmd继续待验。不清理其他任务TRX/TestResults。

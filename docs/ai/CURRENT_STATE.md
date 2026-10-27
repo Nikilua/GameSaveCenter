@@ -106,3 +106,7 @@ T01-04账本记录发现任务标题列缺失，已按计划补为“路径越�
 新增CLOSE-UI-01。根因是历史DataGrid剩余视口被560 DIP固定上限截断；本轮改为按当前PageHost扣除摘要/框架/详情后的剩余高度布局。复用既有UI-SCROLL-LAYOUT-REPAIR-20261020预算与滚动结构，没有修改候选表、共享滚动条、GamePicker、业务命令/绑定或恢复安全语义。
 
 提交前SDK8.0.423：相关WPF几何类11/11；完整Render QA重跑成功，3840×2160逻辑DIP下SaveHistoryGrid 1741×1695、2560×1440下1101×899，双主题和resize恢复通过。首次Render QA仅侧栏快速切换探针未settle，保留诊断后重跑通过。该证据是离屏逻辑DPI，不等同用户另一台机器或真实Playnite。当前候选完整中文根入口链待提交后执行；目标外机物理DPI仍待复核。32项账本的T00-07、T01-04、T01-08、T02-08、T03-05边界不因本条改变。
+
+## 2026-10-27 Round5 U01-07/08
+
+U01-07已通过既有生产按钮换行/无省略和长文案、路径、错误、复制行为覆盖去重满足。U01-08测试夹具升级到生产字号200%（Body 28、Caption/按钮24 DIP），覆盖输入、操作按钮、表头、可滚动技术详情及精确文本选择；SDK8.0.423专项2/2与组合21/21、0 skip。无生产资源改动，真实Playnite/UIA/键盘/IME/物理DPI仍未验。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-07-08/`。整轮中文根入口完整链、独立`scripts/build.cmd`与GitHub适用job仍待最终候选；不删除用户Round3 TRX或共享TestResults。

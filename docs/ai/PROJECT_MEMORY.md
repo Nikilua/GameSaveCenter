@@ -1300,3 +1300,7 @@ U01候选`7e61bba3`的GitHub run `40505231943`双SDK均失败于 `SaveAndTrainer
 ## Round5 U01-05/06 进度恢复点（2026-10-27）
 
 U01-05已统一共享WPF-UI按钮普通禁用态与高对比态：使用`GscDisabledTextBrush`、`GscControlFillBrush`和`GscControlStrokeBrush`，不再将整块Chrome设为0.72透明；DisabledText按对比算法更新，Caption原12 DIP/Muted语义Brush保持。U01-06去重为已满足，沿用16/24 DIP图标资源、光学对齐与Q24 DPI探针。SDK8.0.423组合26/26、0 skip；source validation、WPF静态检查、RenderHarness双主题render-qa均通过（0 PROBLEM）。详细前后对比、TRX及报告见`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-05-06/`。实现提交813adb09已推送但Actions push run远端待验（查询限制与下一步见verification.json）；真实Playnite宿主/UIA/物理DPI和整轮最终中文根入口/独立`scripts/build.cmd`仍待验。阶段临时渲染输出的报告哈希已归档；唯一清理命令被执行策略阻止，记录于`cleanup.json`，不改用别的Shell。保留Round3 TRX及共享TestResults。
+
+## 2026-10-27 Round5 U01-07/08恢复点
+
+U01-07去重后沿用生产按钮完整换行/无省略模板与现有长路径、错误详情、剪贴板、选择和UIA键盘行为测试，状态为已满足。U01-08加强`R03TextScaleTests`到生产Body 14→28、Caption与按钮12→24 DIP，测量控件扩展、技术详情可滚动且完整选择；SDK8.0.423专项2/2、组合21/21、0 skip。唯一源码改动是测试夹具，未更改生产XAML/资源；详细记录及TRX/SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U01-07-08/`。真实Playnite、UIA/键盘/IME和物理DPI仍待验；本轮推送后的CI/Actions需按实际提交核实，整轮中文入口链与独立`scripts/build.cmd`留待最终候选。保留所有Round3 TRX和共享TestResults；本批没有新临时构建或渲染输出。
