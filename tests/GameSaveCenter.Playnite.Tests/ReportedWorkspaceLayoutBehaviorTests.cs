@@ -1091,6 +1091,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var saveCompactRows = 0;
         var saveCompactGap = 0d;
         var saveWideRows = 0;
+        var saveWidePageWidth = 0d;
+        var saveWideActionsWidth = 0d;
         var saveWideBottomMargin = 0d;
         var inboxCompactRows = 0;
         var inboxCompactGap = 0d;
@@ -1122,10 +1124,16 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 // The selected-version inspector otherwise owns half the window;
                 // the former Auto column appeared to fit only by overflowing it.
                 ((DataGrid)saveView.FindName("SaveHistoryGrid")!).SelectedItem = null;
+                // Hosted Windows runners may clamp the HWND to their desktop work area.
+                // Pin the page's logical layout width so this assertion exercises a wide
+                // page even when the test window itself extends beyond the visible desktop.
+                saveView.Width = 1800;
                 saveWindow.Width = 1800;
                 saveView.ApplyResponsiveLayout(1800, 720);
                 FlushLayout(saveWindow);
                 (saveWideRows, _) = MeasureWrapRows(saveActions, saveView);
+                saveWidePageWidth = saveView.ActualWidth;
+                saveWideActionsWidth = saveActions.ActualWidth;
                 saveWideBottomMargin = saveActions.Children.OfType<FrameworkElement>().Max(child => child.Margin.Bottom);
 
                 var mediaView = new MediaCenterView { DataContext = CreateMediaContext() };
@@ -1251,7 +1259,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Save rows={saveCompactRows}, gap={saveCompactGap:0.##} DIP, wide rows={saveWideRows}, restored bottom={saveWideBottomMargin:0.##}; Inbox rows={inboxCompactRows}, gap={inboxCompactGap:0.##} DIP, wide rows={inboxWideRows}, restored bottom={inboxWideBottomMargin:0.##}");
+        output.WriteLine($"{theme} Save rows={saveCompactRows}, gap={saveCompactGap:0.##} DIP, wide rows={saveWideRows}, page={saveWidePageWidth:0.##} DIP, actions={saveWideActionsWidth:0.##} DIP, restored bottom={saveWideBottomMargin:0.##}; Inbox rows={inboxCompactRows}, gap={inboxCompactGap:0.##} DIP, wide rows={inboxWideRows}, restored bottom={inboxWideBottomMargin:0.##}");
         foreach (var sample in mediaPresetSamples)
             output.WriteLine($"{theme} Media preset {sample}");
         foreach (var sample in mediaSecondaryActionSamples)

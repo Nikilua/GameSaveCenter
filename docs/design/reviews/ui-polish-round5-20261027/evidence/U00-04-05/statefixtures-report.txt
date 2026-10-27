@@ -1,0 +1,503 @@
+GameSaveCenter production workspace state fixtures
+Generated: 2026-10-27 17:16:15
+States: Ready, Empty, Loading, Error, Stale, Offline
+Pages: SaveHistory, MediaInbox, MediaDetails, MaintenanceAudit
+
+  binding-surface: all required media/maintenance state properties present
+  MediaInbox fixture state=Ready theme=Light size=1040x700: target=712x685, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-light-1040x700-Ready.png: 712x685 DIP, 126731 bytes
+  MediaDetails fixture state=Ready theme=Light size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-light-1040x700-Ready.png: 712x700 DIP, 97712 bytes
+  MaintenanceAudit fixture state=Ready theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-light-1040x700-Ready.png: 744x389 DIP, 43891 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Light size=1040x700: target=728x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1040x700-Ready.png: 728x657 DIP, 107524 bytes
+  SaveHistory fixture state=Ready theme=Light size=1040x700: target=728x565, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-light-1040x700-Ready.png: 728x565 DIP, 78844 bytes
+  MediaInbox fixture state=Empty theme=Light size=1040x700: target=712x685, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-light-1040x700-Empty.png: 712x685 DIP, 69638 bytes
+  MediaDetails fixture state=Empty theme=Light size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-light-1040x700-Empty.png: 712x700 DIP, 97920 bytes
+  MaintenanceAudit fixture state=Empty theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-light-1040x700-Empty.png: 744x389 DIP, 13509 bytes
+  SaveHistory fixture state=Empty theme=Light size=1040x700: target=728x559, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Empty: rows=0, emptyText=Visible, staleVisible=False, historyOverlay=False
+  save-history-light-1040x700-Empty.png: 728x559 DIP, 51324 bytes
+  MediaInbox fixture state=Loading theme=Light size=1040x700: target=712x685, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1040x700-Loading.png: 712x685 DIP, 79606 bytes
+  MediaDetails fixture state=Loading theme=Light size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1040x700-Loading.png: 712x700 DIP, 98825 bytes
+  MaintenanceAudit fixture state=Loading theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1040x700-Loading.png: 744x389 DIP, 24259 bytes
+  SaveHistory fixture state=Loading theme=Light size=1040x700: target=728x559, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Loading: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1040x700-Loading.png: 728x559 DIP, 59740 bytes
+  MediaInbox fixture state=Error theme=Light size=1040x700: target=712x685, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1040x700-Error.png: 712x685 DIP, 87532 bytes
+  MediaDetails fixture state=Error theme=Light size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1040x700-Error.png: 712x700 DIP, 102422 bytes
+  MaintenanceAudit fixture state=Error theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1040x700-Error.png: 744x389 DIP, 29731 bytes
+  SaveHistory fixture state=Error theme=Light size=1040x700: target=728x559, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Error: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1040x700-Error.png: 728x559 DIP, 67185 bytes
+  MediaInbox fixture state=Stale theme=Light size=1040x700: target=712x757, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-light-1040x700-Stale.png: 712x757 DIP, 141518 bytes
+  MediaDetails fixture state=Stale theme=Light size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-light-1040x700-Stale.png: 712x700 DIP, 100711 bytes
+  MaintenanceAudit fixture state=Stale theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-light-1040x700-Stale.png: 744x389 DIP, 43854 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Light size=1040x700: target=728x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1040x700-Stale.png: 728x657 DIP, 107882 bytes
+  SaveHistory fixture state=Stale theme=Light size=1040x700: target=728x628, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  SaveHistory fixture data state=Stale: rows=12, emptyText=Collapsed, staleVisible=True, historyOverlay=False
+  save-history-light-1040x700-Stale.png: 728x628 DIP, 88912 bytes
+  MediaInbox fixture state=Offline theme=Light size=1040x700: target=712x699, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1040x700-Offline.png: 712x699 DIP, 91083 bytes
+  MediaDetails fixture state=Offline theme=Light size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1040x700-Offline.png: 712x700 DIP, 100471 bytes
+  MaintenanceAudit fixture state=Offline theme=Light size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1040x700-Offline.png: 744x389 DIP, 26483 bytes
+  SaveHistory fixture state=Offline theme=Light size=1040x700: target=728x559, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Offline: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1040x700-Offline.png: 728x559 DIP, 63793 bytes
+  SaveHistoryMultiSelectLongText theme=Light size=1040x700: selected=2, longNote=113 chars, sourceDevice=PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01
+  SaveHistoryMultiSelectLongText fixture state=Ready theme=Light size=1040x700: target=728x565, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  save-history-light-1040x700-multiselect-long-text.png: 728x565 DIP, 80795 bytes
+  MediaInbox fixture state=Ready theme=Light size=1100x720: target=772x705, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-light-1100x720-Ready.png: 772x705 DIP, 127738 bytes
+  MediaDetails fixture state=Ready theme=Light size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-light-1100x720-Ready.png: 772x720 DIP, 107815 bytes
+  MaintenanceAudit fixture state=Ready theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-light-1100x720-Ready.png: 804x409 DIP, 44720 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Light size=1100x720: target=788x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1100x720-Ready.png: 788x657 DIP, 108421 bytes
+  SaveHistory fixture state=Ready theme=Light size=1100x720: target=788x565, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-light-1100x720-Ready.png: 788x565 DIP, 84279 bytes
+  MediaInbox fixture state=Empty theme=Light size=1100x720: target=772x629, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-light-1100x720-Empty.png: 772x629 DIP, 69912 bytes
+  MediaDetails fixture state=Empty theme=Light size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-light-1100x720-Empty.png: 772x720 DIP, 106016 bytes
+  MaintenanceAudit fixture state=Empty theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-light-1100x720-Empty.png: 804x409 DIP, 13790 bytes
+  SaveHistory fixture state=Empty theme=Light size=1100x720: target=788x559, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Empty: rows=0, emptyText=Visible, staleVisible=False, historyOverlay=False
+  save-history-light-1100x720-Empty.png: 788x559 DIP, 51940 bytes
+  MediaInbox fixture state=Loading theme=Light size=1100x720: target=772x629, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1100x720-Loading.png: 772x629 DIP, 79744 bytes
+  MediaDetails fixture state=Loading theme=Light size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1100x720-Loading.png: 772x720 DIP, 106456 bytes
+  MaintenanceAudit fixture state=Loading theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1100x720-Loading.png: 804x409 DIP, 24694 bytes
+  SaveHistory fixture state=Loading theme=Light size=1100x720: target=788x559, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Loading: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1100x720-Loading.png: 788x559 DIP, 60427 bytes
+  MediaInbox fixture state=Error theme=Light size=1100x720: target=772x629, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1100x720-Error.png: 772x629 DIP, 87727 bytes
+  MediaDetails fixture state=Error theme=Light size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1100x720-Error.png: 772x720 DIP, 111125 bytes
+  MaintenanceAudit fixture state=Error theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1100x720-Error.png: 804x409 DIP, 30267 bytes
+  SaveHistory fixture state=Error theme=Light size=1100x720: target=788x559, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Error: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1100x720-Error.png: 788x559 DIP, 67703 bytes
+  MediaInbox fixture state=Stale theme=Light size=1100x720: target=772x777, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-light-1100x720-Stale.png: 772x777 DIP, 142577 bytes
+  MediaDetails fixture state=Stale theme=Light size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-light-1100x720-Stale.png: 772x720 DIP, 100873 bytes
+  MaintenanceAudit fixture state=Stale theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-light-1100x720-Stale.png: 804x409 DIP, 44800 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Light size=1100x720: target=788x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1100x720-Stale.png: 788x657 DIP, 108801 bytes
+  SaveHistory fixture state=Stale theme=Light size=1100x720: target=788x628, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  SaveHistory fixture data state=Stale: rows=12, emptyText=Collapsed, staleVisible=True, historyOverlay=False
+  save-history-light-1100x720-Stale.png: 788x628 DIP, 94409 bytes
+  MediaInbox fixture state=Offline theme=Light size=1100x720: target=772x643, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1100x720-Offline.png: 772x643 DIP, 92131 bytes
+  MediaDetails fixture state=Offline theme=Light size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1100x720-Offline.png: 772x720 DIP, 107642 bytes
+  MaintenanceAudit fixture state=Offline theme=Light size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1100x720-Offline.png: 804x409 DIP, 27029 bytes
+  SaveHistory fixture state=Offline theme=Light size=1100x720: target=788x559, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Offline: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1100x720-Offline.png: 788x559 DIP, 64737 bytes
+  SaveHistoryMultiSelectLongText theme=Light size=1100x720: selected=2, longNote=113 chars, sourceDevice=PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01
+  SaveHistoryMultiSelectLongText fixture state=Ready theme=Light size=1100x720: target=788x565, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  save-history-light-1100x720-multiselect-long-text.png: 788x565 DIP, 86697 bytes
+  MediaInbox fixture state=Ready theme=Light size=1366x768: target=1010x677, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-light-1366x768-Ready.png: 1010x677 DIP, 129084 bytes
+  MediaDetails fixture state=Ready theme=Light size=1366x768: target=1010x768, dataSurface=MediaGrid=539x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-light-1366x768-Ready.png: 1010x768 DIP, 132470 bytes
+  MaintenanceAudit fixture state=Ready theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=665x413, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-light-1366x768-Ready.png: 1042x457 DIP, 104883 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Light size=1366x768: target=1026x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1366x768-Ready.png: 1026x657 DIP, 111952 bytes
+  SaveHistory fixture state=Ready theme=Light size=1366x768: target=506x644, dataSurface=SaveHistoryGrid=503x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-light-1366x768-Ready.png: 506x644 DIP, 76253 bytes
+  MediaInbox fixture state=Empty theme=Light size=1366x768: target=1010x677, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-light-1366x768-Empty.png: 1010x677 DIP, 72028 bytes
+  MediaDetails fixture state=Empty theme=Light size=1366x768: target=1010x768, dataSurface=MediaGrid=979x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-light-1366x768-Empty.png: 1010x768 DIP, 115133 bytes
+  MaintenanceAudit fixture state=Empty theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-light-1366x768-Empty.png: 1042x457 DIP, 14715 bytes
+  SaveHistory fixture state=Empty theme=Light size=1366x768: target=1026x538, dataSurface=SaveHistoryGrid=1023x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Empty: rows=0, emptyText=Visible, staleVisible=False, historyOverlay=False
+  save-history-light-1366x768-Empty.png: 1026x538 DIP, 58675 bytes
+  MediaInbox fixture state=Loading theme=Light size=1366x768: target=1010x677, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1366x768-Loading.png: 1010x677 DIP, 82327 bytes
+  MediaDetails fixture state=Loading theme=Light size=1366x768: target=1010x768, dataSurface=MediaGrid=979x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1366x768-Loading.png: 1010x768 DIP, 123310 bytes
+  MaintenanceAudit fixture state=Loading theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1366x768-Loading.png: 1042x457 DIP, 26096 bytes
+  SaveHistory fixture state=Loading theme=Light size=1366x768: target=1026x538, dataSurface=SaveHistoryGrid=1023x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Loading: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1366x768-Loading.png: 1026x538 DIP, 67213 bytes
+  MediaInbox fixture state=Error theme=Light size=1366x768: target=1010x677, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1366x768-Error.png: 1010x677 DIP, 90597 bytes
+  MediaDetails fixture state=Error theme=Light size=1366x768: target=1010x768, dataSurface=MediaGrid=979x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1366x768-Error.png: 1010x768 DIP, 127532 bytes
+  MaintenanceAudit fixture state=Error theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1366x768-Error.png: 1042x457 DIP, 32065 bytes
+  SaveHistory fixture state=Error theme=Light size=1366x768: target=1026x538, dataSurface=SaveHistoryGrid=1023x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Error: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1366x768-Error.png: 1026x538 DIP, 75161 bytes
+  MediaInbox fixture state=Stale theme=Light size=1366x768: target=1010x749, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-light-1366x768-Stale.png: 1010x749 DIP, 144486 bytes
+  MediaDetails fixture state=Stale theme=Light size=1366x768: target=1010x768, dataSurface=MediaGrid=539x154, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-light-1366x768-Stale.png: 1010x768 DIP, 132470 bytes
+  MaintenanceAudit fixture state=Stale theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=665x341, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-light-1366x768-Stale.png: 1042x457 DIP, 105201 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Light size=1366x768: target=1026x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-1366x768-Stale.png: 1026x657 DIP, 112356 bytes
+  SaveHistory fixture state=Stale theme=Light size=1366x768: target=506x707, dataSurface=SaveHistoryGrid=503x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  SaveHistory fixture data state=Stale: rows=12, emptyText=Collapsed, staleVisible=True, historyOverlay=False
+  save-history-light-1366x768-Stale.png: 506x707 DIP, 86101 bytes
+  MediaInbox fixture state=Offline theme=Light size=1366x768: target=1010x691, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-1366x768-Offline.png: 1010x691 DIP, 95837 bytes
+  MediaDetails fixture state=Offline theme=Light size=1366x768: target=1010x768, dataSurface=MediaGrid=979x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-1366x768-Offline.png: 1010x768 DIP, 124343 bytes
+  MaintenanceAudit fixture state=Offline theme=Light size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-1366x768-Offline.png: 1042x457 DIP, 28368 bytes
+  SaveHistory fixture state=Offline theme=Light size=1366x768: target=1026x538, dataSurface=SaveHistoryGrid=1023x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Offline: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-1366x768-Offline.png: 1026x538 DIP, 71645 bytes
+  SaveHistoryMultiSelectLongText theme=Light size=1366x768: selected=2, longNote=113 chars, sourceDevice=PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01
+  SaveHistoryMultiSelectLongText fixture state=Ready theme=Light size=1366x768: target=506x644, dataSurface=SaveHistoryGrid=503x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  save-history-light-1366x768-multiselect-long-text.png: 506x644 DIP, 76664 bytes
+  MediaInbox fixture state=Ready theme=Light size=2560x1440: target=1087x1349, dataSurface=MediaInboxGrid=1057x1080, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-light-2560x1440-Ready.png: 1087x1349 DIP, 135345 bytes
+  MediaDetails fixture state=Ready theme=Light size=2560x1440: target=2204x1440, dataSurface=MediaGrid=1221x789, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-light-2560x1440-Ready.png: 2204x1440 DIP, 213922 bytes
+  MaintenanceAudit fixture state=Ready theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=1859x1085, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-light-2560x1440-Ready.png: 2236x1129 DIP, 186846 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Light size=2560x1440: target=2220x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-2560x1440-Ready.png: 2220x657 DIP, 122439 bytes
+  SaveHistory fixture state=Ready theme=Light size=2560x1440: target=1103x1220, dataSurface=SaveHistoryGrid=1101x956, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-light-2560x1440-Ready.png: 1103x1220 DIP, 168513 bytes
+  MediaInbox fixture state=Empty theme=Light size=2560x1440: target=2204x1349, dataSurface=MediaInboxGrid=2173x1080, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-light-2560x1440-Empty.png: 2204x1349 DIP, 87783 bytes
+  MediaDetails fixture state=Empty theme=Light size=2560x1440: target=2204x1440, dataSurface=MediaGrid=2173x789, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-light-2560x1440-Empty.png: 2204x1440 DIP, 139530 bytes
+  MaintenanceAudit fixture state=Empty theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-light-2560x1440-Empty.png: 2236x1129 DIP, 24746 bytes
+  SaveHistory fixture state=Empty theme=Light size=2560x1440: target=2220x1144, dataSurface=SaveHistoryGrid=2217x956, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Empty: rows=0, emptyText=Visible, staleVisible=False, historyOverlay=False
+  save-history-light-2560x1440-Empty.png: 2220x1144 DIP, 68729 bytes
+  MediaInbox fixture state=Loading theme=Light size=2560x1440: target=2204x1349, dataSurface=MediaInboxGrid=2173x1080, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-2560x1440-Loading.png: 2204x1349 DIP, 99682 bytes
+  MediaDetails fixture state=Loading theme=Light size=2560x1440: target=2204x1440, dataSurface=MediaGrid=2173x789, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-2560x1440-Loading.png: 2204x1440 DIP, 148495 bytes
+  MaintenanceAudit fixture state=Loading theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-2560x1440-Loading.png: 2236x1129 DIP, 37232 bytes
+  SaveHistory fixture state=Loading theme=Light size=2560x1440: target=2220x1144, dataSurface=SaveHistoryGrid=2217x956, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Loading: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-2560x1440-Loading.png: 2220x1144 DIP, 78196 bytes
+  MediaInbox fixture state=Error theme=Light size=2560x1440: target=2204x1349, dataSurface=MediaInboxGrid=2173x1080, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-2560x1440-Error.png: 2204x1349 DIP, 109810 bytes
+  MediaDetails fixture state=Error theme=Light size=2560x1440: target=2204x1440, dataSurface=MediaGrid=2173x789, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-2560x1440-Error.png: 2204x1440 DIP, 157148 bytes
+  MaintenanceAudit fixture state=Error theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-2560x1440-Error.png: 2236x1129 DIP, 43663 bytes
+  SaveHistory fixture state=Error theme=Light size=2560x1440: target=2220x1144, dataSurface=SaveHistoryGrid=2217x956, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Error: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-2560x1440-Error.png: 2220x1144 DIP, 86746 bytes
+  MediaInbox fixture state=Stale theme=Light size=2560x1440: target=1087x1421, dataSurface=MediaInboxGrid=1057x1080, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-light-2560x1440-Stale.png: 1087x1421 DIP, 149860 bytes
+  MediaDetails fixture state=Stale theme=Light size=2560x1440: target=2204x1440, dataSurface=MediaGrid=1221x715, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-light-2560x1440-Stale.png: 2204x1440 DIP, 229825 bytes
+  MaintenanceAudit fixture state=Stale theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=1859x1013, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-light-2560x1440-Stale.png: 2236x1129 DIP, 200857 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Light size=2560x1440: target=2220x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-light-2560x1440-Stale.png: 2220x657 DIP, 122848 bytes
+  SaveHistory fixture state=Stale theme=Light size=2560x1440: target=1103x1283, dataSurface=SaveHistoryGrid=1101x956, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  SaveHistory fixture data state=Stale: rows=12, emptyText=Collapsed, staleVisible=True, historyOverlay=False
+  save-history-light-2560x1440-Stale.png: 1103x1283 DIP, 177918 bytes
+  MediaInbox fixture state=Offline theme=Light size=2560x1440: target=2204x1363, dataSurface=MediaInboxGrid=2173x1080, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-light-2560x1440-Offline.png: 2204x1363 DIP, 114737 bytes
+  MediaDetails fixture state=Offline theme=Light size=2560x1440: target=2204x1440, dataSurface=MediaGrid=2173x789, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-light-2560x1440-Offline.png: 2204x1440 DIP, 151765 bytes
+  MaintenanceAudit fixture state=Offline theme=Light size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-light-2560x1440-Offline.png: 2236x1129 DIP, 39802 bytes
+  SaveHistory fixture state=Offline theme=Light size=2560x1440: target=2220x1144, dataSurface=SaveHistoryGrid=2217x956, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Offline: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-light-2560x1440-Offline.png: 2220x1144 DIP, 82919 bytes
+  SaveHistoryMultiSelectLongText theme=Light size=2560x1440: selected=2, longNote=113 chars, sourceDevice=PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01
+  SaveHistoryMultiSelectLongText fixture state=Ready theme=Light size=2560x1440: target=1103x1144, dataSurface=SaveHistoryGrid=1101x880, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  save-history-light-2560x1440-multiselect-long-text.png: 1103x1144 DIP, 176156 bytes
+  MediaInbox fixture state=Ready theme=Dark size=1040x700: target=712x685, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-dark-1040x700-Ready.png: 712x685 DIP, 131128 bytes
+  MediaDetails fixture state=Ready theme=Dark size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-dark-1040x700-Ready.png: 712x700 DIP, 105334 bytes
+  MaintenanceAudit fixture state=Ready theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-dark-1040x700-Ready.png: 744x389 DIP, 44935 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Dark size=1040x700: target=728x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1040x700-Ready.png: 728x657 DIP, 112628 bytes
+  SaveHistory fixture state=Ready theme=Dark size=1040x700: target=728x565, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-dark-1040x700-Ready.png: 728x565 DIP, 83689 bytes
+  MediaInbox fixture state=Empty theme=Dark size=1040x700: target=712x685, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-dark-1040x700-Empty.png: 712x685 DIP, 72413 bytes
+  MediaDetails fixture state=Empty theme=Dark size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-dark-1040x700-Empty.png: 712x700 DIP, 105485 bytes
+  MaintenanceAudit fixture state=Empty theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1040x700-Empty.png: 744x389 DIP, 13604 bytes
+  SaveHistory fixture state=Empty theme=Dark size=1040x700: target=728x559, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Empty: rows=0, emptyText=Visible, staleVisible=False, historyOverlay=False
+  save-history-dark-1040x700-Empty.png: 728x559 DIP, 54662 bytes
+  MediaInbox fixture state=Loading theme=Dark size=1040x700: target=712x685, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1040x700-Loading.png: 712x685 DIP, 83773 bytes
+  MediaDetails fixture state=Loading theme=Dark size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1040x700-Loading.png: 712x700 DIP, 106721 bytes
+  MaintenanceAudit fixture state=Loading theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1040x700-Loading.png: 744x389 DIP, 25066 bytes
+  SaveHistory fixture state=Loading theme=Dark size=1040x700: target=728x559, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Loading: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1040x700-Loading.png: 728x559 DIP, 63583 bytes
+  MediaInbox fixture state=Error theme=Dark size=1040x700: target=712x685, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1040x700-Error.png: 712x685 DIP, 92310 bytes
+  MediaDetails fixture state=Error theme=Dark size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1040x700-Error.png: 712x700 DIP, 109966 bytes
+  MaintenanceAudit fixture state=Error theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1040x700-Error.png: 744x389 DIP, 31255 bytes
+  SaveHistory fixture state=Error theme=Dark size=1040x700: target=728x559, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Error: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1040x700-Error.png: 728x559 DIP, 71451 bytes
+  MediaInbox fixture state=Stale theme=Dark size=1040x700: target=712x757, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-dark-1040x700-Stale.png: 712x757 DIP, 146390 bytes
+  MediaDetails fixture state=Stale theme=Dark size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-dark-1040x700-Stale.png: 712x700 DIP, 107691 bytes
+  MaintenanceAudit fixture state=Stale theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-dark-1040x700-Stale.png: 744x389 DIP, 44751 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Dark size=1040x700: target=728x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1040x700-Stale.png: 728x657 DIP, 113036 bytes
+  SaveHistory fixture state=Stale theme=Dark size=1040x700: target=728x628, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  SaveHistory fixture data state=Stale: rows=12, emptyText=Collapsed, staleVisible=True, historyOverlay=False
+  save-history-dark-1040x700-Stale.png: 728x628 DIP, 94113 bytes
+  MediaInbox fixture state=Offline theme=Dark size=1040x700: target=712x699, dataSurface=MediaInboxGrid=681x340, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1040x700-Offline.png: 712x699 DIP, 96759 bytes
+  MediaDetails fixture state=Offline theme=Dark size=1040x700: target=712x700, dataSurface=MediaGrid=681x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1040x700-Offline.png: 712x700 DIP, 108420 bytes
+  MaintenanceAudit fixture state=Offline theme=Dark size=1040x700: target=744x389, dataSurface=MaintenanceAuditFindingsGrid=741x345, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1040x700-Offline.png: 744x389 DIP, 27788 bytes
+  SaveHistory fixture state=Offline theme=Dark size=1040x700: target=728x559, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Offline: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1040x700-Offline.png: 728x559 DIP, 68232 bytes
+  SaveHistoryMultiSelectLongText theme=Dark size=1040x700: selected=2, longNote=113 chars, sourceDevice=PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01
+  SaveHistoryMultiSelectLongText fixture state=Ready theme=Dark size=1040x700: target=728x565, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  save-history-dark-1040x700-multiselect-long-text.png: 728x565 DIP, 85686 bytes
+  MediaInbox fixture state=Ready theme=Dark size=1100x720: target=772x705, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-dark-1100x720-Ready.png: 772x705 DIP, 132062 bytes
+  MediaDetails fixture state=Ready theme=Dark size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-dark-1100x720-Ready.png: 772x720 DIP, 115400 bytes
+  MaintenanceAudit fixture state=Ready theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-dark-1100x720-Ready.png: 804x409 DIP, 45845 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Dark size=1100x720: target=788x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1100x720-Ready.png: 788x657 DIP, 113425 bytes
+  SaveHistory fixture state=Ready theme=Dark size=1100x720: target=788x565, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-dark-1100x720-Ready.png: 788x565 DIP, 89027 bytes
+  MediaInbox fixture state=Empty theme=Dark size=1100x720: target=772x629, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-dark-1100x720-Empty.png: 772x629 DIP, 72804 bytes
+  MediaDetails fixture state=Empty theme=Dark size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-dark-1100x720-Empty.png: 772x720 DIP, 113600 bytes
+  MaintenanceAudit fixture state=Empty theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1100x720-Empty.png: 804x409 DIP, 13891 bytes
+  SaveHistory fixture state=Empty theme=Dark size=1100x720: target=788x559, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Empty: rows=0, emptyText=Visible, staleVisible=False, historyOverlay=False
+  save-history-dark-1100x720-Empty.png: 788x559 DIP, 55098 bytes
+  MediaInbox fixture state=Loading theme=Dark size=1100x720: target=772x629, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1100x720-Loading.png: 772x629 DIP, 83802 bytes
+  MediaDetails fixture state=Loading theme=Dark size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1100x720-Loading.png: 772x720 DIP, 114891 bytes
+  MaintenanceAudit fixture state=Loading theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1100x720-Loading.png: 804x409 DIP, 25474 bytes
+  SaveHistory fixture state=Loading theme=Dark size=1100x720: target=788x559, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Loading: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1100x720-Loading.png: 788x559 DIP, 64016 bytes
+  MediaInbox fixture state=Error theme=Dark size=1100x720: target=772x629, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1100x720-Error.png: 772x629 DIP, 92758 bytes
+  MediaDetails fixture state=Error theme=Dark size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1100x720-Error.png: 772x720 DIP, 119220 bytes
+  MaintenanceAudit fixture state=Error theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1100x720-Error.png: 804x409 DIP, 31891 bytes
+  SaveHistory fixture state=Error theme=Dark size=1100x720: target=788x559, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Error: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1100x720-Error.png: 788x559 DIP, 72034 bytes
+  MediaInbox fixture state=Stale theme=Dark size=1100x720: target=772x777, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-dark-1100x720-Stale.png: 772x777 DIP, 147005 bytes
+  MediaDetails fixture state=Stale theme=Dark size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-dark-1100x720-Stale.png: 772x720 DIP, 107346 bytes
+  MaintenanceAudit fixture state=Stale theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-dark-1100x720-Stale.png: 804x409 DIP, 45704 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Dark size=1100x720: target=788x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1100x720-Stale.png: 788x657 DIP, 113849 bytes
+  SaveHistory fixture state=Stale theme=Dark size=1100x720: target=788x628, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  SaveHistory fixture data state=Stale: rows=12, emptyText=Collapsed, staleVisible=True, historyOverlay=False
+  save-history-dark-1100x720-Stale.png: 788x628 DIP, 99217 bytes
+  MediaInbox fixture state=Offline theme=Dark size=1100x720: target=772x643, dataSurface=MediaInboxGrid=741x360, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1100x720-Offline.png: 772x643 DIP, 97693 bytes
+  MediaDetails fixture state=Offline theme=Dark size=1100x720: target=772x720, dataSurface=MediaGrid=741x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1100x720-Offline.png: 772x720 DIP, 116068 bytes
+  MaintenanceAudit fixture state=Offline theme=Dark size=1100x720: target=804x409, dataSurface=MaintenanceAuditFindingsGrid=801x365, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1100x720-Offline.png: 804x409 DIP, 28569 bytes
+  SaveHistory fixture state=Offline theme=Dark size=1100x720: target=788x559, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Offline: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1100x720-Offline.png: 788x559 DIP, 68758 bytes
+  SaveHistoryMultiSelectLongText theme=Dark size=1100x720: selected=2, longNote=113 chars, sourceDevice=PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01
+  SaveHistoryMultiSelectLongText fixture state=Ready theme=Dark size=1100x720: target=788x565, dataSurface=SaveHistoryGrid=785x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  save-history-dark-1100x720-multiselect-long-text.png: 788x565 DIP, 91185 bytes
+  MediaInbox fixture state=Ready theme=Dark size=1366x768: target=1010x677, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-dark-1366x768-Ready.png: 1010x677 DIP, 134051 bytes
+  MediaDetails fixture state=Ready theme=Dark size=1366x768: target=1010x768, dataSurface=MediaGrid=539x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-dark-1366x768-Ready.png: 1010x768 DIP, 140928 bytes
+  MaintenanceAudit fixture state=Ready theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=665x413, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-dark-1366x768-Ready.png: 1042x457 DIP, 108349 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Dark size=1366x768: target=1026x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1366x768-Ready.png: 1026x657 DIP, 116940 bytes
+  SaveHistory fixture state=Ready theme=Dark size=1366x768: target=506x644, dataSurface=SaveHistoryGrid=503x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-dark-1366x768-Ready.png: 506x644 DIP, 80005 bytes
+  MediaInbox fixture state=Empty theme=Dark size=1366x768: target=1010x677, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-dark-1366x768-Empty.png: 1010x677 DIP, 75700 bytes
+  MediaDetails fixture state=Empty theme=Dark size=1366x768: target=1010x768, dataSurface=MediaGrid=979x154, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-dark-1366x768-Empty.png: 1010x768 DIP, 122576 bytes
+  MaintenanceAudit fixture state=Empty theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1366x768-Empty.png: 1042x457 DIP, 14984 bytes
+  SaveHistory fixture state=Empty theme=Dark size=1366x768: target=1026x538, dataSurface=SaveHistoryGrid=1023x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Empty: rows=0, emptyText=Visible, staleVisible=False, historyOverlay=False
+  save-history-dark-1366x768-Empty.png: 1026x538 DIP, 61862 bytes
+  MediaInbox fixture state=Loading theme=Dark size=1366x768: target=1010x677, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1366x768-Loading.png: 1010x677 DIP, 87572 bytes
+  MediaDetails fixture state=Loading theme=Dark size=1366x768: target=1010x768, dataSurface=MediaGrid=979x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1366x768-Loading.png: 1010x768 DIP, 131560 bytes
+  MaintenanceAudit fixture state=Loading theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1366x768-Loading.png: 1042x457 DIP, 26987 bytes
+  SaveHistory fixture state=Loading theme=Dark size=1366x768: target=1026x538, dataSurface=SaveHistoryGrid=1023x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Loading: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1366x768-Loading.png: 1026x538 DIP, 70719 bytes
+  MediaInbox fixture state=Error theme=Dark size=1366x768: target=1010x677, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1366x768-Error.png: 1010x677 DIP, 95862 bytes
+  MediaDetails fixture state=Error theme=Dark size=1366x768: target=1010x768, dataSurface=MediaGrid=979x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1366x768-Error.png: 1010x768 DIP, 136618 bytes
+  MaintenanceAudit fixture state=Error theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1366x768-Error.png: 1042x457 DIP, 33451 bytes
+  SaveHistory fixture state=Error theme=Dark size=1366x768: target=1026x538, dataSurface=SaveHistoryGrid=1023x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Error: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1366x768-Error.png: 1026x538 DIP, 79416 bytes
+  MediaInbox fixture state=Stale theme=Dark size=1366x768: target=1010x749, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-dark-1366x768-Stale.png: 1010x749 DIP, 149953 bytes
+  MediaDetails fixture state=Stale theme=Dark size=1366x768: target=1010x768, dataSurface=MediaGrid=539x154, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-dark-1366x768-Stale.png: 1010x768 DIP, 140928 bytes
+  MaintenanceAudit fixture state=Stale theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=665x341, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-dark-1366x768-Stale.png: 1042x457 DIP, 108149 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Dark size=1366x768: target=1026x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-1366x768-Stale.png: 1026x657 DIP, 117370 bytes
+  SaveHistory fixture state=Stale theme=Dark size=1366x768: target=506x707, dataSurface=SaveHistoryGrid=503x274, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  SaveHistory fixture data state=Stale: rows=12, emptyText=Collapsed, staleVisible=True, historyOverlay=False
+  save-history-dark-1366x768-Stale.png: 506x707 DIP, 89947 bytes
+  MediaInbox fixture state=Offline theme=Dark size=1366x768: target=1010x691, dataSurface=MediaInboxGrid=979x408, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-1366x768-Offline.png: 1010x691 DIP, 101376 bytes
+  MediaDetails fixture state=Offline theme=Dark size=1366x768: target=1010x768, dataSurface=MediaGrid=979x154, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-1366x768-Offline.png: 1010x768 DIP, 133180 bytes
+  MaintenanceAudit fixture state=Offline theme=Dark size=1366x768: target=1042x457, dataSurface=MaintenanceAuditFindingsGrid=1039x413, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-1366x768-Offline.png: 1042x457 DIP, 29684 bytes
+  SaveHistory fixture state=Offline theme=Dark size=1366x768: target=1026x538, dataSurface=SaveHistoryGrid=1023x274, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Offline: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-1366x768-Offline.png: 1026x538 DIP, 75688 bytes
+  SaveHistoryMultiSelectLongText theme=Dark size=1366x768: selected=2, longNote=113 chars, sourceDevice=PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01
+  SaveHistoryMultiSelectLongText fixture state=Ready theme=Dark size=1366x768: target=506x644, dataSurface=SaveHistoryGrid=503x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  save-history-dark-1366x768-multiselect-long-text.png: 506x644 DIP, 80452 bytes
+  MediaInbox fixture state=Ready theme=Dark size=2560x1440: target=1087x1349, dataSurface=MediaInboxGrid=1057x1080, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-inbox-dark-2560x1440-Ready.png: 1087x1349 DIP, 139032 bytes
+  MediaDetails fixture state=Ready theme=Dark size=2560x1440: target=2204x1440, dataSurface=MediaGrid=1221x789, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  media-details-dark-2560x1440-Ready.png: 2204x1440 DIP, 222548 bytes
+  MaintenanceAudit fixture state=Ready theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=1859x1085, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-audit-dark-2560x1440-Ready.png: 2236x1129 DIP, 192927 bytes
+  MaintenanceNextSteps fixture state=Ready theme=Dark size=2560x1440: target=2220x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-2560x1440-Ready.png: 2220x657 DIP, 127456 bytes
+  SaveHistory fixture state=Ready theme=Dark size=2560x1440: target=1103x1220, dataSurface=SaveHistoryGrid=1101x956, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-dark-2560x1440-Ready.png: 1103x1220 DIP, 175689 bytes
+  MediaInbox fixture state=Empty theme=Dark size=2560x1440: target=2204x1349, dataSurface=MediaInboxGrid=2173x1080, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-inbox-dark-2560x1440-Empty.png: 2204x1349 DIP, 90994 bytes
+  MediaDetails fixture state=Empty theme=Dark size=2560x1440: target=2204x1440, dataSurface=MediaGrid=2173x789, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  media-details-dark-2560x1440-Empty.png: 2204x1440 DIP, 146483 bytes
+  MaintenanceAudit fixture state=Empty theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  maintenance-audit-dark-2560x1440-Empty.png: 2236x1129 DIP, 24857 bytes
+  SaveHistory fixture state=Empty theme=Dark size=2560x1440: target=2220x1144, dataSurface=SaveHistoryGrid=2217x956, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Empty: rows=0, emptyText=Visible, staleVisible=False, historyOverlay=False
+  save-history-dark-2560x1440-Empty.png: 2220x1144 DIP, 72128 bytes
+  MediaInbox fixture state=Loading theme=Dark size=2560x1440: target=2204x1349, dataSurface=MediaInboxGrid=2173x1080, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-2560x1440-Loading.png: 2204x1349 DIP, 104694 bytes
+  MediaDetails fixture state=Loading theme=Dark size=2560x1440: target=2204x1440, dataSurface=MediaGrid=2173x789, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-2560x1440-Loading.png: 2204x1440 DIP, 156863 bytes
+  MaintenanceAudit fixture state=Loading theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-2560x1440-Loading.png: 2236x1129 DIP, 38042 bytes
+  SaveHistory fixture state=Loading theme=Dark size=2560x1440: target=2220x1144, dataSurface=SaveHistoryGrid=2217x956, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Loading: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-2560x1440-Loading.png: 2220x1144 DIP, 81928 bytes
+  MediaInbox fixture state=Error theme=Dark size=2560x1440: target=2204x1349, dataSurface=MediaInboxGrid=2173x1080, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-2560x1440-Error.png: 2204x1349 DIP, 115038 bytes
+  MediaDetails fixture state=Error theme=Dark size=2560x1440: target=2204x1440, dataSurface=MediaGrid=2173x789, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-2560x1440-Error.png: 2204x1440 DIP, 166974 bytes
+  MaintenanceAudit fixture state=Error theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-2560x1440-Error.png: 2236x1129 DIP, 45069 bytes
+  SaveHistory fixture state=Error theme=Dark size=2560x1440: target=2220x1144, dataSurface=SaveHistoryGrid=2217x956, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Error: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-2560x1440-Error.png: 2220x1144 DIP, 90882 bytes
+  MediaInbox fixture state=Stale theme=Dark size=2560x1440: target=1087x1421, dataSurface=MediaInboxGrid=1057x1080, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-inbox-dark-2560x1440-Stale.png: 1087x1421 DIP, 154450 bytes
+  MediaDetails fixture state=Stale theme=Dark size=2560x1440: target=2204x1440, dataSurface=MediaGrid=1221x715, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  media-details-dark-2560x1440-Stale.png: 2204x1440 DIP, 238428 bytes
+  MaintenanceAudit fixture state=Stale theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=1859x1013, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  maintenance-audit-dark-2560x1440-Stale.png: 2236x1129 DIP, 205420 bytes
+  MaintenanceNextSteps fixture state=Stale theme=Dark size=2560x1440: target=2220x657, dataSurface=missing, presenters=0, visiblePresenters=0, staleBanners=0, actionItems=3
+  maintenance-next-steps-dark-2560x1440-Stale.png: 2220x657 DIP, 127925 bytes
+  SaveHistory fixture state=Stale theme=Dark size=2560x1440: target=1103x1283, dataSurface=SaveHistoryGrid=1101x956, presenters=1, visiblePresenters=0, staleBanners=1, actionItems=3
+  SaveHistory fixture data state=Stale: rows=12, emptyText=Collapsed, staleVisible=True, historyOverlay=False
+  save-history-dark-2560x1440-Stale.png: 1103x1283 DIP, 185419 bytes
+  MediaInbox fixture state=Offline theme=Dark size=2560x1440: target=2204x1363, dataSurface=MediaInboxGrid=2173x1080, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-inbox-dark-2560x1440-Offline.png: 2204x1363 DIP, 120285 bytes
+  MediaDetails fixture state=Offline theme=Dark size=2560x1440: target=2204x1440, dataSurface=MediaGrid=2173x789, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  media-details-dark-2560x1440-Offline.png: 2204x1440 DIP, 161468 bytes
+  MaintenanceAudit fixture state=Offline theme=Dark size=2560x1440: target=2236x1129, dataSurface=MaintenanceAuditFindingsGrid=2233x1085, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  maintenance-audit-dark-2560x1440-Offline.png: 2236x1129 DIP, 41171 bytes
+  SaveHistory fixture state=Offline theme=Dark size=2560x1440: target=2220x1144, dataSurface=SaveHistoryGrid=2217x956, presenters=1, visiblePresenters=1, staleBanners=0, actionItems=0
+  SaveHistory fixture data state=Offline: rows=0, emptyText=Collapsed, staleVisible=False, historyOverlay=True
+  save-history-dark-2560x1440-Offline.png: 2220x1144 DIP, 86941 bytes
+  SaveHistoryMultiSelectLongText theme=Dark size=2560x1440: selected=2, longNote=113 chars, sourceDevice=PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01
+  SaveHistoryMultiSelectLongText fixture state=Ready theme=Dark size=2560x1440: target=1103x1144, dataSurface=SaveHistoryGrid=1101x880, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  save-history-dark-2560x1440-multiselect-long-text.png: 1103x1144 DIP, 183485 bytes
+statefixtures OK

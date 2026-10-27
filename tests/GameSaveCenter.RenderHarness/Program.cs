@@ -968,7 +968,8 @@ public static class Program
         report.AppendLine("GameSaveCenter 30-minute endurance probe");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         report.AppendLine("Host: real WPF STA Window with opacity 0.01; Playnite host and user input are not inferred");
-        report.AppendLine("Actions: workspace navigation, Media preview segment, selected details/inspector, Light/Dark theme");
+        report.AppendLine("Actions: workspace navigation, Media preview segment, selected details/inspector, scroll offset changes, synthetic task search text updates, Light/Dark theme");
+        report.AppendLine("Input boundary: TaskSearchTextBox.Text is changed programmatically against FakeDashboardData; this is a logical WPF update/layout proxy, not physical keyboard, IME, or presented-frame latency");
         report.AppendLine("Resources: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64, handles, timers, managed event handlers, animated owners and thumbnail cache; no forced GC in this probe");
         report.AppendLine($"DurationTargetSeconds: {durationSeconds}");
         report.AppendLine($"PostActionSettleSeconds: {postActionSettleSeconds}");
@@ -1041,6 +1042,7 @@ public static class Program
             var themeIndex = 0;
             var actionFailureCount = 0;
             var actionDurationsMs = new List<double>();
+            var actionMeasurementsMs = new Dictionary<string, List<double>>(StringComparer.Ordinal);
             var slowActionStacks = new List<string>();
             DispatcherTimer? actionTimer = null;
             DispatcherTimer? settleTimer = null;
@@ -1097,6 +1099,19 @@ public static class Program
                 window.UpdateLayout();
             }
 
+            void MeasureAction(string name, Action action)
+            {
+                var timer = Stopwatch.StartNew();
+                action();
+                timer.Stop();
+                if (!actionMeasurementsMs.TryGetValue(name, out var measurements))
+                {
+                    measurements = new List<double>();
+                    actionMeasurementsMs.Add(name, measurements);
+                }
+                measurements.Add(timer.Elapsed.TotalMilliseconds);
+            }
+
             void ExercisePreviewAndDetails(UserControl page)
             {
                 var mediaTabs = page is MediaCenterView
@@ -1135,14 +1150,50 @@ public static class Program
                             || button.Name == "TaskDetailsButton"));
                 if (detailButton != null)
                 {
-                    detailButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                    window.UpdateLayout();
+                    MeasureAction("details_open", () =>
+                    {
+                        detailButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        window.UpdateLayout();
+                    });
                     completedActions++;
                     var close = FindVisualChildren<Button>(page)
                         .FirstOrDefault(button => button.Visibility == Visibility.Visible
                             && button.Name.EndsWith("CloseDetailsButton", StringComparison.Ordinal));
-                    close?.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                    window.UpdateLayout();
+                    if (close != null)
+                    {
+                        MeasureAction("details_close", () =>
+                        {
+                            close.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                            window.UpdateLayout();
+                        });
+                    }
+                }
+
+                var scrollSurface = FindVisualChildren<ScrollViewer>(page)
+                    .Where(viewer => viewer.IsVisible && viewer.ScrollableHeight > 0)
+                    .OrderByDescending(viewer => viewer.ScrollableHeight)
+                    .FirstOrDefault();
+                if (scrollSurface != null)
+                {
+                    var targetOffset = cycle % 2 == 0 ? scrollSurface.ScrollableHeight * 0.75 : 0;
+                    MeasureAction("scroll_offset", () =>
+                    {
+                        scrollSurface.ScrollToVerticalOffset(targetOffset);
+                        window.UpdateLayout();
+                    });
+                    completedActions++;
+                }
+
+                if (page is TaskCenterView && page.FindName("TaskSearchTextBox") is TextBox taskSearch)
+                {
+                    var nextQuery = cycle % 2 == 0 ? "存档" : string.Empty;
+                    MeasureAction("synthetic_search_input", () =>
+                    {
+                        taskSearch.Text = nextQuery;
+                        taskSearch.CaretIndex = nextQuery.Length;
+                        window.UpdateLayout();
+                    });
+                    completedActions++;
                 }
             }
 
@@ -1154,7 +1205,8 @@ public static class Program
                     var current = pages[pageIndex];
                     currentPage = current.Name;
                     currentTheme = ThemeModes[themeIndex].Name;
-                    LayoutCurrentPage(current.View, ThemeModes[themeIndex].Mode);
+                    MeasureAction("workspace_switch_layout", () =>
+                        LayoutCurrentPage(current.View, ThemeModes[themeIndex].Mode));
                     ExercisePreviewAndDetails(current.View);
                     completedActions++;
                     cycle++;
@@ -1243,6 +1295,7 @@ public static class Program
                 report,
                 samples,
                 actionDurationsMs,
+                actionMeasurementsMs,
                 slowActionStacks,
                 cycle,
                 completedActions,
@@ -1269,6 +1322,7 @@ public static class Program
         StringBuilder report,
         IReadOnlyList<EnduranceSample> samples,
         IReadOnlyList<double> actionDurationsMs,
+        IReadOnlyDictionary<string, List<double>> actionMeasurementsMs,
         IReadOnlyList<string> slowActionStacks,
         int cycles,
         int completedActions,
@@ -1328,9 +1382,18 @@ public static class Program
                     report.AppendLine("HOTSPOT " + stack.Replace(Environment.NewLine, Environment.NewLine + "HOTSPOT "));
             }
         }
+        foreach (var action in actionMeasurementsMs.OrderBy(pair => pair.Key, StringComparer.Ordinal))
+        {
+            var durations = action.Value;
+            report.AppendLine(
+                $"SUMMARY action={action.Key} samples={durations.Count} "
+                + $"median_ms={CalculatePercentile(durations, 0.50):0.##} "
+                + $"p95_ms={CalculatePercentile(durations, 0.95):0.##} "
+                + $"max_ms={durations.Max():0.##}");
+        }
         report.AppendLine(
             "SUMMARY interpretation=bounded-window observation; trend fields are evidence, "
-            + "not proof of Playnite-host or mathematically unbounded behavior");
+            + "not proof of Playnite-host or mathematically unbounded behavior; WPF action durations are logical layout proxies and do not measure compositor/presented frames or physical input latency");
     }
 
     private static double CalculateSlopePerMinute(
@@ -1564,7 +1627,7 @@ public static class Program
         report.AppendLine("GameSaveCenter production workspace state fixtures");
         report.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
         report.AppendLine("States: Ready, Empty, Loading, Error, Stale, Offline");
-        report.AppendLine("Pages: MediaInbox, MediaDetails, MaintenanceAudit");
+        report.AppendLine("Pages: SaveHistory, MediaInbox, MediaDetails, MaintenanceAudit");
         report.AppendLine();
         var problems = new List<string>();
 
@@ -1637,7 +1700,55 @@ public static class Program
                                 problems,
                                 report);
                         }
+
+                        var saveData = new FakeDashboardData(12, state);
+                        if (state is WorkspaceFixtureState.Empty
+                            or WorkspaceFixtureState.Loading
+                            or WorkspaceFixtureState.Error
+                            or WorkspaceFixtureState.Offline)
+                            saveData.ClearTableDataForFixture();
+                        CaptureWorkspaceStateFixture(
+                            new SaveCenterView { DataContext = saveData },
+                            Path.Combine(outputRoot, $"save-history-{themeName}-{width}x{height}-{state}.png"),
+                            "SaveHistory",
+                            "SaveHistoryTableFrame",
+                            width,
+                            height,
+                            themeMode,
+                            state,
+                            view => SelectTab(view, 0),
+                            problems,
+                            report);
                     }
+
+                    // Use only this in-memory fake view model; selection changes are
+                    // visual input to the fixture and invoke no save/restore command.
+                    var longTextData = new FakeDashboardData(12, WorkspaceFixtureState.Ready);
+                    longTextData.Backups[0].Comment = "自动保存前手动创建的版本；这是隔离的长文本样张，包含 English build 1.2.3 和路径 D:\\Games\\Example\\Saved\\Profile\\VeryLongFolderName\\slot-01.sav。";
+                    longTextData.Backups[0].SourceDevice = "PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01";
+                    CaptureWorkspaceStateFixture(
+                        new SaveCenterView { DataContext = longTextData },
+                        Path.Combine(outputRoot, $"save-history-{themeName}-{width}x{height}-multiselect-long-text.png"),
+                        "SaveHistoryMultiSelectLongText",
+                        "SaveHistoryTableFrame",
+                        width,
+                        height,
+                        themeMode,
+                        WorkspaceFixtureState.Ready,
+                        view =>
+                        {
+                            SelectTab(view, 0);
+                            view.UpdateLayout();
+                            var grid = FindVisualChildren<DataGrid>(view).Single(candidate => candidate.Name == "SaveHistoryGrid");
+                            grid.SelectedItems.Clear();
+                            grid.SelectedItems.Add(longTextData.Backups[0]);
+                            grid.SelectedItems.Add(longTextData.Backups[1]);
+                            report.AppendLine($"  SaveHistoryMultiSelectLongText theme={themeMode} size={width}x{height}: selected={grid.SelectedItems.Count}, longNote={longTextData.Backups[0].Comment.Length} chars, sourceDevice={longTextData.Backups[0].SourceDevice}");
+                            if (grid.SelectedItems.Count != 2)
+                                problems.Add($"SaveHistory multi-select fixture selected {grid.SelectedItems.Count} rows at {themeMode} {width}x{height}");
+                        },
+                        problems,
+                        report);
                 }
             }
 
@@ -2205,11 +2316,11 @@ public static class Program
                 var presenters = FindVisualChildren<WorkspaceStatePresenter>(host).ToList();
                 var visiblePresenters = presenters.Where(presenter => presenter.Visibility == Visibility.Visible).ToList();
                 var staleBanners = FindVisualChildren<FrameworkElement>(host)
-                    .Where(element => element.Name is "MediaInboxStaleBanner" or "MediaCurrentStaleBanner" or "MaintenanceStaleBanner")
+                    .Where(element => element.Name is "SaveDetailsStaleBanner" or "MediaInboxStaleBanner" or "MediaCurrentStaleBanner" or "MaintenanceStaleBanner")
                     .Where(element => element.Visibility == Visibility.Visible)
                     .ToList();
                 var dataSurface = FindVisualChildren<FrameworkElement>(host)
-                    .FirstOrDefault(element => element.Name is "MediaInboxGrid" or "MediaGrid" or "MaintenanceAuditFindingsGrid");
+                    .FirstOrDefault(element => element.Name is "SaveHistoryGrid" or "MediaInboxGrid" or "MediaGrid" or "MaintenanceAuditFindingsGrid");
                 var actionItems = view.DataContext is FakeDashboardData fake
                     ? fake.MaintenanceActionItems.Count
                     : -1;
@@ -2229,6 +2340,40 @@ public static class Program
                     problems.Add($"{label} {state} {themeMode} {windowW}x{windowH} unexpectedly shows an overlay");
                 if (expectsStale && staleBanners.Count == 0)
                     problems.Add($"{label} stale {themeMode} {windowW}x{windowH} has no visible stale banner");
+                if (label == "SaveHistory" && view.DataContext is FakeDashboardData saveData)
+                {
+                    var saveGrid = dataSurface as DataGrid;
+                    var emptyText = FindVisualChildren<TextBlock>(host)
+                        .FirstOrDefault(text => text.Name == "SaveHistoryEmptyStateText");
+                    fixtureReport.AppendLine(
+                        $"  SaveHistory fixture data state={state}: rows={saveGrid?.Items.Count ?? -1}, " +
+                        $"emptyText={emptyText?.Visibility}, staleVisible={saveData.SaveDetailsStaleVisible}, historyOverlay={saveData.SaveHistoryStateOverlayVisible}");
+                    if (state == WorkspaceFixtureState.Empty
+                        && (saveGrid?.Items.Count != 0 || emptyText?.Visibility != Visibility.Visible))
+                        problems.Add($"SaveHistory empty {themeMode} {windowW}x{windowH} lacks its empty text or retains rows");
+                    if (state == WorkspaceFixtureState.Stale
+                        && (saveData.Backups.Count == 0 || !saveData.SaveDetailsStaleVisible || staleBanners.Count == 0))
+                        problems.Add($"SaveHistory stale {themeMode} {windowW}x{windowH} did not retain prior rows and show the stale banner");
+                    if ((state is WorkspaceFixtureState.Loading or WorkspaceFixtureState.Error or WorkspaceFixtureState.Offline)
+                        && saveGrid?.Items.Count != 0)
+                        problems.Add($"SaveHistory {state} {themeMode} {windowW}x{windowH} should use an empty initial-load fixture");
+                }
+                if (label == "SaveHistoryMultiSelectLongText" && view.DataContext is FakeDashboardData longTextData)
+                {
+                    var saveGrid = dataSurface as DataGrid;
+                    var renderedNote = saveGrid == null ? null : FindVisualChildren<TextBlock>(saveGrid)
+                        .FirstOrDefault(text => text.Text == longTextData.Backups[0].Comment);
+                    fixtureReport.AppendLine(
+                        $"  SaveHistory long-text contract: selected={saveGrid?.SelectedItems.Count ?? -1}, " +
+                        $"noteChars={longTextData.Backups[0].Comment.Length}, noteTrimming={renderedNote?.TextTrimming}, " +
+                        $"noteTooltip={(renderedNote?.ToolTip?.ToString() == longTextData.Backups[0].Comment)}");
+                    if (saveGrid?.SelectedItems.Count != 2)
+                        problems.Add($"SaveHistory multi-select state was lost at {themeMode} {windowW}x{windowH}");
+                    if (renderedNote == null
+                        || renderedNote.TextTrimming != TextTrimming.CharacterEllipsis
+                        || !Equals(renderedNote.ToolTip, longTextData.Backups[0].Comment))
+                        problems.Add($"SaveHistory long note was not realized with its full tooltip at {themeMode} {windowW}x{windowH}");
+                }
                 if (state == WorkspaceFixtureState.Ready && label == "MaintenanceNextSteps" && actionItems < 3)
                     problems.Add($"MaintenanceNextSteps ready {themeMode} {windowW}x{windowH} is missing maintenance action fixtures ({actionItems})");
             });

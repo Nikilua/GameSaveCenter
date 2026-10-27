@@ -1,0 +1,61 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "run_id": 40486014630,
+  "run_url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40486014630",
+  "head_sha": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+  "branch": "main",
+  "conclusion": "failure",
+  "sdk_baseline": "8.0.423",
+  "sdk10_review": "10.0.401",
+  "jobs": [
+    {
+      "job_id": 122127864273,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "conclusion": "failure",
+      "diagnostic_artifact_id": 12726540815,
+      "diagnostic_artifact_sha256": "9fc975a424e4cc6be3dcb2e01190c38592280827d225c80fe2ef66ce22700a40",
+      "diagnostic_artifact_url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40486014630/artifacts/12726540815"
+    },
+    {
+      "job_id": 122127864513,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "diagnostic_artifact_id": 12726057319,
+      "diagnostic_artifact_sha256": "a6335144c7503002e135e714f7522024fa3ed67ed660c1b5ef47d7aad8640e7b",
+      "diagnostic_artifact_url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40486014630/artifacts/12726057319"
+    }
+  ],
+  "test_summary_each_job": {
+    "total": 1676,
+    "passed": 1655,
+    "failed": 2,
+    "existing_skipped": 19,
+    "isolated_wpf_class_runs": 126
+  },
+  "failure": {
+    "test": "ReportedWorkspaceLayoutBehaviorTests.CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins",
+    "themes": ["Light", "Dark"],
+    "source_line": 1263,
+    "assertion": "expected one wide Save Center action row; measured two",
+    "observed_layout": "The Inbox wide row assertions passed. The Save Center row-gap controller correctly retained its 20 DIP gap while the panel still wrapped, so the fixture also observed a 20 DIP bottom margin.",
+    "category": "test fixture width assumption",
+    "assessment": "The fixture requested a 1800 DIP window and passed that value to ApplyResponsiveLayout, but did not pin or record the SaveCenterView's actual logical width. This is consistent with the hidden test window receiving a narrower effective page width on CI; it does not establish a production layout regression.",
+    "local_recheck_after_fixture_update": {
+      "sdk": "8.0.423",
+      "entire_class_total": 54,
+      "passed": 54,
+      "failed": 0,
+      "skipped": 0,
+      "wide_page_width_dip": 1800,
+      "wide_actions_width_dip": 1754.67,
+      "wide_rows": 1,
+      "restored_bottom_margin_dip": 0,
+      "trx": "tests/layout-class-sdk8423-fixture-width-fixed.trx",
+      "trx_sha256": "4A6C6253F46D791E0896839FF06E5D8384264D9FDA3CBA9B62A0CC8C54CB3FB7"
+    }
+  },
+  "repair_in_worktree": "Pin saveView.Width to the logical 1800 DIP page under test, keep the same one-row and restored-margin assertions, and report measured page/action widths in test output.",
+  "raw_diagnostic_artifacts": "The original SDK8 and SDK10 workflow artifacts remain retrievable using the artifact IDs and SHA-256 digests above; source logs were read from both jobs."
+}

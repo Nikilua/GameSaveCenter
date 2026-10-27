@@ -1,0 +1,57 @@
+{
+  "commit": "9dfbf5c4aaa999dabebd8d9dd7851f9fbc379585",
+  "sdk": "8.0.423",
+  "sourceValidation": "passed",
+  "xamlStructural": "25 files passed",
+  "wpfStatic": {
+    "xamlFiles": 31,
+    "errors": 0,
+    "warnings": 26,
+    "info": 179
+  },
+  "focusedTest": {
+    "total": 180,
+    "passed": 141,
+    "failed": 0,
+    "skipped": 0,
+    "duration": "23s",
+    "skipMeaning": "existing architecture skips, not counted as passes"
+  },
+  "renderQa": {
+    "exitCode": 0,
+    "pngCount": 394,
+    "problemCount": 0,
+    "reportSha256": "233C8CB02592D243E5886E8B0DB5CEC114567F1AF33685C057DCF77CBD30154E",
+    "dpi": "offscreen logical DIP 1.00",
+    "themes": [
+      "light",
+      "dark"
+    ]
+  },
+  "files": [
+    {
+      "file": "q14-current-9dfbf5c4.trx",
+      "sha256": "BE4D62D48387097DC2EB90D6A5C8CA3CF9E579D1E2911D6D9E951C1CFDC40A0D"
+    },
+    {
+      "file": "render-qa-report.txt",
+      "sha256": "233C8CB02592D243E5886E8B0DB5CEC114567F1AF33685C057DCF77CBD30154E"
+    },
+    {
+      "file": "Save-dark-1040x700.png",
+      "sha256": "F0A10EAEB3B3665DB84696C0E3B3DF6F916AB2D69AEB6F8D215E4BFAFC6DCAD0"
+    },
+    {
+      "file": "Save-dark-1366x768.png",
+      "sha256": "0433F1321662E697A3AA78E8470453661CDB188F3FF6FA50D5657F88DF1B8DA3"
+    },
+    {
+      "file": "Save-light-1040x700.png",
+      "sha256": "A0EBC21484F76A0F265C482D885444219D85C691B6B0BD0F6A6C202992CD8A10"
+    },
+    {
+      "file": "Save-light-1366x768.png",
+      "sha256": "776CD757905561E8E8C037A16A4098C450431EB3DCD54F677EA486DDA402A50D"
+    }
+  ]
+}

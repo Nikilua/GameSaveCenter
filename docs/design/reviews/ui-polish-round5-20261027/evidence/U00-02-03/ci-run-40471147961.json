@@ -1,0 +1,42 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "run": {
+    "id": 40471147961,
+    "number": 1304,
+    "attempt": 1,
+    "head": "5a816db8081060d6e5bb83e20352c867e4e5285d",
+    "event": "push",
+    "conclusion": "failure",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40471147961"
+  },
+  "jobs": [
+    {
+      "id": 122078289646,
+      "name": "编译、测试与打包",
+      "conclusion": "failure",
+      "summary": "1290 passed / 1 failed / 18 skipped; 36 WPF isolated classes",
+      "failure": "Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters；preset ComboBox selected text 未出现在模板视觉树；此前资源字典按需合并修正未解决",
+      "artifact": {
+        "id": 12718623617,
+        "name": "GameSaveCenter-build-diagnostics",
+        "size": 618022,
+        "sha256": "f35fdcb466c1f356f478c7d057fdf1fbd695e6235caf2127f1dd517f86bd1107"
+      }
+    },
+    {
+      "id": 122078289366,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "failure",
+      "summary": "1290 passed / 1 failed / 18 skipped; 36 WPF isolated classes",
+      "failure": "同一 Q14 selected-content failure",
+      "artifact": {
+        "id": 12719825548,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "size": 525001,
+        "sha256": "7a6b5814b8b6ac5e93ac1025720966b52ea94054b628db4466a5caf429ef8ad8"
+      }
+    }
+  ],
+  "failureClassification": "WPF behavior test failure; post-test render/static/package steps gated."
+}

@@ -1,0 +1,42 @@
+{
+  "stage": "U00-06 performance baseline temporary outputs",
+  "status": "pending_execution_policy_rejection",
+  "target": ".tmp/ui-polish-round5-u00-06",
+  "targetResolved": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\ui-polish-round5-u00-06",
+  "boundaryCheck": {
+    "repositoryRoot": "D:\\workplace\\github\\GameSaveCenter",
+    "insideRepositoryTmp": true,
+    "gitIgnored": true,
+    "reparsePoints": 0,
+    "activeRenderHarnessProcesses": 0,
+    "documentReference": "BASELINE.md contains the reproducible command output path; the report itself is archived alongside this manifest."
+  },
+  "contents": [
+    {
+      "path": ".tmp/ui-polish-round5-u00-06/perf/enduranceprobe-report.txt",
+      "bytes": 37150,
+      "sha256": "DEC2F3BCCBF98B53764935547572E3BCB7AA59FCBB81B85988E343A72CCCF6A4",
+      "archivedAt": "docs/design/reviews/ui-polish-round5-20261027/evidence/U00-06-07/enduranceprobe-report.txt"
+    },
+    {
+      "path": ".tmp/ui-polish-round5-u00-06/perf/round5-measurement-source.patch",
+      "bytes": 22450,
+      "sha256": "8D2BA455A8725B63114CC05C7574BF2E90A8C0DCA9B4190F1690ABD10AEA55AD",
+      "purpose": "temporary diff identity calculation"
+    }
+  ],
+  "totalBytes": 59600,
+  "diskSpace": {
+    "volume": "D:",
+    "beforeBytesFree": 9811570688,
+    "afterAttemptBytesFree": 9811570688,
+    "removedBytes": 0
+  },
+  "cleanupAttempts": [
+    {
+      "command": "PowerShell Remove-Item -LiteralPath .tmp/ui-polish-round5-u00-06 -Recurse -Force",
+      "result": "blocked before execution by command policy; no files were removed"
+    }
+  ],
+  "nextAction": "Retry this exact owned .tmp target only if execution policy permits the repository-required PowerShell cleanup."
+}

@@ -12411,3 +12411,26 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 `a83c008ab9228fb477b215d410eb82c2f6d11497` 的 `windows-build.yml` run `40480521410`（run #1307）在 SDK8.0.423 与 SDK10.0.401 job 均因同一 R23 `CloudTransferSummary...` 测试失败。两边共1622项：1602通过、1失败、19既有skip、0错误/超时/中止；根因是隔离 MaintenanceView 测试未提供 Playnite 宿主资源 `BaseTextBlockStyle`，在 Show/layout 前解析XAML时失败。主job后续render QA、WPF静态审查、打包按门禁跳过。原始job与artifact ID、SHA、故障摘录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40480521410.json`；两个CI诊断artifact保留在GitHub供到期前直接下载。
 
 将该测试移入独立的 `CloudTransferSummaryProductionBehaviorTests` WPF类，在测试拥有的Application中提供样式，并在finally关闭窗口和Application；避免全局Application跨同类测试影响键盘焦点和项目容器断言。SDK8.0.423独立进程验证新类1/1通过、原R23类其余8/8通过，0 skip。TRX已归档到同目录 `tests/` 并附入CI JSON。此次为本地定向修复；该修复提交、双SDK新run、中文根入口完整链均待执行，尚不结项U00-02/03。
+
+## 2026-10-27 Round5 U00-04/05/06 存档示范与性能基线
+
+- U00-04 仅调存档摘要区间距：卡片内距10/4→12/8 DIP、底部2→8、操作间隔10→12、辅助行距统一4；上下文胶囊映射到8/12 DIP步长。没有调整业务内容、命令/Binding、游戏选框、列表列/滚动或详情面板。1040×700和1366×768双主题没有新增换行/挤压，主表仍满足四条可读行。
+- U00-05 将SaveHistory纳入离屏 `statefixtures`：Light/Dark × 4尺寸 × Ready/Empty/Loading/Error/Stale/Offline加长文本多选，共56张状态图。Empty/首次Loading/Error/Offline使用空表假数据；Stale保留12行旧数据与过期提示；多选夹具选中2行并核对长备注省略和完整ToolTip。FakeDashboardData无数据库写入且不触发真实命令。
+- U00-06 扩展现有enduranceprobe，将切页布局、详情开/合、ScrollViewer offset、任务搜索输入分别记录n/median/P95/max。SDK8.0.423 Release RenderHarness编译0 warning/0 error；60秒动作+30秒稳定观察，68周期/290步骤、10资源样本、0操作失败。受控1040×700 DIP、7页、60条内存合成数据、Light/Dark、无强制GC。结果：切页68次504.33/803.59/838.62ms；详情开52次10.91/125.58/422.19；详情关10次18.97/21.82/21.82；滚动64次0.59/36.33/48.35；合成搜索输入10次2.43/12.12/12.12。输入只编程写TextBox文本，不是物理键盘/IME；所有计时均为WPF逻辑布局代理，不测屏幕呈现帧。完整报告见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-06-07/`。
+- 本批相关行为测试3/3且0 skip，R08同页布局类4/4且0 skip；`render-qa`此前在同一存档UI改动上exit0、0 PROBLEM；最新source validation、XAML 25/25和WPF静态审查31 XAML、0 error/26 warnings/179 info通过。中文根入口完整链、独立`scripts/build.cmd`职责验证、实际安装/宿主和当前源码的GitHub双SDK均待验；不能以当前离屏和局部编译替代。
+- `.tmp/ui-polish-round5-u00-06`报告副本已复制、核SHA并确认处于仓库忽略的`.tmp`、无reparse、无运行RenderHarness；目录仅59,600字节。仓库规定的精确PowerShell `Remove-Item -LiteralPath ... -Recurse -Force`在执行前被策略拒绝，未删除；保留已归档报告和失败清理状态见同目录`cleanup.json`。Round3未跟踪TRX/TestResults原样保留。
+
+## 2026-10-27 Round5 U00-07/08 初始分级与示范复核
+
+沿用U00-01四页同条件截图/几何，将样本候选分成P0=0个确认遮挡/不可达项、P1=8个层级/密度候选、P2=12个装饰/辅助排版候选。设置页两个P1仍是验证错误截图的不确定样本；不能据此改页面。所有横向滚动列表均保留可达通路，不因需要横滚直接视作不可用。各候选有页面目标，后续按U01-U08任务归属继续实施；这不是20项产品缺陷断言。
+
+在SaveCenter生产视图完成双主题组合复核，引用U00-04/05代表图和完整状态矩阵，不复制相同图像。字体层级、颜色资源、摘要卡片间距、Ready/Empty/Loading/Error/Stale/Offline、长文本多选均有对照；1040/1366 DIP没有因本轮间距增加换行。Demo DesignShell/Pages和v3.1源当前缺失，报告明确为生产视图复核，不称Demo一致；本轮也尚无共享ControlTemplate迁移。
+
+## 2026-10-27 Round5 CI保存页宽屏夹具复核与U00-04/05/06本地验证
+
+run 40486014630（提交 5d0a2448d6315af61571d0d3fbecfd902e5344fc）中SDK8 job 122127864273和SDK10 job 122127864513均在ReportedWorkspaceLayoutBehaviorTests的保存页宽屏断言失败；各1676项、1655通过、2失败、19既有skip、126个WPF隔离类。两个主题均请求1800 DIP窗口但实际测出两行，20 DIP行间距仍正确，媒体收件箱断言通过。run/artifact/job身份、摘要和原始诊断获取链接见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40486014630.json；旧失败留作历史证据。
+
+定位为测试夹具把Window请求宽度当作页面实际逻辑宽，未固定或记录SaveCenterView实际宽度。夹具现固定SaveCenterView宽度1800 DIP并记录页面/操作区实测值，单行和margin归零断言保持。SDK8.0.423完整ReportedWorkspaceLayoutBehaviorTests类54/54、0失败、0 skip；Light/Dark实际页面宽1800 DIP，操作区1754.67 DIP，宽屏单行、底部间距0。TRX及SHA见上述CI证据JSON。新候选双SDK CI尚待提交后核实。
+
+同一工作树U00-04/05/06本地验证：RenderHarness Release编译SDK8.0.423、0警告/0错误；source validation通过；XAML检查25/25；WPF静态审查31 XAML、0 error/26 warning/179 info（与基线一致）；git diff --check通过。U00-04/05先前render-qa exit0/0 PROBLEM、状态夹具56图和主题/尺寸行为证据仍有效；本次没有改生产XAML，仅修正行为测试的宽度夹具并添加Harness性能探针。
+本批中文提交、GitHub新提交双SDK检查、标准中文入口全链、独立scripts/build.cmd尚待。真实Playnite宿主、UIA/IME和物理DPI仍未验；不触碰真实存档恢复、媒体删除或云写入。受策略拒绝的阶段自有临时输出仍按cleanup.json保持待执行；没有动用户Round3 TRX/TestResults。

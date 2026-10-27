@@ -1616,9 +1616,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("SaveCandidateGrid.MaxHeight = candidateTableViewportHeight", saveCode);
         Assert.DoesNotContain("Math.Min(560d, historyTableBudget)", saveCode);
         Assert.Contains("height > 0", saveCode);
-        Assert.Contains("x:Name=\"SaveHistorySummaryCard\" Grid.Row=\"0\" Style=\"{DynamicResource GscReadingCardStyle}\" Padding=\"10,4\"", save);
-        Assert.Contains("x:Name=\"SaveHistorySummaryActions\" Grid.Row=\"1\" VerticalAlignment=\"Top\" HorizontalAlignment=\"Stretch\" Margin=\"0,10,0,0\"", save);
-        // The former 2-DIP gap rounded to 1.6 DIP; 10 DIP now yields a readable 9.6 DIP gap.
+        Assert.Contains("x:Name=\"SaveHistorySummaryCard\" Grid.Row=\"0\" Style=\"{DynamicResource GscReadingCardStyle}\" Padding=\"12,8\" Margin=\"0,0,0,8\"", save);
+        Assert.Contains("x:Name=\"SaveHistorySummaryActions\" Grid.Row=\"1\" VerticalAlignment=\"Top\" HorizontalAlignment=\"Stretch\" Margin=\"0,12,0,0\"", save);
+        // The 12-DIP action gap aligns to the shared 12-DIP spacing step while staying below the 14-DIP section gap.
         Assert.Contains("historyActionRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap)", saveCode);
         Assert.Contains("SaveHistoryRestoreAvailabilityHint.Visibility = compact", saveCode);
         Assert.Contains("SaveHistoryInspectorAvailabilityHint.Visibility = compact", saveCode);

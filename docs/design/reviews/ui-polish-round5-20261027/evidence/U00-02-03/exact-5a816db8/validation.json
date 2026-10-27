@@ -1,0 +1,13 @@
+{
+  "commit": "5a816db8081060d6e5bb83e20352c867e4e5285d",
+  "sdk": "8.0.423",
+  "focusedTest": {
+    "total": 180,
+    "passed": 141,
+    "failed": 0,
+    "skipped": 0,
+    "duration": "27s",
+    "skipMeaning": "既有架构 skip，不计通过"
+  },
+  "trxSha256": "1977AD43D7E8AC19B6A075DE918DF81221960A262727FD7A5C821AAB3B15DB60"
+}

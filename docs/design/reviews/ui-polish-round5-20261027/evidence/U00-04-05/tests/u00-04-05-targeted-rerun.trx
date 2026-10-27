@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="7e7ed322-cafe-4201-ba4a-8217ea1f641e" name="lopmatu@SULT 2026-10-27 17:19:17" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-27T17:19:17.6628754+08:00" queuing="2026-10-27T17:19:17.6628758+08:00" start="2026-10-27T17:19:09.7058674+08:00" finish="2026-10-27T17:19:35.7953616+08:00" />
+  <TestSettings name="default" id="de673389-f96a-47c9-b989-20e12616a0c0">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-27_17_19_17" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="45eccb05-43f9-4ab9-8516-1dd2f9a329ed" testId="351b10e3-ecfb-8e41-d2d2-dc303d33b787" testName="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport" computerName="SULT" duration="00:00:00.1140000" startTime="2026-10-27T17:19:20.2106073+08:00" endTime="2026-10-27T17:19:20.3220534+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="45eccb05-43f9-4ab9-8516-1dd2f9a329ed" />
+    <UnitTestResult executionId="212f84be-d3d3-4e34-8ed6-5040f773e911" testId="f14d8609-0abd-c6e4-e4de-0cbe507aab27" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Light)" computerName="SULT" duration="00:00:02.5410000" startTime="2026-10-27T17:19:17.6466829+08:00" endTime="2026-10-27T17:19:20.1623186+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="212f84be-d3d3-4e34-8ed6-5040f773e911">
+      <Output>
+        <StdOut>Light Save history: summary=676×579.33, content=649.33×380.67, actions=649.33×168@row1, selected=True, inspector=Visible/647.33×875.33; wideRow=1, windowedAgainRow=1, action/content gap=12 DIP, trailing whitespace=9.33 DIP&#xD;
+2100: card=838×579.33, content=811.33×380.67, actions=811.33×168; 1280: card=616×573.33, content=589.33×380.67, actions=589.33×162; 1100: card=526×647.33, content=499.33×398.67, actions=499.33×218; 1052: card=502×665.33, content=475.33×416.67, actions=475.33×218; 1040: card=496×683.33, content=469.33×434.67, actions=469.33×218; 1000: card=476×733.33, content=449.33×434.67, actions=449.33×268; 960: card=928×529.33, content=901.33×386.67, actions=901.33×112; 920: card=888×529.33, content=861.33×386.67, actions=861.33×112; 900: card=868×529.33, content=841.33×386.67, actions=841.33×112; 880: card=848×585.33, content=821.33×386.67, actions=821.33×168; 860: card=828×585.33, content=801.33×386.67, actions=801.33×168; 2100: card=838×579.33, content=811.33×380.67, actions=811.33×168</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="66a70901-bf7a-4bed-bddd-64a7f15f7492" testId="518e3f14-882c-6541-6ec8-46c20a796276" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Dark)" computerName="SULT" duration="00:00:05.2230000" startTime="2026-10-27T17:19:12.4131035+08:00" endTime="2026-10-27T17:19:17.6203913+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="66a70901-bf7a-4bed-bddd-64a7f15f7492">
+      <Output>
+        <StdOut>Dark Save history: summary=676×579.33, content=649.33×380.67, actions=649.33×168@row1, selected=True, inspector=Visible/647.33×875.33; wideRow=1, windowedAgainRow=1, action/content gap=12 DIP, trailing whitespace=9.33 DIP&#xD;
+2100: card=838×579.33, content=811.33×380.67, actions=811.33×168; 1280: card=616×573.33, content=589.33×380.67, actions=589.33×162; 1100: card=526×647.33, content=499.33×398.67, actions=499.33×218; 1052: card=502×665.33, content=475.33×416.67, actions=475.33×218; 1040: card=496×683.33, content=469.33×434.67, actions=469.33×218; 1000: card=476×733.33, content=449.33×434.67, actions=449.33×268; 960: card=928×529.33, content=901.33×386.67, actions=901.33×112; 920: card=888×529.33, content=861.33×386.67, actions=861.33×112; 900: card=868×529.33, content=841.33×386.67, actions=841.33×112; 880: card=848×585.33, content=821.33×386.67, actions=821.33×168; 860: card=828×585.33, content=801.33×386.67, actions=801.33×168; 2100: card=838×579.33, content=811.33×380.67, actions=811.33×168</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Light)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="f14d8609-0abd-c6e4-e4de-0cbe507aab27">
+      <Execution id="212f84be-d3d3-4e34-8ed6-5040f773e911" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="351b10e3-ecfb-8e41-d2d2-dc303d33b787">
+      <Execution id="45eccb05-43f9-4ab9-8516-1dd2f9a329ed" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests" name="SaveAndTrainerStackedInspectorsReserveAReadableListViewport" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Dark)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="518e3f14-882c-6541-6ec8-46c20a796276">
+      <Execution id="66a70901-bf7a-4bed-bddd-64a7f15f7492" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="351b10e3-ecfb-8e41-d2d2-dc303d33b787" executionId="45eccb05-43f9-4ab9-8516-1dd2f9a329ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f14d8609-0abd-c6e4-e4de-0cbe507aab27" executionId="212f84be-d3d3-4e34-8ed6-5040f773e911" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="518e3f14-882c-6541-6ec8-46c20a796276" executionId="66a70901-bf7a-4bed-bddd-64a7f15f7492" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.56]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.63]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:09.64]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
