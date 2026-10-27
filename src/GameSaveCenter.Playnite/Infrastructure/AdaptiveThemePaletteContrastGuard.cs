@@ -265,10 +265,18 @@ namespace GameSaveCenter.Playnite.Infrastructure
             AddContrast(measurements, "SecondaryText vs Background", secondary, background, 4.5);
             AddContrast(measurements, "MutedText vs Background", muted, background, 4.5);
             AddContrast(measurements, "OnAccentText vs Accent", palette.OnAccentText, palette.Accent, 4.5);
-            AddContrast(measurements, "Info vs Background", palette.Info, background, 3.0);
-            AddContrast(measurements, "Success vs Background", palette.Success, background, 3.0);
-            AddContrast(measurements, "Warning vs Background", palette.Warning, background, 3.0);
-            AddContrast(measurements, "Error vs Background", palette.Error, background, 3.0);
+            var semanticMinimum = palette.IsHighContrast ? 3.0 : 4.5;
+            AddContrast(measurements, "Info vs Background", palette.Info, background, semanticMinimum);
+            AddContrast(measurements, "Success vs Background", palette.Success, background, semanticMinimum);
+            AddContrast(measurements, "Warning vs Background", palette.Warning, background, semanticMinimum);
+            AddContrast(measurements, "Error vs Background", palette.Error, background, semanticMinimum);
+            if (!palette.IsHighContrast)
+            {
+                AddContrast(measurements, "Info vs InfoIconFill", palette.Info, Composite(palette.InfoIconFill, controlFill), 4.5);
+                AddContrast(measurements, "Success vs SuccessIconFill", palette.Success, Composite(palette.SuccessIconFill, controlFill), 4.5);
+                AddContrast(measurements, "Warning vs WarningIconFill", palette.Warning, Composite(palette.WarningIconFill, controlFill), 4.5);
+                AddContrast(measurements, "Error vs ErrorIconFill", palette.Error, Composite(palette.ErrorIconFill, controlFill), 4.5);
+            }
             AddContrast(measurements, "ControlStroke vs Surface", palette.ControlStroke, surface, 1.15);
             AddLuminance(measurements, "Surface vs Background", surface, background, 0.016);
             AddLuminance(measurements, "ControlFill vs Surface", controlFill, surface, 0.005);

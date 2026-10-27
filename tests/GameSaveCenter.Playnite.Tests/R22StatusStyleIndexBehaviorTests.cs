@@ -16,6 +16,8 @@ public sealed class R22StatusStyleIndexBehaviorTests
     [InlineData("失败", "× 失败")]
     [InlineData("执行中", "ℹ 执行中")]
     [InlineData("上传中", "ℹ 上传中")]
+    [InlineData("等待中", "ℹ 等待中")]
+    [InlineData("等待确认", "⚠ 等待确认")]
     [InlineData("已暂停", "⚠ 已暂停")]
     public void SharedStatusGlyphMappingCoversEachVisualBucket(string status, string expected)
     {

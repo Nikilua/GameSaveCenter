@@ -215,6 +215,16 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var error = highContrast
                 ? primaryText
                 : isDark ? Color.FromRgb(242, 109, 126) : Color.FromRgb(199, 65, 82);
+            if (!highContrast)
+            {
+                // Status colors are also used for small result labels inside their own tinted
+                // chips. Calibrate them against both the page and the realized 13% semantic
+                // fill so those labels keep ordinary-text contrast in Light and Dark themes.
+                info = EnsureSemanticTextContrast(info, stableBase, controlFill, isDark);
+                success = EnsureSemanticTextContrast(success, stableBase, controlFill, isDark);
+                warning = EnsureSemanticTextContrast(warning, stableBase, controlFill, isDark);
+                error = EnsureSemanticTextContrast(error, stableBase, controlFill, isDark);
+            }
 
             // A larger strength should reveal more of the bounded ambient material instead
             // of making every card an opaque mask. Keep the low end stable and readable, then
@@ -281,10 +291,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 Success = success,
                 Warning = warning,
                 Error = error,
-                InfoIconFill = highContrast ? info : WithAlpha(info, 0.13),
-                SuccessIconFill = highContrast ? success : WithAlpha(success, 0.13),
-                WarningIconFill = highContrast ? warning : WithAlpha(warning, 0.13),
-                ErrorIconFill = highContrast ? error : WithAlpha(error, 0.13)
+                InfoIconFill = highContrast ? SystemColors.ControlColor : WithAlpha(info, 0.13),
+                SuccessIconFill = highContrast ? SystemColors.ControlColor : WithAlpha(success, 0.13),
+                WarningIconFill = highContrast ? SystemColors.ControlColor : WithAlpha(warning, 0.13),
+                ErrorIconFill = highContrast ? SystemColors.ControlColor : WithAlpha(error, 0.13)
             };
         }
 
@@ -568,6 +578,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 palette.IsDark ? (byte)54 : (byte)34, 0, 0, 0));
             WpfUiThemeScope.Apply(resources, palette.IsDark);
             ApplyDemoCoreResources(resources, palette.IsDark, palette.IsHighContrast);
+            ApplySemanticStatusResources(resources, palette);
             // The shell sidebar is one continuous translucent material surface. Keep this
             // separate from GscSidebarBrush, which is also used by standalone rounded cards
             // in the settings view; the shell brush can therefore carry a broad navigation wash
@@ -575,6 +586,34 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscSidebarMaterialBrush"] = CreateSidebarMaterialBrush(palette, glassEnabled);
             if (!glassEnabled)
                 resources["GscGlassHighlightBrush"] = Brush(Colors.Transparent);
+        }
+
+        private static void ApplySemanticStatusResources(ResourceDictionary resources, AdaptiveThemePalette palette)
+        {
+            resources["GscInfoBrush"] = Brush(palette.Info);
+            resources["GscSuccessBrush"] = Brush(palette.Success);
+            resources["GscWarningBrush"] = Brush(palette.Warning);
+            resources["GscErrorBrush"] = Brush(palette.Error);
+            resources["GscInfoIconFillBrush"] = Brush(palette.InfoIconFill);
+            resources["GscSuccessIconFillBrush"] = Brush(palette.SuccessIconFill);
+            resources["GscWarningIconFillBrush"] = Brush(palette.WarningIconFill);
+            resources["GscErrorIconFillBrush"] = Brush(palette.ErrorIconFill);
+            resources["GscErrorTintBrush"] = Brush(SemanticTint(palette.Error, palette.IsDark ? 0.20 : 0.12, palette.IsHighContrast));
+            resources["GscRestoreInfoFillBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.20 : 0.11, palette.IsHighContrast));
+            resources["GscRestoreInfoStrokeBrush"] = Brush(SemanticTint(palette.Info, palette.IsDark ? 0.46 : 0.32, palette.IsHighContrast));
+            resources["GscSafetyFillBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.20 : 0.12, palette.IsHighContrast));
+            resources["GscSafetyStrokeBrush"] = Brush(SemanticTint(palette.Warning, palette.IsDark ? 0.48 : 0.34, palette.IsHighContrast));
+
+            // AcrylicReferenceControls still consumes the unprefixed names. Keep its
+            // semantic aliases tied to the exact same foreground and icon fill colors.
+            resources["InfoBrush"] = Brush(palette.Info);
+            resources["InfoFillBrush"] = Brush(palette.InfoIconFill);
+            resources["SuccessBrush"] = Brush(palette.Success);
+            resources["SuccessFillBrush"] = Brush(palette.SuccessIconFill);
+            resources["WarningBrush"] = Brush(palette.Warning);
+            resources["WarningFillBrush"] = Brush(palette.WarningIconFill);
+            resources["ErrorBrush"] = Brush(palette.Error);
+            resources["ErrorFillBrush"] = Brush(palette.ErrorIconFill);
         }
 
         /// <summary>
@@ -733,14 +772,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var scrollThumb = isDark ? Color.FromArgb(0x38, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x33, 0x00, 0x00, 0x00);
             var scrollThumbHover = isDark ? Color.FromArgb(0x52, 0xFF, 0xFF, 0xFF) : Color.FromArgb(0x52, 0x00, 0x00, 0x00);
             var scrim = isDark ? Color.FromArgb(0x66, 0x0D, 0x0F, 0x14) : Color.FromArgb(0x47, 0x10, 0x14, 0x18);
-            var success = isDark ? Color.FromRgb(0x4C, 0xDB, 0x8E) : Color.FromRgb(0x12, 0x8A, 0x4C);
-            var successFill = isDark ? Color.FromArgb(0x23, 0x4C, 0xDB, 0x8E) : Color.FromArgb(0x1F, 0x12, 0x8A, 0x4C);
-            var warning = isDark ? Color.FromRgb(0xF0, 0xB2, 0x4E) : Color.FromRgb(0x9A, 0x6A, 0x14);
-            var warningFill = isDark ? Color.FromArgb(0x26, 0xF0, 0xB2, 0x4E) : Color.FromArgb(0x22, 0x9A, 0x6A, 0x14);
-            var error = isDark ? Color.FromRgb(0xF2, 0x6D, 0x7E) : Color.FromRgb(0xC7, 0x41, 0x52);
-            var errorFill = isDark ? Color.FromArgb(0x26, 0xF2, 0x6D, 0x7E) : Color.FromArgb(0x20, 0xC7, 0x41, 0x52);
-            var info = isDark ? Color.FromRgb(0x5C, 0xAA, 0xF0) : Color.FromRgb(0x25, 0x6F, 0xBD);
-            var infoFill = isDark ? Color.FromArgb(0x22, 0x5C, 0xAA, 0xF0) : Color.FromArgb(0x1F, 0x25, 0x6F, 0xBD);
+            var success = isDark ? Color.FromRgb(0x4C, 0xDB, 0x8E) : Color.FromRgb(0x0F, 0x6C, 0x3B);
+            var successFill = WithAlpha(success, 0.13);
+            var warning = isDark ? Color.FromRgb(0xF0, 0xB2, 0x4E) : Color.FromRgb(0x79, 0x53, 0x10);
+            var warningFill = WithAlpha(warning, 0.13);
+            var error = isDark ? Color.FromRgb(0xF3, 0x79, 0x88) : Color.FromRgb(0x9B, 0x33, 0x3F);
+            var errorFill = WithAlpha(error, 0.13);
+            var info = isDark ? Color.FromRgb(0x5C, 0xAA, 0xF0) : Color.FromRgb(0x1F, 0x5E, 0xA0);
+            var infoFill = WithAlpha(info, 0.13);
             var neutral = isDark ? Color.FromRgb(0xB9, 0xC0, 0xCC) : Color.FromRgb(0x4E, 0x56, 0x66);
 
             resources["GscBackdropBrush"] = CanvasGradient(canvasStart, canvasMiddle, canvasEnd);
@@ -786,14 +825,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscWarningBrush"] = Brush(warning);
             resources["GscErrorBrush"] = Brush(error);
             resources["GscInfoIconFillBrush"] = Brush(infoFill);
-            resources["GscRestoreInfoFillBrush"] = Brush(infoFill);
+            resources["GscRestoreInfoFillBrush"] = Brush(WithAlpha(info, isDark ? 0.20 : 0.11));
             resources["GscRestoreInfoStrokeBrush"] = Brush(info);
             resources["GscSuccessIconFillBrush"] = Brush(successFill);
             resources["GscWarningIconFillBrush"] = Brush(warningFill);
-            resources["GscSafetyFillBrush"] = Brush(warningFill);
+            resources["GscSafetyFillBrush"] = Brush(WithAlpha(warning, isDark ? 0.20 : 0.12));
             resources["GscSafetyStrokeBrush"] = Brush(warning);
             resources["GscErrorIconFillBrush"] = Brush(errorFill);
-            resources["GscErrorTintBrush"] = Brush(errorFill);
+            resources["GscErrorTintBrush"] = Brush(WithAlpha(error, isDark ? 0.20 : 0.12));
             resources["GscMutedStatusBrush"] = Brush(neutral);
 
             // AcrylicReferenceControls is still the shared template source for production
@@ -1310,6 +1349,23 @@ namespace GameSaveCenter.Playnite.Infrastructure
             for (var attempt = 0; attempt < 6 && ContrastRatio(candidate, background) < 3; attempt++)
                 candidate = Blend(candidate, target, 0.18);
             return candidate;
+        }
+
+        private static Color EnsureSemanticTextContrast(Color candidate, Color background, Color controlFill, bool darkBackground)
+        {
+            candidate = Opaque(candidate);
+            var target = darkBackground ? Colors.White : Colors.Black;
+            var realizedControlFill = controlFill;
+            for (var attempt = 0; attempt < 48; attempt++)
+            {
+                var semanticFill = Blend(realizedControlFill, candidate, 0.13);
+                if (ContrastRatio(candidate, background) >= 4.5
+                    && ContrastRatio(candidate, semanticFill) >= 4.5)
+                    return candidate;
+                candidate = Blend(candidate, target, 0.08);
+            }
+
+            return target;
         }
 
         private static Color WithAlpha(Color color, double opacity)

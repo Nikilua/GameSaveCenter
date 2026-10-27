@@ -135,6 +135,11 @@ public sealed class R10RecentAccessBehaviorTests
                 Assert.Equal("game-1", ((RecentAccessItem)button.CommandParameter!).PlayniteId);
                 Assert.True(button.Command!.CanExecute(button.CommandParameter));
                 Assert.True(button.IsVisible);
+                var recentAccessTile = FindVisualDescendants<Border>(button)
+                    .Single(border => border.Width == 34 && border.Height == 34);
+                Assert.Equal(
+                    Assert.IsType<SolidColorBrush>(overview.TryFindResource("GscControlFillBrush")).Color,
+                    Assert.IsType<SolidColorBrush>(recentAccessTile.Background).Color);
 
                 typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .Invoke(button, Array.Empty<object>());

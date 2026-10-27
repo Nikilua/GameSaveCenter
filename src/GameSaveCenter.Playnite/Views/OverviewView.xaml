@@ -548,8 +548,8 @@
                                             <Border Style="{StaticResource GscActivityRowBorder}">
                                                 <Grid MinHeight="52">
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                    <Border Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscAccentTintBrush}" BorderBrush="{DynamicResource GscAccentTintBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                        <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionHistory}" Width="18" Height="18" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <Border Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                        <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionHistory}" Width="18" Height="18" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Border>
                                                     <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
                                                         <TextBlock Text="{Binding GameName, Mode=OneWay}" FontSize="{DynamicResource GscBodyFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding GameName}"/>
@@ -612,8 +612,8 @@
                                     <DataTemplate>
                                         <Grid Margin="0">
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="74"/><ColumnDefinition Width="96"/></Grid.ColumnDefinitions>
-                                            <Border x:Name="OverviewTaskStatusPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscAccentTintBrush}" BorderBrush="{DynamicResource GscAccentTintBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                                <ui:ThemeAwareIcon x:Name="RecentActivityGlyph" Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionHistory}" Width="18" Height="18" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <Border x:Name="OverviewTaskStatusPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                                <ui:ThemeAwareIcon x:Name="RecentActivityGlyph" Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusInfo}" Width="18" Height="18" Foreground="{DynamicResource GscMutedStatusBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                             <StackPanel Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center" MinWidth="0">
                                                 <Grid MinWidth="0">
@@ -637,23 +637,26 @@
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding State}" Value="Failed">
-                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="IconData" Value="{StaticResource GscIconStatusError}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
-                                                <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultChip" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscErrorBrush}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}" Value="Running">
-                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="IconData" Value="{StaticResource GscIconActionRun}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
-                                                <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                                                <Setter TargetName="OverviewTaskResultChip" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                                                <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscAccentBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultChip" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}" Value="Cancelled">
-                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="IconData" Value="{StaticResource GscIconStatusInfo}"/>
                                                 <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscMutedStatusBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -661,9 +664,31 @@
                                                 <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscMutedStatusBrush}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding State}" Value="Succeeded">
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
+                                                <Setter TargetName="RecentActivityGlyph" Property="IconData" Value="{StaticResource GscIconStatusSuccess}"/>
+                                                <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscSuccessIconFillBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultChip" Property="BorderBrush" Value="{DynamicResource GscSuccessBrush}"/>
                                                 <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscSuccessBrush}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding State}" Value="Queued">
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
+                                                <Setter TargetName="RecentActivityGlyph" Property="IconData" Value="{StaticResource GscIconStatusInfo}"/>
+                                                <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscInfoIconFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultChip" Property="BorderBrush" Value="{DynamicResource GscInfoBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscInfoBrush}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding State}" Value="WaitingForUser">
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskStatusPill" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                                                <Setter TargetName="RecentActivityGlyph" Property="IconData" Value="{StaticResource GscIconStatusWarning}"/>
+                                                <Setter TargetName="RecentActivityGlyph" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultChip" Property="Background" Value="{DynamicResource GscWarningIconFillBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultChip" Property="BorderBrush" Value="{DynamicResource GscWarningBrush}"/>
+                                                <Setter TargetName="OverviewTaskResultText" Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>

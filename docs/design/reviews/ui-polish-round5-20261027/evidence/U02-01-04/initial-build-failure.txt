@@ -1,0 +1,1 @@
+U02-01～04 首次定向编译未通过：新增 U02SemanticStatusColorBehaviorTests 引用了 RecentAccessItem，但测试文件未导入 GameSaveCenter.Playnite.ViewModels。补齐 using 后，定向测试批通过（SDK 8.0.423，15 passed，0 failed，0 skipped）。这是已修复的测试夹具编译错误，不是产品运行失败；原始诊断保留于本记录。
