@@ -83,6 +83,28 @@ public sealed class AccessibilitySourceTests
     }
 
     [Fact]
+    public void ProductionComboBoxKeepsLongSelectionSeparateFromItsChevron()
+    {
+        var root = FindRepositoryRoot();
+        var production = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        var templateStart = production.IndexOf("x:Key=\"GscWpfUiComboBoxTemplate\"", StringComparison.Ordinal);
+        var styleStart = production.IndexOf("x:Key=\"GscWpfUiComboBox\"", templateStart, StringComparison.Ordinal);
+        Assert.True(templateStart >= 0 && styleStart > templateStart);
+        var template = production.Substring(templateStart, styleStart - templateStart);
+
+        Assert.Contains("<ColumnDefinition Width=\"*\"/>", template);
+        Assert.Contains("<ColumnDefinition Width=\"20\"/>", template);
+        Assert.Contains("x:Name=\"DisplayMemberText\"", template);
+        Assert.Contains("TextTrimming=\"CharacterEllipsis\"", template);
+        Assert.Contains("TextWrapping=\"NoWrap\"", template);
+        Assert.Contains("ToolTip=\"{Binding Text, RelativeSource={RelativeSource TemplatedParent}}\"", template);
+        Assert.Contains("x:Name=\"PART_Popup\"", template);
+        Assert.Contains("MaxDropDownHeight", template);
+        Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", template);
+        Assert.Contains("KeyboardNavigation.DirectionalNavigation=\"Contained\"", template);
+    }
+
+    [Fact]
     public void TaskAndMediaSearchClearAndCountsStayOutsideEditableTextLayout()
     {
         var root = FindRepositoryRoot();
