@@ -133,59 +133,6 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="20"/>
                                 </Grid.ColumnDefinitions>
-                                <!-- SelectionBoxItemTemplate is an internal ComboBox detail and isn't a reliable
-                                     ancestor binding from this nested ToggleButton template. Keep custom templates
-                                     on the public ItemTemplate API and render DisplayMemberPath through ComboBox.Text. -->
-                                <ContentPresenter Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  ContentTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  ContentTemplateSelector="{Binding ItemTemplateSelector, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  ContentStringFormat="{Binding ItemStringFormat, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  TextElement.FontFamily="{Binding FontFamily, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  TextElement.FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                                  TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType=ComboBox}}">
-                                    <ContentPresenter.Style>
-                                        <Style TargetType="ContentPresenter">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource AncestorType=ComboBox}}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource AncestorType=ComboBox}}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ContentPresenter.Style>
-                                </ContentPresenter>
-                                <TextBlock Grid.Column="0"
-                                           Text="{Binding Text, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                           TextTrimming="CharacterEllipsis"
-                                           TextWrapping="NoWrap"
-                                           ToolTip="{Binding Text, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                           IsHitTestVisible="False"
-                                           HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                           VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                           TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                           TextElement.FontFamily="{Binding FontFamily, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                           TextElement.FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=ComboBox}}"
-                                           TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource AncestorType=ComboBox}}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource AncestorType=ComboBox}}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource AncestorType=ComboBox}}" Value="">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
                                 <Path x:Name="Chevron"
                                       Grid.Column="1"
                                       Data="M 1 2 L 5 6 L 9 2"
@@ -220,6 +167,64 @@
                     </ControlTemplate>
                 </ToggleButton.Template>
             </ToggleButton>
+            <!-- Keep the selected item outside the nested ToggleButton template. This makes
+                 ComboBox template bindings resolve consistently on supported WPF runtimes. -->
+            <Grid Margin="{TemplateBinding Padding}"
+                  IsHitTestVisible="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
+                <ContentPresenter Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}"
+                                  ContentTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                  ContentTemplateSelector="{Binding ItemTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
+                                  ContentStringFormat="{Binding ItemStringFormat, RelativeSource={RelativeSource TemplatedParent}}"
+                                  HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"
+                                  VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"
+                                  TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
+                                  TextElement.FontFamily="{Binding FontFamily, RelativeSource={RelativeSource TemplatedParent}}"
+                                  TextElement.FontSize="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}"
+                                  TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource TemplatedParent}}">
+                    <ContentPresenter.Style>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentPresenter.Style>
+                </ContentPresenter>
+                <TextBlock Grid.Column="0"
+                           Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap"
+                           ToolTip="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
+                           HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"
+                           VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"
+                           TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
+                           TextElement.FontFamily="{Binding FontFamily, RelativeSource={RelativeSource TemplatedParent}}"
+                           TextElement.FontSize="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}"
+                           TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource TemplatedParent}}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
             <Popup x:Name="PART_Popup"
                    Placement="Bottom"
                    AllowsTransparency="{DynamicResource GscPopupAllowsTransparency}"

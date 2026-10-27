@@ -6407,13 +6407,18 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.DoesNotContain("ScrollViewer.VerticalContentAlignment\" Value=\"Center\"", overview);
 
         // ComboBox selection text follows the same content-alignment and foreground
-        // contract as shared buttons; the DesignTokens template must remain a safe
-        // fallback when the production adapter is not present.
-        Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
-        Assert.Contains("TextElement.Foreground=\"{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
-        Assert.Contains("TextElement.FontFamily=\"{Binding FontFamily, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
-        Assert.Contains("TextElement.FontSize=\"{Binding FontSize, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
-        Assert.Contains("TextElement.FontWeight=\"{Binding FontWeight, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", production);
+        // contract as shared buttons. The selected display is a direct ComboBox
+        // template child so these bindings do not depend on the nested ToggleButton tree.
+        var productionComboBoxTemplateEnd = production.IndexOf("<!-- Implicit item styling", productionComboBoxTemplateStart, StringComparison.Ordinal);
+        Assert.True(productionComboBoxTemplateEnd > productionComboBoxTemplateStart);
+        var productionComboBoxTemplate = production.Substring(productionComboBoxTemplateStart, productionComboBoxTemplateEnd - productionComboBoxTemplateStart);
+        Assert.Contains("Content=\"{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
+        Assert.Contains("Text=\"{Binding Text, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
+        Assert.Contains("VerticalAlignment=\"{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
+        Assert.Contains("TextElement.Foreground=\"{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
+        Assert.Contains("TextElement.FontFamily=\"{Binding FontFamily, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
+        Assert.Contains("TextElement.FontSize=\"{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
+        Assert.Contains("TextElement.FontWeight=\"{Binding FontWeight, RelativeSource={RelativeSource TemplatedParent}}\"", productionComboBoxTemplate);
         Assert.Contains("<Setter Property=\"HorizontalContentAlignment\" Value=\"Left\"/>", production);
         Assert.Contains("TextElement.Foreground=\"{TemplateBinding Foreground}\"", production);
         Assert.Contains("HorizontalAlignment=\"{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=ComboBox}}\"", tokens);
@@ -6444,7 +6449,10 @@ public sealed class WpfUiResourceDictionaryTests
             // with summary cards instead of spending a permanent row on a redundant hero.
             if (view != "TaskCenterView.xaml")
             {
-                Assert.Contains("BasedOn=\"{StaticResource GscRedesignWorkspaceTabControl}\"", xaml);
+                Assert.True(
+                    xaml.IndexOf("BasedOn=\"{StaticResource GscRedesignWorkspaceTabControl}\"", StringComparison.Ordinal) >= 0
+                    || xaml.IndexOf("Style=\"{StaticResource GscRedesignWorkspaceTabControl}\"", StringComparison.Ordinal) >= 0,
+                    $"{view} must use the shared Demo workspace TabControl style directly or through a local extension.");
             }
             Assert.DoesNotContain("GscRedesignWorkspaceHeroCard", xaml);
             Assert.DoesNotContain("WorkspaceHero", xaml);
