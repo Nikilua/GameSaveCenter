@@ -5677,6 +5677,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Storyboard.TargetName=\"Chevron\"", tokens);
         Assert.Contains("To=\"0\" Duration=\"{StaticResource GscMotionFast}\"", tokens);
         Assert.Contains("To=\"-90\" Duration=\"{StaticResource GscMotionFast}\"", tokens);
+        Assert.Contains("GscExpandedStateToChevronAngleConverter", tokens);
+        Assert.Contains("RelativeSource AncestorType={x:Type ToggleButton}", tokens);
+        Assert.Contains("Condition Property=\"IsEnabled\" Value=\"False\"", tokens);
         Assert.Contains("GscDisclosureCard", tokens);
         Assert.Contains("<Setter Property=\"Background\" Value=\"{DynamicResource GscControlFillBrush}\"/>", tokens);
         Assert.Contains("Background=\"{TemplateBinding Background}\"", tokens);

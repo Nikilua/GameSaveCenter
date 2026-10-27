@@ -14,10 +14,12 @@ using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using UiPath = System.Windows.Shapes.Path;
 using System.Windows.Threading;
 using System.Xml.Linq;
 using GameSaveCenter.Contracts;
@@ -499,6 +501,148 @@ public sealed class R23ProductionResourceStateBehaviorTests
                     Assert.All(indicators, indicator =>
                         Assert.False(DependencyPropertyHelper.GetValueSource(indicator, UIElement.OpacityProperty).IsAnimated));
                 }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes()
+    {
+        RunSta(() =>
+        {
+            var resources = LoadProductionResources();
+            var root = new Grid { Resources = resources };
+            AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, true);
+            var expander = new Expander
+            {
+                Style = Assert.IsType<Style>(resources["GscDisclosureCard"]),
+                Header = "详细信息",
+                Content = new TextBlock { Text = "保留展开内容" },
+                Width = 360,
+                IsExpanded = false
+            };
+            root.Children.Add(expander);
+            var window = CreateWindow(root, 420, 180);
+
+            try
+            {
+                window.Show();
+                FlushLayout(window);
+                expander.ApplyTemplate();
+                var header = Assert.IsType<ToggleButton>(expander.Template!.FindName("HeaderSite", expander));
+                header.ApplyTemplate();
+                var chevron = Assert.Single(FindVisualChildren<UiPath>(header));
+
+                foreach (var mode in Themes)
+                {
+                    ApplyTheme(root, mode);
+                    AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, true);
+                    expander.IsEnabled = true;
+                    expander.IsExpanded = false;
+                    FlushLayout(window);
+                    var openingTransform = Assert.IsType<RotateTransform>(chevron.RenderTransform);
+
+                    expander.IsExpanded = true;
+                    Assert.True(PumpDispatcherUntilFast(
+                        () => DependencyPropertyHelper.GetValueSource(openingTransform, RotateTransform.AngleProperty).IsAnimated
+                            && openingTransform.Angle > -90 && openingTransform.Angle < 0,
+                        TimeSpan.FromMilliseconds(250)),
+                        $"{mode}: disclosure chevron did not expose an in-flight opening sample.");
+
+                    expander.IsEnabled = false;
+                    FlushLayout(window);
+                    Assert.True(expander.IsExpanded, $"{mode}: disabling the card changed its expanded business state.");
+                    Assert.False(expander.IsEnabled);
+                    Assert.False(DependencyPropertyHelper.GetValueSource(openingTransform, RotateTransform.AngleProperty).IsAnimated,
+                        $"{mode}: disabled open transition kept its previous animation clock.");
+                    var disabledOpenTransform = Assert.IsType<RotateTransform>(chevron.RenderTransform);
+                    Assert.Equal(0, disabledOpenTransform.Angle, 3);
+                    Assert.False(DependencyPropertyHelper.GetValueSource(disabledOpenTransform, RotateTransform.AngleProperty).IsAnimated);
+
+                    expander.IsEnabled = true;
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(160));
+                    FlushLayout(window);
+                    var restoredOpenTransform = Assert.IsType<RotateTransform>(chevron.RenderTransform);
+                    Assert.True(expander.IsExpanded, $"{mode}: re-enabling changed the card's expanded state.");
+                    Assert.Equal(0, restoredOpenTransform.Angle, 3);
+                    Assert.False(DependencyPropertyHelper.GetValueSource(restoredOpenTransform, RotateTransform.AngleProperty).IsAnimated,
+                        $"{mode}: re-enabling an open card replayed an old opening storyboard.");
+
+                    expander.IsExpanded = false;
+                    FlushLayout(window);
+                    var restoredClosedTransform = Assert.IsType<RotateTransform>(chevron.RenderTransform);
+                    Assert.False(expander.IsExpanded, $"{mode}: changing the enabled card's state was ignored.");
+                    Assert.True(header.IsChecked == false,
+                        $"{mode}: the bound header state did not follow the expanded value; checked={header.IsChecked}.");
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(160));
+                    FlushLayout(window);
+                    Assert.True(Math.Abs(restoredClosedTransform.Angle + 90) < 0.001,
+                        $"{mode}: resting angle did not follow collapse; angle={restoredClosedTransform.Angle}; binding={BindingOperations.GetBindingExpression(restoredClosedTransform, RotateTransform.AngleProperty)?.Status}.");
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles()
+    {
+        RunSta(() =>
+        {
+            var resources = LoadProductionResources();
+            var root = new Grid { Resources = resources };
+            AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, true);
+            var expander = new Expander
+            {
+                Style = Assert.IsType<Style>(resources["GscDisclosureCard"]),
+                Header = "反复展开",
+                Content = new TextBlock { Text = "活动模板实例保持稳定" },
+                Width = 360,
+                IsExpanded = false
+            };
+            root.Children.Add(expander);
+            var window = CreateWindow(root, 420, 180);
+
+            try
+            {
+                window.Show();
+                FlushLayout(window);
+                expander.ApplyTemplate();
+                var header = Assert.IsType<ToggleButton>(expander.Template!.FindName("HeaderSite", expander));
+                header.ApplyTemplate();
+                var chevron = Assert.Single(FindVisualChildren<UiPath>(header));
+                var transform = Assert.IsType<RotateTransform>(chevron.RenderTransform);
+
+                for (var cycle = 0; cycle < 100; cycle++)
+                {
+                    expander.IsExpanded = true;
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(130));
+                    Assert.True(expander.IsExpanded);
+                    Assert.Same(header, expander.Template.FindName("HeaderSite", expander));
+                    Assert.Same(chevron, Assert.Single(FindVisualChildren<UiPath>(header)));
+                    Assert.Same(transform, chevron.RenderTransform);
+
+                    expander.IsExpanded = false;
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(130));
+                    Assert.False(expander.IsExpanded);
+                    Assert.Same(header, expander.Template.FindName("HeaderSite", expander));
+                    Assert.Same(chevron, Assert.Single(FindVisualChildren<UiPath>(header)));
+                    Assert.Same(transform, chevron.RenderTransform);
+                }
+
+                AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, false);
+                FlushLayout(window);
+                var terminalTransform = Assert.IsType<RotateTransform>(chevron.RenderTransform);
+                Assert.Equal(-90, terminalTransform.Angle, 3);
+                Assert.False(DependencyPropertyHelper.GetValueSource(terminalTransform, RotateTransform.AngleProperty).IsAnimated,
+                    "reduced motion did not remove the final disclosure storyboard clock after the 100th close.");
             }
             finally
             {

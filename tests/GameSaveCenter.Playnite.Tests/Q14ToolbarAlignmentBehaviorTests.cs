@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -175,6 +176,9 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             if (moreFilters.Visibility == Visibility.Visible)
                 moreFilters.IsExpanded = true;
             window.Show();
+            FlushLayout(window);
+            fixture.SelectedTaskFilterPreset = null;
+            fixture.SelectedTaskFilterPreset = fixture.TaskFilterPresets[0];
             FlushLayout(window);
             view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
             FlushLayout(window);
@@ -434,6 +438,9 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
             if (moreFilters.Visibility == Visibility.Visible)
                 moreFilters.IsExpanded = true;
             window.Show();
+            FlushLayout(window);
+            fixture.SelectedTaskFilterPreset = null;
+            fixture.SelectedTaskFilterPreset = fixture.TaskFilterPresets[0];
             FlushLayout(window);
             view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
             FlushLayout(window);
@@ -709,15 +716,27 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
     <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/AcrylicProductionResources.xaml""/>
 </ResourceDictionary.MergedDictionaries></ResourceDictionary>"));
 
-    private sealed class TaskToolbarFixture
+    private sealed class TaskToolbarFixture : INotifyPropertyChanged
     {
+        private TaskFilterPreset? selectedTaskFilterPreset;
+
         public string TaskSearchText { get; set; } = "搜索任务";
         public string TaskStatusFilter { get; set; } = "全部";
         public string TaskTypeFilter { get; set; } = "全部";
         public string TaskHistoryScope { get; set; } = "全部时间";
         public string TaskHistoryRange { get; set; } = "全部时间";
         public string TaskFilterPresetNameDraft { get; set; } = "我的预设";
-        public TaskFilterPreset? SelectedTaskFilterPreset { get; set; }
+        public TaskFilterPreset? SelectedTaskFilterPreset
+        {
+            get => selectedTaskFilterPreset;
+            set
+            {
+                if (ReferenceEquals(selectedTaskFilterPreset, value)) return;
+                selectedTaskFilterPreset = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTaskFilterPreset)));
+            }
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
         public ObservableCollection<string> TaskStatusFilterOptions { get; } = new() { "全部", "失败" };
         public ObservableCollection<string> TaskTypeFilterOptions { get; } = new() { "全部", "媒体同步" };
         public ObservableCollection<string> TaskHistoryScopeOptions { get; } = new() { "全部时间", "最近" };

@@ -131,6 +131,7 @@
          words; values outside that vocabulary remain untouched. -->
     <ui:StatusGlyphConverter x:Key="GscStatusGlyphConverter"/>
     <converters:PathDisplayConverter x:Key="GscPathDisplayConverter"/>
+    <converters:ExpandedStateToChevronAngleConverter x:Key="GscExpandedStateToChevronAngleConverter"/>
     <SolidColorBrush x:Key="GscScrollTrackBrush" Color="#00000000"/>
     <SolidColorBrush x:Key="GscScrollThumbBrush" Color="#38FFFFFF"/>
     <SolidColorBrush x:Key="GscScrollThumbHoverBrush" Color="#52FFFFFF"/>
@@ -461,7 +462,7 @@
                                                   VerticalAlignment="Center"
                                                   RenderTransformOrigin="0.5,0.5">
                                                 <Path.RenderTransform>
-                                                    <RotateTransform Angle="-90"/>
+                                                    <RotateTransform Angle="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}, Converter={StaticResource GscExpandedStateToChevronAngleConverter}}"/>
                                                 </Path.RenderTransform>
                                             </Path>
                                             <ContentPresenter ContentSource="Content"
@@ -539,6 +540,26 @@
                                             <Setter TargetName="Chevron" Property="RenderTransform">
                                                 <Setter.Value><RotateTransform Angle="-90"/></Setter.Value>
                                             </Setter>
+                                            <MultiTrigger.EnterActions>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderOpenStoryboard"/>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderCloseStoryboard"/>
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsChecked" Value="True"/>
+                                                <Condition Property="IsEnabled" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <MultiTrigger.EnterActions>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderOpenStoryboard"/>
+                                                <RemoveStoryboard BeginStoryboardName="GscExpanderCloseStoryboard"/>
+                                            </MultiTrigger.EnterActions>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsChecked" Value="False"/>
+                                                <Condition Property="IsEnabled" Value="False"/>
+                                            </MultiTrigger.Conditions>
                                             <MultiTrigger.EnterActions>
                                                 <RemoveStoryboard BeginStoryboardName="GscExpanderOpenStoryboard"/>
                                                 <RemoveStoryboard BeginStoryboardName="GscExpanderCloseStoryboard"/>
