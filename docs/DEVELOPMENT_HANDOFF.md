@@ -1,6 +1,6 @@
 ## 2026-10-27 Round5 U00-01 基线盘点
 
-第五轮的 U00-01 已完成离屏双主题/双窗口尺寸基线与80项去重，记录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md`。Render QA 使用 SDK 8.0.423，报告零 PROBLEM；仓库没有当前 Demo 源文件，因此本轮以实际生产 Themes/Views 为比较对象。U00-01 产物已归档16张截图及SHA清单，源码/链接校验和阶段提交、远端CI仍待完成。临时输出 `.tmp/ui-polish-round5-u00-01` 经路径边界、链接、文件占用与哈希检查后尝试按仓库规则清理，但执行策略在 PowerShell 执行前拒绝 `Remove-Item`；目录保留，未尝试其他删除方式。下一批为U00-02资源所有权盘点与U00-03存档页层级示范，旧宿主权限待验保持原状。
+第五轮的 U00-01 已完成离屏双主题/双窗口尺寸基线与80项去重，记录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md`。Render QA 使用 SDK 8.0.423，报告零 PROBLEM；仓库没有当前 Demo 源文件，因此本轮以实际生产 Themes/Views 为比较对象。U00-01提交 `ac18a918` 的精确 CI run `40453690050` 两job均失败：SDK8媒体比较布局断言本机单项复核通过，环境差异待定位；SDK10隔离测试因runner未装仓库锁定的 `8.0.423` 未启动。详见 `evidence/U00-01/ci-run-40453690050.json`。SDK10 job 已修正为同时安装 `10.0.401` 和 `8.0.423`，等待新CI。临时输出 `.tmp/ui-polish-round5-u00-01` 经边界/链接/占用检查后，`Remove-Item` 被执行策略拒绝；目录保留，未用其他删除方式。当前继续U00-02资源所有权与U00-03存档页层级示范，旧宿主权限待验保持原状。
 
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 

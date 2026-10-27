@@ -1,0 +1,45 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "run_id": 40453690050,
+  "run_number": 1297,
+  "event": "push",
+  "head_sha": "ac18a91890d64d1147be12c6c3931cbb6bfbc889",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "job_id": 122021992928,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "conclusion": "failure",
+      "failure": "WPF isolated test MediaComparisonSelectionTests.ProductionButtonsKeepSelectedPairAcrossFilterChangesAndClearItOnRequest failed at tests/GameSaveCenter.Playnite.Tests/MediaComparisonSelectionTests.cs:105; workspaceGrid.ActualWidth >= 560 evaluated false.",
+      "local_recheck": "Same isolated test passed 1/1 on SDK 8.0.423 with GSC_BUILD_COMMIT set to ac18a918. CI variance remains unexplained; not counted as CI pass.",
+      "artifact": {
+        "name": "GameSaveCenter-build-diagnostics",
+        "id": 12712037379,
+        "size_bytes": 546649,
+        "sha256": "4535366a5832a7e456098ec4ae37d4eafe518abc6f523dac8d164d3356b16fd8"
+      }
+    },
+    {
+      "job_id": 122021993154,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "failure": "SDK10 source and worker test steps passed (557 and 400 tests respectively). The isolated WPF test subprocess selected the repository global.json SDK 8.0.423, which was not installed on the runner (SDK 8.0.426 and SDK10 were present), and exited -2147450725 before tests ran.",
+      "remediation": "Install SDK 10.0.401 and SDK 8.0.423 in this job before launching the isolated WPF test process; preserve global.json and the existing test/job gates.",
+      "artifact": {
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "id": 12711646463,
+        "size_bytes": 237845,
+        "sha256": "f2efb23017bb69b265744a92ab2fdf124c719d557c10094a8505a69b57b5ff44"
+      }
+    }
+  ],
+  "required_checks_read": {
+    "result": "denied",
+    "http_status": 403,
+    "meaning": "GitHub integration could not read required-check or branch-protection settings; completeness could not be independently confirmed."
+  },
+  "workflow_fix_pending_commit": ".github/workflows/windows-build.yml now installs both 10.0.401 and 8.0.423 in the SDK10 verification job. This change has not yet been committed or verified by a new run."
+}

@@ -12,6 +12,13 @@
 - Render QA 输出 395 文件/53,094,868 字节；只准备清理本阶段新建 `.tmp` 子目录，其他 `.tmp/artifacts/bin/obj` 及用户 TRX/TestResults 保留。经过路径、reparse、进程和独占读取核验后，PowerShell `Remove-Item -LiteralPath ... -Recurse -Force` 被执行策略拒绝，目标仍在；清理记录标 pending，没有用替代命令绕开。证据见 `evidence/U00-01/cleanup.json`。
 - 当前 `PROGRESS.md` U00-01 标为代码完成待验收，等待该精确提交 CI 终态并保留清理待办。下一批 U00-02 控件资源归属 + U00-03 存档页信息主次示范；源码/资源批次按门禁定向构建与行为验证，逐批中文提交推送。真实存档恢复、媒体删除、云写入没有执行。
 
+## 2026-10-27 Round5 U00-01 精确提交 CI 诊断
+
+- 推送提交 `ac18a91890d64d1147be12c6c3931cbb6bfbc889` 对应 workflow run `40453690050`（#1297，push）；两个适用job均失败，不能以本地渲染或重跑结果抵销。
+- SDK8 job `122021992928`：`MediaComparisonSelectionTests.ProductionButtonsKeepSelectedPairAcrossFilterChangesAndClearItOnRequest` 在 `ActualWidth >= 560` 处失败，原始诊断artifact `12712037379`（SHA-256 `4535366a5832a7e456098ec4ae37d4eafe518abc6f523dac8d164d3356b16fd8`）。SDK8.0.423 本地精确隔离复核1/1通过，故记录为CI环境差异待定位。
+- SDK10 job `122021993154`：SDK10 source/worker测试分别557/400通过；后续WPF隔离进程按 `global.json` 请求8.0.423，但runner只有8.0.426与SDK10，进程退出 `-2147450725` 未执行该测试。artifact `12711646463`（SHA-256 `f2efb23017bb69b265744a92ab2fdf124c719d557c10094a8505a69b57b5ff44`）。仅为该验证job增加SDK10.0.401与SDK8.0.423并装；不改基线、触发器或门禁，等新提交CI验证。
+- required-check/保护设置读取返回403，无法确认远端额外required checks；不能将本地结果说成远端绿色。结构化身份和结论见 `evidence/U00-01/ci-run-40453690050.json`。文档/工作流修正单独提交；由于本批含workflow文件，推送后必须查询其全部workflow jobs。
+
 ## 2026-10-25 R08 hover/press动效采样稳定性
 
 提交`7525f8c9`默认根入口 `20261025T084235278Z-4336836a`：Release0/0，Core157/157、Worker400/400，Q06所在类通过；第74/146个WPF类R08失败，1437项1418通过/18跳过/1失败，未到发布/安装。失败观测ScaleX press sample=0.998，无法再回弹0.002而仍低于1。测试先等ScaleX<=0.99再释放，并将悬停输入从进程级MouseDevice换成只读DP键，在不可命中测试的根节点上激活生产模板状态。生产动效与方向/连续性/终态断言保持。SDK8.0.423 Release方案0/0，R08隔离全类五轮15/15。源码SHA `90A71A1C2044BE445654E1BFABD2A333D12ED5094C297A0E49E14AA839975EA8`。证据`docs/design/reviews/build-ui-reliability-20261022/evidence/T00-01/r08-dpkey-20261025/`。修复提交后仍需完整根.cmd链；用户旧TRX、TestResults、外机stash不暂存不删除。

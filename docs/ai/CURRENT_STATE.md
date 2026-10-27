@@ -1,6 +1,6 @@
 ## 2026-10-27 新授权：第五轮 UI 与动画精修 80 项
 
-用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01 已在源码 `f5cddfe9` 完成离屏视觉基线与旧任务去重；RenderHarness Release 0 warning/0 error，SDK8.0.423，render-qa exit 0/0 PROBLEM。远端精确提交 CI 待推送后核验；本阶段 395 个、53,094,868 字节 `.tmp` 输出因 `Remove-Item -Recurse -Force` 被执行策略拒绝而保留。下一批 U00-02 + U00-03，按依赖每批2～4项；旧S/T权限、真实宿主和物理输入待验状态不因新计划自动结项。详细发现、截图与清理边界见[U00-01基线](../design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md)。
+用户明确要求新增界面与动画优化任务，现新增[80项计划与实施提示词](../design/UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)及[逐项账本](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。U00-01 基线与旧任务去重已完成并以 `ac18a918` 推送；SDK8.0.423 RenderHarness Release 0/0，render-qa exit 0/0 PROBLEM。精确 GitHub run `40453690050` 的两个适用 job 均失败：SDK8有1项媒体比较布局行为断言失败（本地单项复核1/1通过，属环境相关待复核），SDK10隔离测试误回到原始8.0.423 global.json而runner未安装该精确版本；原始日志、job和artifact身份见[U00-01 CI记录](../design/reviews/ui-polish-round5-20261027/evidence/U00-01/ci-run-40453690050.json)。已准备只在SDK10验证环境同时安装10.0.401与仓库基线8.0.423的修复，待新提交验证；required-checks保护端点返回403，远端规则不可读。本阶段395个、53,094,868字节`.tmp`仍因策略拒绝删除而保留。下一批仍为U00-02 + U00-03；旧S/T宿主/权限/物理输入待验状态不变。详细发现见[U00-01基线](../design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md)。
 
 提示词明确标准中文一键入口转英文根入口的完整构建/测试/发布/打包/安装身份/启动验收，以及scripts/build.cmd职责、GitHub精确提交所有适用job（含SDK基线与SDK10）通过、每阶段安全清理自有无用产物。无远端权限不得称CI成功；不改保护/跳过测试求绿。本次仅新增本地文档，未重跑全链或查询远端CI；产品全链事实仍以90bf0405证据为准。按源码结构、80项计数、链接与diff校验交付，不创建新对话，不清理用户旧TRX/TestResults。
 

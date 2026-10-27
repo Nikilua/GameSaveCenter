@@ -84,7 +84,9 @@ jobs:
       - name: 安装 .NET SDK 10.0.401
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 10.0.401
+          dotnet-version: |
+            10.0.401
+            8.0.423
 
       - name: 隔离工作树并运行 Release 编译与测试
         shell: pwsh
