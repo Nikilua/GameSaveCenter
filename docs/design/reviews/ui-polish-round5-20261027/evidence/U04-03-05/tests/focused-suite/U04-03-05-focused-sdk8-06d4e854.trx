@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="809d9b92-2487-4850-ac8d-6a8d3bb65dae" name="lopmatu@SULT 2026-10-28 04:17:32" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-28T04:17:32.3239775+08:00" queuing="2026-10-28T04:17:32.3239778+08:00" start="2026-10-28T04:17:27.4974341+08:00" finish="2026-10-28T04:18:06.9195289+08:00" />
+  <TestSettings name="default" id="83a8d9df-c5ac-44ab-ae51-80205e4e9576">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-28_04_17_32" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="04e46775-f794-4da3-b474-f768ffc26172" testId="be5b923e-ad7a-cf67-60b8-2c11fea6272a" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" computerName="SULT" duration="00:00:02.9310000" startTime="2026-10-28T04:17:44.2401230+08:00" endTime="2026-10-28T04:17:47.1683800+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="04e46775-f794-4da3-b474-f768ffc26172">
+      <Output>
+        <StdOut>sidebar collapseMid=191.333; reversalStart=191.333; reverseMid=204; final=270; opacity=1; completed=True; trace=after-collapse collapsed=True; running=True; base=191.278; actual=191.333 | after-reverse-progress collapsed=False; running=True; base=204.203; actual=204</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fb7b679c-6c2f-4726-bf5b-d73398cb54e5" testId="24784125-168b-e6a3-e5f4-3418cda16bdd" testName="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" computerName="SULT" duration="00:00:00.8570000" startTime="2026-10-28T04:17:32.3095560+08:00" endTime="2026-10-28T04:17:33.1433775+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fb7b679c-6c2f-4726-bf5b-d73398cb54e5" />
+    <UnitTestResult executionId="eb0c8849-a88c-407c-ba03-6428d17effb3" testId="b0340ce6-688e-c340-02d5-18ae291f41df" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" computerName="SULT" duration="00:00:02.4660000" startTime="2026-10-28T04:17:41.7733181+08:00" endTime="2026-10-28T04:17:44.2381224+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eb0c8849-a88c-407c-ba03-6428d17effb3">
+      <Output>
+        <StdOut>translate midpoint=0.78; sampled=True; reversalStart=0.78; final=-8; completed=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d9eb6174-fb50-4922-94d9-ae6ec9ed7290" testId="656cb48b-6117-db47-8114-749aedae68d4" testName="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" computerName="SULT" duration="00:00:02.3330000" startTime="2026-10-28T04:17:29.9788696+08:00" endTime="2026-10-28T04:17:32.2854462+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d9eb6174-fb50-4922-94d9-ae6ec9ed7290" />
+    <UnitTestResult executionId="343446de-be08-4529-863a-bee887391715" testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" testName="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" computerName="SULT" duration="00:00:00.1080000" startTime="2026-10-28T04:17:53.1061583+08:00" endTime="2026-10-28T04:17:53.2121706+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="343446de-be08-4529-863a-bee887391715">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Null() Failure: Value is not null&#xD;
+Expected: null&#xD;
+Actual:   System.InvalidOperationException: 调用线程无法访问此对象，因为另一个线程拥有该对象。&#xD;
+   在 System.Windows.Threading.Dispatcher.VerifyAccess()&#xD;
+   在 System.Windows.Application.set_ShutdownMode(ShutdownMode value)&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.EnsureApplication() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 708&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.CaptureToolbarGeometry(GameSaveCenterThemeMode theme, Double width, Double height) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 386&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.&lt;&gt;c__DisplayClass4_0.&lt;ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters&gt;b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 62</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 141</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="91f8d3e1-ebdd-4bd8-a442-485653878119" testId="6b3fe9f0-76e6-dc62-9c8d-d551ba38833d" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ImeProcessedAndArrowKeysRemainInThePickerInputRoute" computerName="SULT" duration="00:00:00.4360000" startTime="2026-10-28T04:17:48.2409033+08:00" endTime="2026-10-28T04:17:48.6748254+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="91f8d3e1-ebdd-4bd8-a442-485653878119" />
+    <UnitTestResult executionId="ef981e7e-1b28-43aa-8072-b665941e15c4" testId="eb4ef714-a033-d773-df25-3d35298457a4" testName="GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark" computerName="SULT" duration="00:00:08.6240000" startTime="2026-10-28T04:17:33.1486016+08:00" endTime="2026-10-28T04:17:41.7703189+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ef981e7e-1b28-43aa-8072-b665941e15c4" />
+    <UnitTestResult executionId="b9f6caa6-e618-4386-8f68-81713182c5fd" testId="0e230479-af85-539d-539e-1cb7a5b7c051" testName="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes" computerName="SULT" duration="00:00:02.2220000" startTime="2026-10-28T04:17:50.8841400+08:00" endTime="2026-10-28T04:17:53.1041592+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9f6caa6-e618-4386-8f68-81713182c5fd" />
+    <UnitTestResult executionId="6b9e6da6-0527-42cf-a9a1-8c8ac9bf729f" testId="ae894b52-3ecf-9c15-f90c-e32eb12650b7" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ActiveTextCompositionKeepsPickerOpenUntilCompositionCommits" computerName="SULT" duration="00:00:00.4320000" startTime="2026-10-28T04:17:50.4511299+08:00" endTime="2026-10-28T04:17:50.8811369+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6b9e6da6-0527-42cf-a9a1-8c8ac9bf729f" />
+    <UnitTestResult executionId="9f961a7e-9865-4163-8b8f-46236542bc46" testId="aec19de8-c519-0131-a42c-a53d1122a613" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EscapeClosesTheProductionPickerAndReturnsFocusToTheContextButton" computerName="SULT" duration="00:00:00.5280000" startTime="2026-10-28T04:17:47.7178765+08:00" endTime="2026-10-28T04:17:48.2389008+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9f961a7e-9865-4163-8b8f-46236542bc46" />
+    <UnitTestResult executionId="eb8c41e5-3028-4ac6-b0bd-82bde3f88959" testId="2db61859-6b6e-8e9c-63a7-f573aeffb663" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues" computerName="SULT" duration="00:00:00.0440000" startTime="2026-10-28T04:17:47.1703781+08:00" endTime="2026-10-28T04:17:47.2150705+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eb8c41e5-3028-4ac6-b0bd-82bde3f88959">
+      <Output>
+        <StdOut>button hover midpoint=0; exit=0/0; reenter=0/0; final=0; samples=False/False/False; press midpoint=0; release=0-&gt;0; re-press=0-&gt;0; overlay=0-&gt;0-&gt;0; releaseFinal=0/0; transitions=False/False/False; light/dark sibling sweep visited=0; max residual=0; re-entry=False/False</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Null() Failure: Value is not null&#xD;
+Expected: null&#xD;
+Actual:   System.InvalidOperationException: 调用线程无法访问此对象，因为另一个线程拥有该对象。&#xD;
+   在 System.Windows.Threading.Dispatcher.VerifyAccess()&#xD;
+   在 System.Windows.Application.set_ShutdownMode(ShutdownMode value)&#xD;
+   在 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.&lt;&gt;c__DisplayClass5_0.&lt;ProductionButtonHoverAndPressReverseFromTheirRenderedValues&gt;b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R08MotionReverseBehaviorTests.cs:行号 262</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R08MotionReverseBehaviorTests.cs:行号 392</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0f80f347-7162-40a4-a1bb-97461f334053" testId="b67c05b2-fe79-7df1-ba2f-1f7d20943c92" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ProductionGamePickerOpensAndSelectsTheExactDuplicateNameById" computerName="SULT" duration="00:00:00.6780000" startTime="2026-10-28T04:17:49.1053596+08:00" endTime="2026-10-28T04:17:49.7798037+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0f80f347-7162-40a4-a1bb-97461f334053" />
+    <UnitTestResult executionId="a311f65a-b5aa-4d7b-97ec-82b34b1e2980" testId="0247db42-d44b-2f24-18f6-fc9390354081" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ProductionSearchClearButtonClearsTextAndReturnsFocusToTheSearchBox" computerName="SULT" duration="00:00:00.6690000" startTime="2026-10-28T04:17:49.7818057+08:00" endTime="2026-10-28T04:17:50.4491316+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a311f65a-b5aa-4d7b-97ec-82b34b1e2980" />
+    <UnitTestResult executionId="3a42d665-803f-4c3d-a6a4-73410dfdff9b" testId="10cf7944-f661-0d0f-5c57-230c39db81fe" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EnterConfirmsTheVisibleListCandidateAndReturnsFocusToTheContextButton" computerName="SULT" duration="00:00:00.4970000" startTime="2026-10-28T04:17:47.2258273+08:00" endTime="2026-10-28T04:17:47.7157626+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3a42d665-803f-4c3d-a6a4-73410dfdff9b" />
+    <UnitTestResult executionId="dba7d111-f0cc-4d92-8392-d21e7fb2fe51" testId="5e1c5085-98fd-7b9c-bc97-57b223f0dd74" testName="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EnterWithNoVisibleResultKeepsThePreviouslySelectedGameAndPickerOpen" computerName="SULT" duration="00:00:00.4280000" startTime="2026-10-28T04:17:48.6778242+08:00" endTime="2026-10-28T04:17:49.1023597+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dba7d111-f0cc-4d92-8392-d21e7fb2fe51" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ProductionGamePickerOpensAndSelectsTheExactDuplicateNameById" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b67c05b2-fe79-7df1-ba2f-1f7d20943c92">
+      <Execution id="0f80f347-7162-40a4-a1bb-97461f334053" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests" name="ProductionGamePickerOpensAndSelectsTheExactDuplicateNameById" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0e230479-af85-539d-539e-1cb7a5b7c051">
+      <Execution id="b9f6caa6-e618-4386-8f68-81713182c5fd" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests" name="WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2db61859-6b6e-8e9c-63a7-f573aeffb663">
+      <Execution id="eb8c41e5-3028-4ac6-b0bd-82bde3f88959" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="ProductionButtonHoverAndPressReverseFromTheirRenderedValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b0340ce6-688e-c340-02d5-18ae291f41df">
+      <Execution id="eb0c8849-a88c-407c-ba03-6428d17effb3" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157">
+      <Execution id="343446de-be08-4529-863a-bee887391715" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests" name="ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ProductionSearchClearButtonClearsTextAndReturnsFocusToTheSearchBox" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0247db42-d44b-2f24-18f6-fc9390354081">
+      <Execution id="a311f65a-b5aa-4d7b-97ec-82b34b1e2980" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests" name="ProductionSearchClearButtonClearsTextAndReturnsFocusToTheSearchBox" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="24784125-168b-e6a3-e5f4-3418cda16bdd">
+      <Execution id="fb7b679c-6c2f-4726-bf5b-d73398cb54e5" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests" name="SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="be5b923e-ad7a-cf67-60b8-2c11fea6272a">
+      <Execution id="04e46775-f794-4da3-b474-f768ffc26172" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests.ProductionButtonCapturesAndChecksFiveStatesInLightAndDark" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="eb4ef714-a033-d773-df25-3d35298457a4">
+      <Execution id="ef981e7e-1b28-43aa-8072-b665941e15c4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests" name="ProductionButtonCapturesAndChecksFiveStatesInLightAndDark" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ActiveTextCompositionKeepsPickerOpenUntilCompositionCommits" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ae894b52-3ecf-9c15-f90c-e32eb12650b7">
+      <Execution id="6b9e6da6-0527-42cf-a9a1-8c8ac9bf729f" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests" name="ActiveTextCompositionKeepsPickerOpenUntilCompositionCommits" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="656cb48b-6117-db47-8114-749aedae68d4">
+      <Execution id="d9eb6174-fb50-4922-94d9-ae6ec9ed7290" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests" name="FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.ImeProcessedAndArrowKeysRemainInThePickerInputRoute" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6b3fe9f0-76e6-dc62-9c8d-d551ba38833d">
+      <Execution id="91f8d3e1-ebdd-4bd8-a442-485653878119" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests" name="ImeProcessedAndArrowKeysRemainInThePickerInputRoute" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EnterWithNoVisibleResultKeepsThePreviouslySelectedGameAndPickerOpen" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5e1c5085-98fd-7b9c-bc97-57b223f0dd74">
+      <Execution id="dba7d111-f0cc-4d92-8392-d21e7fb2fe51" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests" name="EnterWithNoVisibleResultKeepsThePreviouslySelectedGameAndPickerOpen" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EscapeClosesTheProductionPickerAndReturnsFocusToTheContextButton" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="aec19de8-c519-0131-a42c-a53d1122a613">
+      <Execution id="9f961a7e-9865-4163-8b8f-46236542bc46" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests" name="EscapeClosesTheProductionPickerAndReturnsFocusToTheContextButton" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests.EnterConfirmsTheVisibleListCandidateAndReturnsFocusToTheContextButton" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u04-03-05-build-06d4e854\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="10cf7944-f661-0d0f-5c57-230c39db81fe">
+      <Execution id="3a42d665-803f-4c3d-a6a4-73410dfdff9b" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u04-03-05-build-06d4e854\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests" name="EnterConfirmsTheVisibleListCandidateAndReturnsFocusToTheContextButton" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="be5b923e-ad7a-cf67-60b8-2c11fea6272a" executionId="04e46775-f794-4da3-b474-f768ffc26172" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="24784125-168b-e6a3-e5f4-3418cda16bdd" executionId="fb7b679c-6c2f-4726-bf5b-d73398cb54e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b0340ce6-688e-c340-02d5-18ae291f41df" executionId="eb0c8849-a88c-407c-ba03-6428d17effb3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="656cb48b-6117-db47-8114-749aedae68d4" executionId="d9eb6174-fb50-4922-94d9-ae6ec9ed7290" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ff1a3fe2-8c60-8990-83fc-3ec1b1e4f157" executionId="343446de-be08-4529-863a-bee887391715" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b3fe9f0-76e6-dc62-9c8d-d551ba38833d" executionId="91f8d3e1-ebdd-4bd8-a442-485653878119" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eb4ef714-a033-d773-df25-3d35298457a4" executionId="ef981e7e-1b28-43aa-8072-b665941e15c4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0e230479-af85-539d-539e-1cb7a5b7c051" executionId="b9f6caa6-e618-4386-8f68-81713182c5fd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ae894b52-3ecf-9c15-f90c-e32eb12650b7" executionId="6b9e6da6-0527-42cf-a9a1-8c8ac9bf729f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aec19de8-c519-0131-a42c-a53d1122a613" executionId="9f961a7e-9865-4163-8b8f-46236542bc46" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2db61859-6b6e-8e9c-63a7-f573aeffb663" executionId="eb8c41e5-3028-4ac6-b0bd-82bde3f88959" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b67c05b2-fe79-7df1-ba2f-1f7d20943c92" executionId="0f80f347-7162-40a4-a1bb-97461f334053" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0247db42-d44b-2f24-18f6-fc9390354081" executionId="a311f65a-b5aa-4d7b-97ec-82b34b1e2980" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10cf7944-f661-0d0f-5c57-230c39db81fe" executionId="3a42d665-803f-4c3d-a6a4-73410dfdff9b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e1c5085-98fd-7b9c-bc97-57b223f0dd74" executionId="dba7d111-f0cc-4d92-8392-d21e7fb2fe51" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="15" executed="15" passed="13" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.46]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.51]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:18.83]       Assert.Null() Failure: Value is not null&#xD;
+[xUnit.net 00:00:18.83]       Expected: null&#xD;
+[xUnit.net 00:00:18.83]       Actual:   System.InvalidOperationException: 调用线程无法访问此对象，因为另一个线程拥有该对象。&#xD;
+[xUnit.net 00:00:18.83]          在 System.Windows.Threading.Dispatcher.VerifyAccess()&#xD;
+[xUnit.net 00:00:18.83]          在 System.Windows.Application.set_ShutdownMode(ShutdownMode value)&#xD;
+[xUnit.net 00:00:18.83]          在 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.&lt;&gt;c__DisplayClass5_0.&lt;ProductionButtonHoverAndPressReverseFromTheirRenderedValues&gt;b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R08MotionReverseBehaviorTests.cs:行号 262&#xD;
+[xUnit.net 00:00:18.83]       Stack Trace:&#xD;
+[xUnit.net 00:00:18.83]            在 GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R08MotionReverseBehaviorTests.cs:行号 392&#xD;
+[xUnit.net 00:00:18.83]       Output:&#xD;
+[xUnit.net 00:00:18.83]         button hover midpoint=0; exit=0/0; reenter=0/0; final=0; samples=False/False/False; press midpoint=0; release=0-&gt;0; re-press=0-&gt;0; overlay=0-&gt;0-&gt;0; releaseFinal=0/0; transitions=False/False/False; light/dark sibling sweep visited=0; max residual=0; re-entry=False/False&#xD;
+[xUnit.net 00:00:24.82]       Assert.Null() Failure: Value is not null&#xD;
+[xUnit.net 00:00:24.82]       Expected: null&#xD;
+[xUnit.net 00:00:24.82]       Actual:   System.InvalidOperationException: 调用线程无法访问此对象，因为另一个线程拥有该对象。&#xD;
+[xUnit.net 00:00:24.82]          在 System.Windows.Threading.Dispatcher.VerifyAccess()&#xD;
+[xUnit.net 00:00:24.82]          在 System.Windows.Application.set_ShutdownMode(ShutdownMode value)&#xD;
+[xUnit.net 00:00:24.82]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.EnsureApplication() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 708&#xD;
+[xUnit.net 00:00:24.82]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.CaptureToolbarGeometry(GameSaveCenterThemeMode theme, Double width, Double height) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 386&#xD;
+[xUnit.net 00:00:24.82]          在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.&lt;&gt;c__DisplayClass4_0.&lt;ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters&gt;b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 62&#xD;
+[xUnit.net 00:00:24.82]       Stack Trace:&#xD;
+[xUnit.net 00:00:24.82]            在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 141&#xD;
+[xUnit.net 00:00:24.83]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-28T04:17:47.2195208+08:00">
+        <Text>[xUnit.net 00:00:18.83]     GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-28T04:17:53.2132944+08:00">
+        <Text>[xUnit.net 00:00:24.82]     GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

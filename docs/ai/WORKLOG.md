@@ -1,3 +1,10 @@
+## 2026-10-28 Round5 U04-06/08 动画中断与生命周期
+
+- U04-06为共享DisclosureCard补充禁用中途的Storyboard收尾；绑定恢复当前展开状态，不改变IsExpanded、命令或内容。双主题行为用例验证动画时禁用、重新启用不重播以及后续正常收起。U04-08在同一生产模板执行100次开合，Header/Path/RotateTransform身份恒定，Reduced Motion无最终活动时钟。Q14测试夹具实现属性通知，在加载后发出选中预设变化，修复父提交CI暴露的ComboBox.Text初始化误判。
+- 源码/测试提交并推送 `c5c86558b6232995438657c00810aeb327ed9ba5`（`修复披露卡动画中断状态`）。SDK8.0.423精确提交 Release 聚焦13/13、0失败、0 skip；TRX SHA `833588BF1FAAE0DFEE552BD805FD279A1EE5FD59B15EC917645B1C1005C4C602`。错误缩写身份的一次提交后测试被仓库一致性保护拒绝并中断，原始日志保留、不计通过；随后以完整SHA重跑通过。
+- Source validation、XAML26/26、WPF静态37文件/0 errors、RenderHarness Release 0 warning/0 error、Render QA 394 PNG/0 PROBLEM通过；完整身份和边界见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U04-06-08/BASELINE.md`。父提交run `40578426793`两SDK均失败于Q14夹具初始化；源码run `40583173450` baseline job `122467678548`与SDK10 job `122467678982`当前在测试，无artifact。required-checks先前403，不能声称远端完整required checks。
+- 真正CanExecute取消、窗口失活、Playnite宿主/UIA和系统动画设置仍未直接驱动；真实存档恢复、媒体删除和云端写入未执行。执行策略拒绝本批精确 `Remove-Item` 清理请求；没有尝试其它删除方式，临时路径和磁盘快照见 `evidence/U04-06-08/cleanup.json`，用户/其它任务TRX未动。下一批推进U05-01/02。
+
 ## 2026-10-28 Round5 U02-01～04 主题层次去重与状态语义
 
 - U02-01/02经U00-01生产主题基线与`AdaptiveThemePaletteContrastGuard`去重：页面/卡片/控件分层及轻描边阈值已有实现，Light/Dark复核通过，本批没有无依据地重写表面色。U02-03/04修正概览最近访问图标的普遍强调色，以及任务成功复用历史图标、运行/失败/取消共用强调色的问题；六种状态使用一致语义图标、文字和浅底。
@@ -12495,3 +12502,11 @@ CI快照run 40554157661：baseline job 122365585853已过Render QA和WPF静态�
 ## 2026-10-28 Round5 U03-08/U04-01/02
 
 U03-08盘点确认数值范围/溢出/滚轮、路径预览/校验/缺失目录以及本地打开防护已有实现，故不重造生产控件。U04-01在`AcrylicReferenceControls.xaml`与既有生产共享模板使用共享120ms hover、100ms press令牌，DisclosureCard转场用fast令牌；不确定进度的2秒扫动保留并注明语义。U04-02在生产WPF-UI按钮状态模板上补双主题8兄弟×3轮快速合成hover扫过、归零与重新进入验证。生产实现`631b218e`，STA合并测试`95b5dbf9`，双主题测试`0c7c4268`，均已推送。SDK8.0.423定向21/21+2/2、0 skip；source validation、XAML26/26、WPF静态37/0 error、RenderHarness 0/0和Render QA 394 PNG/0 PROBLEM通过。原先跨STA事实隔离失败诊断被修正，保留TRX；最新CI run `40572542627` baseline/SDK10 jobs `122430277192`/`122430276522`仍运行，required-checks接口403。真实Playnite/UIA客户端/物理鼠标/实体DPI未验。阶段Render QA输出清理因先前PowerShell操作遭拒，未重试或换Shell；保留`.tmp`目录，只归档并核对报告。
+## 2026-10-28 Round5 U04-03/04/05/07 已推送；U04-06/08进行中
+
+- 源码/测试提交`4225eb17139a844ede87219f02a9ad97e88a12de`（`增加工作区标签选中动效`）已推送。共享页签选中提示条可反向渐隐并支持 Reduced Motion；R08/Q14测试不再修改跨STA全局Application；DisclosureChevron旧150ms断言改为共享120ms令牌。SDK8.0.423组合15/15、令牌1/1、source/XAML/WPF静态和Render QA通过，详细证据在`docs/design/reviews/ui-polish-round5-20261027/evidence/U04-03-05/`。
+- 精确源码run `40578426793`（baseline job `122451017347`、SDK10 job `122451017062`）和前序纯文档run `40575315327`（job `122440055009`/`122440055220`）截至起始快照仍运行；required-checks API返回403，不能确认保护规则。旧两run的断言失败已从原始日志确认并保留身份。
+- 本轮继续 U04-06/08。去重发现共享DisclosureCard缺少“动画中禁用”的终态收尾，已在本地增加禁用时移除双向故事板并应用开/关终态，正在SDK8.0.423隔离运行`R23ProductionResourceStateBehaviorTests`，其中新增中断/恢复与100次开合检查。待测试通过后再记录源码验证、Render QA、中文提交与CI；撤销项和真实宿主边界继续保留。
+- U04-03批临时Build/Render QA目录按清理规则留作当前审计，空间和归属见`evidence/U04-03-05/cleanup.json`；本批未删除其他任务文件、用户TRX/TestResults或未知输出。
+
+## 2026-10-28 Round5 U02-01～04 主题层次去重与状态语义

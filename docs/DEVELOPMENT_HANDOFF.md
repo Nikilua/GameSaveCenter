@@ -1,3 +1,11 @@
+## 2026-10-28 Round5 U04-06/08 最新交接
+
+当前 `main` 包含并已推送 `c5c86558b6232995438657c00810aeb327ed9ba5`（`修复披露卡动画中断状态`）。共享DisclosureCard在展开动画中途禁用时移除Storyboards并按当前IsExpanded/Toggle绑定恢复终态；重新启用不回放旧动画。100次开合期间Header、Chevron Path及RotateTransform身份稳定；Reduced Motion清除最终时钟。Q14测试夹具通知属性更新，修复父提交CI失败。
+
+SDK8.0.423精确提交聚焦13/13、0 skip；source validation、XAML26/26、WPF静态37 XAML/0 errors及Render QA 394 PNG/0 PROBLEM通过。证据见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U04-06-08/BASELINE.md`。源码run `40583173450` baseline job `122467678548`和SDK10 job `122467678982`仍在编译测试；父run `40578426793`失败于Q14夹具，run/job/artifact原始诊断保留在 `evidence/U03-08-U04-01-02/ci-runs.json`。required-checks API此前403；由有权限的GitHub API/UI确认完整required checks和workflow适用性，不能声称远端已绿。
+
+下一批去重推进U05-01/02，保持Demo-first、既有页面业务/焦点契约；真实窗口失活、CanExecute取消、Playnite宿主/UIA和系统Reduced Motion仍待验。旧S/T宿主/权限状态保持原样，不重复试探。中文根入口全链与独立 `scripts/build.cmd`只在最终候选执行；真实存档恢复、媒体删除和云端写入不执行。本批精确PowerShell清理命令被执行策略拒绝，未换其它命令，见 `evidence/U04-06-08/cleanup.json`。
+
 ## 2026-10-28 Round5 U02最新交接
 
 当前main已包含并推送 `504562a7f0dad88454dde57b290b7862f91c93e6`（`校准概览任务语义状态色`）。U02-01～04本地SDK8定向15/15、0 skip；source validation、XAML、WPF静态审查和提交身份Render QA通过。U02-01/02是核验既有Light/Dark自适应表面层次后去重，不改已有达标表面值；U02-03/04修正概览普通强调色及任务状态图标/颜色不一致。
@@ -1183,3 +1191,12 @@ CI：run `40566121765`（1327，d1fc）与 `40567683673`（1328，5300）两套S
 最新Windows Actions run `40572542627` 的baseline job `122430277192`和SDK10 job `122430276522`均仍在编译/测试；required-checks接口403，不能推断分支保护。下一批继续U04-03/04/05：已存在的按压逆转和取消/禁用行为复用测试；只在共享生产Tab模板加轻量可降低动态效果的选中指示过渡，并验证快速切换及焦点独立；输入焦点、校验和清除保持即时反馈。真实Playnite、Narrator/UIA、物理鼠标、IME、实体DPI及真实恢复/媒体删除/云端写入均不在视觉验收内。
 
 阶段Render QA截图副本位于本仓库`.tmp/round5-u03-08-u04-01-02-render-95b5dbf9`，共394 PNG；有先前Remove-Item权限拒绝，因此不重试、不换Shell。只保留一份截图副本并已归档核验报告，完整记录与磁盘空间见对应`cleanup.json`。当前工作树还有先前任务/其他过程遗留的未跟踪TRX、TestResults和证据目录；不清理或纳入本次文档提交。最终Round5候选必须先提交，再由`GameSaveCenter-一键构建安装运行.cmd`执行全链、单独核验`scripts/build.cmd`，并查询候选SHA的基线SDK与SDK10所有适用job/artifact。
+## 2026-10-28 Round5 U04最新交接
+
+当前`main`已包含并推送源码/测试提交`4225eb17139a844ede87219f02a9ad97e88a12de`（`增加工作区标签选中动效`）。U04-03/04/05/07的SDK8.0.423行为15/15、Disclosure共享令牌1/1、source/XAML/WPF静态和Render QA通过；证据见`docs/design/reviews/ui-polish-round5-20261027/evidence/U04-03-05/BASELINE.md`。此前修复同批旧Disclosure 150ms断言后，源码run `40578426793`及文档run `40575315327`的baseline/SDK10 job仍需完成；required checks endpoint 403，不推断保护状态。
+
+本次继续U04-06/08：共享`GscDisclosureCard`被禁用时直接到当前展开终态并移除进入/退出Storyboard；本地SDK8.0.423隔离行为套件正验证中，包括中断恢复及100次开合后单一Chevron/Transform稳定。测试与静态/Render验证通过后再提交推送，远端对精确提交核对所有适用job/artifact。未覆盖的取消与窗口失活情形、真实Playnite宿主需照实标记待验；不改变业务取消、安全或云写入语义。
+
+下一批在U04-06/08完成和交接后继续本轮80项，不能等待旧S/T宿主或权限状态，也不重复试探API权限拒绝。整轮最终候选仍需中文根入口完整安装启动链与独立`scripts/build.cmd`职责检查；本批不得误用完整链替代Final gate。保留游戏选框/滚动条系统、命令/Binding、UIA/键盘/IME、虚拟化、主题/DPI及Playnite兼容约束。真实存档恢复、媒体删除、云端写入不在视觉验证范围。
+
+## 2026-10-28 Round5 U02最新交接

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="cb27e4e7-0c1c-4ef1-9256-811c4f2ce2fd" name="lopmatu@SULT 2026-10-28 04:42:19" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-28T04:42:19.6032418+08:00" queuing="2026-10-28T04:42:19.6032422+08:00" start="2026-10-28T04:42:14.1809999+08:00" finish="2026-10-28T04:43:48.3050203+08:00" />
+  <TestSettings name="default" id="8dde42d4-7534-4bea-ae5d-d5d6b117b0ee">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-28_04_42_19" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="35c38fe8-485c-4fda-a5b4-994027a23b70" testId="56cc080a-d2d2-7160-ad72-09f0d0b45659" testName="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles" computerName="SULT" duration="00:01:13.0700000" startTime="2026-10-28T04:42:19.5888722+08:00" endTime="2026-10-28T04:43:32.6183384+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="35c38fe8-485c-4fda-a5b4-994027a23b70" />
+    <UnitTestResult executionId="8f9c84ef-cf60-4629-9a6d-88d7bbef7a99" testId="6f343c3f-a6c7-c1a8-28ea-6115ff94936e" testName="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes" computerName="SULT" duration="00:00:02.7300000" startTime="2026-10-28T04:42:16.8303775+08:00" endTime="2026-10-28T04:42:19.5480105+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8f9c84ef-cf60-4629-9a6d-88d7bbef7a99">
+      <Output>
+        <ErrorInfo>
+          <Message>Xunit.Sdk.TrueException: Light: a fresh expansion after re-enable did not start normally.&#xD;
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.&lt;&gt;c.&lt;DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes&gt;b__5_0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 583&#xD;
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.&lt;&gt;c__DisplayClass33_0.&lt;RunSta&gt;b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1457</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1469</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d5d80f8a-5639-47f3-9137-6cba061f02cb" testId="4708e24e-7370-a7c7-11f1-4077aafa3fa8" testName="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming" computerName="SULT" duration="00:00:00.1060000" startTime="2026-10-28T04:43:32.6263386+08:00" endTime="2026-10-28T04:43:32.7269509+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d5d80f8a-5639-47f3-9137-6cba061f02cb" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\.tmp\round5-u04-06-08-build-4225\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6f343c3f-a6c7-c1a8-28ea-6115ff94936e">
+      <Execution id="8f9c84ef-cf60-4629-9a6d-88d7bbef7a99" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\.tmp\round5-u04-06-08-build-4225\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests" name="DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\.tmp\round5-u04-06-08-build-4225\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="56cc080a-d2d2-7160-ad72-09f0d0b45659">
+      <Execution id="35c38fe8-485c-4fda-a5b4-994027a23b70" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\.tmp\round5-u04-06-08-build-4225\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests" name="DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\.tmp\round5-u04-06-08-build-4225\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4708e24e-7370-a7c7-11f1-4077aafa3fa8">
+      <Execution id="d5d80f8a-5639-47f3-9137-6cba061f02cb" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\.tmp\round5-u04-06-08-build-4225\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests" name="SharedDisclosureChevronUsesDemoRotationTiming" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="56cc080a-d2d2-7160-ad72-09f0d0b45659" executionId="35c38fe8-485c-4fda-a5b4-994027a23b70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6f343c3f-a6c7-c1a8-28ea-6115ff94936e" executionId="8f9c84ef-cf60-4629-9a6d-88d7bbef7a99" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4708e24e-7370-a7c7-11f1-4077aafa3fa8" executionId="d5d80f8a-5639-47f3-9137-6cba061f02cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="3" executed="3" passed="2" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.59]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.65]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.43]       Xunit.Sdk.TrueException: Light: a fresh expansion after re-enable did not start normally.&#xD;
+[xUnit.net 00:00:04.43]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+[xUnit.net 00:00:04.43]          在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.&lt;&gt;c.&lt;DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes&gt;b__5_0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 583&#xD;
+[xUnit.net 00:00:04.43]          在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.&lt;&gt;c__DisplayClass33_0.&lt;RunSta&gt;b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1457&#xD;
+[xUnit.net 00:00:04.43]       Stack Trace:&#xD;
+[xUnit.net 00:00:04.43]            在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1469&#xD;
+[xUnit.net 00:01:17.61]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-28T04:42:19.5530957+08:00">
+        <Text>[xUnit.net 00:00:04.43]     GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

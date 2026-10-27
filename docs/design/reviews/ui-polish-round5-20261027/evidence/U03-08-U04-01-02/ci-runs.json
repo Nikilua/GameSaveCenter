@@ -62,15 +62,57 @@
       "sha": "95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7",
       "baselineJob": {
         "id": 122426545328,
-        "status": "in_progress",
-        "step": "编译与测试"
+        "status": "completed",
+        "step": "编译与测试",
+        "conclusion": "failure",
+        "failedStep": "编译与测试",
+        "tests": {
+          "total": 1975,
+          "passed": 1916,
+          "failed": 1,
+          "skipped": 58
+        },
+        "failure": "WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming 仍断言 To=-90 对应150ms字面量；生产转场已改为 GscMotionFast",
+        "artifact": {
+          "id": 12766234197,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1029619,
+          "sha256": "ae51f19c391e5a192e77183e28313409ee42c459986ce3512ec087c6fa04c70d"
+        }
       },
       "sdk10Job": {
         "id": 122426544757,
-        "status": "in_progress",
-        "step": "隔离工作树并运行 Release 编译与测试"
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "隔离工作树并运行 Release 编译与测试",
+        "tests": {
+          "total": 1975,
+          "passed": 1916,
+          "failed": 1,
+          "skipped": 58
+        },
+        "failure": "WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming 仍断言 To=-90 对应150ms字面量；生产转场已改为 GscMotionFast",
+        "artifact": {
+          "id": 12767022087,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 942137,
+          "sha256": "bd0b718078df4b7a763990caf3971513d4f48a4d9d796f1fb7f9840560093a4d"
+        }
       },
-      "artifacts": [],
+      "artifacts": [
+        {
+          "id": 12766234197,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1029619,
+          "sha256": "ae51f19c391e5a192e77183e28313409ee42c459986ce3512ec087c6fa04c70d"
+        },
+        {
+          "id": 12767022087,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 942137,
+          "sha256": "bd0b718078df4b7a763990caf3971513d4f48a4d9d796f1fb7f9840560093a4d"
+        }
+      ],
       "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40571484630"
     },
     {
@@ -79,16 +121,193 @@
       "sha": "0c7c42687bd3be6f1f97192c50b5ca580e6f4545",
       "baselineJob": {
         "id": 122430277192,
-        "status": "in_progress",
-        "step": "编译与测试"
+        "status": "completed",
+        "step": "编译与测试",
+        "conclusion": "failure",
+        "failedStep": "编译与测试",
+        "tests": {
+          "total": 1975,
+          "passed": 1916,
+          "failed": 1,
+          "skipped": 58
+        },
+        "failure": "WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming 仍断言 To=-90 对应150ms字面量；生产转场已改为 GscMotionFast",
+        "artifact": {
+          "id": 12767464233,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1030384,
+          "sha256": "2129ffcfb2bb68ed3f4c673c92007de50ee08c738da342905c712086bcb1b741"
+        }
       },
       "sdk10Job": {
         "id": 122430276522,
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "隔离工作树并运行 Release 编译与测试复核",
+        "tests": {
+          "total": 1975,
+          "passed": 1916,
+          "failed": 1,
+          "skipped": 58
+        },
+        "failure": "WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming 仍断言 To=-90 对应150ms字面量；生产转场已改为 GscMotionFast",
+        "artifact": {
+          "id": 12766573322,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 939612,
+          "sha256": "87dceff55d9cedfae2ebf22c50c49c6f658c492e681ddd0cfa5ab667ee467132"
+        }
+      },
+      "artifacts": [
+        {
+          "id": 12767464233,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1030384,
+          "sha256": "2129ffcfb2bb68ed3f4c673c92007de50ee08c738da342905c712086bcb1b741"
+        },
+        {
+          "id": 12766573322,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 939612,
+          "sha256": "87dceff55d9cedfae2ebf22c50c49c6f658c492e681ddd0cfa5ab667ee467132"
+        }
+      ],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40572542627"
+    },
+    {
+      "runNumber": 1333,
+      "runId": 40575315327,
+      "sha": "06d4e854fd64f15013d25aac0c499f33ec5002a5",
+      "baselineJob": {
+        "id": 122440055009,
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "编译与测试",
+        "tests": {
+          "total": 1975,
+          "passed": 1916,
+          "failed": 1,
+          "skipped": 58
+        },
+        "failure": "WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming 仍断言150ms旧字面量，生产已映射GscMotionFast",
+        "artifact": {
+          "id": 12768812955,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1030586,
+          "sha256": "9144293ce37630e7ed19c84bc4b04aa1a4f8a97eda9875821c218cceccb1fb69"
+        }
+      },
+      "sdk10Job": {
+        "id": 122440055220,
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "隔离工作树并运行 Release 编译与测试复核",
+        "tests": {
+          "total": 1975,
+          "passed": 1916,
+          "failed": 1,
+          "skipped": 58
+        },
+        "failure": "WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming 仍断言150ms旧字面量，生产已映射GscMotionFast",
+        "artifact": {
+          "id": 12769196085,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 941430,
+          "sha256": "f7ede03529a1604174868c6397d8ca7fd9092eaa80d4e22f8e0ec182e89a5e6e"
+        }
+      },
+      "artifacts": [
+        {
+          "id": 12768812955,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1030586,
+          "sha256": "9144293ce37630e7ed19c84bc4b04aa1a4f8a97eda9875821c218cceccb1fb69"
+        },
+        {
+          "id": 12769196085,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 941430,
+          "sha256": "f7ede03529a1604174868c6397d8ca7fd9092eaa80d4e22f8e0ec182e89a5e6e"
+        }
+      ],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40575315327"
+    },
+    {
+      "runNumber": 1334,
+      "runId": 40578426793,
+      "sha": "4225eb17139a844ede87219f02a9ad97e88a12de",
+      "baselineJob": {
+        "id": 122451017347,
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "编译与测试",
+        "tests": {
+          "total": 1316,
+          "passed": 1297,
+          "failed": 1,
+          "skipped": 18
+        },
+        "failure": "Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters 断言筛选预设ComboBox.Text为默认值时取得空字符串",
+        "artifact": {
+          "id": 12769806143,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 621976,
+          "sha256": "219bea3ace594af871c475610fc8a774cb18fe8fb6052b8013e21ef96db6e7b2"
+        }
+      },
+      "sdk10Job": {
+        "id": 122451017062,
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "隔离工作树并运行 Release 编译与测试复核",
+        "tests": {
+          "total": 1316,
+          "passed": 1297,
+          "failed": 1,
+          "skipped": 18
+        },
+        "failure": "Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters 断言筛选预设ComboBox.Text为默认值时取得空字符串",
+        "artifact": {
+          "id": 12769635489,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 528287,
+          "sha256": "1b6af6a7ba564b397241fecbb06c69965cd58dfe4bbbea623a71711dc4d77373"
+        }
+      },
+      "artifacts": [
+        {
+          "id": 12769806143,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 621976,
+          "sha256": "219bea3ace594af871c475610fc8a774cb18fe8fb6052b8013e21ef96db6e7b2"
+        },
+        {
+          "id": 12769635489,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 528287,
+          "sha256": "1b6af6a7ba564b397241fecbb06c69965cd58dfe4bbbea623a71711dc4d77373"
+        }
+      ],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40578426793"
+    },
+    {
+      "runNumber": 1335,
+      "runId": 40583173450,
+      "sha": "c5c86558b6232995438657c00810aeb327ed9ba5",
+      "baselineJob": {
+        "id": 122467678548,
         "status": "in_progress",
-        "step": "隔离工作树并运行 Release 编译与测试"
+        "conclusion": null,
+        "step": "编译与测试"
+      },
+      "sdk10Job": {
+        "id": 122467678982,
+        "status": "in_progress",
+        "conclusion": null,
+        "step": "隔离工作树并运行 Release 编译与测试复核"
       },
       "artifacts": [],
-      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40572542627"
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40583173450"
     }
   ],
   "branchProtection": {
@@ -96,5 +315,5 @@
     "api": "GET /repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks",
     "result": "HTTP 403 Resource not accessible by integration; no assumption is made about required checks"
   },
-  "snapshotUtc": "2026-10-27T20:07:25Z"
+  "snapshotUtc": "2026-10-27T21:05:21Z"
 }

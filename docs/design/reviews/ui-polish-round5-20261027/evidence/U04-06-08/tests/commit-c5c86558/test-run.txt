@@ -1,0 +1,37 @@
+  正在确定要还原的项目…
+  已还原 D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 120 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (用时 120 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (用时 120 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 120 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (用时 131 毫秒)。
+  GameSaveCenter.Contracts -> D:\workplace\github\GameSaveCenter\.tmp\round5-u04-06-08-sdk8423-c5c86558\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> D:\workplace\github\GameSaveCenter\.tmp\round5-u04-06-08-sdk8423-c5c86558\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Playnite -> D:\workplace\github\GameSaveCenter\.tmp\round5-u04-06-08-sdk8423-c5c86558\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> D:\workplace\github\GameSaveCenter\.tmp\round5-u04-06-08-sdk8423-c5c86558\bin\GameSaveCenter.Playnite.HostAuditSeeder\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> D:\workplace\github\GameSaveCenter\.tmp\round5-u04-06-08-sdk8423-c5c86558\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+D:\workplace\github\GameSaveCenter\.tmp\round5-u04-06-08-sdk8423-c5c86558\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:01.84]     GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters [FAIL]
+[xUnit.net 00:00:01.88]     GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters [111 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=c5c865580b...，源码根 HEAD=c5c86558b6232995438657c00810aeb327ed9ba5，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\528774ff-b2c6-4688-9557-99c4efb5ae9d\528774ff-b2c6-4688-9557-99c4efb5ae9d\assembly\dl3\9a05c6bc\44dcdc59_5666dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\Q14ToolbarAlignmentBehaviorTests.cs:行号 39
+  失败 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes [36 ms]
+  错误消息:
+   System.InvalidOperationException: Playnite 源码测试检测到 checkout/程序集身份不一致，已阻止继续读取源码：程序集 commit=c5c865580b...，源码根 HEAD=c5c86558b6232995438657c00810aeb327ed9ba5，源码根=D:\workplace\github\GameSaveCenter，程序集=C:\Users\lopmatu\AppData\Local\Temp\528774ff-b2c6-4688-9557-99c4efb5ae9d\528774ff-b2c6-4688-9557-99c4efb5ae9d\assembly\dl3\9a05c6bc\44dcdc59_5666dd01\GameSaveCenter.Playnite.Tests.dll。请清理隔离输出并从同一 checkout 重新构建。
+   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.ReadTopLevelWorkspaceTabHeaders(String fileName) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1312
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes>b__8_1(ValueTuple`2 page) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 758
+   在 System.Linq.Enumerable.WhereSelectArrayIterator`2.MoveNext()
+   在 System.Linq.Buffer`1..ctor(IEnumerable`1 source)
+   在 System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes>b__8_0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 757
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c__DisplayClass33_0.<RunSta>b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1455
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1467

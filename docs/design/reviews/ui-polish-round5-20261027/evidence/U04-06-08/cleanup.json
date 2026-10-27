@@ -1,0 +1,59 @@
+{
+  "stage": "U04-06/U04-08",
+  "capturedAtLocal": "2026-10-28T05:05:21+08:00",
+  "previousStageDiskSnapshot": {
+    "source": "U04-03/04/05/07 evidence record; not captured at this stage start",
+    "cFreeBytes": 1473875968,
+    "dFreeBytes": 4474048512
+  },
+  "beforeCleanupBytes": {
+    "cFree": 1429553152,
+    "dFree": 3764527104
+  },
+  "retained": [
+    {
+      "path": ".tmp/round5-u04-06-08-render-4225",
+      "reason": "current dual-theme Render QA audit output; 394 PNG plus report/log evidence",
+      "files": 395,
+      "bytes": 53232903,
+      "reportSha256": "003C824E733019D273A827BE0157AC3BAAC5291A6F79048A8807F86101ED7B0A"
+    },
+    {
+      "path": ".tmp/round5-u04-06-08-sdk8423-c5c86558-exact",
+      "reason": "exact-commit test build output retained for this completed source batch",
+      "files": 324,
+      "bytes": 28909354
+    },
+    {
+      "path": ".tmp/round5-u04-06-08-sdk8423-c5c86558",
+      "reason": "first post-commit test attempt with an intentionally retained wrong-identity diagnostic; not counted as verification",
+      "files": 324,
+      "bytes": 28903720
+    },
+    {
+      "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U04-06-08/tests",
+      "reason": "current and failed diagnostic TRX evidence retained"
+    }
+  ],
+  "cleanupTargetsRetained": [
+    "src/GameSaveCenter.Contracts/.tmp/round5-u04-06-08-build-4225",
+    "src/GameSaveCenter.Core/.tmp/round5-u04-06-08-build-4225",
+    "src/GameSaveCenter.Playnite/.tmp/round5-u04-06-08-build-4225",
+    "tests/GameSaveCenter.Playnite.Tests/.tmp/round5-u04-06-08-build-4225"
+  ],
+  "afterCleanupBytes": {
+    "cFree": 1436905472,
+    "dFree": 4407484416
+  },
+  "cleanupCommand": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+  "cleanupCommandResult": "Rejected by execution policy before execution; no deletion performed",
+  "checks": {
+    "allCleanupCandidatesResolvedInsideRepository": true,
+    "allCleanupCandidatesWereStageOwnedNamedTmpDirectories": true,
+    "allTargetContentsHadZeroReparsePoints": true,
+    "noRunningProcessReferencedTheOutputDirectories": true,
+    "userAndOtherTaskTestResultsUntouched": true,
+    "artifactsRootUntouched": true
+  },
+  "notes": "Exact stage-start disk space was not recorded. The previous-stage values are historical context. The only cleanup command was rejected by policy; no alternative command was used. Free-space values changed between snapshots for an unattributed reason and are not presented as cleanup gains. Other task TestResults and unknown files were untouched."
+}

@@ -1,8 +1,16 @@
-## Round5 U03-08/U04-01/02 最新本地状态（2026-10-28）
+## Round5 U04-06/08 最新本地状态（2026-10-28）
 
-当前 `main` 为 `0c7c42687bd3be6f1f97192c50b5ca580e6f4545`。U03-08去重确认数值范围/溢出/滚轮边界、路径预览/类型验证/缺失目录说明及本地打开保护已有实现与行为测试，无产品改动。U04-01将生产共享交互时长映射到 `MotionTokens.xaml`，保留并解释不确定进度的2秒扫动例外；U04-02补按钮快速hover扫过Light/Dark合成状态验证。SDK8.0.423精确测试21/21+2/2、0 skip；Source validation、XAML26/26、WPF静态37 XAML/0 error、RenderHarness编译0/0、双主题394 PNG Render QA无PROBLEM。证据见`../design/reviews/ui-polish-round5-20261027/evidence/U03-08-U04-01-02/BASELINE.md`。
+当前 `main` 已推送源码提交 `c5c86558b6232995438657c00810aeb327ed9ba5`。共享 DisclosureCard 在 Chevron 展开动画中途被禁用时移除旧 Storyboard 时钟，保持 IsExpanded 业务值，并以 IsChecked 绑定恢复合法终态；重新启用不回放旧动画。生命周期测试在同一生产实例完成100次开合，Header/Path/RotateTransform 对象身份不变，Reduced Motion移除最终时钟。Q14测试夹具现在在加载后通知选中预设变化，修复run `40578426793` 两SDK的初始化时序失败。
 
-run `40572542627`的baseline job `122430277192`与SDK10 job `122430276522`仍在编译/测试；required-checks API为403，远端待验。真实Playnite/UIA客户端、物理鼠标、IME与实体DPI未验。继续独立推进U04-03/04/05，不等待旧S/T宿主/权限状态；暂不运行整轮完整入口或删除被本机策略拒绝清理的阶段`.tmp`图像。最终候选仍须以中文根入口跑构建/测试/发布/打包/安装身份核验/启动，并独立按职责验证`scripts/build.cmd`。
+SDK8.0.423 精确提交 Release 聚焦测试13/13、0失败、0跳过。Source validation、XAML26/26、WPF静态37 XAML/0错误、RenderHarness Release 0 warning/0 error、双主题Render QA 394 PNG/0 PROBLEM均通过；TRX、哈希和限制见 `../design/reviews/ui-polish-round5-20261027/evidence/U04-06-08/BASELINE.md`。提交run `40583173450` 的 baseline job `122467678548` 与 SDK10 job `122467678982`目前在测试，尚无终态/artifact；状态见 `../design/reviews/ui-polish-round5-20261027/evidence/U03-08-U04-01-02/ci-runs.json`。required-checks读取曾返回403，远端额外保护仍不推断。
+
+代码级别未直接驱动取消命令、真实窗口失活、Playnite宿主、UIA客户端或系统Reduced Motion设置；U04-06/08保持“代码完成待验收”。本批 `Remove-Item -LiteralPath -Recurse -Force` 在执行策略处被拒绝，未换命令清理；准确自有路径、磁盘快照与拒绝记录见 `../design/reviews/ui-polish-round5-20261027/evidence/U04-06-08/cleanup.json`。下一批推进U05页面/详情过渡，不等待旧S/T宿主或权限状态；整轮最终仍需中文根入口完整构建/测试/发布/打包/安装身份/启动和独立 `scripts/build.cmd` 验证。
+
+## Round5 U04-03/04/05/07 最新本地状态（2026-10-28）
+
+当前 `main` 为 `4225eb17139a844ede87219f02a9ad97e88a12de`。U04-04在共享工作区Tab模板加3×16 DIP选中提示条，以共享`GscMotionNormal`渐入/退出并在反向切换时互相移除故事板；焦点环/选中底色/布局分开。U04-03与U04-05复用R08/Q06/R09及GamePicker既有行为，本轮修正测试夹具跨STA全局Application依赖；U04-07在关闭动态效果时直接设终态并清除动画。同步修正旧DisclosureChevron测试对150ms字面量的假设为共享fast令牌。
+
+SDK8.0.423组合行为15/15、0 skip，令牌回归1/1；Source validation、XAML26/26、WPF静态37 XAML/0 error、RenderHarness 0/0、双主题394 PNG Render QA/0 PROBLEM通过。详细TRX、报告SHA、磁盘变化见`../design/reviews/ui-polish-round5-20261027/evidence/U04-03-05/BASELINE.md`。精确源码run `40578426793`（baseline `122451017347`、SDK10 `122451017062`）仍运行；纯文档run `40575315327`两个SDK job也在运行。先前run `40571484630`/`40572542627`双SDK失败于过时Disclosure测试断言，已读取原始日志并记录artifact身份。required-checks API此前403，分支保护状态仍不推断。真实Playnite/UIA客户端、物理鼠标、IME与实体DPI未验；继续独立推进U04-06/08，不等待旧S/T宿主/权限状态。整轮最终候选仍须用中文根入口执行构建/测试/发布/打包/安装身份核验/启动，并独立按职责验证`scripts/build.cmd`。
 
 ## Round5 U02-05/06 最新本地状态（2026-10-28）
 

@@ -1,8 +1,14 @@
-## 2026-10-28 Round5 U03-08/U04-01/02接续
+## 2026-10-28 Round5 U04-06/08
 
-当前实现提交 `631b218e48cf2fb3d2be9be02ebf680551398db1`，后续测试整合/双主题覆盖提交 `95b5dbf942e44a23da46a2f2227f3c22b8a7f7b7`、`0c7c42687bd3be6f1f97192c50b5ca580e6f4545` 已推送。U03-08数值/路径无新缺口；U04-01统一共享hover/press/disclosure转场令牌、明示进度扫动例外；U04-02合成hover双主题快速扫过行为覆盖。SDK8精确SHA定向23/23、0 skip，source/XAML/WPF静态和Render QA通过。证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U03-08-U04-01-02/`；Windows CI最终候选`40572542627`双job仍运行，required-checks仍403。
+源码提交 `c5c86558b6232995438657c00810aeb327ed9ba5` 已推送。U04-06 给共享 DisclosureCard 增加禁用中断收尾：清除转场时钟、保留展开状态并按当前Toggle状态解析Chevron；重新启用不重播旧动画。U04-08在生产模板实例上完成100次开合，元素/Transform身份稳定；Reduced Motion清除时钟。Q14夹具在窗口加载后通知属性更新。SDK8.0.423精确提交行为13/13、0 skip；source/XAML/WPF静态及Render QA均通过，证据位于 `docs/design/reviews/ui-polish-round5-20261027/evidence/U04-06-08/`。
 
-下一小批依赖满足项为U04-03/04/05：按压释放沿用已通过R08/Q06连续性与取消/禁用安全行为覆盖；在生产共享Tab模板中对选中指示加入受MotionEnabledActive/Reduced Motion控制的克制过渡，并验收快速切换/焦点分离；输入焦点、验证错误与清除反馈继续即时，不加阻塞等待。勿修改游戏选框、滚动条、业务命令或安全语义；旧S/T宿主/权限阻塞不重复探测。每批源码/资源须先做相关编译与行为检查、源码/XAML/WPF静态审查及render-qa；最终候选另跑中文根入口完整链和独立`scripts/build.cmd`。
+源码run `40583173450` baseline job `122467678548`、SDK10 job `122467678982`截至快照在编译测试，尚无artifact或结论；父提交run `40578426793`两SDK因Q14夹具初始化预期失败已保留原始诊断。required-checks接口曾403，远端保护状态不推断。真实CanExecute取消、窗口失活、Playnite宿主/UIA与系统Reduced Motion仍待验；真实存档恢复、媒体删除、云端写入不执行。下一批按去重推进U05-01/02。当前阶段清理命令被执行策略拒绝，未换其它删除方式，详情见 `evidence/U04-06-08/cleanup.json`。
+
+## 2026-10-28 Round5 U04-03/04/05/07
+
+当前 `main` 为源码/测试提交`4225eb17139a844ede87219f02a9ad97e88a12de`。共享工作区页签新增选中提示条与可反向opacity过渡，Reduced Motion下直接写终态并移除故事板；U04-03/05沿用现有按压/命令安全、焦点/校验/清除行为，无输入等待。R08/Q14隔离测试不再写入跨STA全局Application；DisclosureChevron的时长断言改验共享`GscMotionFast`。SDK8.0.423组合15/15、令牌1/1、source/XAML/WPF静态/Render QA均通过，证据`docs/design/reviews/ui-polish-round5-20261027/evidence/U04-03-05/`。源码run `40578426793`（baseline `122451017347`、SDK10 `122451017062`）和文档run `40575315327`仍在运行；`40571484630`与`40572542627`双SDK失败已从原始日志定位为旧150ms断言。required-checks API为403，仍不能推断branch protection。
+
+下一批依赖项为U04-06/08：覆盖CanExecute变化/取消/失活后的合法终态与重复开关对象的动画生命周期，不做新对话/并行共享资源修改。保持游戏选框与滚动条、真实命令/Binding/UIA、业务错误/取消/恢复安全语义。旧S/T权限/宿主状态保持且不重复试探；真实Playnite/UIA/IME/实体DPI未验。每批源码先编译和行为测试，跑源码校验、XAML结构、WPF静态审查与render-qa，中文提交并推送；最终候选再以中文根入口全链和独立`scripts/build.cmd`验收。
 
 ## 2026-10-28 Round5 U02-05/06 共享线宽与圆角裁切
 

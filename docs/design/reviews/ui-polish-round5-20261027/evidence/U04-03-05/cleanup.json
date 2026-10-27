@@ -1,0 +1,41 @@
+{
+  "batch": "U04-03/04/05/07",
+  "timestampLocal": "2026-10-28",
+  "diskFreeBeforeBytes": {
+    "C": 1478320128,
+    "D": 6165086208
+  },
+  "diskFreeAfterBytes": {
+    "C": 1473875968,
+    "D": 4474048512
+  },
+  "ownedOutputs": [
+    {
+      "path": ".tmp/round5-u04-03-05-build-06d4e854",
+      "files": 330,
+      "bytes": 28891017,
+      "action": "retained current isolated Release test output",
+      "reason": "reproducible batch output; deletion was not attempted"
+    },
+    {
+      "path": ".tmp/round5-u04-03-05-render-06d4e854",
+      "files": 395,
+      "bytes": 53246317,
+      "action": "retained current audit output",
+      "reason": "394 PNG plus report; no duplicate screenshot copy"
+    }
+  ],
+  "deleted": [],
+  "preserved": [
+    "User and unrelated tests/GameSaveCenter.Playnite.Tests/TestResults",
+    "Unrelated Round3 TRX and evidence",
+    "Unknown artifacts and configurations"
+  ],
+  "observations": {
+    "measuredOwnedOutputBytes": 82137334,
+    "dFreeDeltaBytes": -1691037696,
+    "unattributedDDeltaBytes": -1608900362,
+    "note": "Only current batch-owned .tmp paths are counted; remaining observed D free-space change is unattributed and was not used to target cleanup."
+  },
+  "priorCleanupConstraint": "A prior Remove-Item attempt on another Round5 .tmp directory was rejected; this batch did not retry through another shell or delete route."
+}
