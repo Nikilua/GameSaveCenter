@@ -690,7 +690,9 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
     {
         var application = Application.Current ?? new Application();
         application.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-        if (application.Resources.MergedDictionaries.Count == 0)
+        // A pre-existing dictionary may hold unrelated resources. Confirm the
+        // production control style this fixture needs instead of relying on count.
+        if (application.TryFindResource("GscWpfUiFilterComboBox") is null)
             application.Resources.MergedDictionaries.Add(LoadProductionResources());
     }
 
