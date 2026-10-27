@@ -1,0 +1,98 @@
+{
+  "schema": "gsc.github-actions-run-evidence.v1",
+  "run": {
+    "id": 40480521410,
+    "runNumber": 1307,
+    "workflow": ".github/workflows/windows-build.yml",
+    "branch": "main",
+    "headSha": "a83c008ab9228fb477b215d410eb82c2f6d11497",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40480521410",
+    "conclusion": "failure"
+  },
+  "jobs": [
+    {
+      "id": 122109368379,
+      "name": "编译、测试与打包",
+      "sdk": "global.json baseline 8.0.423",
+      "conclusion": "failure",
+      "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40480521410/job/122109368379",
+      "testSummary": {
+        "total": 1622,
+        "passed": 1602,
+        "failed": 1,
+        "skipped": 19,
+        "errorsTimeoutsAborts": 0,
+        "isolatedWpfClasses": 124
+      },
+      "failure": {
+        "test": "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.CloudTransferSummaryUsesThemeAccentAndKeepsExplanationsAccessibleWithoutExtraRowsInBothThemes",
+        "type": "System.Windows.Markup.XamlParseException",
+        "message": "Cannot find resource named 'BaseTextBlockStyle'. Resource names are case sensitive.",
+        "classification": "test fixture omitted the Playnite host resource required by MaintenanceView; failure occurred before rendering assertions"
+      },
+      "artifact": {
+        "id": 12724006406,
+        "name": "GameSaveCenter-build-diagnostics",
+        "sizeBytes": 890464,
+        "sha256": "ea65eaf42941c9624c963af65b3e57023bdb90d6e2a68a28149c64ad3929ae86",
+        "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40480521410/artifacts/12724006406"
+      },
+      "downstreamSteps": {
+        "renderQa": "skipped",
+        "wpfStaticReview": "skipped",
+        "package": "skipped"
+      }
+    },
+    {
+      "id": 122109368247,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40480521410/job/122109368247",
+      "testSummary": {
+        "total": 1622,
+        "passed": 1602,
+        "failed": 1,
+        "skipped": 19,
+        "errorsTimeoutsAborts": 0,
+        "isolatedWpfClasses": 124
+      },
+      "failure": {
+        "test": "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.CloudTransferSummaryUsesThemeAccentAndKeepsExplanationsAccessibleWithoutExtraRowsInBothThemes",
+        "type": "System.Windows.Markup.XamlParseException",
+        "message": "Cannot find resource named 'BaseTextBlockStyle'. Resource names are case sensitive.",
+        "classification": "test fixture omitted the Playnite host resource required by MaintenanceView; failure occurred before rendering assertions"
+      },
+      "artifact": {
+        "id": 12723199314,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "sizeBytes": 801097,
+        "sha256": "f99826ad9145aa45f074acab6d4551808c2bfcd45c29dd9cf8d140ccdea961db",
+        "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40480521410/artifacts/12723199314"
+      }
+    }
+  ],
+  "localReproductionAndRepair": {
+    "sdk": "8.0.423",
+    "repair": "Move the MaintenanceView host-resource fixture into its own isolated WPF test class; create its Application and BaseTextBlockStyle only inside that test and shut it down after closing the window. This prevents the Application singleton from affecting unrelated R23 focus and container tests.",
+    "verification": [
+      {
+        "testClass": "CloudTransferSummaryProductionBehaviorTests",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "sha256": "DEB0B7266BDB58306E70F364F5582F8F810175AFFAED12BBF114617610F4FBB3",
+        "result": "tests/cloud-transfer-summary-isolated.trx"
+      },
+      {
+        "testClass": "R23ProductionResourceStateBehaviorTests",
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0,
+        "sha256": "C33846CCEFF14CEECB04EE73BDFBAB6CD732305281B94C667E9ADBDDBBED9AEF",
+        "result": "tests/r23-class-after-isolation.trx"
+      }
+    ],
+    "boundary": "Local targeted SDK 8 tests only; full candidate root chain and new-commit GitHub jobs remain pending."
+  }
+}

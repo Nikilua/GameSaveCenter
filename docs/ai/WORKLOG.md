@@ -12405,3 +12405,9 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 - 标题回归修正提交20be80738a97539376dca07b0be1599ffdb59c84的run 40462741496（#1300）两适用job均失败在 MediaInboxScrollBehaviorTests.WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll。主SDK8 job 122050912738，SDK10.0.401 job 122050913048；两边Core 157/157、Worker 400/400，Playnite均1233项1214通过、1失败、18既有skip。原始输出显示测试请求Window 1400 DIP，但GitHub Windows 2025 runner的实际MediaInboxLayout宽1014 DIP，低于生产宽屏门槛1334，响应式逻辑正确走窄屏抽屉分支；旧测试错误地断言Inspector必须仍为MediaInboxLayout子项。Assert.Same失败观测到expected Grid 1014×540、actual parent Grid 998×594。ender-qa、WPF静态审查和打包被测试门禁跳过。
 - 修正测试夹具直接设置MediaInboxLayout.Width=1360并断言排布后宽度至少1334 DIP，原有Inspector固定、圆角裁剪、页面/详情滚动与尺寸关系断言保留。本机global.json SDK8.0.423定向类6/6通过，TRX见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/tests/MediaInboxScrollBehavior-sdk8423-20be-test-fix.trx。没有改变生产布局，也不以失败提交CI为通过。
 - Artifact 12715695277（560383 bytes，SHA-256 9a418bba14c15d75cff4cf68075319e746fbec3f2ec3e786ea9a8e1a39282572）及 12715124302（468931 bytes，SHA-256 53db689e72e3f11a8bef06416e3993a390017f8ecf78c89c63fdb408a68aab0f）；完整run/job/日志链接见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40462741496.json。
+
+## 2026-10-27 R23 WPF 测试宿主资源隔离修复
+
+`a83c008ab9228fb477b215d410eb82c2f6d11497` 的 `windows-build.yml` run `40480521410`（run #1307）在 SDK8.0.423 与 SDK10.0.401 job 均因同一 R23 `CloudTransferSummary...` 测试失败。两边共1622项：1602通过、1失败、19既有skip、0错误/超时/中止；根因是隔离 MaintenanceView 测试未提供 Playnite 宿主资源 `BaseTextBlockStyle`，在 Show/layout 前解析XAML时失败。主job后续render QA、WPF静态审查、打包按门禁跳过。原始job与artifact ID、SHA、故障摘录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40480521410.json`；两个CI诊断artifact保留在GitHub供到期前直接下载。
+
+将该测试移入独立的 `CloudTransferSummaryProductionBehaviorTests` WPF类，在测试拥有的Application中提供样式，并在finally关闭窗口和Application；避免全局Application跨同类测试影响键盘焦点和项目容器断言。SDK8.0.423独立进程验证新类1/1通过、原R23类其余8/8通过，0 skip。TRX已归档到同目录 `tests/` 并附入CI JSON。此次为本地定向修复；该修复提交、双SDK新run、中文根入口完整链均待执行，尚不结项U00-02/03。

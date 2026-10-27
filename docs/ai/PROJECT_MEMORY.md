@@ -1263,3 +1263,9 @@ Round4 S02-04 的实现 `1b17e4a0` 是 `90bf0405` 的祖先。复用 T00-01 的�
 ## 2026-10-27 T01-04账本字段修正
 
 `PROGRESS.md` 中T01-04行漏掉任务标题“路径越界负例”，导致状态/提交单元格错位；现已依据32项计划与T01-04证据补齐。验收状态仍为代码完成待验收、提交`d2429890`，原因仍是文件符号链接创建受Windows权限限制。所有32行现为统一6列。
+
+## 2026-10-27 Round5 CI R23资源测试夹具修复接续
+
+Round5当前分支提交 `a83c008ab9228fb477b215d410eb82c2f6d11497` 的 `windows-build.yml` run `40480521410` 两个适用job均因R23隔离MaintenanceView测试未提供Playnite宿主资源 `BaseTextBlockStyle` 而失败；SDK8与SDK10测试汇总均1622项/1602通过/1失败/19既有skip。失败不是U00-02/03产品呈现逻辑。详细job/artifact/原始诊断身份在 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40480521410.json`。
+
+当前工作树把该测试独立成 `CloudTransferSummaryProductionBehaviorTests`，只在它自身Application生命周期内添加宿主基准样式并关闭Application；SDK8.0.423两次独立测试进程结果为新类1/1、原R23类8/8，0 skip。先分别提交并推送该测试夹具修复，核对新提交两条CI job和诊断artifact，再继续U00-04/05候选；不要把本地定向通过当作CI或完整中文根入口全链通过。当前尚未提交的U00-04/05界面、RenderHarness、测试与Round5证据单独留在工作树，禁止混入夹具修复提交。随后按Round5计划每批推进2～4项，保留用户未跟踪Round3 TRX和Playnite TestResults。
