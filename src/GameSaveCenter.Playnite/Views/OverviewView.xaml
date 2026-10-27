@@ -49,7 +49,7 @@
                 <Setter Property="Appearance" Value="Secondary"/>
                 <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="Padding" Value="12,7"/>
                 <Setter Property="MinHeight" Value="{DynamicResource GscButtonHeight}"/>
@@ -62,7 +62,7 @@
                 <Setter Property="Background" Value="{DynamicResource GscErrorIconFillBrush}"/>
                 <!-- 与今日概览其它胶囊保持一致的中性描边；浅红底保留“需关注”语义。 -->
                 <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter Property="ui:Button.CornerRadius" Value="12"/>
                 <Setter Property="Padding" Value="10,5"/>
                 <Setter Property="Margin" Value="0,0,0,6"/>
@@ -138,7 +138,7 @@
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter TargetName="TaskItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                                     <Setter TargetName="TaskItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                                    <Setter TargetName="TaskItemChrome" Property="BorderThickness" Value="1"/>
+                                    <Setter TargetName="TaskItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                                     <Setter TargetName="TaskItemChrome" Property="CornerRadius" Value="14"/>
                                     <Setter TargetName="TaskItemChrome" Property="Margin" Value="4,2"/>
                                     <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
@@ -191,7 +191,7 @@
             <Style x:Key="OverviewHeaderFrame" TargetType="Border">
                 <Setter Property="Background" Value="{DynamicResource GscTableHeaderBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscTableDividerBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter Property="CornerRadius" Value="8"/>
                 <Setter Property="Padding" Value="6,2"/>
                 <Setter Property="Margin" Value="6,0,6,8"/>
@@ -548,7 +548,7 @@
                                             <Border Style="{StaticResource GscActivityRowBorder}">
                                                 <Grid MinHeight="52">
                                                     <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                    <Border Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                    <Border Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}" HorizontalAlignment="Left" VerticalAlignment="Center">
                                                         <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconActionHistory}" Width="18" Height="18" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Border>
                                                     <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center" MinWidth="0">
@@ -612,7 +612,7 @@
                                     <DataTemplate>
                                         <Grid Margin="0">
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="74"/><ColumnDefinition Width="96"/></Grid.ColumnDefinitions>
-                                            <Border x:Name="OverviewTaskStatusPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Border x:Name="OverviewTaskStatusPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}" HorizontalAlignment="Left" VerticalAlignment="Top">
                                                 <ui:ThemeAwareIcon x:Name="RecentActivityGlyph" Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusInfo}" Width="18" Height="18" Foreground="{DynamicResource GscMutedStatusBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                             <StackPanel Grid.Column="1" Margin="0,0,8,0" VerticalAlignment="Center" MinWidth="0">
@@ -849,7 +849,7 @@
                                     <Border x:Name="OverviewProtectionPreviewCard"
                                             Background="{DynamicResource GscControlFillBrush}"
                                             BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                                            BorderThickness="1"
+                                            BorderThickness="{StaticResource GscHairlineThickness}"
                                             CornerRadius="10"
                                             Padding="8"
                                             Margin="0,0,0,6"
@@ -864,7 +864,7 @@
                                                     <Border Grid.Column="1" x:Name="OverviewProtectionPreviewStatusPill"
                                                             Background="{DynamicResource GscSafetyFillBrush}"
                                                             BorderBrush="{DynamicResource GscWarningBrush}"
-                                                            BorderThickness="1"
+                                                            BorderThickness="{StaticResource GscHairlineThickness}"
                                                             CornerRadius="8"
                                                             Padding="6,2"
                                                             Margin="8,0,0,0"

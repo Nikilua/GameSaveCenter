@@ -145,7 +145,7 @@
         </ScrollViewer>
         <Border x:Name="ProbeFailurePanel" Panel.ZIndex="10" Visibility="Collapsed" HorizontalAlignment="Stretch"
                 VerticalAlignment="Bottom" Margin="20" Padding="12" CornerRadius="12"
-                Background="{DynamicResource GscErrorTintBrush}" BorderBrush="{DynamicResource GscErrorBrush}" BorderThickness="1">
+                Background="{DynamicResource GscErrorTintBrush}" BorderBrush="{DynamicResource GscErrorBrush}" BorderThickness="{StaticResource GscHairlineThickness}">
             <TextBlock x:Name="ProbeFailureText" TextWrapping="Wrap" Foreground="{DynamicResource GscPrimaryTextBrush}"/>
         </Border>
         <ui:SnackbarPresenter x:Name="SnackbarHost" Panel.ZIndex="21" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"/>

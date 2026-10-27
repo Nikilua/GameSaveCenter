@@ -236,7 +236,7 @@
                                 <DataGridTemplateColumn x:Name="SaveHistoryStateColumn" HeaderStyle="{StaticResource SaveLastHeader}" Header="状态" infra:DataGridColumnHeaderHelpBehavior.Description="锁定状态与恢复可用性；未验证不表示安全。" Width="106" MinWidth="96">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border BorderThickness="1">
+                                            <Border BorderThickness="{StaticResource GscHairlineThickness}">
                                                 <Border.Style>
                                                     <Style TargetType="Border" BasedOn="{StaticResource GscRedesignTableStatusPill}">
                                                         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
@@ -389,7 +389,7 @@
                                         <Style TargetType="Border">
                                             <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
                                             <Setter Property="BorderBrush" Value="{DynamicResource GscDividerBrush}"/>
-                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding RestorePlanMappingPreview}" Value="{x:Null}">
@@ -491,7 +491,7 @@
                                     <ItemsControl ItemsSource="{Binding RestoreWorkflowSteps}" AutomationProperties.Name="恢复四步流程">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Border Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="1" Padding="8" Margin="0,0,0,6">
+                                                <Border Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="{StaticResource GscHairlineThickness}" Padding="8" Margin="0,0,0,6">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                                         <TextBlock Text="{Binding Glyph}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Top"/>

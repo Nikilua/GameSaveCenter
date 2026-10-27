@@ -114,7 +114,7 @@
                             <ListBoxItem Content="设置迁移"/>
                         </ListBox>
                     </Border>
-                    <ScrollViewer x:Name="SettingsScroller" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscPageScrollViewer}" Background="{DynamicResource GscSettingsContentBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ScrollViewer x:Name="SettingsScroller" Grid.Row="0" Grid.Column="2" Style="{DynamicResource GscPageScrollViewer}" Background="{DynamicResource GscSettingsContentBrush}" BorderBrush="{DynamicResource GscGlassStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel x:Name="SettingsContentStack" MaxWidth="820" HorizontalAlignment="Left" Margin="0,0,10,0">
                             <Grid x:Name="SettingsGeneralPanel" Visibility="Visible">
                                 <ui:Card Style="{StaticResource SettingsCard}">
@@ -409,7 +409,7 @@
                             </ComboBox>
                         </Grid>
                     </Border>
-                     <Border settings:GameSaveCenterSettingsView.SearchTerms="自动化 恢复 默认 安全 快照" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,12,0,0">
+                     <Border settings:GameSaveCenterSettingsView.SearchTerms="自动化 恢复 默认 安全 快照" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscSafetyStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}" CornerRadius="10" Padding="12" Margin="0,12,0,0">
                         <TextBlock Text="自动恢复始终关闭。恢复必须经过当前快照、游戏关闭确认、预览、恢复后校验和可撤销快照。" TextWrapping="Wrap"/>
                     </Border>
                 </StackPanel>

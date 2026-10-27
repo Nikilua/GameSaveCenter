@@ -26,7 +26,7 @@
         <Setter Property="MaxHeight" Value="140"/>
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="CornerRadius" Value="{StaticResource GscCornerControl}"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="Margin" Value="0,0,0,8"/>
@@ -58,7 +58,7 @@
     <Style x:Key="GscCommandDirectoryShortcutBadge" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Padding" Value="5,1"/>
         <Setter Property="Visibility" Value="Visible"/>
@@ -74,7 +74,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="12,10"/>
         <Setter Property="Margin" Value="0,0,0,5"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

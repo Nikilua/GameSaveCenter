@@ -439,7 +439,7 @@
                                                             <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding RestoreMetadataBackupCommand}" Content="恢复元数据灾备" Margin="0,0,0,8" ToolTip="预览并恢复 SQLite 快照与 Worker 设置，保留恢复前副本"/>
                                                         </WrapPanel>
                                                     </Expander>
-                                                    <Border Grid.Row="5" Grid.ColumnSpan="2" Margin="0,14,0,0" Padding="12" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" BorderThickness="1" CornerRadius="10">
+                                                    <Border Grid.Row="5" Grid.ColumnSpan="2" Margin="0,14,0,0" Padding="12" Background="{DynamicResource GscSafetyFillBrush}" BorderBrush="{DynamicResource GscWarningBrush}" BorderThickness="{StaticResource GscHairlineThickness}" CornerRadius="10">
                                                         <Border.Style>
                                                             <Style TargetType="Border">
                                                                 <Setter Property="Visibility" Value="Collapsed"/>

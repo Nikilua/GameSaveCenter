@@ -5,6 +5,7 @@
     <!-- DesignControls 内的 Style/ControlTemplate 用 StaticResource 引用字阶与圆角令牌，
          必须在自身字典作用域内可解析，不能依赖宿主/页面合并的 Resources。 -->
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GeometryTokens.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceTokens.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
@@ -75,7 +76,7 @@
     <Style x:Key="LabCard" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource CardFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource CardStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="CornerRadius" Value="{StaticResource RadiusXL}"/>
         <Setter Property="Padding" Value="18,16"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -93,7 +94,7 @@
     <Style x:Key="LabFloating" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource FloatingFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource FloatingStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="CornerRadius" Value="{StaticResource RadiusXL}"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -136,7 +137,7 @@
         <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
         <Setter Property="FontSize" Value="{StaticResource SizeBody}"/>
         <Setter Property="FontWeight" Value="Medium"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BtnStrokeBrush}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource LabFocusVisual}"/>
@@ -455,7 +456,7 @@
                     <Grid>
                         <Border x:Name="Bd" CornerRadius="{StaticResource RadiusS}" Margin="2"
                                 Background="{DynamicResource SegmentItemFillBrush}"
-                                BorderBrush="{DynamicResource SegmentItemStrokeBrush}" BorderThickness="1"
+                                BorderBrush="{DynamicResource SegmentItemStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}"
                                 Opacity="0"/>
                         <ContentPresenter x:Name="Cp" Margin="14,6" TextElement.FontSize="{StaticResource SizeCaption}"
                                           TextElement.FontWeight="Medium" TextElement.FontFamily="{StaticResource UiFont}"
@@ -536,7 +537,7 @@
                 <ControlTemplate TargetType="TextBox">
                     <Border x:Name="Bd" CornerRadius="{StaticResource RadiusM}"
                             Background="{DynamicResource FieldFillBrush}"
-                            BorderBrush="{DynamicResource FieldStrokeBrush}" BorderThickness="1"
+                            BorderBrush="{DynamicResource FieldStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}"
                             SnapsToDevicePixels="True">
                         <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
                                       VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
@@ -601,7 +602,7 @@
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Border x:Name="Bd" CornerRadius="{StaticResource RadiusM}"
                                             Background="{DynamicResource FieldFillBrush}"
-                                            BorderBrush="{DynamicResource FieldStrokeBrush}" BorderThickness="1"/>
+                                            BorderBrush="{DynamicResource FieldStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}"/>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource DividerStrongBrush}"/>
@@ -621,7 +622,7 @@
                         <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom"
                                AllowsTransparency="True" PopupAnimation="Fade" Margin="0,6,0,0" StaysOpen="False">
                             <Border Background="{DynamicResource FloatingFillBrush}"
-                                    BorderBrush="{DynamicResource FloatingStrokeBrush}" BorderThickness="1"
+                                    BorderBrush="{DynamicResource FloatingStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}"
                                     CornerRadius="{StaticResource RadiusL}" Padding="4"
                                     MinWidth="{TemplateBinding ActualWidth}" MaxHeight="320"
                                     Effect="{StaticResource PopupShadow}">
@@ -652,7 +653,7 @@
                     <Grid>
                         <Border x:Name="Track" Width="40" Height="23" CornerRadius="11.5"
                                 Background="{DynamicResource SegmentFillBrush}"
-                                BorderBrush="Transparent" BorderThickness="1" VerticalAlignment="Center"/>
+                                BorderBrush="Transparent" BorderThickness="{StaticResource GscHairlineThickness}" VerticalAlignment="Center"/>
                         <Ellipse x:Name="Thumb" Width="17" Height="17" Fill="#F2FFFFFF"
                                  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,0,0">
                             <Ellipse.Effect>
@@ -773,7 +774,7 @@
     <Style x:Key="LabTableFrame" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource SubFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource SubStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="CornerRadius" Value="{StaticResource RadiusL}"/>
         <Setter Property="ClipToBounds" Value="True"/>
         <Setter Property="Margin" Value="0,2,0,6"/>
@@ -887,7 +888,7 @@
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border x:Name="Bd" CornerRadius="{StaticResource RadiusL}" Padding="12"
                             Background="{DynamicResource SubFillBrush}"
-                            BorderBrush="{DynamicResource SubStrokeBrush}" BorderThickness="1"
+                            BorderBrush="{DynamicResource SubStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}"
                             Margin="0,0,0,8" SnapsToDevicePixels="True">
                         <ContentPresenter/>
                     </Border>
@@ -962,7 +963,7 @@
                         </ToggleButton>
                         <Border x:Name="Body" CornerRadius="{StaticResource RadiusM}" Margin="0,4,0,0"
                                 Background="{DynamicResource SubFillBrush}"
-                                BorderBrush="{DynamicResource SubStrokeBrush}" BorderThickness="1"
+                                BorderBrush="{DynamicResource SubStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}"
                                 Padding="12" Visibility="Collapsed">
                             <ContentPresenter/>
                         </Border>
@@ -1090,7 +1091,7 @@
         <Setter Property="FontSize" Value="{StaticResource SizeCaption}"/>
         <Setter Property="Background" Value="{DynamicResource FloatingFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource FloatingStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="10,7"/>
         <Setter Property="Placement" Value="Mouse"/>
         <Setter Property="HorizontalOffset" Value="0"/>

@@ -4,6 +4,7 @@
                     xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
                     xmlns:contracts="clr-namespace:GameSaveCenter.Contracts;assembly=GameSaveCenter.Contracts">
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GeometryTokens.xaml"/>
         <!-- StaticResource resolution happens while this dictionary is parsed. Keep WPF-UI's
              type-keyed defaults in the same resource scope as the production adapters; a
              sibling merge at the UserControl level is too late in Playnite's XAML loader. -->
@@ -22,7 +23,7 @@
         <Setter Property="Padding" Value="16"/>
         <Setter Property="Background" Value="{DynamicResource GscGlassFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ui:Card}">
@@ -214,7 +215,7 @@
                         Padding="5"
                         Background="{DynamicResource GscPopupBrush}"
                         BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                        BorderThickness="1"
+                        BorderThickness="{StaticResource GscHairlineThickness}"
                         CornerRadius="11"
                         Effect="{DynamicResource GscPopupEffect}">
                     <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
@@ -378,7 +379,7 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="1"/>
+                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                         </Trigger>
                         <MultiTrigger>
@@ -388,7 +389,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
-                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="1"/>
+                            <Setter TargetName="ItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                         </MultiTrigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
@@ -693,7 +694,7 @@
                 <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                 <Setter TargetName="RowBackground" Property="Margin" Value="4,2,12,2"/>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
+                <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
                 <!-- Leave a safe area at the right edge. Playnite's host ScrollViewer
                      can overlay the last device pixels with its vertical track; keeping the
@@ -710,7 +711,7 @@
                 <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
                 <Setter TargetName="RowBackground" Property="Margin" Value="4,2,12,2"/>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
-                <Setter TargetName="RowChrome" Property="BorderThickness" Value="1"/>
+                <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
                 <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
@@ -747,7 +748,7 @@
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
             </Trigger>
@@ -758,14 +759,14 @@
                 </MultiTrigger.Conditions>
                 <Setter Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
             </MultiTrigger>
             <DataTrigger Binding="{Binding Path=DataContext.State, RelativeSource={RelativeSource Self}}" Value="{x:Static contracts:TaskState.Failed}">
                 <Setter Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
             </DataTrigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
@@ -794,7 +795,7 @@
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
             </Trigger>
@@ -842,7 +843,7 @@
                     <Border x:Name="TabChrome"
                             Background="Transparent"
                             BorderBrush="Transparent"
-                            BorderThickness="1"
+                            BorderThickness="{StaticResource GscHairlineThickness}"
                             CornerRadius="10"
                             Padding="{TemplateBinding Padding}"
                             SnapsToDevicePixels="True">
@@ -920,7 +921,7 @@
              renaming hundreds of command bindings or changing their layout contracts. -->
         <Setter Property="Background" Value="{DynamicResource GscButtonGlassBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscButtonGlassBorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource GscSharedFocusVisual}"/>
@@ -1283,7 +1284,7 @@
                         </Grid.ColumnDefinitions>
                         <Border x:Name="Track" Width="40" Height="23" CornerRadius="11.5"
                                 Background="{DynamicResource GscControlStrokeBrush}"
-                                BorderBrush="Transparent" BorderThickness="1"
+                                BorderBrush="Transparent" BorderThickness="{StaticResource GscHairlineThickness}"
                                 HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Ellipse x:Name="Thumb" Width="17" Height="17" Fill="{DynamicResource GscGlassStrongBrush}"
                                      HorizontalAlignment="Left" Margin="3,0,0,0"
@@ -1336,7 +1337,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="12,3"/>
         <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
         <Setter Property="CaretBrush" Value="{DynamicResource GscAccentBrush}"/>
@@ -1404,7 +1405,7 @@
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="12,5"/>
         <Setter Property="MaxDropDownHeight" Value="320"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -1455,7 +1456,7 @@
         <Setter Property="Background" Value="{DynamicResource GscGlassStrongBrush}"/>
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="6"/>
         <Setter Property="HasDropShadow" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>

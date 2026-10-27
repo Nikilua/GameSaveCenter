@@ -1095,6 +1095,36 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscGeometryCornerTable\">12</CornerRadius>", geometryTokens);
         Assert.Contains("x:Key=\"GscHairlineThickness\">1</Thickness>", geometryTokens);
 
+        foreach (var relativePath in new[]
+        {
+            "Themes/DesignTokens.xaml",
+            "Themes/Redesign.xaml",
+            "Themes/WpfUiProduction.xaml",
+            "Themes/AcrylicProductionResources.xaml",
+            "Themes/AcrylicReferenceControls.xaml",
+            "Views/AcrylicProductionShellView.xaml",
+            "Views/DashboardView.xaml",
+            "Views/MaintenanceView.xaml",
+            "Views/MediaCenterView.xaml",
+            "Views/OverviewView.xaml",
+            "Views/SaveCenterView.xaml",
+            "Views/TaskCenterView.xaml",
+            "Views/TrainerCenterView.xaml",
+            "Settings/GameSaveCenterSettingsView.xaml",
+            "Views/Development/UiFrameworkProbeView.xaml"
+        })
+        {
+            var source = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", relativePath.Replace('/', Path.DirectorySeparatorChar)));
+            var document = XDocument.Parse(source);
+            var literalOneDipBorders = document.Descendants().Where(element =>
+                element.Attributes().Any(attribute => attribute.Name.LocalName == "BorderThickness" && attribute.Value == "1")
+                || (element.Name.LocalName == "Setter"
+                    && element.Attribute("Property")?.Value == "BorderThickness"
+                    && element.Attribute("Value")?.Value == "1"));
+            Assert.Empty(literalOneDipBorders);
+            Assert.Contains("GscHairlineThickness", source);
+        }
+
         // Dashboard keeps a compatibility-scope row style while the extracted workspaces use
         // the shared dictionary. Both templates must retain the same WPF selective-scrolling
         // contract so a host theme cannot silently break horizontal scrolling in one scope.
