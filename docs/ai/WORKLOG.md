@@ -12354,3 +12354,7 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 ## 2026-10-27 S02-04 SDK8 标准链证据同步
 
 将 T00-01 `90bf0405` 同次运行的 Playnite source、通知收件箱、Worker 与 R09 原始 TRX 归档到 Round4 S02-04 证据目录，核对SHA-256与TRX计数：R10上下文6/6、通知2/2、任务精确查询10/10、R09 2/2。源实现 `1b17e4a0` 是标准链源码 `90bf0405` 的祖先。更新 Round4 machine ledger evidence/boundary，保留host pending；backlog状态调为 `IMPLEMENTED` 并注明真实通知页待验。与T00-01共享全链、无代码变更、未重复构建。未创建或删除 `artifacts/`、`.tmp/` 产物；只复用既有 run 诊断并把四份当前TRX归档到文档证据。阶段开始时C盘可用6,158,508,032字节、D盘7,189,680,224字节；用户的Round3未跟踪TRX/TestResults未触碰。
+
+## 2026-10-27 T03-05 宿主进程状态纠正
+
+完整进程名扫描查到 Playnite.DesktopApp PID 39152（09:24:11 启动）和 GameSaveCenter.Worker PID 42800（09:24:21 启动）仍运行；前次 `Get-Process -Name Playnite` 漏掉 `.DesktopApp` 后缀，不能据此称宿主已退出。没有结束这两个进程，也没有启动隔离副本。C/D盘开始可用空间为6,153,490,432 / 7,187,152,896字节；本阶段只改文档，无 artifacts/.tmp 输出或清理。

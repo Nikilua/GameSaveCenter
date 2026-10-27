@@ -1118,4 +1118,4 @@ R13-08 行为测试使用合成 DTO、fake context 和隔离 STA；未启动真�
 
 S02-04 实现 `1b17e4a0` 已包含在 `90bf0405` 全链源码中。共享 T00-01 根入口结果退出0，SDK8.0.423；R10 上下文6/6、通知收件箱2/2、Worker精确任务查询10/10、R09焦点2/2。原始TRX与hash见 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/sdk8-standard-90bf0405.json`；机器账本的 `hostVerificationState` 仍 pending，因为没有真实通知页面导航/返回交互证据。
 
-本次进程只读检查时未发现 Playnite GUI，发现 Worker PID 42800 仍在运行。不终止它；进行 T03-05 旧包/设置验证前先核实该进程生命周期与所有权，再使用隔离 Playnite 配置，避免接触正常用户设置、存档或媒体。
+本次完整进程名只读检查发现 `Playnite.DesktopApp` PID 39152（2026-10-27 09:24:11 启动）和 `GameSaveCenter.Worker` PID 42800（09:24:21 启动）仍在运行。前一次 `Get-Process -Name Playnite` 查询没有匹配带 `.DesktopApp` 后缀的进程名，不能据此称 Playnite 已退出。两个进程均未终止；T03-05 仍须等它们正常退出后，才可沿隔离配置流程验证旧包和设置，避免接触正常用户设置、存档或媒体。

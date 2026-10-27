@@ -1246,3 +1246,5 @@ T01-04 隔离路径边界脚本在审核通过的提升上下文中仍无法创�
 ## 2026-10-27 S02-04 使用最新 SDK8 标准链补证
 
 Round4 S02-04 的实现 `1b17e4a0` 是 `90bf0405` 的祖先。复用 T00-01 的中文标准根入口同次证据，不重复做上下文跳转实现或构建：R10稳定ID上下文6/6、通知收件箱2/2、Worker精确任务查询10/10、R09焦点2/2；SDK8.0.423完整链、安装身份和Playnite插件加载路径均有记录。原始TRX与SHA在 `docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/sdk8-standard-90bf0405.json`。Backlog 标为 `IMPLEMENTED`，Round4仍为“代码完成待验收”；真实通知详情导航、返回与失效对象呈现留在宿主验收。该批只同步证据和状态，不改产品源码。
+
+2026-10-27 宿主状态纠正：完整进程名扫描显示 Playnite.DesktopApp PID 39152 与 GameSaveCenter.Worker PID 42800 仍运行。先前 `Get-Process -Name Playnite` 没匹配 `.DesktopApp` 后缀，因此“未发现 Playnite GUI”不准确。不要终止或在正常实例活动时运行旧包隔离宿主；等两个进程正常退出后再核实 T03-05 条件。
