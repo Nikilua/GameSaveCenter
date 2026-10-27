@@ -87,7 +87,7 @@ S04-05 `4d0bfd3c` 已受控验收并推送：锁定 A，只在当前已加载且
 | S02-01 | IMPLEMENTED | `83194c50` 建立本地通知记录 DTO 与 Worker SQLite 去重/保留接口；SDK8 解决方案构建 0/0，新增通知持久化测试 3/3，Worker 364 passed/1 skipped。通知 producer 留给 S02-02。证据见 Round4 S02-01。 |
 | S02-02 | IMPLEMENTED | `8810d9e6` 接入通知记录生产者和收件箱；SDK8.0.423 Release solution build 0/0，Playnite 定向 15/15（R09 2/2）、Worker persistence 3/3、双主题 Render QA 22/22。真实 Playnite/安装门禁未运行。证据见 Round4 S02-02。 |
 | S02-03 | IMPLEMENTED | 6d3a6f43 加入单条/当前筛选结果已读与确认清除已读记录；SDK8.0.423 Release build 0/0，Playnite 定向 18/18（R09 2/2）、Worker SQLite 7/7、双主题 11 尺寸 Render QA 22/22。真实 Playnite/安装门禁未运行；外机旧 R09 缺同次身份材料。证据见 Round4 S02-03。 |
-| S02-04 | CODE_COMPLETE_PENDING | `1b17e4a0` 增加通知到游戏/任务的稳定 ID 上下文跳转；SDK9 Release solution build 0/0，通知/R10 + Worker 查询 + R09 `20/20`，双主题 11 尺寸 Render QA OK。SDK8 正式基线、完整 WPF 隔离、Playnite 安装/宿主未验；保存的一键日志停于 R05 指针读取。证据见 Round4 S02-04。 |
+| S02-04 | IMPLEMENTED | `1b17e4a0` 的稳定 ID 上下文跳转复用 T00-01 `90bf0405` SDK8.0.423 中文标准全链证据：R10 上下文 `6/6`、通知收件箱 `2/2`、Worker 精确任务查询 `10/10`、R09 `2/2`；标准链安装身份与插件从安装目录实际加载也已核对。真实通知页面导航、返回和失效对象交互仍待 Playnite 宿主验收，Round4 保持“代码完成待验收”。[TRX与身份清单](design/reviews/ui-finesse-round4-20261018/evidence/S02-04/sdk8-standard-90bf0405.json)、[完整标准链](design/reviews/ui-history-table-4k-20261026/evidence/standard-90bf0405/README.md)。 |
 | S02-05 | IMPLEMENTED | `2aa3fe3c` 增加 UTC 临时静音、跨午夜本地安静时段、可发现状态和解除入口；SDK9 Release build 0/0，策略 20/20、设置交互/持久化 15/15、独立 R09 2/2，浅/深主题 × 两尺寸探针 4/4。SDK8、完整 WPF 循环、安装和真实宿主待验；旧 R09 输入身份未知。证据见 Round4 S02-05。 |
 | S02-06 | IMPLEMENTED | `a6153219` 明确已知警告/错误级别突破静音；SDK9 策略 22/22、持久化 7/7、R09 2/2。SDK8、完整 WPF 循环和真实宿主未验。证据见 Round4 S02-06。 |
 | S02-07 | IMPLEMENTED | `9ed6b4e5`/`c4fb56a0` 归并明确重试链并保留首末时间、次数和最后错误；SDK9 通知/重试/R09 定向测试 19/19。SDK8、完整 WPF 循环和真实宿主未验。证据见 Round4 S02-07。 |

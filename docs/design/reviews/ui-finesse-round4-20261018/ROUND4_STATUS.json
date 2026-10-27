@@ -418,7 +418,7 @@
       "implementationCommit": "1b17e4a0",
       "controlledVerificationState": "passed",
       "hostVerificationState": "pending",
-      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-04/README.md)：官方 Release solution build 0/0、XAML 25/25；通知/R10 8/8、Worker 精确 task ID 10/10、R09 2/2。；当前完整链统一见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实宿主交互仍待验",
+      "verificationText": "[SDK8 当前源码复核](evidence/SDK8-S02-RECHECK-20261021/README.md)；[本项历史证据](evidence/S02-04/README.md)；2026-10-27 `90bf0405` SDK8 全链复核：[目标 TRX 清单](evidence/S02-04/sdk8-standard-90bf0405.json)及[复用的 T00-01 标准链](../ui-history-table-4k-20261026/evidence/standard-90bf0405/README.md)：R10 上下文 6/6、通知收件箱 2/2、Worker 精确任务查询 10/10、R09 2/2；旧阶段结果见[最终默认全链](evidence/S00-08/STANDARD_BUILD_20261023.md)，真实通知页面交互仍待验",
       "evidence": [
         {
           "label": "SDK8 当前源码复核",
@@ -429,11 +429,19 @@
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/README.md"
         },
         {
+          "label": "2026-10-27 SDK8 完整链目标 TRX",
+          "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S02-04/sdk8-standard-90bf0405.json"
+        },
+        {
+          "label": "复用的 T00-01 标准完整链",
+          "path": "docs/design/reviews/ui-history-table-4k-20261026/evidence/standard-90bf0405/README.md"
+        },
+        {
           "label": "最终默认全链",
           "path": "docs/design/reviews/ui-finesse-round4-20261018/evidence/S00-08/STANDARD_BUILD_20261023.md"
         }
       ],
-      "boundary": "当前02119729默认.cmd完整WPF隔离、发布/打包/安装身份与进程启动已通过；真实Playnite通知页面交互、实际宿主设置/导航与本项行为呈现仍待验；历史输入权限边界未绕过，旧R09输入身份仍未知。 不以受控用例或进程启动冒充宿主交互验收。"
+      "boundary": "90bf0405 的 SDK8.0.423 中文标准入口完整链退出0；R10上下文6/6、通知收件箱2/2、Worker精确任务查询10/10、R09焦点2/2，安装身份及Playnite插件实际加载路径均有同次证据。真实通知页面的游戏/任务导航、返回、失效对象呈现及实际宿主设置交互仍待验；不以受控用例或进程启动冒充宿主交互验收。"
     },
     {
       "id": "S02-05",

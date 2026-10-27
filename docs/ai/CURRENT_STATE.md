@@ -12,6 +12,8 @@
 
 T00-01以当前90bf全链验收。清理本轮自有输出2211文件/341,640,816逻辑字节；删除清单、路径检查与C/D盘前后空间见[cleanup.json](../design/reviews/ui-history-table-4k-20261026/evidence/standard-90bf0405/cleanup.json)。32项仍有T00-07、T01-04、T01-08、T02-08、T03-05五项待权限、外机或真实宿主/输入条件；不重复探测已记录的权限阻塞。Round4仍为40已验收、2已满足、21宿主待验、1外部阻塞；本次视口修复复用既有滚动预算，不改变S01状态。当前完整记录见[专项进度账本](../design/reviews/build-ui-reliability-20261022/PROGRESS.md)。
 
+本次标准链也为 Round4 S02-04 提供当前 SDK8 受控复核：R10 上下文行为6/6、通知收件箱2/2、Worker精确任务查询10/10、R09焦点2/2。复用T00-01的同次90bf TRX，不重复实现或构建；backlog据此更新为受控实现完成，Round4仍保留“代码完成待验收”，真实通知页面导航和返回仍待宿主验证。原始TRX与哈希见[S02-04复核清单](../design/reviews/ui-finesse-round4-20261018/evidence/S02-04/sdk8-standard-90bf0405.json)。
+
 ## 2026-10-25 本机默认根入口历史成功基线（后续中文入口见末尾）
 
 - 当前产品源码身份 b29c39a541ba92461e167f14f64917d889293161 的默认根入口 cmd.exe /d /c "GameSaveCenter-Run.cmd < nul" 已退出0：build run 20261025T152449622Z-e85af693、install run 20261025T152447580Z-d50774fa。SDK8.0.423 / Release，solution 0警告/0错误、155阶段无失败。Core157/157、Worker400/400；总计1968项1911通过/57跳过/0失败、错误、超时或中止，149份TRX一致、146个WPF隔离类全部完成。[最新完整链证据](../design/reviews/build-ui-reliability-20261022/evidence/T00-01/standard-b29c39a5/README.md)。

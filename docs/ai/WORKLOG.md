@@ -12350,3 +12350,7 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 首轮同源码根链在Worker `NotificationRecordPersistenceTests.Dispose()` 清理临时SQLite目录时遇到文件占用，399/400，真实失败保留。相同测试程序集重测目标1/1、Worker全组400/400，随后标准完整链再通过；失败与成功间无源码变化。摘要、失败TRX和控制台日志归档在 `docs/design/reviews/ui-history-table-4k-20261026/evidence/standard-90bf0405/`。RenderHarness首轮只因侧栏快速切换settle探针失败，首轮报告归档；重跑无PROBLEM。历史表格Light/Dark、3840×2160逻辑DIP与收缩恢复通过；用户另一台物理4K机器未验。
 
 三入口退出转交证据仍有效：`GameSaveCenter-Run.cmd`、中文全链入口和`scripts/build.cmd`注入0/7/23均原样返回，9/9；入口自T00-02证据后未变。本轮清理2211个自有文件、341,640,816逻辑字节，C盘可用空间清理前/后为6,162,194,432/6,162,190,336字节，D盘为6,845,612,032/7,192,395,776字节；[删除清单与边界复核](../design/reviews/ui-history-table-4k-20261026/evidence/standard-90bf0405/cleanup.json)。当前成功构建/包/诊断保留，已归档的本轮临时RenderHarness/失败构建副本完成清理。文档阶段`validate-source.py`通过，10份Markdown的766个本地链接0失效、7份JSON可解析、证据SHA逐项核对，`git diff --check`退出0；没有因纯文档记录再跑产品构建。T00-01验收；其他五个T任务及Round4宿主边界保持未验，未绕过权限。
+
+## 2026-10-27 S02-04 SDK8 标准链证据同步
+
+将 T00-01 `90bf0405` 同次运行的 Playnite source、通知收件箱、Worker 与 R09 原始 TRX 归档到 Round4 S02-04 证据目录，核对SHA-256与TRX计数：R10上下文6/6、通知2/2、任务精确查询10/10、R09 2/2。源实现 `1b17e4a0` 是标准链源码 `90bf0405` 的祖先。更新 Round4 machine ledger evidence/boundary，保留host pending；backlog状态调为 `IMPLEMENTED` 并注明真实通知页待验。与T00-01共享全链、无代码变更、未重复构建。未创建或删除 `artifacts/`、`.tmp/` 产物；只复用既有 run 诊断并把四份当前TRX归档到文档证据。阶段开始时C盘可用6,158,508,032字节、D盘7,189,680,224字节；用户的Round3未跟踪TRX/TestResults未触碰。

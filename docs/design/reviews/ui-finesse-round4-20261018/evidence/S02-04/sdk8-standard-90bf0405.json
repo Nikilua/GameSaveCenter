@@ -1,0 +1,98 @@
+{
+  "taskId": "S02-04",
+  "evidenceDate": "2026-10-27",
+  "implementationCommit": "1b17e4a0e14f7de2f9ba5fe51595d51a26099e56",
+  "implementationIsAncestorOfVerifiedSource": true,
+  "verifiedSourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "reusedFrom": "T00-01 standard root-chain run; no implementation or duplicate build was added for S02-04.",
+  "entrypoint": "GameSaveCenter-一键构建安装运行.cmd",
+  "outerExitCode": 0,
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "runs": {
+    "build": "20261027T010319835Z-7b052459",
+    "install": "20261027T010317740Z-96e7b91b",
+    "package": "20261027T012406316Z-c7e3272f"
+  },
+  "fullChainTestTotals": {
+    "total": 1968,
+    "passed": 1910,
+    "skipped": 58,
+    "failed": 0
+  },
+  "focusedCoverage": [
+    {
+      "name": "R10ContextGameBehaviorTests",
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "trx": "tests/standard-90bf0405/playnite-source.trx"
+    },
+    {
+      "name": "NotificationInboxViewBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "trx": "tests/standard-90bf0405/notification-inbox.trx"
+    },
+    {
+      "name": "TaskQueryPersistenceTests",
+      "total": 10,
+      "passed": 10,
+      "failed": 0,
+      "trx": "tests/standard-90bf0405/worker-task-query.trx"
+    },
+    {
+      "name": "R09FocusOutlineBehaviorTests",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "trx": "tests/standard-90bf0405/r09-focus-outline.trx"
+    }
+  ],
+  "trxFiles": [
+    {
+      "path": "tests/standard-90bf0405/playnite-source.trx",
+      "originalArtifact": "artifacts/build-diagnostics/20261027T010319835Z-7b052459/tests/playnite-source/playnite-source.trx",
+      "bytes": 843224,
+      "sha256": "55CF75C262657936544B744A55CB6C25573A6AD3D9DA24FFC5E0D79C32F9803E",
+      "total": 562,
+      "passed": 544,
+      "notExecuted": 18,
+      "failed": 0
+    },
+    {
+      "path": "tests/standard-90bf0405/notification-inbox.trx",
+      "originalArtifact": "artifacts/build-diagnostics/20261027T010319835Z-7b052459/tests/wpf.NotificationInboxViewBehaviorTests/wpf.NotificationInboxViewBehaviorTests.trx",
+      "bytes": 4907,
+      "sha256": "5B6BE86562E1E5B5AA149DE4FE9B52D009743C38744EC1A7442E5163A8244102",
+      "total": 2,
+      "passed": 2,
+      "notExecuted": 0,
+      "failed": 0
+    },
+    {
+      "path": "tests/standard-90bf0405/worker-task-query.trx",
+      "originalArtifact": "artifacts/build-diagnostics/20261027T010319835Z-7b052459/tests/worker/worker.trx",
+      "bytes": 601760,
+      "sha256": "5A527C3FA163C53D58BCEBC253AB48B14128C8D328EBA9F0326441E6A0EA8D99",
+      "total": 400,
+      "passed": 400,
+      "notExecuted": 0,
+      "failed": 0
+    },
+    {
+      "path": "tests/standard-90bf0405/r09-focus-outline.trx",
+      "originalArtifact": "artifacts/build-diagnostics/20261027T010319835Z-7b052459/tests/wpf.R09FocusOutlineBehaviorTests/wpf.R09FocusOutlineBehaviorTests.trx",
+      "bytes": 4988,
+      "sha256": "4619D65B53432F9A679C6310B32334A8C715620C98BD826566204256370E0A54",
+      "total": 2,
+      "passed": 2,
+      "notExecuted": 0,
+      "failed": 0
+    }
+  ],
+  "installAndLoadEvidence": "../../../ui-history-table-4k-20261026/evidence/standard-90bf0405/README.md",
+  "hostVerificationState": "pending",
+  "hostBoundary": "The chain verifies installation identity and that Playnite loaded the package from its install directory; it does not verify notification-page navigation, return, missing-target behavior, or interaction in the real Playnite UI."
+}
