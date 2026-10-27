@@ -104,13 +104,19 @@
                 <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscControlFocusFillBrush}"/>
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
+                <Setter TargetName="PART_ContentHost" Property="TextElement.Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
+            </Trigger>
+            <!-- Validation is the highest-priority input state. Keep its text available
+                 to UI Automation while the two-DIP stroke remains outside measurement. -->
             <Trigger Property="Validation.HasError" Value="True">
                 <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscErrorTintBrush}"/>
                 <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscErrorBrush}"/>
                 <Setter TargetName="ValidationStroke" Property="Opacity" Value="1"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter TargetName="InputChromeRoot" Property="Opacity" Value="0.45"/>
+                <Setter Property="AutomationProperties.HelpText"
+                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

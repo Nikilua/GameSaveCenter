@@ -1,8 +1,10 @@
 using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -154,6 +156,21 @@ public sealed class R09FocusOutlineBehaviorTests
                 Assert.Equal(new Thickness(2), validationStroke.BorderThickness);
                 Assert.False(validationStroke.IsHitTestVisible);
                 Assert.NotNull(textBox.FocusVisualStyle);
+                Assert.Equal("请输入 1–3 之间的数值。", AutomationProperties.GetHelpText(textBox));
+
+                textBox.IsEnabled = false;
+                FlushLayout(window);
+                var disabledRoot = Assert.IsType<Grid>(textBox.Template.FindName("InputChromeRoot", textBox));
+                var contentHost = Assert.IsType<ScrollViewer>(textBox.Template.FindName("PART_ContentHost", textBox));
+                Assert.Equal(1d, disabledRoot.Opacity);
+                Assert.Equal(BrushColor(resources["GscErrorTintBrush"]), BrushColor(errorChrome.Background));
+                Assert.Equal(BrushColor(resources["GscErrorBrush"]), BrushColor(errorChrome.BorderBrush));
+                Assert.Equal(BrushColor(resources["GscDisabledTextBrush"]), BrushColor(TextElement.GetForeground(contentHost)));
+                Assert.Equal(1d, validationStroke.Opacity);
+
+                textBox.IsEnabled = true;
+                Assert.Same(textBox, Keyboard.Focus(textBox));
+                FlushLayout(window);
 
                 textBox.Text = "2";
                 textBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();
@@ -164,6 +181,14 @@ public sealed class R09FocusOutlineBehaviorTests
                 Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(recoveredChrome.BorderBrush));
                 Assert.Equal(new Thickness(1), recoveredChrome.BorderThickness);
                 Assert.Equal(0d, validationStroke.Opacity);
+
+                textBox.IsReadOnly = true;
+                Assert.Same(textBox, Keyboard.Focus(textBox));
+                FlushLayout(window);
+                Assert.True(textBox.IsReadOnly);
+                Assert.True(textBox.IsKeyboardFocusWithin);
+                Assert.Equal("2", textBox.Text);
+                Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(recoveredChrome.BorderBrush));
             }
             finally
             {

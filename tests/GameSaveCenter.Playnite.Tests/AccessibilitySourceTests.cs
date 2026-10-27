@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -78,6 +80,43 @@ public sealed class AccessibilitySourceTests
         Assert.Contains(
             "<Setter Property=\"FocusVisualStyle\" Value=\"{DynamicResource GscSharedFocusVisual}\"/>",
             production);
+    }
+
+    [Fact]
+    public void TaskAndMediaSearchClearAndCountsStayOutsideEditableTextLayout()
+    {
+        var root = FindRepositoryRoot();
+        var taskView = XDocument.Load(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml"));
+        var mediaView = XDocument.Load(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml"));
+        XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var search = taskView.Descendants().Single(element => element.Attribute(x + "Name")?.Value == "TaskSearchTextBox");
+        var searchHost = Assert.IsType<XElement>(search.Parent);
+        var clear = searchHost.Elements().Single(element => element.Name.LocalName == "Button");
+        var summary = taskView.Descendants().Single(element => element.Attribute(x + "Name")?.Value == "TaskSummaryPanel");
+        var filterBar = taskView.Descendants().Single(element => element.Attribute(x + "Name")?.Value == "TaskFilterBar");
+
+        Assert.Equal("{Binding TaskSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}", search.Attribute("Text")?.Value);
+        Assert.Equal("30,7,38,7", search.Attribute("Padding")?.Value);
+        Assert.Null(search.Attribute("PreviewKeyDown"));
+        Assert.Equal("OnClearSearchTextBoxClick", clear.Attribute("Click")?.Value);
+        Assert.Equal("清除任务搜索", clear.Attribute("AutomationProperties.Name")?.Value);
+        Assert.Equal("Right", clear.Attribute("HorizontalAlignment")?.Value);
+        Assert.DoesNotContain(searchHost.Elements(), element => element.Name.LocalName == "ColumnDefinition");
+        Assert.Contains(summary.Descendants(), element => element.Attribute("Text")?.Value?.Contains("TaskTotalCount") == true);
+        Assert.Equal("0", summary.Attribute("Grid.Row")?.Value);
+        Assert.Equal("1", filterBar.Attribute("Grid.Row")?.Value);
+        Assert.Contains(filterBar.Descendants(), element => element.Attribute(x + "Name")?.Value == "TaskSearchBoxHost");
+        Assert.DoesNotContain(searchHost.Descendants(), element => element.Attribute("Text")?.Value?.Contains("TaskTotalCount") == true);
+
+        var mediaSearch = mediaView.Descendants().Single(element => element.Attribute(x + "Name")?.Value == "MediaSearchTextBox");
+        var mediaSearchHost = Assert.IsType<XElement>(mediaSearch.Parent);
+        var mediaClear = mediaSearchHost.Elements().Single(element => element.Name.LocalName == "Button");
+        var mediaSummary = mediaView.Descendants().Single(element => element.Attribute(x + "Name")?.Value == "MediaSummaryPanel");
+        Assert.Equal("12,3,38,3", mediaSearch.Attribute("Padding")?.Value);
+        Assert.Equal("Right", mediaClear.Attribute("HorizontalAlignment")?.Value);
+        Assert.Equal("清除媒体搜索", mediaClear.Attribute("AutomationProperties.Name")?.Value);
+        Assert.Contains(mediaSummary.Descendants(), element => element.Attribute("Text")?.Value?.Contains("MediaSummary.TotalCount") == true);
+        Assert.DoesNotContain(mediaSearchHost.Descendants(), element => element.Attribute("Text")?.Value?.Contains("MediaSummary.TotalCount") == true);
     }
 
     [Fact]
