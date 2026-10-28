@@ -131,9 +131,9 @@ public sealed class FakeDashboardData
             : "关联内容按稳定 ID 定位；不会按名称猜测。已读只表示查看，不代表问题已解决。";
     public ObservableCollection<NotificationInboxItem> NotificationInboxItems { get; } = new()
     {
-        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-error", Severity = NotificationSeverity.Error, Title = "备份任务失败", Summary = "远端认证失败，请检查连接设置。", GameId = "game-1", TaskId = "task-103", CreatedUtc = DateTime.UtcNow.AddMinutes(-8) }),
-        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-warning", Severity = NotificationSeverity.Warning, Title = "退出备份摘要", Summary = "本次会话有一项备份未完成。", GameId = "game-2", CreatedUtc = DateTime.UtcNow.AddMinutes(-35) }),
-        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-success", Severity = NotificationSeverity.Success, Title = "媒体同步完成", Summary = "已归档 12 个截图。", GameId = "game-3", TaskId = "task-101", CreatedUtc = DateTime.UtcNow.AddHours(-2), IsRead = true })
+        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-error", Severity = NotificationSeverity.Error, Title = "备份任务失败", Summary = "远端认证失败，请检查连接设置。", GameId = "game-1", TaskId = "task-103", CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-8) }),
+        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-warning", Severity = NotificationSeverity.Warning, Title = "退出备份摘要", Summary = "本次会话有一项备份未完成。", GameId = "game-2", CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-35) }),
+        new NotificationInboxItem(new NotificationRecordDto { NotificationId = "render-success", Severity = NotificationSeverity.Success, Title = "媒体同步完成", Summary = "已归档 12 个截图。", GameId = "game-3", TaskId = "task-101", CreatedUtc = FakeSampleClock.UtcNow.AddHours(-2), IsRead = true })
     };
     public IReadOnlyList<string> NotificationSeverityOptions { get; } = new[] { "全部级别", "错误", "警告", "成功", "信息" };
     public IReadOnlyList<string> NotificationTimeOptions { get; } = new[] { "全部时间", "最近24小时", "最近7天", "最近30天" };
@@ -180,7 +180,7 @@ public sealed class FakeDashboardData
             KeepMonthlyMonths = 30,
             GrowthMinimumMiBPer30Days = 128,
             GrowthMaximumMiBPer30Days = 512,
-            LastSnapshotUtc = DateTime.UtcNow.AddHours(-3)
+            LastSnapshotUtc = FakeSampleClock.UtcNow.AddHours(-3)
         };
         RetentionScenarioDrafts.Add(retentionScenario);
         SelectedRetentionScenarioDraft = retentionScenario;
@@ -221,7 +221,7 @@ public sealed class FakeDashboardData
             UnassignedMediaCount = 7
         };
 
-        var cloudNow = DateTime.UtcNow;
+        var cloudNow = FakeSampleClock.UtcNow;
         CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Backup:game-1", Kind = CloudTransferKind.Backup, PlayniteId = "game-1", GameName = "Baldur's Gate 3", State = "Pending", UpdatedUtc = cloudNow.AddMinutes(-2) });
         CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Media:game-2", Kind = CloudTransferKind.Media, PlayniteId = "game-2", GameName = "演示游戏 2", State = "Verifying", OperationKind = CloudTransferOperationKind.Verify, UpdatedUtc = cloudNow.AddMinutes(-1) });
         CloudTransferItems.Add(new CloudTransferStatusDto { TransferKey = "Backup:game-3", Kind = CloudTransferKind.Backup, PlayniteId = "game-3", GameName = "演示游戏 3", State = "RetryScheduled", AttemptCount = 2, NextAttemptUtc = cloudNow.AddMinutes(18), LastErrorCode = "RCLONE_NETWORK_FAILED", LastError = "远端暂时不可用", UpdatedUtc = cloudNow.AddMinutes(-5) });
@@ -251,7 +251,7 @@ public sealed class FakeDashboardData
 
         EnvironmentCheck = new EnvironmentCheckReportDto
         {
-            CheckedUtc = DateTime.UtcNow,
+            CheckedUtc = FakeSampleClock.UtcNow,
             PassedCount = 8,
             SkippedCount = 1,
             Summary = "检查完成：环境已准备好，可以手动执行一次测试备份。"
@@ -311,13 +311,13 @@ public sealed class FakeDashboardData
             LudusaviMatched = true,
             BackupVersionCount = 12,
             MediaCount = 32,
-            LastBackupUtc = DateTime.UtcNow.AddHours(-2),
+            LastBackupUtc = FakeSampleClock.UtcNow.AddHours(-2),
             CloudState = "Uploaded",
             HealthState = "Ready",
             LudusaviName = "BG3"
         };
 
-        var fixtureNowUtc = DateTime.UtcNow;
+        var fixtureNowUtc = FakeSampleClock.UtcNow;
         for (var i = 1; i <= rowCount; i++)
         {
             var protectedFixture = i % 4 == 0;
@@ -362,9 +362,9 @@ public sealed class FakeDashboardData
                 Message = i % 4 == 0 ? "远端暂时不可用，本地版本已保留。" : $"任务 {i} 完成",
                 ErrorCode = i % 4 == 0 ? "E_CLOUD" : string.Empty,
                 ErrorMessage = i % 4 == 0 ? "Rclone remote unavailable; local source retained." : string.Empty,
-                CreatedUtc = DateTime.UtcNow.AddMinutes(-30 * i),
-                StartedUtc = DateTime.UtcNow.AddMinutes(-30 * i + 1),
-                FinishedUtc = i % 4 == 1 ? null : DateTime.UtcNow.AddMinutes(-30 * i + 25)
+                CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-30 * i),
+                StartedUtc = FakeSampleClock.UtcNow.AddMinutes(-30 * i + 1),
+                FinishedUtc = i % 4 == 1 ? null : FakeSampleClock.UtcNow.AddMinutes(-30 * i + 25)
             });
         }
 
@@ -382,7 +382,7 @@ public sealed class FakeDashboardData
             Result = "Succeeded",
             GameName = Games[0].Name,
             Summary = "Ludusavi 备份结果：新增 1 个文件",
-            CreatedUtc = DateTime.UtcNow.AddMinutes(-8)
+            CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-8)
         });
         Activities.Add(new ActivityEntryDto
         {
@@ -390,7 +390,7 @@ public sealed class FakeDashboardData
             Result = "Failed",
             GameName = Games[1].Name,
             Summary = "云端复制失败，本地版本已保留",
-            CreatedUtc = DateTime.UtcNow.AddMinutes(-20)
+            CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-20)
         });
         Activities.Add(new ActivityEntryDto
         {
@@ -398,7 +398,7 @@ public sealed class FakeDashboardData
             Result = "Succeeded",
             GameName = "全局",
             Summary = "完整性自检通过：数据库、目录和已索引文件正常",
-            CreatedUtc = DateTime.UtcNow.AddMinutes(-35)
+            CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-35)
         });
 
         for (var i = 1; i <= 4; i++)
@@ -425,7 +425,7 @@ public sealed class FakeDashboardData
                 Source = i % 3 == 0 ? MediaSourceKind.XboxGameBar : MediaSourceKind.Steam,
                 ArchivePath = $@"D:\Media\{SelectedGame.Name}\capture-{i}.{(i % 3 == 0 ? "mp4" : "png")}",
                 OriginalPath = $@"D:\Captures\capture-{i}.{(i % 3 == 0 ? "mp4" : "png")}",
-                CapturedUtc = DateTime.UtcNow.AddDays(-i),
+                CapturedUtc = FakeSampleClock.UtcNow.AddDays(-i),
                 SizeBytes = 6_500_000L + i * 1_100_000L,
                 IsFavorite = i % 2 == 0,
                 Comment = i % 2 == 0 ? "营地夜景" : string.Empty,
@@ -440,14 +440,14 @@ public sealed class FakeDashboardData
                 Source = i % 3 == 0 ? MediaSourceKind.XboxGameBar : MediaSourceKind.WindowsScreenshot,
                 ArchivePath = $@"D:\Media\Inbox\shared-{i}.{(i % 3 == 0 ? "mp4" : "png")}",
                 OriginalPath = $@"D:\Captures\shared-{i}.{(i % 3 == 0 ? "mp4" : "png")}",
-                CapturedUtc = DateTime.UtcNow.AddHours(-i * 3),
+                CapturedUtc = FakeSampleClock.UtcNow.AddHours(-i * 3),
                 SizeBytes = 4_200_000L + i * 900_000L,
                 ClassificationState = "Inbox",
                 ClassificationReason = "无法唯一判断所属游戏"
             });
         }
 
-        var classificationNow = DateTime.UtcNow;
+        var classificationNow = FakeSampleClock.UtcNow;
         MediaClassificationPreview = new MediaClassificationPreviewDto
         {
             BatchId = "preview-demo",
@@ -566,7 +566,7 @@ public sealed class FakeDashboardData
             {
                 Category = i % 3 == 0 ? "Cloud" : "Backup",
                 Message = i % 3 == 0 ? "Rclone remote unavailable; local source retained." : $"Backup version {i} created and validated.",
-                CreatedUtc = DateTime.UtcNow.AddMinutes(-i * 9)
+                CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-i * 9)
             });
             DeviceComparisons.Add(new DeviceConflictStatusDto
             {
@@ -587,15 +587,15 @@ public sealed class FakeDashboardData
                 ContentFingerprintsMatch = false,
                 LocalReadinessStatus = "Ready",
                 RemoteReadinessStatus = "Warning",
-                LocalReadinessCheckedUtc = DateTime.UtcNow.AddDays(-2),
-                RemoteReadinessCheckedUtc = DateTime.UtcNow.AddDays(-21),
-                LocalSummaryGeneratedUtc = DateTime.UtcNow.AddMinutes(-5),
-                RemoteSummaryGeneratedUtc = DateTime.UtcNow.AddDays(-1),
+                LocalReadinessCheckedUtc = FakeSampleClock.UtcNow.AddDays(-2),
+                RemoteReadinessCheckedUtc = FakeSampleClock.UtcNow.AddDays(-21),
+                LocalSummaryGeneratedUtc = FakeSampleClock.UtcNow.AddMinutes(-5),
+                RemoteSummaryGeneratedUtc = FakeSampleClock.UtcNow.AddDays(-1),
                 HasConflict = true,
                 Reason = "DivergedFromCommonBase",
                 Confidence = 0.82,
-                LocalCreatedUtc = DateTime.UtcNow.AddDays(-i),
-                RemoteCreatedUtc = DateTime.UtcNow.AddDays(-i).AddMinutes(3),
+                LocalCreatedUtc = FakeSampleClock.UtcNow.AddDays(-i),
+                RemoteCreatedUtc = FakeSampleClock.UtcNow.AddDays(-i).AddMinutes(3),
                 Decision = i % 3 == 0 ? "Defer" : string.Empty
             });
             ProcessMappings.Add(new ProcessMappingDto
@@ -604,7 +604,7 @@ public sealed class FakeDashboardData
                 PlayniteId = "game-" + i,
                 GameName = Games[i - 1].Name,
                 Enabled = true,
-                CreatedUtc = DateTime.UtcNow.AddDays(-i)
+                CreatedUtc = FakeSampleClock.UtcNow.AddDays(-i)
             });
         }
 
@@ -623,7 +623,7 @@ public sealed class FakeDashboardData
                 ContentFingerprint = i == 1 || i == 2 ? "render-equivalent-content" : $"render-content-{i}",
                 PlayniteId = SelectedGame.PlayniteId,
                 LudusaviName = SelectedGame.Name,
-                CreatedUtc = DateTime.UtcNow.AddDays(-i),
+                CreatedUtc = FakeSampleClock.UtcNow.AddDays(-i),
                 TotalBytes = 24_800_000L + i * 1_000_000L,
                 FileCount = 120 + i,
                 IsLocked = i % 4 == 0,
@@ -653,8 +653,8 @@ public sealed class FakeDashboardData
                 CloseOnGameExit = i % 3 == 0,
                 RequiresAdmin = i % 4 == 0,
                 ActiveVersionId = "v1",
-                CreatedUtc = DateTime.UtcNow.AddDays(-i),
-                UpdatedUtc = DateTime.UtcNow.AddDays(-i)
+                CreatedUtc = FakeSampleClock.UtcNow.AddDays(-i),
+                UpdatedUtc = FakeSampleClock.UtcNow.AddDays(-i)
             });
             var tool = GameTools[i - 1];
             tool.Versions.Add(new GameToolVersionDto
@@ -665,7 +665,7 @@ public sealed class FakeDashboardData
                 EntryPath = $@"D:\Tools\{tool.DisplayName}\trainer.exe",
                 WorkingDirectory = $@"D:\Tools\{tool.DisplayName}",
                 IsAvailable = true,
-                CreatedUtc = DateTime.UtcNow.AddDays(-i)
+                CreatedUtc = FakeSampleClock.UtcNow.AddDays(-i)
             });
             if (i % 2 == 0)
             {
@@ -676,7 +676,7 @@ public sealed class FakeDashboardData
                     VersionName = "v1.1",
                     EntryPath = $@"D:\Tools\{tool.DisplayName}\trainer_v11.exe",
                     IsAvailable = true,
-                    CreatedUtc = DateTime.UtcNow.AddDays(-i + 1)
+                    CreatedUtc = FakeSampleClock.UtcNow.AddDays(-i + 1)
                 });
             }
             TrainerCatalogResults.Add(new TrainerCatalogItemDto
@@ -687,8 +687,8 @@ public sealed class FakeDashboardData
                 PageUrl = "https://example.com/trainer",
                 GameVersion = "1.0",
                 OptionCount = 12 + i,
-                LastUpdatedUtc = DateTime.UtcNow.AddDays(-i),
-                LastSyncedUtc = DateTime.UtcNow.AddDays(-i)
+                LastUpdatedUtc = FakeSampleClock.UtcNow.AddDays(-i),
+                LastSyncedUtc = FakeSampleClock.UtcNow.AddDays(-i)
             });
             TrainerReleases.Add(new TrainerReleaseDto
             {
@@ -697,7 +697,7 @@ public sealed class FakeDashboardData
                 DisplayName = i == 1 ? "Baldur's Gate 3 v1.0 Plus 20 Trainer" : $"Trainer v1.{i} Plus {i + 10}",
                 DownloadUrl = "https://example.com/download",
                 SizeBytes = 1_800_000L + i * 100_000L,
-                PublishedUtc = DateTime.UtcNow.AddDays(-i)
+                PublishedUtc = FakeSampleClock.UtcNow.AddDays(-i)
             });
         }
 
@@ -771,7 +771,7 @@ public sealed class FakeDashboardData
             PreviewId = "render-preview-01",
             PlayniteId = SelectedGame.PlayniteId,
             BackupId = SelectedBackup.BackupId,
-            PreviewedUtc = DateTime.UtcNow.AddMinutes(-3),
+            PreviewedUtc = FakeSampleClock.UtcNow.AddMinutes(-3),
             FileCount = 18,
             TotalBytes = 2_850_000,
             Summary = "映射预览：18 个文件 · 2.72 MiB；只读核对，不写入当前存档。"
@@ -779,7 +779,7 @@ public sealed class FakeDashboardData
         RestorePlanDrafts.Add(new RestorePlanDraftDefinition
         {
             DraftId = "render-plan-01",
-            CreatedUtc = DateTime.UtcNow.AddMinutes(-2),
+            CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-2),
             PlayniteId = SelectedGame.PlayniteId,
             GameName = SelectedGame.Name,
             TargetBackupId = SelectedBackup.BackupId,
@@ -789,7 +789,7 @@ public sealed class FakeDashboardData
             MappingTotalBytes = 2_850_000,
             MappingUnknownSizeCount = 0,
             MappingPreviewId = "render-preview-01",
-            MappingPreviewedUtc = DateTime.UtcNow.AddMinutes(-3),
+            MappingPreviewedUtc = FakeSampleClock.UtcNow.AddMinutes(-3),
             MappingFingerprintVersion = 1,
             MappingFingerprint = new string('A', 64),
             MappingFingerprintKeyId = "7921d802aedb490ab9935cd8f2241968",
@@ -800,7 +800,7 @@ public sealed class FakeDashboardData
         var comparisonDraft = new RestorePlanDraftDefinition
         {
             DraftId = "render-plan-02",
-            CreatedUtc = DateTime.UtcNow,
+            CreatedUtc = FakeSampleClock.UtcNow,
             PlayniteId = SelectedGame.PlayniteId,
             GameName = SelectedGame.Name,
             TargetBackupId = SelectedBackup.BackupId,
@@ -810,7 +810,7 @@ public sealed class FakeDashboardData
             MappingTotalBytes = 2_850_000,
             MappingUnknownSizeCount = 1,
             MappingPreviewId = "render-preview-02",
-            MappingPreviewedUtc = DateTime.UtcNow,
+            MappingPreviewedUtc = FakeSampleClock.UtcNow,
             MappingFingerprintVersion = 1,
             MappingFingerprint = new string('B', 64),
             MappingFingerprintKeyId = "7921d802aedb490ab9935cd8f2241968",
@@ -967,7 +967,7 @@ public sealed class FakeDashboardData
                     {
                         PlayniteId = $"risk-game-{index}",
                         GameName = $"风险游戏 {index:00}",
-                        LastPlayedUtc = DateTime.UtcNow.AddDays(-index),
+                        LastPlayedUtc = FakeSampleClock.UtcNow.AddDays(-index),
                         IssueKind = index % 3 == 0
                             ? RecentProtectionIssueKind.UnrecognizedSave
                             : RecentProtectionIssueKind.NeverBackedUp,
@@ -1276,7 +1276,7 @@ public sealed class FakeDashboardData
         Enabled = true,
         Available = true,
         MirrorPath = @"H:\GameSaveCenter-Mirror",
-        LastSyncUtc = DateTime.UtcNow.AddHours(-2),
+        LastSyncUtc = FakeSampleClock.UtcNow.AddHours(-2),
         CopiedCount = 184,
         VerifiedCount = 184,
         TotalBytes = 128L * 1024 * 1024 * 1024,
@@ -1396,9 +1396,9 @@ public sealed class FakeDashboardData
         },
         TopGames =
         {
-            new StorageGameRankDto { GameName = "Cyberpunk 2077", BackupCount = 12, BackupBytes = 20L * 1024 * 1024 * 1024, LatestBackupUtc = DateTime.UtcNow.AddHours(-3) },
-            new StorageGameRankDto { GameName = "Baldur's Gate 3", BackupCount = 18, BackupBytes = 16L * 1024 * 1024 * 1024, LatestBackupUtc = DateTime.UtcNow.AddDays(-1) },
-            new StorageGameRankDto { GameName = "Elden Ring", BackupCount = 8, BackupBytes = 9L * 1024 * 1024 * 1024, LatestBackupUtc = DateTime.UtcNow.AddDays(-2) }
+            new StorageGameRankDto { GameName = "Cyberpunk 2077", BackupCount = 12, BackupBytes = 20L * 1024 * 1024 * 1024, LatestBackupUtc = FakeSampleClock.UtcNow.AddHours(-3) },
+            new StorageGameRankDto { GameName = "Baldur's Gate 3", BackupCount = 18, BackupBytes = 16L * 1024 * 1024 * 1024, LatestBackupUtc = FakeSampleClock.UtcNow.AddDays(-1) },
+            new StorageGameRankDto { GameName = "Elden Ring", BackupCount = 8, BackupBytes = 9L * 1024 * 1024 * 1024, LatestBackupUtc = FakeSampleClock.UtcNow.AddDays(-2) }
         }
     };
     public RetentionSimulationPreviewDto RetentionSimulation { get; } = new RetentionSimulationPreviewDto
@@ -1416,13 +1416,13 @@ public sealed class FakeDashboardData
             new RetentionSimulationItemDto
             {
                 PlayniteId = "g1", GameName = "Cyberpunk 2077", BackupId = "old-1",
-                CreatedUtc = DateTime.UtcNow.AddDays(-300), TotalBytes = 4L * 1024 * 1024 * 1024,
+                CreatedUtc = FakeSampleClock.UtcNow.AddDays(-300), TotalBytes = 4L * 1024 * 1024 * 1024,
                 ArchivePath = @"D:\GameSaveCenterData\Saves\Cyberpunk 2077\old-1.zip", Reason = "超出保留窗口或桶位"
             },
             new RetentionSimulationItemDto
             {
                 PlayniteId = "g2", GameName = "Baldur's Gate 3", BackupId = "old-2",
-                CreatedUtc = DateTime.UtcNow.AddDays(-260), TotalBytes = 3L * 1024 * 1024 * 1024,
+                CreatedUtc = FakeSampleClock.UtcNow.AddDays(-260), TotalBytes = 3L * 1024 * 1024 * 1024,
                 ArchivePath = @"D:\GameSaveCenterData\Saves\Baldur's Gate 3\old-2.zip", Reason = "超出保留窗口或桶位"
             }
         }

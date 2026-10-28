@@ -5066,6 +5066,7 @@ public static class Program
         report.AppendLine("WindowDip: per-case window_dip/content_dip fields");
         report.AppendLine($"Themes: {themes}");
         report.AppendLine($"DataVolumes: {dataVolumes}");
+        report.AppendLine($"SampleTimeUtc: {FakeSampleClock.SampleUtc.ToString("O", System.Globalization.CultureInfo.InvariantCulture)} (pinned={FakeSampleClock.IsPinned})");
         report.AppendLine("TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness");
     }
 
@@ -5432,7 +5433,7 @@ public static class Program
                 Source = i % 3 == 0 ? MediaSourceKind.XboxGameBar : MediaSourceKind.WindowsScreenshot,
                 ArchivePath = $@"D:\Media\Inbox\probe-{i}.{(i % 3 == 0 ? "mp4" : "png")}",
                 OriginalPath = $@"D:\Captures\probe-{i}.{(i % 3 == 0 ? "mp4" : "png")}",
-                CapturedUtc = DateTime.UtcNow.AddMinutes(-i * 5),
+                CapturedUtc = FakeSampleClock.UtcNow.AddMinutes(-i * 5),
                 SizeBytes = 4_000_000L + i * 100_000L,
                 ClassificationState = "Inbox",
                 ClassificationReason = "无法唯一判断所属游戏"
@@ -5942,9 +5943,9 @@ public static class Program
                 State = index % 4 == 0 ? TaskState.Failed : TaskState.Succeeded,
                 ProgressPercent = index % 4 == 0 ? 0 : 100,
                 Message = index % 4 == 0 ? "L21 scale fixture failure" : "L21 scale fixture completed",
-                CreatedUtc = DateTime.UtcNow.AddMinutes(-index),
-                StartedUtc = DateTime.UtcNow.AddMinutes(-index + 1),
-                FinishedUtc = DateTime.UtcNow.AddMinutes(-index + 2)
+                CreatedUtc = FakeSampleClock.UtcNow.AddMinutes(-index),
+                StartedUtc = FakeSampleClock.UtcNow.AddMinutes(-index + 1),
+                FinishedUtc = FakeSampleClock.UtcNow.AddMinutes(-index + 2)
             });
         }
 
@@ -5983,7 +5984,7 @@ public static class Program
             Source = index % 3 == 0 ? MediaSourceKind.XboxGameBar : MediaSourceKind.WindowsScreenshot,
             ArchivePath = $@"D:\Media\L21\archive-{index}.png",
             OriginalPath = $@"D:\Media\L21\source-{index}.png",
-            CapturedUtc = DateTime.UtcNow.AddMinutes(-index),
+            CapturedUtc = FakeSampleClock.UtcNow.AddMinutes(-index),
             SizeBytes = 4_000_000L + index,
             ClassificationState = "Inbox",
             ClassificationReason = "L21 scale fixture"
