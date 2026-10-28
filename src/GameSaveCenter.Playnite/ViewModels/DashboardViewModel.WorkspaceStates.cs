@@ -130,6 +130,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool IsSaveHistoryLoading => saveDetailsState == WorkspaceDataState.Loading && Backups.Count == 0;
         public bool IsTrainerToolsLoading => IsBusy && GameTools.Count == 0;
         public bool IsTrainerCatalogLoading { get => isTrainerCatalogLoading; private set => SetValue(ref isTrainerCatalogLoading, value); }
+        public bool IsLaunchingGameTool { get => isLaunchingGameTool; private set => SetValue(ref isLaunchingGameTool, value); }
         public bool IsTrainerReleasesLoading { get => isTrainerReleasesLoading; private set => SetValue(ref isTrainerReleasesLoading, value); }
 
         public string SaveDetailsState => saveDetailsState.ToString();

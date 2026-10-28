@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U08-05/06 工具启动反馈与维护短窗
+
+U08-05现将 `IsLaunchingGameTool` 精确围绕Worker请求设定并在 `finally` 清除，按钮接已有busy视觉，另显示带UIA Name/HelpText的启动文案；来源、缺文件状态、自动启动、CanTrackProcess禁用原因及既有命令未动。U08-06现有摘要/渐进详情/复制完整DiagnosticSummary体系增加1160×520 DIP窗口下滚到长摘要、回顶操作卡触发复制命令的WPF行为回归。SDK8.0.423 Release 5/5无skip，source validation、WPF42/0errors/26warnings/179info、Render QA双主题394 PNG/0 PROBLEM通过。证据与不代表真实Playnite/外部UIA/实体DPI的边界见Round5 `evidence/U08-05-06-current-main-d6d940e7/BASELINE.md`；本批新SHA双SDK CI待查询。
+
 ## 2026-10-29 Round5 U08-03/04 当前主线行为补充
 
 在`8ac477b9fad108d714e94a7da202b5be22ef6b30`源码上追加任务行高度状态切换测试，含长中英游戏名、长错误详情、阶段/进度与完整UIA HelpText；同时重跑任务页、缩略图占位与2000项媒体虚拟列表行为组合，SDK8.0.423 Release 15/15、无skip。媒体覆盖无图/录像/文件缺失/损坏占位和Ready恢复、滚动/追加/状态替换/删除所选项、缩放与窗口尺寸。未改生产XAML/资源，不把旧Render QA截图认作本SHA结果；源码校验及WPF静态检查结果和未验边界详见Round5 `evidence/U08-03-04-current-main-8ac477b9/BASELINE.md`。两项已推进代码完成待验收，实体宿主/UIA/物理DPI和提交CI仍待验。

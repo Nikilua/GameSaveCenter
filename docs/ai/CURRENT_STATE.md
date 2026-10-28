@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U08-05/06 当前工作树
+
+工具页为启动请求新增局部 busy+状态文本，在 `finally` 还原；原命令、风险与进程跟踪门控保持。维护诊断页新增1160×520 DIP真实WPF窗口的摘要底部滚动、完整长摘要内部滚动和复制命令可达回归。SDK8.0.423 Release 5/5、0 skip；source validation通过；WPF静态42 XAML/0错误/26 warning/179 info；Render QA 394 PNG/0 PROBLEM。真实Playnite、工具实际启动、Narrator/外部UIA/物理DPI及本批新SHA CI待验。证据 `docs/design/reviews/ui-polish-round5-20261027/evidence/U08-05-06-current-main-d6d940e7/BASELINE.md`。
+
 ## 2026-10-29 Round5 U08-03/04 当前主线复核
 
 生产源码基线`8ac477b9fad108d714e94a7da202b5be22ef6b30`：任务页状态替换/阶段进度/长文本UIA及稳定行高新增真实WPF视图回归；媒体页占位各状态恢复、虚拟列表滚动锚点和选中焦点边界覆盖。SDK8.0.423 Release组合15/15、0 skip，source validation退出0，WPF静态42 XAML/0错误/26既有warning/179 info。仅改测试与review证据，无生产XAML/资源变化。两项标为代码完成待验收；Playnite、实体UIA/输入、物理DPI与本批新SHA CI待验。证据见`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-03-04-current-main-8ac477b9/BASELINE.md`。完整TRX SHA-256 `316B0C4A11F464BFB0F21B98DF3D3E3A04393BC251F1648E788832606024D1D8`。

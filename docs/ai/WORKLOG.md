@@ -1,3 +1,10 @@
+## 2026-10-29 Round5 U08-05/06 工具启动状态与维护短窗
+
+- 为工具启动请求新增专属 `IsLaunchingGameTool` 状态，在异步请求期间显示 busy 和“正在启动所选工具…”，finally覆盖成功/失败/取消清理；已有来源、可用状态、自动启动说明及 `CanTrackProcess` 安全限制保持。
+- 维护页真实WPF窗口 1160×520 DIP回归确认操作卡复制按钮与长诊断摘要可通过页面纵向滚动到达，摘要框保留纵/横滚动，原绑定命令可调用。
+- SDK8.0.423 Release定向5/5、0失败、0 skip；source validation退出0；WPF静态42 XAML/0错误/26 warning/179 info；固定UTC双主题Render QA394 PNG/0 PROBLEM。测试 `NU1900` 是漏洞源连接warning，不影响通过。
+- 真实Playnite、真实工具进程、外部UIA/Narrator、实体键鼠/物理DPI未验。上一个已推送基线 `d6d940e7` run40731004737 SDK10 job122966980155通过/artifact12835609657，baseline job122966980646在打包；不代表本批工作树代码。详见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U08-05-06-current-main-d6d940e7/BASELINE.md`。
+
 ## 2026-10-29 Round5 U08-03/04 当前主线行为复核
 
 - 在生产源码身份`8ac477b9fad108d714e94a7da202b5be22ef6b30`上新增真实WPF TaskCenter行高切换用例，并复跑任务行、缩略图占位恢复、2000项媒体虚拟列表边界组合；SDK8.0.423 Release 15/15，0失败、0 skip。

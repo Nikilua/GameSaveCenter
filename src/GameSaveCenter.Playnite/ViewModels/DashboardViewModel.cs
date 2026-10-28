@@ -216,6 +216,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string trainerSearchText = string.Empty;
         private bool showTrainerLibrary;
         private bool isTrainerCatalogLoading;
+        private bool isLaunchingGameTool;
         private bool isTrainerReleasesLoading;
         private bool isTrainerDownloadActive;
         private bool isCancellingTrainerDownload;
@@ -4716,10 +4717,20 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task LaunchSelectedGameToolAsync()
         {
-            var result=await plugin.RequestAsync<GameToolLaunchResultDto>(MessageTypes.LaunchGameTool,new GameToolCommandRequestDto{ToolId=SelectedGameTool.ToolId});
-            ConfirmSuccess(result.Skipped
-                ? "已有同一路径实例，已跳过启动"
-                : "已启动 "+SelectedGameTool.DisplayName);
+            var selectedTool = SelectedGameTool;
+            ApplyOnUi(() => IsLaunchingGameTool = true);
+            try
+            {
+                var result = await plugin.RequestAsync<GameToolLaunchResultDto>(MessageTypes.LaunchGameTool,
+                    new GameToolCommandRequestDto { ToolId = selectedTool.ToolId });
+                ConfirmSuccess(result.Skipped
+                    ? "已有同一路径实例，已跳过启动"
+                    : "已启动 " + selectedTool.DisplayName);
+            }
+            finally
+            {
+                ApplyOnUi(() => IsLaunchingGameTool = false);
+            }
         }
 
         private async Task OpenSelectedGameToolDirectoryAsync()
