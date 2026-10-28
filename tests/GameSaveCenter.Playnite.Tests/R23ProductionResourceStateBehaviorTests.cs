@@ -1079,6 +1079,21 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         Assert.Equal(BrushColor(page.Resources["GscAccentBrush"]), BrushColor(chrome.BorderBrush));
                         Assert.Equal(new Thickness(2), chrome.BorderThickness);
 
+                        ChangeMouseOverForTest(row);
+                        FlushLayout(window);
+                        Assert.True(row.IsMouseOver && row.IsSelected && row.IsKeyboardFocusWithin);
+                        var selectedBackground = Assert.IsType<Border>(row.Template.FindName("RowBackground", row));
+                        Assert.Equal(BrushColor(page.Resources["GscAccentTintBrush"]), BrushColor(selectedBackground.Background));
+                        Assert.Equal(new Thickness(2), chrome.BorderThickness);
+                        AssertRowGeometryUnchanged(unselectedGeometry, CaptureCellAndTextGeometry(row, grid), fixture.Name, theme, "hovered keyboard selection");
+                        Assert.Same(external, Keyboard.Focus(external));
+                        FlushLayout(window);
+                        Assert.True(row.IsSelected && row.IsMouseOver);
+                        Assert.Equal(BrushColor(page.Resources["GscSelectionInactiveBrush"]), BrushColor(selectedBackground.Background));
+                        ChangeMouseOverForTest(external);
+                        FlushLayout(window);
+                        Assert.False(row.IsMouseOver);
+
                         grid.IsEnabled = false;
                         FlushLayout(window);
                         Assert.False(row.IsEnabled, $"{fixture.Name} row remained enabled with its DataGrid disabled");
@@ -1088,6 +1103,44 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         Assert.Same(external, Keyboard.Focus(external));
                         FlushLayout(window);
                         Assert.NotSame(cell, Keyboard.Focus(cell));
+                        grid.IsEnabled = true;
+                        ChangeMouseOverForTest(external);
+                        grid.UnselectAll();
+                        for (var index = 0; index < 300; index++)
+                            rows.Add(fixture.Name == "Media Inbox" ? (object)CreateMedia("scroll-" + index) : new ProbeRow("scroll-" + index));
+                        // The real shell supplies the finite workspace viewport. This
+                        // standalone page fixture must perform the same host call before
+                        // evaluating recycling; otherwise Save measures all 302 rows.
+                        switch (page)
+                        {
+                            case TaskCenterView task: task.ApplyResponsiveLayout(1280, 900); break;
+                            case MediaCenterView media: media.ApplyResponsiveLayout(1280, 900); break;
+                            case SaveCenterView save: save.ApplyResponsiveLayout(1280, 900); break;
+                            case MaintenanceView maintenance: maintenance.ApplyResponsiveLayout(1280, 900); break;
+                        }
+                        FlushLayout(window);
+                        FlushLayout(window);
+                        var oldContainers = FindVisualChildren<DataGridRow>(grid).ToDictionary(container => container, container => container.Item);
+                        grid.SelectedItem = rows[220];
+                        grid.CurrentCell = new DataGridCellInfo(rows[220], grid.Columns[0]);
+                        grid.ScrollIntoView(rows[220]);
+                        FlushLayout(window);
+                        FlushLayout(window);
+                        var distantRows = FindVisualChildren<DataGridRow>(grid)
+                            .Where(container => rows.IndexOf(container.Item) >= 200).ToArray();
+                        Assert.NotEmpty(distantRows);
+                        if (VirtualizingPanel.GetVirtualizationMode(grid) == VirtualizationMode.Recycling)
+                            Assert.True(distantRows.Any(container => oldContainers.TryGetValue(container, out var previousItem)
+                                && !ReferenceEquals(previousItem, container.Item)),
+                                $"{fixture.Name}/{theme}: no reused row observed; before={oldContainers.Count}, distant={distantRows.Length}, realized={FindVisualChildren<DataGridRow>(grid).Count()}, viewport={grid.ActualWidth}x{grid.ActualHeight}.");
+                        foreach (var reused in distantRows)
+                        {
+                            var background = Assert.IsType<Border>(reused.Template.FindName("RowBackground", reused));
+                            Assert.False(reused.IsMouseOver || reused.IsKeyboardFocusWithin);
+                            Assert.Equal(ReferenceEquals(rows[220], reused.Item), reused.IsSelected);
+                            var expected = reused.IsSelected ? page.Resources["GscSelectionInactiveBrush"] : reused.Background;
+                            Assert.Equal(BrushColor(expected), BrushColor(background.Background));
+                        }
                     }
                     finally
                     {

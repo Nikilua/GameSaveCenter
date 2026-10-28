@@ -147,11 +147,29 @@ public sealed class R06ColumnHeaderHelpTests
 
                 var onClick = typeof(ButtonBase).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)
                     ?? throw new Xunit.Sdk.XunitException("WPF ButtonBase.OnClick was not found.");
+                var sortText = Assert.Single(FindVisualChildren<TextBlock>(header));
+                var textOrigin = sortText.TransformToAncestor(header).Transform(new Point());
+                var textWidth = sortText.ActualWidth;
+                var headerHeight = header.ActualHeight;
+                var glyph = Assert.IsType<System.Windows.Shapes.Path>(header.Template.FindName("SortGlyph", header));
+                Assert.Equal(Visibility.Collapsed, glyph.Visibility);
                 onClick.Invoke(header, null);
+                host.UpdateLayout();
+                Assert.Equal(Visibility.Visible, glyph.Visibility);
+                Assert.Equal(textOrigin, sortText.TransformToAncestor(header).Transform(new Point()));
+                Assert.Equal(textWidth, sortText.ActualWidth, 2);
+                Assert.Equal(headerHeight, header.ActualHeight, 2);
                 Assert.Equal(System.ComponentModel.ListSortDirection.Ascending, column.SortDirection);
                 Assert.Equal(new[] { "a", "b" }, GetVisibleValues(view));
 
                 onClick.Invoke(header, null);
+                host.UpdateLayout();
+                Assert.Equal(Visibility.Visible, glyph.Visibility);
+                Assert.Equal(textOrigin, sortText.TransformToAncestor(header).Transform(new Point()));
+                Assert.Equal(textWidth, sortText.ActualWidth, 2);
+                var glyphBounds = glyph.TransformToAncestor(header).TransformBounds(new Rect(glyph.RenderSize));
+                Assert.True(glyphBounds.Left >= 0 && glyphBounds.Right <= header.ActualWidth,
+                    $"Sort glyph must remain inside its reserved header slot: {glyphBounds} / {header.ActualWidth}");
                 Assert.Equal(System.ComponentModel.ListSortDirection.Descending, column.SortDirection);
                 Assert.Equal(new[] { "b", "a" }, GetVisibleValues(view));
             }

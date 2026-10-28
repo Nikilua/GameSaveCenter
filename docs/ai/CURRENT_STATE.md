@@ -170,3 +170,7 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## 2026-10-28 Round5 U05-07/08当前接续
 
 生产Shell换页/卸载清理说明Popup、命令层和PageHost动画；TaskCenterView卸载取消详情退出代次/时钟。31次切页×主题×弹层×详情中断及Shell卸载组合通过，缓存/筛选/选中/滚动3项和隐藏/最小化进度1项通过，合计SDK8.0.423 Release7/7、0 skip。source/XAML26/WPF静态0 error、scripts/render-qa.ps1退出0/双主题394图0 PROBLEM。证据见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-07-08/BASELINE.md。两项代码完成待验收，真实宿主及新提交CI待验；接续U06-01/02共享表格小批。最终中文根入口完整安装启动链与独立scripts/build.cmd仍是硬门禁。当前审计和有价值失败诊断保留，删除清单为空，未碰用户/其他阶段输出。
+
+## 2026-10-28 Round5 U06-01/02当前接续
+
+本批去重复用共享表格节奏与S01密度，无生产资源变更。补表头未排序/升/降序文字几何与箭头槽位、四页双主题三态叠加及失焦选择，并在302对象滚动后核对行容器实例承载不同Item、无旧状态串色；媒体Standard例外保留。初轮组合16/16，强化滚动专项1/1、0 skip；独立页夹具补真实Shell的有限视口调用，原失败保留。source/XAML26/WPF静态0 error；Render QA继承同生产源码U05-07/08，未制造截图副本。证据docs/design/reviews/ui-polish-round5-20261027/evidence/U06-01-02/BASELINE.md。两项代码完成待验收；提交后双SDK CI待查，真实Playnite/物理输入/UIA/DPI与最终中文完整链、独立scripts/build.cmd未验。接续U06-03/04行内动作与工具栏。
