@@ -1,0 +1,15 @@
+{
+  "deleted": [
+    ".tmp/round5-u06-07-08/u06-candidate-loaded-fixed.trx"
+  ],
+  "reason": "中间3项成功TRX已脱敏归档并由最终4项结果覆盖，原始临时副本无引用或占用",
+  "bytes": 11777,
+  "before": {
+    "Name": "D",
+    "Free": 16363245568
+  },
+  "after": {
+    "Name": "D",
+    "Free": 16363257856
+  }
+}

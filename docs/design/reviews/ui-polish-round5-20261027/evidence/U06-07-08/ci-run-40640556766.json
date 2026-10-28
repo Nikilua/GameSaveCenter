@@ -1,0 +1,14 @@
+{
+  "run": 40640556766,
+  "sha": "969bfc203dc66ec21fe1718b9eae5a7cdfd1fb7c",
+  "workflow": ".github/workflows/windows-build.yml",
+  "jobs": [
+    {"id":122657446208,"sdk":"8.0.423","conclusion":"success","testsTotal":1986,"passed":1928,"skipped":58,"failed":0},
+    {"id":122657446527,"sdk":"10.0.401","conclusion":"success","testsTotal":1986,"passed":1928,"skipped":58,"failed":0}
+  ],
+  "artifacts": [
+    {"id":12797566488,"name":"GameSaveCenter-build-diagnostics","sha256":"32c1bbb6a22ae52e8a1b35fcf62f931f9aed624da20bbd6ff5bee1a0005640bf"},
+    {"id":12797273479,"name":"GameSaveCenter-windows-preview","sha256":"cd93d56c6a715c595582efdcbc335d04666c7cdcb020da78ec46c3e10a723f5a"},
+    {"id":12796321637,"name":"GameSaveCenter-sdk10-build-diagnostics","sha256":"88baa2a7f1f8ad19c0fe65f366babf1b78cb350cf1033dbd2c741a65c232f604"}
+  ]
+}

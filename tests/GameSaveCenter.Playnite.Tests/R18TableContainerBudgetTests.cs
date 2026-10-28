@@ -93,6 +93,12 @@ public sealed class R18TableContainerBudgetTests
         var mediaCodeBehind = Read("src", "GameSaveCenter.Playnite", "Views", "MediaCenterView.xaml.cs");
         var task = Read("src", "GameSaveCenter.Playnite", "Views", "TaskCenterView.xaml");
         var accumulator = Read("src", "GameSaveCenter.Playnite", "Infrastructure", "MediaPageAccumulator.cs");
+        var rowResources = XDocument.Parse(Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml"));
+        XNamespace rowNames = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var rowTemplate = Assert.Single(rowResources.Descendants(),
+            element => (string?)element.Attribute(rowNames + "Key") == "GscRoundedDataGridRowTemplate");
+        Assert.DoesNotContain(rowTemplate.Descendants(), element =>
+            element.Name.LocalName == "Storyboard" || element.Name.LocalName.EndsWith("Animation", StringComparison.Ordinal));
 
         Assert.Contains("EnableRowVirtualization\" Value=\"True\"", media);
         Assert.Contains("VirtualizingPanel.ScrollUnit\" Value=\"Item\"", media);
@@ -211,6 +217,12 @@ public sealed class R18TableContainerBudgetTests
                 FlushLayout(window);
                 timer.Stop();
                 var rows = FindRealizedRows(grid);
+                foreach (var row in rows)
+                {
+                    Assert.False(row.HasAnimatedProperties, $"{kind}: a realized row retained an active animation clock.");
+                    if (row.RenderTransform != null)
+                        Assert.False(row.RenderTransform.HasAnimatedProperties, $"{kind}: a row transform retained an active animation clock.");
+                }
                 realizedSamples.Add(rows.Length);
                 visibleSamples.Add(CountVisibleRows(grid, scroller));
                 scrollMs.Add(timer.Elapsed.TotalMilliseconds);

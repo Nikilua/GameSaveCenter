@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -136,16 +136,35 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             candidateGrid.ItemsSource = saveRows;
             candidateGrid.SelectedItem = saveRows[0];
             saveType.GetField("candidateInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(saveView, true);
-            tabs.SelectedIndex = 1;
-            saveView.ApplyResponsiveLayout(900, 600);
-            saveHost.UpdateLayout();
-            Assert.True(candidateGrid.Height >= candidateGrid.MinHeight && candidateGrid.Height <= 560d);
-            var candidatePage = GetField<ScrollViewer>(saveType, saveView, "SaveCandidatePageScrollViewer");
-            AssertPageContentMeasuredWithinHost(candidatePage, saveHost);
-            AssertTableScrollsInsideFrame(candidateGrid, GetField<Border>(saveType, saveView, "SaveCandidateTableFrame"));
-            AssertContentBoundsFit(candidatePage, GetField<Border>(saveType, saveView, "SaveCandidateTableFrame"));
-            AssertInnerScrollCanReachEnd(candidateGrid);
-            AssertPageCanReachEnd(candidatePage);
+            var candidateWindow = new Window { Content = saveHost, Width = 900, Height = 600, ShowInTaskbar = false, WindowStyle = WindowStyle.None, Opacity = 0.01 };
+            System.Windows.Automation.AutomationProperties.SetName(candidateWindow, "Candidate viewport resize fixture");
+            try
+            {
+                candidateWindow.Show();
+                tabs.SelectedIndex = 1;
+                saveView.ApplyResponsiveLayout(900, 600);
+                saveHost.UpdateLayout();
+                Assert.True(GetField<ScrollViewer>(saveType, saveView, "SaveCandidatePageScrollViewer").IsVisible,
+                    "The selected candidate viewport must be visible before testing its settled height.");
+                Assert.True(candidateGrid.Height >= candidateGrid.MinHeight && candidateGrid.Height <= 560d);
+                var candidateHeightAtShortHost = candidateGrid.ActualHeight;
+                ResizeHost(saveHost, fourKWidth, fourKHeight, () => saveView.ApplyResponsiveLayout(fourKWidth, fourKHeight));
+                saveView.ApplyResponsiveLayout(fourKWidth, fourKHeight);
+                saveHost.UpdateLayout();
+                Assert.True(candidateGrid.ActualHeight > 560 && candidateGrid.ActualHeight > candidateHeightAtShortHost + 300,
+                    $"The candidate table must fill the taller finite viewport: short={candidateHeightAtShortHost:0.0}, tall={candidateGrid.ActualHeight:0.0}, height={candidateGrid.Height:0.0}, candidateViewport={GetField<ScrollViewer>(saveType, saveView, "SaveCandidatePageScrollViewer").ViewportHeight:0.0}, historyViewport={GetField<ScrollViewer>(saveType, saveView, "SaveHistoryPageScrollViewer").ViewportHeight:0.0}, candidateVisible={GetField<ScrollViewer>(saveType, saveView, "SaveCandidatePageScrollViewer").IsVisible}.");
+                ResizeHost(saveHost, 900, 600, () => saveView.ApplyResponsiveLayout(900, 600));
+                saveView.ApplyResponsiveLayout(900, 600);
+                saveHost.UpdateLayout();
+                Assert.True(candidateGrid.ActualHeight < candidateHeightAtShortHost + 1 && candidateGrid.ActualHeight >= candidateGrid.MinHeight - 1);
+                var candidatePage = GetField<ScrollViewer>(saveType, saveView, "SaveCandidatePageScrollViewer");
+                AssertPageContentMeasuredWithinHost(candidatePage, saveHost);
+                AssertTableScrollsInsideFrame(candidateGrid, GetField<Border>(saveType, saveView, "SaveCandidateTableFrame"));
+                AssertContentBoundsFit(candidatePage, GetField<Border>(saveType, saveView, "SaveCandidateTableFrame"));
+                AssertInnerScrollCanReachEnd(candidateGrid);
+                AssertPageCanReachEnd(candidatePage);
+            }
+            finally { candidateWindow.Close(); }
 
             var taskView = new TaskCenterView();
             var taskType = typeof(TaskCenterView);

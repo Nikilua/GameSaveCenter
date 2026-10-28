@@ -383,7 +383,7 @@ namespace GameSaveCenter.Playnite.Views
                 tableMinHeight,
                 candidateTopChromeHeight + candidateFrameChromeHeight,
                 candidateInspectorBudget);
-            var candidateTableViewportHeight = Math.Max(tableMinHeight, Math.Min(560d, candidateTableBudget));
+            var candidateTableViewportHeight = Math.Max(tableMinHeight, candidateTableBudget);
             SaveCandidateGrid.Height = candidateTableViewportHeight;
             SaveCandidateGrid.MaxHeight = candidateTableViewportHeight;
             SaveCandidateInspectorFrame.MaxHeight = showCandidateInspector
