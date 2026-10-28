@@ -27,6 +27,7 @@
                 <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
                 <Setter Property="TextWrapping" Value="NoWrap"/>
                 <Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                <Setter Property="AutomationProperties.HelpText" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
             </Style>
             <Style x:Key="TaskTimeCell" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}">
                 <Setter Property="ToolTip" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/>

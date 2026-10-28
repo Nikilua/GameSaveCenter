@@ -53,6 +53,7 @@ namespace GameSaveCenter.Playnite.Controls
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(12)
             };
+            placeholderText.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding(nameof(PlaceholderText)) { Source = this });
             placeholderText.SetResourceReference(TextBlock.ForegroundProperty, "GscSecondaryTextBrush");
             placeholder = new Border
             {

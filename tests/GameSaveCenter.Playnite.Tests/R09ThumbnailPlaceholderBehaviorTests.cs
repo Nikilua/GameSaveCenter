@@ -52,6 +52,7 @@ public sealed class R09ThumbnailPlaceholderBehaviorTests : IDisposable
 
                 Assert.Equal("NoImage", preview.PreviewState);
                 Assert.Equal("暂无截图", preview.PlaceholderText);
+                Assert.Equal("暂无截图", Assert.IsType<TextBlock>(Assert.IsType<Border>(preview.Children[1]).Child).Text);
                 Assert.True(preview.IsPlaceholderVisible);
                 Assert.Equal(96, preview.ActualWidth, 3);
                 Assert.Equal(96, preview.ActualHeight, 3);
@@ -60,6 +61,7 @@ public sealed class R09ThumbnailPlaceholderBehaviorTests : IDisposable
                 preview.Kind = MediaKind.VideoClip;
                 Assert.Equal("Video", preview.PreviewState);
                 Assert.Equal("录像预览", preview.PlaceholderText);
+                Assert.Equal("录像预览", Assert.IsType<TextBlock>(Assert.IsType<Border>(preview.Children[1]).Child).Text);
                 Assert.True(preview.IsPlaceholderVisible);
 
                 var missing = Path.Combine(root, "missing.png");
@@ -67,6 +69,7 @@ public sealed class R09ThumbnailPlaceholderBehaviorTests : IDisposable
                 preview.SourcePath = missing;
                 PumpUntil(window.Dispatcher, () => preview.PreviewState == "Missing", TimeSpan.FromSeconds(3));
                 Assert.Equal("媒体文件不存在", preview.PlaceholderText);
+                Assert.Equal("媒体文件不存在", Assert.IsType<TextBlock>(Assert.IsType<Border>(preview.Children[1]).Child).Text);
                 Assert.True(preview.IsPlaceholderVisible);
 
                 var corrupt = Path.Combine(root, "corrupt.png");
@@ -74,6 +77,7 @@ public sealed class R09ThumbnailPlaceholderBehaviorTests : IDisposable
                 preview.SourcePath = corrupt;
                 PumpUntil(window.Dispatcher, () => preview.PreviewState == "Failed", TimeSpan.FromSeconds(3));
                 Assert.Equal("缩略图损坏或无法读取", preview.PlaceholderText);
+                Assert.Equal("缩略图损坏或无法读取", Assert.IsType<TextBlock>(Assert.IsType<Border>(preview.Children[1]).Child).Text);
                 Assert.True(preview.IsPlaceholderVisible);
 
                 var valid = Path.Combine(root, "valid.png");
