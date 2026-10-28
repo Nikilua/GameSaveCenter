@@ -538,6 +538,7 @@ namespace GameSaveCenter.Playnite.Views
             var scopeSelection = TaskHistoryScopeComboBox.SelectedItem;
             var rangeSelection = TaskHistoryRangeComboBox.SelectedItem;
             var gameSelection = TaskGameFilterComboBox.SelectedItem;
+            var presetSelection = TaskFilterPresetComboBox.SelectedItem;
 
             if (compact == alreadyCompact)
             {
@@ -587,6 +588,7 @@ namespace GameSaveCenter.Playnite.Views
                 RestoreFilterSelection(TaskHistoryScopeComboBox, scopeSelection);
                 RestoreFilterSelection(TaskHistoryRangeComboBox, rangeSelection);
                 RestoreFilterSelection(TaskGameFilterComboBox, gameSelection);
+                RestoreFilterSelection(TaskFilterPresetComboBox, presetSelection);
                 return;
             }
 
@@ -620,6 +622,7 @@ namespace GameSaveCenter.Playnite.Views
             RestoreFilterSelection(TaskHistoryScopeComboBox, scopeSelection);
             RestoreFilterSelection(TaskHistoryRangeComboBox, rangeSelection);
             RestoreFilterSelection(TaskGameFilterComboBox, gameSelection);
+            RestoreFilterSelection(TaskFilterPresetComboBox, presetSelection);
         }
 
         private void SetCompactFilterGroupSpacing(double bottom)
