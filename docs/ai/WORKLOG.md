@@ -1,3 +1,9 @@
+## 2026-10-29 Round5 U07-03/06 补充行为回归
+
+- 新增真实WPF Tooltip贴工作区下边缘时翻到TextBox上方的几何用例；新增生产Toast host五条通知限额/最新优先/淘汰最旧及中间卡片退出期间稳定顺序和计时器回收用例。生产XAML、共享样式、Binding和业务代码未改。
+- SDK8.0.423 Release隔离定向测试总计7项：6通过、0失败、1项既有系统指针移动 opt-in 跳过。TRX SHA-256 `4135DBB964AD17548789445A0533E02E7EAFD404EC2FB2F70D35FE790D2E1DFF`。Source validation退出0；WPF静态42 XAML/0错误/26既有warning/179 info；`git diff --check`退出0。没有因无生产视觉资源变化重复生成Render QA截图。
+- 两项从“进行中”推进为“代码完成待验收”；实体IME、混合DPI跨屏、真实Playnite仍待验。提交与精确SHA双SDK CI待完成；完整最终入口链及`build.cmd`由U09门禁完成。证据 `docs/design/reviews/ui-polish-round5-20261027/evidence/U07-03-06/`。
+
 ## 2026-10-28 Round5 U09-01/02/03 证据回归核对
 
 - 对照U00-01截图与Round5现存前后图；确认U06-07/08有已归档同任务前后图，其他页面尚无足够逐批同数据双主题配对。当前Light/Dark存档页参考图已归档；运行时相对时间由`DateTime.UtcNow`生成，U00与当前图不宣称同数据。

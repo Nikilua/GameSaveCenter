@@ -336,6 +336,75 @@ public sealed class R05TooltipTimingBehaviorTests
         });
     }
 
+    [Fact]
+    public void ProductionEditorTooltipFlipsAboveOwnerNearWorkAreaBottom()
+    {
+        RunSta(() =>
+        {
+            var shell = new AcrylicProductionShellView();
+            var owner = new TextBox
+            {
+                Width = 180,
+                Height = 32,
+                Text = "编辑器帮助",
+                IsReadOnly = true,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Style = (Style)shell.FindResource("GscWpfUiPathDetailTextBox")
+            };
+            var root = new Grid();
+            root.Children.Add(owner);
+            GscToolTipBehavior.SetEnableEscapeClose(root, true);
+
+            var tooltip = new ToolTip
+            {
+                Content = "边缘提示内容用于验证可用空间不足时回退到控件上方，并保留完整可读的说明文字。",
+                Style = (Style)shell.FindResource(typeof(ToolTip)),
+                PlacementTarget = owner
+            };
+            owner.ToolTip = tooltip;
+
+            var workArea = SystemParameters.WorkArea;
+            var window = new Window
+            {
+                Content = shell,
+                Width = 340,
+                Height = 150,
+                Left = workArea.Left + 20,
+                Top = workArea.Bottom - 150,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01,
+                Topmost = true
+            };
+            shell.Content = root;
+
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                root.UpdateLayout();
+
+                Assert.Equal(PlacementMode.Bottom, ToolTipService.GetPlacement(owner));
+                tooltip.Placement = ToolTipService.GetPlacement(owner);
+                tooltip.IsOpen = true;
+                DrainDispatcher();
+                window.UpdateLayout();
+
+                Assert.True(tooltip.IsOpen);
+                Assert.True(tooltip.ActualHeight > 32, "The synthetic tooltip must be taller than the small area left below its editor.");
+                var ownerBottom = owner.PointToScreen(new Point(owner.ActualWidth / 2, owner.ActualHeight));
+                var tooltipTop = tooltip.PointToScreen(new Point(tooltip.ActualWidth / 2, 0));
+                Assert.True(tooltipTop.Y < ownerBottom.Y,
+                    $"A bottom-anchored editor tooltip should flip above its owner near the work-area edge; tooltip top={tooltipTop.Y}, owner bottom={ownerBottom.Y}.");
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
     private static T[] FindVisualChildren<T>(DependencyObject root) where T : DependencyObject
     {
         var results = new System.Collections.Generic.List<T>();

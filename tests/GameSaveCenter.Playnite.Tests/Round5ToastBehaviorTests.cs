@@ -20,6 +20,78 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class Round5ToastBehaviorTests
 {
     [Fact]
+    public void ToastStackKeepsNewestFirstAndRetainsOrderWhileOneToastExits()
+    {
+        Exception? failure = null;
+        var thread = new Thread(() =>
+        {
+            var window = default(Window);
+            DashboardView? dashboard = null;
+            try
+            {
+                var plugin = (GameSaveCenterPlugin)FormatterServices.GetUninitializedObject(typeof(GameSaveCenterPlugin));
+                dashboard = new DashboardView(plugin, () => true, useMinimalDialogBehaviorFixture: true);
+                var root = (Grid)dashboard.Content;
+                var toastHost = new StackPanel
+                {
+                    Width = 360,
+                    MaxWidth = 360,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Margin = new Thickness(0, 78, 22, 0)
+                };
+                root.Children.Insert(0, toastHost);
+                typeof(DashboardView).GetField("ToastHost", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(dashboard, toastHost);
+                var production = new NotificationInboxView();
+                foreach (var key in new[] { "GscRedesignFeedbackToastCard", "GscRedesignFeedbackToastTitle", "GscRedesignFeedbackToastMessage", "GscButtonBase" })
+                    dashboard.Resources[key] = production.FindResource(key);
+                window = new Window { Content = dashboard, Width = 800, Height = 600, ShowInTaskbar = false, WindowStyle = WindowStyle.None, Opacity = 0.01 };
+                window.Show();
+
+                var showToast = typeof(DashboardView).GetMethod("ShowToast", BindingFlags.Instance | BindingFlags.NonPublic)!;
+                for (var index = 1; index <= 5; index++)
+                    showToast.Invoke(dashboard, new object[] { $"通知 {index}", $"内容 {index}", UiNotificationKind.Information, $"详情 {index}", false });
+
+                PumpDispatcherFor(TimeSpan.FromMilliseconds(400));
+                window.UpdateLayout();
+                var cards = toastHost.Children.OfType<Border>().ToArray();
+                Assert.Equal(4, cards.Length);
+                Assert.Equal(new[] { "通知 5", "通知 4", "通知 3", "通知 2" }, cards.Select(GetToastTitle));
+                var timers = (Dictionary<Border, DispatcherTimer>)typeof(DashboardView).GetField("toastTimers", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(dashboard)!;
+                Assert.Equal(4, timers.Count);
+                Assert.DoesNotContain(cards, card => !timers.ContainsKey(card));
+
+                var exiting = cards[1];
+                var close = Assert.Single(((Grid)exiting.Child).Children.OfType<Button>());
+                close.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, close));
+
+                Assert.Equal(cards, toastHost.Children.OfType<Border>());
+                Assert.False(timers.ContainsKey(exiting));
+                PumpDispatcherFor(TimeSpan.FromMilliseconds(450));
+
+                var remaining = toastHost.Children.OfType<Border>().ToArray();
+                Assert.Equal(new[] { "通知 5", "通知 3", "通知 2" }, remaining.Select(GetToastTitle));
+                Assert.Equal(3, timers.Count);
+            }
+            catch (Exception ex)
+            {
+                failure = ex;
+            }
+            finally
+            {
+                if (dashboard != null)
+                    typeof(DashboardView).GetMethod("ClearToasts", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(dashboard, null);
+                window?.Close();
+                Dispatcher.CurrentDispatcher.InvokeShutdown();
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        Assert.True(thread.Join(TimeSpan.FromSeconds(20)));
+        if (failure != null) throw new Xunit.Sdk.XunitException(failure.ToString());
+    }
+
+    [Fact]
     public void LongMessageHasFullDetailAndKeyboardFocusPausesItsTimer()
     {
         Exception? failure = null;
@@ -72,5 +144,25 @@ public sealed class Round5ToastBehaviorTests
         thread.Start();
         Assert.True(thread.Join(TimeSpan.FromSeconds(20)));
         if (failure != null) throw new Xunit.Sdk.XunitException(failure.ToString());
+    }
+
+    private static string GetToastTitle(Border card)
+        => Assert.IsType<TextBlock>(Assert.IsType<StackPanel>(Assert.IsType<Grid>(card.Child)
+            .Children.OfType<StackPanel>().Single()).Children.OfType<TextBlock>().First()).Text;
+
+    private static void PumpDispatcherFor(TimeSpan duration)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Background)
+        {
+            Interval = duration
+        };
+        timer.Tick += (_, __) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
     }
 }

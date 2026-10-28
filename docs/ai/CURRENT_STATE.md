@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U07-03/06 补充行为覆盖
+
+在已推送生产基线 `842557f6` 上新增 Tooltip 屏幕工作区底边实际翻转与 Toast 五条上限/最新优先/退出中不重排行为测试；本批仅改测试，不改生产视觉资源。SDK8.0.423 隔离 WPF 定向组6通过、0失败、1项既有系统指针 opt-in 跳过；源码校验通过，WPF静态审查42 XAML/0错误/26既有warning/179 info。TRX与SHA见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U07-03-06/BASELINE.md`。当前测试与文档工作树未提交，双SDK CI待精确提交后查询；实体IME、混合DPI跨屏和Playnite宿主未验。
+
 ## 2026-10-28 Round5 U09-01/02/03 当前回归审查
 
 当前生产源码基线 `d4c4357c4e0c256b4fe0248d7efc25ce5badfd18`。U09 Render QA 报告为双主题×11个窗口尺寸、394 PNG、0 PROBLEM、逻辑DPI 1.00；当前存档页Light/Dark 1040×700图已保留。U00基线与当前图使用运行时UTC假时间且页文案/工具栏已变化，不能当作同数据前后图；逐批前后截图缺口仍在。

@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U07-03/06 补充覆盖
+
+在推送基线 `842557f6` 后，本地补充了生产 Tooltip 主屏工作区底边空间不足时翻到控件上方的实际 Popup 几何断言，以及 Toast 5条限额、新消息置顶、关闭中间卡片时顺序保持和退场计时器回收行为。该批没有生产XAML或资源差异。SDK8.0.423 Release定向结果6通过/0失败/1既有指针移动测试跳过；source validation exit0，WPF静态42文件/0 error/26 warning/179 info。证据见Round5 `evidence/U07-03-06/BASELINE.md`。真实IME、混合DPI多屏、Playnite通知/弹层宿主尚待验；本批提交和双SDKCI待办。继续按2～4项依赖批推进剩余独立任务，不因旧S/T待验阻塞。
+
 ## 2026-10-28 Round5 U09-01/02/03 回归审查续接
 
 U09审查发现 `R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor` 在CI的根因是测试上下文漏掉 `SaveTabIndex`，使被检查的存档重试按钮位于未选中的TabItem中。夹具补默认首页后，控件真实可见，UIA `IInvokeProvider`执行Click；没有删除断言或改产品命令。提交后用精确SHA重跑SDK8定向组，并查询`.github/workflows/windows-build.yml`的SDK基线和SDK10 job。
