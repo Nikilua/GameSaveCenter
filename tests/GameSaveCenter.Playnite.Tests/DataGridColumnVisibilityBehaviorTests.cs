@@ -279,6 +279,12 @@ public sealed class DataGridColumnVisibilityBehaviorTests
 
     private static void RunSta(Action action)
     {
+        // The isolated test runner gives this WPF behavior class its own process.
+        // These checks cover keyboard navigation and UI Automation, not stylus or
+        // touch input; keeping WPF's hardware stylus stack out avoids a crash in
+        // Popup mouse-capture transitions on stylus-enabled hosts.
+        AppContext.SetSwitch("Switch.System.Windows.Input.Stylus.DisableStylusAndTouchSupport", true);
+
         Exception? failure = null;
         var thread = new Thread(() =>
         {

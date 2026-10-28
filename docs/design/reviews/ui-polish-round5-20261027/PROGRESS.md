@@ -30,6 +30,10 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 
 通知页已有“清除筛选”生产处理器会聚焦搜索框，但旧回归只断言筛选值。本批把测试夹具置于实际无结果空态，在已显示窗口中先聚焦清除按钮，再触发清除并核实键盘焦点回到搜索框；同时保留U07-05的新通知前插后搜索焦点和旧选择。SDK 8.0.423 Release 通知视图类4/4、0 skip；首次失败是夹具隐藏了空态按钮，诊断与修正通过的TRX分别见[evidence/U07-05-08](evidence/U07-05-08/BASELINE.md)。源码校验通过，WPF静态审查42 XAML/0错误/26既有警告/179 info。仅改行为测试，无生产XAML或资源改动；引用此前U08-07-08双主题394图/0 PROBLEM，不宣称本批新渲染或真实宿主结果。`7304a58e`的run `40726534942`（baseline job `122951221975`、SDK10 job `122951222525`）查询时仍运行且无artifact；本批提交的新run待查询。实际Playnite跳转、DB/Worker通知刷新、实体键盘/UIA仍待验。
 
+## 2026-10-29 U09-05 完整链诊断续跑
+
+第一次完整中文入口在沙箱中已完成编译、测试和打包，但安装阶段无法写入用户 Playnite 扩展目录；授权提升后的重跑通过 SDK/Release 编译及核心测试，随后在第10/154个WPF隔离类遇到系统 `StylusWisp` Popup捕获崩溃，未进入打包安装。为避免键盘/UIA测试被不相关的主机 stylus/touch 捕获中断，在仅测试类的 STA 辅助器中设置 WPF AppContext 开关；生产程序集、WPF资源和触控设置未变。正式 `scripts/build.ps1 -SkipTests`：SDK8.0.423、Release、0 warnings/0 errors、XAML26/26；该隔离类5/5、0失败、0 skip。首次直接 `dotnet test` 的源码身份元数据缺失属于不完整调用，按正式构建脚本补齐身份后重跑通过。C盘系统临时目录不足时未清理外部数据，改将进程 `TEMP/TMP` 定向到本阶段 D盘临时目录，空间预检通过。证据含原崩溃/TRX、修复后TRX、构建日志和空间快照，见[evidence/U09-05-wpf-stylus-fix](evidence/U09-05-wpf-stylus-fix/BASELINE.md)。本地完整中文入口仍未成功，独立 `scripts/build.cmd` 与当前提交双SDK CI仍待验；本项继续进行中。
+
 ## 2026-10-28 U09 当前批次
 
 已提交并推送 RenderHarness 固定样本时钟 `8deb17c75ac91d716ec38b05f6f0a54530df2217`。U09-01 至 U09-04 首批验证已记录：同一 UTC 假数据时间的两次完整双主题 Render QA 样图逐像素一致；精确提交键盘/UIA 定向16/16、0 skip；双主题×11尺寸394 PNG、0 PROBLEM；同条件操作 P95 较 U00-06 下降，但 U00 没有逐帧或分配字节数据，单次侧栏收起的离屏帧间隔代理约90ms，需真实宿主复核。对应报告、TRX、像素哈希和限制见下方 U09-01～04 行。U09-05 标准入口完整链、U09-07 清理、U09-08 总审尚未完成。U09-06 中，2b6c4022 两个 CI job 已通过；8deb17c7 的 SDK10 job 已通过、baseline job仍运行；required-checks 接口403，状态远端待验。
@@ -132,7 +136,7 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U09-02 | 键盘与UIA回归 | 代码完成待验收 | SDK8.0.423 Release 精确提交`8deb17c7`组合16/16、0失败、0 skip；TRX原始与脱敏SHA已归档。修正R07夹具默认`SaveTabIndex`，增加可见/排列/UIA Invoke断言 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | WPF MoveFocus/UIA Peer不等于实体键盘、IME、外部UIA或Playnite宿主验收 |
 | U09-03 | 尺寸主题交叉回归 | 代码完成待验收 | 精确提交`8deb17c7`：双主题×11窗口尺寸，394 PNG、0 PROBLEM、逻辑DPI1.00；source validation通过、XAML26/26、WPF静态42文件/0 errors。Render QA原始及脱敏报告SHA已记录 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 物理DPI/多屏/Playnite窗口未验；Render报告含未跟踪外部输出，跟踪树在运行时干净 |
 | U09-04 | 动画性能复测 | 进行中 | 精确提交同条件 enduranceprobe 60秒+30秒：操作周期P95 933.16→654.02ms；内存斜率代理下降；三次独立侧栏Shell QA均收敛。明细见[性能复测](evidence/U09-04/PERFORMANCE.md) | [U09-04性能证据](evidence/U09-04/PERFORMANCE.md) | U00无逐帧及累计分配基线；当前单次收起离屏帧间隔P95约90ms，需真实宿主/已呈现帧复核；不据离屏小样本宣称无回退 |
-| U09-05 | 标准cmd最终验收 | 待开始 | 已确认`GameSaveCenter-Run.cmd`、`GameSaveCenter-一键构建安装运行.cmd`、`scripts/build.cmd`均存在；尚未运行 | — | 需冻结跟踪文件后执行真实完整构建、测试、发布打包、安装身份核对与启动，并单独验证`build.cmd` |
+| U09-05 | 标准cmd最终验收 | 进行中 | 两次完整入口均未完成：沙箱写安装目录受拒；授权提升重跑在WPF stylus/Popup捕获处崩溃。隔离键盘/UIA类的测试专用输入栈开关已由正式Release编译与行为测试验证 | [WPF宿主诊断与局部验证](evidence/U09-05-wpf-stylus-fix/BASELINE.md)；[历史完整链证据](evidence/U09-05/BUILD-REVIEW.md) | 新候选提交后仍须以中文根入口完整链成功退出0、验证发布/包/安装身份/启动；独立`scripts/build.cmd`另验；保留并解释既有68个skip |
 | U09-06 | GitHub双SDK门禁 | 进行中 | `dcc288d6`已推送；GitHub combined status为空，PR-only workflow-run查询为空；公开check-runs接口返回403 rate limit，故不判通过、不重试 | [Round5既有CI与权限状态](evidence/U09-01-03/BASELINE.md)；[失败job/artifact及归因](evidence/U08-08-09-01/ci-d19570fa-failure.json)；[U07-07/08 CI快照](evidence/U07-07-08-RECOVERY/ci-progress.json)；[U08精确SHA查询](evidence/U08-01-02/ci-progress-957ee.json)；[dcc288d6查询与后续步骤](evidence/U07-05-06-title-density/ci-progress-dcc288d6.json) | `windows-build.yml`的baseline与SDK10 job尚无可核run/job/artifact身份，标“远端待验”；限流解除后从认证GitHub Actions视图查询精确SHA的两个job、日志/TRX及artifact。required-checks既有403不重复探测 |
 | U09-07 | 产物清理与可追溯 | 待开始 | 本批证据已脱敏归档；阶段 `.tmp/round5-u09-01-03` 尚未清理 | — | 需核对路径边界、引用、占用及磁盘空间，仅清理本阶段自有输出并记录前后空间 |
 | U09-08 | 整轮交付审查 | 待开始 | U09及80项最终审查待执行 | — | 完整入口、本地构建和CI门禁结果齐全前不结项 |

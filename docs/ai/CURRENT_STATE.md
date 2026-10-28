@@ -267,3 +267,7 @@ Trainer 工具列表删除了永久折叠、与共享空态 Presenter 重复的�
 ## 2026-10-29 Round5 U07-05/06 长标题精修
 
 `dcc288d66368b05884e47d57db0749a98ea17a36`已推送。通知收件箱与Toast标题单行省略，完整内容继续可从Tooltip/UIA及通知详情读取；列表虚拟化、四条Toast上限和焦点暂停计时保持。SDK8.0.423 Release精确SHA聚焦7/7、0 skip，source validation通过，WPF静态42 XAML/0 error；固定UTC双主题Render QA 394 PNG、0 PROBLEM，长标题溢出由行为测试验证，短截图样本未触发溢出。证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-05-06-title-density/`。U07-05仍待刷新数据/来源契约/真实宿主；U07-06待Playnite叠放遮挡复核。GitHub状态为空且公开check-runs触发403限流，双SDK精确run/job/artifact标“远端待验”。阶段`.tmp`安全清理已完成，共移除1262个文件/191,875,219字节；空间与路径/占用核验见`cleanup-dcc288d6.json`。整轮根入口完整链及独立`scripts/build.cmd`仍未执行。
+
+## 2026-10-29 Round5 U09-05 WPF测试宿主诊断
+
+已复现授权提升完整链中的WPF `StylusWisp` 异常：列菜单 Popup 鼠标捕获时测试主机中止。仅在隔离的列菜单行为测试进程禁用该用例不覆盖的 stylus/touch 栈；SDK8.0.423 Release正式构建0警告/错误，XAML26/26，目标类5/5通过。进程 `TEMP/TMP` 使用阶段自有 D盘路径绕过C盘系统临时目录空间不足；未清理C盘或其他任务文件。证据 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-wpf-stylus-fix/`。完整中文根入口安装启动链、独立 `scripts/build.cmd` 和该候选SHA的GitHub双SDK job/artifact尚未验收；不据局部编译结项。

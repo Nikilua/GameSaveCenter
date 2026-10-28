@@ -1467,3 +1467,10 @@ Trainer 工具页清除了永久折叠的重复空态文字，继续使用共享
 ## Round5 U07-05/06通知长标题（2026-10-29）
 
 提交`dcc288d66368b05884e47d57db0749a98ea17a36`已推送。通知标题采用一行省略并保留Tooltip/UIA完整名称和详情阅读路径；Toast沿用共享退出效果与四条上限。Release SDK8.0.423精确提交测试7/7、0 skip，WPF静态42 XAML/0 error，固定UTC Render QA双主题394图/0 PROBLEM。RenderHarness当前通知样例标题较短，长标题渲染通过生产窗口行为断言验证。真实通知数据刷新、来源字段契约、Playnite Toast遮挡均待验；GitHub push run未能从已连接接口取回，公开check-runs接口403限流，故双SDK标“远端待验”。证据与清理记录见`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-05-06-title-density/`。接续独立Round5条目；整轮中文完整入口与独立`scripts/build.cmd`仍未跑。
+
+## Round5 U09-05 WPF测试宿主诊断（2026-10-29）
+
+- `cb0a11cbe32d19afc9a65f2b4c92209c0965c3d0`完整入口的一次授权提升重跑在`DataGridColumnVisibilityBehaviorTests`的Popup鼠标捕获中触发WPF `StylusWisp` NullReferenceException；第一次完整链同类5/5通过。测试断言的是键盘菜单导航和UIA，不验证stylus/touch，因此只在该隔离WPF类的STA测试辅助器设置WPF AppContext stylus/touch禁用开关，产品程序集、资源及宿主输入行为不变。
+- 以SDK8.0.423运行正式`build.ps1 -SkipTests`：Release解决方案0警告/0错误、XAML26/26；隔离类5/5、0失败、0 skip。一次不完整直接dotnet调用缺少`GscBuildCommit`，随后走正式构建并复验通过，不把设置错误计作产品缺陷。
+- C盘系统临时目录605229056字节低于空间门禁1073741824；未清理C盘/未知文件，改把本批进程TEMP/TMP设为仓库`.tmp`下D盘路径后预检通过。局部TRX、崩溃TRX/序列、构建摘要及快照见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-wpf-stylus-fix/`。
+- 中文完整入口、安装身份/启动、独立`scripts/build.cmd`以及本批提交后的GitHub baseline/SDK10 CI与artifact仍待核验。终结不得用此局部成功代替最终链；Playnite真实宿主、stylus/touch/IME仍未验。

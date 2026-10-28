@@ -12661,3 +12661,10 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - SDK8.0.423 Release精确SHA定向7/7、0 skip；source validation与WPF静态42 XAML/0 error通过；Render QA固定UTC双主题394 PNG/0 PROBLEM。短标题截图没有展示裁切，溢出行为由显示窗口测试确认；真实Playnite Toast遮挡仍待验。通知数据刷新与来源字段契约尚待上游支持，未虚构来源。
 - 双SDK GitHub push run/job/artifact无法从现有连接确认，combined status为空且公开check-runs接口403限流，标“远端待验”，后续经认证Actions视图查精确SHA；required-checks既有403不重试。证据、报告哈希和原失败夹具位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-05-06-title-density/`。
 - 已先归档和核对本批证据后，安全清理独立`.tmp/round5-u07-toast-density`：1262文件/191875219字节，路径位于仓库`.tmp`、无重解析点/引用/占用，空间与清理JSON留档。完整中文根入口链及独立`scripts/build.cmd`仍待最终候选执行。
+
+## 2026-10-29 Round5 U09-05 WPF捕获崩溃修正
+
+- 完整链的授权提升重跑在`DataGridColumnVisibilityBehaviorTests`列菜单打开时因WPF `StylusWisp` Popup鼠标捕获异常中止；同一类此前曾5/5通过。核实调用栈后，仅对该隔离键盘/UIA测试类设置WPF stylus/touch AppContext开关，不改变产品输入行为与资源。
+- 正式SDK8.0.423 Release `scripts/build.ps1 -SkipTests`：XAML26/26，解决方案0 warnings/0 errors；编译后目标WPF隔离类5/5、0失败、0 skip。第一次手动dotnet调用漏掉仓库注入的`GscBuildCommit`身份，修正调用流程后重跑全类通过。
+- C盘系统TEMP空间605229056 bytes，不足门禁1 GiB；未删C盘未知数据。进程TEMP/TMP改到本阶段D盘`.tmp`隔离目录，空间预检显示D盘13300178944 bytes可用、预算4294967296并通过。日志/原始与通过TRX/崩溃测试序列及空间快照见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-wpf-stylus-fix/`。
+- 本阶段代码和记录将单独中文提交。随后仍需在冻结SHA运行中文完整入口链、核验安装/包身份与Playnite启动、独立运行`scripts/build.cmd`并查询该SHA的baseline与SDK10 CI/artifact。真实Playnite、stylus/touch/IME边界未验证。

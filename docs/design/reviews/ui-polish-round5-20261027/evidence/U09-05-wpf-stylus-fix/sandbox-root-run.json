@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "cb0a11cbe32d19afc9a65f2b4c92209c0965c3d0",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "rootChain": {
+    "installRun": "20261028T201041211Z-7b36f78d",
+    "exitCode": 1,
+    "productVersion": "0.6.73",
+    "buildDiagnosticsRun": "20261028T201043317Z-a8e14568",
+    "tests": {
+      "failed": 0,
+      "skipReasons": [
+        {
+          "count": 57,
+          "reason": "assertions for the previously revoked Today Workbench architecture"
+        },
+        {
+          "count": 1,
+          "reason": "user-pointer-interactive test requires explicit interactive opt-in"
+        },
+        {
+          "count": 9,
+          "reason": "local Named Pipe client tests denied by the sandbox"
+        },
+        {
+          "count": 1,
+          "reason": "local Named Pipe Worker-process test denied by the sandbox"
+        }
+      ],
+      "passed": 1944,
+      "skipped": 68,
+      "total": 2012
+    },
+    "failedStage": "install-transaction",
+    "packageFiles": [
+      "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "artifacts/GameSaveCenter-0.6.73.pext"
+    ]
+  },
+  "install": {
+    "previousTargetMoved": false,
+    "temporaryPathExisted": false,
+    "playniteRestarted": false,
+    "failure": "sandbox denied write to the Playnite extension staging path"
+  },
+  "notes": [
+    "A later elevated complete-chain retry reached WPF tests, where StylusWisp crashed during Popup mouse capture; see elevated-full-chain-wpf-crash-console.txt and wpf-stylus-crash-console.txt.",
+    "No previous-installed extension folder was moved or removed.",
+    "This run was not a successful install/start gate."
+  ]
+}

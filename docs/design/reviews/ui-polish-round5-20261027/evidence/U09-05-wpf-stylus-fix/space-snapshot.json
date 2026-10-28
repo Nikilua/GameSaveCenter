@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-10-29",
+  "before": {
+    "D_AvailableBytes": 13300178944,
+    "C_AvailableBytes": 605229056
+  },
+  "scriptPreflight": {
+    "BudgetBytes": 4294967296,
+    "volume": "D:\\",
+    "AvailableBytes": 13300178944,
+    "result": "passed after TEMP/TMP were redirected to the stage-owned D: path"
+  },
+  "after": [
+    {
+      "Name": "C:\\",
+      "AvailableFreeBytes": 601587712,
+      "TotalBytes": 214749409280
+    },
+    {
+      "Name": "D:\\",
+      "AvailableFreeBytes": 13134721024,
+      "TotalBytes": 294972813312
+    }
+  ],
+  "CDriveCleanup": "none",
+  "temporaryRoot": ".tmp/round5-u09-05-wpf-stylus-check/official-build-isolated"
+}

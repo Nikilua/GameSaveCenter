@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="07dfec16-75a9-44f8-8bac-38231f09c908" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T04:46:57.3628151+08:00" queuing="2026-10-29T04:46:57.3628155+08:00" start="2026-10-29T04:46:53.1091589+08:00" finish="2026-10-29T04:47:05.7556269+08:00" />
+  <TestSettings name="default" id="e0dc0290-0fee-4fad-8ef2-8d3137098a79">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b0be5f07-c4d7-48e8-acd5-2f4fdba0c308" testId="1423385b-46a7-c8af-a26f-4101ab25994c" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.HiddenColumnPreferencesRoundTripAndResetWithLocalUiPreferences" computerName="redacted-host" duration="00:00:00.0640000" startTime="2026-10-29T04:46:56.4795865+08:00" endTime="2026-10-29T04:46:56.5421645+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b0be5f07-c4d7-48e8-acd5-2f4fdba0c308" />
+    <UnitTestResult executionId="1cb31ce9-fadf-427d-8a0b-3dc101093ace" testId="4ee8c8be-6f09-767d-0dd0-4136e154a144" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ProductionTablesExposeThePickerAndSharedThemeResources" computerName="redacted-host" duration="00:00:00.1270000" startTime="2026-10-29T04:46:56.5441644+08:00" endTime="2026-10-29T04:46:56.6689041+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1cb31ce9-fadf-427d-8a0b-3dc101093ace" />
+    <UnitTestResult executionId="318f8ddf-040a-4711-8eaf-5ab5406bfbeb" testId="ec43b4c1-cc60-3c9c-bb97-d6f2e4fe1bea" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ResetRestoresAllColumnsAndOnlyRemovesCurrentGridPreference" computerName="redacted-host" duration="00:00:00.9590000" startTime="2026-10-29T04:46:55.4320578+08:00" endTime="2026-10-29T04:46:56.3672145+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="318f8ddf-040a-4711-8eaf-5ab5406bfbeb" />
+    <UnitTestResult executionId="85902bad-bc5c-43a0-8f38-11a4208ae994" testId="02dffcfc-6e2e-f18b-7944-8e922d6a07b2" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.OptionalColumnsPersistByStableKeyWhileIdentityAndStateRemainVisible" computerName="redacted-host" duration="00:00:00.1100000" startTime="2026-10-29T04:46:56.4027971+08:00" endTime="2026-10-29T04:46:56.4775851+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="85902bad-bc5c-43a0-8f38-11a4208ae994" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.HiddenColumnPreferencesRoundTripAndResetWithLocalUiPreferences" storage="[repo]\artifacts\gsc-b\5c521fc9\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1423385b-46a7-c8af-a26f-4101ab25994c">
+      <Execution id="b0be5f07-c4d7-48e8-acd5-2f4fdba0c308" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\5c521fc9\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="HiddenColumnPreferencesRoundTripAndResetWithLocalUiPreferences" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ProductionTablesExposeThePickerAndSharedThemeResources" storage="[repo]\artifacts\gsc-b\5c521fc9\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4ee8c8be-6f09-767d-0dd0-4136e154a144">
+      <Execution id="1cb31ce9-fadf-427d-8a0b-3dc101093ace" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\5c521fc9\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="ProductionTablesExposeThePickerAndSharedThemeResources" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.OptionalColumnsPersistByStableKeyWhileIdentityAndStateRemainVisible" storage="[repo]\artifacts\gsc-b\5c521fc9\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="02dffcfc-6e2e-f18b-7944-8e922d6a07b2">
+      <Execution id="85902bad-bc5c-43a0-8f38-11a4208ae994" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\5c521fc9\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="OptionalColumnsPersistByStableKeyWhileIdentityAndStateRemainVisible" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ResetRestoresAllColumnsAndOnlyRemovesCurrentGridPreference" storage="[repo]\artifacts\gsc-b\5c521fc9\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ec43b4c1-cc60-3c9c-bb97-d6f2e4fe1bea">
+      <Execution id="318f8ddf-040a-4711-8eaf-5ab5406bfbeb" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\5c521fc9\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="ResetRestoresAllColumnsAndOnlyRemovesCurrentGridPreference" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="1423385b-46a7-c8af-a26f-4101ab25994c" executionId="b0be5f07-c4d7-48e8-acd5-2f4fdba0c308" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ee8c8be-6f09-767d-0dd0-4136e154a144" executionId="1cb31ce9-fadf-427d-8a0b-3dc101093ace" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ec43b4c1-cc60-3c9c-bb97-d6f2e4fe1bea" executionId="318f8ddf-040a-4711-8eaf-5ab5406bfbeb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="02dffcfc-6e2e-f18b-7944-8e922d6a07b2" executionId="85902bad-bc5c-43a0-8f38-11a4208ae994" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.80]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.84]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.NullReferenceException: δ�������������õ������ʵ����&#xD;
+   �� System.Windows.Input.StylusWisp.WispStylusDevice.ChangeStylusCapture(IInputElement stylusCapture, CaptureMode captureMode, Int32 timestamp)&#xD;
+   �� System.Windows.Input.StylusWisp.WispStylusDevice.Capture(IInputElement element, CaptureMode captureMode)&#xD;
+   �� System.Windows.Input.StylusWisp.WispLogic.PostProcessInput(Object sender, ProcessInputEventArgs e)&#xD;
+   �� System.Windows.Input.InputManager.RaiseProcessInputEventHandlers(ProcessInputEventHandler postProcessInput, ProcessInputEventArgs processInputEventArgs)&#xD;
+   �� System.Windows.Input.InputManager.ProcessStagingArea()&#xD;
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)&#xD;
+   �� System.Windows.Input.MouseDevice.ChangeMouseCapture(IInputElement mouseCapture, IMouseInputProvider providerCapture, CaptureMode captureMode, Int32 timestamp)&#xD;
+   �� System.Windows.Input.MouseDevice.Capture(IInputElement element, CaptureMode captureMode)&#xD;
+   �� System.Windows.Controls.Primitives.Popup.EstablishPopupCapture(Boolean isRestoringCapture)&#xD;
+   �� System.Windows.Controls.Primitives.Popup.OnLostMouseCapture(Object sender, MouseEventArgs e)&#xD;
+   �� System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)&#xD;
+   �� System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)&#xD;
+   �� System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)&#xD;
+   �� System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)&#xD;
+   �� System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)&#xD;
+   �� System.Windows.Input.InputManager.ProcessStagingArea()&#xD;
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)&#xD;
+   �� System.Windows.Input.MouseDevice.ChangeMouseCapture(IInputElement mouseCapture, IMouseInputProvider providerCapture, CaptureMode captureMode, Int32 timestamp)&#xD;
+   �� System.Windows.Input.MouseDevice.PreNotifyInput(Object sender, NotifyInputEventArgs e)&#xD;
+   �� System.Windows.Input.InputManager.ProcessStagingArea()&#xD;
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)&#xD;
+   �� System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)&#xD;
+   �� System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)&#xD;
+   �� System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean&amp; handled)&#xD;
+   �� System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean&amp; handled)&#xD;
+   �� MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean&amp; handled)&#xD;
+   �� MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)&#xD;
+   �� System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)&#xD;
+   �� System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)&#xD;
+   �� System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)&#xD;
+   �� MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-29T04:47:05.7068472+08:00">
+        <Text>活动的测试运行已中止。原因: 测试主机进程崩溃 : δ���������쳣:  System.NullReferenceException: δ�������������õ������ʵ����&#xD;
+   �� System.Windows.Input.StylusWisp.WispStylusDevice.ChangeStylusCapture(IInputElement stylusCapture, CaptureMode captureMode, Int32 timestamp)&#xD;
+   �� System.Windows.Input.StylusWisp.WispStylusDevice.Capture(IInputElement element, CaptureMode captureMode)&#xD;
+   �� System.Windows.Input.StylusWisp.WispLogic.PostProcessInput(Object sender, ProcessInputEventArgs e)&#xD;
+   �� System.Windows.Input.InputManager.RaiseProcessInputEventHandlers(ProcessInputEventHandler postProcessInput, ProcessInputEventArgs processInputEventArgs)&#xD;
+   �� System.Windows.Input.InputManager.ProcessStagingArea()&#xD;
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)&#xD;
+   �� System.Windows.Input.MouseDevice.ChangeMouseCapture(IInputElement mouseCapture, IMouseInputProvider providerCapture, CaptureMode captureMode, Int32 timestamp)&#xD;
+   �� System.Windows.Input.MouseDevice.Capture(IInputElement element, CaptureMode captureMode)&#xD;
+   �� System.Windows.Controls.Primitives.Popup.EstablishPopupCapture(Boolean isRestoringCapture)&#xD;
+   �� System.Windows.Controls.Primitives.Popup.OnLostMouseCapture(Object sender, MouseEventArgs e)&#xD;
+   �� System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)&#xD;
+   �� System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)&#xD;
+   �� System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)&#xD;
+   �� System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)&#xD;
+   �� System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)&#xD;
+   �� System.Windows.Input.InputManager.ProcessStagingArea()&#xD;
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)&#xD;
+   �� System.Windows.Input.MouseDevice.ChangeMouseCapture(IInputElement mouseCapture, IMouseInputProvider providerCapture, CaptureMode captureMode, Int32 timestamp)&#xD;
+   �� System.Windows.Input.MouseDevice.PreNotifyInput(Object sender, NotifyInputEventArgs e)&#xD;
+   �� System.Windows.Input.InputManager.ProcessStagingArea()&#xD;
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)&#xD;
+   �� System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)&#xD;
+   �� System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)&#xD;
+   �� System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean&amp; handled)&#xD;
+   �� System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean&amp; handled)&#xD;
+   �� MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean&amp; handled)&#xD;
+   �� MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)&#xD;
+   �� System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)&#xD;
+   �� System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)&#xD;
+   �� System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)&#xD;
+   �� MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)&#xD;
+</Text>
+      </RunInfo>
+    </RunInfos>
+    <CollectorDataEntries>
+      <Collector agentName="SULT" uri="datacollector://microsoft/TestPlatform/Extensions/Blame/v1" collectorDisplayName="Blame">
+        <UriAttachments>
+          <UriAttachment>
+            <A href="SULT\Sequence_58a16338a6404cf492b111b2b4c7a734.xml"></A>
+          </UriAttachment>
+        </UriAttachments>
+      </Collector>
+    </CollectorDataEntries>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,93 @@
+[repo]\artifacts\gsc-b\5c521fc9\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:00.80]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:00.84]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ResetRestoresAllColumnsAndOnlyRemovesCurrentGridPreference [959 ms]
+  已通过 GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.OptionalColumnsPersistByStableKeyWhileIdentityAndStateRemainVisible [110 ms]
+  已通过 GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.HiddenColumnPreferencesRoundTripAndResetWithLocalUiPreferences [64 ms]
+  已通过 GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ProductionTablesExposeThePickerAndSharedThemeResources [127 ms]
+δ���������쳣:  System.NullReferenceException: δ�������������õ������ʵ����
+   �� System.Windows.Input.StylusWisp.WispStylusDevice.ChangeStylusCapture(IInputElement stylusCapture, CaptureMode captureMode, Int32 timestamp)
+   �� System.Windows.Input.StylusWisp.WispStylusDevice.Capture(IInputElement element, CaptureMode captureMode)
+   �� System.Windows.Input.StylusWisp.WispLogic.PostProcessInput(Object sender, ProcessInputEventArgs e)
+   �� System.Windows.Input.InputManager.RaiseProcessInputEventHandlers(ProcessInputEventHandler postProcessInput, ProcessInputEventArgs processInputEventArgs)
+   �� System.Windows.Input.InputManager.ProcessStagingArea()
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   �� System.Windows.Input.MouseDevice.ChangeMouseCapture(IInputElement mouseCapture, IMouseInputProvider providerCapture, CaptureMode captureMode, Int32 timestamp)
+   �� System.Windows.Input.MouseDevice.Capture(IInputElement element, CaptureMode captureMode)
+   �� System.Windows.Controls.Primitives.Popup.EstablishPopupCapture(Boolean isRestoringCapture)
+   �� System.Windows.Controls.Primitives.Popup.OnLostMouseCapture(Object sender, MouseEventArgs e)
+   �� System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   �� System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   �� System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   �� System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   �� System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   �� System.Windows.Input.InputManager.ProcessStagingArea()
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   �� System.Windows.Input.MouseDevice.ChangeMouseCapture(IInputElement mouseCapture, IMouseInputProvider providerCapture, CaptureMode captureMode, Int32 timestamp)
+   �� System.Windows.Input.MouseDevice.PreNotifyInput(Object sender, NotifyInputEventArgs e)
+   �� System.Windows.Input.InputManager.ProcessStagingArea()
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   �� System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   �� System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   �� System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   �� System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   �� System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   �� System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   �� MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+
+测试总数: 未知
+     通过数: 4
+总时间: 12.6369 秒
+结果文件: [repo]\artifacts\build-diagnostics\20261028T204308335Z-2afd213b\tests\wpf.DataGridColumnVisibilityBehaviorTests\wpf.DataGridColumnVisibilityBehaviorTests.trx
+
+
+附件:
+  [repo]\artifacts\build-diagnostics\20261028T204308335Z-2afd213b\tests\wpf.DataGridColumnVisibilityBehaviorTests\c7b49e7c-ba59-48ed-807f-5cb81c547745\Sequence_58a16338a6404cf492b111b2b4c7a734.xml
+活动的测试运行已中止。原因: 测试主机进程崩溃 : δ���������쳣:  System.NullReferenceException: δ�������������õ������ʵ����
+   �� System.Windows.Input.StylusWisp.WispStylusDevice.ChangeStylusCapture(IInputElement stylusCapture, CaptureMode captureMode, Int32 timestamp)
+   �� System.Windows.Input.StylusWisp.WispStylusDevice.Capture(IInputElement element, CaptureMode captureMode)
+   �� System.Windows.Input.StylusWisp.WispLogic.PostProcessInput(Object sender, ProcessInputEventArgs e)
+   �� System.Windows.Input.InputManager.RaiseProcessInputEventHandlers(ProcessInputEventHandler postProcessInput, ProcessInputEventArgs processInputEventArgs)
+   �� System.Windows.Input.InputManager.ProcessStagingArea()
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   �� System.Windows.Input.MouseDevice.ChangeMouseCapture(IInputElement mouseCapture, IMouseInputProvider providerCapture, CaptureMode captureMode, Int32 timestamp)
+   �� System.Windows.Input.MouseDevice.Capture(IInputElement element, CaptureMode captureMode)
+   �� System.Windows.Controls.Primitives.Popup.EstablishPopupCapture(Boolean isRestoringCapture)
+   �� System.Windows.Controls.Primitives.Popup.OnLostMouseCapture(Object sender, MouseEventArgs e)
+   �� System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   �� System.Windows.RoutedEventHandlerInfo.InvokeHandler(Object target, RoutedEventArgs routedEventArgs)
+   �� System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   �� System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   �� System.Windows.UIElement.RaiseTrustedEvent(RoutedEventArgs args)
+   �� System.Windows.Input.InputManager.ProcessStagingArea()
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   �� System.Windows.Input.MouseDevice.ChangeMouseCapture(IInputElement mouseCapture, IMouseInputProvider providerCapture, CaptureMode captureMode, Int32 timestamp)
+   �� System.Windows.Input.MouseDevice.PreNotifyInput(Object sender, NotifyInputEventArgs e)
+   �� System.Windows.Input.InputManager.ProcessStagingArea()
+   �� System.Windows.Input.InputManager.ProcessInput(InputEventArgs input)
+   �� System.Windows.Input.InputProviderSite.ReportInput(InputReport inputReport)
+   �� System.Windows.Interop.HwndMouseInputProvider.ReportInput(IntPtr hwnd, InputMode mode, Int32 timestamp, RawMouseActions actions, Int32 x, Int32 y, Int32 wheel)
+   �� System.Windows.Interop.HwndMouseInputProvider.FilterMessage(IntPtr hwnd, WindowMessage msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� System.Windows.Interop.HwndSource.InputFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   �� MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   �� System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   �� System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   �� System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   �� MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+
+测试运行已中止。
+活动的测试运行已中止，因为主机进程意外退出。请检查上面的调用堆栈(如果有)，以获取有关异常来源的详细信息。
+发生崩溃时运行的测试:
+GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ColumnMenuNavigationKeepsEnabledItemsInOrderAndCycles
+
+此测试可能是(也可能不是)崩溃的来源。

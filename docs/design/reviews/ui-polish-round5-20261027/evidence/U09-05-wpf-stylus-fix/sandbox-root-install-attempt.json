@@ -1,0 +1,31 @@
+{
+  "Owner": {
+    "ProcessId": 52104,
+    "ProcessStartedUtc": "2026-10-28T20:10:40.4890426Z"
+  },
+  "StartedUtc": "2026-10-28T20:41:19.2101660Z",
+  "FailureMessage": "Access to the path 'C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec.__new-589d7b6dd1444fd8a445615653663025' is denied.",
+  "Temporary": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec.__new-589d7b6dd1444fd8a445615653663025",
+  "AttemptId": "cfae9740e825461a80e7213a735fd11f",
+  "Retention": "Install attempt evidence; external extension paths must never be passed to repository cleanup",
+  "CompletedUtc": "2026-10-28T20:41:19.2186489Z",
+  "OwnerPid": 52104,
+  "OwnerStart": "2026-10-28T20:10:40.4890426Z",
+  "Stage": "install-transaction",
+  "Target": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+  "TemporaryExists": false,
+  "Artifacts": [
+    {
+      "Exists": false,
+      "CreatedByThisRun": false,
+      "Stage": "install-staging",
+      "Path": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec.__new-589d7b6dd1444fd8a445615653663025",
+      "Retention": "Staging moved or removed; retain this identity record",
+      "Active": false
+    }
+  ],
+  "ExpectedVersion": "0.6.73",
+  "Outcome": "failed",
+  "SchemaVersion": 2,
+  "RunId": "20261028T201041211Z-7b36f78d"
+}
