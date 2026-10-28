@@ -123,7 +123,17 @@
                             <DataGridTemplateColumn Header="级别" Width="88" MinWidth="80">
                                 <DataGridTemplateColumn.CellTemplate><DataTemplate><Border Style="{StaticResource NotificationSeverityPill}" HorizontalAlignment="Left" Padding="7,3"><TextBlock Text="{Binding SeverityDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold"/></Border></DataTemplate></DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="通知" Binding="{Binding Title}" Width="2*" MinWidth="160"/>
+                            <DataGridTextColumn Header="通知" Binding="{Binding Title, Mode=OneWay}" Width="2*" MinWidth="160">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextWrapping" Value="NoWrap"/>
+                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        <Setter Property="ToolTip" Value="{Binding Title, Mode=OneWay}"/>
+                                        <Setter Property="AutomationProperties.Name" Value="{Binding Title, Mode=OneWay}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn Header="摘要" Binding="{Binding Summary}" Width="3*" MinWidth="200"/>
                             <DataGridTextColumn Header="尝试" Binding="{Binding OccurrenceDisplay}" Width="68" MinWidth="64"/>
                             <DataGridTemplateColumn Header="问题" Width="76" MinWidth="70">

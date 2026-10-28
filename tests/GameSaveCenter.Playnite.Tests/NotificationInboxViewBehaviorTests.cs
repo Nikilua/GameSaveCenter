@@ -111,6 +111,54 @@ public sealed class NotificationInboxViewBehaviorTests
     }
 
     [Fact]
+    public void DenseNotificationTitleKeepsItsFullTextAvailableToMouseAndAutomation()
+    {
+        RunSta(() =>
+        {
+            const string title = "一个很长的通知标题，说明后台存档校验失败并保留完整信息";
+            var data = new NotificationInboxData();
+            var item = new NotificationInboxItem(new NotificationRecordDto
+            {
+                NotificationId = "notice-long-title",
+                Title = title,
+                Summary = "标题在密集列表中单行显示。"
+            });
+            data.NotificationInboxItems.Add(item);
+
+            var view = new NotificationInboxView { DataContext = data };
+            var window = new Window
+            {
+                Content = view,
+                Width = 900,
+                Height = 600,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                var grid = Assert.IsType<DataGrid>(view.FindName("NotificationGrid"));
+                grid.ScrollIntoView(item);
+                window.Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() => { }));
+                grid.UpdateLayout();
+                var row = Assert.IsType<DataGridRow>(grid.ItemContainerGenerator.ContainerFromItem(item));
+                var titleColumn = Assert.IsType<DataGridTextColumn>(grid.Columns[1]);
+                var titleText = Assert.IsType<TextBlock>(titleColumn.GetCellContent(row));
+
+                Assert.Equal(TextWrapping.NoWrap, titleText.TextWrapping);
+                Assert.Equal(TextTrimming.CharacterEllipsis, titleText.TextTrimming);
+                Assert.Equal(title, titleText.ToolTip);
+                Assert.Equal(title, AutomationProperties.GetName(titleText));
+                Assert.True(grid.EnableRowVirtualization);
+                Assert.True(grid.EnableColumnVirtualization);
+            }
+            finally { window.Close(); }
+        });
+    }
+
+    [Fact]
     public void CompactLayoutKeepsListOpenAndMakesDetailsAnExplicitToggle()
     {
         RunSta(() =>

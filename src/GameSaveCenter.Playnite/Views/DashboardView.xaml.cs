@@ -1590,7 +1590,7 @@ namespace GameSaveCenter.Playnite.Views
 
             var textPanel = new StackPanel { Margin = new Thickness(10, 0, 8, 0) };
             Grid.SetColumn(textPanel, 1);
-            var titleText = new TextBlock { Text = title, Style = (Style)Resources["GscRedesignFeedbackToastTitle"] };
+            var titleText = new TextBlock { Text = title, ToolTip = title, Style = (Style)Resources["GscRedesignFeedbackToastTitle"] };
             var messageText = new TextBlock { Text = message, Style = (Style)Resources["GscRedesignFeedbackToastMessage"] };
             messageText.ToolTip = message;
             textPanel.Children.Add(titleText);

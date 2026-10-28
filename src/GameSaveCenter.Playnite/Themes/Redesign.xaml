@@ -297,7 +297,8 @@
     <Style x:Key="GscRedesignFeedbackToastTitle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
     </Style>
 
     <Style x:Key="GscRedesignFeedbackToastMessage" TargetType="TextBlock">

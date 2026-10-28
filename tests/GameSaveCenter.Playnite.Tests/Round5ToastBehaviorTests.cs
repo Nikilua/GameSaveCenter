@@ -113,13 +113,19 @@ public sealed class Round5ToastBehaviorTests
                 {
                     window.Show();
                     var message = string.Concat(Enumerable.Repeat("合成的长通知内容", 40));
-                    typeof(DashboardView).GetMethod("ShowToast", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(dashboard, new object[] { "通知", message, UiNotificationKind.Information, message, false });
+                    var title = string.Concat(Enumerable.Repeat("较长通知标题", 12));
+                    typeof(DashboardView).GetMethod("ShowToast", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(dashboard, new object[] { title, message, UiNotificationKind.Information, message, false });
                     window.UpdateLayout();
                     var card = Assert.IsAssignableFrom<Border>(Assert.Single(toastHost.Children.OfType<Border>()));
                     var grid = Assert.IsType<Grid>(card.Child);
                     var text = Assert.IsType<StackPanel>(grid.Children.OfType<StackPanel>().Single());
+                    var titleText = Assert.IsType<TextBlock>(text.Children.OfType<TextBlock>().First());
                     var details = Assert.Single(text.Children.OfType<Button>());
                     var close = Assert.Single(grid.Children.OfType<Button>());
+                    Assert.Equal(TextWrapping.NoWrap, titleText.TextWrapping);
+                    Assert.Equal(TextTrimming.CharacterEllipsis, titleText.TextTrimming);
+                    Assert.Equal(title, titleText.ToolTip);
+                    Assert.Contains(title, AutomationProperties.GetName(card));
                     Assert.Equal("查看通知完整详情", AutomationProperties.GetName(details));
                     Assert.Equal("关闭通知提示", AutomationProperties.GetName(close));
                     var timers = (Dictionary<Border, DispatcherTimer>)typeof(DashboardView).GetField("toastTimers", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(dashboard)!;
@@ -130,6 +136,7 @@ public sealed class Round5ToastBehaviorTests
                     Assert.True(card.IsKeyboardFocusWithin);
                     Assert.False(timer.IsEnabled);
                     details.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, details));
+                    Assert.Equal(title, Assert.IsType<TextBlock>(dashboard.FindName("DialogTitleText")).Text);
                     var dialogText = Assert.IsType<TextBlock>(dashboard.FindName("DialogMessageText"));
                     Assert.Equal(message, dialogText.Text);
                     close.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, close));
