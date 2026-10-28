@@ -361,7 +361,7 @@
                              second full-size wash here: it creates a square inner background and
                              makes the rounded card look like a panel inside another panel. -->
                         <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
-                            <TextBlock x:Name="OverviewTodayHeroEyebrow" Style="{DynamicResource GscRedesignHeroEyebrow}" Text="待处理"/>
+                            <TextBlock x:Name="OverviewTodayHeroEyebrow" Style="{DynamicResource GscRedesignHeroEyebrow}" Text="当前状态"/>
                             <TextBlock x:Name="OverviewPriorityTitleText" AutomationProperties.Name="{Binding OverviewPriorityTitle}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewPriorityTitle}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
