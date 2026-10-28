@@ -182,3 +182,5 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## 2026-10-28 Round5 U06-05/06当前接续
 
 生产代码未改。存档历史非零滚动起点进入/清除40项多选保持偏移，Escape保留选择，双主题断点往返保持选择和焦点；实际任务页空/筛选无结果/错误区分，清筛选合成命令不触发刷新。SDK8.0.423 Release最终17/17、0 skip；首次锚点夹具缺有限视口失败已保留，修正后原断言通过。source/XAML26/WPF静态0错误，Render QA继承同生产代码。证据docs/design/reviews/ui-polish-round5-20261027/evidence/U06-05-06/BASELINE.md；两项代码完成待验收，真实宿主和新提交CI未验。未采集阶段开始前磁盘快照，证据中明确记录该限制；未删除其他任务输出。接续U06-07/08，最终中文根入口完整链及独立scripts/build.cmd仍待验。
+
+2026-10-28 CI新失败：run40644355886 SDK10及run40645391789双SDK在ProcessMappingInlineActionBehaviorTests第87行受控IsMouseOver断言失败；原始job日志与artifact身份见ci-hover-failures.json。生产命令未执行失败；测试在注入状态后泵送后台消息，可能先收到真实桌面指针更新。夹具改为同步UpdateLayout后立即检查进入/退出悬停，保留可见性、焦点、列宽与目标断言。SDK8.0.423本地1/1、0 skip，TRX见tests/ci-hover-synchronous.trx；当时工作树另含U06-07/08候选，SDK10和新提交CI仍待验。假设尚待远端验证，不声称CI已修复。

@@ -83,11 +83,13 @@ public sealed class ProcessMappingInlineActionBehaviorTests
                     Assert.Equal(actionColumnWidth, grid.Columns.Last().ActualWidth, 2);
                     var changeMouseOver = typeof(MouseDevice).GetMethod("ChangeMouseOver", BindingFlags.Instance | BindingFlags.NonPublic)!;
                     changeMouseOver.Invoke(Mouse.PrimaryDevice, new object[] { rowButton, Environment.TickCount });
-                    PumpLayout(window);
+                    // Keep the synthetic pointer in force while measuring. Pumping the
+                    // dispatcher here can deliver a real desktop pointer update first.
+                    window.UpdateLayout();
                     Assert.True(rowButton.IsMouseOver && rowButton.IsVisible);
                     Assert.Equal(actionColumnWidth, grid.Columns.Last().ActualWidth, 2);
                     changeMouseOver.Invoke(Mouse.PrimaryDevice, new object[] { grid, Environment.TickCount });
-                    PumpLayout(window);
+                    window.UpdateLayout();
                     Assert.False(rowButton.IsMouseOver);
                     Assert.False(command.CanExecute(null), "The row-delete command must reject a missing target instead of falling back to the selected row.");
 

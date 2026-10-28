@@ -1,5 +1,9 @@
 [
   {
+    "name": "ci-hover-synchronous.trx",
+    "sha256": "B90A23BCDF6599C2C2047F2C786E0B3C86FF1CAA88C60295DCDF95132AC1D46F"
+  },
+  {
     "name": "u06-actions-final.trx",
     "sha256": "4BB81B1426F20C4E1972BF6A02F906BE9F8DAE2DB8AE0E00A8A5977DADC376A2"
   },

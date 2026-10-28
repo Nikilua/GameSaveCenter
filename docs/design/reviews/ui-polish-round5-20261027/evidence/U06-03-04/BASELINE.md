@@ -13,3 +13,5 @@ Source validation通过、XAML26/26、WPF静态37 XAML/0 errors/26既有warnings
 此前弹层源码提交bca60704的Windows Actions [run 40639378202](https://github.com/Nikilua/GameSaveCenter/actions/runs/40639378202)两个适用job现已成功：SDK8.0.423基线122653683590、SDK10.0.401复核122653683330；原始日志中分别确认基线SDK及SDK10 Release build/tests通过，基线render-qa OK。扩展包与两个诊断artifact身份及SHA见[CI清单](ci-run-40639378202.json)。required-checks接口既有403，不能由这两个job推断分支保护完整性。此结论不替代本批新提交CI。
 
 两项保持代码完成待验收；真实Playnite、物理输入/UIA/实体DPI及新提交CI待验。最终中文根入口完整构建/测试/发布/打包/安装身份/启动与独立scripts/build.cmd仍需最终候选执行。disk-before/after记录空间，本阶段仅保留当前TRX及脱敏证据，无包或截图副本；没有已确认无用目录，删除清单为空，其他任务TRX/TestResults未动。
+
+2026-10-28 CI新失败：run40644355886 SDK10及run40645391789双SDK在ProcessMappingInlineActionBehaviorTests第87行受控IsMouseOver断言失败；原始job日志与artifact身份见ci-hover-failures.json。生产命令未执行失败；测试在注入状态后泵送后台消息，可能先收到真实桌面指针更新。夹具改为同步UpdateLayout后立即检查进入/退出悬停，保留可见性、焦点、列宽与目标断言。SDK8.0.423本地1/1、0 skip，TRX见tests/ci-hover-synchronous.trx；当时工作树另含U06-07/08候选，SDK10和新提交CI仍待验。假设尚待远端验证，不声称CI已修复。

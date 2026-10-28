@@ -1,0 +1,8 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "failure": "ProcessMappingInlineActionBehaviorTests line 87: controlled IsMouseOver/IsVisible assertion after dispatcher pump",
+  "runs": [
+    {"id":40644355886,"sha":"39c6ad8077de99ce45a723302025ad0746303fd2","sdk10Job":122669582927,"sdk10Conclusion":"failure","baselineJob":122669582490,"baselineAtAudit":"in_progress","sdk10Artifact":12797018157,"artifactSha256":"7227bc5c6663d60e981e1e27675db9a5ca6a3a67892317f9a788b6ee665ae823"},
+    {"id":40645391789,"sha":"e4285c058c33e6048fd79f3914ad699a17237703","baselineJob":122672901077,"baselineConclusion":"failure","baselineArtifact":12798126072,"baselineSha256":"73ec18236619ed2e049028e4b6d76873ad43eb741c2a5d9abf737bc3eb9c0480","sdk10Job":122672901345,"sdk10Conclusion":"failure","sdk10Artifact":12797960792,"sdk10Sha256":"fa6fe000709dd6617e323705809989d0ab685fde93b5ba660a9b274e634b1959"}
+  ]
+}
