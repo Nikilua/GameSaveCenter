@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="98b5f3a0-784c-4005-a5cb-abb2557b748e" name="lopmatu@SULT 2026-10-29 00:23:15" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T00:23:15.6270977+08:00" queuing="2026-10-29T00:23:15.6270982+08:00" start="2026-10-29T00:23:08.9582208+08:00" finish="2026-10-29T00:23:16.6877292+08:00" />
+  <TestSettings name="default" id="7b9dece1-23a5-436d-be76-cff13b5a02f6">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-29_00_23_15" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="68fc6cd1-81ce-40e1-849e-87ffcad3fa71" testId="91604f2a-3ffc-a2db-646f-0a028bafefbf" testName="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.CompactLayoutKeepsListOpenAndMakesDetailsAnExplicitToggle" computerName="SULT" duration="00:00:00.0900000" startTime="2026-10-29T00:23:15.6108186+08:00" endTime="2026-10-29T00:23:15.6798192+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="68fc6cd1-81ce-40e1-849e-87ffcad3fa71" />
+    <UnitTestResult executionId="cbfd9c63-1f84-4dcd-a115-048eb2f8df29" testId="95e88d6e-3a72-13d3-f8f8-79a9868c1997" testName="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.NewNotificationDoesNotTakeKeyboardFocusFromSearch" computerName="SULT" duration="00:00:02.5540000" startTime="2026-10-29T00:23:13.0509335+08:00" endTime="2026-10-29T00:23:15.5898187+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cbfd9c63-1f84-4dcd-a115-048eb2f8df29" />
+    <UnitTestResult executionId="29fa0a56-d209-4fbf-a55a-ecb97904f933" testId="a00ff961-84bb-59e1-2c15-5a9d6e89bfd0" testName="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.ReadActionsUseBoundCommandsAndExposeTheirSafetyScopeToAutomation" computerName="SULT" duration="00:00:00.4420000" startTime="2026-10-29T00:23:15.6808202+08:00" endTime="2026-10-29T00:23:16.1218526+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29fa0a56-d209-4fbf-a55a-ecb97904f933" />
+    <UnitTestResult executionId="5806b1d6-222b-4b59-9fab-a5de7a4954c5" testId="c35368ce-bd19-2e84-a56f-ec0af251d1d8" testName="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.ClearFiltersResetsOnlySearchAndFilterSelections" computerName="SULT" duration="00:00:00.3870000" startTime="2026-10-29T00:23:16.1228521+08:00" endTime="2026-10-29T00:23:16.5084792+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5806b1d6-222b-4b59-9fab-a5de7a4954c5" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.ReadActionsUseBoundCommandsAndExposeTheirSafetyScopeToAutomation" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="a00ff961-84bb-59e1-2c15-5a9d6e89bfd0">
+      <Execution id="29fa0a56-d209-4fbf-a55a-ecb97904f933" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests" name="ReadActionsUseBoundCommandsAndExposeTheirSafetyScopeToAutomation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.ClearFiltersResetsOnlySearchAndFilterSelections" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="c35368ce-bd19-2e84-a56f-ec0af251d1d8">
+      <Execution id="5806b1d6-222b-4b59-9fab-a5de7a4954c5" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests" name="ClearFiltersResetsOnlySearchAndFilterSelections" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.CompactLayoutKeepsListOpenAndMakesDetailsAnExplicitToggle" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="91604f2a-3ffc-a2db-646f-0a028bafefbf">
+      <Execution id="68fc6cd1-81ce-40e1-849e-87ffcad3fa71" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests" name="CompactLayoutKeepsListOpenAndMakesDetailsAnExplicitToggle" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.NewNotificationDoesNotTakeKeyboardFocusFromSearch" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="95e88d6e-3a72-13d3-f8f8-79a9868c1997">
+      <Execution id="cbfd9c63-1f84-4dcd-a115-048eb2f8df29" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests" name="NewNotificationDoesNotTakeKeyboardFocusFromSearch" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="91604f2a-3ffc-a2db-646f-0a028bafefbf" executionId="68fc6cd1-81ce-40e1-849e-87ffcad3fa71" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="95e88d6e-3a72-13d3-f8f8-79a9868c1997" executionId="cbfd9c63-1f84-4dcd-a115-048eb2f8df29" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a00ff961-84bb-59e1-2c15-5a9d6e89bfd0" executionId="29fa0a56-d209-4fbf-a55a-ecb97904f933" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c35368ce-bd19-2e84-a56f-ec0af251d1d8" executionId="5806b1d6-222b-4b59-9fab-a5de7a4954c5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.80]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.84]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.37]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

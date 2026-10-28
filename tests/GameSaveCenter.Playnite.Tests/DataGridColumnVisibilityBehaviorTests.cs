@@ -5,6 +5,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
@@ -98,6 +100,66 @@ public sealed class DataGridColumnVisibilityBehaviorTests
                 Assert.True(settings.TryGetDataGridHiddenColumnKeys("save-history", out var otherViewKeys));
                 Assert.Equal(new[] { "note" }, otherViewKeys);
                 Assert.Equal(1, persistCount);
+            }
+        });
+    }
+
+    [Fact]
+    public void ColumnMenuNavigationKeepsEnabledItemsInOrderAndCycles()
+    {
+        RunSta(() =>
+        {
+            var grid = CreateGrid();
+            var button = CreateButtonWithProductionResources();
+            var content = new StackPanel();
+            content.Children.Add(button);
+            content.Children.Add(grid);
+            var window = new Window
+            {
+                Content = content,
+                Width = 640,
+                Height = 420,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+
+            using (var controller = CreateController(grid, button, new GameSaveCenterSettings(), () => { }))
+            {
+                try
+                {
+                    window.Show();
+                    window.Activate();
+                    Assert.True(button.Focus());
+                    Assert.Same(button, Keyboard.FocusedElement);
+                    window.UpdateLayout();
+                    controller.Menu.IsOpen = true;
+                    window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+
+                    var menuItems = controller.Menu.Items.OfType<MenuItem>().ToArray();
+                    Assert.Equal(
+                        new[] { "时间（必要列）", "任务（必要列）", "阶段", "游戏", "备注", "状态（必要列）", "恢复默认列显示" },
+                        menuItems.Select(AutomationProperties.GetName));
+                    var presenter = Assert.Single(FindVisualChildren<ItemsPresenter>(controller.Menu));
+                    Assert.Equal(KeyboardNavigationMode.Cycle, KeyboardNavigation.GetDirectionalNavigation(presenter));
+                    Assert.All(new[] { menuItems[0], menuItems[1], menuItems[5] }, item =>
+                    {
+                        Assert.False(item.IsEnabled);
+                        Assert.True(ToolTipService.GetShowOnDisabled(item));
+                        Assert.False(string.IsNullOrWhiteSpace(AutomationProperties.GetHelpText(item)));
+                    });
+                    Assert.Single(controller.Menu.Items.OfType<Separator>());
+                    Assert.All(menuItems.Where(item => item.IsEnabled), item =>
+                    {
+                        Assert.True(item.Focusable);
+                        Assert.False(string.IsNullOrWhiteSpace(AutomationProperties.GetName(item)));
+                    });
+                }
+                finally
+                {
+                    controller.Menu.IsOpen = false;
+                    window.Close();
+                }
             }
         });
     }
@@ -201,6 +263,18 @@ public sealed class DataGridColumnVisibilityBehaviorTests
     {
         item.IsChecked = isChecked;
         item.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent, item));
+    }
+
+    private static T[] FindVisualChildren<T>(DependencyObject root) where T : DependencyObject
+    {
+        var matches = new List<T>();
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+        {
+            var child = VisualTreeHelper.GetChild(root, index);
+            if (child is T match) matches.Add(match);
+            matches.AddRange(FindVisualChildren<T>(child));
+        }
+        return matches.ToArray();
     }
 
     private static void RunSta(Action action)

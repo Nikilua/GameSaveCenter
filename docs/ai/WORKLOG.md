@@ -1,3 +1,9 @@
+## 2026-10-29 Round5 U07-04/05 行为补充
+
+- 真实列选择菜单定向类5/5：校验必要列禁用说明、UIA名称、稳定次序、可用项焦点能力和生产ItemsPresenter的Cycle配置。当前列菜单无icon/shortcut/submenu数据，不添加占位项。程序化打开Popup后直接Focus MenuItem失败并保留诊断TRX；这不是实体键盘结论。
+- 通知收件箱定向类4/4：真实View/DataGrid在搜索焦点及旧行选中时列表前插新通知，焦点和原选中对象不变。通知DTO无Source字段，本批保留数据契约，U07-05继续进行中。
+- TRX与SHA见Round5 evidence/U07-04-05。未修改生产XAML/资源，因此继承同一生产视图既有双主题Render QA，不重复渲染。物理键盘、Narrator、数据库刷新和Playnite待验；提交/双SDK CI后续记录。
+
 ## 2026-10-29 Round5 U07-03/06 补充行为回归
 
 - 新增真实WPF Tooltip贴工作区下边缘时翻到TextBox上方的几何用例；新增生产Toast host五条通知限额/最新优先/淘汰最旧及中间卡片退出期间稳定顺序和计时器回收用例。生产XAML、共享样式、Binding和业务代码未改。

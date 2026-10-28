@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U07-04/05
+
+列菜单回归覆盖生产资源的 `ItemsPresenter` `KeyboardNavigationMode.Cycle`、稳定项序、禁用必需列UIA说明及可聚焦项，SDK8.0.423定向5/5；通知列表在前插入新项时保留搜索焦点和旧选中行，定向4/4。测试只修改行为用例，不改生产菜单/通知源码。一个直接打开Popup后让MenuItem.Focus的合成探针失败，发现窗口仍把键盘焦点留在Button；保留诊断且不冒充真实按键测试。现有通知契约无Source属性，不要猜测或从标题生成来源。状态、证据和CI应跟随 `docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md` 更新。
+
 ## 2026-10-29 Round5 U07-03/06 补充覆盖
 
 在推送基线 `842557f6` 后，本地补充了生产 Tooltip 主屏工作区底边空间不足时翻到控件上方的实际 Popup 几何断言，以及 Toast 5条限额、新消息置顶、关闭中间卡片时顺序保持和退场计时器回收行为。该批没有生产XAML或资源差异。SDK8.0.423 Release定向结果6通过/0失败/1既有指针移动测试跳过；source validation exit0，WPF静态42文件/0 error/26 warning/179 info。证据见Round5 `evidence/U07-03-06/BASELINE.md`。真实IME、混合DPI多屏、Playnite通知/弹层宿主尚待验；本批提交和双SDKCI待办。继续按2～4项依赖批推进剩余独立任务，不因旧S/T待验阻塞。

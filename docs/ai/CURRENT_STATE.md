@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U07-04/05 补充验证
+
+在 `a89b29db` 后检查真实列选择菜单的稳定次序、必需列UIA说明、可用项以及ItemsPresenter Cycle配置，SDK8.0.423定向5/5；真实通知收件箱在列表首部加入新项不抢搜索焦点并保持旧项选中，定向4/4。新增测试与证据，不改生产XAML/资源/DTO。程序化Popup焦点探针失败是因为调用Focus仍保留在拥有按钮，原TRX已存档，不作为产品缺陷结论。DTO无来源字段，不推断来源，U07-05保持进行中；物理键盘、Playnite、真实数据刷新待验。详见Round5 `evidence/U07-04-05/BASELINE.md`。
+
 ## 2026-10-29 Round5 U07-03/06 补充行为覆盖
 
 在已推送生产基线 `842557f6` 上新增 Tooltip 屏幕工作区底边实际翻转与 Toast 五条上限/最新优先/退出中不重排行为测试；本批仅改测试，不改生产视觉资源。SDK8.0.423 隔离 WPF 定向组6通过、0失败、1项既有系统指针 opt-in 跳过；源码校验通过，WPF静态审查42 XAML/0错误/26既有warning/179 info。TRX与SHA见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U07-03-06/BASELINE.md`。当前测试与文档工作树未提交，双SDK CI待精确提交后查询；实体IME、混合DPI跨屏和Playnite宿主未验。

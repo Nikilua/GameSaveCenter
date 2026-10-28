@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Automation;
+using System.Windows.Input;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
@@ -44,6 +45,62 @@ public sealed class NotificationInboxViewBehaviorTests
                 Assert.Equal("全部时间", data.NotificationTimeFilter);
                 Assert.Contains("不会修改通知记录或已读状态", AutomationProperties.GetHelpText(clear));
                 Assert.Equal(0, data.MarkSelectedExecutions + data.MarkVisibleExecutions + data.ClearReadExecutions);
+            }
+            finally { window.Close(); }
+        });
+    }
+
+    [Fact]
+    public void NewNotificationDoesNotTakeKeyboardFocusFromSearch()
+    {
+        RunSta(() =>
+        {
+            var data = new NotificationInboxData();
+            var selected = new NotificationInboxItem(new NotificationRecordDto
+            {
+                NotificationId = "notice-existing",
+                Title = "当前通知",
+                Summary = "已有通知摘要"
+            });
+            data.NotificationInboxItems.Add(selected);
+            data.SelectedNotification = selected;
+
+            var view = new NotificationInboxView { DataContext = data };
+            var window = new Window
+            {
+                Content = view,
+                Width = 900,
+                Height = 600,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                var search = Assert.IsType<TextBox>(view.FindName("NotificationInboxSearchTextBox"));
+                var grid = Assert.IsType<DataGrid>(view.FindName("NotificationGrid"));
+                grid.UpdateLayout();
+                Assert.True(search.Focus());
+                Keyboard.Focus(search);
+                Assert.Same(search, Keyboard.FocusedElement);
+                Assert.Same(selected, grid.SelectedItem);
+
+                data.NotificationInboxItems.Insert(0, new NotificationInboxItem(new NotificationRecordDto
+                {
+                    NotificationId = "notice-new",
+                    Title = "新到通知",
+                    Summary = "后台增加的通知摘要"
+                }));
+                window.Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() => { }));
+                window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+                grid.UpdateLayout();
+
+                Assert.Same(search, Keyboard.FocusedElement);
+                Assert.Equal("notice-new", data.NotificationInboxItems[0].NotificationId);
+                Assert.Same(selected, grid.SelectedItem);
+                Assert.Equal("notice-existing", ((NotificationInboxItem)grid.SelectedItem!).NotificationId);
             }
             finally { window.Close(); }
         });
