@@ -1,3 +1,12 @@
+## 2026-10-28 Round5 U09-01/02/03 证据回归核对
+
+- 对照U00-01截图与Round5现存前后图；确认U06-07/08有已归档同任务前后图，其他页面尚无足够逐批同数据双主题配对。当前Light/Dark存档页参考图已归档；运行时相对时间由`DateTime.UtcNow`生成，U00与当前图不宣称同数据。
+- 当前生产源码`d4c4357c4e0c256b4fe0248d7efc25ce5badfd18`执行`render-qa.ps1`：RenderHarness Release 0 warning/0 error，退出0，Light/Dark×11尺寸、394 PNG、0 PROBLEM，DPI为1.00逻辑DIP；完整报告及SHA见`evidence/U09-01-03/`和本地`.tmp/round5-u09-01-03/`。
+- SDK8.0.423键盘/焦点/通知/UIA候选组合16/16、0 skip。检查`R21KeyboardNavigationTraceTests`使用WPF `MoveFocus`遍历，`R07`用控件UIA Peer；不代表实体输入、IME、外部UIA或宿主验收。
+- 最新远端run40660226413对SHA `d4c4357c`的baseline job122721119895与SDK10 job122721119553都在`SaveStaleBannerKeepsRetryAndHistoryTableFloor`失败。定位为测试夹具漏`SaveTabIndex`，不是被测生产按钮失效；补默认页签并加强可见/排列/UIA调用检查后，R07 5/5，组合16/16本地候选通过。run/job/artifact及摘要见`evidence/U09-01-03/ci-failure.json`；修复提交的精确SHA与双SDK CI尚待完成。
+- 本阶段自有`.tmp`输出405文件/54,641,150 bytes，保留当前报告及失败诊断；没有删除及空间回收。C/D空闲空间开工与当前读数见`evidence/U09-01-03/BASELINE.md`，不可将变动全归因于本阶段。保留Round3 TRX/TestResults与其他任务输出。
+- U09-01/02/03、U09-06保持进行中；物理DPI/真实Playnite/实体键盘与IME未验。接续先提交测试夹具并精确SHA重跑，再补同数据配图和U09-04时间采样，不改变真实存档恢复、媒体删除或云端写入范围。
+
 ## 2026-10-28 Round5 U08-07/08 局部推进
 
 基线 `9181700f`：通知筛选无结果增加清除搜索/级别/时间并回焦搜索的入口，空态文字复用共享标题与说明样式，保留已读和导航命令。八类页面完成共享资源引用首轮盘点；静态计数不能替代状态和视觉比较。SDK8.0.423 定向 15/15、0 skip；源码/XAML/WPF 静态及双主题 394 图离屏回归通过，基于未提交工作树。真实跳转、键盘/UIA、跨页逐控件及宿主待验，两项仍在进行；见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U08-07-08/BASELINE.md`。新提交 CI 和整轮完整构建安装启动待验。

@@ -1,3 +1,9 @@
+## 2026-10-28 Round5 U09-01/02/03 回归审查续接
+
+U09审查发现 `R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor` 在CI的根因是测试上下文漏掉 `SaveTabIndex`，使被检查的存档重试按钮位于未选中的TabItem中。夹具补默认首页后，控件真实可见，UIA `IInvokeProvider`执行Click；没有删除断言或改产品命令。提交后用精确SHA重跑SDK8定向组，并查询`.github/workflows/windows-build.yml`的SDK基线和SDK10 job。
+
+RenderHarness假数据以`DateTime.UtcNow`生成相对日期；不同运行的截图即使页面、主题、尺寸相同也不能直接作为同数据前后对照。U09-01需要明确采样时间并补足逐批配图；当前样图可用于查看，U00/current图仅作不同源码与样本的参考。Render QA的3840×2160 DIP仍非实体DPI或Playnite宿主证据。真实键盘、IME、外部UIA和旧S/T权限状态按既有边界记录，不重复试探拒绝。
+
 ## 2026-10-28 Round5 U08-07/08 局部推进
 
 基线 `9181700f`：通知筛选无结果增加清除搜索/级别/时间并回焦搜索的入口，空态文字复用共享标题与说明样式，保留已读和导航命令。八类页面完成共享资源引用首轮盘点；静态计数不能替代状态和视觉比较。SDK8.0.423 定向 15/15、0 skip；源码/XAML/WPF 静态及双主题 394 图离屏回归通过，基于未提交工作树。真实跳转、键盘/UIA、跨页逐控件及宿主待验，两项仍在进行；见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U08-07-08/BASELINE.md`。新提交 CI 和整轮完整构建安装启动待验。

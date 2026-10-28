@@ -1,0 +1,48 @@
+{
+  "sourceCommit": "d4c4357c4e0c256b4fe0248d7efc25ce5badfd18",
+  "baselineCommit": "f5cddfe960668fbb06653d553c0a2bf316ce137d",
+  "renderGeneratedLocal": "2026-10-28 16:58:34 +08:00",
+  "renderReport": {
+    "path": ".tmp/round5-u09-01-03/render/render-qa-report.txt",
+    "sha256": "4E5F449D5FAC94FBEB1A43B22B75C0A9F566B8601F7D57EFEB2355E55D8A3118",
+    "bytes": 1159857,
+    "pngCount": 394,
+    "problemCount": 0,
+    "exitCode": 0,
+    "result": "render-qa OK",
+    "dpiScale": 1.0,
+    "themes": ["light", "dark"],
+    "windowDips": ["1040x700", "1100x720", "1280x720", "1366x768", "1536x864", "1600x900", "1707x960", "1920x1080", "2048x1152", "2560x1440", "3840x2160"]
+  },
+  "screenshots": [
+    {
+      "file": "current-save-light-1040x700.png",
+      "theme": "light",
+      "page": "Save",
+      "windowDip": "1040x700",
+      "bytes": 66102,
+      "sha256": "0A5495F212FDB317BFCC8A257543DC4E4CDF254C8958A431B4305C18D69E781A",
+      "baselineFile": "../U00-01/Save-light-1040x700.png",
+      "baselineSha256": "82372E236F678BC579B1514CBCFD150F7FEE071E9AB7732894C825EDAC0C468C",
+      "sameDataVerified": false,
+      "sampleTime": "baseline 昨天 11:28；current 昨天 17:00"
+    },
+    {
+      "file": "current-save-dark-1040x700.png",
+      "theme": "dark",
+      "page": "Save",
+      "windowDip": "1040x700",
+      "bytes": 70634,
+      "sha256": "8CD7911BB36A50FEFC4EBE0778F1B0FC76DE4D415441B48181ECB021CC2B4A12",
+      "baselineFile": "../U00-01/Save-dark-1040x700.png",
+      "baselineSha256": "DFF173ADE2141E2AB2670F268EC1B8D804F684F6B486789E5F4CD6DF5EAEE262",
+      "sameDataVerified": false,
+      "sampleTime": "baseline 昨天 11:28；current 昨天 17:00"
+    }
+  ],
+  "existingPairedEvidence": [
+    "../U06-07-08/render/before.png",
+    "../U06-07-08/render/after.png"
+  ],
+  "comparisonConclusion": "Current light/dark samples are archived for review. U00 baseline pixels differ in both UI and runtime-generated fake timestamps; do not treat this as a same-data before/after pair."
+}

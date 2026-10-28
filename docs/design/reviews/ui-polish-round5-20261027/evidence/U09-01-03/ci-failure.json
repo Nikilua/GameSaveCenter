@@ -1,0 +1,38 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "runId": 40660226413,
+  "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40660226413",
+  "headSha": "d4c4357c4e0c256b4fe0248d7efc25ce5badfd18",
+  "workflow": ".github/workflows/windows-build.yml",
+  "jobs": [
+    {
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "jobId": 122721119895,
+      "conclusion": "failure",
+      "failedTest": "GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor",
+      "artifact": {
+        "id": 12804108513,
+        "name": "GameSaveCenter-build-diagnostics",
+        "sizeBytes": 727440,
+        "sha256": "b3eada3b35d528c4913bd5cde2fdb7dc3a7fdbd5857e8f2540980ee3d975aac7"
+      }
+    },
+    {
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "jobId": 122721119553,
+      "conclusion": "failure",
+      "failedTest": "GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor",
+      "artifact": {
+        "id": 12804446953,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "sizeBytes": 635159,
+        "sha256": "dde371d9327c27f49d0ae271d910c82bd71f996f0db2ecb6a4f8c63255d7597f"
+      }
+    }
+  ],
+  "diagnosis": "Both SDKs failed the UIA retry assertion because SaveBannerContext omitted SaveTabIndex, leaving the WPF tab content unselected and the button IsVisible=false. The test fixture now initializes SaveTabIndex=0 and asserts visibility and arranged area before invoking the UIA peer.",
+  "repairStatus": "local candidate passed R07 class 5/5 and combined keyboard/focus/UIA batch 16/16 with 0 skip on SDK 8.0.423; repaired commit CI pending",
+  "actions": "No assertions were removed; no skip was added; no workflow or branch protection was changed."
+}

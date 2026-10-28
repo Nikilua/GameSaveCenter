@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="95c83cf7-161d-44d7-bf0f-70ac45e30210" name="lopmatu@SULT 2026-10-28 20:13:37" runUser="redacted" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-28T20:13:37.3152963+08:00" queuing="2026-10-28T20:13:37.3152967+08:00" start="2026-10-28T20:13:31.2339946+08:00" finish="2026-10-28T20:14:04.2154454+08:00" />
+  <TestSettings name="default" id="86373508-2702-4032-b4c0-17d1f5ac4a5a">
+    <Deployment runDeploymentRoot="redacted" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="325ad412-d78b-4abd-870a-d99517dc148d" testId="54a70533-7577-b28d-d456-6e926d72bf2e" testName="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests.LoadMoreButtonIsNotKeyboardReachableWhenTaskHistoryIsExhausted" computerName="redacted" duration="00:00:00.6110000" startTime="2026-10-28T20:13:40.7647129+08:00" endTime="2026-10-28T20:13:41.3749150+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="325ad412-d78b-4abd-870a-d99517dc148d" />
+    <UnitTestResult executionId="c036ca54-a070-47d4-ae11-61281d169d25" testId="53e2bd33-550c-6dde-3528-eea3446509b3" testName="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests.ShellNavigationAndSettingsEntryHaveStableKeyboardAutomationNames" computerName="redacted" duration="00:00:00.2550000" startTime="2026-10-28T20:13:41.3769149+08:00" endTime="2026-10-28T20:13:41.6297662+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c036ca54-a070-47d4-ae11-61281d169d25" />
+    <UnitTestResult executionId="cc7304b7-a78e-444f-902c-89d8def649ab" testId="2fbc98c4-552a-47dd-91ef-0756965c8955" testName="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests.TaskPageLoadingCompletionReplacesTheReadableStatusSurface" computerName="redacted" duration="00:00:00.3810000" startTime="2026-10-28T20:13:40.3820007+08:00" endTime="2026-10-28T20:13:40.7627121+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc7304b7-a78e-444f-902c-89d8def649ab" />
+    <UnitTestResult executionId="841c1ff4-ae2d-48b0-9f4a-8ab3b6c62fe5" testId="a00ff961-84bb-59e1-2c15-5a9d6e89bfd0" testName="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.ReadActionsUseBoundCommandsAndExposeTheirSafetyScopeToAutomation" computerName="redacted" duration="00:00:01.5340000" startTime="2026-10-28T20:13:37.0676425+08:00" endTime="2026-10-28T20:13:38.5888138+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="841c1ff4-ae2d-48b0-9f4a-8ab3b6c62fe5" />
+    <UnitTestResult executionId="b637dfba-0674-446b-be12-0b1804350f6b" testId="2c8cbaaa-cd9e-202c-0f4a-d5ad391a2246" testName="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.MaintenanceStaleBannerAndSafeModeKeepExplicitRecoveryActions" computerName="redacted" duration="00:00:00.3850000" startTime="2026-10-28T20:13:45.2465239+08:00" endTime="2026-10-28T20:13:45.6295395+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b637dfba-0674-446b-be12-0b1804350f6b" />
+    <UnitTestResult executionId="2fb4a716-d95f-47e5-a9cc-c2a10fdeb99e" testId="0c876211-66f4-2c5c-9e96-07a22446773e" testName="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests.SelectedFailedTaskKeepsFiltersTableDetailsAndFooterInKeyboardOrder" computerName="redacted" duration="00:00:00.5800000" startTime="2026-10-28T20:13:44.4260496+08:00" endTime="2026-10-28T20:13:44.9969431+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2fb4a716-d95f-47e5-a9cc-c2a10fdeb99e">
+      <Output>
+        <StdOut>TaskCenter failed selection forward=[搜索任务 &gt; 清除任务搜索 &gt; 任务状态筛选 &gt; 任务类型筛选 &gt; 任务范围 &gt; 任务时间范围 &gt; 刷新任务列表 &gt; 任务筛选预设 &gt; 应用任务筛选预设 &gt; 任务筛选预设名称 &gt; 保存任务筛选预设 &gt; 重命名任务筛选预设 &gt; 删除任务筛选预设 &gt; 任务表格视图 &gt; 任务表格视图名称 &gt; 保存当前任务表格视图 &gt; 另存任务表格视图副本 &gt; 重命名任务表格视图 &gt; 删除任务表格视图 &gt; 任务游戏筛选 &gt; 打开人工待办清单 &gt; 批量重试当前结果中的可恢复任务 &gt; Button &gt; 设置任务列表显示列 &gt; 预览任务表格布局重置范围 &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; HeaderSite &gt; 任务可选择技术详情 &gt; 查看关联游戏详情 &gt; 复制任务摘要和错误码 &gt; 安全重试任务 &gt; 将所选后台任务加入待办] reverse=[搜索任务 &gt; 将所选后台任务加入待办 &gt; 安全重试任务 &gt; 复制任务摘要和错误码 &gt; 查看关联游戏详情 &gt; 任务可选择技术详情 &gt; HeaderSite &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; DataGridCell &gt; 预览任务表格布局重置范围 &gt; 设置任务列表显示列 &gt; Button &gt; 批量重试当前结果中的可恢复任务 &gt; 打开人工待办清单 &gt; 任务游戏筛选 &gt; 删除任务表格视图 &gt; 重命名任务表格视图 &gt; 另存任务表格视图副本 &gt; 保存当前任务表格视图 &gt; 任务表格视图名称 &gt; 任务表格视图 &gt; 删除任务筛选预设 &gt; 重命名任务筛选预设 &gt; 保存任务筛选预设 &gt; 任务筛选预设名称 &gt; 应用任务筛选预设 &gt; 任务筛选预设 &gt; 刷新任务列表 &gt; 任务时间范围 &gt; 任务范围 &gt; 任务类型筛选 &gt; 任务状态筛选 &gt; 清除任务搜索] visible-interactive=[搜索任务, 清除任务搜索, 任务状态筛选, 任务类型筛选, 任务范围, 任务时间范围, 刷新任务列表, 任务筛选预设, 应用任务筛选预设, 任务筛选预设名称, 保存任务筛选预设, 重命名任务筛选预设, 删除任务筛选预设, 任务表格视图, 任务表格视图名称, 保存当前任务表格视图, 另存任务表格视图副本, 重命名任务表格视图, 删除任务表格视图, 任务游戏筛选, 打开人工待办清单, 批量重试当前结果中的可恢复任务, Button, 设置任务列表显示列, 预览任务表格布局重置范围, HeaderSite, 任务可选择技术详情, 查看关联游戏详情, 复制任务摘要和错误码, 安全重试任务, 将所选后台任务加入待办, 任务列表] expected=[搜索任务, 任务状态筛选, 任务列表, 任务可选择技术详情, 安全重试任务]&#xD;
+selected=keyboard-failed; rows=3; failed details present=True; retry enabled=True; cancel enabled=False; selected row cell reached both ways=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9e81e2ad-9865-49e5-9717-6622a910d71c" testId="c35368ce-bd19-2e84-a56f-ec0af251d1d8" testName="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.ClearFiltersResetsOnlySearchAndFilterSelections" computerName="redacted" duration="00:00:00.4810000" startTime="2026-10-28T20:13:38.5908103+08:00" endTime="2026-10-28T20:13:39.0635163+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e81e2ad-9865-49e5-9717-6622a910d71c" />
+    <UnitTestResult executionId="308acc5f-9b9b-4894-aa6b-82d814e330f4" testId="444bb4d6-4a39-04ae-a53c-3072092e95e3" testName="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.EmptyTaskFailureKeepsTheFailurePresenterReachable" computerName="redacted" duration="00:00:00.2470000" startTime="2026-10-28T20:13:44.9999471+08:00" endTime="2026-10-28T20:13:45.2445238+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="308acc5f-9b9b-4894-aa6b-82d814e330f4" />
+    <UnitTestResult executionId="d1e2825f-5847-4ed6-8041-9d9c6419dc26" testId="321433fa-b200-1827-b205-72f336f0f9e5" testName="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.TaskEmptyFilterEmptyAndErrorUseDistinctActionsWithoutRefreshingOnClear" computerName="redacted" duration="00:00:00.2460000" startTime="2026-10-28T20:13:45.9054600+08:00" endTime="2026-10-28T20:13:46.1363883+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d1e2825f-5847-4ed6-8041-9d9c6419dc26" />
+    <UnitTestResult executionId="fb91f219-bb02-4f49-b3da-6b402d4e5cb8" testId="4223d7c0-f057-7365-24b7-dd0c8a42c171" testName="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor" computerName="redacted" duration="00:00:00.2620000" startTime="2026-10-28T20:13:45.6315402+08:00" endTime="2026-10-28T20:13:45.8904644+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fb91f219-bb02-4f49-b3da-6b402d4e5cb8" />
+    <UnitTestResult executionId="0ca4013e-2262-4dcb-88ba-95d5bbdc86a3" testId="91604f2a-3ffc-a2db-646f-0a028bafefbf" testName="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.CompactLayoutKeepsListOpenAndMakesDetailsAnExplicitToggle" computerName="redacted" duration="00:00:01.2870000" startTime="2026-10-28T20:13:35.7788502+08:00" endTime="2026-10-28T20:13:37.0486401+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0ca4013e-2262-4dcb-88ba-95d5bbdc86a3" />
+    <UnitTestResult executionId="ee3599df-cd28-43b0-89a8-4b27c3e005c2" testId="33412565-e202-3605-2eca-d95c88a151c4" testName="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests.TerminalToastIsReadableWithoutTakingFocus" computerName="redacted" duration="00:00:00.3740000" startTime="2026-10-28T20:13:40.0160304+08:00" endTime="2026-10-28T20:13:40.3809997+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee3599df-cd28-43b0-89a8-4b27c3e005c2" />
+    <UnitTestResult executionId="3279968d-c003-431b-9eab-6b7f72a7d3e5" testId="f1629e0f-a7b1-91de-b3e3-69971a31fabd" testName="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests.EightProductionEntrancesRecordForwardAndReverseKeyboardFocusTraces" computerName="redacted" duration="00:00:02.7870000" startTime="2026-10-28T20:13:41.6397690+08:00" endTime="2026-10-28T20:13:44.4200554+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3279968d-c003-431b-9eab-6b7f72a7d3e5">
+      <Output>
+        <StdOut>Dashboard Shell forward=[当前插件版本 &gt; 打开首页 &gt; 打开存档中心 &gt; 打开修改器中心 &gt; 打开媒体中心 &gt; 打开任务中心 &gt; 打开通知收件箱 &gt; 打开维护中心 &gt; 打开 GameSaveCenter 设置 &gt; 收起导航栏 &gt; 选择当前游戏 &gt; ContentControl &gt; 搜索命令 &gt; 显示键盘操作 &gt; 刷新 &gt; 同步媒体 &gt; 立即备份当前游戏 &gt; 备份全部游戏] reverse=[当前插件版本 &gt; 备份全部游戏 &gt; 立即备份当前游戏 &gt; 同步媒体 &gt; 刷新 &gt; 显示键盘操作 &gt; 搜索命令 &gt; ContentControl &gt; 选择当前游戏 &gt; 收起导航栏 &gt; 打开 GameSaveCenter 设置 &gt; 打开维护中心 &gt; 打开通知收件箱 &gt; 打开任务中心 &gt; 打开媒体中心 &gt; 打开修改器中心 &gt; 打开存档中心 &gt; 打开首页] visible-interactive=[当前插件版本, 打开首页, 打开存档中心, 打开修改器中心, 打开媒体中心, 打开任务中心, 打开通知收件箱, 打开维护中心, 打开 GameSaveCenter 设置, 收起导航栏, 选择当前游戏, 搜索命令, 显示键盘操作, 刷新, 同步媒体, 立即备份当前游戏, 备份全部游戏] expected=[打开首页, 打开存档中心, 打开修改器中心, 打开媒体中心, 打开任务中心, 打开维护中心, 打开 GameSaveCenter 设置]&#xD;
+Overview forward=[刷新概览 &gt; 备份全部游戏 &gt; 同步媒体 &gt; Button &gt; 查看最近访问 &gt; 查看最近游玩但未受保护的游戏 &gt; 为所选最近游玩游戏启用推荐保护 &gt; ItemsControl &gt; 打开维护中心查看完整关注详情] reverse=[刷新概览 &gt; 打开维护中心查看完整关注详情 &gt; ItemsControl &gt; 为所选最近游玩游戏启用推荐保护 &gt; 查看最近游玩但未受保护的游戏 &gt; 查看最近访问 &gt; Button &gt; 同步媒体 &gt; 备份全部游戏] visible-interactive=[刷新概览, 备份全部游戏, 同步媒体, Button, 查看最近访问, 查看最近游玩但未受保护的游戏, 为所选最近游玩游戏启用推荐保护, 打开维护中心查看完整关注详情] expected=[刷新概览, 备份全部游戏, 同步媒体]&#xD;
+SaveCenter forward=[TabControl &gt; 立即扫描存档路径 &gt; 预览当前游戏备份范围 &gt; 重新校验存档路径 &gt; 重新加载存档详情 &gt; 历史版本日期范围 &gt; 清空历史版本日期范围 &gt; 跳到最近历史版本 &gt; 跳到较早历史版本 &gt; 加载更早的备份历史 &gt; 设置存档历史表格显示列 &gt; 存档历史表格视图 &gt; 存档历史视图名称 &gt; 保存当前存档历史视图 &gt; 另存存档历史视图副本 &gt; 重命名存档历史视图 &gt; 删除存档历史视图 &gt; 预览存档历史布局重置范围 &gt; TextBlock &gt; TabItem] reverse=[TabControl &gt; TextBlock &gt; 预览存档历史布局重置范围 &gt; 删除存档历史视图 &gt; 重命名存档历史视图 &gt; 另存存档历史视图副本 &gt; 保存当前存档历史视图 &gt; 存档历史视图名称 &gt; 存档历史表格视图 &gt; 设置存档历史表格显示列 &gt; 加载更早的备份历史 &gt; 跳到较早历史版本 &gt; 跳到最近历史版本 &gt; 清空历史版本日期范围 &gt; 历史版本日期范围 &gt; 重新加载存档详情 &gt; 重新校验存档路径 &gt; 预览当前游戏备份范围 &gt; 立即扫描存档路径 &gt; TabItem] visible-interactive=[立即扫描存档路径, 预览当前游戏备份范围, 重新校验存档路径, 重新加载存档详情, 历史版本日期范围, 清空历史版本日期范围, 跳到最近历史版本, 跳到较早历史版本, 加载更早的备份历史, 设置存档历史表格显示列, 存档历史表格视图, 存档历史视图名称, 保存当前存档历史视图, 另存存档历史视图副本, 重命名存档历史视图, 删除存档历史视图, 预览存档历史布局重置范围] expected=[立即扫描存档路径, 重新校验存档路径, 重新加载存档详情]&#xD;
+TrainerCenter forward=[TabControl &gt; TabItem &gt; ContentControl &gt; 导入修改器 &gt; 导入工具目录 &gt; 导入 Cheat Table &gt; 添加工具启动项] reverse=[TabControl &gt; 添加工具启动项 &gt; 导入 Cheat Table &gt; 导入工具目录 &gt; 导入修改器 &gt; ContentControl &gt; TabItem] visible-interactive=[导入修改器, 导入工具目录, 导入 Cheat Table, 添加工具启动项] expected=[导入修改器]&#xD;
+MediaCenter forward=[MediaTabControl &gt; 重置媒体收件箱表格列宽 &gt; 媒体收件箱视图 &gt; 归类所选媒体 &gt; 媒体筛选预设 &gt; 应用媒体筛选预设 &gt; 媒体筛选预设名称 &gt; 保存媒体筛选预设 &gt; 重命名媒体筛选预设 &gt; 删除媒体筛选预设 &gt; TextBlock &gt; 打开媒体归类批次历史 &gt; 忽略所选媒体 &gt; Button &gt; Button &gt; Button &gt; TabItem] reverse=[MediaTabControl &gt; Button &gt; Button &gt; Button &gt; 忽略所选媒体 &gt; 打开媒体归类批次历史 &gt; TextBlock &gt; 删除媒体筛选预设 &gt; 重命名媒体筛选预设 &gt; 保存媒体筛选预设 &gt; 媒体筛选预设名称 &gt; 应用媒体筛选预设 &gt; 媒体筛选预设 &gt; 归类所选媒体 &gt; 媒体收件箱视图 &gt; 重置媒体收件箱表格列宽 &gt; TabItem] visible-interactive=[重置媒体收件箱表格列宽, 媒体收件箱视图, 归类所选媒体, 媒体筛选预设, 应用媒体筛选预设, 媒体筛选预设名称, 保存媒体筛选预设, 重命名媒体筛选预设, 删除媒体筛选预设, 打开媒体归类批次历史, 忽略所选媒体, Button, Button, Button] expected=[打开媒体归类批次历史]&#xD;
+TaskCenter forward=[搜索任务 &gt; 任务状态筛选 &gt; 任务类型筛选 &gt; 任务范围 &gt; 任务时间范围 &gt; 刷新任务列表 &gt; 任务筛选预设 &gt; 应用任务筛选预设 &gt; 任务筛选预设名称 &gt; 保存任务筛选预设 &gt; 重命名任务筛选预设 &gt; 删除任务筛选预设 &gt; 任务表格视图 &gt; 任务表格视图名称 &gt; 保存当前任务表格视图 &gt; 另存任务表格视图副本 &gt; 重命名任务表格视图 &gt; 删除任务表格视图 &gt; 打开人工待办清单 &gt; 批量重试当前结果中的可恢复任务 &gt; 设置任务列表显示列 &gt; 预览任务表格布局重置范围] reverse=[搜索任务 &gt; 预览任务表格布局重置范围 &gt; 设置任务列表显示列 &gt; 批量重试当前结果中的可恢复任务 &gt; 打开人工待办清单 &gt; 删除任务表格视图 &gt; 重命名任务表格视图 &gt; 另存任务表格视图副本 &gt; 保存当前任务表格视图 &gt; 任务表格视图名称 &gt; 任务表格视图 &gt; 删除任务筛选预设 &gt; 重命名任务筛选预设 &gt; 保存任务筛选预设 &gt; 任务筛选预设名称 &gt; 应用任务筛选预设 &gt; 任务筛选预设 &gt; 刷新任务列表 &gt; 任务时间范围 &gt; 任务范围 &gt; 任务类型筛选 &gt; 任务状态筛选] visible-interactive=[搜索任务, 任务状态筛选, 任务类型筛选, 任务范围, 任务时间范围, 刷新任务列表, 任务筛选预设, 应用任务筛选预设, 任务筛选预设名称, 保存任务筛选预设, 重命名任务筛选预设, 删除任务筛选预设, 任务表格视图, 任务表格视图名称, 保存当前任务表格视图, 另存任务表格视图副本, 重命名任务表格视图, 删除任务表格视图, 打开人工待办清单, 批量重试当前结果中的可恢复任务, 设置任务列表显示列, 预览任务表格布局重置范围] expected=[搜索任务, 刷新任务列表]&#xD;
+Maintenance forward=[MaintenanceTabControl &gt; TabItem &gt; 刷新诊断 &gt; ItemsControl &gt; TabItem] reverse=[MaintenanceTabControl &gt; ItemsControl &gt; 刷新诊断 &gt; TabItem &gt; TabItem] visible-interactive=[刷新诊断] expected=[刷新维护状态, 刷新诊断]&#xD;
+Settings forward=[搜索设置 &gt; HeaderSite &gt; 选择要恢复默认的单个设置字段 &gt; 恢复选中的单个设置字段默认值 &gt; 恢复全部安全设置默认值 &gt; ListBoxItem &gt; Card &gt; 恢复常规与目录安全设置默认值 &gt; 选择当前路径字段 &gt; 浏览并替换当前路径 &gt; 校验当前路径 &gt; 打开当前有效路径 &gt; 复制当前完整路径 &gt; Worker 可执行文件路径 &gt; Ludusavi 可执行文件路径 &gt; 存档目录 &gt; Rclone 可执行文件路径 &gt; 云端目标 &gt; 媒体目录 &gt; CheckBox &gt; 本地镜像目录] reverse=[搜索设置 &gt; 本地镜像目录 &gt; CheckBox &gt; 媒体目录 &gt; 云端目标 &gt; Rclone 可执行文件路径 &gt; 存档目录 &gt; Ludusavi 可执行文件路径 &gt; Worker 可执行文件路径 &gt; 复制当前完整路径 &gt; 打开当前有效路径 &gt; 校验当前路径 &gt; 浏览并替换当前路径 &gt; 选择当前路径字段 &gt; 恢复常规与目录安全设置默认值 &gt; Card &gt; ListBoxItem &gt; 恢复全部安全设置默认值 &gt; 恢复选中的单个设置字段默认值 &gt; 选择要恢复默认的单个设置字段 &gt; HeaderSite] visible-interactive=[搜索设置, HeaderSite, 选择要恢复默认的单个设置字段, 恢复选中的单个设置字段默认值, 恢复全部安全设置默认值, 恢复常规与目录安全设置默认值, 选择当前路径字段, 浏览并替换当前路径, 校验当前路径, 打开当前有效路径, 复制当前完整路径, Worker 可执行文件路径, Ludusavi 可执行文件路径, 存档目录, Rclone 可执行文件路径, 云端目标, 媒体目录, CheckBox, 本地镜像目录] expected=[搜索设置, 设置分类导航]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="aad02907-a81b-4fa4-b3af-d2d53b41fecd" testId="24784125-168b-e6a3-e5f4-3418cda16bdd" testName="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" computerName="redacted" duration="00:00:00.4190000" startTime="2026-10-28T20:13:39.5888394+08:00" endTime="2026-10-28T20:13:40.0130299+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aad02907-a81b-4fa4-b3af-d2d53b41fecd" />
+    <UnitTestResult executionId="9614db7c-1077-4fdc-82d0-676bee9165fa" testId="656cb48b-6117-db47-8114-749aedae68d4" testName="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" computerName="redacted" duration="00:00:00.5190000" startTime="2026-10-28T20:13:39.0695168+08:00" endTime="2026-10-28T20:13:39.5878429+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9614db7c-1077-4fdc-82d0-676bee9165fa" />
+    <UnitTestResult executionId="b7d2471d-d724-4a41-b085-e3dc33c05781" testId="28105252-0dc9-3d9c-2e87-9d5c43390e01" testName="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.TaskFailureWithRetainedRowsKeepsRetryBannerAndTableViewport" computerName="redacted" duration="00:00:00.2630000" startTime="2026-10-28T20:13:46.1383886+08:00" endTime="2026-10-28T20:13:46.3998626+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b7d2471d-d724-4a41-b085-e3dc33c05781" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests.EightProductionEntrancesRecordForwardAndReverseKeyboardFocusTraces" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="f1629e0f-a7b1-91de-b3e3-69971a31fabd">
+      <Execution id="3279968d-c003-431b-9eab-6b7f72a7d3e5" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests" name="EightProductionEntrancesRecordForwardAndReverseKeyboardFocusTraces" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests.TaskPageLoadingCompletionReplacesTheReadableStatusSurface" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="2fbc98c4-552a-47dd-91ef-0756965c8955">
+      <Execution id="cc7304b7-a78e-444f-902c-89d8def649ab" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests" name="TaskPageLoadingCompletionReplacesTheReadableStatusSurface" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.ReadActionsUseBoundCommandsAndExposeTheirSafetyScopeToAutomation" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="a00ff961-84bb-59e1-2c15-5a9d6e89bfd0">
+      <Execution id="841c1ff4-ae2d-48b0-9f4a-8ab3b6c62fe5" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests" name="ReadActionsUseBoundCommandsAndExposeTheirSafetyScopeToAutomation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests.TerminalToastIsReadableWithoutTakingFocus" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="33412565-e202-3605-2eca-d95c88a151c4">
+      <Execution id="ee3599df-cd28-43b0-89a8-4b27c3e005c2" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests" name="TerminalToastIsReadableWithoutTakingFocus" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.ClearFiltersResetsOnlySearchAndFilterSelections" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="c35368ce-bd19-2e84-a56f-ec0af251d1d8">
+      <Execution id="9e81e2ad-9865-49e5-9717-6622a910d71c" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests" name="ClearFiltersResetsOnlySearchAndFilterSelections" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.TaskFailureWithRetainedRowsKeepsRetryBannerAndTableViewport" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="28105252-0dc9-3d9c-2e87-9d5c43390e01">
+      <Execution id="b7d2471d-d724-4a41-b085-e3dc33c05781" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests" name="TaskFailureWithRetainedRowsKeepsRetryBannerAndTableViewport" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests.LoadMoreButtonIsNotKeyboardReachableWhenTaskHistoryIsExhausted" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="54a70533-7577-b28d-d456-6e926d72bf2e">
+      <Execution id="325ad412-d78b-4abd-870a-d99517dc148d" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests" name="LoadMoreButtonIsNotKeyboardReachableWhenTaskHistoryIsExhausted" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests.ShellNavigationAndSettingsEntryHaveStableKeyboardAutomationNames" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="53e2bd33-550c-6dde-3528-eea3446509b3">
+      <Execution id="c036ca54-a070-47d4-ae11-61281d169d25" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests" name="ShellNavigationAndSettingsEntryHaveStableKeyboardAutomationNames" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="24784125-168b-e6a3-e5f4-3418cda16bdd">
+      <Execution id="aad02907-a81b-4fa4-b3af-d2d53b41fecd" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests" name="SelectedTabAndInvalidTextBoxKeepFocusRingOutsideStateChromeAndRecoverAfterError" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.MaintenanceStaleBannerAndSafeModeKeepExplicitRecoveryActions" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="2c8cbaaa-cd9e-202c-0f4a-d5ad391a2246">
+      <Execution id="b637dfba-0674-446b-be12-0b1804350f6b" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests" name="MaintenanceStaleBannerAndSafeModeKeepExplicitRecoveryActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests.CompactLayoutKeepsListOpenAndMakesDetailsAnExplicitToggle" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="91604f2a-3ffc-a2db-646f-0a028bafefbf">
+      <Execution id="0ca4013e-2262-4dcb-88ba-95d5bbdc86a3" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests" name="CompactLayoutKeepsListOpenAndMakesDetailsAnExplicitToggle" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.EmptyTaskFailureKeepsTheFailurePresenterReachable" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="444bb4d6-4a39-04ae-a53c-3072092e95e3">
+      <Execution id="308acc5f-9b9b-4894-aa6b-82d814e330f4" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests" name="EmptyTaskFailureKeepsTheFailurePresenterReachable" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests.FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="656cb48b-6117-db47-8114-749aedae68d4">
+      <Execution id="9614db7c-1077-4fdc-82d0-676bee9165fa" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests" name="FocusedPrimaryButtonKeepsRoundedOverlayAndSharedFocusRingWithNegativeBlurredState" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests.SelectedFailedTaskKeepsFiltersTableDetailsAndFooterInKeyboardOrder" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="0c876211-66f4-2c5c-9e96-07a22446773e">
+      <Execution id="2fb4a716-d95f-47e5-a9cc-c2a10fdeb99e" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests" name="SelectedFailedTaskKeepsFiltersTableDetailsAndFooterInKeyboardOrder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="4223d7c0-f057-7365-24b7-dd0c8a42c171">
+      <Execution id="fb91f219-bb02-4f49-b3da-6b402d4e5cb8" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests" name="SaveStaleBannerKeepsRetryAndHistoryTableFloor" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.TaskEmptyFilterEmptyAndErrorUseDistinctActionsWithoutRefreshingOnClear" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="321433fa-b200-1827-b205-72f336f0f9e5">
+      <Execution id="d1e2825f-5847-4ed6-8041-9d9c6419dc26" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests" name="TaskEmptyFilterEmptyAndErrorUseDistinctActionsWithoutRefreshingOnClear" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="54a70533-7577-b28d-d456-6e926d72bf2e" executionId="325ad412-d78b-4abd-870a-d99517dc148d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="53e2bd33-550c-6dde-3528-eea3446509b3" executionId="c036ca54-a070-47d4-ae11-61281d169d25" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2fbc98c4-552a-47dd-91ef-0756965c8955" executionId="cc7304b7-a78e-444f-902c-89d8def649ab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a00ff961-84bb-59e1-2c15-5a9d6e89bfd0" executionId="841c1ff4-ae2d-48b0-9f4a-8ab3b6c62fe5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2c8cbaaa-cd9e-202c-0f4a-d5ad391a2246" executionId="b637dfba-0674-446b-be12-0b1804350f6b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0c876211-66f4-2c5c-9e96-07a22446773e" executionId="2fb4a716-d95f-47e5-a9cc-c2a10fdeb99e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c35368ce-bd19-2e84-a56f-ec0af251d1d8" executionId="9e81e2ad-9865-49e5-9717-6622a910d71c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="444bb4d6-4a39-04ae-a53c-3072092e95e3" executionId="308acc5f-9b9b-4894-aa6b-82d814e330f4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="321433fa-b200-1827-b205-72f336f0f9e5" executionId="d1e2825f-5847-4ed6-8041-9d9c6419dc26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4223d7c0-f057-7365-24b7-dd0c8a42c171" executionId="fb91f219-bb02-4f49-b3da-6b402d4e5cb8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="91604f2a-3ffc-a2db-646f-0a028bafefbf" executionId="0ca4013e-2262-4dcb-88ba-95d5bbdc86a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33412565-e202-3605-2eca-d95c88a151c4" executionId="ee3599df-cd28-43b0-89a8-4b27c3e005c2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f1629e0f-a7b1-91de-b3e3-69971a31fabd" executionId="3279968d-c003-431b-9eab-6b7f72a7d3e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="24784125-168b-e6a3-e5f4-3418cda16bdd" executionId="aad02907-a81b-4fa4-b3af-d2d53b41fecd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="656cb48b-6117-db47-8114-749aedae68d4" executionId="9614db7c-1077-4fdc-82d0-676bee9165fa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="28105252-0dc9-3d9c-2e87-9d5c43390e01" executionId="b7d2471d-d724-4a41-b085-e3dc33c05781" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="16" executed="16" passed="16" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.31]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.38]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:14.08]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -182,14 +182,25 @@ public sealed class R07StatusBannerBudgetBehaviorTests
                 PumpLayout(window);
 
                 var banner = (Border)view.FindName("SaveDetailsStaleBanner")!;
+                var frame = (Border)view.FindName("SaveHistoryTableFrame")!;
+                var layout = (Grid)view.FindName("SaveHistoryLayout")!;
+                var summary = (Border)view.FindName("SaveHistorySummaryCard")!;
+                var summaryGrid = (Grid)view.FindName("SaveHistorySummaryGrid")!;
+                var summaryContent = (StackPanel)view.FindName("SaveHistorySummaryContentStack")!;
+                var pageScroll = (ScrollViewer)view.FindName("SaveHistoryPageScrollViewer")!;
                 var grid = (DataGrid)view.FindName("SaveHistoryGrid")!;
                 var retry = FindVisualChildren<WpfButton>(banner).Single(button => Equals(button.Content, "重试"));
 
                 Assert.Single(FindVisualChildren<WpfButton>(banner));
                 Assert.Equal(Visibility.Visible, banner.Visibility);
+                Assert.True(banner.ActualHeight > 0,
+                    $"Save stale banner has no arranged area: actual={banner.ActualHeight:0.##}, visible={banner.IsVisible}, visibility={banner.Visibility}, summary={summary.ActualHeight:0.##}, summaryGrid={summaryGrid.ActualHeight:0.##}, stack={summaryContent.ActualHeight:0.##}, layout={layout.ActualHeight:0.##}/{layout.MinHeight:0.##}, frame={frame.ActualHeight:0.##}, page={pageScroll.ActualHeight:0.##}");
                 Assert.Same(state.LoadDetailsCommand, retry.Command);
                 Assert.True(grid.MinHeight >= 236);
-                Assert.True(grid.ActualHeight >= grid.MinHeight - 1);
+                Assert.True(grid.ActualHeight >= grid.MinHeight - 1,
+                    $"Save history table floor: grid={grid.ActualHeight:0.##}/{grid.MinHeight:0.##}, frame={frame.ActualHeight:0.##}, page={pageScroll.ActualHeight:0.##}, viewport={pageScroll.ViewportHeight:0.##}, extent={pageScroll.ExtentHeight:0.##}, banner={banner.ActualHeight:0.##}");
+                Assert.True(retry.IsEnabled, $"Save retry button disabled: type={retry.GetType().FullName}, visible={retry.IsVisible}, loaded={retry.IsLoaded}, canExecute={retry.Command?.CanExecute(retry.CommandParameter)}");
+                Assert.True(retry.IsVisible, $"Save retry button not visible: type={retry.GetType().FullName}, enabled={retry.IsEnabled}, loaded={retry.IsLoaded}");
                 Assert.Equal(1, InvokeButton(retry));
                 Assert.Equal(1, state.LoadDetailsCommand.ExecuteCount);
             }
@@ -383,6 +394,7 @@ public sealed class R07StatusBannerBudgetBehaviorTests
     {
         public ObservableCollection<BackupVersionDto> Backups { get; } = new ObservableCollection<BackupVersionDto>();
         public ObservableCollection<SavePathCandidateDto> SaveCandidates { get; } = new ObservableCollection<SavePathCandidateDto>();
+        public int SaveTabIndex { get; set; }
         public object? SelectedGame => null;
         public object? SelectedBackup { get; set; }
         public object? SelectedCandidate { get; set; }

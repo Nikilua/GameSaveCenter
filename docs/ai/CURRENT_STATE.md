@@ -1,3 +1,11 @@
+## 2026-10-28 Round5 U09-01/02/03 当前回归审查
+
+当前生产源码基线 `d4c4357c4e0c256b4fe0248d7efc25ce5badfd18`。U09 Render QA 报告为双主题×11个窗口尺寸、394 PNG、0 PROBLEM、逻辑DPI 1.00；当前存档页Light/Dark 1040×700图已保留。U00基线与当前图使用运行时UTC假时间且页文案/工具栏已变化，不能当作同数据前后图；逐批前后截图缺口仍在。
+
+SDK8.0.423键盘/焦点/UIA候选组合16/16、0 skip；修复R07测试夹具缺少SaveTabIndex导致页面未选中的问题，未动生产页面或业务命令。对MoveFocus合成遍历、控件AutomationPeer的测试不等于实体键盘、IME、外部UIA客户端或Playnite宿主验收。精确修复提交和双SDKCI待推送/核对，CI前一SHA `d4c4357c` 的baseline/SDK10 job都因该夹具问题失败，原始身份见Round5 `evidence/U09-01-03/ci-failure.json`。
+
+证据：[U09-01/02/03](../design/reviews/ui-polish-round5-20261027/evidence/U09-01-03/BASELINE.md)。接续先提交并精确SHA重跑，再推进同数据截图夹具与U09-04动画测量；不等待旧S/T宿主或权限状态。完整中文安装启动链和独立`scripts/build.cmd`仍是整轮最终门禁。
+
 ## 2026-10-28 Round5 U08-07/08 局部推进
 
 基线 `9181700f`：通知筛选无结果增加清除搜索/级别/时间并回焦搜索的入口，空态文字复用共享标题与说明样式，保留已读和导航命令。八类页面完成共享资源引用首轮盘点；静态计数不能替代状态和视觉比较。SDK8.0.423 定向 15/15、0 skip；源码/XAML/WPF 静态及双主题 394 图离屏回归通过，基于未提交工作树。真实跳转、键盘/UIA、跨页逐控件及宿主待验，两项仍在进行；见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U08-07-08/BASELINE.md`。新提交 CI 和整轮完整构建安装启动待验。
