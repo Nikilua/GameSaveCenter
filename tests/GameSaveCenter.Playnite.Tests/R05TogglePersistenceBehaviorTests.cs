@@ -134,6 +134,7 @@ public sealed class R05TogglePersistenceBehaviorTests
                 var healthToggle = FindToggle(view, "启用恢复可用性巡检");
                 var mediaSources = FindMediaSourceFields(view);
                 var healthFields = (UniformGrid)view.FindName("HealthInspectionIntervalFields")!;
+                var healthHint = (TextBlock)view.FindName("HealthInspectionDependencyHint")!;
 
                 Assert.True(mediaSources.IsEnabled);
                 Assert.True(healthFields.IsEnabled);
@@ -150,6 +151,8 @@ public sealed class R05TogglePersistenceBehaviorTests
                 Assert.False(settings.HealthInspectionEnabled);
                 Assert.False(mediaSources.IsEnabled);
                 Assert.False(healthFields.IsEnabled);
+                Assert.True(healthHint.IsVisible);
+                Assert.Contains("关闭时保留当前数值", healthHint.Text);
 
                 settings.CancelEdit();
                 DrainDispatcher();
