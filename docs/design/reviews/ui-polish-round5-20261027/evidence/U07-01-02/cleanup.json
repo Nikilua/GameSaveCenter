@@ -1,0 +1,25 @@
+{
+  "deleted": [
+    {
+      "path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u07-01-02\\u07-dialog.trx",
+      "bytes": 13845
+    },
+    {
+      "path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u07-01-02\\u07-dialog-final.trx",
+      "bytes": 15370
+    },
+    {
+      "path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u07-01-02\\u07-dialog-wrap-final.trx",
+      "bytes": 17336
+    }
+  ],
+  "reason": "阶段内中间成功TRX已被最终10项结果替代",
+  "before": {
+    "Name": "D",
+    "Free": 16303292416
+  },
+  "after": {
+    "Name": "D",
+    "Free": 16303345664
+  }
+}

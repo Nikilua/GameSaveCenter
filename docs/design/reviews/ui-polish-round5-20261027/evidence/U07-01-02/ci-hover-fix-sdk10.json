@@ -1,0 +1,16 @@
+{
+  "run": 40647037308,
+  "sha": "3ecacdc0dc5376e45a6460b2af2668a1df57f328",
+  "workflow": ".github/workflows/windows-build.yml",
+  "sdk10Job": 122678147262,
+  "sdk10Conclusion": "success",
+  "sdkVersion": "10.0.401",
+  "testsTotal": 1987,
+  "passed": 1929,
+  "skipped": 58,
+  "failed": 0,
+  "artifact": 12799640064,
+  "artifactSha256": "863bd8ae19e94b97cadb35f6a2076af785e54c10eb464e5556a2a5a21261771a",
+  "baselineJob": 122678147577,
+  "baselineStatusAtAudit": "in_progress"
+}

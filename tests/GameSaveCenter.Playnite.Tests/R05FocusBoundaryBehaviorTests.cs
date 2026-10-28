@@ -176,6 +176,22 @@ public sealed class R05FocusBoundaryBehaviorTests
                 Assert.True(WaitFor(host, () => ReferenceEquals(Keyboard.FocusedElement, trigger)));
                 Assert.False(reducedMotionRequest.Completion.Task.Result);
 
+                // Exercise the production Escape route with an isolated shell; this
+                // fixture has no Playnite service graph or real destructive action.
+                typeof(DashboardView).GetField("ProductionShellView", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .SetValue(dashboard, new AcrylicProductionShellView());
+                Assert.True(trigger.Focus());
+                var escapeRequest = new UiConfirmationEventArgs("确认", "合成测试", "继续", "取消", true);
+                RaiseConfirmationRequest(dashboard, plugin, escapeRequest);
+                Assert.True(WaitFor(host, () => ReferenceEquals(Keyboard.FocusedElement, cancel)));
+                var escape = new KeyEventArgs(Keyboard.PrimaryDevice, PresentationSource.FromVisual(host)!, 0, Key.Escape)
+                { RoutedEvent = Keyboard.PreviewKeyDownEvent };
+                typeof(DashboardView).GetMethod("OnPreviewKeyDown", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)!
+                    .Invoke(dashboard, new object[] { dashboard, escape });
+                Assert.True(escape.Handled);
+                Assert.False(escapeRequest.Completion.Task.Result);
+                Assert.True(WaitFor(host, () => ReferenceEquals(Keyboard.FocusedElement, trigger)));
+
                 animationsEnabled = true;
                 Assert.True(trigger.Focus());
                 Assert.Same(trigger, Keyboard.Focus(trigger));

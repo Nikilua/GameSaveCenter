@@ -12550,3 +12550,7 @@ U03-08盘点确认数值范围/溢出/滚轮、路径预览/校验/缺失目录�
 ## 2026-10-28 Round5 U06-07/08当前接续
 
 候选路径表移除560 DIP上限，沿用有限剩余高度预算；同条件3840×2160逻辑DIP由1747×560增至1741×1665，窄短窗回缩/内部滚动通过。SDK8.0.423 Release组合4/4、0 skip；R18 2千/1万/2万夹具任务最多10实现行、媒体最多7，保留媒体Standard例外；实现行和变换无活动动画、模板无逐行Storyboard。source/XAML26/WPF静态0 error、双主题Render QA394图/0 PROBLEM。报告、前后图、失败诊断和安全清理见docs/design/reviews/ui-polish-round5-20261027/evidence/U06-07-08/BASELINE.md。969bfc20的run40640556766双SDK均成功、三个artifact身份已登记；U06-03受控悬停失败修正3ecacdc0的run40647037308尚在运行。真实Playnite/物理DPI和最终中文根入口完整链及独立scripts/build.cmd仍待验；下一批U07-01/02。
+
+## 2026-10-28 Round5 U07-01/02当前接续
+
+生产DialogOverlay动作区从水平StackPanel改为WrapPanel，非末项统一8 DIP间距；标题/真实对象与影响文本、独立正文滚动、危险确认安全策略保留。SDK8.0.423 Release10/10、0 skip，含220 DIP受控按钮换行、合成Escape取消回焦、重复确认保护；一次反射重载歧义失败已修正并保留。source/XAML26/WPF静态0 error，Render QA双主题394图/0 PROBLEM；证据docs/design/reviews/ui-polish-round5-20261027/evidence/U07-01-02/BASELINE.md。真实Playnite长正文/物理输入/UIA/DPI待验。悬停修正3ecacdc0的SDK10 job成功，baseline仍在运行，artifact身份已记录；最终完整中文根入口链、独立scripts/build.cmd和本批CI仍待验。接续U07-03/04。
