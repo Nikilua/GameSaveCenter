@@ -22,6 +22,65 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R06TaskProgressBehaviorTests
 {
     [Fact]
+    public void ProductionProgressCellKeepsItsGeometryAcrossUnknownRunningAndTerminalStates()
+    {
+        RunSta(() =>
+        {
+            var tasks = new ObservableCollection<TaskStatusDto> { Task("progress-transition", TaskState.Running, -1) };
+            var view = new TaskCenterView();
+            var grid = (DataGrid)view.FindName("TaskGrid")!;
+            grid.ItemsSource = tasks;
+            var window = new Window { Content = view, Width = 1400, Height = 700, ShowInTaskbar = false };
+            AutomationProperties.SetName(window, "Production task progress transition fixture");
+            try
+            {
+                window.Show();
+                view.ApplyResponsiveLayout(1400, 700);
+                double? barWidth = null;
+                double? labelRightEdge = null;
+                foreach (var next in new[] {
+                    Task("progress-transition", TaskState.Running, -1),
+                    Task("progress-transition", TaskState.Running, 0),
+                    Task("progress-transition", TaskState.Running, 73),
+                    Task("progress-transition", TaskState.Cancelled, 73),
+                    Task("progress-transition", TaskState.Succeeded, 100) })
+                {
+                    tasks[0] = next;
+                    PumpLayout(window);
+                    var cell = grid.Columns.Single(column => Equals(column.Header, "进度")).GetCellContent(next);
+                    Assert.NotNull(cell);
+                    var bar = FindChildren<ProgressBar>(cell!).Single();
+                    var text = FindChildren<TextBlock>(cell!).Single();
+                    var rightEdge = text.TransformToAncestor(cell!).Transform(new Point(text.ActualWidth, 0)).X;
+                    Assert.Equal(next.ProgressDisplay, text.Text);
+                    Assert.Equal(next.ProgressValue, bar.Value);
+                    Assert.True(bar.ActualWidth > 0 && text.ActualWidth > 0);
+                    if (barWidth.HasValue)
+                    {
+                        Assert.Equal(barWidth.Value, bar.ActualWidth, 2);
+                        Assert.Equal(labelRightEdge!.Value, rightEdge, 2);
+                    }
+                    barWidth = bar.ActualWidth;
+                    labelRightEdge = rightEdge;
+                    if (next.State == TaskState.Cancelled)
+                    {
+                        Assert.Equal("已取消", next.StateDisplay);
+                        Assert.Equal("73%", text.Text);
+                    }
+                }
+            }
+            finally { window.Close(); }
+        });
+    }
+
+    private static IEnumerable<T> FindChildren<T>(DependencyObject root) where T : DependencyObject
+    {
+        if (root is T match) yield return match;
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
+            foreach (var child in FindChildren<T>(VisualTreeHelper.GetChild(root, index))) yield return child;
+    }
+
+    [Fact]
     public void ProgressReplacementKeepsSelectedTaskAndLogicalScrollAnchor()
     {
         RunSta(() =>

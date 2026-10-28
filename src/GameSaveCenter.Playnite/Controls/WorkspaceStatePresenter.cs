@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System;
+using System.Windows.Threading;
 
 namespace GameSaveCenter.Playnite.Controls
 {
@@ -11,8 +13,15 @@ namespace GameSaveCenter.Playnite.Controls
     /// </summary>
     public sealed class WorkspaceStatePresenter : ContentControl
     {
+        private DispatcherTimer? loadingFeedbackTimer;
+        private static readonly DependencyPropertyKey IsLoadingFeedbackReadyPropertyKey = DependencyProperty.RegisterReadOnly(
+            nameof(IsLoadingFeedbackReady), typeof(bool), typeof(WorkspaceStatePresenter), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsLoadingFeedbackReadyProperty = IsLoadingFeedbackReadyPropertyKey.DependencyProperty;
+        public bool IsLoadingFeedbackReady => (bool)GetValue(IsLoadingFeedbackReadyProperty);
+
         public static readonly DependencyProperty StateProperty = DependencyProperty.Register(
-            nameof(State), typeof(string), typeof(WorkspaceStatePresenter), new PropertyMetadata("Empty"));
+            nameof(State), typeof(string), typeof(WorkspaceStatePresenter),
+            new PropertyMetadata("Empty", (owner, _) => ((WorkspaceStatePresenter)owner).UpdateLoadingFeedback()));
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             nameof(Title), typeof(string), typeof(WorkspaceStatePresenter), new PropertyMetadata(string.Empty));
@@ -34,6 +43,52 @@ namespace GameSaveCenter.Playnite.Controls
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(WorkspaceStatePresenter),
                 new FrameworkPropertyMetadata(typeof(WorkspaceStatePresenter)));
+        }
+
+        public WorkspaceStatePresenter()
+        {
+            Loaded += (_, __) => UpdateLoadingFeedback();
+            Unloaded += (_, __) => StopLoadingFeedback();
+            IsVisibleChanged += (_, __) => UpdateLoadingFeedback();
+        }
+
+        private void UpdateLoadingFeedback()
+        {
+            StopLoadingFeedback();
+            if (State != "Loading")
+            {
+                SetValue(IsLoadingFeedbackReadyPropertyKey, true);
+                return;
+            }
+
+            SetValue(IsLoadingFeedbackReadyPropertyKey, false);
+            if (!IsLoaded || !IsVisible)
+                return;
+
+            // Only the visual feedback waits. The caller's loading/error/data state is
+            // never delayed, and Hidden in the template keeps the same measured slot.
+            loadingFeedbackTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher)
+            {
+                Interval = TimeSpan.FromMilliseconds(180)
+            };
+            loadingFeedbackTimer.Tick += OnLoadingFeedbackReady;
+            loadingFeedbackTimer.Start();
+        }
+
+        private void OnLoadingFeedbackReady(object? sender, EventArgs e)
+        {
+            StopLoadingFeedback();
+            if (IsLoaded && IsVisible && State == "Loading")
+                SetValue(IsLoadingFeedbackReadyPropertyKey, true);
+        }
+
+        private void StopLoadingFeedback()
+        {
+            if (loadingFeedbackTimer == null)
+                return;
+            loadingFeedbackTimer.Stop();
+            loadingFeedbackTimer.Tick -= OnLoadingFeedbackReady;
+            loadingFeedbackTimer = null;
         }
 
         public string State

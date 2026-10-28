@@ -1,0 +1,15 @@
+{
+  "deleted": [
+    ".tmp/round5-u05-05-06/u05-loading-progress.trx"
+  ],
+  "reason": "Intermediate successful12-test TRX superseded by archived final13-test result; no document reference, link or file lock",
+  "bytes": 26331,
+  "before": {
+    "Name": "D",
+    "Free": 16905261056
+  },
+  "after": {
+    "Name": "D",
+    "Free": 16905289728
+  }
+}

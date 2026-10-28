@@ -1358,3 +1358,7 @@ U03-04/05 Render QA全量临时目录仍在`.tmp/round5-u03-04-05-render-d1fc130
 ## 2026-10-28 Round5 U05-04说明弹层接续
 
 生产键盘说明Popup由硬编码Fade/透明改用共享资源，增加打开焦点、Escape关闭和触发器回焦及UIA名称。SDK8.0.423 Release组合16/16、0 skip；source/XAML26/WPF静态0 error，scripts/render-qa.ps1退出0、双主题394 PNG/0 PROBLEM。证据见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-04-help/BASELINE.md；U05-04代码完成待验收，提交后CI待查。继续U05-05/06加载与进度小批；整轮最终中文根入口完整链/独立scripts/build.cmd及真实宿主边界保留。
+
+## 2026-10-28 Round5 U05-05/06当前接续
+
+共享WorkspaceStatePresenter延迟180ms显示Loading视觉提示（Hidden保留测量槽），错误/内容状态立即切换，退出/隐藏/卸载停止计时器。生产进度语义去重保留，新增实际进度列未知/0/73/取消/成功五态宽度与右边界检查。SDK8.0.423 Release组合13/13、0 skip；source、XAML26、WPF静态0 error、scripts/render-qa.ps1退出0/双主题394图/0 PROBLEM。证据见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/BASELINE.md。两项代码完成待验收；新提交CI待查询，旧S/T边界不变。已安全清理本批一份无引用中间成功TRX，保留最终/失败诊断和当前渲染。接续U05-07/08；整轮中文根入口完整安装启动链与独立scripts/build.cmd仍待最终候选执行。

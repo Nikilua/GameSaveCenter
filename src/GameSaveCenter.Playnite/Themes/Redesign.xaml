@@ -1017,7 +1017,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ui:WorkspaceStatePresenter">
-                    <Border Style="{DynamicResource GscRedesignSubCard}" Padding="18" MinHeight="96">
+                    <Border x:Name="StateSurface" Style="{DynamicResource GscRedesignSubCard}" Padding="18" MinHeight="96">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="440">
                             <Border Width="40" Height="40" CornerRadius="12" Background="{DynamicResource GscAccentIconFillBrush}" HorizontalAlignment="Center">
                                 <ui:ThemeAwareIcon x:Name="StateGlyphText" Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusInfo}" Width="24" Height="24" Foreground="{DynamicResource GscAccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -1030,6 +1030,13 @@
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="State" Value="Loading"/>
+                                <Condition Property="IsLoadingFeedbackReady" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="StateSurface" Property="Visibility" Value="Hidden"/>
+                        </MultiTrigger>
                         <Trigger Property="RetryCommand" Value="{x:Null}">
                             <Setter TargetName="RetryButton" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
