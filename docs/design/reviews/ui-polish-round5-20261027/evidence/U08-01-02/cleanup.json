@@ -1,0 +1,35 @@
+{
+  "stage": ".tmp/round5-u08-01-02-next",
+  "resolvedWithin": ".tmp",
+  "targetNameVerified": true,
+  "reparsePoints": 0,
+  "exactStageMarkdownLinks": 0,
+  "activeBuildProcesses": 0,
+  "exclusiveReadChecksPassed": true,
+  "deletedFiles": [
+    {
+      "path": ".tmp/round5-u08-01-02-next/logs/exact-957ee036-focused.log",
+      "bytes": 2690
+    },
+    {
+      "path": ".tmp/round5-u08-01-02-next/test-results/exact-957ee036-focused.trx",
+      "bytes": 5171
+    },
+    {
+      "path": ".tmp/round5-u08-01-02-next/test-results/round5-u08-01-02-focused.trx",
+      "bytes": 5171
+    }
+  ],
+  "fileCount": 3,
+  "logicalBytesDeleted": 13032.0,
+  "freeBytesBefore": {
+    "C": 2406744064,
+    "D": 12463370240
+  },
+  "freeBytesAfter": {
+    "C": 2406744064,
+    "D": 12463390720
+  },
+  "userAndOtherTaskTestResultsPreserved": true,
+  "renderArtifactsOrBuildPackagesCreated": false
+}

@@ -1,0 +1,44 @@
+{
+  "checkedAtUtc": "2026-10-28T19:21:23Z",
+  "repository": "Nikilua/GameSaveCenter",
+  "branch": "main",
+  "commit": "957ee036e9c26e6b41af620ec916aaca1f37d673",
+  "commitMessage": "补充概览与存档窗口回归",
+  "pushConfirmed": true,
+  "workflow": {
+    "path": ".github/workflows/windows-build.yml",
+    "name": "Windows 构建验证",
+    "applicableJobs": [
+      {
+        "jobId": "build",
+        "name": "编译、测试与打包",
+        "sdk": "global.json baseline"
+      },
+      {
+        "jobId": "sdk10-build",
+        "name": ".NET SDK 10.0.401 编译与测试复核",
+        "sdk": "10.0.401"
+      }
+    ]
+  },
+  "observations": {
+    "commitFetch": "GitHub connector found the exact pushed commit.",
+    "combinedStatus": {
+      "statuses": [],
+      "interpretation": "The connector returned no status entries; this is not evidence of success or a completed workflow."
+    },
+    "workflowRunLookup": {
+      "runs": [],
+      "limitation": "The available commit-workflow-runs connector only returns pull-request-triggered runs, so it cannot identify this push run."
+    },
+    "publicActionsPage": {
+      "url": "https://github.com/Nikilua/GameSaveCenter/actions/workflows/windows-build.yml",
+      "usable": false,
+      "reason": "The page snapshot was a stale cache and did not expose this commit's run."
+    },
+    "requiredChecks": "An earlier required-checks query returned 403; it was not repeated.",
+    "runJobArtifactIdentityAvailable": false
+  },
+  "status": "remote_pending",
+  "nextStep": "Use a GitHub connection that can list Actions runs by head SHA for 957ee036e9c26e6b41af620ec916aaca1f37d673. Record the baseline and SDK 10 job IDs, conclusions, original failure logs if any, TRX, and artifact IDs/digests before marking the commit verified."
+}

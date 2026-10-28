@@ -260,3 +260,6 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## 2026-10-29 Round5 U08-08 / U09-01 跨页与证据复核
 
 Trainer 工具列表删除了永久折叠、与共享空态 Presenter 重复的旧文字节点；行为源码测试守住共享状态模板及加载期间空态抑制。同步修复`d19570fa` GitHub双SDK都失败的窄窗布局测试夹具：先加载窗口并确认空闲忙碌状态折叠，再快照可见动作原边距。SDK8.0.423 Release组合16/17（16通过、0失败、1个历史架构skip），双主题间距用例2/2；Render QA双主题394图/0 PROBLEM，source validation通过、WPF静态42 XAML/0 error。证据、TRX/报告哈希和失败job/artifact身份见`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-08-09-01/`。当前修正提交待推送/CI；真实Playnite、外部UIA/Narrator、实体键盘/IME/物理DPI未验。按安全边界清理了本阶段唯一原始TRX临时目录共5文件/134106字节，保留当前Render QA；cleanup.json列空间、引用和占用核查。U08-08代码完成待验收，U09-01继续进行中。
+## 2026-10-29 Round5 U08-01/02 可见窗口复验
+
+测试提交 `957ee036e9c26e6b41af620ec916aaca1f37d673` 已推送。概览优先状态与下一步命令、存档历史当前游戏身份/未选择提示均在 `1040×700 DIP` 可见 WPF 窗口验证；原命令、滚动边界和恢复前置未变。SDK8.0.423 Release精确提交2/2、0 skip，source validation通过，WPF静态42 XAML/0错误/26既有warning/179 info。仅改测试，无生产XAML/资源改动，因此本批不重复Render QA；真实Playnite、物理DPI及当前提交GitHub双SDK run/job/artifact仍待验。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-02/BASELINE.md`。

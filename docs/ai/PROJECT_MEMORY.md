@@ -1458,3 +1458,8 @@ U03-04/05 Render QA全量临时目录仍在`.tmp/round5-u03-04-05-render-d1fc130
 ## 2026-10-29 Round5 U08-08 / U09-01 与 CI 夹具修正
 
 Trainer 工具页清除了永久折叠的重复空态文字，继续使用共享 `WorkspaceStatePresenter` 和加载状态条件；没有改命令、业务绑定或安全语义。`d19570fa` 的 `windows-build.yml` baseline/SDK10 两job均因同一Light/Dark布局用例失败：夹具在Window加载套用空闲Collapsed样式前捕获了六个按钮的margin。窗口加载后捕获五个可见动作并保留原有行距/抽屉恢复断言。SDK8.0.423精确工作树定向16/17（16通过、0失败、1历史架构skip），主题用例2/2；source validation、WPF静态和双主题Render QA通过。脱敏证据及run/job/artifact身份位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-08-09-01/`。修正提交远端CI待验；Render QA是离屏逻辑DPI，不等价Playnite宿主、外部UIA、实体输入或物理DPI。文档/PNG/TRX逐项引用、临时文件占用及路径边界核对后，只清理本批`.tmp/.../test-results`，保留当前渲染输出；禁止触碰其它阶段TestResults/TRX。接续推进独立Round5条目，不等待旧S/T宿主权限待验。
+## 2026-10-29 Round5 U08-01/02 可见窗口复验
+
+- `957ee036e9c26e6b41af620ec916aaca1f37d673` 已推送，仅新增/调整 WPF 测试。概览眉题/状态/命令与存档当前游戏身份在真实显示的 `1040×700 DIP` 测试窗口中可见；UIA与ToolTip、存档未选择回退、滚动边界得到覆盖。
+- SDK8.0.423 Release精确提交2/2、0 skip；source validation exit0，WPF静态42 XAML/0 errors/26 warnings/179 info。生产XAML未改，本批不重复Render QA。没有执行真实存档恢复或备份。
+- GitHub对该SHA未返回combined status，PR-only run接口无push run；记录在Round5 `evidence/U08-01-02/ci-progress-957ee.json`，标“远端待验”。继续用可查询push-run的连接读取 `windows-build.yml` 基线与SDK10 job及artifact；required-checks既有403不复探。测试/日志证据与WPF STA收尾诊断见 `evidence/U08-01-02/BASELINE.md`。本轮整体验收仍受最终中文根入口完整链、独立`scripts/build.cmd`和GitHub两SDK门禁约束。

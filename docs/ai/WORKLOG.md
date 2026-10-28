@@ -12646,3 +12646,11 @@ U03-08盘点确认数值范围/溢出/滚轮、路径预览/校验/缺失目录�
 - source validation退出0；WPF静态42 XAML、0 error、26 warning、179 info；Render QA双主题394 PNG、0 PROBLEM。细节和脱敏TRX/Render报告SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-08-09-01/BASELINE.md`。
 - 删除前检查`.tmp`路径边界/重解析点、文档引用、专属进程和文件独占读取；只清理5个本阶段原始TRX，共134106字节；保留当前Render QA。空间前后与清单见`evidence/U08-08-09-01/cleanup.json`。
 - U08-08代码完成待验收；U09-01仍进行中（其它视觉批次成对样图缺失）。真实Playnite、外部UIA/Narrator、实体键盘/IME及物理DPI不在本批本地覆盖范围。中文提交、push和当前提交双SDK CI结果待记录。
+
+## 2026-10-29 Round5 U08-01/02 可见窗口复验
+
+测试提交 `957ee036e9c26e6b41af620ec916aaca1f37d673`（`补充概览与存档窗口回归`）已推送 `main`。将旧脱离宿主夹具升级为显示的 WPF `Window`，在 `1040×700 DIP` 复核概览中性状态眉题、优先状态及下一步命令/UIA，和存档历史所选身份/Tooltip/UIA、未选择回退、表格最小高度与滚动边界。SDK8.0.423 Release、目标net472，精确提交2/2、0失败、0 skip、退出0；脱敏TRX SHA-256 `BFEE915A1C42F11B0387FB8A83CC129E214C807A9F6CDA831CB82583E173BF7F`。
+
+初轮编译的`IsExternalInit`错误通过改为普通类修复；首个窗口测试的`Single()`重名失败通过只搜索ButtonBase修复。最终TRX在测试成功后有已知WPF `TextServicesHost.OnUnregisterTextStore` STA收尾InvalidComObjectException诊断，旧隔离WPF证据也有同类痕迹；测试退出0且TRX为2 pass/0 fail/0 skip。`validate-source.py`退出0；WPF静态42 XAML/0 errors/26既有warnings/179 info。仅测试变更，不重新渲染生产UI；继承既有生产候选双主题Render QA而不将其称为精确SHA截图。未执行真实备份/恢复。
+
+GitHub已确认commit，但当前combined-status返回空、可用workflow-run接口仅查PR触发且未给push run；公开Actions页为过期缓存，run/job/artifact身份不可核。U09-06与U08两项均维持“远端待验”，具体可执行查询记录于`evidence/U08-01-02/ci-progress-957ee.json`。本批 `.tmp/round5-u08-01-02-next` 清理、链接/源码检查结果见U08-01/02证据；真实Playnite/物理DPI以及U09-05完整中文入口链与独立`scripts/build.cmd`仍待验。接续Round5其它独立任务，不等待旧S/T权限。
