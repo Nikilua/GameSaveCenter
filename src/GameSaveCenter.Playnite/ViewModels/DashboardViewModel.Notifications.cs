@@ -411,6 +411,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 return search.Length == 0
                     || ContainsNotificationSearchValue(item.Title, search)
                     || ContainsNotificationSearchValue(item.Summary, search)
+                    || ContainsNotificationSearchValue(item.SourceDisplay, search)
                     || ContainsNotificationSearchValue(item.GameId, search)
                     || ContainsNotificationSearchValue(item.TaskId, search);
             }).ToList();
@@ -440,6 +441,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             NotificationId = record.NotificationId ?? string.Empty;
             Title = string.IsNullOrWhiteSpace(record.Title) ? "通知" : record.Title;
             Summary = record.Summary ?? string.Empty;
+            SourceDisplay = string.IsNullOrWhiteSpace(record.Source) ? "来源未记录" : record.Source.Trim();
+            SourceLineDisplay = "来源：" + SourceDisplay;
             GameId = record.GameId ?? string.Empty;
             TaskId = record.TaskId ?? string.Empty;
             FirstTaskId = string.IsNullOrWhiteSpace(record.FirstTaskId) ? TaskId : record.FirstTaskId;
@@ -464,6 +467,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string NotificationId { get; }
         public string Title { get; }
         public string Summary { get; }
+        public string SourceDisplay { get; }
+        public string SourceLineDisplay { get; }
         public string GameId { get; }
         public string TaskId { get; }
         public string FirstTaskId { get; }

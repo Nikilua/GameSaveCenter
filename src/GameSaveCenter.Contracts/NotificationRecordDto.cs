@@ -26,6 +26,8 @@ namespace GameSaveCenter.Contracts
         public string TaskId { get; set; } = string.Empty;
         public string FirstTaskId { get; set; } = string.Empty;
         public string GameId { get; set; } = string.Empty;
+        /// <summary>Explicit origin label captured from the event that created this notice.</summary>
+        public string Source { get; set; } = string.Empty;
         public NotificationSeverity Severity { get; set; } = NotificationSeverity.Information;
         public string Title { get; set; } = string.Empty;
         public string Summary { get; set; } = string.Empty;

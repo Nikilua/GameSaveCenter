@@ -1,3 +1,11 @@
+## 2026-10-29 Round5 U07-05 通知来源局部候选
+
+本批工作树已添加 `NotificationRecordDto.Source`、SQLite旧库加列迁移、任务/会话显式来源赋值、通知表标题下来源行和详情来源。旧记录来源为空时显示“来源未记录”，不得从摘要猜来源。标题排序/复制、虚拟化、焦点和滚动语义继续保留。固定 `2026-10-28T09:00:00Z`的浅/深主题1040×700对照及红acted TRX/静态报告位于Round5 `evidence/U07-05-notification-source-20261029/`。
+
+SDK8.0.423 Release定向Worker通知13/13，Playnite通知/UIA 7/7；`validate-source.py`、`check-xaml.ps1` 26文件、WPF静态42 XAML/0 errors、Render QA 394 PNG/0 PROBLEM均通过。当前是未冻结候选，完整根入口/安装身份/启动、独立 `scripts/build.cmd` 和精确SHA GitHub baseline+SDK10 CI尚待执行。离线Playnite聚焦构建曾提示NuGet audit数据源不可达NU1900，不是测试失败；后续全链仍须通过真实仓库入口门禁。
+
+下一步检查本批差异与证据链接，中文提交并冻结源码；然后运行 `GameSaveCenter-一键构建安装运行.cmd`（转交 `GameSaveCenter-Run.cmd`）完整链和独立 `scripts/build.cmd`。两者成功后推送精确源码SHA，读取适用workflow所有job、原始失败日志和artifact身份；branch required-check权限403按用户要求不重复探测，继续标“远端待验”。完成根链/CI后回填本证据与Round5 PROGRESS，并做文档源码/链接检查。真实Playnite宿主、外部UIA、键盘/IME、物理DPI及真实存档恢复、媒体删除、云端写入仍不在本批验证范围。
+
 ## 2026-10-28 Round5 U09回归审查接续
 
 当前工作基于生产源码SHA `d4c4357c4e0c256b4fe0248d7efc25ce5badfd18`。U09 Render QA完成：Light/Dark×11窗口DIP尺寸共394 PNG、0 PROBLEM、逻辑DPI 1.00；双主题1040×700存档页参考图及报告哈希见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-03/`。运行时假数据含`DateTime.UtcNow`，U00截图时间与当前样本不同；U09-01仍缺逐批同数据双主题前后证据，不能把当前/基线图当成已配对结果。

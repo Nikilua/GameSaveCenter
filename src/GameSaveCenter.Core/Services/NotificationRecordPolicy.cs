@@ -15,6 +15,7 @@ public static class NotificationRecordPolicy
     public const int MaximumPageSize = 500;
     public const int MaximumTitleLength = 96;
     public const int MaximumSummaryLength = 320;
+    public const int MaximumSourceLength = 64;
     public const int MaximumErrorLength = 1024;
     public const int MaximumKeyLength = 128;
     public const int MaximumOccurrenceEvents = MaximumRecords * 20;
@@ -66,6 +67,7 @@ public static class NotificationRecordPolicy
             TaskId = NormalizeIdentifier(source.TaskId),
             FirstTaskId = NormalizeIdentifier(source.FirstTaskId),
             GameId = NormalizeIdentifier(source.GameId),
+            Source = NormalizeText(source.Source, MaximumSourceLength),
             Severity = Enum.IsDefined(typeof(NotificationSeverity), source.Severity)
                 ? source.Severity
                 : NotificationSeverity.Information,

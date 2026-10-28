@@ -1,3 +1,10 @@
+## 2026-10-29 Round5 U07-05 / U09-01 通知来源候选
+
+- 通知来源正式进入 DTO/策略/SQLite：来源限64字、空白归一；SQLite旧表仅加 `source TEXT NOT NULL DEFAULT ''`，旧通知未记录来源时明确显示“来源未记录”。任务来源取既有 `TaskTypeDisplay`，会话来源只从摘要创建事件填入。
+- 生产通知列表新增标题下来源行与详情来源字段，模板列保留 `Title` 排序/复制，Tooltip/UIA、虚拟化、焦点行为和既有滚动系统未变。RenderHarness更新真实来源样例，固定UTC浅/深主题截图已归档。
+- SDK8.0.423 Release焦点行为：Worker通知13/13、Playnite通知/UIA 7/7；source validation、XAML26文件、WPF静态42 XAML/0 error、Render QA 394 PNG/0 PROBLEM通过。完整证据见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U07-05-notification-source-20261029/`。
+- 还未形成冻结源码提交；下一步只提交本轮源码、测试、进度与证据，冻结后执行中文根入口完整链及独立 `scripts/build.cmd`，随后推送并查该SHA的workflow baseline/SDK10全部job与artifact。Playnite真实宿主仍待验。
+
 ## 2026-10-29 Round5 U09-05/06/07/08 冻结候选最终门禁与整轮盘点
 
 - 源码提交 `5f0eb6209ccfb33c67efac36aee68aee204de614`：测试线程为列菜单键盘/UIA回归禁用无关 stylus/touch 支持，修复宿主 `StylusWisp` 捕获崩溃；生产代码、WPF资源与业务语义不变。此前故障与修复证据在Round5 `evidence/U09-05-wpf-stylus-fix/`。

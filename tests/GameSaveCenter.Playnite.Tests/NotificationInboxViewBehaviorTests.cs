@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Automation;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
@@ -121,6 +122,7 @@ public sealed class NotificationInboxViewBehaviorTests
             {
                 NotificationId = "notice-long-title",
                 Title = title,
+                Source = "存档校验",
                 Summary = "标题在密集列表中单行显示。"
             });
             data.NotificationInboxItems.Add(item);
@@ -144,13 +146,21 @@ public sealed class NotificationInboxViewBehaviorTests
                 window.Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() => { }));
                 grid.UpdateLayout();
                 var row = Assert.IsType<DataGridRow>(grid.ItemContainerGenerator.ContainerFromItem(item));
-                var titleColumn = Assert.IsType<DataGridTextColumn>(grid.Columns[1]);
-                var titleText = Assert.IsType<TextBlock>(titleColumn.GetCellContent(row));
+                var titleColumn = Assert.IsType<DataGridTemplateColumn>(grid.Columns[1]);
+                Assert.Equal("Title", titleColumn.SortMemberPath);
+                Assert.Equal("Title", Assert.IsType<Binding>(titleColumn.ClipboardContentBinding).Path.Path);
+                var titleCell = Assert.IsAssignableFrom<ContentPresenter>(titleColumn.GetCellContent(row));
+                var titleText = Assert.IsType<TextBlock>(FindTextBlock(titleCell, title));
+                var sourceText = Assert.IsType<TextBlock>(FindTextBlock(titleCell, "通知来源"));
 
                 Assert.Equal(TextWrapping.NoWrap, titleText.TextWrapping);
                 Assert.Equal(TextTrimming.CharacterEllipsis, titleText.TextTrimming);
                 Assert.Equal(title, titleText.ToolTip);
                 Assert.Equal(title, AutomationProperties.GetName(titleText));
+                Assert.Equal("来源：存档校验", sourceText.Text);
+                Assert.Equal("来源：存档校验", sourceText.ToolTip);
+                Assert.Equal("通知来源", AutomationProperties.GetName(sourceText));
+                Assert.Equal("存档校验", AutomationProperties.GetHelpText(sourceText));
                 Assert.True(grid.EnableRowVirtualization);
                 Assert.True(grid.EnableColumnVirtualization);
             }
@@ -302,6 +312,21 @@ public sealed class NotificationInboxViewBehaviorTests
         thread.Join();
         if (failure != null)
             throw new Xunit.Sdk.XunitException(failure.ToString());
+    }
+
+    private static TextBlock? FindTextBlock(DependencyObject parent, string automationName)
+    {
+        if (parent is TextBlock textBlock
+            && string.Equals(AutomationProperties.GetName(textBlock), automationName, StringComparison.Ordinal))
+            return textBlock;
+
+        for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+        {
+            var found = FindTextBlock(VisualTreeHelper.GetChild(parent, index), automationName);
+            if (found != null) return found;
+        }
+
+        return null;
     }
 
     private sealed class NotificationInboxData

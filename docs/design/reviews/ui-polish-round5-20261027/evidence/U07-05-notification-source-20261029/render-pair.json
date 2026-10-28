@@ -1,0 +1,48 @@
+{
+  "baseRevision": "9086154134982dfd7c5a4f0fb317d59a4285bfd2",
+  "candidateRevision": "pending frozen source commit",
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "dpiScale": 1.0,
+  "windowDip": "1040x700",
+  "page": "Notifications",
+  "themes": ["light", "dark"],
+  "comparison": "Same notification fixture fields and pinned time; candidate adds explicit source values as the intended change.",
+  "renderQa": {
+    "recursivePngCount": 394,
+    "problemCount": 0,
+    "exitCode": 0,
+    "beforeReport": {
+      "file": "render-qa-before-report.txt",
+      "bytes": 1141894,
+      "sha256": "A0C5743335619B480856D9687953A67385B2A5458A300CED9BCDCE843255F328",
+      "headRevision": "9086154134982dfd7c5a4f0fb317d59a4285bfd2"
+    },
+    "afterReport": {
+      "file": "render-qa-after-report.txt",
+      "bytes": 1141888,
+      "sha256": "FD755E94EE8D023B24D6C59BF1BA53E51C98A495E9B3065E1A3BE33C3E6A9A51",
+      "headRevision": "9086154134982dfd7c5a4f0fb317d59a4285bfd2",
+      "workingTreeClean": false
+    }
+  },
+  "images": [
+    {
+      "theme": "light",
+      "beforeFile": "render/Notifications-before-light-1040x700.png",
+      "beforeBytes": 56370,
+      "beforeSha256": "6488CCAAD64552ECDA650EFDF650AF3B3BAD5DF09DAF9C8CF214835D62D59069",
+      "afterFile": "render/Notifications-after-light-1040x700.png",
+      "afterBytes": 62372,
+      "afterSha256": "D863A0E5DAFD68404CC004C5BD8149280B3C6679E034E291A1BAA74ACED0D257"
+    },
+    {
+      "theme": "dark",
+      "beforeFile": "render/Notifications-before-dark-1040x700.png",
+      "beforeBytes": 59126,
+      "beforeSha256": "AE3B3C0F0897F61FB553B4B5D7264A44CBB295BADD1278C4DF219841903B6523",
+      "afterFile": "render/Notifications-after-dark-1040x700.png",
+      "afterBytes": 65338,
+      "afterSha256": "81C8956FBA96AD2EAD04CAA785C5ADEE724D6778F7247B3EC95188B292884A54"
+    }
+  ]
+}

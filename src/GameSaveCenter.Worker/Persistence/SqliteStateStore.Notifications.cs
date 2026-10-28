@@ -143,7 +143,7 @@ VALUES($event,$issue,$task,$occurred);";
                 {
                     updateIssue.CommandText = @"
 UPDATE notification_records
-SET task_id=$task,severity=$severity,title=$title,summary=$summary,
+SET task_id=$task,source=CASE WHEN $source<>'' THEN $source ELSE source END,severity=$severity,title=$title,summary=$summary,
     last_occurred_utc=$lastOccurred,is_resolved=1,is_read=0
 WHERE issue_key=$issue AND last_occurred_utc<=$lastOccurred;";
                 }
@@ -156,6 +156,7 @@ SET first_task_id=CASE WHEN COALESCE(NULLIF(first_occurred_utc,''),created_utc)>
     first_occurred_utc=CASE WHEN COALESCE(NULLIF(first_occurred_utc,''),created_utc)>$firstOccurred THEN $firstOccurred ELSE first_occurred_utc END,
     task_id=CASE WHEN last_occurred_utc<=$lastOccurred THEN $task ELSE task_id END,
     severity=CASE WHEN last_occurred_utc<=$lastOccurred THEN $severity ELSE severity END,
+    source=CASE WHEN last_occurred_utc<=$lastOccurred AND $source<>'' THEN $source ELSE source END,
     title=CASE WHEN last_occurred_utc<=$lastOccurred THEN $title ELSE title END,
     summary=CASE WHEN last_occurred_utc<=$lastOccurred THEN $summary ELSE summary END,
     occurrence_count=occurrence_count+1,
@@ -168,6 +169,7 @@ WHERE issue_key=$issue;";
                 updateIssue.Parameters.AddWithValue("$firstTask", string.IsNullOrWhiteSpace(normalized.FirstTaskId) ? normalized.TaskId : normalized.FirstTaskId);
                 updateIssue.Parameters.AddWithValue("$firstOccurred", normalized.FirstOccurredUtc.ToString("O", CultureInfo.InvariantCulture));
                 updateIssue.Parameters.AddWithValue("$task", normalized.TaskId);
+                updateIssue.Parameters.AddWithValue("$source", normalized.Source);
                 updateIssue.Parameters.AddWithValue("$severity", (int)normalized.Severity);
                 updateIssue.Parameters.AddWithValue("$title", normalized.Title);
                 updateIssue.Parameters.AddWithValue("$summary", normalized.Summary);
@@ -181,13 +183,14 @@ WHERE issue_key=$issue;";
                     insertIssue.Transaction = transaction;
                     insertIssue.CommandText = @"
 INSERT OR IGNORE INTO notification_records(
-    notification_id,deduplication_key,issue_key,task_id,first_task_id,game_id,severity,title,summary,created_utc,
+    notification_id,deduplication_key,issue_key,source,task_id,first_task_id,game_id,severity,title,summary,created_utc,
     occurrence_count,first_occurred_utc,last_occurred_utc,last_error,is_resolved,is_read)
-VALUES($id,$dedup,$issue,$task,$firstTask,$game,$severity,$title,$summary,$created,
+VALUES($id,$dedup,$issue,$source,$task,$firstTask,$game,$severity,$title,$summary,$created,
     1,$firstOccurred,$lastOccurred,$lastError,0,$isRead);";
                     insertIssue.Parameters.AddWithValue("$id", normalized.NotificationId);
                     insertIssue.Parameters.AddWithValue("$dedup", normalized.DeduplicationKey);
                     insertIssue.Parameters.AddWithValue("$issue", normalized.IssueKey);
+                    insertIssue.Parameters.AddWithValue("$source", normalized.Source);
                     insertIssue.Parameters.AddWithValue("$task", normalized.TaskId);
                     insertIssue.Parameters.AddWithValue("$firstTask", string.IsNullOrWhiteSpace(normalized.FirstTaskId) ? normalized.TaskId : normalized.FirstTaskId);
                     insertIssue.Parameters.AddWithValue("$game", normalized.GameId);
@@ -225,13 +228,14 @@ VALUES($id,$dedup,$issue,$task,$firstTask,$game,$severity,$title,$summary,$creat
             insert.Transaction = transaction;
             insert.CommandText = @"
 INSERT OR IGNORE INTO notification_records(
-    notification_id,deduplication_key,issue_key,task_id,first_task_id,game_id,severity,title,summary,created_utc,
+    notification_id,deduplication_key,issue_key,source,task_id,first_task_id,game_id,severity,title,summary,created_utc,
     occurrence_count,first_occurred_utc,last_occurred_utc,last_error,is_resolved,is_read)
-VALUES($id,$deduplicationKey,'',$taskId,$taskId,$gameId,$severity,$title,$summary,$created,
+VALUES($id,$deduplicationKey,'',$source,$taskId,$taskId,$gameId,$severity,$title,$summary,$created,
     1,$created,$created,'',0,$isRead);";
             insert.Parameters.AddWithValue("$id", normalized.NotificationId);
             insert.Parameters.AddWithValue("$deduplicationKey", normalized.DeduplicationKey);
             insert.Parameters.AddWithValue("$taskId", normalized.TaskId);
+            insert.Parameters.AddWithValue("$source", normalized.Source);
             insert.Parameters.AddWithValue("$gameId", normalized.GameId);
             insert.Parameters.AddWithValue("$severity", (int)normalized.Severity);
             insert.Parameters.AddWithValue("$title", normalized.Title);
@@ -270,12 +274,13 @@ VALUES($id,$deduplicationKey,'',$taskId,$taskId,$gameId,$severity,$title,$summar
         insert.Transaction = transaction;
         insert.CommandText = @"
 INSERT OR IGNORE INTO notification_records(
-    notification_id,deduplication_key,issue_key,task_id,first_task_id,game_id,severity,title,summary,created_utc,
+    notification_id,deduplication_key,issue_key,source,task_id,first_task_id,game_id,severity,title,summary,created_utc,
     occurrence_count,first_occurred_utc,last_occurred_utc,last_error,is_resolved,is_read)
-VALUES($id,$dedup,'',$task,$task,$game,$severity,$title,$summary,$created,1,$created,$created,'',0,$isRead);";
+VALUES($id,$dedup,'',$source,$task,$task,$game,$severity,$title,$summary,$created,1,$created,$created,'',0,$isRead);";
         insert.Parameters.AddWithValue("$id", notification.NotificationId);
         insert.Parameters.AddWithValue("$dedup", deduplicationKey);
         insert.Parameters.AddWithValue("$task", notification.TaskId);
+        insert.Parameters.AddWithValue("$source", notification.Source);
         insert.Parameters.AddWithValue("$game", notification.GameId);
         insert.Parameters.AddWithValue("$severity", (int)notification.Severity);
         insert.Parameters.AddWithValue("$title", notification.Title);
@@ -313,7 +318,7 @@ WHERE event_key IN (
         using var command = connection.CreateCommand();
         command.CommandText = @"
 SELECT notification_id,deduplication_key,issue_key,task_id,first_task_id,game_id,severity,title,summary,created_utc,occurrence_count,
-       COALESCE(NULLIF(first_occurred_utc,''),created_utc),COALESCE(NULLIF(last_occurred_utc,''),created_utc),last_error,is_resolved,is_read
+       COALESCE(NULLIF(first_occurred_utc,''),created_utc),COALESCE(NULLIF(last_occurred_utc,''),created_utc),last_error,is_resolved,is_read,source
 FROM notification_records
 WHERE COALESCE(NULLIF(last_occurred_utc,''),created_utc) >= $cutoff
 ORDER BY COALESCE(NULLIF(last_occurred_utc,''),created_utc) DESC, notification_id DESC
@@ -342,7 +347,8 @@ LIMIT $limit;";
                 LastOccurredUtc = DateTime.Parse(reader.GetString(12), CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind).ToUniversalTime(),
                 LastError = reader.GetString(13),
                 IsResolved = reader.GetInt32(14) != 0,
-                IsRead = reader.GetInt32(15) != 0
+                IsRead = reader.GetInt32(15) != 0,
+                Source = reader.GetString(16)
             });
         }
 

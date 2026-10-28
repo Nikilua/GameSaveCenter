@@ -123,17 +123,16 @@
                             <DataGridTemplateColumn Header="级别" Width="88" MinWidth="80">
                                 <DataGridTemplateColumn.CellTemplate><DataTemplate><Border Style="{StaticResource NotificationSeverityPill}" HorizontalAlignment="Left" Padding="7,3"><TextBlock Text="{Binding SeverityDisplay}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold"/></Border></DataTemplate></DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="通知" Binding="{Binding Title, Mode=OneWay}" Width="2*" MinWidth="160">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextWrapping" Value="NoWrap"/>
-                                        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-                                        <Setter Property="ToolTip" Value="{Binding Title, Mode=OneWay}"/>
-                                        <Setter Property="AutomationProperties.Name" Value="{Binding Title, Mode=OneWay}"/>
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Header="通知" Width="2*" MinWidth="160" SortMemberPath="Title" ClipboardContentBinding="{Binding Title, Mode=OneWay}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel VerticalAlignment="Center" Margin="0,2">
+                                            <TextBlock Text="{Binding Title, Mode=OneWay}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding Title, Mode=OneWay}" AutomationProperties.Name="{Binding Title, Mode=OneWay}"/>
+                                            <TextBlock Text="{Binding SourceLineDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" FontSize="{DynamicResource GscCaptionFontSize}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding SourceLineDisplay, Mode=OneWay}" AutomationProperties.Name="通知来源" AutomationProperties.HelpText="{Binding SourceDisplay, Mode=OneWay}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="摘要" Binding="{Binding Summary}" Width="3*" MinWidth="200"/>
                             <DataGridTextColumn Header="尝试" Binding="{Binding OccurrenceDisplay}" Width="68" MinWidth="64"/>
                             <DataGridTemplateColumn Header="问题" Width="76" MinWidth="70">
@@ -162,6 +161,8 @@
                             <StackPanel>
                                 <TextBlock Text="{Binding SelectedNotification.Title, Mode=OneWay}" Style="{DynamicResource GscSectionTitleStyle}" TextWrapping="Wrap"/>
                                 <TextBlock Text="{Binding SelectedNotification.Summary, Mode=OneWay}" Margin="0,7,0,7" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap"/>
+                                <TextBlock Text="来源" Style="{StaticResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}"/>
+                                <TextBlock Text="{Binding SelectedNotification.SourceDisplay, Mode=OneWay}" AutomationProperties.Name="通知来源" Margin="0,2,0,6" TextWrapping="Wrap"/>
                                 <StackPanel Visibility="{Binding SelectedNotification.HasIssue, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,0,8">
                                     <TextBlock Text="{Binding SelectedNotification.OccurrenceDisplay, Mode=OneWay}" FontWeight="SemiBold"/>
                                     <TextBlock Text="{Binding SelectedNotification.ResolvedDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,2,0,0"/>

@@ -1013,6 +1013,7 @@ namespace GameSaveCenter.Playnite
                 TaskId = taskId,
                 FirstTaskId = taskId,
                 GameId = gameId,
+                Source = task.TaskTypeDisplay,
                 Severity = severity,
                 Title = resolvesIssue ? "后台任务已恢复" : TaskNotificationTitle(task),
                 Summary = resolvesIssue ? game + " · " + task.TaskTypeDisplay + " 重试成功，关联故障已恢复。" : text,
@@ -1317,6 +1318,7 @@ namespace GameSaveCenter.Playnite
                 {
                     DeduplicationKey = CreateNotificationDeduplicationKey("session", sessionId),
                     GameId = firstTask?.GameId ?? string.Empty,
+                    Source = "游戏会话",
                     Severity = severity,
                     Title = "退出备份摘要",
                     Summary = summary.Message,

@@ -1,3 +1,10 @@
+## 2026-10-29 Round5 通知来源续接要点
+
+- U07-05已从“DTO没有来源”推进为源码候选：`NotificationRecordDto.Source`限长64并规范化；SQLite初始化添加 `source` 列，`DEFAULT ''` 兼容旧数据。不得从Summary、通知ID等文本推断来源；任务事件用 `TaskTypeDisplay`，退出备份摘要用明确的“游戏会话”。
+- 通知来源展示位于标题下及详情，保留模板列排序 `Title` 与复制 `Title`；关注UIA HelpText、Tooltip、旧来源回退、新通知不抢焦点、虚拟化和滚动语义。通知相关Worker13/13、Playnite7/7、Render QA394/0 PROBLEM和静态门禁均已局部通过；精确本批证据见 `evidence/U07-05-notification-source-20261029/`。
+- 当前记录处在冻结前局部候选。后续按AGENTS要求：提交中文源码/测试/进度证据，冻结跟踪文件后跑中文根入口完整链并核实安装身份/启动，再独立跑 `scripts/build.cmd`；推送后确认 `windows-build.yml` baseline 与SDK10 job和artifact。不得用旧提交结果或局部测试替代。
+- U09-01已增加一个通知页同样本双主题前后对照，其他视觉批次仍未齐；U09-04的U00帧/分配基线不能追补并须如实留待验；U09-06 required-check权限403不重复探测。真实Playnite宿主/物理输入边界保持明确。
+
 ## 2026-10-29 Round5 最终候选与续接规则
 
 - 冻结候选为源码提交 `5f0eb6209ccfb33c67efac36aee68aee204de614`。`GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1 -Configuration Release` 完整成功退出0；独立 `scripts/build.cmd` 也按其构建/测试职责退出0。两个SDK8.0.423 Release运行都是2012项、1954通过、0失败、58个显式skip，全部157份TRX counters匹配。57 skip属于已撤销“今日工作台”断言，1个Tooltip系统指针用例默认opt-in；skip不算通过。

@@ -35,6 +35,7 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
         notification.Severity = NotificationSeverity.Success;
         notification.Title = "备份完成";
         notification.Summary = "游戏存档备份已完成";
+        notification.Source = "存档备份";
 
         Assert.True(await store.TryAddNotificationAsync(notification, CancellationToken.None));
 
@@ -49,12 +50,14 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
         Assert.Equal(NotificationSeverity.Success, persisted.Severity);
         Assert.Equal("备份完成", persisted.Title);
         Assert.Equal("游戏存档备份已完成", persisted.Summary);
+        Assert.Equal("存档备份", persisted.Source);
         Assert.False(persisted.IsRead);
 
         var restartedStore = new SqliteStateStore(options, NullLogger<SqliteStateStore>.Instance);
         await restartedStore.InitializeAsync(CancellationToken.None);
-        Assert.Equal("notification-1", Assert.Single(
-            await restartedStore.GetRecentNotificationRecordsAsync(10, CancellationToken.None)).NotificationId);
+        var afterRestart = Assert.Single(await restartedStore.GetRecentNotificationRecordsAsync(10, CancellationToken.None));
+        Assert.Equal("notification-1", afterRestart.NotificationId);
+        Assert.Equal("存档备份", afterRestart.Source);
     }
 
     [Fact]
@@ -84,9 +87,9 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
         var firstAt = DateTime.UtcNow.AddMinutes(-12);
         var secondAt = DateTime.UtcNow.AddMinutes(-4);
         var recoveredAt = DateTime.UtcNow;
-        Assert.True(await store.TryAddNotificationAsync(
-            CreateIssueRecord("issue:backup:game-1:root-1", "task-1", "attempt:task-1", firstAt, "DISK_FULL: 目标盘空间不足"),
-            CancellationToken.None));
+        var firstAttempt = CreateIssueRecord("issue:backup:game-1:root-1", "task-1", "attempt:task-1", firstAt, "DISK_FULL: 目标盘空间不足");
+        firstAttempt.Source = "存档备份";
+        Assert.True(await store.TryAddNotificationAsync(firstAttempt, CancellationToken.None));
 
         Assert.False(await store.TryAddNotificationAsync(
             CreateIssueRecord("issue:backup:game-1:root-1", "task-1", "attempt:task-1", firstAt, "重放不应重复计数"),
@@ -102,6 +105,7 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
         Assert.Equal("task-1", aggregate.FirstTaskId);
         Assert.Equal("task-2", aggregate.TaskId);
         Assert.Equal("DISK_FULL: 重试后仍然空间不足", aggregate.LastError);
+        Assert.Equal("存档备份", aggregate.Source);
         Assert.Equal(firstAt, aggregate.FirstOccurredUtc, TimeSpan.FromMilliseconds(1));
         Assert.Equal(secondAt, aggregate.LastOccurredUtc, TimeSpan.FromMilliseconds(1));
         Assert.False(aggregate.IsResolved);
@@ -121,6 +125,7 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
         Assert.Equal("DISK_FULL: 重试后仍然空间不足", aggregate.LastError);
         Assert.Equal(NotificationSeverity.Success, aggregate.Severity);
         Assert.True(aggregate.IsResolved);
+        Assert.Equal("存档备份", aggregate.Source);
         Assert.False(aggregate.IsRead);
 
         Assert.True(await restartedStore.TryAddNotificationAsync(
@@ -130,6 +135,7 @@ public sealed class NotificationRecordPersistenceTests : IDisposable
         Assert.Equal(3, aggregate.OccurrenceCount);
         Assert.Equal("task-4", aggregate.TaskId);
         Assert.Equal("ACCESS_DENIED: 权限仍不足", aggregate.LastError);
+        Assert.Equal("存档备份", aggregate.Source);
         Assert.False(aggregate.IsResolved);
         Assert.Equal(NotificationSeverity.Error, aggregate.Severity);
     }
@@ -243,6 +249,28 @@ VALUES('legacy-notice','legacy-event','legacy-task','game-1',$error,'后台任�
     }
 
     [Fact]
+    public async Task ExistingNotificationTableWithoutSourceColumnMigratesWithUnknownSource()
+    {
+        await using (var connection = new SqliteConnection($"Data Source={options.DatabasePath};Mode=ReadWriteCreate;Cache=Shared;Foreign Keys=True"))
+        {
+            await connection.OpenAsync();
+            await using var command = connection.CreateCommand();
+            command.CommandText = @"
+ALTER TABLE notification_records DROP COLUMN source;
+INSERT INTO notification_records(notification_id,deduplication_key,task_id,game_id,severity,title,summary,created_utc,is_read)
+VALUES('legacy-source-notice','legacy-source-event','task-legacy','game-legacy',0,'旧通知','兼容来源列升级', $created,0);";
+            command.Parameters.AddWithValue("$created", DateTime.UtcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture));
+            await command.ExecuteNonQueryAsync();
+        }
+
+        var migratedStore = new SqliteStateStore(options, NullLogger<SqliteStateStore>.Instance);
+        await migratedStore.InitializeAsync(CancellationToken.None);
+        var migrated = Assert.Single(await migratedStore.GetRecentNotificationRecordsAsync(10, CancellationToken.None));
+        Assert.Equal("legacy-source-notice", migrated.NotificationId);
+        Assert.Equal(string.Empty, migrated.Source);
+    }
+
+    [Fact]
     public async Task ClearReadDeletesOnlyReadNotificationsAndPreservesTasksAuditAndRestoreEvidence()
     {
         var read = CreateRecord("event:read", "notification-read");
@@ -306,7 +334,8 @@ VALUES('legacy-notice','legacy-event','legacy-task','game-1',$error,'后台任�
             GameId = " ",
             Severity = (NotificationSeverity)99,
             Title = "  title\r\nwith   spacing  ",
-            Summary = new string('x', NotificationRecordPolicy.MaximumSummaryLength + 50)
+            Summary = new string('x', NotificationRecordPolicy.MaximumSummaryLength + 50),
+            Source = "  " + new string('s', NotificationRecordPolicy.MaximumSourceLength + 50) + "  "
         });
 
         Assert.NotNull(normalized);
@@ -316,6 +345,7 @@ VALUES('legacy-notice','legacy-event','legacy-task','game-1',$error,'后台任�
         Assert.Equal(NotificationSeverity.Information, normalized.Severity);
         Assert.Equal("title with spacing", normalized.Title);
         Assert.Equal(NotificationRecordPolicy.MaximumSummaryLength, normalized.Summary.Length);
+        Assert.Equal(NotificationRecordPolicy.MaximumSourceLength, normalized.Source.Length);
         Assert.Null(NotificationRecordPolicy.Normalize(new NotificationRecordDto { DeduplicationKey = new string('x', 129) }));
     }
 

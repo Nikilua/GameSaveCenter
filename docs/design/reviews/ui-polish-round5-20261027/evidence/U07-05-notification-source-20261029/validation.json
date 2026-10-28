@@ -1,0 +1,45 @@
+{
+  "candidateRevision": "pending frozen source commit",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "sourceValidation": { "exitCode": 0, "result": "passed" },
+  "xamlStructure": { "exitCode": 0, "filesPassed": 26 },
+  "wpfStatic": {
+    "exitCode": 0,
+    "xamlFiles": 42,
+    "errors": 0,
+    "warnings": 26,
+    "info": 179,
+    "newNotificationViewFindings": 0,
+    "report": "wpf-static.txt",
+    "reportSha256": "752DFDFDD2B46BFB8CEFDC29007E025D6A4A07D0369AC94E0A77A861883265C6"
+  },
+  "tests": [
+    {
+      "project": "GameSaveCenter.Worker.Tests",
+      "filter": "NotificationRecordPersistenceTests",
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "trx": "tests/notification-persistence.redacted.trx",
+      "rawTrxSha256": "38CA6E512FB136075BE760863DABB962A8BCD0D6E0E2CCB0A7B23FDC138EEC85",
+      "redactedTrxSha256": "83BA770226586B45EAE50A3B8476063B6C6D54F5568110E737E19DC568CDC618"
+    },
+    {
+      "project": "GameSaveCenter.Playnite.Tests",
+      "filter": "NotificationInboxAggregationBehaviorTests|NotificationInboxViewBehaviorTests",
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "trx": "tests/notification-inbox.redacted.trx",
+      "rawTrxSha256": "F0E4B305F300A178A253E3CAB88D6CB5C20BA54BCDDAF33183CB489EE26E3D62",
+      "redactedTrxSha256": "75FD155F9A611BE8FC6497590D07F8E9D2B7205E5CAD5830C5D9479F03C14019",
+      "nonBlockingWarning": "NU1900: NuGet vulnerability data source was unreachable during the local no-restore build."
+    }
+  ],
+  "frozenCandidateBuildAndCi": "pending"
+}

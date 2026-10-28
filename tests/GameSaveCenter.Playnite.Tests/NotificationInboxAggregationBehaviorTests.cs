@@ -21,6 +21,7 @@ public sealed class NotificationInboxAggregationBehaviorTests
             FirstTaskId = "first-task",
             GameId = "game-1",
             Severity = NotificationSeverity.Error,
+            Source = "存档校验",
             Title = "后台任务失败",
             Summary = "最近一次失败",
             CreatedUtc = first,
@@ -36,6 +37,8 @@ public sealed class NotificationInboxAggregationBehaviorTests
         Assert.Equal("first-task", item.FirstTaskId);
         Assert.Equal("retry-task", item.TaskId);
         Assert.Equal("ACCESS_DENIED: 权限不足", item.LastError);
+        Assert.Equal("存档校验", item.SourceDisplay);
+        Assert.Equal("来源：存档校验", item.SourceLineDisplay);
         Assert.Equal(last, item.CreatedUtc);
         Assert.Equal(first, item.FirstOccurredUtc);
         Assert.Equal(last, item.LastOccurredUtc);
@@ -56,5 +59,7 @@ public sealed class NotificationInboxAggregationBehaviorTests
         Assert.Equal("—", item.OccurrenceDisplay);
         Assert.Equal("—", item.ResolvedDisplay);
         Assert.Equal("task-2", item.FirstTaskId);
+        Assert.Equal("来源未记录", item.SourceDisplay);
+        Assert.Equal("来源：来源未记录", item.SourceLineDisplay);
     }
 }

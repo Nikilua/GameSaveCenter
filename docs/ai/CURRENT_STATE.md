@@ -1,3 +1,11 @@
+## 2026-10-29 Round5 U07-05通知来源局部候选
+
+当前源码工作树加入显式通知来源字段：任务来源来自稳定 `TaskTypeDisplay`，会话摘要来源来自会话事件；SQLite加列兼容旧表，旧数据保留空来源并显示“来源未记录”。列表标题下增加来源行、详情增加来源字段，通知排序/复制/UIA/虚拟化/焦点/滚动系统保留。
+
+SDK8.0.423 Release定向Worker 13/13、Playnite 7/7，无skip；源码检查通过、XAML结构26/26、WPF静态42 XAML/0 errors/26 warnings/179 info；双主题Render QA 394 PNG、0 PROBLEM。实现和对照证据在Round5 `evidence/U07-05-notification-source-20261029/`。当前候选尚未提交与冻结；随后须按真实中文入口跑完整构建/测试/发布/打包/安装身份核验/启动，并单独验证 `scripts/build.cmd`，推送后查询baseline和SDK10 CI全部job/artifact。
+
+真实Playnite来源数据刷新、外部UIA、实体IME/键盘及物理DPI未验。其他Round5边界保持：U09-01仍缺其它视觉批次配对，U09-04缺U00逐帧/累计分配基线，U09-06保护required-check名单权限此前403，按用户要求不复探；真实存档恢复/媒体删除/云端写入未执行。
+
 ## 2026-10-29 Round5 U09-05/06/07/08 最终候选门禁
 
 源码候选 `5f0eb6209ccfb33c67efac36aee68aee204de614` 已推送。测试专用修正避免键盘/UIA列菜单用例触发无关的 `StylusWisp` Popup 捕获崩溃；生产程序集、XAML、资源与业务命令未改。中文根入口完整Release构建/测试/发布/打包/安装身份/启动及独立 `scripts/build.cmd` 均退出0。两次SDK8.0.423运行各2012项、1954通过、0失败、58个明确skip（57个已撤销“今日工作台”断言、1个默认opt-in系统指针测试）；不将skip计为通过。
