@@ -1595,19 +1595,20 @@ namespace GameSaveCenter.Playnite.Views
             messageText.ToolTip = message;
             textPanel.Children.Add(titleText);
             textPanel.Children.Add(messageText);
-            var hasDistinctDetail = !string.IsNullOrWhiteSpace(detailMessage)
-                && !string.Equals(detailMessage, message, StringComparison.Ordinal);
-            if (kind == UiNotificationKind.Error || hasDistinctDetail)
+            var fullDetail = string.IsNullOrWhiteSpace(detailMessage) ? message : detailMessage;
+            if (!string.IsNullOrWhiteSpace(fullDetail))
             {
                 var details = new Button { Content = "查看详情", HorizontalAlignment = HorizontalAlignment.Left, Margin = new Thickness(0, 7, 0, 0), Padding = new Thickness(8, 4, 8, 4), MinHeight = 28 };
                 details.Style = (Style)Resources["GscButtonBase"];
-                details.Click += (_, __) => ShowResultDialog(title, detailMessage);
+                AutomationProperties.SetName(details, "查看通知完整详情");
+                details.Click += (_, __) => ShowResultDialog(title, fullDetail);
                 textPanel.Children.Add(details);
             }
             layout.Children.Add(textPanel);
 
             var close = new Button { Content = "×", Width = 28, Height = 28, MinHeight = 28, Padding = new Thickness(0), Margin = new Thickness(2, -3, -2, 0), VerticalAlignment = VerticalAlignment.Top };
             close.Style = (Style)Resources["GscButtonBase"];
+            AutomationProperties.SetName(close, "关闭通知提示");
             Grid.SetColumn(close, 2);
             layout.Children.Add(close);
             card.Child = layout;
@@ -1618,7 +1619,12 @@ namespace GameSaveCenter.Playnite.Views
             timer.Tick += (_, __) => dismiss();
             close.Click += (_, __) => dismiss();
             card.MouseEnter += (_, __) => timer.Stop();
-            card.MouseLeave += (_, __) => timer.Start();
+            card.MouseLeave += (_, __) => { if (toastTimers.ContainsKey(card) && !card.IsKeyboardFocusWithin) timer.Start(); };
+            card.IsKeyboardFocusWithinChanged += (_, __) =>
+            {
+                if (card.IsKeyboardFocusWithin) timer.Stop();
+                else if (toastTimers.ContainsKey(card) && !card.IsMouseOver) timer.Start();
+            };
             ToastHost.Children.Insert(0, card);
             while (ToastHost.Children.Count > 4 && ToastHost.Children[ToastHost.Children.Count - 1] is Border expired)
             {

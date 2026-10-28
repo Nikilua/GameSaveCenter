@@ -87,6 +87,11 @@ public sealed class NotificationInboxViewBehaviorTests
                 var openGame = Assert.IsAssignableFrom<Button>(view.FindName("NotificationOpenGameButton"));
                 var openTask = Assert.IsAssignableFrom<Button>(view.FindName("NotificationOpenTaskButton"));
                 var openFirstTask = Assert.IsAssignableFrom<Button>(view.FindName("NotificationOpenFirstTaskButton"));
+                var detailTime = Assert.IsType<TextBlock>(view.FindName("NotificationDetailTime"));
+                detailTime.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget();
+                BindingOperations.GetBindingExpression(detailTime, AutomationProperties.HelpTextProperty)?.UpdateTarget();
+                Assert.Equal(data.SelectedNotification!.CreatedRelativeDisplay, detailTime.Text);
+                Assert.Equal(data.SelectedNotification.CreatedFullDisplay, AutomationProperties.GetHelpText(detailTime));
                 markSelected.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
                 markVisible.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
                 clearRead.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();

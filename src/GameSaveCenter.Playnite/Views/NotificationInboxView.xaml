@@ -143,7 +143,10 @@
                         <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
                         <StackPanel Grid.Row="0" Margin="0,0,0,7">
                             <TextBlock Text="通知详情" Style="{DynamicResource GscSectionTitleStyle}"/>
-                            <TextBlock Text="{Binding SelectedNotification.SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0"/>
+                            <WrapPanel Margin="0,4,0,0">
+                                <TextBlock Text="{Binding SelectedNotification.SeverityDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}"/>
+                                <TextBlock x:Name="NotificationDetailTime" Text="{Binding SelectedNotification.CreatedRelativeDisplay, Mode=OneWay}" ToolTip="{Binding SelectedNotification.CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedNotification.CreatedFullDisplay, Mode=OneWay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="10,0,0,0"/>
+                            </WrapPanel>
                         </StackPanel>
                         <ScrollViewer x:Name="NotificationDetailScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="True">
                             <StackPanel>
