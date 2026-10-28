@@ -483,7 +483,14 @@ public sealed class Q14ToolbarAlignmentBehaviorTests
 
             var presetBounds = presetControls.Select(control => GetBounds(control, presetRow)).ToArray();
             var presetCombo = Assert.Single(presetControls.OfType<ComboBox>());
-            Assert.Equal("默认", presetCombo.Text);
+            Assert.Same(fixture.TaskFilterPresets[0], presetCombo.SelectedItem);
+            Assert.Same(fixture.TaskFilterPresets[0], fixture.SelectedTaskFilterPreset);
+            var selectedPresenter = Assert.IsType<ContentPresenter>(
+                presetCombo.Template.FindName("SelectedItemContent", presetCombo));
+            var selectedDisplayText = FindVisualChildren<TextBlock>(selectedPresenter)
+                .FirstOrDefault(block => block.IsVisible && !string.IsNullOrWhiteSpace(block.Text))?.Text
+                ?? selectedPresenter.Content as string;
+            Assert.Equal("默认", selectedDisplayText);
             Assert.NotEmpty(presetBounds);
             Assert.All(presetBounds, bounds =>
                 AssertGeometryNear(bounds.Height, ExpectedControlHeight, GeometryTolerance,

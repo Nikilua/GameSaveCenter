@@ -183,7 +183,7 @@
                     <ColumnDefinition Width="20"/>
                 </Grid.ColumnDefinitions>
                 <ContentPresenter x:Name="SelectedItemContent"
-                                  Visibility="Collapsed"
+                                  Visibility="Visible"
                                   Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}"
                                   ContentTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
                                   ContentTemplateSelector="{Binding ItemTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}"
@@ -196,7 +196,7 @@
                                   TextElement.FontWeight="{Binding FontWeight, RelativeSource={RelativeSource TemplatedParent}}"/>
                 <TextBlock x:Name="DisplayMemberText"
                            Grid.Column="0"
-                           Visibility="Visible"
+                           Visibility="Collapsed"
                            Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="NoWrap"
@@ -244,14 +244,6 @@
                 <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
             </MultiTrigger>
-            <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
-                <Setter TargetName="SelectedItemContent" Property="Visibility" Value="Visible"/>
-                <Setter TargetName="DisplayMemberText" Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding DisplayMemberPath, RelativeSource={RelativeSource TemplatedParent}}" Value="">
-                <Setter TargetName="SelectedItemContent" Property="Visibility" Value="Visible"/>
-                <Setter TargetName="DisplayMemberText" Property="Visibility" Value="Collapsed"/>
-            </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
