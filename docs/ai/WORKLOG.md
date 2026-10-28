@@ -1,3 +1,9 @@
+## 2026-10-29 Round5 U07-05/U08-07 焦点路径
+
+- 在通知页测试中使用实际无结果空态，使“清除筛选”按钮可见且可聚焦；聚焦按钮后触发其WPF Click处理器，核对搜索、级别、时间恢复默认且键盘焦点回搜索框，通知/已读命令计数保持0。通知视图定向4/4、0 skip。
+- 首次新增断言失败于测试夹具将无结果空态折叠，修正夹具后通过；失败/通过TRX及SHA见Round5 `evidence/U07-05-08/BASELINE.md`。Source validation通过；WPF静态42 XAML/0 errors/26既有warning/179 info；`git diff --check`通过。没有生产XAML/资源变化，复用既有双主题渲染证据。
+- U08-07推进为代码完成待验收；游戏/任务真实跳转、DB/Worker通知刷新、实体键鼠/UIA、Playnite宿主仍待验。本批提交与新提交CI身份待精确记录。
+
 ## 2026-10-29 Round5 U07-04/05 行为补充
 
 - 真实列选择菜单定向类5/5：校验必要列禁用说明、UIA名称、稳定次序、可用项焦点能力和生产ItemsPresenter的Cycle配置。当前列菜单无icon/shortcut/submenu数据，不添加占位项。程序化打开Popup后直接Focus MenuItem失败并保留诊断TRX；这不是实体键盘结论。

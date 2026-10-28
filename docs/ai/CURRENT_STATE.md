@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U07-05/U08-07 焦点补充
+
+通知清除筛选焦点回归现在以空态实际可见的生产WPF窗口断言按钮到搜索框焦点交接；到达通知不抢焦点/不替换旧选中行继续覆盖。SDK8.0.423通知视图类4/4、0 skip；source validation exit0；WPF静态42 XAML/0错误/26既有warning/179 info。仅修改测试，无生产XAML和资源差异。首次失败为测试夹具把无结果空态折叠，TRX已作为诊断归档。U08-07代码完成待验收；真实Playnite导航、Worker刷新、物理输入和UIA待验。证据见Round5 `evidence/U07-05-08/BASELINE.md`。
+
 ## 2026-10-29 Round5 U07-04/05 补充验证
 
 在 `a89b29db` 后检查真实列选择菜单的稳定次序、必需列UIA说明、可用项以及ItemsPresenter Cycle配置，SDK8.0.423定向5/5；真实通知收件箱在列表首部加入新项不抢搜索焦点并保持旧项选中，定向4/4。新增测试与证据，不改生产XAML/资源/DTO。程序化Popup焦点探针失败是因为调用Focus仍保留在拥有按钮，原TRX已存档，不作为产品缺陷结论。DTO无来源字段，不推断来源，U07-05保持进行中；物理键盘、Playnite、真实数据刷新待验。详见Round5 `evidence/U07-04-05/BASELINE.md`。

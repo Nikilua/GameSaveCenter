@@ -22,7 +22,7 @@ public sealed class NotificationInboxViewBehaviorTests
     {
         RunSta(() =>
         {
-            var data = new NotificationInboxData();
+            var data = new NotificationInboxData { NotificationInboxHasNoFilterResults = true };
             var view = new NotificationInboxView { DataContext = data };
             var window = new Window { Content = view, Width = 900, Height = 600, ShowInTaskbar = false, WindowStyle = WindowStyle.None, Opacity = 0.01 };
             try
@@ -36,10 +36,14 @@ public sealed class NotificationInboxViewBehaviorTests
                 search.Text = "合成查询";
                 severity.SelectedIndex = 1;
                 time.SelectedIndex = 1;
+                Assert.True(clear.Focus());
+                Keyboard.Focus(clear);
+                Assert.Same(clear, Keyboard.FocusedElement);
                 clear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, clear));
                 Assert.Equal(string.Empty, search.Text);
                 Assert.Equal(0, severity.SelectedIndex);
                 Assert.Equal(0, time.SelectedIndex);
+                Assert.Same(search, Keyboard.FocusedElement);
                 Assert.Equal(string.Empty, data.NotificationInboxSearchText);
                 Assert.Equal("全部级别", data.NotificationSeverityFilter);
                 Assert.Equal("全部时间", data.NotificationTimeFilter);
@@ -267,7 +271,7 @@ public sealed class NotificationInboxViewBehaviorTests
         public int NotificationUnreadCount => 0;
         public string NotificationInboxCountSummary => "最近 30 天 · 暂无记录";
         public bool NotificationInboxHasNoRecords => true;
-        public bool NotificationInboxHasNoFilterResults => false;
+        public bool NotificationInboxHasNoFilterResults { get; set; }
         public string NotificationInboxErrorMessage => string.Empty;
         public bool HasNotificationInboxError => false;
         public string NotificationInboxLoadStatus => string.Empty;
