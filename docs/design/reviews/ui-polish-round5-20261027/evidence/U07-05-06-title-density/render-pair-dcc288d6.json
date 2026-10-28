@@ -1,0 +1,35 @@
+{
+  "beforeCommit": "eb4ded7dd38a4a7b8818569c4ebd078d96daf992",
+  "afterCommit": "dcc288d66368b05884e47d57db0749a98ea17a36",
+  "sampleUtc": "2026-10-27T00:00:00Z",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "dpiScale": 1.0,
+  "screenshotSet": "Notifications inbox at 1040x700 DIP",
+  "beforePngCount": 394,
+  "afterPngCount": 394,
+  "beforeProblemCount": 0,
+  "afterProblemCount": 0,
+  "beforeReportSha256": "45AFA40DFFB4629C700C6567D2B8738404E52D0E3126BCE300909475043C2FDC",
+  "afterReportSha256": "FB85ADECFB9A5E5AD859EB03033CE92A6B0510E2AEF6D8F01B142BBFCC00B93F",
+  "afterReportResult": "render-qa OK",
+  "afterReportWorkingTreeClean": false,
+  "images": [
+    {
+      "theme": "light",
+      "beforeFile": "Notifications-before-light-1040x700.png",
+      "beforeSha256": "7F36EE27E6DDA14917C89A1DBDBA968F884DB7E88E63AFA6EC4EE61047DED87C",
+      "afterFile": "Notifications-after-light-1040x700.png",
+      "afterSha256": "24C2B921E4DA42341C4296D1549AB11B9E6260AA0CD8A3D630975C0AE4574545"
+    },
+    {
+      "theme": "dark",
+      "beforeFile": "Notifications-before-dark-1040x700.png",
+      "beforeSha256": "0C0259FACAF4068CA2AABC2D8A870B77B222B5C489AF76976AE38669161F3798",
+      "afterFile": "Notifications-after-dark-1040x700.png",
+      "afterSha256": "1F94F55A4C60686B4F9B92B27DA0F0843FC40ECA6A3BDF6861D0430AD36E0942"
+    }
+  ]
+}

@@ -12654,3 +12654,10 @@ U03-08盘点确认数值范围/溢出/滚轮、路径预览/校验/缺失目录�
 初轮编译的`IsExternalInit`错误通过改为普通类修复；首个窗口测试的`Single()`重名失败通过只搜索ButtonBase修复。最终TRX在测试成功后有已知WPF `TextServicesHost.OnUnregisterTextStore` STA收尾InvalidComObjectException诊断，旧隔离WPF证据也有同类痕迹；测试退出0且TRX为2 pass/0 fail/0 skip。`validate-source.py`退出0；WPF静态42 XAML/0 errors/26既有warnings/179 info。仅测试变更，不重新渲染生产UI；继承既有生产候选双主题Render QA而不将其称为精确SHA截图。未执行真实备份/恢复。
 
 GitHub已确认commit，但当前combined-status返回空、可用workflow-run接口仅查PR触发且未给push run；公开Actions页为过期缓存，run/job/artifact身份不可核。U09-06与U08两项均维持“远端待验”，具体可执行查询记录于`evidence/U08-01-02/ci-progress-957ee.json`。本批 `.tmp/round5-u08-01-02-next` 清理、链接/源码检查结果见U08-01/02证据；真实Playnite/物理DPI以及U09-05完整中文入口链与独立`scripts/build.cmd`仍待验。接续Round5其它独立任务，不等待旧S/T权限。
+
+## 2026-10-29 Round5 U07-05/06 通知标题密度
+
+- 提交`dcc288d66368b05884e47d57db0749a98ea17a36`（`收拢通知长标题显示`）已推送。收件箱和Toast标题改为单行省略，完整标题保留Tooltip/UIA/详情路径；列表虚拟化、焦点暂停Toast计时与四条堆叠上限未变。
+- SDK8.0.423 Release精确SHA定向7/7、0 skip；source validation与WPF静态42 XAML/0 error通过；Render QA固定UTC双主题394 PNG/0 PROBLEM。短标题截图没有展示裁切，溢出行为由显示窗口测试确认；真实Playnite Toast遮挡仍待验。通知数据刷新与来源字段契约尚待上游支持，未虚构来源。
+- 双SDK GitHub push run/job/artifact无法从现有连接确认，combined status为空且公开check-runs接口403限流，标“远端待验”，后续经认证Actions视图查精确SHA；required-checks既有403不重试。证据、报告哈希和原失败夹具位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-05-06-title-density/`。
+- 已先归档和核对本批证据后，安全清理独立`.tmp/round5-u07-toast-density`：1262文件/191875219字节，路径位于仓库`.tmp`、无重解析点/引用/占用，空间与清理JSON留档。完整中文根入口链及独立`scripts/build.cmd`仍待最终候选执行。

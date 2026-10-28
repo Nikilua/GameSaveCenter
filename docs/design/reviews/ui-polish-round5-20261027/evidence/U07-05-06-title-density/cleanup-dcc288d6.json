@@ -1,0 +1,71 @@
+{
+  "stage": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u07-toast-density",
+  "resolvedWithin": ".tmp",
+  "removedFileCount": 1262,
+  "removedBytes": 191875219.0,
+  "directories": [
+    {
+      "directory": "after",
+      "fileCount": 395,
+      "bytes": 53352494.0
+    },
+    {
+      "directory": "before",
+      "fileCount": 395,
+      "bytes": 53351226.0
+    },
+    {
+      "directory": "exact-dcc288d6-render",
+      "fileCount": 395,
+      "bytes": 53370212.0
+    },
+    {
+      "directory": "exact-dcc288d6-test-results",
+      "fileCount": 1,
+      "bytes": 12512.0
+    },
+    {
+      "directory": "precommit-final-results",
+      "fileCount": 1,
+      "bytes": 12512.0
+    },
+    {
+      "directory": "precommit-retry1-results",
+      "fileCount": 1,
+      "bytes": 12512.0
+    },
+    {
+      "directory": "precommit-test-results",
+      "fileCount": 1,
+      "bytes": 17099.0
+    },
+    {
+      "directory": "temp",
+      "fileCount": 73,
+      "bytes": 31746652.0
+    }
+  ],
+  "reparsePoints": 0,
+  "lockedFiles": 0,
+  "referencingProcesses": 0,
+  "markdownEvidenceLinksToStage": 0,
+  "retainedEvidence": [
+    "render/Notifications before+after light/dark 1040x700",
+    "render/render-qa-before-report.txt",
+    "render/render-qa-dcc288d6-report.txt",
+    "tests/U07-notification-focused-dcc288d6.redacted.trx",
+    "tests/U07-notification-first-attempt-failure.redacted.trx",
+    "ci-progress-dcc288d6.json",
+    "validation-dcc288d6.json",
+    "render-pair-dcc288d6.json"
+  ],
+  "freeBytesBefore": {
+    "C": 643764224,
+    "D": 12923396096
+  },
+  "freeBytesAfter": {
+    "C": 643764224,
+    "D": 13118300160
+  },
+  "deleted": true
+}

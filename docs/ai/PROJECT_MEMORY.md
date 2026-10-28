@@ -1463,3 +1463,7 @@ Trainer 工具页清除了永久折叠的重复空态文字，继续使用共享
 - `957ee036e9c26e6b41af620ec916aaca1f37d673` 已推送，仅新增/调整 WPF 测试。概览眉题/状态/命令与存档当前游戏身份在真实显示的 `1040×700 DIP` 测试窗口中可见；UIA与ToolTip、存档未选择回退、滚动边界得到覆盖。
 - SDK8.0.423 Release精确提交2/2、0 skip；source validation exit0，WPF静态42 XAML/0 errors/26 warnings/179 info。生产XAML未改，本批不重复Render QA。没有执行真实存档恢复或备份。
 - GitHub对该SHA未返回combined status，PR-only run接口无push run；记录在Round5 `evidence/U08-01-02/ci-progress-957ee.json`，标“远端待验”。继续用可查询push-run的连接读取 `windows-build.yml` 基线与SDK10 job及artifact；required-checks既有403不复探。测试/日志证据与WPF STA收尾诊断见 `evidence/U08-01-02/BASELINE.md`。本轮整体验收仍受最终中文根入口完整链、独立`scripts/build.cmd`和GitHub两SDK门禁约束。
+
+## Round5 U07-05/06通知长标题（2026-10-29）
+
+提交`dcc288d66368b05884e47d57db0749a98ea17a36`已推送。通知标题采用一行省略并保留Tooltip/UIA完整名称和详情阅读路径；Toast沿用共享退出效果与四条上限。Release SDK8.0.423精确提交测试7/7、0 skip，WPF静态42 XAML/0 error，固定UTC Render QA双主题394图/0 PROBLEM。RenderHarness当前通知样例标题较短，长标题渲染通过生产窗口行为断言验证。真实通知数据刷新、来源字段契约、Playnite Toast遮挡均待验；GitHub push run未能从已连接接口取回，公开check-runs接口403限流，故双SDK标“远端待验”。证据与清理记录见`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-05-06-title-density/`。接续独立Round5条目；整轮中文完整入口与独立`scripts/build.cmd`仍未跑。

@@ -1,0 +1,43 @@
+{
+  "commit": "dcc288d66368b05884e47d57db0749a98ea17a36",
+  "test": {
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "targetFramework": "net472",
+    "command": "dotnet test GameSaveCenter.Playnite.Tests.csproj --filter NotificationInboxViewBehaviorTests|Round5ToastBehaviorTests",
+    "outcomes": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    "rawTrxSha256": "919C32C274371674C512D6817963B2E9843E9F7271169965D2B4AD82865BD81D",
+    "redactedTrxSha256": "DD4FD6B8BB405407FBAF4D1707276DFA16726003176A94FA4D3433B016C5A2BA",
+    "nugetAuditWarning": "NU1900: api.nuget.org service index unavailable for vulnerability data; test execution passed."
+  },
+  "firstTestAttempt": {
+    "outcomes": {
+      "total": 7,
+      "passed": 6,
+      "failed": 1,
+      "skipped": 0
+    },
+    "redactedTrxSha256": "916E1B9311A09C17F288CC87C004397E31ADF333706226C2B3F9D536A36AAD19",
+    "diagnosis": "Test fixture visual-tree search did not find the generated title element; replaced with DataGridTextColumn.GetCellContent(row), then exact run passed."
+  },
+  "sourceValidation": "passed",
+  "wpfStatic": {
+    "xamlFiles": 42,
+    "errors": 0,
+    "existingWarnings": 26,
+    "info": 179
+  },
+  "renderHarnessBuild": {
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "realPlaynite": "not run",
+  "physicalKeyboardImeDpi": "not run",
+  "toastOverlayCriticalActionCoverage": "not verified in real host"
+}

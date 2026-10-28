@@ -1,0 +1,26 @@
+{
+  "commit": "dcc288d66368b05884e47d57db0749a98ea17a36",
+  "branch": "main",
+  "pushed": true,
+  "requiredWorkflow": ".github/workflows/windows-build.yml",
+  "requiredJobs": [
+    "build",
+    "sdk10-build"
+  ],
+  "combinedStatus": {
+    "result": "empty",
+    "statuses": []
+  },
+  "workflowRunLookup": {
+    "result": "empty",
+    "scope": "PR-triggered runs only",
+    "workflowRuns": []
+  },
+  "publicCheckRuns": {
+    "httpStatus": 403,
+    "reason": "rate limit exceeded",
+    "request": "GET /repos/Nikilua/GameSaveCenter/commits/dcc288d66368b05884e47d57db0749a98ea17a36/check-runs?per_page=100"
+  },
+  "conclusion": "remote_pending",
+  "nextStep": "Use an authenticated GitHub Actions view/query for exact dcc288d6 and record both job IDs, conclusions, logs/TRX and artifact IDs."
+}
