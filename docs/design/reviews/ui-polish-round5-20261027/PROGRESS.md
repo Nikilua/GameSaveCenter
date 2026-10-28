@@ -62,8 +62,8 @@
 | U04-06 | 中途禁用与取消 | 代码完成待验收 | DisclosureCard在打开过程中禁用时移除旧Storyboard时钟，保留IsExpanded并以绑定恢复合法角度；重新启用不回放旧动画。取消命令与真实窗口失活未由本批直接驱动 | 实现与双主题行为见evidence/U04-06-08/BASELINE.md；源码提交c5c86558 | SDK8.0.423精确SHA 13/13、0 skip；source/XAML/WPF静态与Render QA通过。40583173450两job在测试；真实CanExecute取消/窗口失活及Playnite宿主边界待验。 |
 | U04-07 | 降低动态效果 | 代码完成待验收 | MotionEnabledActive关闭时页签选择直接写入终态并移除两方向Storyboards；无缩放、位移或输入等待 | 状态及行为见evidence/U04-03-05/BASELINE.md；提交4225eb17 | 双主题SDK8用例确认终态、无活动时钟；40578426793失败于Q14夹具，修复在c5c86558，当前40583173450待验；真实系统动画设置/Playnite宿主待验。 |
 | U04-08 | 动画对象生命周期 | 代码完成待验收 | 同一生产DisclosureCard完成100次开合；Header、Chevron Path和RotateTransform身份稳定；Reduced Motion清除最终Storyboard时钟 | 实现与双主题行为见evidence/U04-06-08/BASELINE.md；源码提交c5c86558 | SDK8.0.423精确SHA 13/13、0 skip；Render QA 394 PNG/0 PROBLEM。40583173450两job在测试；真实Playnite和宿主长期内存增长未验。 |
-| U05-01 | 页面切换方向 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
-| U05-02 | 详情打开关闭 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
+| U05-01 | 页面切换方向 | 代码完成待验收 | 真实PageHost只在Content变化后使用Fast时长的轻淡入/上移；快速导航验证最终页、标题、选中项和焦点，不做全页模糊 | [U05-01/02证据](evidence/U05-01-02/BASELINE.md)；实现提交`237e993f9e03541f5e8056c30cab8fdb029c0a77` | SDK8.0.423行为批5/5、CI基线与SDK10各1982总/1924通过/0失败/58既有skip；source/XAML/WPF静态通过；精确SHA Render QA 394图/0 PROBLEM；run 1339成功，artifact身份见`evidence/U05-01-02/ci-run-40623449222.json`。真实Playnite与最终安装链待验。 |
+| U05-02 | 详情打开关闭 | 代码完成待验收 | 紧凑任务详情开合使用Opacity/Translate，不动画Width；关闭中禁命中、焦点回到打开按钮，可反向/在选择、布局或降低动态效果时安全收尾，保留队列选中锚点和滚动 | [U05-01/02证据](evidence/U05-01-02/BASELINE.md)；实现提交`237e993f9e03541f5e8056c30cab8fdb029c0a77` | SDK8.0.423 open-close-reverse及Reduced Motion通过，0 skip；基线与SDK10精确SHA job均成功；Render QA 394图/0 PROBLEM；run 1339 artifacts已记录。真实宿主待验。 |
 | U05-03 | 详情对象切换 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
 | U05-04 | 弹层进入退出 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
 | U05-05 | 加载到内容 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |

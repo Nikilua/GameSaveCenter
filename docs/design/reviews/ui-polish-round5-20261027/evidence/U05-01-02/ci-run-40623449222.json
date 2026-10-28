@@ -1,0 +1,96 @@
+{
+  "runNumber": 1339,
+  "runId": 40623449222,
+  "workflow": ".github/workflows/windows-build.yml",
+  "event": "push",
+  "headSha": "237e993f9e03541f5e8056c30cab8fdb029c0a77",
+  "conclusion": "success",
+  "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40623449222",
+  "completedAtUtc": "2026-10-28T03:43:43Z",
+  "jobs": [
+    {
+      "id": 122602679724,
+      "name": "编译、测试与打包",
+      "conclusion": "success",
+      "sdk": "8.0.423",
+      "releaseBuild": {
+        "warnings": 0,
+        "errors": 0
+      },
+      "tests": {
+        "compileAndTest": {
+          "total": 1982,
+          "passed": 1924,
+          "failed": 0,
+          "skipped": 58,
+          "wpfIsolatedClasses": 148
+        },
+        "packageValidation": {
+          "total": 1982,
+          "passed": 1924,
+          "failed": 0,
+          "skipped": 58,
+          "wpfIsolatedClasses": 148
+        }
+      },
+      "sourceValidation": "passed",
+      "xamlValidation": {
+        "conclusion": "success",
+        "files": 26
+      },
+      "renderQa": {
+        "conclusion": "success",
+        "summary": "394 PNG; render-qa OK"
+      },
+      "wpfStatic": {
+        "conclusion": "success",
+        "xamlFiles": 32,
+        "errors": 0,
+        "warnings": 26,
+        "info": 179
+      },
+      "package": {
+        "conclusion": "success",
+        "file": "artifacts/GameSaveCenter-0.6.73-playnite.zip"
+      },
+      "diagnosticSelfTest": "The self-test intentionally produced one failed TRX outcome while checking failure capture; its diagnostic preview and build-diagnostics tests passed."
+    },
+    {
+      "id": 122602679492,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "success",
+      "sdk": "10.0.401",
+      "tests": {
+        "total": 1982,
+        "passed": 1924,
+        "failed": 0,
+        "skipped": 58,
+        "wpfIsolatedClasses": 148
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12790790406,
+      "name": "GameSaveCenter-windows-preview",
+      "bytes": 90781948,
+      "sha256": "9bb87173576b5f418fcb43ecc5623afdcd4dab44096eaaaad07259cc31d355fa"
+    },
+    {
+      "id": 12790705921,
+      "name": "GameSaveCenter-build-diagnostics",
+      "bytes": 1970995,
+      "sha256": "f34908b12d5e202ecca15930b7836e742055a97d64e991d43ac7444eca7a70c3"
+    },
+    {
+      "id": 12788344957,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "bytes": 943107,
+      "sha256": "fda31bce879de5a1f8e9efe260bf16b6ee04d8620699ab50795fd483708e0a8e"
+    }
+  ],
+  "branchProtection": {
+    "requiredStatusChecks": "unverified",
+    "result": "HTTP 403 Resource not accessible by integration; no assumption is made about required checks"
+  }
+}

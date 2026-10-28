@@ -1344,3 +1344,7 @@ U01-07去重后沿用生产按钮完整换行/无省略模板与现有长路径�
 截至2026-10-27 19:21 UTC，GitHub runs 1321–1323双SDK成功；1324–1326的SDK10 job成功但baseline在生成PEXT；1327（d1fc）和1328（5300）双job正在编译测试，不能当作通过。状态/artifact id在 `evidence/U02-05-06/ci-runs.json`。required-checks API此前403；不推断branch protection。等待job完成时可按用户要求继续独立小批，不反复试S/T权限问题。U03-06/07只改C#测试，因此不单独生成重复UI快照；对应生产资源render-qa使用d1fc精确源码。
 
 U03-04/05 Render QA全量临时目录仍在`.tmp/round5-u03-04-05-render-d1fc1308`，395文件/53,147,489字节；报告和浅深主题任务页已复制到Round5证据，PowerShell Remove-Item调用因执行策略拒绝未执行。不要换Shell、脚本或其它删除路径；按cleanup.json记录处理，保留这个输出直到命令授权发生变化。其它用户/其他任务TRX与共享TestResults均未删除。
+
+## Round5 U05-01/02恢复点（2026-10-28）
+
+`main`源码提交`237e993f9e03541f5e8056c30cab8fdb029c0a77`已push：生产PageHost在内容实际变化后才以共享Fast过渡；任务详情紧凑开合使用Opacity/Translate，不动Width，关闭命中关闭、焦点返回触发器，可反向并在Reduced Motion/对象变更/布局转宽时清理。相关SDK8行为5/5、0 skip；source、XAML26/26、WPF静态37/0 errors和Render QA394 PNG/0 PROBLEM通过。run 1339精确SHA两个适用job均成功：SDK8.0.423与10.0.401各1982总/1924通过/0失败/58既有skip，扩展包、job与artifact身份见Round5 `evidence/U05-01-02/ci-run-40623449222.json`。诊断自测中的单个失败TRX结果是验证失败采集的预期负例；正式测试及第二轮打包测试均0失败。系统动效测试使用中性探针，测试Application为OnExplicitShutdown；没有删断言或扩大skip。required-checks读取仍403，保护状态不推断。当前只完成U05-01/02；真实Playnite宿主、物理输入/UIA/IME/DPI和最终本地根入口链未验。接续U05-03/04，不等待旧S/T宿主或权限。

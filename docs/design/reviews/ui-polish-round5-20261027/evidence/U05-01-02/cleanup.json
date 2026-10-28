@@ -1,0 +1,46 @@
+{
+  "stage": "U05-01/U05-02",
+  "capturedAtUtc": "2026-10-28T03:45:00Z",
+  "diskFreeCurrentBytes": {
+    "C": 3366817792,
+    "D": 2126438400
+  },
+  "deleted": [
+    {
+      "path": ".tmp/round5-q14-selection-48f69413",
+      "files": 719,
+      "bytes": 82220431,
+      "result": "Removed with PowerShell Remove-Item -LiteralPath -Recurse -Force after resolving the path under repository .tmp, checking zero reparse points and no active test/render process, and verifying the required TRX had been archived under docs evidence.",
+      "diskFreeBeforeAfter": "D free space was observed at approximately 1.79 GB before and 1.87 GB after; readings are rounded and other disk activity was present, so no causal gain is claimed."
+    }
+  ],
+  "retained": [
+    {
+      "path": ".tmp/round5-u05-237e993f",
+      "files": 395,
+      "bytes": 53231794,
+      "reason": "Current exact-SHA Render QA audit output; report and selected before/after screenshots are also archived under this evidence directory."
+    },
+    {
+      "path": ".tmp/round5-u05-batch",
+      "files": 431,
+      "bytes": 29288640,
+      "reason": "Current focused build/test traces, including the repaired initial WPF Application lifecycle failure and final passing runs."
+    },
+    {
+      "path": ".tmp/round5-u02-sdk8.0.423",
+      "reason": "Retained exact SDK 8.0.423 installation referenced by prior evidence and needed for the final root build/install/start gate."
+    }
+  ],
+  "preserved": [
+    "tests/GameSaveCenter.Playnite.Tests/TestResults and all user/other-task TRX files",
+    "Unknown artifacts, configuration and source files",
+    "Current U05 Render QA and focused diagnostics outputs"
+  ],
+  "boundaryChecks": {
+    "currentRetainedOutputsCanonicalizedInsideRepositoryTmp": true,
+    "currentRetainedOutputsReparsePoints": 0,
+    "oldQ14OutputStillExists": false,
+    "artifactsRootUntouched": true
+  }
+}

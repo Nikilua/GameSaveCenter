@@ -12510,3 +12510,7 @@ U03-08盘点确认数值范围/溢出/滚轮、路径预览/校验/缺失目录�
 - U04-03批临时Build/Render QA目录按清理规则留作当前审计，空间和归属见`evidence/U04-03-05/cleanup.json`；本批未删除其他任务文件、用户TRX/TestResults或未知输出。
 
 ## 2026-10-28 Round5 U02-01～04 主题层次去重与状态语义
+
+## 2026-10-28 Round5 U05-01/02 页面与详情过渡
+
+`237e993f9e03541f5e8056c30cab8fdb029c0a77` 已提交并推送。U05-01在生产PageHost真实Content变化后增加共享Fast轻淡入/上移；U05-02为紧凑任务详情增加Opacity/Translate开合、关闭期间焦点回退与可逆关闭，并在选择、响应式切换、Reduced Motion时清理旧时钟。GscMotion补了逐元素归一化与过期完成保护。SDK8.0.423相关行为5/5、0 skip；Source Validation、XAML26/26、WPF静态37文件/0 error通过；该SHA Render QA 394 PNG/0 PROBLEM。run 1339 (`40623449222`) baseline job `122602679724`(SDK8.0.423)与SDK10.0.401 job `122602679492`均成功，各1982总/1924通过/0失败/58既有skip。基线Release两轮均0 warning/0 error，source validation、XAML26/26、Render QA 394 PNG、WPF静态32 XAML/0 errors/26 warnings/179 info及扩展包生成通过。基线、SDK10和预览artifact ID/大小/SHA及诊断负例说明见`evidence/U05-01-02/ci-run-40623449222.json`。required-checks接口先前403，保护状态仍待验。真实Playnite/物理UIA/键盘/IME/跨屏DPI未验；整轮最终中文根入口全链和独立`scripts/build.cmd`未验。接续U05-03/04。

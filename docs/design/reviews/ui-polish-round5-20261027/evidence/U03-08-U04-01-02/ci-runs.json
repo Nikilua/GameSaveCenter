@@ -296,18 +296,330 @@
       "sha": "c5c86558b6232995438657c00810aeb327ed9ba5",
       "baselineJob": {
         "id": 122467678548,
-        "status": "in_progress",
-        "conclusion": null,
-        "step": "编译与测试"
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "编译与测试",
+        "tests": {
+          "total": 1316,
+          "passed": 1297,
+          "failed": 1,
+          "skipped": 18
+        },
+        "failure": "Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters：预期ComboBox.Text为默认，实际为空。已读取原始job日志。",
+        "artifact": {
+          "id": 12770991617,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 622156,
+          "sha256": "a0d97762dbf514b181f1470abead977b5d127e19325ca50a31c2010647425f32"
+        }
       },
       "sdk10Job": {
         "id": 122467678982,
-        "status": "in_progress",
-        "conclusion": null,
-        "step": "隔离工作树并运行 Release 编译与测试复核"
+        "status": "completed",
+        "conclusion": "failure",
+        "failedStep": "隔离工作树并运行 Release 编译与测试复核",
+        "tests": {
+          "total": 1316,
+          "passed": 1297,
+          "failed": 1,
+          "skipped": 18
+        },
+        "failure": "Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters：预期ComboBox.Text为默认，实际为空。已读取原始job日志；失败出现在单类隔离执行。",
+        "artifact": {
+          "id": 12770842930,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 529495,
+          "sha256": "5e64402b210086df05c9c25e22312b7bb9d369c99b6f04c75ebe0cb685f09686"
+        }
       },
-      "artifacts": [],
+      "artifacts": [
+        {
+          "id": 12770991617,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 622156,
+          "sha256": "a0d97762dbf514b181f1470abead977b5d127e19325ca50a31c2010647425f32"
+        },
+        {
+          "id": 12770842930,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 529495,
+          "sha256": "5e64402b210086df05c9c25e22312b7bb9d369c99b6f04c75ebe0cb685f09686"
+        }
+      ],
       "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40583173450"
+    },
+    {
+      "runNumber": 1336,
+      "runId": 40584607154,
+      "sha": "7a6a2854554ba2ad533b27d088425b8f2da139fa",
+      "baselineJob": {
+        "id": 122472634218,
+        "status": "completed",
+        "step": "编译与测试",
+        "conclusion": "failure",
+        "failedStep": "编译与测试",
+        "tests": {
+          "total": 1316,
+          "passed": 1297,
+          "failed": 1,
+          "skipped": 18
+        },
+        "failure": "Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters: 预期ComboBox.Text“默认”，实际为空；原始job日志已读。",
+        "artifact": {
+          "id": 12772885049,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 622350,
+          "sha256": "9ac27d75e6c11da035a10905802226711c956aed903e2f962c88c31b8cfe24c1"
+        }
+      },
+      "sdk10Job": {
+        "id": 122472634411,
+        "status": "completed",
+        "step": "隔离工作树并运行 Release 编译与测试复核",
+        "conclusion": "failure",
+        "failedStep": "隔离工作树并运行 Release 编译与测试复核",
+        "tests": {
+          "total": 1316,
+          "passed": 1297,
+          "failed": 1,
+          "skipped": 18
+        },
+        "failure": "同一Q14ToolbarAlignmentBehaviorTests断言ComboBox.Text为空；原始SDK10 job日志已读。",
+        "artifact": {
+          "id": 12771007155,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 528987,
+          "sha256": "1a320224d3265dac9dc0196ee174232c7961b70a202cc177027e277c734cc049"
+        }
+      },
+      "artifacts": [
+        {
+          "id": 12772885049,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 622350,
+          "sha256": "9ac27d75e6c11da035a10905802226711c956aed903e2f962c88c31b8cfe24c1"
+        },
+        {
+          "id": 12771007155,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 528987,
+          "sha256": "1a320224d3265dac9dc0196ee174232c7961b70a202cc177027e277c734cc049"
+        }
+      ],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40584607154"
+    },
+    {
+      "runNumber": 1337,
+      "runId": 40612835364,
+      "sha": "150ee893fd3a3b9108441798fe9763690c4c8170",
+      "baselineJob": {
+        "id": 122568278851,
+        "status": "completed",
+        "step": "编译与测试",
+        "conclusion": "failure",
+        "failedStep": "编译与测试",
+        "tests": {
+          "total": 1316,
+          "passed": 1297,
+          "failed": 1,
+          "skipped": 18
+        },
+        "failure": "Q14ToolbarAlignmentBehaviorTests.ProductionTaskToolbarsKeepMixedControlGeometryAndTextCenters: 预期ComboBox.Text“默认”，实际为空；原始job日志已读。",
+        "artifact": {
+          "id": 12784336960,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 621560,
+          "sha256": "febf0a1cd07bb431317042fc08876d3ca6c7f092d80f034894d8defc1d963ac1"
+        }
+      },
+      "sdk10Job": {
+        "id": 122568278602,
+        "status": "completed",
+        "step": "隔离工作树并运行 Release 编译与测试复核",
+        "conclusion": "failure",
+        "failedStep": "隔离工作树并运行 Release 编译与测试复核",
+        "tests": {
+          "total": 1316,
+          "passed": 1297,
+          "failed": 1,
+          "skipped": 18
+        },
+        "failure": "同一Q14ToolbarAlignmentBehaviorTests断言ComboBox.Text为空；原始SDK10 job日志已读。",
+        "artifact": {
+          "id": 12784750661,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 528168,
+          "sha256": "d3fa333c2687489dc60f01ce5abb5b1000018d907c0fa4d1f324ae33f60db313"
+        }
+      },
+      "artifacts": [
+        {
+          "id": 12784336960,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 621560,
+          "sha256": "febf0a1cd07bb431317042fc08876d3ca6c7f092d80f034894d8defc1d963ac1"
+        },
+        {
+          "id": 12784750661,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 528168,
+          "sha256": "d3fa333c2687489dc60f01ce5abb5b1000018d907c0fa4d1f324ae33f60db313"
+        }
+      ],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40612835364"
+    },
+    {
+      "runNumber": 1338,
+      "runId": 40615179837,
+      "sha": "48f69413e137bd0b609c5db618914aaeb4690687",
+      "baselineJob": {
+        "id": 122575876046,
+        "status": "completed",
+        "step": "生成 Playnite 扩展包",
+        "conclusion": "failure",
+        "successfulSteps": [
+          "编译与测试",
+          "离屏渲染 QA",
+          "WPF UI 静态审查"
+        ],
+        "failedStep": "生成 Playnite 扩展包",
+        "tests": {
+          "total": 1455,
+          "passed": 1435,
+          "failed": 1,
+          "skipped": 19
+        },
+        "failure": "package.ps1的第二轮完整隔离测试中R08SystemMotionHotChangeBehaviorTests未在验收前观察到Opacity动画时钟（opacity=1; loaded=True）；首次编译测试、Render QA与WPF静态审查均成功。原始job日志已读。",
+        "artifact": {
+          "id": 12786916407,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1689007,
+          "sha256": "33cb7b2750dbc164072a43b0388843fae7fc0fc24458a6c15f5a64a0ccdba749"
+        }
+      },
+      "sdk10Job": {
+        "id": 122575876367,
+        "status": "completed",
+        "step": "隔离工作树并运行 Release 编译与测试",
+        "conclusion": "success",
+        "tests": {
+          "total": 1980,
+          "passed": 1922,
+          "failed": 0,
+          "skipped": 58
+        },
+        "artifact": {
+          "id": 12785353237,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 942925,
+          "sha256": "5ef8ba5b3c034fbc1f2865b8ddc49761b0c4f90564300c005be11d450dcc8f04"
+        }
+      },
+      "artifacts": [
+        {
+          "id": 12786916407,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1689007,
+          "sha256": "33cb7b2750dbc164072a43b0388843fae7fc0fc24458a6c15f5a64a0ccdba749"
+        },
+        {
+          "id": 12785353237,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 942925,
+          "sha256": "5ef8ba5b3c034fbc1f2865b8ddc49761b0c4f90564300c005be11d450dcc8f04"
+        }
+      ],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40615179837"
+    },
+    {
+      "runNumber": 1339,
+      "runId": 40623449222,
+      "sha": "237e993f9e03541f5e8056c30cab8fdb029c0a77",
+      "baselineJob": {
+        "id": 122602679724,
+        "status": "completed",
+        "step": "全部步骤完成",
+        "conclusion": "success",
+        "sdk": "8.0.423",
+        "successfulSteps": [
+          "源码结构检查",
+          "诊断采集自测",
+          "SDK 基线与缺失负例",
+          "编译与测试",
+          "离屏渲染 QA",
+          "WPF UI 静态审查",
+          "生成 Playnite 扩展包",
+          "上传构建产物"
+        ],
+        "tests": {
+          "total": 1982,
+          "passed": 1924,
+          "failed": 0,
+          "skipped": 58,
+          "wpfIsolatedClasses": 148
+        },
+        "build": {
+          "configuration": "Release",
+          "warnings": 0,
+          "errors": 0
+        },
+        "sourceValidation": "passed",
+        "xamlValidation": {
+          "passed": true,
+          "files": 26
+        },
+        "renderQa": {
+          "conclusion": "success",
+          "summary": "394 PNG; render-qa OK"
+        },
+        "wpfStatic": {
+          "conclusion": "success",
+          "xamlFiles": 32,
+          "errors": 0,
+          "warnings": 26,
+          "info": 179
+        },
+        "package": {
+          "conclusion": "success",
+          "file": "artifacts/GameSaveCenter-0.6.73-playnite.zip"
+        },
+        "diagnosticSelfTest": "Expected one failed outcome while validating failure capture; diagnostic preview and build-diagnostics tests passed."
+      },
+      "sdk10Job": {
+        "id": 122602679492,
+        "status": "completed",
+        "step": "隔离工作树并运行 Release 编译与测试",
+        "conclusion": "success",
+        "sdk": "10.0.401",
+        "tests": {
+          "total": 1982,
+          "passed": 1924,
+          "failed": 0,
+          "skipped": 58,
+          "wpfIsolatedClasses": 148
+        }
+      },
+      "artifacts": [
+        {
+          "id": 12790790406,
+          "name": "GameSaveCenter-windows-preview",
+          "bytes": 90781948,
+          "sha256": "9bb87173576b5f418fcb43ecc5623afdcd4dab44096eaaaad07259cc31d355fa"
+        },
+        {
+          "id": 12790705921,
+          "name": "GameSaveCenter-build-diagnostics",
+          "bytes": 1970995,
+          "sha256": "f34908b12d5e202ecca15930b7836e742055a97d64e991d43ac7444eca7a70c3"
+        },
+        {
+          "id": 12788344957,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "bytes": 943107,
+          "sha256": "fda31bce879de5a1f8e9efe260bf16b6ee04d8620699ab50795fd483708e0a8e"
+        }
+      ],
+      "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40623449222"
     }
   ],
   "branchProtection": {
@@ -315,5 +627,5 @@
     "api": "GET /repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks",
     "result": "HTTP 403 Resource not accessible by integration; no assumption is made about required checks"
   },
-  "snapshotUtc": "2026-10-27T21:05:21Z"
+  "snapshotUtc": "2026-10-28 03:44:30 UTC"
 }

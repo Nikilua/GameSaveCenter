@@ -148,3 +148,7 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## Round5 当前进度（2026-10-28）：U03-04～07
 
 `d1fc1308317fb805d61d67a7dda77d71e0afff18`和`5300a2b5c70f7736f1f46617667de73749b8d883`已推送。U03-04/05改共享TextBox禁用/验证错误语义和搜索区域源码回归，SDK8.0.423隔离32/32，XAML26/26、WPF静态37文件/0 error、Render QA双主题394 PNG/0 PROBLEM。U03-06/07通过去重复用既有ComboBox与CheckBox模板，仅加长选中项/箭头分栏源码守护测试，专项13/13。精确TRX、报告与摘要在Round5 evidence/U03-04-05及U03-06-07。CI run `40566121765`和`40567683673`截至19:21 UTC均未完结；更早run `40561836233`baseline仍在打包，SDK10成功。真实Playnite/实际UIA/鼠标/实体DPI待验。临时Render QA删除请求被执行策略拦截，未换Shell，见checks/cleanup.json。旧S/T权限待验不阻止继续独立控件批。整轮最终根入口构建安装启动、独立scripts/build.cmd和所有候选CI门禁未完成。
+
+## 2026-10-28 Round5当前源码与验证状态
+
+`main`已推送至`237e993f9e03541f5e8056c30cab8fdb029c0a77`，实现U05-01/02轻量页面切换和紧凑任务详情开合。SDK8.0.423相关行为5/5、0 skip；source validation通过，XAML26/26，WPF静态37 XAML/0 error，离屏Render QA精确SHA 394图/0 PROBLEM。GitHub run `40623449222`精确SHA两个适用job均成功：基线SDK8.0.423及SDK10.0.401各1982总/1924通过/0失败/58既有skip；扩展包与artifact身份见`docs/design/reviews/ui-polish-round5-20261027/evidence/U05-01-02/ci-run-40623449222.json`。required-checks权限此前403，保护状态仍“远端待验”。U05-01/02仍是“代码完成待验收”；真实Playnite、物理UIA/IME/DPI、整轮中文根入口/独立`scripts/build.cmd`仍未验。接续U05-03/04。

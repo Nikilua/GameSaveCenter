@@ -1,0 +1,47 @@
+{
+  "candidateSourceSha": "237e993f9e03541f5e8056c30cab8fdb029c0a77",
+  "renderQa": {
+    "commit": "237e993f9e03541f5e8056c30cab8fdb029c0a77",
+    "pngCount": 394,
+    "problemCount": 0,
+    "result": "render-qa OK",
+    "workingTreeClean": false,
+    "dirtyTrackedFile": "evidence/U03-08-U04-01-02/ci-runs.json",
+    "report": "render/render-qa-report.txt",
+    "reportSha256": "C765430BC402FE81A6C51E6CE312BF19F37535A82EBFBA2EF65D525A858D9824"
+  },
+  "screenshots": [
+    {
+      "name": "Task-1040x700.png",
+      "baselineSourceSha": "48f69413e137bd0b609c5db618914aaeb4690687",
+      "baselinePath": "render/before/Task-1040x700.png",
+      "baselineSha256": "54CB738262FE3C12362C96D474668F101C1C66781126FB0CA946C95AD7253D46",
+      "candidatePath": "render/after/Task-1040x700.png",
+      "candidateSha256": "EEF733183C82C010A7D5CAC5DB83DA49F068E084229618B776024EC13141860D"
+    },
+    {
+      "name": "Shell-Tasks-1040x700.png",
+      "baselineSourceSha": "48f69413e137bd0b609c5db618914aaeb4690687",
+      "baselinePath": "render/before/Shell-Tasks-1040x700.png",
+      "baselineSha256": "91A2FDEB7A244ED5EA46C9F07465860B5BF80A4C081FC884E986C5B4000EF51F",
+      "candidatePath": "render/after/Shell-Tasks-1040x700.png",
+      "candidateSha256": "2B57D7C89ED186955653A8C655920B1EBECEA01D14F3E8DD971976413CF70C2B"
+    },
+    {
+      "name": "Shell-Tasks-1040x700-closed.png",
+      "baselineSourceSha": "48f69413e137bd0b609c5db618914aaeb4690687",
+      "baselinePath": "render/before/Shell-Tasks-1040x700-closed.png",
+      "baselineSha256": "1E658483FCC97D3986806F8EBDD95282811A9C2C42B2F6996440E3757F45174C",
+      "candidatePath": "render/after/Shell-Tasks-1040x700-closed.png",
+      "candidateSha256": "127F9E0457F90EF044698693EC7328E327B64E1610EA4B048BE276F6A28D14F4"
+    },
+    {
+      "name": "Task-1040x700-dark.png",
+      "baselineSourceSha": "48f69413e137bd0b609c5db618914aaeb4690687",
+      "baselinePath": "render/before/Task-1040x700-dark.png",
+      "baselineSha256": "64CDF85B19AFCCF66223FB8F4EFDA9D3981F8FF45D5985AEFF4929F8E9CC1DE9",
+      "candidatePath": "render/after/Task-1040x700-dark.png",
+      "candidateSha256": "630A4625FFFCB0F669E2B14ECF07F9778A85780F0EC7A89AD78C92FD12155A18"
+    }
+  ]
+}
