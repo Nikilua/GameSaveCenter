@@ -315,11 +315,15 @@
                    HorizontalOffset="-220"
                    Margin="0,8,0,0"
                    StaysOpen="False"
-                   AllowsTransparency="True"
-                   PopupAnimation="Fade"
+                   AllowsTransparency="{DynamicResource GscPopupAllowsTransparency}"
+                   PopupAnimation="{DynamicResource GscPopupAnimation}"
+                   Opened="OnKeyboardHelpOpened"
                    Focusable="True"
                    AutomationProperties.Name="键盘操作说明">
-                <Border Width="300"
+                <Border x:Name="KeyboardShortcutHelpCard" Width="300"
+                        Focusable="True" KeyboardNavigation.TabNavigation="Cycle"
+                        AutomationProperties.Name="键盘操作说明"
+                        PreviewKeyDown="OnKeyboardHelpPreviewKeyDown"
                         Padding="14"
                         Style="{DynamicResource GscRedesignFloatingPickerCard}">
                     <StackPanel>

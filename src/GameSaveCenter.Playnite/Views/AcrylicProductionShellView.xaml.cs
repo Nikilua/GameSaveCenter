@@ -1077,6 +1077,26 @@ namespace GameSaveCenter.Playnite.Views
             e.Handled = true;
         }
 
+        private void OnKeyboardHelpOpened(object sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
+            {
+                if (IsLoaded && KeyboardShortcutHelpPopup.IsOpen)
+                    KeyboardShortcutHelpCard.Focus();
+            }));
+        }
+
+        private void OnKeyboardHelpPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape || !KeyboardShortcutHelpPopup.IsOpen)
+                return;
+
+            e.Handled = true;
+            KeyboardShortcutHelpPopup.IsOpen = false;
+            if (HeaderKeyboardHelpButton.IsVisible && HeaderKeyboardHelpButton.IsEnabled)
+                HeaderKeyboardHelpButton.Focus();
+        }
+
         private void UpdateNavigationReturnButton()
         {
             if (HeaderBackButton == null)

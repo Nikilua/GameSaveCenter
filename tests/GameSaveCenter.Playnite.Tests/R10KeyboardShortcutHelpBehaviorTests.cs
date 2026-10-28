@@ -15,6 +15,55 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R10KeyboardShortcutHelpBehaviorTests
 {
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void HelpPopupUsesSharedMotionAndEscapeReturnsToItsTrigger(bool animated)
+    {
+        RunSta(() =>
+        {
+            var shell = new AcrylicProductionShellView();
+            shell.Resources["GscPopupAnimation"] = animated
+                ? System.Windows.Controls.Primitives.PopupAnimation.Fade
+                : System.Windows.Controls.Primitives.PopupAnimation.None;
+            shell.Resources["GscPopupAllowsTransparency"] = animated;
+            using var host = new WindowHost(shell);
+            System.Windows.Automation.AutomationProperties.SetName(host.Window, "Keyboard help popup focus fixture");
+            host.Window.Activate();
+            var button = (Button)shell.FindName("HeaderKeyboardHelpButton")!;
+            var popup = (System.Windows.Controls.Primitives.Popup)shell.FindName("KeyboardShortcutHelpPopup")!;
+            var card = (Border)shell.FindName("KeyboardShortcutHelpCard")!;
+            try
+            {
+                for (var index = 0; index < 3; index++)
+                {
+                    Assert.True(button.IsVisible);
+                    Assert.True(button.Focus());
+                    Assert.Same(button, Keyboard.FocusedElement);
+                    button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    host.Window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+                    Assert.True(popup.IsOpen);
+                    Assert.Equal(animated, popup.AllowsTransparency);
+                    Assert.Equal(animated ? System.Windows.Controls.Primitives.PopupAnimation.Fade
+                        : System.Windows.Controls.Primitives.PopupAnimation.None, popup.PopupAnimation);
+                    Assert.True(card.IsVisible);
+                    Assert.Same(card, Keyboard.FocusedElement);
+                    var escape = new KeyEventArgs(Keyboard.PrimaryDevice,
+                        PresentationSource.FromVisual(card)!, 0, Key.Escape)
+                    { RoutedEvent = Keyboard.PreviewKeyDownEvent };
+                    card.RaiseEvent(escape);
+                    Assert.True(escape.Handled);
+                    Assert.False(popup.IsOpen);
+                    Assert.Same(button, Keyboard.FocusedElement);
+                }
+            }
+            finally
+            {
+                popup.IsOpen = false;
+            }
+        });
+    }
+
     [Fact]
     public void CatalogListsOnlyCommandsThatCanExecute()
     {
