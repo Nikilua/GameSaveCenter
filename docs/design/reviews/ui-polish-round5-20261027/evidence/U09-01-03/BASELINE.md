@@ -18,6 +18,8 @@ SDK 8.0.423、Release、精确提交 `8deb17c7` 的定向组合 16/16 通过，0
 
 测试用 WPF `MoveFocus` 检查导航顺序，用 UIA Peer/Invoke 验证名称与命令入口。它不等同于实体键盘、真实 IME、外部 UIA 客户端或 Playnite 内焦点验收；这些边界保留。
 
+该阶段本机排查留下的9份失败TRX（R07状态横幅与列菜单焦点，共10个失败结果）已做路径脱敏并归档：[失败TRX压缩包](historical-failed-local-trx-redacted.zip)、[逐项SHA和失败用例清单](historical-failed-local-trx-manifest.json)。单份历史TRX没有完整源码SHA字段，因此只作故障调查记录；精确当前候选的成功TRX见[U09-05最终门禁](../U09-05-final-5f0eb620/BASELINE.md)，旧结果不覆盖新源码结论。
+
 ## U09-03 尺寸、主题与 DPI
 
 精确提交 Render QA 覆盖 1040×700、1100×720、1280×720、1366×768、1536×864、1600×900、1707×960、1920×1080、2048×1152、2560×1440、3840×2160 DIP，双主题共 394 张 PNG、0 `PROBLEM`。报告 SHA/尺寸清单见 [截图清单](screenshots.json)。3840×2160 是逻辑 DIP 离屏测量，不是实体 4K 屏幕。物理 DPI、多屏切换、Playnite 外壳尺寸与主题交叉仍待真实宿主。
@@ -32,4 +34,4 @@ R07 测试夹具缺少 `SaveTabIndex` 的失败历史仍保留在 [ci-failure.js
 
 新源码提交 `8deb17c75ac91d716ec38b05f6f0a54530df2217` 的 run `40699146599` 中，SDK10 job `122853896050` 已成功，artifact `12822401732`（954,683 bytes，`sha256:0e3f437dc24d0ba32734b3052aa752c441f2bee56afedf04232ab041415adae4`）；baseline job `122853896172` 在本次记录时仍运行，不能据此结项。required-checks 接口曾返回 403 `Resource not accessible by integration`，规则集读取为 `[]`；不推断保护状态，待有权限的仓库维护者核对 `main` 的 required status checks。既有 S/T 宿主与权限待验项保持原样，不重复探测。
 
-全轮最终中文入口、独立 `scripts/build.cmd`、安装身份/启动链和产物清理尚未执行；见 [U09-04 性能证据](../U09-04/PERFORMANCE.md)。
+本文件建立时，最终中文入口、独立 `scripts/build.cmd`、安装身份/启动链和产物清理尚未执行；这些门禁后续已在[精确候选U09-05最终证据](../U09-05-final-5f0eb620/BASELINE.md)完成。U09-04逐帧/分配基线与真实宿主复核边界仍见[性能证据](../U09-04/PERFORMANCE.md)。

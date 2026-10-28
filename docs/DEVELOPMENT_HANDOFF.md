@@ -1283,10 +1283,12 @@ CI：run `40566121765`（1327，d1fc）与 `40567683673`（1328，5300）两套S
 
 生产DialogOverlay动作区从水平StackPanel改为WrapPanel，非末项统一8 DIP间距；标题/真实对象与影响文本、独立正文滚动、危险确认安全策略保留。SDK8.0.423 Release10/10、0 skip，含220 DIP受控按钮换行、合成Escape取消回焦、重复确认保护；一次反射重载歧义失败已修正并保留。source/XAML26/WPF静态0 error，Render QA双主题394图/0 PROBLEM；证据docs/design/reviews/ui-polish-round5-20261027/evidence/U07-01-02/BASELINE.md。真实Playnite长正文/物理输入/UIA/DPI待验。悬停修正3ecacdc0的SDK10 job成功，baseline仍在运行，artifact身份已记录；最终完整中文根入口链、独立scripts/build.cmd和本批CI仍待验。接续U07-03/04。
 
-## 2026-10-28 Round5 U09-01～04 当前接续
+## 2026-10-29 Round5 U09-05～08 最终门禁与接续状态
 
-继续严格按 `docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md` 推进 U09-05→U09-08。源码已推至`8deb17c75ac91d716ec38b05f6f0a54530df2217`；当前 SDK8.0.423 本地安装在`.tmp/round5-u09-01-03/dotnet-sdk8`，执行本地 dotnet 前设置 `DOTNET_ROOT` 和 `PATH` 到该目录，不改机器 SDK/global.json。不要把任何SDK安装复制进仓库。
+继续严格以 `docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md` 为逐项状态源。Round5 冻结源码候选 `5f0eb6209ccfb33c67efac36aee68aee204de614` 已完成最终本地门禁：中文根入口发布/安装/启动退出0，独立 `scripts/build.cmd` 退出0；两次 SDK 8.0.423 Release 测试各2012项、1954通过、0失败、58个明确 skip。`windows-build.yml` run `40768381673` 的 baseline 与 SDK10.0.401 job 均成功；artifact/安装身份/TRX与精确限制见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-5f0eb620/`。
 
-入口实际存在：`GameSaveCenter-一键构建安装运行.cmd`委托`GameSaveCenter-Run.cmd`，后者调用`scripts/dev-install-run.ps1 -Configuration Release`；独立`scripts/build.cmd`只负责`scripts/build.ps1`的解决方案构建/测试，不替代包、安装和启动链。下一批先看当前输出所有权与入口副作用，然后在冻结跟踪文件的已提交候选上运行独立`scripts/build.cmd`，再以中文包装入口运行完整Release构建/测试/发布打包/安装身份核验/启动。捕获实际SHA、SDK、退出码、诊断/TRX和安装ID。不要跳过测试或用SDK9冒充global.json的8.0.423。
+`GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1 -Configuration Release`；`scripts/build.cmd`只覆盖解决方案构建/测试。已安装 Playnite PID `42296` 仅证明进程启动，不代表 Playnite 页面已做视觉验收。真实存档恢复、媒体删除、云端写入没有执行。
 
-当前 U09 性能结论保持保守：操作布局代理对比 U00 改善，但 U00没有逐帧/分配基线；当前单次侧栏收起离屏帧间隔P95约90ms，应记录为待真实宿主复核，不调整动画时长来淡化信号。RenderHarness实测16/16，固定样本394图/0 PROBLEM。CI run40699146599的SDK10 job通过，baseline job122853896172仍运行；branch-protection required-checks调用曾403，不重复相同权限探测，向有权限维护者给出`gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks`核验步骤。运行最终入口、等待CI并安全清理本批自有`.tmp/round5-u09-01-03`后，再做U09-08；保留用户/其他任务`TestResults`。
+机器全局仅装 SDK `9.0.302`；仓库要求的 SDK `8.0.423` 保存在本地工具目录 `.tmp/round5-u09-01-03/dotnet-sdk8`，这是继续本地构建所需的活跃工具，必须保留；用该路径设置 `DOTNET_ROOT`/`PATH`，不可改 `global.json`、用 SDK9冒充基线或把 SDK复制进仓库。该目录其余已归档的旧测试/截图/日志和 U09-05 本批临时输出已按边界清理；清单、锁占用检查和空间前后值见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-5f0eb620/cleanup.json`。
+
+CI 两 job 均通过，但连接器先前读取 `main` required checks/branch protection 返回403，未重复探测；U09-06 保留“远端待验”，由有权限维护者执行 `gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks` 并核对两个 job。其余仍需真实验收的项：U07-05来源数据契约缺字段，U09-01逐批同数据双主题对照仍不完整，U09-04缺 U00 逐帧/累计分配基线；按 PROGRESS 保留状态，不声称整轮80项全结项。U09-01-03旧本地失败 TRX 已脱敏归档，当前精确SHA成功 TRX 在 U09-05-final 证据中。保留用户和其他任务的 `TestResults`。

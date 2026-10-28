@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-29",
+  "sourceCommit": "5f0eb6209ccfb33c67efac36aee68aee204de614",
+  "trackedWorktreeClean": true,
+  "rootCommand": "GameSaveCenter-一键构建安装运行.cmd -> GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1 -Configuration Release",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "driveSpaceBefore": [
+    {
+      "Drive": "C:\\",
+      "FreeBytes": 597852160,
+      "TotalBytes": 214749409280
+    },
+    {
+      "Drive": "D:\\",
+      "FreeBytes": 13132906496,
+      "TotalBytes": 294972813312
+    }
+  ],
+  "existingPackages": [
+    {
+      "Name": "GameSaveCenter-0.6.73-playnite.zip",
+      "Bytes": 45736098,
+      "SHA256": "FFA7C68D03E4A2C197223FDC5E03E3AD5C43F119D31AD748D5DC0BFBE4FF2286"
+    },
+    {
+      "Name": "GameSaveCenter-0.6.73.pext",
+      "Bytes": 45736098,
+      "SHA256": "FFA7C68D03E4A2C197223FDC5E03E3AD5C43F119D31AD748D5DC0BFBE4FF2286"
+    }
+  ],
+  "priorInstallLogs": [
+    {
+      "Name": "one-click-install.log",
+      "Bytes": 97597,
+      "SHA256": "05C87EB30B176732A3FB4B466FC7C00F3DF2E1733260E74E954EBEB32D69CBB7"
+    },
+    {
+      "Name": "last-dev-install.txt",
+      "Bytes": 2304,
+      "SHA256": "1FB79C30295952BDFAB684390C669569F04E2D5227E9B2AE7EA6A2EF8967FD77"
+    }
+  ],
+  "stagePath": ".tmp/round5-u09-05-final-5f0eb620-20261029",
+  "tempRoot": ".tmp/round5-u09-05-final-5f0eb620-20261029/system-temp",
+  "note": "TEMP/TMP will be set to this stage-owned D: directory before launch; tracked files are frozen at the recorded SHA."
+}

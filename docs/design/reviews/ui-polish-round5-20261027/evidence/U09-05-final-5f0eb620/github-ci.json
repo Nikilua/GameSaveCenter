@@ -1,0 +1,87 @@
+{
+  "sourceCommit": "5f0eb6209ccfb33c67efac36aee68aee204de614",
+  "workflow": {
+    "path": ".github/workflows/windows-build.yml",
+    "name": "Windows 构建验证",
+    "runId": 40768381673,
+    "runNumber": 1374,
+    "attempt": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40768381673",
+    "startedAtUtc": "2026-10-28T21:01:17Z",
+    "completedAtUtc": "2026-10-28T22:05:40Z"
+  },
+  "applicableJobs": [
+    {
+      "id": 123098598311,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAtUtc": "2026-10-28T21:01:19Z",
+      "completedAtUtc": "2026-10-28T22:05:40Z",
+      "passedSteps": [
+        "源码结构检查",
+        "诊断采集自测",
+        "SDK 基线与缺失负例",
+        "编译与测试",
+        "离屏渲染 QA",
+        "WPF UI 静态审查",
+        "生成 Playnite 扩展包",
+        "上传构建产物",
+        "保留构建与测试诊断（包括失败）"
+      ]
+    },
+    {
+      "id": 123098597735,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAtUtc": "2026-10-28T21:01:20Z",
+      "completedAtUtc": "2026-10-28T21:25:10Z",
+      "passedSteps": [
+        "隔离工作树并运行 Release 编译与测试",
+        "保留 SDK 10.0.401 构建诊断（包括失败）"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12855272229,
+      "name": "GameSaveCenter-windows-preview",
+      "bytes": 90786760,
+      "sha256": "a6e2799a1dd287aac891fb5498e40a03c35aa5f83dc365bfbd5ef6f883d3f279",
+      "createdAtUtc": "2026-10-28T22:05:33Z",
+      "expiresAtUtc": "2027-01-26T21:01:17Z",
+      "expired": false
+    },
+    {
+      "id": 12854783673,
+      "name": "GameSaveCenter-build-diagnostics",
+      "bytes": 2019551,
+      "sha256": "de772a593f11f7e513954382f39cc45ec08ee9fb3ef257923ebcd9ffae4aaede",
+      "createdAtUtc": "2026-10-28T22:05:36Z",
+      "expiresAtUtc": "2026-11-11T22:05:34Z",
+      "expired": false
+    },
+    {
+      "id": 12852732983,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "bytes": 964854,
+      "sha256": "4947940bb304982686397c66eb243a5a3f49c21383998edc064eb2a3c984a28a",
+      "createdAtUtc": "2026-10-28T21:25:06Z",
+      "expiresAtUtc": "2026-11-11T21:25:04Z",
+      "expired": false
+    }
+  ],
+  "requiredChecks": {
+    "status": "远端待验",
+    "jobResultsComplete": true,
+    "checkListReadable": false,
+    "reason": "本次精确 SHA 的两项 workflow job 均成功，但连接器先前读取 required checks / branch protection 返回403；按用户要求不重复同一权限探测，不据 workflow 结果推断保护规则完整。",
+    "nextStep": "有读取权限的仓库维护者或授权连接执行 gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks，并将 main 的 required check 名称与本 workflow 两 job 核对。"
+  }
+}

@@ -1,0 +1,413 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-29T06:02:53.9494785+08:00",
+  "sourceCommit": "5f0eb6209ccfb33c67efac36aee68aee204de614",
+  "targets": [
+    {
+      "path": ".tmp/round5-u09-05-final-5f0eb620-20261029",
+      "fileCount": 22,
+      "bytes": 6049043.0,
+      "reparsePointCount": 0,
+      "lockedFileCount": 0
+    },
+    {
+      "path": ".tmp/round5-u09-05-build-cmd-5f0eb620-20261029",
+      "fileCount": 1364,
+      "bytes": 181519105.0,
+      "reparsePointCount": 0,
+      "lockedFileCount": 0
+    }
+  ],
+  "ownerProcesses": [
+    {
+      "pid": 49788,
+      "running": false
+    },
+    {
+      "pid": 51892,
+      "running": false
+    }
+  ],
+  "markdownReferencesFound": false,
+  "archiveValidation": {
+    "trxCount": 314,
+    "manifestMismatches": 0,
+    "zipEntries": 314
+  },
+  "retained": [
+    "artifacts/gsc-b/dac0bcbb",
+    "artifacts/build-diagnostics/20261028T210324425Z-f531a673",
+    "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "artifacts/GameSaveCenter-0.6.73.pext",
+    "artifacts/last-dev-install.txt",
+    "artifacts/one-click-install.log",
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-5f0eb620"
+  ],
+  "diskSpaceBefore": [
+    {
+      "drive": "C",
+      "freeBytes": 604344320
+    },
+    {
+      "drive": "D",
+      "freeBytes": 12529422336
+    }
+  ],
+  "diskSpaceAfter": [
+    {
+      "drive": "C",
+      "freeBytes": 604344320
+    },
+    {
+      "drive": "D",
+      "freeBytes": 12720783360
+    }
+  ],
+  "spaceDeltas": [
+    {
+      "drive": "C",
+      "beforeFreeBytes": 604344320,
+      "afterFreeBytes": 604344320,
+      "observedFreeDeltaBytes": 0
+    },
+    {
+      "drive": "D",
+      "beforeFreeBytes": 12529422336,
+      "afterFreeBytes": 12720783360,
+      "observedFreeDeltaBytes": 191361024
+    }
+  ],
+  "removedOnlyWithPowerShellRemoveItemLiteralPathRecurseForce": true,
+  "previousRound5TempCleanup": {
+    "stage": ".tmp/round5-u09-01-03",
+    "deleted": [
+      {
+        "path": ".tmp/round5-u09-01-03/combined",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 49643.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/dotnet-temp",
+        "kind": "directory",
+        "fileCount": 0,
+        "bytes": null,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/exact",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 49643.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/exact-8deb",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 49643.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/exact-after-fix",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 49643.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/performance",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 37212.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/r07",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 19901.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/r07-corrected-fixture",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 16995.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/r07-diagnostic",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 6555.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/r07-diagnostic2",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 6561.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/r07-diagnostic3",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 6691.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/r07-final",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 16995.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/r07-fix",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 19855.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/render",
+        "kind": "directory",
+        "fileCount": 395,
+        "bytes": 53302848.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/render-repro",
+        "kind": "directory",
+        "fileCount": 395,
+        "bytes": 53234230.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/shellqa",
+        "kind": "directory",
+        "fileCount": 31,
+        "bytes": 3573500.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-03-06-focused-run",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 12925.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-04-column-menu-final",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 9228.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-04-column-menu-final2",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 9213.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-04-column-menu-run2",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 14248.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-04-column-menu-run3",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 6025.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-04-column-menu-run4",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 6025.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-04-column-menu-run5",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 6025.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-04-focused-run",
+        "kind": "directory",
+        "fileCount": 0,
+        "bytes": null,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-05-notification-focus",
+        "kind": "directory",
+        "fileCount": 1,
+        "bytes": 7613.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-06-focused",
+        "kind": "directory",
+        "fileCount": 7,
+        "bytes": 13127.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/historical-failed-trx-export",
+        "kind": "directory",
+        "fileCount": 9,
+        "bytes": 88965.0,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/one-click-final.exit",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 3,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/one-click-final.log",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 119906,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/performance-console.txt",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 37279,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/render-exact-console.txt",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 1142899,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/render-qa.log",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 1160792,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/save-light-diff.png",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 20831,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/scripts-build.exit",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 3,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/scripts-build.log",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 108392,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/shellqa-console.txt",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 4313,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u07-04-05-wpf-static.txt",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 29646,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u09-02.trx",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 34314,
+        "reparsePointCount": 0
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/u09-05-space-before.txt",
+        "kind": "file",
+        "fileCount": 1,
+        "bytes": 211,
+        "reparsePointCount": 0
+      }
+    ],
+    "deletedTotalFiles": 869.0,
+    "deletedTotalBytes": 113271898.0,
+    "lockedFiles": 0,
+    "markdownReferencesFound": false,
+    "historicalFailures": {
+      "failedTrxFilesArchived": 9,
+      "failureCount": 10,
+      "archive": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-03/historical-failed-local-trx-redacted.zip",
+      "manifest": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-03/historical-failed-local-trx-manifest.json"
+    },
+    "retainedActiveTooling": [
+      {
+        "path": ".tmp/round5-u09-01-03/dotnet-sdk8",
+        "reason": "Local SDK 8.0.423 is required by global.json; the machine-installed SDK is 9.0.302. DEVELOPMENT_HANDOFF instructs local builds to set DOTNET_ROOT/PATH to this portable SDK."
+      },
+      {
+        "path": ".tmp/round5-u09-01-03/dotnet-install.ps1",
+        "reason": "Known bootstrap script for the retained portable SDK."
+      }
+    ],
+    "diskSpaceBefore": [
+      {
+        "drive": "C",
+        "freeBytes": 622411776
+      },
+      {
+        "drive": "D",
+        "freeBytes": 12720508928
+      }
+    ],
+    "diskSpaceAfter": [
+      {
+        "drive": "C",
+        "freeBytes": 622411776
+      },
+      {
+        "drive": "D",
+        "freeBytes": 12835926016
+      }
+    ],
+    "spaceDeltas": [
+      {
+        "drive": "C",
+        "beforeFreeBytes": 622411776,
+        "afterFreeBytes": 622411776,
+        "observedFreeDeltaBytes": 0
+      },
+      {
+        "drive": "D",
+        "beforeFreeBytes": 12720508928,
+        "afterFreeBytes": 12835926016,
+        "observedFreeDeltaBytes": 115417088
+      }
+    ]
+  }
+}

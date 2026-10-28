@@ -1,3 +1,11 @@
+## 2026-10-29 Round5 U09-05/06/07/08 最终候选门禁
+
+源码候选 `5f0eb6209ccfb33c67efac36aee68aee204de614` 已推送。测试专用修正避免键盘/UIA列菜单用例触发无关的 `StylusWisp` Popup 捕获崩溃；生产程序集、XAML、资源与业务命令未改。中文根入口完整Release构建/测试/发布/打包/安装身份/启动及独立 `scripts/build.cmd` 均退出0。两次SDK8.0.423运行各2012项、1954通过、0失败、58个明确skip（57个已撤销“今日工作台”断言、1个默认opt-in系统指针测试）；不将skip计为通过。
+
+精确SHA的 GitHub run `40768381673` / #1374 success；baseline job `123098598311` 和 SDK10.0.401 job `123098597735` 均成功，Render QA/WPF静态/包与上传全过。当前包SHA-256 `F80780FE18D890610C10B881D1B21D7D9967CE7EFFEBF265B3EDF3DB4D514DBD`，安装主插件DLL SHA-256 `220BE2409571A14902F1350BBD48655950EF974C94E857D1C7CE5E1EB0859F02`；Playnite PID42296已启动。证据见[U09-05最终候选](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-5f0eb620/BASELINE.md)。这不代表真实页面视觉、实体输入/IME、外部UIA、物理DPI或真实存档/媒体/云端业务已验。
+
+本地阶段临时构建/测试/离屏图已安全清理，当前文件与前后空间见同目录 `cleanup.json`。保留 `.tmp/round5-u09-01-03/dotnet-sdk8` 及安装脚本，因为系统只装SDK9.0.302、global.json要求8.0.423；剩余阶段失败TRX已脱敏归档。required-check/branch protection读取先前403，未重复探测，故U09-06仅对保护规则名单标“远端待验”。80项复核：6项已满足、70项代码完成待验收、U07-05/U09-01/U09-04进行中、U09-06远端待验；U09-08审查已完成但不代表整轮80项全验收。详见Round5 `PROGRESS.md`。
+
 ## 2026-10-29 Round5 U07-07/08 恢复说明批
 
 推送源码提交 `0aff7f32aab4fb31940fd791c1486c67d36ebdbd`。SDK8.0.423 Release精确提交定向10/10、0 skip；源码校验通过，WPF静态42 XAML/0错误/26既有warning/179 info。固定UTC双主题Render QA候选394 PNG/0 PROBLEM/exit0；其报告记录前一HEAD `17d883ab` 和dirty候选，精确SHA渲染由当前CI覆盖。run `40749256118` baseline job `123031214603`与SDK10 job `123031215214`查询时均进行中、暂无artifact；前一个17d run `40744264627`的SDK10 job成功/artifact `12843205835`，baseline仍在打包。required-checks曾403，权限与保护状态继续标“远端待验”。U07-07/08更新为代码完成待验收；证据在Round5 `evidence/U07-07-08-RECOVERY/BASELINE.md`。真实Playnite、外部UIA、实体键盘/IME和物理DPI未验，未执行真实恢复/媒体删除/云端写入。

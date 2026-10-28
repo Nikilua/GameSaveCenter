@@ -1,3 +1,13 @@
+## 2026-10-29 Round5 最终候选与续接规则
+
+- 冻结候选为源码提交 `5f0eb6209ccfb33c67efac36aee68aee204de614`。`GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1 -Configuration Release` 完整成功退出0；独立 `scripts/build.cmd` 也按其构建/测试职责退出0。两个SDK8.0.423 Release运行都是2012项、1954通过、0失败、58个显式skip，全部157份TRX counters匹配。57 skip属于已撤销“今日工作台”断言，1个Tooltip系统指针用例默认opt-in；skip不算通过。
+- `windows-build.yml` 精确SHA run `40768381673` 两job均success：baseline job `123098598311`（SDK8.0.423，含Render QA/WPF静态/包/上传）；SDK10.0.401 job `123098597735`。Artifact IDs/digests和安装/包DLL哈希都在Round5 `evidence/U09-05-final-5f0eb620/`。
+- AppContext关闭 stylus/touch 的开关只放在 `DataGridColumnVisibilityBehaviorTests.RunSta` 的测试线程，目的是绕过与键盘/UIA无关的Windows StylusWisp Popup捕获崩溃；不能迁移到产品UI或恢复触控设置。
+- GitHub workflow job都通过，但branch required-check / protection读取先前403。用户明确要求不重复相同权限探测；U09-06应只对保护规则名单保持“远端待验”，下一步让有权限维护者或连接执行 `gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks`，核对名称与两个job，不可推断为绿色。
+- 本机global只装SDK9.0.302，而 `global.json`固定SDK8.0.423。当前可用便携SDK在 `.tmp/round5-u09-01-03/dotnet-sdk8`；本地运行前设置 `DOTNET_ROOT` 和 `PATH` 指向该 `dotnet.exe`。该目录与 `dotnet-install.ps1`是活跃工具，后续构建期间保留；禁止改global.json、把SDK9当8或将SDK拷进源码仓库。
+- U09-05完整链与build.cmd、U09-07清理已通过；最终本地证据、314份TRX归档、9份旧失败TRX、路径/锁占用/磁盘空间快照见Round5 `evidence/U09-05-final-5f0eb620/` 和 `evidence/U09-01-03/`。`artifacts/gsc-b/dac0bcbb`、本地package/pext、安装报告和root build diagnostics是当前输出，需保留至被更新替代。
+- Playnite PID42296只证明桌面进程启动，不代表真实页面视觉、外部UIA、实体键鼠/IME或物理DPI验收；本轮没有真实存档恢复、媒体删除、云写入。80项复核状态为6项已满足、70项代码完成待验收、U07-05/U09-01/U09-04进行中、U09-06远端待验。U09-08记录审查完成但不表示80项全验收；继续依 `docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md` 跟踪这些明确边界。
+
 ## 2026-10-29 Round5 U07-07/08 恢复提示
 
 - U07-07的巡检依赖提示已在生产Settings页；新增回归确保它紧挨开关与禁用间隔，并保留关闭时当前值。

@@ -1,0 +1,20 @@
+{
+  "sourceCommit": "5f0eb6209ccfb33c67efac36aee68aee204de614",
+  "bothRunsHaveSameSkipBreakdown": true,
+  "total": 58,
+  "reasons": [
+    {
+      "count": 57,
+      "category": "revoked-ui-architecture",
+      "reason": "Assertion belongs to the revoked Today Workbench UI architecture and no longer applies after the current AcrylicFork production baseline."
+    },
+    {
+      "count": 1,
+      "category": "interactive-pointer-opt-in",
+      "test": "GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt",
+      "reason": "Moves the system mouse pointer; skipped by default and can be run explicitly with GSC_RUN_INTERACTIVE_POINTER_TESTS=1."
+    }
+  ],
+  "pipeSandboxSkips": 0,
+  "failures": 0
+}

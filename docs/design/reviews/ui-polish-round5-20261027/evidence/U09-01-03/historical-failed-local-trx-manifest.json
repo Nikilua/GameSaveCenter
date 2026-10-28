@@ -1,0 +1,118 @@
+{
+  "sourceCommit": "not encoded in the individual historical TRX; see surrounding U09-01/02/03 evidence for stage context",
+  "currentCandidate": "5f0eb6209ccfb33c67efac36aee68aee204de614",
+  "sourceIdentityUse": "historical diagnostic only; does not validate or replace the exact-current-SHA runs",
+  "redaction": "D:\\workplace\\github\\GameSaveCenter -> [repo]; C:\\Users\\<user> -> %USERPROFILE%",
+  "failedFileCount": 9,
+  "failures": [
+    {
+      "path": "r07/u09-r07-current.trx",
+      "originalBytes": 19901,
+      "originalSha256": "B15159D9F8EBEDAD55F618245330EEA608D834E2B599BB762B042748B055DB50",
+      "redactedBytes": 19452,
+      "redactedSha256": "1B9768FEE8B41B66B87B9FEF61AC1B14524639CE3DD98C275521DFD9E40EFA09",
+      "testCaseCount": 5,
+      "failedCount": 1,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor"
+      ]
+    },
+    {
+      "path": "r07-diagnostic/u09-r07-diagnostic.trx",
+      "originalBytes": 6555,
+      "originalSha256": "0EC53DE7F7534298A1FD404DAA424DFBAE4DF31255F8B53D070FE697D6474608",
+      "redactedBytes": 6330,
+      "redactedSha256": "92E06A4FD1C5ED0CE8AC98A9028BB63DAF9B1D1584FFAE5976E6EDF92D7D9E5A",
+      "testCaseCount": 1,
+      "failedCount": 1,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor"
+      ]
+    },
+    {
+      "path": "r07-diagnostic2/u09-r07-diagnostic2.trx",
+      "originalBytes": 6561,
+      "originalSha256": "96E4714D2018021D24CDCB3FEB2499F7B76E0E6C38C2B3F28F347DFC972DE040",
+      "redactedBytes": 6336,
+      "redactedSha256": "C1CDC7378DAABC45CD3D08F4C2636F0638FB16103E26574581D4F3CC23C48226",
+      "testCaseCount": 1,
+      "failedCount": 1,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor"
+      ]
+    },
+    {
+      "path": "r07-diagnostic3/u09-r07-diagnostic3.trx",
+      "originalBytes": 6691,
+      "originalSha256": "927D624F191DBA77D26FAFCADE17D2168B8499993177A0077967560D53615F95",
+      "redactedBytes": 6466,
+      "redactedSha256": "953F588E38093174A9416E9566CC78651BBA4E6C5D52557EACC46F6C68ACBA03",
+      "testCaseCount": 1,
+      "failedCount": 1,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor"
+      ]
+    },
+    {
+      "path": "r07-fix/u09-r07-fix.trx",
+      "originalBytes": 19855,
+      "originalSha256": "8AA3C9CD2286807C586483EB1B62FDD53F47A3AA82648B3062014A5869E9C030",
+      "redactedBytes": 19406,
+      "redactedSha256": "E44987BD0BD681A7730D462A8467ECD45982DB71EB9F901B31056540FBB9C4E3",
+      "testCaseCount": 5,
+      "failedCount": 1,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests.SaveStaleBannerKeepsRetryAndHistoryTableFloor"
+      ]
+    },
+    {
+      "path": "u07-04-column-menu-run2/u07-04-column-menu.trx",
+      "originalBytes": 14248,
+      "originalSha256": "E29AE202B423BBC05A4C1B6445205AB3EB6BCA13C239C9839F361F71395B59A9",
+      "redactedBytes": 13575,
+      "redactedSha256": "E26ACCFAA892FEA2CD6AE32D5BCDDB717573C0A9E56B7327A0E735F148E304E5",
+      "testCaseCount": 5,
+      "failedCount": 2,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ProductionTablesExposeThePickerAndSharedThemeResources",
+        "GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ColumnMenuArrowNavigationVisitsEnabledItemsAndResetInOrder"
+      ]
+    },
+    {
+      "path": "u07-04-column-menu-run3/u07-04-column-menu.trx",
+      "originalBytes": 6025,
+      "originalSha256": "8FEFADD3B03BAB1799A58E9716E6382EBAC6BE5C62DE3EF0A807BF78F3AB1427",
+      "redactedBytes": 5800,
+      "redactedSha256": "8D18E0A441BE7B1EB071ACA0960C4C25F62AFD75221757F9088A904016EA85E2",
+      "testCaseCount": 1,
+      "failedCount": 1,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ColumnMenuArrowNavigationVisitsEnabledItemsAndResetInOrder"
+      ]
+    },
+    {
+      "path": "u07-04-column-menu-run4/u07-04-column-menu.trx",
+      "originalBytes": 6025,
+      "originalSha256": "DADD2CF1F3816EAFE442D1117937A47B3D57218057738A9A7AED5256073980A8",
+      "redactedBytes": 5800,
+      "redactedSha256": "7B34C23451975183E8F6AD98F5148415AF975EEA640E6C30F8FCA3D25F26484B",
+      "testCaseCount": 1,
+      "failedCount": 1,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ColumnMenuArrowNavigationVisitsEnabledItemsAndResetInOrder"
+      ]
+    },
+    {
+      "path": "u07-04-column-menu-run5/u07-04-column-menu.trx",
+      "originalBytes": 6025,
+      "originalSha256": "CF6F9C8C2493FE96E55BC263EB154292564F3487B39402FD7077D1832122A26A",
+      "redactedBytes": 5800,
+      "redactedSha256": "5322BBCD858135AE0A2B982A9EA4879539AE6FD5BDBCE4D6C6C3553D0B2E43CD",
+      "testCaseCount": 1,
+      "failedCount": 1,
+      "testNames": [
+        "GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ColumnMenuArrowNavigationVisitsEnabledItemsAndResetInOrder"
+      ]
+    }
+  ]
+}

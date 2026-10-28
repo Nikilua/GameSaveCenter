@@ -1,3 +1,11 @@
+## 2026-10-29 Round5 U09-05/06/07/08 冻结候选最终门禁与整轮盘点
+
+- 源码提交 `5f0eb6209ccfb33c67efac36aee68aee204de614`：测试线程为列菜单键盘/UIA回归禁用无关 stylus/touch 支持，修复宿主 `StylusWisp` 捕获崩溃；生产代码、WPF资源与业务语义不变。此前故障与修复证据在Round5 `evidence/U09-05-wpf-stylus-fix/`。
+- 中文真实根入口完整链和独立 `scripts/build.cmd` 都以SDK8.0.423、Release、退出码0完成。每次2012项：1954通过、0失败、58明确skip（57旧Today Workbench断言、1系统指针opt-in）；157份TRX计数全匹配。根链安装插件版本`0.6.73+5f0eb620...`并启动Playnite PID42296；包/安装身份、日志、314份TRX及skip分类见`evidence/U09-05-final-5f0eb620/`。
+- 精确SHA GitHub Actions run `40768381673` / #1374 success；baseline job `123098598311`（SDK8.0.423，编译测试、Render QA、WPF静态、扩展包和artifact全部过）与SDK10.0.401 job `123098597735` success。Artifact ID/digest见 `evidence/U09-05-final-5f0eb620/github-ci.json`。required-check/branch protection此前403；按用户要求不重复探测，保护规则名单单独记“远端待验”。
+- 安全清理只处理已确认属于本阶段的仓库`.tmp`输出；两个U09-05目录删除1386个文件/187,568,148 bytes，D盘观测增加191,361,024 bytes。`.tmp/round5-u09-01-03`旧输出删869文件/113,271,898 bytes，D盘增加115,417,088 bytes；9份历史失败TRX（10个失败结果）脱敏归档。保留用户/其他任务TRX/TestResults与当前包/构建/诊断。便携SDK8.0.423仍是活跃工具（系统全局仅SDK9.0.302）及bootstrap脚本按handoff保留，不能整目录删除；记录见`evidence/U09-05-final-5f0eb620/cleanup.json`。
+- 80项状态复核为6项已满足、70项代码完成待验收、U07-05/U09-01/U09-04进行中、U09-06远端待验。U09-08审查项完成，但这不代表所有视觉/行为验收完成；真实Playnite渲染/物理输入/IME/DPI未验证，真实恢复/媒体删除/云写入未执行。逐项状态与剩余范围见Round5 `PROGRESS.md`。
+
 ## 2026-10-29 Round5 U07-07/08 任务恢复说明
 
 - 在任务详情加入 `TaskRetryGuidanceResolver` 展示层说明：已知云端权限不足、网络不可达、传输未完成分别给出核对步骤；未知远端结果先核实接收状态。保留原重试命令、资格判断、任务对象、Worker和写入行为。设置页既有巡检依赖文案新增邻接/禁用态源码守护。
@@ -39,7 +47,7 @@
 ## 2026-10-28 Round5 U09-01/02/03 证据回归核对
 
 - 对照U00-01截图与Round5现存前后图；确认U06-07/08有已归档同任务前后图，其他页面尚无足够逐批同数据双主题配对。当前Light/Dark存档页参考图已归档；运行时相对时间由`DateTime.UtcNow`生成，U00与当前图不宣称同数据。
-- 当前生产源码`d4c4357c4e0c256b4fe0248d7efc25ce5badfd18`执行`render-qa.ps1`：RenderHarness Release 0 warning/0 error，退出0，Light/Dark×11尺寸、394 PNG、0 PROBLEM，DPI为1.00逻辑DIP；完整报告及SHA见`evidence/U09-01-03/`和本地`.tmp/round5-u09-01-03/`。
+- 当前生产源码`d4c4357c4e0c256b4fe0248d7efc25ce5badfd18`执行`render-qa.ps1`：RenderHarness Release 0 warning/0 error，退出0，Light/Dark×11尺寸、394 PNG、0 PROBLEM，DPI为1.00逻辑DIP；完整报告、SHA及样图见`evidence/U09-01-03/`。原始`.tmp`渲染/测试输出按U09-07归档必要报告后清理；该目录仅保留后续本地基线构建所需的SDK8.0.423工具。
 - SDK8.0.423键盘/焦点/通知/UIA候选组合16/16、0 skip。检查`R21KeyboardNavigationTraceTests`使用WPF `MoveFocus`遍历，`R07`用控件UIA Peer；不代表实体输入、IME、外部UIA或宿主验收。
 - 最新远端run40660226413对SHA `d4c4357c`的baseline job122721119895与SDK10 job122721119553都在`SaveStaleBannerKeepsRetryAndHistoryTableFloor`失败。定位为测试夹具漏`SaveTabIndex`，不是被测生产按钮失效；补默认页签并加强可见/排列/UIA调用检查后，R07 5/5，组合16/16本地候选通过。run/job/artifact及摘要见`evidence/U09-01-03/ci-failure.json`；修复提交的精确SHA与双SDK CI尚待完成。
 - 本阶段自有`.tmp`输出405文件/54,641,150 bytes，保留当前报告及失败诊断；没有删除及空间回收。C/D空闲空间开工与当前读数见`evidence/U09-01-03/BASELINE.md`，不可将变动全归因于本阶段。保留Round3 TRX/TestResults与其他任务输出。

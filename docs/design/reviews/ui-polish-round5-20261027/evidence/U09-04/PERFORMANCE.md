@@ -4,7 +4,7 @@
 
 ## 与 U00-06 同场景的操作与资源代理
 
-执行 `dotnet run --no-build --no-restore --configuration Release --project tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj -- enduranceprobe .tmp/round5-u09-01-03/performance 60`。样本时间固定为 `2026-10-28T09:00:00Z`。本轮窗口 1040×700 DIP、逻辑 DPI 1.00、Light/Dark、七个生产工作区；活动操作60秒，停止操作后稳定观察30秒，10个资源样本、0操作失败。窗口是 opacity 0.01 的 WPF STA 隔离窗口，不是真实 Playnite 宿主。
+执行 `dotnet run --no-build --no-restore --configuration Release --project tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj -- enduranceprobe <本批临时输出目录> 60`。样本时间固定为 `2026-10-28T09:00:00Z`。本轮窗口 1040×700 DIP、逻辑 DPI 1.00、Light/Dark、七个生产工作区；活动操作60秒，停止操作后稳定观察30秒，10个资源样本、0操作失败。窗口是 opacity 0.01 的 WPF STA 隔离窗口，不是真实 Playnite 宿主。原始临时输出已清理，脱敏报告保存在本目录的 [enduranceprobe 报告](enduranceprobe-report-redacted.txt)。
 
 | 指标 | U00-06 基线 | 当前提交 | 观察 |
 | --- | ---: | ---: | --- |
