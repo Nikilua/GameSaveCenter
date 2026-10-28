@@ -1,14 +1,18 @@
 [
   {
-    "Path": "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U05-03-04\\tests\\u05-03-04-fixed.trx",
-    "Hash": "C85AAF100EEDCEE25D69D685003ABBF83C8F017223BBDC448227330A0A239336"
+    "file": "u05-03-04-exact-18d73836.trx",
+    "sha256": "4CD7E7AE522792B49D294808FBFADB9E8DA156D33E3DE93E0574E057D897E6D0"
   },
   {
-    "Path": "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U05-03-04\\tests\\u05-03-04-identity.trx",
-    "Hash": "51B6767687CA1D88361F6F040DECF09726A96E5EB870C49F645BB26E3F2D8767"
+    "file": "u05-03-04-fixed.trx",
+    "sha256": "C85AAF100EEDCEE25D69D685003ABBF83C8F017223BBDC448227330A0A239336"
   },
   {
-    "Path": "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U05-03-04\\tests\\u05-03-04.trx",
-    "Hash": "1ACD5933FC1E9BCF05539B6B9A19408B286711013E75285A6EA857D407683F34"
+    "file": "u05-03-04-identity.trx",
+    "sha256": "51B6767687CA1D88361F6F040DECF09726A96E5EB870C49F645BB26E3F2D8767"
+  },
+  {
+    "file": "u05-03-04.trx",
+    "sha256": "1ACD5933FC1E9BCF05539B6B9A19408B286711013E75285A6EA857D407683F34"
   }
 ]

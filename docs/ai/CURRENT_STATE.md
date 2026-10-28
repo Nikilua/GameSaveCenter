@@ -156,3 +156,5 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## 2026-10-28 Round5 U05-03/04 当前接续
 
 本批只补充详情对象与弹层退出行为证据，生产实现继承237e993f。SDK8.0.423 Release定向9/9、0 skip，source/WPF静态通过；U05-03代码完成待验收，U05-04仍需菜单和所有抽屉实际开闭/回焦证据。失败夹具及缺构建身份诊断保留，详见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-03-04/BASELINE.md。最终根入口完整链、独立scripts/build.cmd及当前提交CI仍待完成；不重复旧权限探测。
+
+提交后复核：实现/测试提交18d73836e58946eb85c8db1c50a85519d14e1b3d已推送；冻结跟踪文件后SDK8.0.423 Release精确身份9/9、0 skip、退出0，见tests/u05-03-04-exact-18d73836.trx。GitHub run40638353451的baseline job122650472010及SDK10 job122650471976均仍在运行，无终态或artifact，见ci-run-40638353451.json。required-checks既有403不重试。
