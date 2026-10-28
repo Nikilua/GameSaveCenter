@@ -261,7 +261,7 @@
                                                 </Border>
                                                 <WrapPanel Margin="0,14,0,0">
                                                     <!-- Icon-only: copy diagnostics. -->
-                                                    <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding DataContext.CopyDiagnosticsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="复制诊断" AutomationProperties.Name="复制诊断" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnCopy}" Width="18" Height="18"/></ui:Button>
+                                                    <ui:Button Style="{DynamicResource GscIconOnlyButtonBase}" Command="{Binding DataContext.CopyDiagnosticsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="复制完整诊断摘要，不仅限于当前所选问题" AutomationProperties.Name="复制诊断" AutomationProperties.HelpText="复制完整诊断摘要，不仅限于当前所选问题。" Margin="0,0,8,8"><ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconBtnCopy}" Width="18" Height="18"/></ui:Button>
                                                     <ui:Button Command="{Binding DataContext.OpenSelectedFindingNavigationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="{Binding DataContext.SelectedFindingNavigationText, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="{Binding DataContext.SelectedFindingNavigationToolTip, RelativeSource={RelativeSource AncestorType=UserControl}}" AutomationProperties.Name="{Binding DataContext.SelectedFindingNavigationText, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="0,0,0,8">
                                                         <ui:Button.Style>
                                                             <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiContextButton}">
@@ -409,7 +409,7 @@
                                             </StackPanel>
                                             <ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiToolbarPrimaryButton}" Command="{Binding RefreshDiagnosticsCommand}" Content="刷新诊断"/>
                                             <WrapPanel x:Name="MaintenanceDiagnosticActions" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,16,0,0">
-                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" Margin="0,0,8,8"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyDiagnosticsCommand}" Content="复制诊断" ToolTip="复制完整诊断摘要" AutomationProperties.HelpText="复制完整诊断摘要，不仅限于当前所选问题。" Margin="0,0,8,8"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CreateDiagnosticsPackageCommand}" Content="导出诊断包" Margin="0,0,8,8" ToolTip="先预览类别和脱敏范围；确认后生成，不包含存档、媒体和凭据"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding CopyMaintenanceReportCommand}" Content="复制健康报告" Margin="0,0,8,8" ToolTip="生成用户可读健康报告并复制到剪贴板"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiToolbarButton}" Command="{Binding ExportMaintenanceReportCommand}" Content="导出健康报告" Margin="0,0,8,8" ToolTip="导出为 TXT 或 Markdown 用户可读健康报告"/>

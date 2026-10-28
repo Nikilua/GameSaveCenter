@@ -1,0 +1,28 @@
+{
+  "run": 40657403310,
+  "sha": "fd2d1316be9ff2d65b0851ac57c45e40064e50ac",
+  "jobs": [
+    {
+      "id": 122711682164,
+      "sdk": "8.0.423",
+      "conclusion": "failure",
+      "artifact": 12803175260,
+      "digest": "sha256:4bb346ad404524d2f304444c6ca71cebab6af3bc7e80276f8cb251628284fbff"
+    },
+    {
+      "id": 122711682592,
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "artifact": 12802043705,
+      "digest": "sha256:52360a74f54ba9e2a79a88f38ac9f6e6d54065e57f81c6862bba9d2c26ff46cc"
+    }
+  ],
+  "failure": "RestoredAcrylicForkBaselineTests.OverviewPrioritizesPendingWorkAndRecentTasksWithoutDuplicateHomePanels line 28 expected Text=待处理 after the intended eyebrow text changed to 当前状态",
+  "source_tests": {
+    "total": 1125,
+    "passed": 1106,
+    "failed": 1,
+    "skipped": 18
+  },
+  "raw_logs": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40657403310"
+}

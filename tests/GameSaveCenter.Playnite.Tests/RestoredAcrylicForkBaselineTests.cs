@@ -25,10 +25,10 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("Command=\"{Binding RefreshCommand}\"", overview);
         Assert.Contains("Command=\"{Binding BackupAllCommand}\"", overview);
         Assert.Contains("Command=\"{Binding SyncMediaCommand}\"", overview);
-        Assert.Contains("Text=\"待处理\"", overview);
-
         var document = XDocument.Parse(overview);
         var xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var eyebrow = document.Descendants().Single(node => node.Attribute(xamlName)?.Value == "OverviewTodayHeroEyebrow");
+        Assert.Equal("当前状态", eyebrow.Attribute("Text")?.Value);
         foreach (var hiddenElement in new[]
                  {
                      "OverviewHeroStatusPills",
