@@ -12630,3 +12630,12 @@ U03-08盘点确认数值范围/溢出/滚轮、路径预览/校验/缺失目录�
 - SDK8.0.423 Release精确提交键盘/UIA定向16/16、0 skip；双主题×11尺寸 Render QA 394 PNG/0 PROBLEM，固定样本完整运行两次，主图逐像素一致；`validate-source.py`、XAML26/26、WPF静态42文件/0 error通过。TRX、脱敏渲染报告与哈希见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-03/`。
 - 同条件EnduranceProbe 60秒活动+30秒稳定段：86轮、366动作、0失败，周期P95 654.02ms，对比U00的933.16ms；工作区切换/详情打开/滚动P95改善，详情关闭+1.75ms。私有/托管存活内存斜率代理分别下降；U00未记录累计分配字节，不能用存活堆替代。3次隔离Shell QA每次均收敛，但单次收起帧间隔P95 89.4/90.0/91.7ms，属于opacity0.01离屏CompositionTarget事件；U00缺同指标，不能判断回退，需真实Playnite帧呈现复核。完整数据见`evidence/U09-04/PERFORMANCE.md`。
 - R07旧失败提交`d4c4357c`run40660226413已修复；提交`2b6c4022`run40688405018的baseline/SDK10 job均成功。`8deb17c7`run40699146599 SDK10 job122853896050成功，baseline job122853896172仍运行；required-checks接口403，远端保护待权限核查。U09-05完整中文入口与`scripts/build.cmd`、U09-07安全清理、U09-08总审仍未执行，不据此批局部通过结项。
+
+## 2026-10-29 Round5 U08-08 / U09-01 与 d195 CI 修复候选
+
+- 删除`TrainerCenterView.xaml`中永久Collapsed、与共享空态Presenter重复的旧TextBlock；新增测试守护共享Presenter和加载状态空态抑制。
+- 修复`TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer`夹具在窗口加载前取到六项边距的问题；先show/flush并断言启动状态提示已折叠，再捕获可见动作margin。SDK8.0.423 Release组合17项16通过、0失败、1历史“今日工作台”断言skip；Light/Dark针对用例2/2。
+- d19570fa run 40737167888 baseline job 122988713401 和 SDK10 job 122988712933 均失败，原始诊断/两个artifact及digest已存档；仅该测试夹具问题。修正候选双SDKCI待推送验证。
+- source validation退出0；WPF静态42 XAML、0 error、26 warning、179 info；Render QA双主题394 PNG、0 PROBLEM。细节和脱敏TRX/Render报告SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-08-09-01/BASELINE.md`。
+- 删除前检查`.tmp`路径边界/重解析点、文档引用、专属进程和文件独占读取；只清理5个本阶段原始TRX，共134106字节；保留当前Render QA。空间前后与清单见`evidence/U08-08-09-01/cleanup.json`。
+- U08-08代码完成待验收；U09-01仍进行中（其它视觉批次成对样图缺失）。真实Playnite、外部UIA/Narrator、实体键盘/IME及物理DPI不在本批本地覆盖范围。中文提交、push和当前提交双SDK CI结果待记录。

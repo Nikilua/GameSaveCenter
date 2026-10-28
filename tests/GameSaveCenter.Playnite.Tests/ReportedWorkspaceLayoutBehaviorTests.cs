@@ -1469,13 +1469,17 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var actions = (WrapPanel)typeof(TrainerCenterView)
                     .GetField("TrainerInstalledToolActions", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(view)!;
-                originalBottomMargins = actions.Children.OfType<FrameworkElement>()
-                    .Select(child => child.Margin.Bottom)
-                    .ToList();
                 window = CreateWindow(view, 1280, 720);
                 window.Show();
                 FindVisualChildren<TabControl>(view).Single().SelectedIndex = 0;
                 FlushLayout(window);
+                var launchStatusText = actions.Children.OfType<TextBlock>()
+                    .Single(child => child.Name == "TrainerLaunchStatusText");
+                Assert.Equal(Visibility.Collapsed, launchStatusText.Visibility);
+                originalBottomMargins = actions.Children.OfType<FrameworkElement>()
+                    .Where(child => child.Visibility == Visibility.Visible)
+                    .Select(child => child.Margin.Bottom)
+                    .ToList();
                 view.ApplyResponsiveLayout(1280, 720);
                 FlushLayout(window);
                 (desktopRows, desktopGap) = MeasureWrapRows(actions, view);

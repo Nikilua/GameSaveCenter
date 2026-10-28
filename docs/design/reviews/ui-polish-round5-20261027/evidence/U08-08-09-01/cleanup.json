@@ -1,0 +1,13 @@
+{
+  "stage": "U08-08-09-01",
+  "cleanupTarget": ".tmp/round5-u08-01-02-08/test-results",
+  "deleted": true,
+  "files": 5,
+  "bytes": 134106,
+  "fileLockCheck": "exclusive read open succeeded for all files before removal",
+  "matchingTestProcessNames": 0,
+  "documentReferences": 0,
+  "kept": ".tmp/round5-u08-01-02-08/render",
+  "spaceBeforeBytes": { "C": 2623889408, "D": 12335489024 },
+  "spaceAfterBytes": { "C": 2623504384, "D": 12335636480 }
+}

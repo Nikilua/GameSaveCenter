@@ -1,0 +1,36 @@
+{
+  "sampleTimeUtc": "2026-10-29T00:00:00Z",
+  "renderReportRawSha256": "D562C430759B4CBD59E5595542FE4C1B36DE8D4907D1F27CCE2DA44DDE8847A7",
+  "renderReportRedactedSha256": "3FFC015EB8BAFE363062DE628A5729FC7DAABA0F651FFA2C0D34106DC6D43385",
+  "renderedPngCount": 394,
+  "problemCount": 0,
+  "comparison": {
+    "before": {
+      "output": ".tmp/round5-u08-01-02/render/theme/light/Trainer-1040x700.png",
+      "reportCommit": "18481e6d8d3415ffc31362764980614e76445848",
+      "sampleTimeUtc": "not recorded in prior report",
+      "sha256": "7E5F9EDF44E654448B2C2A6B506456B4EE8C514819F2EE36C63163B22ABB12B3"
+    },
+    "after": {
+      "output": ".tmp/round5-u08-01-02-08/render/theme/light/Trainer-1040x700.png",
+      "baseCommit": "d19570fad7f056e44b2f0d5aee2eca3260d04ae7",
+      "sampleTimeUtc": "2026-10-29T00:00:00Z",
+      "sha256": "7E5F9EDF44E654448B2C2A6B506456B4EE8C514819F2EE36C63163B22ABB12B3"
+    },
+    "pixelHashEqual": true,
+    "interpretation": "The removed legacy TextBlock was permanently Collapsed; the Trainer page image remained pixel-identical. The earlier report did not pin sample UTC, so this comparison verifies only the static Trainer fixture surface, not cross-page time-sensitive content."
+  },
+  "tests": {
+    "finalRawTrxSha256": "31C94F65F0631C2128F52927E1910B3B09293AB0CAD0690F68F707A6F27B4175",
+    "finalRedactedTrxSha256": "1533D6F3C3516DF4778D6B43DB6DEB062E8E2F59481094040D2279BB613F7810",
+    "rowGapFailureRawSha256": "0D42D0C47633405A807B9F75E3B9C8AE1947ECE7DAF72B7C9FC5FA94D83FB32B",
+    "rowGapFailureRedactedSha256": "0B1EB12B4E7CDD9DE5D91E3131B5413AD409C51B7415B5A8CB2B80C6A88AAAAB",
+    "identityMetadataFailureRawSha256": "C48D4614C1A0AFCEE72386734745DBDDC5BD9740DB32FD6936FB9E9A571F7450",
+    "identityMetadataFailureRedactedSha256": "103EF086ADC52A7663A8D7E9877B431257FC688C6EB4BDAA040399D51AE739DA",
+    "passing": 16,
+    "failed": 0,
+    "skipped": 1,
+    "total": 17,
+    "existingSkip": "SharedWorkspaceStatePresenterExistsAndIsUsedAcrossPages: historical assertion for the discarded Today Workbench architecture"
+  }
+}

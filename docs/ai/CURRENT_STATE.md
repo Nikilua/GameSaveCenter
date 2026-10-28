@@ -252,3 +252,7 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## 2026-10-28 Round5 U09-01/04当前状态
 
 `main`源码提交已推送至`8deb17c75ac91d716ec38b05f6f0a54530df2217`，新增 RenderHarness 假样本固定时钟。SDK8.0.423精确提交键盘/UIA组合16/16、0 skip；固定 UTC 的双主题×11尺寸 Render QA 394 PNG/0 PROBLEM，重复两次主样图逐像素一致；source validation、XAML26/26和WPF静态42文件/0 error通过。U00同条件操作周期P95 933.16→654.02ms，内存趋势代理下降；U00无动画逐帧及累计分配字节基线，当前离屏单次收起帧间隔P95约90ms，U09-04继续待真实宿主复核。2b6c4022 CI双job成功；8deb17c7 SDK10成功、baseline仍运行；required-checks查询403，保护状态远端待验。完整本地入口链、独立scripts/build.cmd、阶段清理与整轮审查未完成。详见`docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md`。
+
+## 2026-10-29 Round5 U08-08 / U09-01 跨页与证据复核
+
+Trainer 工具列表删除了永久折叠、与共享空态 Presenter 重复的旧文字节点；行为源码测试守住共享状态模板及加载期间空态抑制。同步修复`d19570fa` GitHub双SDK都失败的窄窗布局测试夹具：先加载窗口并确认空闲忙碌状态折叠，再快照可见动作原边距。SDK8.0.423 Release组合16/17（16通过、0失败、1个历史架构skip），双主题间距用例2/2；Render QA双主题394图/0 PROBLEM，source validation通过、WPF静态42 XAML/0 error。证据、TRX/报告哈希和失败job/artifact身份见`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-08-09-01/`。当前修正提交待推送/CI；真实Playnite、外部UIA/Narrator、实体键盘/IME/物理DPI未验。按安全边界清理了本阶段唯一原始TRX临时目录共5文件/134106字节，保留当前Render QA；cleanup.json列空间、引用和占用核查。U08-08代码完成待验收，U09-01继续进行中。

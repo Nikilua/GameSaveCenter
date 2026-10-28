@@ -1,0 +1,36 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "commit": "d19570fad7f056e44b2f0d5aee2eca3260d04ae7",
+  "runId": 40737167888,
+  "result": "failure",
+  "jobs": [
+    {
+      "id": 122988713401,
+      "name": "编译、测试与打包",
+      "conclusion": "failure",
+      "artifactId": 12839593450,
+      "artifactName": "GameSaveCenter-build-diagnostics",
+      "artifactDigest": "sha256:67f72c73f82b05f1e1b48ed3aedd41c5b7daad6a6ff826fcf1d96591536ab773"
+    },
+    {
+      "id": 122988712933,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "failure",
+      "artifactId": 12839945589,
+      "artifactName": "GameSaveCenter-sdk10-build-diagnostics",
+      "artifactDigest": "sha256:63df4d8cbfbf590280ebb57dacdd3ecfa19b6973de268515702e8e258200eb0e"
+    }
+  ],
+  "diagnostics": {
+    "stage": "tests",
+    "className": "ReportedWorkspaceLayoutBehaviorTests",
+    "cases": 54,
+    "passed": 52,
+    "failed": 2,
+    "failingCase": "TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer (Light, Dark)",
+    "expected": "six margins because the pre-show snapshot included TrainerLaunchStatusText before its collapsed style was applied",
+    "actual": "five margins after WPF loaded the view and applied the collapsed idle status",
+    "repair": "capture original visible-action margins after the window is loaded and assert idle status is collapsed before responsive margins change",
+    "localVerification": "SDK 8.0.423 focused two theme cases 2/2; combined focused suite 16 passed, 0 failed, 1 existing skip"
+  }
+}

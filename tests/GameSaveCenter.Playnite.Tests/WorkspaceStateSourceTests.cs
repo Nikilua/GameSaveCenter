@@ -42,6 +42,18 @@ public sealed class WorkspaceStateSourceTests
     }
 
     [Fact]
+    public void TrainerToolEmptyStateUsesTheSharedPresenterWithoutAnOrphanedLegacyLabel()
+    {
+        var root = FindRepositoryRoot();
+        var trainer = File.ReadAllText(Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml"));
+
+        Assert.Contains("<ui:WorkspaceStatePresenter State=\"Empty\" Title=\"暂无已安装工具\" Message=\"可以导入 EXE、ZIP、文件夹或 CT 文件。\"", trainer);
+        Assert.Contains("BasedOn=\"{StaticResource GscWorkspaceStatePresenter}\"", trainer);
+        Assert.Contains("Condition Binding=\"{Binding IsTrainerToolsLoading}\" Value=\"False\"", trainer);
+        Assert.DoesNotContain("<TextBlock Text=\"暂无已安装工具&#xA;可以导入 EXE、ZIP、文件夹或 CT 文件。\"", trainer);
+    }
+
+    [Fact]
     public void StatePresenterSupportsSixUnifiedStates()
     {
         var root = FindRepositoryRoot();

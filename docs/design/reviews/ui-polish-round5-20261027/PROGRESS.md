@@ -1,8 +1,12 @@
 # 第五轮 UI 与动画精修进度
 
+## 2026-10-29 U08-08 / U09-01 与 CI 回归修正
+
+删除 Trainer 工具列表中永久折叠、与共享空态 Presenter 重复的旧文字节点；新增来源回归，守住共享 Presenter 与加载时不显示空态。修复 `d19570fa` 双 SDK CI 报出的窄窗测试夹具时序：窗口加载后再捕获可见动作的原始边距，并核实忙碌状态提示空闲时折叠。SDK 8.0.423 定向组合 16/17（16通过、0失败、1既有skip）；双主题间距用例2/2。Render QA 双主题394图、0 PROBLEM；源码校验和 WPF 静态审查退出0。细节、脱敏 TRX/Render QA 报告哈希、CI job 与 artifact 身份见[evidence/U08-08-09-01](evidence/U08-08-09-01/BASELINE.md)。修正提交的远端双SDK CI待查；真实 Playnite/UIA/IME/物理DPI未验。U08-08代码完成待验收，U09-01继续进行中，跨页同条件配对仍有缺口。
+
 ## 2026-10-29 U08-05 / U08-06 工具状态与短窗维护页
 
-U08-05补上启动请求独立的忙碌动画/“正在启动所选工具…”UIA状态，并确保无论成功、失败或取消都会清除；来源、文件可用/缺失、自动启动和不可跟踪原因原表达及安全门控保留。U08-06用1160×520 DIP真实WPF窗口验证诊断页滚动到底可读完整长摘要、摘要内部滚动，并能返回操作卡触发原绑定复制命令。SDK8.0.423 Release定向5/5、0 skip；source validation退出0；WPF静态42 XAML/0错误/26 warning/179 info；固定样本双主题394 PNG、0 PROBLEM。工作树基线、TRX/Render报告SHA和边界见[evidence/U08-05-06-current-main-d6d940e7](evidence/U08-05-06-current-main-d6d940e7/BASELINE.md)。真实Playnite、外部UIA/Narrator、物理输入/DPI及本批提交CI待验；上一提交`d6d940e7` run `40731004737` SDK10 job `122966980155`通过/artifact `12835609657`，baseline job `122966980646`仍打包，不覆盖本批修改。
+U08-05补上启动请求独立的忙碌动画/“正在启动所选工具…”UIA状态，并确保无论成功、失败或取消都会清除；来源、文件可用/缺失、自动启动和不可跟踪原因原表达及安全门控保留。U08-06用1160×520 DIP真实WPF窗口验证诊断页滚动到底可读完整长摘要、摘要内部滚动，并能返回操作卡触发原绑定复制命令。SDK8.0.423 Release定向5/5、0 skip；source validation退出0；WPF静态42 XAML/0错误/26 warning/179 info；固定样本双主题394 PNG、0 PROBLEM。工作树基线、TRX/Render报告SHA和边界见[evidence/U08-05-06-current-main-d6d940e7](evidence/U08-05-06-current-main-d6d940e7/BASELINE.md)。前置提交`d6d940e7`的run `40731004737`中baseline job `122966980646`和SDK10 job `122966980155`均通过；本批基线`d19570fa`的run `40737167888`双job失败于同一浅/深主题夹具断言，根因与修正见[evidence/U08-08-09-01](evidence/U08-08-09-01/BASELINE.md)，修正提交CI待查。真实Playnite、外部UIA/Narrator、物理输入/DPI仍待验。
 
 ## 2026-10-29 U08-03 / U08-04 当前主线行为复核
 
@@ -119,12 +123,12 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U08-05 | 工具页状态表达 | 代码完成待验收 | 来源/文件状态/自动启动说明清楚；启动请求有局部忙碌动画与UIA状态；不可跟踪时禁用原因可读 | [当前工作树证据](evidence/U08-05-06-current-main-d6d940e7/BASELINE.md) | SDK8本批5/5；真实工具启动、Playnite宿主、外部UIA/Narrator及新SHA CI待验 |
 | U08-06 | 维护页密度整理 | 代码完成待验收 | 诊断摘要先呈现；详情渐进展开；完整摘要复制命令保留；短窗可滚达摘要与操作入口 | [当前工作树证据](evidence/U08-05-06-current-main-d6d940e7/BASELINE.md) | SDK8本批5/5；本机WPF 1160×520 DIP覆盖；真实宿主与新SHA CI待验 |
 | U08-07 | 通知页整体一致 | 代码完成待验收 | 无结果可清除筛选并回焦搜索，空态文字复用共享样式；实际WPF窗口回归确认按钮焦点转移 | [局部证据](evidence/U08-07-08/BASELINE.md)；[筛选焦点回归](evidence/U07-05-08/BASELINE.md) | SDK8既有15/15并新增通知视图4/4、0 skip；真实游戏/任务跳转和Playnite宿主待验 |
-| U08-08 | 跨页一致性巡检 | 进行中 | 八类页面完成首轮共享资源引用盘点 | [盘点与差异](evidence/U08-07-08/BASELINE.md) | 静态引用不等于逐控件状态与视觉验收 |
-| U09-01 | 对比证据最小集 | 进行中 | 在 RenderHarness 引入可固定 UTC 的假样本时钟；`8deb17c7` 同样本完整渲染两次，Light/Dark 存档图解码像素均稳定，报告SHA/像素SHA见[截图清单](evidence/U09-01-03/screenshots.json) | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | U00图属于不同UI状态且未固定样本，历史逐批配对仍缺；后续视觉批次须引用稳定样本及双主题前后图 |
+| U08-08 | 跨页一致性巡检 | 代码完成待验收 | 八类页面首轮共享资源盘点后，移除Trainer工具列表永久折叠的重复空态文字，保留共享 Presenter 与加载抑制条件 | [盘点与差异](evidence/U08-07-08/BASELINE.md)；[本批复核](evidence/U08-08-09-01/BASELINE.md) | Light `Trainer-1040x700` 删除前后像素SHA一致；其它跨页状态/间距及真实宿主仍需逐项复核 |
+| U09-01 | 对比证据最小集 | 进行中 | RenderHarness 固定UTC假样本时钟；`8deb17c7`同样本完整双主题渲染两次，存档图像素稳定；本批固定样本Render QA双主题394 PNG/0 PROBLEM，Trainer静态夹具前后像素SHA一致 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md)；[本批清单](evidence/U08-08-09-01/screenshots.json) | 本轮其它视觉批次同条件双主题前后配对仍缺；之前Trainer图未记录样本UTC，仅证明静态夹具相同 |
 | U09-02 | 键盘与UIA回归 | 代码完成待验收 | SDK8.0.423 Release 精确提交`8deb17c7`组合16/16、0失败、0 skip；TRX原始与脱敏SHA已归档。修正R07夹具默认`SaveTabIndex`，增加可见/排列/UIA Invoke断言 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | WPF MoveFocus/UIA Peer不等于实体键盘、IME、外部UIA或Playnite宿主验收 |
 | U09-03 | 尺寸主题交叉回归 | 代码完成待验收 | 精确提交`8deb17c7`：双主题×11窗口尺寸，394 PNG、0 PROBLEM、逻辑DPI1.00；source validation通过、XAML26/26、WPF静态42文件/0 errors。Render QA原始及脱敏报告SHA已记录 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 物理DPI/多屏/Playnite窗口未验；Render报告含未跟踪外部输出，跟踪树在运行时干净 |
 | U09-04 | 动画性能复测 | 进行中 | 精确提交同条件 enduranceprobe 60秒+30秒：操作周期P95 933.16→654.02ms；内存斜率代理下降；三次独立侧栏Shell QA均收敛。明细见[性能复测](evidence/U09-04/PERFORMANCE.md) | [U09-04性能证据](evidence/U09-04/PERFORMANCE.md) | U00无逐帧及累计分配基线；当前单次收起离屏帧间隔P95约90ms，需真实宿主/已呈现帧复核；不据离屏小样本宣称无回退 |
 | U09-05 | 标准cmd最终验收 | 待开始 | 已确认`GameSaveCenter-Run.cmd`、`GameSaveCenter-一键构建安装运行.cmd`、`scripts/build.cmd`均存在；尚未运行 | — | 需冻结跟踪文件后执行真实完整构建、测试、发布打包、安装身份核对与启动，并单独验证`build.cmd` |
-| U09-06 | GitHub双SDK门禁 | 进行中 | 修复提交`2b6c4022` run [40688405018](https://github.com/Nikilua/GameSaveCenter/actions/runs/40688405018)的baseline与SDK10 job成功；`8deb17c7` run [40699146599](https://github.com/Nikilua/GameSaveCenter/actions/runs/40699146599)的SDK10 job成功，baseline `122853896172`仍运行。artifact见[CI证据](evidence/U09-01-03/BASELINE.md) | [旧失败诊断](evidence/U09-01-03/ci-failure.json)；[当前工作流报告](evidence/U09-01-03/BASELINE.md) | required-checks查询403，不能验证保护规则要求；须等baseline终态并由有权限的维护者核对required checks |
+| U09-06 | GitHub双SDK门禁 | 进行中 | `2b6c4022` run `40688405018`两个job通过；`8deb17c7` run `40699146599` SDK10通过、baseline仍运行。`d19570fa` run `40737167888`双job失败，发现并修复Trainer窄窗用例夹具时序，修正提交待CI | [Round5既有CI与权限状态](evidence/U09-01-03/BASELINE.md)；[失败job/artifact及归因](evidence/U08-08-09-01/ci-d19570fa-failure.json) | required-checks接口403，保护状态仍“远端待验”；当前修正提交两个SDK job都通过前不结项 |
 | U09-07 | 产物清理与可追溯 | 待开始 | 本批证据已脱敏归档；阶段 `.tmp/round5-u09-01-03` 尚未清理 | — | 需核对路径边界、引用、占用及磁盘空间，仅清理本阶段自有输出并记录前后空间 |
 | U09-08 | 整轮交付审查 | 待开始 | U09及80项最终审查待执行 | — | 完整入口、本地构建和CI门禁结果齐全前不结项 |

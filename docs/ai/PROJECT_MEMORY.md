@@ -1446,3 +1446,7 @@ U03-04/05 Render QA全量临时目录仍在`.tmp/round5-u03-04-05-render-d1fc130
 ## 2026-10-28 Round5 U09-01/04 当前接续
 
 源码提交`8deb17c75ac91d716ec38b05f6f0a54530df2217`已推送。RenderHarness新增环境固定 UTC 假样本时钟；完整 Render QA 双主题×11尺寸394图、0 PROBLEM，连续相同样本主图像素相同。SDK8.0.423键盘/UIA精确组合16/16、0 skip。端到端布局代理与 U00-06 对比改善，但 U00没有逐帧和分配量记录；当前离屏侧栏单次收起帧间隔约90ms，需真实宿主复核，不能作物理帧率结论。GitHub run40699146599 SDK10 job已通过、baseline job仍运行；required-checks API403，不重试同权限探测。下一阶段冻结跟踪文件后依次运行`GameSaveCenter-一键构建安装运行.cmd`及`scripts/build.cmd`，先完成完整链和CI，再做精确清理/整轮审查。状态详见PROGRESS.md与evidence/U09-01-03、U09-04。
+
+## 2026-10-29 Round5 U08-08 / U09-01 与 CI 夹具修正
+
+Trainer 工具页清除了永久折叠的重复空态文字，继续使用共享 `WorkspaceStatePresenter` 和加载状态条件；没有改命令、业务绑定或安全语义。`d19570fa` 的 `windows-build.yml` baseline/SDK10 两job均因同一Light/Dark布局用例失败：夹具在Window加载套用空闲Collapsed样式前捕获了六个按钮的margin。窗口加载后捕获五个可见动作并保留原有行距/抽屉恢复断言。SDK8.0.423精确工作树定向16/17（16通过、0失败、1历史架构skip），主题用例2/2；source validation、WPF静态和双主题Render QA通过。脱敏证据及run/job/artifact身份位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-08-09-01/`。修正提交远端CI待验；Render QA是离屏逻辑DPI，不等价Playnite宿主、外部UIA、实体输入或物理DPI。文档/PNG/TRX逐项引用、临时文件占用及路径边界核对后，只清理本批`.tmp/.../test-results`，保留当前渲染输出；禁止触碰其它阶段TestResults/TRX。接续推进独立Round5条目，不等待旧S/T宿主权限待验。
