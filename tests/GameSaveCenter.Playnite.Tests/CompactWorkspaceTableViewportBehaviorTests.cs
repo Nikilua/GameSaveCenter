@@ -4,7 +4,10 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -162,6 +165,171 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             AssertContentBoundsFit(taskPage, GetField<Border>(taskType, taskView, "TaskTableFrame"));
             AssertInnerScrollCanReachEnd(taskGrid);
             AssertPageCanReachEnd(taskPage);
+        });
+    }
+
+    [Fact]
+    public void CompactTaskInspectorReversesItsTransitionWithoutMovingTheQueueAnchor()
+    {
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new TaskCenterView
+                {
+                    UiAnimationsEnabled = true,
+                    SystemMotionEnabledProviderForAudit = () => true
+                };
+                var type = typeof(TaskCenterView);
+                var rows = Enumerable.Range(0, 96).Select(_ => new object()).ToArray();
+                var grid = GetField<DataGrid>(type, view, "TaskGrid");
+                var layout = GetField<Grid>(type, view, "TaskWorkspaceLayout");
+                var frame = GetField<Border>(type, view, "TaskDetailInspectorFrame");
+                var detailsViewer = view.TaskDetailScrollViewerElement;
+                var openButton = GetField<GameSaveCenter.Playnite.Controls.Button>(type, view, "TaskCompactDetailsButton");
+                var closeButton = GetField<GameSaveCenter.Playnite.Controls.Button>(type, view, "TaskCompactCloseDetailsButton");
+                grid.ItemsSource = rows;
+                // This fixture has no DashboardViewModel. Remove its unresolved SelectedTask
+                // binding so the control cannot reset the isolated selection during remeasure.
+                BindingOperations.ClearBinding(grid, DataGrid.SelectedItemProperty);
+
+                window = new Window
+                {
+                    Content = view,
+                    Width = 960,
+                    Height = 640,
+                    WindowStyle = WindowStyle.None,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Opacity = 0.01
+                };
+                view.ApplyResponsiveLayout(960, 640);
+                window.Show();
+                FlushWindowLayout(window);
+                grid.SelectedItem = rows[4];
+                grid.ScrollIntoView(rows[4]);
+                FlushWindowLayout(window);
+
+                var gridScroll = FindVisualDescendant<ScrollViewer>(grid);
+                gridScroll.ScrollToVerticalOffset(12);
+                FlushWindowLayout(window);
+                var selectedAnchor = grid.SelectedItem;
+                var scrollAnchor = gridScroll.VerticalOffset;
+                Assert.True(scrollAnchor > 0);
+
+                InvokeTaskDetailsClick(view, openButton);
+                FlushWindowLayout(window);
+                Assert.Equal(Visibility.Visible, frame.Visibility);
+                Assert.True(frame.IsHitTestVisible && detailsViewer.IsHitTestVisible);
+                Assert.True(layout.RowDefinitions[4].Height.IsAuto);
+                Assert.True(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
+                Assert.False(DependencyPropertyHelper.GetValueSource(layout.ColumnDefinitions[2], ColumnDefinition.WidthProperty).IsAnimated);
+                Assert.Same(detailsViewer, Keyboard.FocusedElement);
+                if (!ReferenceEquals(selectedAnchor, grid.SelectedItem))
+                    throw new InvalidOperationException(
+                        $"Selection moved during the open layout: selectedIndex={Array.IndexOf(rows, grid.SelectedItem)}; details={detailsViewer.Visibility}; open={GetField<bool>(type, view, "taskInspectorOpen")}.");
+                PumpDispatcherFor(TimeSpan.FromMilliseconds(180));
+                FlushWindowLayout(window);
+                Assert.Equal(1, frame.Opacity);
+                Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
+                Assert.True(GetField<bool>(type, view, "taskInspectorOpen"));
+
+                var breakpoint = GetField<object>(type, view, "detailBreakpoint");
+                var isCompact = (bool)breakpoint.GetType().GetProperty("IsCompact")!.GetValue(breakpoint)!;
+                if (!isCompact || grid.SelectedItem == null)
+                    throw new InvalidOperationException(
+                        $"Close preconditions changed: compact={isCompact}; selected={grid.SelectedItem != null}; workspaceWidth={layout.ActualWidth:0.##}; surfaceWidth={GetField<FrameworkElement>(type, view, "TaskPageScrollSurface").ActualWidth:0.##}.");
+                InvokeTaskDetailsClick(view, closeButton);
+                Assert.True(GetField<bool>(type, view, "taskInspectorClosing"));
+                FlushWindowLayout(window);
+                Assert.Equal(Visibility.Visible, frame.Visibility);
+                Assert.False(frame.IsHitTestVisible);
+                Assert.True(layout.RowDefinitions[4].Height.IsAuto);
+                Assert.Equal(Visibility.Visible, openButton.Visibility);
+                Assert.True(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
+                Assert.Same(openButton, Keyboard.FocusedElement);
+
+                // Reopen during the exit. The newer target must cancel the pending collapse.
+                InvokeTaskDetailsClick(view, openButton);
+                Assert.Equal(Visibility.Visible, frame.Visibility);
+                Assert.True(frame.IsHitTestVisible);
+                Assert.Same(detailsViewer, Keyboard.FocusedElement);
+                PumpDispatcherFor(TimeSpan.FromMilliseconds(180));
+                FlushWindowLayout(window);
+                Assert.Equal(Visibility.Visible, frame.Visibility);
+                Assert.Equal(1, frame.Opacity);
+                Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
+
+                InvokeTaskDetailsClick(view, closeButton);
+                PumpDispatcherFor(TimeSpan.FromMilliseconds(180));
+                FlushWindowLayout(window);
+                Assert.Equal(Visibility.Collapsed, frame.Visibility);
+                Assert.Equal(new GridLength(0), layout.RowDefinitions[4].Height);
+                Assert.Same(selectedAnchor, grid.SelectedItem);
+                Assert.InRange(Math.Abs(scrollAnchor - gridScroll.VerticalOffset), 0, 0.1);
+                Assert.False(DependencyPropertyHelper.GetValueSource(layout.ColumnDefinitions[2], ColumnDefinition.WidthProperty).IsAnimated);
+                Assert.Same(openButton, Keyboard.FocusedElement);
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void CompactTaskInspectorHonorsReducedMotionAndClosesImmediately()
+    {
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new TaskCenterView
+                {
+                    UiAnimationsEnabled = false,
+                    SystemMotionEnabledProviderForAudit = () => true
+                };
+                var type = typeof(TaskCenterView);
+                var grid = GetField<DataGrid>(type, view, "TaskGrid");
+                var layout = GetField<Grid>(type, view, "TaskWorkspaceLayout");
+                var frame = GetField<Border>(type, view, "TaskDetailInspectorFrame");
+                var openButton = GetField<GameSaveCenter.Playnite.Controls.Button>(type, view, "TaskCompactDetailsButton");
+                var closeButton = GetField<GameSaveCenter.Playnite.Controls.Button>(type, view, "TaskCompactCloseDetailsButton");
+                var rows = CreateRows();
+                grid.ItemsSource = rows;
+                grid.SelectedItem = rows[0];
+
+                window = new Window
+                {
+                    Content = view,
+                    Width = 960,
+                    Height = 640,
+                    WindowStyle = WindowStyle.None,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Opacity = 0.01
+                };
+                view.ApplyResponsiveLayout(960, 640);
+                window.Show();
+                FlushWindowLayout(window);
+
+                InvokeTaskDetailsClick(view, openButton);
+                Assert.Equal(Visibility.Visible, frame.Visibility);
+                Assert.Equal(1, frame.Opacity);
+                Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
+                Assert.True(layout.RowDefinitions[4].Height.IsAuto);
+
+                InvokeTaskDetailsClick(view, closeButton);
+                Assert.Equal(Visibility.Collapsed, frame.Visibility);
+                Assert.Equal(new GridLength(0), layout.RowDefinitions[4].Height);
+                Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
+            }
+            finally
+            {
+                window?.Close();
+            }
         });
     }
 
@@ -387,6 +555,33 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
 
     private static T GetField<T>(Type type, object target, string name)
         => (T)type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(target)!;
+
+    private static void InvokeTaskDetailsClick(TaskCenterView view, GameSaveCenter.Playnite.Controls.Button button)
+        => typeof(TaskCenterView).GetMethod("OnTaskCompactDetailsClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .Invoke(view, new object[] { button, new RoutedEventArgs() });
+
+    private static void FlushWindowLayout(Window window)
+    {
+        window.UpdateLayout();
+        window.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
+        window.UpdateLayout();
+    }
+
+    private static void PumpDispatcherFor(TimeSpan duration)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Background)
+        {
+            Interval = duration
+        };
+        timer.Tick += (_, __) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
+    }
 
     [Theory]
     [InlineData(false)]

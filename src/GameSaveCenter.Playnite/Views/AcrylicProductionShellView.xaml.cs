@@ -596,7 +596,9 @@ namespace GameSaveCenter.Playnite.Views
             // reassigning the same cached page would otherwise make the host perform
             // an avoidable content transition and could disturb a nested scroll owner.
             if (contentChanged)
+            {
                 PageHost.Content = page;
+            }
             UpdatePageHeader(workspace);
             var gameScoped = workspace != WorkspaceKind.Tasks
                 && workspace != WorkspaceKind.Maintenance
@@ -626,6 +628,13 @@ namespace GameSaveCenter.Playnite.Views
             // settling; first activation and actual page changes still get a full pass.
             if (contentChanged || firstActivation)
                 ApplyResponsiveLayout(ActualWidth, ActualHeight);
+            if (contentChanged)
+            {
+                if (IsSidebarMotionEnabled)
+                    GscMotion.AnimateEntrance(PageHost, 6, GscMotion.Fast, GscMotion.Fast);
+                else
+                    GscMotion.Normalize(PageHost);
+            }
             timer.Stop();
             Logger.Debug($"[PERF] WorkspaceActivation workspace={workspace} phase={(firstActivation ? "first" : "revisit")} page={(contentChanged ? "attach" : "reuse")} layout={timer.Elapsed.TotalMilliseconds:F3}ms");
         }
@@ -898,10 +907,9 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         /// <summary>
-        /// Cancels an in-flight sidebar transition when reduced motion becomes active.
-        /// Settings and Windows animation preferences can change while the embedded page
-        /// remains loaded, so waiting for the next click would leave a visual transition
-        /// running after the user has explicitly disabled it.
+        /// Cancels in-flight shell and page transitions when reduced motion becomes active.
+        /// Settings and Windows animation preferences can change while the view remains
+        /// loaded, so waiting for the next click would leave stale visual motion running.
         /// </summary>
         internal void NormalizeMotionIfDisabled()
         {
@@ -919,6 +927,7 @@ namespace GameSaveCenter.Playnite.Views
             SidebarContentLayer.Opacity = 1;
             sidebarTransitionRunning = false;
             ApplySidebarLayout();
+            GscMotion.Normalize(PageHost);
         }
 
         // Instance-scoped preference input lets STA tests exercise both policy branches

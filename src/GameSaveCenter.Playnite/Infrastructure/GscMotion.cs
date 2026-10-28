@@ -31,6 +31,8 @@ namespace GameSaveCenter.Playnite.Infrastructure
             public double ScaleBaseX;
             public double ScaleBaseY;
             public Transform? OwnedRenderTransform;
+            public TranslateTransform? MotionTranslate;
+            public ScaleTransform? MotionScale;
         }
 
         private sealed class MotionRegistry
@@ -254,30 +256,43 @@ namespace GameSaveCenter.Playnite.Infrastructure
             {
                 if (!element.Dispatcher.CheckAccess())
                     continue;
-
-                var state = MotionStates.GetOrCreateValue(element);
-                state.TranslateGeneration++;
-                state.EntranceGeneration++;
-                state.ScaleGeneration++;
-                element.BeginAnimation(UIElement.OpacityProperty, null);
-                if (element.RenderTransform is TranslateTransform translate)
-                {
-                    translate.BeginAnimation(TranslateTransform.XProperty, null);
-                    translate.BeginAnimation(TranslateTransform.YProperty, null);
-                    translate.X = 0;
-                    translate.Y = 0;
-                }
-                if (state.HasScaleBase)
-                {
-                    var scale = GetMutableScaleTransform(element);
-                    scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
-                    scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
-                    scale.ScaleX = state.ScaleBaseX;
-                    scale.ScaleY = state.ScaleBaseY;
-                    state.HasScaleBase = false;
-                }
-                element.Opacity = 1;
+                Normalize(element);
             }
+        }
+
+        /// <summary>
+        /// Cancels render-only motion on one element and returns it to its neutral visual
+        /// state. The caller remains responsible for completing any pending semantic change.
+        /// </summary>
+        internal static void Normalize(FrameworkElement element)
+        {
+            var state = MotionStates.GetOrCreateValue(element);
+            state.TranslateGeneration++;
+            state.EntranceGeneration++;
+            state.ScaleGeneration++;
+            element.BeginAnimation(UIElement.OpacityProperty, null);
+
+            var translate = state.MotionTranslate ?? element.RenderTransform as TranslateTransform;
+            if (translate != null)
+            {
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                translate.X = 0;
+                translate.Y = 0;
+            }
+            state.MotionTranslate = null;
+
+            if (state.HasScaleBase)
+            {
+                var scale = state.MotionScale ?? GetMutableScaleTransform(element);
+                scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+                scale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+                scale.ScaleX = state.ScaleBaseX;
+                scale.ScaleY = state.ScaleBaseY;
+                state.HasScaleBase = false;
+            }
+            state.MotionScale = null;
+            element.Opacity = 1;
         }
 
         private static ScaleTransform? FindMutableScaleTransform(TransformGroup group)
@@ -317,6 +332,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var motionState = MotionStates.GetOrCreateValue(element);
             var generation = ++motionState.TranslateGeneration;
             var translate = GetMutableTranslateTransform(element);
+            motionState.MotionTranslate = translate;
             var currentX = translate.X;
             var currentY = translate.Y;
             translate.BeginAnimation(TranslateTransform.XProperty, null);
@@ -365,6 +381,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var motionState = MotionStates.GetOrCreateValue(element);
             var generation = ++motionState.ScaleGeneration;
             var scale = GetMutableScaleTransform(element);
+            motionState.MotionScale = scale;
             if (!motionState.HasScaleBase)
             {
                 motionState.ScaleBaseX = scale.ScaleX;
@@ -450,6 +467,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var motionState = MotionStates.GetOrCreateValue(element);
             var generation = ++motionState.EntranceGeneration;
             var translate = GetMutableTranslateTransform(element);
+            motionState.MotionTranslate = translate;
             var translateSource = DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty);
             var opacitySource = DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty);
             var hasActiveAnimation = translateSource.IsAnimated || opacitySource.IsAnimated;
@@ -493,6 +511,62 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 translate.BeginAnimation(TranslateTransform.YProperty, null);
                 element.Opacity = 1;
                 translate.Y = 0;
+            };
+            element.BeginAnimation(UIElement.OpacityProperty, opacityAnimation);
+            translate.BeginAnimation(TranslateTransform.YProperty, translateAnimation);
+        }
+
+        /// <summary>
+        /// Fades and lifts an element out while keeping its measured layout stable. The
+        /// completion callback runs only if no newer entrance/exit or normalization replaced
+        /// this transition.
+        /// </summary>
+        internal static void AnimateExit(
+            FrameworkElement element,
+            double offsetY,
+            TimeSpan duration,
+            Action? completed = null)
+        {
+            Track(element);
+            var motionState = MotionStates.GetOrCreateValue(element);
+            var generation = ++motionState.EntranceGeneration;
+            var translate = GetMutableTranslateTransform(element);
+            motionState.MotionTranslate = translate;
+            var translateSource = DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty);
+            var opacitySource = DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty);
+            var currentY = translate.Y;
+            var currentOpacity = element.Opacity;
+
+            if (translateSource.IsAnimated || opacitySource.IsAnimated)
+            {
+                // Preserve effective values when a close reverses an in-flight entrance.
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                element.BeginAnimation(UIElement.OpacityProperty, null);
+                translate.Y = currentY;
+                element.Opacity = currentOpacity;
+            }
+
+            var easing = CreateEaseOut();
+            var opacityAnimation = new DoubleAnimation(currentOpacity, 0, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            var translateAnimation = new DoubleAnimation(currentY, offsetY, duration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            translateAnimation.Completed += (_, __) =>
+            {
+                if (generation != motionState.EntranceGeneration)
+                    return;
+
+                element.BeginAnimation(UIElement.OpacityProperty, null);
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                element.Opacity = 1;
+                translate.Y = 0;
+                completed?.Invoke();
             };
             element.BeginAnimation(UIElement.OpacityProperty, opacityAnimation);
             translate.BeginAnimation(TranslateTransform.YProperty, translateAnimation);

@@ -1768,6 +1768,9 @@ namespace GameSaveCenter.Playnite.Views
             var productionOverview = ProductionShellView.GetWorkspaceView<OverviewView>(WorkspaceKind.Overview);
             if (productionOverview != null)
                 productionOverview.UiAnimationsEnabled = MotionEnabled;
+            var productionTaskCenter = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
+            if (productionTaskCenter != null)
+                productionTaskCenter.UiAnimationsEnabled = MotionEnabled;
             ProductionShellView.NormalizeMotionIfDisabled();
             NormalizeDashboardMotionIfDisabled();
 
@@ -1805,7 +1808,10 @@ namespace GameSaveCenter.Playnite.Views
 
             var taskCenter = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
             if (taskCenter != null)
+            {
+                taskCenter.NormalizeInspectorMotionIfDisabled();
                 NormalizeAnimatedElement(taskCenter.TaskDetailCardElement);
+            }
         }
 
         private static void NormalizeAnimatedElement(FrameworkElement element)

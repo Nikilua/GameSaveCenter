@@ -24,6 +24,8 @@ namespace GameSaveCenter.Playnite.Views
         private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private readonly WrapPanelRowGapController taskFilterPresetRowGap;
         private bool taskInspectorOpen;
+        private bool taskInspectorClosing;
+        private int taskInspectorTransitionGeneration;
         private DataGridColumnLayoutController? columnLayout;
         private DataGridColumnVisibilityController? columnVisibility;
         private DataGridStableSortController? sortController;
@@ -31,6 +33,16 @@ namespace GameSaveCenter.Playnite.Views
         private ScrollViewer? taskGridScrollViewer;
         private DashboardViewModel? navigationViewModel;
         private bool restoringTaskGridScroll;
+
+        /// <summary>The dashboard supplies its persisted and system motion preference.</summary>
+        public bool UiAnimationsEnabled { get; set; }
+
+        // Instance-scoped override keeps reduced-motion behavior deterministic in STA tests.
+        internal Func<bool>? SystemMotionEnabledProviderForAudit { get; set; }
+
+        private bool IsInspectorMotionEnabled
+            => UiAnimationsEnabled
+               && (SystemMotionEnabledProviderForAudit?.Invoke() ?? GscMotion.IsEnabled(true));
 
         public TaskCenterView()
         {
@@ -288,6 +300,7 @@ namespace GameSaveCenter.Playnite.Views
         public void ApplyResponsiveLayout(double width, double height)
         {
             if (isApplyingLayout) return;
+            var inspectorWasVisible = TaskDetailInspectorFrame.Visibility == Visibility.Visible;
             isApplyingLayout = true;
             try
             {
@@ -301,6 +314,8 @@ namespace GameSaveCenter.Playnite.Views
                 var requestedHeight = height > 0 ? height : lastRequestedHeight > 0 ? lastRequestedHeight : ActualHeight;
                 if (height > 0)
                     lastRequestedHeight = height;
+                if (!stack && taskInspectorClosing)
+                    CancelTaskInspectorTransition();
                 var availableHeight = WorkspaceTableViewportPolicy.ResolvePageViewportHeight(
                     requestedHeight,
                     TaskPageScrollViewer.ViewportHeight);
@@ -414,21 +429,24 @@ namespace GameSaveCenter.Playnite.Views
                     var hasTaskSelection = TaskGrid.SelectedItem != null;
                     if (hasTaskSelection)
                     {
-                        TaskDetailScrollViewer.Visibility = taskInspectorOpen
+                        var showCompactInspector = taskInspectorOpen || taskInspectorClosing;
+                        TaskDetailScrollViewer.Visibility = showCompactInspector
                             ? Visibility.Visible
                             : Visibility.Collapsed;
                         TaskCompactDetailsButton.Content = taskInspectorOpen
                             ? "收起任务详情 ›"
                             : "查看任务详情 ›";
-                        TaskCompactDetailsButton.Visibility = taskInspectorOpen
+                        TaskCompactDetailsButton.Visibility = taskInspectorOpen && !taskInspectorClosing
                             ? Visibility.Collapsed
                             : Visibility.Visible;
-                        TaskCompactCloseDetailsButton.Visibility = taskInspectorOpen
+                        TaskCompactCloseDetailsButton.Visibility = taskInspectorOpen && !taskInspectorClosing
                             ? Visibility.Visible
                             : Visibility.Collapsed;
                     }
                     else
                     {
+                        if (taskInspectorClosing)
+                            CancelTaskInspectorTransition();
                         TaskCompactDetailsButton.Visibility = Visibility.Collapsed;
                         TaskCompactCloseDetailsButton.Visibility = Visibility.Collapsed;
                         taskInspectorOpen = false;
@@ -443,6 +461,7 @@ namespace GameSaveCenter.Playnite.Views
                         : Visibility.Collapsed;
                 }
                 TaskDetailInspectorFrame.Visibility = TaskDetailScrollViewer.Visibility;
+                TaskDetailInspectorFrame.IsHitTestVisible = !taskInspectorClosing;
                 var showInspector = TaskDetailScrollViewer.Visibility == Visibility.Visible;
                 var inspectorWidth = TaskWorkspaceLayout.TryFindResource("GscWorkspaceInspectorWidth") is GridLength gl
                     ? gl
@@ -504,6 +523,9 @@ namespace GameSaveCenter.Playnite.Views
                 TaskWorkspaceLayout.Height = pageContentHeight;
                 TaskGrid.Height = double.NaN;
                 TaskGrid.MaxHeight = double.PositiveInfinity;
+
+                if (!inspectorWasVisible && TaskDetailInspectorFrame.Visibility == Visibility.Visible)
+                    AnimateTaskInspectorEntrance();
             }
             finally
             {
@@ -514,10 +536,90 @@ namespace GameSaveCenter.Playnite.Views
         private void OnTaskSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             taskInspectorOpen = false;
+            CancelTaskInspectorTransition();
             if (IsLoaded)
-                ApplyResponsiveLayout(
-                    TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : TaskWorkspaceLayout.ActualWidth,
-                    lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : TaskWorkspaceLayout.ActualHeight);
+                ApplyLatestResponsiveLayout();
+        }
+
+        internal void NormalizeInspectorMotionIfDisabled()
+        {
+            if (IsInspectorMotionEnabled)
+                return;
+
+            var wasClosing = taskInspectorClosing;
+            CancelTaskInspectorTransition();
+            if (wasClosing)
+                ApplyLatestResponsiveLayout();
+        }
+
+        private void AnimateTaskInspectorEntrance()
+        {
+            TaskDetailInspectorFrame.IsHitTestVisible = true;
+            if (!IsInspectorMotionEnabled)
+            {
+                GscMotion.Normalize(TaskDetailInspectorFrame);
+                return;
+            }
+
+            GscMotion.AnimateEntrance(
+                TaskDetailInspectorFrame,
+                8,
+                GscMotion.GetDuration(TaskDetailInspectorFrame, GscMotion.MotionDurationKind.Fast),
+                GscMotion.GetDuration(TaskDetailInspectorFrame, GscMotion.MotionDurationKind.Fast));
+        }
+
+        private void BeginTaskInspectorClose()
+        {
+            if (!taskInspectorOpen || TaskGrid.SelectedItem == null || !detailBreakpoint.IsCompact)
+                return;
+
+            taskInspectorOpen = false;
+            taskInspectorClosing = true;
+            var generation = ++taskInspectorTransitionGeneration;
+            TaskDetailInspectorFrame.IsHitTestVisible = false;
+            ApplyLatestResponsiveLayout();
+
+            if (!IsInspectorMotionEnabled)
+            {
+                CompleteTaskInspectorClose(generation);
+                return;
+            }
+
+            GscMotion.AnimateExit(
+                TaskDetailInspectorFrame,
+                -6,
+                GscMotion.GetDuration(TaskDetailInspectorFrame, GscMotion.MotionDurationKind.Fast),
+                () => CompleteTaskInspectorClose(generation));
+            FocusElement(TaskCompactDetailsButton);
+        }
+
+        private void CompleteTaskInspectorClose(int generation)
+        {
+            if (generation != taskInspectorTransitionGeneration || !taskInspectorClosing)
+                return;
+
+            taskInspectorClosing = false;
+            TaskDetailInspectorFrame.IsHitTestVisible = true;
+            ApplyLatestResponsiveLayout();
+        }
+
+        private void CancelTaskInspectorTransition()
+        {
+            taskInspectorTransitionGeneration++;
+            taskInspectorClosing = false;
+            GscMotion.Normalize(TaskDetailInspectorFrame);
+            TaskDetailInspectorFrame.IsHitTestVisible = true;
+        }
+
+        private void ApplyLatestResponsiveLayout()
+        {
+            ApplyResponsiveLayout(
+                TaskPageScrollSurface.ActualWidth > 0
+                    ? TaskPageScrollSurface.ActualWidth
+                    : responsiveWidth > 0 ? responsiveWidth : TaskWorkspaceLayout.ActualWidth,
+                lastRequestedHeight > 0
+                    ? lastRequestedHeight
+                    : responsiveHeight > 0 ? responsiveHeight : TaskWorkspaceLayout.ActualHeight);
         }
 
         private void OnClearTaskFiltersClick(object sender, RoutedEventArgs e)
@@ -678,11 +780,21 @@ namespace GameSaveCenter.Playnite.Views
         private void OnTaskCompactDetailsClick(object sender, RoutedEventArgs e)
         {
             if (TaskGrid.SelectedItem == null) return;
-            taskInspectorOpen = !taskInspectorOpen;
-            ApplyResponsiveLayout(
-                TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
-                lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(taskInspectorOpen ? TaskDetailScrollViewer : TaskCompactDetailsButton);
+            if (taskInspectorOpen)
+            {
+                BeginTaskInspectorClose();
+                return;
+            }
+
+            var reversingClose = taskInspectorClosing;
+            taskInspectorTransitionGeneration++;
+            taskInspectorClosing = false;
+            taskInspectorOpen = true;
+            TaskDetailInspectorFrame.IsHitTestVisible = true;
+            ApplyLatestResponsiveLayout();
+            if (reversingClose)
+                AnimateTaskInspectorEntrance();
+            FocusElement(TaskDetailScrollViewer);
         }
 
         private void OnTaskDetailPreviewKeyDown(object sender, KeyEventArgs e)
@@ -690,11 +802,7 @@ namespace GameSaveCenter.Playnite.Views
             if (e.Key != Key.Escape || !taskInspectorOpen)
                 return;
 
-            taskInspectorOpen = false;
-            ApplyResponsiveLayout(
-                TaskPageScrollSurface.ActualWidth > 0 ? TaskPageScrollSurface.ActualWidth : ActualWidth,
-                lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(TaskCompactDetailsButton);
+            BeginTaskInspectorClose();
             e.Handled = true;
         }
 

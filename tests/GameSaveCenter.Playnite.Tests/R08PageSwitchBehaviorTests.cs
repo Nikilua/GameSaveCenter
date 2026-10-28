@@ -24,6 +24,7 @@ using Xunit.Abstractions;
 
 namespace GameSaveCenter.Playnite.Tests;
 
+[Collection("R08ProductionMotionWpf")]
 public sealed class R08PageSwitchBehaviorTests
 {
     private readonly ITestOutputHelper output;
@@ -45,6 +46,8 @@ public sealed class R08PageSwitchBehaviorTests
             try
             {
                 var shell = new AcrylicProductionShellView();
+                shell.MotionEnabledProvider = () => false;
+                shell.SystemMotionEnabledProviderForAudit = () => true;
                 typeof(AcrylicProductionShellView)
                     .GetMethod("CreatePages", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .Invoke(shell, null);
@@ -455,6 +458,8 @@ public sealed class R08PageSwitchBehaviorTests
             try
             {
                 var shell = new AcrylicProductionShellView();
+                shell.MotionEnabledProvider = () => true;
+                shell.SystemMotionEnabledProviderForAudit = () => true;
                 typeof(AcrylicProductionShellView)
                     .GetMethod("CreatePages", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .Invoke(shell, null);
@@ -485,13 +490,14 @@ public sealed class R08PageSwitchBehaviorTests
                     Width = 1366,
                     Height = 900,
                     ShowInTaskbar = false,
-                    ShowActivated = false,
+                    ShowActivated = true,
                     WindowStyle = WindowStyle.None,
                     Opacity = 0.01
                 };
 
                 shell.NavigateTo(WorkspaceKind.Overview);
                 window.Show();
+                window.Activate();
                 FlushLayout(window);
 
                 var overviewNavigation = (RadioButton)shell.FindName("NavOverview")!;
@@ -521,10 +527,18 @@ public sealed class R08PageSwitchBehaviorTests
                 var completedRoutes = 0;
                 foreach (var (workspace, navigation, expectedTitle) in route)
                 {
-                    navigation.Focus();
-                    Keyboard.Focus(navigation);
+                    var focusRequestAccepted = navigation.Focus();
+                    var keyboardFocus = Keyboard.Focus(navigation);
                     if (!ReferenceEquals(Keyboard.FocusedElement, navigation))
-                        throw new InvalidOperationException($"Could not establish keyboard focus on {workspace} navigation.");
+                    {
+                        var focusedType = Keyboard.FocusedElement?.GetType().FullName ?? "null";
+                        var requestedType = keyboardFocus?.GetType().FullName ?? "null";
+                        throw new InvalidOperationException(
+                            $"Could not establish keyboard focus on {workspace} navigation; " +
+                            $"windowActive={window.IsActive}; loaded={navigation.IsLoaded}; visible={navigation.IsVisible}; " +
+                            $"enabled={navigation.IsEnabled}; focusable={navigation.Focusable}; tabStop={navigation.IsTabStop}; " +
+                            $"focusRequestAccepted={focusRequestAccepted}; requested={requestedType}; focused={focusedType}.");
+                    }
 
                     // Changing IsChecked raises the real RadioButton Checked route and
                     // reaches production OnNavChecked; only Overview/Tasks are used so
@@ -537,16 +551,30 @@ public sealed class R08PageSwitchBehaviorTests
                     Assert.Single(navigationItems, item => item.IsChecked == true);
                     Assert.True(navigation.IsChecked);
                     Assert.Same(navigation, Keyboard.FocusedElement);
-                    Assert.Equal(1, pageHost.Opacity);
                     Assert.Null(pageHost.Effect);
-                    Assert.True(pageHost.RenderTransform == null || pageHost.RenderTransform == Transform.Identity);
+                    if (completedRoutes == 0)
+                    {
+                        FlushLayout(window);
+                        var opacitySource = DependencyPropertyHelper.GetValueSource(pageHost, UIElement.OpacityProperty);
+                        Assert.True(opacitySource.IsAnimated,
+                            $"Page entrance was not active after {workspace}: opacity={pageHost.Opacity:0.###}, source={opacitySource.BaseValueSource}, motionEnabled={shell.SidebarMotionEnabledForAudit}, loaded={pageHost.IsLoaded}, fast={GscMotion.Fast.TotalMilliseconds:0.###}ms.");
+                        Assert.IsType<TranslateTransform>(pageHost.RenderTransform);
+                    }
                     completedRoutes++;
                 }
 
                 FlushLayout(window);
+                PumpDispatcherFor(TimeSpan.FromMilliseconds(260));
+                FlushLayout(window);
                 Assert.Same(shell.GetWorkspaceView(WorkspaceKind.Tasks), pageHost.Content);
                 Assert.Equal("任务中心", title.Text);
                 Assert.Same(tasksNavigation, Keyboard.FocusedElement);
+                Assert.Equal(1, pageHost.Opacity);
+                Assert.Null(pageHost.Effect);
+                var pageTranslation = Assert.IsType<TranslateTransform>(pageHost.RenderTransform);
+                Assert.Equal(0, pageTranslation.Y);
+                Assert.False(DependencyPropertyHelper.GetValueSource(pageHost, UIElement.OpacityProperty).IsAnimated);
+                Assert.False(DependencyPropertyHelper.GetValueSource(pageTranslation, TranslateTransform.YProperty).IsAnimated);
                 observation = $"routes={completedRoutes}; final={dashboard.CurrentWorkspace}; title={title.Text}; focus=NavTasks; pageEffects=none";
             }
             catch (Exception caught)
@@ -569,7 +597,7 @@ public sealed class R08PageSwitchBehaviorTests
     }
 
     [Fact]
-    public void ProductionPageHostDoesNotDeclareFullPageBlurOrEntranceAnimation()
+    public void ProductionPageHostUsesLightEntranceOnlyWhenContentChangesAndNeverBlurs()
     {
         var root = TestRepositoryContext.Root;
         var source = System.IO.File.ReadAllText(System.IO.Path.Combine(
@@ -580,7 +608,8 @@ public sealed class R08PageSwitchBehaviorTests
         Assert.Contains("var contentChanged = !ReferenceEquals(PageHost.Content, page);", source);
         Assert.Contains("if (contentChanged)", source);
         Assert.Contains("PageHost.Content = page;", source);
-        Assert.DoesNotContain("AnimateEntrance(PageHost", source);
+        Assert.Contains("GscMotion.AnimateEntrance(PageHost, 6, GscMotion.Fast, GscMotion.Fast);", source);
+        Assert.Contains("GscMotion.Normalize(PageHost);", source);
         Assert.DoesNotContain("BlurEffect", markup);
         Assert.DoesNotContain("PageHost.Effect", source);
     }
@@ -646,6 +675,22 @@ public sealed class R08PageSwitchBehaviorTests
         window.UpdateLayout();
         window.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
         window.UpdateLayout();
+    }
+
+    private static void PumpDispatcherFor(TimeSpan duration)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Background)
+        {
+            Interval = duration
+        };
+        timer.Tick += (_, __) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
     }
 
     private static T? FindVisualChild<T>(DependencyObject root) where T : DependencyObject
@@ -735,4 +780,9 @@ public sealed class R08PageSwitchBehaviorTests
             remove { }
         }
     }
+}
+
+[CollectionDefinition("R08ProductionMotionWpf", DisableParallelization = true)]
+public sealed class R08ProductionMotionWpfCollection
+{
 }
