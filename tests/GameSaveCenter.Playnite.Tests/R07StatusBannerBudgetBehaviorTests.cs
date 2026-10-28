@@ -24,6 +24,48 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R07StatusBannerBudgetBehaviorTests
 {
     [Fact]
+    public void TaskEmptyFilterEmptyAndErrorUseDistinctActionsWithoutRefreshingOnClear()
+    {
+        RunSta(() =>
+        {
+            var state = new TaskBannerContext { StateOverride = "Empty" };
+            var view = new TaskCenterView { DataContext = state };
+            var window = Show(view, 1000, 700);
+            try
+            {
+                view.ApplyResponsiveLayout(1000, 700);
+                PumpLayout(window);
+                var surfaces = FindVisualChildren<WorkspaceStatePresenter>(view).ToArray();
+                var empty = surfaces.Single(item => item.State == "Empty");
+                var filtered = surfaces.Single(item => item.State == "FilterEmpty");
+                var error = surfaces.Single(item => item.State == "Error");
+                Assert.Equal(Visibility.Visible, empty.Visibility);
+                Assert.Equal(Visibility.Collapsed, filtered.Visibility);
+                Assert.Equal(Visibility.Collapsed, error.Visibility);
+                Assert.Null(empty.RetryCommand);
+                state.StateOverride = "FilterEmpty";
+                state.NotifyState(); PumpLayout(window);
+                Assert.Equal(Visibility.Collapsed, empty.Visibility);
+                Assert.Equal(Visibility.Visible, filtered.Visibility);
+                Assert.Contains("筛选", filtered.Title);
+                Assert.Same(state.ClearTaskFiltersCommand, filtered.RetryCommand);
+                var clear = (WpfButton)filtered.Template!.FindName("RetryButton", filtered)!;
+                Assert.Equal(1, InvokeButton(clear));
+                Assert.Equal(1, state.ClearTaskFiltersCommand.ExecuteCount);
+                Assert.Equal(0, state.RefreshCommand.ExecuteCount);
+                state.StateOverride = "Error";
+                state.NotifyState(); PumpLayout(window);
+                Assert.Equal(Visibility.Collapsed, filtered.Visibility);
+                Assert.Equal(Visibility.Visible, error.Visibility);
+                Assert.Same(state.RefreshCommand, error.RetryCommand);
+                Assert.Equal(1, InvokeButton((WpfButton)error.Template!.FindName("RetryButton", error)!));
+                Assert.Equal(1, state.RefreshCommand.ExecuteCount);
+            }
+            finally { window.Close(); }
+        });
+    }
+
+    [Fact]
     public void TaskFailureWithRetainedRowsKeepsRetryBannerAndTableViewport()
     {
         RunSta(() =>
@@ -298,11 +340,13 @@ public sealed class R07StatusBannerBudgetBehaviorTests
         public bool TaskPageLoadFailed { get; set; }
         public string TaskPageErrorMessage { get; set; } = string.Empty;
         public bool TaskPageHasItems => Tasks.Count > 0;
-        public string TaskPageState => TaskPageLoadFailed ? (TaskPageHasItems ? "ErrorWithData" : "Error") : "Ready";
+        public string? StateOverride { get; set; }
+        public string TaskPageState => StateOverride ?? (TaskPageLoadFailed ? (TaskPageHasItems ? "ErrorWithData" : "Error") : "Ready");
         public string TaskPageStatusSummary => TaskPageLoadFailed
             ? (TaskPageHasItems ? "读取失败，已保留旧数据。" : "读取任务失败，请重试。")
             : IsTaskPageLoading ? "正在刷新，已保留旧数据。" : "最近更新：合成时间";
         public TestCommand RefreshCommand { get; } = new TestCommand();
+        public TestCommand ClearTaskFiltersCommand { get; } = new TestCommand();
         public int TaskTotalCount => Tasks.Count;
         public string TaskTotalCountLabel => "任务总数";
         public int RunningTaskCount => 0;

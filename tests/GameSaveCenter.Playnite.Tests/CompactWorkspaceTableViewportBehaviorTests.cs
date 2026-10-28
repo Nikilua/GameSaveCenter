@@ -672,7 +672,17 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                 Assert.True(window.IsActive, "The focus fixture window must be the active input window.");
                 Assert.Same(grid, System.Windows.Input.Keyboard.Focus(grid));
                 Assert.Same(grid, System.Windows.Input.Keyboard.FocusedElement);
+                view.ApplyResponsiveLayout(1400, 700);
+                window.UpdateLayout();
+                grid.ScrollIntoView(rows[20]);
+                window.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
+                window.UpdateLayout();
+                var selectionScroll = FindVisualDescendant<ScrollViewer>(grid);
+                var beforeSelectionOffset = selectionScroll.VerticalOffset;
+                Assert.True(beforeSelectionOffset > 0, "Selection anchor must begin below the first viewport.");
                 foreach (var row in rows.Skip(20).Take(40)) grid.SelectedItems.Add(row);
+                window.UpdateLayout();
+                Assert.InRange(Math.Abs(beforeSelectionOffset - selectionScroll.VerticalOffset), 0, 0.1);
                 grid.CurrentCell = new DataGridCellInfo(rows[20], grid.Columns[0]);
                 type.GetField("historyInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(view, true);
                 var focusedElement = System.Windows.Input.Keyboard.FocusedElement;
@@ -695,6 +705,17 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                         Assert.True(double.IsNaN(view.Height), "Responsive measurement must not freeze the root height.");
                     }
                 }
+                var escape = new System.Windows.Input.KeyEventArgs(System.Windows.Input.Keyboard.PrimaryDevice,
+                    PresentationSource.FromVisual(grid)!, 0, System.Windows.Input.Key.Escape)
+                { RoutedEvent = System.Windows.Input.Keyboard.PreviewKeyDownEvent };
+                grid.RaiseEvent(escape);
+                window.UpdateLayout();
+                Assert.Equal(expected, grid.SelectedItems.Cast<HistoryScrollDetail>().Select(row => row.BackupId).OrderBy(id => id).ToArray());
+                var beforeClearOffset = selectionScroll.VerticalOffset;
+                grid.SelectedItems.Clear();
+                window.UpdateLayout();
+                Assert.Empty(grid.SelectedItems);
+                Assert.InRange(Math.Abs(beforeClearOffset - selectionScroll.VerticalOffset), 0, 0.1);
             }
             finally { window?.Close(); }
         });

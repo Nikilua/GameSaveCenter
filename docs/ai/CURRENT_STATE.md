@@ -178,3 +178,7 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## 2026-10-28 Round5 U06-03/04当前接续
 
 复用行内常显删除文字与目标绑定，补实际焦点、受控悬停列宽和安全对象检查；复核窄宽工具栏换行、筛选摘要和多选选择往返。SDK8.0.423 Release 7+9项通过、0 skip；source/XAML26/WPF静态0错误，生产视觉未变，Render QA继承同源码U05-07/08。证据docs/design/reviews/ui-polish-round5-20261027/evidence/U06-03-04/BASELINE.md。bca60704的run40639378202双SDK job成功，原始日志及3个artifact身份见该证据CI清单；required checks既有403不推断。U06-03/04代码完成待验收，接续U06-05/06。最终根入口完整链、独立scripts/build.cmd和真实宿主仍待验。
+
+## 2026-10-28 Round5 U06-05/06当前接续
+
+生产代码未改。存档历史非零滚动起点进入/清除40项多选保持偏移，Escape保留选择，双主题断点往返保持选择和焦点；实际任务页空/筛选无结果/错误区分，清筛选合成命令不触发刷新。SDK8.0.423 Release最终17/17、0 skip；首次锚点夹具缺有限视口失败已保留，修正后原断言通过。source/XAML26/WPF静态0错误，Render QA继承同生产代码。证据docs/design/reviews/ui-polish-round5-20261027/evidence/U06-05-06/BASELINE.md；两项代码完成待验收，真实宿主和新提交CI未验。未采集阶段开始前磁盘快照，证据中明确记录该限制；未删除其他任务输出。接续U06-07/08，最终中文根入口完整链及独立scripts/build.cmd仍待验。
