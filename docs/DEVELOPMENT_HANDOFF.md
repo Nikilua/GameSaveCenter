@@ -1220,3 +1220,7 @@ CI：run `40566121765`（1327，d1fc）与 `40567683673`（1328，5300）两套S
 ## 2026-10-28 Round5 U05-05/06当前接续
 
 共享WorkspaceStatePresenter延迟180ms显示Loading视觉提示（Hidden保留测量槽），错误/内容状态立即切换，退出/隐藏/卸载停止计时器。生产进度语义去重保留，新增实际进度列未知/0/73/取消/成功五态宽度与右边界检查。SDK8.0.423 Release组合13/13、0 skip；source、XAML26、WPF静态0 error、scripts/render-qa.ps1退出0/双主题394图/0 PROBLEM。证据见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/BASELINE.md。两项代码完成待验收；新提交CI待查询，旧S/T边界不变。已安全清理本批一份无引用中间成功TRX，保留最终/失败诊断和当前渲染。接续U05-07/08；整轮中文根入口完整安装启动链与独立scripts/build.cmd仍待最终候选执行。
+
+## 2026-10-28 Round5 U05-07/08当前接续
+
+生产Shell换页/卸载清理说明Popup、命令层和PageHost动画；TaskCenterView卸载取消详情退出代次/时钟。31次切页×主题×弹层×详情中断及Shell卸载组合通过，缓存/筛选/选中/滚动3项和隐藏/最小化进度1项通过，合计SDK8.0.423 Release7/7、0 skip。source/XAML26/WPF静态0 error、scripts/render-qa.ps1退出0/双主题394图0 PROBLEM。证据见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-07-08/BASELINE.md。两项代码完成待验收，真实宿主及新提交CI待验；接续U06-01/02共享表格小批。最终中文根入口完整安装启动链与独立scripts/build.cmd仍是硬门禁。当前审计和有价值失败诊断保留，删除清单为空，未碰用户/其他阶段输出。

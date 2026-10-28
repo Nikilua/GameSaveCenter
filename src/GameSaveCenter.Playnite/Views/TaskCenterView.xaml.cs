@@ -110,6 +110,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            CancelTaskInspectorTransition();
             CaptureTaskGridScroll();
             DetachTaskGridScrollViewer();
             UnsubscribeNavigationViewModel();

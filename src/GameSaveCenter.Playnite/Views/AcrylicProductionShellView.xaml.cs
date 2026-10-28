@@ -597,6 +597,9 @@ namespace GameSaveCenter.Playnite.Views
             // an avoidable content transition and could disturb a nested scroll owner.
             if (contentChanged)
             {
+                KeyboardShortcutHelpPopup.IsOpen = false;
+                CloseCommandDirectory(restoreFocus: false);
+                GscMotion.Normalize(PageHost);
                 PageHost.Content = page;
             }
             UpdatePageHeader(workspace);
@@ -658,6 +661,9 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
+            KeyboardShortcutHelpPopup.IsOpen = false;
+            CloseCommandDirectory(restoreFocus: false);
+            GscMotion.Normalize(PageHost);
             sidebarTransitionGeneration++;
             SidebarColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
             SidebarContentLayer.BeginAnimation(UIElement.OpacityProperty, null);

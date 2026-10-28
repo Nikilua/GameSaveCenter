@@ -525,8 +525,24 @@ public sealed class R08PageSwitchBehaviorTests
                 };
 
                 var completedRoutes = 0;
-                foreach (var (workspace, navigation, expectedTitle) in route)
+                var help = (System.Windows.Controls.Primitives.Popup)shell.FindName("KeyboardShortcutHelpPopup")!;
+                var helpButton = (Button)shell.FindName("HeaderKeyboardHelpButton")!;
+                var taskView = shell.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks)!;
+                taskView.UiAnimationsEnabled = true;
+                taskView.SystemMotionEnabledProviderForAudit = () => true;
+                var taskGrid = (DataGrid)taskView.FindName("TaskGrid")!;
+                System.Windows.Data.BindingOperations.ClearBinding(taskGrid, DataGrid.SelectedItemProperty);
+                taskGrid.ItemsSource = Enumerable.Range(0, 8).Select(_ => new object()).ToArray();
+                var inspector = (Border)taskView.FindName("TaskDetailInspectorFrame")!;
+                var detailsOpen = (Button)taskView.FindName("TaskCompactDetailsButton")!;
+                var detailsClose = (Button)taskView.FindName("TaskCompactCloseDetailsButton")!;
+                window.Width = 1040;
+                window.Height = 700;
+                foreach (var (workspace, navigation, expectedTitle) in Enumerable.Range(0, 5).SelectMany(index => index == 0 ? route : route.Skip(1)))
                 {
+                    ApplyTheme(shell, completedRoutes % 2 == 0 ? GameSaveCenterThemeMode.Light : GameSaveCenterThemeMode.Dark);
+                    helpButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    Assert.True(help.IsOpen, $"Help did not open at route {completedRoutes}/{workspace}");
                     var focusRequestAccepted = navigation.Focus();
                     var keyboardFocus = Keyboard.Focus(navigation);
                     if (!ReferenceEquals(Keyboard.FocusedElement, navigation))
@@ -545,11 +561,12 @@ public sealed class R08PageSwitchBehaviorTests
                     // the isolated fixture cannot start game-scoped loads.
                     navigation.IsChecked = true;
 
+                    Assert.False(help.IsOpen);
                     Assert.Equal(workspace, dashboard.CurrentWorkspace);
                     Assert.Same(shell.GetWorkspaceView(workspace), pageHost.Content);
                     Assert.Equal(expectedTitle, title.Text);
                     Assert.Single(navigationItems, item => item.IsChecked == true);
-                    Assert.True(navigation.IsChecked);
+                    Assert.True(navigation.IsChecked, $"Navigation not selected at route {completedRoutes}/{workspace}");
                     Assert.Same(navigation, Keyboard.FocusedElement);
                     Assert.Null(pageHost.Effect);
                     if (completedRoutes == 0)
@@ -559,6 +576,30 @@ public sealed class R08PageSwitchBehaviorTests
                         Assert.True(opacitySource.IsAnimated,
                             $"Page entrance was not active after {workspace}: opacity={pageHost.Opacity:0.###}, source={opacitySource.BaseValueSource}, motionEnabled={shell.SidebarMotionEnabledForAudit}, loaded={pageHost.IsLoaded}, fast={GscMotion.Fast.TotalMilliseconds:0.###}ms.");
                         Assert.IsType<TranslateTransform>(pageHost.RenderTransform);
+                    }
+                    if (workspace == WorkspaceKind.Tasks)
+                    {
+                        FlushLayout(window);
+                        taskGrid.SelectedIndex = 0;
+                        taskView.ApplyResponsiveLayout(960, 640);
+                        detailsOpen.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        Assert.Equal(Visibility.Visible, inspector.Visibility);
+                        Assert.True(inspector.IsHitTestVisible);
+                        detailsClose.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        Assert.False(inspector.IsHitTestVisible);
+                        // The next navigation interrupts this exit. It must revoke the
+                        // old clock without changing the synthetic task selection.
+                        navigation.Focus();
+                    }
+                    else
+                    {
+                        window.Dispatcher.Invoke(DispatcherPriority.ApplicationIdle, new Action(() => { }));
+                        Assert.False(DependencyPropertyHelper.GetValueSource(inspector, UIElement.OpacityProperty).IsAnimated);
+                        // A detached page can inherit an effective false hit-test value;
+                        // verify its own lock is cleared, then verify effective hit testing
+                        // again when the next Tasks route actually displays the inspector.
+                        Assert.Equal(true, inspector.ReadLocalValue(UIElement.IsHitTestVisibleProperty));
+                        Assert.False((bool)typeof(TaskCenterView).GetField("taskInspectorClosing", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!);
                     }
                     completedRoutes++;
                 }
@@ -575,6 +616,17 @@ public sealed class R08PageSwitchBehaviorTests
                 Assert.Equal(0, pageTranslation.Y);
                 Assert.False(DependencyPropertyHelper.GetValueSource(pageHost, UIElement.OpacityProperty).IsAnimated);
                 Assert.False(DependencyPropertyHelper.GetValueSource(pageTranslation, TranslateTransform.YProperty).IsAnimated);
+                // Leave while the render-only entrance is active. Unload must close
+                // native popups and revoke clocks without touching the dashboard state.
+                GscMotion.AnimateEntrance(pageHost, 6, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+                helpButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                Assert.True(help.IsOpen);
+                window.Content = null;
+                FlushLayout(window);
+                Assert.False(help.IsOpen);
+                Assert.False(DependencyPropertyHelper.GetValueSource(pageHost, UIElement.OpacityProperty).IsAnimated);
+                Assert.Equal(1, pageHost.Opacity);
+                Assert.Equal(WorkspaceKind.Tasks, dashboard.CurrentWorkspace);
                 observation = $"routes={completedRoutes}; final={dashboard.CurrentWorkspace}; title={title.Text}; focus=NavTasks; pageEffects=none";
             }
             catch (Exception caught)
