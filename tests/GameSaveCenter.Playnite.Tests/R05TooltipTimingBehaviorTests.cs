@@ -19,6 +19,27 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R05TooltipTimingBehaviorTests
 {
     [Fact]
+    public void ScopedTextEditorHelpUsesOwnerPlacementWithoutOverridingExplicitPlacement()
+    {
+        RunSta(() =>
+        {
+            var root = new StackPanel();
+            var editor = new TextBox();
+            var overriddenEditor = new TextBox();
+            var button = new Button();
+            ToolTipService.SetPlacement(overriddenEditor, PlacementMode.Top);
+            root.Children.Add(editor);
+            root.Children.Add(overriddenEditor);
+            root.Children.Add(button);
+            GscToolTipBehavior.SetEnableEscapeClose(root, true);
+
+            Assert.Equal(PlacementMode.Bottom, ToolTipService.GetPlacement(editor));
+            Assert.Equal(PlacementMode.Top, ToolTipService.GetPlacement(overriddenEditor));
+            Assert.Equal(PlacementMode.Mouse, ToolTipService.GetPlacement(button));
+        });
+    }
+
+    [Fact]
     public void RefreshIgnoresPresentationRootsOwnedByAnotherDispatcher()
     {
         using var sourceReady = new ManualResetEventSlim();

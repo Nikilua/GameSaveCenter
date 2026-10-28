@@ -45,6 +45,12 @@ public sealed class DataGridColumnVisibilityBehaviorTests
                 Assert.False(requiredTime.IsEnabled);
                 Assert.False(requiredTask.IsEnabled);
                 Assert.False(requiredState.IsEnabled);
+                Assert.All(new[] { requiredTime, requiredTask, requiredState }, item =>
+                {
+                    Assert.True(ToolTipService.GetShowOnDisabled(item));
+                    Assert.Equal(AutomationProperties.GetHelpText(item), item.ToolTip);
+                });
+                Assert.Null(picker.ToolTip);
                 Assert.True(requiredTime.IsChecked);
                 Assert.True(requiredTask.IsChecked);
                 Assert.True(requiredState.IsChecked);

@@ -192,6 +192,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                     entry.IsRequired
                         ? "用于识别对象或状态，始终保持显示。"
                         : "勾选显示此列，取消勾选隐藏此列。新版本增加的列默认显示。");
+                if (entry.IsRequired)
+                {
+                    item.ToolTip = "用于识别对象或状态，始终保持显示。";
+                    ToolTipService.SetShowOnDisabled(item, true);
+                }
                 item.Click += OnColumnMenuItemClick;
                 columnMenuItems.Add(item);
                 result.Items.Add(item);

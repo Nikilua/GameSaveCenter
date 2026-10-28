@@ -1,3 +1,7 @@
+## 2026-10-28 Round5 U07-03/04 局部推进
+
+基线 `2aba614f`：生产文本编辑器的默认提示改为锚定控件下方，保留显式位置；表格列菜单必要列的禁用原因同时提供鼠标提示及原有 UIA HelpText。两项仍为进行中：屏幕边缘、真实 IME、弹出层宿主和快捷键/图标/子菜单及键盘路径未完成核验。SDK8.0.423 Release 5/5、0 skip，源码/XAML/WPF 静态检查和双主题 394 图离屏渲染通过；工作树渲染不是精确提交证据。前后、结果和清理边界见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U07-03-04/BASELINE.md`。最终完整入口构建安装启动及双 SDK CI 仍待验。
+
 ## 2026-10-28 Round5 U04-06/08 动画中断与生命周期
 
 - U04-06为共享DisclosureCard补充禁用中途的Storyboard收尾；绑定恢复当前展开状态，不改变IsExpanded、命令或内容。双主题行为用例验证动画时禁用、重新启用不重播以及后续正常收起。U04-08在同一生产模板执行100次开合，Header/Path/RotateTransform身份恒定，Reduced Motion无最终活动时钟。Q14测试夹具实现属性通知，在加载后发出选中预设变化，修复父提交CI暴露的ComboBox.Text初始化误判。
@@ -12417,7 +12421,8 @@ Worker win-x64发布、ZIP与PEXT生成和身份核验通过。六个安装程�
 
 ## 2026-10-27 媒体收件箱宽屏测试夹具修正
 
-- 标题回归修正提交20be80738a97539376dca07b0be1599ffdb59c84的run 40462741496（#1300）两适用job均失败在 MediaInboxScrollBehaviorTests.WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll。主SDK8 job 122050912738，SDK10.0.401 job 122050913048；两边Core 157/157、Worker 400/400，Playnite均1233项1214通过、1失败、18既有skip。原始输出显示测试请求Window 1400 DIP，但GitHub Windows 2025 runner的实际MediaInboxLayout宽1014 DIP，低于生产宽屏门槛1334，响应式逻辑正确走窄屏抽屉分支；旧测试错误地断言Inspector必须仍为MediaInboxLayout子项。Assert.Same失败观测到expected Grid 1014×540、actual parent Grid 998×594。ender-qa、WPF静态审查和打包被测试门禁跳过。
+- 标题回归修正提交20be80738a97539376dca07b0be1599ffdb59c84的run 40462741496（#1300）两适用job均失败在 MediaInboxScrollBehaviorTests.WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll。主SDK8 job 122050912738，SDK10.0.401 job 122050913048；两边Core 157/157、Worker 400/400，Playnite均1233项1214通过、1失败、18既有skip。原始输出显示测试请求Window 1400 DIP，但GitHub Windows 2025 runner的实际MediaInboxLayout宽1014 DIP，低于生产宽屏门槛1334，响应式逻辑正确走窄屏抽屉分支；旧测试错误地断言Inspector必须仍为MediaInboxLayout子项。Assert.Same失败观测到expected Grid 1014×540、actual parent Grid 998×594。
+ender-qa、WPF静态审查和打包被测试门禁跳过。
 - 修正测试夹具直接设置MediaInboxLayout.Width=1360并断言排布后宽度至少1334 DIP，原有Inspector固定、圆角裁剪、页面/详情滚动与尺寸关系断言保留。本机global.json SDK8.0.423定向类6/6通过，TRX见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/tests/MediaInboxScrollBehavior-sdk8423-20be-test-fix.trx。没有改变生产布局，也不以失败提交CI为通过。
 - Artifact 12715695277（560383 bytes，SHA-256 9a418bba14c15d75cff4cf68075319e746fbec3f2ec3e786ea9a8e1a39282572）及 12715124302（468931 bytes，SHA-256 53db689e72e3f11a8bef06416e3993a390017f8ecf78c89c63fdb408a68aab0f）；完整run/job/日志链接见docs/design/reviews/ui-polish-round5-20261027/evidence/U00-02-03/ci-run-40462741496.json。
 

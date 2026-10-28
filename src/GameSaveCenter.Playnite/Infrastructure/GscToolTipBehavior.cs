@@ -88,6 +88,14 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 dependencyObject,
                 ToolTipService.BetweenShowDelayProperty,
                 ToolTipService.GetBetweenShowDelay(scope));
+
+            // A mouse-positioned popup can cover the caret and selection while editing.
+            // Anchor text-editor help below its owner, while honoring any explicit placement.
+            if (dependencyObject is TextBoxBase
+                && DependencyPropertyHelper.GetValueSource(dependencyObject, ToolTipService.PlacementProperty).BaseValueSource == BaseValueSource.Default)
+            {
+                ToolTipService.SetPlacement(dependencyObject, PlacementMode.Bottom);
+            }
         }
 
         private static void ApplyScopedTimingValue(

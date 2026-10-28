@@ -1,3 +1,7 @@
+## 2026-10-28 Round5 U07-03/04 局部推进
+
+基线 `2aba614f`：生产文本编辑器的默认提示改为锚定控件下方，保留显式位置；表格列菜单必要列的禁用原因同时提供鼠标提示及原有 UIA HelpText。两项仍为进行中：屏幕边缘、真实 IME、弹出层宿主和快捷键/图标/子菜单及键盘路径未完成核验。SDK8.0.423 Release 5/5、0 skip，源码/XAML/WPF 静态检查和双主题 394 图离屏渲染通过；工作树渲染不是精确提交证据。前后、结果和清理边界见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U07-03-04/BASELINE.md`。最终完整入口构建安装启动及双 SDK CI 仍待验。
+
 ## 2026-10-28 Round5 U04-06/08
 
 源码提交 `c5c86558b6232995438657c00810aeb327ed9ba5` 已推送。U04-06 给共享 DisclosureCard 增加禁用中断收尾：清除转场时钟、保留展开状态并按当前Toggle状态解析Chevron；重新启用不重播旧动画。U04-08在生产模板实例上完成100次开合，元素/Transform身份稳定；Reduced Motion清除时钟。Q14夹具在窗口加载后通知属性更新。SDK8.0.423精确提交行为13/13、0 skip；source/XAML/WPF静态及Render QA均通过，证据位于 `docs/design/reviews/ui-polish-round5-20261027/evidence/U04-06-08/`。
