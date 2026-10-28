@@ -1,0 +1,55 @@
+GameSaveCenter production shell chrome QA
+Generated: 2026-10-28 22:03:18
+Scenario: shellqa
+EvidenceSource: OffscreenRenderHarness
+Commit: 8deb17c75ac91d716ec38b05f6f0a54530df2217
+WorkingTreeClean: False
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production shell fixtures
+SampleTimeUtc: 2026-10-28T09:00:00.0000000+00:00 (pinned=True)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+
+Production shell chrome QA (compact header)
+  Shell 720x640 compact=True header=163.3 rows=0/1 spans=2/2 actions=346.0x123.3
+  Shell 960x640 compact=True header=163.3 rows=0/1 spans=2/2 actions=541.3x123.3
+  Shell 980x640 compact=True header=86.0 rows=0/1 spans=2/2 actions=654.0x46.0
+  Shell 1040x700 compact=True header=86.0 rows=0/1 spans=2/2 actions=654.0x46.0
+  Shell 1200x720 compact=False header=68.0 rows=0/0 spans=1/1 actions=734.0x46.0
+  Shell 1279x720 compact=False header=68.0 rows=0/0 spans=1/1 actions=734.0x46.0
+  Shell 1280x720 compact=False header=68.0 rows=0/0 spans=1/1 actions=734.0x46.0
+  Shell 1366x768 compact=False header=68.0 rows=0/0 spans=1/1 actions=734.0x46.0
+
+Production shell PageHost geometry QA (media inbox)
+  Shell Media 1040x700: tableFrameY=233x634, gridY=376x267, gridTopGap=143
+  Shell Media 1040x700: PageHost=726x570, scroll=710x423 extent=634, grid=663x267
+  Shell Media 1040x700 bottom: offset=217.33/217.33 viewport=233.33..656 footer=436..636.67 history=548.67..584.67 secondary=596.67..636.67
+  Shell Media 1100x720: tableFrameY=233x612, gridY=376x267, gridTopGap=143
+  Shell Media 1100x720: PageHost=786x590, scroll=770x443 extent=612, grid=723x267
+  Shell Media 1100x720 bottom: offset=175.33/175.33 viewport=233.33..676 footer=478..656.67 history=568.67..604.67 secondary=616.67..656.67
+  Shell Media 1366x768: tableFrameY=215x565, gridY=282x296, gridTopGap=67
+  Shell Media 1366x768: PageHost=1052x656, scroll=1036x509 extent=565, grid=989x296
+  Shell Media 1366x768 bottom: offset=62/62 viewport=215.33..724 footer=526..704.67 history=616.67..652.67 secondary=664.67..704.67
+
+Production shell PageHost geometry QA (maintenance compact inspectors)
+  Shell Maintenance 1040x700: PageHost=726x570, compact=True, diagnosticsRows=8, processRows=6, closed=Collapsed/Collapsed, opened=Visible/Visible
+  Shell Maintenance 1100x720: PageHost=786x590, compact=True, diagnosticsRows=8, processRows=7, closed=Collapsed/Collapsed, opened=Visible/Visible
+  Shell Maintenance 1366x768: PageHost=1052x656, compact=False, diagnosticsRows=9, processRows=9, closed=Visible/Visible, opened=Visible/Visible
+
+Production shell PageHost geometry QA (task workspace)
+    openedRows=4, closeAction=Visible
+  Shell Tasks 1040x700: PageHost=726x570, compact=True, rows=6, queue=710x356, gridScroll=693x285, grid=693x285, inspector=Visible/679x135, filters=Visible
+    openedRows=4, closeAction=Visible
+  Shell Tasks 1100x720: PageHost=786x590, compact=True, rows=6, queue=770x356, gridScroll=753x285, grid=753x285, inspector=Visible/739x135, filters=Visible
+  Shell Tasks 1366x768: PageHost=1052x656, compact=False, rows=7, queue=517x550, gridScroll=500x457, grid=500x457, inspector=Visible/486x519, filters=Visible
+
+Production shell background material QA (full-shell ambient layer)
+  light/ShellBackground/1040x700 bounds=0,0,1040x700 grid=0/2/0/2 UseSelectedGameBackground=False
+  dark/ShellBackground/1040x700 bounds=0,0,1040x700 grid=0/2/0/2 UseSelectedGameBackground=False
+
+Sidebar transition performance probe (2000x1100 host)
+  single-toggle motion=True duration=317.1ms layout=10 measure=14/0.0ms arrange=13/44.3ms frames=10 frameGapP95=91.7ms maxFrameGap=91.7ms slowFrameRatio=0.333 secondClick=False finalWidth=72.0 collapsed=True settled=True
+  rapid-toggle motion=True duration=476.3ms layout=68 measure=60/0.0ms arrange=58/153.1ms frames=57 frameGapP95=12.8ms maxFrameGap=41.6ms slowFrameRatio=0.036 secondClick=True finalWidth=270.0 collapsed=False settled=True
+  atomic-final motion=False duration=51.3ms layout=3 measure=2/0.0ms arrange=2/5.6ms frames=4 frameGapP95=19.3ms maxFrameGap=19.3ms slowFrameRatio=0.333 secondClick=False finalWidth=72.0 collapsed=True settled=True
+shell-qa OK

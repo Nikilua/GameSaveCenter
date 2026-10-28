@@ -1,5 +1,9 @@
 # 第五轮 UI 与动画精修进度
 
+## 2026-10-28 U09 当前批次
+
+已提交并推送 RenderHarness 固定样本时钟 `8deb17c75ac91d716ec38b05f6f0a54530df2217`。U09-01 至 U09-04 首批验证已记录：同一 UTC 假数据时间的两次完整双主题 Render QA 样图逐像素一致；精确提交键盘/UIA 定向16/16、0 skip；双主题×11尺寸394 PNG、0 PROBLEM；同条件操作 P95 较 U00-06 下降，但 U00 没有逐帧或分配字节数据，单次侧栏收起的离屏帧间隔代理约90ms，需真实宿主复核。对应报告、TRX、像素哈希和限制见下方 U09-01～04 行。U09-05 标准入口完整链、U09-07 清理、U09-08 总审尚未完成。U09-06 中，2b6c4022 两个 CI job 已通过；8deb17c7 的 SDK10 job 已通过、baseline job仍运行；required-checks 接口403，状态远端待验。
+
 2026-10-28 U04-06/08本地代码与行为批已完成：共享DisclosureCard在动画中途禁用后清除旧时钟并维持业务展开态，恢复不回放旧动画；双主题回归和100次开合生命周期通过。源码提交c5c86558b6232995438657c00810aeb327ed9ba5已推送，SDK8.0.423精确提交测试13/13、0 skip；source validation、XAML26/26、WPF静态37 XAML/0错误及Render QA 394 PNG/0 PROBLEM通过。细节、哈希和边界见evidence/U04-06-08/BASELINE.md。当前run 40583173450 baseline job 122467678548与SDK10 job 122467678982在编译测试，尚无终态/artifact；CanExecute取消、真实窗口失活及Playnite宿主未由本地用例直接驱动。清理命令被执行策略拒绝，没有改用其它删除命令，记录见evidence/U04-06-08/cleanup.json。下一批推进U05页面/详情过渡去重，不等待旧S/T宿主/权限状态。
 
 任务源：[80项计划与实施提示词](../../UI_POLISH_ROUND5_80_TASKS_2026-10-27.md)。U00-01 已完成本地离屏基线盘点并推送；`ac18a918` 与SDK修正提交 `3b97af01` 的对应run均失败。SDK10已成功安装8.0.423，第二个run两job都在媒体比较控件宽度断言失败；两次run的job/artifact身份和诊断见[40453690050](evidence/U00-01/ci-run-40453690050.json)、[40456945529](evidence/U00-01/ci-run-40456945529.json)。现以固定640/500 DIP验证该生产断点，本机SDK8精确测试1/1通过；候选远端CI待验。阶段自有 `.tmp` 清理因执行策略拒绝而待执行。其余任务仍按依赖准入，排期不等于完成。
@@ -94,11 +98,11 @@
 | U08-06 | 维护页密度整理 | 进行中 | 明确复制完整诊断摘要而非仅所选问题 | [局部证据](evidence/U08-05-06/BASELINE.md) | SDK8组合48/48；渐进展开和短窗入口待验 |
 | U08-07 | 通知页整体一致 | 进行中 | 无结果可清除筛选并回焦搜索，空态文字复用共享样式 | [局部证据](evidence/U08-07-08/BASELINE.md) | SDK8定向15/15；真实跳转与宿主待验 |
 | U08-08 | 跨页一致性巡检 | 进行中 | 八类页面完成首轮共享资源引用盘点 | [盘点与差异](evidence/U08-07-08/BASELINE.md) | 静态引用不等于逐控件状态与视觉验收 |
-| U09-01 | 对比证据最小集 | 进行中 | 复核U00截图和已归档前后图；保存当前存档页双主题样图与报告哈希。U00/current假数据的运行时相对时间及UI不同，不能声称同数据前后配对；U06-07/08已有一组有效前后图 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 双主题样图已归档；逐批同数据前后图仍缺，需补稳定时间夹具与引用清单 |
-| U09-02 | 键盘与UIA回归 | 进行中 | SDK8.0.423候选组合16/16、0 skip；修正R07测试夹具缺失SaveTabIndex，并加可见/排列/UIA Invoke断言 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 精确提交需重跑；WPF MoveFocus/UIA Peer不等于实体键盘、IME、外部UIA或Playnite宿主验收 |
-| U09-03 | 尺寸主题交叉回归 | 进行中 | 当前SHA产品源码Render QA：双主题×11个窗口尺寸，394 PNG、0 PROBLEM、逻辑DPI 1.00 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 物理DPI/多屏/Playnite窗口未验；Render QA报告SHA和尺寸清单已记录 |
-| U09-04 | 动画性能复测 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
-| U09-05 | 标准cmd最终验收 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
-| U09-06 | GitHub双SDK门禁 | 进行中 | 精确提交`d4c4357c` run [40660226413](https://github.com/Nikilua/GameSaveCenter/actions/runs/40660226413)的baseline与SDK10 job均在R07存档重试UIA夹具断言失败；已读原始日志，修复缺失SaveTabIndex，远端重验待提交 | [U09 CI失败与artifacts](evidence/U09-01-03/ci-failure.json) | 当前失败不是绿色；修复提交推送后须复核所有适用job/artifact |
-| U09-07 | 产物清理与可追溯 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
-| U09-08 | 整轮交付审查 | 待开始 | 实施前去重 | — | 待验；按公共门禁记录 |
+| U09-01 | 对比证据最小集 | 进行中 | 在 RenderHarness 引入可固定 UTC 的假样本时钟；`8deb17c7` 同样本完整渲染两次，Light/Dark 存档图解码像素均稳定，报告SHA/像素SHA见[截图清单](evidence/U09-01-03/screenshots.json) | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | U00图属于不同UI状态且未固定样本，历史逐批配对仍缺；后续视觉批次须引用稳定样本及双主题前后图 |
+| U09-02 | 键盘与UIA回归 | 代码完成待验收 | SDK8.0.423 Release 精确提交`8deb17c7`组合16/16、0失败、0 skip；TRX原始与脱敏SHA已归档。修正R07夹具默认`SaveTabIndex`，增加可见/排列/UIA Invoke断言 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | WPF MoveFocus/UIA Peer不等于实体键盘、IME、外部UIA或Playnite宿主验收 |
+| U09-03 | 尺寸主题交叉回归 | 代码完成待验收 | 精确提交`8deb17c7`：双主题×11窗口尺寸，394 PNG、0 PROBLEM、逻辑DPI1.00；source validation通过、XAML26/26、WPF静态42文件/0 errors。Render QA原始及脱敏报告SHA已记录 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 物理DPI/多屏/Playnite窗口未验；Render报告含未跟踪外部输出，跟踪树在运行时干净 |
+| U09-04 | 动画性能复测 | 进行中 | 精确提交同条件 enduranceprobe 60秒+30秒：操作周期P95 933.16→654.02ms；内存斜率代理下降；三次独立侧栏Shell QA均收敛。明细见[性能复测](evidence/U09-04/PERFORMANCE.md) | [U09-04性能证据](evidence/U09-04/PERFORMANCE.md) | U00无逐帧及累计分配基线；当前单次收起离屏帧间隔P95约90ms，需真实宿主/已呈现帧复核；不据离屏小样本宣称无回退 |
+| U09-05 | 标准cmd最终验收 | 待开始 | 已确认`GameSaveCenter-Run.cmd`、`GameSaveCenter-一键构建安装运行.cmd`、`scripts/build.cmd`均存在；尚未运行 | — | 需冻结跟踪文件后执行真实完整构建、测试、发布打包、安装身份核对与启动，并单独验证`build.cmd` |
+| U09-06 | GitHub双SDK门禁 | 进行中 | 修复提交`2b6c4022` run [40688405018](https://github.com/Nikilua/GameSaveCenter/actions/runs/40688405018)的baseline与SDK10 job成功；`8deb17c7` run [40699146599](https://github.com/Nikilua/GameSaveCenter/actions/runs/40699146599)的SDK10 job成功，baseline `122853896172`仍运行。artifact见[CI证据](evidence/U09-01-03/BASELINE.md) | [旧失败诊断](evidence/U09-01-03/ci-failure.json)；[当前工作流报告](evidence/U09-01-03/BASELINE.md) | required-checks查询403，不能验证保护规则要求；须等baseline终态并由有权限的维护者核对required checks |
+| U09-07 | 产物清理与可追溯 | 待开始 | 本批证据已脱敏归档；阶段 `.tmp/round5-u09-01-03` 尚未清理 | — | 需核对路径边界、引用、占用及磁盘空间，仅清理本阶段自有输出并记录前后空间 |
+| U09-08 | 整轮交付审查 | 待开始 | U09及80项最终审查待执行 | — | 完整入口、本地构建和CI门禁结果齐全前不结项 |

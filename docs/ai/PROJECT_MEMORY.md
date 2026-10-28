@@ -1422,3 +1422,7 @@ U03-04/05 Render QA全量临时目录仍在`.tmp/round5-u03-04-05-render-d1fc130
 ## 2026-10-28 Round5 U07-01/02当前接续
 
 生产DialogOverlay动作区从水平StackPanel改为WrapPanel，非末项统一8 DIP间距；标题/真实对象与影响文本、独立正文滚动、危险确认安全策略保留。SDK8.0.423 Release10/10、0 skip，含220 DIP受控按钮换行、合成Escape取消回焦、重复确认保护；一次反射重载歧义失败已修正并保留。source/XAML26/WPF静态0 error，Render QA双主题394图/0 PROBLEM；证据docs/design/reviews/ui-polish-round5-20261027/evidence/U07-01-02/BASELINE.md。真实Playnite长正文/物理输入/UIA/DPI待验。悬停修正3ecacdc0的SDK10 job成功，baseline仍在运行，artifact身份已记录；最终完整中文根入口链、独立scripts/build.cmd和本批CI仍待验。接续U07-03/04。
+
+## 2026-10-28 Round5 U09-01/04 当前接续
+
+源码提交`8deb17c75ac91d716ec38b05f6f0a54530df2217`已推送。RenderHarness新增环境固定 UTC 假样本时钟；完整 Render QA 双主题×11尺寸394图、0 PROBLEM，连续相同样本主图像素相同。SDK8.0.423键盘/UIA精确组合16/16、0 skip。端到端布局代理与 U00-06 对比改善，但 U00没有逐帧和分配量记录；当前离屏侧栏单次收起帧间隔约90ms，需真实宿主复核，不能作物理帧率结论。GitHub run40699146599 SDK10 job已通过、baseline job仍运行；required-checks API403，不重试同权限探测。下一阶段冻结跟踪文件后依次运行`GameSaveCenter-一键构建安装运行.cmd`及`scripts/build.cmd`，先完成完整链和CI，再做精确清理/整轮审查。状态详见PROGRESS.md与evidence/U09-01-03、U09-04。

@@ -228,3 +228,7 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## 2026-10-28 Round5 U07-01/02当前接续
 
 生产DialogOverlay动作区从水平StackPanel改为WrapPanel，非末项统一8 DIP间距；标题/真实对象与影响文本、独立正文滚动、危险确认安全策略保留。SDK8.0.423 Release10/10、0 skip，含220 DIP受控按钮换行、合成Escape取消回焦、重复确认保护；一次反射重载歧义失败已修正并保留。source/XAML26/WPF静态0 error，Render QA双主题394图/0 PROBLEM；证据docs/design/reviews/ui-polish-round5-20261027/evidence/U07-01-02/BASELINE.md。真实Playnite长正文/物理输入/UIA/DPI待验。悬停修正3ecacdc0的SDK10 job成功，baseline仍在运行，artifact身份已记录；最终完整中文根入口链、独立scripts/build.cmd和本批CI仍待验。接续U07-03/04。
+
+## 2026-10-28 Round5 U09-01/04当前状态
+
+`main`源码提交已推送至`8deb17c75ac91d716ec38b05f6f0a54530df2217`，新增 RenderHarness 假样本固定时钟。SDK8.0.423精确提交键盘/UIA组合16/16、0 skip；固定 UTC 的双主题×11尺寸 Render QA 394 PNG/0 PROBLEM，重复两次主样图逐像素一致；source validation、XAML26/26和WPF静态42文件/0 error通过。U00同条件操作周期P95 933.16→654.02ms，内存趋势代理下降；U00无动画逐帧及累计分配字节基线，当前离屏单次收起帧间隔P95约90ms，U09-04继续待真实宿主复核。2b6c4022 CI双job成功；8deb17c7 SDK10成功、baseline仍运行；required-checks查询403，保护状态远端待验。完整本地入口链、独立scripts/build.cmd、阶段清理与整轮审查未完成。详见`docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md`。

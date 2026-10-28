@@ -1282,3 +1282,11 @@ CI：run `40566121765`（1327，d1fc）与 `40567683673`（1328，5300）两套S
 ## 2026-10-28 Round5 U07-01/02当前接续
 
 生产DialogOverlay动作区从水平StackPanel改为WrapPanel，非末项统一8 DIP间距；标题/真实对象与影响文本、独立正文滚动、危险确认安全策略保留。SDK8.0.423 Release10/10、0 skip，含220 DIP受控按钮换行、合成Escape取消回焦、重复确认保护；一次反射重载歧义失败已修正并保留。source/XAML26/WPF静态0 error，Render QA双主题394图/0 PROBLEM；证据docs/design/reviews/ui-polish-round5-20261027/evidence/U07-01-02/BASELINE.md。真实Playnite长正文/物理输入/UIA/DPI待验。悬停修正3ecacdc0的SDK10 job成功，baseline仍在运行，artifact身份已记录；最终完整中文根入口链、独立scripts/build.cmd和本批CI仍待验。接续U07-03/04。
+
+## 2026-10-28 Round5 U09-01～04 当前接续
+
+继续严格按 `docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md` 推进 U09-05→U09-08。源码已推至`8deb17c75ac91d716ec38b05f6f0a54530df2217`；当前 SDK8.0.423 本地安装在`.tmp/round5-u09-01-03/dotnet-sdk8`，执行本地 dotnet 前设置 `DOTNET_ROOT` 和 `PATH` 到该目录，不改机器 SDK/global.json。不要把任何SDK安装复制进仓库。
+
+入口实际存在：`GameSaveCenter-一键构建安装运行.cmd`委托`GameSaveCenter-Run.cmd`，后者调用`scripts/dev-install-run.ps1 -Configuration Release`；独立`scripts/build.cmd`只负责`scripts/build.ps1`的解决方案构建/测试，不替代包、安装和启动链。下一批先看当前输出所有权与入口副作用，然后在冻结跟踪文件的已提交候选上运行独立`scripts/build.cmd`，再以中文包装入口运行完整Release构建/测试/发布打包/安装身份核验/启动。捕获实际SHA、SDK、退出码、诊断/TRX和安装ID。不要跳过测试或用SDK9冒充global.json的8.0.423。
+
+当前 U09 性能结论保持保守：操作布局代理对比 U00 改善，但 U00没有逐帧/分配基线；当前单次侧栏收起离屏帧间隔P95约90ms，应记录为待真实宿主复核，不调整动画时长来淡化信号。RenderHarness实测16/16，固定样本394图/0 PROBLEM。CI run40699146599的SDK10 job通过，baseline job122853896172仍运行；branch-protection required-checks调用曾403，不重复相同权限探测，向有权限维护者给出`gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks`核验步骤。运行最终入口、等待CI并安全清理本批自有`.tmp/round5-u09-01-03`后，再做U09-08；保留用户/其他任务`TestResults`。

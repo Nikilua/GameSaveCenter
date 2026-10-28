@@ -1,18 +1,24 @@
 {
-  "sourceCommit": "d4c4357c4e0c256b4fe0248d7efc25ce5badfd18",
+  "sourceCommit": "8deb17c75ac91d716ec38b05f6f0a54530df2217",
   "baselineCommit": "f5cddfe960668fbb06653d553c0a2bf316ce137d",
-  "renderGeneratedLocal": "2026-10-28 16:58:34 +08:00",
+  "sampleTimeUtc": "2026-10-28T09:00:00.0000000+00:00",
+  "renderGeneratedLocal": "2026-10-28 21:56:50 +08:00",
   "renderReport": {
-    "path": ".tmp/round5-u09-01-03/render/render-qa-report.txt",
-    "sha256": "4E5F449D5FAC94FBEB1A43B22B75C0A9F566B8601F7D57EFEB2355E55D8A3118",
-    "bytes": 1159857,
+    "path": "render-qa-report-redacted.txt",
+    "rawSha256": "1647F2E948328526829EAB5F9F441612A36044F8B77A8BEEF3519E4FFBAEF0BF",
+    "rawBytes": 1141900,
+    "sha256": "5DB61ED68576FB2261766059509A41105AFC7A0F9E0183A657D11A1375A81EDA",
+    "bytes": 1126066,
     "pngCount": 394,
     "problemCount": 0,
     "exitCode": 0,
     "result": "render-qa OK",
     "dpiScale": 1.0,
     "themes": ["light", "dark"],
-    "windowDips": ["1040x700", "1100x720", "1280x720", "1366x768", "1536x864", "1600x900", "1707x960", "1920x1080", "2048x1152", "2560x1440", "3840x2160"]
+    "windowDips": ["1040x700", "1100x720", "1280x720", "1366x768", "1536x864", "1600x900", "1707x960", "1920x1080", "2048x1152", "2560x1440", "3840x2160"],
+    "exactCommitRepeatedRuns": 2,
+    "workingTreeCleanInReport": false,
+    "trackedTreeClean": true
   },
   "screenshots": [
     {
@@ -22,10 +28,11 @@
       "windowDip": "1040x700",
       "bytes": 66102,
       "sha256": "0A5495F212FDB317BFCC8A257543DC4E4CDF254C8958A431B4305C18D69E781A",
+      "pixelSha256": "4D195AEDF62103567E07DCCB3CAE37AEF1527A415DF4933E4002D422056FDF94",
       "baselineFile": "../U00-01/Save-light-1040x700.png",
       "baselineSha256": "82372E236F678BC579B1514CBCFD150F7FEE071E9AB7732894C825EDAC0C468C",
       "sameDataVerified": false,
-      "sampleTime": "baseline 昨天 11:28；current 昨天 17:00"
+      "sampleTime": "fixed at 2026-10-28T09:00:00Z; two exact-commit renders had identical decoded pixels"
     },
     {
       "file": "current-save-dark-1040x700.png",
@@ -34,15 +41,16 @@
       "windowDip": "1040x700",
       "bytes": 70634,
       "sha256": "8CD7911BB36A50FEFC4EBE0778F1B0FC76DE4D415441B48181ECB021CC2B4A12",
+      "pixelSha256": "27E0EE2569A281E5B039382A5E80FCF0E520E62FCA2C795AA7260D77137C613F",
       "baselineFile": "../U00-01/Save-dark-1040x700.png",
       "baselineSha256": "DFF173ADE2141E2AB2670F268EC1B8D804F684F6B486789E5F4CD6DF5EAEE262",
       "sameDataVerified": false,
-      "sampleTime": "baseline 昨天 11:28；current 昨天 17:00"
+      "sampleTime": "fixed at 2026-10-28T09:00:00Z; two exact-commit renders had identical decoded pixels"
     }
   ],
   "existingPairedEvidence": [
     "../U06-07-08/render/before.png",
     "../U06-07-08/render/after.png"
   ],
-  "comparisonConclusion": "Current light/dark samples are archived for review. U00 baseline pixels differ in both UI and runtime-generated fake timestamps; do not treat this as a same-data before/after pair."
+  "comparisonConclusion": "The current theme samples are pixel-stable under the pinned fixture clock. The U00 baseline is from a different UI state and was not measured with this clock, so it remains an invalid same-data before/after pair."
 }
