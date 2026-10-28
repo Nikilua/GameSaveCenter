@@ -108,6 +108,14 @@ namespace GameSaveCenter.Playnite.Views
             }
         }
 
+        private void OnClearFiltersClick(object sender, RoutedEventArgs e)
+        {
+            NotificationInboxSearchTextBox.SetCurrentValue(TextBox.TextProperty, string.Empty);
+            NotificationSeverityFilterComboBox.SetCurrentValue(ComboBox.SelectedIndexProperty, 0);
+            NotificationTimeFilterComboBox.SetCurrentValue(ComboBox.SelectedIndexProperty, 0);
+            NotificationInboxSearchTextBox.Focus();
+        }
+
         private void OnCompactDetailsClick(object sender, RoutedEventArgs e)
         {
             if (compactLayout != true) return;

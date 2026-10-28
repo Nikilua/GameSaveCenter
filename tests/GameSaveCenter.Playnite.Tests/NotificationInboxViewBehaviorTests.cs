@@ -17,6 +17,39 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class NotificationInboxViewBehaviorTests
 {
     [Fact]
+    public void ClearFiltersResetsOnlySearchAndFilterSelections()
+    {
+        RunSta(() =>
+        {
+            var data = new NotificationInboxData();
+            var view = new NotificationInboxView { DataContext = data };
+            var window = new Window { Content = view, Width = 900, Height = 600, ShowInTaskbar = false, WindowStyle = WindowStyle.None, Opacity = 0.01 };
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                var search = Assert.IsType<TextBox>(view.FindName("NotificationInboxSearchTextBox"));
+                var severity = Assert.IsType<ComboBox>(view.FindName("NotificationSeverityFilterComboBox"));
+                var time = Assert.IsType<ComboBox>(view.FindName("NotificationTimeFilterComboBox"));
+                var clear = Assert.IsAssignableFrom<Button>(view.FindName("NotificationClearFiltersButton"));
+                search.Text = "合成查询";
+                severity.SelectedIndex = 1;
+                time.SelectedIndex = 1;
+                clear.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, clear));
+                Assert.Equal(string.Empty, search.Text);
+                Assert.Equal(0, severity.SelectedIndex);
+                Assert.Equal(0, time.SelectedIndex);
+                Assert.Equal(string.Empty, data.NotificationInboxSearchText);
+                Assert.Equal("全部级别", data.NotificationSeverityFilter);
+                Assert.Equal("全部时间", data.NotificationTimeFilter);
+                Assert.Contains("不会修改通知记录或已读状态", AutomationProperties.GetHelpText(clear));
+                Assert.Equal(0, data.MarkSelectedExecutions + data.MarkVisibleExecutions + data.ClearReadExecutions);
+            }
+            finally { window.Close(); }
+        });
+    }
+
+    [Fact]
     public void CompactLayoutKeepsListOpenAndMakesDetailsAnExplicitToggle()
     {
         RunSta(() =>

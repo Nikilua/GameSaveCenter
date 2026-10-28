@@ -181,14 +181,15 @@
 
                 <Border x:Name="NotificationNoRecordsEmptyState" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="2" Style="{DynamicResource GscRedesignEmptyStateSurface}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="480" Visibility="{Binding NotificationInboxHasNoRecords, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="还没有通知" FontSize="17" FontWeight="SemiBold" TextAlignment="Center"/>
-                        <TextBlock Text="任务完成、失败或退出摘要会出现在这里。" Margin="0,7,0,0" Foreground="{DynamicResource GscSecondaryTextBrush}" TextAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock Text="还没有通知" Style="{DynamicResource GscSectionTitleStyle}" TextAlignment="Center"/>
+                        <TextBlock Text="任务完成、失败或退出摘要会出现在这里。" Style="{DynamicResource GscCaptionStyle}" Margin="0,7,0,0" Foreground="{DynamicResource GscSecondaryTextBrush}" TextAlignment="Center" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
                 <Border x:Name="NotificationNoResultsEmptyState" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="2" Style="{DynamicResource GscRedesignEmptyStateSurface}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="480" Visibility="{Binding NotificationInboxHasNoFilterResults, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="没有匹配的通知" FontSize="17" FontWeight="SemiBold" TextAlignment="Center"/>
-                        <TextBlock Text="调整级别、时间或搜索条件后重试。" Margin="0,7,0,0" Foreground="{DynamicResource GscSecondaryTextBrush}" TextAlignment="Center" TextWrapping="Wrap"/>
+                        <TextBlock Text="没有匹配的通知" Style="{DynamicResource GscSectionTitleStyle}" TextAlignment="Center"/>
+                        <TextBlock Text="调整级别、时间或搜索条件后重试。" Style="{DynamicResource GscCaptionStyle}" Margin="0,7,0,0" Foreground="{DynamicResource GscSecondaryTextBrush}" TextAlignment="Center" TextWrapping="Wrap"/>
+                        <ui:Button x:Name="NotificationClearFiltersButton" Content="清除筛选" Style="{DynamicResource GscWpfUiActionButton}" Click="OnClearFiltersClick" HorizontalAlignment="Center" Margin="0,10,0,0" AutomationProperties.Name="清除通知筛选" AutomationProperties.HelpText="清除搜索、级别和时间筛选；不会修改通知记录或已读状态。"/>
                     </StackPanel>
                 </Border>
                 <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Text="{Binding NotificationInboxLoadStatus, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0" Foreground="{DynamicResource GscSecondaryTextBrush}" IsHitTestVisible="False"/>
