@@ -1206,3 +1206,7 @@ CI：run `40566121765`（1327，d1fc）与 `40567683673`（1328，5300）两套S
 源码/测试提交`237e993f9e03541f5e8056c30cab8fdb029c0a77`已推送；本地SDK8.0.423行为5/5、0 skip，Source Validation、XAML26/26、WPF静态37文件/0 errors及精确SHA Render QA 394 PNG/0 PROBLEM已通过。run `40623449222`基线job `122602679724`(SDK8.0.423)与SDK10.0.401 job `122602679492`均成功，各1982总/1924通过/0失败/58既有skip；基线扩展包生成及三个artifact的ID/大小/SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U05-01-02/ci-run-40623449222.json`。完整证据和边界见`evidence/U05-01-02/BASELINE.md`。Required-checks API既有403仍使分支保护状态待验，不推断required checks。
 
 继续U05-03/04时保持当前游戏选框、滚动条、命令/Binding、键盘/UIA、虚拟化、Reduced Motion与安全/取消语义；真实Playnite待验不阻断其它独立项。U05-01/02精确提交的双SDK GitHub job已闭合成功。最终硬门禁仍是中文`GameSaveCenter-一键构建安装运行.cmd`完整构建/测试/发布/打包/安装身份/启动，以及独立`scripts/build.cmd`实际职责；二者不能互相替代。保留Round3用户TRX和共享TestResults；本轮Render QA当前报告和精简前后图已归档，临时全量图清理需边界/引用核对后仅用PowerShell定点处理。
+
+## 2026-10-28 Round5 U05-03/04 当前接续
+
+本批只补充详情对象与弹层退出行为证据，生产实现继承237e993f。SDK8.0.423 Release定向9/9、0 skip，source/WPF静态通过；U05-03代码完成待验收，U05-04仍需菜单和所有抽屉实际开闭/回焦证据。失败夹具及缺构建身份诊断保留，详见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-03-04/BASELINE.md。最终根入口完整链、独立scripts/build.cmd及当前提交CI仍待完成；不重复旧权限探测。

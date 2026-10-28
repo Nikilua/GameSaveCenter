@@ -1348,3 +1348,7 @@ U03-04/05 Render QA全量临时目录仍在`.tmp/round5-u03-04-05-render-d1fc130
 ## Round5 U05-01/02恢复点（2026-10-28）
 
 `main`源码提交`237e993f9e03541f5e8056c30cab8fdb029c0a77`已push：生产PageHost在内容实际变化后才以共享Fast过渡；任务详情紧凑开合使用Opacity/Translate，不动Width，关闭命中关闭、焦点返回触发器，可反向并在Reduced Motion/对象变更/布局转宽时清理。相关SDK8行为5/5、0 skip；source、XAML26/26、WPF静态37/0 errors和Render QA394 PNG/0 PROBLEM通过。run 1339精确SHA两个适用job均成功：SDK8.0.423与10.0.401各1982总/1924通过/0失败/58既有skip，扩展包、job与artifact身份见Round5 `evidence/U05-01-02/ci-run-40623449222.json`。诊断自测中的单个失败TRX结果是验证失败采集的预期负例；正式测试及第二轮打包测试均0失败。系统动效测试使用中性探针，测试Application为OnExplicitShutdown；没有删断言或扩大skip。required-checks读取仍403，保护状态不推断。当前只完成U05-01/02；真实Playnite宿主、物理输入/UIA/IME/DPI和最终本地根入口链未验。接续U05-03/04，不等待旧S/T宿主或权限。
+
+## 2026-10-28 Round5 U05-03/04 当前接续
+
+本批只补充详情对象与弹层退出行为证据，生产实现继承237e993f。SDK8.0.423 Release定向9/9、0 skip，source/WPF静态通过；U05-03代码完成待验收，U05-04仍需菜单和所有抽屉实际开闭/回焦证据。失败夹具及缺构建身份诊断保留，详见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-03-04/BASELINE.md。最终根入口完整链、独立scripts/build.cmd及当前提交CI仍待完成；不重复旧权限探测。

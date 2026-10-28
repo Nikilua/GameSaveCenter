@@ -190,6 +190,15 @@ public sealed class R05FocusBoundaryBehaviorTests
                 cancel.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 Assert.Equal(Visibility.Visible, overlay.Visibility);
                 Assert.True(IsDescendantOf(Keyboard.FocusedElement, overlay));
+                // A second click and a new request during the exit must not turn the
+                // already-cancelled decision into confirmation or replace its content.
+                confirm.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                var overlappingRequest = new UiConfirmationEventArgs("另一项", "不能覆盖退出中的对话框", "继续", "取消", true);
+                RaiseConfirmationRequest(dashboard, plugin, overlappingRequest);
+                Assert.True(overlappingRequest.Handled);
+                Assert.False(overlappingRequest.Completion.Task.Result);
+                Assert.False(animatedRequest.Completion.Task.Result);
+                Assert.Equal("确认", ((TextBlock)dashboard.FindName("DialogTitleText")!).Text);
                 Assert.True(WaitFor(host, () =>
                     overlay.Visibility == Visibility.Collapsed
                     && ReferenceEquals(Keyboard.FocusedElement, trigger)));

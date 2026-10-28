@@ -152,3 +152,7 @@ U02-07/08已去重并复核现有共享能力：阴影采用有限层级，重�
 ## 2026-10-28 Round5当前源码与验证状态
 
 `main`已推送至`237e993f9e03541f5e8056c30cab8fdb029c0a77`，实现U05-01/02轻量页面切换和紧凑任务详情开合。SDK8.0.423相关行为5/5、0 skip；source validation通过，XAML26/26，WPF静态37 XAML/0 error，离屏Render QA精确SHA 394图/0 PROBLEM。GitHub run `40623449222`精确SHA两个适用job均成功：基线SDK8.0.423及SDK10.0.401各1982总/1924通过/0失败/58既有skip；扩展包与artifact身份见`docs/design/reviews/ui-polish-round5-20261027/evidence/U05-01-02/ci-run-40623449222.json`。required-checks权限此前403，保护状态仍“远端待验”。U05-01/02仍是“代码完成待验收”；真实Playnite、物理UIA/IME/DPI、整轮中文根入口/独立`scripts/build.cmd`仍未验。接续U05-03/04。
+
+## 2026-10-28 Round5 U05-03/04 当前接续
+
+本批只补充详情对象与弹层退出行为证据，生产实现继承237e993f。SDK8.0.423 Release定向9/9、0 skip，source/WPF静态通过；U05-03代码完成待验收，U05-04仍需菜单和所有抽屉实际开闭/回焦证据。失败夹具及缺构建身份诊断保留，详见docs/design/reviews/ui-polish-round5-20261027/evidence/U05-03-04/BASELINE.md。最终根入口完整链、独立scripts/build.cmd及当前提交CI仍待完成；不重复旧权限探测。

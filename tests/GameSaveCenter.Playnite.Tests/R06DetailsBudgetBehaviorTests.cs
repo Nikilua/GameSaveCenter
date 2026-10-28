@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
@@ -142,6 +143,19 @@ public sealed class R06DetailsBudgetBehaviorTests
                 grid.SelectedIndex = 0;
                 window.UpdateLayout();
                 grid.SelectedIndex = 1;
+                // Check on the same dispatcher turn, before a render or transition can
+                // conceal a stale title paired with the new command target.
+                Assert.Same(second, probe.SelectedTask);
+                var immediateText = string.Join("\n", FindVisualChildren<TextBlock>(detailCard).Select(textBlock => textBlock.Text));
+                Assert.Contains("长诊断游戏", immediateText);
+                Assert.DoesNotContain("短详情游戏", immediateText);
+                var action = FindVisualChildren<Button>(detailCard)
+                    .Single(button => AutomationProperties.GetName(button) == "查看关联游戏详情");
+                Assert.Same(probe.OpenSelectedTaskGameCommand, action.Command);
+                typeof(System.Windows.Controls.Primitives.ButtonBase)
+                    .GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(action, null);
+                Assert.Same(second, probe.LastActionTask);
                 window.UpdateLayout();
                 expander.IsExpanded = true;
                 window.UpdateLayout();
@@ -221,9 +235,12 @@ public sealed class R06DetailsBudgetBehaviorTests
             var collection = new ObservableCollection<TaskStatusDto>(tasks);
             TasksView = CollectionViewSource.GetDefaultView(collection);
             this.selectedTask = selectedTask;
+            OpenSelectedTaskGameCommand = new ProbeCommand(() => LastActionTask = SelectedTask);
         }
 
         public ICollectionView TasksView { get; }
+        public ICommand OpenSelectedTaskGameCommand { get; }
+        public TaskStatusDto? LastActionTask { get; private set; }
 
         public TaskStatusDto? SelectedTask
         {
@@ -237,5 +254,14 @@ public sealed class R06DetailsBudgetBehaviorTests
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+    }
+
+    private sealed class ProbeCommand : ICommand
+    {
+        private readonly Action action;
+        public ProbeCommand(Action action) => this.action = action;
+        public bool CanExecute(object? parameter) => true;
+        public void Execute(object? parameter) => action();
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
     }
 }
