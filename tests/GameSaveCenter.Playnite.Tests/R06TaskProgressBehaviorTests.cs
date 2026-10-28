@@ -73,6 +73,86 @@ public sealed class R06TaskProgressBehaviorTests
         });
     }
 
+    [Fact]
+    public void ProductionTaskRowKeepsStableHeightAcrossStageProgressAndLongTextUpdates()
+    {
+        RunSta(() =>
+        {
+            var initial = Task("row-stability", TaskState.Running, -1);
+            initial.StageMessage = "正在准备";
+            var tasks = new ObservableCollection<TaskStatusDto> { initial };
+            var view = new TaskCenterView();
+            var grid = (DataGrid)view.FindName("TaskGrid")!;
+            grid.ItemsSource = tasks;
+            var window = new Window { Content = view, Width = 1400, Height = 700, ShowInTaskbar = false };
+
+            try
+            {
+                window.Show();
+                view.ApplyResponsiveLayout(1400, 700);
+                PumpLayout(window);
+
+                double? stableHeight = null;
+                var fullGameName = string.Concat(Enumerable.Repeat("超长中文游戏名称与 Long Game Name ", 8));
+                var updates = new[]
+                {
+                    new TaskStatusDto
+                    {
+                        TaskId = "row-stability", TaskType = "Backup", GameName = fullGameName,
+                        State = TaskState.Running, ProgressPercent = 35, StageMessage = "正在扫描存档",
+                        CreatedUtc = initial.CreatedUtc
+                    },
+                    new TaskStatusDto
+                    {
+                        TaskId = "row-stability", TaskType = "Backup", GameName = fullGameName,
+                        State = TaskState.Failed, ProgressPercent = 35, StageMessage = "正在扫描存档",
+                        ErrorCode = "SYNTHETIC_FAILURE", ErrorMessage = new string('诊', 320),
+                        CreatedUtc = initial.CreatedUtc
+                    },
+                    new TaskStatusDto
+                    {
+                        TaskId = "row-stability", TaskType = "Backup", GameName = fullGameName,
+                        State = TaskState.Cancelled, ProgressPercent = 35, StageMessage = "正在扫描存档",
+                        CreatedUtc = initial.CreatedUtc
+                    },
+                    new TaskStatusDto
+                    {
+                        TaskId = "row-stability", TaskType = "Backup", GameName = fullGameName,
+                        State = TaskState.Succeeded, ProgressPercent = 100, StageMessage = "备份完成",
+                        CreatedUtc = initial.CreatedUtc
+                    }
+                };
+
+                foreach (var next in updates)
+                {
+                    tasks[0] = next;
+                    PumpLayout(window);
+
+                    var row = Assert.IsType<DataGridRow>(grid.ItemContainerGenerator.ContainerFromIndex(0));
+                    Assert.True(row.ActualHeight > 0);
+                    if (stableHeight.HasValue)
+                        Assert.Equal(stableHeight.Value, row.ActualHeight, 2);
+                    stableHeight = row.ActualHeight;
+
+                    var stageColumn = grid.Columns.Single(column => Equals(column.Header, "阶段"));
+                    var stageText = Assert.IsType<TextBlock>(stageColumn.GetCellContent(next));
+                    Assert.Equal(next.StageDisplay, stageText.Text);
+                    var progressColumn = grid.Columns.Single(column => Equals(column.Header, "进度"));
+                    var progressCell = progressColumn.GetCellContent(next);
+                    Assert.NotNull(progressCell);
+                    var progressText = FindChildren<TextBlock>(progressCell!).Single();
+                    Assert.Equal(next.ProgressDisplay, progressText.Text);
+
+                    var gameColumn = grid.Columns.Single(column => Equals(column.Header, "游戏"));
+                    var gameText = Assert.IsType<TextBlock>(gameColumn.GetCellContent(next));
+                    BindingOperations.GetBindingExpression(gameText, AutomationProperties.HelpTextProperty)?.UpdateTarget();
+                    Assert.Equal(fullGameName, AutomationProperties.GetHelpText(gameText));
+                }
+            }
+            finally { window.Close(); }
+        });
+    }
+
     private static IEnumerable<T> FindChildren<T>(DependencyObject root) where T : DependencyObject
     {
         if (root is T match) yield return match;

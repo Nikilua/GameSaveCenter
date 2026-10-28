@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U08-03/04 当前主线复核
+
+生产源码基线`8ac477b9fad108d714e94a7da202b5be22ef6b30`：任务页状态替换/阶段进度/长文本UIA及稳定行高新增真实WPF视图回归；媒体页占位各状态恢复、虚拟列表滚动锚点和选中焦点边界覆盖。SDK8.0.423 Release组合15/15、0 skip，source validation退出0，WPF静态42 XAML/0错误/26既有warning/179 info。仅改测试与review证据，无生产XAML/资源变化。两项标为代码完成待验收；Playnite、实体UIA/输入、物理DPI与本批新SHA CI待验。证据见`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-03-04-current-main-8ac477b9/BASELINE.md`。完整TRX SHA-256 `316B0C4A11F464BFB0F21B98DF3D3E3A04393BC251F1648E788832606024D1D8`。
+
 ## 2026-10-29 Round5 U07-05/U08-07 焦点补充
 
 通知清除筛选焦点回归现在以空态实际可见的生产WPF窗口断言按钮到搜索框焦点交接；到达通知不抢焦点/不替换旧选中行继续覆盖。SDK8.0.423通知视图类4/4、0 skip；source validation exit0；WPF静态42 XAML/0错误/26既有warning/179 info。仅修改测试，无生产XAML和资源差异。首次失败为测试夹具把无结果空态折叠，TRX已作为诊断归档。U08-07代码完成待验收；真实Playnite导航、Worker刷新、物理输入和UIA待验。证据见Round5 `evidence/U07-05-08/BASELINE.md`。

@@ -1,3 +1,9 @@
+## 2026-10-29 Round5 U08-03/04 当前主线行为复核
+
+- 在生产源码身份`8ac477b9fad108d714e94a7da202b5be22ef6b30`上新增真实WPF TaskCenter行高切换用例，并复跑任务行、缩略图占位恢复、2000项媒体虚拟列表边界组合；SDK8.0.423 Release 15/15，0失败、0 skip。
+- U08-03核对运行/失败/取消/完成替换期间行高稳定、阶段/进度文本和完整长游戏名UIA HelpText；U08-04核对占位状态与Ready恢复、滚动锚点、追加/替换/移除选中项、行内选中焦点边界。无生产XAML/资源修改；source validation退出0，WPF静态42 XAML/0错误/26既有warning/179 info。
+- TRX SHA-256 `316B0C4A11F464BFB0F21B98DF3D3E3A04393BC251F1648E788832606024D1D8`。未重跑Render QA；Playnite宿主、实体UIA/输入、物理跨屏DPI及本提交CI仍待验。详见`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-03-04-current-main-8ac477b9/BASELINE.md`。
+
 ## 2026-10-29 Round5 U07-05/U08-07 焦点路径
 
 - 在通知页测试中使用实际无结果空态，使“清除筛选”按钮可见且可聚焦；聚焦按钮后触发其WPF Click处理器，核对搜索、级别、时间恢复默认且键盘焦点回搜索框，通知/已读命令计数保持0。通知视图定向4/4、0 skip。
