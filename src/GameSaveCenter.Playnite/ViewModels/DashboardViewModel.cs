@@ -1111,6 +1111,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string TaskWaitingSummary => $"排队/等待确认：{WaitingTaskCount}";
         public int RetryableTaskCount => TasksView?.Cast<TaskStatusDto>().Count(CanRetryTask) ?? Tasks.Count(CanRetryTask);
         public string TaskRetrySummary => $"失败 {TaskSummary.FailedCount} · 已取消 {TaskSummary.CancelledCount}";
+        public string SelectedTaskRetryGuidance => TaskRetryGuidanceResolver.Resolve(SelectedTask, CanRetryTask(SelectedTask));
         public int CompletedTaskCount => todaySucceededTaskCount;
         public int LoadedTaskCount => Tasks.Count;
         public bool TaskHistoryHasMore { get => taskHistoryHasMore; private set => SetValue(ref taskHistoryHasMore, value); }
@@ -1451,6 +1452,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 SetValue(ref selectedTask, value);
+                OnPropertyChanged(nameof(SelectedTaskRetryGuidance));
                 RebuildSelectedTaskTimeline();
                 OnPropertyChanged(nameof(SelectedTaskSourceReferences));
                 OnPropertyChanged(nameof(HasSelectedTaskSources));

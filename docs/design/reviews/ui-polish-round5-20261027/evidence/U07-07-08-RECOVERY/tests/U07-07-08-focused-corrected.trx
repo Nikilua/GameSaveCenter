@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="892db248-22b9-410d-8d69-b232914983ff" name="REDACTED@HOST 2026-10-29 02:41:04" runUser="HOST\REDACTED" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T02:41:04.6136198+08:00" queuing="2026-10-29T02:41:04.6136201+08:00" start="2026-10-29T02:41:00.0890151+08:00" finish="2026-10-29T02:41:23.1116881+08:00" />
+  <TestSettings name="default" id="83312a1e-a514-4189-b08c-958b376a18d3">
+    <Deployment runDeploymentRoot="REDACTED_SULT_2026-10-29_02_41_04" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e51e34b1-0db6-4eae-9b7d-07262892b3c9" testId="dd0be355-3bcb-4173-6fac-21c34740911b" testName="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceViewTests.RetryGuidanceCardTracksTerminalTaskAndAutomationHelpText" computerName="HOST" duration="00:00:02.4750000" startTime="2026-10-29T02:41:04.5976482+08:00" endTime="2026-10-29T02:41:07.0596334+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e51e34b1-0db6-4eae-9b7d-07262892b3c9" />
+    <UnitTestResult executionId="0ca40667-7b9d-4567-ba66-51eddb8595bb" testId="db2ee523-054e-fa38-1aad-ef1c56ea2d55" testName="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.KnownCloudFailuresHaveSeparateNextSteps(errorCode: &quot;RCLONE_PERMISSION_DENIED&quot;, category: &quot;权限不足&quot;, nextStep: &quot;上次远端结果&quot;)" computerName="HOST" duration="00:00:00.0010000" startTime="2026-10-29T02:41:04.4004092+08:00" endTime="2026-10-29T02:41:04.4014084+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0ca40667-7b9d-4567-ba66-51eddb8595bb" />
+    <UnitTestResult executionId="ae10906d-4144-4324-8402-4a0bfbe66b6f" testId="bb04112c-23f4-34ca-7f75-6524fe528268" testName="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.KnownCloudFailuresHaveSeparateNextSteps(errorCode: &quot;RCLONE_NETWORK_FAILED&quot;, category: &quot;网络或远端暂不可达&quot;, nextStep: &quot;不要盲目重试&quot;)" computerName="HOST" duration="00:00:00.0200000" startTime="2026-10-29T02:41:04.3774000+08:00" endTime="2026-10-29T02:41:04.3824103+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ae10906d-4144-4324-8402-4a0bfbe66b6f" />
+    <UnitTestResult executionId="e16487fc-d7b9-4ab8-97ed-b4bb3808203d" testId="f74e593d-5d81-1c48-922c-369943424c96" testName="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.UnsupportedRetryAndNonTerminalStatesAreExplainedWithoutEnablingCommands" computerName="HOST" duration="00:00:00.0010000" startTime="2026-10-29T02:41:04.4094089+08:00" endTime="2026-10-29T02:41:04.4104102+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e16487fc-d7b9-4ab8-97ed-b4bb3808203d" />
+    <UnitTestResult executionId="f22ac640-fa9a-4225-bac5-258a396a1037" testId="61645536-0627-d4e7-fc6b-278d3685eecc" testName="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.BulkActionsCaptureStableIdsAndExplainPartialResults" computerName="HOST" duration="00:00:00.0320000" startTime="2026-10-29T02:41:04.5527621+08:00" endTime="2026-10-29T02:41:04.5833332+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f22ac640-fa9a-4225-bac5-258a396a1037" />
+    <UnitTestResult executionId="2492d694-9862-406f-af44-1d0d2904fd96" testId="7cda16fb-bb52-2cfc-5c75-e918d3c88fc7" testName="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.TaskCenterExposesSafeBulkRetryWithoutChangingWorkerProtocol" computerName="HOST" duration="00:00:00.0310000" startTime="2026-10-29T02:41:04.5214129+08:00" endTime="2026-10-29T02:41:04.5507600+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2492d694-9862-406f-af44-1d0d2904fd96" />
+    <UnitTestResult executionId="f89871b3-28d1-4e8c-a4c7-9edb5b7a4d26" testId="31008a89-a6ef-d226-c145-ba428bb692cc" testName="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.ExplicitRetryRequestsCarryRootIssueAndPreserveMediaTransferKind" computerName="HOST" duration="00:00:00.0200000" startTime="2026-10-29T02:41:04.5044132+08:00" endTime="2026-10-29T02:41:04.5194085+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f89871b3-28d1-4e8c-a4c7-9edb5b7a4d26" />
+    <UnitTestResult executionId="8dc5b831-8749-4930-a074-fc05d6f941fb" testId="5e55abeb-cda3-26dd-9e94-061d195b8192" testName="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.KnownCloudFailuresHaveSeparateNextSteps(errorCode: &quot;RCLONE_TRANSFER_INCOMPLETE&quot;, category: &quot;传输未完成&quot;, nextStep: &quot;核对远端目标对象&quot;)" computerName="HOST" duration="00:00:00.0010000" startTime="2026-10-29T02:41:04.4034089+08:00" endTime="2026-10-29T02:41:04.4044085+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8dc5b831-8749-4930-a074-fc05d6f941fb" />
+    <UnitTestResult executionId="d8bc2e9b-6d50-4087-ad2e-a14808254667" testId="38d6ba51-6864-bbea-1a8d-99d2f3413fab" testName="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.UnknownCloudFailureDoesNotEncourageBlindResubmission" computerName="HOST" duration="00:00:00.0010000" startTime="2026-10-29T02:41:04.4074100+08:00" endTime="2026-10-29T02:41:04.4084106+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d8bc2e9b-6d50-4087-ad2e-a14808254667" />
+    <UnitTestResult executionId="3cb2da8d-3a26-47bf-ae30-b2c0bc89dcc9" testId="e2c4b4cb-78ad-9c4c-d653-658774d13b0b" testName="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.RestoreInspectionDependencyHintStaysNextToItsDisabledSettings" computerName="HOST" duration="00:00:00.1180000" startTime="2026-10-29T02:41:04.4154122+08:00" endTime="2026-10-29T02:41:04.4994106+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3cb2da8d-3a26-47bf-ae30-b2c0bc89dcc9" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.UnknownCloudFailureDoesNotEncourageBlindResubmission" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="38d6ba51-6864-bbea-1a8d-99d2f3413fab">
+      <Execution id="d8bc2e9b-6d50-4087-ad2e-a14808254667" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests" name="UnknownCloudFailureDoesNotEncourageBlindResubmission" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.RestoreInspectionDependencyHintStaysNextToItsDisabledSettings" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="e2c4b4cb-78ad-9c4c-d653-658774d13b0b">
+      <Execution id="3cb2da8d-3a26-47bf-ae30-b2c0bc89dcc9" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests" name="RestoreInspectionDependencyHintStaysNextToItsDisabledSettings" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceViewTests.RetryGuidanceCardTracksTerminalTaskAndAutomationHelpText" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="dd0be355-3bcb-4173-6fac-21c34740911b">
+      <Execution id="e51e34b1-0db6-4eae-9b7d-07262892b3c9" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceViewTests" name="RetryGuidanceCardTracksTerminalTaskAndAutomationHelpText" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.KnownCloudFailuresHaveSeparateNextSteps(errorCode: &quot;RCLONE_PERMISSION_DENIED&quot;, category: &quot;权限不足&quot;, nextStep: &quot;上次远端结果&quot;)" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="db2ee523-054e-fa38-1aad-ef1c56ea2d55">
+      <Execution id="0ca40667-7b9d-4567-ba66-51eddb8595bb" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests" name="KnownCloudFailuresHaveSeparateNextSteps" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.BulkActionsCaptureStableIdsAndExplainPartialResults" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="61645536-0627-d4e7-fc6b-278d3685eecc">
+      <Execution id="f22ac640-fa9a-4225-bac5-258a396a1037" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests" name="BulkActionsCaptureStableIdsAndExplainPartialResults" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.ExplicitRetryRequestsCarryRootIssueAndPreserveMediaTransferKind" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="31008a89-a6ef-d226-c145-ba428bb692cc">
+      <Execution id="f89871b3-28d1-4e8c-a4c7-9edb5b7a4d26" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests" name="ExplicitRetryRequestsCarryRootIssueAndPreserveMediaTransferKind" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests.TaskCenterExposesSafeBulkRetryWithoutChangingWorkerProtocol" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="7cda16fb-bb52-2cfc-5c75-e918d3c88fc7">
+      <Execution id="2492d694-9862-406f-af44-1d0d2904fd96" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetrySourceTests" name="TaskCenterExposesSafeBulkRetryWithoutChangingWorkerProtocol" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.KnownCloudFailuresHaveSeparateNextSteps(errorCode: &quot;RCLONE_NETWORK_FAILED&quot;, category: &quot;网络或远端暂不可达&quot;, nextStep: &quot;不要盲目重试&quot;)" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="bb04112c-23f4-34ca-7f75-6524fe528268">
+      <Execution id="ae10906d-4144-4324-8402-4a0bfbe66b6f" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests" name="KnownCloudFailuresHaveSeparateNextSteps" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.KnownCloudFailuresHaveSeparateNextSteps(errorCode: &quot;RCLONE_TRANSFER_INCOMPLETE&quot;, category: &quot;传输未完成&quot;, nextStep: &quot;核对远端目标对象&quot;)" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="5e55abeb-cda3-26dd-9e94-061d195b8192">
+      <Execution id="8dc5b831-8749-4930-a074-fc05d6f941fb" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests" name="KnownCloudFailuresHaveSeparateNextSteps" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests.UnsupportedRetryAndNonTerminalStatesAreExplainedWithoutEnablingCommands" storage="REPO_ROOT\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="f74e593d-5d81-1c48-922c-369943424c96">
+      <Execution id="e16487fc-d7b9-4ab8-97ed-b4bb3808203d" />
+      <TestMethod codeBase="REPO_ROOT\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests" name="UnsupportedRetryAndNonTerminalStatesAreExplainedWithoutEnablingCommands" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="dd0be355-3bcb-4173-6fac-21c34740911b" executionId="e51e34b1-0db6-4eae-9b7d-07262892b3c9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db2ee523-054e-fa38-1aad-ef1c56ea2d55" executionId="0ca40667-7b9d-4567-ba66-51eddb8595bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb04112c-23f4-34ca-7f75-6524fe528268" executionId="ae10906d-4144-4324-8402-4a0bfbe66b6f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f74e593d-5d81-1c48-922c-369943424c96" executionId="e16487fc-d7b9-4ab8-97ed-b4bb3808203d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="61645536-0627-d4e7-fc6b-278d3685eecc" executionId="f22ac640-fa9a-4225-bac5-258a396a1037" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7cda16fb-bb52-2cfc-5c75-e918d3c88fc7" executionId="2492d694-9862-406f-af44-1d0d2904fd96" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31008a89-a6ef-d226-c145-ba428bb692cc" executionId="f89871b3-28d1-4e8c-a4c7-9edb5b7a4d26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e55abeb-cda3-26dd-9e94-061d195b8192" executionId="8dc5b831-8749-4930-a074-fc05d6f941fb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="38d6ba51-6864-bbea-1a8d-99d2f3413fab" executionId="d8bc2e9b-6d50-4087-ad2e-a14808254667" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e2c4b4cb-78ad-9c4c-d653-658774d13b0b" executionId="3cb2da8d-3a26-47bf-ae30-b2c0bc89dcc9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="10" executed="10" passed="10" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.18]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.24]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.00]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

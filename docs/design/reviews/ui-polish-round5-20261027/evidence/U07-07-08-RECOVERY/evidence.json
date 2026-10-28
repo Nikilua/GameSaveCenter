@@ -1,0 +1,88 @@
+{
+  "batch": "U07-07 / U07-08",
+  "baseCommit": "17d883abd084e3a2a646c1879f45ecbacd6d9dee",
+  "candidateState": "working tree source candidate before commit; exact files are listed by SHA-256",
+  "candidateFiles": [
+    {
+      "path": "src/GameSaveCenter.Contracts/CloudFailureExplanation.cs",
+      "sha256": "6192963962933EC70D397487758056F0B5D167A340A3CB79A1D5EF4EEBE7DE7D"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/DashboardViewModel.cs",
+      "sha256": "DAC2CBB4AA8F612B6331F512AF3FFDDD390043BE45307A5167E6BE94A413180E"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/ViewModels/TaskRetryGuidanceResolver.cs",
+      "sha256": "2F781BE8587F1C6DF6473091D972E899CD25ECFCD1E52EBA981EF0C1A24E177E"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml",
+      "sha256": "07FC96BD5ADFD40DE5401EE7EE5DA548D09494A38A755A9C67A37128D8381DED"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskRetrySourceTests.cs",
+      "sha256": "CA2F4182E518C81B887D92C5BDE5F9E9B2DCAF5C4C13932F348A59341CC858AF"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskRetryGuidanceResolverTests.cs",
+      "sha256": "EC1EC832831758CC60022FF63AA828FD79586D5A61DA368B2066E7F559153FDB"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/TaskRetryGuidanceViewTests.cs",
+      "sha256": "9D71897864F9B57A452C3E2BECC9C6FDE35C162DDBA25AA8301C713E955BE130"
+    }
+  ],
+  "focusedTests": {
+    "source": "U07-07-08-focused-corrected.trx",
+    "rawSha256": "E4251B8AB7E48C37091FF04D44510D457005FE81287AF0583BBFF5FBF57EB79F",
+    "redactedSha256": "E164AEF5B87F9AFBBD5F9DDD60C4023E80504C91DABC5B77B68A8E5B831A45A1",
+    "outcomes": {
+      "Passed": 10
+    },
+    "localPathLeak": false,
+    "total": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "redactionValid": true
+  },
+  "preservedHarnessFailure": {
+    "source": "U07-07-08-focused-with-view.trx",
+    "rawSha256": "8305FBF2B1F8C6D91D0CC2B548BA76B0FAA64C1469BDF71218C4E148EF528DAF",
+    "redactedSha256": "6AB9D23D5C771482633A00E16C1DD803BD24BE975A92901A7328977D1E8ED991",
+    "outcomes": {
+      "Passed": 9,
+      "Failed": 1
+    },
+    "localPathLeak": false,
+    "total": 10,
+    "passed": 9,
+    "failed": 1,
+    "skipped": 0,
+    "redactionValid": true
+  },
+  "failedHarnessDiagnosis": "The initial WPF test confirmed the card visibility, then its helper failed to locate the guidance TextBlock via the visual tree. The view now names the TextBlock and the helper reads that named field; the corrected test passes.",
+  "render": {
+    "command": "scripts/render-qa.ps1 -Configuration Release -Output .tmp/round5-u07-07-08-next/render -SampleUtc 2026-10-29T00:00:00Z",
+    "exitCode": 0,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "pngCount": 394,
+    "problemLines": 0,
+    "rawReportSha256": "F2B3E58E25C3161362203559213A266B4A5C045772A3D54980E2A11D086DD040",
+    "redactedReportSha256": "7C0ED2F7047CB6AEA94A1385A9C1D91347CFB8C8B7E9390CB6B9E7F0842785B5",
+    "screenshotsManifest": "screenshots.json",
+    "screenshotsManifestSha256": "262A6E9E8380019E8A3264E74F39C5EE8D8C2F42BFE722FD4157E7A4880CDBA9",
+    "reportTextHasLocalPathLeak": false
+  },
+  "sourceValidation": "python scripts/validate-source.py: passed",
+  "wpfStaticReview": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .: 42 XAML, 0 errors, 26 warnings, 179 info; warnings are pre-existing and outside this batch",
+  "buildWarnings": "NU1900 vulnerability-feed access warnings because api.nuget.org was unavailable; cached restore and compilation succeeded",
+  "boundaries": [
+    "Playnite host, external UIA/Narrator, physical keyboard/IME and mixed-DPI behavior not verified",
+    "No real archive restore, media deletion or cloud write was performed",
+    "GitHub run for the pushed source commit 17d883abd084e3a2a646c1879f45ecbacd6d9dee was in progress at collection time"
+  ]
+}

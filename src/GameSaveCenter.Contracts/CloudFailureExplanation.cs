@@ -21,6 +21,12 @@ public sealed class CloudFailureExplanation
         {
             case "RCLONE_AUTH_FAILED":
                 return new CloudFailureExplanation("认证失败", "下一步：前往设置检查云端凭据并重新验证远端，然后再重试。");
+            case "RCLONE_PERMISSION_DENIED":
+                return new CloudFailureExplanation("权限不足", "下一步：检查云端账户对目标目录的权限；修复后先核对上次远端结果，再决定是否重试。");
+            case "RCLONE_NETWORK_FAILED":
+                return new CloudFailureExplanation("网络或远端暂不可达", "下一步：确认连接和远端状态；若无法确认本次提交是否已收到，不要盲目重试。");
+            case "RCLONE_TRANSFER_INCOMPLETE":
+                return new CloudFailureExplanation("传输未完成", "下一步：先核对远端目标对象和上次任务结果，再决定是否重新提交。");
             case "RCLONE_NO_SPACE":
                 return new CloudFailureExplanation("空间不足", "下一步：释放本地或远端空间、检查配额，完成后再重试。");
             case "RCLONE_REMOTE_NOT_FOUND":

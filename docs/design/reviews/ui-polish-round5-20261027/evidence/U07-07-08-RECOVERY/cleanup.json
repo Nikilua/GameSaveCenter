@@ -1,0 +1,24 @@
+{
+  "target": ".tmp/round5-u07-07-08-next/test-results",
+  "normalizedTarget": "REPO_ROOT\\.tmp\\round5-u07-07-08-next\\test-results",
+  "insideRepositoryTmp": true,
+  "reparsePoint": false,
+  "documentationReferences": 0,
+  "exclusiveOpenPassed": true,
+  "filesRemoved": [
+    "U07-07-08-focused-corrected.trx",
+    "U07-07-08-focused-with-view.trx",
+    "U07-07-08-focused.trx"
+  ],
+  "fileCount": 3,
+  "bytesRemoved": 57248.0,
+  "freeSpaceBeforeBytes": {
+    "C": 2450276352,
+    "D": 12463775744
+  },
+  "freeSpaceAfterBytes": {
+    "C": 2450276352,
+    "D": 12463841280
+  },
+  "renderAuditRetained": ".tmp/round5-u07-07-08-next/render"
+}
