@@ -1,0 +1,207 @@
+WARNING src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:702  Canvas found; do not use it for primary application layout.
+WARNING src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:714  Canvas found; do not use it for primary application layout.
+WARNING src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:720  Ellipse near Thumb template; avoid overlapping translucent end caps.
+WARNING src\GameSaveCenter.Playnite\Views\Development\UiFrameworkProbeView.xaml:57  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\Development\UiFrameworkProbeView.xaml:119  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:175  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:304  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:468  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:605  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:731  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:1002  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:1257  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:1295  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MaintenanceView.xaml:1347  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:162  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:269  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:384  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:441  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:961  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:990  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:1055  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:1070  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\OverviewView.xaml:510  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\OverviewView.xaml:818  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\TrainerCenterView.xaml:79  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING src\GameSaveCenter.Playnite\Views\TrainerCenterView.xaml:170  Large scrollable control may be inside StackPanel; verify finite remaining size.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:4  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:5  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:6  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:7  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:8  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:9  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:10  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:11  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:12  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:13  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:14  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:15  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\DesignTokens.xaml:16  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\ScrollBar.xaml:28  Hardcoded color found; views should usually use shared theme resources.
+INFO    .codex\skills\wpf-apple-desktop-ui\examples\ScrollBar.xaml:48  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:8  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:9  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:10  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:14  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:15  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:16  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:17  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:18  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:19  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:20  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:21  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:22  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:23  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:24  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:25  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:26  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:27  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:28  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:29  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:32  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:33  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:34  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:35  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:38  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:39  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:42  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:43  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:44  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:45  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:48  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:49  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:50  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:53  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:54  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:55  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:58  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:59  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:62  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:63  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:64  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:65  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:66  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:67  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:68  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:69  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:70  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:71  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:74  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:75  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:78  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:79  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:82  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:83  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:84  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:85  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:86  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceColorsDark.xaml:87  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:225  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:227  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:310  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:658  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:723  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\AcrylicReferenceControls.xaml:723  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:16  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:17  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:18  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:19  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:20  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:21  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:22  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:23  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:24  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:25  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:26  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:27  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:28  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:29  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:30  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:31  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:32  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:33  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:34  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:35  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:36  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:37  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:38  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:39  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:40  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:41  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:42  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:43  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:48  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:49  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:51  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:53  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:54  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:56  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:57  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:66  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:70  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:71  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:76  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:77  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:78  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:79  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:97  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:98  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:99  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:100  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:101  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:102  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:103  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:104  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:106  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:107  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:109  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:110  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:111  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:112  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:113  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:114  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:115  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:116  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:117  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:118  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:119  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:120  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:121  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:122  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:123  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:127  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:128  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:129  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:135  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:136  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:137  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:138  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\DesignTokens.xaml:139  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:16  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:17  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:18  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:19  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:20  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:21  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:22  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:23  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:24  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:25  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:26  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:27  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:28  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:29  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:30  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:31  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:32  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:33  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:34  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:35  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:36  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Themes\WpfUiBase.xaml:37  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:700  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:701  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:810  Hardcoded color found; views should usually use shared theme resources.
+INFO    src\GameSaveCenter.Playnite\Views\MediaCenterView.xaml:810  Hardcoded color found; views should usually use shared theme resources.
+
+Scanned 37 XAML files: 0 errors, 26 warnings, 179 info.

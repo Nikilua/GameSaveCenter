@@ -12536,3 +12536,7 @@ U03-08盘点确认数值范围/溢出/滚轮、路径预览/校验/缺失目录�
 ## 2026-10-28 Round5 U06-01/02当前接续
 
 本批去重复用共享表格节奏与S01密度，无生产资源变更。补表头未排序/升/降序文字几何与箭头槽位、四页双主题三态叠加及失焦选择，并在302对象滚动后核对行容器实例承载不同Item、无旧状态串色；媒体Standard例外保留。初轮组合16/16，强化滚动专项1/1、0 skip；独立页夹具补真实Shell的有限视口调用，原失败保留。source/XAML26/WPF静态0 error；Render QA继承同生产源码U05-07/08，未制造截图副本。证据docs/design/reviews/ui-polish-round5-20261027/evidence/U06-01-02/BASELINE.md。两项代码完成待验收；提交后双SDK CI待查，真实Playnite/物理输入/UIA/DPI与最终中文完整链、独立scripts/build.cmd未验。接续U06-03/04行内动作与工具栏。
+
+## 2026-10-28 Round5 U06-03/04当前接续
+
+复用行内常显删除文字与目标绑定，补实际焦点、受控悬停列宽和安全对象检查；复核窄宽工具栏换行、筛选摘要和多选选择往返。SDK8.0.423 Release 7+9项通过、0 skip；source/XAML26/WPF静态0错误，生产视觉未变，Render QA继承同源码U05-07/08。证据docs/design/reviews/ui-polish-round5-20261027/evidence/U06-03-04/BASELINE.md。bca60704的run40639378202双SDK job成功，原始日志及3个artifact身份见该证据CI清单；required checks既有403不推断。U06-03/04代码完成待验收，接续U06-05/06。最终根入口完整链、独立scripts/build.cmd和真实宿主仍待验。

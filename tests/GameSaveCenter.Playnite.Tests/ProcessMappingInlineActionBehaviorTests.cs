@@ -72,6 +72,23 @@ public sealed class ProcessMappingInlineActionBehaviorTests
                     Assert.Same(clicked, rowButton.CommandParameter);
                     Assert.True(rowButton.IsEnabled, $"{theme}: clicked row action was disabled despite a valid row target.");
                     Assert.Equal("launcher-b.exe", AutomationProperties.GetName(rowButton));
+                    Assert.Equal("删除此 EXE 进程映射", AutomationProperties.GetHelpText(rowButton));
+                    Assert.Equal("删除", rowButton.Content);
+                    var actionColumnWidth = grid.Columns.Last().ActualWidth;
+                    window.Activate();
+                    Assert.True(rowButton.IsVisible && rowButton.Focusable);
+                    Assert.Same(rowButton, Keyboard.Focus(rowButton));
+                    PumpLayout(window);
+                    Assert.True(rowButton.IsKeyboardFocused);
+                    Assert.Equal(actionColumnWidth, grid.Columns.Last().ActualWidth, 2);
+                    var changeMouseOver = typeof(MouseDevice).GetMethod("ChangeMouseOver", BindingFlags.Instance | BindingFlags.NonPublic)!;
+                    changeMouseOver.Invoke(Mouse.PrimaryDevice, new object[] { rowButton, Environment.TickCount });
+                    PumpLayout(window);
+                    Assert.True(rowButton.IsMouseOver && rowButton.IsVisible);
+                    Assert.Equal(actionColumnWidth, grid.Columns.Last().ActualWidth, 2);
+                    changeMouseOver.Invoke(Mouse.PrimaryDevice, new object[] { grid, Environment.TickCount });
+                    PumpLayout(window);
+                    Assert.False(rowButton.IsMouseOver);
                     Assert.False(command.CanExecute(null), "The row-delete command must reject a missing target instead of falling back to the selected row.");
 
                     var hitPoint = new Point(rowButton.ActualWidth / 2, rowButton.ActualHeight / 2);
