@@ -1,3 +1,10 @@
+## 2026-10-29 Round5 U07-07/08 任务恢复说明
+
+- 在任务详情加入 `TaskRetryGuidanceResolver` 展示层说明：已知云端权限不足、网络不可达、传输未完成分别给出核对步骤；未知远端结果先核实接收状态。保留原重试命令、资格判断、任务对象、Worker和写入行为。设置页既有巡检依赖文案新增邻接/禁用态源码守护。
+- SDK8.0.423 Release精确提交 `0aff7f32aab4fb31940fd791c1486c67d36ebdbd` 定向10/10、0失败、0 skip；source validation退出0；WPF静态42 XAML/0错误/26 warning/179 info。固定UTC Render QA候选exit0、双主题394 PNG/0 PROBLEM，报告提交前身份为 `17d883ab`/dirty；新SHA CI执行精确提交渲染。
+- 首个WPF视图用例的辅助器无法从视觉树找到TextBlock，失败9/10 TRX已保留；XAML明确命名后精确SHA测试10/10。NuGet `NU1900` 只表示漏洞源不可达，缓存还原和编译成功。TRX归档后两次清理仅处理本阶段 `.tmp/round5-u07-07-08-next`：初次3个TRX/57,248 bytes；精确SHA复测后移除5份测试/渲染日志（1,181,558 bytes）及1份已归档TRX（19,074 bytes）。已确认路径在仓库`.tmp`内、无reparse point、无Markdown链接、文件独占打开成功且无相关进程；Render QA审计目录保留，C/D前后空间见 `evidence/U07-07-08-RECOVERY/cleanup.json`。
+- 提交 `0aff7f32` 已推送；run `40749256118` baseline job `123031214603`编译测试中，SDK10 job `123031215214`安装SDK中，暂无artifact；required-checks此前403，标“远端待验”。上一run `40744264627` SDK10 job `123013743402`成功/artifact `12843205835`，baseline job `123013742351`仍打包。U07-07/08置为代码完成待验收；Playnite/实体输入/外部UIA/物理DPI和真实恢复、删除、云写入均未验。
+
 ## 2026-10-29 Round5 U08-05/06 工具启动状态与维护短窗
 
 - 为工具启动请求新增专属 `IsLaunchingGameTool` 状态，在异步请求期间显示 busy 和“正在启动所选工具…”，finally覆盖成功/失败/取消清理；已有来源、可用状态、自动启动说明及 `CanTrackProcess` 安全限制保持。

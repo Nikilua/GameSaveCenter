@@ -1,3 +1,7 @@
+## 2026-10-29 Round5 U07-07/08 恢复说明批
+
+推送源码提交 `0aff7f32aab4fb31940fd791c1486c67d36ebdbd`。SDK8.0.423 Release精确提交定向10/10、0 skip；源码校验通过，WPF静态42 XAML/0错误/26既有warning/179 info。固定UTC双主题Render QA候选394 PNG/0 PROBLEM/exit0；其报告记录前一HEAD `17d883ab` 和dirty候选，精确SHA渲染由当前CI覆盖。run `40749256118` baseline job `123031214603`与SDK10 job `123031215214`查询时均进行中、暂无artifact；前一个17d run `40744264627`的SDK10 job成功/artifact `12843205835`，baseline仍在打包。required-checks曾403，权限与保护状态继续标“远端待验”。U07-07/08更新为代码完成待验收；证据在Round5 `evidence/U07-07-08-RECOVERY/BASELINE.md`。真实Playnite、外部UIA、实体键盘/IME和物理DPI未验，未执行真实恢复/媒体删除/云端写入。
+
 ## 2026-10-29 Round5 U08-05/06 当前工作树
 
 工具页为启动请求新增局部 busy+状态文本，在 `finally` 还原；原命令、风险与进程跟踪门控保持。维护诊断页新增1160×520 DIP真实WPF窗口的摘要底部滚动、完整长摘要内部滚动和复制命令可达回归。SDK8.0.423 Release 5/5、0 skip；source validation通过；WPF静态42 XAML/0错误/26 warning/179 info；Render QA 394 PNG/0 PROBLEM。真实Playnite、工具实际启动、Narrator/外部UIA/物理DPI及本批新SHA CI待验。证据 `docs/design/reviews/ui-polish-round5-20261027/evidence/U08-05-06-current-main-d6d940e7/BASELINE.md`。

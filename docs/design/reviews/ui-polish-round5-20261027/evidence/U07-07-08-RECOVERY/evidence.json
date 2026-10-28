@@ -1,7 +1,7 @@
 {
   "batch": "U07-07 / U07-08",
   "baseCommit": "17d883abd084e3a2a646c1879f45ecbacd6d9dee",
-  "candidateState": "working tree source candidate before commit; exact files are listed by SHA-256",
+  "candidateState": "committed and pushed source candidate; validation repeated on exact commit SHA",
   "candidateFiles": [
     {
       "path": "src/GameSaveCenter.Contracts/CloudFailureExplanation.cs",
@@ -33,9 +33,9 @@
     }
   ],
   "focusedTests": {
-    "source": "U07-07-08-focused-corrected.trx",
-    "rawSha256": "E4251B8AB7E48C37091FF04D44510D457005FE81287AF0583BBFF5FBF57EB79F",
-    "redactedSha256": "E164AEF5B87F9AFBBD5F9DDD60C4023E80504C91DABC5B77B68A8E5B831A45A1",
+    "source": "U07-07-08-committed.trx",
+    "rawSha256": "48B72A5B6E3F10B0A8A8BF9B43619FFD9E87C4E465164465819297A91097D375",
+    "redactedSha256": "86226C8EF1FDC0EC1F1BD01D9B2075F88B8197DA208914ACAEDD8C09E6265C88",
     "outcomes": {
       "Passed": 10
     },
@@ -44,7 +44,9 @@
     "passed": 10,
     "failed": 0,
     "skipped": 0,
-    "redactionValid": true
+    "redactionValid": true,
+    "exitCode": 0,
+    "sourceCommit": "0aff7f32aab4fb31940fd791c1486c67d36ebdbd"
   },
   "preservedHarnessFailure": {
     "source": "U07-07-08-focused-with-view.trx",
@@ -75,7 +77,10 @@
     "redactedReportSha256": "7C0ED2F7047CB6AEA94A1385A9C1D91347CFB8C8B7E9390CB6B9E7F0842785B5",
     "screenshotsManifest": "screenshots.json",
     "screenshotsManifestSha256": "262A6E9E8380019E8A3264E74F39C5EE8D8C2F42BFE722FD4157E7A4880CDBA9",
-    "reportTextHasLocalPathLeak": false
+    "reportTextHasLocalPathLeak": false,
+    "reportCommit": "17d883abd084e3a2a646c1879f45ecbacd6d9dee",
+    "reportWorkingTreeClean": false,
+    "exactCommittedShaRenderedByGitHub": false
   },
   "sourceValidation": "python scripts/validate-source.py: passed",
   "wpfStaticReview": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .: 42 XAML, 0 errors, 26 warnings, 179 info; warnings are pre-existing and outside this batch",
@@ -83,6 +88,13 @@
   "boundaries": [
     "Playnite host, external UIA/Narrator, physical keyboard/IME and mixed-DPI behavior not verified",
     "No real archive restore, media deletion or cloud write was performed",
-    "GitHub run for the pushed source commit 17d883abd084e3a2a646c1879f45ecbacd6d9dee was in progress at collection time"
-  ]
+    "GitHub run 40749256118 for source commit 0aff7f32aab4fb31940fd791c1486c67d36ebdbd was still in progress at evidence update; see ci-progress.json"
+  ],
+  "sourceCommit": "0aff7f32aab4fb31940fd791c1486c67d36ebdbd",
+  "ciRun": 40749256118,
+  "ciStatus": "in_progress at evidence update; two applicable jobs recorded in progress.json",
+  "testSdk": "8.0.423",
+  "testConfiguration": "Release",
+  "testFilter": "FullyQualifiedName~GameSaveCenter.Playnite.Tests.TaskRetrySourceTests|FullyQualifiedName~GameSaveCenter.Playnite.Tests.TaskRetryGuidanceResolverTests|FullyQualifiedName~GameSaveCenter.Playnite.Tests.TaskRetryGuidanceViewTests",
+  "testCommand": "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release --filter <testFilter> -p:GscBuildCommit=<sourceCommit> -p:GscSourceRoot=<repo> -m:1 -nodeReuse:false"
 }

@@ -20,5 +20,47 @@
     "C": 2450276352,
     "D": 12463841280
   },
-  "renderAuditRetained": ".tmp/round5-u07-07-08-next/render"
+  "renderAuditRetained": ".tmp/round5-u07-07-08-next/render",
+  "committedTestLogCleanup": {
+    "targets": [
+      {
+        "target": ".tmp/round5-u07-07-08-next/logs",
+        "files": [
+          "focused-tests-committed.log",
+          "focused-tests-corrected.log",
+          "focused-tests-with-view.log",
+          "focused-tests.log",
+          "render-qa.log"
+        ],
+        "fileCount": 5,
+        "bytes": 1181558.0
+      },
+      {
+        "target": ".tmp/round5-u07-07-08-next/test-results",
+        "files": [
+          "U07-07-08-committed.trx"
+        ],
+        "fileCount": 1,
+        "bytes": 19074.0
+      }
+    ],
+    "insideRepositoryTmp": true,
+    "reparsePoint": false,
+    "exclusiveOpenPassed": true,
+    "markdownLinksToTemporaryOutputs": 0,
+    "processes": [
+      "GameSaveCenter.RenderHarness",
+      "testhost",
+      "dotnet"
+    ],
+    "matchingProcessesFound": 0,
+    "freeSpaceBeforeBytes": {
+      "C": 2436919296,
+      "D": 12463349760
+    },
+    "freeSpaceAfterBytes": {
+      "C": 2436919296,
+      "D": 12464570368
+    }
+  }
 }

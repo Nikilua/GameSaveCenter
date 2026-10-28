@@ -2,8 +2,8 @@
 
 本批复用设置页既有的恢复巡检依赖提示，并新增对应位置源码守护；任务详情按终态展示重试前检查卡片。权限不足、网络不可达和传输未完成分别指向核对权限、确认连接/远端状态或核对目标对象；未知云端结果明确要求先确认远端是否收到提交。恢复命令资格、任务提交、Worker 和云端写入流程均未改变。
 
-修正后的 WPF 行为与 Resolver 聚焦测试为 10/10、0失败、0 skip，SDK 8.0.423，Release；Render QA 退出码0，双主题394 PNG、0 PROBLEM。源码校验通过；WPF 静态检查42个XAML、0错误、26条既有warning、179条info。首个View测试失败是测试辅助器按视觉树找不到已呈现的文本节点；保留诊断TRX，改用明确的XAML名字后通过。
+SDK 8.0.423 Release下，未提交候选和精确提交 `0aff7f32aab4fb31940fd791c1486c67d36ebdbd` 均以定向组10/10通过、0失败、0 skip；精确提交TRX的原始/脱敏SHA及命令见 `evidence.json`。源码校验退出0；WPF静态检查42个XAML、0错误、26条既有warning、179条info。首个View测试在卡片可见性断言后失败于测试辅助器按视觉树找不到可见文本节点；保留诊断TRX，改用明确的XAML名字后通过。
 
-实现候选以 `evidence.json` 中列出的逐文件SHA-256标识，基于 `baseCommit` 的工作树候选在本证据采集时尚未提交。RenderHarness 使用固定样本UTC；图片保存在仓库 `.tmp/round5-u07-07-08-next/render`，394图SHA见 `screenshots.json`。脱敏TRX和报告同时记录原始及脱敏SHA。
+实现源码现已提交并推送为 `0aff7f32aab4fb31940fd791c1486c67d36ebdbd`；逐文件SHA见 `evidence.json`。固定UTC Render QA在提交前候选运行，报告内保留当时基线身份 `17d883abd084e3a2a646c1879f45ecbacd6d9dee` 和 dirty 状态；其源码文件SHA与该提交一致，394张图的SHA见 `screenshots.json`。GitHub当前提交run会再次执行精确SHA渲染，尚待终态。测试/报告脱敏副本均记录原始和脱敏SHA，临时测试TRX清理及空间记录见 `cleanup.json`；Render QA目录保留供复核。
 
-U07-07 的设置提示早已在生产页存在，本批以守护断言确认其紧邻开关和被禁用的间隔字段；旧局部证据见 [U07-07-08](../U07-07-08/BASELINE.md)。新远端CI结果、真实Playnite宿主、实体键盘/IME/外部UIA、物理DPI仍待验。本批未运行存档恢复、媒体删除或云端写入。
+U07-07 的设置提示早已在生产页存在，本批以守护断言确认其紧邻开关和被禁用的间隔字段；旧局部证据见 [U07-07-08](../U07-07-08/BASELINE.md)。当前提交 run `40749256118` 的 baseline job `123031214603` 与 SDK10 job `123031215214` 尚在运行，无artifact；之前 required-checks 查询权限为403，状态保持“远端待验”。真实Playnite宿主、实体键盘/IME/外部UIA、物理DPI仍待验。本批未运行存档恢复、媒体删除或云端写入。

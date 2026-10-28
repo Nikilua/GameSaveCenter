@@ -1,0 +1,64 @@
+{
+  "collectedAtUtc": "2026-10-28T18:59:56Z",
+  "workflow": ".github/workflows/windows-build.yml",
+  "previousFixCommit": {
+    "sha": "17d883abd084e3a2a646c1879f45ecbacd6d9dee",
+    "runId": 40744264627,
+    "runNumber": 1367,
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 123013742351,
+        "name": "编译、测试与打包",
+        "status": "in_progress",
+        "activeStep": "生成 Playnite 扩展包",
+        "conclusion": null,
+        "artifact": null
+      },
+      {
+        "id": 123013743402,
+        "name": ".NET SDK 10.0.401 编译与测试复核",
+        "status": "completed",
+        "activeStep": null,
+        "conclusion": "success",
+        "artifact": {
+          "id": 12843205835,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "sizeBytes": 960575,
+          "digest": "sha256:311f9f1140c1fbe6cab970983992c8bd0dcb1afcf03464a1a350fec3bcb9263c"
+        }
+      }
+    ]
+  },
+  "sourceCommit": {
+    "sha": "0aff7f32aab4fb31940fd791c1486c67d36ebdbd",
+    "runId": 40749256118,
+    "runNumber": 1368,
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 123031214603,
+        "name": "编译、测试与打包",
+        "status": "in_progress",
+        "activeStep": "编译与测试",
+        "conclusion": null,
+        "artifact": null
+      },
+      {
+        "id": 123031215214,
+        "name": ".NET SDK 10.0.401 编译与测试复核",
+        "status": "in_progress",
+        "activeStep": "隔离工作树并运行 Release 编译与测试",
+        "conclusion": null,
+        "artifact": null
+      }
+    ]
+  },
+  "requiredChecks": {
+    "status": "远端待验",
+    "reason": "此前required-checks读取返回403；本次不重复探测",
+    "nextStep": "在权限可读的GitHub界面或API中核对main所需检查，再读取两job终态、诊断artifact身份"
+  }
+}

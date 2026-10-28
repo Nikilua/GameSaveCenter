@@ -1,3 +1,11 @@
+## 2026-10-29 Round5 U07-07/08 恢复提示
+
+- U07-07的巡检依赖提示已在生产Settings页；新增回归确保它紧挨开关与禁用间隔，并保留关闭时当前值。
+- U07-08在任务详情加入终态重试前检查，区分权限、网络、传输未完成与未知云端错误。命令资格、任务类型/对象、Worker、错误和取消语义不变；未知远端结果明确要求先核查，不鼓励重复提交。
+- 源码提交 `0aff7f32aab4fb31940fd791c1486c67d36ebdbd`，SDK8.0.423 Release定向精确提交10/10、0 skip；source validation通过；WPF静态42 XAML/0错误/26 warnings/179 info。Render QA双主题394 PNG/0 PROBLEM，但本地报告生成于提交前的dirty候选，精确SHA结果以run `40749256118`的baseline Render QA为准。
+- 当前run baseline job `123031214603`与SDK10 job `123031215214`进行中、无artifact。required-checks先前403，保持远端待验；旧`17d883ab` run `40744264627` SDK10通过/artifact `12843205835`，baseline仍在打包。详细身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U07-07-08-RECOVERY/ci-progress.json`。
+- 旧失败View测试是测试辅助器按视觉树找不到命名节点；失败TRX保留，命名XAML节点后的测试通过。真实Playnite/外部UIA/实体键盘IME/物理DPI待验；未做真实存档恢复、媒体删除或云端写入。
+
 ## 2026-10-29 Round5 U08-05/06 工具启动反馈与维护短窗
 
 U08-05现将 `IsLaunchingGameTool` 精确围绕Worker请求设定并在 `finally` 清除，按钮接已有busy视觉，另显示带UIA Name/HelpText的启动文案；来源、缺文件状态、自动启动、CanTrackProcess禁用原因及既有命令未动。U08-06现有摘要/渐进详情/复制完整DiagnosticSummary体系增加1160×520 DIP窗口下滚到长摘要、回顶操作卡触发复制命令的WPF行为回归。SDK8.0.423 Release 5/5无skip，source validation、WPF42/0errors/26warnings/179info、Render QA双主题394 PNG/0 PROBLEM通过。证据与不代表真实Playnite/外部UIA/实体DPI的边界见Round5 `evidence/U08-05-06-current-main-d6d940e7/BASELINE.md`；本批新SHA双SDK CI待查询。
