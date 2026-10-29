@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestRun id="a0d4e5ed-bd66-4f3c-ac5b-c97d09a0080d" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+
+  <Times creation="2026-10-29T08:01:39.0774493+08:00" queuing="2026-10-29T08:01:39.0774495+08:00" start="2026-10-29T08:01:36.6065418+08:00" finish="2026-10-29T08:01:39.2795698+08:00" />
+
+  <TestSettings name="default" id="8ffa80be-cc10-4859-9895-f268b0cc2501">
+
+    <Deployment runDeploymentRoot="redacted-deployment" />
+
+  </TestSettings>
+
+  <Results>
+
+    <UnitTestResult executionId="785904e8-871a-4395-9cb7-04d838578925" testId="f1a1c709-a224-9aea-61fa-025762cbf776" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.tasks&quot;, alias: &quot;View tasks&quot;, commandIndex: 0, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0742174+08:00" endTime="2026-10-29T08:01:39.0742174+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="785904e8-871a-4395-9cb7-04d838578925" />
+
+    <UnitTestResult executionId="58f9f831-6327-4503-9baa-c2b15826d298" testId="243313aa-47cf-c8c4-b66c-24ec89df63c5" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.overview&quot;, alias: &quot;Overview&quot;, commandIndex: 0, target: Overview)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0275295+08:00" endTime="2026-10-29T08:01:39.0275295+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="58f9f831-6327-4503-9baa-c2b15826d298" />
+
+    <UnitTestResult executionId="ea9d8a6d-7f74-4f24-ac48-a54d1455e3d9" testId="7b418b66-8e96-82ac-6f2b-31b9a7dc8f46" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;review.retention&quot;, alias: &quot;Review cleanup&quot;, commandIndex: 0, target: Maintenance)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0215292+08:00" endTime="2026-10-29T08:01:39.0215292+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ea9d8a6d-7f74-4f24-ac48-a54d1455e3d9" />
+
+    <UnitTestResult executionId="ee2374a2-ee60-4d48-ac16-b40d14c4eb01" testId="f5e028a3-dc2d-66a4-1660-a2a5a477482a" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RemovedCapturedGameNeverFallsThroughToAnotherGame(id: &quot;workspace.trainers&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0585292+08:00" endTime="2026-10-29T08:01:39.0585292+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee2374a2-ee60-4d48-ac16-b40d14c4eb01" />
+
+    <UnitTestResult executionId="8825f4d7-0f7f-4bcf-86b0-6fcc877713e2" testId="3ab5fae4-0529-6b14-0df0-944ca65f848d" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.PageBoundCommandsRejectAChangedWorkspace(id: &quot;workspace.focus-search&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0822165+08:00" endTime="2026-10-29T08:01:39.0822165+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8825f4d7-0f7f-4bcf-86b0-6fcc877713e2" />
+
+    <UnitTestResult executionId="62169098-3fac-4556-824c-6f7b748776b9" testId="94033897-f980-4c0b-f1f4-41c801af713d" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;review.restore&quot;, alias: &quot;Review restore&quot;, commandIndex: 0, target: Saves)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0762176+08:00" endTime="2026-10-29T08:01:39.0772175+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62169098-3fac-4556-824c-6f7b748776b9" />
+
+    <UnitTestResult executionId="f78e36c6-3d11-4485-bd66-900f0eb8280d" testId="96f19e0f-33bf-ecba-e17c-bb1bc4aae3b4" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.maintenance&quot;, alias: &quot;Diagnostics&quot;, commandIndex: 0, target: Maintenance)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0732160+08:00" endTime="2026-10-29T08:01:39.0732160+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f78e36c6-3d11-4485-bd66-900f0eb8280d" />
+
+    <UnitTestResult executionId="5f235e1a-aebd-4897-8d71-2ce9904b138e" testId="17492b82-a956-aa67-c191-f97f269ed9df" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;settings.open&quot;, alias: &quot;Plugin settings&quot;, commandIndex: 1, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0682172+08:00" endTime="2026-10-29T08:01:39.0682172+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5f235e1a-aebd-4897-8d71-2ce9904b138e" />
+
+    <UnitTestResult executionId="3aa5d762-8d8f-4de4-8564-ddc81766e3d1" testId="61c2b47b-d7c9-4e04-bc24-07e3243c010b" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;review.restore&quot;, alias: &quot;Review restore&quot;, commandIndex: 0, target: Saves)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0225305+08:00" endTime="2026-10-29T08:01:39.0225305+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3aa5d762-8d8f-4de4-8564-ddc81766e3d1" />
+
+    <UnitTestResult executionId="836a234c-8b15-4b6d-8976-26c1c2244475" testId="b11b023a-5916-a4f9-1f3b-6ef7ba836e94" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;settings.open&quot;, alias: &quot;Plugin settings&quot;, commandIndex: 1, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0265293+08:00" endTime="2026-10-29T08:01:39.0265293+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="836a234c-8b15-4b6d-8976-26c1c2244475" />
+
+    <UnitTestResult executionId="2a29d341-7299-458d-8cb1-7ca8699d9ac1" testId="4d94a634-dc6a-a9ae-3f3d-832df41bf18f" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.focus-search&quot;, alias: &quot;Ctrl+F&quot;, commandIndex: 3, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0535293+08:00" endTime="2026-10-29T08:01:39.0535293+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2a29d341-7299-458d-8cb1-7ca8699d9ac1" />
+
+    <UnitTestResult executionId="95981334-91b0-44f3-8264-73c2a6a56f12" testId="94b9fb6e-245a-a36e-01f6-d0a4a79e8f8f" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.PageBoundCommandsRejectAChangedWorkspace(id: &quot;game-picker.open&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0812180+08:00" endTime="2026-10-29T08:01:39.0822165+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="95981334-91b0-44f3-8264-73c2a6a56f12" />
+
+    <UnitTestResult executionId="d9991285-ede9-481a-a42c-6d626e76b79e" testId="5b453022-095a-7c2a-6390-0662a75aec34" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.media&quot;, alias: &quot;Screenshots&quot;, commandIndex: 0, target: Media)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0255292+08:00" endTime="2026-10-29T08:01:39.0255292+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d9991285-ede9-481a-a42c-6d626e76b79e" />
+
+    <UnitTestResult executionId="deef1c17-750c-4cae-9dfb-8e1369055651" testId="693a8d39-6dad-702f-4243-1c51396c8cd8" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RemovedCapturedGameNeverFallsThroughToAnotherGame(id: &quot;review.restore&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0622121+08:00" endTime="2026-10-29T08:01:39.0622121+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="deef1c17-750c-4cae-9dfb-8e1369055651" />
+
+    <UnitTestResult executionId="77efa84a-556a-4739-b709-bf38227e357f" testId="523be4ce-4633-dff4-bb50-f3c262214296" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;task.open-associated-game&quot;, alias: &quot;Open related game&quot;, commandIndex: 4, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0752166+08:00" endTime="2026-10-29T08:01:39.0752166+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="77efa84a-556a-4739-b709-bf38227e357f" />
+
+    <UnitTestResult executionId="8ed90d21-e642-4a42-a2fb-e13aac05aa78" testId="9af362da-7c3b-9f51-3d26-c98439e6d6cd" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.saves&quot;, alias: &quot;Save history&quot;, commandIndex: 0, target: Saves)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0672206+08:00" endTime="2026-10-29T08:01:39.0672206+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ed90d21-e642-4a42-a2fb-e13aac05aa78" />
+
+    <UnitTestResult executionId="7dba3086-db6a-44ec-a542-ef44b357229b" testId="79abc320-edaa-bf10-e3aa-98de695b42f8" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.AssociatedGameRejectsStaleTaskAndBusyState(mutation: &quot;changed-game&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0575295+08:00" endTime="2026-10-29T08:01:39.0575295+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7dba3086-db6a-44ec-a542-ef44b357229b" />
+
+    <UnitTestResult executionId="8a150452-58e8-4d25-a347-2dec00f3ab48" testId="3a1320a3-f0d4-be23-1405-b467bd647432" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.trainers&quot;, alias: &quot;Trainers&quot;, commandIndex: 0, target: Trainers)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0515297+08:00" endTime="2026-10-29T08:01:39.0515297+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a150452-58e8-4d25-a347-2dec00f3ab48" />
+
+    <UnitTestResult executionId="21b8e4ab-e271-4fc8-9a86-0bf8b98aa69d" testId="d8b3baf2-f304-9929-6c7d-79d7f3bf3ac9" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.trainers&quot;, alias: &quot;Trainers&quot;, commandIndex: 0, target: Trainers)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0782171+08:00" endTime="2026-10-29T08:01:39.0782171+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="21b8e4ab-e271-4fc8-9a86-0bf8b98aa69d" />
+
+    <UnitTestResult executionId="4f9c50c3-48b7-47cf-acbf-6511570f8984" testId="db99eaa0-dec4-a717-3214-261d266b9239" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.notifications&quot;, alias: &quot;Unread notifications&quot;, commandIndex: 0, target: Notifications)" computerName="redacted-host" duration="00:00:00.0020000" startTime="2026-10-29T08:01:39.0195293+08:00" endTime="2026-10-29T08:01:39.0195293+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4f9c50c3-48b7-47cf-acbf-6511570f8984" />
+
+    <UnitTestResult executionId="5aa56902-406c-466b-9fd1-e2ccdc04f9f5" testId="9a104133-182b-25dd-4aa0-2d47d3b40dba" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RemovedCapturedGameNeverFallsThroughToAnotherGame(id: &quot;workspace.saves&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0595293+08:00" endTime="2026-10-29T08:01:39.0595293+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5aa56902-406c-466b-9fd1-e2ccdc04f9f5" />
+
+    <UnitTestResult executionId="a2063144-0e98-475a-bbff-78b75a430484" testId="efb2acfd-53c1-0852-49f1-bfa6b88f3699" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;review.retention&quot;, alias: &quot;Review cleanup&quot;, commandIndex: 0, target: Maintenance)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0652146+08:00" endTime="2026-10-29T08:01:39.0652146+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a2063144-0e98-475a-bbff-78b75a430484" />
+
+    <UnitTestResult executionId="58bf4380-1223-47e4-80b6-883a7f70bb49" testId="f2980441-a624-259a-fd68-4cda66cce6a6" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.AssociatedGameRejectsStaleTaskAndBusyState(mutation: &quot;removed-task&quot;)" computerName="redacted-host" duration="00:00:00.0020000" startTime="2026-10-29T08:01:39.0555292+08:00" endTime="2026-10-29T08:01:39.0555292+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="58bf4380-1223-47e4-80b6-883a7f70bb49" />
+
+    <UnitTestResult executionId="3ca5a694-10b3-46ba-944a-2d6b5a8c10fc" testId="94cfa885-0f4f-d20e-e236-43343745f2f4" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.maintenance&quot;, alias: &quot;Diagnostics&quot;, commandIndex: 0, target: Maintenance)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0235294+08:00" endTime="2026-10-29T08:01:39.0235294+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3ca5a694-10b3-46ba-944a-2d6b5a8c10fc" />
+
+    <UnitTestResult executionId="0a9564bf-35e8-4bf4-bd3c-25ce6a62a9e3" testId="b0dc3a4a-186e-325d-ecf3-c1720e55a3b8" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;task.open-associated-game&quot;, alias: &quot;Open related game&quot;, commandIndex: 4, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0525292+08:00" endTime="2026-10-29T08:01:39.0525292+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a9564bf-35e8-4bf4-bd3c-25ce6a62a9e3" />
+
+    <UnitTestResult executionId="3fe40e8b-0671-4be6-b858-0d733f2ace69" testId="b54d5039-f84a-7c02-4c24-e73e55921de2" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;game-picker.open&quot;, alias: &quot;Switch game&quot;, commandIndex: 2, target: Tasks)" computerName="redacted-host" duration="00:00:00.0440000" startTime="2026-10-29T08:01:38.9725295+08:00" endTime="2026-10-29T08:01:38.9935292+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fe40e8b-0671-4be6-b858-0d733f2ace69" />
+
+    <UnitTestResult executionId="9a589091-8b42-4b15-b50a-b8ecc12570c3" testId="f78b7b5c-76c1-adac-2eb3-6e89739d3f28" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.AssociatedGameRejectsStaleTaskAndBusyState(mutation: &quot;busy&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0565293+08:00" endTime="2026-10-29T08:01:39.0565293+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a589091-8b42-4b15-b50a-b8ecc12570c3" />
+
+    <UnitTestResult executionId="08f7cf57-7e01-4748-ab0f-eee837ded3e8" testId="cd46115d-8e4f-7f6c-675c-f653ab791f32" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;game-picker.open&quot;, alias: &quot;Switch game&quot;, commandIndex: 2, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0702181+08:00" endTime="2026-10-29T08:01:39.0702181+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="08f7cf57-7e01-4748-ab0f-eee837ded3e8" />
+
+    <UnitTestResult executionId="e3348cf6-f257-4c1b-86af-69ed3513dacc" testId="1480c77c-1ce4-50d7-b669-2506c52ed29a" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.tasks&quot;, alias: &quot;View tasks&quot;, commandIndex: 0, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0505298+08:00" endTime="2026-10-29T08:01:39.0505298+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e3348cf6-f257-4c1b-86af-69ed3513dacc" />
+
+    <UnitTestResult executionId="c9a8d2a3-41d5-4ec2-bd87-82512f7c3153" testId="2a306627-91e7-bb9f-7633-9233424bbe62" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.focus-search&quot;, alias: &quot;Ctrl+F&quot;, commandIndex: 3, target: Tasks)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0712171+08:00" endTime="2026-10-29T08:01:39.0722171+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c9a8d2a3-41d5-4ec2-bd87-82512f7c3153" />
+
+    <UnitTestResult executionId="1a01769e-59a8-4288-9952-ec1daadf1038" testId="c36f9486-7a44-6336-3efd-18919b809bd6" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.notifications&quot;, alias: &quot;Unread notifications&quot;, commandIndex: 0, target: Notifications)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0692186+08:00" endTime="2026-10-29T08:01:39.0692186+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1a01769e-59a8-4288-9952-ec1daadf1038" />
+
+    <UnitTestResult executionId="92a126e6-6e5e-4b3f-bf9c-0ca18f9ad671" testId="21a4f826-3ca1-e304-8c11-097fdc7cc056" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RemovedCapturedGameNeverFallsThroughToAnotherGame(id: &quot;workspace.media&quot;)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0632114+08:00" endTime="2026-10-29T08:01:39.0632114+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="92a126e6-6e5e-4b3f-bf9c-0ca18f9ad671" />
+
+    <UnitTestResult executionId="ad2bcfe2-7704-4aa0-90bb-c21fec5ae5a6" testId="2acbac84-adef-76e5-4dd0-e7934481ca3d" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.media&quot;, alias: &quot;Screenshots&quot;, commandIndex: 0, target: Media)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0662117+08:00" endTime="2026-10-29T08:01:39.0662117+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad2bcfe2-7704-4aa0-90bb-c21fec5ae5a6" />
+
+    <UnitTestResult executionId="1ba9b8f4-84c5-4276-8f5f-2f297f96f918" testId="b8c952d4-7eb2-9693-2978-d26647273297" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.saves&quot;, alias: &quot;Save history&quot;, commandIndex: 0, target: Saves)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0245292+08:00" endTime="2026-10-29T08:01:39.0245292+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1ba9b8f4-84c5-4276-8f5f-2f297f96f918" />
+
+    <UnitTestResult executionId="9d738c0d-af6b-41fe-b395-a8a2d78b13cc" testId="c6822eff-332d-8965-33c6-900a281bee40" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.overview&quot;, alias: &quot;Overview&quot;, commandIndex: 0, target: Overview)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:01:39.0802174+08:00" endTime="2026-10-29T08:01:39.0802174+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d738c0d-af6b-41fe-b395-a8a2d78b13cc" />
+
+    <UnitTestResult executionId="2b804077-9226-41bc-892d-a3dac2ba8d1b" testId="eb453638-a9aa-a58a-2be7-4a7e951be92d" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.ActualRegistryHasNoUntestedRouteAndPreservesTheDefaultEight" computerName="redacted-host" duration="00:00:00.0080000" startTime="2026-10-29T08:01:39.0832145+08:00" endTime="2026-10-29T08:01:39.0832145+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b804077-9226-41bc-892d-a3dac2ba8d1b" />
+
+  </Results>
+
+  <TestDefinitions>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;settings.open&quot;, alias: &quot;Plugin settings&quot;, commandIndex: 1, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b11b023a-5916-a4f9-1f3b-6ef7ba836e94">
+
+      <Execution id="836a234c-8b15-4b6d-8976-26c1c2244475" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;task.open-associated-game&quot;, alias: &quot;Open related game&quot;, commandIndex: 4, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b0dc3a4a-186e-325d-ecf3-c1720e55a3b8">
+
+      <Execution id="0a9564bf-35e8-4bf4-bd3c-25ce6a62a9e3" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.media&quot;, alias: &quot;Screenshots&quot;, commandIndex: 0, target: Media)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5b453022-095a-7c2a-6390-0662a75aec34">
+
+      <Execution id="d9991285-ede9-481a-a42c-6d626e76b79e" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RemovedCapturedGameNeverFallsThroughToAnotherGame(id: &quot;review.restore&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="693a8d39-6dad-702f-4243-1c51396c8cd8">
+
+      <Execution id="deef1c17-750c-4cae-9dfb-8e1369055651" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RemovedCapturedGameNeverFallsThroughToAnotherGame" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.maintenance&quot;, alias: &quot;Diagnostics&quot;, commandIndex: 0, target: Maintenance)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="94cfa885-0f4f-d20e-e236-43343745f2f4">
+
+      <Execution id="3ca5a694-10b3-46ba-944a-2d6b5a8c10fc" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.tasks&quot;, alias: &quot;View tasks&quot;, commandIndex: 0, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f1a1c709-a224-9aea-61fa-025762cbf776">
+
+      <Execution id="785904e8-871a-4395-9cb7-04d838578925" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;review.retention&quot;, alias: &quot;Review cleanup&quot;, commandIndex: 0, target: Maintenance)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="efb2acfd-53c1-0852-49f1-bfa6b88f3699">
+
+      <Execution id="a2063144-0e98-475a-bbff-78b75a430484" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.AssociatedGameRejectsStaleTaskAndBusyState(mutation: &quot;changed-game&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="79abc320-edaa-bf10-e3aa-98de695b42f8">
+
+      <Execution id="7dba3086-db6a-44ec-a542-ef44b357229b" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="AssociatedGameRejectsStaleTaskAndBusyState" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.focus-search&quot;, alias: &quot;Ctrl+F&quot;, commandIndex: 3, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2a306627-91e7-bb9f-7633-9233424bbe62">
+
+      <Execution id="c9a8d2a3-41d5-4ec2-bd87-82512f7c3153" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.trainers&quot;, alias: &quot;Trainers&quot;, commandIndex: 0, target: Trainers)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d8b3baf2-f304-9929-6c7d-79d7f3bf3ac9">
+
+      <Execution id="21b8e4ab-e271-4fc8-9a86-0bf8b98aa69d" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.tasks&quot;, alias: &quot;View tasks&quot;, commandIndex: 0, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1480c77c-1ce4-50d7-b669-2506c52ed29a">
+
+      <Execution id="e3348cf6-f257-4c1b-86af-69ed3513dacc" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.AssociatedGameRejectsStaleTaskAndBusyState(mutation: &quot;busy&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f78b7b5c-76c1-adac-2eb3-6e89739d3f28">
+
+      <Execution id="9a589091-8b42-4b15-b50a-b8ecc12570c3" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="AssociatedGameRejectsStaleTaskAndBusyState" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RemovedCapturedGameNeverFallsThroughToAnotherGame(id: &quot;workspace.media&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="21a4f826-3ca1-e304-8c11-097fdc7cc056">
+
+      <Execution id="92a126e6-6e5e-4b3f-bf9c-0ca18f9ad671" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RemovedCapturedGameNeverFallsThroughToAnotherGame" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;settings.open&quot;, alias: &quot;Plugin settings&quot;, commandIndex: 1, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="17492b82-a956-aa67-c191-f97f269ed9df">
+
+      <Execution id="5f235e1a-aebd-4897-8d71-2ce9904b138e" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.trainers&quot;, alias: &quot;Trainers&quot;, commandIndex: 0, target: Trainers)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3a1320a3-f0d4-be23-1405-b467bd647432">
+
+      <Execution id="8a150452-58e8-4d25-a347-2dec00f3ab48" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.media&quot;, alias: &quot;Screenshots&quot;, commandIndex: 0, target: Media)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2acbac84-adef-76e5-4dd0-e7934481ca3d">
+
+      <Execution id="ad2bcfe2-7704-4aa0-90bb-c21fec5ae5a6" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;task.open-associated-game&quot;, alias: &quot;Open related game&quot;, commandIndex: 4, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="523be4ce-4633-dff4-bb50-f3c262214296">
+
+      <Execution id="77efa84a-556a-4739-b709-bf38227e357f" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.overview&quot;, alias: &quot;Overview&quot;, commandIndex: 0, target: Overview)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="243313aa-47cf-c8c4-b66c-24ec89df63c5">
+
+      <Execution id="58f9f831-6327-4503-9baa-c2b15826d298" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;review.retention&quot;, alias: &quot;Review cleanup&quot;, commandIndex: 0, target: Maintenance)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7b418b66-8e96-82ac-6f2b-31b9a7dc8f46">
+
+      <Execution id="ea9d8a6d-7f74-4f24-ac48-a54d1455e3d9" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.PageBoundCommandsRejectAChangedWorkspace(id: &quot;game-picker.open&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="94b9fb6e-245a-a36e-01f6-d0a4a79e8f8f">
+
+      <Execution id="95981334-91b0-44f3-8264-73c2a6a56f12" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="PageBoundCommandsRejectAChangedWorkspace" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.ActualRegistryHasNoUntestedRouteAndPreservesTheDefaultEight" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="eb453638-a9aa-a58a-2be7-4a7e951be92d">
+
+      <Execution id="2b804077-9226-41bc-892d-a3dac2ba8d1b" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="ActualRegistryHasNoUntestedRouteAndPreservesTheDefaultEight" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RemovedCapturedGameNeverFallsThroughToAnotherGame(id: &quot;workspace.saves&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9a104133-182b-25dd-4aa0-2d47d3b40dba">
+
+      <Execution id="5aa56902-406c-466b-9fd1-e2ccdc04f9f5" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RemovedCapturedGameNeverFallsThroughToAnotherGame" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.overview&quot;, alias: &quot;Overview&quot;, commandIndex: 0, target: Overview)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c6822eff-332d-8965-33c6-900a281bee40">
+
+      <Execution id="9d738c0d-af6b-41fe-b395-a8a2d78b13cc" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.notifications&quot;, alias: &quot;Unread notifications&quot;, commandIndex: 0, target: Notifications)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c36f9486-7a44-6336-3efd-18919b809bd6">
+
+      <Execution id="1a01769e-59a8-4288-9952-ec1daadf1038" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;review.restore&quot;, alias: &quot;Review restore&quot;, commandIndex: 0, target: Saves)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="61c2b47b-d7c9-4e04-bc24-07e3243c010b">
+
+      <Execution id="3aa5d762-8d8f-4de4-8564-ddc81766e3d1" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.notifications&quot;, alias: &quot;Unread notifications&quot;, commandIndex: 0, target: Notifications)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="db99eaa0-dec4-a717-3214-261d266b9239">
+
+      <Execution id="4f9c50c3-48b7-47cf-acbf-6511570f8984" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.saves&quot;, alias: &quot;Save history&quot;, commandIndex: 0, target: Saves)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9af362da-7c3b-9f51-3d26-c98439e6d6cd">
+
+      <Execution id="8ed90d21-e642-4a42-a2fb-e13aac05aa78" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.AssociatedGameRejectsStaleTaskAndBusyState(mutation: &quot;removed-task&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f2980441-a624-259a-fd68-4cda66cce6a6">
+
+      <Execution id="58bf4380-1223-47e4-80b6-883a7f70bb49" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="AssociatedGameRejectsStaleTaskAndBusyState" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;review.restore&quot;, alias: &quot;Review restore&quot;, commandIndex: 0, target: Saves)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="94033897-f980-4c0b-f1f4-41c801af713d">
+
+      <Execution id="62169098-3fac-4556-824c-6f7b748776b9" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RemovedCapturedGameNeverFallsThroughToAnotherGame(id: &quot;workspace.trainers&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f5e028a3-dc2d-66a4-1660-a2a5a477482a">
+
+      <Execution id="ee2374a2-ee60-4d48-ac16-b40d14c4eb01" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RemovedCapturedGameNeverFallsThroughToAnotherGame" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.PageBoundCommandsRejectAChangedWorkspace(id: &quot;workspace.focus-search&quot;)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3ab5fae4-0529-6b14-0df0-944ca65f848d">
+
+      <Execution id="8825f4d7-0f7f-4bcf-86b0-6fcc877713e2" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="PageBoundCommandsRejectAChangedWorkspace" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;workspace.maintenance&quot;, alias: &quot;Diagnostics&quot;, commandIndex: 0, target: Maintenance)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="96f19e0f-33bf-ecba-e17c-bb1bc4aae3b4">
+
+      <Execution id="f78e36c6-3d11-4485-bd66-900f0eb8280d" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.focus-search&quot;, alias: &quot;Ctrl+F&quot;, commandIndex: 3, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4d94a634-dc6a-a9ae-3f3d-832df41bf18f">
+
+      <Execution id="2a29d341-7299-458d-8cb1-7ca8699d9ac1" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints(id: &quot;game-picker.open&quot;, alias: &quot;Switch game&quot;, commandIndex: 2, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="cd46115d-8e4f-7f6c-675c-f653ab791f32">
+
+      <Execution id="08f7cf57-7e01-4748-ab0f-eee837ded3e8" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="RevokedUnderlyingAvailabilityRejectsBothExecutionEntrypoints" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;workspace.saves&quot;, alias: &quot;Save history&quot;, commandIndex: 0, target: Saves)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b8c952d4-7eb2-9693-2978-d26647273297">
+
+      <Execution id="1ba9b8f4-84c5-4276-8f5f-2f297f96f918" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests.SearchExecutesOnlyTheRegisteredSelectedRouteOnce(id: &quot;game-picker.open&quot;, alias: &quot;Switch game&quot;, commandIndex: 2, target: Tasks)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b54d5039-f84a-7c02-4c24-e73e55921de2">
+
+      <Execution id="3fe40e8b-0671-4be6-b858-0d733f2ace69" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests" name="SearchExecutesOnlyTheRegisteredSelectedRouteOnce" />
+
+    </UnitTest>
+
+  </TestDefinitions>
+
+  <TestEntries>
+
+    <TestEntry testId="f1a1c709-a224-9aea-61fa-025762cbf776" executionId="785904e8-871a-4395-9cb7-04d838578925" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="243313aa-47cf-c8c4-b66c-24ec89df63c5" executionId="58f9f831-6327-4503-9baa-c2b15826d298" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="7b418b66-8e96-82ac-6f2b-31b9a7dc8f46" executionId="ea9d8a6d-7f74-4f24-ac48-a54d1455e3d9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="f5e028a3-dc2d-66a4-1660-a2a5a477482a" executionId="ee2374a2-ee60-4d48-ac16-b40d14c4eb01" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="3ab5fae4-0529-6b14-0df0-944ca65f848d" executionId="8825f4d7-0f7f-4bcf-86b0-6fcc877713e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="94033897-f980-4c0b-f1f4-41c801af713d" executionId="62169098-3fac-4556-824c-6f7b748776b9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="96f19e0f-33bf-ecba-e17c-bb1bc4aae3b4" executionId="f78e36c6-3d11-4485-bd66-900f0eb8280d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="17492b82-a956-aa67-c191-f97f269ed9df" executionId="5f235e1a-aebd-4897-8d71-2ce9904b138e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="61c2b47b-d7c9-4e04-bc24-07e3243c010b" executionId="3aa5d762-8d8f-4de4-8564-ddc81766e3d1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="b11b023a-5916-a4f9-1f3b-6ef7ba836e94" executionId="836a234c-8b15-4b6d-8976-26c1c2244475" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="4d94a634-dc6a-a9ae-3f3d-832df41bf18f" executionId="2a29d341-7299-458d-8cb1-7ca8699d9ac1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="94b9fb6e-245a-a36e-01f6-d0a4a79e8f8f" executionId="95981334-91b0-44f3-8264-73c2a6a56f12" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="5b453022-095a-7c2a-6390-0662a75aec34" executionId="d9991285-ede9-481a-a42c-6d626e76b79e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="693a8d39-6dad-702f-4243-1c51396c8cd8" executionId="deef1c17-750c-4cae-9dfb-8e1369055651" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="523be4ce-4633-dff4-bb50-f3c262214296" executionId="77efa84a-556a-4739-b709-bf38227e357f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="9af362da-7c3b-9f51-3d26-c98439e6d6cd" executionId="8ed90d21-e642-4a42-a2fb-e13aac05aa78" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="79abc320-edaa-bf10-e3aa-98de695b42f8" executionId="7dba3086-db6a-44ec-a542-ef44b357229b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="3a1320a3-f0d4-be23-1405-b467bd647432" executionId="8a150452-58e8-4d25-a347-2dec00f3ab48" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="d8b3baf2-f304-9929-6c7d-79d7f3bf3ac9" executionId="21b8e4ab-e271-4fc8-9a86-0bf8b98aa69d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="db99eaa0-dec4-a717-3214-261d266b9239" executionId="4f9c50c3-48b7-47cf-acbf-6511570f8984" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="9a104133-182b-25dd-4aa0-2d47d3b40dba" executionId="5aa56902-406c-466b-9fd1-e2ccdc04f9f5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="efb2acfd-53c1-0852-49f1-bfa6b88f3699" executionId="a2063144-0e98-475a-bbff-78b75a430484" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="f2980441-a624-259a-fd68-4cda66cce6a6" executionId="58bf4380-1223-47e4-80b6-883a7f70bb49" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="94cfa885-0f4f-d20e-e236-43343745f2f4" executionId="3ca5a694-10b3-46ba-944a-2d6b5a8c10fc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="b0dc3a4a-186e-325d-ecf3-c1720e55a3b8" executionId="0a9564bf-35e8-4bf4-bd3c-25ce6a62a9e3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="b54d5039-f84a-7c02-4c24-e73e55921de2" executionId="3fe40e8b-0671-4be6-b858-0d733f2ace69" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="f78b7b5c-76c1-adac-2eb3-6e89739d3f28" executionId="9a589091-8b42-4b15-b50a-b8ecc12570c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="cd46115d-8e4f-7f6c-675c-f653ab791f32" executionId="08f7cf57-7e01-4748-ab0f-eee837ded3e8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="1480c77c-1ce4-50d7-b669-2506c52ed29a" executionId="e3348cf6-f257-4c1b-86af-69ed3513dacc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="2a306627-91e7-bb9f-7633-9233424bbe62" executionId="c9a8d2a3-41d5-4ec2-bd87-82512f7c3153" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="c36f9486-7a44-6336-3efd-18919b809bd6" executionId="1a01769e-59a8-4288-9952-ec1daadf1038" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="21a4f826-3ca1-e304-8c11-097fdc7cc056" executionId="92a126e6-6e5e-4b3f-bf9c-0ca18f9ad671" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="2acbac84-adef-76e5-4dd0-e7934481ca3d" executionId="ad2bcfe2-7704-4aa0-90bb-c21fec5ae5a6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="b8c952d4-7eb2-9693-2978-d26647273297" executionId="1ba9b8f4-84c5-4276-8f5f-2f297f96f918" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="c6822eff-332d-8965-33c6-900a281bee40" executionId="9d738c0d-af6b-41fe-b395-a8a2d78b13cc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="eb453638-a9aa-a58a-2be7-4a7e951be92d" executionId="2b804077-9226-41bc-892d-a3dac2ba8d1b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+  </TestEntries>
+
+  <TestLists>
+
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+
+  </TestLists>
+
+  <ResultSummary outcome="Completed">
+
+    <Counters total="36" executed="36" passed="36" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+
+    <Output>
+
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.82]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.89]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.08]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+
+    </Output>
+
+    <RunInfos>
+
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T08:01:39.2375015+08:00">
+
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+
+      </RunInfo>
+
+    </RunInfos>
+
+  </ResultSummary>
+
+</TestRun>

@@ -1,0 +1,52 @@
+时间：2026-10-29 08:23:12
+
+安装运行 ID：20261028T235825476Z-d43f8012
+
+源码版本：0.6.73
+
+隔离构建目录：[repo]\artifacts\gsc-b\1a593ccc
+
+安装目录：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+
+清单版本：0.6.73
+
+DLL 版本：0.6.73.0
+
+程序集身份（磁盘读取；不代表运行中已加载）：
+
+  GameSaveCenter.Playnite.dll：0.6.73+cd06253158c0e35d43de84e037548a764629749a
+
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+
+  SHA-256：B69C27C8CA798C103B44E85116D8889F6B2FF586FC904063B031223F28299890
+
+  GameSaveCenter.Core.dll：0.6.73+cd06253158c0e35d43de84e037548a764629749a
+
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+
+  SHA-256：5CBE3DD50ACAE0F7DA60BC28ABCB48A38BA7C233EC98BEA4838C2C578D790884
+
+  GameSaveCenter.Contracts.dll：0.6.73+cd06253158c0e35d43de84e037548a764629749a
+
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+
+  SHA-256：E1527D1CDCCD2E1B93141B763454C12D776B1249DF386F0F2E84CC30E928BFEF
+
+  Worker/GameSaveCenter.Worker.dll：0.6.73+cd06253158c0e35d43de84e037548a764629749a
+
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+
+  SHA-256：0EA7886DC5F8F2271ECA0E0F1FFCBA98BD6C7790AE3F9F75C8557B4EB8623B99
+
+  Worker/GameSaveCenter.Core.dll：0.6.73+cd06253158c0e35d43de84e037548a764629749a
+
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+
+  SHA-256：199B00C9C5AE5593B48A9EAEB3201968CCFDD0B066D0DE453DB4086DBD249B39
+
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+cd06253158c0e35d43de84e037548a764629749a
+
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+
+  SHA-256：F09E779CD755E32DB1A11CBC8AF9D0061FF4A3940B0DFA717BB99E9648D2433B
+

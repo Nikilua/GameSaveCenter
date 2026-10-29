@@ -1,3 +1,13 @@
+## 2026-10-29 U07-05冻结候选门禁
+
+源码提交 `cd06253158c0e35d43de84e037548a764629749a` 已推送main。SDK8.0.423 Release中文根入口完整构建、测试、发布、打包、安装身份核验及启动调用退出0（run `20261028T235825476Z-d43f8012`）；独立 `scripts/build.cmd` 规范输出树全套退出0。两次各2013项、1955通过、0失败、58个既有skip（57个撤销架构断言、1个opt-in系统指针测试），skip不计通过。
+
+GitHub run [40794111982](https://github.com/Nikilua/GameSaveCenter/actions/runs/40794111982)的baseline job `123186245250` 与SDK10.0.401 job `123186245559`均成功；baseline源码、诊断自测、SDK基线负例、构建测试、Render QA、WPF静态、打包、上传均成功。artifact IDs为`12865861325`（baseline诊断）、`12865448641`（preview包）、`12863324535`（SDK10诊断），digest见本批证据 `final-gates/ci.json`。保护required-check名单此前403，本批未复探，U09-06仍远端待验。
+
+首次受限build.cmd多出10项Named Pipe/Worker环境skip；提权临时输出树一次Q10复选框合成空格事件2项失败。保留失败TRX，未修改断言或skip。规范输出树完整复跑通过，但根因尚未证明，不能将路径认定为已证实原因。根入口完成启动调用，后续进程查询未见Playnite，因此持续运行、插件已加载及真实页面视觉仍待验；外部UIA、实体IME/键盘、物理DPI未验，真实存档恢复/媒体删除/云端写入未执行。
+
+U07-05更新为代码完成待验收；U09-01仍需其它视觉批次同数据双主题配对，U09-04仍缺U00逐帧/累计分配基线。当前计数6项已满足、71项代码完成待验收、2项进行中、1项远端待验。临时产物归档已完成，清理盘点和删除尚待执行。
+
 # 第五轮 UI 与动画精修进度
 
 ## 2026-10-29 U07-05 / U09-01 通知来源与配对证据
@@ -134,7 +144,7 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U07-02 | 确认按钮位置 | 代码完成待验收 | 共用动作区统一8 DIP间距、长文案可换行；危险确认不设默认Enter，Escape取消并回焦 | [证据](evidence/U07-01-02/BASELINE.md) | SDK8合成WPF10/10、0 skip；新提交CI、真实Playnite/物理输入待验 |
 | U07-03 | 提示框节制 | 代码完成待验收 | 编辑器默认提示锚定控件下方并尊重显式位置；真实 WPF Tooltip 在主显示器工作区底边空间不足时翻到控件上方 | [既有去重及双主题证据](evidence/U07-03-04/BASELINE.md)；[边缘几何回归](evidence/U07-03-06/BASELINE.md) | SDK8隔离 WPF 7项中6通过、1既有系统指针跳过；实体编辑/IME、跨屏混合DPI、Playnite宿主和本批CI待验 |
 | U07-04 | 菜单与快捷键列 | 代码完成待验收 | 必要列禁用原因有鼠标提示和UIA说明；菜单顺序、可用项、UIA名称及生产ItemsPresenter循环导航配置回归通过；真实菜单无图标/快捷键/子菜单数据 | [既有菜单实现](evidence/U07-03-04/BASELINE.md)；[导航结构回归与焦点探针](evidence/U07-04-05/BASELINE.md) | SDK8定向5/5；方向键实体遍历、Narrator与Playnite宿主待验，不把程序化Popup焦点探针当实际输入结论 |
-| U07-05 | 通知卡片精修 | 进行中 | 通知记录新增受界限的真实来源字段和向后兼容加列迁移；任务来源来自 `TaskTypeDisplay`、会话摘要来自会话事件，旧记录明确显示来源未记录。列表标题下增加来源行，详情显示来源；标题Tooltip/UIA、排序/复制、虚拟化、焦点与现有滚动系统保留 | [本批实现、同样本双主题对照与局部门禁](evidence/U07-05-notification-source-20261029/BASELINE.md)；[既有收件箱实现](evidence/U07-05-06/BASELINE.md)；[到达焦点回归](evidence/U07-04-05/BASELINE.md)；[到达/清空筛选焦点](evidence/U07-05-08/BASELINE.md)；[长标题精修](evidence/U07-05-06/BASELINE.md) | SDK8.0.423 Release Worker通知定向13/13、Playnite通知/UIA定向7/7，0失败/0 skip；source/XAML/WPF静态/双主题Render QA exit0。候选完整根入口、独立build.cmd及GitHub CI待验；真实Playnite来源刷新、外部UIA/IME/物理DPI未验 |
+| U07-05 | 通知卡片精修 | 代码完成待验收 | 通知记录新增受界限的真实来源字段和向后兼容加列迁移；任务来源来自 `TaskTypeDisplay`、会话摘要来自会话事件，旧记录明确显示来源未记录。列表标题下增加来源行，详情显示来源；标题Tooltip/UIA、排序/复制、虚拟化、焦点与现有滚动系统保留 | [本批实现、同样本双主题对照与局部门禁](evidence/U07-05-notification-source-20261029/BASELINE.md)；[既有收件箱实现](evidence/U07-05-06/BASELINE.md)；[到达焦点回归](evidence/U07-04-05/BASELINE.md)；[到达/清空筛选焦点](evidence/U07-05-08/BASELINE.md)；[长标题精修](evidence/U07-05-06/BASELINE.md) | SDK8.0.423 Release Worker通知定向13/13、Playnite通知/UIA定向7/7，0失败/0 skip；source/XAML/WPF静态/双主题Render QA exit0。cd062531完整根入口、独立build.cmd均exit0，CI baseline与SDK10均success；真实Playnite来源刷新、外部UIA/IME/物理DPI未验 |
 | U07-06 | Toast堆叠与退出 | 代码完成待验收 | Toast标题单行省略且完整标题可由Tooltip、UIA及详情对话框读取；键盘焦点停留暂停计时；保留四条上限/最新优先，关闭中间卡片时退出动画不重排剩余项且正确回收计时器 | [既有详情与计时证据](evidence/U07-05-06/BASELINE.md)；[多卡堆叠回归](evidence/U07-03-06/BASELINE.md)；[长标题精修](evidence/U07-05-06/BASELINE.md) | SDK8.0.423 Release精确提交7/7、0 skip；Render QA双主题394图/0 PROBLEM；真实Playnite中Toast与关键操作区域的遮挡关系及本批CI待验 |
 | U07-07 | 设置分组与帮助 | 代码完成待验收 | 巡检依赖条件就近常驻说明，保留全局错误定位 | [既有局部证据](evidence/U07-07-08/BASELINE.md)；[本批依赖邻接守护](evidence/U07-07-08-RECOVERY/BASELINE.md) | SDK8.0.423精确提交10/10；新SHA CI、其他设置依赖及真实宿主待验 |
 | U07-08 | 错误反馈恢复入口 | 代码完成待验收 | 任务重试说明提交范围和核对上次结果；增加权限/网络/传输/未知云端分类；命令未改 | [既有局部证据](evidence/U07-07-08/BASELINE.md)；[分类与WPF视图证据](evidence/U07-07-08-RECOVERY/BASELINE.md) | SDK8.0.423精确提交10/10、0 skip；新SHA双SDK CI、Playnite宿主及外部UIA待验 |

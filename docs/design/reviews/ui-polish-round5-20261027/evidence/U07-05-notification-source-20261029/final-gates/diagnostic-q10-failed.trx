@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestRun id="45c3af15-a32f-43c0-9b20-2a681066464a" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+
+  <Times creation="2026-10-29T09:03:56.7296886+08:00" queuing="2026-10-29T09:03:56.7296892+08:00" start="2026-10-29T09:03:52.3627838+08:00" finish="2026-10-29T09:03:58.0061226+08:00" />
+
+  <TestSettings name="default" id="e4fd55ea-f137-47df-a123-185dcd08b78b">
+
+    <Deployment runDeploymentRoot="redacted-deployment" />
+
+  </TestSettings>
+
+  <Results>
+
+    <UnitTestResult executionId="e80391fe-4a2a-4644-875f-76fb9f624ecf" testId="d2389d75-6c13-d9a4-94eb-63dbd8e6f6a8" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Light)" computerName="redacted-host" duration="00:00:00.4270000" startTime="2026-10-29T09:03:57.1030712+08:00" endTime="2026-10-29T09:03:57.5250188+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e80391fe-4a2a-4644-875f-76fb9f624ecf">
+
+      <Output>
+
+        <ErrorInfo>
+
+          <Message>Xunit.Sdk.TrueException: Assert.True() Failure&#xD;
+Expected: True&#xD;
+Actual:   False&#xD;
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.&lt;&gt;c__DisplayClass1_0.&lt;SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 124&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.&lt;&gt;c__DisplayClass8_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 256</Message>
+
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 268</StackTrace>
+
+        </ErrorInfo>
+
+      </Output>
+
+    </UnitTestResult>
+
+    <UnitTestResult executionId="359a52b1-9385-41c7-b3ce-4106b0b5098d" testId="c9992fb5-fa9b-dfee-f70a-93be3fe3053a" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Dark)" computerName="redacted-host" duration="00:00:00.2770000" startTime="2026-10-29T09:03:57.5477555+08:00" endTime="2026-10-29T09:03:57.8011568+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="359a52b1-9385-41c7-b3ce-4106b0b5098d">
+
+      <Output>
+
+        <ErrorInfo>
+
+          <Message>Xunit.Sdk.TrueException: Assert.True() Failure&#xD;
+Expected: True&#xD;
+Actual:   False&#xD;
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.&lt;&gt;c__DisplayClass1_0.&lt;SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 124&#xD;
+   在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.&lt;&gt;c__DisplayClass8_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 256</Message>
+
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 268</StackTrace>
+
+        </ErrorInfo>
+
+      </Output>
+
+    </UnitTestResult>
+
+    <UnitTestResult executionId="8e247b57-6486-44b9-9c40-ad8146139f12" testId="e10a2f12-b3d7-83de-676c-16db2d8ae066" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Dark)" computerName="redacted-host" duration="00:00:01.9940000" startTime="2026-10-29T09:03:54.7108341+08:00" endTime="2026-10-29T09:03:56.6788357+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8e247b57-6486-44b9-9c40-ad8146139f12" />
+
+    <UnitTestResult executionId="35d24997-413f-493a-88d8-e13740889911" testId="f27795b9-8d89-7349-0cdd-0adbe1dc170b" testName="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Light)" computerName="redacted-host" duration="00:00:00.4150000" startTime="2026-10-29T09:03:56.7128397+08:00" endTime="2026-10-29T09:03:57.0940713+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="35d24997-413f-493a-88d8-e13740889911" />
+
+  </Results>
+
+  <TestDefinitions>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Light)" storage="[repo]\.tmp\round5-u07-05-source-20261029\build-cmd\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d2389d75-6c13-d9a4-94eb-63dbd8e6f6a8">
+
+      <Execution id="e80391fe-4a2a-4644-875f-76fb9f624ecf" />
+
+      <TestMethod codeBase="[repo]\.tmp\round5-u07-05-source-20261029\build-cmd\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests" name="SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Light)" storage="[repo]\.tmp\round5-u07-05-source-20261029\build-cmd\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f27795b9-8d89-7349-0cdd-0adbe1dc170b">
+
+      <Execution id="35d24997-413f-493a-88d8-e13740889911" />
+
+      <TestMethod codeBase="[repo]\.tmp\round5-u07-05-source-20261029\build-cmd\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests" name="SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface(mode: Dark)" storage="[repo]\.tmp\round5-u07-05-source-20261029\build-cmd\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="e10a2f12-b3d7-83de-676c-16db2d8ae066">
+
+      <Execution id="8e247b57-6486-44b9-9c40-ad8146139f12" />
+
+      <TestMethod codeBase="[repo]\.tmp\round5-u07-05-source-20261029\build-cmd\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests" name="SharedCheckboxWrapsLongLabelsAndKeepsBoxTextAndGapInOneActivationSurface" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Dark)" storage="[repo]\.tmp\round5-u07-05-source-20261029\build-cmd\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c9992fb5-fa9b-dfee-f70a-93be3fe3053a">
+
+      <Execution id="359a52b1-9385-41c7-b3ce-4106b0b5098d" />
+
+      <TestMethod codeBase="[repo]\.tmp\round5-u07-05-source-20261029\build-cmd\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests" name="SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput" />
+
+    </UnitTest>
+
+  </TestDefinitions>
+
+  <TestEntries>
+
+    <TestEntry testId="d2389d75-6c13-d9a4-94eb-63dbd8e6f6a8" executionId="e80391fe-4a2a-4644-875f-76fb9f624ecf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="c9992fb5-fa9b-dfee-f70a-93be3fe3053a" executionId="359a52b1-9385-41c7-b3ce-4106b0b5098d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="e10a2f12-b3d7-83de-676c-16db2d8ae066" executionId="8e247b57-6486-44b9-9c40-ad8146139f12" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="f27795b9-8d89-7349-0cdd-0adbe1dc170b" executionId="35d24997-413f-493a-88d8-e13740889911" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+  </TestEntries>
+
+  <TestLists>
+
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+
+  </TestLists>
+
+  <ResultSummary outcome="Failed">
+
+    <Counters total="4" executed="4" passed="2" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+
+    <Output>
+
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.80]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.85]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.77]       Xunit.Sdk.TrueException: Assert.True() Failure&#xD;
+[xUnit.net 00:00:03.77]       Expected: True&#xD;
+[xUnit.net 00:00:03.77]       Actual:   False&#xD;
+[xUnit.net 00:00:03.77]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+[xUnit.net 00:00:03.77]          在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.&lt;&gt;c__DisplayClass1_0.&lt;SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 124&#xD;
+[xUnit.net 00:00:03.77]          在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.&lt;&gt;c__DisplayClass8_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 256&#xD;
+[xUnit.net 00:00:03.77]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.77]            在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 268&#xD;
+[xUnit.net 00:00:04.03]       Xunit.Sdk.TrueException: Assert.True() Failure&#xD;
+[xUnit.net 00:00:04.03]       Expected: True&#xD;
+[xUnit.net 00:00:04.03]       Actual:   False&#xD;
+[xUnit.net 00:00:04.03]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+[xUnit.net 00:00:04.03]          在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.&lt;&gt;c__DisplayClass1_0.&lt;SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 124&#xD;
+[xUnit.net 00:00:04.03]          在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.&lt;&gt;c__DisplayClass8_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 256&#xD;
+[xUnit.net 00:00:04.03]       Stack Trace:&#xD;
+[xUnit.net 00:00:04.03]            在 GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10CheckBoxHitBehaviorTests.cs:行号 268&#xD;
+[xUnit.net 00:00:04.03]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+
+    </Output>
+
+    <RunInfos>
+
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-29T09:03:57.5432908+08:00">
+
+        <Text>[xUnit.net 00:00:03.77]     GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Light) [FAIL]</Text>
+
+      </RunInfo>
+
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-10-29T09:03:57.8021802+08:00">
+
+        <Text>[xUnit.net 00:00:04.03]     GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests.SpaceTogglesOncePerKeyPressAndDisabledCheckboxRejectsTheInput(mode: Dark) [FAIL]</Text>
+
+      </RunInfo>
+
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T09:03:57.9652736+08:00">
+
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+
+      </RunInfo>
+
+    </RunInfos>
+
+  </ResultSummary>
+
+</TestRun>

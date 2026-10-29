@@ -1,9 +1,15 @@
 {
-  "candidateRevision": "pending frozen source commit",
+  "candidateRevision": "cd06253158c0e35d43de84e037548a764629749a",
   "sdk": "8.0.423",
   "configuration": "Release",
-  "sourceValidation": { "exitCode": 0, "result": "passed" },
-  "xamlStructure": { "exitCode": 0, "filesPassed": 26 },
+  "sourceValidation": {
+    "exitCode": 0,
+    "result": "passed"
+  },
+  "xamlStructure": {
+    "exitCode": 0,
+    "filesPassed": 26
+  },
   "wpfStatic": {
     "exitCode": 0,
     "xamlFiles": 42,
@@ -41,5 +47,7 @@
       "nonBlockingWarning": "NU1900: NuGet vulnerability data source was unreachable during the local no-restore build."
     }
   ],
-  "frozenCandidateBuildAndCi": "pending"
+  "frozenCandidateBuildAndCi": "pending",
+  "finalGates": "final-gates/local.json",
+  "ci": "final-gates/ci.json"
 }

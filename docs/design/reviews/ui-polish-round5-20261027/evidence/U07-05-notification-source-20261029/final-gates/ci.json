@@ -1,0 +1,225 @@
+{
+  "sourceRevision": "cd06253158c0e35d43de84e037548a764629749a",
+  "runId": 40794111982,
+  "workflow": ".github/workflows/windows-build.yml",
+  "jobs": [
+    {
+      "id": 123186245250,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40794111982,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "检出代码",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "安装 .NET SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "源码结构检查",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "诊断采集自测",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "SDK 基线与缺失负例",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "编译与测试",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "离屏渲染 QA",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "WPF UI 静态审查",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "生成 Playnite 扩展包",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "上传构建产物",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "保留构建与测试诊断（包括失败）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Post 安装 .NET SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        },
+        {
+          "name": "Post 检出代码",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25
+        }
+      ]
+    },
+    {
+      "id": 123186245559,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40794111982,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "检出代码",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "安装 .NET SDK 10.0.401",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "隔离工作树并运行 Release 编译与测试",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "保留 SDK 10.0.401 构建诊断（包括失败）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Post 安装 .NET SDK 10.0.401",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Post 检出代码",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12865861325,
+      "name": "GameSaveCenter-build-diagnostics",
+      "size_in_bytes": 2021815,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12865861325",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12865861325/zip",
+      "expired": false,
+      "created_at": "2026-10-29T01:26:33Z",
+      "expires_at": "2026-11-12T01:26:32Z",
+      "updated_at": "2026-10-29T01:26:33Z",
+      "digest": "sha256:01ec5ca7d0318717a056088d4717a39cedff9d7f99413331c2ddadcd49908048",
+      "workflow_run": {
+        "id": 40794111982,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "cd06253158c0e35d43de84e037548a764629749a"
+      }
+    },
+    {
+      "id": 12865448641,
+      "name": "GameSaveCenter-windows-preview",
+      "size_in_bytes": 90789116,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12865448641",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12865448641/zip",
+      "expired": false,
+      "created_at": "2026-10-29T01:26:31Z",
+      "expires_at": "2027-01-27T00:26:52Z",
+      "updated_at": "2026-10-29T01:26:31Z",
+      "digest": "sha256:517fff44fd503db78e27bc11c982a84b996856aff6fe30730d20e2b544d5a5a7",
+      "workflow_run": {
+        "id": 40794111982,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "cd06253158c0e35d43de84e037548a764629749a"
+      }
+    },
+    {
+      "id": 12863324535,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "size_in_bytes": 967355,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12863324535",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12863324535/zip",
+      "expired": false,
+      "created_at": "2026-10-29T00:55:51Z",
+      "expires_at": "2026-11-12T00:55:49Z",
+      "updated_at": "2026-10-29T00:55:51Z",
+      "digest": "sha256:31e435187b8ba0eb67667de4382cf11338e1d1dfc7a4d2d4a1b8244239c64231",
+      "workflow_run": {
+        "id": 40794111982,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "cd06253158c0e35d43de84e037548a764629749a"
+      }
+    }
+  ],
+  "requiredChecks": "远端待验：此前读取保护规则名单403，本批未重复探测"
+}
