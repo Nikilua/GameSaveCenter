@@ -1,0 +1,102 @@
+{
+  "diskBefore": 4374827008,
+  "checks": "Exact own-stage allowlist; normalized .tmp boundary, reparse and exclusive-open checks; archive hashes verified. Preserve all other phases and original user TRX.",
+  "deferred": [
+    {
+      "reason": "exclusive open failed",
+      "name": "before.zip"
+    }
+  ],
+  "phase": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u03-input-pair-20261029",
+  "diskAfter": 4585582592,
+  "deleted": [
+    {
+      "bytes": 94281777,
+      "name": "before"
+    },
+    {
+      "bytes": 94290470,
+      "name": "after"
+    },
+    {
+      "bytes": 6796216,
+      "name": "before-theme"
+    },
+    {
+      "bytes": 6796216,
+      "name": "after-theme"
+    },
+    {
+      "bytes": 85081,
+      "name": "before-inputs"
+    },
+    {
+      "bytes": 84621,
+      "name": "after-inputs"
+    },
+    {
+      "bytes": 110375,
+      "name": "before-inputs-v2"
+    },
+    {
+      "bytes": 110530,
+      "name": "after-inputs-v2"
+    },
+    {
+      "bytes": 0,
+      "name": "temp"
+    },
+    {
+      "bytes": 4809972,
+      "name": "after.zip"
+    },
+    {
+      "bytes": 4982,
+      "name": "before-build.log"
+    },
+    {
+      "bytes": 4958,
+      "name": "after-build.log"
+    },
+    {
+      "bytes": 1852,
+      "name": "before-input-v2-build.log"
+    },
+    {
+      "bytes": 1844,
+      "name": "after-input-v2-build.log"
+    },
+    {
+      "bytes": 0,
+      "name": "before-theme.log"
+    },
+    {
+      "bytes": 0,
+      "name": "after-theme.log"
+    },
+    {
+      "bytes": 0,
+      "name": "before-inputs.log"
+    },
+    {
+      "bytes": 0,
+      "name": "after-inputs.log"
+    },
+    {
+      "bytes": 236,
+      "name": "sources.json"
+    },
+    {
+      "bytes": 470,
+      "name": "results.json"
+    },
+    {
+      "bytes": 1032,
+      "name": "fixture-instrumentation.json"
+    },
+    {
+      "bytes": 222,
+      "name": "disk-before.json"
+    }
+  ]
+}

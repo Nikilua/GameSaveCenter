@@ -1,0 +1,54 @@
+[
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U01-pair-reconstruction-20261029/before-build.log",
+    "sha256": "8813a276eccd98e382d645df6677627796a866c48aca9837cb0ac392227c6f77"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U01-pair-reconstruction-20261029/disabled-build.log",
+    "sha256": "dd6975e2183f793f930d9c8c131475e2186a9beefd1c4dc30491f73a0fb2b9f2"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U01-pair-reconstruction-20261029/titles-build.log",
+    "sha256": "6baf2b098aece58bac9f13fc227bbc87f1ac2b50d5a337a30d12d42bbe71e0fb"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U02-pair-reconstruction-20261029/after-build.log",
+    "sha256": "179fc8fb8d53f11c94a28642b618b1f984640f8eab1d8a19073f1fdf406acabe"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U02-pair-reconstruction-20261029/after-state-build.log",
+    "sha256": "9d12040640c81415fa6d05cfc54d7f60aea169f9083a6e36dacc6e2010294876"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U02-pair-reconstruction-20261029/after-state-v2-build.log",
+    "sha256": "5153b5c4f8646aa51dae7ebd6cb26465e5d39cce55d4d7acd943d0e36132c330"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U02-pair-reconstruction-20261029/before-build.log",
+    "sha256": "6bd2a2930ac757e019245c42829496333a7ffe6fc50bc3585a1f59e664dd798f"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U02-pair-reconstruction-20261029/before-state-build.log",
+    "sha256": "2faeb291336e6edb0a3ce130bbf6d3c285a5a3c17b3addd880fcf05b2dff7eac"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U02-pair-reconstruction-20261029/before-state-v2-build.log",
+    "sha256": "31e4cabc9e2634ab497be07f99b84124c70ae939230fb5c824ed657c0d68d38f"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U05-pair-reconstruction-20261029/motion/after-build.log",
+    "sha256": "f5d6b1b000e4f2d9c5adb54c7eca50dc1ce629ebe3ab407737ba708949aafa61"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U05-pair-reconstruction-20261029/motion/before-build.log",
+    "sha256": "4c0c6b9edf4958d4b7828b0a0ac4d03f8bece846f9392d10609c3219e4aaad1a"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U06-pair-reconstruction-20261029/after-build.log",
+    "sha256": "e29c94ab3fb19975dae753ce4319cbd3106214bc77a4b64685dc51a00e2a3534"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U06-pair-reconstruction-20261029/before-build.log",
+    "sha256": "c13db9821fdccda530eebe5124ac020dfc57d104858d8bed5d22e697f137694a"
+  }
+]

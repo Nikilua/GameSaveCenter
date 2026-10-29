@@ -1,0 +1,10 @@
+  GameSaveCenter.Contracts -> [repo]\.tmp\round5-u02-pairs-20261029\before\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\.tmp\round5-u02-pairs-20261029\before\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Playnite -> [repo]\.tmp\round5-u02-pairs-20261029\before\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.RenderHarness -> [repo]\.tmp\round5-u02-pairs-20261029\before\tests\GameSaveCenter.RenderHarness\bin\Release\net472\GameSaveCenter.RenderHarness.exe
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:09.30

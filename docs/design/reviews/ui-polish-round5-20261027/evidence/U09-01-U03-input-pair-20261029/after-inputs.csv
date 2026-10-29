@@ -1,0 +1,13 @@
+theme,state,enabled,readonly,error,helptext,opacity,width,height
+Light,Normal,True,False,False,,1,480,42
+Light,ReadOnly,True,True,False,,1,480,42
+Light,Disabled,False,False,False,,1,480,42
+Light,Error,True,False,True,请输入 1～3 / Range 1–3,1,480,42
+Light,DisabledError,False,False,True,请输入 1～3 / Range 1–3,1,480,42
+Light,ReadOnlyError,True,True,True,请输入 1～3 / Range 1–3,1,480,42
+Dark,Normal,True,False,False,,1,480,42
+Dark,ReadOnly,True,True,False,,1,480,42
+Dark,Disabled,False,False,False,,1,480,42
+Dark,Error,True,False,True,请输入 1～3 / Range 1–3,1,480,42
+Dark,DisabledError,False,False,True,请输入 1～3 / Range 1–3,1,480,42
+Dark,ReadOnlyError,True,True,True,请输入 1～3 / Range 1–3,1,480,42

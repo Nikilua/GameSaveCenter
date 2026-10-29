@@ -1,0 +1,40 @@
+$ErrorActionPreference='Stop'
+$repo=(Get-Location).Path;$phase=Join-Path $repo '.tmp/round5-u03-input-pair-20261029'
+New-Item -ItemType Directory -Force -Path $phase | Out-Null
+Get-PSDrive C,D | Select-Object Name,Free | ConvertTo-Json | Set-Content (Join-Path $phase 'disk-before.json')
+$sources=@{before='f59fe4c86c78cb2fc11414a431aceb49821910ee';after='d1fc1308317fb805d61d67a7dda77d71e0afff18'}
+$sources | ConvertTo-Json | Set-Content (Join-Path $phase 'sources.json')
+$sdk=Join-Path $repo '.tmp/round5-u09-01-03/dotnet-sdk8';$env:DOTNET_ROOT=$sdk;$env:PATH=$sdk+';'+$env:PATH;$env:DOTNET_ROLL_FORWARD='Major'
+$env:TEMP=Join-Path $phase 'temp';$env:TMP=$env:TEMP;New-Item -ItemType Directory -Force $env:TEMP | Out-Null
+$records=@();$results=@()
+foreach($side in @('before','after')){
+ $dir=Join-Path $phase $side;$zip=Join-Path $phase ($side+'.zip')
+ git archive --format=zip --output=$zip $sources[$side] src tests scripts manifests Directory.Build.props Directory.Packages.props global.json GameSaveCenter.sln
+ if($LASTEXITCODE){throw 'git archive failed'}
+ Expand-Archive -LiteralPath $zip -DestinationPath $dir
+ foreach($file in Get-ChildItem (Join-Path $dir 'tests/GameSaveCenter.RenderHarness/Fake*.cs')){
+  $old=Get-Content -LiteralPath $file.FullName -Raw
+  $new=$old.Replace('DateTimeOffset.UtcNow','new DateTimeOffset(2026,10,28,9,0,0,TimeSpan.Zero)').Replace('DateTime.UtcNow','new DateTime(2026,10,28,9,0,0,DateTimeKind.Utc)')
+  if($new -ne $old){$hash=(Get-FileHash $file.FullName).Hash;[IO.File]::WriteAllText($file.FullName,$new);$records+=@{snapshot=$side;file=$file.Name;originalSha256=$hash;modifiedSha256=(Get-FileHash $file.FullName).Hash}}
+ }
+ $harness=Join-Path $dir 'tests/GameSaveCenter.RenderHarness'
+ Copy-Item -LiteralPath (Join-Path $repo '.tmp/U03InputProbe.cs') -Destination $harness
+ $program=Join-Path $harness 'Program.cs';$text=Get-Content -LiteralPath $program -Raw
+ $guard=Get-Content (Join-Path $repo 'docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U02-geometry-pairs-20261029/diagnostic-entrypoint.txt') -Raw
+ $guard+=' if(args.Length>2 && args[0]=="u03inputs"){int result=1;var probe=new Thread(()=>{result=U03InputProbe.Run(args[1],args[2]=="after");});probe.SetApartmentState(ApartmentState.STA);probe.Start();probe.Join();return result;} '
+ $match=[regex]::Match($text,'static int Main\(string\[\] args\)\s*\{');if(-not $match.Success){throw 'entrypoint missing'}
+ $text=$text.Insert($match.Index+$match.Length,$guard);[IO.File]::WriteAllText($program,$text)
+ $env:GSC_BUILD_COMMIT=$sources[$side];$log=Join-Path $phase ($side+'-build.log')
+ foreach($project in @('src/GameSaveCenter.Worker/GameSaveCenter.Worker.csproj','tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj')){
+  & (Join-Path $sdk 'dotnet.exe') build (Join-Path $dir $project) -c Release -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:UseSharedCompilation=false >> $log 2>&1
+  if($LASTEXITCODE){throw "$side build failed"}
+ }
+ $exe=Join-Path $harness 'bin/Release/net472/GameSaveCenter.RenderHarness.exe'
+ & $exe u02theme (Join-Path $phase ($side+'-theme')) > (Join-Path $phase ($side+'-theme.log')) 2>&1
+ $results+=@{snapshot=$side;themeExit=$LASTEXITCODE};if($LASTEXITCODE){throw "$side theme failed"}
+ & $exe u03inputs (Join-Path $phase ($side+'-inputs')) $side > (Join-Path $phase ($side+'-inputs.log')) 2>&1
+ $results+=@{snapshot=$side;inputExit=$LASTEXITCODE};$results | ConvertTo-Json | Set-Content (Join-Path $phase 'results.json');$records | ConvertTo-Json | Set-Content (Join-Path $phase 'fixture-instrumentation.json')
+ if($LASTEXITCODE){throw "$side input failed"}
+ Write-Output "$side THEME_INPUT_EXIT=0"
+}
+Write-Output 'U03_PAIR_EXIT=0'

@@ -1,0 +1,18 @@
+[
+  {
+    "snapshot": "before",
+    "themeExit": 0
+  },
+  {
+    "snapshot": "before",
+    "inputExit": 0
+  },
+  {
+    "snapshot": "after",
+    "themeExit": 0
+  },
+  {
+    "snapshot": "after",
+    "inputExit": 0
+  }
+]
