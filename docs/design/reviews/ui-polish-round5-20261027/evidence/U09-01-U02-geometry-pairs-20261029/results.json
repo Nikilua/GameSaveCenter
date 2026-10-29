@@ -1,0 +1,30 @@
+[
+  {
+    "ThemeExit": 0,
+    "Snapshot": "rounded"
+  },
+  {
+    "FinesseExit": 0,
+    "Snapshot": "rounded",
+    "Theme": "light"
+  },
+  {
+    "FinesseExit": 0,
+    "Snapshot": "rounded",
+    "Theme": "dark"
+  },
+  {
+    "ThemeExit": 0,
+    "Snapshot": "hairline"
+  },
+  {
+    "FinesseExit": 0,
+    "Snapshot": "hairline",
+    "Theme": "light"
+  },
+  {
+    "FinesseExit": 0,
+    "Snapshot": "hairline",
+    "Theme": "dark"
+  }
+]

@@ -1,0 +1,84 @@
+{
+  "secondPassDeletedBytes": 2461437,
+  "stageStartDiskFree": [
+    {
+      "Name": "C",
+      "Free": 1983410176
+    },
+    {
+      "Name": "D",
+      "Free": 4595822592
+    }
+  ],
+  "firstPassDeleted": [
+    "rounded",
+    "hairline",
+    "rounded-finesse",
+    "hairline-finesse",
+    "rounded-theme",
+    "hairline-theme"
+  ],
+  "diskFreeAfter": 4592652288,
+  "deferred": [
+    "temp: compiler analyzer DLL deletion denied; retained without retry",
+    "rounded.zip"
+  ],
+  "secondPassDiskBefore": 4590170112,
+  "retained": [
+    "temp",
+    "rounded.zip"
+  ],
+  "firstPass": "Boundary/reparse/exclusive-open checks passed. Six snapshot/render directories removed, then temp analyzer DLL denied. First-pass per-item byte counts lost on terminating error; no exact count claimed. Remaining temp preserved, no retry.",
+  "deleted": [
+    {
+      "name": "hairline.zip",
+      "bytes": 2403403
+    },
+    {
+      "name": "rounded-build.log",
+      "bytes": 2551
+    },
+    {
+      "name": "hairline-build.log",
+      "bytes": 2563
+    },
+    {
+      "name": "rounded-finesse-light.log",
+      "bytes": 12713
+    },
+    {
+      "name": "rounded-finesse-dark.log",
+      "bytes": 12713
+    },
+    {
+      "name": "hairline-finesse-light.log",
+      "bytes": 12714
+    },
+    {
+      "name": "hairline-finesse-dark.log",
+      "bytes": 12714
+    },
+    {
+      "name": "diagnostic-entrypoint.txt",
+      "bytes": 789
+    },
+    {
+      "name": "sources.json",
+      "bytes": 186
+    },
+    {
+      "name": "fixture-instrumentation.json",
+      "bytes": 520
+    },
+    {
+      "name": "results.json",
+      "bytes": 460
+    },
+    {
+      "name": "disk-before.json",
+      "bytes": 111
+    }
+  ],
+  "archiveChecks": "All pairs.json file hashes verified before cleanup. Reproducible snapshot sources are identified by git archive SHA and commit, not references requiring local folders.",
+  "phase": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u02-geometry-pairs-20261029"
+}

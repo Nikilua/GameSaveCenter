@@ -1,0 +1,147 @@
+Supplemental historical RunThemeQa; not full Render QA
+
+Theme QA (forced Light/Dark palettes, default tab)
+  light/Overview/1040x700 viewport probe done
+  light/Overview/1040x700 OK
+  light/Save/1040x700 SaveHistoryGrid readableRows=4/4 viewport=274 DIP
+  light/Save/1040x700 viewport probe done
+  light/Save/1040x700 OK
+  light/Trainer/1040x700 viewport probe done
+  light/Trainer/1040x700 OK
+  light/Media/1040x700 MediaInboxGrid readableRows=4/4 viewport=267 DIP
+  light/Media/1040x700 viewport probe done
+  light/Media/1040x700 OK
+  light/Maintenance/1040x700 FindingsGrid readableRows=5/4 viewport=308 DIP
+  light/Maintenance/1040x700 viewport probe done
+  light/Maintenance/1040x700 OK
+  light/Task/1040x700 TaskGrid readableRows=4/4 viewport=274 DIP
+  light/Task/1040x700 viewport probe done
+  light/Task/1040x700 OK
+  light/Settings/1040x700 viewport probe done
+  light/Settings/1040x700 OK
+  light/Overview/1100x720 viewport probe done
+  light/Overview/1100x720 OK
+  light/Save/1100x720 SaveHistoryGrid readableRows=4/4 viewport=274 DIP
+  light/Save/1100x720 viewport probe done
+  light/Save/1100x720 OK
+  light/Trainer/1100x720 viewport probe done
+  light/Trainer/1100x720 OK
+  light/Media/1100x720 MediaInboxGrid readableRows=4/4 viewport=267 DIP
+  light/Media/1100x720 viewport probe done
+  light/Media/1100x720 OK
+  light/Maintenance/1100x720 FindingsGrid readableRows=5/4 viewport=328 DIP
+  light/Maintenance/1100x720 viewport probe done
+  light/Maintenance/1100x720 OK
+  light/Task/1100x720 TaskGrid readableRows=4/4 viewport=291 DIP
+  light/Task/1100x720 viewport probe done
+  light/Task/1100x720 OK
+  light/Settings/1100x720 viewport probe done
+  light/Settings/1100x720 OK
+  light/Overview/1366x768 viewport probe done
+  light/Overview/1366x768 OK
+  light/Save/1366x768 SaveHistoryGrid readableRows=4/4 viewport=274 DIP
+  light/Save/1366x768 viewport probe done
+  light/Save/1366x768 OK
+  light/Trainer/1366x768 viewport probe done
+  light/Trainer/1366x768 OK
+  light/Media/1366x768 MediaInboxGrid readableRows=4/4 viewport=267 DIP
+  light/Media/1366x768 viewport probe done
+  light/Media/1366x768 OK
+  light/Maintenance/1366x768 FindingsGrid readableRows=6/4 viewport=376 DIP
+  light/Maintenance/1366x768 viewport probe done
+  light/Maintenance/1366x768 OK
+  light/Task/1366x768 TaskGrid readableRows=5/4 viewport=329 DIP
+  light/Task/1366x768 viewport probe done
+  light/Task/1366x768 OK
+  light/Settings/1366x768 viewport probe done
+  light/Settings/1366x768 OK
+  light/Overview/2560x1440 viewport probe done
+  light/Overview/2560x1440 OK
+  light/Save/2560x1440 SaveHistoryGrid readableRows=8/4 viewport=896 DIP
+  light/Save/2560x1440 viewport probe done
+  light/Save/2560x1440 OK
+  light/Trainer/2560x1440 viewport probe done
+  light/Trainer/2560x1440 OK
+  light/Media/2560x1440 MediaInboxGrid readableRows=6/4 viewport=840 DIP
+  light/Media/2560x1440 viewport probe done
+  light/Media/2560x1440 OK
+  light/Maintenance/2560x1440 FindingsGrid readableRows=8/4 viewport=1048 DIP
+  light/Maintenance/2560x1440 viewport probe done
+  light/Maintenance/2560x1440 OK
+  light/Task/2560x1440 TaskGrid readableRows=8/4 viewport=811 DIP
+  light/Task/2560x1440 viewport probe done
+  light/Task/2560x1440 OK
+  light/Settings/2560x1440 viewport probe done
+  light/Settings/2560x1440 OK
+  dark/Overview/1040x700 viewport probe done
+  dark/Overview/1040x700 OK
+  dark/Save/1040x700 SaveHistoryGrid readableRows=4/4 viewport=274 DIP
+  dark/Save/1040x700 viewport probe done
+  dark/Save/1040x700 OK
+  dark/Trainer/1040x700 viewport probe done
+  dark/Trainer/1040x700 OK
+  dark/Media/1040x700 MediaInboxGrid readableRows=4/4 viewport=267 DIP
+  dark/Media/1040x700 viewport probe done
+  dark/Media/1040x700 OK
+  dark/Maintenance/1040x700 FindingsGrid readableRows=5/4 viewport=308 DIP
+  dark/Maintenance/1040x700 viewport probe done
+  dark/Maintenance/1040x700 OK
+  dark/Task/1040x700 TaskGrid readableRows=4/4 viewport=274 DIP
+  dark/Task/1040x700 viewport probe done
+  dark/Task/1040x700 OK
+  dark/Settings/1040x700 viewport probe done
+  dark/Settings/1040x700 OK
+  dark/Overview/1100x720 viewport probe done
+  dark/Overview/1100x720 OK
+  dark/Save/1100x720 SaveHistoryGrid readableRows=4/4 viewport=274 DIP
+  dark/Save/1100x720 viewport probe done
+  dark/Save/1100x720 OK
+  dark/Trainer/1100x720 viewport probe done
+  dark/Trainer/1100x720 OK
+  dark/Media/1100x720 MediaInboxGrid readableRows=4/4 viewport=267 DIP
+  dark/Media/1100x720 viewport probe done
+  dark/Media/1100x720 OK
+  dark/Maintenance/1100x720 FindingsGrid readableRows=5/4 viewport=328 DIP
+  dark/Maintenance/1100x720 viewport probe done
+  dark/Maintenance/1100x720 OK
+  dark/Task/1100x720 TaskGrid readableRows=4/4 viewport=291 DIP
+  dark/Task/1100x720 viewport probe done
+  dark/Task/1100x720 OK
+  dark/Settings/1100x720 viewport probe done
+  dark/Settings/1100x720 OK
+  dark/Overview/1366x768 viewport probe done
+  dark/Overview/1366x768 OK
+  dark/Save/1366x768 SaveHistoryGrid readableRows=4/4 viewport=274 DIP
+  dark/Save/1366x768 viewport probe done
+  dark/Save/1366x768 OK
+  dark/Trainer/1366x768 viewport probe done
+  dark/Trainer/1366x768 OK
+  dark/Media/1366x768 MediaInboxGrid readableRows=4/4 viewport=267 DIP
+  dark/Media/1366x768 viewport probe done
+  dark/Media/1366x768 OK
+  dark/Maintenance/1366x768 FindingsGrid readableRows=6/4 viewport=376 DIP
+  dark/Maintenance/1366x768 viewport probe done
+  dark/Maintenance/1366x768 OK
+  dark/Task/1366x768 TaskGrid readableRows=5/4 viewport=329 DIP
+  dark/Task/1366x768 viewport probe done
+  dark/Task/1366x768 OK
+  dark/Settings/1366x768 viewport probe done
+  dark/Settings/1366x768 OK
+  dark/Overview/2560x1440 viewport probe done
+  dark/Overview/2560x1440 OK
+  dark/Save/2560x1440 SaveHistoryGrid readableRows=8/4 viewport=896 DIP
+  dark/Save/2560x1440 viewport probe done
+  dark/Save/2560x1440 OK
+  dark/Trainer/2560x1440 viewport probe done
+  dark/Trainer/2560x1440 OK
+  dark/Media/2560x1440 MediaInboxGrid readableRows=6/4 viewport=840 DIP
+  dark/Media/2560x1440 viewport probe done
+  dark/Media/2560x1440 OK
+  dark/Maintenance/2560x1440 FindingsGrid readableRows=8/4 viewport=1048 DIP
+  dark/Maintenance/2560x1440 viewport probe done
+  dark/Maintenance/2560x1440 OK
+  dark/Task/2560x1440 TaskGrid readableRows=8/4 viewport=811 DIP
+  dark/Task/2560x1440 viewport probe done
+  dark/Task/2560x1440 OK
+  dark/Settings/2560x1440 viewport probe done
+  dark/Settings/2560x1440 OK

@@ -1,0 +1,676 @@
+{
+  "tasks": [
+    "U02-05",
+    "U02-06"
+  ],
+  "sdk": "8.0.423",
+  "fixedFakeUtc": "2026-10-28T09:00:00Z",
+  "sources": [
+    {
+      "snapshot": "rounded",
+      "commit": "417bed510806f965122554beb4419082443b905e",
+      "archiveSha256": "f120b0dcd47e4c1b5a38e56d393d0dfc9359b988529e7dc461974e3fee879038",
+      "productionSourceFilesVerifiedUnchanged": 356,
+      "themeExit": 0,
+      "finesseLightExit": 0,
+      "finesseDarkExit": 0,
+      "themePngCount": 56
+    },
+    {
+      "snapshot": "hairline",
+      "commit": "f59fe4c86c78cb2fc11414a431aceb49821910ee",
+      "archiveSha256": "22fecc2c47aefba3f10ca7478fea7907029bb4d02fd92dd9763a7b51f3cb3c28",
+      "productionSourceFilesVerifiedUnchanged": 356,
+      "themeExit": 0,
+      "finesseLightExit": 0,
+      "finesseDarkExit": 0,
+      "themePngCount": 56
+    }
+  ],
+  "beforeReference": [
+    {
+      "snapshot": "after",
+      "theme": "light",
+      "surface": "Overview",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\79f348a6d1af8511568020efa79cba1ea074293048dade55ab382900d956158b.png",
+      "sha256": "79f348a6d1af8511568020efa79cba1ea074293048dade55ab382900d956158b"
+    },
+    {
+      "snapshot": "after",
+      "theme": "light",
+      "surface": "Save",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7.png",
+      "sha256": "4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7"
+    },
+    {
+      "snapshot": "after",
+      "theme": "light",
+      "surface": "Trainer",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f.png",
+      "sha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f"
+    },
+    {
+      "snapshot": "after",
+      "theme": "light",
+      "surface": "Media",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\c4cbfb2869eaf4f88d500b85ccd9d9824ee38ec63e0ec450f5985b87bebbd1f2.png",
+      "sha256": "c4cbfb2869eaf4f88d500b85ccd9d9824ee38ec63e0ec450f5985b87bebbd1f2"
+    },
+    {
+      "snapshot": "after",
+      "theme": "light",
+      "surface": "Maintenance",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\0a2a331cfa09da2cd20539a10723daf9155bf3e42c4500b2f4dc969da4db0df6.png",
+      "sha256": "0a2a331cfa09da2cd20539a10723daf9155bf3e42c4500b2f4dc969da4db0df6"
+    },
+    {
+      "snapshot": "after",
+      "theme": "light",
+      "surface": "Task",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\8467d10b403017af205454035f2bb52a2067d23520e76b8a1cfdc51aab9db458.png",
+      "sha256": "8467d10b403017af205454035f2bb52a2067d23520e76b8a1cfdc51aab9db458"
+    },
+    {
+      "snapshot": "after",
+      "theme": "light",
+      "surface": "Settings",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\0f29d75df87f44fba8e460698d6fee9a1825aa11ba301e85476fd907fe9ff36f.png",
+      "sha256": "0f29d75df87f44fba8e460698d6fee9a1825aa11ba301e85476fd907fe9ff36f"
+    },
+    {
+      "snapshot": "after",
+      "theme": "dark",
+      "surface": "Overview",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\112e2b7055d16aa56a6bf8e50f2a1ffb67aa7fb8196f5585a837bc902de0411e.png",
+      "sha256": "112e2b7055d16aa56a6bf8e50f2a1ffb67aa7fb8196f5585a837bc902de0411e"
+    },
+    {
+      "snapshot": "after",
+      "theme": "dark",
+      "surface": "Save",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087.png",
+      "sha256": "be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087"
+    },
+    {
+      "snapshot": "after",
+      "theme": "dark",
+      "surface": "Trainer",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d.png",
+      "sha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d"
+    },
+    {
+      "snapshot": "after",
+      "theme": "dark",
+      "surface": "Media",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3.png",
+      "sha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3"
+    },
+    {
+      "snapshot": "after",
+      "theme": "dark",
+      "surface": "Maintenance",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\0a529029e09e3aef24c0b1c040bb6c142560ce588d85be0876c3ee95b0bca6ea.png",
+      "sha256": "0a529029e09e3aef24c0b1c040bb6c142560ce588d85be0876c3ee95b0bca6ea"
+    },
+    {
+      "snapshot": "after",
+      "theme": "dark",
+      "surface": "Task",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\8e896f098e44070c901f4e8b90b327418dd46730f12bd5e3a55e0fe9d456db79.png",
+      "sha256": "8e896f098e44070c901f4e8b90b327418dd46730f12bd5e3a55e0fe9d456db79"
+    },
+    {
+      "snapshot": "after",
+      "theme": "dark",
+      "surface": "Settings",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\f3081af2503b6a96f033972e7463f4410171d928d3c114acc6f7f10831da0983.png",
+      "sha256": "f3081af2503b6a96f033972e7463f4410171d928d3c114acc6f7f10831da0983"
+    },
+    {
+      "snapshot": "after",
+      "theme": "light",
+      "surface": "finesse",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\157bd06a4e5ca6013bd6c08405c57f177dbf147d99996127921dd815d1d204dc.png",
+      "sha256": "157bd06a4e5ca6013bd6c08405c57f177dbf147d99996127921dd815d1d204dc"
+    },
+    {
+      "snapshot": "after",
+      "theme": "dark",
+      "surface": "finesse",
+      "image": "../U09-01-U02-pair-reconstruction-20261029/images\\efd020f46770cfdb51e7b431dde15b0e5e84ebacd408e31e048cefabec8a428b.png",
+      "sha256": "efd020f46770cfdb51e7b431dde15b0e5e84ebacd408e31e048cefabec8a428b"
+    }
+  ],
+  "equivalentBefore": {
+    "snapshot": "504562a7f0dad88454dde57b290b7862f91c93e6",
+    "actualParent": "3f71053075ad63a85217b07440417f38a2826c18",
+    "srcTree": "2040c79972827f86cf26b8fb0c284d394dd735d0"
+  },
+  "boundaries": [
+    "504562a7 -> 417bed51: corner tokens and clipping",
+    "417bed51 -> f59fe4c8: hairline tokens"
+  ],
+  "images": [
+    {
+      "snapshot": "rounded",
+      "theme": "light",
+      "surface": "Overview",
+      "image": "images\\850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e.png",
+      "sha256": "850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "light",
+      "surface": "Save",
+      "image": "images\\ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477.png",
+      "sha256": "ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "light",
+      "surface": "Trainer",
+      "image": "images\\6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8.png",
+      "sha256": "6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "light",
+      "surface": "Media",
+      "image": "images\\a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b.png",
+      "sha256": "a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "light",
+      "surface": "Maintenance",
+      "image": "images\\4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2.png",
+      "sha256": "4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "light",
+      "surface": "Task",
+      "image": "images\\1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167.png",
+      "sha256": "1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "light",
+      "surface": "Settings",
+      "image": "images\\b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347.png",
+      "sha256": "b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "light",
+      "surface": "finesse",
+      "image": "images\\f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3.png",
+      "sha256": "f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "dark",
+      "surface": "Overview",
+      "image": "images\\767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251.png",
+      "sha256": "767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "dark",
+      "surface": "Save",
+      "image": "images\\b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d.png",
+      "sha256": "b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "dark",
+      "surface": "Trainer",
+      "image": "images\\fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781.png",
+      "sha256": "fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "dark",
+      "surface": "Media",
+      "image": "images\\d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a.png",
+      "sha256": "d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "dark",
+      "surface": "Maintenance",
+      "image": "images\\6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be.png",
+      "sha256": "6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "dark",
+      "surface": "Task",
+      "image": "images\\9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24.png",
+      "sha256": "9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "dark",
+      "surface": "Settings",
+      "image": "images\\6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862.png",
+      "sha256": "6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862"
+    },
+    {
+      "snapshot": "rounded",
+      "theme": "dark",
+      "surface": "finesse",
+      "image": "images\\0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292.png",
+      "sha256": "0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "light",
+      "surface": "Overview",
+      "image": "images\\850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e.png",
+      "sha256": "850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "light",
+      "surface": "Save",
+      "image": "images\\ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477.png",
+      "sha256": "ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "light",
+      "surface": "Trainer",
+      "image": "images\\6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8.png",
+      "sha256": "6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "light",
+      "surface": "Media",
+      "image": "images\\a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b.png",
+      "sha256": "a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "light",
+      "surface": "Maintenance",
+      "image": "images\\4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2.png",
+      "sha256": "4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "light",
+      "surface": "Task",
+      "image": "images\\1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167.png",
+      "sha256": "1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "light",
+      "surface": "Settings",
+      "image": "images\\b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347.png",
+      "sha256": "b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "light",
+      "surface": "finesse",
+      "image": "images\\f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3.png",
+      "sha256": "f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "dark",
+      "surface": "Overview",
+      "image": "images\\767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251.png",
+      "sha256": "767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "dark",
+      "surface": "Save",
+      "image": "images\\b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d.png",
+      "sha256": "b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "dark",
+      "surface": "Trainer",
+      "image": "images\\fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781.png",
+      "sha256": "fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "dark",
+      "surface": "Media",
+      "image": "images\\d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a.png",
+      "sha256": "d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "dark",
+      "surface": "Maintenance",
+      "image": "images\\6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be.png",
+      "sha256": "6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "dark",
+      "surface": "Task",
+      "image": "images\\9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24.png",
+      "sha256": "9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "dark",
+      "surface": "Settings",
+      "image": "images\\6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862.png",
+      "sha256": "6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862"
+    },
+    {
+      "snapshot": "hairline",
+      "theme": "dark",
+      "surface": "finesse",
+      "image": "images\\0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292.png",
+      "sha256": "0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292"
+    }
+  ],
+  "files": [
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\sources.json",
+      "archived": "sources.json",
+      "rawSha256": "0929dbc02357de76cef71c5c7bbd19dc1516e54694a3837ad8e2489d0d4f1a09",
+      "sha256": "079559933a792bdfd45062c55826d8a5282b198315a33d18bfaab185b20f1468"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\fixture-instrumentation.json",
+      "archived": "fixture-instrumentation.json",
+      "rawSha256": "2d0045228cac95923477f514427a26f384ace2cc2ef6ce04c9432925622568b6",
+      "sha256": "5bd77dc53a7631f4785210aa84bce556e1d4eb2d416c4e8b43104a1c02fe3fcf"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\results.json",
+      "archived": "results.json",
+      "rawSha256": "e71ba17b3bfed37a2ac4ec57ca4258ba1219590f436ffbd48f8a88e5d2c1d4d3",
+      "sha256": "0e94cec73afc683a079723b636e947680cabb00d7ad60f8e251a2356c9addf84"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\disk-before.json",
+      "archived": "disk-before.json",
+      "rawSha256": "5d4f6d359d754d584bbc625ff1e6cd7679ad82d484896938f1f18616907e1e90",
+      "sha256": "c5175713d111379ccdfae9bffd9649521ccb4a6a08550dcbf5f70921c6a63892"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\diagnostic-entrypoint.txt",
+      "archived": "diagnostic-entrypoint.txt",
+      "rawSha256": "11d86719146577565b7beb1fd15d490a9c2878d3b47d098492ead7a88e37c804",
+      "sha256": "11d86719146577565b7beb1fd15d490a9c2878d3b47d098492ead7a88e37c804"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-build.log",
+      "archived": "rounded-build.log",
+      "rawSha256": "c46693125935cbebde532c04ae644746f774c7aec18f4f4c71322e986e20eacf",
+      "sha256": "39a849caf37f666d5c0f592c70e7fe54ef0c2252ec2987b2bced265bc6094dc8"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme-report.txt",
+      "archived": "rounded-theme-report.txt",
+      "rawSha256": "75a7dc3266c9d762531a1359c0afbf717910d8d02812278523a57e53d98cbd7d",
+      "sha256": "6cdcd852230ab57d4e25ee892efa12fd640610176fadf070f1c7abfc0f860215"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-finesse-light.log",
+      "archived": "rounded-finesse-light.log",
+      "rawSha256": "9e03120dac058118fb47f27d202000e99adc41d23bf58bf1ada54ab48cc07aee",
+      "sha256": "f2cd43f19c15a18e0b5869fbcfa472a7af2c0c240c3cc7d68918ef2554020da2"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-finesse\\light\\ui-finesse-fixture-report.txt",
+      "archived": "rounded-finesse-light.txt",
+      "rawSha256": "8e6da6bddca7bae9dc46331be164e945f264380807d3681466ec2a1e4afab32e",
+      "sha256": "68389822649094a4659ab3bb9050dd9fa9fbb3b14a8e5c254ab736275620ea4f"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\light\\Overview-1040x700.png",
+      "archived": "images\\850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e.png",
+      "rawSha256": "850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e",
+      "sha256": "850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\light\\Save-1040x700.png",
+      "archived": "images\\ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477.png",
+      "rawSha256": "ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477",
+      "sha256": "ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\light\\Trainer-1040x700.png",
+      "archived": "images\\6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8.png",
+      "rawSha256": "6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8",
+      "sha256": "6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\light\\Media-1040x700.png",
+      "archived": "images\\a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b.png",
+      "rawSha256": "a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b",
+      "sha256": "a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\light\\Maintenance-1040x700.png",
+      "archived": "images\\4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2.png",
+      "rawSha256": "4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2",
+      "sha256": "4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\light\\Task-1040x700.png",
+      "archived": "images\\1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167.png",
+      "rawSha256": "1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167",
+      "sha256": "1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\light\\Settings-1040x700.png",
+      "archived": "images\\b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347.png",
+      "rawSha256": "b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347",
+      "sha256": "b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-finesse\\light\\ui-finesse-fixture.png",
+      "archived": "images\\f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3.png",
+      "rawSha256": "f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3",
+      "sha256": "f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-finesse-dark.log",
+      "archived": "rounded-finesse-dark.log",
+      "rawSha256": "dd6c59b2fc2aa8f2995cb2458d199f6555852785ccb04a5b8a51c125bce82e42",
+      "sha256": "3ebb0a2694f24e58536ad330e52ca3744bc886ab27b0ea0e07844c717763ec9d"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-finesse\\dark\\ui-finesse-fixture-report.txt",
+      "archived": "rounded-finesse-dark.txt",
+      "rawSha256": "d596d3166f082e87d652e2abaeeaf0bb2613ddfd7f7d5a2bc7973305ba2cba37",
+      "sha256": "16df43e6782a21a30f891b4ba1ed36ac89a2a5d318fbb0ade6fe90d30f8660b7"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\dark\\Overview-1040x700.png",
+      "archived": "images\\767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251.png",
+      "rawSha256": "767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251",
+      "sha256": "767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\dark\\Save-1040x700.png",
+      "archived": "images\\b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d.png",
+      "rawSha256": "b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d",
+      "sha256": "b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\dark\\Trainer-1040x700.png",
+      "archived": "images\\fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781.png",
+      "rawSha256": "fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781",
+      "sha256": "fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\dark\\Media-1040x700.png",
+      "archived": "images\\d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a.png",
+      "rawSha256": "d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a",
+      "sha256": "d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\dark\\Maintenance-1040x700.png",
+      "archived": "images\\6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be.png",
+      "rawSha256": "6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be",
+      "sha256": "6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\dark\\Task-1040x700.png",
+      "archived": "images\\9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24.png",
+      "rawSha256": "9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24",
+      "sha256": "9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-theme\\theme\\dark\\Settings-1040x700.png",
+      "archived": "images\\6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862.png",
+      "rawSha256": "6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862",
+      "sha256": "6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\rounded-finesse\\dark\\ui-finesse-fixture.png",
+      "archived": "images\\0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292.png",
+      "rawSha256": "0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292",
+      "sha256": "0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-build.log",
+      "archived": "hairline-build.log",
+      "rawSha256": "439b1926a69b1b3f9482cd74e1a22b249cab944a6be2342c6ae7ccff2076547c",
+      "sha256": "249b6b2d07c4231539e68383997be1b7a8ce2ca5ad93abe4f404fea700b97a99"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme-report.txt",
+      "archived": "hairline-theme-report.txt",
+      "rawSha256": "75a7dc3266c9d762531a1359c0afbf717910d8d02812278523a57e53d98cbd7d",
+      "sha256": "6cdcd852230ab57d4e25ee892efa12fd640610176fadf070f1c7abfc0f860215"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-finesse-light.log",
+      "archived": "hairline-finesse-light.log",
+      "rawSha256": "af44d33aed83326d1b7617c6c3776386eb734c3ef58b8bccd6b85c2d02b6fba1",
+      "sha256": "4f34dac2f8bbcaca6dfda26e0ba9ed65301711cfa917230221aaf2f81c12f0ad"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-finesse\\light\\ui-finesse-fixture-report.txt",
+      "archived": "hairline-finesse-light.txt",
+      "rawSha256": "18c782f17fdca17e2eb17afc2077f9605b7b2b28e3990f8f758644dba1cfc68e",
+      "sha256": "bc12df2c5b0cd7784d0812c679424a8358f45ce4d4410b2e6414af225ead9db9"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\light\\Overview-1040x700.png",
+      "archived": "images\\850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e.png",
+      "rawSha256": "850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e",
+      "sha256": "850e2437682680805040d63b5f58d7014f733b08c46b89a857e1ee25d385713e"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\light\\Save-1040x700.png",
+      "archived": "images\\ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477.png",
+      "rawSha256": "ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477",
+      "sha256": "ccb4836bce2fa1d2174f05342f03d11c2b048b4a5b6d5556c0798f0272c6f477"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\light\\Trainer-1040x700.png",
+      "archived": "images\\6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8.png",
+      "rawSha256": "6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8",
+      "sha256": "6a24635ac438b93511f7308690fcaa60912cd5e257a0a21770cb0444a2d042f8"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\light\\Media-1040x700.png",
+      "archived": "images\\a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b.png",
+      "rawSha256": "a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b",
+      "sha256": "a7c3cacc62f49f647d1fdb9471de54bbea7b4337441e1ad118531028d5a7b06b"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\light\\Maintenance-1040x700.png",
+      "archived": "images\\4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2.png",
+      "rawSha256": "4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2",
+      "sha256": "4811b1720350d9a2d8dffa677b3248573eb3aa8d91618cb42563d2e50f0917d2"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\light\\Task-1040x700.png",
+      "archived": "images\\1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167.png",
+      "rawSha256": "1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167",
+      "sha256": "1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\light\\Settings-1040x700.png",
+      "archived": "images\\b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347.png",
+      "rawSha256": "b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347",
+      "sha256": "b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-finesse\\light\\ui-finesse-fixture.png",
+      "archived": "images\\f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3.png",
+      "rawSha256": "f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3",
+      "sha256": "f6aa806fffe3004c47c7c0c670700152f55f925b71f093f007c30f9e0d5e56c3"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-finesse-dark.log",
+      "archived": "hairline-finesse-dark.log",
+      "rawSha256": "7f563e071a1fcc32f597445a8f65e417c11851e1565fc243089808e23a32bf6c",
+      "sha256": "105d8cf5c948a6d5303bc5073641fddcae64fe3817b04fc6485c22452ce290b9"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-finesse\\dark\\ui-finesse-fixture-report.txt",
+      "archived": "hairline-finesse-dark.txt",
+      "rawSha256": "8d94431b0484263d5c947953eba4697a6eb798ea110967eafb39a39049302f48",
+      "sha256": "77139b2b5cd2b14d19019ba121463fad62f67136ebabaa0b385117dda47d0749"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\dark\\Overview-1040x700.png",
+      "archived": "images\\767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251.png",
+      "rawSha256": "767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251",
+      "sha256": "767d6f4f2b0c15617cafa212c71142196c2e83a344d68d65073b6049fa369251"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\dark\\Save-1040x700.png",
+      "archived": "images\\b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d.png",
+      "rawSha256": "b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d",
+      "sha256": "b03a8d45809161cfe70c2888169e33feaa53f626cf47b8ce926f8727c18bf65d"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\dark\\Trainer-1040x700.png",
+      "archived": "images\\fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781.png",
+      "rawSha256": "fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781",
+      "sha256": "fbfc687bc21f37d94b57f52c9f668084320543fae15361bf141721c02840b781"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\dark\\Media-1040x700.png",
+      "archived": "images\\d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a.png",
+      "rawSha256": "d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a",
+      "sha256": "d2ddf5e7dbaee4a47b877b3222c5b10daf834deb18fbbb6ba6dfb9f537f8029a"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\dark\\Maintenance-1040x700.png",
+      "archived": "images\\6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be.png",
+      "rawSha256": "6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be",
+      "sha256": "6638f7eabee06281d4c5180bbdc06873a7a072cd1ff90b63802b19109017f9be"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\dark\\Task-1040x700.png",
+      "archived": "images\\9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24.png",
+      "rawSha256": "9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24",
+      "sha256": "9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-theme\\theme\\dark\\Settings-1040x700.png",
+      "archived": "images\\6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862.png",
+      "rawSha256": "6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862",
+      "sha256": "6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862"
+    },
+    {
+      "source": ".tmp\\round5-u02-geometry-pairs-20261029\\hairline-finesse\\dark\\ui-finesse-fixture.png",
+      "archived": "images\\0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292.png",
+      "rawSha256": "0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292",
+      "sha256": "0c996df5f4c4b0d4fce0dbbe733a4e628cd93af99b8c603e6c65bcb166fc5292"
+    }
+  ],
+  "scope": "Supplemental historical RunThemeQa and finesse probes; not full Render QA, physical DPI, performance, real Playnite, IME or external UIA acceptance. Report Git commit may follow parent repository; identity is archive comment/hash and unchanged production source verification."
+}
