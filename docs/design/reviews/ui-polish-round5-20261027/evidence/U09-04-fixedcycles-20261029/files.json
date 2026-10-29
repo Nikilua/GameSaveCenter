@@ -1,0 +1,314 @@
+[
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\preparation.json",
+    "archive": "preparation.json",
+    "rawSha256": "c73a3b9248199e7c4f6c765e0c20cef601ed22a4b41b865601baa5d5d7d34f45",
+    "archivedSha256": "84208151241d283aeb20487fa84e870b8361fe538bedb7ceead3a23f923cfa8f"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\stage1-probe.cs",
+    "archive": "stage1-probe.cs",
+    "rawSha256": "9eb27c9b8930053d3959342bf426427c5fe5ca246b1ea71154e750792742c4a1",
+    "archivedSha256": "9eb27c9b8930053d3959342bf426427c5fe5ca246b1ea71154e750792742c4a1"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\prepare-page-diagnostic.py",
+    "archive": "prepare-page-diagnostic.py",
+    "rawSha256": "78ea3bbfbfd7d5ff8dd0aec0497bac4f9780a896721af79167462e49dbcded99",
+    "archivedSha256": "78ea3bbfbfd7d5ff8dd0aec0497bac4f9780a896721af79167462e49dbcded99"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-patch.json",
+    "archive": "page-diagnostic-patch.json",
+    "rawSha256": "28406380278193cfb004bb8276d33aca378b7636bbe4d572a858e6c2dcc80088",
+    "archivedSha256": "41d547c2e41942665923f9202aa4f2f0e831ec8b36c156dd0c28a56a99a9d171"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\run-measurements.ps1",
+    "archive": "run-measurements.ps1",
+    "rawSha256": "221bf97089667443387d586f012fc34542c0cdfc04da38524a22b44b55f25ded",
+    "archivedSha256": "221bf97089667443387d586f012fc34542c0cdfc04da38524a22b44b55f25ded"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\run-page-diagnostic.ps1",
+    "archive": "run-page-diagnostic.ps1",
+    "rawSha256": "a2b7466e2a7042730498b7d55b2805fd022250ba952df45c064ce61e82284043",
+    "archivedSha256": "a2b7466e2a7042730498b7d55b2805fd022250ba952df45c064ce61e82284043"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-index.json",
+    "archive": "measurement-index.json",
+    "rawSha256": "f125a5266d86a4a1378299c0722f7afb2b4ede80dfe3d75b74986bcb2c87901c",
+    "archivedSha256": "0a3cccf4655b3f85ea58b726031436aa2c328b54d873ca8726ff14ec0dead5e6"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-index.json",
+    "archive": "page-diagnostic-index.json",
+    "rawSha256": "73046a34bd756ee8c72299d60e414b63f11015ae33eac1ed1caeea919021b63c",
+    "archivedSha256": "2d6bf973c51776b1fedf052c5809f473cc1ec438a8c574ed34431b9a5f6d3f05"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\before-build.txt",
+    "archive": "before-build.txt",
+    "rawSha256": "d877d23c5c95bed3cafd80284710a632e7ee64002d42b20f56d8d286245b30a2",
+    "archivedSha256": "6a51d8c821e95de9599ec6f9c2ba38b0650c56b15b5a2f54163fbd718558b8ae"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\before-single-node.txt",
+    "archive": "before-single-node.txt",
+    "rawSha256": "5cb36290f43c22080cef7ad8159c672ddcd911dbe6b786d2da0a3161d25f7610",
+    "archivedSha256": "b4bb58994143c4a041e18543317622406addc539b76689b3d7d29bf67c1a51f5"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\before-identity-build.txt",
+    "archive": "before-identity-build.txt",
+    "rawSha256": "a282a75d33af625f66bb48906e0a51aff8c0230c10e7ec61715883597c94e00c",
+    "archivedSha256": "614ea35bff8bcaad29d378ba8c1cf8886f7c1ea12a231111afd8f30acfd58d43"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\after-identity-build.txt",
+    "archive": "after-identity-build.txt",
+    "rawSha256": "0ca53d8e8219eaaa99c45e5256dd4ad246e696f872b58c0e725f80d1a6044c14",
+    "archivedSha256": "91986302f90506addb6de828079f14ae568a5f848e5da9aed7da9a8878ecdcaf"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\before-page-build.txt",
+    "archive": "before-page-build.txt",
+    "rawSha256": "a4657a0a89e5344ece2f6e7c0f0c7906eae55a40c25265a336b896fffdc77bd0",
+    "archivedSha256": "5e7bd410b7bf42c1bd62a1e3523844b543e2fc3e905648ecd49e46e1dd97e3f6"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\after-page-build.txt",
+    "archive": "after-page-build.txt",
+    "rawSha256": "241c8cf62ba3f22c816b3a6b6c90e5c87557904cdf2ab62f94e9d4b95cbad8f7",
+    "archivedSha256": "a38dfc0c6324e33d058c6bca6bfd8a52ae8d02b1ea9b94cc92e11c7b4c895de5"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-1-before\\console.txt",
+    "archive": "measurement-1-before/console.txt",
+    "rawSha256": "9d1216fde3ea6da1bba8c405eeece30c5fc51fd7e03c4b485ccf52d285630aa6",
+    "archivedSha256": "70667f7584d8c2a3be26023938ebd9ad748c5e4a502939a6fc9505baa3e5e411"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-1-before\\enduranceprobe-report.txt",
+    "archive": "measurement-1-before/enduranceprobe-report.txt",
+    "rawSha256": "bfc7a73649dd9bf2f17315c2be401923007e7150deeb999da7acb89750cd7cee",
+    "archivedSha256": "70667f7584d8c2a3be26023938ebd9ad748c5e4a502939a6fc9505baa3e5e411"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-1-before\\identity.json",
+    "archive": "measurement-1-before/identity.json",
+    "rawSha256": "e4c11e5762da82ea0eded567ed35eb34a390c6e0567a189d8df2c881941c3cab",
+    "archivedSha256": "a9129513ec5134d6a6837576ac8d2c135ec39ab908a4252b4bdc4f05396d9d7b"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-1-before\\performance-frames.csv",
+    "archive": "measurement-1-before/performance-frames.csv",
+    "rawSha256": "21551470109c5e248e005a3891afa54914d2aadd7a2b1963973b33b3d3da236b",
+    "archivedSha256": "fde3f0774043d6de3ae068eabdfd614fd0b6169190c40bf32fb4b2bed6dda461"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-1-before\\performance-summary.txt",
+    "archive": "measurement-1-before/performance-summary.txt",
+    "rawSha256": "48bd1985f43ab11abad8574b9a046aeec52066078b8efca6754196ed92dddcba",
+    "archivedSha256": "8d19b7627d6ad8df9ad9cd2bd24018d234dd2120da350679cd928f98664c8d5e"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-2-after\\console.txt",
+    "archive": "measurement-2-after/console.txt",
+    "rawSha256": "655153598112cf4d11805a2772aa952d030346114c47c6825d84c935e79a8dbd",
+    "archivedSha256": "10fbee884c32c18c1d7ad5313250f8397f5a33e9873a0438153207998a9e58e5"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-2-after\\enduranceprobe-report.txt",
+    "archive": "measurement-2-after/enduranceprobe-report.txt",
+    "rawSha256": "4d617cc3e70ec9d8d7305b0a0ab51d6dd966e72ee29b75834ad809e5c6029f06",
+    "archivedSha256": "10fbee884c32c18c1d7ad5313250f8397f5a33e9873a0438153207998a9e58e5"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-2-after\\identity.json",
+    "archive": "measurement-2-after/identity.json",
+    "rawSha256": "9851f9185a3894b13ba745464acdbbb376dc8f7bab7d03a09032807f1110dfb8",
+    "archivedSha256": "b812726da816962e8b89cf23c6bc94e12412f302bfa85882a6348928eb0a305d"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-2-after\\performance-frames.csv",
+    "archive": "measurement-2-after/performance-frames.csv",
+    "rawSha256": "bb5365cdfd8697da8ecd7be08dfd878650658843062be3d0487b05174d92fdb4",
+    "archivedSha256": "140e6c7371d8e3fa9b14f1b2aa153ead2137e29f32c4ed40f592e5fd375edfb2"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-2-after\\performance-summary.txt",
+    "archive": "measurement-2-after/performance-summary.txt",
+    "rawSha256": "4080a2152a982dab072be4db071533b9c0ab293ade7af96a9c7b993b00720e62",
+    "archivedSha256": "0df76ed727d7ac4714f5903f8f8bfdfec01c055cd7d09cfc6c3a55205dbe6153"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-3-after\\console.txt",
+    "archive": "measurement-3-after/console.txt",
+    "rawSha256": "0820c8c88c8a71679ce5e7d36c1ab06263f5453d9794634efa53bd24a6ff1e35",
+    "archivedSha256": "152ebc5298b2dbd59a41586675025a4a905815afbee27513b3388e5200b6b168"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-3-after\\enduranceprobe-report.txt",
+    "archive": "measurement-3-after/enduranceprobe-report.txt",
+    "rawSha256": "7ce70c0764cb44b87c240148ad059aeeda45202370cdad8662d13776d33bc58d",
+    "archivedSha256": "152ebc5298b2dbd59a41586675025a4a905815afbee27513b3388e5200b6b168"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-3-after\\identity.json",
+    "archive": "measurement-3-after/identity.json",
+    "rawSha256": "196fa735c6a547721ac803d256773a5d2351bf6876d3ce947e2c1ee8dfe5dc67",
+    "archivedSha256": "a3746449adc038c9f597d05733bb35ba19ed73713be35de8ccadd8c112e5c948"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-3-after\\performance-frames.csv",
+    "archive": "measurement-3-after/performance-frames.csv",
+    "rawSha256": "f2a3f7539b65292d0cd3ef060dc183bf53a163cd55a198fa7402f90e8a280674",
+    "archivedSha256": "b3b1e9d0d9c4c5c04929ae35316489ebe1086406ba59715f38390a450d643d84"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-3-after\\performance-summary.txt",
+    "archive": "measurement-3-after/performance-summary.txt",
+    "rawSha256": "10cfd28e01da371a1b15ab916fe98e2788f83608bee0676077f8563b551f585c",
+    "archivedSha256": "74bfe4f59ef1a9ca360a6ed95e47a6d73197a2a3e3f00ab7db36136d54a778d1"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-4-before\\console.txt",
+    "archive": "measurement-4-before/console.txt",
+    "rawSha256": "ae2c2faaec7dfcb735b4732ea9883583a378ba732eab04a7f8f9cac8a7e5631a",
+    "archivedSha256": "5bc1a5147ac28ba56524625e4b72b9270237793ca62a7a9d534743c989c84f30"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-4-before\\enduranceprobe-report.txt",
+    "archive": "measurement-4-before/enduranceprobe-report.txt",
+    "rawSha256": "d96701132d106c4ac6abf8f83911c64911346266b4692f41b55ca635bc142637",
+    "archivedSha256": "5bc1a5147ac28ba56524625e4b72b9270237793ca62a7a9d534743c989c84f30"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-4-before\\identity.json",
+    "archive": "measurement-4-before/identity.json",
+    "rawSha256": "40eb51866b91a160881d5b0b6f425f38ec8974813bf5090e6dee5b72e341df7d",
+    "archivedSha256": "ef4f05b9bc499523f3383c29bd22541cf412409d5c7cb01083c8bdea2d27b06b"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-4-before\\performance-frames.csv",
+    "archive": "measurement-4-before/performance-frames.csv",
+    "rawSha256": "c91824a2c9979ff43d9c94494e4a1eb9c8cab04e6241a57805c99b294ca460e2",
+    "archivedSha256": "2863d933ed08da36f9a25ae4cc45beef0b18322e8d46d319df52a04a6aac95ef"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\measurement-4-before\\performance-summary.txt",
+    "archive": "measurement-4-before/performance-summary.txt",
+    "rawSha256": "0d9b6cdc7956015d70c9a8b4e7904c548c9707906be827b3a2becf724c089393",
+    "archivedSha256": "6e2ca15e6cb1a7cf4e2de3e666cbb0ed9616de326c26c87d162255b3dade5cd7"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-1-before\\console.txt",
+    "archive": "page-diagnostic-1-before/console.txt",
+    "rawSha256": "7ad6b2eb81025129ddbfd9af0c54b57aaf45c11ab8746e94f1e34dcd62d57503",
+    "archivedSha256": "ba108bd46d1efbc2adfb213e263a1258ed5b72bb15b1c4d03d0df8f7dba1a8a6"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-1-before\\enduranceprobe-report.txt",
+    "archive": "page-diagnostic-1-before/enduranceprobe-report.txt",
+    "rawSha256": "3a64bc85dea79371105a7d698e0f3c849e5ffd94526448714a992b6eafadd689",
+    "archivedSha256": "ba108bd46d1efbc2adfb213e263a1258ed5b72bb15b1c4d03d0df8f7dba1a8a6"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-1-before\\identity.json",
+    "archive": "page-diagnostic-1-before/identity.json",
+    "rawSha256": "4dffac7130bfb6ea3b26d5caf87e3a919801eb99c0cef8b2a7a09c25ad5559c1",
+    "archivedSha256": "48a084bf92a7d5503080836ac578700811c9baef9d8eb527a4d7ea71bd4a4c10"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-1-before\\page-cycles.csv",
+    "archive": "page-diagnostic-1-before/page-cycles.csv",
+    "rawSha256": "6c32ef7143054ffa3909c93c9f4886b829acc11853dc44be86c3b86f102d6952",
+    "archivedSha256": "3d0ed27c6459c47fb4c83403020c916f84767aeff9e784dbcd0581d169456177"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-1-before\\performance-frames.csv",
+    "archive": "page-diagnostic-1-before/performance-frames.csv",
+    "rawSha256": "73e3782566ff6b7a1a988cee6ac2a595c40c555da4a5e69d2dd7682855bc4e9a",
+    "archivedSha256": "9d262c3e889fbe87782cff044ef126a3b55a6fe1ae2c16c695067dd449254387"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-1-before\\performance-summary.txt",
+    "archive": "page-diagnostic-1-before/performance-summary.txt",
+    "rawSha256": "5edc28e957a6951b465f64714a575e244043e6fffa60c2ebf30a35fc70548366",
+    "archivedSha256": "a56db7e0e0c56d764c961676337563a5f1c02025fac2e7acbe1e0cd582df555c"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-2-after\\console.txt",
+    "archive": "page-diagnostic-2-after/console.txt",
+    "rawSha256": "ae622735a8571f726a5d65657cfb88a150f6af0d29cd931d4ae4b64260af3558",
+    "archivedSha256": "9b03f3d38b101a333a43ec024ec3086eba4c6a59db045d89c5bbd90855d49ea7"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-2-after\\enduranceprobe-report.txt",
+    "archive": "page-diagnostic-2-after/enduranceprobe-report.txt",
+    "rawSha256": "28593ddc89226d1399175b8062e759ba649b03c9ee5d655b0de26c5952f37347",
+    "archivedSha256": "9b03f3d38b101a333a43ec024ec3086eba4c6a59db045d89c5bbd90855d49ea7"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-2-after\\identity.json",
+    "archive": "page-diagnostic-2-after/identity.json",
+    "rawSha256": "1b5e4c590a258c858d4f4a05f78f906096bbd36595093df66c5b3f0e45714cdb",
+    "archivedSha256": "230e9d5af0515101f4bf8ab1ee1c4a9ed38e5aca2b201a8463107990bda19593"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-2-after\\page-cycles.csv",
+    "archive": "page-diagnostic-2-after/page-cycles.csv",
+    "rawSha256": "c20376376e2a068a248da46f7bff5ee1714e92a5123fd6dd7b901d54237e80bf",
+    "archivedSha256": "fe191b45bb6111fdd9c402a45935a6f54b254c0ff18da30bfdfe7437d22da479"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-2-after\\performance-frames.csv",
+    "archive": "page-diagnostic-2-after/performance-frames.csv",
+    "rawSha256": "7a2c9dca4dc629625addffdb7162020f32870c23d0d53015b8a737abbf8ed224",
+    "archivedSha256": "40bd762e0c94f4fbdb51b2fa5826ad5738d426e4d12f142d99d0d264bd973c01"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\page-diagnostic-2-after\\performance-summary.txt",
+    "archive": "page-diagnostic-2-after/performance-summary.txt",
+    "rawSha256": "719132a24ae156d56a38e919431222a1316157e2560202db9f67760276e14621",
+    "archivedSha256": "e69266ba2ae1dcf7c2478cc1ba2978208008d614bcd88f36b433e20ab7a59b0c"
+  },
+  {
+    "source": ".tmp\\q06-bounded-20261029\\run-1.trx",
+    "archive": "q06-bounded/run-1.trx",
+    "rawSha256": "66d0f9138a8876bbd22010e24d7d01eb575e7491bed070e598e1fcc245940a79",
+    "archivedSha256": "57ce5db1054327a556803f2d3e7491419828b656902bed03f66d4ffeec5cf7c4"
+  },
+  {
+    "source": ".tmp\\q06-bounded-20261029\\run-1.txt",
+    "archive": "q06-bounded/run-1.txt",
+    "rawSha256": "b58187c9bad9a0f302685dd5d7b3befa06f5f0d72a824064a7e8a336d6bf7497",
+    "archivedSha256": "fd9d2e2ddbe1b8c93d4fc63b7307628e8c1038833cc704dbe7254661fb3cf649"
+  },
+  {
+    "source": ".tmp\\q06-bounded-20261029\\run-2.trx",
+    "archive": "q06-bounded/run-2.trx",
+    "rawSha256": "0321721503aea3a128b79949eaddd27b8786557c19c4d3f1f822ea3d09040c6a",
+    "archivedSha256": "158ae9fda980137972b681d2809eb86d39086bf8b92e9e8b12080bb9c3423842"
+  },
+  {
+    "source": ".tmp\\q06-bounded-20261029\\run-2.txt",
+    "archive": "q06-bounded/run-2.txt",
+    "rawSha256": "05c4a8aade6b062919ed6f8a875d233abc3492975961d5d011fcf80172962c85",
+    "archivedSha256": "9cafdb6f32d076a971979d40bc08cedc9f0beae93f8af27d53bfe05a4fd9a637"
+  },
+  {
+    "source": ".tmp\\q06-bounded-20261029\\run-3.trx",
+    "archive": "q06-bounded/run-3.trx",
+    "rawSha256": "f9f0f3e0fe129fe8bce7a7eac9d5c8f3d6b763c850aed54f444817f7a33d41e6",
+    "archivedSha256": "9548a510ccb23dd8aaad2b7c696a4e15e1a435cec952ac6f09e4f57946a7f315"
+  },
+  {
+    "source": ".tmp\\q06-bounded-20261029\\run-3.txt",
+    "archive": "q06-bounded/run-3.txt",
+    "rawSha256": "24fab533c82bf29bb3e097171eabee2adebc3cee1587034f588f00e0731c0a50",
+    "archivedSha256": "17bab2eff9c59faad42a736a36a4095917633ceb9102213fdec3b58f704b6d67"
+  }
+]

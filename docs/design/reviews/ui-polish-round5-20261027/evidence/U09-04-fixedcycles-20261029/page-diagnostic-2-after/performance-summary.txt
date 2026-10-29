@@ -1,0 +1,7 @@
+Reconstructed fixed-cycle supplementary WPF diagnostic; not original historical measurements or presented/VSync frames
+Cycles=70; CompletedActions=297; FixedCycleTarget=70; ActionFailures remain governed by original endurance probe
+ActiveSeconds=56.445156; TotalSeconds=87.336800
+ManagedAllocationCounter=AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize; native/other-AppDomain allocations excluded; no forced GC
+ActiveAllocatedBytes=12522422472; TotalAllocatedBytes=12532867208; ActiveBytesPerCycle=178891749.600; ActiveBytesPerCompletedAction=42163038.626
+Phase=active; Samples=1125; P50Ms=15.585; P95Ms=363.796; MaxMs=747.592; Over16_7Ms=288; Over33_3Ms=150
+Phase=settle; Samples=1881; P50Ms=15.567; P95Ms=21.313; MaxMs=310.491; Over16_7Ms=202; Over33_3Ms=6

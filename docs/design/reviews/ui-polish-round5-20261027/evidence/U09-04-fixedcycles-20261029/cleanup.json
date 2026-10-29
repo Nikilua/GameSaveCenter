@@ -1,0 +1,15 @@
+{
+  "status": "No deletion performed",
+  "targets": [
+    ".tmp/u09-fixedcycles-20261029/before.zip",
+    ".tmp/u09-fixedcycles-20261029/after.zip"
+  ],
+  "checks": "C phase boundary/reparse checks, exact duplicate hash against retained D original, full-path docs reference scan passed for before.zip. Exclusive read of before.zip failed because file is in use; stopped before Remove-Item; after.zip not attempted. No repeat.",
+  "deleted": [],
+  "preserved": "Both current C ZIPs, D originals, latest instrumented snapshots/builds, full gate failures, TRX, and user/unknown files.",
+  "availableBytesAfterCheck": {
+    "C": null,
+    "D": null
+  },
+  "note": "Last measured before cleanup attempt C=11884453888 D=18924806144 bytes. Actual free bytes are not inferred as reclaimed; zero deleted bytes."
+}

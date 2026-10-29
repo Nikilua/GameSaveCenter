@@ -1,0 +1,14 @@
+[
+  {
+    "side": "before",
+    "programDiff": "--- \n\n+++ \n\n@@ -1200,6 +1200,7 @@\n\n             void RunActionCycle()\n             {\n                 var cycleStopwatch = Stopwatch.StartNew();\n+                var allocationStart = AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize;\n                 try\n                 {\n                     var current = pages[pageIndex];\n@@ -1223,6 +1224,7 @@\n\n                 {\n                     cycleStopwatch.Stop();\n                     var durationMs = cycleStopwatch.Elapsed.TotalMilliseconds;\n+                    U09Performance.RecordCycle(currentPage, currentTheme, cycle, durationMs, AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize - allocationStart);\n                     actionDurationsMs.Add(durationMs);\n                     if (durationMs > 100 && slowActionStacks.Count < 8)\n                     {",
+    "probeOriginalSha256": "9eb27c9b8930053d3959342bf426427c5fe5ca246b1ea71154e750792742c4a1",
+    "probeSha256": "0e7c8083de6c8896ab9fd62ccacc7b1915b510efc76e8d47e16c8dc8f890bdbb"
+  },
+  {
+    "side": "after",
+    "programDiff": "--- \n\n+++ \n\n@@ -1200,6 +1200,7 @@\n\n             void RunActionCycle()\n             {\n                 var cycleStopwatch = Stopwatch.StartNew();\n+                var allocationStart = AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize;\n                 try\n                 {\n                     var current = pages[pageIndex];\n@@ -1223,6 +1224,7 @@\n\n                 {\n                     cycleStopwatch.Stop();\n                     var durationMs = cycleStopwatch.Elapsed.TotalMilliseconds;\n+                    U09Performance.RecordCycle(currentPage, currentTheme, cycle, durationMs, AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize - allocationStart);\n                     actionDurationsMs.Add(durationMs);\n                     if (durationMs > 100 && slowActionStacks.Count < 8)\n                     {",
+    "probeOriginalSha256": "9eb27c9b8930053d3959342bf426427c5fe5ca246b1ea71154e750792742c4a1",
+    "probeSha256": "0e7c8083de6c8896ab9fd62ccacc7b1915b510efc76e8d47e16c8dc8f890bdbb"
+  }
+]

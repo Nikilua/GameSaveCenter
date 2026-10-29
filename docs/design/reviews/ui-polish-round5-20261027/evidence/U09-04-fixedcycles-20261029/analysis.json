@@ -1,0 +1,232 @@
+{
+  "protocol": "Reconstructed supplementary comparison, not original U00 measurements; ABBA two runs per snapshot, 70 cycles, 297 actions, seven pages, both themes, 1040x700 DIP, 30s settle, 3600s safety; AppDomain managed allocations, no forced GC; Rendering callback gaps are not presented frames; programmatic search is not physical input/IME.",
+  "sourceIdentityBoundary": "Raw report Commit/WorkingTreeClean fields refer to parent be532a81 checkout, NOT historical snapshot. Historical identity is verified ZIP comment/hash, src byte checks and identity.json pluginVersion/hash. Report 30-minute title is inherited; actual total duration approximately 79-89 seconds, not a 30-minute soak.",
+  "sdk": "8.0.423",
+  "productionVerification": [
+    {
+      "side": "before",
+      "productionFilesByteEqualToArchive": 354,
+      "gitArchiveCommit": "0447237a582eb20c22320657c981245cdfe624a6",
+      "zipSha256": "140d12181e75a8ee2ba0f6187af85122aba8402775d39282b0d3bc5495268bdb"
+    },
+    {
+      "side": "after",
+      "productionFilesByteEqualToArchive": 358,
+      "gitArchiveCommit": "acebe07d15d2c43c691128211df56bbe7fefb74f",
+      "zipSha256": "3e2e05083f42a9e653af771151070155533fddb53301cfcec0be8d4eed3b2e5e"
+    }
+  ],
+  "productionAfterUnchangedAtCurrentHead": "git diff acebe07d HEAD -- src is empty",
+  "results": [
+    {
+      "Cycles": 70.0,
+      "CompletedActions": 297.0,
+      "FixedCycleTarget": 70.0,
+      "ActiveSeconds": 51.016631,
+      "TotalSeconds": 82.093329,
+      "ActiveAllocatedBytes": 11123763392.0,
+      "TotalAllocatedBytes": 11133281232.0,
+      "ActiveBytesPerCycle": 158910905.6,
+      "ActiveBytesPerCompletedAction": 37453748.795,
+      "activeFrame": {
+        "Samples": 1059.0,
+        "P50Ms": 15.666,
+        "P95Ms": 333.346,
+        "MaxMs": 676.51,
+        "Over16_7Ms": 279.0,
+        "Over33_3Ms": 146.0
+      },
+      "measurement": "measurement-1-before",
+      "side": "before",
+      "exitCode": 0
+    },
+    {
+      "Cycles": 70.0,
+      "CompletedActions": 297.0,
+      "FixedCycleTarget": 70.0,
+      "ActiveSeconds": 57.629262,
+      "TotalSeconds": 88.703665,
+      "ActiveAllocatedBytes": 12522311184.0,
+      "TotalAllocatedBytes": 12532837800.0,
+      "ActiveBytesPerCycle": 178890159.771,
+      "ActiveBytesPerCompletedAction": 42162663.919,
+      "activeFrame": {
+        "Samples": 1135.0,
+        "P50Ms": 15.569,
+        "P95Ms": 371.557,
+        "MaxMs": 983.124,
+        "Over16_7Ms": 267.0,
+        "Over33_3Ms": 146.0
+      },
+      "measurement": "measurement-2-after",
+      "side": "after",
+      "exitCode": 0
+    },
+    {
+      "Cycles": 70.0,
+      "CompletedActions": 297.0,
+      "FixedCycleTarget": 70.0,
+      "ActiveSeconds": 53.237594,
+      "TotalSeconds": 83.756141,
+      "ActiveAllocatedBytes": 12522271272.0,
+      "TotalAllocatedBytes": 12532117088.0,
+      "ActiveBytesPerCycle": 178889589.6,
+      "ActiveBytesPerCompletedAction": 42162529.535,
+      "activeFrame": {
+        "Samples": 959.0,
+        "P50Ms": 15.689,
+        "P95Ms": 409.093,
+        "MaxMs": 739.263,
+        "Over16_7Ms": 278.0,
+        "Over33_3Ms": 146.0
+      },
+      "measurement": "measurement-3-after",
+      "side": "after",
+      "exitCode": 0
+    },
+    {
+      "Cycles": 70.0,
+      "CompletedActions": 297.0,
+      "FixedCycleTarget": 70.0,
+      "ActiveSeconds": 49.038269,
+      "TotalSeconds": 79.304906,
+      "ActiveAllocatedBytes": 11122793456.0,
+      "TotalAllocatedBytes": 11132253928.0,
+      "ActiveBytesPerCycle": 158897049.371,
+      "ActiveBytesPerCompletedAction": 37450483.017,
+      "activeFrame": {
+        "Samples": 933.0,
+        "P50Ms": 15.666,
+        "P95Ms": 370.993,
+        "MaxMs": 678.673,
+        "Over16_7Ms": 266.0,
+        "Over33_3Ms": 148.0
+      },
+      "measurement": "measurement-4-before",
+      "side": "before",
+      "exitCode": 0
+    },
+    {
+      "Cycles": 70.0,
+      "CompletedActions": 297.0,
+      "FixedCycleTarget": 70.0,
+      "ActiveSeconds": 50.837598,
+      "TotalSeconds": 81.454212,
+      "ActiveAllocatedBytes": 11122789120.0,
+      "TotalAllocatedBytes": 11132151256.0,
+      "ActiveBytesPerCycle": 158896987.429,
+      "ActiveBytesPerCompletedAction": 37450468.418,
+      "activeFrame": {
+        "Samples": 1038.0,
+        "P50Ms": 15.675,
+        "P95Ms": 335.259,
+        "MaxMs": 866.46,
+        "Over16_7Ms": 297.0,
+        "Over33_3Ms": 148.0
+      },
+      "measurement": "page-diagnostic-1-before",
+      "side": "before",
+      "exitCode": 0
+    },
+    {
+      "Cycles": 70.0,
+      "CompletedActions": 297.0,
+      "FixedCycleTarget": 70.0,
+      "ActiveSeconds": 56.445156,
+      "TotalSeconds": 87.3368,
+      "ActiveAllocatedBytes": 12522422472.0,
+      "TotalAllocatedBytes": 12532867208.0,
+      "ActiveBytesPerCycle": 178891749.6,
+      "ActiveBytesPerCompletedAction": 42163038.626,
+      "activeFrame": {
+        "Samples": 1125.0,
+        "P50Ms": 15.585,
+        "P95Ms": 363.796,
+        "MaxMs": 747.592,
+        "Over16_7Ms": 288.0,
+        "Over33_3Ms": 150.0
+      },
+      "measurement": "page-diagnostic-2-after",
+      "side": "after",
+      "exitCode": 0
+    }
+  ],
+  "meanAllocationRegressionPercent": 12.577342314667206,
+  "perPageDiagnostic": {
+    "before": {
+      "Overview": {
+        "samples": 10,
+        "meanAllocatedBytes": 163993037.6,
+        "totalAllocatedBytes": 1639930376
+      },
+      "Save": {
+        "samples": 10,
+        "meanAllocatedBytes": 158498898.4,
+        "totalAllocatedBytes": 1584988984
+      },
+      "Trainer": {
+        "samples": 10,
+        "meanAllocatedBytes": 160905983.2,
+        "totalAllocatedBytes": 1609059832
+      },
+      "Media": {
+        "samples": 10,
+        "meanAllocatedBytes": 164431769.6,
+        "totalAllocatedBytes": 1644317696
+      },
+      "Task": {
+        "samples": 10,
+        "meanAllocatedBytes": 201857437.6,
+        "totalAllocatedBytes": 2018574376
+      },
+      "Notifications": {
+        "samples": 10,
+        "meanAllocatedBytes": 111831260,
+        "totalAllocatedBytes": 1118312600
+      },
+      "Maintenance": {
+        "samples": 10,
+        "meanAllocatedBytes": 141778372.8,
+        "totalAllocatedBytes": 1417783728
+      }
+    },
+    "after": {
+      "Overview": {
+        "samples": 10,
+        "meanAllocatedBytes": 183143232.8,
+        "totalAllocatedBytes": 1831432328
+      },
+      "Save": {
+        "samples": 10,
+        "meanAllocatedBytes": 175836756.8,
+        "totalAllocatedBytes": 1758367568
+      },
+      "Trainer": {
+        "samples": 10,
+        "meanAllocatedBytes": 178598502.4,
+        "totalAllocatedBytes": 1785985024
+      },
+      "Media": {
+        "samples": 10,
+        "meanAllocatedBytes": 182180232.8,
+        "totalAllocatedBytes": 1821802328
+      },
+      "Task": {
+        "samples": 10,
+        "meanAllocatedBytes": 229295962.4,
+        "totalAllocatedBytes": 2292959624
+      },
+      "Notifications": {
+        "samples": 10,
+        "meanAllocatedBytes": 125184935.2,
+        "totalAllocatedBytes": 1251849352
+      },
+      "Maintenance": {
+        "samples": 10,
+        "meanAllocatedBytes": 161763904,
+        "totalAllocatedBytes": 1617639040
+      }
+    }
+  },
+  "status": "U09-04 in progress: stable allocation regression observed on all pages, no production optimization claimed. Next isolate repeated theme resource application vs layout costs. Full root Q06 failure remains unresolved; three bounded diagnostic-only runs passed and are not a fix. Required checks boundary unchanged."
+}

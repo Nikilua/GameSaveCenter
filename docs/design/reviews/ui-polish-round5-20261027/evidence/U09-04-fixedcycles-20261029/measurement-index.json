@@ -1,0 +1,1066 @@
+[
+  {
+    "host": "ControlledWpfWindow",
+    "freeBefore": [
+      {
+        "Name": "C",
+        "Free": 11950260224
+      },
+      {
+        "Name": "D",
+        "Free": 18924806144
+      }
+    ],
+    "side": "before",
+    "order": 1,
+    "pluginVersion": "0.6.73+0447237a582eb20c22320657c981245cdfe624a6",
+    "pluginSha256": "3D2B59C60AB8421E5872EDAA6F4F2FDC8A866852EC183CF7C1CEBCF4190A35D1",
+    "utcEnd": "2026-10-29T08:50:28.6196325Z",
+    "size": "1040x700 DIP",
+    "exitCode": 0,
+    "exeSha256": "7A86991683702FB9A4F5BC42A74B7717DF656293E4A8B8797F6A63F3D2B30E2D",
+    "utcStart": "2026-10-29T08:49:02.6513343Z",
+    "processesAfter": [
+      {
+        "Id": 2100,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.3400119+08:00"
+      },
+      {
+        "Id": 2740,
+        "ProcessName": "dotnet",
+        "CPU": 0.078125,
+        "StartTime": "2026-10-29T16:40:15.7214505+08:00"
+      },
+      {
+        "Id": 3124,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.9677754+08:00"
+      },
+      {
+        "Id": 5880,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.3489996+08:00"
+      },
+      {
+        "Id": 6492,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.8450403+08:00"
+      },
+      {
+        "Id": 9460,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:07.0367371+08:00"
+      },
+      {
+        "Id": 11108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:05.9074557+08:00"
+      },
+      {
+        "Id": 11576,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:14.9472393+08:00"
+      },
+      {
+        "Id": 12200,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.2080924+08:00"
+      },
+      {
+        "Id": 13268,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.0607268+08:00"
+      },
+      {
+        "Id": 14152,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.6209361+08:00"
+      },
+      {
+        "Id": 14368,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.069371+08:00"
+      },
+      {
+        "Id": 14528,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.4717977+08:00"
+      },
+      {
+        "Id": 14756,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.8986813+08:00"
+      },
+      {
+        "Id": 17192,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.2008745+08:00"
+      },
+      {
+        "Id": 20680,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:14.8083708+08:00"
+      },
+      {
+        "Id": 22108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.4813272+08:00"
+      },
+      {
+        "Id": 23340,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.5962948+08:00"
+      },
+      {
+        "Id": 25316,
+        "ProcessName": "dotnet",
+        "CPU": 0.140625,
+        "StartTime": "2026-10-29T16:41:05.7493093+08:00"
+      },
+      {
+        "Id": 26544,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.7601387+08:00"
+      }
+    ],
+    "processesBefore": [
+      {
+        "Id": 2100,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.3400119+08:00"
+      },
+      {
+        "Id": 2740,
+        "ProcessName": "dotnet",
+        "CPU": 0.078125,
+        "StartTime": "2026-10-29T16:40:15.7214505+08:00"
+      },
+      {
+        "Id": 3124,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.9677754+08:00"
+      },
+      {
+        "Id": 5880,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.3489996+08:00"
+      },
+      {
+        "Id": 6492,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.8450403+08:00"
+      },
+      {
+        "Id": 9460,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:07.0367371+08:00"
+      },
+      {
+        "Id": 11108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:05.9074557+08:00"
+      },
+      {
+        "Id": 11576,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:14.9472393+08:00"
+      },
+      {
+        "Id": 12200,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.2080924+08:00"
+      },
+      {
+        "Id": 13268,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.0607268+08:00"
+      },
+      {
+        "Id": 14152,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.6209361+08:00"
+      },
+      {
+        "Id": 14368,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.069371+08:00"
+      },
+      {
+        "Id": 14528,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.4717977+08:00"
+      },
+      {
+        "Id": 14756,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.8986813+08:00"
+      },
+      {
+        "Id": 17192,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.2008745+08:00"
+      },
+      {
+        "Id": 20680,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:14.8083708+08:00"
+      },
+      {
+        "Id": 22108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.4813272+08:00"
+      },
+      {
+        "Id": 23340,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.5962948+08:00"
+      },
+      {
+        "Id": 25316,
+        "ProcessName": "dotnet",
+        "CPU": 0.140625,
+        "StartTime": "2026-10-29T16:41:05.7493093+08:00"
+      },
+      {
+        "Id": 26544,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.7601387+08:00"
+      }
+    ]
+  },
+  {
+    "host": "ControlledWpfWindow",
+    "freeBefore": [
+      {
+        "Name": "C",
+        "Free": 11939422208
+      },
+      {
+        "Name": "D",
+        "Free": 18924871680
+      }
+    ],
+    "side": "after",
+    "order": 2,
+    "pluginVersion": "0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f",
+    "pluginSha256": "4A118B5E7F128FF6ABDC32A0CD9F009F10E00C688546C0AA11F4F5E2A8BD1C3D",
+    "utcEnd": "2026-10-29T08:52:01.1449010Z",
+    "size": "1040x700 DIP",
+    "exitCode": 0,
+    "exeSha256": "8638FB8BBC590B4887C399675DDE6EC06A8D12AE5CFCB5E49D7194EAD19D46E7",
+    "utcStart": "2026-10-29T08:50:28.6740038Z",
+    "processesAfter": [
+      {
+        "Id": 2100,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.3400119+08:00"
+      },
+      {
+        "Id": 2740,
+        "ProcessName": "dotnet",
+        "CPU": 0.078125,
+        "StartTime": "2026-10-29T16:40:15.7214505+08:00"
+      },
+      {
+        "Id": 3124,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.9677754+08:00"
+      },
+      {
+        "Id": 5880,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.3489996+08:00"
+      },
+      {
+        "Id": 6492,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.8450403+08:00"
+      },
+      {
+        "Id": 9460,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:07.0367371+08:00"
+      },
+      {
+        "Id": 11108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:05.9074557+08:00"
+      },
+      {
+        "Id": 11576,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:14.9472393+08:00"
+      },
+      {
+        "Id": 12200,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.2080924+08:00"
+      },
+      {
+        "Id": 13268,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.0607268+08:00"
+      },
+      {
+        "Id": 14152,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.6209361+08:00"
+      },
+      {
+        "Id": 14368,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.069371+08:00"
+      },
+      {
+        "Id": 14528,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.4717977+08:00"
+      },
+      {
+        "Id": 14756,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.8986813+08:00"
+      },
+      {
+        "Id": 17192,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.2008745+08:00"
+      },
+      {
+        "Id": 20680,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:14.8083708+08:00"
+      },
+      {
+        "Id": 22108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.4813272+08:00"
+      },
+      {
+        "Id": 23340,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.5962948+08:00"
+      },
+      {
+        "Id": 25316,
+        "ProcessName": "dotnet",
+        "CPU": 0.140625,
+        "StartTime": "2026-10-29T16:41:05.7493093+08:00"
+      },
+      {
+        "Id": 26544,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.7601387+08:00"
+      }
+    ],
+    "processesBefore": [
+      {
+        "Id": 2100,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.3400119+08:00"
+      },
+      {
+        "Id": 2740,
+        "ProcessName": "dotnet",
+        "CPU": 0.078125,
+        "StartTime": "2026-10-29T16:40:15.7214505+08:00"
+      },
+      {
+        "Id": 3124,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.9677754+08:00"
+      },
+      {
+        "Id": 5880,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.3489996+08:00"
+      },
+      {
+        "Id": 6492,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.8450403+08:00"
+      },
+      {
+        "Id": 9460,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:07.0367371+08:00"
+      },
+      {
+        "Id": 11108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:05.9074557+08:00"
+      },
+      {
+        "Id": 11576,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:14.9472393+08:00"
+      },
+      {
+        "Id": 12200,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.2080924+08:00"
+      },
+      {
+        "Id": 13268,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.0607268+08:00"
+      },
+      {
+        "Id": 14152,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.6209361+08:00"
+      },
+      {
+        "Id": 14368,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.069371+08:00"
+      },
+      {
+        "Id": 14528,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.4717977+08:00"
+      },
+      {
+        "Id": 14756,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.8986813+08:00"
+      },
+      {
+        "Id": 17192,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.2008745+08:00"
+      },
+      {
+        "Id": 20680,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:14.8083708+08:00"
+      },
+      {
+        "Id": 22108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.4813272+08:00"
+      },
+      {
+        "Id": 23340,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.5962948+08:00"
+      },
+      {
+        "Id": 25316,
+        "ProcessName": "dotnet",
+        "CPU": 0.140625,
+        "StartTime": "2026-10-29T16:41:05.7493093+08:00"
+      },
+      {
+        "Id": 26544,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.7601387+08:00"
+      }
+    ]
+  },
+  {
+    "host": "ControlledWpfWindow",
+    "freeBefore": [
+      {
+        "Name": "C",
+        "Free": 11901374464
+      },
+      {
+        "Name": "D",
+        "Free": 18924871680
+      }
+    ],
+    "side": "after",
+    "order": 3,
+    "pluginVersion": "0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f",
+    "pluginSha256": "4A118B5E7F128FF6ABDC32A0CD9F009F10E00C688546C0AA11F4F5E2A8BD1C3D",
+    "utcEnd": "2026-10-29T08:53:29.0262302Z",
+    "size": "1040x700 DIP",
+    "exitCode": 0,
+    "exeSha256": "8638FB8BBC590B4887C399675DDE6EC06A8D12AE5CFCB5E49D7194EAD19D46E7",
+    "utcStart": "2026-10-29T08:52:01.1668176Z",
+    "processesAfter": [
+      {
+        "Id": 2100,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.3400119+08:00"
+      },
+      {
+        "Id": 2740,
+        "ProcessName": "dotnet",
+        "CPU": 0.078125,
+        "StartTime": "2026-10-29T16:40:15.7214505+08:00"
+      },
+      {
+        "Id": 3124,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.9677754+08:00"
+      },
+      {
+        "Id": 5880,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.3489996+08:00"
+      },
+      {
+        "Id": 6492,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.8450403+08:00"
+      },
+      {
+        "Id": 9460,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:07.0367371+08:00"
+      },
+      {
+        "Id": 11108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:05.9074557+08:00"
+      },
+      {
+        "Id": 11576,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:14.9472393+08:00"
+      },
+      {
+        "Id": 12200,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.2080924+08:00"
+      },
+      {
+        "Id": 13268,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.0607268+08:00"
+      },
+      {
+        "Id": 14152,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.6209361+08:00"
+      },
+      {
+        "Id": 14368,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.069371+08:00"
+      },
+      {
+        "Id": 14528,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.4717977+08:00"
+      },
+      {
+        "Id": 14756,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.8986813+08:00"
+      },
+      {
+        "Id": 17192,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.2008745+08:00"
+      },
+      {
+        "Id": 20680,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:14.8083708+08:00"
+      },
+      {
+        "Id": 22108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.4813272+08:00"
+      },
+      {
+        "Id": 23340,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.5962948+08:00"
+      },
+      {
+        "Id": 25316,
+        "ProcessName": "dotnet",
+        "CPU": 0.140625,
+        "StartTime": "2026-10-29T16:41:05.7493093+08:00"
+      },
+      {
+        "Id": 26544,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.7601387+08:00"
+      }
+    ],
+    "processesBefore": [
+      {
+        "Id": 2100,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.3400119+08:00"
+      },
+      {
+        "Id": 2740,
+        "ProcessName": "dotnet",
+        "CPU": 0.078125,
+        "StartTime": "2026-10-29T16:40:15.7214505+08:00"
+      },
+      {
+        "Id": 3124,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.9677754+08:00"
+      },
+      {
+        "Id": 5880,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.3489996+08:00"
+      },
+      {
+        "Id": 6492,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.8450403+08:00"
+      },
+      {
+        "Id": 9460,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:07.0367371+08:00"
+      },
+      {
+        "Id": 11108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:05.9074557+08:00"
+      },
+      {
+        "Id": 11576,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:14.9472393+08:00"
+      },
+      {
+        "Id": 12200,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.2080924+08:00"
+      },
+      {
+        "Id": 13268,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.0607268+08:00"
+      },
+      {
+        "Id": 14152,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.6209361+08:00"
+      },
+      {
+        "Id": 14368,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.069371+08:00"
+      },
+      {
+        "Id": 14528,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.4717977+08:00"
+      },
+      {
+        "Id": 14756,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.8986813+08:00"
+      },
+      {
+        "Id": 17192,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.2008745+08:00"
+      },
+      {
+        "Id": 20680,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:14.8083708+08:00"
+      },
+      {
+        "Id": 22108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.4813272+08:00"
+      },
+      {
+        "Id": 23340,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.5962948+08:00"
+      },
+      {
+        "Id": 25316,
+        "ProcessName": "dotnet",
+        "CPU": 0.140625,
+        "StartTime": "2026-10-29T16:41:05.7493093+08:00"
+      },
+      {
+        "Id": 26544,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.7601387+08:00"
+      }
+    ]
+  },
+  {
+    "host": "ControlledWpfWindow",
+    "freeBefore": [
+      {
+        "Name": "C",
+        "Free": 11899731968
+      },
+      {
+        "Name": "D",
+        "Free": 18924871680
+      }
+    ],
+    "side": "before",
+    "order": 4,
+    "pluginVersion": "0.6.73+0447237a582eb20c22320657c981245cdfe624a6",
+    "pluginSha256": "3D2B59C60AB8421E5872EDAA6F4F2FDC8A866852EC183CF7C1CEBCF4190A35D1",
+    "utcEnd": "2026-10-29T08:54:51.8697445Z",
+    "size": "1040x700 DIP",
+    "exitCode": 0,
+    "exeSha256": "7A86991683702FB9A4F5BC42A74B7717DF656293E4A8B8797F6A63F3D2B30E2D",
+    "utcStart": "2026-10-29T08:53:29.0420564Z",
+    "processesAfter": [
+      {
+        "Id": 2100,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.3400119+08:00"
+      },
+      {
+        "Id": 2740,
+        "ProcessName": "dotnet",
+        "CPU": 0.078125,
+        "StartTime": "2026-10-29T16:40:15.7214505+08:00"
+      },
+      {
+        "Id": 3124,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.9677754+08:00"
+      },
+      {
+        "Id": 5880,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.3489996+08:00"
+      },
+      {
+        "Id": 6492,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.8450403+08:00"
+      },
+      {
+        "Id": 9460,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:07.0367371+08:00"
+      },
+      {
+        "Id": 11108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:05.9074557+08:00"
+      },
+      {
+        "Id": 11576,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:14.9472393+08:00"
+      },
+      {
+        "Id": 12200,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.2080924+08:00"
+      },
+      {
+        "Id": 13268,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.0607268+08:00"
+      },
+      {
+        "Id": 14152,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.6209361+08:00"
+      },
+      {
+        "Id": 14368,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.069371+08:00"
+      },
+      {
+        "Id": 14528,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.4717977+08:00"
+      },
+      {
+        "Id": 14756,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.8986813+08:00"
+      },
+      {
+        "Id": 17192,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.2008745+08:00"
+      },
+      {
+        "Id": 20680,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:14.8083708+08:00"
+      },
+      {
+        "Id": 22108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.4813272+08:00"
+      },
+      {
+        "Id": 23340,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.5962948+08:00"
+      },
+      {
+        "Id": 25316,
+        "ProcessName": "dotnet",
+        "CPU": 0.140625,
+        "StartTime": "2026-10-29T16:41:05.7493093+08:00"
+      },
+      {
+        "Id": 26544,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.7601387+08:00"
+      }
+    ],
+    "processesBefore": [
+      {
+        "Id": 2100,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.3400119+08:00"
+      },
+      {
+        "Id": 2740,
+        "ProcessName": "dotnet",
+        "CPU": 0.078125,
+        "StartTime": "2026-10-29T16:40:15.7214505+08:00"
+      },
+      {
+        "Id": 3124,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.9677754+08:00"
+      },
+      {
+        "Id": 5880,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.3489996+08:00"
+      },
+      {
+        "Id": 6492,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.8450403+08:00"
+      },
+      {
+        "Id": 9460,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:07.0367371+08:00"
+      },
+      {
+        "Id": 11108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:05.9074557+08:00"
+      },
+      {
+        "Id": 11576,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:14.9472393+08:00"
+      },
+      {
+        "Id": 12200,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.2080924+08:00"
+      },
+      {
+        "Id": 13268,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.0607268+08:00"
+      },
+      {
+        "Id": 14152,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.6209361+08:00"
+      },
+      {
+        "Id": 14368,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:40:15.069371+08:00"
+      },
+      {
+        "Id": 14528,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.4717977+08:00"
+      },
+      {
+        "Id": 14756,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.8986813+08:00"
+      },
+      {
+        "Id": 17192,
+        "ProcessName": "dotnet",
+        "CPU": 0.109375,
+        "StartTime": "2026-10-29T16:41:06.2008745+08:00"
+      },
+      {
+        "Id": 20680,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:14.8083708+08:00"
+      },
+      {
+        "Id": 22108,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.4813272+08:00"
+      },
+      {
+        "Id": 23340,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:40:15.5962948+08:00"
+      },
+      {
+        "Id": 25316,
+        "ProcessName": "dotnet",
+        "CPU": 0.140625,
+        "StartTime": "2026-10-29T16:41:05.7493093+08:00"
+      },
+      {
+        "Id": 26544,
+        "ProcessName": "dotnet",
+        "CPU": 0.09375,
+        "StartTime": "2026-10-29T16:41:06.7601387+08:00"
+      }
+    ]
+  }
+]
