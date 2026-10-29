@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestRun id="94143401-9e4a-4f06-a30d-b203055f1779" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+
+  <Times creation="2026-10-29T08:05:23.1429030+08:00" queuing="2026-10-29T08:05:23.1429033+08:00" start="2026-10-29T08:05:18.4980952+08:00" finish="2026-10-29T08:05:23.1494690+08:00" />
+
+  <TestSettings name="default" id="68e6d9cd-b087-4517-8bc8-22681a7487b2">
+
+    <Deployment runDeploymentRoot="redacted-deployment" />
+
+  </TestSettings>
+
+  <Results>
+
+    <UnitTestResult executionId="83c0c5a0-76f8-421d-bf6c-083a11926cde" testId="0220a805-0927-3581-041d-9b3fffb8714a" testName="GameSaveCenter.Playnite.Tests.Q06ContinuousButtonBehaviorTests.RapidFrameworkClicksRespectBusyGateAndKeepSiblingActionEnabled" computerName="redacted-host" duration="00:00:02.1050000" startTime="2026-10-29T08:05:20.8338438+08:00" endTime="2026-10-29T08:05:22.9146447+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="83c0c5a0-76f8-421d-bf6c-083a11926cde" />
+
+  </Results>
+
+  <TestDefinitions>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q06ContinuousButtonBehaviorTests.RapidFrameworkClicksRespectBusyGateAndKeepSiblingActionEnabled" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0220a805-0927-3581-041d-9b3fffb8714a">
+
+      <Execution id="83c0c5a0-76f8-421d-bf6c-083a11926cde" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q06ContinuousButtonBehaviorTests" name="RapidFrameworkClicksRespectBusyGateAndKeepSiblingActionEnabled" />
+
+    </UnitTest>
+
+  </TestDefinitions>
+
+  <TestEntries>
+
+    <TestEntry testId="0220a805-0927-3581-041d-9b3fffb8714a" executionId="83c0c5a0-76f8-421d-bf6c-083a11926cde" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+  </TestEntries>
+
+  <TestLists>
+
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+
+  </TestLists>
+
+  <ResultSummary outcome="Completed">
+
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+
+    <Output>
+
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.81]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.85]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.04]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+
+    </Output>
+
+    <RunInfos>
+
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T08:05:23.1022005+08:00">
+
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+
+      </RunInfo>
+
+    </RunInfos>
+
+  </ResultSummary>
+
+</TestRun>

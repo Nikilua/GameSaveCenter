@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestRun id="c44f6330-1ed2-4bac-880e-9fe37a193a3d" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+
+  <Times creation="2026-10-29T09:17:35.7469671+08:00" queuing="2026-10-29T09:17:35.7469675+08:00" start="2026-10-29T09:17:32.9884361+08:00" finish="2026-10-29T09:17:38.3567934+08:00" />
+
+  <TestSettings name="default" id="fb582c90-dd29-4654-a198-5b79228f9e7c">
+
+    <Deployment runDeploymentRoot="redacted-deployment" />
+
+  </TestSettings>
+
+  <Results>
+
+    <UnitTestResult executionId="058c3a0d-a39e-4cd3-bd58-86f96d0563d4" testId="b4b12ef6-6fc7-d6f9-c1b0-56ca61ed1a20" testName="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.ClickingAHeaderAfterItsCollectionViewWasDetachedDoesNotRefreshTheDeadView" computerName="redacted-host" duration="00:00:01.9940000" startTime="2026-10-29T09:17:35.7472435+08:00" endTime="2026-10-29T09:17:37.7402479+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="058c3a0d-a39e-4cd3-bd58-86f96d0563d4" />
+
+    <UnitTestResult executionId="51421625-358f-40f0-890b-af2e1525471a" testId="678073be-0057-46c7-9c8c-5bf262cf5648" testName="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.ClickingARealColumnHeaderAppliesTheStableSortInBothDirections" computerName="redacted-host" duration="00:00:00.4230000" startTime="2026-10-29T09:17:37.7412489+08:00" endTime="2026-10-29T09:17:38.1627156+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="51421625-358f-40f0-890b-af2e1525471a" />
+
+    <UnitTestResult executionId="13938793-b079-4298-930a-b819adfd8b17" testId="d594466d-2070-606e-5089-8bce2646e557" testName="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.MediaSourceSortKeepsUnknownSourceLastInBothDirections" computerName="redacted-host" duration="00:00:00.0060000" startTime="2026-10-29T09:17:35.7352455+08:00" endTime="2026-10-29T09:17:35.7392473+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="13938793-b079-4298-930a-b819adfd8b17" />
+
+    <UnitTestResult executionId="92851576-f468-480d-bb49-04a54d951b07" testId="dc971189-2589-6e93-8521-3f7da5726265" testName="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.TaskStageSortKeepsUnknownStageLast" computerName="redacted-host" duration="00:00:00.0050000" startTime="2026-10-29T09:17:38.1637164+08:00" endTime="2026-10-29T09:17:38.1677182+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="92851576-f468-480d-bb49-04a54d951b07" />
+
+    <UnitTestResult executionId="dee2b43f-3030-4e8f-854c-c4d6cbee57e5" testId="fcf53948-1eaa-0c48-dfdb-dee989bc8f8d" testName="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.TaskProgressSortUsesNumericValueAndQueuesWithUnknownProgressLast" computerName="redacted-host" duration="00:00:00.0060000" startTime="2026-10-29T09:17:35.7402460+08:00" endTime="2026-10-29T09:17:35.7452462+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dee2b43f-3030-4e8f-854c-c4d6cbee57e5" />
+
+    <UnitTestResult executionId="c0eb1789-24d6-44c2-a9e5-cd958913e254" testId="0f7c8d99-cf8d-534f-1c51-5fda0e8ab722" testName="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.SaveHistoryUsesRawTimeAndNumericValuesWithStableUnknownLastOrdering" computerName="redacted-host" duration="00:00:00.3480000" startTime="2026-10-29T09:17:35.3009852+08:00" endTime="2026-10-29T09:17:35.6242442+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c0eb1789-24d6-44c2-a9e5-cd958913e254" />
+
+    <UnitTestResult executionId="69cd69e9-42f6-429d-be40-d67d04672a50" testId="6de939e0-bed6-7d15-836a-b3da3da62ea1" testName="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.ProductionTablesAttachStableProfilesAndKeepSharedArrowContract" computerName="redacted-host" duration="00:00:00.1080000" startTime="2026-10-29T09:17:35.6522448+08:00" endTime="2026-10-29T09:17:35.7322461+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="69cd69e9-42f6-429d-be40-d67d04672a50" />
+
+  </Results>
+
+  <TestDefinitions>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.TaskProgressSortUsesNumericValueAndQueuesWithUnknownProgressLast" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="fcf53948-1eaa-0c48-dfdb-dee989bc8f8d">
+
+      <Execution id="dee2b43f-3030-4e8f-854c-c4d6cbee57e5" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests" name="TaskProgressSortUsesNumericValueAndQueuesWithUnknownProgressLast" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.MediaSourceSortKeepsUnknownSourceLastInBothDirections" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d594466d-2070-606e-5089-8bce2646e557">
+
+      <Execution id="13938793-b079-4298-930a-b819adfd8b17" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests" name="MediaSourceSortKeepsUnknownSourceLastInBothDirections" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.TaskStageSortKeepsUnknownStageLast" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="dc971189-2589-6e93-8521-3f7da5726265">
+
+      <Execution id="92851576-f468-480d-bb49-04a54d951b07" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests" name="TaskStageSortKeepsUnknownStageLast" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.ProductionTablesAttachStableProfilesAndKeepSharedArrowContract" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6de939e0-bed6-7d15-836a-b3da3da62ea1">
+
+      <Execution id="69cd69e9-42f6-429d-be40-d67d04672a50" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests" name="ProductionTablesAttachStableProfilesAndKeepSharedArrowContract" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.SaveHistoryUsesRawTimeAndNumericValuesWithStableUnknownLastOrdering" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0f7c8d99-cf8d-534f-1c51-5fda0e8ab722">
+
+      <Execution id="c0eb1789-24d6-44c2-a9e5-cd958913e254" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests" name="SaveHistoryUsesRawTimeAndNumericValuesWithStableUnknownLastOrdering" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.ClickingAHeaderAfterItsCollectionViewWasDetachedDoesNotRefreshTheDeadView" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b4b12ef6-6fc7-d6f9-c1b0-56ca61ed1a20">
+
+      <Execution id="058c3a0d-a39e-4cd3-bd58-86f96d0563d4" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests" name="ClickingAHeaderAfterItsCollectionViewWasDetachedDoesNotRefreshTheDeadView" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests.ClickingARealColumnHeaderAppliesTheStableSortInBothDirections" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="678073be-0057-46c7-9c8c-5bf262cf5648">
+
+      <Execution id="51421625-358f-40f0-890b-af2e1525471a" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests" name="ClickingARealColumnHeaderAppliesTheStableSortInBothDirections" />
+
+    </UnitTest>
+
+  </TestDefinitions>
+
+  <TestEntries>
+
+    <TestEntry testId="b4b12ef6-6fc7-d6f9-c1b0-56ca61ed1a20" executionId="058c3a0d-a39e-4cd3-bd58-86f96d0563d4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="678073be-0057-46c7-9c8c-5bf262cf5648" executionId="51421625-358f-40f0-890b-af2e1525471a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="d594466d-2070-606e-5089-8bce2646e557" executionId="13938793-b079-4298-930a-b819adfd8b17" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="dc971189-2589-6e93-8521-3f7da5726265" executionId="92851576-f468-480d-bb49-04a54d951b07" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="fcf53948-1eaa-0c48-dfdb-dee989bc8f8d" executionId="dee2b43f-3030-4e8f-854c-c4d6cbee57e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="0f7c8d99-cf8d-534f-1c51-5fda0e8ab722" executionId="c0eb1789-24d6-44c2-a9e5-cd958913e254" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="6de939e0-bed6-7d15-836a-b3da3da62ea1" executionId="69cd69e9-42f6-429d-be40-d67d04672a50" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+  </TestEntries>
+
+  <TestLists>
+
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+
+  </TestLists>
+
+  <ResultSummary outcome="Completed">
+
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+
+    <Output>
+
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.81]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.85]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.80]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+
+    </Output>
+
+    <RunInfos>
+
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T09:17:38.3182836+08:00">
+
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+
+      </RunInfo>
+
+    </RunInfos>
+
+  </ResultSummary>
+
+</TestRun>

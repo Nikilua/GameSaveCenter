@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestRun id="9a876e10-9536-4a0a-bdfd-09a6ee4a5266" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+
+  <Times creation="2026-10-29T09:29:26.1611088+08:00" queuing="2026-10-29T09:29:26.1611091+08:00" start="2026-10-29T09:29:23.4050669+08:00" finish="2026-10-29T09:29:26.1710165+08:00" />
+
+  <TestSettings name="default" id="5b956f35-47c5-487f-a1cc-36758d36ca08">
+
+    <Deployment runDeploymentRoot="redacted-deployment" />
+
+  </TestSettings>
+
+  <Results>
+
+    <UnitTestResult executionId="e0210419-dc5b-40dd-a0fb-43835112758d" testId="06579e2c-e70c-065b-646c-179b661ac500" testName="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 920, measuredViewportHeight: 640, expected: 640)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T09:29:25.9175358+08:00" endTime="2026-10-29T09:29:25.9175358+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e0210419-dc5b-40dd-a0fb-43835112758d" />
+
+    <UnitTestResult executionId="9762bba7-f01b-4792-b13e-c6e64fc72c61" testId="1985080c-2d7f-bb43-2b5c-c5f94f68ac45" testName="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.EqualStarInspectorUsesHalfOfRemainingDesktopWidth(availableWidth: 1280, gutterWidth: 14, expected: 633)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T09:29:25.9235365+08:00" endTime="2026-10-29T09:29:25.9235365+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9762bba7-f01b-4792-b13e-c6e64fc72c61" />
+
+    <UnitTestResult executionId="d47f5799-2b61-4939-a14d-80888e97422b" testId="6efd195f-9c2f-6736-bed2-6db2735e9ff1" testName="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.PixelInspectorRetainsItsConfiguredWidth" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T09:29:25.9225364+08:00" endTime="2026-10-29T09:29:25.9225364+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d47f5799-2b61-4939-a14d-80888e97422b" />
+
+    <UnitTestResult executionId="9e80e276-7f6e-4ca1-bdc0-0d0a9eee69c7" testId="1d62bc0d-050f-5d81-5700-020afc7e2427" testName="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.EqualStarInspectorUsesHalfOfRemainingDesktopWidth(availableWidth: 1600, gutterWidth: 14, expected: 793)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T09:29:25.9245357+08:00" endTime="2026-10-29T09:29:25.9245357+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e80e276-7f6e-4ca1-bdc0-0d0a9eee69c7" />
+
+    <UnitTestResult executionId="9f52fe34-47ce-4394-afd2-f5aabc2c9ba0" testId="8dd201ec-622e-a0f9-5459-3ac17f9ee0b5" testName="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 920, measuredViewportHeight: 0, expected: 920)" computerName="redacted-host" duration="00:00:00.0240000" startTime="2026-10-29T09:29:25.8862237+08:00" endTime="2026-10-29T09:29:25.8895245+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9f52fe34-47ce-4394-afd2-f5aabc2c9ba0" />
+
+    <UnitTestResult executionId="8a3130e5-4e78-4c27-8d79-400e7440d569" testId="4db45a75-ce94-c5b5-6307-7532729cc970" testName="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 0, measuredViewportHeight: 640, expected: 640)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T09:29:25.9205379+08:00" endTime="2026-10-29T09:29:25.9205379+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a3130e5-4e78-4c27-8d79-400e7440d569" />
+
+    <UnitTestResult executionId="54c6cd5d-ce56-4166-b6f4-54c99faeaac5" testId="137122a5-73f7-4b3c-edd4-7363ea1a9cba" testName="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 0, measuredViewportHeight: 0, expected: 0)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T09:29:25.9185357+08:00" endTime="2026-10-29T09:29:25.9185357+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="54c6cd5d-ce56-4166-b6f4-54c99faeaac5" />
+
+    <UnitTestResult executionId="c908eaa5-edb0-4b1c-8b8e-182b5208c69c" testId="eea8b223-24e1-9f2f-6dad-a46c76fcb7cc" testName="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 640, measuredViewportHeight: 920, expected: 640)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T09:29:25.9165369+08:00" endTime="2026-10-29T09:29:25.9165369+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c908eaa5-edb0-4b1c-8b8e-182b5208c69c" />
+
+  </Results>
+
+  <TestDefinitions>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 640, measuredViewportHeight: 920, expected: 640)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="eea8b223-24e1-9f2f-6dad-a46c76fcb7cc">
+
+      <Execution id="c908eaa5-edb0-4b1c-8b8e-182b5208c69c" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests" name="MeasuredPageViewportBoundsHostHeight" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.PixelInspectorRetainsItsConfiguredWidth" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6efd195f-9c2f-6736-bed2-6db2735e9ff1">
+
+      <Execution id="d47f5799-2b61-4939-a14d-80888e97422b" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests" name="PixelInspectorRetainsItsConfiguredWidth" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 920, measuredViewportHeight: 640, expected: 640)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="06579e2c-e70c-065b-646c-179b661ac500">
+
+      <Execution id="e0210419-dc5b-40dd-a0fb-43835112758d" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests" name="MeasuredPageViewportBoundsHostHeight" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 0, measuredViewportHeight: 0, expected: 0)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="137122a5-73f7-4b3c-edd4-7363ea1a9cba">
+
+      <Execution id="54c6cd5d-ce56-4166-b6f4-54c99faeaac5" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests" name="MeasuredPageViewportBoundsHostHeight" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 920, measuredViewportHeight: 0, expected: 920)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="8dd201ec-622e-a0f9-5459-3ac17f9ee0b5">
+
+      <Execution id="9f52fe34-47ce-4394-afd2-f5aabc2c9ba0" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests" name="MeasuredPageViewportBoundsHostHeight" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.EqualStarInspectorUsesHalfOfRemainingDesktopWidth(availableWidth: 1600, gutterWidth: 14, expected: 793)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1d62bc0d-050f-5d81-5700-020afc7e2427">
+
+      <Execution id="9e80e276-7f6e-4ca1-bdc0-0d0a9eee69c7" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests" name="EqualStarInspectorUsesHalfOfRemainingDesktopWidth" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.MeasuredPageViewportBoundsHostHeight(hostHeight: 0, measuredViewportHeight: 640, expected: 640)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4db45a75-ce94-c5b5-6307-7532729cc970">
+
+      <Execution id="8a3130e5-4e78-4c27-8d79-400e7440d569" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests" name="MeasuredPageViewportBoundsHostHeight" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests.EqualStarInspectorUsesHalfOfRemainingDesktopWidth(availableWidth: 1280, gutterWidth: 14, expected: 633)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1985080c-2d7f-bb43-2b5c-c5f94f68ac45">
+
+      <Execution id="9762bba7-f01b-4792-b13e-c6e64fc72c61" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceTableViewportPolicyTests" name="EqualStarInspectorUsesHalfOfRemainingDesktopWidth" />
+
+    </UnitTest>
+
+  </TestDefinitions>
+
+  <TestEntries>
+
+    <TestEntry testId="06579e2c-e70c-065b-646c-179b661ac500" executionId="e0210419-dc5b-40dd-a0fb-43835112758d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="1985080c-2d7f-bb43-2b5c-c5f94f68ac45" executionId="9762bba7-f01b-4792-b13e-c6e64fc72c61" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="6efd195f-9c2f-6736-bed2-6db2735e9ff1" executionId="d47f5799-2b61-4939-a14d-80888e97422b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="1d62bc0d-050f-5d81-5700-020afc7e2427" executionId="9e80e276-7f6e-4ca1-bdc0-0d0a9eee69c7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="8dd201ec-622e-a0f9-5459-3ac17f9ee0b5" executionId="9f52fe34-47ce-4394-afd2-f5aabc2c9ba0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="4db45a75-ce94-c5b5-6307-7532729cc970" executionId="8a3130e5-4e78-4c27-8d79-400e7440d569" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="137122a5-73f7-4b3c-edd4-7363ea1a9cba" executionId="54c6cd5d-ce56-4166-b6f4-54c99faeaac5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="eea8b223-24e1-9f2f-6dad-a46c76fcb7cc" executionId="c908eaa5-edb0-4b1c-8b8e-182b5208c69c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+  </TestEntries>
+
+  <TestLists>
+
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+
+  </TestLists>
+
+  <ResultSummary outcome="Completed">
+
+    <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+
+    <Output>
+
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.87]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.92]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.05]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+
+    </Output>
+
+    <RunInfos>
+
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T09:29:26.0991743+08:00">
+
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+
+      </RunInfo>
+
+    </RunInfos>
+
+  </ResultSummary>
+
+</TestRun>

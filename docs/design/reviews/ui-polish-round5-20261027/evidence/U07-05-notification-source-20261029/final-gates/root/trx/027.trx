@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestRun id="171f2de1-c6aa-4b1b-a257-d2c253c5d0d4" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+
+  <Times creation="2026-10-29T08:04:29.6189039+08:00" queuing="2026-10-29T08:04:29.6189043+08:00" start="2026-10-29T08:04:26.9931654+08:00" finish="2026-10-29T08:04:31.8493700+08:00" />
+
+  <TestSettings name="default" id="80991510-dbd7-4e74-901c-514bf8bae426">
+
+    <Deployment runDeploymentRoot="redacted-deployment" />
+
+  </TestSettings>
+
+  <Results>
+
+    <UnitTestResult executionId="5956b108-89f7-4763-8062-a33b83634aad" testId="5a745ab4-0efd-de05-c53a-db73a6d8ddf3" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.WheelUsesTheSameRangeAndDoesNotClampAtTheBoundary" computerName="redacted-host" duration="00:00:02.0860000" startTime="2026-10-29T08:04:29.5883710+08:00" endTime="2026-10-29T08:04:31.6202621+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5956b108-89f7-4763-8062-a33b83634aad" />
+
+    <UnitTestResult executionId="8aa06f6d-a15b-4a4b-b460-ab00ffbd2f48" testId="8b2781b9-f457-953a-7852-f7ea19281964" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1441&quot;, expectedValid: False)" computerName="redacted-host" duration="00:00:00.0170000" startTime="2026-10-29T08:04:29.5524487+08:00" endTime="2026-10-29T08:04:29.5524487+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8aa06f6d-a15b-4a4b-b460-ab00ffbd2f48" />
+
+    <UnitTestResult executionId="3ea7f735-f63a-470b-bc98-b2e140346d3e" testId="5fcb6040-68f2-4077-64fe-cfff2fa4a420" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1&quot;, expectedValid: True)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:04:29.5564495+08:00" endTime="2026-10-29T08:04:29.5564495+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3ea7f735-f63a-470b-bc98-b2e140346d3e" />
+
+    <UnitTestResult executionId="7a548534-8002-41a9-ab5a-6c2ab157de70" testId="1afd0400-0342-4ec1-7ca7-42397a920b70" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange" computerName="redacted-host" duration="00:00:00.0090000" startTime="2026-10-29T08:04:31.6242641+08:00" endTime="2026-10-29T08:04:31.6292621+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a548534-8002-41a9-ab5a-6c2ab157de70" />
+
+    <UnitTestResult executionId="0bb1fef1-9efa-4ffc-b2db-fc04bea6d30f" testId="1763ee5f-fbcd-c86a-0072-e352563f3501" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1440&quot;, expectedValid: True)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:04:29.5554479+08:00" endTime="2026-10-29T08:04:29.5554479+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0bb1fef1-9efa-4ffc-b2db-fc04bea6d30f" />
+
+    <UnitTestResult executionId="cc38ef18-2f0b-4e04-b598-1e9914d09d11" testId="5e468f49-15d7-bd0d-4e90-a65da6b1e50c" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;-2147483649&quot;, expectedValid: False)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:04:29.5584504+08:00" endTime="2026-10-29T08:04:29.5584504+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc38ef18-2f0b-4e04-b598-1e9914d09d11" />
+
+    <UnitTestResult executionId="5b8f31ce-e7e0-42ce-b18b-6a73d377fede" testId="7ba77ad1-19df-6fc9-5156-b228338fb5cd" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;12x&quot;, expectedValid: False)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:04:29.5594496+08:00" endTime="2026-10-29T08:04:29.5594496+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5b8f31ce-e7e0-42ce-b18b-6a73d377fede" />
+
+    <UnitTestResult executionId="a648bc3e-873d-4a74-8ce7-b1869a906531" testId="df7ae6db-686a-9e46-440e-0b09195df04d" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;2147483648&quot;, expectedValid: False)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:04:29.5544493+08:00" endTime="2026-10-29T08:04:29.5544493+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a648bc3e-873d-4a74-8ce7-b1869a906531" />
+
+    <UnitTestResult executionId="d6e67efe-7849-4ca6-9756-627f05765b00" testId="5a70057c-ca33-5193-bed1-7ee07998b81f" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown" computerName="redacted-host" duration="00:00:00.1440000" startTime="2026-10-29T08:04:29.4101850+08:00" endTime="2026-10-29T08:04:29.5169967+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d6e67efe-7849-4ca6-9756-627f05765b00" />
+
+    <UnitTestResult executionId="4b09f30a-3495-446f-bbb7-59d107c5ac03" testId="cf61e045-8a2c-15d7-e142-bba8a8390a7c" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;&quot;, expectedValid: False)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:04:29.5615331+08:00" endTime="2026-10-29T08:04:29.5615331+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4b09f30a-3495-446f-bbb7-59d107c5ac03" />
+
+    <UnitTestResult executionId="acaa959e-7e68-42fb-875d-f72f90932ed7" testId="988447a8-cecd-e7d8-46a0-52c44440f167" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;0&quot;, expectedValid: False)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T08:04:29.5604495+08:00" endTime="2026-10-29T08:04:29.5604495+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="acaa959e-7e68-42fb-875d-f72f90932ed7" />
+
+    <UnitTestResult executionId="9629b75a-2ab4-4363-bff4-4e3cd0ef1f51" testId="6a0cbe70-d833-667f-f853-d64a93b938f4" testName="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ExplainsEmptyAndOverflowValues" computerName="redacted-host" duration="00:00:00.0060000" startTime="2026-10-29T08:04:31.6312625+08:00" endTime="2026-10-29T08:04:31.6352623+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9629b75a-2ab4-4363-bff4-4e3cd0ef1f51" />
+
+  </Results>
+
+  <TestDefinitions>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;-2147483649&quot;, expectedValid: False)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5e468f49-15d7-bd0d-4e90-a65da6b1e50c">
+
+      <Execution id="cc38ef18-2f0b-4e04-b598-1e9914d09d11" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;2147483648&quot;, expectedValid: False)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="df7ae6db-686a-9e46-440e-0b09195df04d">
+
+      <Execution id="a648bc3e-873d-4a74-8ce7-b1869a906531" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5a70057c-ca33-5193-bed1-7ee07998b81f">
+
+      <Execution id="d6e67efe-7849-4ca6-9756-627f05765b00" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="KeyboardSelectAllDoesNotQueueWorkDuringDispatcherShutdown" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;&quot;, expectedValid: False)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="cf61e045-8a2c-15d7-e142-bba8a8390a7c">
+
+      <Execution id="4b09f30a-3495-446f-bbb7-59d107c5ac03" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ExplainsEmptyAndOverflowValues" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6a0cbe70-d833-667f-f853-d64a93b938f4">
+
+      <Execution id="9629b75a-2ab4-4363-bff4-4e3cd0ef1f51" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ExplainsEmptyAndOverflowValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1441&quot;, expectedValid: False)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="8b2781b9-f457-953a-7852-f7ea19281964">
+
+      <Execution id="8aa06f6d-a15b-4a4b-b460-ab00ffbd2f48" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1&quot;, expectedValid: True)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5fcb6040-68f2-4077-64fe-cfff2fa4a420">
+
+      <Execution id="3ea7f735-f63a-470b-bc98-b2e140346d3e" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;0&quot;, expectedValid: False)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="988447a8-cecd-e7d8-46a0-52c44440f167">
+
+      <Execution id="acaa959e-7e68-42fb-875d-f72f90932ed7" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;1440&quot;, expectedValid: True)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1763ee5f-fbcd-c86a-0072-e352563f3501">
+
+      <Execution id="0bb1fef1-9efa-4ffc-b2db-fc04bea6d30f" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.IntegerRangeValidationRule_ValidatesCompleteMinuteValues(text: &quot;12x&quot;, expectedValid: False)" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7ba77ad1-19df-6fc9-5156-b228338fb5cd">
+
+      <Execution id="5b8f31ce-e7e0-42ce-b18b-6a73d377fede" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="IntegerRangeValidationRule_ValidatesCompleteMinuteValues" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.WheelUsesTheSameRangeAndDoesNotClampAtTheBoundary" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5a745ab4-0efd-de05-c53a-db73a6d8ddf3">
+
+      <Execution id="5956b108-89f7-4763-8062-a33b83634aad" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="WheelUsesTheSameRangeAndDoesNotClampAtTheBoundary" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.NumericInputTests.ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1afd0400-0342-4ec1-7ca7-42397a920b70">
+
+      <Execution id="7a548534-8002-41a9-ab5a-6c2ab157de70" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.NumericInputTests" name="ProductionNumericEditorsAllDeclareTheSharedBehaviorAndAValidationRange" />
+
+    </UnitTest>
+
+  </TestDefinitions>
+
+  <TestEntries>
+
+    <TestEntry testId="5a745ab4-0efd-de05-c53a-db73a6d8ddf3" executionId="5956b108-89f7-4763-8062-a33b83634aad" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="8b2781b9-f457-953a-7852-f7ea19281964" executionId="8aa06f6d-a15b-4a4b-b460-ab00ffbd2f48" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="5fcb6040-68f2-4077-64fe-cfff2fa4a420" executionId="3ea7f735-f63a-470b-bc98-b2e140346d3e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="1afd0400-0342-4ec1-7ca7-42397a920b70" executionId="7a548534-8002-41a9-ab5a-6c2ab157de70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="1763ee5f-fbcd-c86a-0072-e352563f3501" executionId="0bb1fef1-9efa-4ffc-b2db-fc04bea6d30f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="5e468f49-15d7-bd0d-4e90-a65da6b1e50c" executionId="cc38ef18-2f0b-4e04-b598-1e9914d09d11" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="7ba77ad1-19df-6fc9-5156-b228338fb5cd" executionId="5b8f31ce-e7e0-42ce-b18b-6a73d377fede" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="df7ae6db-686a-9e46-440e-0b09195df04d" executionId="a648bc3e-873d-4a74-8ce7-b1869a906531" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="5a70057c-ca33-5193-bed1-7ee07998b81f" executionId="d6e67efe-7849-4ca6-9756-627f05765b00" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="cf61e045-8a2c-15d7-e142-bba8a8390a7c" executionId="4b09f30a-3495-446f-bbb7-59d107c5ac03" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="988447a8-cecd-e7d8-46a0-52c44440f167" executionId="acaa959e-7e68-42fb-875d-f72f90932ed7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="6a0cbe70-d833-667f-f853-d64a93b938f4" executionId="9629b75a-2ab4-4363-bff4-4e3cd0ef1f51" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+  </TestEntries>
+
+  <TestLists>
+
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+
+  </TestLists>
+
+  <ResultSummary outcome="Completed">
+
+    <Counters total="12" executed="12" passed="12" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+
+    <Output>
+
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.86]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.91]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.23]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+
+    </Output>
+
+    <RunInfos>
+
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T08:04:31.8036007+08:00">
+
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+
+      </RunInfo>
+
+    </RunInfos>
+
+  </ResultSummary>
+
+</TestRun>

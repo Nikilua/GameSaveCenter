@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestRun id="4d3e7995-c40d-4813-a750-2dc2434481a3" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+
+  <Times creation="2026-10-29T09:25:06.3695168+08:00" queuing="2026-10-29T09:25:06.3695172+08:00" start="2026-10-29T09:25:00.1937974+08:00" finish="2026-10-29T09:25:06.5664774+08:00" />
+
+  <TestSettings name="default" id="90296ecf-033c-42be-a8fa-2fa5c930124d">
+
+    <Deployment runDeploymentRoot="redacted-deployment" />
+
+  </TestSettings>
+
+  <Results>
+
+    <UnitTestResult executionId="0056c046-a01b-429c-ad9c-baed2b0f1fe9" testId="35d74678-9d40-ee97-3354-3501085dc41c" testName="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests.RemoteStageResultKeepsRelativeFullAndRawExpiryEvidence" computerName="redacted-host" duration="00:00:00.0060000" startTime="2026-10-29T09:25:06.3490529+08:00" endTime="2026-10-29T09:25:06.3490529+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0056c046-a01b-429c-ad9c-baed2b0f1fe9" />
+
+    <UnitTestResult executionId="2d86a76b-720e-461a-b4aa-6e0cf9a725df" testId="40d54b6d-0a4d-8e56-1bce-19f59838d3db" testName="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests.RemoteStageStatusUsesRelativeBodyAndFullTooltipContract" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T09:25:06.3520616+08:00" endTime="2026-10-29T09:25:06.3520616+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2d86a76b-720e-461a-b4aa-6e0cf9a725df" />
+
+    <UnitTestResult executionId="823469fd-35c5-4104-ba75-4712143c5cd2" testId="289cd9d0-ebf6-298c-8057-18097ddd2560" testName="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests.MaintenanceDeviceStatusBindsRelativeTextAndFullAutomationEvidence" computerName="redacted-host" duration="00:00:03.4150000" startTime="2026-10-29T09:25:02.9231460+08:00" endTime="2026-10-29T09:25:06.3120532+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="823469fd-35c5-4104-ba75-4712143c5cd2" />
+
+  </Results>
+
+  <TestDefinitions>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests.MaintenanceDeviceStatusBindsRelativeTextAndFullAutomationEvidence" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="289cd9d0-ebf6-298c-8057-18097ddd2560">
+
+      <Execution id="823469fd-35c5-4104-ba75-4712143c5cd2" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests" name="MaintenanceDeviceStatusBindsRelativeTextAndFullAutomationEvidence" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests.RemoteStageResultKeepsRelativeFullAndRawExpiryEvidence" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="35d74678-9d40-ee97-3354-3501085dc41c">
+
+      <Execution id="0056c046-a01b-429c-ad9c-baed2b0f1fe9" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests" name="RemoteStageResultKeepsRelativeFullAndRawExpiryEvidence" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests.RemoteStageStatusUsesRelativeBodyAndFullTooltipContract" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="40d54b6d-0a4d-8e56-1bce-19f59838d3db">
+
+      <Execution id="2d86a76b-720e-461a-b4aa-6e0cf9a725df" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests" name="RemoteStageStatusUsesRelativeBodyAndFullTooltipContract" />
+
+    </UnitTest>
+
+  </TestDefinitions>
+
+  <TestEntries>
+
+    <TestEntry testId="35d74678-9d40-ee97-3354-3501085dc41c" executionId="0056c046-a01b-429c-ad9c-baed2b0f1fe9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="40d54b6d-0a4d-8e56-1bce-19f59838d3db" executionId="2d86a76b-720e-461a-b4aa-6e0cf9a725df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="289cd9d0-ebf6-298c-8057-18097ddd2560" executionId="823469fd-35c5-4104-ba75-4712143c5cd2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+  </TestEntries>
+
+  <TestLists>
+
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+
+  </TestLists>
+
+  <ResultSummary outcome="Completed">
+
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+
+    <Output>
+
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.48]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.89]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.94]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.45]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+
+    </Output>
+
+    <RunInfos>
+
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T09:25:06.5218455+08:00">
+
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+
+      </RunInfo>
+
+    </RunInfos>
+
+  </ResultSummary>
+
+</TestRun>

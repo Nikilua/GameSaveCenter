@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0a8dcbc2-3162-4be2-bedc-53f75ad905b8" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T13:53:20.2142470+08:00" queuing="2026-10-29T13:53:20.2142474+08:00" start="2026-10-29T13:53:15.7610485+08:00" finish="2026-10-29T13:53:22.0699765+08:00" />
+  <TestSettings name="default" id="22d73472-c4b1-425d-8abe-438780ba0b98">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="7d387191-f694-483f-b277-80b10dacb9cb" testId="82b4a9a7-4381-2717-341f-35f397761339" testName="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ProductionEditorTooltipFlipsAboveOwnerNearWorkAreaBottom" computerName="redacted-host" duration="00:00:00.4370000" startTime="2026-10-29T13:53:21.4391097+08:00" endTime="2026-10-29T13:53:21.8750596+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7d387191-f694-483f-b277-80b10dacb9cb" />
+    <UnitTestResult executionId="e7fc7e8f-cb98-4279-8a08-bd974719af75" testId="6caa10e4-c6d9-7038-9085-99cd780c4773" testName="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.RefreshIgnoresPresentationRootsOwnedByAnotherDispatcher" computerName="redacted-host" duration="00:00:00.1680000" startTime="2026-10-29T13:53:21.2771072+08:00" endTime="2026-10-29T13:53:21.4371077+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e7fc7e8f-cb98-4279-8a08-bd974719af75" />
+    <UnitTestResult executionId="6a145416-9b12-463c-a0a8-aec1b488edd0" testId="8f49a204-503a-5541-eb75-eca8d3bfd764" testName="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T13:53:21.2714157+08:00" endTime="2026-10-29T13:53:21.2714157+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a145416-9b12-463c-a0a8-aec1b488edd0">
+      <Output>
+        <ErrorInfo>
+          <Message>该测试会移动系统鼠标指针；默认跳过。设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 后可单独运行。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6beef277-77a5-43a0-a5c7-8f1cf66153a9" testId="c1b01885-4c5a-0c23-740d-fa9b8c536de8" testName="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ScopedTextEditorHelpUsesOwnerPlacementWithoutOverridingExplicitPlacement" computerName="redacted-host" duration="00:00:00.9190000" startTime="2026-10-29T13:53:18.4202724+08:00" endTime="2026-10-29T13:53:19.3131703+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6beef277-77a5-43a0-a5c7-8f1cf66153a9" />
+    <UnitTestResult executionId="9e6f3530-cde3-4c9a-be18-c2ea0d70950d" testId="4b20bb36-6c63-2e84-ae4c-aac7c00ea927" testName="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ProductionTooltipWrapsLongPathsAndEscClosesWithoutMovingFocus" computerName="redacted-host" duration="00:00:01.9550000" startTime="2026-10-29T13:53:19.3511666+08:00" endTime="2026-10-29T13:53:21.2684175+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e6f3530-cde3-4c9a-be18-c2ea0d70950d" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ProductionTooltipWrapsLongPathsAndEscClosesWithoutMovingFocus" storage="[repo]\artifacts\gsc-b\c1790992\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4b20bb36-6c63-2e84-ae4c-aac7c00ea927">
+      <Execution id="9e6f3530-cde3-4c9a-be18-c2ea0d70950d" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\c1790992\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests" name="ProductionTooltipWrapsLongPathsAndEscClosesWithoutMovingFocus" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ProductionEditorTooltipFlipsAboveOwnerNearWorkAreaBottom" storage="[repo]\artifacts\gsc-b\c1790992\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="82b4a9a7-4381-2717-341f-35f397761339">
+      <Execution id="7d387191-f694-483f-b277-80b10dacb9cb" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\c1790992\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests" name="ProductionEditorTooltipFlipsAboveOwnerNearWorkAreaBottom" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.RefreshIgnoresPresentationRootsOwnedByAnotherDispatcher" storage="[repo]\artifacts\gsc-b\c1790992\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6caa10e4-c6d9-7038-9085-99cd780c4773">
+      <Execution id="e7fc7e8f-cb98-4279-8a08-bd974719af75" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\c1790992\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests" name="RefreshIgnoresPresentationRootsOwnedByAnotherDispatcher" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.ScopedTextEditorHelpUsesOwnerPlacementWithoutOverridingExplicitPlacement" storage="[repo]\artifacts\gsc-b\c1790992\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c1b01885-4c5a-0c23-740d-fa9b8c536de8">
+      <Execution id="6beef277-77a5-43a0-a5c7-8f1cf66153a9" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\c1790992\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests" name="ScopedTextEditorHelpUsesOwnerPlacementWithoutOverridingExplicitPlacement" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt" storage="[repo]\artifacts\gsc-b\c1790992\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="8f49a204-503a-5541-eb75-eca8d3bfd764">
+      <Execution id="6a145416-9b12-463c-a0a8-aec1b488edd0" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\c1790992\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests" name="QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="82b4a9a7-4381-2717-341f-35f397761339" executionId="7d387191-f694-483f-b277-80b10dacb9cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6caa10e4-c6d9-7038-9085-99cd780c4773" executionId="e7fc7e8f-cb98-4279-8a08-bd974719af75" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8f49a204-503a-5541-eb75-eca8d3bfd764" executionId="6a145416-9b12-463c-a0a8-aec1b488edd0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c1b01885-4c5a-0c23-740d-fa9b8c536de8" executionId="6beef277-77a5-43a0-a5c7-8f1cf66153a9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b20bb36-6c63-2e84-ae4c-aac7c00ea927" executionId="9e6f3530-cde3-4c9a-be18-c2ea0d70950d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.92]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.98]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.91]       该测试会移动系统鼠标指针；默认跳过。设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 后可单独运行。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt”。&#xD;
+[xUnit.net 00:00:04.52]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T13:53:21.2743065+08:00">
+        <Text>[xUnit.net 00:00:03.91]     GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests.QuickMousePassesCancelTooltipAndAStationaryDwellOpensIt [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T13:53:22.0335906+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

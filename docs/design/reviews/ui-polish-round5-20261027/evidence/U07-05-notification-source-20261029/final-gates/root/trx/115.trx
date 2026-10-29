@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestRun id="3d1e2bb1-ec4d-41ac-97fb-bb038080744c" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+
+  <Times creation="2026-10-29T08:15:26.7169444+08:00" queuing="2026-10-29T08:15:26.7169447+08:00" start="2026-10-29T08:15:22.4370482+08:00" finish="2026-10-29T08:15:26.7245069+08:00" />
+
+  <TestSettings name="default" id="9a00671c-2c4f-49b8-a46c-249edcab0ed5">
+
+    <Deployment runDeploymentRoot="redacted-deployment" />
+
+  </TestSettings>
+
+  <Results>
+
+    <UnitTestResult executionId="2c1f0af9-aaa4-4aae-a5a8-906b261814d8" testId="211bc7e0-54a5-f942-b50d-304b81cb77cc" testName="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests.RapidScrollWindowsKeepDecodeCacheAndMemoryBoundedAndRejectStaleFailure" computerName="redacted-host" duration="00:00:01.4460000" startTime="2026-10-29T08:15:24.7469804+08:00" endTime="2026-10-29T08:15:26.1728726+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2c1f0af9-aaa4-4aae-a5a8-906b261814d8">
+
+      <Output>
+
+        <StdOut>R18-03 thumbnail budget: windows=10,requests=120,decode_starts=120,cache=96/96,peak_active=3,managed_delta_max_bytes=87000,cancellations=1,stale_final=Ready&#xD;
+R18-03 raw managed_delta_bytes=49360,35240,77928,0,77016,27408,0,87000,0,55728&#xD;
+R18-03 raw active_after_windows=0,0,0,0,0,0,0,0,0,0,cache_samples=12,24,36,48,60,72,84,96,96,96</StdOut>
+
+      </Output>
+
+    </UnitTestResult>
+
+    <UnitTestResult executionId="3c4d9632-6eb1-49f4-8314-25870a070af5" testId="df31639d-011a-9280-e866-6c270c6d5b79" testName="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests.SourceDimensionsRemainOriginalWhilePreviewUsesCappedThumbnail" computerName="redacted-host" duration="00:00:00.1970000" startTime="2026-10-29T08:15:26.3247475+08:00" endTime="2026-10-29T08:15:26.5194687+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c4d9632-6eb1-49f4-8314-25870a070af5" />
+
+    <UnitTestResult executionId="8e7ebd8a-9b8a-4ea8-83af-25b9747a4f76" testId="9b3992ad-6c27-5557-953f-d7ea98b6fb7c" testName="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests.ComparisonDecodeKeepsOneToOneSourcePixelsWithinDimensionAndCacheBudgets" computerName="redacted-host" duration="00:00:00.1490000" startTime="2026-10-29T08:15:26.2090402+08:00" endTime="2026-10-29T08:15:26.3217450+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8e7ebd8a-9b8a-4ea8-83af-25b9747a4f76" />
+
+  </Results>
+
+  <TestDefinitions>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests.RapidScrollWindowsKeepDecodeCacheAndMemoryBoundedAndRejectStaleFailure" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="211bc7e0-54a5-f942-b50d-304b81cb77cc">
+
+      <Execution id="2c1f0af9-aaa4-4aae-a5a8-906b261814d8" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests" name="RapidScrollWindowsKeepDecodeCacheAndMemoryBoundedAndRejectStaleFailure" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests.ComparisonDecodeKeepsOneToOneSourcePixelsWithinDimensionAndCacheBudgets" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9b3992ad-6c27-5557-953f-d7ea98b6fb7c">
+
+      <Execution id="8e7ebd8a-9b8a-4ea8-83af-25b9747a4f76" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests" name="ComparisonDecodeKeepsOneToOneSourcePixelsWithinDimensionAndCacheBudgets" />
+
+    </UnitTest>
+
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests.SourceDimensionsRemainOriginalWhilePreviewUsesCappedThumbnail" storage="[repo]\artifacts\gsc-b\1a593ccc\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="df31639d-011a-9280-e866-6c270c6d5b79">
+
+      <Execution id="3c4d9632-6eb1-49f4-8314-25870a070af5" />
+
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\1a593ccc\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests" name="SourceDimensionsRemainOriginalWhilePreviewUsesCappedThumbnail" />
+
+    </UnitTest>
+
+  </TestDefinitions>
+
+  <TestEntries>
+
+    <TestEntry testId="211bc7e0-54a5-f942-b50d-304b81cb77cc" executionId="2c1f0af9-aaa4-4aae-a5a8-906b261814d8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="df31639d-011a-9280-e866-6c270c6d5b79" executionId="3c4d9632-6eb1-49f4-8314-25870a070af5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestEntry testId="9b3992ad-6c27-5557-953f-d7ea98b6fb7c" executionId="8e7ebd8a-9b8a-4ea8-83af-25b9747a4f76" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+  </TestEntries>
+
+  <TestLists>
+
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+
+  </TestLists>
+
+  <ResultSummary outcome="Completed">
+
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+
+    <Output>
+
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.80]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.84]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.69]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+
+    </Output>
+
+    <RunInfos>
+
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T08:15:26.6729860+08:00">
+
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+
+      </RunInfo>
+
+    </RunInfos>
+
+  </ResultSummary>
+
+</TestRun>
