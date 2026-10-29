@@ -1,0 +1,114 @@
+
+Theme QA (forced Light/Dark palettes, default tab)
+  light/Overview/1040x700 viewport probe done
+  light/Overview/1040x700 OK
+  light/Save/1040x700 viewport probe done
+  light/Save/1040x700 OK
+  light/Trainer/1040x700 viewport probe done
+  light/Trainer/1040x700 OK
+  light/Media/1040x700 viewport probe done
+  light/Media/1040x700 OK
+  light/Maintenance/1040x700 viewport probe done
+  light/Maintenance/1040x700 OK
+  light/Task/1040x700 viewport probe done
+  light/Task/1040x700 OK
+  light/Settings/1040x700 viewport probe done
+  light/Settings/1040x700 OK
+  light/Overview/1100x720 viewport probe done
+  light/Overview/1100x720 OK
+  light/Save/1100x720 viewport probe done
+  light/Save/1100x720 OK
+  light/Trainer/1100x720 viewport probe done
+  light/Trainer/1100x720 OK
+  light/Media/1100x720 viewport probe done
+  light/Media/1100x720 OK
+  light/Maintenance/1100x720 viewport probe done
+  light/Maintenance/1100x720 OK
+  light/Task/1100x720 viewport probe done
+  light/Task/1100x720 OK
+  light/Settings/1100x720 viewport probe done
+  light/Settings/1100x720 OK
+  light/Overview/1366x768 viewport probe done
+  light/Overview/1366x768 OK
+  light/Save/1366x768 viewport probe done
+  light/Save/1366x768 OK
+  light/Trainer/1366x768 viewport probe done
+  light/Trainer/1366x768 OK
+  light/Media/1366x768 viewport probe done
+  light/Media/1366x768 OK
+  light/Maintenance/1366x768 viewport probe done
+  light/Maintenance/1366x768 OK
+  light/Task/1366x768 viewport probe done
+  light/Task/1366x768 OK
+  light/Settings/1366x768 viewport probe done
+  light/Settings/1366x768 OK
+  light/Overview/2560x1440 viewport probe done
+  light/Overview/2560x1440 OK
+  light/Save/2560x1440 viewport probe done
+  light/Save/2560x1440 OK
+  light/Trainer/2560x1440 viewport probe done
+  light/Trainer/2560x1440 OK
+  light/Media/2560x1440 viewport probe done
+  light/Media/2560x1440 OK
+  light/Maintenance/2560x1440 viewport probe done
+  light/Maintenance/2560x1440 OK
+  light/Task/2560x1440 viewport probe done
+  light/Task/2560x1440 OK
+  light/Settings/2560x1440 viewport probe done
+  light/Settings/2560x1440 OK
+  dark/Overview/1040x700 viewport probe done
+  dark/Overview/1040x700 OK
+  dark/Save/1040x700 viewport probe done
+  dark/Save/1040x700 OK
+  dark/Trainer/1040x700 viewport probe done
+  dark/Trainer/1040x700 OK
+  dark/Media/1040x700 viewport probe done
+  dark/Media/1040x700 OK
+  dark/Maintenance/1040x700 viewport probe done
+  dark/Maintenance/1040x700 OK
+  dark/Task/1040x700 viewport probe done
+  dark/Task/1040x700 OK
+  dark/Settings/1040x700 viewport probe done
+  dark/Settings/1040x700 OK
+  dark/Overview/1100x720 viewport probe done
+  dark/Overview/1100x720 OK
+  dark/Save/1100x720 viewport probe done
+  dark/Save/1100x720 OK
+  dark/Trainer/1100x720 viewport probe done
+  dark/Trainer/1100x720 OK
+  dark/Media/1100x720 viewport probe done
+  dark/Media/1100x720 OK
+  dark/Maintenance/1100x720 viewport probe done
+  dark/Maintenance/1100x720 OK
+  dark/Task/1100x720 viewport probe done
+  dark/Task/1100x720 OK
+  dark/Settings/1100x720 viewport probe done
+  dark/Settings/1100x720 OK
+  dark/Overview/1366x768 viewport probe done
+  dark/Overview/1366x768 OK
+  dark/Save/1366x768 viewport probe done
+  dark/Save/1366x768 OK
+  dark/Trainer/1366x768 viewport probe done
+  dark/Trainer/1366x768 OK
+  dark/Media/1366x768 viewport probe done
+  dark/Media/1366x768 OK
+  dark/Maintenance/1366x768 viewport probe done
+  dark/Maintenance/1366x768 OK
+  dark/Task/1366x768 viewport probe done
+  dark/Task/1366x768 OK
+  dark/Settings/1366x768 viewport probe done
+  dark/Settings/1366x768 OK
+  dark/Overview/2560x1440 viewport probe done
+  dark/Overview/2560x1440 OK
+  dark/Save/2560x1440 viewport probe done
+  dark/Save/2560x1440 OK
+  dark/Trainer/2560x1440 viewport probe done
+  dark/Trainer/2560x1440 OK
+  dark/Media/2560x1440 viewport probe done
+  dark/Media/2560x1440 OK
+  dark/Maintenance/2560x1440 viewport probe done
+  dark/Maintenance/2560x1440 OK
+  dark/Task/2560x1440 viewport probe done
+  dark/Task/2560x1440 OK
+  dark/Settings/2560x1440 viewport probe done
+  dark/Settings/2560x1440 OK

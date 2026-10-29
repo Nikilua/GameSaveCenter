@@ -1,0 +1,53 @@
+[reports/u08-06-before-render-qa-report.txt] count=26
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaInboxGrid table viewport is only 230 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM light/Media/1040x700 MediaInboxGrid viewport 66 DIP (<236)
+  PROBLEM light/Media/1100x720 MediaInboxGrid viewport 86 DIP (<236)
+  PROBLEM light/Media/1366x768 MediaInboxGrid viewport 92 DIP (<236)
+  PROBLEM light/Media/1366x768 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM light/Media/2560x1440 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM dark/Media/1040x700 MediaInboxGrid viewport 66 DIP (<236)
+  PROBLEM dark/Media/1100x720 MediaInboxGrid viewport 86 DIP (<236)
+  PROBLEM dark/Media/1366x768 MediaInboxGrid viewport 92 DIP (<236)
+  PROBLEM dark/Media/1366x768 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM dark/Media/2560x1440 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM Media/step1:1100x720 MediaInboxGrid viewport 86 DIP (<236)
+  PROBLEM Media/step1:1100x720 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM Shell Media 1040x700 inbox grid is shorter than four readable rows (123 DIP).
+  PROBLEM Shell Media 1100x720 inbox grid is shorter than four readable rows (203 DIP).
+  PROBLEM Sidebar rapid-toggle transition did not settle on its requested target.
+  PROBLEM Sidebar rapid toggle did not keep the latest expanded target (width=230.1).
+[reports/u08-06-after-render-qa-report.txt] count=25
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaInboxGrid table viewport is only 230 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM Media tab0 MediaClassificationPreviewItems list viewport is only 126 DIP (< 236)
+  PROBLEM light/Media/1040x700 MediaInboxGrid viewport 66 DIP (<236)
+  PROBLEM light/Media/1100x720 MediaInboxGrid viewport 86 DIP (<236)
+  PROBLEM light/Media/1366x768 MediaInboxGrid viewport 92 DIP (<236)
+  PROBLEM light/Media/1366x768 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM light/Media/2560x1440 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM dark/Media/1040x700 MediaInboxGrid viewport 66 DIP (<236)
+  PROBLEM dark/Media/1100x720 MediaInboxGrid viewport 86 DIP (<236)
+  PROBLEM dark/Media/1366x768 MediaInboxGrid viewport 92 DIP (<236)
+  PROBLEM dark/Media/1366x768 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM dark/Media/2560x1440 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM Media/step1:1100x720 MediaInboxGrid viewport 86 DIP (<236)
+  PROBLEM Media/step1:1100x720 MediaClassificationPreviewItems viewport 126 DIP (<236)
+  PROBLEM Shell Media 1040x700 inbox grid is shorter than four readable rows (123 DIP).
+  PROBLEM Shell Media 1100x720 inbox grid is shorter than four readable rows (203 DIP).
+  PROBLEM Sidebar rapid-toggle transition did not settle on its requested target.

@@ -1,3 +1,10 @@
+## 2026-10-29/30 5040ac5 GitHub CI通过
+
+精确SHA run40958239784已completed/success，head=5040ac555c3d202b144c4ca9730a87978d139252。SDK8 baseline job123743921559、SDK10.0.401 job123743921221均success，所有步骤完成；preview artifact12937747846 digest sha256:3b67364eb23b3651011fc372f9f222ee7f9b8f303672f14217c9ccd8d1abe13e；build diagnostics12937583089 digest sha256:210c25bd803e9490874ce902f92c20c37a3c46390a8956727f3da073c0d49dde；SDK10 diagnostics12936770001 digest sha256:bbf7236c8ff949397e2ede03a953c1402264f3950060b85e32d583c3a803ac8f。required-check名单仍因既有403权限不足远端待验，不重复探测。
+
+## 2026-10-30 U09-01补U08-05/06双主题配对
+
+U08-05对比`d6d940e7`→`d19570fa`，U08-06对比`b9bdd2d3`→`e81c17ce`；固定UTC、浅/深主题、1040×700与1366×768样本。U08-05改后1366窗口出现启动中状态；两侧完整Render QA均0问题。U08-06改后维护动作分组且保留摘要/展开；目标主题行全OK，旧完整报告仍记录26/25个Media/侧栏问题。当前5040ac5 SDK8 Release相关测试5/5、源码校验0、WPF静态26 XAML/0 error/26 warning/164 info。首次压缩快照测试漏设源码身份环境变量的失败日志/TRX保留，后续准确身份测试通过。产物与哈希见`../design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-05-06-pair-20261030/BASELINE.md`。仅更新证据；不执行真实工具/恢复/删除/云写入，真实Playnite/外部UIA/键鼠IME/物理DPI待验；U08-05/06仍代码完成待验收，U09-01继续进行中。本批`.tmp`清理18,652文件/1,412,199,397字节，C盘空闲3,973,689,344→5,437,734,912字节、D盘不变；细节见对应`cleanup.json`。
 ## 2026-10-30 U08配对证据提交CI待验
 
 证据提交`f8feee813c9aaebecec5ff3f644c8038a599685c`已推送`main`。该SHA的`windows-build.yml`应有`build`和`sdk10-build`两项适用job。GitHub连接器HTTP 429，公开Actions API未认证限额，Browser Computer Use kernel初始化失败；本机没有`gh` CLI。run/job/artifact身份不可读，不能算CI通过。下一步用已认证GitHub API按该精确SHA查询runs、jobs与artifacts，再核run/job终态、步骤、artifact head SHA与digest；如果仍受限，由有权限维护者执行只读查询。具体状态见Round5 `PROGRESS.md`。

@@ -1,0 +1,55 @@
+{
+  "cleanedUtc": "2026-10-29T22:36:21.9136798Z",
+  "repoRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "deletedRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u08-05-06-pair-20261030",
+  "verifiedInsideRepoTmp": true,
+  "deletedFileCount": 18652,
+  "deletedBytes": 1412199397,
+  "deletedTopLevelPaths": [
+    "renders/",
+    "snapshots/",
+    "tests/",
+    "initial-script-parameter-failure.json",
+    "preflight.json",
+    "run_snapshot.ps1",
+    "source-validation.log",
+    "wpf-static.log"
+  ],
+  "reparsePoints": 0,
+  "runningRenderHarnessProcesses": 0,
+  "markdownScratchReferences": 0,
+  "evidenceRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-01-U08-05-06-pair-20261030",
+  "evidenceBytesBeforeCleanup": 10256533,
+  "screenshotPairs": 24,
+  "screenshotHashMismatches": 0,
+  "otherCopiedFiles": 32,
+  "otherCopiedFileHashMismatches": 0,
+  "retainedSdkPath": ".tmp/round5-sdk8-8.0.423/dotnet.exe",
+  "retainedSdkExists": true,
+  "freeSpaceBefore": [
+    {
+      "Name": "C",
+      "Free": 3973689344,
+      "Used": 210775719936
+    },
+    {
+      "Name": "D",
+      "Free": 18827005952,
+      "Used": 276145807360
+    }
+  ],
+  "freeSpaceAfter": [
+    {
+      "Name": "C",
+      "Free": 5437734912,
+      "Used": 209311674368
+    },
+    {
+      "Name": "D",
+      "Free": 18827005952,
+      "Used": 276145807360
+    }
+  ],
+  "evidenceFileCountBeforeCleanupRecord": 65,
+  "finalEvidenceFileCount": 66
+}

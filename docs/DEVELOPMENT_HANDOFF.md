@@ -1,3 +1,8 @@
+## 2026-10-30 Round5 当前交接
+
+U09-01新增U08-05/06同数据双主题配对见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-05-06-pair-20261030/BASELINE.md`；当前冻结源码`5040ac555c3d202b144c4ca9730a87978d139252`相关行为5/5，source validation exit0、WPF静态26 XAML/0 error。U08-05/06保持代码完成待验收；U09-01仍需完成剩余配对盘点，U09-04仍待归因，U09-06 required-check仍远端待验。
+
+精确SHA `5040ac555c3d202b144c4ca9730a87978d139252` 的workflow run40958239784已completed/success；SDK8 job123743921559、SDK10 job123743921221及所有步骤均成功。Preview artifact12937747846、build diagnostics12937583089、SDK10 diagnostics12936770001的head SHA与digest已核；详见PROGRESS中的记录。required-check先前403仍不重复探测。真实Playnite宿主、外部UIA/Narrator、实体输入/IME/物理DPI仍待验；不得执行真实存档恢复、媒体删除或云端写入作为视觉验证。
 ## 2026-10-30 Round5 CI续查
 
 当前Round5证据提交`f8feee813c9aaebecec5ff3f644c8038a599685c`已推送到`main`，managed worktree处于detached HEAD。该SHA在`windows-build.yml`的`build`及`sdk10-build`尚缺run/job/artifact身份：GitHub连接器和未认证REST均HTTP429；本机`gh`缺失，Computer Use kernel资源初始化失败。限流解除后按SHA查询workflow runs，逐项核build/test/render/static/package步骤、SDK10复核、终态和artifact digest。U08-01/02仍代码完成待验收；Demo树缺失的边界见U09-01配对证据。

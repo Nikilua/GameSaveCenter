@@ -1,0 +1,37 @@
+{
+  "Root": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "Phase": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u08-05-06-pair-20261030",
+  "StartUtc": "2026-10-29T21:37:28.0915475Z",
+  "Entries": [
+    {
+      "Path": "GameSaveCenter-Run.cmd",
+      "Exists": true
+    },
+    {
+      "Path": "GameSaveCenter-一键构建安装运行.cmd",
+      "Exists": true
+    },
+    {
+      "Path": "scripts\\build.cmd",
+      "Exists": true
+    }
+  ],
+  "RunningBuildProcesses": null,
+  "DiskFreeBefore": [
+    {
+      "Drive": "C",
+      "FreeBytes": 5503307776
+    },
+    {
+      "Drive": "D",
+      "FreeBytes": 18827485184
+    }
+  ],
+  "Sdk8Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423\\dotnet.exe",
+  "Sdk8Version": "8.0.423",
+  "BeforeU08_06": "b9bdd2d3a09c9b0634729b72ebb81fcc3042c10c",
+  "AfterU08_06": "e81c17ce7df7dc46f84bdc9a163aac360b89f842",
+  "BeforeU08_05": "d6d940e70c24d87a742882cbd052c45cd9926c8f",
+  "AfterU08_05": "d19570fad7f056e44b2f0d5aee2eca3260d04ae7",
+  "SampleUtc": "2026-10-28T09:00:00Z"
+}

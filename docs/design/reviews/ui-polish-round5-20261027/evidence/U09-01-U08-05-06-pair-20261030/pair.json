@@ -1,0 +1,98 @@
+{
+  "evidence": "U09-01 paired screenshots for U08-05 and U08-06",
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "windowDips": [
+    "1040x700",
+    "1366x768"
+  ],
+  "renderHarness": {
+    "dataSource": "FakeDashboardData",
+    "clock": "FakeSampleClock.UtcNow",
+    "toolBusyState": "GSC_RENDER_TOOL_BUSY=1; injected only into the temporary RenderHarness fixture",
+    "reportCommitFieldNote": "The archived snapshot has no .git directory; the Render QA report's Commit field reflects the enclosing checkout 5040ac555c3d202b144c4ca9730a87978d139252. Exact source identity is the commit SHA and archive SHA recorded below."
+  },
+  "U08-05": {
+    "change": "Per-request tool launch busy state and accessible status",
+    "before": {
+      "commit": "d6d940e70c24d87a742882cbd052c45cd9926c8f",
+      "archiveSha256": "062A6BBE18F3F500D81441CE94928812BBE0B1002F4E6E1BBAF12A0FB06920C1",
+      "workerBuildExit": 0,
+      "renderHarnessBuildExit": 0,
+      "renderQaExit": 0,
+      "primaryPngCount": 334,
+      "problemCount": 0,
+      "renderReportSha256": "FE3B01D1D73A54FCEBEC51961601869C067A026F447CD19EDE5DED6E31211811"
+    },
+    "after": {
+      "commit": "d19570fad7f056e44b2f0d5aee2eca3260d04ae7",
+      "archiveSha256": "20629697F64189691AA2CB345A22E0ED945D395CF4DCCD46D23921B26ADED397",
+      "workerBuildExit": 0,
+      "renderHarnessBuildExit": 0,
+      "renderQaExit": 0,
+      "primaryPngCount": 334,
+      "problemCount": 0,
+      "renderReportSha256": "07AC99DB587E847437201920DEC213A4268B2B1A2F7DA5D8A95AE3FA9F4858AC"
+    },
+    "observation": "At 1366x768, both themes show the bound '正在启动所选工具…' status beside the existing launch button. The 1040x700 layout uses its narrow responsive arrangement and does not show the right-side tool inspector."
+  },
+  "U08-06": {
+    "change": "Maintenance actions grouped by next step with a three-item preview and disclosure for additional actions; diagnostic summary and bound copy action remain available",
+    "sameFixtureActionIds": [
+      "inspection-1",
+      "transfer-1",
+      "quarantine-1"
+    ],
+    "before": {
+      "commit": "b9bdd2d3a09c9b0634729b72ebb81fcc3042c10c",
+      "archiveSha256": "B9D1EAC8A5A9BEF29D5F4D08BD980BD9D466BF1255C354357922F334AC372433",
+      "workerBuildExit": 0,
+      "renderHarnessBuildExit": 0,
+      "renderQaExit": 1,
+      "problemCount": 26,
+      "targetThemeRows": "8/8 OK",
+      "renderReportSha256": "F72494925289630E24CF8A1D900C04C9F7FFA8981A2FA6179122C2BB075C85B2",
+      "focusedThemeReportSha256": "5AC6505142AA00370682FFDE340110531E46E8CEA0ED554BFB96DD7DEBFB7221",
+      "snapshotMetadataNote": "Raw snapshot targetThemeRowsOk was empty because of a report-parsing defect; the 8/8 status is independently derived from the preserved focused-theme report."
+    },
+    "after": {
+      "commit": "e81c17ce7df7dc46f84bdc9a163aac360b89f842",
+      "archiveSha256": "33DEF20748B697FA871AF8E988908334C5A655B479F9016CED8E4D0340527FD3",
+      "workerBuildExit": 0,
+      "renderHarnessBuildExit": 0,
+      "renderQaExit": 1,
+      "problemCount": 25,
+      "renderReportSha256": "B89B86F189FD1F5329F9A7C547C8F528AFBB6C8511E076070BA96AA96005C2FC",
+      "targetThemeRows": "8/8 OK"
+    },
+    "historicalQaFailures": "Both reports' problems concern existing Media viewport checks and sidebar rapid-toggle checks, outside the changed maintenance/trainer surfaces. Full reports and exact PROBLEM lines are retained."
+  },
+  "behaviorVerification": {
+    "commit": "5040ac555c3d202b144c4ca9730a87978d139252",
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "trx": "tests/U08-05-06-current-main-focused.trx",
+    "initialInvocationFailure": "An isolated git-archive snapshot was tested without GSC_BUILD_COMMIT and failed one identity-guarded source test (2 passed, 0 skipped). It is preserved and not counted. The current tracked checkout was then tested with GSC_BUILD_COMMIT and GSC_SOURCE_ROOT set by its exact HEAD; 5/5 passed."
+  },
+  "staticChecks": {
+    "sourceValidationExit": 0,
+    "wpfStaticAuditExit": 0,
+    "xamlFiles": 26,
+    "errors": 0,
+    "warnings": 26,
+    "info": 164
+  },
+  "unverified": [
+    "Playnite host rendering and host UI Automation/Narrator",
+    "physical keyboard and IME behavior",
+    "physical DPI and multi-monitor behavior",
+    "real tool launch, save restoration, media deletion, and cloud writes"
+  ]
+}

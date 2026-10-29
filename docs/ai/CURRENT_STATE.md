@@ -1,3 +1,6 @@
+## 2026-10-30 U09-01 U08-05/06配对更新
+
+冻结主线`5040ac555c3d202b144c4ca9730a87978d139252`的U08-05/06相关测试5/5、0 skip；历史配对截图与Render报告见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-05-06-pair-20261030/BASELINE.md`。U08-05忙碌状态和U08-06维护分组保持代码完成待验收；U09-01、U09-04进行中，U09-06 required-check仍远端待验。5040ac5的run40958239784已completed/success，SDK8/SDK10 jobs及三个artifact均绑定此SHA；required-check名单仍因既有403远端待验。当前状态计数6/71/2/1。旧完整QA的Media/侧栏问题保留，Demo树和真实宿主/实体输入/物理DPI仍待验；未执行真实恢复、媒体删除或云写入。
 ## 2026-10-30 f8feee81 GitHub CI远端待验
 
 `f8feee813c9aaebecec5ff3f644c8038a599685c`已推送`main`。`windows-build.yml`适用`build`与`sdk10-build`；GitHub连接器HTTP429、公开Actions API未认证速率限制，本机无`gh`，Computer Use kernel初始化失败，所以暂时没有run/job/artifact身份，不能记通过。限流恢复后使用认证API按head SHA查run，再核两job与artifact digest；见`docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md`。

@@ -1,0 +1,36 @@
+[reports/u08-06-before-focused-theme-report.txt]
+  light/Trainer/1040x700 OK
+  light/Maintenance/1040x700 OK
+  light/Trainer/1366x768 OK
+  light/Maintenance/1366x768 OK
+  dark/Trainer/1040x700 OK
+  dark/Maintenance/1040x700 OK
+  dark/Trainer/1366x768 OK
+  dark/Maintenance/1366x768 OK
+[reports/u08-06-after-render-qa-report.txt]
+  light/Trainer/1040x700 OK
+  light/Maintenance/1040x700 OK
+  light/Trainer/1366x768 OK
+  light/Maintenance/1366x768 OK
+  dark/Trainer/1040x700 OK
+  dark/Maintenance/1040x700 OK
+  dark/Trainer/1366x768 OK
+  dark/Maintenance/1366x768 OK
+[reports/u08-05-before-render-qa-report.txt]
+  light/Trainer/1040x700 OK
+  light/Maintenance/1040x700 OK
+  light/Trainer/1366x768 OK
+  light/Maintenance/1366x768 OK
+  dark/Trainer/1040x700 OK
+  dark/Maintenance/1040x700 OK
+  dark/Trainer/1366x768 OK
+  dark/Maintenance/1366x768 OK
+[reports/u08-05-after-render-qa-report.txt]
+  light/Trainer/1040x700 OK
+  light/Maintenance/1040x700 OK
+  light/Trainer/1366x768 OK
+  light/Maintenance/1366x768 OK
+  dark/Trainer/1040x700 OK
+  dark/Maintenance/1040x700 OK
+  dark/Trainer/1366x768 OK
+  dark/Maintenance/1366x768 OK

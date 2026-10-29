@@ -1,3 +1,6 @@
+## 2026-10-30：历史RenderHarness配对取证
+
+`git archive`快照不含`.git`，Render QA文本中的Commit字段会读到外层工作树HEAD，不能作为历史源身份；需以原始Git commit SHA和`git archive` SHA-256共同标识。对动态WPF状态取图时，固定UTC时钟和假数据属性，并保存临时fixture/探针哈希。U08-05/06已补双主题、1040×700/1366×768目标页截图；历史全局QA若有Media/侧栏问题，必须在报告里保留并按目标页逐行核对，不得宣称全局通过。当前行为测试必须设置真实`GSC_BUILD_COMMIT`与`GSC_SOURCE_ROOT`，不得从缺少Git身份的压缩快照直接裸跑。
 ## 2026-10-30 Round5 CI查询限流记录
 
 Round5文档提交`f8feee813c9aaebecec5ff3f644c8038a599685c`已推送`main`；`windows-build.yml`应运行`build`和`sdk10-build`。本次GitHub连接器被HTTP429限流，公开未认证REST同样达到限额，`gh` CLI不存在且Computer Use kernel资产路径缺失；未获得run/job/artifact身份。不要将远端状态推断为通过。后续限流恢复后以认证GitHub API按head SHA查Actions run、jobs、artifacts；required-check先前403不重复探测。

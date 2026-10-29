@@ -1,0 +1,27 @@
+{
+  "label": "u08-05-before-d6d940e7",
+  "commit": "d6d940e70c24d87a742882cbd052c45cd9926c8f",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "archiveBytes": 117811123,
+  "archiveSha256": "062A6BBE18F3F500D81441CE94928812BBE0B1002F4E6E1BBAF12A0FB06920C1",
+  "archiveStartedUtc": "2026-10-29T22:07:55.6436167Z",
+  "archiveExpandedUtc": "2026-10-29T22:08:51.1178050Z",
+  "fakeDashboardDataSha256": "1E93A0679B399C8389937E4A3D4A3A805692BE6FBAD3EF93D71613CC4CC51DC5",
+  "fakeSampleClockSha256": "992FEEBBCA8C2B59C2519DD915A22ADB5AE94408434F84E3A407661514E08E83",
+  "renderHarnessProbeSha256": "553023DC0175614B8E85582FD33D538973FEE4FA7555411575116F6C4B468F74",
+  "workerBuildExit": 0,
+  "renderHarnessBuildExit": 0,
+  "renderQaExit": 0,
+  "pngCount": 334,
+  "problemCount": 0,
+  "assemblySha256": {
+    "renderHarness": "823D2FB966507A3412BA08782D9E28B9701028511A885E214A339FADF6810F99",
+    "plugin": "0DCBEB0002482EE50E08B36130A43058CE4BBF729E7A2D75E4D694FFDDA6914D",
+    "worker": "EB807D212EE2A927623ACF6BF12045A36BEB3C53D9C49E13313ED09A6B9AAD32"
+  },
+  "reportPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u08-05-06-pair-20261030\\renders\\u08-05-before-d6d940e7\\render-qa-report.txt",
+  "reportSha256": "FE3B01D1D73A54FCEBEC51961601869C067A026F447CD19EDE5DED6E31211811",
+  "retainedSource": true
+}
