@@ -1,0 +1,14 @@
+--- original/Program.cs
+
++++ probe/Program.cs
+
+@@ -92,7 +92,7 @@
+
+     };
+ 
+     public static int Main(string[] args)
+-    {
++    { if(args.Length>1 && args[0]=="u05timings"){int result=0;var probe=new Thread(()=>result=U05MotionProbe.Run(args[1]));probe.SetApartmentState(ApartmentState.STA);probe.Start();probe.Join();return result;} 
+         if (args.Length > 0
+             && (args[0].Equals("audit", StringComparison.OrdinalIgnoreCase)
+                 || args[0].Equals("--audit", StringComparison.OrdinalIgnoreCase)))

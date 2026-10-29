@@ -1,0 +1,30 @@
+{
+  "BoundaryChecked": true,
+  "After": [
+    {
+      "Name": "C",
+      "Free": 2312900608
+    },
+    {
+      "Name": "D",
+      "Free": 10620936192
+    }
+  ],
+  "Before": [
+    {
+      "Name": "C",
+      "Free": 2312900608
+    },
+    {
+      "Name": "D",
+      "Free": 10398502912
+    }
+  ],
+  "Files": 2532,
+  "References": "All static/dynamic reports, source identity, instrumentation and required images archived and hash verified; source snapshots regenerate with recorded git archive SHA",
+  "Preserved": "Current build/package/SDK, all other task/user outputs",
+  "NoReparse": true,
+  "Bytes": 216579544.0,
+  "ExclusiveOpenChecked": true,
+  "Deleted": ".tmp\\round5-u09-pairs-20261029"
+}

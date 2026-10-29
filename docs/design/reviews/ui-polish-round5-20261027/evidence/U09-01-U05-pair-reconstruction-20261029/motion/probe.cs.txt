@@ -1,0 +1,29 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using GameSaveCenter.Playnite;
+using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.ViewModels;
+using GameSaveCenter.Playnite.Views;
+using GameSaveCenter.Playnite.Settings;
+namespace GameSaveCenter.RenderHarness;
+internal static class U05MotionProbe
+{
+ static readonly BindingFlags Flags=BindingFlags.Instance|BindingFlags.NonPublic;
+ static void Set(object o,string name,object value)=>o.GetType().GetField(name,Flags)!.SetValue(o,value);
+ static void Pump(double ms){var frame=new DispatcherFrame();var timer=new DispatcherTimer(DispatcherPriority.Background){Interval=TimeSpan.FromMilliseconds(Math.Max(1,ms))};timer.Tick+=(_,_)=>{timer.Stop();frame.Continue=false;};timer.Start();Dispatcher.PushFrame(frame);}
+ static void Theme(UserControl view,GameSaveCenterThemeMode mode)=>typeof(Program).GetMethod("ApplyThemePalette",BindingFlags.Static|BindingFlags.NonPublic,null,new[]{typeof(UserControl),typeof(GameSaveCenterThemeMode),typeof(bool),typeof(bool)},null)!.Invoke(null,new object[]{view,mode,false,true});
+ static void Capture(Window window,string path){var root=(FrameworkElement)window.Content;var bmp=new RenderTargetBitmap((int)Math.Ceiling(root.ActualWidth),(int)Math.Ceiling(root.ActualHeight),96,96,PixelFormats.Pbgra32);bmp.Render(root);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(bmp));using(var stream=File.Create(path))png.Save(stream);}
+ static void Sample(Window window,FrameworkElement element,string scenario,string dir,StringBuilder report,Action action){var request=Stopwatch.StartNew();action();var actionMs=request.Elapsed.TotalMilliseconds;var sw=Stopwatch.StartNew();foreach(var target in new[]{0,16,32,64,128,240,400,800,1600}){if(target>0)Pump(Math.Max(1,target-sw.Elapsed.TotalMilliseconds));var matrix=element.RenderTransform?.Value??Matrix.Identity;report.AppendLine(string.Join(",",scenario,target,actionMs.ToString("F3",System.Globalization.CultureInfo.InvariantCulture),sw.Elapsed.TotalMilliseconds.ToString("F3",System.Globalization.CultureInfo.InvariantCulture),element.Opacity.ToString("F4",System.Globalization.CultureInfo.InvariantCulture),matrix.OffsetY.ToString("F4",System.Globalization.CultureInfo.InvariantCulture),element.Visibility,element.IsHitTestVisible,element.ActualWidth.ToString("F2"),element.ActualHeight.ToString("F2"),DependencyPropertyHelper.GetValueSource(element,UIElement.OpacityProperty).IsAnimated));if(target==0||target==64||target==400)Capture(window,Path.Combine(dir,scenario+"-"+target+".png"));}}
+ public static int Run(string output){Directory.CreateDirectory(output);var app=new Application{ShutdownMode=ShutdownMode.OnExplicitShutdown};app.Resources["BaseTextBlockStyle"]=new Style(typeof(TextBlock));try{foreach(var mode in new[]{GameSaveCenterThemeMode.Light,GameSaveCenterThemeMode.Dark}){var dir=Path.Combine(output,mode.ToString());Directory.CreateDirectory(dir);var data=new FakeDashboardData(60);var shell=new AcrylicProductionShellView{DataContext=data,MotionEnabledProvider=()=>true,SystemMotionEnabledProviderForAudit=()=>true};typeof(AcrylicProductionShellView).GetMethod("CreatePages",Flags)!.Invoke(shell,null);var vm=(DashboardViewModel)FormatterServices.GetUninitializedObject(typeof(DashboardViewModel));Set(vm,"plugin",FormatterServices.GetUninitializedObject(typeof(GameSaveCenterPlugin)));Set(vm,"gamePicker",new GamePickerViewModel());Set(vm,"navigationHistory",new WorkspaceNavigationStack());Set(shell,"viewModel",vm);foreach(var page in shell.WorkspaceViews)page.DataContext=data;Theme(shell,mode);var tasks=shell.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks) ?? throw new InvalidOperationException("Task page missing");Theme(tasks,mode);var motion=tasks.GetType().GetProperty("UiAnimationsEnabled");motion?.SetValue(tasks,true);tasks.GetType().GetProperty("SystemMotionEnabledProviderForAudit",Flags)?.SetValue(tasks,(Func<bool>)(()=>true));var window=new Window{Width=1040,Height=700,Content=shell,ShowInTaskbar=false,WindowStyle=WindowStyle.None,ResizeMode=ResizeMode.NoResize};try{shell.NavigateTo(WorkspaceKind.Overview);window.Show();window.UpdateLayout();Pump(450);var report=new StringBuilder("scenario,target_after_return_ms,action_ms,actual_after_return_ms,opacity,translate_y,visibility,hit_test,width,height,opacity_animated\n");var host=shell.PageHostForAudit;Sample(window,host,"page-first",dir,report,()=>shell.NavigateTo(WorkspaceKind.Tasks));shell.NavigateTo(WorkspaceKind.Overview);Pump(500);Sample(window,host,"page-cached",dir,report,()=>shell.NavigateTo(WorkspaceKind.Tasks));var grid=(DataGrid)tasks.FindName("TaskGrid");grid.SelectedIndex=0;window.UpdateLayout();Pump(450);var inspector=(FrameworkElement)tasks.FindName("TaskDetailInspectorFrame");var open=(Button)tasks.FindName("TaskCompactDetailsButton");var close=(Button)tasks.FindName("TaskCompactCloseDetailsButton");Sample(window,inspector,"details-open",dir,report,()=>open.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)));Sample(window,inspector,"details-close",dir,report,()=>close.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)));File.WriteAllText(Path.Combine(dir,"samples.csv"),report.ToString());}finally{window.Close();}}return 0;}catch(Exception ex){File.WriteAllText(Path.Combine(output,"failure.txt"),ex.ToString());return 1;}finally{app.Shutdown();}}
+}
