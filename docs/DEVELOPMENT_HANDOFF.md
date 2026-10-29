@@ -1,3 +1,7 @@
+## 2026-10-30 U09-04当前源码固定轮次性能补测
+
+当前冻结候选（生产与RenderHarness源码等同`5c0c57b0`）以SDK8.0.423构建离屏诊断探针成功，三轮各70周期/297操作/30秒settle。托管分配与e6旧样本接近；搜索/滚动p95及中位数接近，但当前Rendering回调p95、长间隔比例、工作区布局p95和逐页最大逻辑布局样本较高。旧e6时间字段同值但`pinned=False`、当前`pinned=True`；同探针重建e6遇便携SDK缺两个workload locator目录而exit1，诊断已归档。结论仅为待归因的离屏尾部信号，不能说由页签模板造成，也不能代替真实Playnite/实体键盘/IME/物理呈现帧验证。U00原始帧与累计分配仍缺失，U09-04保持进行中。证据：`../design/reviews/ui-polish-round5-20261027/evidence/U09-04-currentperf-20261030/BASELINE.md`。
+
 ## 2026-10-30 U04-05～08冻结状态复核
 
 U04-05～08现按冻结源`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`记录：完整中文根链、独立`scripts/build.cmd`及run40900374673两SDK jobs均成功，旧Q14失败保留。真实IME/UIA客户端、CanExecute取消、窗口失活、系统动画设置与长期宿主内存观察仍待验。

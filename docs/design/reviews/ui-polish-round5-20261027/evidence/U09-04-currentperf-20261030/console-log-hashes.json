@@ -1,0 +1,22 @@
+{
+  "archive": "console-logs.zip",
+  "archiveSha256": "138991ae3013656627d3a6ed14e240ed283a540ca723a291de6aa37ab987d300",
+  "fileCount": 3,
+  "files": [
+    {
+      "path": "measurement-1-current/console.txt",
+      "bytes": 38041,
+      "sha256": "7009834fa532e8ef4efb8eed632950d0be7003257d9dea688e21487490816c7a"
+    },
+    {
+      "path": "measurement-2-current/console.txt",
+      "bytes": 37641,
+      "sha256": "756b676ab4fdbc8b2986887b57a6685da4c001229c37519ac13c0945d69d62d8"
+    },
+    {
+      "path": "measurement-3-current/console.txt",
+      "bytes": 37633,
+      "sha256": "8a436bfa0d93f0c3eac658a6e3f3268b5fab42672d9ddb45373e8f116bb5354e"
+    }
+  ]
+}

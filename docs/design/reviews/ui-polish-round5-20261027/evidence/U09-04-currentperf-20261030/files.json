@@ -1,0 +1,197 @@
+{
+  "generatedAtUtc": "2026-10-29T18:52:53.0746552Z",
+  "fileCount": 38,
+  "totalBytes": 1258286,
+  "files": [
+    {
+      "path": "archive-verification.json",
+      "bytes": 728,
+      "sha256": "4daf51234fc0b8e19afc13a6a8efebf217d5a47f9d16d87b3fda4c74035dedc4"
+    },
+    {
+      "path": "BASELINE.md",
+      "bytes": 3876,
+      "sha256": "d0a407f7e04bb1367caef8c4b8e5bd783f27a710081df7c4cc7f1ce42cf010be"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 2779,
+      "sha256": "d059b2fad6364d9070fa79b2ddd417eee50dc4496b9ca2c9c24ea25bc2ad1cf2"
+    },
+    {
+      "path": "comparison.csv",
+      "bytes": 792,
+      "sha256": "d95fec5fca12f051ce1c8d6a8935112cf2e117d1d3e0239267a0221752470c7a"
+    },
+    {
+      "path": "console-log-hashes.json",
+      "bytes": 687,
+      "sha256": "db7ed9ab2e7ec6e653db8f07400db262c59a6458944e8f4ea78d6cb6746c5fab"
+    },
+    {
+      "path": "console-logs.zip",
+      "bytes": 9814,
+      "sha256": "138991ae3013656627d3a6ed14e240ed283a540ca723a291de6aa37ab987d300"
+    },
+    {
+      "path": "current-build-exit.txt",
+      "bytes": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "path": "current-build.log",
+      "bytes": 2303,
+      "sha256": "2077ce92b93775498a77cd6b548eeff3414900439872e832fd7bd16eddb30e3c"
+    },
+    {
+      "path": "e6-replay-build-diag.log",
+      "bytes": 875788,
+      "sha256": "f16f58b1ef21407c2623f8161d66fb2fc312805e8eac4324b5e4d3250f36d553"
+    },
+    {
+      "path": "e6-replay-build-exit.txt",
+      "bytes": 1,
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+    },
+    {
+      "path": "e6-replay-build-worker-processes.json",
+      "bytes": 17274,
+      "sha256": "a7390eb07f9598f183f31931e0657a948cd657ff51d59fb6d0df55ddbb542672"
+    },
+    {
+      "path": "e6-replay-build.log",
+      "bytes": 81,
+      "sha256": "a524bdfac9dc283cc5c0f2571744f12dea89a225cd3da09276d456c1bd91e55e"
+    },
+    {
+      "path": "measurement-1-current/enduranceprobe-report.txt",
+      "bytes": 38031,
+      "sha256": "e7cfa66b150549a155da262cf9b787c08625e0140a43e9ce9fc55eaef6250eac"
+    },
+    {
+      "path": "measurement-1-current/identity.json",
+      "bytes": 1099,
+      "sha256": "b71d169998b70902b73256f36c9a2f3b62ea4b9992aabb7aeb50b3e34e40222d"
+    },
+    {
+      "path": "measurement-1-current/page-cycles.csv",
+      "bytes": 2751,
+      "sha256": "fe294b982867bee03ed497db050e36b118e465410758d1d139a1bf9730c3f7c5"
+    },
+    {
+      "path": "measurement-1-current/parts.csv",
+      "bytes": 6887,
+      "sha256": "985b6756312a51eeba17a2b14070f5ba80dff79767fd5729a13525978d280767"
+    },
+    {
+      "path": "measurement-1-current/performance-frames.csv",
+      "bytes": 61613,
+      "sha256": "5d8573c8e6d70efac52844ccdb5899ca40d35bdff76e0a048a739ea43bc2d654"
+    },
+    {
+      "path": "measurement-1-current/performance-summary.txt",
+      "bytes": 702,
+      "sha256": "d3ac3ce33a721e4d3c12b8622250dfb185212c94a05877715e51641226e96df8"
+    },
+    {
+      "path": "measurement-2-current/enduranceprobe-report.txt",
+      "bytes": 38031,
+      "sha256": "a9b69e1250be0e9f6c78fd88653275c46cfe4b54bf0ddae79e5feeb7a2efefa2"
+    },
+    {
+      "path": "measurement-2-current/exit-code.txt",
+      "bytes": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "path": "measurement-2-current/identity.json",
+      "bytes": 1128,
+      "sha256": "852ed3446b0349f06c2fd058470bae5f78abdb9bb0b5ade3688a487667906e07"
+    },
+    {
+      "path": "measurement-2-current/page-cycles.csv",
+      "bytes": 2752,
+      "sha256": "7d48ec1b26213abf5587e279818eaccf62323d8a9732086054954ebc814abb1b"
+    },
+    {
+      "path": "measurement-2-current/parts.csv",
+      "bytes": 6891,
+      "sha256": "82483554b1c3b1f40612768a0cf704cb64dfcb153d857301dd15d44e2f246c30"
+    },
+    {
+      "path": "measurement-2-current/performance-frames.csv",
+      "bytes": 60955,
+      "sha256": "288799cccbfd85ca407a39cecfbe2738ebaa362d251cbed6e3ee0286be5be394"
+    },
+    {
+      "path": "measurement-2-current/performance-summary.txt",
+      "bytes": 702,
+      "sha256": "848e4d124aa75db7ce93bf9d294fbd0715c298f92d8cb3a15c00287f7cf9b0c6"
+    },
+    {
+      "path": "measurement-2-current/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "measurement-3-current/enduranceprobe-report.txt",
+      "bytes": 38023,
+      "sha256": "37c772f33e0c4e40a808132a8c92f857eab2f92367f5465755a5addda1e91bb5"
+    },
+    {
+      "path": "measurement-3-current/exit-code.txt",
+      "bytes": 1,
+      "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "path": "measurement-3-current/identity.json",
+      "bytes": 1127,
+      "sha256": "eb33dcb170fffe0ec9b134f5a1ccbd731fd7f6d76b261351f3df8ff47fd31484"
+    },
+    {
+      "path": "measurement-3-current/page-cycles.csv",
+      "bytes": 2749,
+      "sha256": "cfad39506a978d9fe1cc31c5426fdb67949e8deb9e622e1bd2fa9cbfb67d022d"
+    },
+    {
+      "path": "measurement-3-current/parts.csv",
+      "bytes": 6889,
+      "sha256": "edd9eee6fae8cf0be9e2cb4b607b9d1d955f6e66fd3ddd21294b73053937cbbd"
+    },
+    {
+      "path": "measurement-3-current/performance-frames.csv",
+      "bytes": 60709,
+      "sha256": "09b8d530cdfd8eba33ed3a9fbe2fe09ad93ee1e1cb780e7a62809843f37bec60"
+    },
+    {
+      "path": "measurement-3-current/performance-summary.txt",
+      "bytes": 702,
+      "sha256": "7cdadd149f1108a8651eb60cdb81314a38a79da01c04dac532c31c97fbb19bb4"
+    },
+    {
+      "path": "measurement-3-current/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "page-breakdown.csv",
+      "bytes": 1663,
+      "sha256": "8d5afb178c55f5b7534dff16aeb5f77a52fb5879fc1214b6a13b94a2c9c8e9c7"
+    },
+    {
+      "path": "preparation.json",
+      "bytes": 2618,
+      "sha256": "23aa7d40d4f4cd1edc0819c7d1b0b09541bdbb53bbbc5c01cc968d0a9fd91967"
+    },
+    {
+      "path": "probe/Program.cs.instrumentation.zip",
+      "bytes": 1878,
+      "sha256": "4203e6ee19dcd5c41cfe0960d4645ecc0c41ea05209df7ebea0a886d4b8386fc"
+    },
+    {
+      "path": "probe/U09Performance.cs",
+      "bytes": 6260,
+      "sha256": "6c4302d57b7ebc335325c89285e6af503dc0a1519c3cd78e310ea0b7ae17e7fe"
+    }
+  ]
+}

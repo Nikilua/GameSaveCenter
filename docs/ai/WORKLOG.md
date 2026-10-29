@@ -1,3 +1,7 @@
+## 2026-10-30 U09-04当前源码固定轮次性能补测
+
+当前候选源码（生产与RenderHarness内容等同冻结`5c0c57b0`）使用SDK8.0.423 Release临时探针构建exit0。三轮受控透明WPF STA样本各完成70周期、297操作和30秒settle，0失败；活动托管分配8.8775–8.8779GB，e6旧样本8.8767–8.8769GB；合成搜索/滚动和工作区中位数接近。当前Rendering回调p95 338–360ms、>33.3ms比例18.6–20.5%，工作区逻辑布局p95 709–854ms，均高于旧e6两轮；各页布局中位数接近但最大样本偏高。此为尾部信号，不归因于页签模板/动画。旧e6的SampleTimeUtc相同但pinned=False，当前pinned=True；旧源同探针重建因便携SDK缺`Microsoft.NET.SDK.WorkloadAutoImportPropsLocator`/`Microsoft.NET.SDK.WorkloadManifestTargetsLocator`目录exit1，保留MSB4276原始诊断，未替换SDK。仅清理本批`.tmp/u09-04-currentperf-20261030`（7,481个文件/535,838,263字节），C盘可用空间实测增加551,292,928字节；所有归档SHA校验通过，见`cleanup.json`。临时探针源和测量身份已归档，生产源码无改。U00原始逐帧/分配缺失、真实宿主与实体键盘/IME/呈现帧未验，U09-04继续中。证据见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-currentperf-20261030/BASELINE.md`。
+
 ## 2026-10-30 U09-05冻结门禁通过
 
 5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7 SDK8.0.423；中文包装器完整链exit0、独立scripts/build.cmd exit0。两入口各158 TRX/2020项：1962通过、0失败、58既有skip，skip不计通过；PEXT 45,737,311 bytes，SHA256 `bce032ef9d6c95aa145d0c99a69ee3be16ef7d8dda59e8964db10bc2eb076ee6`，六个包内/安装DLL逐字节相同。Playnite启动PID30324并响应，实际页面未观察。精确SHA的GitHub run40900374673，两项适用job均success，三artifact的head SHA/ID/digest已核。required-check API既有403未重探，仍待有权限维护者查询。soak一次File.Move访问拒绝完整诊断已归档；新门禁通过但旧失败未查明唯一原因。证据：[冻结本地与CI身份](../design/reviews/ui-polish-round5-20261027/evidence/U09-final-5c0c57b0/BASELINE.md)。

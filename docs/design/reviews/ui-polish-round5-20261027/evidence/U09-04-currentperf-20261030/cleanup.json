@@ -1,0 +1,109 @@
+{
+  "target": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-currentperf-20261030",
+  "scope": "Only this phase-owned workspace directory",
+  "deletedFiles": 7481,
+  "deletedBytes": 535838263.0,
+  "deletedTopLevel": [
+    {
+      "Name": "build",
+      "Mode": "d----",
+      "Length": null
+    },
+    {
+      "Name": "dotnet-cli-home",
+      "Mode": "d----",
+      "Length": null
+    },
+    {
+      "Name": "e6-build",
+      "Mode": "d----",
+      "Length": null
+    },
+    {
+      "Name": "e6-source",
+      "Mode": "d----",
+      "Length": null
+    },
+    {
+      "Name": "measurement-1-current",
+      "Mode": "d----",
+      "Length": null
+    },
+    {
+      "Name": "measurement-2-current",
+      "Mode": "d----",
+      "Length": null
+    },
+    {
+      "Name": "measurement-3-current",
+      "Mode": "d----",
+      "Length": null
+    },
+    {
+      "Name": "candidate-build-exit.txt",
+      "Mode": "-a---",
+      "Length": 1
+    },
+    {
+      "Name": "candidate-build.log",
+      "Mode": "-a---",
+      "Length": 2303
+    },
+    {
+      "Name": "e6-build-diag.log",
+      "Mode": "-a---",
+      "Length": 875788
+    },
+    {
+      "Name": "e6-build-exit.txt",
+      "Mode": "-a---",
+      "Length": 1
+    },
+    {
+      "Name": "e6-build-worker-processes.json",
+      "Mode": "-a---",
+      "Length": 17274
+    },
+    {
+      "Name": "e6-build.log",
+      "Mode": "-a---",
+      "Length": 81
+    },
+    {
+      "Name": "e6-source.zip",
+      "Mode": "-a---",
+      "Length": 136382297
+    },
+    {
+      "Name": "preparation.json",
+      "Mode": "-a---",
+      "Length": 629
+    }
+  ],
+  "reparsePoints": 0,
+  "lockedFiles": 0,
+  "targetProcesses": 0,
+  "markdownLinkTargets": 0,
+  "archivedFilesSha256Verified": 31,
+  "archiveMismatches": 0,
+  "freeBeforeBytes": 5784584192,
+  "freeAfterBytes": 6335877120,
+  "observedFreeSpaceIncreaseBytes": 551292928,
+  "retained": [
+    "latest SDK",
+    "unrelated TRX/TestResults",
+    "user settings",
+    "other .tmp/artifacts",
+    "committed evidence"
+  ],
+  "duplicateSourceCopy": "e6-source.zip and its temporary extraction were created from committed e6; removing this copy left tracked docs/evidence untouched.",
+  "buildNodeCleanup": {
+    "verifiedSdkPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-01-03\\dotnet-sdk8\\dotnet.exe",
+    "ownedProcesses": 80,
+    "buildServerShutdownExitCode": 0,
+    "remainingAfterShutdown": 80,
+    "action": "Stopped only the 80 verified worker processes from this phase after build-server shutdown left them alive",
+    "remainingAfterCleanup": 0,
+    "processIdsArchive": "e6-replay-build-worker-processes.json"
+  }
+}

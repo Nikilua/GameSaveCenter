@@ -1,3 +1,7 @@
+## 2026-10-30 U09-04当前源码固定轮次性能补测
+
+当前冻结候选源码等同于`5c0c57b0`，SDK8.0.423 Release临时探针构建exit0。三轮均70周期/297操作；活动托管分配约8.878GB，和e6约8.877GB持平；合成搜索/滚动延迟及工作区中位数接近，但Rendering回调和工作区逻辑布局p95、逐页最大布局样本偏高。旧e6报告相同SampleTimeUtc但`pinned=False`，当前为`pinned=True`；同探针重建e6因便携SDK缺workload locator目录exit1，保留日志，没有换SDK或关闭检查。结果为离屏尾部信号，不能归因于页签模板或动画。U00原始帧/累计分配和真实Playnite/实体输入仍未验，U09-04继续进行。证据在`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-currentperf-20261030/`；阶段临时目录仅含本批产物，删除和空间记录见`cleanup.json`。
+
 ## 2026-10-30 U04-05～08冻结状态复核
 
 U04-05～08的进度已对齐冻结源`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`：夹具修复`c5c86558`与状态实现`4225eb17`均在其祖先中；中文根链、独立`scripts/build.cmd`及run40900374673双SDK jobs均成功，旧Q14失败保留历史。四项仍需真实IME/Playnite UIA、CanExecute取消、窗口失活与长期宿主内存复核。

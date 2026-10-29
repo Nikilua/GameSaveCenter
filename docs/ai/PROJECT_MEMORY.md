@@ -1,3 +1,7 @@
+## 2026-10-30 U09-04当前源码固定轮次性能补测
+
+当前候选源码生产与RenderHarness文件等同`5c0c57b0`，SDK8.0.423 Release临时探针构建exit0。当前三轮70周期/297操作：托管分配约8.878GB，与e6两轮约8.877GB接近；合成搜索/滚动p95和工作区中位数相近，但Rendering回调p95、>33.3ms占比、工作区布局p95和各页最大逻辑布局样本较高。旧e6时间样本字段相同但pinned标记False，当前True；尝试匹配重建e6探针时便携SDK缺workload locator目录导致exit1，证据保留，未改SDK/门禁。差异暂不归因。离屏回调不代表物理呈现，合成搜索不代表键盘/IME；U00原始逐帧/累计分配和真实Playnite/物理DPI仍待验。继续U09-04，不用旧e6全链替代候选门禁。记录：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-currentperf-20261030/`。
+
 ## 2026-10-30 U04-05～08冻结状态复核
 
 U04-05～08旧待验行已改为精确冻结源`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`结论：本地中文根链和独立`scripts/build.cmd`exit0，run40900374673基线/SDK10 job成功。保留Q14旧失败历史；真实IME/Playnite UIA、取消与窗口失活、系统动画选项和长期宿主内存仍待验。

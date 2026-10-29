@@ -1,0 +1,32 @@
+{
+  "order": 3,
+  "label": "current candidate",
+  "sourceHead": "c6af13d64c2166ee95f0170df111197e38c71beb",
+  "sourceContentEquivalentTo": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+  "executableSha256": "9ba72be24afd6a27c13e189497f1afd0f61fc692dfe2edee00d8b3bd7f6995de",
+  "pluginSha256": "88513370fa84d601dc3f56660e69c9db202ad7952579d01d507c2e0cafeb6851",
+  "productVersion": "0.6.73+c6af13d64c2166ee95f0170df111197e38c71beb",
+  "probeSourceSha256": "6c4302d57b7ebc335325c89285e6af503dc0a1519c3cd78e310ea0b7ae17e7fe",
+  "fixedSampleUtc": "2026-10-28T09:00:00Z",
+  "durationSafetyLimitSeconds": 3600,
+  "fixedCycles": 70,
+  "settleSeconds": 30,
+  "startUtc": "2026-10-29T18:22:55.0995300Z",
+  "endUtc": "2026-10-29T18:24:17.7198108Z",
+  "exitCode": 0,
+  "processesBefore": [
+    {
+      "Id": 30324,
+      "ProcessName": "Playnite.DesktopApp",
+      "StartTime": "2026-10-29T23:46:00.727525+08:00"
+    }
+  ],
+  "processesAfter": [
+    {
+      "Id": 30324,
+      "ProcessName": "Playnite.DesktopApp",
+      "StartTime": "2026-10-29T23:46:00.727525+08:00"
+    }
+  ],
+  "elapsedSeconds": 82.62
+}

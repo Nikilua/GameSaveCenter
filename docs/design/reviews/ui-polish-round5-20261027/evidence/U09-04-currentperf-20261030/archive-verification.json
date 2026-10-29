@@ -1,0 +1,14 @@
+{
+  "verifiedAtUtc": "2026-10-29T18:40:37.6572968Z",
+  "matchingFileCount": 31,
+  "matchingBytes": 1340506,
+  "allSha256Equal": true,
+  "mismatches": [],
+  "programPatchApplyCheckExit": 0,
+  "originalProgramSha256": "9e349c9e891b8f9b1087ec14873855e125697dc037b21849835539d23885d9a4",
+  "programPatchSha256": "4123f74d29adf54f11abaf1450a65d34243c0f3b5434078bdc9c051090b7e5c9",
+  "probeSourceSha256": "6c4302d57b7ebc335325c89285e6af503dc0a1519c3cd78e310ea0b7ae17e7fe",
+  "consoleLogZipSha256": "138991ae3013656627d3a6ed14e240ed283a540ca723a291de6aa37ab987d300",
+  "consoleLogsVerifiedAgainstPreArchiveSha256": true,
+  "programPatchArchiveSha256": "4203e6ee19dcd5c41cfe0960d4645ecc0c41ea05209df7ebea0a886d4b8386fc"
+}

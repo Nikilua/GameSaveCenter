@@ -1,0 +1,6 @@
+series,run,active_allocated_bytes,rendering_samples,rendering_p50_ms,rendering_p95_ms,rendering_max_ms,rendering_over_16_7_ms,rendering_over_33_3_ms,rendering_over_33_3_pct,workspace_switch_median_ms,workspace_switch_p95_ms,synthetic_search_p95_ms,scroll_p95_ms,details_open_p95_ms,details_close_p95_ms
+current,1,8877926808,710,16.005,354.448,1168.981,268,143,20.14,293.48,709.49,6.31,33.18,42.08,20.34
+current,2,8877503440,697,16.089,338.073,1184.604,273,143,20.52,287.52,832.56,7.14,31.33,39.62,19.01
+current,3,8877843448,657,16.108,360.335,1005.619,261,135,20.55,292.48,854.35,6.17,30.90,37.75,20.52
+e6,1,8876853888,998,15.758,286.317,616.769,285,144,14.43,282.96,388.30,6.96,31.06,39.04,18.91
+e6,2,8876745224,863,15.859,305.010,600.357,284,143,16.57,285.54,413.79,6.38,31.50,38.07,24.29
