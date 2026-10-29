@@ -1,0 +1,26 @@
+时间：2026-10-29 14:07:08
+安装运行 ID：20261029T054242380Z-d0b034e6
+源码版本：0.6.73
+隔离构建目录：[repo]\artifacts\gsc-b\c1790992
+安装目录：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：20ED5BA3B6089CFF2F1969D43A4E3E2C11AA3C0035E0369CA73B9493FF4F53B9
+  GameSaveCenter.Core.dll：0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：F1AE84C45F311E8B4CB8E66E1045F00562AEC8BB8C1E25EAFA5872C5A961E9C8
+  GameSaveCenter.Contracts.dll：0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：29CA793878C802DFA4900C6F1C922246A9B514C4452EF3D3A26A41A87EC5CDB1
+  Worker/GameSaveCenter.Worker.dll：0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：1515B3EE4785DBA54A5B54D10A5180A8F13D312C96612C1D933264F140E51F16
+  Worker/GameSaveCenter.Core.dll：0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：01D09170BB4C8E4C87454A9EF4E4FC63FC650185C06961B23A546EC376B5A9E4
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：145BA0EFF02780FE84E711359BEB958038A7DBD2C080A8A28362AC6908DEE4E6

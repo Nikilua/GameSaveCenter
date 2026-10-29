@@ -34,6 +34,54 @@ public sealed class R08MotionReverseBehaviorTests
     }
 
     [Fact]
+    public void SamplingDeadlineReturnsBeforeQueuedRenderWorkDrains()
+    {
+        Exception? exception = null;
+        var renderTurns = 0;
+        var thread = new Thread(() =>
+        {
+            var dispatcher = Dispatcher.CurrentDispatcher;
+            DispatcherOperation? pendingRender = null;
+            var stop = false;
+            Action? renderWork = null;
+            renderWork = () =>
+            {
+                if (stop)
+                    return;
+
+                renderTurns++;
+                // Ensure the one-millisecond sampling deadline becomes due while
+                // a finite render queue still has work. This tests dispatcher
+                // ordering rather than imposing a machine-speed threshold.
+                Thread.Sleep(5);
+                if (renderTurns < 40)
+                    pendingRender = dispatcher.BeginInvoke(DispatcherPriority.Render, renderWork!);
+            };
+            try
+            {
+                pendingRender = dispatcher.BeginInvoke(DispatcherPriority.Render, renderWork);
+                PumpDispatcher(TimeSpan.FromMilliseconds(1));
+                Assert.True(renderTurns < 40,
+                    $"the sampling deadline waited for all {renderTurns} queued render turns");
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                stop = true;
+                pendingRender?.Abort();
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+        output.WriteLine($"render turns before sampling deadline: {renderTurns}/40");
+        Assert.Null(exception);
+    }
+
+    [Fact]
     public void TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget()
     {
         Exception? exception = null;
@@ -642,7 +690,11 @@ public sealed class R08MotionReverseBehaviorTests
     private static void PumpDispatcher(TimeSpan duration)
     {
         var frame = new DispatcherFrame();
-        var timer = new DispatcherTimer { Interval = duration };
+        // A Background deadline can wait behind every pending Render operation,
+        // turning a five-millisecond sample into an entire animation. End the
+        // nested frame as soon as the deadline is due; render work can still run
+        // between samples. Production timelines and assertions stay unchanged.
+        var timer = new DispatcherTimer(DispatcherPriority.Send) { Interval = duration };
         timer.Tick += (_, _) =>
         {
             timer.Stop();

@@ -1,3 +1,13 @@
+## 2026-10-29 U04-02/03采样截止修正候选
+
+acebe07d中文根链SDK8.0.423退出0，157份TRX为1955 pass/58既有skip，六个安装DLL与PEXT逐字节相同；新宿主进程68964及14:07:12日志确认加载GameSaveCenter0.6.73，但未验真实页面或运行时模块SHA。独立build.cmd在第75类R08 hover重新进入未采到中间帧失败（局部1463项：1443 pass/1 fail/19 skip），完整交付门禁未通过；原始诊断归档，未追绿重跑旧链。
+
+新增有限Render队列复现：旧1ms采样截止等到40次Render全部结束才返回，准确失败。仅将测试采样截止计时器改为Send优先级，保留生产时长、所有原断言、超时和skip。三轮直接运行12/12断言通过，但额外Test AppDomain有既有COM卸载异常，日志保留、不记为无异常门禁；按仓库正式DisableAppDomain=true复核4/4、0 skip且无该异常。此复现证明采样器可被饿死，旧hover失败未记录迟到耗时，不宣称回溯了唯一根因。
+
+生产资源未改。新候选提交后须重新完整构建安装链、独立build.cmd和双SDK CI；D盘空间不足时以同SHA的C盘隔离工作树执行，不降低空间预算或替换SDK，不重试旧权限拒绝。当前5项已满足、71项代码完成待验收、3项进行中、1项远端待验；U09-05重新进行中，U09-01其它配对及U09-04重建补测继续。required-check名单仍按既有403远端待验，不复探。
+
+[采样截止修正候选](evidence/U04-02-03-sampling-deadline-20261029/BASELINE.md)
+
 ## 2026-10-29 U03-04禁用原生文字修正候选
 
 清理说明：当前保留SDK位于 .tmp/round5-u09-01-03/dotnet-sdk8；已删除逐文件SHA相同的旧SDK副本、四份已由cd062531构建1a593ccc替代的Round5输出及四份过期渲染副本。旧文字中的当前输出仅代表当时状态，现以本条和清理清单为准。原始失败诊断、最新包/构建与当前审计继续保留；D盘由约2.32GB恢复至4.33GB，未降低门禁。
@@ -232,7 +242,7 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U09-02 | 键盘与UIA回归 | 代码完成待验收 | SDK8.0.423 Release 精确提交`8deb17c7`组合16/16、0失败、0 skip；TRX原始与脱敏SHA已归档。修正R07夹具默认`SaveTabIndex`，增加可见/排列/UIA Invoke断言 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | WPF MoveFocus/UIA Peer不等于实体键盘、IME、外部UIA或Playnite宿主验收 |
 | U09-03 | 尺寸主题交叉回归 | 代码完成待验收 | 精确提交`8deb17c7`：双主题×11窗口尺寸，394 PNG、0 PROBLEM、逻辑DPI1.00；source validation通过、XAML26/26、WPF静态42文件/0 errors。Render QA原始及脱敏报告SHA已记录 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 物理DPI/多屏/Playnite窗口未验；Render报告含未跟踪外部输出，跟踪树在运行时干净 |
 | U09-04 | 动画性能复测 | 进行中 | 精确提交同条件 enduranceprobe 60秒+30秒：操作周期P95 933.16→654.02ms；内存斜率代理下降；三次独立侧栏Shell QA均收敛。明细见[性能复测](evidence/U09-04/PERFORMANCE.md) | [U09-04性能证据](evidence/U09-04/PERFORMANCE.md) | U00无逐帧及累计分配基线；当前单次收起离屏帧间隔P95约90ms，需真实宿主/已呈现帧复核；不据离屏小样本宣称无回退 |
-| U09-05 | 标准cmd最终验收 | 已满足 | 冻结SHA`5f0eb620`中文根入口完整Release链退出0，已核对包/安装DLL身份并启动Playnite；独立`scripts/build.cmd`构建测试退出0。每次2012项，1954通过、0失败、58 skip；skip原因完整列出且未计为pass | [最终根链/build.cmd/TRX/安装身份](evidence/U09-05-final-5f0eb620/BASELINE.md)；[Stylus测试修复原因](evidence/U09-05-wpf-stylus-fix/BASELINE.md)；[历史完整链记录](evidence/U09-05/BUILD-REVIEW.md) | Playnite进程启动已核；真实页面视觉、外部UIA、实体键鼠/IME/物理DPI仍未验；真实恢复/媒体删除/云写入不在范围 |
+| U09-05 | 标准cmd最终验收 | 进行中 | 冻结SHA`5f0eb620`中文根入口完整Release链退出0，已核对包/安装DLL身份并启动Playnite；独立`scripts/build.cmd`构建测试退出0。每次2012项，1954通过、0失败、58 skip；skip原因完整列出且未计为pass | [最终根链/build.cmd/TRX/安装身份](evidence/U09-05-final-5f0eb620/BASELINE.md)；[Stylus测试修复原因](evidence/U09-05-wpf-stylus-fix/BASELINE.md)；[历史完整链记录](evidence/U09-05/BUILD-REVIEW.md) | Playnite进程启动已核；真实页面视觉、外部UIA、实体键鼠/IME/物理DPI仍未验；真实恢复/媒体删除/云写入不在范围 |
 | U09-06 | GitHub双SDK门禁 | 远端待验 | 精确SHA`5f0eb620` run`40768381673`最终success；baseline job`123098598311`及SDK10.0.401 job`123098597735`全通过，Render QA、WPF静态、包和上传均成功 | [精确SHA jobs/artifacts/digests](evidence/U09-05-final-5f0eb620/github-ci.json)；[既有CI与权限状态](evidence/U09-01-03/BASELINE.md)；[失败job原始归因](evidence/U08-08-09-01/ci-d19570fa-failure.json) | required-check/branch-protection读取此前403；按用户要求未重复探测。需有权限维护者运行`gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks`并将required名称与两job对照，不以workflow绿色替代 |
 | U09-07 | 产物清理与可追溯 | 已满足 | 当前源码/构建/CI证据已脱敏归档；仅删除两组本阶段`.tmp`输出，保留最新构建、诊断、包、安装报告、文档证据；旧9份失败TRX脱敏归档。D盘两批实测释放191,361,024与115,417,088 bytes | [清单、路径检查、前后空间、保留SDK理由](evidence/U09-05-final-5f0eb620/cleanup.json)；[历史失败TRX](evidence/U09-01-03/historical-failed-local-trx-manifest.json) | 保留`.tmp/round5-u09-01-03/dotnet-sdk8`与bootstrap脚本：系统全局仅SDK9.0.302，后续本地运行需仓库基线SDK8.0.423；未删用户/其他任务TRX/TestResults |
 | U09-08 | 整轮交付审查 | 已满足 | 逐项核对80项状态与旧项去重；如实保留2项进行中、1项required-check远端待验；其余按证据区分已满足/代码完成待验收。最新冻结源全链、独立build.cmd与双SDK CI证据均已纳入审查 | [整轮状态与剩余边界](evidence/U09-05-final-5f0eb620/BASELINE.md)；[最终CI与清理证据](evidence/U09-05-final-5f0eb620/) | 不将“审查已完成”解释为80项全验收；U07-05来源字段契约已代码完成待验收；U09-01配对证据、U09-04逐帧/分配基线仍按上方进行中，required-check清单远端待验 |

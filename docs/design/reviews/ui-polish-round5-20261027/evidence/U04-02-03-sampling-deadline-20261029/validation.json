@@ -1,0 +1,87 @@
+{
+  "baseCommit": "acebe07d15d2c43c691128211df56bbe7fefb74f",
+  "tasks": [
+    "U04-02",
+    "U04-03"
+  ],
+  "productionFilesChanged": false,
+  "regressionBefore": "Finite40 Render turns starved the old1ms sampling deadline; assertion failed40/40.",
+  "fix": "Test-only DispatcherTimer uses Send deadline; original animation durations, sampling timeouts, intermediate/continuity/final/sibling assertions and skip settings unchanged.",
+  "after": "Three direct runs:12/12 assertions passed, but extra test-AppDomain InvalidComObjectException diagnostics retained, not counted as exception-free gate. Official existing DisableAppDomain=true setting4/4,0 skip, no COM diagnostic.",
+  "rootFollowupRequired": "New committed candidate requires complete Chinese root chain and independent build.cmd, plus new GitHub SDK8/SDK10 jobs. Prior acebe07d CI success cannot certify the new test source.",
+  "disk": "D free space became insufficient. No broad cleanup, no retry of recorded deletion denials. Use same committed SHA in a managed C-volume worktree if preflight permits, with unchanged SDK8.0.423 and original entry files.",
+  "files": [
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\after-deadline-1.trx",
+      "archived": "after-deadline-1.trx",
+      "rawSha256": "a6337aabe22015061e2834ab92014892a59e051ed893367e3a19f238d91ed619",
+      "sha256": "65755e03f03a075ce4673437c5d80d7caa8cef782118e492e84fd7737f2d2efe"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\after-deadline-2.trx",
+      "archived": "after-deadline-2.trx",
+      "rawSha256": "018b8a6b4a7dcb3c6cf0c697c91662c6f92784d31b5aed907bc4079b27000366",
+      "sha256": "11a00ca96f37779357e22f420a929aff91bcc82eb95da5b4237e0b8fecf1e13c"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\after-deadline-3.trx",
+      "archived": "after-deadline-3.trx",
+      "rawSha256": "c8a3174bd5210a38493f5af732fd93511de91ddf2bbf97c2bdc115ce61428c35",
+      "sha256": "66a7494770c6b17aba95329a7a1080e947fb0e614f1af1b17156700ce42ac215"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\before-deadline.trx",
+      "archived": "before-deadline.trx",
+      "rawSha256": "c2888179557339c817fb03fdab4f6861796a8f44903ba68c1aa173394d1f7da7",
+      "sha256": "57c9fd2e45c0a484b3c565374e1a2f53154a3c54bac8b35c07dc69c8793b3b85"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\official-domain-setting.trx",
+      "archived": "official-domain-setting.trx",
+      "rawSha256": "2d67710231191c1934476207200ccffdfc2fc462f79ea48343b180bf033c0c83",
+      "sha256": "6feecf5da5fe2d5c15ce662c083109759e06471b263db1ba7ecd13aec17d2f93"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\after-deadline-1.txt",
+      "archived": "after-deadline-1.txt",
+      "rawSha256": "b9ad8feaba470a33afc7f879b0492aae147f56d05216373f8f6e0740dd9ddce0",
+      "sha256": "bc288c94e8f9a6920bab6af895583d29a840258488323f7f98356893b38ff547"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\after-deadline-2.txt",
+      "archived": "after-deadline-2.txt",
+      "rawSha256": "04ccd9e77fba087b9cae114f0aa3c548f5105b06305dd56b7e5c8de4f25b077b",
+      "sha256": "4c2c92bd7ae8d01d49f0e1f4b053231c8838733da34857bc47033545ecd9dc21"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\after-deadline-3.txt",
+      "archived": "after-deadline-3.txt",
+      "rawSha256": "b4a7525336ea54f538590468aa68eac5cf7c3b10d2eeeae14d5fde3876ca2eb4",
+      "sha256": "8310f275d8398ae9e3ce1eb87c556df38902ef1941438ec1e3b97ec6ef6c6d6e"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\before-deadline.txt",
+      "archived": "before-deadline.txt",
+      "rawSha256": "10ef081247af95cc3c2a28f3c8465ef65f8818686950f5a92d86f1b25d46750e",
+      "sha256": "b00cdcbb1305c60da8a84b110acf53dda841d385557ccb5e1a74b0675d4580a2"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\official-domain-setting.txt",
+      "archived": "official-domain-setting.txt",
+      "rawSha256": "03fe23fd920240cdd771156743a08d97ff8222d0dee9a952ab186303a1bda394",
+      "sha256": "e095f2437e9dc7e6cbde73106faa9aeb4d55c43caadef3276582036b33e64708"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\source-check.txt",
+      "archived": "source-check.txt",
+      "rawSha256": "30760e7082311ac27aa2d981c07638fc2a4b11d039c265afb40365b1f98fbca6",
+      "sha256": "77f4beded9cf425fb763b9619b28231640a35746bffda882195fce8787cb8a9b"
+    },
+    {
+      "source": ".tmp\\round5-r08-sampling-deadline-20261029\\disk-before.json",
+      "archived": "disk-before.json",
+      "rawSha256": "d6bcb533ea6465313408aa2c3db457f0d3775d37e4734a75000a50a3e7aa33e3",
+      "sha256": "5889d6755ed6d873949d6b2a86acefa4e66c137c26ce568a362e6a2545ea4c2d"
+    }
+  ]
+}

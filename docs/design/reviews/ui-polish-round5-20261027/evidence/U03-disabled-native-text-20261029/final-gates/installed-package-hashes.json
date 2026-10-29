@@ -1,0 +1,32 @@
+[
+  {
+    "file": "GameSaveCenter.Playnite.dll",
+    "installedSha256": "20ed5ba3b6089cff2f1969d43a4e3e2c11aa3c0035e0369ca73b9493ff4f53b9",
+    "packageEntrySha256": "20ed5ba3b6089cff2f1969d43a4e3e2c11aa3c0035e0369ca73b9493ff4f53b9"
+  },
+  {
+    "file": "GameSaveCenter.Core.dll",
+    "installedSha256": "f1ae84c45f311e8b4cb8e66e1045f00562aec8bb8c1e25eafa5872c5a961e9c8",
+    "packageEntrySha256": "f1ae84c45f311e8b4cb8e66e1045f00562aec8bb8c1e25eafa5872c5a961e9c8"
+  },
+  {
+    "file": "GameSaveCenter.Contracts.dll",
+    "installedSha256": "29ca793878c802dfa4900c6f1c922246a9b514c4452ef3d3a26a41a87ec5cdb1",
+    "packageEntrySha256": "29ca793878c802dfa4900c6f1c922246a9b514c4452ef3d3a26a41a87ec5cdb1"
+  },
+  {
+    "file": "Worker/GameSaveCenter.Worker.dll",
+    "installedSha256": "1515b3ee4785dba54a5b54d10a5180a8f13d312c96612c1d933264f140e51f16",
+    "packageEntrySha256": "1515b3ee4785dba54a5b54d10a5180a8f13d312c96612c1d933264f140e51f16"
+  },
+  {
+    "file": "Worker/GameSaveCenter.Core.dll",
+    "installedSha256": "01d09170bb4c8e4c87454a9ef4e4fc63fc650185c06961b23a546ec376b5a9e4",
+    "packageEntrySha256": "01d09170bb4c8e4c87454a9ef4e4fc63fc650185c06961b23a546ec376b5a9e4"
+  },
+  {
+    "file": "Worker/GameSaveCenter.Contracts.dll",
+    "installedSha256": "145ba0eff02780fe84e711359beb958038a7dbd2c080a8a28362ac6908dee4e6",
+    "packageEntrySha256": "145ba0eff02780fe84e711359beb958038a7dbd2c080a8a28362ac6908dee4e6"
+  }
+]

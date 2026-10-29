@@ -1,0 +1,38 @@
+{
+  "sourceRevision": "acebe07d15d2c43c691128211df56bbe7fefb74f",
+  "sdk": "8.0.423",
+  "rootExit": 0,
+  "independentBuildCmdExit": 1,
+  "fullDeliveryGatePassed": false,
+  "trackedFilesUnchangedUntilGateEnded": true,
+  "rootInstallRun": "20261029T054242380Z-d0b034e6",
+  "rootDiagnostic": "20261029T054244812Z-49aa6485",
+  "failedBuildDiagnostic": "20261029T060710782Z-509a473b",
+  "runs": {
+    "root": {
+      "trxFiles": 157,
+      "outcomes": {
+        "Passed": 1955,
+        "NotExecuted": 58
+      },
+      "skipReasons": {
+        "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。": 57,
+        "该测试会移动系统鼠标指针；默认跳过。设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 后可单独运行。": 1
+      }
+    },
+    "build-cmd-failed": {
+      "trxFiles": 78,
+      "outcomes": {
+        "Passed": 1443,
+        "NotExecuted": 19,
+        "Failed": 1
+      },
+      "skipReasons": {
+        "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。": 18,
+        "该测试会移动系统鼠标指针；默认跳过。设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 后可单独运行。": 1
+      }
+    }
+  },
+  "failure": "R08 hover re-entry missing in-flight sample. Raw failure retained. New queue-order regression reproduces sampler starvation; original failure did not record dispatcher lateness, so unique historical cause is not claimed. Follow-up U04-02/03 candidate must run new full gates.",
+  "host": "Fresh process68964 and host log14:07:12 confirm plugin version0.6.73 loaded. Six installed DLLs match PEXT bytes. No runtime module SHA or page/IME/UIA/physical DPI/presented-frame acceptance."
+}

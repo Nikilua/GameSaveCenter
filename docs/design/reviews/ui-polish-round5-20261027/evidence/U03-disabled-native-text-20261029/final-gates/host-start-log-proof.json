@@ -1,0 +1,15 @@
+{
+  "process": [
+    {
+      "Id": 68964,
+      "StartTime": "2026-10-29T14:07:08.4671544+08:00"
+    }
+  ],
+  "installedSource": "acebe07d15d2c43c691128211df56bbe7fefb74f",
+  "lineNumber": 15886,
+  "logPath": "[user-profile]/AppData/Roaming/Playnite/playnite.log",
+  "logLastWriteUtc": "2026-10-29T06:11:44.1567465Z",
+  "matchingLogLine": "29-10 14:07:12.995|INFO |ExtensionFactory:Loaded plugin: GameSaveCenter, version 0.6.73",
+  "boundary": "Host log confirms plugin version0.6.73 loaded after this process start. Installed files identify acebe07d; no runtime module SHA was read. No actual plugin page, external UIA/IME, physical DPI or presented-frame verification.",
+  "checkedUtc": "2026-10-29T06:20:09.5903795Z"
+}

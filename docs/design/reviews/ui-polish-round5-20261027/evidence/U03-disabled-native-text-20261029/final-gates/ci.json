@@ -1,0 +1,231 @@
+{
+  "runId": 40824853858,
+  "headSha": "acebe07d15d2c43c691128211df56bbe7fefb74f",
+  "workflowPath": ".github/workflows/windows-build.yml",
+  "checkedAt": "2026-10-29 06:54:25 UTC",
+  "results": [
+    {
+      "jobs": [
+        {
+          "id": 123285435265,
+          "name": ".NET SDK 10.0.401 编译与测试复核",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 40824853858,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "检出代码",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "安装 .NET SDK 10.0.401",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "隔离工作树并运行 Release 编译与测试",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "保留 SDK 10.0.401 构建诊断（包括失败）",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Post 安装 .NET SDK 10.0.401",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Post 检出代码",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            }
+          ]
+        },
+        {
+          "id": 123285435466,
+          "name": "编译、测试与打包",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 40824853858,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "检出代码",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "安装 .NET SDK",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "源码结构检查",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "诊断采集自测",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "SDK 基线与缺失负例",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "编译与测试",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "离屏渲染 QA",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "WPF UI 静态审查",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "生成 Playnite 扩展包",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "上传构建产物",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "保留构建与测试诊断（包括失败）",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Post 安装 .NET SDK",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23
+            },
+            {
+              "name": "Post 检出代码",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "artifacts": [
+        {
+          "id": 12878041163,
+          "name": "GameSaveCenter-build-diagnostics",
+          "size_in_bytes": 2014159,
+          "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12878041163",
+          "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12878041163/zip",
+          "expired": false,
+          "created_at": "2026-10-29T06:28:45Z",
+          "expires_at": "2026-11-12T06:28:44Z",
+          "updated_at": "2026-10-29T06:28:45Z",
+          "digest": "sha256:659f0dd7b476ede20fdecb0c0e6629daaf3490ee3896e5748b24a84d7e4827c1",
+          "workflow_run": {
+            "id": 40824853858,
+            "repository_id": 1313302377,
+            "head_repository_id": 1313302377,
+            "head_branch": "main",
+            "head_sha": "acebe07d15d2c43c691128211df56bbe7fefb74f"
+          }
+        },
+        {
+          "id": 12877318743,
+          "name": "GameSaveCenter-windows-preview",
+          "size_in_bytes": 90788648,
+          "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12877318743",
+          "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12877318743/zip",
+          "expired": false,
+          "created_at": "2026-10-29T06:28:43Z",
+          "expires_at": "2027-01-27T05:41:35Z",
+          "updated_at": "2026-10-29T06:28:43Z",
+          "digest": "sha256:92a44960cce479eb34be466aeeea978a65430dfc4b2f61a61a3b5aee10598f6d",
+          "workflow_run": {
+            "id": 40824853858,
+            "repository_id": 1313302377,
+            "head_repository_id": 1313302377,
+            "head_branch": "main",
+            "head_sha": "acebe07d15d2c43c691128211df56bbe7fefb74f"
+          }
+        },
+        {
+          "id": 12876014987,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "size_in_bytes": 966860,
+          "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12876014987",
+          "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12876014987/zip",
+          "expired": false,
+          "created_at": "2026-10-29T06:04:53Z",
+          "expires_at": "2026-11-12T06:04:52Z",
+          "updated_at": "2026-10-29T06:04:53Z",
+          "digest": "sha256:46683c5c58bf561eb97d0ff580c86582d1b0dc87d9882040a396b3e5a187b55d",
+          "workflow_run": {
+            "id": 40824853858,
+            "repository_id": 1313302377,
+            "head_repository_id": 1313302377,
+            "head_branch": "main",
+            "head_sha": "acebe07d15d2c43c691128211df56bbe7fefb74f"
+          }
+        }
+      ]
+    }
+  ]
+}

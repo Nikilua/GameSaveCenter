@@ -1,0 +1,17 @@
+{
+  "diskAfter": [
+    {
+      "Name": "C",
+      "Free": 1974116352
+    },
+    {
+      "Name": "D",
+      "Free": 2518138880
+    }
+  ],
+  "finished": "2026-10-29T06:21:14.9302952Z",
+  "commit": "acebe07d15d2c43c691128211df56bbe7fefb74f",
+  "rootExit": 0,
+  "trackedFilesUnchanged": true,
+  "buildCmdExit": 1
+}

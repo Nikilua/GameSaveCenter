@@ -1,18 +1,26 @@
 [
   {
     "file": "cleanup-archive\\.tmp_round5-u05-05-06_render\\render-qa-report.txt",
-    "sha256": "5fe82395e29cf2ae891bafc5d567c7409144c4330546e5e02770da08e61f4546"
+    "sha256": "5d03d2fd81492c463127ff8a43ddd1517c4c06b8ee872899ad6f3a757a35788a",
+    "rawSha256": "5fe82395e29cf2ae891bafc5d567c7409144c4330546e5e02770da08e61f4546",
+    "normalization": "UTF8 no BOM, LF, repository/user-profile redaction; original raw SHA retained"
   },
   {
     "file": "cleanup-archive\\.tmp_round5-u05-07-08_render\\render-qa-report.txt",
-    "sha256": "9f7e473dd8f481902ae41b05c04917b950e55a06753682bacc5e68400138c65a"
+    "sha256": "f8fd9c358373dd7756c8c866a50c789a01e716a086e24ea2c142735f4f16711a",
+    "rawSha256": "9f7e473dd8f481902ae41b05c04917b950e55a06753682bacc5e68400138c65a",
+    "normalization": "UTF8 no BOM, LF, repository/user-profile redaction; original raw SHA retained"
   },
   {
     "file": "cleanup-archive\\.tmp_round5-u05-237e993f_render\\render-qa-report.txt",
-    "sha256": "c765430bc402fe81a6c51e6ce312bf19f37535a82ebfba2ef65d525a858d9824"
+    "sha256": "75e43c4aa8f54adce6f3f5dc3fb41ec8983af4746a252dcdcf815042c9412c9d",
+    "rawSha256": "c765430bc402fe81a6c51e6ce312bf19f37535a82ebfba2ef65d525a858d9824",
+    "normalization": "UTF8 no BOM, LF, repository/user-profile redaction; original raw SHA retained"
   },
   {
     "file": "cleanup-archive\\.tmp_round5-u08-05-06-render-d6d940e7\\render-qa-report.txt",
-    "sha256": "cbb1499a3ddfbe5c8fe8b2fb2c0ba71b8ff32500e9936a43ac154dc4dbe88508"
+    "sha256": "b6e9a6bd2ee95336ff1db0397bb35969c6e69fc5ac2e52936169e1eef35963eb",
+    "rawSha256": "cbb1499a3ddfbe5c8fe8b2fb2c0ba71b8ff32500e9936a43ac154dc4dbe88508",
+    "normalization": "UTF8 no BOM, LF, repository/user-profile redaction; original raw SHA retained"
   }
 ]

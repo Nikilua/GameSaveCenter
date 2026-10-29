@@ -253,5 +253,8 @@
   },
   "static": "42 XAML,0 errors,26 existing warnings,179 info; XML structural26/26; source validation passed",
   "failureClassification": "Before regression actual native foreground primary instead of disabled. First expanded run missed build-commit metadata: six source tests blocked, two WPF passed. Correct HEAD metadata rerun8/8, no skips; all failures preserved.",
-  "scope": "Controlled WPF Light/Dark screenshots, error HelpText/dimensions and disabled/re-enabled Foreground behavior. Physical Playnite, IME/UIA client and DPI remain unverified. This candidate requires its own full Chinese root chain, independent scripts/build.cmd and remote CI; old cd062531 gate cannot certify new source."
+  "scope": "Controlled WPF Light/Dark screenshots, error HelpText/dimensions and disabled/re-enabled Foreground behavior. Physical Playnite, IME/UIA client and DPI remain unverified. This candidate requires its own full Chinese root chain, independent scripts/build.cmd and remote CI; old cd062531 gate cannot certify new source.",
+  "frozenCandidate": "acebe07d15d2c43c691128211df56bbe7fefb74f",
+  "finalGates": "final-gates/local.json",
+  "followup": "../U04-02-03-sampling-deadline-20261029/BASELINE.md"
 }
