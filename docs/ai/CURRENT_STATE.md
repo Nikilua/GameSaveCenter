@@ -1,3 +1,7 @@
+## 2026-10-30 U04-01～04冻结状态复核
+
+进度行中的旧“待跑”状态已按冻结源修正：`631b218e`、`4225eb17`、`c5c86558`、`388c46ea`均为`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`祖先。该SHA的中文完整根链与独立`scripts/build.cmd`均exit0，GitHub run40900374673的SDK8/SDK10 job均success；旧Q14失败记录保留。U04-01～04仍代码完成待验收，真实Playnite/实体输入/物理DPI未验。细节见对应PROGRESS行与U09-final-5c0c57b0证据。
+
 ## 2026-10-30 U09-01补U07-07/08历史配对
 
 离屏生产快照对照：设置 `a76de89f`→`c5b03e57`，任务 `17d883ab`→`0aff7f32`。SDK8.0.423 Release四次构建/捕获均exit0；八张Light/Dark前后图已复核，固定任务时钟，验证说明在视口内及UIA HelpText与卡片正文一致。首轮小窗截图裁切且入场动画未收敛，已排除。源/探针/程序集身份和SHA、构建/渲染日志见`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-07-08/historical-render-pair-20261030/`。生产源码未改，U07-07/08仍代码完成待验收；Playnite宿主、外部UIA、实体输入/IME、物理DPI未验，真实恢复/删除/云写入未执行。仅清理已核验的阶段`.tmp/u07-visual-pairs-20261030`目录（2,708文件/125,652,193字节），前后空间与预检见证据`cleanup.json`。当前6项已满足、71项代码完成待验收、2项进行中、1项远端待验。接续U09-01其余历史配对盘点与U09-04独立性能工作。

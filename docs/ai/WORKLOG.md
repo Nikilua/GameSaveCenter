@@ -12821,3 +12821,10 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 仅归档证据和更新状态文档，生产源码未改；U07-07/08仍代码完成待验收，U09-01继续。真实Playnite、外部UIA、实体输入/IME、物理DPI未验；真实恢复/媒体删除/云写入未运行。构建日志保留四条既有NU1900警告和0错误。
 - 证据、探针和SHA清单见`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-07-08/historical-render-pair-20261030/`。归档后仅删除已确认的阶段目录`.tmp/u07-visual-pairs-20261030`：2,708文件/125,652,193字节；21项归档资产大小/SHA均匹配，零reparse、锁定、进程及Markdown引用。C盘可用空间清理前6,220,857,344、清理后6,352,650,240字节，观察净增131,792,896字节；清理数据见同目录`cleanup.json`。未触及其它`artifacts/`、`.tmp/`、TRX/TestResults或未知文件。
 - `validate-source.py`退出0；六份变更Markdown本地相对链接805 checked/0 missing；`git diff --check`退出0（仅提示WORKLOG.md CRLF规范化）。此纯文档批不重复执行完整产品链。
+
+## 2026-10-30 Round5 U04-01～04冻结状态复核
+
+- 清理进度表中的旧“待跑/旧失败”状态：`631b218e`、`4225eb17`、`c5c86558`、`388c46ea`均是冻结候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`的祖先，相关功能与Q14夹具修复已包含在该精确源中。
+- 该源中文根入口及独立`scripts/build.cmd`均exit0，各158 TRX、2020项、1962通过/0失败/58既有skip；GitHub run `40900374673`的SDK8 job `123540700192`与SDK10.0.401 job `123540699717`均success。U04-04保留R23 12/12与Render QA394图证据。历史405784失败不删除，记为后续修复已由精确冻结门禁覆盖。
+- U04-01～04仍为代码完成待验收：真实Playnite显示、实体指针/键盘与物理DPI未验。详见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-final-5c0c57b0/BASELINE.md`及各行链接；本次仅更正文档，没有新生产源码。
+- `validate-source.py`退出0；五份变更Markdown本地相对链接795 checked/0 missing；`git diff --check`退出0（仅提示WORKLOG.md CRLF规范化）。纯文档阶段不重复本地完整产品链。
