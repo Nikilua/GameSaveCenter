@@ -1,3 +1,7 @@
+## 2026-10-30 U09-01提交CI远端待验
+
+证据提交`f8feee813c9aaebecec5ff3f644c8038a599685c`已推送到`main`。该push适用`.github/workflows/windows-build.yml`的`build`（编译、测试与打包）和`sdk10-build`（SDK10.0.401编译与测试复核）。本轮GitHub连接器返回HTTP 429，公开Actions API也触发未认证速率限制；本机无`gh`命令，Computer Use初始化因kernel资源路径不存在失败。没有run、job或artifact身份可读，因此两项均记“远端待验”，不推断通过。限流恢复后，以精确head SHA查询Actions runs，再核对两job终态、步骤与产物digest；必要时由有权限维护者执行同一只读API查询。
+
 ## 2026-10-30 U09-01补U08-01/02同数据历史配对
 
 对照历史生产快照`18481e6d8d3415ffc31362764980614e76445848`→`fd2d1316be9ff2d65b0851ac57c45e40064e50ac`，生产差异仅为概览眉题“待处理”改为“当前状态”，以及存档历史摘要显示所选游戏名并提供身份Tooltip/UIA HelpText；命令、列表、恢复前置与滚动行为未改。两侧以SDK8.0.423 Release分别构建真实Worker和RenderHarness，完整Render QA均exit0、394 PNG、0 PROBLEM；固定UTC及运行任务时长后，38图变化、356图像素相同，任务页无变化，双主题目标图已复核。after行为测试1/1通过、0失败、0 skip。当前生产子树WPF静态审查26 XAML/0 error/26 warning/164 info；Overview两条是容器结构启发式误报，渲染无问题。证据、日志、TRX与哈希见[同数据历史配对](evidence/U09-01-U08-pair-20261030/BASELINE.md)。

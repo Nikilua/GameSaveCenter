@@ -1,3 +1,7 @@
+## 2026-10-30 Round5 CI续查
+
+当前Round5证据提交`f8feee813c9aaebecec5ff3f644c8038a599685c`已推送到`main`，managed worktree处于detached HEAD。该SHA在`windows-build.yml`的`build`及`sdk10-build`尚缺run/job/artifact身份：GitHub连接器和未认证REST均HTTP429；本机`gh`缺失，Computer Use kernel资源初始化失败。限流解除后按SHA查询workflow runs，逐项核build/test/render/static/package步骤、SDK10复核、终态和artifact digest。U08-01/02仍代码完成待验收；Demo树缺失的边界见U09-01配对证据。
+
 ## 2026-10-30 Round5 U09-01继续
 
 U08-01/02生产变化已补历史同数据双主题配对与after行为回归，证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-pair-20261030/BASELINE.md`；两项仍代码完成待验收，U09-01仍进行中。继续盘点其它视觉批次，优先依赖满足的独立页面/共享控件项；遵循Demo-first和UI_CHANGE_GATE，不碰真实恢复、媒体删除或云写入。规则指定的`GameSaveCenter.AcrylicFork/.../Design` Demo树不在本工作树，后续生产 UI 变更前先定位权威Demo资源，不能声称直接Demo验收。RenderHarness须固定UTC与运行任务时长，使用对应历史真实Worker。本工作树保留SDK8.0.423副本在`.tmp/round5-sdk8-8.0.423`，不要误清理。

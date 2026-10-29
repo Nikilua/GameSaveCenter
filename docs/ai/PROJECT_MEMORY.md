@@ -1,3 +1,7 @@
+## 2026-10-30 Round5 CI查询限流记录
+
+Round5文档提交`f8feee813c9aaebecec5ff3f644c8038a599685c`已推送`main`；`windows-build.yml`应运行`build`和`sdk10-build`。本次GitHub连接器被HTTP429限流，公开未认证REST同样达到限额，`gh` CLI不存在且Computer Use kernel资产路径缺失；未获得run/job/artifact身份。不要将远端状态推断为通过。后续限流恢复后以认证GitHub API按head SHA查Actions run、jobs、artifacts；required-check先前403不重复探测。
+
 ## 2026-10-30 U09-01 U08-01/02历史配对与RenderHarness固定条件
 
 对比生产快照`18481e6d8d3415ffc31362764980614e76445848`→`fd2d1316be9ff2d65b0851ac57c45e40064e50ac`：概览眉题从“待处理”变为“当前状态”，存档历史摘要加入所选游戏身份；其它生产行为未改。两侧SDK8.0.423 Release真实Worker与RenderHarness构建成功，完整双主题Render QA各394 PNG/0 PROBLEM/exit0；after定向回归1/1。固定RenderHarness必须同时设置假数据UTC和运行任务`ElapsedSeconds`，否则DTO会用真实`UtcNow`生成动态时长；SettingsState捕获需要编译历史源码对应Worker。net472路径限制可以用仓库`.tmp`短junction承载临时输出，不改源码/断言。技能静态审查生产子树26 XAML/0 error/26 warning；两条Overview warning源于检测器2500字符文本邻近启发式，未反映容器树。规则指定的`GameSaveCenter.AcrylicFork/.../Design`参考树当前未检出，后续UI源改动前需定位到可读的权威Demo资源；本批没有生产源修改。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-pair-20261030/`。本工作树保留SDK8.0.423副本在`.tmp/round5-sdk8-8.0.423`，系统SDK只有9.0.302；该目录只供后续冻结门禁复用。

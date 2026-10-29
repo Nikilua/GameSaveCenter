@@ -1,3 +1,7 @@
+## 2026-10-30 U08配对证据提交CI待验
+
+证据提交`f8feee813c9aaebecec5ff3f644c8038a599685c`已推送`main`。该SHA的`windows-build.yml`应有`build`和`sdk10-build`两项适用job。GitHub连接器HTTP 429，公开Actions API未认证限额，Browser Computer Use kernel初始化失败；本机没有`gh` CLI。run/job/artifact身份不可读，不能算CI通过。下一步用已认证GitHub API按该精确SHA查询runs、jobs与artifacts，再核run/job终态、步骤、artifact head SHA与digest；如果仍受限，由有权限维护者执行只读查询。具体状态见Round5 `PROGRESS.md`。
+
 ## 2026-10-30 U09-01补U08-01/02历史配对
 
 历史生产快照`18481e6d8d3415ffc31362764980614e76445848`→`fd2d1316be9ff2d65b0851ac57c45e40064e50ac`；生产差异限于概览眉题与存档摘要所选游戏身份提示。SDK8.0.423 Release两侧真实Worker/RenderHarness构建无警告错误，完整Render QA各394 PNG/0 PROBLEM/exit0；固定样本UTC和运行任务ElapsedSeconds后38张变化、356张像素一致，任务页不变。after定向行为测试1/1通过。当前生产子树WPF静态审查26 XAML/0 error/26 warning/164 info；Overview两条为StackPanel启发式文本邻近误报，实际为Grid内标题区，SaveCenter无警告。Demo-first文档指定的`GameSaveCenter.AcrylicFork/.../Design`树不在本工作树，未声称直接Demo对照。证据、前后目标图、报告、日志、TRX和SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-pair-20261030/`。未改生产源码，U08-01/02仍代码完成待验收，U09-01继续进行。
