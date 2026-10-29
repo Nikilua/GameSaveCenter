@@ -1,0 +1,36 @@
+{
+  "tasks": [
+    "U04-06",
+    "U04-08"
+  ],
+  "scope": "Historical snapshots for disclosure disable interruption and transform identity. Production source untouched; not compiled/rendered yet. Probe instrumentation pending. Current gate candidate remains 392854b3.",
+  "sdk": "8.0.423",
+  "snapshots": [
+    {
+      "side": "before",
+      "commit": "4225eb17139a844ede87219f02a9ad97e88a12de",
+      "archiveSha256": "31d8af744aba1b6da9451fca55f1ae36434f3b12635b224069d9bcea295fc089",
+      "unchangedProductionFiles": 356,
+      "fixedClockFixtures": [
+        {
+          "file": "FakeDashboardData.cs",
+          "oldSha256": "c01762269b2b185f9ef0bbd3e1208c93a57c56c7c3de68db6e75cad67ca6f475",
+          "newSha256": "59206a1aa165952d3655f55a7edf7e6868bac0acb984ceefe6b2ef022e629755"
+        }
+      ]
+    },
+    {
+      "side": "after",
+      "commit": "c5c86558b6232995438657c00810aeb327ed9ba5",
+      "archiveSha256": "e5e62160298c00de7a8a22b2d063a2408cdb87591e7e2db3f01898fa6cd565bd",
+      "unchangedProductionFiles": 357,
+      "fixedClockFixtures": [
+        {
+          "file": "FakeDashboardData.cs",
+          "oldSha256": "c01762269b2b185f9ef0bbd3e1208c93a57c56c7c3de68db6e75cad67ca6f475",
+          "newSha256": "59206a1aa165952d3655f55a7edf7e6868bac0acb984ceefe6b2ef022e629755"
+        }
+      ]
+    }
+  ]
+}

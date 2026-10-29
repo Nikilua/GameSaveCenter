@@ -1,0 +1,62 @@
+[
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T145010628Z-1d5c3fbe\\summary.json",
+    "archive": "failed-root-summary.json",
+    "rawSha256": "6ec612d65854e8581b1115caf85081b2c86d0d0bb77f4056c885a1336b4060f7",
+    "archivedSha256": "917d5936a45f33de875d3d6042c448075ae74d6b9b7226f4db1c6fa68936e173"
+  },
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T145010628Z-1d5c3fbe\\worker-console.txt",
+    "archive": "failed-worker.txt",
+    "rawSha256": "26befe6815d17a4723559d223d06b06e94d868a2beb40ebd07d0aa6ed2b82ee0",
+    "archivedSha256": "0b239074327192b9bb31fd5a9dfa121d301288d79e5995bd882c9ee7e9a3fedf"
+  },
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T145010628Z-1d5c3fbe\\tests\\worker\\worker.trx",
+    "archive": "failed-worker.trx",
+    "rawSha256": "d7a40866fc4f3ce7f14fdf3affc5df60d3cd8283d0330ed1b5472fe587bd8774",
+    "archivedSha256": "3da6395ebf4c47aac7bbe751ae5966325f95fd509bdf70919efd40e486d6060e"
+  },
+  {
+    "source": ".tmp\\u04-render-final-20261029\\frozen.json",
+    "archive": "frozen.json",
+    "rawSha256": "e6a4ef1e7acafc34c2c5ed9f3a91d7e46e6d4cad7e7e3af7fa5f16475c7f45bd",
+    "archivedSha256": "f3e346866ea8493aade04b0b116b48abc638bc55679d99c31580a613dd3cad8d"
+  },
+  {
+    "source": ".tmp\\u04-render-final-20261029\\root-console.txt",
+    "archive": "failed-root-console.txt",
+    "rawSha256": "a9874f4d088d80ba088eec79817ea84feacf8948f3fd9fa6d9b487571859db8e",
+    "archivedSha256": "32daadcf519fae10e3afb6a5d62a784cc0e1621ec12fe2ba25d6665b3fba163e"
+  },
+  {
+    "source": ".tmp\\u04-render-final-20261029\\root-exit.txt",
+    "archive": "root-exit.txt",
+    "rawSha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+    "archivedSha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "source": ".tmp\\u09-soak-diagnostic-20261029\\targeted.txt",
+    "archive": "targeted.txt",
+    "rawSha256": "9d58c8a6080aa6204fc6a91a1da3ab5705daafe0047844a9ec4651112f31923c",
+    "archivedSha256": "4c8d41aa9f8f8900352936e8174842690638002fb7b388d417a0d11ed9cdf121"
+  },
+  {
+    "source": ".tmp\\u09-soak-diagnostic-20261029\\worker-diagnostic.txt",
+    "archive": "worker-diagnostic.txt",
+    "rawSha256": "035f286781cc346d9e7c9ed8c54c6197fe97c81266a8928673c79dd20cabbc6b",
+    "archivedSha256": "a849fbef4e64bad38d650009045d5cb819ff30ec4c4b33c3c0519f273f05863c"
+  },
+  {
+    "source": ".tmp\\u09-soak-diagnostic-20261029\\worker-diagnostic.trx",
+    "archive": "worker-diagnostic.trx",
+    "rawSha256": "56f92b9ff9bb8c753a019b5f1f47a256a0915d6e5ec9d5769a15de54c2b25fc8",
+    "archivedSha256": "b6e6f08bdd42af03af744fd4fcf3fafb21511b51c04222049c5d876f53ec2c44"
+  },
+  {
+    "source": ".tmp\\u09-soak-diagnostic-20261029\\lopmatu_SULT_2026-10-29_23_01_49.trx",
+    "archive": "targeted.trx",
+    "rawSha256": "10b106e0528ca6077c83ac3e66e47590c3fe8977c9afbba4ca7039caf8f3e433",
+    "archivedSha256": "c35c78a17a7e4c08e0531d97db56104fcd5ef4b15c1df9a427a2cca1cc694e98"
+  }
+]

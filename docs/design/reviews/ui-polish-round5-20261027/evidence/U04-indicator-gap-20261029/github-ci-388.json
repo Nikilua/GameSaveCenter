@@ -1,0 +1,80 @@
+{
+  "source": "GitHub connector, workflow_run_jobs and workflow_run_artifacts queries",
+  "run": 40882375341,
+  "headSha": "388c46ea620738f05c127633e4e3b1b7f859a2b9",
+  "workflow": ".github/workflows/windows-build.yml",
+  "jobs": [
+    {
+      "id": 123477010272,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 123477009566,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12904896598,
+      "name": "GameSaveCenter-build-diagnostics",
+      "size_in_bytes": 2027780,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12904896598",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12904896598/zip",
+      "expired": false,
+      "created_at": "2026-10-29T14:23:02Z",
+      "expires_at": "2026-11-12T14:23:00Z",
+      "updated_at": "2026-10-29T14:23:02Z",
+      "digest": "sha256:f0545ec57ae23eba0250c5192257754d2d4bde5df880c10a545cec34a0fbc017",
+      "workflow_run": {
+        "id": 40882375341,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "388c46ea620738f05c127633e4e3b1b7f859a2b9"
+      }
+    },
+    {
+      "id": 12904692279,
+      "name": "GameSaveCenter-windows-preview",
+      "size_in_bytes": 90789512,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12904692279",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12904692279/zip",
+      "expired": false,
+      "created_at": "2026-10-29T14:23:00Z",
+      "expires_at": "2027-01-27T13:29:19Z",
+      "updated_at": "2026-10-29T14:23:00Z",
+      "digest": "sha256:59937a301a231fd50a4278c0cc813bf5a235222439fad8a639d59b7730a3ef0b",
+      "workflow_run": {
+        "id": 40882375341,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "388c46ea620738f05c127633e4e3b1b7f859a2b9"
+      }
+    },
+    {
+      "id": 12901404211,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "size_in_bytes": 972661,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12901404211",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12901404211/zip",
+      "expired": false,
+      "created_at": "2026-10-29T13:56:42Z",
+      "expires_at": "2026-11-12T13:56:41Z",
+      "updated_at": "2026-10-29T13:56:42Z",
+      "digest": "sha256:a24bd20e03b85493a86ffe23e7affb480de17f7aea695bd2651a8bac817b07c1",
+      "workflow_run": {
+        "id": 40882375341,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "388c46ea620738f05c127633e4e3b1b7f859a2b9"
+      }
+    }
+  ],
+  "requiredChecks": "Prior API 403; not queried again."
+}

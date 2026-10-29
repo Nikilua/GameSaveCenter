@@ -1,0 +1,17 @@
+theme,phase,elapsed_ms,expanded,enabled,angle,animated,same_header,same_path,same_transform
+Light,initial,3.716,False,True,-90.000000,True,True,True,True
+Light,before-disable,17.328,True,True,-81.798450,True,True,True,True
+Light,disabled-immediate,18.379,True,False,-80.056875,True,True,True,True
+Light,disabled-settled,333.151,True,False,0.000000,True,True,True,True
+Light,reenabled,592.062,True,True,0.000000,True,True,True,True
+Light,reduced-theme-applied,720.772,True,True,0.000000,False,True,True,False
+Light,reduced-baseline,720.911,True,True,0.000000,False,True,True,True
+Light,reduced-after100,737.217,True,True,0.000000,False,True,True,True
+Dark,initial,0.096,False,True,-90.000000,True,True,True,True
+Dark,before-disable,27.117,True,True,-64.299300,True,True,True,True
+Dark,disabled-immediate,27.321,True,False,-64.299300,True,True,True,True
+Dark,disabled-settled,350.407,True,False,0.000000,True,True,True,True
+Dark,reenabled,610.690,True,True,0.000000,True,True,True,True
+Dark,reduced-theme-applied,740.399,True,True,0.000000,False,True,True,False
+Dark,reduced-baseline,740.459,True,True,0.000000,False,True,True,True
+Dark,reduced-after100,756.358,True,True,0.000000,False,True,True,True

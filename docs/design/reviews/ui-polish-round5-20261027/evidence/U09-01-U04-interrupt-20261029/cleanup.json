@@ -1,0 +1,186 @@
+{
+  "utc": "2026-10-29T15:18:10.0432738Z",
+  "retained": [],
+  "after": [
+    {
+      "Name": "C",
+      "Free": 6881271808
+    },
+    {
+      "Name": "D",
+      "Free": 18776997888
+    }
+  ],
+  "before": [
+    {
+      "Name": "C",
+      "Free": 6880698368
+    },
+    {
+      "Name": "D",
+      "Free": 18776997888
+    }
+  ],
+  "deleted": [
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-capture\\Dark-disabled-settled.png",
+      "sha256": "97df8310c462f511d805fbcb902238deb3337fa3a4347345494e0896c7d9d340",
+      "bytes": 16554
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-capture\\Dark-initial.png",
+      "sha256": "59ce544afbb7ecb89f485ce26bc0c205ed99a5acc4730621089e0b96d93d8fdd",
+      "bytes": 10985
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-capture\\Dark-reduced-after100.png",
+      "sha256": "6d7a4af3e4998277d7396b7c0a9f3ba32308f3d05ad3124a00c3e7ad252e71a8",
+      "bytes": 17364
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-capture\\Dark-reenabled.png",
+      "sha256": "6d7a4af3e4998277d7396b7c0a9f3ba32308f3d05ad3124a00c3e7ad252e71a8",
+      "bytes": 17364
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-capture\\Light-disabled-settled.png",
+      "sha256": "a588f6966a569f0f2a154dfa6af66a9244e5e9c9afbef4f477927a058b0e33d6",
+      "bytes": 15615
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-capture\\Light-initial.png",
+      "sha256": "bea87fdfd13ecdae932b4d6196afdebbbb39a2667d28953163848dbac8d16f60",
+      "bytes": 10487
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-capture\\Light-reduced-after100.png",
+      "sha256": "86952f0aba62a897b7c01e8475939a9874bf79b6046b0ba9b111c467f226aea2",
+      "bytes": 16790
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-capture\\Light-reenabled.png",
+      "sha256": "86952f0aba62a897b7c01e8475939a9874bf79b6046b0ba9b111c467f226aea2",
+      "bytes": 16790
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-final-capture\\Dark-disabled-settled.png",
+      "sha256": "97df8310c462f511d805fbcb902238deb3337fa3a4347345494e0896c7d9d340",
+      "bytes": 16554
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-final-capture\\Dark-initial.png",
+      "sha256": "59ce544afbb7ecb89f485ce26bc0c205ed99a5acc4730621089e0b96d93d8fdd",
+      "bytes": 10985
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-final-capture\\Dark-reduced-after100.png",
+      "sha256": "6d7a4af3e4998277d7396b7c0a9f3ba32308f3d05ad3124a00c3e7ad252e71a8",
+      "bytes": 17364
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-final-capture\\Dark-reenabled.png",
+      "sha256": "6d7a4af3e4998277d7396b7c0a9f3ba32308f3d05ad3124a00c3e7ad252e71a8",
+      "bytes": 17364
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-final-capture\\Light-disabled-settled.png",
+      "sha256": "a588f6966a569f0f2a154dfa6af66a9244e5e9c9afbef4f477927a058b0e33d6",
+      "bytes": 15615
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-final-capture\\Light-initial.png",
+      "sha256": "bea87fdfd13ecdae932b4d6196afdebbbb39a2667d28953163848dbac8d16f60",
+      "bytes": 10487
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-final-capture\\Light-reduced-after100.png",
+      "sha256": "86952f0aba62a897b7c01e8475939a9874bf79b6046b0ba9b111c467f226aea2",
+      "bytes": 16790
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\before-final-capture\\Light-reenabled.png",
+      "sha256": "86952f0aba62a897b7c01e8475939a9874bf79b6046b0ba9b111c467f226aea2",
+      "bytes": 16790
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-capture\\Dark-disabled-settled.png",
+      "sha256": "97df8310c462f511d805fbcb902238deb3337fa3a4347345494e0896c7d9d340",
+      "bytes": 16554
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-capture\\Dark-initial.png",
+      "sha256": "59ce544afbb7ecb89f485ce26bc0c205ed99a5acc4730621089e0b96d93d8fdd",
+      "bytes": 10985
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-capture\\Dark-reduced-after100.png",
+      "sha256": "6d7a4af3e4998277d7396b7c0a9f3ba32308f3d05ad3124a00c3e7ad252e71a8",
+      "bytes": 17364
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-capture\\Dark-reenabled.png",
+      "sha256": "6d7a4af3e4998277d7396b7c0a9f3ba32308f3d05ad3124a00c3e7ad252e71a8",
+      "bytes": 17364
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-capture\\Light-disabled-settled.png",
+      "sha256": "a588f6966a569f0f2a154dfa6af66a9244e5e9c9afbef4f477927a058b0e33d6",
+      "bytes": 15615
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-capture\\Light-initial.png",
+      "sha256": "bea87fdfd13ecdae932b4d6196afdebbbb39a2667d28953163848dbac8d16f60",
+      "bytes": 10487
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-capture\\Light-reduced-after100.png",
+      "sha256": "86952f0aba62a897b7c01e8475939a9874bf79b6046b0ba9b111c467f226aea2",
+      "bytes": 16790
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-capture\\Light-reenabled.png",
+      "sha256": "86952f0aba62a897b7c01e8475939a9874bf79b6046b0ba9b111c467f226aea2",
+      "bytes": 16790
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-final-capture\\Dark-disabled-settled.png",
+      "sha256": "97df8310c462f511d805fbcb902238deb3337fa3a4347345494e0896c7d9d340",
+      "bytes": 16554
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-final-capture\\Dark-initial.png",
+      "sha256": "59ce544afbb7ecb89f485ce26bc0c205ed99a5acc4730621089e0b96d93d8fdd",
+      "bytes": 10985
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-final-capture\\Dark-reduced-after100.png",
+      "sha256": "6d7a4af3e4998277d7396b7c0a9f3ba32308f3d05ad3124a00c3e7ad252e71a8",
+      "bytes": 17364
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-final-capture\\Dark-reenabled.png",
+      "sha256": "6d7a4af3e4998277d7396b7c0a9f3ba32308f3d05ad3124a00c3e7ad252e71a8",
+      "bytes": 17364
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-final-capture\\Light-disabled-settled.png",
+      "sha256": "a588f6966a569f0f2a154dfa6af66a9244e5e9c9afbef4f477927a058b0e33d6",
+      "bytes": 15615
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-final-capture\\Light-initial.png",
+      "sha256": "bea87fdfd13ecdae932b4d6196afdebbbb39a2667d28953163848dbac8d16f60",
+      "bytes": 10487
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-final-capture\\Light-reduced-after100.png",
+      "sha256": "86952f0aba62a897b7c01e8475939a9874bf79b6046b0ba9b111c467f226aea2",
+      "bytes": 16790
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u04-disclosure-interrupt-pairs-20261029\\after-final-capture\\Light-reenabled.png",
+      "sha256": "86952f0aba62a897b7c01e8475939a9874bf79b6046b0ba9b111c467f226aea2",
+      "bytes": 16790
+    }
+  ]
+}

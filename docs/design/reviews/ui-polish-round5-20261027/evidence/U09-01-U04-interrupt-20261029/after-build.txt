@@ -1,0 +1,34 @@
+  正在确定要还原的项目…
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+  已还原 [repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (用时 18.1 秒)。
+  已还原 [repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 18.1 秒)。
+  已还原 [repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj (用时 18.1 秒)。
+  已还原 [repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 18.1 秒)。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Contracts -> [repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Core -> [repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_sdn043de_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Playnite -> [repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.RenderHarness -> [repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\bin\Release\net472\GameSaveCenter.RenderHarness.exe
+
+已成功生成。
+
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-disclosure-interrupt-pairs-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_sdn043de_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+    9 个警告
+    0 个错误
+
+已用时间 00:01:12.51

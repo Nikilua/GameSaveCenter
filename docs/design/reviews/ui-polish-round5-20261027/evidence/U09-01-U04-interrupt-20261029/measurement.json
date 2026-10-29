@@ -1,0 +1,134 @@
+{
+  "identities": [
+    {
+      "side": "before",
+      "commit": "4225eb17139a844ede87219f02a9ad97e88a12de",
+      "verifiedProductionFiles": 356,
+      "zipSha256": "31d8af744aba1b6da9451fca55f1ae36434f3b12635b224069d9bcea295fc089",
+      "compiledPluginSha256": "7d14c4d9b75df973ff219ff6753547adb92df5d5c29da3cac3743fe344044def"
+    },
+    {
+      "side": "after",
+      "commit": "c5c86558b6232995438657c00810aeb327ed9ba5",
+      "verifiedProductionFiles": 357,
+      "zipSha256": "e5e62160298c00de7a8a22b2d063a2408cdb87591e7e2db3f01898fa6cd565bd",
+      "compiledPluginSha256": "de2f7058d6f234a0aba0dc1fd66ed72f4ca20effe807733f37d9ddc48a14f1e8"
+    }
+  ],
+  "metrics": [
+    {
+      "side": "before",
+      "theme": "Light",
+      "disabledImmediate": {
+        "theme": "Light",
+        "phase": "disabled-immediate",
+        "elapsed_ms": "19.750",
+        "expanded": "True",
+        "enabled": "False",
+        "angle": "-79.400325",
+        "animated": "True",
+        "same_header": "True",
+        "same_path": "True",
+        "same_transform": "True"
+      },
+      "after100": {
+        "theme": "Light",
+        "phase": "reduced-after100",
+        "elapsed_ms": "730.301",
+        "expanded": "True",
+        "enabled": "True",
+        "angle": "0.000000",
+        "animated": "False",
+        "same_header": "True",
+        "same_path": "True",
+        "same_transform": "True"
+      }
+    },
+    {
+      "side": "before",
+      "theme": "Dark",
+      "disabledImmediate": {
+        "theme": "Dark",
+        "phase": "disabled-immediate",
+        "elapsed_ms": "10.422",
+        "expanded": "True",
+        "enabled": "False",
+        "angle": "-70.226625",
+        "animated": "True",
+        "same_header": "True",
+        "same_path": "True",
+        "same_transform": "True"
+      },
+      "after100": {
+        "theme": "Dark",
+        "phase": "reduced-after100",
+        "elapsed_ms": "717.945",
+        "expanded": "True",
+        "enabled": "True",
+        "angle": "0.000000",
+        "animated": "False",
+        "same_header": "True",
+        "same_path": "True",
+        "same_transform": "True"
+      }
+    },
+    {
+      "side": "after",
+      "theme": "Light",
+      "disabledImmediate": {
+        "theme": "Light",
+        "phase": "disabled-immediate",
+        "elapsed_ms": "31.749",
+        "expanded": "True",
+        "enabled": "False",
+        "angle": "0.000000",
+        "animated": "False",
+        "same_header": "True",
+        "same_path": "True",
+        "same_transform": "True"
+      },
+      "after100": {
+        "theme": "Light",
+        "phase": "reduced-after100",
+        "elapsed_ms": "669.850",
+        "expanded": "True",
+        "enabled": "True",
+        "angle": "0.000000",
+        "animated": "False",
+        "same_header": "True",
+        "same_path": "True",
+        "same_transform": "True"
+      }
+    },
+    {
+      "side": "after",
+      "theme": "Dark",
+      "disabledImmediate": {
+        "theme": "Dark",
+        "phase": "disabled-immediate",
+        "elapsed_ms": "27.188",
+        "expanded": "True",
+        "enabled": "False",
+        "angle": "0.000000",
+        "animated": "False",
+        "same_header": "True",
+        "same_path": "True",
+        "same_transform": "True"
+      },
+      "after100": {
+        "theme": "Dark",
+        "phase": "reduced-after100",
+        "elapsed_ms": "707.919",
+        "expanded": "True",
+        "enabled": "True",
+        "angle": "0.000000",
+        "animated": "False",
+        "same_header": "True",
+        "same_path": "True",
+        "same_transform": "True"
+      }
+    }
+  ],
+  "finalHelperSha256": "afb218d3fa625603ca650b771f6aaafea9f8c0a8541c3df7919655b555aac1e3",
+  "assemblyVersionBoundary": "Snapshot builds did not stamp historical GSC_BUILD_COMMIT. ZIP commit plus verified unchanged production bytes and compiled DLL SHA identify this controlled reconstruction; not installed historical packages."
+}

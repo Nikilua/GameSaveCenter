@@ -1,0 +1,14 @@
+[
+  {
+    "side": "before",
+    "programBeforeSha256": "9a079a422ff392e0a466572e17e082e7324cce72bd59f2360af9b3d86204ce4b",
+    "programAfterSha256": "b7e761dd211ba805ebd0103abe01c60723c4d236e4632e34121792dfa08b5a9c",
+    "helperSha256": "60c620ccfac1cc6d2d1224c9bac0b92adff3493c6d1bd54e62c33c1a884c253f"
+  },
+  {
+    "side": "after",
+    "programBeforeSha256": "9a079a422ff392e0a466572e17e082e7324cce72bd59f2360af9b3d86204ce4b",
+    "programAfterSha256": "b7e761dd211ba805ebd0103abe01c60723c4d236e4632e34121792dfa08b5a9c",
+    "helperSha256": "60c620ccfac1cc6d2d1224c9bac0b92adff3493c6d1bd54e62c33c1a884c253f"
+  }
+]

@@ -364,8 +364,22 @@ public sealed class SoakDataScaleHarness : IDisposable
     private async Task SimulateAtomicWriteAsync(int cycle, CancellationToken token)
     {
         var path = Path.Combine(options.DataDirectory, "soak-" + cycle + ".json");
-        await AtomicFileWriter.WriteAllTextAsync(path, $"{{cycle:{cycle}}}", token).ConfigureAwait(false);
-        await AtomicFileWriter.WriteAllTextAsync(path, $"{{cycle:{cycle + 1}}}", token).ConfigureAwait(false);
+        var write = 1;
+        try
+        {
+            await AtomicFileWriter.WriteAllTextAsync(path, $"{{cycle:{cycle}}}", token).ConfigureAwait(false);
+            write = 2;
+            await AtomicFileWriter.WriteAllTextAsync(path, $"{{cycle:{cycle + 1}}}", token).ConfigureAwait(false);
+        }
+        catch (Exception exception)
+        {
+            exception.Data["Soak.AtomicWrite.Path"] = path;
+            exception.Data["Soak.AtomicWrite.Cycle"] = cycle;
+            exception.Data["Soak.AtomicWrite.Write"] = write;
+            try { exception.Data["Soak.AtomicWrite.Attributes"] = File.GetAttributes(path); }
+            catch (Exception diagnosticException) { exception.Data["Soak.AtomicWrite.Attributes"] = diagnosticException.GetType().Name; }
+            throw;
+        }
         TempResidue += Directory.EnumerateFiles(options.DataDirectory, "*.tmp").Count()
             + Directory.EnumerateFiles(options.DataDirectory, "*.replace").Count();
     }

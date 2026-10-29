@@ -19,7 +19,17 @@ public sealed class SoakDataScaleTests
         var profile = Environment.GetEnvironmentVariable("GSC_SOAK_DATA_SCALE") ?? "0";
         using var harness = new SoakDataScaleHarness();
 
-        await harness.RunAsync(profile, CancellationToken.None);
+        try
+        {
+            await harness.RunAsync(profile, CancellationToken.None);
+        }
+        catch (Exception exception)
+        {
+            output.WriteLine($"Soak failure HRESULT=0x{exception.HResult:X8}");
+            foreach (System.Collections.DictionaryEntry entry in exception.Data)
+                output.WriteLine($"{entry.Key}={entry.Value}");
+            throw;
+        }
 
         Assert.Empty(harness.Errors);
         Assert.True(harness.BoundedGrowth, harness.GrowthSummary);
