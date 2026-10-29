@@ -1,0 +1,356 @@
+[
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\after.trx",
+    "archive": "tests/01.trx",
+    "rawSha256": "a0a2f236c55cebc176b8f89afa0f0d8b0cc5390d116f7c8f15c26a797405bf9a",
+    "archivedSha256": "0d201d7fa378ea69def1bc2399538d198df6b915b9397987d177070d7f7d52ce"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\before.trx",
+    "archive": "tests/02.trx",
+    "rawSha256": "958993ab2410f2f5648e4681f0af9c91a2bd506a8cdde712543eaac7b8aea7a2",
+    "archivedSha256": "64050c31b1d07b7badf628cdc1f6c12c091fe6e8b40f81a9346490e36ad883ff"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\R09HighContrastBehaviorTests-final.trx",
+    "archive": "tests/03.trx",
+    "rawSha256": "401cbe34a6d02c49d3f0caff1464eeea433bc3f560560ce4523411d29bac343d",
+    "archivedSha256": "df126055c6e6bf59e2f8741b19b1f05fc2057acceecbbeb5d4976c8002a1e3d0"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\R09HighContrastBehaviorTests-identity.trx",
+    "archive": "tests/04.trx",
+    "rawSha256": "00036e1b4573478155fed48e89a072ecc6716bfb39a354fbd11d8cb62c34a4a3",
+    "archivedSha256": "157ead3a78cc27f6b282da77932f3739d197d8fccdbd14c955c9be1e70b01e6f"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\R09ThemeSwitchBehaviorTests-final.trx",
+    "archive": "tests/05.trx",
+    "rawSha256": "2d64fda4819a0495521945103d7e31461acf02dd9c015194e8f7ee7f73671ea1",
+    "archivedSha256": "c20c818056530101f2dbf23c5cd7624e500ecd1960833eb40c2796467506cb8d"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\R09ThemeSwitchBehaviorTests-identity.trx",
+    "archive": "tests/06.trx",
+    "rawSha256": "749b352d1043f670070cb6bc5290513d8fc2f945562a4b486ccc80e155f2e8cf",
+    "archivedSha256": "d374d97ba8efbed1009f750499b4a39bcec14b604c84ef9744d9802bfd8b99e8"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\RuntimePalettePublicationBehaviorTests-final.trx",
+    "archive": "tests/07.trx",
+    "rawSha256": "ea1dc94e608d72efa0843b2c33e155d55ee2f4428dcb6025fb94aa2a395d2c00",
+    "archivedSha256": "7fe0c34cea885517e469a43eda6b9b5e16d34405106b1fbf4006eedecfe96ed8"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\RuntimePalettePublicationBehaviorTests-identity.trx",
+    "archive": "tests/08.trx",
+    "rawSha256": "25e35cb08433604679b12c00a7d86c3a205852636402d1fc047a215d8cf3073d",
+    "archivedSha256": "c5222142d35bf81129c719ee59c2737cb4fa278c66d25993c522564ca99c7e22"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\U02SemanticStatusColorBehaviorTests-final.trx",
+    "archive": "tests/09.trx",
+    "rawSha256": "fec99f6f9ed568e116719e9d572d3c3cd0881276e31dc62915889ff7ac1bcfde",
+    "archivedSha256": "bebe0b289066e84e8d62af42bd09849faae92287d70f9476ef358e10995ed256"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\U02SemanticStatusColorBehaviorTests-identity.trx",
+    "archive": "tests/10.trx",
+    "rawSha256": "1873dcfbfa498150c1dc0bdce827badeb30da017c0c9b8cd2f90838a578f20a0",
+    "archivedSha256": "88d46b1e4e442cd5a3e379f34ec8e8cf1969fae0e544cb67efec3a6dfb10f056"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\WpfUiResourceDictionaryTests-final.trx",
+    "archive": "tests/11.trx",
+    "rawSha256": "61f6f21288e54f77137fe0d6d0d563f96221de331318d91e7a2dc9be52a3d131",
+    "archivedSha256": "648ac7666259ce8a9ec512703a955f68340fd71f3e2927420b35ede05bb78d64"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\WpfUiResourceDictionaryTests-identity.trx",
+    "archive": "tests/12.trx",
+    "rawSha256": "33c21c6fe588cc18fcde1e07d138305c78dd218c96e93420266caaa5041c56e0",
+    "archivedSha256": "ae4c5ff087b2c64136e82ac5aebb5b5d13c1b12a8beb8ddb8b13606d25f3bfff"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\WpfUiResourceDictionaryTests.trx",
+    "archive": "tests/13.trx",
+    "rawSha256": "03cf98744555bcc3c4307d068469f9a5ef5d8fa430de0a3e9386891b8e2f699a",
+    "archivedSha256": "b0b8f11d8b5045cbd0694e06f3575f293e74bd0b8a46c1d0f853a2a786b3153e"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\after.txt",
+    "archive": "logs/after.txt",
+    "rawSha256": "b1382ce6ff78d98037253cd0db5f83955aab91a155c154fd57e1f02e516ec96f",
+    "archivedSha256": "19ce2a9dd736f4eb2aa562cffb33e73e7c77f12e49edd494104755cd737a895b"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\before.txt",
+    "archive": "logs/before.txt",
+    "rawSha256": "3abed4bb961b4f0cdd64b3c5b733c823a55721fb57e2785536e8bb9b4fd75fd5",
+    "archivedSha256": "e5d19b8935db58c8d4ff9a4772ff05d9475d4106daf4baaa6af6ae48b2b844e8"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\identity-build.txt",
+    "archive": "logs/identity-build.txt",
+    "rawSha256": "409f0ff7da3d8df8f39a7c5e1f6326192047f8c10836abec871b45dfb82403bf",
+    "archivedSha256": "b03a91fd59663898fe0ae31779f96db389b4fdfb386a9093c8a118700c90af4e"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\null-fix-build.txt",
+    "archive": "logs/null-fix-build.txt",
+    "rawSha256": "f8b8dc4d42ee4844f001367db3885043bfff1ddad3b63d188476cebe6669d790",
+    "archivedSha256": "3ad96bb37804686e1ed5cd9aa237f28da5526ff45c14d5fa8a036c71c86dd2b7"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\R09HighContrastBehaviorTests-final.txt",
+    "archive": "logs/R09HighContrastBehaviorTests-final.txt",
+    "rawSha256": "6f8255f85d3f4904933637f00472f5d63290c23b588392b0a4dc5f841711cc83",
+    "archivedSha256": "b0fe29bbc1845374a2271665b8aab0d763daf5748067305481da766592db7aca"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\R09HighContrastBehaviorTests-identity.txt",
+    "archive": "logs/R09HighContrastBehaviorTests-identity.txt",
+    "rawSha256": "2249a4376be5d131c02fc70991e77da7a3d0b1520ee1e5f063c08813ce8a4953",
+    "archivedSha256": "cfe7da551940b0cfba01a5fccaf2e2e36fafbc600c1f76c55d82148388b3a288"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\R09ThemeSwitchBehaviorTests-final.txt",
+    "archive": "logs/R09ThemeSwitchBehaviorTests-final.txt",
+    "rawSha256": "f6722ad6e4f7924ee6e2095da0fc19b4c320054e2139ce6635d9c6674efd8e4c",
+    "archivedSha256": "42d1cad7c6f2cc3473142b12c5defc92b3e9a2700a379c95d2bb8a917b822f6a"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\R09ThemeSwitchBehaviorTests-identity.txt",
+    "archive": "logs/R09ThemeSwitchBehaviorTests-identity.txt",
+    "rawSha256": "599579143719398c0d506b648b6ef580d4b1c40924172e4a4577c2af992f7a24",
+    "archivedSha256": "c023f35fd69a9cf5fce1df0bdeae01b28fdf327d7f6acdd34d6bebdd2171f903"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\render-failed-report.txt",
+    "archive": "logs/render-failed-report.txt",
+    "rawSha256": "d20d0193c96c5951e300bd4757031fbfeef725a43bfeb8400d06fe1a309e0b0a",
+    "archivedSha256": "bbf50028217d051f2f7376298f927bad366b8d622a8b75882478a8ebf76fd4d5"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\render-final.txt",
+    "archive": "logs/render-final.txt",
+    "rawSha256": "6107026c2dace54d8bca8350d4de54a7915f581f8c247fefd464167b2897241e",
+    "archivedSha256": "3f9dc62f6cceba04758fa7e2f93c58f17ce2ed24ffb1b095d021262ea5cba899"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\render-qa.txt",
+    "archive": "logs/render-qa.txt",
+    "rawSha256": "f6ed255698823633ad68a47b1065d634a60796441ed1b1864b0c7c512ada1bbb",
+    "archivedSha256": "81b4097eafb58ce5a6984abd57f4045ab7dc85d33693af3933a48d8f7ff92522"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\RuntimePalettePublicationBehaviorTests-final.txt",
+    "archive": "logs/RuntimePalettePublicationBehaviorTests-final.txt",
+    "rawSha256": "14db83d657c0ac747373618e7199b41d707efabe5bda2259909dfd44097b6cc4",
+    "archivedSha256": "9ff360ba5740dc6771289b228184018514d0262b5b65f9d02c05db8077d5dfd2"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\RuntimePalettePublicationBehaviorTests-identity.txt",
+    "archive": "logs/RuntimePalettePublicationBehaviorTests-identity.txt",
+    "rawSha256": "9bd9dc8e31d20ea5386a75086176ccf4d3273f872bb0ef74ada97de31e2405c6",
+    "archivedSha256": "be1545d19884f107b4d44eee60f8774e26e25a257c311035cac22446482aafae"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\source.txt",
+    "archive": "logs/source.txt",
+    "rawSha256": "30760e7082311ac27aa2d981c07638fc2a4b11d039c265afb40365b1f98fbca6",
+    "archivedSha256": "77f4beded9cf425fb763b9619b28231640a35746bffda882195fce8787cb8a9b"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\U02SemanticStatusColorBehaviorTests-final.txt",
+    "archive": "logs/U02SemanticStatusColorBehaviorTests-final.txt",
+    "rawSha256": "c4265c912b3350a11c06844e0f01cc66c8c8b97a9a2a2f564ae77d3345715367",
+    "archivedSha256": "e9bcc95cc2d6acbf7c1c54013a8f9996e71f3d6edacbdb1170ddbdb087c165e8"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\U02SemanticStatusColorBehaviorTests-identity.txt",
+    "archive": "logs/U02SemanticStatusColorBehaviorTests-identity.txt",
+    "rawSha256": "36c07667b3b2f4623b22f8ea14f8f150607ca899302477f15c143caebaad5deb",
+    "archivedSha256": "4e612121a2db21f0cba9bc0dd74265f2a9442577694cd838799356f41ded7404"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\worker-build.txt",
+    "archive": "logs/worker-build.txt",
+    "rawSha256": "5501413701eeffc4446bcdfff5171d41da8c44254687c49dccc87a1a501c035f",
+    "archivedSha256": "f8adb1d50f55db2dcc822a1b53594fc62c817f6bf8ccdfabcccb14d4e1433422"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\wpf-static.txt",
+    "archive": "logs/wpf-static.txt",
+    "rawSha256": "c6258955a8ca57ab4092ffaaded623e6d671d6e18ab783517f13bd567cd62b10",
+    "archivedSha256": "90217e4285adfaf351447b49a765b276261a761f4ad8bb60f998160d249e62b9"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\WpfUiResourceDictionaryTests-final.txt",
+    "archive": "logs/WpfUiResourceDictionaryTests-final.txt",
+    "rawSha256": "2d12242e5f6c44226b1d230d75369c1de1aae6b56ce3af65125e1cf3e32315f2",
+    "archivedSha256": "f9b1b974abcf6ec0bbbf53c9d128761a2e21149f0539a447034c600c3839d1ad"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\WpfUiResourceDictionaryTests-identity.txt",
+    "archive": "logs/WpfUiResourceDictionaryTests-identity.txt",
+    "rawSha256": "ea32d0eb6fcdf818bef5a25f98cc6baf4aa271cc8445be37c8f74ce97a010288",
+    "archivedSha256": "b0c7c70ef3a5a839b7a182bd761606d69bb56f70cd9bd6ea1d5477a3b104b7a5"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\WpfUiResourceDictionaryTests.txt",
+    "archive": "logs/WpfUiResourceDictionaryTests.txt",
+    "rawSha256": "a140c188ed1c37f7b524eb52b662fff311be46309e9e625f220db1f9ff5181b2",
+    "archivedSha256": "869fa61257e3997eb36e63fd9724aacf3400607598315a4373b9d21586c9a932"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\render-final\\render-qa-report.txt",
+    "archive": "render-final-report.txt",
+    "rawSha256": "8660d4c8271ef54e997b78a3daefac879035775faa16ed6871a70b58155a906a",
+    "archivedSha256": "61393b13fe750e7138597f42df53ed6c6d3ff9f0b1e629a9332349ab30467e50"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\render-final\\theme\\light\\Overview-1040x700.png",
+    "archive": "overview-light.png",
+    "rawSha256": "033e259779597d4db1b9c7f346da0e7dced9075ab418569b1ca89c72e93dc52d",
+    "archivedSha256": "033e259779597d4db1b9c7f346da0e7dced9075ab418569b1ca89c72e93dc52d"
+  },
+  {
+    "source": ".tmp\\u09-palette-publication-20261029\\render-final\\theme\\dark\\Overview-1040x700.png",
+    "archive": "overview-dark.png",
+    "rawSha256": "299032ddc9abb5c3acf81244daf074710e07104c3a5e3133422a71efef6f593a",
+    "archivedSha256": "299032ddc9abb5c3acf81244daf074710e07104c3a5e3133422a71efef6f593a"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\prepare-parts-diagnostic.py",
+    "archive": "parts/prepare-parts-diagnostic.py",
+    "rawSha256": "3da514e0bb34fdc0fb2e99aa42c65405942e6226444529e58f8d8956bc50fee8",
+    "archivedSha256": "3da514e0bb34fdc0fb2e99aa42c65405942e6226444529e58f8d8956bc50fee8"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-patch.json",
+    "archive": "parts/parts-patch.json",
+    "rawSha256": "50dae1d84ac1d2da74e0c1a3b9f74967ec9cc9f71ff4a8696ec75a9fd4200a28",
+    "archivedSha256": "50dae1d84ac1d2da74e0c1a3b9f74967ec9cc9f71ff4a8696ec75a9fd4200a28"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\run-parts-diagnostic.ps1",
+    "archive": "parts/run-parts-diagnostic.ps1",
+    "rawSha256": "eb62a9cd274d34691d0c12b9ccc9d268040e87f0bf016d82eeea3b4c602002eb",
+    "archivedSha256": "eb62a9cd274d34691d0c12b9ccc9d268040e87f0bf016d82eeea3b4c602002eb"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-index.json",
+    "archive": "parts/parts-diagnostic-index.json",
+    "rawSha256": "61896c49a879babad37a0a2b7519d4b691c03909aaf76c8bfe69e9a0e414c480",
+    "archivedSha256": "dc96ee15234c019df401d50ea5a2d81a7fe9436316674ee22424e0dc4f8450f9"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\before-parts-build.txt",
+    "archive": "parts/before-parts-build.txt",
+    "rawSha256": "6bb55e6d68fd4cd343782e51de963b7e2ecc32d46867013bdb27d4c9c1ea8836",
+    "archivedSha256": "73ef93c2637a0d09d75b016a161f5ecf18748a61169067fd76ebda00eb4883ce"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\after-parts-build.txt",
+    "archive": "parts/after-parts-build.txt",
+    "rawSha256": "409a4f59400f7ef47dd80bb6c6478e9b074be1f61f69e32eed31da30aba3b1ff",
+    "archivedSha256": "442321c97745584dd121dc9026a4d222b0a91506fc211e00fa334a11e101cdba"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-1-before\\console.txt",
+    "archive": "parts/parts-diagnostic-1-before/console.txt",
+    "rawSha256": "c12d3dba61fec7b6527531fba4623d475be5c5eae81fb644b9ff8a2f3a941b98",
+    "archivedSha256": "52f4f4b51f78eba6fe3f05cfbba1be4b5fdbccb15bb9d5a25367ab12646f72ba"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-1-before\\enduranceprobe-report.txt",
+    "archive": "parts/parts-diagnostic-1-before/enduranceprobe-report.txt",
+    "rawSha256": "cc848ca80322414f412bb1df6329a256ef6a4b72bdb3e7a4111adf7a05830dfb",
+    "archivedSha256": "52f4f4b51f78eba6fe3f05cfbba1be4b5fdbccb15bb9d5a25367ab12646f72ba"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-1-before\\identity.json",
+    "archive": "parts/parts-diagnostic-1-before/identity.json",
+    "rawSha256": "d85048b267211ee3e893b686c9893fecaa6d333293615fab32fdda24914c3b5e",
+    "archivedSha256": "ecaee330c97db0a321f2680607af6b180f58d5f0960d8444c99b8407be929526"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-1-before\\page-cycles.csv",
+    "archive": "parts/parts-diagnostic-1-before/page-cycles.csv",
+    "rawSha256": "db999e4a0aa98c9c762c1d1c169289e926776e522c63d7a135e05c2fb2c4c429",
+    "archivedSha256": "dd57118d20f1fbe31ac1f86efcf6aa98d030daf61d528fe12d6ca401e04d4019"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-1-before\\parts.csv",
+    "archive": "parts/parts-diagnostic-1-before/parts.csv",
+    "rawSha256": "3d0ec94d49dadd7a1f44771ba39139e9400c0b56902a4a5f0f483e480398fb7c",
+    "archivedSha256": "5b5d7109d8ad776bf4593d171e108ae446bc390442fc7823de5f3051e7b3446a"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-1-before\\performance-frames.csv",
+    "archive": "parts/parts-diagnostic-1-before/performance-frames.csv",
+    "rawSha256": "300a90a6ba77f29e3a6f5ddb6ad29c6d5eb3538973f522e38b426981ff24bcf1",
+    "archivedSha256": "9561054613d350093e7cd48641a4f039ced88fe4a9a5749a51e0e9b6036108ad"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-1-before\\performance-summary.txt",
+    "archive": "parts/parts-diagnostic-1-before/performance-summary.txt",
+    "rawSha256": "26a16b8f6dcea617878f17f3cf42fbdc4273ff4df6af762b14e8745320a494e0",
+    "archivedSha256": "3394ba83b57e8c22f9a29e3bf58c1e10fd82bd4b08474b2751260b299320ccb7"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-2-after\\console.txt",
+    "archive": "parts/parts-diagnostic-2-after/console.txt",
+    "rawSha256": "3f78d217e50f0e8c89b523c3a23c06139da6fcaad8b6e8d5c69165e5aacf9e45",
+    "archivedSha256": "ce891954d6c41467cfa091ddd85a33abbd9136c0ee91b0fde16511fa627e66d5"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-2-after\\enduranceprobe-report.txt",
+    "archive": "parts/parts-diagnostic-2-after/enduranceprobe-report.txt",
+    "rawSha256": "85753bcc321f0ba2a5a23e3ccdb34d534308524ab327a38e31e19c2b4bec74e8",
+    "archivedSha256": "ce891954d6c41467cfa091ddd85a33abbd9136c0ee91b0fde16511fa627e66d5"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-2-after\\identity.json",
+    "archive": "parts/parts-diagnostic-2-after/identity.json",
+    "rawSha256": "b893c6817442e251adf007b1240afffda42b32108c7a2d1252807caf2255db88",
+    "archivedSha256": "42ad6cb5ac237af3d8af796970834e702949102b1d8ec1f7019ee0435642a63f"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-2-after\\page-cycles.csv",
+    "archive": "parts/parts-diagnostic-2-after/page-cycles.csv",
+    "rawSha256": "3c21b0589d74990eb123b7f5c5b4fa2d975a1d29007cc9c495d7a4fa4ac8a7b3",
+    "archivedSha256": "0b364141f5624812f15afb0ae9ad5ce019f4e8752361865bdfb4715a6c205920"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-2-after\\parts.csv",
+    "archive": "parts/parts-diagnostic-2-after/parts.csv",
+    "rawSha256": "8d16572f59567de2744104c3e18ba1a409e999c9e56d3e12bcbb2dc36551af96",
+    "archivedSha256": "7043849f2c40bdeaa5bb97eb62967c9b58d36ade91cace92efa9a4ddd20284ab"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-2-after\\performance-frames.csv",
+    "archive": "parts/parts-diagnostic-2-after/performance-frames.csv",
+    "rawSha256": "ea3a40afe279f022b29205ba47be4d9f131fbc35a698998d6ad09e717a47c719",
+    "archivedSha256": "982cf697474b757f0a49f4bc658cf131367b76792a8129d9e9f81f35e09e8369"
+  },
+  {
+    "source": ".tmp\\u09-fixedcycles-20261029\\parts-diagnostic-2-after\\performance-summary.txt",
+    "archive": "parts/parts-diagnostic-2-after/performance-summary.txt",
+    "rawSha256": "ce1081a5586416cf0756012c3de90afb9348c81cdcd700969ba270cd2fdedfec",
+    "archivedSha256": "436d601dd583649db0dc4c211ccfb00a118ca66c18fc4f8fca038d3424a50eec"
+  },
+  {
+    "source": ".tmp/u09-palette-publication-20261029/render/theme/light/Settings-1040x700.png",
+    "archive": "failed-render-settings/light-1040x700.png",
+    "rawSha256": "b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347",
+    "archivedSha256": "b5ed94530dd3bd45cd6a1881f70bc49dd3910e28e831ae4a427e8babc4592347"
+  },
+  {
+    "source": ".tmp/u09-palette-publication-20261029/render/theme/dark/Settings-1040x700.png",
+    "archive": "failed-render-settings/dark-1040x700.png",
+    "rawSha256": "6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862",
+    "archivedSha256": "6a9fd785dbe2028202e6c7421b0759bcafac9f1c81e3e54755bc1cc447043862"
+  }
+]

@@ -1,0 +1,926 @@
+[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:04.28]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditUsesDemoInspectorAndInternalAuditViewport [FAIL]
+[xUnit.net 00:00:04.28]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxInspectorKeepsActionsOutsideTheGridScrollSurface [FAIL]
+[xUnit.net 00:00:04.29]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SidebarStatusUsesRealBooleanStatesInsteadOfRawBooleanText [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditUsesDemoInspectorAndInternalAuditViewport [96 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditUsesDemoInspectorAndInternalAuditViewport() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2062
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxInspectorKeepsActionsOutsideTheGridScrollSurface [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxInspectorKeepsActionsOutsideTheGridScrollSurface() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1282
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SidebarStatusUsesRealBooleanStatesInsteadOfRawBooleanText [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SidebarStatusUsesRealBooleanStatesInsteadOfRawBooleanText() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1397
+[xUnit.net 00:00:05.10]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(mode: Light) [FAIL]
+[xUnit.net 00:00:05.13]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(mode: Dark) [FAIL]
+[xUnit.net 00:00:05.14]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected [SKIP]
+[xUnit.net 00:00:05.54]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxUsesStableLargeDataVirtualizationAndMaintenanceHeadersOwnTheirTheme [FAIL]
+[xUnit.net 00:00:05.54]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDoesNotRenderASecondLegacyOverviewMetricStrip [FAIL]
+[xUnit.net 00:00:05.54]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryMaintenanceDataGridHasAnEmptyStateOverlay [FAIL]
+[xUnit.net 00:00:05.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsUsesSharedResponsiveFieldGroupsWithoutShrinkingNumericInputs [FAIL]
+[xUnit.net 00:00:05.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignKeepsNavigationAndStatusCardsInsideCompactSidebarBounds [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(mode: Light) [836 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(GameSaveCenterThemeMode mode) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1991
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(mode: Dark) [32 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(GameSaveCenterThemeMode mode) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1991
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxUsesStableLargeDataVirtualizationAndMaintenanceHeadersOwnTheirTheme [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxUsesStableLargeDataVirtualizationAndMaintenanceHeadersOwnTheirTheme() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1204
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDoesNotRenderASecondLegacyOverviewMetricStrip [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDoesNotRenderASecondLegacyOverviewMetricStrip() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4477
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryMaintenanceDataGridHasAnEmptyStateOverlay [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryMaintenanceDataGridHasAnEmptyStateOverlay() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5101
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsUsesSharedResponsiveFieldGroupsWithoutShrinkingNumericInputs [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsUsesSharedResponsiveFieldGroupsWithoutShrinkingNumericInputs() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5417
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignKeepsNavigationAndStatusCardsInsideCompactSidebarBounds [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignKeepsNavigationAndStatusCardsInsideCompactSidebarBounds() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6065
+[xUnit.net 00:00:05.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewActivityRowsAndCloudQueueCardKeepVisualContentAndOneClickNavigation [FAIL]
+[xUnit.net 00:00:05.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupDefersWorkerUntilExplicitUserIntent [FAIL]
+[xUnit.net 00:00:05.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCardsUseReadableAutoStartStatusInsteadOfRawBoolean [FAIL]
+[xUnit.net 00:00:05.63]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture [FAIL]
+[xUnit.net 00:00:05.79]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:05.79]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn [SKIP]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewActivityRowsAndCloudQueueCardKeepVisualContentAndOneClickNavigation [12 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewActivityRowsAndCloudQueueCardKeepVisualContentAndOneClickNavigation() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3989
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupDefersWorkerUntilExplicitUserIntent [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupDefersWorkerUntilExplicitUserIntent() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6008
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCardsUseReadableAutoStartStatusInsteadOfRawBoolean [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCardsUseReadableAutoStartStatusInsteadOfRawBoolean() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4147
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture [50 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 516
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReleasesEmptyRightColumn [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn [1 ms]
+[xUnit.net 00:00:05.91]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSummaryStripFollowsTheDemoMetricRhythm [FAIL]
+[xUnit.net 00:00:05.91]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignUsesExplicitHeaderRowsAndSharedGameContextAtEveryBreakpoint [FAIL]
+[xUnit.net 00:00:05.93]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeGameLibrariesUseOneVirtualizedSearchableSelectorSurface [FAIL]
+[xUnit.net 00:00:05.93]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SemanticStatusColorsAreLocalDynamicResourcesInHighContrast [FAIL]
+[xUnit.net 00:00:05.94]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveShellReclaimsCompactPaddingForWorkspaceScrollRows [FAIL]
+[xUnit.net 00:00:05.94]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TableDensitySettingUsesSharedTokensWithoutChangingBodyTypography [FAIL]
+[xUnit.net 00:00:05.94]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FixedAmbientMaterialLayersUseTheOpaqueAccessibilityFallback [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSummaryStripFollowsTheDemoMetricRhythm [4 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSummaryStripFollowsTheDemoMetricRhythm() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3398
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignUsesExplicitHeaderRowsAndSharedGameContextAtEveryBreakpoint [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignUsesExplicitHeaderRowsAndSharedGameContextAtEveryBreakpoint() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6086
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeGameLibrariesUseOneVirtualizedSearchableSelectorSurface [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeGameLibrariesUseOneVirtualizedSearchableSelectorSurface() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4371
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SemanticStatusColorsAreLocalDynamicResourcesInHighContrast [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SemanticStatusColorsAreLocalDynamicResourcesInHighContrast() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5615
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveShellReclaimsCompactPaddingForWorkspaceScrollRows [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveShellReclaimsCompactPaddingForWorkspaceScrollRows() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5828
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TableDensitySettingUsesSharedTokensWithoutChangingBodyTypography [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TableDensitySettingUsesSharedTokensWithoutChangingBodyTypography() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1182
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FixedAmbientMaterialLayersUseTheOpaqueAccessibilityFallback [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FixedAmbientMaterialLayersUseTheOpaqueAccessibilityFallback() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 839
+[xUnit.net 00:00:05.94]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterProvidesDemoComparisonAndRetentionInspector [SKIP]
+[xUnit.net 00:00:05.94]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCardAliasesKeepReadingSurfacesFlatAndConsistent [FAIL]
+[xUnit.net 00:00:05.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:05.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxSupportsNonIntrusiveBatchClassificationActions [FAIL]
+[xUnit.net 00:00:05.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap [SKIP]
+[xUnit.net 00:00:05.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsOnlyTheWorkerOwnedByThisPluginInstance [FAIL]
+[xUnit.net 00:00:05.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:05.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardLargeScrollableControlsStayInsideFiniteGridLayouts [FAIL]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterProvidesDemoComparisonAndRetentionInspector [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCardAliasesKeepReadingSurfacesFlatAndConsistent [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCardAliasesKeepReadingSurfacesFlatAndConsistent() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5778
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorReleasesEmptyRightColumn [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxSupportsNonIntrusiveBatchClassificationActions [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxSupportsNonIntrusiveBatchClassificationActions() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1333
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsOnlyTheWorkerOwnedByThisPluginInstance [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsOnlyTheWorkerOwnedByThisPluginInstance() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5332
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorReleasesEmptyRightColumn [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardLargeScrollableControlsStayInsideFiniteGridLayouts [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardLargeScrollableControlsStayInsideFiniteGridLayouts() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3720
+[xUnit.net 00:00:05.96]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryReadinessProbeNeverEagerlyStartsWorkerAfterASettledPartialSnapshot [FAIL]
+[xUnit.net 00:00:05.96]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoVisualVocabularyAndWorkspaceStretchContractRemainAvailable [FAIL]
+[xUnit.net 00:00:05.96]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionXamlUsesOnlyRealDockEnumValues [FAIL]
+[xUnit.net 00:00:05.96]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStopsHiddenNotificationPollingWhenDetached [FAIL]
+[xUnit.net 00:00:05.96]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridUsesDemoBodyAndCaptionFontTokens [FAIL]
+[xUnit.net 00:00:05.96]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCorePaletteWinsOverHostNeutralBrushesOutsideHighContrast [FAIL]
+[xUnit.net 00:00:05.96]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AsyncUiEventBoundariesDoNotLeakFailuresIntoThePlayniteDispatcher [FAIL]
+[xUnit.net 00:00:05.97]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSliderDeclaresReadableTrackAndExpandedInputTarget [FAIL]
+[xUnit.net 00:00:05.97]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterKeepsTableRowsVisibleWhenMetadataActionsWrap [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryReadinessProbeNeverEagerlyStartsWorkerAfterASettledPartialSnapshot [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryReadinessProbeNeverEagerlyStartsWorkerAfterASettledPartialSnapshot() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5967
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoVisualVocabularyAndWorkspaceStretchContractRemainAvailable [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoVisualVocabularyAndWorkspaceStretchContractRemainAvailable() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3151
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionXamlUsesOnlyRealDockEnumValues [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionXamlUsesOnlyRealDockEnumValues() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6185
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStopsHiddenNotificationPollingWhenDetached [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStopsHiddenNotificationPollingWhenDetached() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5981
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridUsesDemoBodyAndCaptionFontTokens [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridUsesDemoBodyAndCaptionFontTokens() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5692
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCorePaletteWinsOverHostNeutralBrushesOutsideHighContrast [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCorePaletteWinsOverHostNeutralBrushesOutsideHighContrast() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5655
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AsyncUiEventBoundariesDoNotLeakFailuresIntoThePlayniteDispatcher [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AsyncUiEventBoundariesDoNotLeakFailuresIntoThePlayniteDispatcher() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5182
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSliderDeclaresReadableTrackAndExpandedInputTarget [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSliderDeclaresReadableTrackAndExpandedInputTarget() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 728
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterKeepsTableRowsVisibleWhenMetadataActionsWrap [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterKeepsTableRowsVisibleWhenMetadataActionsWrap() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2468
+[xUnit.net 00:00:05.98]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor [SKIP]
+[xUnit.net 00:00:06.03]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorRestoresAfterCompactResize [SKIP]
+[xUnit.net 00:00:06.04]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSearchRowStacksButtonsBelowTheSearchBoxSoNarrowWindowsDoNotClip [FAIL]
+[xUnit.net 00:00:06.04]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskSummaryMatchesDemoStateBreakdownWithRealCounts [FAIL]
+[xUnit.net 00:00:06.04]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceCompactInspectorTogglesToUsableHeight [SKIP]
+[xUnit.net 00:00:06.04]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard [SKIP]
+[xUnit.net 00:00:06.04]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorRestoresAfterCompactResize [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSearchRowStacksButtonsBelowTheSearchBoxSoNarrowWindowsDoNotClip [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSearchRowStacksButtonsBelowTheSearchBoxSoNarrowWindowsDoNotClip() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3645
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskSummaryMatchesDemoStateBreakdownWithRealCounts [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskSummaryMatchesDemoStateBreakdownWithRealCounts() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 935
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceCompactInspectorTogglesToUsableHeight [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors [1 ms]
+[xUnit.net 00:00:06.04]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints [SKIP]
+[xUnit.net 00:00:06.04]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardToastTimersAreReleasedOnUnloadAndCapacityEviction [FAIL]
+[xUnit.net 00:00:06.04]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryPrewarmsWorkerWithoutBlockingDashboardOnLudusaviVersion [FAIL]
+[xUnit.net 00:00:06.11]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCurrentActionsReserveACompactDetailsLane [FAIL]
+[xUnit.net 00:00:06.11]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorRestoresAfterCompactResize [SKIP]
+[xUnit.net 00:00:06.11]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.BackgroundWorkerCollectionUpdatesRespectThePlayniteDispatcherLifecycle [FAIL]
+[xUnit.net 00:00:06.11]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedGlassButtonAliasesKeepThemeStatesAndPressFeedback [FAIL]
+[xUnit.net 00:00:06.11]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProtectionPromptUsesThreeExplicitChoices [FAIL]
+[xUnit.net 00:00:06.12]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DenseGridLongTextUsesTheSharedEllipsisAndTooltipStyle [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardToastTimersAreReleasedOnUnloadAndCapacityEviction [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardToastTimersAreReleasedOnUnloadAndCapacityEviction() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5581
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryPrewarmsWorkerWithoutBlockingDashboardOnLudusaviVersion [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryPrewarmsWorkerWithoutBlockingDashboardOnLudusaviVersion() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5385
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCurrentActionsReserveACompactDetailsLane [66 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCurrentActionsReserveACompactDetailsLane() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3493
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorRestoresAfterCompactResize [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.BackgroundWorkerCollectionUpdatesRespectThePlayniteDispatcherLifecycle [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.BackgroundWorkerCollectionUpdatesRespectThePlayniteDispatcherLifecycle() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5898
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedGlassButtonAliasesKeepThemeStatesAndPressFeedback [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedGlassButtonAliasesKeepThemeStatesAndPressFeedback() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 245
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProtectionPromptUsesThreeExplicitChoices [5 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProtectionPromptUsesThreeExplicitChoices() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4181
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DenseGridLongTextUsesTheSharedEllipsisAndTooltipStyle [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DenseGridLongTextUsesTheSharedEllipsisAndTooltipStyle() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4276
+[xUnit.net 00:00:06.12]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceActionsUseSingleFiniteScrollChannel [FAIL]
+[xUnit.net 00:00:06.24]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterPathWorkspaceShowsRealRuleAndValidationEntryPoints [FAIL]
+[xUnit.net 00:00:06.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDataGridsDeclareExplicitFirstAndLastHeaderStyles [FAIL]
+[xUnit.net 00:00:06.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable [SKIP]
+[xUnit.net 00:00:06.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryTaskNotificationsDoNotOpenAWorkerLongPollBeforeTheDashboardIsOpened [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceActionsUseSingleFiniteScrollChannel [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceActionsUseSingleFiniteScrollChannel() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2852
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterPathWorkspaceShowsRealRuleAndValidationEntryPoints [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterPathWorkspaceShowsRealRuleAndValidationEntryPoints() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2829
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDataGridsDeclareExplicitFirstAndLastHeaderStyles [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDataGridsDeclareExplicitFirstAndLastHeaderStyles() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1252
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryTaskNotificationsDoNotOpenAWorkerLongPollBeforeTheDashboardIsOpened [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryTaskNotificationsDoNotOpenAWorkerLongPollBeforeTheDashboardIsOpened() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5994
+[xUnit.net 00:00:06.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeferredDashboardCallbacksAreProtectedDuringPlayniteUnload [FAIL]
+[xUnit.net 00:00:06.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsSectionRhythmUsesTitlePlusCaptionRowsForToggles [FAIL]
+[xUnit.net 00:00:06.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsStoragePolicyFieldsUseASafeCompactSingleColumnLayout [FAIL]
+[xUnit.net 00:00:06.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewPrioritizesPendingAndRecentTasksBeforeSecondaryContent [FAIL]
+[xUnit.net 00:00:06.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary [SKIP]
+[xUnit.net 00:00:06.26]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PluginNotificationAndConfirmationDispatchRespectPlayniteShutdown [FAIL]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourcesKeepPathEditingAndSafetyCommandsReachableInCompactLayouts [FAIL]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterReleasesEmptyHistoryAndCandidateInspectors [SKIP]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardUsesSidebarAsTheOnlyWorkspaceSwitcher [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeferredDashboardCallbacksAreProtectedDuringPlayniteUnload [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeferredDashboardCallbacksAreProtectedDuringPlayniteUnload() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5150
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsSectionRhythmUsesTitlePlusCaptionRowsForToggles [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsSectionRhythmUsesTitlePlusCaptionRowsForToggles() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5467
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsStoragePolicyFieldsUseASafeCompactSingleColumnLayout [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsStoragePolicyFieldsUseASafeCompactSingleColumnLayout() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5400
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewPrioritizesPendingAndRecentTasksBeforeSecondaryContent [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewPrioritizesPendingAndRecentTasksBeforeSecondaryContent() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4038
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PluginNotificationAndConfirmationDispatchRespectPlayniteShutdown [11 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PluginNotificationAndConfirmationDispatchRespectPlayniteShutdown() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5921
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourcesKeepPathEditingAndSafetyCommandsReachableInCompactLayouts [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourcesKeepPathEditingAndSafetyCommandsReachableInCompactLayouts() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4244
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterReleasesEmptyHistoryAndCandidateInspectors [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardUsesSidebarAsTheOnlyWorkspaceSwitcher [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardUsesSidebarAsTheOnlyWorkspaceSwitcher() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1780
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorFillsTheWorkspaceAndOnlyCapsWhenStacked [FAIL]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedListBoxItemsStayRoundedAndKeyboardFocusable [FAIL]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridUsesTheSharedViewportWithoutFixedBottomCompensation [FAIL]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerHandshakeRejectsHealthyStaleVersionBeforeLargeLibraryReuse [FAIL]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsTheDemoShellAtItsCommonMinimumWidth [FAIL]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterInspectorsRestoreAfterCompactResize [SKIP]
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode [FAIL]
+[xUnit.net 00:00:06.28]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskAndMaintenanceTablesUseReadableSemanticStatusTemplates [FAIL]
+[xUnit.net 00:00:06.28]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmbeddedPlayniteViewsDoNotRegisterWindowScopedContentDialogHosts [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorFillsTheWorkspaceAndOnlyCapsWhenStacked [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorFillsTheWorkspaceAndOnlyCapsWhenStacked() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2366
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedListBoxItemsStayRoundedAndKeyboardFocusable [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedListBoxItemsStayRoundedAndKeyboardFocusable() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5751
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridUsesTheSharedViewportWithoutFixedBottomCompensation [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridUsesTheSharedViewportWithoutFixedBottomCompensation() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1610
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerHandshakeRejectsHealthyStaleVersionBeforeLargeLibraryReuse [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerHandshakeRejectsHealthyStaleVersionBeforeLargeLibraryReuse() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5275
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsTheDemoShellAtItsCommonMinimumWidth [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsTheDemoShellAtItsCommonMinimumWidth() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5846
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterInspectorsRestoreAfterCompactResize [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5514
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskAndMaintenanceTablesUseReadableSemanticStatusTemplates [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskAndMaintenanceTablesUseReadableSemanticStatusTemplates() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4213
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmbeddedPlayniteViewsDoNotRegisterWindowScopedContentDialogHosts [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmbeddedPlayniteViewsDoNotRegisterWindowScopedContentDialogHosts() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 809
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault [FAIL]
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewMetricSeparatorsOccupyGapsBetweenSixCards [FAIL]
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsPathFieldsAreFullWidthReadableRowsPreservingEveryBinding [FAIL]
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDataGridHeaderKeepsSortGlyphAndResizePartsVisible [FAIL]
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.HeaderActionsKeepAnInternalHorizontalScrollChannelAtNarrowWidths [FAIL]
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedPageScrollViewerStretchesContentAndLeavesBottomBreathingRoom [FAIL]
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceIsPhysicallyExtractedAsAGlobalVirtualizedSurface [FAIL]
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault [43 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6393
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewMetricSeparatorsOccupyGapsBetweenSixCards [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewMetricSeparatorsOccupyGapsBetweenSixCards() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3801
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsPathFieldsAreFullWidthReadableRowsPreservingEveryBinding [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsPathFieldsAreFullWidthReadableRowsPreservingEveryBinding() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5443
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDataGridHeaderKeepsSortGlyphAndResizePartsVisible [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDataGridHeaderKeepsSortGlyphAndResizePartsVisible() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1167
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.HeaderActionsKeepAnInternalHorizontalScrollChannelAtNarrowWidths [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.HeaderActionsKeepAnInternalHorizontalScrollChannelAtNarrowWidths() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2997
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedPageScrollViewerStretchesContentAndLeavesBottomBreathingRoom [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedPageScrollViewerStretchesContentAndLeavesBottomBreathingRoom() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4118
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceIsPhysicallyExtractedAsAGlobalVirtualizedSurface [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceIsPhysicallyExtractedAsAGlobalVirtualizedSurface() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4508
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1627
+[xUnit.net 00:00:06.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStartsDescriptorSynchronizationWithoutBlockingTheFirstPaint [FAIL]
+[xUnit.net 00:00:06.40]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SafeFallbackUsesSystemThemeResourcesInsteadOfHardCodedDarkColors [FAIL]
+[xUnit.net 00:00:06.40]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionFindingRowsUseDemoIconTileRhythmWithSuggestedActionText [FAIL]
+[xUnit.net 00:00:06.40]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAndSidebarUseTheSharedPageScrollChannel [FAIL]
+[xUnit.net 00:00:06.40]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator [SKIP]
+[xUnit.net 00:00:06.40]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceShowsSafeModeBannerBoundToSnapshot [FAIL]
+[xUnit.net 00:00:06.40]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveLayoutsCoalesceResizeStormsWithoutUpdatingUnloadedViews [FAIL]
+[xUnit.net 00:00:06.40]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibraryKeepsBusyWorkerInsteadOfKillingItAfterPingTimeout [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStartsDescriptorSynchronizationWithoutBlockingTheFirstPaint [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStartsDescriptorSynchronizationWithoutBlockingTheFirstPaint() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5363
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SafeFallbackUsesSystemThemeResourcesInsteadOfHardCodedDarkColors [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SafeFallbackUsesSystemThemeResourcesInsteadOfHardCodedDarkColors() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1828
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionFindingRowsUseDemoIconTileRhythmWithSuggestedActionText [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionFindingRowsUseDemoIconTileRhythmWithSuggestedActionText() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3769
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAndSidebarUseTheSharedPageScrollChannel [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAndSidebarUseTheSharedPageScrollChannel() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1763
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceShowsSafeModeBannerBoundToSnapshot [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceShowsSafeModeBannerBoundToSnapshot() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5492
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveLayoutsCoalesceResizeStormsWithoutUpdatingUnloadedViews [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveLayoutsCoalesceResizeStormsWithoutUpdatingUnloadedViews() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5810
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibraryKeepsBusyWorkerInsteadOfKillingItAfterPingTimeout [4 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibraryKeepsBusyWorkerInsteadOfKillingItAfterPingTimeout() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5254
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.InitialSynchronizationCancellationToleratesCompletionRace [FAIL]
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot [SKIP]
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibrariesSyncDescriptorsAndKeepMatchingInTheWorkerQueue [FAIL]
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCenterKeepsProjectImportConfirmationTab [FAIL]
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedButtonsAndTogglesKeepDemoStateLayersWithoutChangingTheirCommands [FAIL]
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands [SKIP]
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionNavigationCentersEachIconAndLabelOnTheSameRow [FAIL]
+[xUnit.net 00:00:06.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProvidesReadOnlyRetentionPreviewTab [FAIL]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.InitialSynchronizationCancellationToleratesCompletionRace [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.InitialSynchronizationCancellationToleratesCompletionRace() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5910
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibrariesSyncDescriptorsAndKeepMatchingInTheWorkerQueue [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibrariesSyncDescriptorsAndKeepMatchingInTheWorkerQueue() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6021
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCenterKeepsProjectImportConfirmationTab [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCenterKeepsProjectImportConfirmationTab() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2981
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedButtonsAndTogglesKeepDemoStateLayersWithoutChangingTheirCommands [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedButtonsAndTogglesKeepDemoStateLayersWithoutChangingTheirCommands() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 672
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionNavigationCentersEachIconAndLabelOnTheSameRow [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionNavigationCentersEachIconAndLabelOnTheSameRow() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 201
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProvidesReadOnlyRetentionPreviewTab [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProvidesReadOnlyRetentionPreviewTab() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2887
+[xUnit.net 00:00:06.42]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSelectionLoadsReleasesInTheExtractedWorkspace [FAIL]
+[xUnit.net 00:00:06.42]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseTheSharedDemoLayoutWithoutReplacingTheirRealContent [FAIL]
+[xUnit.net 00:00:06.49]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces [SKIP]
+[xUnit.net 00:00:06.50]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactLayoutsKeepSummaryInformationAndUseThePageScroller [SKIP]
+[xUnit.net 00:00:06.50]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerDownloadFeedbackKeepsStableRequestContextAndOffersSafeCancellation [FAIL]
+[xUnit.net 00:00:06.50]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsDemoFooterHierarchyWithoutReintroducingStatusBarLayout [FAIL]
+[xUnit.net 00:00:06.50]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSectionCardMatchesDemoReadingSurfaceGeometry [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSelectionLoadsReleasesInTheExtractedWorkspace [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSelectionLoadsReleasesInTheExtractedWorkspace() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3679
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseTheSharedDemoLayoutWithoutReplacingTheirRealContent [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseTheSharedDemoLayoutWithoutReplacingTheirRealContent() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6491
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactLayoutsKeepSummaryInformationAndUseThePageScroller [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerDownloadFeedbackKeepsStableRequestContextAndOffersSafeCancellation [7 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerDownloadFeedbackKeepsStableRequestContextAndOffersSafeCancellation() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3693
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsDemoFooterHierarchyWithoutReintroducingStatusBarLayout [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsDemoFooterHierarchyWithoutReintroducingStatusBarLayout() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6201
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSectionCardMatchesDemoReadingSurfaceGeometry [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSectionCardMatchesDemoReadingSurfaceGeometry() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6214
+[xUnit.net 00:00:06.50]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover [SKIP]
+[xUnit.net 00:00:06.51]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ThemeAwareIconPackUsesSharedGeometryAndInheritableForeground [FAIL]
+[xUnit.net 00:00:06.51]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkspaceTableHeadersShareTheReadingSurfaceWithoutDividerBands [FAIL]
+[xUnit.net 00:00:06.51]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupRendersCacheWithoutKillingBusyWorker [FAIL]
+[xUnit.net 00:00:06.51]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [SKIP]
+[xUnit.net 00:00:06.52]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:06.52]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsRedesignMovesCategoriesWithoutRemovingExistingFieldsOrSaveSemantics [FAIL]
+[xUnit.net 00:00:06.52]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorStacksBeforeItsEditingControlsAreCompressed [SKIP]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ThemeAwareIconPackUsesSharedGeometryAndInheritableForeground [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ThemeAwareIconPackUsesSharedGeometryAndInheritableForeground() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 217
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkspaceTableHeadersShareTheReadingSurfaceWithoutDividerBands [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkspaceTableHeadersShareTheReadingSurfaceWithoutDividerBands() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5735
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupRendersCacheWithoutKillingBusyWorker [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupRendersCacheWithoutKillingBusyWorker() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5237
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsRedesignMovesCategoriesWithoutRemovingExistingFieldsOrSaveSemantics [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsRedesignMovesCategoriesWithoutRemovingExistingFieldsOrSaveSemantics() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6134
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorStacksBeforeItsEditingControlsAreCompressed [1 ms]
+[xUnit.net 00:00:06.52]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionActionsExposeAnAccessibleExplanationPath [SKIP]
+[xUnit.net 00:00:06.52]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.RecentProtectionCardSupportsSelectionAndRecommendedBatchAction [SKIP]
+[xUnit.net 00:00:06.52]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.GlobalWorkspaceViewsHaveOneVisibleMigrationEntryAndKeepVirtualization [FAIL]
+[xUnit.net 00:00:06.52]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsQueuedCallbacksBeforeTheyTouchWorkerOrUi [FAIL]
+[xUnit.net 00:00:06.52]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:06.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibrarySynchronizationWaitsForAnInteractiveSurface [FAIL]
+[xUnit.net 00:00:06.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryUsesReadableStatusLabelsAndRoundedStatusTemplates [FAIL]
+[xUnit.net 00:00:06.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming [FAIL]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionActionsExposeAnAccessibleExplanationPath [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.RecentProtectionCardSupportsSelectionAndRecommendedBatchAction [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.GlobalWorkspaceViewsHaveOneVisibleMigrationEntryAndKeepVirtualization [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.GlobalWorkspaceViewsHaveOneVisibleMigrationEntryAndKeepVirtualization() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 979
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsQueuedCallbacksBeforeTheyTouchWorkerOrUi [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsQueuedCallbacksBeforeTheyTouchWorkerOrUi() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5348
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibrarySynchronizationWaitsForAnInteractiveSurface [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibrarySynchronizationWaitsForAnInteractiveSurface() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5950
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryUsesReadableStatusLabelsAndRoundedStatusTemplates [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryUsesReadableStatusLabelsAndRoundedStatusTemplates() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4131
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5673
+[xUnit.net 00:00:06.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial [SKIP]
+[xUnit.net 00:00:06.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryInspectorDoesNotShowDisabledControlsOrUnlabelledPillsWithoutASelection [FAIL]
+[xUnit.net 00:00:06.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExistingButtonsUseGlassSurfaceAndSidebarIconUsesPlayniteGlyphBrush [FAIL]
+[xUnit.net 00:00:06.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi [FAIL]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProcessTableSpansFullWidthUntilAMappingIsSelected [FAIL]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGameFilterMovesIntoMoreFiltersOnCompactPanes [SKIP]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CustomToolSettingsExposeConservativeProcessAndRiskPolicies [FAIL]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OptionalWpfUiProbeKeepsItsChecklistInsideAFixedGridRow [FAIL]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryInspectorDoesNotShowDisabledControlsOrUnlabelledPillsWithoutASelection [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryInspectorDoesNotShowDisabledControlsOrUnlabelledPillsWithoutASelection() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6120
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExistingButtonsUseGlassSurfaceAndSidebarIconUsesPlayniteGlyphBrush [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExistingButtonsUseGlassSurfaceAndSidebarIconUsesPlayniteGlyphBrush() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 268
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 898
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProcessTableSpansFullWidthUntilAMappingIsSelected [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProcessTableSpansFullWidthUntilAMappingIsSelected() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 2261
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGameFilterMovesIntoMoreFiltersOnCompactPanes [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CustomToolSettingsExposeConservativeProcessAndRiskPolicies [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CustomToolSettingsExposeConservativeProcessAndRiskPolicies() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4159
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OptionalWpfUiProbeKeepsItsChecklistInsideAFixedGridRow [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OptionalWpfUiProbeKeepsItsChecklistInsideAFixedGridRow() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4230
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseGridRootsAndInternalTableScrolling [FAIL]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected [SKIP]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridSelectionUsesTrainerRoundedCardChrome [FAIL]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable [SKIP]
+[xUnit.net 00:00:06.56]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NativeConfirmationFallbackAlsoRunsInsideTheUiBoundary [FAIL]
+[xUnit.net 00:00:06.57]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourceRulesUseAVisibleWideFormAndResponsiveStackedList [FAIL]
+[xUnit.net 00:00:06.57]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmptyDataSurfacesExplainNextStepsWithoutBreakingLocalScrolling [FAIL]
+[xUnit.net 00:00:06.57]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers [SKIP]
+[xUnit.net 00:00:06.57]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeviceDecisionsPreserveProtectedRecoveryAndReadableCompactFields [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseGridRootsAndInternalTableScrolling [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseGridRootsAndInternalTableScrolling() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1412
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridSelectionUsesTrainerRoundedCardChrome [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridSelectionUsesTrainerRoundedCardChrome() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 3823
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NativeConfirmationFallbackAlsoRunsInsideTheUiBoundary [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NativeConfirmationFallbackAlsoRunsInsideTheUiBoundary() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5938
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourceRulesUseAVisibleWideFormAndResponsiveStackedList [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourceRulesUseAVisibleWideFormAndResponsiveStackedList() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4863
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmptyDataSurfacesExplainNextStepsWithoutBreakingLocalScrolling [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmptyDataSurfacesExplainNextStepsWithoutBreakingLocalScrolling() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5046
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeviceDecisionsPreserveProtectedRecoveryAndReadableCompactFields [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeviceDecisionsPreserveProtectedRecoveryAndReadableCompactFields() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4263
+[xUnit.net 00:00:06.57]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling [SKIP]
+[xUnit.net 00:00:06.57]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardWorkspacePresentationKeepsHeaderContextInSync [FAIL]
+[xUnit.net 00:00:06.57]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PreDashboardCatalogGuardCoversPartialLargeLibrariesAndDatabaseShutdowns [FAIL]
+[xUnit.net 00:00:06.57]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAsyncFeedbackDoesNotTargetAnUnloadedPlaynitePage [FAIL]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerLaunchLogRecordsExpectedVersionForStaleInstallationDiagnostics [FAIL]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip [FAIL]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ToastElevationFallsBackToAnOpaqueAccessibleSurface [FAIL]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedTextInputsAndComboItemsKeepDemoFocusAndSelectionLanguage [FAIL]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardViewModelEventsFollowTheLoadedViewLifecycle [FAIL]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardWorkspacePresentationKeepsHeaderContextInSync [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardWorkspacePresentationKeepsHeaderContextInSync() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4492
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PreDashboardCatalogGuardCoversPartialLargeLibrariesAndDatabaseShutdowns [2 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PreDashboardCatalogGuardCoversPartialLargeLibrariesAndDatabaseShutdowns() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 6046
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAsyncFeedbackDoesNotTargetAnUnloadedPlaynitePage [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAsyncFeedbackDoesNotTargetAnUnloadedPlaynitePage() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5796
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerLaunchLogRecordsExpectedVersionForStaleInstallationDiagnostics [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerLaunchLogRecordsExpectedVersionForStaleInstallationDiagnostics() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5307
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 1576
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ToastElevationFallsBackToAnOpaqueAccessibleSurface [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ToastElevationFallsBackToAnOpaqueAccessibleSurface() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5884
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedTextInputsAndComboItemsKeepDemoFocusAndSelectionLanguage [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedTextInputsAndComboItemsKeepDemoFocusAndSelectionLanguage() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 711
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardViewModelEventsFollowTheLoadedViewLifecycle [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardViewModelEventsFollowTheLoadedViewLifecycle() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5862
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles [SKIP]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AccentBrandMarksUseTheComputedOnAccentForegroundInEveryTheme [FAIL]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerDuplicateNormalExitReusesHealthyExistingInstance [FAIL]
+[xUnit.net 00:00:06.58]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FiniteWidthComboBoxesUseTheSharedLongTextTemplate [FAIL]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles [1 ms]
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AccentBrandMarksUseTheComputedOnAccentForegroundInEveryTheme [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AccentBrandMarksUseTheComputedOnAccentForegroundInEveryTheme() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5599
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerDuplicateNormalExitReusesHealthyExistingInstance [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerDuplicateNormalExitReusesHealthyExistingInstance() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 5318
+  失败 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FiniteWidthComboBoxesUseTheSharedLongTextTemplate [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FiniteWidthComboBoxesUseTheSharedLongTextTemplate() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\WpfUiResourceDictionaryTests.cs:行号 4318
+结果文件: [repo]\.tmp\u09-palette-publication-20261029\WpfUiResourceDictionaryTests.trx
+
+失败!  - 失败:   120，通过:    20，已跳过:    39，总计:   179，持续时间: 3 s - GameSaveCenter.Playnite.Tests.dll (net472)

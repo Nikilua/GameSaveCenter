@@ -1,0 +1,24 @@
+{
+  "side": "after",
+  "utcEnd": "2026-10-29T09:12:31.1126056Z",
+  "pluginVersion": "0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f",
+  "exeSha256": "EFCC47C6923CC766ABAF3FC4666EFE73D6CE0DC043FA72726E09A871B2233F10",
+  "freeBefore": [
+    {
+      "Name": "C",
+      "Free": 11876110336
+    },
+    {
+      "Name": "D",
+      "Free": 18922831872
+    }
+  ],
+  "processesAfter": [],
+  "processesBefore": [],
+  "order": 2,
+  "exitCode": 0,
+  "utcStart": "2026-10-29T09:11:04.9933556Z",
+  "pluginSha256": "150F27222EC3DBA1D7EFB26CA13797F40EF8FC8FFEA7C32527D2D8CF71980E41",
+  "size": "1040x700 DIP",
+  "host": "ControlledWpfWindow"
+}

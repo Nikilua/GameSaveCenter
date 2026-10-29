@@ -1,0 +1,38 @@
+{
+  "deleted": [
+    {
+      "basis": "owned failed rendering output superseded by render-final; failed report and representative screenshots verified in 59-file archive; provenance paths in manifests retained, not active raw-output links",
+      "bytes": 53440218.0,
+      "files": 395,
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-palette-publication-20261029\\render"
+    },
+    {
+      "basis": "owned failed rendering output superseded by render-final; failed report and representative screenshots verified in 59-file archive; provenance paths in manifests retained, not active raw-output links",
+      "bytes": 13510358.0,
+      "files": 72,
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-palette-publication-20261029\\failed-settings-archive-staging"
+    }
+  ],
+  "preserved": "render-final 394 PNGs, all TRX/builds/failure logs, U09 fixed-cycle snapshots and ZIPs, unknown/user files",
+  "before": [
+    {
+      "Name": "C",
+      "Free": 8271122432
+    },
+    {
+      "Name": "D",
+      "Free": 18922307584
+    }
+  ],
+  "after": [
+    {
+      "Name": "C",
+      "Free": 8339210240
+    },
+    {
+      "Name": "D",
+      "Free": 18922307584
+    }
+  ],
+  "utc": "2026-10-29T09:39:04.1428057Z"
+}

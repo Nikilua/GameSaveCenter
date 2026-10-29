@@ -500,6 +500,23 @@ namespace GameSaveCenter.Playnite.Infrastructure
         /// </summary>
         public static void ApplyRuntimeThemeResources(ResourceDictionary resources, AdaptiveThemePalette palette, bool glassEnabled, bool motionEnabled)
         {
+            // The compatibility, material and Demo layers deliberately override some of the
+            // same keys. Resolve those overrides away from the live visual tree: publishing
+            // intermediate brushes repeatedly invalidates every DynamicResource consumer.
+            var resolved = new ResourceDictionary();
+            // ResourceDictionary's indexer ignores null assigned to a missing key. Add
+            // nullable effect keys explicitly so their final null values also get published
+            // when high contrast or reduced transparency must remove an existing effect.
+            foreach (var key in new[] { "GscSurfaceEffect", "GscPrimaryButtonEffect", "GscSidebarEffect",
+                "GscPopupEffect", "GscDialogEffect", "GscSliderThumbEffect", "GscGameBackgroundEffect" })
+                resolved.Add(key, null);
+            PopulateRuntimeThemeResources(resolved, palette, glassEnabled, motionEnabled);
+            foreach (var key in resolved.Keys)
+                resources[key] = resolved[key];
+        }
+
+        private static void PopulateRuntimeThemeResources(ResourceDictionary resources, AdaptiveThemePalette palette, bool glassEnabled, bool motionEnabled)
+        {
             glassEnabled = glassEnabled && palette.GlassEnabled;
             ApplyAccentResources(resources, palette);
             ApplyMaterialResources(resources, palette, glassEnabled, motionEnabled);

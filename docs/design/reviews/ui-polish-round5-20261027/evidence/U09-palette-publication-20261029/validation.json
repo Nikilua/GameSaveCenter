@@ -1,0 +1,46 @@
+{
+  "baseCommit": "16e30205692d701dcd6e17a40a56e58c8ef522b3",
+  "workingTreeHasCandidateChanges": true,
+  "sdk": "8.0.423",
+  "candidateFiles": {
+    "src/GameSaveCenter.Playnite/Infrastructure/AdaptiveThemePalette.cs": "b770bfc36f4266d50c26a360ea2d27e85ffa0c4d61036f09e80a208e0f94b167",
+    "tests/GameSaveCenter.Playnite.Tests/RuntimePalettePublicationBehaviorTests.cs": "62c6e1b23cd97bc80d5a24ea65ede876587c43b1f9d2bb90e7551362b90cde27"
+  },
+  "redGreen": {
+    "oldRepeatedPublicationFailed": 4,
+    "firstFinalBrushFixPassed": 4,
+    "highContrastNullRegression": "R09HighContrastBehaviorTests identity run failed before explicit null keys; preserved",
+    "finalPassed": 150,
+    "existingSkipped": 39,
+    "skipReason": "39 tests target withdrawn Today workbench structure, unchanged and not counted as pass"
+  },
+  "static": {
+    "source": "passed",
+    "wpfErrors": 0,
+    "warnings": 78,
+    "info": 507
+  },
+  "render": {
+    "initialExit": 1,
+    "initialFailure": "Worker was absent in standard bin; 4 normal/dirty settings-state problems; preserved",
+    "workerBuildExit": 0,
+    "finalExit": 0,
+    "pngCount": 394,
+    "problems": 0,
+    "sampleUtc": "2026-10-28T09:00:00Z",
+    "manualViewed": "Overview Light/Dark1040x700, bytes identical in initial/final output; not real Playnite verification"
+  },
+  "partsAllocationBytes": {
+    "before": {
+      "theme": 10571998176,
+      "layout": 263670424
+    },
+    "after": {
+      "theme": 11754240784,
+      "layout": 296945776
+    }
+  },
+  "candidatePerformance": "not measured yet; do not claim regression resolved",
+  "fullGate": "not run on committed candidate yet",
+  "ci": "new candidate not pushed yet; no delivery acceptance claimed"
+}

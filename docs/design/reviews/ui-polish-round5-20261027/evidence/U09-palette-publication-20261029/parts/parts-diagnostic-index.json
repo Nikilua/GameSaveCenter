@@ -1,0 +1,50 @@
+[
+  {
+    "side": "before",
+    "utcEnd": "2026-10-29T09:11:04.9570127Z",
+    "pluginVersion": "0.6.73+0447237a582eb20c22320657c981245cdfe624a6",
+    "exeSha256": "92CC94F48EA0A808DB369A760F1FA6D0C6D74A222D4EF4CE1B8F61CE83D822D2",
+    "freeBefore": [
+      {
+        "Name": "C",
+        "Free": 11909742592
+      },
+      {
+        "Name": "D",
+        "Free": 18922504192
+      }
+    ],
+    "processesAfter": [],
+    "processesBefore": [],
+    "order": 1,
+    "exitCode": 0,
+    "utcStart": "2026-10-29T09:09:41.1318254Z",
+    "pluginSha256": "236A6CA120F5567F27FC6B6A1C12221346B2796FC1E6409968FE6C66BD09F4D5",
+    "size": "1040x700 DIP",
+    "host": "ControlledWpfWindow"
+  },
+  {
+    "side": "after",
+    "utcEnd": "2026-10-29T09:12:31.1126056Z",
+    "pluginVersion": "0.6.73+acebe07d15d2c43c691128211df56bbe7fefb74f",
+    "exeSha256": "EFCC47C6923CC766ABAF3FC4666EFE73D6CE0DC043FA72726E09A871B2233F10",
+    "freeBefore": [
+      {
+        "Name": "C",
+        "Free": 11876110336
+      },
+      {
+        "Name": "D",
+        "Free": 18922831872
+      }
+    ],
+    "processesAfter": [],
+    "processesBefore": [],
+    "order": 2,
+    "exitCode": 0,
+    "utcStart": "2026-10-29T09:11:04.9933556Z",
+    "pluginSha256": "150F27222EC3DBA1D7EFB26CA13797F40EF8FC8FFEA7C32527D2D8CF71980E41",
+    "size": "1040x700 DIP",
+    "host": "ControlledWpfWindow"
+  }
+]

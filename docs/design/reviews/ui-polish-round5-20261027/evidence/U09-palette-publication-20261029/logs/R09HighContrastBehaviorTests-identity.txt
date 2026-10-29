@@ -1,0 +1,18 @@
+[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:07.54]     GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion [4 s]
+  错误消息:
+   Xunit.Sdk.NullException: Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   DropShadowEffect { BlurRadius = 20, CanFreeze = True, Color = #FF000000, DependencyObjectType = DependencyObjectType { BaseType = DependencyObjectType { ··· }, Id = 96, Name = "DropShadowEffect", SystemType = typeof(System.Windows.Media.Effects.DropShadowEffect) }, Direction = 315, ··· }
+   在 GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.<>c.<HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion>b__1_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R09HighContrastBehaviorTests.cs:行号 89
+   在 GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.<>c__DisplayClass14_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R09HighContrastBehaviorTests.cs:行号 546
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R09HighContrastBehaviorTests.cs:行号 557
+结果文件: [repo]\.tmp\u09-palette-publication-20261029\R09HighContrastBehaviorTests-identity.trx
+
+失败!  - 失败:     1，通过:     2，已跳过:     0，总计:     3，持续时间: 4 s - GameSaveCenter.Playnite.Tests.dll (net472)

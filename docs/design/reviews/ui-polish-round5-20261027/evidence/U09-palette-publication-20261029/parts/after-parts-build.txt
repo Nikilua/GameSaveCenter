@@ -1,0 +1,21 @@
+[repo]\.tmp\u09-fixedcycles-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Contracts -> [repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+[repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Core -> [repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+[repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_2tbjopiq_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Playnite -> [repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.RenderHarness -> [repo]\.tmp\u09-fixedcycles-20261029\after\tests\GameSaveCenter.RenderHarness\bin\Release\net472\GameSaveCenter.RenderHarness.exe
+
+已成功生成。
+
+[repo]\.tmp\u09-fixedcycles-20261029\after\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u09-fixedcycles-20261029\after\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_2tbjopiq_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+    5 个警告
+    0 个错误
+
+已用时间 00:00:54.37
