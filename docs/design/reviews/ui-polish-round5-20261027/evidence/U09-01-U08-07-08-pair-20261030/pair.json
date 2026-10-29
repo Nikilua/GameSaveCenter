@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "U08_07": {
+    "beforeCommit": "9181700f1bd72170bdff991b576c0966152b9890",
+    "afterCommit": "d4c4357c4e0c256b4fe0248d7efc25ce5badfd18",
+    "screenshots": [
+      {
+        "capture": "U08-07-before",
+        "theme": "light",
+        "size": "1040x700",
+        "image": {
+          "path": "screenshots/U08-07-before/Notifications-light-1040x700.png",
+          "bytes": 44201,
+          "sha256": "30A0D3E06B7C452F2FBCAF020E75D5AD9BD03EB0F3B3BE67468A6BC10196ABFB"
+        }
+      },
+      {
+        "capture": "U08-07-before",
+        "theme": "light",
+        "size": "1366x768",
+        "image": {
+          "path": "screenshots/U08-07-before/Notifications-light-1366x768.png",
+          "bytes": 51257,
+          "sha256": "8557F84526B5E0C7B7B093D8A80C97008BC5FF32CA669757A91A541924805DB4"
+        }
+      },
+      {
+        "capture": "U08-07-before",
+        "theme": "dark",
+        "size": "1040x700",
+        "image": {
+          "path": "screenshots/U08-07-before/Notifications-dark-1040x700.png",
+          "bytes": 46579,
+          "sha256": "6AEA7F2D418978FAF54FC59F097BCF2DDE551DBCA375EDBA83EE437221C0471C"
+        }
+      },
+      {
+        "capture": "U08-07-before",
+        "theme": "dark",
+        "size": "1366x768",
+        "image": {
+          "path": "screenshots/U08-07-before/Notifications-dark-1366x768.png",
+          "bytes": 54662,
+          "sha256": "6A5F0D9F002C7104920E3D51B8C806CD1233ED21199FD5AFD97CA2E97FC6E9FB"
+        }
+      },
+      {
+        "capture": "U08-07-after",
+        "theme": "light",
+        "size": "1040x700",
+        "image": {
+          "path": "screenshots/U08-07-after/Notifications-light-1040x700.png",
+          "bytes": 46492,
+          "sha256": "D8492E981671E6C6931ADC04169675406FEFE4F6A713101BF668C13938A0D190"
+        }
+      },
+      {
+        "capture": "U08-07-after",
+        "theme": "light",
+        "size": "1366x768",
+        "image": {
+          "path": "screenshots/U08-07-after/Notifications-light-1366x768.png",
+          "bytes": 53620,
+          "sha256": "0953CEB07F56F67EA51D0DD4D6B4FCE3D8E9F8A79522A517D9CB34FBA1E49011"
+        }
+      },
+      {
+        "capture": "U08-07-after",
+        "theme": "dark",
+        "size": "1040x700",
+        "image": {
+          "path": "screenshots/U08-07-after/Notifications-dark-1040x700.png",
+          "bytes": 48916,
+          "sha256": "674927F40E55B93C22776BAFF0D28ECD471F5DB7E4EAEE6CB2EAFD194D32A9B8"
+        }
+      },
+      {
+        "capture": "U08-07-after",
+        "theme": "dark",
+        "size": "1366x768",
+        "image": {
+          "path": "screenshots/U08-07-after/Notifications-dark-1366x768.png",
+          "bytes": 57512,
+          "sha256": "1614F305747BBF370BDAFA259D706126926F3964E3FD71B38569811C9853C708"
+        }
+      }
+    ]
+  },
+  "U08_08": {
+    "beforeCommit": "fd2d1316be9ff2d65b0851ac57c45e40064e50ac",
+    "afterCommit": "9181700f1bd72170bdff991b576c0966152b9890",
+    "afterCaptureReused": "U08-07-before at 918; fixed sample, fixture/probe hashes, and Trainer target images match",
+    "screenshots": [
+      {
+        "theme": "light",
+        "size": "1040x700",
+        "before": {
+          "path": "screenshots/U08-08-before/Trainer-light-1040x700.png",
+          "bytes": 74251,
+          "sha256": "7E5F9EDF44E654448B2C2A6B506456B4EE8C514819F2EE36C63163B22ABB12B3"
+        },
+        "after": {
+          "path": "screenshots/U08-07-before/Trainer-light-1040x700.png",
+          "bytes": 74251,
+          "sha256": "7E5F9EDF44E654448B2C2A6B506456B4EE8C514819F2EE36C63163B22ABB12B3"
+        },
+        "pixelIdentical": true
+      },
+      {
+        "theme": "light",
+        "size": "1366x768",
+        "before": {
+          "path": "screenshots/U08-08-before/Trainer-light-1366x768.png",
+          "bytes": 110472,
+          "sha256": "8F960B194737762C5DBE007FDEDF8CB0219779B3545DE834FC1E9A1C1E832CD2"
+        },
+        "after": {
+          "path": "screenshots/U08-07-before/Trainer-light-1366x768.png",
+          "bytes": 110472,
+          "sha256": "8F960B194737762C5DBE007FDEDF8CB0219779B3545DE834FC1E9A1C1E832CD2"
+        },
+        "pixelIdentical": true
+      },
+      {
+        "theme": "dark",
+        "size": "1040x700",
+        "before": {
+          "path": "screenshots/U08-08-before/Trainer-dark-1040x700.png",
+          "bytes": 77280,
+          "sha256": "9709CD54DBEED5E9EF3AA483D4F39B960C567AFE9624B0F71F547734133FA866"
+        },
+        "after": {
+          "path": "screenshots/U08-07-before/Trainer-dark-1040x700.png",
+          "bytes": 77280,
+          "sha256": "9709CD54DBEED5E9EF3AA483D4F39B960C567AFE9624B0F71F547734133FA866"
+        },
+        "pixelIdentical": true
+      },
+      {
+        "theme": "dark",
+        "size": "1366x768",
+        "before": {
+          "path": "screenshots/U08-08-before/Trainer-dark-1366x768.png",
+          "bytes": 116298,
+          "sha256": "090E08749AC80707A57065DE4E4F8C73AFA8EFBD087959995F0672D6CBC788EF"
+        },
+        "after": {
+          "path": "screenshots/U08-07-before/Trainer-dark-1366x768.png",
+          "bytes": 116298,
+          "sha256": "090E08749AC80707A57065DE4E4F8C73AFA8EFBD087959995F0672D6CBC788EF"
+        },
+        "pixelIdentical": true
+      }
+    ]
+  }
+}
