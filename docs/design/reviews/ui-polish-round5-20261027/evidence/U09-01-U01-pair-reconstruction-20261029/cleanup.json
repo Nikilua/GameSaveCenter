@@ -1,0 +1,273 @@
+{
+  "Preserved": "Current package/build/SDK and all other task/user outputs",
+  "ArchiveVerified": true,
+  "References": "Required static pair images, full reports including baseline failure, source identity, fixture instrumentation and inventory archived with SHA; deleted explicitly named stage outputs only",
+  "After": [
+    {
+      "Name": "C",
+      "Free": 2625937408
+    },
+    {
+      "Name": "D",
+      "Free": 5695303680
+    }
+  ],
+  "Before": [
+    {
+      "Name": "C",
+      "Free": 2628202496
+    },
+    {
+      "Name": "D",
+      "Free": 5227978752
+    }
+  ],
+  "Deleted": [
+    {
+      "Files": 15,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 5329280.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\temp"
+    },
+    {
+      "Files": 1,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 274.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\sources.json"
+    },
+    {
+      "Files": 1,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 775.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\fixture-instrumentation.json"
+    },
+    {
+      "Files": 1,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 361.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\run-results.json"
+    },
+    {
+      "Files": 1,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 486.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\finesse-results.json"
+    },
+    {
+      "Files": 1,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 11865.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\visual-commit-inventory.json"
+    },
+    {
+      "Files": 1,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 111.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disk-before.json"
+    },
+    {
+      "Files": 1174,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 94154037.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\before"
+    },
+    {
+      "Files": 1174,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 94159801.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\titles"
+    },
+    {
+      "Files": 1174,
+      "NoReparse": true,
+      "BoundaryChecked": true,
+      "Bytes": 94162725.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disabled"
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\before-render",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 395,
+      "Bytes": 53081191.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\before-finesse",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 4,
+      "Bytes": 392203.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\before-build.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 2431.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\before-render-console.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 1180719.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\before-finesse-light.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 11944.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\before-finesse-dark.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 11941.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\titles-render",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 395,
+      "Bytes": 53108489.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\titles-finesse",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 4,
+      "Bytes": 391980.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\titles.zip",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 2394182.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\titles-build.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 2431.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\titles-render-console.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 1180617.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\titles-finesse-light.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 12485.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\titles-finesse-dark.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 12482.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disabled-render",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 395,
+      "Bytes": 53109150.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disabled-finesse",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 4,
+      "Bytes": 390863.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disabled.zip",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 2394269.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disabled-build.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 2455.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disabled-render-console.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 1181718.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disabled-finesse-light.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 12485.0
+    },
+    {
+      "Path": ".tmp\\round5-u01-pairs-20261029\\disabled-finesse-dark.log",
+      "ExclusiveOpenChecked": true,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Files": 1,
+      "Bytes": 12481.0
+    }
+  ],
+  "Retained": [
+    {
+      "Reason": "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file 'D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u01-pairs-20261029\\before.zip' because it is being used by another process.\"",
+      "Path": ".tmp\\round5-u01-pairs-20261029\\before.zip"
+    }
+  ]
+}

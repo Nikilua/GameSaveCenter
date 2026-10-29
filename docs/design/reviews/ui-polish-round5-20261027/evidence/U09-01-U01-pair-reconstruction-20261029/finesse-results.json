@@ -1,0 +1,32 @@
+[
+  {
+    "ExitCode": 0,
+    "Snapshot": "before",
+    "Theme": "light"
+  },
+  {
+    "ExitCode": 0,
+    "Snapshot": "before",
+    "Theme": "dark"
+  },
+  {
+    "ExitCode": 0,
+    "Snapshot": "titles",
+    "Theme": "light"
+  },
+  {
+    "ExitCode": 0,
+    "Snapshot": "titles",
+    "Theme": "dark"
+  },
+  {
+    "ExitCode": 0,
+    "Snapshot": "disabled",
+    "Theme": "light"
+  },
+  {
+    "ExitCode": 0,
+    "Snapshot": "disabled",
+    "Theme": "dark"
+  }
+]

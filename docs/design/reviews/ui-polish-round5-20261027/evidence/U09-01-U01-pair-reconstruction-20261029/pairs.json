@@ -1,0 +1,758 @@
+{
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "fakeDataUtc": "2026-10-28T09:00:00Z",
+  "pairs": [
+    {
+      "tasks": [
+        "U01-01",
+        "U01-02"
+      ],
+      "before": "before",
+      "after": "titles"
+    },
+    {
+      "tasks": [
+        "U01-05",
+        "U01-06"
+      ],
+      "before": "titles",
+      "after": "disabled"
+    }
+  ],
+  "sourceIdentity": [
+    {
+      "snapshot": "before",
+      "commit": "0447237a582eb20c22320657c981245cdfe624a6",
+      "archiveSha256": "140d12181e75a8ee2ba0f6187af85122aba8402775d39282b0d3bc5495268bdb",
+      "productionSourceFilesVerifiedUnchanged": 354,
+      "renderExitCode": 1,
+      "png": 394,
+      "problems": [
+        "  PROBLEM Sidebar rapid-toggle transition did not settle on its requested target."
+      ]
+    },
+    {
+      "snapshot": "titles",
+      "commit": "7e61bba3f99f202122a01ce96d6944e78f45abf8",
+      "archiveSha256": "bbfb9ba2cf2c8a6a7ce49869ac2251c35b3d8160fc99d84c236fb303f13b80ef",
+      "productionSourceFilesVerifiedUnchanged": 354,
+      "renderExitCode": 0,
+      "png": 394,
+      "problems": []
+    },
+    {
+      "snapshot": "disabled",
+      "commit": "813adb09284f3400cd07a758d3eca4d23c34155d",
+      "archiveSha256": "ae06414eced4caf26526b85c6034f559b38cc0173e13a891aa65eb3eadda2a42",
+      "productionSourceFilesVerifiedUnchanged": 354,
+      "renderExitCode": 0,
+      "png": 394,
+      "problems": []
+    }
+  ],
+  "images": [
+    {
+      "snapshot": "before",
+      "theme": "light",
+      "surface": "Save",
+      "windowDip": "1040x700",
+      "image": "images\\a032992371cae5de9ca71e634c577dcb3d372e3f5bb8784a7a94d904ea04eb98.png",
+      "sha256": "a032992371cae5de9ca71e634c577dcb3d372e3f5bb8784a7a94d904ea04eb98"
+    },
+    {
+      "snapshot": "before",
+      "theme": "light",
+      "surface": "Task",
+      "windowDip": "1040x700",
+      "image": "images\\1ac1d77b8eafb1a2daf534c06086e188580d14c5af1c88b59f786829c7deb30b.png",
+      "sha256": "1ac1d77b8eafb1a2daf534c06086e188580d14c5af1c88b59f786829c7deb30b"
+    },
+    {
+      "snapshot": "before",
+      "theme": "light",
+      "surface": "Media",
+      "windowDip": "1040x700",
+      "image": "images\\e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b.png",
+      "sha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b"
+    },
+    {
+      "snapshot": "before",
+      "theme": "light",
+      "surface": "Trainer",
+      "windowDip": "1040x700",
+      "image": "images\\fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f.png",
+      "sha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f"
+    },
+    {
+      "snapshot": "before",
+      "theme": "light",
+      "surface": "Shell-Background",
+      "windowDip": "1040x700",
+      "image": "images\\64f8d303e1ac3737752f0f551f9cf9b9996c40fee0afbc0e5a8021f6059b858e.png",
+      "sha256": "64f8d303e1ac3737752f0f551f9cf9b9996c40fee0afbc0e5a8021f6059b858e"
+    },
+    {
+      "snapshot": "before",
+      "theme": "light",
+      "surface": "Notifications",
+      "windowDip": "1040x700",
+      "image": "images\\f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c.png",
+      "sha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c"
+    },
+    {
+      "snapshot": "before",
+      "theme": "light",
+      "surface": "finesse",
+      "windowDip": "1120x980",
+      "image": "images\\3fc89c03aa4b7600c5809c0710c701cfd981a2cb2049ab4a4bfcfab14d50bbfc.png",
+      "sha256": "3fc89c03aa4b7600c5809c0710c701cfd981a2cb2049ab4a4bfcfab14d50bbfc"
+    },
+    {
+      "snapshot": "before",
+      "theme": "dark",
+      "surface": "Save",
+      "windowDip": "1040x700",
+      "image": "images\\112bc5dbe0cb52755814387a50aa2b4d50f7fb492b81d7f82da024fe51524437.png",
+      "sha256": "112bc5dbe0cb52755814387a50aa2b4d50f7fb492b81d7f82da024fe51524437"
+    },
+    {
+      "snapshot": "before",
+      "theme": "dark",
+      "surface": "Task",
+      "windowDip": "1040x700",
+      "image": "images\\3e02e26a8076959f2696472b32896a39842388a15a22b505de0b2060f1549752.png",
+      "sha256": "3e02e26a8076959f2696472b32896a39842388a15a22b505de0b2060f1549752"
+    },
+    {
+      "snapshot": "before",
+      "theme": "dark",
+      "surface": "Media",
+      "windowDip": "1040x700",
+      "image": "images\\30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3.png",
+      "sha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3"
+    },
+    {
+      "snapshot": "before",
+      "theme": "dark",
+      "surface": "Trainer",
+      "windowDip": "1040x700",
+      "image": "images\\1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d.png",
+      "sha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d"
+    },
+    {
+      "snapshot": "before",
+      "theme": "dark",
+      "surface": "Shell-Background",
+      "windowDip": "1040x700",
+      "image": "images\\3a0bd6cbeeff9d3311d70e36ec83967557cd37d413c1bcf05f6ade0ae80e6235.png",
+      "sha256": "3a0bd6cbeeff9d3311d70e36ec83967557cd37d413c1bcf05f6ade0ae80e6235"
+    },
+    {
+      "snapshot": "before",
+      "theme": "dark",
+      "surface": "Notifications",
+      "windowDip": "1040x700",
+      "image": "images\\a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a.png",
+      "sha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a"
+    },
+    {
+      "snapshot": "before",
+      "theme": "dark",
+      "surface": "finesse",
+      "windowDip": "1120x980",
+      "image": "images\\d86b56b1869c7418d3f39eb6e52be071ae662f3da2f8b291693dea6cb8aa970e.png",
+      "sha256": "d86b56b1869c7418d3f39eb6e52be071ae662f3da2f8b291693dea6cb8aa970e"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "light",
+      "surface": "Save",
+      "windowDip": "1040x700",
+      "image": "images\\4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7.png",
+      "sha256": "4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "light",
+      "surface": "Task",
+      "windowDip": "1040x700",
+      "image": "images\\96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80.png",
+      "sha256": "96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "light",
+      "surface": "Media",
+      "windowDip": "1040x700",
+      "image": "images\\e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b.png",
+      "sha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "light",
+      "surface": "Trainer",
+      "windowDip": "1040x700",
+      "image": "images\\fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f.png",
+      "sha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "light",
+      "surface": "Shell-Background",
+      "windowDip": "1040x700",
+      "image": "images\\047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e.png",
+      "sha256": "047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "light",
+      "surface": "Notifications",
+      "windowDip": "1040x700",
+      "image": "images\\f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c.png",
+      "sha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "light",
+      "surface": "finesse",
+      "windowDip": "1120x980",
+      "image": "images\\558a75f84ba52b2acffcb9ed5af1e74932326c2a95f81fa91bb16c4f0cec70e6.png",
+      "sha256": "558a75f84ba52b2acffcb9ed5af1e74932326c2a95f81fa91bb16c4f0cec70e6"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "dark",
+      "surface": "Save",
+      "windowDip": "1040x700",
+      "image": "images\\be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087.png",
+      "sha256": "be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "dark",
+      "surface": "Task",
+      "windowDip": "1040x700",
+      "image": "images\\fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1.png",
+      "sha256": "fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "dark",
+      "surface": "Media",
+      "windowDip": "1040x700",
+      "image": "images\\30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3.png",
+      "sha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "dark",
+      "surface": "Trainer",
+      "windowDip": "1040x700",
+      "image": "images\\1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d.png",
+      "sha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "dark",
+      "surface": "Shell-Background",
+      "windowDip": "1040x700",
+      "image": "images\\c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d.png",
+      "sha256": "c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "dark",
+      "surface": "Notifications",
+      "windowDip": "1040x700",
+      "image": "images\\a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a.png",
+      "sha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a"
+    },
+    {
+      "snapshot": "titles",
+      "theme": "dark",
+      "surface": "finesse",
+      "windowDip": "1120x980",
+      "image": "images\\09f9eef0280d09fa0345844d6f409862d836ae9858e9760939d4681fa3a32e85.png",
+      "sha256": "09f9eef0280d09fa0345844d6f409862d836ae9858e9760939d4681fa3a32e85"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "light",
+      "surface": "Save",
+      "windowDip": "1040x700",
+      "image": "images\\4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7.png",
+      "sha256": "4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "light",
+      "surface": "Task",
+      "windowDip": "1040x700",
+      "image": "images\\96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80.png",
+      "sha256": "96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "light",
+      "surface": "Media",
+      "windowDip": "1040x700",
+      "image": "images\\e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b.png",
+      "sha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "light",
+      "surface": "Trainer",
+      "windowDip": "1040x700",
+      "image": "images\\fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f.png",
+      "sha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "light",
+      "surface": "Shell-Background",
+      "windowDip": "1040x700",
+      "image": "images\\047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e.png",
+      "sha256": "047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "light",
+      "surface": "Notifications",
+      "windowDip": "1040x700",
+      "image": "images\\f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c.png",
+      "sha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "light",
+      "surface": "finesse",
+      "windowDip": "1120x980",
+      "image": "images\\a51d79880d545124e4f8149683fcc046d9eb303da779820856abd58d2710503c.png",
+      "sha256": "a51d79880d545124e4f8149683fcc046d9eb303da779820856abd58d2710503c"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "dark",
+      "surface": "Save",
+      "windowDip": "1040x700",
+      "image": "images\\be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087.png",
+      "sha256": "be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "dark",
+      "surface": "Task",
+      "windowDip": "1040x700",
+      "image": "images\\fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1.png",
+      "sha256": "fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "dark",
+      "surface": "Media",
+      "windowDip": "1040x700",
+      "image": "images\\30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3.png",
+      "sha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "dark",
+      "surface": "Trainer",
+      "windowDip": "1040x700",
+      "image": "images\\1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d.png",
+      "sha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "dark",
+      "surface": "Shell-Background",
+      "windowDip": "1040x700",
+      "image": "images\\c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d.png",
+      "sha256": "c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "dark",
+      "surface": "Notifications",
+      "windowDip": "1040x700",
+      "image": "images\\a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a.png",
+      "sha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a"
+    },
+    {
+      "snapshot": "disabled",
+      "theme": "dark",
+      "surface": "finesse",
+      "windowDip": "1120x980",
+      "image": "images\\e92c86359c64395db41801c2a6b6f88f3c60c68e935353b7d4be9f0eda84bf08.png",
+      "sha256": "e92c86359c64395db41801c2a6b6f88f3c60c68e935353b7d4be9f0eda84bf08"
+    }
+  ],
+  "files": [
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\sources.json",
+      "archived": "sources.json",
+      "rawSha256": "b6f1e41bb196fa53c0a5e3dff431dd8d25231a984a9a1b066cb12120b5cddd81",
+      "sha256": "634a632fd444f84720fa080ae4abdb07fddd267eb10ea4ca2e66c81bb8068272"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\fixture-instrumentation.json",
+      "archived": "fixture-instrumentation.json",
+      "rawSha256": "0f11ea5ba20fd4ed065cd90288bf01491f188279f630ae14fbcb7d062578650c",
+      "sha256": "cbf7dc299ac09ec878595c8b63424352ad584cf6a86a8ec0c13dcb5d9af0ff72"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\run-results.json",
+      "archived": "run-results.json",
+      "rawSha256": "ffe510f16825ca0ab8fe146cf8b8cee327bc99f5eafa8ad37708c1466b36bfb5",
+      "sha256": "80cef4ab9b7620471ed0263a61eaa017bd81aa688aa5710d5ac6e450811983ef"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\finesse-results.json",
+      "archived": "finesse-results.json",
+      "rawSha256": "bebc80937affdf7c4a22611be68d24bacdd56820459131c85253a3f580f94b2c",
+      "sha256": "671bb02415da3b5e16b146a0f587eab0b034c1dbd3765b661224c4e71fb4599f"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\visual-commit-inventory.json",
+      "archived": "visual-commit-inventory.json",
+      "rawSha256": "084a820de1a997858d0edbb0ff8e48c96aaeb880e555f2680fdb4cf78342ce20",
+      "sha256": "20632f2ce984a05dbd6e8cd60de5d257175ddef9030451a452a4d668245f6b5e"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disk-before.json",
+      "archived": "disk-before.json",
+      "rawSha256": "49b9d28b3cd03c90b50896e59451978136c2ab9a8bab245ed3031a0cedda4e77",
+      "sha256": "5142039c3b0eb0577dee348919e19adb7d6113f36236e106f5a15440ad9232a2"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\render-qa-report.txt",
+      "archived": "before-render-report.txt",
+      "rawSha256": "c487b2bdf1e94f2b5ae6dc2579f815eb7ba5de7362cba554d83fe13ccbd41a2d",
+      "sha256": "cb526fe46fcfdfd9e1bd16956bfb82a70e7f708f744ff9363586ee76c9ceb6ec"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-build.log",
+      "archived": "before-build.log",
+      "rawSha256": "08b25507bfbeb3d15ab8858d430226efc5851413ae7bfec36d68b13e9a8448e5",
+      "sha256": "8813a276eccd98e382d645df6677627796a866c48aca9837cb0ac392227c6f77"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\light\\Save-1040x700.png",
+      "archived": "images\\a032992371cae5de9ca71e634c577dcb3d372e3f5bb8784a7a94d904ea04eb98.png",
+      "rawSha256": "a032992371cae5de9ca71e634c577dcb3d372e3f5bb8784a7a94d904ea04eb98",
+      "sha256": "a032992371cae5de9ca71e634c577dcb3d372e3f5bb8784a7a94d904ea04eb98"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\light\\Task-1040x700.png",
+      "archived": "images\\1ac1d77b8eafb1a2daf534c06086e188580d14c5af1c88b59f786829c7deb30b.png",
+      "rawSha256": "1ac1d77b8eafb1a2daf534c06086e188580d14c5af1c88b59f786829c7deb30b",
+      "sha256": "1ac1d77b8eafb1a2daf534c06086e188580d14c5af1c88b59f786829c7deb30b"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\light\\Media-1040x700.png",
+      "archived": "images\\e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b.png",
+      "rawSha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b",
+      "sha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\light\\Trainer-1040x700.png",
+      "archived": "images\\fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f.png",
+      "rawSha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f",
+      "sha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\light\\Shell-Background-1040x700.png",
+      "archived": "images\\64f8d303e1ac3737752f0f551f9cf9b9996c40fee0afbc0e5a8021f6059b858e.png",
+      "rawSha256": "64f8d303e1ac3737752f0f551f9cf9b9996c40fee0afbc0e5a8021f6059b858e",
+      "sha256": "64f8d303e1ac3737752f0f551f9cf9b9996c40fee0afbc0e5a8021f6059b858e"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\Notifications-light-1040x700.png",
+      "archived": "images\\f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c.png",
+      "rawSha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c",
+      "sha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-finesse\\light\\ui-finesse-fixture-report.txt",
+      "archived": "before-finesse-light.txt",
+      "rawSha256": "ac46cd1828f14359522cbb505ae5f5cd8fcd86817c4d37be63b79fe953ce8c12",
+      "sha256": "379a0f593233eef6451a4f2161ad27c25bfdbe966c6765b73c9411c3e295639c"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-finesse\\light\\ui-finesse-fixture.png",
+      "archived": "images\\3fc89c03aa4b7600c5809c0710c701cfd981a2cb2049ab4a4bfcfab14d50bbfc.png",
+      "rawSha256": "3fc89c03aa4b7600c5809c0710c701cfd981a2cb2049ab4a4bfcfab14d50bbfc",
+      "sha256": "3fc89c03aa4b7600c5809c0710c701cfd981a2cb2049ab4a4bfcfab14d50bbfc"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\dark\\Save-1040x700.png",
+      "archived": "images\\112bc5dbe0cb52755814387a50aa2b4d50f7fb492b81d7f82da024fe51524437.png",
+      "rawSha256": "112bc5dbe0cb52755814387a50aa2b4d50f7fb492b81d7f82da024fe51524437",
+      "sha256": "112bc5dbe0cb52755814387a50aa2b4d50f7fb492b81d7f82da024fe51524437"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\dark\\Task-1040x700.png",
+      "archived": "images\\3e02e26a8076959f2696472b32896a39842388a15a22b505de0b2060f1549752.png",
+      "rawSha256": "3e02e26a8076959f2696472b32896a39842388a15a22b505de0b2060f1549752",
+      "sha256": "3e02e26a8076959f2696472b32896a39842388a15a22b505de0b2060f1549752"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\dark\\Media-1040x700.png",
+      "archived": "images\\30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3.png",
+      "rawSha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3",
+      "sha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\dark\\Trainer-1040x700.png",
+      "archived": "images\\1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d.png",
+      "rawSha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d",
+      "sha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\theme\\dark\\Shell-Background-1040x700.png",
+      "archived": "images\\3a0bd6cbeeff9d3311d70e36ec83967557cd37d413c1bcf05f6ade0ae80e6235.png",
+      "rawSha256": "3a0bd6cbeeff9d3311d70e36ec83967557cd37d413c1bcf05f6ade0ae80e6235",
+      "sha256": "3a0bd6cbeeff9d3311d70e36ec83967557cd37d413c1bcf05f6ade0ae80e6235"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-render\\Notifications-dark-1040x700.png",
+      "archived": "images\\a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a.png",
+      "rawSha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a",
+      "sha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-finesse\\dark\\ui-finesse-fixture-report.txt",
+      "archived": "before-finesse-dark.txt",
+      "rawSha256": "97c97caa00d1aafe30967fd1830b3d0b426a9c1dc17b09739d02ea2b73db6311",
+      "sha256": "7d9d5a47821ef3c9fd941e17f68319d9c4b5011145eae5fd82626d8e1bceab23"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\before-finesse\\dark\\ui-finesse-fixture.png",
+      "archived": "images\\d86b56b1869c7418d3f39eb6e52be071ae662f3da2f8b291693dea6cb8aa970e.png",
+      "rawSha256": "d86b56b1869c7418d3f39eb6e52be071ae662f3da2f8b291693dea6cb8aa970e",
+      "sha256": "d86b56b1869c7418d3f39eb6e52be071ae662f3da2f8b291693dea6cb8aa970e"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\render-qa-report.txt",
+      "archived": "titles-render-report.txt",
+      "rawSha256": "c6c1261701d86f11472fc60720091e648f4f1244e0bd293371263df99872364a",
+      "sha256": "d17ad23c400cbf5861486a4c47515b62cfbb1ee6bb06146d72ae85874ddce042"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-build.log",
+      "archived": "titles-build.log",
+      "rawSha256": "c040d6cb981cc72cf0eb62be4421e4ec16600cd2b269149ee20679ea39e85f87",
+      "sha256": "6baf2b098aece58bac9f13fc227bbc87f1ac2b50d5a337a30d12d42bbe71e0fb"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\light\\Save-1040x700.png",
+      "archived": "images\\4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7.png",
+      "rawSha256": "4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7",
+      "sha256": "4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\light\\Task-1040x700.png",
+      "archived": "images\\96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80.png",
+      "rawSha256": "96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80",
+      "sha256": "96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\light\\Media-1040x700.png",
+      "archived": "images\\e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b.png",
+      "rawSha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b",
+      "sha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\light\\Trainer-1040x700.png",
+      "archived": "images\\fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f.png",
+      "rawSha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f",
+      "sha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\light\\Shell-Background-1040x700.png",
+      "archived": "images\\047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e.png",
+      "rawSha256": "047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e",
+      "sha256": "047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\Notifications-light-1040x700.png",
+      "archived": "images\\f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c.png",
+      "rawSha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c",
+      "sha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-finesse\\light\\ui-finesse-fixture-report.txt",
+      "archived": "titles-finesse-light.txt",
+      "rawSha256": "bf1d01dcea7ac2ae0c16a0ad5161b0a2f54848aebf3d5c09d1063e9220bc4a8f",
+      "sha256": "d92a4da8d9c0ddd539a618cd22c056c041cec18bfe5f3cf87b15a712e659d0ba"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-finesse\\light\\ui-finesse-fixture.png",
+      "archived": "images\\558a75f84ba52b2acffcb9ed5af1e74932326c2a95f81fa91bb16c4f0cec70e6.png",
+      "rawSha256": "558a75f84ba52b2acffcb9ed5af1e74932326c2a95f81fa91bb16c4f0cec70e6",
+      "sha256": "558a75f84ba52b2acffcb9ed5af1e74932326c2a95f81fa91bb16c4f0cec70e6"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\dark\\Save-1040x700.png",
+      "archived": "images\\be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087.png",
+      "rawSha256": "be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087",
+      "sha256": "be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\dark\\Task-1040x700.png",
+      "archived": "images\\fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1.png",
+      "rawSha256": "fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1",
+      "sha256": "fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\dark\\Media-1040x700.png",
+      "archived": "images\\30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3.png",
+      "rawSha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3",
+      "sha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\dark\\Trainer-1040x700.png",
+      "archived": "images\\1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d.png",
+      "rawSha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d",
+      "sha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\theme\\dark\\Shell-Background-1040x700.png",
+      "archived": "images\\c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d.png",
+      "rawSha256": "c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d",
+      "sha256": "c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-render\\Notifications-dark-1040x700.png",
+      "archived": "images\\a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a.png",
+      "rawSha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a",
+      "sha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-finesse\\dark\\ui-finesse-fixture-report.txt",
+      "archived": "titles-finesse-dark.txt",
+      "rawSha256": "272d47ea6faed5ce3c6a2610b37b1465037183c3a60833d9a4f9160a84537eb7",
+      "sha256": "cca2f36dc8f1cd86e2d46f5713c8d0519d270a45d3f42c5eca8ee5eb351bc2f4"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\titles-finesse\\dark\\ui-finesse-fixture.png",
+      "archived": "images\\09f9eef0280d09fa0345844d6f409862d836ae9858e9760939d4681fa3a32e85.png",
+      "rawSha256": "09f9eef0280d09fa0345844d6f409862d836ae9858e9760939d4681fa3a32e85",
+      "sha256": "09f9eef0280d09fa0345844d6f409862d836ae9858e9760939d4681fa3a32e85"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\render-qa-report.txt",
+      "archived": "disabled-render-report.txt",
+      "rawSha256": "dd7efa793653be1b8f4897b20d00ec4f8fb31b8d6fce628d32770eb11f70c760",
+      "sha256": "13b4d6c24508584431597aa9c8d9de7ecfec2438b57e2f640ea5dd86a9a6db05"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-build.log",
+      "archived": "disabled-build.log",
+      "rawSha256": "98fd4db467a0742ccd61aee07f1bf13cc6281fd7b34d64d0d268f0b5268c054a",
+      "sha256": "dd6975e2183f793f930d9c8c131475e2186a9beefd1c4dc30491f73a0fb2b9f2"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\light\\Save-1040x700.png",
+      "archived": "images\\4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7.png",
+      "rawSha256": "4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7",
+      "sha256": "4b7ec24e7286a00218ff15207800233d47555fe75a7ec1bfd9e376d688fee4e7"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\light\\Task-1040x700.png",
+      "archived": "images\\96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80.png",
+      "rawSha256": "96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80",
+      "sha256": "96242908ff68a2f4e33ba2547934df5929dff35103241cec04f31fc36b8c1b80"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\light\\Media-1040x700.png",
+      "archived": "images\\e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b.png",
+      "rawSha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b",
+      "sha256": "e43a500cda2646317b7e1527706ed11fb35445253e3790a2fd324b47eef8783b"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\light\\Trainer-1040x700.png",
+      "archived": "images\\fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f.png",
+      "rawSha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f",
+      "sha256": "fb1faf508113be4416b4396fb0fbe40340151b8b8f2d00ead12ca062829f841f"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\light\\Shell-Background-1040x700.png",
+      "archived": "images\\047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e.png",
+      "rawSha256": "047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e",
+      "sha256": "047b3d3b21af7cd1d5fdc9cc40d5b84e67802af018c1680c1234aca7e6d77e1e"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\Notifications-light-1040x700.png",
+      "archived": "images\\f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c.png",
+      "rawSha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c",
+      "sha256": "f648199cc130fa5b732a93cbe5a3c9b2c88f1c07213899a1854ff932b0ef300c"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-finesse\\light\\ui-finesse-fixture-report.txt",
+      "archived": "disabled-finesse-light.txt",
+      "rawSha256": "93c45545c2d9d979d9e144680adf5eb181b57613e89dfaeba303759319432062",
+      "sha256": "dd9379ea7c750644755926e59963f6c2505cc09e5668358d3d3ed9f64c7531a9"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-finesse\\light\\ui-finesse-fixture.png",
+      "archived": "images\\a51d79880d545124e4f8149683fcc046d9eb303da779820856abd58d2710503c.png",
+      "rawSha256": "a51d79880d545124e4f8149683fcc046d9eb303da779820856abd58d2710503c",
+      "sha256": "a51d79880d545124e4f8149683fcc046d9eb303da779820856abd58d2710503c"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\dark\\Save-1040x700.png",
+      "archived": "images\\be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087.png",
+      "rawSha256": "be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087",
+      "sha256": "be3380b6e63fefa6314340344632b4baf79693e0c9431fc7984c97737cca2087"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\dark\\Task-1040x700.png",
+      "archived": "images\\fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1.png",
+      "rawSha256": "fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1",
+      "sha256": "fda0e720116a93aa8792eb8aa01fb57e91e45885a270f6282774e47d81f4a8b1"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\dark\\Media-1040x700.png",
+      "archived": "images\\30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3.png",
+      "rawSha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3",
+      "sha256": "30a8f19f23c6a247f2a3646b6250afe739e2ad3849465756ecb0a57af99629e3"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\dark\\Trainer-1040x700.png",
+      "archived": "images\\1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d.png",
+      "rawSha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d",
+      "sha256": "1212934fcad41ecdb3a959a6e59623b5527656fe266e8a1a8b3a5c705447330d"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\theme\\dark\\Shell-Background-1040x700.png",
+      "archived": "images\\c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d.png",
+      "rawSha256": "c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d",
+      "sha256": "c82eebfe5f1c9ae3d1d0f809cb9d17f184ad3680394ee3d1a49d59ffaa57c28d"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-render\\Notifications-dark-1040x700.png",
+      "archived": "images\\a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a.png",
+      "rawSha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a",
+      "sha256": "a04cdd3a09f82e6a8cba2ae5c610176333d2921b1a44860568b74d79423cae5a"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-finesse\\dark\\ui-finesse-fixture-report.txt",
+      "archived": "disabled-finesse-dark.txt",
+      "rawSha256": "77696835cef31fcb480c3895981991ba8cddab81bc5de15e0473f2290fc7283f",
+      "sha256": "98ae71348ed2fa7f8191cb76e2173cbec544580f2de68c5ebca70630d5a1343c"
+    },
+    {
+      "source": ".tmp\\round5-u01-pairs-20261029\\disabled-finesse\\dark\\ui-finesse-fixture.png",
+      "archived": "images\\e92c86359c64395db41801c2a6b6f88f3c60c68e935353b7d4be9f0eda84bf08.png",
+      "rawSha256": "e92c86359c64395db41801c2a6b6f88f3c60c68e935353b7d4be9f0eda84bf08",
+      "sha256": "e92c86359c64395db41801c2a6b6f88f3c60c68e935353b7d4be9f0eda84bf08"
+    }
+  ],
+  "clockBoundary": "Fake data timestamps fixed identically. Production wall-clock formatters and capture time were not changed; relative-time display may vary.",
+  "baselineFailure": "Before full Render QA exit1: Sidebar rapid-toggle transition did not settle on requested target. Baseline failure retained without rerun or weakened assertions; only static typography/page screenshots used for pair. Both after snapshots full Render QA exit0.",
+  "identityBoundary": "Historical report Commit fields resolve parent repository HEAD; actual historical identity is ZIP comment+SHA and production source file comparison.",
+  "verificationBoundary": "Six existing finesse probes exit0. Physical DPI, optional-font-absent configuration, input/IME, external UIA and Playnite hosting not verified. No new behavior-test or full current installation success inferred from historical reconstruction."
+}
