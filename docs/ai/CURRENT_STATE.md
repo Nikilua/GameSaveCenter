@@ -1,3 +1,7 @@
+## 2026-10-30 U04-05～08冻结状态复核
+
+U04-05～08的进度已对齐冻结源`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`：夹具修复`c5c86558`与状态实现`4225eb17`均在其祖先中；中文根链、独立`scripts/build.cmd`及run40900374673双SDK jobs均成功，旧Q14失败保留历史。四项仍需真实IME/Playnite UIA、CanExecute取消、窗口失活与长期宿主内存复核。
+
 ## 2026-10-30 U04-01～04冻结状态复核
 
 进度行中的旧“待跑”状态已按冻结源修正：`631b218e`、`4225eb17`、`c5c86558`、`388c46ea`均为`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`祖先。该SHA的中文完整根链与独立`scripts/build.cmd`均exit0，GitHub run40900374673的SDK8/SDK10 job均success；旧Q14失败记录保留。U04-01～04仍代码完成待验收，真实Playnite/实体输入/物理DPI未验。细节见对应PROGRESS行与U09-final-5c0c57b0证据。

@@ -1,3 +1,7 @@
+## 2026-10-30 U04-05～08冻结状态复核
+
+U04-05～08旧待验行已改为精确冻结源`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`结论：本地中文根链和独立`scripts/build.cmd`exit0，run40900374673基线/SDK10 job成功。保留Q14旧失败历史；真实IME/Playnite UIA、取消与窗口失活、系统动画选项和长期宿主内存仍待验。
+
 ## 2026-10-30 U04-01～04冻结状态复核
 
 U04-01～04记录已从旧待跑状态同步到精确冻结源`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`。其祖先包含动画令牌、R08/Q06、页签提示条位置与Q14夹具修复；中文根链和独立`scripts/build.cmd`均exit0，run40900374673的基线/SDK10 jobs均success。旧失败run保留历史。四项仍需Playnite宿主和实体输入/DPI验收。

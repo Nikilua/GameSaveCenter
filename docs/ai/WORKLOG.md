@@ -12828,3 +12828,10 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 该源中文根入口及独立`scripts/build.cmd`均exit0，各158 TRX、2020项、1962通过/0失败/58既有skip；GitHub run `40900374673`的SDK8 job `123540700192`与SDK10.0.401 job `123540699717`均success。U04-04保留R23 12/12与Render QA394图证据。历史405784失败不删除，记为后续修复已由精确冻结门禁覆盖。
 - U04-01～04仍为代码完成待验收：真实Playnite显示、实体指针/键盘与物理DPI未验。详见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-final-5c0c57b0/BASELINE.md`及各行链接；本次仅更正文档，没有新生产源码。
 - `validate-source.py`退出0；五份变更Markdown本地相对链接795 checked/0 missing；`git diff --check`退出0（仅提示WORKLOG.md CRLF规范化）。纯文档阶段不重复本地完整产品链。
+
+## 2026-10-30 Round5 U04-05～08冻结状态复核
+
+- 同步U04-05～08记录：`c5c86558`与`4225eb17`均为冻结源`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`祖先。输入/焦点既有组合、DisclosureCard中途禁用、Reduced Motion与100次对象生命周期检查均纳入该源验证；Q14夹具旧失败不删除，405831旧运行不再作为当前结论。
+- 精确冻结源中文根入口与独立`scripts/build.cmd`均exit0，各158 TRX、2020项、1962通过/0失败/58既有skip。run40900374673 baseline `123540700192`与SDK10.0.401 `123540699717`均success；局部SDK8组合15/15及DisclosureCard 13/13、双主题Render QA 394 PNG/0 PROBLEM保留原证据。
+- U04-05～08仍代码完成待验收：真实IME/Playnite UIA、CanExecute取消、窗口失活、系统动画设置和长期宿主内存观察未做。不触发真实恢复、媒体删除或云写入；不重复已拒绝的权限查询。
+- `validate-source.py`退出0；五份变更Markdown本地相对链接795 checked/0 missing；`git diff --check`退出0（仅提示WORKLOG.md CRLF规范化）。纯文档批不重复本地完整产品链。
