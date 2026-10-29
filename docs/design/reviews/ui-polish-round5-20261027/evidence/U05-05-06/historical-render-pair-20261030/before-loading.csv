@@ -1,0 +1,15 @@
+theme,phase,elapsed_ms,state,surface_visibility,width,height
+Light,fast-start,6.004,Loading,Visible,660.000,220.000
+Light,fast-complete,45.603,Empty,Visible,660.000,220.000
+Light,fast-settled,314.428,Empty,Visible,660.000,220.000
+Light,slow-start,0.945,Loading,Visible,660.000,220.000
+Light,slow-visible,264.250,Loading,Visible,660.000,220.000
+Light,error-immediate,272.290,Error,Visible,660.000,220.000
+Light,error-settled,546.989,Error,Visible,660.000,220.000
+Dark,fast-start,1.012,Loading,Visible,660.000,220.000
+Dark,fast-complete,10.233,Empty,Visible,660.000,220.000
+Dark,fast-settled,280.962,Empty,Visible,660.000,220.000
+Dark,slow-start,0.802,Loading,Visible,660.000,220.000
+Dark,slow-visible,266.254,Loading,Visible,660.000,220.000
+Dark,error-immediate,273.791,Error,Visible,660.000,220.000
+Dark,error-settled,547.152,Error,Visible,660.000,220.000

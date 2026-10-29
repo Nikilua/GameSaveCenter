@@ -12809,3 +12809,8 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 正式SDK8.0.423 Release `scripts/build.ps1 -SkipTests`：XAML26/26，解决方案0 warnings/0 errors；编译后目标WPF隔离类5/5、0失败、0 skip。第一次手动dotnet调用漏掉仓库注入的`GscBuildCommit`身份，修正调用流程后重跑全类通过。
 - C盘系统TEMP空间605229056 bytes，不足门禁1 GiB；未删C盘未知数据。进程TEMP/TMP改到本阶段D盘`.tmp`隔离目录，空间预检显示D盘13300178944 bytes可用、预算4294967296并通过。日志/原始与通过TRX/崩溃测试序列及空间快照见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-wpf-stylus-fix/`。
 - 本阶段代码和记录将单独中文提交。随后仍需在冻结SHA运行中文完整入口链、核验安装/包身份与Playnite启动、独立运行`scripts/build.cmd`并查询该SHA的baseline与SDK10 CI/artifact。真实Playnite、stylus/touch/IME边界未验证。
+
+## 2026-10-30 Round5 U09-01补U05-05/06历史配对
+
+只读快照 `bca60704cc9eaffdc78b1154e4dfe5873cef10b8`→`969bfc203dc66ec21fe1718b9eae5a7cdfd1fb7c`，SDK8.0.423下RenderHarness Release构建/采样两侧均exit0，分别有4条保留的NU1900警告、0错误。短Loading起始由Visible变Hidden，槽位660×220 DIP固定；慢加载在后续采样可见，Error不延迟。进度未知/0/73/取消73/成功100共10个主题/状态点匹配DTO，52 DIP条宽与100 DIP标签右界稳定。只改临时探针，无生产源码或资源差异。精选PNG、两版CSV、源快照ZIP身份及首次探针失败/修正记录已归档：`docs/design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/historical-render-pair-20261030/`。真实Playnite、外部UIA/IME/物理DPI保持待验；U09-01还有其他历史视觉配对待盘点。
+纯文档源码校验exit0；六份变更Markdown本地相对链接707 checked/0 missing；配对清单19个文件SHA-256/长度复核一致。文档批次不重复运行完整产品链。阶段`.tmp`仅清理本批路径：2252文件/72,113,511字节，C盘可用空间净增77,299,712字节；未发现reparse、引用、占用或运行中的RenderHarness，详见[清理记录](../design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/cleanup-historical-pair-20261030.json)。

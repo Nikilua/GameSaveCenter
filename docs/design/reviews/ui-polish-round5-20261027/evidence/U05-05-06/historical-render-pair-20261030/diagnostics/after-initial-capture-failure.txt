@@ -1,0 +1,4 @@
+System.InvalidOperationException: slow-visible: expected Visible, actual Hidden.
+   在 GameSaveCenter.RenderHarness.Program.<RunLoadingProgress>g__RecordLoading|1_0(String phase, Boolean picture, <>c__DisplayClass1_0& , <>c__DisplayClass1_1& , <>c__DisplayClass1_2& , <>c__DisplayClass1_3& ) 位置 <phase-root>\after\tests\GameSaveCenter.RenderHarness\LoadingProgressProbe.cs:行号 64
+   在 GameSaveCenter.RenderHarness.Program.RunLoadingProgress(String output) 位置 <phase-root>\after\tests\GameSaveCenter.RenderHarness\LoadingProgressProbe.cs:行号 79
+   在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass0_0.<RunLoadingProgressEntry>b__0() 位置 <phase-root>\after\tests\GameSaveCenter.RenderHarness\LoadingProgressProbe.cs:行号 28

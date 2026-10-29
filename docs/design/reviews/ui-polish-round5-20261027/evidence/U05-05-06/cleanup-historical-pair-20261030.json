@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-30",
+  "deletedPaths": [
+    ".tmp/u05-loading-progress-pairs-20261029"
+  ],
+  "recursive": true,
+  "fileCount": 2252,
+  "bytes": 72113511,
+  "extensions": [
+    {
+      "extension": ".baml",
+      "files": 52,
+      "bytes": 1205875
+    },
+    {
+      "extension": ".cache",
+      "files": 46,
+      "bytes": 448308
+    },
+    {
+      "extension": ".cmd",
+      "files": 2,
+      "bytes": 774
+    },
+    {
+      "extension": ".config",
+      "files": 4,
+      "bytes": 704
+    },
+    {
+      "extension": ".cs",
+      "files": 1486,
+      "bytes": 18126987
+    },
+    {
+      "extension": ".csproj",
+      "files": 18,
+      "bytes": 15648
+    },
+    {
+      "extension": ".csv",
+      "files": 6,
+      "bytes": 4114
+    },
+    {
+      "extension": ".dll",
+      "files": 224,
+      "bytes": 26298096
+    },
+    {
+      "extension": ".editorconfig",
+      "files": 10,
+      "bytes": 3457
+    },
+    {
+      "extension": ".exe",
+      "files": 4,
+      "bytes": 2596864
+    },
+    {
+      "extension": ".json",
+      "files": 38,
+      "bytes": 272897
+    },
+    {
+      "extension": ".lref",
+      "files": 2,
+      "bytes": 7738
+    },
+    {
+      "extension": ".pdb",
+      "files": 28,
+      "bytes": 10208572
+    },
+    {
+      "extension": ".png",
+      "files": 62,
+      "bytes": 1539489
+    },
+    {
+      "extension": ".props",
+      "files": 12,
+      "bytes": 16272
+    },
+    {
+      "extension": ".ps1",
+      "files": 118,
+      "bytes": 768770
+    },
+    {
+      "extension": ".py",
+      "files": 10,
+      "bytes": 277108
+    },
+    {
+      "extension": ".resources",
+      "files": 2,
+      "bytes": 1210167
+    },
+    {
+      "extension": ".sln",
+      "files": 2,
+      "bytes": 9858
+    },
+    {
+      "extension": ".targets",
+      "files": 8,
+      "bytes": 4272
+    },
+    {
+      "extension": ".txt",
+      "files": 18,
+      "bytes": 115199
+    },
+    {
+      "extension": ".up2date",
+      "files": 6,
+      "bytes": 0
+    },
+    {
+      "extension": ".xaml",
+      "files": 52,
+      "bytes": 2863216
+    },
+    {
+      "extension": ".xml",
+      "files": 28,
+      "bytes": 1268558
+    },
+    {
+      "extension": ".yaml",
+      "files": 12,
+      "bytes": 18726
+    },
+    {
+      "extension": ".zip",
+      "files": 2,
+      "bytes": 4831842
+    }
+  ],
+  "checks": {
+    "normalizedRepositoryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+    "normalizedTmpRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp",
+    "normalizedTarget": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u05-loading-progress-pairs-20261029",
+    "targetInsideRepositoryTmp": true,
+    "reparsePoints": 0,
+    "trackedDocumentationReferences": 0,
+    "exclusiveOpenFailures": 0,
+    "activeRenderHarnessProcesses": 0,
+    "archivedEvidenceFiles": 19,
+    "evidenceHashMismatches": 0,
+    "sourceSnapshotCommitsExist": true
+  },
+  "diskSpaceBeforeBytes": 6372392960,
+  "diskSpaceAfterBytes": 6449692672,
+  "diskSpaceDeltaBytes": 77299712
+}

@@ -1617,3 +1617,7 @@ Trainer 工具页清除了永久折叠的重复空态文字，继续使用共享
 - 以SDK8.0.423运行正式`build.ps1 -SkipTests`：Release解决方案0警告/0错误、XAML26/26；隔离类5/5、0失败、0 skip。一次不完整直接dotnet调用缺少`GscBuildCommit`，随后走正式构建并复验通过，不把设置错误计作产品缺陷。
 - C盘系统临时目录605229056字节低于空间门禁1073741824；未清理C盘/未知文件，改把本批进程TEMP/TMP设为仓库`.tmp`下D盘路径后预检通过。局部TRX、崩溃TRX/序列、构建摘要及快照见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-wpf-stylus-fix/`。
 - 中文完整入口、安装身份/启动、独立`scripts/build.cmd`以及本批提交后的GitHub baseline/SDK10 CI与artifact仍待核验。终结不得用此局部成功代替最终链；Playnite真实宿主、stylus/touch/IME仍未验。
+
+## Round5 U09-01补U05-05/06历史配对（2026-10-30）
+
+已为U05-05/06归档SDK8.0.423 RenderHarness历史双主题配对：短Loading由Visible转为Hidden、慢响应后显示、Error即时可见，660×220 DIP布局槽位不变；五态进度数据匹配DTO，Light/Dark下52 DIP进度条及100 DIP标签边界稳定。两版快照编译与采样均exit0；只使用临时探针，生产代码未改。配对图、CSV、快照身份、首次探针诊断见`docs/design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/historical-render-pair-20261030/`。它仅证明离屏合成RenderHarness，不代表Playnite宿主/实体输入/IME/外部UIA/物理DPI。U09-01其它视觉配对仍待核对；整轮状态为6已满足、71代码完成待验收、2进行中、1远端待验。

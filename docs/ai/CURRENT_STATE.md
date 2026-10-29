@@ -138,7 +138,7 @@ SDK8.0.423 Release定向Worker 13/13、Playnite 7/7，无skip；源码检查通�
 
 精确SHA的 GitHub run `40768381673` / #1374 success；baseline job `123098598311` 和 SDK10.0.401 job `123098597735` 均成功，Render QA/WPF静态/包与上传全过。当前包SHA-256 `F80780FE18D890610C10B881D1B21D7D9967CE7EFFEBF265B3EDF3DB4D514DBD`，安装主插件DLL SHA-256 `220BE2409571A14902F1350BBD48655950EF974C94E857D1C7CE5E1EB0859F02`；Playnite PID42296已启动。证据见[U09-05最终候选](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-5f0eb620/BASELINE.md)。这不代表真实页面视觉、实体输入/IME、外部UIA、物理DPI或真实存档/媒体/云端业务已验。
 
-本地阶段临时构建/测试/离屏图已安全清理，当前文件与前后空间见同目录 `cleanup.json`。保留 `.tmp/round5-u09-01-03/dotnet-sdk8` 及安装脚本，因为系统只装SDK9.0.302、global.json要求8.0.423；剩余阶段失败TRX已脱敏归档。required-check/branch protection读取先前403，未重复探测，故U09-06仅对保护规则名单标“远端待验”。80项复核：6项已满足、70项代码完成待验收、U07-05/U09-01/U09-04进行中、U09-06远端待验；U09-08审查已完成但不代表整轮80项全验收。详见Round5 `PROGRESS.md`。
+本地阶段临时构建/测试/离屏图已安全清理，当前文件与前后空间见同目录 `cleanup.json`。保留 `.tmp/round5-u09-01-03/dotnet-sdk8` 及安装脚本，因为系统只装SDK9.0.302、global.json要求8.0.423；剩余阶段失败TRX已脱敏归档。required-check/branch protection读取先前403，未重复探测，故U09-06仅对保护规则名单标“远端待验”。80项复核：6项已满足、71项代码完成待验收、U09-01/U09-04进行中、U09-06远端待验；U09-08审查已完成但不代表整轮80项全验收。详见Round5 `PROGRESS.md`。
 
 ## 2026-10-29 Round5 U07-07/08 恢复说明批
 
@@ -413,3 +413,7 @@ Trainer 工具列表删除了永久折叠、与共享空态 Presenter 重复的�
 ## 2026-10-29 Round5 U09-05 WPF测试宿主诊断
 
 已复现授权提升完整链中的WPF `StylusWisp` 异常：列菜单 Popup 鼠标捕获时测试主机中止。仅在隔离的列菜单行为测试进程禁用该用例不覆盖的 stylus/touch 栈；SDK8.0.423 Release正式构建0警告/错误，XAML26/26，目标类5/5通过。进程 `TEMP/TMP` 使用阶段自有 D盘路径绕过C盘系统临时目录空间不足；未清理C盘或其他任务文件。证据 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-wpf-stylus-fix/`。完整中文根入口安装启动链、独立 `scripts/build.cmd` 和该候选SHA的GitHub双SDK job/artifact尚未验收；不据局部编译结项。
+
+## 2026-10-30 Round5 U09-01补U05-05/06历史配对
+
+U05加载反馈与真实进度列完成同数据、同主题 before/after RenderHarness 配对。SDK8.0.423 Release 两侧 build/capture 均 exit0；快照 `bca60704` / `969bfc20`，短 Loading 从 Visible 变 Hidden，慢加载在采样点恢复，错误立即可见；660×220 DIP槽位保留。五种进度状态的 Light/Dark 样本和值均匹配 DTO，进度条52 DIP、标签右界100 DIP不变。临时探针只实例化生产控件/资源，没有生产文件变更；真实Playnite、UIA/物理输入DPI和业务写入仍待验。清单、CSV、精选截图与探针失败/修正诊断见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/historical-render-pair-20261030/`；U09-01其余视觉批次配对仍待盘点。

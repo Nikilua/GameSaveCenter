@@ -1,0 +1,35 @@
+  正在确定要还原的项目…
+<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+<phase-root>\before\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+<phase-root>\before\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+  已还原 <phase-root>\before\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 17.82 秒)。
+  已还原 <phase-root>\before\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (用时 17.82 秒)。
+  已还原 <phase-root>\before\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 17.82 秒)。
+  已还原 <phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj (用时 17.82 秒)。
+<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Contracts -> <phase-root>\before\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+<phase-root>\before\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Core -> <phase-root>\before\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+<phase-root>\before\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_r4viwy4l_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Playnite -> <phase-root>\before\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+<phase-root>\before\tests\GameSaveCenter.RenderHarness\LoadingProgressProbe.cs(62,89): error CS1061: “WorkspaceStatePresenter”未包含“IsLoadingFeedbackReady”的定义，并且找不到可接受第一个“WorkspaceStatePresenter”类型参数的可访问扩展方法“IsLoadingFeedbackReady”(是否缺少 using 指令或程序集引用?) [<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+
+生成失败。
+
+<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+<phase-root>\before\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+<phase-root>\before\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_r4viwy4l_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+<phase-root>\before\tests\GameSaveCenter.RenderHarness\LoadingProgressProbe.cs(62,89): error CS1061: “WorkspaceStatePresenter”未包含“IsLoadingFeedbackReady”的定义，并且找不到可接受第一个“WorkspaceStatePresenter”类型参数的可访问扩展方法“IsLoadingFeedbackReady”(是否缺少 using 指令或程序集引用?) [<phase-root>\before\tests\GameSaveCenter.RenderHarness\GameSaveCenter.RenderHarness.csproj]
+    9 个警告
+    1 个错误
+
+已用时间 00:01:33.27

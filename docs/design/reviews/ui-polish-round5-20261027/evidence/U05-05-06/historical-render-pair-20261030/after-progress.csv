@@ -1,0 +1,11 @@
+theme,phase,state,progress_display,progress_value,bar_width,label_right
+Light,0,Running,—,0.000,52.000,100.000
+Light,1,Running,0%,0.000,52.000,100.000
+Light,2,Running,73%,73.000,52.000,100.000
+Light,3,Cancelled,73%,73.000,52.000,100.000
+Light,4,Succeeded,100%,100.000,52.000,100.000
+Dark,0,Running,—,0.000,52.000,100.000
+Dark,1,Running,0%,0.000,52.000,100.000
+Dark,2,Running,73%,73.000,52.000,100.000
+Dark,3,Cancelled,73%,73.000,52.000,100.000
+Dark,4,Succeeded,100%,100.000,52.000,100.000

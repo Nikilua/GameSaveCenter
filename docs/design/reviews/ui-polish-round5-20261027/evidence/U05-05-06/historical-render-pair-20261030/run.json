@@ -1,0 +1,163 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "sdk": "8.0.423",
+  "harness": "tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj",
+  "build": "Release; --no-restore -m:1",
+  "harnessProbeSha256": "1e9a27b4815c131effe6608239a9e46c99d683ef062260c03a75bc3a76e424f3",
+  "snapshots": [
+    {
+      "side": "before",
+      "commit": "bca60704cc9eaffdc78b1154e4dfe5873cef10b8",
+      "archiveSha256": "723a59d1ddbbf0120b6be4ee8bcae85206b0747e004f585e3871eef90d26d816",
+      "productionFilesUnchanged": 357,
+      "renderHarnessBuildExitCode": 0,
+      "renderProbeExitCode": 0,
+      "renderHarnessBuildWarnings": 4,
+      "renderHarnessBuildErrors": 0
+    },
+    {
+      "side": "after",
+      "commit": "969bfc203dc66ec21fe1718b9eae5a7cdfd1fb7c",
+      "archiveSha256": "e13991e7c9ed5408cf938b3f2f0f59658667330da1ad339310a61d7064a00304",
+      "productionFilesUnchanged": 357,
+      "renderHarnessBuildExitCode": 0,
+      "renderProbeExitCode": 0,
+      "renderHarnessBuildWarnings": 4,
+      "renderHarnessBuildErrors": 0
+    }
+  ],
+  "measurements": {
+    "workspaceStatePresenterSlotDips": "660 x 220",
+    "loading": {
+      "afterError": "Visible",
+      "afterFastComplete": "Visible",
+      "afterFastStart": "Hidden",
+      "afterSlowVisible": {
+        "Light": 277.763,
+        "Dark": 263.688
+      },
+      "beforeError": "Visible",
+      "beforeFastStart": "Visible"
+    },
+    "progress": {
+      "beforeBarWidthDip": 52.0,
+      "beforeLabelRightDip": 100.0,
+      "states": [
+        "unknown",
+        "0%",
+        "73%",
+        "Cancelled 73%",
+        "Succeeded 100%"
+      ],
+      "themes": [
+        "Light",
+        "Dark"
+      ],
+      "afterBarWidthDip": 52.0,
+      "afterLabelRightDip": 100.0
+    }
+  },
+  "files": [
+    {
+      "path": "after-loading.csv",
+      "bytes": 865,
+      "sha256": "a6946fa9e3a14d1144ec70d743053e06cc9db6510642211dc510e0220d2a6bfb"
+    },
+    {
+      "path": "after-progress.csv",
+      "bytes": 503,
+      "sha256": "7495ad72b2beb872dfa3f3de7989d6cf633ae67592fc33e836d76f514b1deb52"
+    },
+    {
+      "path": "before-loading.csv",
+      "bytes": 870,
+      "sha256": "efde6bd84683f7e00d189e014953555d36ac53046379874b8cab73ba49ce76b2"
+    },
+    {
+      "path": "before-progress.csv",
+      "bytes": 503,
+      "sha256": "7495ad72b2beb872dfa3f3de7989d6cf633ae67592fc33e836d76f514b1deb52"
+    },
+    {
+      "path": "harness-adjustments.md",
+      "bytes": 1600,
+      "sha256": "7783b8252d9bc423e38844a49793fd4a00eb9fffbac011b799516327d807db9c"
+    },
+    {
+      "path": "diagnostics/after-initial-capture-failure.txt",
+      "bytes": 757,
+      "sha256": "b1c76c3bffd94af82b4b0b65970837d6c36c45cfdca9dc577187541c8cee53c1"
+    },
+    {
+      "path": "diagnostics/after-initial-no-restore-build.txt",
+      "bytes": 939,
+      "sha256": "40a8786c5ce1a4c09af3515b09d0e468b55a612827d11819b22499ab0161cf49"
+    },
+    {
+      "path": "diagnostics/before-initial-build-failure.txt",
+      "bytes": 6088,
+      "sha256": "d7cac5b0a44c77ac9599d7c3839e9f221df8d5728e7a601a7ffc07ec35e0ae76"
+    },
+    {
+      "path": "screenshots/after-Dark-loading-error-immediate.png",
+      "bytes": 12712,
+      "sha256": "85647f2c0b33f61fd07238e056e0255c4a3d8bdabe7da7d3b88e78218afd18cd"
+    },
+    {
+      "path": "screenshots/after-Dark-loading-fast-start.png",
+      "bytes": 7110,
+      "sha256": "4d7505cc2067c6cc3609c2be19be0a43b355ee715c2b81d2cb0ba667d9d487c6"
+    },
+    {
+      "path": "screenshots/after-Dark-loading-slow-visible.png",
+      "bytes": 12798,
+      "sha256": "df00d8b762bf686eda47c656e602025775f4057c107f700d5222261c4b7928e9"
+    },
+    {
+      "path": "screenshots/after-Dark-progress-3.png",
+      "bytes": 41694,
+      "sha256": "dc915433587b815f99f68cd6ac36f4a232d97da3970ff285a33057c4e65a914f"
+    },
+    {
+      "path": "screenshots/after-Light-loading-error-immediate.png",
+      "bytes": 11201,
+      "sha256": "5e373cffbd06dc5fe13130444e3ecde1e0e73d4523ac6f01c7ed81f76ad78edf"
+    },
+    {
+      "path": "screenshots/after-Light-loading-fast-start.png",
+      "bytes": 6622,
+      "sha256": "1067a9c0ca767ac565aa24ecd5fadb2974ce0b4a97827da016c73cb7a40ea963"
+    },
+    {
+      "path": "screenshots/after-Light-loading-slow-visible.png",
+      "bytes": 11208,
+      "sha256": "af0b41525bac1c14e660551e9f650e6731f782def95c43ba80b7523b5c066404"
+    },
+    {
+      "path": "screenshots/after-Light-progress-2.png",
+      "bytes": 40005,
+      "sha256": "56528e8c786b71c3e30e62e3501832262499621d8f684c918c6f1bff2a5030f5"
+    },
+    {
+      "path": "screenshots/before-Dark-loading-fast-start.png",
+      "bytes": 12798,
+      "sha256": "df00d8b762bf686eda47c656e602025775f4057c107f700d5222261c4b7928e9"
+    },
+    {
+      "path": "screenshots/before-Light-loading-fast-start.png",
+      "bytes": 11208,
+      "sha256": "af0b41525bac1c14e660551e9f650e6731f782def95c43ba80b7523b5c066404"
+    },
+    {
+      "path": "screenshots/before-Light-progress-2.png",
+      "bytes": 40005,
+      "sha256": "56528e8c786b71c3e30e62e3501832262499621d8f684c918c6f1bff2a5030f5"
+    }
+  ],
+  "limitations": [
+    "RenderHarness creates a synthetic readonly task and realizes production WorkspaceStatePresenter and TaskCenterView resources; it is not an interactive Playnite host session.",
+    "No restore, media deletion, or cloud write was performed.",
+    "The initial after capture probe was corrected because its high-priority dispatcher pump prevented the lower-priority loading timer from advancing; both snapshots then passed with the same ContextIdle pump."
+  ]
+}
