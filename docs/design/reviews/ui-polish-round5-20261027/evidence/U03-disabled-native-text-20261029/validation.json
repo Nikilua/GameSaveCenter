@@ -1,0 +1,257 @@
+{
+  "baseCommit": "3b72ddb2a51b42595fa6d12155c6d88603b07eed",
+  "sdk": "8.0.423",
+  "precommitDirty": true,
+  "tests": [
+    {
+      "file": "before-disabled-foreground.trx",
+      "counters": {
+        "total": "2",
+        "executed": "2",
+        "passed": "1",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "after-disabled-foreground.trx",
+      "counters": {
+        "total": "8",
+        "executed": "8",
+        "passed": "2",
+        "failed": "6",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    },
+    {
+      "file": "after-identity-disabled-foreground.trx",
+      "counters": {
+        "total": "8",
+        "executed": "8",
+        "passed": "8",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+      "beforeSha256": "cdd9706ca42a12558c5c466f06296d6a6e6132062f4f1fb5e74b08591d6c0dc7",
+      "afterSha256": "c86ed672a48be65fc7e0dedf3db615c3535171829278f173ac592e6335d3f7e0"
+    },
+    {
+      "path": "tests/GameSaveCenter.Playnite.Tests/R09FocusOutlineBehaviorTests.cs",
+      "beforeSha256": "88c1d0c069846ae551dfcf3d907f2e12b85689022c29e90e1133e50203da635d",
+      "afterSha256": "efc74784dc0e424d5a9a4b7675df92adfcb33e82f97de90eef8ebce39b147652"
+    }
+  ],
+  "images": [
+    {
+      "side": "before",
+      "theme": "Light",
+      "image": "images\\a3e1c047478c90b90487060eafa62e8af273ee0002dad17743b6bec17cde642a.png",
+      "sha256": "a3e1c047478c90b90487060eafa62e8af273ee0002dad17743b6bec17cde642a"
+    },
+    {
+      "side": "before",
+      "theme": "Dark",
+      "image": "images\\f1f1851f14df82c0322f76eb2ebf275a2b50664694e8b231bb7a199bc7fb334d.png",
+      "sha256": "f1f1851f14df82c0322f76eb2ebf275a2b50664694e8b231bb7a199bc7fb334d"
+    },
+    {
+      "side": "after",
+      "theme": "Light",
+      "image": "images\\eb0a0011b9e9c729db55f32c0c9121cc3f2f3020bcd2d410b6a87659edfe4d75.png",
+      "sha256": "eb0a0011b9e9c729db55f32c0c9121cc3f2f3020bcd2d410b6a87659edfe4d75"
+    },
+    {
+      "side": "after",
+      "theme": "Dark",
+      "image": "images\\264987f6e0c8ebb6ffe8993cdc07f5daebbee0dc668d77dc910306c9c0da9b8e.png",
+      "sha256": "264987f6e0c8ebb6ffe8993cdc07f5daebbee0dc668d77dc910306c9c0da9b8e"
+    }
+  ],
+  "files": [
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\disk-before.json",
+      "archived": "disk-before.json",
+      "rawSha256": "693b0a5991217c84914da93080e8111550c4b1300d851dd7ed71d903bb1b6261",
+      "sha256": "743f893675b0e0b20dccccf35cf443dd8f45f7f7de20da37c49ffb330c271ab7"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\before-test.log",
+      "archived": "before-test.log",
+      "rawSha256": "46ed58a6fc996cb9c6b03221e8b63f8c3fe6f76a5dee98fc8a83c0257d372727",
+      "sha256": "71618b171c9193940a55ba371a91151925747813f88073686174012e38227c08"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\before-disabled-foreground.trx",
+      "archived": "before-disabled-foreground.trx",
+      "rawSha256": "a63dfdf23d96640446559484a5c22657e71ae58afaa1e047c1dc97ed77bac7d0",
+      "sha256": "4ed79f609cc0cee2e0e4595c1726eb559b194d1e429a81d54707be2c1d1083fb"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\after-test.log",
+      "archived": "after-test.log",
+      "rawSha256": "bd97671dd02eac2c09c25889201e7e7fd39f5a02400ce116a0f20dcd93e54fb7",
+      "sha256": "9344fae13de08424bced5244934467b7123a53d04533171dc9eabeaee59a5b39"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\after-disabled-foreground.trx",
+      "archived": "after-disabled-foreground.trx",
+      "rawSha256": "9d61ff9171c8c0e5635e10d02b58d16d221d9775ed2a738bfc535f0b2419d46f",
+      "sha256": "db70fd28b25c40d73f26e69a6510c7bac52c0fa3c987238e43bce71b81dc9302"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\after-identity-test.log",
+      "archived": "after-identity-test.log",
+      "rawSha256": "deb8c7e2ff6a1e05dbcc7594568233d34ecdf7486501152ad3748eb453a78af1",
+      "sha256": "b8e7b4df658644bd3b4317ea827509f7012a9775167b7264d4b96fd5de30c3d9"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\after-identity-disabled-foreground.trx",
+      "archived": "after-identity-disabled-foreground.trx",
+      "rawSha256": "4a71ebc81b25617a42f1b2adfcf7e02da2bb124b3ac6163da3a0f60c59f37c0f",
+      "sha256": "122755f1420fe13d6366060183fe26e1b7703eaa4e52b794148e7dd6b3a88dd8"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\before-probe-build.log",
+      "archived": "before-probe-build.log",
+      "rawSha256": "3bbb5f4530267b82c49e6caeb7cd96f6a087dcd6e5268ccfd2d9296eed76dd71",
+      "sha256": "bad406c20f4d0a5eb6e11473a72a6c8be741a1937f4f9aa9ad9e30fb643c8960"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\after-probe-build.log",
+      "archived": "after-probe-build.log",
+      "rawSha256": "dfe7cb4cf1f0994e6389af651fbaeddb03ffb627e315364dd5e9caad293f9b88",
+      "sha256": "3fc3bfb3cd3b421dd2ef8b9b05607176e13425d4a178c4bfd1cdda8cf2fab960"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\source-check.txt",
+      "archived": "source-check.txt",
+      "rawSha256": "30760e7082311ac27aa2d981c07638fc2a4b11d039c265afb40365b1f98fbca6",
+      "sha256": "77f4beded9cf425fb763b9619b28231640a35746bffda882195fce8787cb8a9b"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\wpf-static.txt",
+      "archived": "wpf-static.txt",
+      "rawSha256": "752dfdfdd2b46bfb8cefdc29007e025d6a4a07d0369ac94e0a77a861883265c6",
+      "sha256": "357f524e0af09b9f8568f84be4a145bd98b1edc1505789731376fe085bedf477"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\xaml-check.txt",
+      "archived": "xaml-check.txt",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\render.log",
+      "archived": "render.log",
+      "rawSha256": "55d424abfd9a8a516078270d92d7302bc5a9e1ccb4c3a9dae870c760010ae5a0",
+      "sha256": "6544d06f59cccfa3c865454fc841cae0b3fd0072ec39e9039ebbc460fcb34910"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\InputProbe.cs",
+      "archived": "InputProbe.cs.txt",
+      "rawSha256": "51f393da513884b8379be30b8173f921cdabbefaa236d97e78c0c604dff0e137",
+      "sha256": "51f393da513884b8379be30b8173f921cdabbefaa236d97e78c0c604dff0e137"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\Main.cs",
+      "archived": "Main.cs.txt",
+      "rawSha256": "334ebb50fa1c29a4b9e63e47f0f6e7ee33a1e78fa064fd1799d2ff16d6e05ee6",
+      "sha256": "334ebb50fa1c29a4b9e63e47f0f6e7ee33a1e78fa064fd1799d2ff16d6e05ee6"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\Probe.csproj",
+      "archived": "Probe.csproj.txt",
+      "rawSha256": "d7ffe7bbb4ef83f5ce034231d820a97c6738838b15ad5744e7c9cd38c853a444",
+      "sha256": "d7ffe7bbb4ef83f5ce034231d820a97c6738838b15ad5744e7c9cd38c853a444"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\render\\render-qa-report.txt",
+      "archived": "render-qa-report.txt",
+      "rawSha256": "02042279e931e9c4fff33faf7f010d633de198ade95016db406493f56a762239",
+      "sha256": "4b41c2497b90e057eb60bf2cf51d640d9db86111e0146226c13da4c292bec647"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\before-inputs\\inputs.csv",
+      "archived": "before-inputs.csv",
+      "rawSha256": "0ecc3b8b2495721166f9228d0debcf66e16aaed7a5f511c60520296f15655adc",
+      "sha256": "cd02d98b99fde05bbf69c8bde280459977df3a7090d181de4b9fe9140675a7ea"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\before-inputs\\Light-inputs.png",
+      "archived": "images\\a3e1c047478c90b90487060eafa62e8af273ee0002dad17743b6bec17cde642a.png",
+      "rawSha256": "a3e1c047478c90b90487060eafa62e8af273ee0002dad17743b6bec17cde642a",
+      "sha256": "a3e1c047478c90b90487060eafa62e8af273ee0002dad17743b6bec17cde642a"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\before-inputs\\Dark-inputs.png",
+      "archived": "images\\f1f1851f14df82c0322f76eb2ebf275a2b50664694e8b231bb7a199bc7fb334d.png",
+      "rawSha256": "f1f1851f14df82c0322f76eb2ebf275a2b50664694e8b231bb7a199bc7fb334d",
+      "sha256": "f1f1851f14df82c0322f76eb2ebf275a2b50664694e8b231bb7a199bc7fb334d"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\after-inputs\\inputs.csv",
+      "archived": "after-inputs.csv",
+      "rawSha256": "0ecc3b8b2495721166f9228d0debcf66e16aaed7a5f511c60520296f15655adc",
+      "sha256": "cd02d98b99fde05bbf69c8bde280459977df3a7090d181de4b9fe9140675a7ea"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\after-inputs\\Light-inputs.png",
+      "archived": "images\\eb0a0011b9e9c729db55f32c0c9121cc3f2f3020bcd2d410b6a87659edfe4d75.png",
+      "rawSha256": "eb0a0011b9e9c729db55f32c0c9121cc3f2f3020bcd2d410b6a87659edfe4d75",
+      "sha256": "eb0a0011b9e9c729db55f32c0c9121cc3f2f3020bcd2d410b6a87659edfe4d75"
+    },
+    {
+      "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\after-inputs\\Dark-inputs.png",
+      "archived": "images\\264987f6e0c8ebb6ffe8993cdc07f5daebbee0dc668d77dc910306c9c0da9b8e.png",
+      "rawSha256": "264987f6e0c8ebb6ffe8993cdc07f5daebbee0dc668d77dc910306c9c0da9b8e",
+      "sha256": "264987f6e0c8ebb6ffe8993cdc07f5daebbee0dc668d77dc910306c9c0da9b8e"
+    }
+  ],
+  "render": {
+    "exit": 0,
+    "png": 394,
+    "problems": 0,
+    "sampleUtc": "2026-10-28T09:00:00Z"
+  },
+  "static": "42 XAML,0 errors,26 existing warnings,179 info; XML structural26/26; source validation passed",
+  "failureClassification": "Before regression actual native foreground primary instead of disabled. First expanded run missed build-commit metadata: six source tests blocked, two WPF passed. Correct HEAD metadata rerun8/8, no skips; all failures preserved.",
+  "scope": "Controlled WPF Light/Dark screenshots, error HelpText/dimensions and disabled/re-enabled Foreground behavior. Physical Playnite, IME/UIA client and DPI remain unverified. This candidate requires its own full Chinese root chain, independent scripts/build.cmd and remote CI; old cd062531 gate cannot certify new source."
+}

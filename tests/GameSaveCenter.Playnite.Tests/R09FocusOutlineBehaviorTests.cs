@@ -166,11 +166,13 @@ public sealed class R09FocusOutlineBehaviorTests
                 Assert.Equal(BrushColor(resources["GscErrorTintBrush"]), BrushColor(errorChrome.Background));
                 Assert.Equal(BrushColor(resources["GscErrorBrush"]), BrushColor(errorChrome.BorderBrush));
                 Assert.Equal(BrushColor(resources["GscDisabledTextBrush"]), BrushColor(TextElement.GetForeground(contentHost)));
+                Assert.Equal(BrushColor(resources["GscDisabledTextBrush"]), BrushColor(textBox.Foreground));
                 Assert.Equal(1d, validationStroke.Opacity);
 
                 textBox.IsEnabled = true;
                 Assert.Same(textBox, Keyboard.Focus(textBox));
                 FlushLayout(window);
+                Assert.Equal(BrushColor(resources["GscPrimaryTextBrush"]), BrushColor(textBox.Foreground));
 
                 textBox.Text = "2";
                 textBox.GetBindingExpression(TextBox.TextProperty)!.UpdateSource();

@@ -1,0 +1,100 @@
+{
+  "before": [
+    {
+      "Name": "C",
+      "Free": 1942917120
+    },
+    {
+      "Name": "D",
+      "Free": 2315763712
+    }
+  ],
+  "ownership": "Four superseded Round5 candidate binaries: cb0a11cb,842557f6,5f0eb620. Latest remains1a593ccc. Old Render reports archived before deletion; existing selected images remain in original evidence. Deleted render PNGs are superseded, reproducible and not current audit.",
+  "sdk": "All 5140 old SDK files matched the retained SDK8.0.423 counterpart by SHA256. No SDK baseline/version substitution.",
+  "deleted": [
+    {
+      "path": ".tmp/round5-u02-sdk8.0.423",
+      "bytes": 748426619.0,
+      "files": 5140,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    },
+    {
+      "path": "artifacts/gsc-b/5c521fc9",
+      "bytes": 177342492.0,
+      "files": 749,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    },
+    {
+      "path": "artifacts/gsc-b/666f20a5",
+      "bytes": 287398267.0,
+      "files": 1032,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    },
+    {
+      "path": "artifacts/gsc-b/dac0bcbb",
+      "bytes": 287568931.0,
+      "files": 1032,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    },
+    {
+      "path": "artifacts/gsc-b/de765bc9",
+      "bytes": 281740387.0,
+      "files": 1015,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    },
+    {
+      "path": ".tmp/round5-u05-237e993f/render",
+      "bytes": 53231794.0,
+      "files": 395,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    },
+    {
+      "path": ".tmp/round5-u05-05-06/render",
+      "bytes": 53224349.0,
+      "files": 395,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    },
+    {
+      "path": ".tmp/round5-u05-07-08/render",
+      "bytes": 53233343.0,
+      "files": 395,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    },
+    {
+      "path": ".tmp/round5-u08-05-06-render-d6d940e7",
+      "bytes": 53276915.0,
+      "files": 395,
+      "reparse": 0,
+      "exclusiveOpenPassed": true,
+      "reportsArchived": true
+    }
+  ],
+  "retained": "Latest cd062531 build1a593ccc/package/install identity, all root diagnostics and failed TRX, current audit and retained SDK, user/other task TRX/TestResults.",
+  "deferred": [],
+  "after": [
+    {
+      "Name": "C",
+      "Free": 1940807680
+    },
+    {
+      "Name": "D",
+      "Free": 4328112128
+    }
+  ]
+}

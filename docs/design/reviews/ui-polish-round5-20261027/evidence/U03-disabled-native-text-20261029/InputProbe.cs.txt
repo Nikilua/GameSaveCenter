@@ -1,0 +1,30 @@
+using System;
+using System.IO;
+using System.Text;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Automation;
+using GameSaveCenter.Playnite.Settings;
+using GameSaveCenter.Playnite.Views;
+namespace GameSaveCenter.RenderHarness;
+internal static class U03InputProbe
+{
+ public static int Run(string output,bool after)
+ {
+  Directory.CreateDirectory(output);var app=new Application{ShutdownMode=ShutdownMode.OnExplicitShutdown};app.Resources["BaseTextBlockStyle"]=new Style(typeof(TextBlock));var report=new StringBuilder("theme,state,enabled,readonly,error,helptext,opacity,width,height\n");
+  try{foreach(var mode in new[]{GameSaveCenterThemeMode.Light,GameSaveCenterThemeMode.Dark}){
+   var source=new TaskCenterView();Assembly.Load("GameSaveCenter.RenderHarness").GetType("GameSaveCenter.RenderHarness.Program")!.GetMethod("ApplyThemePalette",BindingFlags.Static|BindingFlags.NonPublic,null,new[]{typeof(UserControl),typeof(GameSaveCenterThemeMode),typeof(bool),typeof(bool)},null)!.Invoke(null,new object[]{source,mode,false,false});
+   var panel=new StackPanel{Margin=new Thickness(24)};var root=new UserControl{Resources=source.Resources,Content=new Border{Background=source.TryFindResource("GscBackdropBrush") as Brush,Child=panel},Width=760,Height=520};
+   panel.Children.Add(new TextBlock{Text="历史生产输入状态 / Same input states",FontSize=22,Margin=new Thickness(0,0,0,16),Foreground=source.TryFindResource("GscPrimaryTextBrush") as Brush});
+   var states=new[]{"Normal","ReadOnly","Disabled","Error","DisabledError","ReadOnlyError"};
+   foreach(var state in states){var row=new StackPanel{Orientation=Orientation.Horizontal,Margin=new Thickness(0,6,0,6)};row.Children.Add(new TextBlock{Text=state,Width=170,VerticalAlignment=VerticalAlignment.Center,Foreground=source.TryFindResource("GscPrimaryTextBrush") as Brush});var box=new TextBox{Style=(Style)source.FindResource("GscWpfUiTextBox"),Width=480,Height=42,Text="相同文本 / Same input 2026",IsReadOnly=state.Contains("ReadOnly"),IsEnabled=!state.Contains("Disabled")};row.Children.Add(box);panel.Children.Add(row);if(state.Contains("Error")){var binding=new Binding("Value"){Source=new ValueSource(),Mode=BindingMode.TwoWay};box.SetBinding(TextBox.TextProperty,binding);Validation.MarkInvalid(box.GetBindingExpression(TextBox.TextProperty),new ValidationError(new ErrorRule(),box.GetBindingExpression(TextBox.TextProperty),"请输入 1～3 / Range 1–3",null));}root.Measure(new Size(760,520));root.Arrange(new Rect(0,0,760,520));root.UpdateLayout();if(box.ActualWidth!=480||box.ActualHeight!=42)throw new Exception("state changed dimensions");if(after&&state.Contains("Error")&&AutomationProperties.GetHelpText(box)!="请输入 1～3 / Range 1–3")throw new Exception("error HelpText missing");report.AppendLine(string.Join(",",mode,state,box.IsEnabled,box.IsReadOnly,Validation.GetHasError(box),AutomationProperties.GetHelpText(box),box.Opacity,box.ActualWidth,box.ActualHeight));}
+   root.Measure(new Size(760,520));root.Arrange(new Rect(0,0,760,520));root.UpdateLayout();var bmp=new RenderTargetBitmap(760,520,96,96,PixelFormats.Pbgra32);bmp.Render(root);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(bmp));using(var stream=File.Create(Path.Combine(output,mode+"-inputs.png")))png.Save(stream);
+  }File.WriteAllText(Path.Combine(output,"inputs.csv"),report.ToString());return 0;}catch(Exception ex){File.WriteAllText(Path.Combine(output,"failure.txt"),ex.ToString());return 1;}finally{app.Shutdown();}
+ }
+ public sealed class ValueSource{public string Value{get;set;}="相同文本 / Same input 2026";}
+ sealed class ErrorRule:ValidationRule{public override ValidationResult Validate(object value,System.Globalization.CultureInfo culture)=>new ValidationResult(false,"请输入 1～3 / Range 1–3");}
+}

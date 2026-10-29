@@ -1,3 +1,13 @@
+## 2026-10-29 U03-04禁用原生文字修正候选
+
+清理说明：当前保留SDK位于 .tmp/round5-u09-01-03/dotnet-sdk8；已删除逐文件SHA相同的旧SDK副本、四份已由cd062531构建1a593ccc替代的Round5输出及四份过期渲染副本。旧文字中的当前输出仅代表当时状态，现以本条和清理清单为准。原始失败诊断、最新包/构建与当前审计继续保留；D盘由约2.32GB恢复至4.33GB，未降低门禁。
+
+历史同状态对照发现共享TextBox只改变PART_ContentHost附加Foreground，原生编辑文字仍读取控件Foreground；新增实际属性断言在修改前准确失败（预期#FF9AA4B5、实际#FFF2F4F8）。共享模板改为设置TextBox本身Foreground，沿原TemplateBinding传给内容宿主；补重新启用恢复主文字色断言，错误描边/HelpText和尺寸语义保留。
+
+SDK8.0.423 Release定向8/8、0 skip；首次扩展运行因未传构建身份导致6个源码测试被门禁拦截，补真实HEAD元数据后通过，失败TRX保留。双主题同状态图片已检查；源码校验、XAML26/26、WPF静态42文件/0 errors（既有26 warning/179 info）及完整Render QA394 PNG/0 PROBLEM/exit0通过。当前为源码候选；提交冻结后还须本候选中文根入口完整链、独立build.cmd及双SDK CI，不能沿用cd062531通过结果。真实Playnite、实体输入/IME/UIA及物理DPI继续待验。
+
+[原生禁用文字修正候选](evidence/U03-disabled-native-text-20261029/BASELINE.md)
+
 ## 2026-10-29 U09-01补U03-04/05输入状态对照
 
 重建f59fe4c8→d1fc1308（实际父88e1e8f3与f59生产src树相同），Fake固定UTC且源码相同，src逐文件与ZIP核对未改。SDK8.0.423 Release Worker/Harness及探针重编译均0警告0错误，两侧原RunThemeQa补充矩阵0 problems/exit0；双主题六种输入组合尺寸均480×42，After错误HelpText可读，输入探针两版均exit0。v1说明文字资源键错误导致标签不可见，v2已修正探针并保留首轮诊断；两侧双主题状态图及任务/媒体搜索页图已保存。

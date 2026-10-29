@@ -107,7 +107,9 @@
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="Chrome" Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
                 <Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
-                <Setter TargetName="PART_ContentHost" Property="TextElement.Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
+                <!-- Native TextBox text reads the editor's Foreground. Changing only
+                     the content host's attached value leaves the actual glyphs enabled. -->
+                <Setter Property="Foreground" Value="{DynamicResource GscDisabledTextBrush}"/>
             </Trigger>
             <!-- Validation is the highest-priority input state. Keep its text available
                  to UI Automation while the two-DIP stroke remains outside measurement. -->

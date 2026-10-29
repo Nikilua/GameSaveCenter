@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net472</TargetFramework><UseWPF>true</UseWPF><EnableDefaultCompileItems>false</EnableDefaultCompileItems><StartupObject>ProbeMain</StartupObject><GenerateDocumentationFile>false</GenerateDocumentationFile></PropertyGroup>
+  <ItemGroup><Compile Include="InputProbe.cs"/><Compile Include="Main.cs"/><ProjectReference Include="../../tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj"/></ItemGroup>
+</Project>

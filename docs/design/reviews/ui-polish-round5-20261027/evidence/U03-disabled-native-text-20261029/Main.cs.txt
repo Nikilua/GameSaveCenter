@@ -1,0 +1,2 @@
+using System;
+internal static class ProbeMain { [STAThread] private static int Main(string[] args) => GameSaveCenter.RenderHarness.U03InputProbe.Run(args[0], args[1]=="after"); }
