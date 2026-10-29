@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="5be6079b-8cdb-42c4-8c8e-b574eb3204cc" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T18:22:09.5535042+08:00" queuing="2026-10-29T18:22:09.5535047+08:00" start="2026-10-29T18:22:04.2724450+08:00" finish="2026-10-29T18:22:09.7452724+08:00" />
+  <TestSettings name="default" id="a39cff44-d1b8-47c1-bb04-5595b3ed15a1">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="748c5438-0813-4755-a06e-092749ee4dcd" testId="06e8e124-8454-bfe9-a9c6-e4e145303885" testName="GameSaveCenter.Playnite.Tests.R09IconSemanticBehaviorTests.SemanticActionIconsAreNonEmptyVectorsWithOneSharedCompactSize" computerName="redacted-host" duration="00:00:00.0160000" startTime="2026-10-29T18:22:09.5376279+08:00" endTime="2026-10-29T18:22:09.5376279+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="748c5438-0813-4755-a06e-092749ee4dcd" />
+    <UnitTestResult executionId="e133bd77-3a1f-4699-915c-7bcb8c0d6ab9" testId="a12729c4-9277-cc0a-2832-0c328d617a85" testName="GameSaveCenter.Playnite.Tests.R09IconSemanticBehaviorTests.ProductionActionUsagesShareTheSemanticMapAndDisabledButtonsKeepTheirVector" computerName="redacted-host" duration="00:00:02.7500000" startTime="2026-10-29T18:22:06.7868150+08:00" endTime="2026-10-29T18:22:09.5006295+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e133bd77-3a1f-4699-915c-7bcb8c0d6ab9" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09IconSemanticBehaviorTests.SemanticActionIconsAreNonEmptyVectorsWithOneSharedCompactSize" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="06e8e124-8454-bfe9-a9c6-e4e145303885">
+      <Execution id="748c5438-0813-4755-a06e-092749ee4dcd" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09IconSemanticBehaviorTests" name="SemanticActionIconsAreNonEmptyVectorsWithOneSharedCompactSize" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09IconSemanticBehaviorTests.ProductionActionUsagesShareTheSemanticMapAndDisabledButtonsKeepTheirVector" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="a12729c4-9277-cc0a-2832-0c328d617a85">
+      <Execution id="e133bd77-3a1f-4699-915c-7bcb8c0d6ab9" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09IconSemanticBehaviorTests" name="ProductionActionUsagesShareTheSemanticMapAndDisabledButtonsKeepTheirVector" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="06e8e124-8454-bfe9-a9c6-e4e145303885" executionId="748c5438-0813-4755-a06e-092749ee4dcd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a12729c4-9277-cc0a-2832-0c328d617a85" executionId="e133bd77-3a1f-4699-915c-7bcb8c0d6ab9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.49]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.88]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.93]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.77]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T18:22:09.7034829+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,55 @@
+{
+  "measurements": {
+    "before": [
+      {
+        "ActiveSeconds": 51.016631,
+        "TotalSeconds": 82.093329,
+        "ActiveAllocatedBytes": 11123763392.0,
+        "ActiveRenderingCallbackGapP95Ms": 333.346
+      },
+      {
+        "ActiveSeconds": 49.038269,
+        "TotalSeconds": 79.304906,
+        "ActiveAllocatedBytes": 11122793456.0,
+        "ActiveRenderingCallbackGapP95Ms": 370.993
+      }
+    ],
+    "after": [
+      {
+        "ActiveSeconds": 57.629262,
+        "TotalSeconds": 88.703665,
+        "ActiveAllocatedBytes": 12522311184.0,
+        "ActiveRenderingCallbackGapP95Ms": 371.557
+      },
+      {
+        "ActiveSeconds": 53.237594,
+        "TotalSeconds": 83.756141,
+        "ActiveAllocatedBytes": 12522271272.0,
+        "ActiveRenderingCallbackGapP95Ms": 409.093
+      }
+    ],
+    "candidate": [
+      {
+        "ActiveSeconds": 45.057919,
+        "TotalSeconds": 75.877239,
+        "ActiveAllocatedBytes": 8876853888.0,
+        "ActiveRenderingCallbackGapP95Ms": 286.317
+      },
+      {
+        "ActiveSeconds": 43.586908,
+        "TotalSeconds": 74.091019,
+        "ActiveAllocatedBytes": 8876745224.0,
+        "ActiveRenderingCallbackGapP95Ms": 305.01
+      }
+    ]
+  },
+  "meanActiveAllocatedBytes": {
+    "before": 11123278424.0,
+    "after": 12522291228.0,
+    "candidate": 8876799556.0
+  },
+  "candidateChangePercentVsHistoricalBefore": -20.1961938051727,
+  "candidateChangePercentVsUnoptimizedAfter": -29.1120179655991,
+  "boundary": "same reconstructed70 cycles297actions1040x700DIP both themes, no forcedGC; Rendering callback gaps not physicalframes; original contemporaneous U00 frame/allocation baseline unavailable; some individual action latency remains above old source and is not declared fully resolved",
+  "frozenCandidate": "e6e7f3b931ec767aea353d0998bc12800df16a21"
+}

@@ -1,0 +1,39 @@
+  正在确定要还原的项目…
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。 [[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+  已还原 [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (用时 18.1 秒)。
+  已还原 [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (用时 18.1 秒)。
+  已还原 [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 18.1 秒)。
+  已还原 [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 18.1 秒)。
+  已还原 [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (用时 18.11 秒)。
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Contracts -> [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Core -> [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite_ool0qyka_wpftmp.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Playnite -> [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj : warning NU1900: 获取包漏洞数据时出错: 无法加载源 https://api.nuget.org/v3/index.json 的服务索引。
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.HostAuditSeeder\bin\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll
+[repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:05.05]     GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes [2 s]
+  错误消息:
+   Xunit.Sdk.TrueException: Light/System.Windows.Controls.TextBlock: selection indicator overlaps the header reading area; indicator=20.6666666666667,12.6666666666667,2.66666666666667,16, header=16.6666666666667,11.3333333333333,56,18.6666666666667.
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes>b__3_0() 位置 [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 354
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c__DisplayClass33_0.<RunSta>b__0() 位置 [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1513
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 位置 [repo]\.tmp\u04-indicator-gap-20261029\before-snapshot\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1525
+结果文件: [repo]\.tmp\u04-indicator-gap-20261029\baseline-common-ancestor.trx
+
+失败!  - 失败:     1，通过:     0，已跳过:     0，总计:     1，持续时间: 1 s - GameSaveCenter.Playnite.Tests.dll (net472)

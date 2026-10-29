@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="b0a1e444-e1d8-4a59-9989-4e3da90af04f" name="lopmatu@SULT 2026-10-29 18:47:41" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T18:47:41.6899744+08:00" queuing="2026-10-29T18:47:41.6899750+08:00" start="2026-10-29T18:47:35.1757867+08:00" finish="2026-10-29T18:47:41.6957580+08:00" />
+  <TestSettings name="default" id="87ccc751-3da4-4cd6-99ed-d5d9847c5696">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-29_18_47_41" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ba184f3a-09f7-4292-8639-e50801a1dae1" testId="cfc6f60c-8b8d-93bb-1b0a-3e2d35457b95" testName="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes" computerName="SULT" duration="00:00:02.0090000" startTime="2026-10-29T18:47:39.4738335+08:00" endTime="2026-10-29T18:47:41.4590521+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba184f3a-09f7-4292-8639-e50801a1dae1">
+      <Output>
+        <ErrorInfo>
+          <Message>Xunit.Sdk.TrueException: Light/System.Windows.Controls.TextBlock: selection indicator overlaps the header reading area; indicator=19.3333333333333,11.3333333333333,2.66666666666667,16, header=15.3333333333333,10,56,18.6666666666667.&#xD;
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.&lt;&gt;c.&lt;WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes&gt;b__3_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 353&#xD;
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.&lt;&gt;c__DisplayClass33_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1512</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1524</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="cfc6f60c-8b8d-93bb-1b0a-3e2d35457b95">
+      <Execution id="ba184f3a-09f7-4292-8639-e50801a1dae1" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests" name="WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="cfc6f60c-8b8d-93bb-1b0a-3e2d35457b95" executionId="ba184f3a-09f7-4292-8639-e50801a1dae1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.48]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.87]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.91]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.99]       Xunit.Sdk.TrueException: Light/System.Windows.Controls.TextBlock: selection indicator overlaps the header reading area; indicator=19.3333333333333,11.3333333333333,2.66666666666667,16, header=15.3333333333333,10,56,18.6666666666667.&#xD;
+[xUnit.net 00:00:04.99]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+[xUnit.net 00:00:04.99]          在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.&lt;&gt;c.&lt;WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes&gt;b__3_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 353&#xD;
+[xUnit.net 00:00:04.99]          在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.&lt;&gt;c__DisplayClass33_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1512&#xD;
+[xUnit.net 00:00:04.99]       Stack Trace:&#xD;
+[xUnit.net 00:00:04.99]            在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1524&#xD;
+[xUnit.net 00:00:05.02]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-10-29T18:47:41.4806223+08:00">
+        <Text>[xUnit.net 00:00:04.99]     GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a360351d-d42b-4821-8f70-fde43f96e683" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T18:03:16.2779631+08:00" queuing="2026-10-29T18:03:16.2779638+08:00" start="2026-10-29T18:03:13.4190991+08:00" finish="2026-10-29T18:03:18.6207815+08:00" />
+  <TestSettings name="default" id="cee191af-5bb8-4b93-92c1-7c6479bf7c7d">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="061ad618-46e6-465d-893e-91bdc0aca0b3" testId="bd06cc1a-e998-edc3-2708-28a2b86899f4" testName="GameSaveCenter.Playnite.Tests.R22CopyFeedbackBehaviorTests.CopyFeedbackStaysNearTheGridReusesOnePopupAndAnnouncesFailureRetry" computerName="redacted-host" duration="00:00:02.3420000" startTime="2026-10-29T18:03:16.0989710+08:00" endTime="2026-10-29T18:03:18.4107860+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="061ad618-46e6-465d-893e-91bdc0aca0b3" />
+    <UnitTestResult executionId="5307aa92-0bba-4016-9a7a-1c85113e9764" testId="eef3e3b6-0f59-a0de-eb0d-7a05d6749f10" testName="GameSaveCenter.Playnite.Tests.R22CopyFeedbackBehaviorTests.CopyFeedbackContractCoversLocalSettingsAndDashboardSources" computerName="redacted-host" duration="00:00:00.1170000" startTime="2026-10-29T18:03:15.9777053+08:00" endTime="2026-10-29T18:03:16.0679704+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5307aa92-0bba-4016-9a7a-1c85113e9764" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R22CopyFeedbackBehaviorTests.CopyFeedbackStaysNearTheGridReusesOnePopupAndAnnouncesFailureRetry" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="bd06cc1a-e998-edc3-2708-28a2b86899f4">
+      <Execution id="061ad618-46e6-465d-893e-91bdc0aca0b3" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R22CopyFeedbackBehaviorTests" name="CopyFeedbackStaysNearTheGridReusesOnePopupAndAnnouncesFailureRetry" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R22CopyFeedbackBehaviorTests.CopyFeedbackContractCoversLocalSettingsAndDashboardSources" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="eef3e3b6-0f59-a0de-eb0d-7a05d6749f10">
+      <Execution id="5307aa92-0bba-4016-9a7a-1c85113e9764" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R22CopyFeedbackBehaviorTests" name="CopyFeedbackContractCoversLocalSettingsAndDashboardSources" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="bd06cc1a-e998-edc3-2708-28a2b86899f4" executionId="061ad618-46e6-465d-893e-91bdc0aca0b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eef3e3b6-0f59-a0de-eb0d-7a05d6749f10" executionId="5307aa92-0bba-4016-9a7a-1c85113e9764" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.49]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.92]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.97]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.49]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T18:03:18.5837273+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

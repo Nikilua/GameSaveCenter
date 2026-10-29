@@ -1,0 +1,20 @@
+{
+  "baseCommit": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+  "workingTreeDirty": true,
+  "sdk": "8.0.423",
+  "files": {
+    "src\\GameSaveCenter.Playnite\\Themes\\Redesign.xaml": "9ee6cbe5a0d2e0bebc1ae3e531770bc09dda9f91aa1bd2d785ba252f4d1814e4",
+    "tests\\GameSaveCenter.Playnite.Tests\\R23ProductionResourceStateBehaviorTests.cs": "66fc38182decb79428ef1a967b037af696fd6ee0d871c91c5fcabc7455c49237"
+  },
+  "renderReportRawSha256": "b565ae60900ab0e50816d9570c65f6076d30ae94d87c3a3bf5906422d2973736",
+  "renderPngs": 394,
+  "r23Passed": 12,
+  "sourceValidation": "passed",
+  "productionStatic": {
+    "files": 26,
+    "errors": 0,
+    "warnings": 26,
+    "info": 164
+  },
+  "fullFrozenGates": "Not run on this new candidate. e6 prior complete gates are separately archived."
+}

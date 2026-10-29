@@ -1,0 +1,37 @@
+{
+  "tasks": [
+    "U04-01",
+    "U04-04",
+    "U04-07"
+  ],
+  "scope": "Historical snapshots for original motion tokens and workspace-tab indicator. Production source untouched; not compiled/rendered yet. Probe instrumentation pending. Current gate candidate remains e6e7f3b9.",
+  "sdk": "8.0.423",
+  "snapshots": [
+    {
+      "side": "before",
+      "commit": "418291351931380704464609291a7e1eb0630142",
+      "archiveSha256": "66a646c73d0115c4b874f357c8f635aca5ef9976b9bfed7a2a19ab7b51a97fb6",
+      "unchangedProductionFiles": 356,
+      "fixedClockFixtures": [
+        {
+          "file": "FakeDashboardData.cs",
+          "oldSha256": "c01762269b2b185f9ef0bbd3e1208c93a57c56c7c3de68db6e75cad67ca6f475",
+          "newSha256": "59206a1aa165952d3655f55a7edf7e6868bac0acb984ceefe6b2ef022e629755"
+        }
+      ]
+    },
+    {
+      "side": "after",
+      "commit": "4225eb17139a844ede87219f02a9ad97e88a12de",
+      "archiveSha256": "31d8af744aba1b6da9451fca55f1ae36434f3b12635b224069d9bcea295fc089",
+      "unchangedProductionFiles": 356,
+      "fixedClockFixtures": [
+        {
+          "file": "FakeDashboardData.cs",
+          "oldSha256": "c01762269b2b185f9ef0bbd3e1208c93a57c56c7c3de68db6e75cad67ca6f475",
+          "newSha256": "59206a1aa165952d3655f55a7edf7e6868bac0acb984ceefe6b2ef022e629755"
+        }
+      ]
+    }
+  ]
+}

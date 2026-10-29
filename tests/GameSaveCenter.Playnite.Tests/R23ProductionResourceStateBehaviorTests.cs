@@ -348,6 +348,11 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         var chrome = Assert.IsType<Border>(item.Template.FindName("Chrome", item));
                         var header = Assert.IsAssignableFrom<FrameworkElement>(item.Header);
                         var headerBounds = BoundsRelativeTo(header, chrome);
+                        var indicator = Assert.IsType<Border>(item.Template.FindName("SelectionIndicator", item));
+                        var indicatorBounds = BoundsRelativeTo(indicator, item);
+                        var headerReadingBounds = BoundsRelativeTo(header, item);
+                        Assert.True(indicatorBounds.Right + 3 <= headerReadingBounds.Left,
+                            $"{mode}/{item.Header}: selection indicator overlaps the header reading area; indicator={indicatorBounds}, header={headerReadingBounds}.");
                         var safeLeft = chrome.BorderThickness.Left + chrome.Padding.Left;
                         var safeRight = chrome.ActualWidth - chrome.BorderThickness.Right - chrome.Padding.Right;
 
@@ -389,6 +394,76 @@ public sealed class R23ProductionResourceStateBehaviorTests
             {
                 window.Close();
             }
+        });
+    }
+
+    [Fact]
+    public void WorkspaceTabIndicatorsKeepCompactPaddingAndDisabledDimmingInBothThemes()
+    {
+        RunSta(() =>
+        {
+            var resources = LoadProductionResources();
+            var root = new Grid { Resources = resources };
+            var tabs = new TabControl
+            {
+                Style = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabControl"]),
+                Width = 940,
+                Height = 180
+            };
+            var headers = new FrameworkElement[]
+            {
+                new TextBlock { Text = "历史版本" },
+                new TextBlock { Text = "Validation and restore history" },
+                new TextBlock { Text = "待归类 200" },
+                new Border { Width = 4, Height = 4 }
+            };
+            var items = headers.Select(header => new TabItem
+            {
+                Header = header,
+                Content = new Border { Height = 24 }
+            }).ToArray();
+            foreach (var item in items) tabs.Items.Add(item);
+            root.Children.Add(tabs);
+            var window = CreateWindow(root, 1000, 260);
+            try
+            {
+                window.Show();
+                foreach (var theme in Themes)
+                foreach (var styleKey in new[] { "GscRedesignWorkspaceTabItem", "GscInternalTabItem" })
+                {
+                    ApplyTheme(root, theme);
+                    AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, false);
+                    foreach (var item in items) item.Style = Assert.IsType<Style>(resources[styleKey]);
+                    foreach (var item in items)
+                    {
+                        item.IsEnabled = true;
+                        tabs.SelectedItem = item;
+                        FlushLayout(window);
+                        var chrome = Assert.IsType<Border>(item.Template.FindName("Chrome", item));
+                        var indicator = Assert.IsType<Border>(item.Template.FindName("SelectionIndicator", item));
+                        var header = Assert.IsAssignableFrom<FrameworkElement>(item.Header);
+                        var indicatorBounds = BoundsRelativeTo(indicator, item);
+                        var headerBounds = BoundsRelativeTo(header, item);
+                        Assert.True(indicatorBounds.Right + 3 <= headerBounds.Left,
+                            $"{theme}/{styleKey}: indicator={indicatorBounds}, header={headerBounds}.");
+                        var width = item.ActualWidth;
+                        item.IsEnabled = false;
+                        FlushLayout(window);
+                        Assert.InRange(Math.Abs(VisualOpacityRelativeTo(chrome, item, true) - .42), 0, .000001);
+                        Assert.InRange(Math.Abs(VisualOpacityRelativeTo(indicator, item, false) - .42), 0, .000001);
+                        item.IsEnabled = true;
+                        tabs.SelectedItem = item;
+                        FlushLayout(window);
+                        Assert.InRange(Math.Abs(VisualOpacityRelativeTo(indicator, item, false) - 1), 0, .000001);
+                        Assert.InRange(Math.Abs(item.ActualWidth - width), 0, .25);
+                        Assert.True(chrome.DesiredSize.Width + .25 >= chrome.Padding.Left + chrome.Padding.Right
+                            + chrome.BorderThickness.Left + chrome.BorderThickness.Right + 7);
+                        Assert.True(chrome.DesiredSize.Height + .25 >= chrome.Padding.Top + chrome.Padding.Bottom
+                            + chrome.BorderThickness.Top + chrome.BorderThickness.Bottom + 16);
+                    }
+                }
+            }
+            finally { window.Close(); }
         });
     }
 
@@ -1439,6 +1514,19 @@ public sealed class R23ProductionResourceStateBehaviorTests
     {
         var origin = element.TransformToAncestor(ancestor).Transform(new Point(0, 0));
         return new Rect(origin.X, origin.Y, element.ActualWidth, element.ActualHeight);
+    }
+
+    private static double VisualOpacityRelativeTo(UIElement element, Visual ancestor, bool includeSelf)
+    {
+        var opacity = 1d;
+        DependencyObject? current = includeSelf ? element : VisualTreeHelper.GetParent(element);
+        while (current != ancestor)
+        {
+            Assert.NotNull(current);
+            if (current is UIElement visual) opacity *= visual.Opacity;
+            current = VisualTreeHelper.GetParent(current!);
+        }
+        return opacity;
     }
 
     private static void AssertRowGeometryUnchanged(Rect[] expected, Rect[] actual, string page, GameSaveCenterThemeMode theme, string state)

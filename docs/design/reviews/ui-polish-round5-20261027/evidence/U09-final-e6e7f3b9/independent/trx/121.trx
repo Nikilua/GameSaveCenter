@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="9c2894e5-db78-4504-a2b8-071c718fb357" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T18:26:21.0088703+08:00" queuing="2026-10-29T18:26:21.0088707+08:00" start="2026-10-29T18:26:18.1590621+08:00" finish="2026-10-29T18:26:23.1176690+08:00" />
+  <TestSettings name="default" id="fc560e9b-5c75-4428-95c0-3a05ede753ce">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="11bde17e-04a4-496a-9658-de43244246fa" testId="d1e2ce50-e78b-e9e2-3f4b-94066eb78488" testName="GameSaveCenter.Playnite.Tests.R21SelectableTechnicalTextBehaviorTests.ProductionShellVersionEntrancesUseSelectableTechnicalText" computerName="redacted-host" duration="00:00:00.1220000" startTime="2026-10-29T18:26:20.7347041+08:00" endTime="2026-10-29T18:26:20.8234975+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="11bde17e-04a4-496a-9658-de43244246fa" />
+    <UnitTestResult executionId="6d968742-4995-43f4-8928-2fce5589a6e8" testId="554aeb87-a828-0cb8-4278-231ba8139f71" testName="GameSaveCenter.Playnite.Tests.R21SelectableTechnicalTextBehaviorTests.TechnicalTextStyleKeepsVersionReadableAndKeyboardSelectable" computerName="redacted-host" duration="00:00:02.0880000" startTime="2026-10-29T18:26:20.8574928+08:00" endTime="2026-10-29T18:26:22.9117294+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6d968742-4995-43f4-8928-2fce5589a6e8" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21SelectableTechnicalTextBehaviorTests.TechnicalTextStyleKeepsVersionReadableAndKeyboardSelectable" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="554aeb87-a828-0cb8-4278-231ba8139f71">
+      <Execution id="6d968742-4995-43f4-8928-2fce5589a6e8" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21SelectableTechnicalTextBehaviorTests" name="TechnicalTextStyleKeepsVersionReadableAndKeyboardSelectable" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R21SelectableTechnicalTextBehaviorTests.ProductionShellVersionEntrancesUseSelectableTechnicalText" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="d1e2ce50-e78b-e9e2-3f4b-94066eb78488">
+      <Execution id="11bde17e-04a4-496a-9658-de43244246fa" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R21SelectableTechnicalTextBehaviorTests" name="ProductionShellVersionEntrancesUseSelectableTechnicalText" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="d1e2ce50-e78b-e9e2-3f4b-94066eb78488" executionId="11bde17e-04a4-496a-9658-de43244246fa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="554aeb87-a828-0cb8-4278-231ba8139f71" executionId="6d968742-4995-43f4-8928-2fce5589a6e8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.53]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.94]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.98]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.26]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T18:26:23.0769806+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

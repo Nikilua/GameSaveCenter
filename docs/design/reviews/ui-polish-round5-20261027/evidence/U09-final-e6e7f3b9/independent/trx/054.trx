@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="5f8c043f-33e1-48bd-8c87-6368de968e10" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T18:17:53.3921839+08:00" queuing="2026-10-29T18:17:53.3921843+08:00" start="2026-10-29T18:17:47.5197906+08:00" finish="2026-10-29T18:17:54.5935275+08:00" />
+  <TestSettings name="default" id="6ba44c4f-6f8a-4156-8198-f7f42c0dcce0">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="81e4c271-2836-49e6-9678-f26ce0e4bb6c" testId="d2c3ef52-f653-4c17-a9c9-2d8619ae2cd8" testName="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests.ClearingSelectionDoesNotChangeInboxScope" computerName="redacted-host" duration="00:00:00.5520000" startTime="2026-10-29T18:17:53.3774800+08:00" endTime="2026-10-29T18:17:53.8834673+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="81e4c271-2836-49e6-9678-f26ce0e4bb6c" />
+    <UnitTestResult executionId="8822d16f-a6a6-4465-854b-e9a01080398a" testId="a3d8b212-20cd-fdd3-4a05-a2a3254e875c" testName="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests.CrossWindowSelectionSeparatesTotalSelectionFromCurrentWindowScope" computerName="redacted-host" duration="00:00:03.2910000" startTime="2026-10-29T18:17:50.0736329+08:00" endTime="2026-10-29T18:17:53.3314822+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8822d16f-a6a6-4465-854b-e9a01080398a" />
+    <UnitTestResult executionId="8227f7c8-1ae2-4b9c-a859-43be0059676b" testId="38a9c1ea-1521-c76b-2b97-5a683000df52" testName="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests.EmptySingleAndMultipleSelectionsUseCompactAccurateSummaries" computerName="redacted-host" duration="00:00:00.5100000" startTime="2026-10-29T18:17:53.8854660+08:00" endTime="2026-10-29T18:17:54.3945317+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8227f7c8-1ae2-4b9c-a859-43be0059676b" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests.ClearingSelectionDoesNotChangeInboxScope" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="d2c3ef52-f653-4c17-a9c9-2d8619ae2cd8">
+      <Execution id="81e4c271-2836-49e6-9678-f26ce0e4bb6c" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests" name="ClearingSelectionDoesNotChangeInboxScope" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests.EmptySingleAndMultipleSelectionsUseCompactAccurateSummaries" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="38a9c1ea-1521-c76b-2b97-5a683000df52">
+      <Execution id="8227f7c8-1ae2-4b9c-a859-43be0059676b" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests" name="EmptySingleAndMultipleSelectionsUseCompactAccurateSummaries" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests.CrossWindowSelectionSeparatesTotalSelectionFromCurrentWindowScope" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="a3d8b212-20cd-fdd3-4a05-a2a3254e875c">
+      <Execution id="8822d16f-a6a6-4465-854b-e9a01080398a" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests" name="CrossWindowSelectionSeparatesTotalSelectionFromCurrentWindowScope" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="d2c3ef52-f653-4c17-a9c9-2d8619ae2cd8" executionId="81e4c271-2836-49e6-9678-f26ce0e4bb6c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a3d8b212-20cd-fdd3-4a05-a2a3254e875c" executionId="8822d16f-a6a6-4465-854b-e9a01080398a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="38a9c1ea-1521-c76b-2b97-5a683000df52" executionId="8227f7c8-1ae2-4b9c-a859-43be0059676b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.49]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.90]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.95]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.37]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T18:17:54.5537687+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

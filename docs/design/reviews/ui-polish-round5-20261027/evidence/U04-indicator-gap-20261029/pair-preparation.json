@@ -1,0 +1,36 @@
+{
+  "baselineCommit": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+  "baselineArchiveSha256": "2c9cf5ccaf963f8c49a1193c59ac28d54e02b56fd03d49b69c9eb9eb9f627eb9",
+  "sdk": "8.0.423",
+  "sameFixture": "two fixed header strings and read-only disclosure content; no fake clocks/business commands invoked by this control-only probe",
+  "snapshots": [
+    {
+      "side": "before",
+      "baseCommit": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+      "sourceProductionFiles": 358,
+      "changedProduction": [],
+      "programOriginalSha256": "9e349c9e891b8f9b1087ec14873855e125697dc037b21849835539d23885d9a4",
+      "programInstrumentedSha256": "05e39dcb7cbc1574c185031fd78f8eeec9e371d78e9ec5eaf9572ea7b9385003",
+      "programPatch": "--- \n\n+++ \n\n@@ -37,7 +37,7 @@\n\n /// logical content sizes produced by the Dashboard shell for common 1080p/2K/4K windows\n /// and writes PNGs plus a measurable scroll/viewport report for later comparison.\n /// </summary>\n-public static class Program\n+public static partial class Program\n {\n     private static readonly string RepositoryRoot = ResolveRepositoryRoot();\n \n@@ -93,6 +93,8 @@\n\n \n     public static int Main(string[] args)\n     {\n+        if (args.Length > 0 && args[0] == \"u04pairprobe\")\n+            return RunU04PairEntry(Path.GetFullPath(args[1]));\n         if (args.Length > 0\n             && (args[0].Equals(\"audit\", StringComparison.OrdinalIgnoreCase)\n                 || args[0].Equals(\"--audit\", StringComparison.OrdinalIgnoreCase)))",
+      "probeSha256": "85ee9a64196928f44d7d0567dd4ad75ebd8bf03aa0fd9ae3d0e71eca1c9ae905",
+      "observingTestSha256": "c36e28dbcff88f767bf18c5276d5c51a98a51f840f9e1f825620a5ca970daf24"
+    },
+    {
+      "side": "after",
+      "baseCommit": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+      "sourceProductionFiles": 358,
+      "changedProduction": [
+        {
+          "file": "src/GameSaveCenter.Playnite/Themes/Redesign.xaml",
+          "sha256": "ef6a897a91fc5ffbfb3a30c4128a403e1f388308e2c965203be8e39b8562ca0f",
+          "patch": "--- \n\n+++ \n\n@@ -641,16 +641,6 @@\n\n                                 UseLayoutRounding=\"True\"\n                                 ClipToBounds=\"False\">\n                             <Grid>\n-                                <Border x:Name=\"SelectionIndicator\"\n-                                        Width=\"3\"\n-                                        Height=\"16\"\n-                                        Margin=\"4,0,0,0\"\n-                                        HorizontalAlignment=\"Left\"\n-                                        VerticalAlignment=\"Center\"\n-                                        Background=\"{DynamicResource GscAccentBrush}\"\n-                                        CornerRadius=\"2\"\n-                                        Opacity=\"0\"\n-                                        IsHitTestVisible=\"False\"/>\n                                 <ContentPresenter ContentSource=\"Header\"\n                                                   HorizontalAlignment=\"Center\"\n                                                   VerticalAlignment=\"Center\"\n@@ -658,6 +648,17 @@\n\n                                                   SnapsToDevicePixels=\"True\"/>\n                             </Grid>\n                         </Border>\n+                        <Border x:Name=\"SelectionIndicator\"\n+                                Grid.Column=\"0\"\n+                                Width=\"3\"\n+                                Height=\"16\"\n+                                Margin=\"8,0,0,0\"\n+                                HorizontalAlignment=\"Left\"\n+                                VerticalAlignment=\"Center\"\n+                                Background=\"{DynamicResource GscAccentBrush}\"\n+                                CornerRadius=\"2\"\n+                                Opacity=\"0\"\n+                                IsHitTestVisible=\"False\"/>\n                     </Grid>\n                     <ControlTemplate.Triggers>\n                         <Trigger Property=\"IsMouseOver\" Value=\"True\">"
+        }
+      ],
+      "programOriginalSha256": "9e349c9e891b8f9b1087ec14873855e125697dc037b21849835539d23885d9a4",
+      "programInstrumentedSha256": "05e39dcb7cbc1574c185031fd78f8eeec9e371d78e9ec5eaf9572ea7b9385003",
+      "programPatch": "--- \n\n+++ \n\n@@ -37,7 +37,7 @@\n\n /// logical content sizes produced by the Dashboard shell for common 1080p/2K/4K windows\n /// and writes PNGs plus a measurable scroll/viewport report for later comparison.\n /// </summary>\n-public static class Program\n+public static partial class Program\n {\n     private static readonly string RepositoryRoot = ResolveRepositoryRoot();\n \n@@ -93,6 +93,8 @@\n\n \n     public static int Main(string[] args)\n     {\n+        if (args.Length > 0 && args[0] == \"u04pairprobe\")\n+            return RunU04PairEntry(Path.GetFullPath(args[1]));\n         if (args.Length > 0\n             && (args[0].Equals(\"audit\", StringComparison.OrdinalIgnoreCase)\n                 || args[0].Equals(\"--audit\", StringComparison.OrdinalIgnoreCase)))",
+      "probeSha256": "85ee9a64196928f44d7d0567dd4ad75ebd8bf03aa0fd9ae3d0e71eca1c9ae905",
+      "observingTestSha256": "c36e28dbcff88f767bf18c5276d5c51a98a51f840f9e1f825620a5ca970daf24"
+    }
+  ]
+}

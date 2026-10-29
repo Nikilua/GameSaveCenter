@@ -1,0 +1,18 @@
+[
+  {
+    "side": "before",
+    "programOriginalSha256": "9a079a422ff392e0a466572e17e082e7324cce72bd59f2360af9b3d86204ce4b",
+    "programInstrumentedSha256": "2feb7aeb37039ca293ac5eb2baf0ebc078088aa821fc539d120b22f161e89f3f",
+    "programDiff": "--- \n\n+++ \n\n@@ -37,7 +37,7 @@\n\n /// logical content sizes produced by the Dashboard shell for common 1080p/2K/4K windows\n /// and writes PNGs plus a measurable scroll/viewport report for later comparison.\n /// </summary>\n-public static class Program\n+public static partial class Program\n {\n     private static readonly string RepositoryRoot = ResolveRepositoryRoot();\n \n@@ -93,6 +93,8 @@\n\n \n     public static int Main(string[] args)\n     {\n+        if (args.Length > 0 && args[0] == \"u04pairprobe\")\n+            return RunU04PairEntry(Path.GetFullPath(args[1]));\n         if (args.Length > 0\n             && (args[0].Equals(\"audit\", StringComparison.OrdinalIgnoreCase)\n                 || args[0].Equals(\"--audit\", StringComparison.OrdinalIgnoreCase)))",
+    "probeSha256": "fda1425f07c9e847552e50ef9d66d710600b13cf0878bdd5d43f6f57ffde4c6f",
+    "productionFilesUnchanged": 356
+  },
+  {
+    "side": "after",
+    "programOriginalSha256": "9a079a422ff392e0a466572e17e082e7324cce72bd59f2360af9b3d86204ce4b",
+    "programInstrumentedSha256": "2feb7aeb37039ca293ac5eb2baf0ebc078088aa821fc539d120b22f161e89f3f",
+    "programDiff": "--- \n\n+++ \n\n@@ -37,7 +37,7 @@\n\n /// logical content sizes produced by the Dashboard shell for common 1080p/2K/4K windows\n /// and writes PNGs plus a measurable scroll/viewport report for later comparison.\n /// </summary>\n-public static class Program\n+public static partial class Program\n {\n     private static readonly string RepositoryRoot = ResolveRepositoryRoot();\n \n@@ -93,6 +93,8 @@\n\n \n     public static int Main(string[] args)\n     {\n+        if (args.Length > 0 && args[0] == \"u04pairprobe\")\n+            return RunU04PairEntry(Path.GetFullPath(args[1]));\n         if (args.Length > 0\n             && (args[0].Equals(\"audit\", StringComparison.OrdinalIgnoreCase)\n                 || args[0].Equals(\"--audit\", StringComparison.OrdinalIgnoreCase)))",
+    "probeSha256": "fda1425f07c9e847552e50ef9d66d710600b13cf0878bdd5d43f6f57ffde4c6f",
+    "productionFilesUnchanged": 356
+  }
+]

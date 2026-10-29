@@ -1,0 +1,2378 @@
+{
+  "before": [
+    {
+      "Name": "C",
+      "Free": 7349362688
+    },
+    {
+      "Name": "D",
+      "Free": 18786607104
+    }
+  ],
+  "deleted": [
+    {
+      "sha256": "75734847CDC84857933BFA1F7949395F2845BFAA600BBE3505AC14B8A98C7D87",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-enter-0.png",
+      "bytes": 28176
+    },
+    {
+      "sha256": "E83B122285F9853F64FE49D1834B535C6ECB72A7644B63404BAF320F88C73823",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-enter-140.png",
+      "bytes": 28136
+    },
+    {
+      "sha256": "E83B122285F9853F64FE49D1834B535C6ECB72A7644B63404BAF320F88C73823",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-enter-240.png",
+      "bytes": 28136
+    },
+    {
+      "sha256": "B242CE0634DAF4B887D743A267A486C66DCF4C684746F1438517BFF41D22B88D",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-enter-40.png",
+      "bytes": 28175
+    },
+    {
+      "sha256": "E83B122285F9853F64FE49D1834B535C6ECB72A7644B63404BAF320F88C73823",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-enter-80.png",
+      "bytes": 28136
+    },
+    {
+      "sha256": "FC3D782C03262926E1DB99AB4CB61E8A3622A8B9A49642CE24A45B982CC48400",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-exit-0.png",
+      "bytes": 22397
+    },
+    {
+      "sha256": "DB1702D7E3D3F9C437C29F7264C2B06D625658B1554B7E506E19D7E70346A3EB",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-exit-140.png",
+      "bytes": 22402
+    },
+    {
+      "sha256": "1C810AD8F1A37BEC3898BF119AA1D055A6575CDC7EAB46AFC9238DC36597B087",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-exit-240.png",
+      "bytes": 22412
+    },
+    {
+      "sha256": "DB1702D7E3D3F9C437C29F7264C2B06D625658B1554B7E506E19D7E70346A3EB",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-exit-40.png",
+      "bytes": 22402
+    },
+    {
+      "sha256": "DB1702D7E3D3F9C437C29F7264C2B06D625658B1554B7E506E19D7E70346A3EB",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-exit-80.png",
+      "bytes": 22402
+    },
+    {
+      "sha256": "1C810AD8F1A37BEC3898BF119AA1D055A6575CDC7EAB46AFC9238DC36597B087",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-initial-0.png",
+      "bytes": 22412
+    },
+    {
+      "sha256": "EBE2AF3D6151971D2618E49DCC218A28D868373F7036ACE6A8B29B2AECBFD040",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-reduced-0.png",
+      "bytes": 28213
+    },
+    {
+      "sha256": "EBE2AF3D6151971D2618E49DCC218A28D868373F7036ACE6A8B29B2AECBFD040",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Dark-reduced-160.png",
+      "bytes": 28213
+    },
+    {
+      "sha256": "B0B691058FCF68204F15F028BE3AF33A7C006144F9E1C1F53FA415D7301F3F9E",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-enter-0.png",
+      "bytes": 27323
+    },
+    {
+      "sha256": "7CA9957C7DAF8D2ADBF6C7229A5610533FBDCB5EB62D7B636B3260D1E419123F",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-enter-140.png",
+      "bytes": 27351
+    },
+    {
+      "sha256": "7CA9957C7DAF8D2ADBF6C7229A5610533FBDCB5EB62D7B636B3260D1E419123F",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-enter-240.png",
+      "bytes": 27351
+    },
+    {
+      "sha256": "B0B691058FCF68204F15F028BE3AF33A7C006144F9E1C1F53FA415D7301F3F9E",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-enter-40.png",
+      "bytes": 27323
+    },
+    {
+      "sha256": "40CAB98932DA1619E3A9439C0DE794E28F8B08D32446263C8FE3955274F0D3F4",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-enter-80.png",
+      "bytes": 27321
+    },
+    {
+      "sha256": "9F8E75AFBB2337665CD716C59A77E67DFAE8C245389BA6B23F2D929949FD9241",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-exit-0.png",
+      "bytes": 21470
+    },
+    {
+      "sha256": "03B1B1CBAEDA8176727A1D25FCA3BF75BA158C9522E99AA5A5D61AD5EAAC55B0",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-exit-140.png",
+      "bytes": 21387
+    },
+    {
+      "sha256": "03B1B1CBAEDA8176727A1D25FCA3BF75BA158C9522E99AA5A5D61AD5EAAC55B0",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-exit-240.png",
+      "bytes": 21387
+    },
+    {
+      "sha256": "429324817C5013011BEC099AEF60F739DFD893DC9FAEF56C8E1C477C3F9EAF9D",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-exit-40.png",
+      "bytes": 21444
+    },
+    {
+      "sha256": "D58541A3E3D7E62948F2172A0D47D738CA7090FD07FB6A0421EB3AEB140C2E4F",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-exit-80.png",
+      "bytes": 21425
+    },
+    {
+      "sha256": "03B1B1CBAEDA8176727A1D25FCA3BF75BA158C9522E99AA5A5D61AD5EAAC55B0",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-initial-0.png",
+      "bytes": 21387
+    },
+    {
+      "sha256": "7CA9957C7DAF8D2ADBF6C7229A5610533FBDCB5EB62D7B636B3260D1E419123F",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-reduced-0.png",
+      "bytes": 27351
+    },
+    {
+      "sha256": "7CA9957C7DAF8D2ADBF6C7229A5610533FBDCB5EB62D7B636B3260D1E419123F",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-capture\\Light-reduced-160.png",
+      "bytes": 27351
+    },
+    {
+      "sha256": "1E5194871F45A3517B71A94C37986038165616008DA7BBFE015A70CE20A7F096",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-enter-0.png",
+      "bytes": 28292
+    },
+    {
+      "sha256": "C19141B331197B0E3E4534EDD6730B8BC961147F578AADBF05B8B36357696023",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-enter-140.png",
+      "bytes": 28430
+    },
+    {
+      "sha256": "0C33816FCC3D6814F1B180BB6B52A3E6EAAA1A36320FC967B712CA0EFAA71C8E",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-enter-240.png",
+      "bytes": 28351
+    },
+    {
+      "sha256": "C19141B331197B0E3E4534EDD6730B8BC961147F578AADBF05B8B36357696023",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-enter-40.png",
+      "bytes": 28430
+    },
+    {
+      "sha256": "C19141B331197B0E3E4534EDD6730B8BC961147F578AADBF05B8B36357696023",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-enter-80.png",
+      "bytes": 28430
+    },
+    {
+      "sha256": "2C429E8F3A2CBA5C881CBA361755C029EA396BE7A0BD370FD1B53ED22D72EFE7",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-exit-0.png",
+      "bytes": 22673
+    },
+    {
+      "sha256": "0AAF4353248BC2C30663C3D3802A0B71956353251A2C4DCA42D3C6A2643F7D12",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-exit-140.png",
+      "bytes": 22623
+    },
+    {
+      "sha256": "0AAF4353248BC2C30663C3D3802A0B71956353251A2C4DCA42D3C6A2643F7D12",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-exit-240.png",
+      "bytes": 22623
+    },
+    {
+      "sha256": "2C429E8F3A2CBA5C881CBA361755C029EA396BE7A0BD370FD1B53ED22D72EFE7",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-exit-40.png",
+      "bytes": 22673
+    },
+    {
+      "sha256": "2C429E8F3A2CBA5C881CBA361755C029EA396BE7A0BD370FD1B53ED22D72EFE7",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-exit-80.png",
+      "bytes": 22673
+    },
+    {
+      "sha256": "14A69E66833BD5CDF72290DF140FDFCCDF74459C4E95D59FF06E96EFEF3E7926",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-initial-0.png",
+      "bytes": 22498
+    },
+    {
+      "sha256": "4B9ED3E90EC8C59FB93E99FA0162EF92E095A840096F3FB1B6E50F8A02A52824",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-reduced-0.png",
+      "bytes": 28436
+    },
+    {
+      "sha256": "E15ECFC55DC5F734CC6C983668216FACABF38C099DCE6966317CCF706D1BAE87",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Dark-reduced-160.png",
+      "bytes": 28285
+    },
+    {
+      "sha256": "14BC7B68184EC1E735F17A9FC4B4004D6E9117B59015EFCFB44CD619128671B5",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-enter-0.png",
+      "bytes": 27469
+    },
+    {
+      "sha256": "ED0BAA7838AC49A02734BF3FF63B99703F419DC0C07006720F3C7819E7C728B6",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-enter-140.png",
+      "bytes": 27471
+    },
+    {
+      "sha256": "ED0BAA7838AC49A02734BF3FF63B99703F419DC0C07006720F3C7819E7C728B6",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-enter-240.png",
+      "bytes": 27471
+    },
+    {
+      "sha256": "14BC7B68184EC1E735F17A9FC4B4004D6E9117B59015EFCFB44CD619128671B5",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-enter-40.png",
+      "bytes": 27469
+    },
+    {
+      "sha256": "ED0BAA7838AC49A02734BF3FF63B99703F419DC0C07006720F3C7819E7C728B6",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-enter-80.png",
+      "bytes": 27471
+    },
+    {
+      "sha256": "EB404C152AC0839ABD1C4BC93DC124C572F7F3609EF1FD1C8BAAD280C0F41CF6",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-exit-0.png",
+      "bytes": 21618
+    },
+    {
+      "sha256": "0CF1B0EB052BC5B7485AFE392BD15920B32152B0FF8424EC9866195E550C2DE2",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-exit-140.png",
+      "bytes": 21726
+    },
+    {
+      "sha256": "0CF1B0EB052BC5B7485AFE392BD15920B32152B0FF8424EC9866195E550C2DE2",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-exit-240.png",
+      "bytes": 21726
+    },
+    {
+      "sha256": "7E0D78DB2E7EB5DAAF7CF544218566BC52DDD020FD19B9821A3BC66E0161B150",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-exit-40.png",
+      "bytes": 21720
+    },
+    {
+      "sha256": "9529F99A6F3A23295D509ECAAF1308A51CEC5AF1AEEE56F4BE67E0A9AD46022A",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-exit-80.png",
+      "bytes": 21715
+    },
+    {
+      "sha256": "F0D66D330D9ED22773B33B2A39DC620EB7D0B7FB6FD2C2059494A7340495D2ED",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-initial-0.png",
+      "bytes": 21552
+    },
+    {
+      "sha256": "124613F37FDBA42E34EAEB8A01BD98DE37655D497B2DDAE6A6C159F26ACBDA98",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-reduced-0.png",
+      "bytes": 27589
+    },
+    {
+      "sha256": "ED0BAA7838AC49A02734BF3FF63B99703F419DC0C07006720F3C7819E7C728B6",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-capture\\Light-reduced-160.png",
+      "bytes": 27471
+    },
+    {
+      "sha256": "182DA96F18E9777267E515BD79B32DC9FFD88AA54FABBB13D0043C800F780377",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-deadline-capture\\Dark-enter-settled.png",
+      "bytes": 28200
+    },
+    {
+      "sha256": "1C810AD8F1A37BEC3898BF119AA1D055A6575CDC7EAB46AFC9238DC36597B087",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-deadline-capture\\Dark-exit-settled.png",
+      "bytes": 22412
+    },
+    {
+      "sha256": "1C810AD8F1A37BEC3898BF119AA1D055A6575CDC7EAB46AFC9238DC36597B087",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-deadline-capture\\Dark-initial-0.png",
+      "bytes": 22412
+    },
+    {
+      "sha256": "EBE2AF3D6151971D2618E49DCC218A28D868373F7036ACE6A8B29B2AECBFD040",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-deadline-capture\\Dark-reduced-0.png",
+      "bytes": 28213
+    },
+    {
+      "sha256": "37BE948C52AC8A43E6B84EA6800A0004A65C77EDB35EDAB4A7850D4F0AF47BC9",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-deadline-capture\\Light-enter-settled.png",
+      "bytes": 27350
+    },
+    {
+      "sha256": "03B1B1CBAEDA8176727A1D25FCA3BF75BA158C9522E99AA5A5D61AD5EAAC55B0",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-deadline-capture\\Light-exit-settled.png",
+      "bytes": 21387
+    },
+    {
+      "sha256": "03B1B1CBAEDA8176727A1D25FCA3BF75BA158C9522E99AA5A5D61AD5EAAC55B0",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-deadline-capture\\Light-initial-0.png",
+      "bytes": 21387
+    },
+    {
+      "sha256": "7CA9957C7DAF8D2ADBF6C7229A5610533FBDCB5EB62D7B636B3260D1E419123F",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\before-deadline-capture\\Light-reduced-0.png",
+      "bytes": 27351
+    },
+    {
+      "sha256": "3D1CB8B04CF4441E0C010F2DDFCBF7ECB91DB3E1ED39E47799BF538EFA4BF11F",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-deadline-capture\\Dark-enter-settled.png",
+      "bytes": 28398
+    },
+    {
+      "sha256": "14A69E66833BD5CDF72290DF140FDFCCDF74459C4E95D59FF06E96EFEF3E7926",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-deadline-capture\\Dark-exit-settled.png",
+      "bytes": 22498
+    },
+    {
+      "sha256": "E06D1F270731318F2D4827A83A228356830271EB21898E6332701F6DB4BDB214",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-deadline-capture\\Dark-initial-0.png",
+      "bytes": 22500
+    },
+    {
+      "sha256": "0E3AAC564A0B94AA8D729CDD3A64458A7D38F6380894A2A7CA196DDEB8CFA7AD",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-deadline-capture\\Dark-reduced-0.png",
+      "bytes": 28329
+    },
+    {
+      "sha256": "D8AE52904600FA2AA25E791D68FA3B12C84D406C803FD97A31592E2B1A18CBB9",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-deadline-capture\\Light-enter-settled.png",
+      "bytes": 27578
+    },
+    {
+      "sha256": "F0D66D330D9ED22773B33B2A39DC620EB7D0B7FB6FD2C2059494A7340495D2ED",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-deadline-capture\\Light-exit-settled.png",
+      "bytes": 21552
+    },
+    {
+      "sha256": "F0D66D330D9ED22773B33B2A39DC620EB7D0B7FB6FD2C2059494A7340495D2ED",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-deadline-capture\\Light-initial-0.png",
+      "bytes": 21552
+    },
+    {
+      "sha256": "7BA0909B3CC2DB92BB5A3EA801923A95A7401EF3EC77CF851CBA934B3BA05283",
+      "path": ".tmp\\u04-token-tab-pairs-20261029\\after-deadline-capture\\Light-reduced-0.png",
+      "bytes": 27492
+    },
+    {
+      "sha256": "DF354C41106318E7EE1CDB2E5F410639EAED4558A6D8DEB86DED0A11CDF82349",
+      "path": ".tmp\\u04-indicator-gap-20261029\\after-pair-capture\\Dark-enter-settled.png",
+      "bytes": 28327
+    },
+    {
+      "sha256": "00CEA3B0C611A7A4EE372679033FD77B86B41F0DEB1EFCA4B9ABD3FDA92F6536",
+      "path": ".tmp\\u04-indicator-gap-20261029\\after-pair-capture\\Dark-exit-settled.png",
+      "bytes": 22487
+    },
+    {
+      "sha256": "00CEA3B0C611A7A4EE372679033FD77B86B41F0DEB1EFCA4B9ABD3FDA92F6536",
+      "path": ".tmp\\u04-indicator-gap-20261029\\after-pair-capture\\Dark-initial-0.png",
+      "bytes": 22487
+    },
+    {
+      "sha256": "DF354C41106318E7EE1CDB2E5F410639EAED4558A6D8DEB86DED0A11CDF82349",
+      "path": ".tmp\\u04-indicator-gap-20261029\\after-pair-capture\\Dark-reduced-0.png",
+      "bytes": 28327
+    },
+    {
+      "sha256": "0F35068FEE9D3F6D4845CB51CCAA93FE7EA0F116A54D256FA488ED60B17373FB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\after-pair-capture\\Light-enter-settled.png",
+      "bytes": 27456
+    },
+    {
+      "sha256": "B93F2C0C359291D0320CAA60557525ACB83B1AD602FE7EE3D7492DD8A064AB4A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\after-pair-capture\\Light-exit-settled.png",
+      "bytes": 21499
+    },
+    {
+      "sha256": "B93F2C0C359291D0320CAA60557525ACB83B1AD602FE7EE3D7492DD8A064AB4A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\after-pair-capture\\Light-initial-0.png",
+      "bytes": 21499
+    },
+    {
+      "sha256": "0F35068FEE9D3F6D4845CB51CCAA93FE7EA0F116A54D256FA488ED60B17373FB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\after-pair-capture\\Light-reduced-0.png",
+      "bytes": 27456
+    },
+    {
+      "sha256": "99B18FBA1285CC255E301C3D5C714D5703900F63AE29E887FD44D24B261823C2",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1040x700-tab0.png",
+      "bytes": 54875
+    },
+    {
+      "sha256": "2A41E6285F7F03CE98CC65432F7B4A79DF80900E3CB858012526B40966C391F7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1040x700-tab1.png",
+      "bytes": 61462
+    },
+    {
+      "sha256": "C6C7D58E197575E393A8B55BA2C5BB2A87DC636C8D789E6F7D725BC116C1819E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1040x700-tab2.png",
+      "bytes": 63028
+    },
+    {
+      "sha256": "84D6D16BFBB934979F1701D536988929A90BBBC1F70E9D442BF848B96243DE7D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1040x700-tab3.png",
+      "bytes": 104683
+    },
+    {
+      "sha256": "E0F2F49D5710FA05D17FA85EC29454570F149E0C40123C08AC1C1CF9AFE0B764",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1040x700-tab4.png",
+      "bytes": 63868
+    },
+    {
+      "sha256": "FF75B9597FF8DFAFCDAB8ACB239DC97C5D0EC3CD26150F720FC665668D8362C6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1040x700-tab5.png",
+      "bytes": 53223
+    },
+    {
+      "sha256": "DE84FEE4EC16E7A292342A57F79CF713F203F2E0F458645D891795BEA71998ED",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1100x720-tab0.png",
+      "bytes": 57956
+    },
+    {
+      "sha256": "ECD0EF0B66090B52ED0539CE985E36C97262D0014F4BB71DE0EE57723AC40D3D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1100x720-tab1.png",
+      "bytes": 68042
+    },
+    {
+      "sha256": "12DA7F67AA7D75EFEB4584C614D92E588FCEBD444A935EC55D3FD429F7C98236",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1100x720-tab2.png",
+      "bytes": 71225
+    },
+    {
+      "sha256": "5C87B1CC10E43D01551D9215103BBA75F1A4BF57FD4D1650728DD3834255AED7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1100x720-tab3.png",
+      "bytes": 107363
+    },
+    {
+      "sha256": "A5139B01D619A360222794D90AAC3BB897E676CF1AB6213B85622C01557A8C1E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1100x720-tab4.png",
+      "bytes": 64505
+    },
+    {
+      "sha256": "C6469A389AEB43D88715CD7B73C6B42C1BC417B817C9771C22D8C9806DC1E39C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1100x720-tab5.png",
+      "bytes": 53854
+    },
+    {
+      "sha256": "9A871CFEC5B5A27637B58EF271E39003F4D328404F03655BB52B6F7229944DEF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1280x720-tab0.png",
+      "bytes": 58738
+    },
+    {
+      "sha256": "464233EF532BDFFBEA666B2AB95043E0B233A87713C8220DB4B165EA8837D73C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1280x720-tab1.png",
+      "bytes": 69499
+    },
+    {
+      "sha256": "0D65DEBB4F8BFE1790C217F260690279D47DE24E2735267A810826F7C402E86D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1280x720-tab2.png",
+      "bytes": 75231
+    },
+    {
+      "sha256": "009F24B40C8B81A2301BDBF4761BD38E4E16600CB76F75A01771962542439A50",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1280x720-tab3.png",
+      "bytes": 112761
+    },
+    {
+      "sha256": "10F54F789072A06E6F6A4BC75BCF75EB2DD8B4F0873FCD6545ECC955C20D57AC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1280x720-tab4.png",
+      "bytes": 65552
+    },
+    {
+      "sha256": "4302F182DCBDAEAD5E2E6753480BD408E37F622F7CAA89E965A9B10BFD915E2D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1280x720-tab5.png",
+      "bytes": 54488
+    },
+    {
+      "sha256": "A9128FCAB8112B65F2071A0D37CC5A4289BDFF7056167141D0E76A03B06B63F1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1366x768-tab0.png",
+      "bytes": 87026
+    },
+    {
+      "sha256": "6273FADC61DBB7528FDB8779A620B65F3A16601E52670232F1694D012D287332",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1366x768-tab1.png",
+      "bytes": 85966
+    },
+    {
+      "sha256": "6A26F28B238CD3045C1D4ED80AACAEC09B93D23E92E659A3C791CECE6F5310E1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1366x768-tab2.png",
+      "bytes": 128712
+    },
+    {
+      "sha256": "279921FFC31F44E5754FA844E97E14653F59D4944B6D29A533007AAC520F318A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1366x768-tab3.png",
+      "bytes": 121445
+    },
+    {
+      "sha256": "3E26B0EEBAD0ABE6D4657B1BF296696CC5C101A48EEF5C31A0B04E8879156F02",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1366x768-tab4.png",
+      "bytes": 108946
+    },
+    {
+      "sha256": "2616B08D6DC59D3EDF1217DC5D47E22CA68930ED5E2292CA343AC31E26863AB7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1366x768-tab5.png",
+      "bytes": 82485
+    },
+    {
+      "sha256": "0C01D65BB4B60887209723C07C414C6DF3C5A2ADC1EB96E25B4557DF90FD7A78",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1536x864-tab0.png",
+      "bytes": 100035
+    },
+    {
+      "sha256": "C2F5FD97FFDEE3641495C4C2750236DEFD4F93959E3E1352EEAFA5CFF3E78D33",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1536x864-tab1.png",
+      "bytes": 114775
+    },
+    {
+      "sha256": "908048271EFF5FD25C5D2C538B6E6AAB1DE149D9F450B3101CD37CC96CF5E3CA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1536x864-tab2.png",
+      "bytes": 171528
+    },
+    {
+      "sha256": "880744FD93C14FAA8DEA940D9AEEACFF2A5B7CAF294B6B7D8198DFD1C168F42B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1536x864-tab3.png",
+      "bytes": 140731
+    },
+    {
+      "sha256": "D0477176BE2A537D0B6B1F264D23F4475489C090E0C3E612556A92D7DFF87E0F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1536x864-tab4.png",
+      "bytes": 126876
+    },
+    {
+      "sha256": "10601B485D03080EBEF793C6C8CE037A547D4164E74D979781F9DEF75BCCB712",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1536x864-tab5.png",
+      "bytes": 95742
+    },
+    {
+      "sha256": "DF069A2042B186FD73D28FB3CD79F885F63FA80CF66DE995B60A043C10DFA635",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1600x900-tab0.png",
+      "bytes": 100807
+    },
+    {
+      "sha256": "77DF8816D316E686CAA4551E43AEF7729E1A93F933D5DBDB36A265C473728CB1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1600x900-tab1.png",
+      "bytes": 123710
+    },
+    {
+      "sha256": "938EAABDC787EF6FBCE2116E7EB60C38F5DEB2B35C54FC9D998D7DD61D757A21",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1600x900-tab2.png",
+      "bytes": 188905
+    },
+    {
+      "sha256": "F5EC6924285C280302539C1A5AE5A01AFEB8BD7852B762DB5E6A6FDDE3D117ED",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1600x900-tab3.png",
+      "bytes": 147212
+    },
+    {
+      "sha256": "5C1C6CB1377DB79BCE4171112A12F3FF9A6DD381B6433C0ADA062B929F5FF242",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1600x900-tab4.png",
+      "bytes": 127775
+    },
+    {
+      "sha256": "3A4DA2F417F804D172A30F092D66B6B4BAC27B70762304108196D00E7B740115",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1600x900-tab5.png",
+      "bytes": 96446
+    },
+    {
+      "sha256": "01C40072FB2BEA8BE25FA7B509200D8624EFC28CDD1EDBDEACD71EC3AA9B2C1A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1707x960-tab0.png",
+      "bytes": 103417
+    },
+    {
+      "sha256": "E84F29FDABAE761AE0E631D2C126C75EFD2E978A9A1223BB13C453B76522DD55",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1707x960-tab1.png",
+      "bytes": 143873
+    },
+    {
+      "sha256": "35638E49B4F26B24DE49697ED4FFC8E345A92DB450FABE21DF604682FDAD8F96",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1707x960-tab2.png",
+      "bytes": 202251
+    },
+    {
+      "sha256": "400CBDDF0BC8548F4B3011B840CB55CC32F48B18BD9DD452C721E3BF98D68B95",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1707x960-tab3.png",
+      "bytes": 149166
+    },
+    {
+      "sha256": "BFE6F5BFD65D65923E9C575DE6910CCC38564D2404F6AD4053526EC17E7E3014",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1707x960-tab4.png",
+      "bytes": 129704
+    },
+    {
+      "sha256": "10A56A34A1FF7983C1316E707CAE8769E5F093D98BB7C6681159560B00BD60BE",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1707x960-tab5.png",
+      "bytes": 98582
+    },
+    {
+      "sha256": "65A86C8ADA21D553B3B6A64FCA616094D161885453FFE05677C2DAF555FF8391",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1920x1080-tab0.png",
+      "bytes": 105649
+    },
+    {
+      "sha256": "BB884DE9069B4564B5D5993D50FD5DBFF1D3D2E500DFDEE7F17A8025B5FF2ABF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1920x1080-tab1.png",
+      "bytes": 181440
+    },
+    {
+      "sha256": "68C6418E3C1BF8A9E91E8FBED0E6A266E98CB28235D018D41D375C98780CC2BA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1920x1080-tab2.png",
+      "bytes": 224473
+    },
+    {
+      "sha256": "864F73809852363DAA6B5930CB6F0EB63341918DFAFDD18AEF03767D8DA38EBD",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1920x1080-tab3.png",
+      "bytes": 182807
+    },
+    {
+      "sha256": "8A73075BA228883B15B37A4DFF2C3FA5892DB676365F750A518008B283A52FC3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1920x1080-tab4.png",
+      "bytes": 132172
+    },
+    {
+      "sha256": "D9138C04B6895192CE731E2A3DEF4156EA8D4CBEA7842BD8BA3D0BA6ADD2F74D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-1920x1080-tab5.png",
+      "bytes": 101269
+    },
+    {
+      "sha256": "FE1DB0FB9FC8BAC05AE40852B9323833245E2A19C8C74A5AA88646CE6057354E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2048x1152-tab0.png",
+      "bytes": 107839
+    },
+    {
+      "sha256": "6C9243DDCC83966BED03183DDF5E160FDD8B74FC8EB1DA6FE006BE478E44796E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2048x1152-tab1.png",
+      "bytes": 193640
+    },
+    {
+      "sha256": "13517175300C4A2B784F617F0EC4090FD9F87FBE5815A38E34D194D6A6668E8C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2048x1152-tab2.png",
+      "bytes": 231350
+    },
+    {
+      "sha256": "8F2A969AAE8CAB1C801B359B9BDCE3EE0C3B43D4034A493871C2A959634FCDE3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2048x1152-tab3.png",
+      "bytes": 203481
+    },
+    {
+      "sha256": "B677DC1B4C2C3DD0EAE6EF7019C36BC9E774EDA28C74C30BC3947E44FCCD458F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2048x1152-tab4.png",
+      "bytes": 135061
+    },
+    {
+      "sha256": "5112DD71961C703DDA8E6804600E756B97B4307D5D8C0F39622F46EF1E85C430",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2048x1152-tab5.png",
+      "bytes": 103270
+    },
+    {
+      "sha256": "074438DCB0F45BE28F268ECFA8457CA9D9DF5B3774094F67FC3396D1B87A13A3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2560x1440-tab0.png",
+      "bytes": 114292
+    },
+    {
+      "sha256": "24E8DB886A7B373D02D6C0592ACCBF3542B356F1225A0731A61276FDD03DA0CE",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2560x1440-tab1.png",
+      "bytes": 212659
+    },
+    {
+      "sha256": "F5342295594CC338C9A04E44450634D0C7C6AE0EACDDB5EE1AC8013585C52B3F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2560x1440-tab2.png",
+      "bytes": 273253
+    },
+    {
+      "sha256": "3C737B4AA07C628EB0A2585CB3FDB6CC3B5031B174D09A0A60C28294ECB3473F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2560x1440-tab3.png",
+      "bytes": 275953
+    },
+    {
+      "sha256": "DEB96E70DBB630CBF556BAEE969D686001194B6E0A9F05A22BF004A7B1132A03",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2560x1440-tab4.png",
+      "bytes": 143666
+    },
+    {
+      "sha256": "6EEA500F35B2DFED5A0BC8CAF35E98345801E1BFA081B7C7749888D577899D13",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-2560x1440-tab5.png",
+      "bytes": 109712
+    },
+    {
+      "sha256": "6A9B282AFEA53EB63EDFF4F0A7D4437B75EB5C03627D78F91E3C61B15AA30153",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-3840x2160-tab0.png",
+      "bytes": 135676
+    },
+    {
+      "sha256": "908EBFC1FDDF99CD4C1B17E3984C66A67D8BA3ED827E22CCA1E8110164577E52",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-3840x2160-tab1.png",
+      "bytes": 237510
+    },
+    {
+      "sha256": "BA570BEAF3C9A89B6F0C45C0122E1AC8ECFD9C46A1DDE5917F7814EB2BBA6901",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-3840x2160-tab2.png",
+      "bytes": 307629
+    },
+    {
+      "sha256": "F7BDF20CB0587CC487E75C4A9104481E949965937F092F10300ACFC161111A2A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-3840x2160-tab3.png",
+      "bytes": 429295
+    },
+    {
+      "sha256": "34C80EC27EECD22C8E199DC1BAA97BBE59FFB68E9C42D0A81D74500C11AD3A9F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-3840x2160-tab4.png",
+      "bytes": 165113
+    },
+    {
+      "sha256": "16F04D5BD2F9B441646431AA3799C990CFEFFCB24B690615025FEC5BF5CB26FD",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Maintenance-3840x2160-tab5.png",
+      "bytes": 130095
+    },
+    {
+      "sha256": "753FEADE741953B92C9FADE0C08A2C1FC2B4B513AF0B02EDFCEB5E454324762C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1040x700-tab0.png",
+      "bytes": 67105
+    },
+    {
+      "sha256": "8F26E9F70A2C6065711D999E7175EF26E81B4D3151E0B4BF8A4863E59CF8FF5F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1040x700-tab1.png",
+      "bytes": 85719
+    },
+    {
+      "sha256": "A6AB3367A223B9E46148CD2DB755C0CB0EB7B4F5D62B75FF81E4BDD6CDA571E4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1040x700-tab2.png",
+      "bytes": 77506
+    },
+    {
+      "sha256": "37B7C6A61EFD8D1A41D73819921121E8FF4CA36681298003668DD5FAE1B5159B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1040x700-tab3.png",
+      "bytes": 54708
+    },
+    {
+      "sha256": "82DB96DEFDD8304CE6AA07E5B1F519F0B0EA729880ABC32D3F5B7018ADDCBA48",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1100x720-tab0.png",
+      "bytes": 76321
+    },
+    {
+      "sha256": "463555BDA193B72E5674EB06271F92015837D03A9FDA15DEA370507B80D69922",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1100x720-tab1.png",
+      "bytes": 85869
+    },
+    {
+      "sha256": "201543C7BD51837571ADADFCBE28D1604BB6C2B9F93ACDA0434B619A187AB345",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1100x720-tab2.png",
+      "bytes": 84266
+    },
+    {
+      "sha256": "254623274881925E6A731310A8DDF758C4BD0FA50D9EBE4908F58A75AD2C1012",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1100x720-tab3.png",
+      "bytes": 58712
+    },
+    {
+      "sha256": "7E5C6636B9CB1B92CEA2C03EB262179D3E53F62215554DDDB155E5F5CC63FC2F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1280x720-tab0.png",
+      "bytes": 76776
+    },
+    {
+      "sha256": "6F94CD481D6A430652DB1DDA79FCB93F8D9D8D45291A7BB9455C183A784FA131",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1280x720-tab1.png",
+      "bytes": 94082
+    },
+    {
+      "sha256": "A20CECED49EE95D8D48612801EF7366504611FE3C04FDBA4A360CC0221AEF27A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1280x720-tab2.png",
+      "bytes": 85449
+    },
+    {
+      "sha256": "961A9EAC5C4543EFDBC02974F2B91198C89057165ACBC71D97E51AAA3EDD702F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1280x720-tab3.png",
+      "bytes": 103448
+    },
+    {
+      "sha256": "90C5A49A0A72B9C8ACFCDFAD88FE631FAEA259021D16EF5477BF094F4EC3EEDF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1366x768-tab0.png",
+      "bytes": 93032
+    },
+    {
+      "sha256": "E5CF21F81C1D08CC4B0115863AAA82F4F0C2F75CEFA835948707B21B09E92117",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1366x768-tab1.png",
+      "bytes": 110779
+    },
+    {
+      "sha256": "BB0DD8B9DFA8DAA11C0C738A531761ABF211B6FE5AFD69D3A1EC0F522167F621",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1366x768-tab2.png",
+      "bytes": 90432
+    },
+    {
+      "sha256": "0297292F608C8CC524C138046A360D1C4F41A8F14D8FB0E54E663DD6B13953D5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1366x768-tab3.png",
+      "bytes": 112985
+    },
+    {
+      "sha256": "A5E5D1506F84FA35F4D6DD7161C8A2085342C4DB1FD116F241B8230FF54D71F1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1536x864-tab0.png",
+      "bytes": 117847
+    },
+    {
+      "sha256": "E84426D096A6D39C790117E90BE40E7DBCF3B98E55F77DCA465706DE0512F980",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1536x864-tab1.png",
+      "bytes": 130147
+    },
+    {
+      "sha256": "A6F6C4683FB0F6066BC4F334D69B50DD9F4C3E7FAE6BD7567FE3DAD5D7BEC81E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1536x864-tab2.png",
+      "bytes": 104165
+    },
+    {
+      "sha256": "E5E08D6366E9CFFA9A339E3C169A2550435F4F0E557A849229E123FCA9A86501",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1536x864-tab3.png",
+      "bytes": 129963
+    },
+    {
+      "sha256": "D2ED082F7FF7D4631D8EDA616A2A1CEB1179D27B87CF167A87FBC4A3E0625451",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1600x900-tab0.png",
+      "bytes": 128029
+    },
+    {
+      "sha256": "0C61F704869A66B873F609744AEC543F4A4ACC675310D720D16AF486AECF22FB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1600x900-tab1.png",
+      "bytes": 139753
+    },
+    {
+      "sha256": "06970996D533AD0FF84DEC1F40347C9DB14763CAB98FAD78A0EAB07787E7E9A0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1600x900-tab2.png",
+      "bytes": 110541
+    },
+    {
+      "sha256": "9754F26995DE6AAFB2CC780B28DF51151E4C3BBDF8F7A8A86C45748A748AFD64",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1600x900-tab3.png",
+      "bytes": 138025
+    },
+    {
+      "sha256": "42A26A45095A792F5F044448413E7C4C8B19EB1C4354EE33153627C245500989",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1707x960-tab0.png",
+      "bytes": 145662
+    },
+    {
+      "sha256": "B78CE51E1102BF96227187211A9606F7EF0C97CAC42FF6B7DC65B9D036C50B5D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1707x960-tab1.png",
+      "bytes": 143154
+    },
+    {
+      "sha256": "7EDE721EEE7523AE37A19AFE23B149ECD52E57F5005AAC08788D9211C6EB0F9B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1707x960-tab2.png",
+      "bytes": 115936
+    },
+    {
+      "sha256": "6D283F9ECE916FBB3C12DD759EFFDCE6F3D7242EE4939ECC7E7578493544F9C9",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1707x960-tab3.png",
+      "bytes": 149032
+    },
+    {
+      "sha256": "192F558CDDB8C5E3CBEACAC580E91D32623121837E2808250337F1680F4FDD8E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1920x1080-tab0.png",
+      "bytes": 169147
+    },
+    {
+      "sha256": "0778439809CCA2D34C1158D74276F699C5794E98E385C3BF1D78EE1E371BBD50",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1920x1080-tab1.png",
+      "bytes": 171008
+    },
+    {
+      "sha256": "09C57F5D46B341BAABF8D605659A88EB93EAEF87D7C5209761F3C870D0A887F6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1920x1080-tab2.png",
+      "bytes": 119156
+    },
+    {
+      "sha256": "5C535FB4CD9D8F86C9326E5987B296FA1EDFF043CC2EC4E69D2F1F587693A952",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-1920x1080-tab3.png",
+      "bytes": 156377
+    },
+    {
+      "sha256": "E53A40534FC5D5A7C454D0745E3FD1F138768D5A8F1C74C80B2D16870A07BB7B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-2048x1152-tab0.png",
+      "bytes": 191649
+    },
+    {
+      "sha256": "3967FEE7105E06B1C22B9E048107DC374EA2D283DA3B4BFDC4E774928A6D4FB5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-2048x1152-tab1.png",
+      "bytes": 194659
+    },
+    {
+      "sha256": "41D4A0C5A73B6A524666815EC5AAAF4444B5A41E3202ECDEE4E663C8F04FE042",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-2048x1152-tab2.png",
+      "bytes": 121211
+    },
+    {
+      "sha256": "7ABC25569AE58508D2851424F9FEF2F3A660FD35984467A8141E006CD4CA7752",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-2048x1152-tab3.png",
+      "bytes": 159011
+    },
+    {
+      "sha256": "3748A578181CF078BAAE43B249B0430F8E4C1EEE0B0D2AA8DAB790CC2401E3D1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-2560x1440-tab0.png",
+      "bytes": 232658
+    },
+    {
+      "sha256": "4840AA1F01FEB8C329BCB4A182396D5564A9290CFEC2E4E6797C24EADFCCB3AB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-2560x1440-tab1.png",
+      "bytes": 233827
+    },
+    {
+      "sha256": "5B15938A2B1748760FD3F1EF54EE5320AC2EDB23772FCB76D3786CA9131F8F41",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-2560x1440-tab2.png",
+      "bytes": 129584
+    },
+    {
+      "sha256": "7BDB83EFAE3018AFC202FCDBBB16DF561E045A5959E8D3DDB2DB067FD3E476CC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-2560x1440-tab3.png",
+      "bytes": 166940
+    },
+    {
+      "sha256": "525F8C149EEA66ACA9DFEC779F04FC8A4A4C5CE3EC40916EBA0EEE0EEE67F72A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-3840x2160-tab0.png",
+      "bytes": 297528
+    },
+    {
+      "sha256": "6C5E5A71B5DA62A7179139A02DA247EEF4320AF17DBCBFC3C00470382C9A98BB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-3840x2160-tab1.png",
+      "bytes": 262044
+    },
+    {
+      "sha256": "3FE48DA320C708CBFEF9136DA1E03102B62163FE17D7E51DD87308ED38949111",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-3840x2160-tab2.png",
+      "bytes": 150655
+    },
+    {
+      "sha256": "9251E6B84657DA09117A85F4089BADA946EB0DBBD0B9A4F025B9F16DF31D4DEF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Media-3840x2160-tab3.png",
+      "bytes": 188898
+    },
+    {
+      "sha256": "81C8956FBA96AD2EAD04CAA785C5ADEE724D6778F7247B3EC95188B292884A54",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-1040x700.png",
+      "bytes": 65338
+    },
+    {
+      "sha256": "234A4AA95BCBFBA4B30F25056CD08CB3B859C6FBFB0E75C3C01F6D28A4BDB08A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-1100x720.png",
+      "bytes": 68175
+    },
+    {
+      "sha256": "5F566AF23C4BF3885985CD8767A107F229BE758224DA1D8282FB909968AE2CA7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-1280x720.png",
+      "bytes": 70271
+    },
+    {
+      "sha256": "96E4011ADB0F123CE73E6BA1E8C20DD8B6203CB2ED8DB820EE41D18454857176",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-1366x768.png",
+      "bytes": 93364
+    },
+    {
+      "sha256": "437614A1F6A483AE6F619A81B3E04602CCBFBF690C0C5501A793A5A132B347F1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-1536x864.png",
+      "bytes": 114759
+    },
+    {
+      "sha256": "5A3205D6862D10C5C354FFBBBD6A6E9629A396F7CF72EC0053BAECE778F0F86F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-1600x900.png",
+      "bytes": 117420
+    },
+    {
+      "sha256": "FCEE1AB2337820A7FB75DD07F654D9BF387A288D4ED8B3FA5C1382AB47F44B96",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-1707x960.png",
+      "bytes": 119991
+    },
+    {
+      "sha256": "0C312B8726F7A328B43FC98EB942E9E5CA6033BC4D1CDE1D9478F7FEB25CACA0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-1920x1080.png",
+      "bytes": 121412
+    },
+    {
+      "sha256": "81610BB5DF197FE5E037FF60B3B9D4FED7C70C1DC590A5EA3C2ABF2A23F561CF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-2048x1152.png",
+      "bytes": 124400
+    },
+    {
+      "sha256": "20BFEBD9DE24D0FAA77C3F314944BBEE3C363886C0C3920F6AE460BC0636D0A9",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-2560x1440.png",
+      "bytes": 133000
+    },
+    {
+      "sha256": "DCD198F59151C0110EF7D022292E10B402163147FCCB5B757DD9B4266F9262E3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-dark-3840x2160.png",
+      "bytes": 153853
+    },
+    {
+      "sha256": "D863A0E5DAFD68404CC004C5BD8149280B3C6679E034E291A1BAA74ACED0D257",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-1040x700.png",
+      "bytes": 62372
+    },
+    {
+      "sha256": "83E8E66A6AAA4871396D55E22F5FA10BA2430698CB1D3C45A9D27E0497D0A05A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-1100x720.png",
+      "bytes": 65252
+    },
+    {
+      "sha256": "86F2B809B95E8464ED336002084E04AC8F3830B156302F8DE32262E86F0B98E3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-1280x720.png",
+      "bytes": 67294
+    },
+    {
+      "sha256": "8BDD0007344C28841FE9F0B37CD01DAC0BF7DC72077F1B1A2FC1236174557A97",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-1366x768.png",
+      "bytes": 89497
+    },
+    {
+      "sha256": "F672764A60EE84DB87C9911F4A33D4C070D57CD8E1A5E11EA48E43AEC7D9CE68",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-1536x864.png",
+      "bytes": 109643
+    },
+    {
+      "sha256": "15141FD22FA1D3989ABE0E07F66C6E80EA7F39DE0EE2C96F45D8AAF9EAB44117",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-1600x900.png",
+      "bytes": 112238
+    },
+    {
+      "sha256": "F3FA894AD72AD03787ECA908234465ED258381462AF539B9323E2917C8FF5628",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-1707x960.png",
+      "bytes": 114571
+    },
+    {
+      "sha256": "81E1C67DE034C4EF3C2CC2FDDCF9CDC9FB079841C9690B4B31059A7832BBF601",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-1920x1080.png",
+      "bytes": 116800
+    },
+    {
+      "sha256": "C18A6C8E493671CDA3C49DB53AE5AA6087E7D2A14889BA8E7D021DB414D21B5C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-2048x1152.png",
+      "bytes": 118679
+    },
+    {
+      "sha256": "62369BE33FDA96DDC34C27815BD677B622A39D85A1506ED0AE6095505B3388DB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-2560x1440.png",
+      "bytes": 127525
+    },
+    {
+      "sha256": "CE9B4C45699A1D449162CF86AFD371F7A61B24B268980926DD278C6123F899F5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Notifications-light-3840x2160.png",
+      "bytes": 149536
+    },
+    {
+      "sha256": "E9AD60242D2226A1C96E8B01563F7B3BD53989256C5DFD22F50818BFD5FB74F1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-1040x700.png",
+      "bytes": 58912
+    },
+    {
+      "sha256": "B8067992BAD761F6056C9040B95610B9A7D3B1538F399F927444D4A92D398027",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-1100x720.png",
+      "bytes": 64534
+    },
+    {
+      "sha256": "1D0EC2B8406BC1AEC00B436256CB6A9B834B465E1E9838844EA74CA86ABBACA8",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-1280x720.png",
+      "bytes": 65682
+    },
+    {
+      "sha256": "A8FE23AFCBAD95BEC39C8A325CE2FBC21DC1228C20940CAB24BF79326E018495",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-1366x768.png",
+      "bytes": 73982
+    },
+    {
+      "sha256": "404599752D82B04128013B47B6F13D2CA15DA398933E9CB59F8C342B1F9FF0FF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-1536x864.png",
+      "bytes": 135698
+    },
+    {
+      "sha256": "A117218C46D8A25A529009F260499DBF0E8CBA0A7DA63CDB9EF26EEC66A2C18D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-1600x900.png",
+      "bytes": 146466
+    },
+    {
+      "sha256": "CE0C8C99BBAAA8B3C88207C501521A2B9D6ADA1E347EA36755F5AEEA514CEBBD",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-1707x960.png",
+      "bytes": 166127
+    },
+    {
+      "sha256": "D38B88B151FBB0954AA68D3F5F6FA628AA99E2D3A6F39461B481E21C841DB588",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-1920x1080.png",
+      "bytes": 198512
+    },
+    {
+      "sha256": "4D39ADEC29965F8A1C40C5EE63C9358BD6511C66221025656FC0804BA7A11A3D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-2048x1152.png",
+      "bytes": 205337
+    },
+    {
+      "sha256": "3A0B068D77E209F8F272215E55A2048DEB4BF6721A7F98D046C41D2A4AEB03DC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-2560x1440.png",
+      "bytes": 248676
+    },
+    {
+      "sha256": "191C2755008FF78B345004102085EF0FEFAE799B66AC9F1ED82273059C64736E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Overview-3840x2160.png",
+      "bytes": 274485
+    },
+    {
+      "sha256": "DE3A02393E32A87165605385B11C032CC20F5C5D3DDF31C785DA48B18DF51633",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1040x700-tab0.png",
+      "bytes": 64531
+    },
+    {
+      "sha256": "8C47024CF60469AF35FBB63B4A6E5B40D7C3053B9CDEA841D2D8E5F9BA104076",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1040x700-tab1.png",
+      "bytes": 81677
+    },
+    {
+      "sha256": "B071FBDFF93FEA32D29E12B79404C1A66AAD4F7286821DAC598E17AAC13925D3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1040x700-tab2.png",
+      "bytes": 46825
+    },
+    {
+      "sha256": "B15C48DD99C1EF516F6E80FFF9AAC7F09B6A4410B344E5FF1D8957A9EDBE2DEA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1040x700-tab3.png",
+      "bytes": 64920
+    },
+    {
+      "sha256": "93B8596F0E8B0922BBEE15EAC3728E95C66F67F43C955CD0DDCF4B90DB544E03",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1100x720-tab0.png",
+      "bytes": 73613
+    },
+    {
+      "sha256": "575D0195E05D711C5ABFBAD2C5F7F0A89B3BF05225519D99ECA54BDD9869AA54",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1100x720-tab1.png",
+      "bytes": 84724
+    },
+    {
+      "sha256": "EA9B2C5FE1468AE7FBC513CAB7E45CC7AD38DB397BF6F43E47DBF157A09C69E1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1100x720-tab2.png",
+      "bytes": 47962
+    },
+    {
+      "sha256": "036547FA8EED8168F8E4A9C2CA7C6162B0701DD077F29499909A91F338AF10B1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1100x720-tab3.png",
+      "bytes": 70880
+    },
+    {
+      "sha256": "106CBD556471928E9570DF5858E8D7437A5F2182420174214759841014366348",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1280x720-tab0.png",
+      "bytes": 82717
+    },
+    {
+      "sha256": "FED7E6A374342C93D526B3FA6E69C901B92C533E120A614A386192AA6FFAAEC1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1280x720-tab1.png",
+      "bytes": 92852
+    },
+    {
+      "sha256": "606C259D6B112EA767C8773AEBFACA72A06B1358022449183357AA116BA913B9",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1280x720-tab2.png",
+      "bytes": 48642
+    },
+    {
+      "sha256": "2D339432C085C9D69F4AD6DD2DEB8754B1830425DBF7F995F7C3679286130180",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1280x720-tab3.png",
+      "bytes": 77977
+    },
+    {
+      "sha256": "B6B0266416C486786130A182C09E5C42C1FEB9415F1465298649FE98886AE366",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1366x768-tab0.png",
+      "bytes": 105491
+    },
+    {
+      "sha256": "95E416250C9BC0105EF2338A5674165C93B814A1B919D7F51EF893A2FE17B9BB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1366x768-tab1.png",
+      "bytes": 101160
+    },
+    {
+      "sha256": "608824B594758E98E9C6FF8F1B183E027F817E15A6DB2B439F252B1FB53C3C08",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1366x768-tab2.png",
+      "bytes": 116835
+    },
+    {
+      "sha256": "4313C18EA84620CF9F3CE23B798F3959727EFB641A6E323F5A36C97531DD6EDE",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1366x768-tab3.png",
+      "bytes": 85835
+    },
+    {
+      "sha256": "19D7663620B24FE1461A927A861C830605AD3224D2FEE105096EC2F917AFF856",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1536x864-tab0.png",
+      "bytes": 134828
+    },
+    {
+      "sha256": "2C1ACF165ACA8EB8B67A49281CD0F58562EE52AE13B3E1C4699D2F2E2FFFCA54",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1536x864-tab1.png",
+      "bytes": 122830
+    },
+    {
+      "sha256": "38E0FD638C0C72CAF9D4E634380586B71FB0E879F5138E709DF6CCB8B3EBEFEF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1536x864-tab2.png",
+      "bytes": 129349
+    },
+    {
+      "sha256": "8BB579864652DF3BA4E3F8EB04890AECC81916374D153904EA35380EAE191996",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1536x864-tab3.png",
+      "bytes": 106225
+    },
+    {
+      "sha256": "E04C2D25EA3DD9EB4D1CBA2E23D8D6C47A932BF7505193C98ECC194ED4352C57",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1600x900-tab0.png",
+      "bytes": 148641
+    },
+    {
+      "sha256": "AEE268B6B54E0CE9F2CDDB24DB158F6722FECE73C264CED70A0D936EF6A53FF0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1600x900-tab1.png",
+      "bytes": 135068
+    },
+    {
+      "sha256": "59B75410E1986B6EF1851FBAE7A7A4D718C0D8865664628A56649DBBA3DE1323",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1600x900-tab2.png",
+      "bytes": 129987
+    },
+    {
+      "sha256": "AC517B0EA90066733AC0BFD9443DEDCA87E9E76AC56AAF343DC4D69EEAEA7896",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1600x900-tab3.png",
+      "bytes": 107766
+    },
+    {
+      "sha256": "E217ABCA29372BB8DCF44ACA5BE910E83DA3C814410C2AB98A3771299BB61730",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1707x960-tab0.png",
+      "bytes": 165823
+    },
+    {
+      "sha256": "739A5921C2F039CDE422160D41555041145E0001DA1E9FF0E47BCC4006FE0A64",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1707x960-tab1.png",
+      "bytes": 153550
+    },
+    {
+      "sha256": "B732CA8EED9F3DA4A1A6EB9229E2773929DE3E43B48E27979CFBDD0687C1A5BA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1707x960-tab2.png",
+      "bytes": 131844
+    },
+    {
+      "sha256": "265947012E6C0DA6D8F078B4085C691F3D29A2F5CF542A3EF10C46B799D62343",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1707x960-tab3.png",
+      "bytes": 109097
+    },
+    {
+      "sha256": "31C5CCC77BE3A89E4A916FDE80EF60390D0B8D9DE8018870693CBD27E4346184",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1920x1080-tab0.png",
+      "bytes": 217751
+    },
+    {
+      "sha256": "5008F5571605D2B788018C8AEF10434E0AFEF54BD81CB96F2FF31984E249F7DC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1920x1080-tab1.png",
+      "bytes": 165197
+    },
+    {
+      "sha256": "3D8797374FE75091A6F18003C0C8647E24439D9557ED83C11D6C63B86EF35A85",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1920x1080-tab2.png",
+      "bytes": 136130
+    },
+    {
+      "sha256": "0CF9CAA1E6C529B003FA9E05CB88EF758048D455BCFAFBC84EA4266EA75BA17E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-1920x1080-tab3.png",
+      "bytes": 112739
+    },
+    {
+      "sha256": "DE2E54A16EE72ECE56DEA63F8F66F31CE84A6B4470DCAFD03AF68CD7F7BA0BE1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-2048x1152-tab0.png",
+      "bytes": 228646
+    },
+    {
+      "sha256": "96BCECDBB6D92080B705FF26DCA7AF760FE737F8D44398C6BC371357A2B057D3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-2048x1152-tab1.png",
+      "bytes": 167475
+    },
+    {
+      "sha256": "47D5C6451D89875A7BF901682BF8BCCE45D6D1DB023AA8CF6CD72F357F79600E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-2048x1152-tab2.png",
+      "bytes": 135468
+    },
+    {
+      "sha256": "CF909DBD6393F3A32762C9D0FCB84DE8FBF3A26FE874798F7CE57BF5EB2DDAB5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-2048x1152-tab3.png",
+      "bytes": 114881
+    },
+    {
+      "sha256": "7A50E3AC89F6BB725F0B242D99C33A222B5353DA237BEA8F9251E629E6024732",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-2560x1440-tab0.png",
+      "bytes": 294920
+    },
+    {
+      "sha256": "6D025D6DB4401BBE11A36544E3D79D64C1229B9C611309A8E0D1609FFCA49A65",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-2560x1440-tab1.png",
+      "bytes": 176599
+    },
+    {
+      "sha256": "A26016EC7E50D0FA0E2DD6F0D9DE2816AA28ED98F1CE3D18724970E774064FA8",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-2560x1440-tab2.png",
+      "bytes": 146768
+    },
+    {
+      "sha256": "07C1B34A88959E850ACA025D03C4EABAEE89D8C7410402CFB812AF290977008F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-2560x1440-tab3.png",
+      "bytes": 121431
+    },
+    {
+      "sha256": "3AC7E3A9BCFF768C015461F8F413A3D5C2E80F635D7662FC25A45F8DFDB52A55",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-3840x2160-tab0.png",
+      "bytes": 465638
+    },
+    {
+      "sha256": "C906A66054534D1C117B99AA5831F9633DAADA45BB2220EE51D66B42933CA4E4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-3840x2160-tab1.png",
+      "bytes": 197824
+    },
+    {
+      "sha256": "A444FD9F339CFBBB897BDACC02407862D5555DBDDF875451C342CE938A257B19",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-3840x2160-tab2.png",
+      "bytes": 168369
+    },
+    {
+      "sha256": "83B9FCBFF49EBD595666BD150AD406FA229681691412720E2BFC1DDDE2D71D4E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Save-3840x2160-tab3.png",
+      "bytes": 143160
+    },
+    {
+      "sha256": "8792081128AD1C3A0C6B4DDF79735D051B78B3BB743487347363B6EF41DA6906",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1040x700-tab0.png",
+      "bytes": 96408
+    },
+    {
+      "sha256": "56AF79FC1E0D4E019314C563D9D3DD62F5F634750EA9DA4BD33BAD010439A9B3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1040x700-tab1.png",
+      "bytes": 98868
+    },
+    {
+      "sha256": "51449A67A44B226A6D6C5CA547E71D660FAADB392366AFB6A1D54B3B2D5A1749",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1040x700-tab2.png",
+      "bytes": 99283
+    },
+    {
+      "sha256": "909ABF776560D55765BD433A82BCE00335FE01C9B183BB5B863D886B6260CA75",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1040x700-tab3.png",
+      "bytes": 95963
+    },
+    {
+      "sha256": "FF7677353E5EC74F41BE8F90351CCF8FD98D70DBEAE530DEDABE99468B514FAA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1040x700-tab4.png",
+      "bytes": 93880
+    },
+    {
+      "sha256": "721893139D43998B0FED729D081E1BD8E09EED952BC3AEB6CCD05CC68912FE71",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1100x720-tab0.png",
+      "bytes": 110129
+    },
+    {
+      "sha256": "A3BE65D195223CF101C05F321B5DDAEC8F6E306C68547F2B18D196B992E0BA3B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1100x720-tab1.png",
+      "bytes": 102817
+    },
+    {
+      "sha256": "3C9695210AFF36B8CE3C8C7B7546BDC0E6E076592B98E424AC743E4B57D8C6B5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1100x720-tab2.png",
+      "bytes": 108014
+    },
+    {
+      "sha256": "6BCB4083BD0826A6D32560A64DB505D801797B8C0A5C31C6637646A5702C2450",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1100x720-tab3.png",
+      "bytes": 108482
+    },
+    {
+      "sha256": "72AEB1B731FCCA7149A6FB4073895AA9E707F31097E5DD9DDD2949B02E4CE680",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1100x720-tab4.png",
+      "bytes": 104319
+    },
+    {
+      "sha256": "5907B291D88D7E1B2CEBD737E816AA9B2D1E256F14967FC607A515ABE6F6D629",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1280x720-tab0.png",
+      "bytes": 116739
+    },
+    {
+      "sha256": "0BAE985CD53CD2EC5B55FC0D2F074379D65F08020B1AAAC7B510A887234DA4E4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1280x720-tab1.png",
+      "bytes": 111832
+    },
+    {
+      "sha256": "3A945485047D614D8C28D57E10501F124217F88256E0F1CCDBC63BEFF9878D85",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1280x720-tab2.png",
+      "bytes": 110557
+    },
+    {
+      "sha256": "6EA48E0FB2D4B21E2EB77CCB6F9BF9849A062E9461188D31F1D4C6936913359A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1280x720-tab3.png",
+      "bytes": 115444
+    },
+    {
+      "sha256": "44966D1AA2BB1E49903934EF97CA92652212E389E11C0E183950326001E5B1F0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1280x720-tab4.png",
+      "bytes": 106397
+    },
+    {
+      "sha256": "D7B43924ADEA5D4B4219E13AE514435A91DBC7D908D9118A5A3D5D3C23EE9D9B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1366x768-tab0.png",
+      "bytes": 119602
+    },
+    {
+      "sha256": "33BC6954876DD96DBBA34DA4D7A580FAE44672E65C938FE9AE0D33E543420EAA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1366x768-tab1.png",
+      "bytes": 119770
+    },
+    {
+      "sha256": "36B649CFF41C3F8A88EFE1A687E2FDE06FF1BED36EAEB871421F4DA239B4C99C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1366x768-tab2.png",
+      "bytes": 119670
+    },
+    {
+      "sha256": "19454CEBC2FADF0117DFABAB2D76EFECCC43CDB21851AF6D99DE6AF94311AEC6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1366x768-tab3.png",
+      "bytes": 119057
+    },
+    {
+      "sha256": "91D2C5D6DEECEA8444FDCE73F5BC2B9A27AD666A7547DE0F1833C8A69F226976",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1366x768-tab4.png",
+      "bytes": 118603
+    },
+    {
+      "sha256": "79EC263FC4A4F19E0AA5228AF7F46CCB3A9BD99390792E1E331D701FFDB57D8A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1536x864-tab0.png",
+      "bytes": 184291
+    },
+    {
+      "sha256": "C0E9FC8402392EE48B564217C0EF2BB0324FD818EF2C9700232F347A13A7DB64",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1536x864-tab1.png",
+      "bytes": 170073
+    },
+    {
+      "sha256": "88887567852F96DCE3F95BF761C730CEF3D321F44D9B3FC25EDB7C4529733560",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1536x864-tab2.png",
+      "bytes": 176668
+    },
+    {
+      "sha256": "ABADC4E73333E560E4D18AF6A91B9D735BBA0DDBA0B9C7C6C275D37F495DD542",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1536x864-tab3.png",
+      "bytes": 169392
+    },
+    {
+      "sha256": "D74126AB747B8473D61111AD88DAB54B00DF63E5B811E8B3D659731412E3D651",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1536x864-tab4.png",
+      "bytes": 158972
+    },
+    {
+      "sha256": "21374CA94AAFC1198C6ABF0CB7B93FCA30547D5DFE3D9E88A6AE68C12CD8383D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1600x900-tab0.png",
+      "bytes": 192386
+    },
+    {
+      "sha256": "C2ABC9740590CE76765EE137572466245201C6A93468841D6AF347681EFB6AFD",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1600x900-tab1.png",
+      "bytes": 181715
+    },
+    {
+      "sha256": "80F71B5C87AC445CE2D51BF99B347EFF9A20B6637FF06E6362B5C4CC75FDBB85",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1600x900-tab2.png",
+      "bytes": 187486
+    },
+    {
+      "sha256": "C81552D13E99E602A7B660F9A7EAAF1E4AF8BFDA411F2D1EC42A2A4A821191C6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1600x900-tab3.png",
+      "bytes": 181128
+    },
+    {
+      "sha256": "C492CB5053041F6D2F414094B03D4BFD687021FBDAABF20A4BCCFB766B98CEA4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1600x900-tab4.png",
+      "bytes": 168105
+    },
+    {
+      "sha256": "C8F9F250B24318777D0D79F9FE58A1FEA7B5309EEF92C04533B71F3F4B025917",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1707x960-tab0.png",
+      "bytes": 230235
+    },
+    {
+      "sha256": "092F9923DE8E3B57F2B9181BE7091B70BF76092871D4EE23ABE1E7CB4DBC73B3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1707x960-tab1.png",
+      "bytes": 203511
+    },
+    {
+      "sha256": "57B0A28A8962B6D6D690DCAC6B652FC949C2D9E43633AB085EF0A2F74C1D4124",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1707x960-tab2.png",
+      "bytes": 218493
+    },
+    {
+      "sha256": "216A1637CE02A66135D4249298AF0BA2C143BDCFF209C225EB830DF2790969A0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1707x960-tab3.png",
+      "bytes": 208504
+    },
+    {
+      "sha256": "37F417040B9396B716C692E9C349FF1812CDBFEBC39770175EAAD38E982E3DA8",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1707x960-tab4.png",
+      "bytes": 179001
+    },
+    {
+      "sha256": "51B69474F6DE50204CD1B9218246A4352A975D4D95F4AF9D315A10D8B7044AE8",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1920x1080-tab0.png",
+      "bytes": 284414
+    },
+    {
+      "sha256": "DF56116AE979C4789038F33B0B89BEE57C33218FB91D1F484D09B238B30CB997",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1920x1080-tab1.png",
+      "bytes": 221066
+    },
+    {
+      "sha256": "52F492A2C5F48DC58C73D0D92CA2A70ADB67C9564E23F64999CDF3EBEF49B1BB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1920x1080-tab2.png",
+      "bytes": 239366
+    },
+    {
+      "sha256": "7736A01769BC43A81EE1DD7759AC44A1AA0DF657D0D9F657E64BA98644CB77F6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1920x1080-tab3.png",
+      "bytes": 254968
+    },
+    {
+      "sha256": "76E68D419E1DCC0879EB65782C1D3DFD0FEDD07667E9316DC98AE504EC73FCF0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-1920x1080-tab4.png",
+      "bytes": 198403
+    },
+    {
+      "sha256": "984198889F32BB801B263D661EF8B25D8B320671A5E46905AF6E37380AC4D315",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2048x1152-tab0.png",
+      "bytes": 302238
+    },
+    {
+      "sha256": "4FD81CF02BD562995FD880E44BF18FD64D18FD9D19EFE9953619DDC1FFA9D929",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2048x1152-tab1.png",
+      "bytes": 230998
+    },
+    {
+      "sha256": "AC74913273FF533407E3C07685BFBC68F39DFAE1A912F45AC4E60EC2AEAEF412",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2048x1152-tab2.png",
+      "bytes": 265503
+    },
+    {
+      "sha256": "7BDFAD8CB6D36418B83C04A4C211215ED804148F00FF53260F5498171311DC8E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2048x1152-tab3.png",
+      "bytes": 276909
+    },
+    {
+      "sha256": "9A0F981906E6A15AE09E83AF8CE75DE6EC2445269C0D39AD5C6EE2ABBB426B55",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2048x1152-tab4.png",
+      "bytes": 209157
+    },
+    {
+      "sha256": "B6BF25F6D121AB68695E59C061C3793D72BC4432AFB38FB06612B62A1094D068",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2560x1440-tab0.png",
+      "bytes": 371885
+    },
+    {
+      "sha256": "8E8FCEE41A846002FFE6B706FC555F81FC2BE737163A67B523EF25AE1E92D2BC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2560x1440-tab1.png",
+      "bytes": 273323
+    },
+    {
+      "sha256": "EC51797C9A6CEC0F4EC344FFE5F4703BB432910E1268CB0BCAC08D8881BB6E43",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2560x1440-tab2.png",
+      "bytes": 334419
+    },
+    {
+      "sha256": "D3F35E7ACA36E1B0CB7A732F193BE2A1E2AE792A8527AF6A91704DD5CC4F5CFE",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2560x1440-tab3.png",
+      "bytes": 390782
+    },
+    {
+      "sha256": "D56B1FD8A3437A9F4BEF4700C4992678CDFE22C292B7181633344A352897660B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-2560x1440-tab4.png",
+      "bytes": 249125
+    },
+    {
+      "sha256": "00296035AFDFA517F430AB5D10A958FEEFE6247D507D8F6DF0DCEA447810FF99",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-3840x2160-tab0.png",
+      "bytes": 475754
+    },
+    {
+      "sha256": "629BA2001F7F380C55CD6D6351D9CAE8DF82BE77310D1FE1A049F447E81420C2",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-3840x2160-tab1.png",
+      "bytes": 366109
+    },
+    {
+      "sha256": "AE6BD003A91F6DA6D9EC3886F80DBC7FC77EE44A16E17CF48D73F8A403B6C073",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-3840x2160-tab2.png",
+      "bytes": 432587
+    },
+    {
+      "sha256": "E0867277936D0902274BE0B430C03FC6D43EA1F377F81497FDA916203D99A8B9",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-3840x2160-tab3.png",
+      "bytes": 695378
+    },
+    {
+      "sha256": "F6AA0B6A20967B7568CDA70A1AA48E72DFFD9F66BD194B57AA4319433285B955",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-3840x2160-tab4.png",
+      "bytes": 341737
+    },
+    {
+      "sha256": "6C131C549651D0D599B0D06C003EF8A25D74F7E8746DE2F6BF2E1709348BDCEB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-state-dirty-1040x700.png",
+      "bytes": 167353
+    },
+    {
+      "sha256": "EEE3A684EB7208F43E288A21F469FFE59DD0DE3D0833202A03C64CADA9B35F51",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-state-invalid-1040x700.png",
+      "bytes": 175289
+    },
+    {
+      "sha256": "F86B0868517FC9F79EF2F74E4CF86537267428F59045C7EE9A981F33765124E7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-state-normal-1040x700.png",
+      "bytes": 167463
+    },
+    {
+      "sha256": "34F80288DC2054A255663E96AA925B0C6911726C2473D957463CD1B9A5020E39",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-theme-switch-dark-open-1040x700.png",
+      "bytes": 148420
+    },
+    {
+      "sha256": "A1CB1D94DE06789CF511C44C7C6C682DFA5A28BDD747201EB43E2C780C829244",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-theme-switch-dark-popup.png",
+      "bytes": 6201
+    },
+    {
+      "sha256": "F18A7A9597D16EB386E48C0E4E1A8E9AFBF5E6441E574E346C20022C71349220",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-theme-switch-dark-tooltip.png",
+      "bytes": 3081
+    },
+    {
+      "sha256": "F906700E330688A3A3151915DA0BA0D03CBFAF6D6BEE8BAB5E6BE8B2691A2157",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-theme-switch-light-open-1040x700.png",
+      "bytes": 123439
+    },
+    {
+      "sha256": "BCE61E8170837A95717C850AA816F608594E24D081CBB65CC39169BE77F4D886",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-theme-switch-light-popup.png",
+      "bytes": 5852
+    },
+    {
+      "sha256": "03987DD3F0141B43641EA6F5BA1704D8603A65582EE294B82FD1DA2299F1B37A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Settings-theme-switch-light-tooltip.png",
+      "bytes": 2821
+    },
+    {
+      "sha256": "16F6AB25B504955EFBEDD9EB60383E94DCBC47359DA3F9073311E0CCC15CBA23",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-1040x700.png",
+      "bytes": 64719
+    },
+    {
+      "sha256": "05FCD7B17CFD0E7CABD17D9D2FF8A64DC13A23177C111AD86619D4CD71E1D3E4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-1200x720.png",
+      "bytes": 67075
+    },
+    {
+      "sha256": "2FE20D5CD34803D39823A64C9E4AB253E2AEBAB59703F6B0935989EDAB723393",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-1279x720.png",
+      "bytes": 67473
+    },
+    {
+      "sha256": "3D446C9CC625835A589096A1B267C6CC786477156DFF0AB62FB14D2F1E975FA4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-1280x720.png",
+      "bytes": 67516
+    },
+    {
+      "sha256": "6D992B239F7A4D4754F965F1C92441E15C4E3B250F5CA5B51DBC309888EC63A6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-1366x768.png",
+      "bytes": 67439
+    },
+    {
+      "sha256": "1D5D390DC7E935CE5B491CF7E710DF93542A848856A7056CCA3CC3BA5163FFF7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-720x640.png",
+      "bytes": 62426
+    },
+    {
+      "sha256": "AEC4F96E3D1E22FF2C559C12F8D30FB4640004038F6F6871018B548FCD4197DC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-960x640.png",
+      "bytes": 65595
+    },
+    {
+      "sha256": "16B5027B10E99E4A461D901A4BC4DF275C2A478E4DC8D6D2E7557EA6B8D5853C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-980x640.png",
+      "bytes": 64129
+    },
+    {
+      "sha256": "1621CAFC48D07D5452B7C6D08488C5E9E61537177E38F008F2F50A2D8153F8BF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Diagnostics-1040x700-closed.png",
+      "bytes": 129617
+    },
+    {
+      "sha256": "A43666C1A0AC728AA903C2D3149B10909D94A81F57F6FE5D80745CF9801EC231",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Diagnostics-1040x700.png",
+      "bytes": 121838
+    },
+    {
+      "sha256": "D2845C09880095D84AC5E99805964A4FDEC1415167023E5F9D342392BAE2E030",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Diagnostics-1100x720-closed.png",
+      "bytes": 135617
+    },
+    {
+      "sha256": "AEB28D9D705248C82E8E3B92FB2ADD27EBF40DDC963CEB2993089560CD971E76",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Diagnostics-1100x720.png",
+      "bytes": 127848
+    },
+    {
+      "sha256": "06CB09EA5E7303858EBC9B75C79F369A10DBF608D73A612A67978FC6CF13A7AB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Diagnostics-1366x768-closed.png",
+      "bytes": 169232
+    },
+    {
+      "sha256": "06CB09EA5E7303858EBC9B75C79F369A10DBF608D73A612A67978FC6CF13A7AB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Diagnostics-1366x768.png",
+      "bytes": 169232
+    },
+    {
+      "sha256": "2F3BBA1045BD4C52DA62A8DDDC00D7EA9E4FC039DA677CA74D3D391F0944206C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Process-1040x700-closed.png",
+      "bytes": 126778
+    },
+    {
+      "sha256": "ECDBFC6810B69640D259E1366F2B9E816B0544E0FB9D943164B2A5FE4219E7AF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Process-1040x700.png",
+      "bytes": 116777
+    },
+    {
+      "sha256": "2C90C2EBFE53015C75FBFEA4DBA2F3A9B674C54FF6C554B2873663167F36FEF3",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Process-1100x720-closed.png",
+      "bytes": 127021
+    },
+    {
+      "sha256": "5E3B5DE9026361EDF68C55C94912869C397E5BB0FCE949FE7C4E018518BB1262",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Process-1100x720.png",
+      "bytes": 117801
+    },
+    {
+      "sha256": "9437CF089F59A454ADBC059A8B1D621EE4642B1714BE4DA3970C494A97907052",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Process-1366x768-closed.png",
+      "bytes": 159895
+    },
+    {
+      "sha256": "9437CF089F59A454ADBC059A8B1D621EE4642B1714BE4DA3970C494A97907052",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Maintenance-Process-1366x768.png",
+      "bytes": 159895
+    },
+    {
+      "sha256": "07F5639BB734AD2549AA915C66D98994B689E73A9FE811961AB4F4D2DDBC053D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Media-1040x700.png",
+      "bytes": 145083
+    },
+    {
+      "sha256": "EB3C3CC58E2BEEA7E367B736101E9512F37F37884D04E55D8F0C7DC8F5D31A10",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Media-1100x720.png",
+      "bytes": 150489
+    },
+    {
+      "sha256": "764F8BCB02FA13B463DC49C91DF881DDA26ECCDB5CE7ADAD207B8C20CB63A948",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Media-1366x768.png",
+      "bytes": 189087
+    },
+    {
+      "sha256": "9757364BD57B7E45A58EA813A6EE472FC40083A14806C5D86686FB06AC6222D4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Tasks-1040x700-closed.png",
+      "bytes": 141819
+    },
+    {
+      "sha256": "B51B00F185FBB6DF69740ABD70509A0D7AF51A54D6A703959A469EF69DB1E85A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Tasks-1040x700.png",
+      "bytes": 134459
+    },
+    {
+      "sha256": "36C84C8B3BC8E7A4FCBE7B3D33B5D808052E6DD791C9A0D8B479A2788E245018",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Tasks-1100x720-closed.png",
+      "bytes": 155975
+    },
+    {
+      "sha256": "6C7A7FA38C80B5E90216D8C4905CD39DDEBA46181075AC2AF1344D66570276F7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Tasks-1100x720.png",
+      "bytes": 140291
+    },
+    {
+      "sha256": "7338845CAB0A10F850ECEEB9D62B1E6D94399A8D10C77D9AEAA849BB29CDD04F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Shell-Tasks-1366x768-closed.png",
+      "bytes": 181316
+    },
+    {
+      "sha256": "AAF01C3C9D2474886406F5B819A9F67E99878E970F0DDC30EF6DD3181D905E93",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-1040x700.png",
+      "bytes": 64380
+    },
+    {
+      "sha256": "83FF1F11DB6B46DB0529BBA890FCDC6B7B7CDB416EE3FE8CA5B2AD24FB10C313",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-1100x720.png",
+      "bytes": 74773
+    },
+    {
+      "sha256": "D4ED83070325C51C44007159114025B447269BD07145B6F49AFAD40A68B7D53A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-1280x720.png",
+      "bytes": 79648
+    },
+    {
+      "sha256": "ADBCB88F063CE3592D49041D5A5AC0E6304E55C7BFFF040A41513FF756589D1D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-1366x768.png",
+      "bytes": 90480
+    },
+    {
+      "sha256": "44653D572FD837A43B7525D504E3684365944EE5E4CD83DD587200DF930946DA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-1536x864.png",
+      "bytes": 106277
+    },
+    {
+      "sha256": "118347E5AA1099F7E624D9A2E2F09D28152A054D288734D61DB30F29184FE7F8",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-1600x900.png",
+      "bytes": 124152
+    },
+    {
+      "sha256": "226B33EDE6BA0EC0E4739D58BBA8FC64F9ED151443B21CAA74085A0AAD7856DE",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-1707x960.png",
+      "bytes": 130409
+    },
+    {
+      "sha256": "F3CEB4A64B145F86E5DD5E5D34738B1B0B5BCC2C4A900EA7522B414D70404C7D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-1920x1080.png",
+      "bytes": 176031
+    },
+    {
+      "sha256": "BD6D3B1B4FC1F9B4565DB3F8A38CF6ADA7F68DAC306BA41E208700AF39356417",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-2048x1152.png",
+      "bytes": 179592
+    },
+    {
+      "sha256": "1112EBAD47912B454A465E224449629A0F6DEE674CE75B909A08277F9034E4EB",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-2560x1440.png",
+      "bytes": 192358
+    },
+    {
+      "sha256": "72C383024DD7E924CE38489D3035FEE0C8CD8C843C0E2CB3F9E42A030F4C76A5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Task-3840x2160.png",
+      "bytes": 220078
+    },
+    {
+      "sha256": "E5290D11DD3C707F5D4EA50263E701E83FF4EC30BE3329C1CB62E935A025C8A8",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1040x700-tab0.png",
+      "bytes": 65946
+    },
+    {
+      "sha256": "73BC3635EAD31F0F9BFD9053AB5451E2FEA32CE294412666D2A0201421465DAE",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1040x700-tab1.png",
+      "bytes": 45086
+    },
+    {
+      "sha256": "B062F06C04D93893CFA23C8E0622D91E31D531C668722D2024300810E2885B57",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1040x700-tab2.png",
+      "bytes": 45077
+    },
+    {
+      "sha256": "182517C5E8E677C7307463FB8B0EBB1A1D3CEADDD2986A67F317B2557982398B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1040x700-tab3.png",
+      "bytes": 41042
+    },
+    {
+      "sha256": "9D44F3846B3DD7AE81746A8436C45A2AEAEC65CEAB901F688634EA0F075072D7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1100x720-tab0.png",
+      "bytes": 66967
+    },
+    {
+      "sha256": "151F1F78108B175EAB0888DCC83AB22AF903815CEEC2E2AD9288D4C84A70AC7D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1100x720-tab1.png",
+      "bytes": 45411
+    },
+    {
+      "sha256": "02F2DE83E161F35D211C2E8E3B5EEE02E14A63CE9D484A5EB35E0F67E5750159",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1100x720-tab2.png",
+      "bytes": 46366
+    },
+    {
+      "sha256": "5FE27FAC60E4B2AD67E527BF07417836A16F6B4A5FB51C1D77575F6814EBF40F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1100x720-tab3.png",
+      "bytes": 41794
+    },
+    {
+      "sha256": "18C6DF99B012EDDA2107182A9C769EFB1068FE453DB7705829783A141BD22638",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1280x720-tab0.png",
+      "bytes": 67912
+    },
+    {
+      "sha256": "A11B35302BCE293F05140FE4DE6597EB773A3CAA1B280DBA2792A5C34F1C11D5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1280x720-tab1.png",
+      "bytes": 45941
+    },
+    {
+      "sha256": "BD77733E069057D702BD966A37DCD85493FEF4C52F7BF9C1277FEC6ADE7F2E02",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1280x720-tab2.png",
+      "bytes": 46960
+    },
+    {
+      "sha256": "1E26B22E42ACCA5536B537826B5B047E66ED546B07388793932487797FF0EACF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1280x720-tab3.png",
+      "bytes": 42662
+    },
+    {
+      "sha256": "9294ABE14D05AAE33267144758F00DEAE66A153CB4EE783AEBE16B4C7234CAB4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1366x768-tab0.png",
+      "bytes": 101692
+    },
+    {
+      "sha256": "3550302E1DD44FC5EEED8FF9791D9729415E80F0C0C524E92EB7EC8F4D829298",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1366x768-tab1.png",
+      "bytes": 47156
+    },
+    {
+      "sha256": "928DACD5B0273A88AB1FA17C4E966DF91D9C9C5A74A403BCD61C76C02407F4E4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1366x768-tab2.png",
+      "bytes": 57665
+    },
+    {
+      "sha256": "F65757CD081BF6B466D05E86A0E3F9904832D7D4E2031B365C154FA17907D31A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1366x768-tab3.png",
+      "bytes": 73319
+    },
+    {
+      "sha256": "5BC4B882A3F1C47E71F083172ACD297AD96584D1E2BFA44A2F776BF2255CFAFC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1536x864-tab0.png",
+      "bytes": 127929
+    },
+    {
+      "sha256": "4E552811B73F31C10D3407924DEF8B4523FAB5CDBF22F6F98F8323FC8F6482B1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1536x864-tab1.png",
+      "bytes": 49245
+    },
+    {
+      "sha256": "429CB7D0C2A6966257E78991FA46F26B4092F7EB91F5CB2A5AB024B0A750AEED",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1536x864-tab2.png",
+      "bytes": 70204
+    },
+    {
+      "sha256": "243259767222A6B3E2026DB184AC5550AF9316DC477B614E308B1F1152CB6CB1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1536x864-tab3.png",
+      "bytes": 80658
+    },
+    {
+      "sha256": "BBB7B318E6B8F87A14BF0AA6697BC26A74BC693CE7DEE88C8EB5FCF703BDD517",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1600x900-tab0.png",
+      "bytes": 139969
+    },
+    {
+      "sha256": "E47C200602A132E93CFDB623BA1677322892318522A90D780C9C5C8B8D058405",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1600x900-tab1.png",
+      "bytes": 49819
+    },
+    {
+      "sha256": "EC623588573ED931A8A542CE16C1680705172CFD60E49B3E8BD7DC928C2A09E5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1600x900-tab2.png",
+      "bytes": 71408
+    },
+    {
+      "sha256": "71A4344750303B215FC6670B81165CD80B1C8E7E7D8395E5D2CAB3B7137AAE8B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1600x900-tab3.png",
+      "bytes": 84157
+    },
+    {
+      "sha256": "0B40DC718BBEE3CA45DC22A5B4E661BD62555E6F4277B15D0C41354B8256E8ED",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1707x960-tab0.png",
+      "bytes": 152499
+    },
+    {
+      "sha256": "6442D478B3FCDF7FF36484EBFE342BC4AEF9D183E2FBAF403CA8FC56712437EF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1707x960-tab1.png",
+      "bytes": 50875
+    },
+    {
+      "sha256": "14EFDAF439D36AD041250B5624E366703275E4444A7584BC490C304C7C97A9A8",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1707x960-tab2.png",
+      "bytes": 82974
+    },
+    {
+      "sha256": "1ACB40321F04F1F225363C8F69FAFEBC2AE25AC3F2C50A3816A237EE85B5ABEC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1707x960-tab3.png",
+      "bytes": 88691
+    },
+    {
+      "sha256": "29B439C8FF18BB92A3884E6481C6E56064E4B12165020305B4D9A1B55CFFE130",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1920x1080-tab0.png",
+      "bytes": 164296
+    },
+    {
+      "sha256": "C52EE722F9366A63EC9DA86915DC0A6D17A955E73C84D66CA57777653FC58A1A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1920x1080-tab1.png",
+      "bytes": 53052
+    },
+    {
+      "sha256": "BECCEDF175875A1C4933DE370118BE47A8B5B6FEAA839C48FB851E85C70B6A8C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1920x1080-tab2.png",
+      "bytes": 97148
+    },
+    {
+      "sha256": "9762979BEA952646633734B1243068AB56B099CCDBFBA5CC3A940278076C39CA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-1920x1080-tab3.png",
+      "bytes": 98530
+    },
+    {
+      "sha256": "04A5DC885FEB26BC60826CE5AD229084D19A0DDF6360EB8528B1DF1CA4F33A8D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-2048x1152-tab0.png",
+      "bytes": 167499
+    },
+    {
+      "sha256": "06EA6C5BFC3B075F02231E947A05C8827A5B143D1B02C8B35CDF3886F31DF1A0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-2048x1152-tab1.png",
+      "bytes": 54243
+    },
+    {
+      "sha256": "98BEA311907ADA137124FBF6916AA494308AE84EAA687C81F6B80415AC5C887F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-2048x1152-tab2.png",
+      "bytes": 107116
+    },
+    {
+      "sha256": "48B22B981D83CB379DBD3523863312EA6E7F6C8BCBA8FF297C63CA797E65ACD5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-2048x1152-tab3.png",
+      "bytes": 101735
+    },
+    {
+      "sha256": "E11F0977ABDF34AFE9ECB66B28F3017A6CB4EBA9FF89BD83473C60BC5F1354B6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-2560x1440-tab0.png",
+      "bytes": 175917
+    },
+    {
+      "sha256": "A966BB4CB1AA0B32EE2AF580AEAF6D2FF0EE5D7D2CDF8B64BD104C2FCD901FAC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-2560x1440-tab1.png",
+      "bytes": 60418
+    },
+    {
+      "sha256": "ADD3CF103C6794D5785E37B849CF2449E0E02E4454263D1A3D67EFC449AE9772",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-2560x1440-tab2.png",
+      "bytes": 129013
+    },
+    {
+      "sha256": "EB4CAFB2CA38ECA189D189E665C813330FF6B6FA8EE0CE0E66E4432C0984C21E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-2560x1440-tab3.png",
+      "bytes": 108848
+    },
+    {
+      "sha256": "E7CE4E7744B1C7763B08D65EA6AD82C78B7A943B0EB404CA113783382DCF53E6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-3840x2160-tab0.png",
+      "bytes": 198791
+    },
+    {
+      "sha256": "EE0580BBA9F5DFF7C904D263D8247B4A8FE2754FC701D9F6263F7E0E1F79A777",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-3840x2160-tab1.png",
+      "bytes": 78904
+    },
+    {
+      "sha256": "318FF88BFFF4B6B0289BBCEC78FC3B4C6C9989A43FCBCBB6D94A488D3479CB5D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-3840x2160-tab2.png",
+      "bytes": 149099
+    },
+    {
+      "sha256": "9B0DAD801EFA09CEABB9492259E954D99DD07FE5143B6A090B14D1DAFBEC6C40",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\Trainer-3840x2160-tab3.png",
+      "bytes": 128573
+    },
+    {
+      "sha256": "DFEE1F79C8135CF2803AAF432167C1B4508F05F79449AA140D0D486D6586C8B7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Maintenance-1040x700.png",
+      "bytes": 60718
+    },
+    {
+      "sha256": "AFA6ECA33EF93C254B2D3594EC1535C2458635099BF27467EF14FE944147F7A4",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Maintenance-1100x720.png",
+      "bytes": 63902
+    },
+    {
+      "sha256": "2F0DDD62E9A0E03A683CA24BA1F70785AC3D11844CA6A88CF33497E0B4BDE635",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Maintenance-1366x768.png",
+      "bytes": 94866
+    },
+    {
+      "sha256": "91C0E71B2299A3B9F17BDAE48CDDAB9974FE23AC8BA5234A67E54E01EFA6340C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Maintenance-2560x1440.png",
+      "bytes": 122103
+    },
+    {
+      "sha256": "09C4046EA6D523B2F79D93A52A9BBB7D1A4E4500AA8F2947FA88BE20008969FA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Maintenance-CloudQueue-1040x700.png",
+      "bytes": 73517
+    },
+    {
+      "sha256": "3B6E7D0D8A5671E11A75D5317BB9FE67DA15EED570FFD064425D8490DECEF7DA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Media-1040x700.png",
+      "bytes": 72860
+    },
+    {
+      "sha256": "A17AE1793A9622A10287EB3EA362FD97A485075FBA9D142CCC996189A0E9FCB6",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Media-1100x720.png",
+      "bytes": 82228
+    },
+    {
+      "sha256": "3EC84DC4DAC7C51D9386CA856852902D610CA902238637FCC907533EF72A0D7E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Media-1366x768.png",
+      "bytes": 101564
+    },
+    {
+      "sha256": "2D56F5BDA796516537F386794F5164C3A86869164983686ECF28279C8F78D0CA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Media-2560x1440.png",
+      "bytes": 249200
+    },
+    {
+      "sha256": "299032DDC9ABB5C3ACF81244DAF074710E07104C3A5E3133422A71EFEF6F593A",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Overview-1040x700.png",
+      "bytes": 60992
+    },
+    {
+      "sha256": "DEE73E45E49184CA6971B0CF6AA7123F6F2C710FE296F704DB715E06DB8E79D5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Overview-1100x720.png",
+      "bytes": 66747
+    },
+    {
+      "sha256": "C4D069A32977C6E28D04C542D6F41E3FD0E2ED4EE7DC44079A47F738140FB8AD",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Overview-1366x768.png",
+      "bytes": 76176
+    },
+    {
+      "sha256": "A8B8D3ED6130CC7031E80D8A7688D863CEDE64CD334D6A8F41F12C5C09568D59",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Overview-2560x1440.png",
+      "bytes": 265009
+    },
+    {
+      "sha256": "AA5E4D765AAB3EDA2C70557DC05998F61EB76D7A04D62E0DFDCC3E039B911726",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Save-1040x700.png",
+      "bytes": 70857
+    },
+    {
+      "sha256": "EBD52A3916F6176C268AE4DFAD60EB5BBAC4A5F8B69714816A986FBC93E598E7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Save-1100x720.png",
+      "bytes": 80581
+    },
+    {
+      "sha256": "A35C3102B68EE6C2DB17A417C1FEF9F379A40C14D7570379754DACE447C9FC68",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Save-1366x768.png",
+      "bytes": 113766
+    },
+    {
+      "sha256": "925B2A9BE725926DA675D56F6C8F438082F5D58D8710F352D9B9ECAFA8951C5C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Save-2560x1440.png",
+      "bytes": 311744
+    },
+    {
+      "sha256": "6A9FD785DBE2028202E6C7421B0759BCAFAC9F1C81E3E54755BC1CC447043862",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Settings-1040x700.png",
+      "bytes": 94847
+    },
+    {
+      "sha256": "62E0FEB05FA60F75577B7E04A9414B31BFC7A0C141623C2B172F48537CC74756",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Settings-1100x720.png",
+      "bytes": 108682
+    },
+    {
+      "sha256": "EA382871191E30E8B46242C83ECC4545ED3C2C50EB93ECF8D3125D189FD6449F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Settings-1366x768.png",
+      "bytes": 141212
+    },
+    {
+      "sha256": "E8F2031DB755DD2143F1B69CEBED50160CBD48BE8FA34E1164A487505FED1007",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Settings-2560x1440.png",
+      "bytes": 370922
+    },
+    {
+      "sha256": "B811AFB3DF8A9BCAAC70957CBFF4924FA2B09E9E1654272E5C23AA0AF188A7EA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Shell-Background-1040x700.png",
+      "bytes": 76351
+    },
+    {
+      "sha256": "9EC0A992D62A05F248DB231C50A12BDF61F38A457C6C677A6F644F692B1D9A24",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Task-1040x700.png",
+      "bytes": 69996
+    },
+    {
+      "sha256": "14A67136F21AC3CB300280CD2B41806DE930032688986AB389D021329ED9A0D1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Task-1100x720.png",
+      "bytes": 80490
+    },
+    {
+      "sha256": "2C5ECC7935BD615271D19CA87888CEA88838BFEFA9D4AC365AEEF5FF6F5B5CF0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Task-1366x768.png",
+      "bytes": 101039
+    },
+    {
+      "sha256": "101603FCDAEFFE28DE50F5FED2B833BC51D4FB81CDF5656D7DC5C1341A1F04EC",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Task-2560x1440.png",
+      "bytes": 209384
+    },
+    {
+      "sha256": "5170A1B48B055AB5FF5333AB17AC6A8BA0711178EB88EA45784029521E48451B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Trainer-1040x700.png",
+      "bytes": 77252
+    },
+    {
+      "sha256": "DCAD45F7D51C49F3508C61A142B63078F1BF8A8FC2C4197BAE6A706F78F1471E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Trainer-1100x720.png",
+      "bytes": 78239
+    },
+    {
+      "sha256": "71E8360E5A1FD654EF15FA1B74BF65B5140DA9ACB82D3BE0CA4F786EF2F3FA0C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Trainer-1366x768.png",
+      "bytes": 113241
+    },
+    {
+      "sha256": "474250B52F8AFC816D851E52268CA60BCC26FE21071BF06823C9100EC2F2809F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\dark\\Trainer-2560x1440.png",
+      "bytes": 190350
+    },
+    {
+      "sha256": "0984772936C42E07F4CDDACD8D1B1BD9D626C81B02CC9FAF4DB43197D803E959",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Maintenance-1040x700.png",
+      "bytes": 58975
+    },
+    {
+      "sha256": "407266AD7FBA2E62A3AE1D744B2FD832BD2EAC8A6D8AF2CAE5823E98887F6A11",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Maintenance-1100x720.png",
+      "bytes": 62109
+    },
+    {
+      "sha256": "D4D54BCC5136E14E4D1E5172B30377627508247C60DBB9CF45B51D3B853891CF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Maintenance-1366x768.png",
+      "bytes": 90615
+    },
+    {
+      "sha256": "F15D700F425EF02649313DAE67CF11DD16B6C18C42AA94F49DFB47A15B49FFFF",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Maintenance-2560x1440.png",
+      "bytes": 118239
+    },
+    {
+      "sha256": "FCF692FB4C74D7D2D9E1BC60C20B8EF1A73107ABD5F031414C1B31C4159250F1",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Maintenance-CloudQueue-1040x700.png",
+      "bytes": 69516
+    },
+    {
+      "sha256": "4D35CFCA30032540F2F3C55C483FBA811FB8C15A969821D730DC0737FE09E2A0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Media-1040x700.png",
+      "bytes": 69532
+    },
+    {
+      "sha256": "7E27241C3066EC946C65EB2FB9788D8D1B5AFA68BB09BD32854FD98DF442DD94",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Media-1100x720.png",
+      "bytes": 78193
+    },
+    {
+      "sha256": "4D0408D300AD28D27BE1FA4C5E4DC14C7A7A346152D77AF1AE30C5991BB91547",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Media-1366x768.png",
+      "bytes": 97066
+    },
+    {
+      "sha256": "D3141089E1B594BED6F10D1C350CE59A02B315C23B217F26903C94191E08476B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Media-2560x1440.png",
+      "bytes": 240763
+    },
+    {
+      "sha256": "033E259779597D4DB1B9C7F346DA0E7DCED9075AB418569B1CA89C72E93DC52D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Overview-1040x700.png",
+      "bytes": 58432
+    },
+    {
+      "sha256": "57D881E785FA6BF4ABCC25EBBB4F7EB02FAADB210C7FEAECA2218682C97D158F",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Overview-1100x720.png",
+      "bytes": 63713
+    },
+    {
+      "sha256": "F022E140D6DD824F2035FD675E36764BF40A91D0AFC4EA757904E819386A8FCA",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Overview-1366x768.png",
+      "bytes": 72923
+    },
+    {
+      "sha256": "E7A409445A65707B471C276CA9629453BBF2D00EB8C79DC770F7F349D7C264E0",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Overview-2560x1440.png",
+      "bytes": 251581
+    },
+    {
+      "sha256": "CB9BD17DF1D8C23F160886F101A679B1E762F7739A3F750FBA9AB0A896484FC7",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Save-1040x700.png",
+      "bytes": 66238
+    },
+    {
+      "sha256": "832EF66CD5B4FB3ED81D76FF028C24ED38DCBDD9E4F72E68F2F4D694D77C28D5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Save-1100x720.png",
+      "bytes": 75364
+    },
+    {
+      "sha256": "CB52FFB81D960964F522B89C04E10AF1F2208D833FD66AC3F80F57FEA48D6335",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Save-1366x768.png",
+      "bytes": 107238
+    },
+    {
+      "sha256": "1313533A608A9D7833BF5904A68A5C6984326AEF8C2693E99C403CB19AF89A3C",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Save-2560x1440.png",
+      "bytes": 295910
+    },
+    {
+      "sha256": "B5ED94530DD3BD45CD6A1881F70BC49DD3910E28E831AE4A427E8BABC4592347",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Settings-1040x700.png",
+      "bytes": 74551
+    },
+    {
+      "sha256": "711BCE60A8C030F6F4ABF52077F96576D797B5B6D574E25E233A954CE4B0458E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Settings-1100x720.png",
+      "bytes": 87540
+    },
+    {
+      "sha256": "132D60A71BDDA6404956CB9B372E6B9588C72FAB06E1B12C16F380278A91CE82",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Settings-1366x768.png",
+      "bytes": 114558
+    },
+    {
+      "sha256": "4A32B99570F4B2C1D6F774D32765BFB6A8CDA48CDC7A2F1AE3233049DBA48F87",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Settings-2560x1440.png",
+      "bytes": 299767
+    },
+    {
+      "sha256": "A6A7C8B61C5E93077D888EA918C2A23B0A94F0DF0FBE4BE8C8060BA4DB58C6F5",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Shell-Background-1040x700.png",
+      "bytes": 59911
+    },
+    {
+      "sha256": "1B412AB78B7A3114D7D56A9A8DA90832A4E1339BCD5896C393DC121CBEF2E167",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Task-1040x700.png",
+      "bytes": 66001
+    },
+    {
+      "sha256": "A16D4D1B7C166A68E89500BEB7378E9A4B2A792108D363EC788C51DEABB8193E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Task-1100x720.png",
+      "bytes": 76142
+    },
+    {
+      "sha256": "F59B9950342907395890F21F0CDDB13795CDDF01E113DBC3865DA2D46D64C368",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Task-1366x768.png",
+      "bytes": 98182
+    },
+    {
+      "sha256": "5893DE75C1973D177C6AB9836422518C7F155A8EC906A07E5FF96E331D7E7C2E",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Task-2560x1440.png",
+      "bytes": 200809
+    },
+    {
+      "sha256": "69CDCAAFDB0F4968BDCEC6203F4E6C571D1CF72C3835E6C20F1C5722353C6B8D",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Trainer-1040x700.png",
+      "bytes": 74214
+    },
+    {
+      "sha256": "F9CD13535A3FD0A203F0EC71A13858AA9D42F8368C1F018863CE730C5BAAC593",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Trainer-1100x720.png",
+      "bytes": 75060
+    },
+    {
+      "sha256": "6BB694E26BA46A7A5F330E9CEE4E2A637081ADAA52EB5B7E1A753F04FC0F521B",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Trainer-1366x768.png",
+      "bytes": 107818
+    },
+    {
+      "sha256": "D35C4DFF8356CC5C06E34FB9753839C9A4B0AE368CFBA7CD000560F33098A443",
+      "path": ".tmp\\u04-indicator-gap-20261029\\render\\theme\\light\\Trainer-2560x1440.png",
+      "bytes": 179663
+    }
+  ],
+  "preserved": [],
+  "after": [
+    {
+      "Name": "C",
+      "Free": 7404433408
+    },
+    {
+      "Name": "D",
+      "Free": 18786607104
+    }
+  ],
+  "referenceCheck": "Only superseded capture PNGs; raw provenance paths retained in manifests. Current baseline/candidate and final-render directories excluded.",
+  "retained": "all CSV/logs/TRX, latest394 render PNGs, accepted paired controls, source snapshots and unknown files",
+  "utc": "2026-10-29T13:23:37.0042538Z"
+}

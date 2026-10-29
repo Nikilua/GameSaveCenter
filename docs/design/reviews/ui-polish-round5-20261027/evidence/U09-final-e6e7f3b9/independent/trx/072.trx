@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ab079678-3305-4d94-a8e2-9cffd3fadcc4" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T18:20:10.3903856+08:00" queuing="2026-10-29T18:20:10.3903862+08:00" start="2026-10-29T18:20:05.7322036+08:00" finish="2026-10-29T18:20:10.6054423+08:00" />
+  <TestSettings name="default" id="743c1698-6e21-4867-9a50-7d16a5e60f99">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="55b77a7d-91b0-4460-8db3-ff3d6b4400de" testId="2868ba20-ccba-398f-a985-7bd9250671d9" testName="GameSaveCenter.Playnite.Tests.R07ScrollOwnershipBehaviorTests.DataGridTransfersWheelAtBoundaryToItsPageSurface" computerName="redacted-host" duration="00:00:02.0600000" startTime="2026-10-29T18:20:08.3107716+08:00" endTime="2026-10-29T18:20:10.3359110+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55b77a7d-91b0-4460-8db3-ff3d6b4400de" />
+    <UnitTestResult executionId="20e72ab9-3e9b-4259-acc1-1afc5588586c" testId="8c42cd6f-d2d7-3a4d-ef2f-b98bf775b607" testName="GameSaveCenter.Playnite.Tests.R07ScrollOwnershipBehaviorTests.NestedSurfaceTransfersWheelOnlyAtItsVerticalBoundary" computerName="redacted-host" duration="00:00:00.0680000" startTime="2026-10-29T18:20:10.3877614+08:00" endTime="2026-10-29T18:20:10.4043722+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="20e72ab9-3e9b-4259-acc1-1afc5588586c" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07ScrollOwnershipBehaviorTests.NestedSurfaceTransfersWheelOnlyAtItsVerticalBoundary" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="8c42cd6f-d2d7-3a4d-ef2f-b98bf775b607">
+      <Execution id="20e72ab9-3e9b-4259-acc1-1afc5588586c" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07ScrollOwnershipBehaviorTests" name="NestedSurfaceTransfersWheelOnlyAtItsVerticalBoundary" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07ScrollOwnershipBehaviorTests.DataGridTransfersWheelAtBoundaryToItsPageSurface" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="2868ba20-ccba-398f-a985-7bd9250671d9">
+      <Execution id="55b77a7d-91b0-4460-8db3-ff3d6b4400de" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07ScrollOwnershipBehaviorTests" name="DataGridTransfersWheelAtBoundaryToItsPageSurface" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2868ba20-ccba-398f-a985-7bd9250671d9" executionId="55b77a7d-91b0-4460-8db3-ff3d6b4400de" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8c42cd6f-d2d7-3a4d-ef2f-b98bf775b607" executionId="20e72ab9-3e9b-4259-acc1-1afc5588586c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.49]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.92]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.97]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.18]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T18:20:10.5674615+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

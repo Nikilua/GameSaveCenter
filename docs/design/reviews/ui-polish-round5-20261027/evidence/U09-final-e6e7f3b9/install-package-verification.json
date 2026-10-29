@@ -1,0 +1,46 @@
+{
+  "commit": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+  "package": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\GameSaveCenter-0.6.73.pext",
+  "packageBytes": 45737323,
+  "packageSha256": "ebf2ca9b1a745a1de0d2673a90eb6f2172d803ea90361b4b08608b9b722e0f07",
+  "installedRoot": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+  "assemblies": [
+    {
+      "relativePath": "GameSaveCenter.Playnite.dll",
+      "packageSha256": "d6c6fdbf311c63c694803ae2d06c5282f7fb778b5bbc989eeb42e3d2e37dd65d",
+      "installedSha256": "d6c6fdbf311c63c694803ae2d06c5282f7fb778b5bbc989eeb42e3d2e37dd65d",
+      "byteEqual": true
+    },
+    {
+      "relativePath": "GameSaveCenter.Core.dll",
+      "packageSha256": "4701b0e21adbb5bcba57bdc0df63ef115bb9ffe7dde04ad0aa85545d58bef9dc",
+      "installedSha256": "4701b0e21adbb5bcba57bdc0df63ef115bb9ffe7dde04ad0aa85545d58bef9dc",
+      "byteEqual": true
+    },
+    {
+      "relativePath": "GameSaveCenter.Contracts.dll",
+      "packageSha256": "e3c242113bd1a9802d8e65c8bc95bab786a56335e3f5eb73af11d52bce489750",
+      "installedSha256": "e3c242113bd1a9802d8e65c8bc95bab786a56335e3f5eb73af11d52bce489750",
+      "byteEqual": true
+    },
+    {
+      "relativePath": "Worker/GameSaveCenter.Worker.dll",
+      "packageSha256": "3a31505a1d9a0adf0ff10504b492e331ea04fc6fad1e716784dab247b192dd2a",
+      "installedSha256": "3a31505a1d9a0adf0ff10504b492e331ea04fc6fad1e716784dab247b192dd2a",
+      "byteEqual": true
+    },
+    {
+      "relativePath": "Worker/GameSaveCenter.Core.dll",
+      "packageSha256": "e8eae8c9340b02956482a1a37753f7643909cabc02fbe1b0e9585c496660999e",
+      "installedSha256": "e8eae8c9340b02956482a1a37753f7643909cabc02fbe1b0e9585c496660999e",
+      "byteEqual": true
+    },
+    {
+      "relativePath": "Worker/GameSaveCenter.Contracts.dll",
+      "packageSha256": "015d2d4c483ee73cb12f3e3a6704fc102e0830cc9b6f960e1fd7b2cfbc74b9ff",
+      "installedSha256": "015d2d4c483ee73cb12f3e3a6704fc102e0830cc9b6f960e1fd7b2cfbc74b9ff",
+      "byteEqual": true
+    }
+  ],
+  "boundary": "disk and package byte equality; runtime loaded module SHA not inferred"
+}

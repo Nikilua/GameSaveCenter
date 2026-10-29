@@ -1,0 +1,454 @@
+{
+  "queriedAt": "2026-10-29T10:49:00Z",
+  "sourceCommit": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+  "workflowPath": ".github/workflows/windows-build.yml",
+  "run": {
+    "id": 40851428895,
+    "name": "Windows 构建验证",
+    "node_id": "WFR_kwLOTkdnac8AAAAJgu9WHw",
+    "head_branch": "main",
+    "head_sha": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+    "path": ".github/workflows/windows-build.yml",
+    "display_title": "合并主题资源更新，减少重复刷新",
+    "run_number": 1394,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "workflow_id": 321079489,
+    "check_suite_id": 110731509923,
+    "check_suite_node_id": "CS_kwDOTkdnac8AAAAZyBzAow",
+    "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/runs/40851428895",
+    "html_url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40851428895",
+    "pull_requests": [],
+    "created_at": "2026-10-29T09:40:04Z",
+    "updated_at": "2026-10-29T10:44:54Z",
+    "actor": {
+      "login": "Nikilua",
+      "id": 56751693,
+      "node_id": "MDQ6VXNlcjU2NzUxNjkz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56751693?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Nikilua",
+      "html_url": "https://github.com/Nikilua",
+      "followers_url": "https://api.github.com/users/Nikilua/followers",
+      "following_url": "https://api.github.com/users/Nikilua/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Nikilua/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Nikilua/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Nikilua/subscriptions",
+      "organizations_url": "https://api.github.com/users/Nikilua/orgs",
+      "repos_url": "https://api.github.com/users/Nikilua/repos",
+      "events_url": "https://api.github.com/users/Nikilua/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Nikilua/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "run_attempt": 1,
+    "referenced_workflows": [],
+    "run_started_at": "2026-10-29T09:40:04Z",
+    "triggering_actor": {
+      "login": "Nikilua",
+      "id": 56751693,
+      "node_id": "MDQ6VXNlcjU2NzUxNjkz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56751693?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Nikilua",
+      "html_url": "https://github.com/Nikilua",
+      "followers_url": "https://api.github.com/users/Nikilua/followers",
+      "following_url": "https://api.github.com/users/Nikilua/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Nikilua/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Nikilua/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Nikilua/subscriptions",
+      "organizations_url": "https://api.github.com/users/Nikilua/orgs",
+      "repos_url": "https://api.github.com/users/Nikilua/repos",
+      "events_url": "https://api.github.com/users/Nikilua/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Nikilua/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "jobs_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/runs/40851428895/jobs",
+    "logs_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/runs/40851428895/logs",
+    "check_suite_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/check-suites/110731509923",
+    "artifacts_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/runs/40851428895/artifacts",
+    "cancel_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/runs/40851428895/cancel",
+    "rerun_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/runs/40851428895/rerun",
+    "previous_attempt_url": null,
+    "workflow_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/workflows/321079489",
+    "head_commit": {
+      "id": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+      "tree_id": "722f686ae2b901d7f0a7ceb4519bc5f98f2644d2",
+      "message": "合并主题资源更新，减少重复刷新",
+      "timestamp": "2026-10-29T09:39:54Z",
+      "author": {
+        "name": "Sable Drift",
+        "email": "sable-drift@users.noreply.github.com"
+      },
+      "committer": {
+        "name": "Sable Drift",
+        "email": "sable-drift@users.noreply.github.com"
+      }
+    },
+    "repository": {
+      "id": 1313302377,
+      "node_id": "R_kgDOTkdnaQ",
+      "name": "GameSaveCenter",
+      "full_name": "Nikilua/GameSaveCenter",
+      "private": false,
+      "owner": {
+        "login": "Nikilua",
+        "id": 56751693,
+        "node_id": "MDQ6VXNlcjU2NzUxNjkz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/56751693?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Nikilua",
+        "html_url": "https://github.com/Nikilua",
+        "followers_url": "https://api.github.com/users/Nikilua/followers",
+        "following_url": "https://api.github.com/users/Nikilua/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Nikilua/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Nikilua/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Nikilua/subscriptions",
+        "organizations_url": "https://api.github.com/users/Nikilua/orgs",
+        "repos_url": "https://api.github.com/users/Nikilua/repos",
+        "events_url": "https://api.github.com/users/Nikilua/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Nikilua/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Nikilua/GameSaveCenter",
+      "description": null,
+      "fork": false,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter",
+      "forks_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/forks",
+      "keys_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/teams",
+      "hooks_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/hooks",
+      "issue_events_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/events",
+      "assignees_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/tags",
+      "blobs_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/languages",
+      "stargazers_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/stargazers",
+      "contributors_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/contributors",
+      "subscribers_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/subscribers",
+      "subscription_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/subscription",
+      "commits_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/merges",
+      "archive_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/downloads",
+      "issues_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/deployments"
+    },
+    "head_repository": {
+      "id": 1313302377,
+      "node_id": "R_kgDOTkdnaQ",
+      "name": "GameSaveCenter",
+      "full_name": "Nikilua/GameSaveCenter",
+      "private": false,
+      "owner": {
+        "login": "Nikilua",
+        "id": 56751693,
+        "node_id": "MDQ6VXNlcjU2NzUxNjkz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/56751693?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Nikilua",
+        "html_url": "https://github.com/Nikilua",
+        "followers_url": "https://api.github.com/users/Nikilua/followers",
+        "following_url": "https://api.github.com/users/Nikilua/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Nikilua/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Nikilua/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Nikilua/subscriptions",
+        "organizations_url": "https://api.github.com/users/Nikilua/orgs",
+        "repos_url": "https://api.github.com/users/Nikilua/repos",
+        "events_url": "https://api.github.com/users/Nikilua/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Nikilua/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/Nikilua/GameSaveCenter",
+      "description": null,
+      "fork": false,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter",
+      "forks_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/forks",
+      "keys_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/teams",
+      "hooks_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/hooks",
+      "issue_events_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/events",
+      "assignees_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/tags",
+      "blobs_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/languages",
+      "stargazers_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/stargazers",
+      "contributors_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/contributors",
+      "subscribers_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/subscribers",
+      "subscription_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/subscription",
+      "commits_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/merges",
+      "archive_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/downloads",
+      "issues_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/labels{/name}",
+      "releases_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/deployments"
+    }
+  },
+  "jobs": [
+    {
+      "id": 123371589585,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40851428895,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "检出代码",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "安装 .NET SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "源码结构检查",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "诊断采集自测",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "SDK 基线与缺失负例",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "编译与测试",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "离屏渲染 QA",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "WPF UI 静态审查",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "生成 Playnite 扩展包",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "上传构建产物",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "保留构建与测试诊断（包括失败）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Post 安装 .NET SDK",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        },
+        {
+          "name": "Post 检出代码",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25
+        }
+      ]
+    },
+    {
+      "id": 123371590197,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 40851428895,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "检出代码",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "安装 .NET SDK 10.0.401",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "隔离工作树并运行 Release 编译与测试",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "保留 SDK 10.0.401 构建诊断（包括失败）",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Post 安装 .NET SDK 10.0.401",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Post 检出代码",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12890528012,
+      "name": "GameSaveCenter-windows-preview",
+      "size_in_bytes": 90789458,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12890528012",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12890528012/zip",
+      "expired": false,
+      "created_at": "2026-10-29T10:44:47Z",
+      "expires_at": "2027-01-27T09:40:05Z",
+      "updated_at": "2026-10-29T10:44:47Z",
+      "digest": "sha256:529b245b4682ece863219e2ab4a010e14e68fbf30e582c954cf46878a707451a",
+      "workflow_run": {
+        "id": 40851428895,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "e6e7f3b931ec767aea353d0998bc12800df16a21"
+      }
+    },
+    {
+      "id": 12890044489,
+      "name": "GameSaveCenter-build-diagnostics",
+      "size_in_bytes": 2029054,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12890044489",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12890044489/zip",
+      "expired": false,
+      "created_at": "2026-10-29T10:44:50Z",
+      "expires_at": "2026-11-12T10:44:48Z",
+      "updated_at": "2026-10-29T10:44:50Z",
+      "digest": "sha256:e605b6100e6c284295460ac66204f88fa09e0ae0dd5addb8fe80cdace019eaa0",
+      "workflow_run": {
+        "id": 40851428895,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "e6e7f3b931ec767aea353d0998bc12800df16a21"
+      }
+    },
+    {
+      "id": 12888483995,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "size_in_bytes": 971514,
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12888483995",
+      "archive_download_url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/12888483995/zip",
+      "expired": false,
+      "created_at": "2026-10-29T10:08:09Z",
+      "expires_at": "2026-11-12T10:08:08Z",
+      "updated_at": "2026-10-29T10:08:09Z",
+      "digest": "sha256:6afce11b5862ffec0d98e8f194e1ff021f1bbb18534222d429f2b4c416228eb4",
+      "workflow_run": {
+        "id": 40851428895,
+        "repository_id": 1313302377,
+        "head_repository_id": 1313302377,
+        "head_branch": "main",
+        "head_sha": "e6e7f3b931ec767aea353d0998bc12800df16a21"
+      }
+    }
+  ],
+  "requiredChecks": {
+    "status": "远端待验",
+    "reason": "Previously 403 Resource not accessible by integration; not re-probed",
+    "nextCommand": "gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks"
+  },
+  "boundary": "Both applicable workflow jobs verified; branch-protection required-check list unavailable. Artifact metadata/digests verified, no local-vs-CI binary equality inferred."
+}

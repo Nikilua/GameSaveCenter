@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="7a31e1e4-f06a-4dcb-862f-143d2a91093f" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T17:59:43.3290231+08:00" queuing="2026-10-29T17:59:43.3290236+08:00" start="2026-10-29T17:59:37.5920427+08:00" finish="2026-10-29T17:59:45.2304190+08:00" />
+  <TestSettings name="default" id="49663bbf-0d71-465e-8550-d342613a7138">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e5d5299b-426d-497f-b292-26f166beb62f" testId="685553f3-b876-9828-2a1d-0edac51ef0a3" testName="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests.SaveHistoryShowsLocalSuccessAndScopedCloudRetryWhenCloudUploadIsQueued" computerName="redacted-host" duration="00:00:00.5220000" startTime="2026-10-29T17:59:43.3135127+08:00" endTime="2026-10-29T17:59:43.7978436+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e5d5299b-426d-497f-b292-26f166beb62f" />
+    <UnitTestResult executionId="bffddf76-12fd-4b04-ba47-474aa421b444" testId="3bb499fe-b12e-580b-53af-3a7281c82b39" testName="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests.EmptyPreviewDoesNotPretendScanningFinishedAndNoDataStaysExplicit" computerName="redacted-host" duration="00:00:03.2010000" startTime="2026-10-29T17:59:40.1053094+08:00" endTime="2026-10-29T17:59:43.2760886+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bffddf76-12fd-4b04-ba47-474aa421b444" />
+    <UnitTestResult executionId="a089c1e9-8096-4bfe-b18d-1eb66402998d" testId="9bf22155-4830-9954-2143-be38e404cf43" testName="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests.UploadedCloudCopyWaitsForRemoteVerificationAndDoesNotOfferUploadRetry" computerName="redacted-host" duration="00:00:00.5750000" startTime="2026-10-29T17:59:43.8128430+08:00" endTime="2026-10-29T17:59:44.3730251+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a089c1e9-8096-4bfe-b18d-1eb66402998d" />
+    <UnitTestResult executionId="71fbf234-fdeb-4854-8111-0621a70448f3" testId="fc4c4c24-b70a-9197-5e15-55007128e2d0" testName="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests.SaveHistoryShowsNonDestructiveBackupPreviewAndIdentifiedPaths" computerName="redacted-host" duration="00:00:00.6160000" startTime="2026-10-29T17:59:44.3760256+08:00" endTime="2026-10-29T17:59:44.9900932+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="71fbf234-fdeb-4854-8111-0621a70448f3" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests.SaveHistoryShowsNonDestructiveBackupPreviewAndIdentifiedPaths" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="fc4c4c24-b70a-9197-5e15-55007128e2d0">
+      <Execution id="71fbf234-fdeb-4854-8111-0621a70448f3" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests" name="SaveHistoryShowsNonDestructiveBackupPreviewAndIdentifiedPaths" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests.UploadedCloudCopyWaitsForRemoteVerificationAndDoesNotOfferUploadRetry" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9bf22155-4830-9954-2143-be38e404cf43">
+      <Execution id="a089c1e9-8096-4bfe-b18d-1eb66402998d" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests" name="UploadedCloudCopyWaitsForRemoteVerificationAndDoesNotOfferUploadRetry" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests.EmptyPreviewDoesNotPretendScanningFinishedAndNoDataStaysExplicit" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3bb499fe-b12e-580b-53af-3a7281c82b39">
+      <Execution id="bffddf76-12fd-4b04-ba47-474aa421b444" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests" name="EmptyPreviewDoesNotPretendScanningFinishedAndNoDataStaysExplicit" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests.SaveHistoryShowsLocalSuccessAndScopedCloudRetryWhenCloudUploadIsQueued" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="685553f3-b876-9828-2a1d-0edac51ef0a3">
+      <Execution id="e5d5299b-426d-497f-b292-26f166beb62f" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests" name="SaveHistoryShowsLocalSuccessAndScopedCloudRetryWhenCloudUploadIsQueued" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="685553f3-b876-9828-2a1d-0edac51ef0a3" executionId="e5d5299b-426d-497f-b292-26f166beb62f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3bb499fe-b12e-580b-53af-3a7281c82b39" executionId="bffddf76-12fd-4b04-ba47-474aa421b444" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9bf22155-4830-9954-2143-be38e404cf43" executionId="a089c1e9-8096-4bfe-b18d-1eb66402998d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fc4c4c24-b70a-9197-5e15-55007128e2d0" executionId="71fbf234-fdeb-4854-8111-0621a70448f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.47]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.91]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.96]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.94]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T17:59:45.1870704+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

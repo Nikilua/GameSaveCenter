@@ -1,0 +1,24 @@
+{
+  "freeBefore": [
+    {
+      "Name": "C",
+      "Free": 8286650368
+    },
+    {
+      "Name": "D",
+      "Free": 18920120320
+    }
+  ],
+  "pluginSha256": "9AF08F95D7437B621982EBC0EA6067767411D0A5B8B00EBD1CD0FAD48AF1A991",
+  "utcStart": "2026-10-29T09:43:53.8183076Z",
+  "processesAfter": [],
+  "processesBefore": [],
+  "utcEnd": "2026-10-29T09:45:11.4741967Z",
+  "host": "ControlledWpfWindow",
+  "size": "1040x700 DIP",
+  "side": "candidate",
+  "order": 2,
+  "pluginVersion": "0.6.73+e6e7f3b931ec767aea353d0998bc12800df16a21",
+  "exeSha256": "3B6F1DA45AEB3C6A19DC707D222EF530FF704BD13F62DE74278722622F362327",
+  "exitCode": 0
+}

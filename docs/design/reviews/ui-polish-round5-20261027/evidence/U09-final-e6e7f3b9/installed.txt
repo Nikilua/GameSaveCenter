@@ -1,0 +1,26 @@
+时间：2026-10-29 18:08:43
+安装运行 ID：20261029T094600461Z-3c40de62
+源码版本：0.6.73
+隔离构建目录：[repo]\artifacts\gsc-b\0c313121
+安装目录：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+e6e7f3b931ec767aea353d0998bc12800df16a21
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：D6C6FDBF311C63C694803AE2D06C5282F7FB778B5BBC989EEB42E3D2E37DD65D
+  GameSaveCenter.Core.dll：0.6.73+e6e7f3b931ec767aea353d0998bc12800df16a21
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：4701B0E21ADBB5BCBA57BDC0DF63EF115BB9FFE7DDE04AD0AA85545D58BEF9DC
+  GameSaveCenter.Contracts.dll：0.6.73+e6e7f3b931ec767aea353d0998bc12800df16a21
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：E3C242113BD1A9802D8E65C8BC95BAB786A56335E3F5EB73AF11D52BCE489750
+  Worker/GameSaveCenter.Worker.dll：0.6.73+e6e7f3b931ec767aea353d0998bc12800df16a21
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：3A31505A1D9A0ADF0FF10504B492E331EA04FC6FAD1E716784DAB247B192DD2A
+  Worker/GameSaveCenter.Core.dll：0.6.73+e6e7f3b931ec767aea353d0998bc12800df16a21
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：E8EAE8C9340B02956482A1A37753F7643909CABC02FBE1B0E9585C496660999E
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+e6e7f3b931ec767aea353d0998bc12800df16a21
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：015D2D4C483EE73CB12F3E3A6704FC102E0830CC9B6F960E1FD7B2CFBC74B9FF

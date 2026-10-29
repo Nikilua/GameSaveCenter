@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d34d8c25-841b-445e-94ca-434ece44b050" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T18:07:39.6841845+08:00" queuing="2026-10-29T18:07:39.6841848+08:00" start="2026-10-29T18:07:33.1578030+08:00" finish="2026-10-29T18:07:39.6912940+08:00" />
+  <TestSettings name="default" id="3f173591-b2db-4c06-9723-25f56cac882c">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="1d0c4b61-d7a4-4081-bd30-5706ff0e3804" testId="68edae81-0737-40d5-f22a-246e3dfefe80" testName="GameSaveCenter.Playnite.Tests.UiNegativeFixtureRegistryTests.RegisteredNegativeFixturesAreRejectedByTheirDetectors" computerName="redacted-host" duration="00:00:03.7040000" startTime="2026-10-29T18:07:35.7358677+08:00" endTime="2026-10-29T18:07:39.4131179+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d0c4b61-d7a4-4081-bd30-5706ff0e3804" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiNegativeFixtureRegistryTests.RegisteredNegativeFixturesAreRejectedByTheirDetectors" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="68edae81-0737-40d5-f22a-246e3dfefe80">
+      <Execution id="1d0c4b61-d7a4-4081-bd30-5706ff0e3804" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiNegativeFixtureRegistryTests" name="RegisteredNegativeFixturesAreRejectedByTheirDetectors" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="68edae81-0737-40d5-f22a-246e3dfefe80" executionId="1d0c4b61-d7a4-4081-bd30-5706ff0e3804" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.49]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.95]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.00]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+N01 [�Աȶ�] detector=AdaptiveThemePaletteContrastGuard.ValidateTextContrast; expected-failure=�������ڰ����ϱ������ violation; detected=True; violations=1, check=negative-black-on-dark&#xD;
+N02 [����] detector=NumericCellReadability.Measure; expected-failure=�и����㹻����ֵ�п��������ʧ��; detected=True; text=-99,999,999,999,999, horizontalFit=False, verticalFit=True, isReadable=False&#xD;
+N03 [����] detector=AcrylicProductionShellView.OnPickerPreviewKeyDown; expected-failure=�޿ɼ���ѡ�� Enter ����ȷ�Ͼ�ѡ���ر�ѡ��; detected=True; handled=False, overlay=Visible, selectionPreserved=True&#xD;
+N04 [�㼶] detector=RealHostUiAuditService.CheckChildLayoutOverflow; expected-failure=�̶������еĳ����Ӽ�����д CHILD_LAYOUT_OVERFLOW; detected=True; gateExists=True&#xD;
+N05 [״̬] detector=WorkspaceStatePresenter; expected-failure=Loading ״̬�����������Բ���ϵײ�����; detected=True; retry=Collapsed, underlyingHit=False, presenterHitTestVisible=True&#xD;
+[xUnit.net 00:00:04.79]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T18:07:39.6348221+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

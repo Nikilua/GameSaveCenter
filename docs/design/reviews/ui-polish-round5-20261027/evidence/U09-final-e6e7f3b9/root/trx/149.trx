@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="f7ad9d28-8d90-4fc5-af7c-6afbbeb56749" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T18:07:25.5698701+08:00" queuing="2026-10-29T18:07:25.5698706+08:00" start="2026-10-29T18:07:22.7142879+08:00" finish="2026-10-29T18:07:26.1254666+08:00" />
+  <TestSettings name="default" id="9c0d0afb-253e-4783-ab71-e5457966c015">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="72febc0e-bfee-40bc-affa-1eb3c1643039" testId="1a8a1103-38c1-c841-d030-a723c67ee4ab" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.AdaptivePaletteContrastGuardsPass(mode: Light)" computerName="redacted-host" duration="00:00:00.0050000" startTime="2026-10-29T18:07:25.4454503+08:00" endTime="2026-10-29T18:07:25.4454503+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72febc0e-bfee-40bc-affa-1eb3c1643039" />
+    <UnitTestResult executionId="46d4035e-2861-4779-bcc8-e5eb04a94766" testId="4e299cbf-1ea3-37c1-64e4-68f3af8208c5" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.AdaptivePaletteContrastGuardsPass(mode: Dark)" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-10-29T18:07:25.4544533+08:00" endTime="2026-10-29T18:07:25.4544533+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="46d4035e-2861-4779-bcc8-e5eb04a94766" />
+    <UnitTestResult executionId="0fc89373-f5f1-4573-a15d-d6782244732d" testId="5fe56808-c5e8-fa5d-3a86-c5c7f5c0232f" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.StyleFingerprintExportsRepresentativeControl" computerName="redacted-host" duration="00:00:00.0230000" startTime="2026-10-29T18:07:25.8771399+08:00" endTime="2026-10-29T18:07:25.8981394+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0fc89373-f5f1-4573-a15d-d6782244732d" />
+    <UnitTestResult executionId="72ae9fa7-3c42-4909-848f-335029efe168" testId="f5eb1299-334d-f437-d6de-8ea51a46cf65" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.SemanticStateContrastCoversGradientButtonSelectionInputDangerAndComplexSurfaces(mode: Light)" computerName="redacted-host" duration="00:00:00.0020000" startTime="2026-10-29T18:07:25.4424499+08:00" endTime="2026-10-29T18:07:25.4424499+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72ae9fa7-3c42-4909-848f-335029efe168" />
+    <UnitTestResult executionId="322f6ff3-c14f-48e8-8ac4-862e97a4c66f" testId="b5aa79cf-8e37-79ab-36db-9c67d3b2a4f2" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.ResourceSnapshotExportsResolvedBrushValues" computerName="redacted-host" duration="00:00:00.0070000" startTime="2026-10-29T18:07:25.4574503+08:00" endTime="2026-10-29T18:07:25.4574503+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="322f6ff3-c14f-48e8-8ac4-862e97a4c66f" />
+    <UnitTestResult executionId="722f3a6e-71e4-4e90-9eda-1f90ad3ffb7d" testId="1e991b17-c7eb-f450-6d4f-5f0be8f51c24" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.ThemeResourceSwitchReplacesStateBrushesWithoutLeavingStaticFallbacks" computerName="redacted-host" duration="00:00:00.0080000" startTime="2026-10-29T18:07:25.8651433+08:00" endTime="2026-10-29T18:07:25.8701428+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="722f3a6e-71e4-4e90-9eda-1f90ad3ffb7d" />
+    <UnitTestResult executionId="1ac7e735-1d96-4b5a-8f08-4a2f7ab9c1ea" testId="064fc21d-a8db-173e-fc43-f991879974d1" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.AdaptivePaletteContrastGuardsPass(mode: FollowPlaynite)" computerName="redacted-host" duration="00:00:00.0040000" startTime="2026-10-29T18:07:25.4464489+08:00" endTime="2026-10-29T18:07:25.4464489+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1ac7e735-1d96-4b5a-8f08-4a2f7ab9c1ea" />
+    <UnitTestResult executionId="55c7aaa2-51b9-464e-a60a-c9ce5b07d521" testId="34bd1beb-9fc7-458a-d2ca-df41d799ef4b" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.HighDpiPngUsesExplicitScaleWithoutApplyingHostDpiTwice" computerName="redacted-host" duration="00:00:00.4190000" startTime="2026-10-29T18:07:25.4584496+08:00" endTime="2026-10-29T18:07:25.8621428+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55c7aaa2-51b9-464e-a60a-c9ce5b07d521" />
+    <UnitTestResult executionId="607e107c-714d-4078-a7fb-80097a1f2215" testId="06ead2a1-7ffe-531e-1730-4329e6b029fb" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.SemanticStateContrastCoversGradientButtonSelectionInputDangerAndComplexSurfaces(mode: Dark)" computerName="redacted-host" duration="00:00:00.1370000" startTime="2026-10-29T18:07:25.3061460+08:00" endTime="2026-10-29T18:07:25.4144504+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="607e107c-714d-4078-a7fb-80097a1f2215" />
+    <UnitTestResult executionId="4929a01c-86fe-4bd8-9c8d-38c86813bed4" testId="e6d0013b-e6b7-7242-727c-82a7cc7204a7" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.TextContrastGuardCompositesEffectiveAlphaAndRejectsTheFormerDarkFixtureFalsePositive" computerName="redacted-host" duration="00:00:00.0040000" startTime="2026-10-29T18:07:25.8741407+08:00" endTime="2026-10-29T18:07:25.8751400+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4929a01c-86fe-4bd8-9c8d-38c86813bed4" />
+    <UnitTestResult executionId="8a1571e4-41d0-4bba-95d0-fde726eeab0e" testId="7e1705b6-6ba9-b768-2d29-bb633f2775e4" testName="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.GradientContrastModelsWholeChromeOpacityAndNonUniformStops" computerName="redacted-host" duration="00:00:00.0080000" startTime="2026-10-29T18:07:25.4554498+08:00" endTime="2026-10-29T18:07:25.4554498+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a1571e4-41d0-4bba-95d0-fde726eeab0e" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.ThemeResourceSwitchReplacesStateBrushesWithoutLeavingStaticFallbacks" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1e991b17-c7eb-f450-6d4f-5f0be8f51c24">
+      <Execution id="722f3a6e-71e4-4e90-9eda-1f90ad3ffb7d" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="ThemeResourceSwitchReplacesStateBrushesWithoutLeavingStaticFallbacks" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.SemanticStateContrastCoversGradientButtonSelectionInputDangerAndComplexSurfaces(mode: Dark)" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="06ead2a1-7ffe-531e-1730-4329e6b029fb">
+      <Execution id="607e107c-714d-4078-a7fb-80097a1f2215" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="SemanticStateContrastCoversGradientButtonSelectionInputDangerAndComplexSurfaces" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.ResourceSnapshotExportsResolvedBrushValues" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b5aa79cf-8e37-79ab-36db-9c67d3b2a4f2">
+      <Execution id="322f6ff3-c14f-48e8-8ac4-862e97a4c66f" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="ResourceSnapshotExportsResolvedBrushValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.GradientContrastModelsWholeChromeOpacityAndNonUniformStops" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7e1705b6-6ba9-b768-2d29-bb633f2775e4">
+      <Execution id="8a1571e4-41d0-4bba-95d0-fde726eeab0e" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="GradientContrastModelsWholeChromeOpacityAndNonUniformStops" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.SemanticStateContrastCoversGradientButtonSelectionInputDangerAndComplexSurfaces(mode: Light)" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f5eb1299-334d-f437-d6de-8ea51a46cf65">
+      <Execution id="72ae9fa7-3c42-4909-848f-335029efe168" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="SemanticStateContrastCoversGradientButtonSelectionInputDangerAndComplexSurfaces" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.AdaptivePaletteContrastGuardsPass(mode: Light)" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1a8a1103-38c1-c841-d030-a723c67ee4ab">
+      <Execution id="72febc0e-bfee-40bc-affa-1eb3c1643039" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="AdaptivePaletteContrastGuardsPass" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.TextContrastGuardCompositesEffectiveAlphaAndRejectsTheFormerDarkFixtureFalsePositive" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="e6d0013b-e6b7-7242-727c-82a7cc7204a7">
+      <Execution id="4929a01c-86fe-4bd8-9c8d-38c86813bed4" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="TextContrastGuardCompositesEffectiveAlphaAndRejectsTheFormerDarkFixtureFalsePositive" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.AdaptivePaletteContrastGuardsPass(mode: FollowPlaynite)" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="064fc21d-a8db-173e-fc43-f991879974d1">
+      <Execution id="1ac7e735-1d96-4b5a-8f08-4a2f7ab9c1ea" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="AdaptivePaletteContrastGuardsPass" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.AdaptivePaletteContrastGuardsPass(mode: Dark)" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4e299cbf-1ea3-37c1-64e4-68f3af8208c5">
+      <Execution id="46d4035e-2861-4779-bcc8-e5eb04a94766" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="AdaptivePaletteContrastGuardsPass" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.StyleFingerprintExportsRepresentativeControl" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5fe56808-c5e8-fa5d-3a86-c5c7f5c0232f">
+      <Execution id="0fc89373-f5f1-4573-a15d-d6782244732d" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="StyleFingerprintExportsRepresentativeControl" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests.HighDpiPngUsesExplicitScaleWithoutApplyingHostDpiTwice" storage="[repo]\artifacts\gsc-b\0c313121\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="34bd1beb-9fc7-458a-d2ca-df41d799ef4b">
+      <Execution id="55c7aaa2-51b9-464e-a60a-c9ce5b07d521" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\0c313121\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiDiagnosticsExporterTests" name="HighDpiPngUsesExplicitScaleWithoutApplyingHostDpiTwice" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="1a8a1103-38c1-c841-d030-a723c67ee4ab" executionId="72febc0e-bfee-40bc-affa-1eb3c1643039" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e299cbf-1ea3-37c1-64e4-68f3af8208c5" executionId="46d4035e-2861-4779-bcc8-e5eb04a94766" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5fe56808-c5e8-fa5d-3a86-c5c7f5c0232f" executionId="0fc89373-f5f1-4573-a15d-d6782244732d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f5eb1299-334d-f437-d6de-8ea51a46cf65" executionId="72ae9fa7-3c42-4909-848f-335029efe168" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b5aa79cf-8e37-79ab-36db-9c67d3b2a4f2" executionId="322f6ff3-c14f-48e8-8ac4-862e97a4c66f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e991b17-c7eb-f450-6d4f-5f0be8f51c24" executionId="722f3a6e-71e4-4e90-9eda-1f90ad3ffb7d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="064fc21d-a8db-173e-fc43-f991879974d1" executionId="1ac7e735-1d96-4b5a-8f08-4a2f7ab9c1ea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34bd1beb-9fc7-458a-d2ca-df41d799ef4b" executionId="55c7aaa2-51b9-464e-a60a-c9ce5b07d521" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="06ead2a1-7ffe-531e-1730-4329e6b029fb" executionId="607e107c-714d-4078-a7fb-80097a1f2215" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e6d0013b-e6b7-7242-727c-82a7cc7204a7" executionId="4929a01c-86fe-4bd8-9c8d-38c86813bed4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7e1705b6-6ba9-b768-2d29-bb633f2775e4" executionId="8a1571e4-41d0-4bba-95d0-fde726eeab0e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="11" executed="11" passed="11" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.49]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.91]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.98]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.67]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T18:07:26.0795624+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

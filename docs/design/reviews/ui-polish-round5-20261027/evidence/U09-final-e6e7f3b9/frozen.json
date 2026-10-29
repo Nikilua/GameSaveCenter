@@ -1,0 +1,35 @@
+{
+  "indexTree": "722f686ae2b901d7f0a7ceb4519bc5f98f2644d2",
+  "workspace": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "utc": "2026-10-29T09:45:59.5421783Z",
+  "before": [
+    {
+      "Name": "C",
+      "Free": 8283561984
+    },
+    {
+      "Name": "D",
+      "Free": 18920185856
+    }
+  ],
+  "commit": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+  "sdk": "8.0.423",
+  "entryHashes": [
+    {
+      "sha256": "958D2FA746F78CDD381AE5A72B9A24CFC779743E91EF4AA577212E01972494FA",
+      "file": "GameSaveCenter-一键构建安装运行.cmd"
+    },
+    {
+      "sha256": "405F30591DE559519F49D028FAB5C639C6F04D4844F18764FA6D3C8A07A1D0BF",
+      "file": "GameSaveCenter-Run.cmd"
+    },
+    {
+      "sha256": "873C6AECBC86876BADC7ED6458F9CD735EF9E0FA1A7FB4756C0476E97291A552",
+      "file": "scripts/build.cmd"
+    },
+    {
+      "sha256": "248C17BB46FD7FF31402C62DC1870E90005FC1D9BCBC9A31CEFCC78691149D76",
+      "file": "global.json"
+    }
+  ]
+}
