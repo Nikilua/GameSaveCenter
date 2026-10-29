@@ -49,4 +49,3 @@ DLL 版本：0.6.73.0
   文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
 
   SHA-256：F09E779CD755E32DB1A11CBC8AF9D0061FF4A3940B0DFA717BB99E9648D2433B
-

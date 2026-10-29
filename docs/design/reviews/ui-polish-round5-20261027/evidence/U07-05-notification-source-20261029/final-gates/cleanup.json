@@ -1,0 +1,123 @@
+{
+  "Before": [
+    {
+      "Name": "C",
+      "Free": 2335031296
+    },
+    {
+      "Name": "D",
+      "Free": 12983488512
+    }
+  ],
+  "Deleted": [
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\after-render",
+      "Files": 395,
+      "Bytes": 53386693.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\before-render",
+      "Files": 395,
+      "Bytes": 53212150.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\build-cmd",
+      "Files": 1048,
+      "Bytes": 174394397.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\build-cmd-canonical",
+      "Files": 337,
+      "Bytes": 11648490.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\build-cmd-elevated",
+      "Files": 93,
+      "Bytes": 9602115.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\diagnose-q10",
+      "Files": 1,
+      "Bytes": 1586.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\root-chain-temp",
+      "Files": 15,
+      "Bytes": 5329280.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\temp",
+      "Files": 37,
+      "Bytes": 16153356.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\tests-playnite",
+      "Files": 1,
+      "Bytes": 12152.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    },
+    {
+      "Path": ".tmp\\round5-u07-05-source-20261029\\tests-worker",
+      "Files": 1,
+      "Bytes": 21788.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "ReferenceDisposition": "Original diagnostic paths retained in archive-manifest; required content copied and archive SHA verified before removal"
+    }
+  ],
+  "After": [
+    {
+      "Name": "C",
+      "Free": 2334900224
+    },
+    {
+      "Name": "D",
+      "Free": 13314207744
+    }
+  ],
+  "Preserved": [
+    "artifacts/gsc-b/1a593ccc",
+    "artifacts/build-diagnostics/20261028T235827455Z-4a9c7826",
+    "artifacts/GameSaveCenter-0.6.73.pext",
+    "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    ".tmp/round5-u09-01-03/dotnet-sdk8",
+    "all user/other task TRX and TestResults"
+  ],
+  "ArchiveVerification": "321 files SHA256 match"
+}

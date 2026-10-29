@@ -1,3 +1,7 @@
+## 2026-10-29 通知来源批次产物清理
+
+核对321份归档SHA全部一致后，仅删除本批`.tmp/round5-u07-05-source-20261029/`下10个明确目录，共323,762,007 bytes；路径边界、重解析链接及独占打开检查均通过，D盘前后实测增加330,719,232 bytes。保留标准根构建、根诊断、最新包、SDK及其它任务TRX/TestResults；清单见Round5通知来源证据`final-gates/cleanup.json`。U07-05代码完成待验收，U09-01配对/U09-04基线/U09-06保护名单边界继续保留。
+
 ## 2026-10-29 U07-05冻结候选门禁
 
 源码提交 `cd06253158c0e35d43de84e037548a764629749a` 已推送main。SDK8.0.423 Release中文根入口完整构建、测试、发布、打包、安装身份核验及启动调用退出0（run `20261028T235825476Z-d43f8012`）；独立 `scripts/build.cmd` 规范输出树全套退出0。两次各2013项、1955通过、0失败、58个既有skip（57个撤销架构断言、1个opt-in系统指针测试），skip不计通过。
@@ -6,7 +10,7 @@ GitHub run [40794111982](https://github.com/Nikilua/GameSaveCenter/actions/runs/
 
 首次受限build.cmd多出10项Named Pipe/Worker环境skip；提权临时输出树一次Q10复选框合成空格事件2项失败。保留失败TRX，未修改断言或skip。规范输出树完整复跑通过，但根因尚未证明，不能将路径认定为已证实原因。根入口完成启动调用，后续进程查询未见Playnite，因此持续运行、插件已加载及真实页面视觉仍待验；外部UIA、实体IME/键盘、物理DPI未验，真实存档恢复/媒体删除/云端写入未执行。
 
-U07-05更新为代码完成待验收；U09-01仍需其它视觉批次同数据双主题配对，U09-04仍缺U00逐帧/累计分配基线。当前计数6项已满足、71项代码完成待验收、2项进行中、1项远端待验。临时产物归档已完成，清理盘点和删除尚待执行。
+U07-05更新为代码完成待验收；U09-01仍需其它视觉批次同数据双主题配对，U09-04仍缺U00逐帧/累计分配基线。当前计数6项已满足、71项代码完成待验收、2项进行中、1项远端待验。本批临时产物已归档核验并清理，见最新清理记录。
 
 # 第五轮 UI 与动画精修进度
 
@@ -163,4 +167,4 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U09-05 | 标准cmd最终验收 | 已满足 | 冻结SHA`5f0eb620`中文根入口完整Release链退出0，已核对包/安装DLL身份并启动Playnite；独立`scripts/build.cmd`构建测试退出0。每次2012项，1954通过、0失败、58 skip；skip原因完整列出且未计为pass | [最终根链/build.cmd/TRX/安装身份](evidence/U09-05-final-5f0eb620/BASELINE.md)；[Stylus测试修复原因](evidence/U09-05-wpf-stylus-fix/BASELINE.md)；[历史完整链记录](evidence/U09-05/BUILD-REVIEW.md) | Playnite进程启动已核；真实页面视觉、外部UIA、实体键鼠/IME/物理DPI仍未验；真实恢复/媒体删除/云写入不在范围 |
 | U09-06 | GitHub双SDK门禁 | 远端待验 | 精确SHA`5f0eb620` run`40768381673`最终success；baseline job`123098598311`及SDK10.0.401 job`123098597735`全通过，Render QA、WPF静态、包和上传均成功 | [精确SHA jobs/artifacts/digests](evidence/U09-05-final-5f0eb620/github-ci.json)；[既有CI与权限状态](evidence/U09-01-03/BASELINE.md)；[失败job原始归因](evidence/U08-08-09-01/ci-d19570fa-failure.json) | required-check/branch-protection读取此前403；按用户要求未重复探测。需有权限维护者运行`gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks`并将required名称与两job对照，不以workflow绿色替代 |
 | U09-07 | 产物清理与可追溯 | 已满足 | 当前源码/构建/CI证据已脱敏归档；仅删除两组本阶段`.tmp`输出，保留最新构建、诊断、包、安装报告、文档证据；旧9份失败TRX脱敏归档。D盘两批实测释放191,361,024与115,417,088 bytes | [清单、路径检查、前后空间、保留SDK理由](evidence/U09-05-final-5f0eb620/cleanup.json)；[历史失败TRX](evidence/U09-01-03/historical-failed-local-trx-manifest.json) | 保留`.tmp/round5-u09-01-03/dotnet-sdk8`与bootstrap脚本：系统全局仅SDK9.0.302，后续本地运行需仓库基线SDK8.0.423；未删用户/其他任务TRX/TestResults |
-| U09-08 | 整轮交付审查 | 已满足 | 逐项核对80项状态与旧项去重；如实保留3项进行中、1项required-check远端待验；其余按证据区分已满足/代码完成待验收。最新冻结源全链、独立build.cmd与双SDK CI证据均已纳入审查 | [整轮状态与剩余边界](evidence/U09-05-final-5f0eb620/BASELINE.md)；[最终CI与清理证据](evidence/U09-05-final-5f0eb620/) | 不将“审查已完成”解释为80项全验收；U07-05来源字段契约、U09-01配对证据、U09-04逐帧/分配基线仍按上方进行中，required-check清单远端待验 |
+| U09-08 | 整轮交付审查 | 已满足 | 逐项核对80项状态与旧项去重；如实保留2项进行中、1项required-check远端待验；其余按证据区分已满足/代码完成待验收。最新冻结源全链、独立build.cmd与双SDK CI证据均已纳入审查 | [整轮状态与剩余边界](evidence/U09-05-final-5f0eb620/BASELINE.md)；[最终CI与清理证据](evidence/U09-05-final-5f0eb620/) | 不将“审查已完成”解释为80项全验收；U07-05来源字段契约已代码完成待验收；U09-01配对证据、U09-04逐帧/分配基线仍按上方进行中，required-check清单远端待验 |
