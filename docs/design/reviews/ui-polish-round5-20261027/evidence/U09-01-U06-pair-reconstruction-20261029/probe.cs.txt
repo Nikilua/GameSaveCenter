@@ -1,0 +1,30 @@
+using System;
+using System.IO;
+using System.Text;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using GameSaveCenter.Playnite.Settings;
+namespace GameSaveCenter.RenderHarness;
+internal static class U06PairProbe
+{
+ public static int Run(string output)
+ {
+  Directory.CreateDirectory(output);var app=new Application{ShutdownMode=ShutdownMode.OnExplicitShutdown};app.Resources["BaseTextBlockStyle"]=new Style(typeof(TextBlock));
+  var geometry=new StringBuilder("theme,window_w,window_h,content_w,content_h,grid_w,grid_h,items\n");var report=new StringBuilder("Historical pair using original RenderTabs/SavePng; not current full Render QA\n");const BindingFlags flags=BindingFlags.Static|BindingFlags.NonPublic;
+  try
+  {
+   foreach(var mode in new[]{GameSaveCenterThemeMode.Light,GameSaveCenterThemeMode.Dark})foreach(var size in new[]{(W:1040,H:700),(W:3840,H:2160)})
+   {
+    var dir=Path.Combine(output,mode.ToString());Directory.CreateDirectory(dir);var view=(UserControl)typeof(Program).GetMethod("CreateThemeView",flags)!.Invoke(null,new object[]{"Save"})!;
+    typeof(Program).GetMethod("ApplyThemePalette",flags,null,new[]{typeof(UserControl),typeof(GameSaveCenterThemeMode),typeof(bool),typeof(bool)},null)!.Invoke(null,new object[]{view,mode,false,false});double w=size.W-296,h=size.H-240;
+    Action layout=()=>typeof(Program).GetMethod("ApplyThemeResponsive",flags)!.Invoke(null,new object[]{view,w,(double)size.H});
+    Action<Grid,int,StringBuilder> verify=(host,index,details)=>{if(index!=1)return;var grid=(DataGrid)view.FindName("SaveCandidateGrid");if(grid.Items.Count!=8||grid.ActualHeight<=0)throw new InvalidOperationException("Candidate fixture invalid");geometry.AppendLine(string.Join(",",mode,size.W,size.H,host.ActualWidth,host.ActualHeight,grid.ActualWidth,grid.ActualHeight,grid.Items.Count));};
+    typeof(Program).GetMethod("RenderTabs",flags)!.Invoke(null,new object[]{view,dir,"Save",size.W,size.H,w,h,report,layout,verify});
+   }
+   File.WriteAllText(Path.Combine(output,"geometry.csv"),geometry.ToString());File.WriteAllText(Path.Combine(output,"report.txt"),report.ToString());return 0;
+  }
+  catch(Exception ex){File.WriteAllText(Path.Combine(output,"failure.txt"),ex.ToString());return 1;}
+  finally{app.Shutdown();}
+ }
+}

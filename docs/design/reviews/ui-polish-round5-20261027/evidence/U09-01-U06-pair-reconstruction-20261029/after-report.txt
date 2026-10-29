@@ -1,0 +1,109 @@
+Historical pair using original RenderTabs/SavePng; not current full Render QA
+  Save tab0 layout_ms=717 render_ms=144 window_dip=1040x700 content_dip=744x460
+  Save tab0 HeaderScrollViewer: size=742x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryPageScrollViewer: size=744x413, viewport=407, extent=553, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab0 PART_ContentHost: size=107x33, viewport=27, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab0 DG_ScrollViewer: size=725x274, viewport=4, extent=8, vbar=Auto, hbar=Auto, scrollable=True, hscrollable=True
+  Save tab0 SaveHistoryActionsScrollViewer: size=0x0, viewport=0, extent=0, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryGrid: size=725x274, rows=8, readableRows=4/4
+  Save tab0 SaveHistoryViewConfigurationComboBox: selected=(null), index=-1, items=0
+  Save tab1 layout_ms=717 render_ms=32 window_dip=1040x700 content_dip=744x460
+  Save tab1 HeaderScrollViewer: size=742x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidatePageScrollViewer: size=744x413, viewport=407, extent=408, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab1 DG_ScrollViewer: size=725x310, viewport=4, extent=8, vbar=Auto, hbar=Auto, scrollable=True, hscrollable=True
+  Save tab1 SaveCandidateInspectorScrollViewer: size=0x0, viewport=0, extent=0, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidateGrid: size=725x310, rows=8, readableRows=5/4
+  Save tab1 SaveCurrentRuleButtons: y=52,52,52 heights=36,36,36
+  Save tab2 layout_ms=717 render_ms=25 window_dip=1040x700 content_dip=744x460
+  Save tab2 HeaderScrollViewer: size=742x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab2 PART_ContentHost: size=81x33, viewport=25, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab3 layout_ms=717 render_ms=26 window_dip=1040x700 content_dip=744x460
+  Save tab3 HeaderScrollViewer: size=742x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab3 SaveComparePageScrollViewer: size=744x409, viewport=391, extent=553, vbar=Auto, hbar=Auto, scrollable=True, hscrollable=True
+  Save tab3 PART_ContentHost: size=141x33, viewport=27, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab3 SaveCompareMainScrollViewer: size=368x149, viewport=143, extent=143, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab3 SaveCompareRetentionScrollViewer: size=394x388, viewport=382, extent=381, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab0 layout_ms=37 render_ms=442 window_dip=3840x2160 content_dip=3544x1920
+  Save tab0 HeaderScrollViewer: size=3542x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryPageScrollViewer: size=3544x1873, viewport=1867, extent=1868, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab0 PART_ContentHost: size=107x33, viewport=27, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab0 DG_ScrollViewer: size=1755x1692, viewport=8, extent=8, vbar=Auto, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryActionsScrollViewer: size=1726x1833, viewport=1827, extent=2329, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab0 PART_ContentHost: size=1707x61, viewport=55, extent=19, vbar=Hidden, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryGrid: size=1755x1692, rows=8, readableRows=8/4
+  Save tab0 SaveHistoryViewConfigurationComboBox: selected=(null), index=-1, items=0
+  Save tab0 RestorePlanCompareFromSelector: selected=GameSaveCenter.Playnite.Settings.RestorePlanDraftDefinition, index=0, items=2
+  Save tab0 RestorePlanCompareToSelector: selected=GameSaveCenter.Playnite.Settings.RestorePlanDraftDefinition, index=1, items=2
+  Save tab1 layout_ms=37 render_ms=340 window_dip=3840x2160 content_dip=3544x1920
+  Save tab1 HeaderScrollViewer: size=3542x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidatePageScrollViewer: size=3544x1873, viewport=1867, extent=1868, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab1 PART_ContentHost: size=107x33, viewport=27, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab1 DG_ScrollViewer: size=1755x1665, viewport=8, extent=8, vbar=Auto, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidateInspectorScrollViewer: size=1726x1636, viewport=1630, extent=223, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab1 PART_ContentHost: size=1609x33, viewport=27, extent=16, vbar=Disabled, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidateGrid: size=1755x1665, rows=8, readableRows=8/4
+  Save tab1 SaveCandidateViewConfigurationComboBox: selected=(null), index=-1, items=0
+  Save tab1 SaveCurrentRuleButtons: y=62,62,62 heights=36,36,36
+  Save tab2 layout_ms=37 render_ms=335 window_dip=3840x2160 content_dip=3544x1920
+  Save tab2 HeaderScrollViewer: size=3542x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab2 PART_ContentHost: size=81x33, viewport=25, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab3 layout_ms=37 render_ms=330 window_dip=3840x2160 content_dip=3544x1920
+  Save tab3 HeaderScrollViewer: size=3542x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab3 SaveComparePageScrollViewer: size=3544x1869, viewport=1863, extent=535, vbar=Auto, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab3 PART_ContentHost: size=1471x34, viewport=28, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab3 SaveCompareMainScrollViewer: size=1698x150, viewport=144, extent=143, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab3 SaveCompareRetentionScrollViewer: size=1724x388, viewport=382, extent=381, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab0 layout_ms=33 render_ms=25 window_dip=1040x700 content_dip=744x460
+  Save tab0 HeaderScrollViewer: size=742x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryPageScrollViewer: size=744x413, viewport=407, extent=553, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab0 PART_ContentHost: size=107x33, viewport=27, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab0 DG_ScrollViewer: size=725x274, viewport=4, extent=8, vbar=Auto, hbar=Auto, scrollable=True, hscrollable=True
+  Save tab0 SaveHistoryActionsScrollViewer: size=0x0, viewport=0, extent=0, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryGrid: size=725x274, rows=8, readableRows=4/4
+  Save tab0 SaveHistoryViewConfigurationComboBox: selected=(null), index=-1, items=0
+  Save tab1 layout_ms=33 render_ms=25 window_dip=1040x700 content_dip=744x460
+  Save tab1 HeaderScrollViewer: size=742x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidatePageScrollViewer: size=744x413, viewport=407, extent=408, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab1 DG_ScrollViewer: size=725x310, viewport=4, extent=8, vbar=Auto, hbar=Auto, scrollable=True, hscrollable=True
+  Save tab1 SaveCandidateInspectorScrollViewer: size=0x0, viewport=0, extent=0, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidateGrid: size=725x310, rows=8, readableRows=5/4
+  Save tab1 SaveCurrentRuleButtons: y=52,52,52 heights=36,36,36
+  Save tab2 layout_ms=33 render_ms=22 window_dip=1040x700 content_dip=744x460
+  Save tab2 HeaderScrollViewer: size=742x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab2 PART_ContentHost: size=81x33, viewport=25, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab3 layout_ms=33 render_ms=22 window_dip=1040x700 content_dip=744x460
+  Save tab3 HeaderScrollViewer: size=742x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab3 SaveComparePageScrollViewer: size=744x409, viewport=391, extent=553, vbar=Auto, hbar=Auto, scrollable=True, hscrollable=True
+  Save tab3 PART_ContentHost: size=141x33, viewport=27, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab3 SaveCompareMainScrollViewer: size=368x149, viewport=143, extent=143, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab3 SaveCompareRetentionScrollViewer: size=394x388, viewport=382, extent=381, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab0 layout_ms=33 render_ms=407 window_dip=3840x2160 content_dip=3544x1920
+  Save tab0 HeaderScrollViewer: size=3542x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryPageScrollViewer: size=3544x1873, viewport=1867, extent=1868, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab0 PART_ContentHost: size=107x33, viewport=27, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab0 DG_ScrollViewer: size=1755x1692, viewport=8, extent=8, vbar=Auto, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryActionsScrollViewer: size=1726x1833, viewport=1827, extent=2329, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab0 PART_ContentHost: size=1707x61, viewport=55, extent=19, vbar=Hidden, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab0 SaveHistoryGrid: size=1755x1692, rows=8, readableRows=8/4
+  Save tab0 SaveHistoryViewConfigurationComboBox: selected=(null), index=-1, items=0
+  Save tab0 RestorePlanCompareFromSelector: selected=GameSaveCenter.Playnite.Settings.RestorePlanDraftDefinition, index=0, items=2
+  Save tab0 RestorePlanCompareToSelector: selected=GameSaveCenter.Playnite.Settings.RestorePlanDraftDefinition, index=1, items=2
+  Save tab1 layout_ms=33 render_ms=356 window_dip=3840x2160 content_dip=3544x1920
+  Save tab1 HeaderScrollViewer: size=3542x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidatePageScrollViewer: size=3544x1873, viewport=1867, extent=1868, vbar=Auto, hbar=Disabled, scrollable=True, hscrollable=False
+  Save tab1 PART_ContentHost: size=107x33, viewport=27, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab1 DG_ScrollViewer: size=1755x1665, viewport=8, extent=8, vbar=Auto, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidateInspectorScrollViewer: size=1726x1636, viewport=1630, extent=223, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab1 PART_ContentHost: size=1609x33, viewport=27, extent=16, vbar=Disabled, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab1 SaveCandidateGrid: size=1755x1665, rows=8, readableRows=8/4
+  Save tab1 SaveCandidateViewConfigurationComboBox: selected=(null), index=-1, items=0
+  Save tab1 SaveCurrentRuleButtons: y=62,62,62 heights=36,36,36
+  Save tab2 layout_ms=33 render_ms=337 window_dip=3840x2160 content_dip=3544x1920
+  Save tab2 HeaderScrollViewer: size=3542x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab2 PART_ContentHost: size=81x33, viewport=25, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab3 layout_ms=33 render_ms=345 window_dip=3840x2160 content_dip=3544x1920
+  Save tab3 HeaderScrollViewer: size=3542x36, viewport=36, extent=36, vbar=Disabled, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab3 SaveComparePageScrollViewer: size=3544x1869, viewport=1863, extent=535, vbar=Auto, hbar=Auto, scrollable=False, hscrollable=False
+  Save tab3 PART_ContentHost: size=1471x34, viewport=28, extent=19, vbar=Hidden, hbar=Hidden, scrollable=False, hscrollable=False
+  Save tab3 SaveCompareMainScrollViewer: size=1698x150, viewport=144, extent=143, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False
+  Save tab3 SaveCompareRetentionScrollViewer: size=1724x388, viewport=382, extent=381, vbar=Auto, hbar=Disabled, scrollable=False, hscrollable=False

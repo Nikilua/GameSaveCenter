@@ -1,0 +1,176 @@
+{
+  "Preserved": "Current package/build/SDK and all other task/user files",
+  "Deleted": [
+    {
+      "Files": 1094,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 32845055.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\after"
+    },
+    {
+      "Files": 1094,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 32842517.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\before"
+    },
+    {
+      "Files": 5,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 499750.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\after-render"
+    },
+    {
+      "Files": 5,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 487986.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\after-render-v2"
+    },
+    {
+      "Files": 18,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 2617370.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\after-render-v3"
+    },
+    {
+      "Files": 5,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 381401.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\before-render"
+    },
+    {
+      "Files": 5,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 381063.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\before-render-v2"
+    },
+    {
+      "Files": 18,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 2661515.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\before-render-v3"
+    },
+    {
+      "Files": 0,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": null,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\temp"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 1519.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\after-build.log"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 812.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\after-v2-build.log"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 812.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\after-v3-build.log"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 1527.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\before-build.log"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 816.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\before-v2-build.log"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 816.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\before-v3-build.log"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 2419975.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\before.zip"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 112.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\disk-before.json"
+    },
+    {
+      "Files": 1,
+      "BoundaryChecked": true,
+      "ExclusiveOpenChecked": true,
+      "Bytes": 508.0,
+      "NoReparse": true,
+      "Path": ".tmp\\round5-u06-pair-20261029\\fixture-instrumentation.json"
+    }
+  ],
+  "After": [
+    {
+      "Name": "C",
+      "Free": 2240688128
+    },
+    {
+      "Name": "D",
+      "Free": 8992354304
+    }
+  ],
+  "References": "Required image/report/geometry/source identity/probe evidence archived and hash verified; deleted only explicitly named stage outputs",
+  "Before": [
+    {
+      "Name": "C",
+      "Free": 2246725632
+    },
+    {
+      "Name": "D",
+      "Free": 8912060416
+    }
+  ],
+  "Retained": [
+    {
+      "Path": ".tmp/round5-u06-pair-20261029/after.zip",
+      "Reason": "Earlier exclusive-open check found active file lock; not retried without ownership change"
+    }
+  ]
+}
