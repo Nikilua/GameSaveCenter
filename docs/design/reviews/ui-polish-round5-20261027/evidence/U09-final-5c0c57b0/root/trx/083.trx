@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="08de2753-df23-4fd5-acbc-7e5120c2b1e0" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:34:23.9593102+08:00" queuing="2026-10-29T23:34:23.9593106+08:00" start="2026-10-29T23:34:21.0743540+08:00" finish="2026-10-29T23:34:24.2713395+08:00" />
+  <TestSettings name="default" id="d630bcca-9fd1-413e-9aec-4ffc576db4b6">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d72f548c-e2ce-4048-9851-316ae93d80d6" testId="c2018675-3dfe-e914-4640-99b2535b5415" testName="GameSaveCenter.Playnite.Tests.R09BackgroundPressureBehaviorTests.GlassMaterialsKeepSemanticTextReadableAcrossHostBackgroundFamilies" computerName="redacted-host" duration="00:00:00.3590000" startTime="2026-10-29T23:34:23.7445684+08:00" endTime="2026-10-29T23:34:24.0599813+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d72f548c-e2ce-4048-9851-316ae93d80d6" />
+    <UnitTestResult executionId="d8ea28a7-8953-4c3c-aef0-151ad5551934" testId="7b70349b-1476-1789-21d7-5b181fd1e499" testName="GameSaveCenter.Playnite.Tests.R09BackgroundPressureBehaviorTests.LayeredContrastProbeRejectsAReadabilityFailure" computerName="redacted-host" duration="00:00:00.0170000" startTime="2026-10-29T23:34:23.7105565+08:00" endTime="2026-10-29T23:34:23.7145559+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d8ea28a7-8953-4c3c-aef0-151ad5551934" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09BackgroundPressureBehaviorTests.GlassMaterialsKeepSemanticTextReadableAcrossHostBackgroundFamilies" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c2018675-3dfe-e914-4640-99b2535b5415">
+      <Execution id="d72f548c-e2ce-4048-9851-316ae93d80d6" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09BackgroundPressureBehaviorTests" name="GlassMaterialsKeepSemanticTextReadableAcrossHostBackgroundFamilies" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09BackgroundPressureBehaviorTests.LayeredContrastProbeRejectsAReadabilityFailure" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7b70349b-1476-1789-21d7-5b181fd1e499">
+      <Execution id="d8ea28a7-8953-4c3c-aef0-151ad5551934" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09BackgroundPressureBehaviorTests" name="LayeredContrastProbeRejectsAReadabilityFailure" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c2018675-3dfe-e914-4640-99b2535b5415" executionId="d72f548c-e2ce-4048-9851-316ae93d80d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7b70349b-1476-1789-21d7-5b181fd1e499" executionId="d8ea28a7-8953-4c3c-aef0-151ad5551934" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.53]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.98]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.03]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.47]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:34:24.2283350+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

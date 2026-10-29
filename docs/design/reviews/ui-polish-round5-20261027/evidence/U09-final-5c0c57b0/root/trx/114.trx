@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1910093d-e3d1-4213-a6ad-be2518b0759a" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:38:16.4526933+08:00" queuing="2026-10-29T23:38:16.4526937+08:00" start="2026-10-29T23:38:08.0120000+08:00" finish="2026-10-29T23:38:16.4596448+08:00" />
+  <TestSettings name="default" id="b8f8dba2-3927-4ee5-9ac0-8f643deae86a">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e86982a8-8c70-4eb4-b658-3f153f5f6786" testId="2dc509a4-e96e-9c04-7597-b062f8424252" testName="GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests.ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets" computerName="redacted-host" duration="00:00:05.5630000" startTime="2026-10-29T23:38:10.6848323+08:00" endTime="2026-10-29T23:38:16.2272160+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e86982a8-8c70-4eb4-b658-3f153f5f6786">
+      <Output>
+        <StdOut>R18-04 Task backend=2000 ui=2000 mode=Recycling unit=Item canContentScroll=True columnVirtualization=True viewportRows=8 maxRealized=10 maxVisible=8 rowsPanelVirtualizing=True rowsPanelChildren=10 scrollable=1993 p95_ms=732.127 max_ms=732.127 scroll_ms=3.509,63.327,732.127,16.537,29.566,22.947,16.13,23.094&#xD;
+R18-04 Media-Inbox backend=2000 ui=2000 mode=Standard unit=Item canContentScroll=True columnVirtualization=False viewportRows=7 maxRealized=7 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=7 scrollable=1994 p95_ms=0.091 max_ms=0.091 scroll_ms=0.091,0.026,0.024,0.023,0.024,0.034,0.027,0.055&#xD;
+R18-04 Task backend=10000 ui=10000 mode=Recycling unit=Item canContentScroll=True columnVirtualization=True viewportRows=8 maxRealized=10 maxVisible=8 rowsPanelVirtualizing=True rowsPanelChildren=10 scrollable=9993 p95_ms=26.857 max_ms=26.857 scroll_ms=0.834,18.984,16.548,26.857,14.215,18.795,19.236,21.003&#xD;
+R18-04 Media-Inbox backend=10000 ui=2000 mode=Standard unit=Item canContentScroll=True columnVirtualization=False viewportRows=7 maxRealized=7 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=7 scrollable=1994 p95_ms=0.04 max_ms=0.04 scroll_ms=0.04,0.024,0.028,0.024,0.023,0.023,0.022,0.023&#xD;
+R18-04 Task backend=20000 ui=20000 mode=Recycling unit=Item canContentScroll=True columnVirtualization=True viewportRows=8 maxRealized=10 maxVisible=8 rowsPanelVirtualizing=True rowsPanelChildren=10 scrollable=19993 p95_ms=48.401 max_ms=48.401 scroll_ms=0.812,20.269,21.98,48.401,14.076,30.237,16.886,21.109&#xD;
+R18-04 Media-Inbox backend=20000 ui=2000 mode=Standard unit=Item canContentScroll=True columnVirtualization=False viewportRows=7 maxRealized=7 maxVisible=7 rowsPanelVirtualizing=True rowsPanelChildren=7 scrollable=1994 p95_ms=0.029 max_ms=0.029 scroll_ms=0.029,0.027,0.024,0.023,0.028,0.023,0.023,0.027</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests.ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2dc509a4-e96e-9c04-7597-b062f8424252">
+      <Execution id="e86982a8-8c70-4eb4-b658-3f153f5f6786" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests" name="ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2dc509a4-e96e-9c04-7597-b062f8424252" executionId="e86982a8-8c70-4eb4-b658-3f153f5f6786" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.83]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.87]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.51]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:38:16.4081831+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

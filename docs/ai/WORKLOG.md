@@ -1,3 +1,9 @@
+## 2026-10-30 U09-05冻结门禁通过
+
+5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7 SDK8.0.423；中文包装器完整链exit0、独立scripts/build.cmd exit0。两入口各158 TRX/2020项：1962通过、0失败、58既有skip，skip不计通过；PEXT 45,737,311 bytes，SHA256 `bce032ef9d6c95aa145d0c99a69ee3be16ef7d8dda59e8964db10bc2eb076ee6`，六个包内/安装DLL逐字节相同。Playnite启动PID30324并响应，实际页面未观察。精确SHA的GitHub run40900374673，两项适用job均success，三artifact的head SHA/ID/digest已核。required-check API既有403未重探，仍待有权限维护者查询。soak一次File.Move访问拒绝完整诊断已归档；新门禁通过但旧失败未查明唯一原因。证据：[冻结本地与CI身份](../design/reviews/ui-polish-round5-20261027/evidence/U09-final-5c0c57b0/BASELINE.md)。
+
+Computer Use依仓库Skill使用node_repl/@oai/sky，本轮初始化返回kernel assets路径不存在(os error 3)，此前也出现同错；停止自动化。插件可视页面/外部UIA/物理输入DPI未验，相关项继续标代码完成待验收；真实恢复、媒体删除、云写入未执行。required-check接口下一步为有权限维护者执行`gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks`。
+
 ## 2026-10-29 U09-01补U04-06/08中断与复用对照
 
 两侧历史生产src逐字节核对未改，SDK8.0.423单节点编译退出0（NU1900网络审计警告保留）。真实披露卡双主题：旧版中途禁用仍保留动画时钟，新版立即回到合法展开角度且无时钟；重新启用不重播。主题重应用前后都替换Transform，因此100次开合按主题完成后的新基准测量，两侧Header/Path/Transform身份均稳定，不虚构复用改善。最新20图及三轮CSV、源码与探针身份已归档；真实取消/窗口失活、Playnite及物理输入DPI仍待验，当前生产源码未改，U09-01保持进行中。

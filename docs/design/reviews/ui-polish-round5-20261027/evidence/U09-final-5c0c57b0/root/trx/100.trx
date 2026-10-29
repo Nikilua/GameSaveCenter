@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ada8bda7-2093-4d8d-b842-b6c9ff2f3c6f" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:36:28.4281902+08:00" queuing="2026-10-29T23:36:28.4281909+08:00" start="2026-10-29T23:36:22.3141399+08:00" finish="2026-10-29T23:36:29.7911887+08:00" />
+  <TestSettings name="default" id="29c10efb-91c2-4bd8-b650-46b797f873b2">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="706c1ab0-1a4f-404c-a0b8-d68849df022f" testId="4e9cc557-bd84-975a-b3c3-28305d7de771" testName="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests.ProtectionDisplayMatchesRetentionRulesAndExplainsUnlockBoundary" computerName="redacted-host" duration="00:00:00.0020000" startTime="2026-10-29T23:36:28.4136058+08:00" endTime="2026-10-29T23:36:28.4136058+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="706c1ab0-1a4f-404c-a0b8-d68849df022f" />
+    <UnitTestResult executionId="934cf611-3e0f-45d2-911d-536fd99121b4" testId="83f3c984-7ef6-dbe3-cf01-a48d156b8484" testName="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests.SaveHistoryRowsExposeBoundProtectionStateAndExplanationContract" computerName="redacted-host" duration="00:00:03.0690000" startTime="2026-10-29T23:36:25.3579170+08:00" endTime="2026-10-29T23:36:28.3806014+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="934cf611-3e0f-45d2-911d-536fd99121b4" />
+    <UnitTestResult executionId="be1d9292-1c53-4461-abfc-e6c2dc9ae14e" testId="4d038dc5-0a65-477a-6560-d723f26f3890" testName="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests.ProtectionCellTemplateBindsGlyphAndExplanationForProtectedAndUnprotectedVersions" computerName="redacted-host" duration="00:00:01.1990000" startTime="2026-10-29T23:36:28.4256032+08:00" endTime="2026-10-29T23:36:29.5813986+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="be1d9292-1c53-4461-abfc-e6c2dc9ae14e" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests.SaveHistoryRowsExposeBoundProtectionStateAndExplanationContract" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="83f3c984-7ef6-dbe3-cf01-a48d156b8484">
+      <Execution id="934cf611-3e0f-45d2-911d-536fd99121b4" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests" name="SaveHistoryRowsExposeBoundProtectionStateAndExplanationContract" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests.ProtectionDisplayMatchesRetentionRulesAndExplainsUnlockBoundary" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4e9cc557-bd84-975a-b3c3-28305d7de771">
+      <Execution id="706c1ab0-1a4f-404c-a0b8-d68849df022f" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests" name="ProtectionDisplayMatchesRetentionRulesAndExplainsUnlockBoundary" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests.ProtectionCellTemplateBindsGlyphAndExplanationForProtectedAndUnprotectedVersions" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4d038dc5-0a65-477a-6560-d723f26f3890">
+      <Execution id="be1d9292-1c53-4461-abfc-e6c2dc9ae14e" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests" name="ProtectionCellTemplateBindsGlyphAndExplanationForProtectedAndUnprotectedVersions" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="4e9cc557-bd84-975a-b3c3-28305d7de771" executionId="706c1ab0-1a4f-404c-a0b8-d68849df022f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="83f3c984-7ef6-dbe3-cf01-a48d156b8484" executionId="934cf611-3e0f-45d2-911d-536fd99121b4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d038dc5-0a65-477a-6560-d723f26f3890" executionId="be1d9292-1c53-4461-abfc-e6c2dc9ae14e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.83]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.87]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.20]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:36:29.7571377+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

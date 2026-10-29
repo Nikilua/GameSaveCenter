@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ed3d290d-3895-49fa-82ce-bc4256647ca2" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:55:12.4576123+08:00" queuing="2026-10-29T23:55:12.4576126+08:00" start="2026-10-29T23:55:08.1391359+08:00" finish="2026-10-29T23:55:12.4648109+08:00" />
+  <TestSettings name="default" id="3ec6d02e-96fc-4c6d-ae6a-a2c4800fb221">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="117dccc9-7a68-4d46-9d23-deed370ce720" testId="9e70a5df-4714-b603-8ab3-90e1e90a5717" testName="GameSaveCenter.Playnite.Tests.R02HitAreaSpacingTests.NarrowWrapKeepsCopyAndDeleteInOneActionRow" computerName="redacted-host" duration="00:00:01.5070000" startTime="2026-10-29T23:55:10.6762819+08:00" endTime="2026-10-29T23:55:12.1518214+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="117dccc9-7a68-4d46-9d23-deed370ce720" />
+    <UnitTestResult executionId="6f93e67f-de1d-4095-956a-6e4c0bc704ca" testId="e9d21279-7c81-a52a-e76f-b21c32dcc4e6" testName="GameSaveCenter.Playnite.Tests.R02HitAreaSpacingTests.AdjacentCopyAndDeleteButtonsHaveIndependentHitTargets" computerName="redacted-host" duration="00:00:00.0960000" startTime="2026-10-29T23:55:12.1863965+08:00" endTime="2026-10-29T23:55:12.2484656+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f93e67f-de1d-4095-956a-6e4c0bc704ca" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02HitAreaSpacingTests.AdjacentCopyAndDeleteButtonsHaveIndependentHitTargets" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="e9d21279-7c81-a52a-e76f-b21c32dcc4e6">
+      <Execution id="6f93e67f-de1d-4095-956a-6e4c0bc704ca" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02HitAreaSpacingTests" name="AdjacentCopyAndDeleteButtonsHaveIndependentHitTargets" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R02HitAreaSpacingTests.NarrowWrapKeepsCopyAndDeleteInOneActionRow" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="9e70a5df-4714-b603-8ab3-90e1e90a5717">
+      <Execution id="117dccc9-7a68-4d46-9d23-deed370ce720" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R02HitAreaSpacingTests" name="NarrowWrapKeepsCopyAndDeleteInOneActionRow" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="9e70a5df-4714-b603-8ab3-90e1e90a5717" executionId="117dccc9-7a68-4d46-9d23-deed370ce720" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e9d21279-7c81-a52a-e76f-b21c32dcc4e6" executionId="6f93e67f-de1d-4095-956a-6e4c0bc704ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.80]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.84]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.50]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:55:12.4193129+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c76541c2-23ce-4e39-b9d9-a3775caad3e5" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:44:50.6224641+08:00" queuing="2026-10-29T23:44:50.6224644+08:00" start="2026-10-29T23:44:45.5705313+08:00" finish="2026-10-29T23:44:52.1699637+08:00" />
+  <TestSettings name="default" id="61cbdbca-b4e4-4a26-9474-186181c4f42c">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="56bfea51-9147-4909-9053-be8271f09bd6" testId="80cd9be3-2922-0b99-2773-d70b5f35cbd2" testName="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.RetryCommandThatCannotExecuteIgnoresKeyboardAndClickDispatch(key: Space)" computerName="redacted-host" duration="00:00:00.1390000" startTime="2026-10-29T23:44:50.8804991+08:00" endTime="2026-10-29T23:44:51.0185073+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="56bfea51-9147-4909-9053-be8271f09bd6" />
+    <UnitTestResult executionId="c93e1f5d-20d2-4df9-9584-6e8a7c46546c" testId="950926bf-9b4c-cf62-19e7-51a346aaef76" testName="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonIsHitTestableAndBoundToCommand(state: &quot;Error&quot;)" computerName="redacted-host" duration="00:00:00.1280000" startTime="2026-10-29T23:44:50.6078346+08:00" endTime="2026-10-29T23:44:50.7037974+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c93e1f5d-20d2-4df9-9584-6e8a7c46546c" />
+    <UnitTestResult executionId="ad22c9ee-0343-4cd9-abff-9dd27ef24199" testId="fcd6fb3b-ce8e-6047-18c8-30dd79164147" testName="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonKeyboardActivationExecutesOnce(key: Space)" computerName="redacted-host" duration="00:00:00.2410000" startTime="2026-10-29T23:44:51.5938803+08:00" endTime="2026-10-29T23:44:51.8342604+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad22c9ee-0343-4cd9-abff-9dd27ef24199" />
+    <UnitTestResult executionId="44703b7e-4655-4ee9-81b0-488707fb5b20" testId="80cd9be3-2922-0b99-2773-d70b5f35cbd2" testName="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.RetryCommandThatCannotExecuteIgnoresKeyboardAndClickDispatch(key: Return)" computerName="redacted-host" duration="00:00:00.1680000" startTime="2026-10-29T23:44:50.7107969+08:00" endTime="2026-10-29T23:44:50.8784974+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="44703b7e-4655-4ee9-81b0-488707fb5b20" />
+    <UnitTestResult executionId="2495dbc5-fef3-48f9-ae00-32c2ff2a07d6" testId="fcd6fb3b-ce8e-6047-18c8-30dd79164147" testName="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonKeyboardActivationExecutesOnce(key: Return)" computerName="redacted-host" duration="00:00:00.4420000" startTime="2026-10-29T23:44:51.1510508+08:00" endTime="2026-10-29T23:44:51.5928796+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2495dbc5-fef3-48f9-ae00-32c2ff2a07d6" />
+    <UnitTestResult executionId="8f5fbf5a-51f1-4e03-aade-e078e49ecad2" testId="9d242d07-777b-19dc-4082-1a5095af5af8" testName="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.LoadingPresenterBlocksUnderlyingInputAndHidesRetry" computerName="redacted-host" duration="00:00:00.1440000" startTime="2026-10-29T23:44:51.8352639+08:00" endTime="2026-10-29T23:44:51.9780397+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8f5fbf5a-51f1-4e03-aade-e078e49ecad2" />
+    <UnitTestResult executionId="923df062-cfc0-4e90-8460-114c503ff380" testId="d36e1ec8-5160-8664-3e69-8a067fd434fd" testName="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonFrameworkClickDispatchExecutesOnce" computerName="redacted-host" duration="00:00:00.1310000" startTime="2026-10-29T23:44:51.0195070+08:00" endTime="2026-10-29T23:44:51.1500500+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="923df062-cfc0-4e90-8460-114c503ff380" />
+    <UnitTestResult executionId="094dabdb-d765-455b-b063-5361cce7c040" testId="5633687c-86f8-dcae-7756-c3e50634283c" testName="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonIsHitTestableAndBoundToCommand(state: &quot;Offline&quot;)" computerName="redacted-host" duration="00:00:02.6650000" startTime="2026-10-29T23:44:47.9356682+08:00" endTime="2026-10-29T23:44:50.5758311+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="094dabdb-d765-455b-b063-5361cce7c040" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonIsHitTestableAndBoundToCommand(state: &quot;Offline&quot;)" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5633687c-86f8-dcae-7756-c3e50634283c">
+      <Execution id="094dabdb-d765-455b-b063-5361cce7c040" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests" name="FailureRetryButtonIsHitTestableAndBoundToCommand" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonFrameworkClickDispatchExecutesOnce" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d36e1ec8-5160-8664-3e69-8a067fd434fd">
+      <Execution id="923df062-cfc0-4e90-8460-114c503ff380" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests" name="FailureRetryButtonFrameworkClickDispatchExecutesOnce" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.LoadingPresenterBlocksUnderlyingInputAndHidesRetry" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9d242d07-777b-19dc-4082-1a5095af5af8">
+      <Execution id="8f5fbf5a-51f1-4e03-aade-e078e49ecad2" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests" name="LoadingPresenterBlocksUnderlyingInputAndHidesRetry" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonIsHitTestableAndBoundToCommand(state: &quot;Error&quot;)" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="950926bf-9b4c-cf62-19e7-51a346aaef76">
+      <Execution id="c93e1f5d-20d2-4df9-9584-6e8a7c46546c" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests" name="FailureRetryButtonIsHitTestableAndBoundToCommand" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.FailureRetryButtonKeyboardActivationExecutesOnce" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="fcd6fb3b-ce8e-6047-18c8-30dd79164147">
+      <Execution id="2495dbc5-fef3-48f9-ae00-32c2ff2a07d6" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests" name="FailureRetryButtonKeyboardActivationExecutesOnce" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests.RetryCommandThatCannotExecuteIgnoresKeyboardAndClickDispatch" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="80cd9be3-2922-0b99-2773-d70b5f35cbd2">
+      <Execution id="44703b7e-4655-4ee9-81b0-488707fb5b20" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.WorkspaceStatePresenterBehaviorTests" name="RetryCommandThatCannotExecuteIgnoresKeyboardAndClickDispatch" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="80cd9be3-2922-0b99-2773-d70b5f35cbd2" executionId="56bfea51-9147-4909-9053-be8271f09bd6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="950926bf-9b4c-cf62-19e7-51a346aaef76" executionId="c93e1f5d-20d2-4df9-9584-6e8a7c46546c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fcd6fb3b-ce8e-6047-18c8-30dd79164147" executionId="ad22c9ee-0343-4cd9-abff-9dd27ef24199" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80cd9be3-2922-0b99-2773-d70b5f35cbd2" executionId="44703b7e-4655-4ee9-81b0-488707fb5b20" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fcd6fb3b-ce8e-6047-18c8-30dd79164147" executionId="2495dbc5-fef3-48f9-ae00-32c2ff2a07d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9d242d07-777b-19dc-4082-1a5095af5af8" executionId="8f5fbf5a-51f1-4e03-aade-e078e49ecad2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d36e1ec8-5160-8664-3e69-8a067fd434fd" executionId="923df062-cfc0-4e90-8460-114c503ff380" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5633687c-86f8-dcae-7756-c3e50634283c" executionId="094dabdb-d765-455b-b063-5361cce7c040" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.83]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.89]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.01]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:44:52.1329411+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

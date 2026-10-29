@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="964c462d-7fd6-4ff7-b443-8b504f031a6a" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:49:55.8642980+08:00" queuing="2026-10-29T23:49:55.8642984+08:00" start="2026-10-29T23:49:51.6230366+08:00" finish="2026-10-29T23:49:57.4288816+08:00" />
+  <TestSettings name="default" id="082b9209-0894-4bf3-b56b-44ea5fc71a15">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f16d4e58-99b1-4d38-af25-e904ec5ccb50" testId="6cba0987-c15a-ace6-926d-011de9f727a4" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ColumnMenuNavigationKeepsEnabledItemsInOrderAndCycles" computerName="redacted-host" duration="00:00:01.5950000" startTime="2026-10-29T23:49:55.6446965+08:00" endTime="2026-10-29T23:49:57.2365575+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f16d4e58-99b1-4d38-af25-e904ec5ccb50" />
+    <UnitTestResult executionId="41501052-b1d0-4fd8-a0d6-e96266f67cf7" testId="1423385b-46a7-c8af-a26f-4101ab25994c" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.HiddenColumnPreferencesRoundTripAndResetWithLocalUiPreferences" computerName="redacted-host" duration="00:00:00.0620000" startTime="2026-10-29T23:49:55.4612649+08:00" endTime="2026-10-29T23:49:55.5202649+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="41501052-b1d0-4fd8-a0d6-e96266f67cf7" />
+    <UnitTestResult executionId="bef8f8d7-90ad-4991-be95-6a1a0dcbc847" testId="4ee8c8be-6f09-767d-0dd0-4136e154a144" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ProductionTablesExposeThePickerAndSharedThemeResources" computerName="redacted-host" duration="00:00:00.1220000" startTime="2026-10-29T23:49:55.5222666+08:00" endTime="2026-10-29T23:49:55.6416952+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bef8f8d7-90ad-4991-be95-6a1a0dcbc847" />
+    <UnitTestResult executionId="3b5d78d6-60f4-4bcc-bdea-a7953b0144b7" testId="ec43b4c1-cc60-3c9c-bb97-d6f2e4fe1bea" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ResetRestoresAllColumnsAndOnlyRemovesCurrentGridPreference" computerName="redacted-host" duration="00:00:01.3960000" startTime="2026-10-29T23:49:53.9572153+08:00" endTime="2026-10-29T23:49:55.3239556+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3b5d78d6-60f4-4bcc-bdea-a7953b0144b7" />
+    <UnitTestResult executionId="9f8a0bf7-5acd-4de0-bcc8-18f1b7a2aac2" testId="02dffcfc-6e2e-f18b-7944-8e922d6a07b2" testName="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.OptionalColumnsPersistByStableKeyWhileIdentityAndStateRemainVisible" computerName="redacted-host" duration="00:00:00.1340000" startTime="2026-10-29T23:49:55.3519559+08:00" endTime="2026-10-29T23:49:55.4582651+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9f8a0bf7-5acd-4de0-bcc8-18f1b7a2aac2" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.HiddenColumnPreferencesRoundTripAndResetWithLocalUiPreferences" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="1423385b-46a7-c8af-a26f-4101ab25994c">
+      <Execution id="41501052-b1d0-4fd8-a0d6-e96266f67cf7" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="HiddenColumnPreferencesRoundTripAndResetWithLocalUiPreferences" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ProductionTablesExposeThePickerAndSharedThemeResources" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="4ee8c8be-6f09-767d-0dd0-4136e154a144">
+      <Execution id="bef8f8d7-90ad-4991-be95-6a1a0dcbc847" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="ProductionTablesExposeThePickerAndSharedThemeResources" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.OptionalColumnsPersistByStableKeyWhileIdentityAndStateRemainVisible" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="02dffcfc-6e2e-f18b-7944-8e922d6a07b2">
+      <Execution id="9f8a0bf7-5acd-4de0-bcc8-18f1b7a2aac2" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="OptionalColumnsPersistByStableKeyWhileIdentityAndStateRemainVisible" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ColumnMenuNavigationKeepsEnabledItemsInOrderAndCycles" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="6cba0987-c15a-ace6-926d-011de9f727a4">
+      <Execution id="f16d4e58-99b1-4d38-af25-e904ec5ccb50" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="ColumnMenuNavigationKeepsEnabledItemsInOrderAndCycles" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests.ResetRestoresAllColumnsAndOnlyRemovesCurrentGridPreference" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="ec43b4c1-cc60-3c9c-bb97-d6f2e4fe1bea">
+      <Execution id="3b5d78d6-60f4-4bcc-bdea-a7953b0144b7" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests" name="ResetRestoresAllColumnsAndOnlyRemovesCurrentGridPreference" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="6cba0987-c15a-ace6-926d-011de9f727a4" executionId="f16d4e58-99b1-4d38-af25-e904ec5ccb50" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1423385b-46a7-c8af-a26f-4101ab25994c" executionId="41501052-b1d0-4fd8-a0d6-e96266f67cf7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ee8c8be-6f09-767d-0dd0-4136e154a144" executionId="bef8f8d7-90ad-4991-be95-6a1a0dcbc847" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ec43b4c1-cc60-3c9c-bb97-d6f2e4fe1bea" executionId="3b5d78d6-60f4-4bcc-bdea-a7953b0144b7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="02dffcfc-6e2e-f18b-7944-8e922d6a07b2" executionId="9f8a0bf7-5acd-4de0-bcc8-18f1b7a2aac2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="5" passed="5" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.82]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.87]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.23]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:49:57.3946311+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

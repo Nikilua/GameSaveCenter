@@ -1,0 +1,64 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "run": {
+    "id": 40900374673,
+    "number": 1398,
+    "event": "push",
+    "headSha": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+    "status": "completed",
+    "conclusion": "success",
+    "createdAt": "2026-10-29T15:19:26Z",
+    "updatedAt": "2026-10-29T16:27:12Z"
+  },
+  "jobs": [
+    {
+      "id": 123540700192,
+      "name": "编译、测试与打包",
+      "conclusion": "success",
+      "passedSteps": [
+        "源码结构检查",
+        "诊断采集自测",
+        "SDK基线与缺失负例",
+        "编译与测试",
+        "离屏渲染QA",
+        "WPF静态审查",
+        "生成Playnite扩展包",
+        "上传构建产物",
+        "保留构建诊断"
+      ]
+    },
+    {
+      "id": 123540699717,
+      "name": "SDK10.0.401编译与测试复核",
+      "conclusion": "success",
+      "passedSteps": [
+        "隔离Release编译与测试",
+        "保留SDK10诊断"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12914531169,
+      "name": "GameSaveCenter-build-diagnostics",
+      "digest": "sha256:838887b8f0dd684eaf5738ab01831ad4c804b880c5706dcd05a144b9e389d371",
+      "headSha": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+      "expired": false
+    },
+    {
+      "id": 12914426395,
+      "name": "GameSaveCenter-windows-preview",
+      "digest": "sha256:d56eb32ee461ac243e09d07eea9a9a10c005c7ff21441d274c0b2cd6465f0cee",
+      "headSha": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+      "expired": false
+    },
+    {
+      "id": 12908709759,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "digest": "sha256:c01d58757f68faca43de97b1d6e2e0789f342b9f405544e5e23a9fc292c88bdb",
+      "headSha": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+      "expired": false
+    }
+  ],
+  "requiredChecks": "Classic branch protection read previously returned 403. Do not repeat. Authorized maintainer can run gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks."
+}

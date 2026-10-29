@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6ad6fc05-4c64-4abe-9173-69e48443523e" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:30:48.3724212+08:00" queuing="2026-10-29T23:30:48.3724216+08:00" start="2026-10-29T23:30:41.6188940+08:00" finish="2026-10-29T23:30:48.3792979+08:00" />
+  <TestSettings name="default" id="aaadc668-1a60-4060-ae37-c6560cf916b2">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="413657a8-68f1-4d24-8236-579e8941de59" testId="0faff2d0-97ac-d832-63a1-849a31c1398d" testName="GameSaveCenter.Playnite.Tests.R05TogglePersistenceBehaviorTests.ProductionToggleKeepsValueDisplayAndDraftRollbackAligned" computerName="redacted-host" duration="00:00:04.1930000" startTime="2026-10-29T23:30:43.9745384+08:00" endTime="2026-10-29T23:30:48.1435116+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="413657a8-68f1-4d24-8236-579e8941de59" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05TogglePersistenceBehaviorTests.ProductionToggleKeepsValueDisplayAndDraftRollbackAligned" storage="[repo]\artifacts\gsc-b\871b9f7b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0faff2d0-97ac-d832-63a1-849a31c1398d">
+      <Execution id="413657a8-68f1-4d24-8236-579e8941de59" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\871b9f7b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05TogglePersistenceBehaviorTests" name="ProductionToggleKeepsValueDisplayAndDraftRollbackAligned" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="0faff2d0-97ac-d832-63a1-849a31c1398d" executionId="413657a8-68f1-4d24-8236-579e8941de59" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.84]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.88]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.15]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:30:48.3303644+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

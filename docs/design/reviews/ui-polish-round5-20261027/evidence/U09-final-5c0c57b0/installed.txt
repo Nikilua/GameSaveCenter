@@ -1,0 +1,26 @@
+时间：2026-10-29 23:46:00
+安装运行 ID：20261029T152004872Z-4bdb3788
+源码版本：0.6.73
+隔离构建目录：[repo]\artifacts\gsc-b\871b9f7b
+安装目录：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：FD036FA359EA406C9D93A0517082C60F86E72D96F0870C562A3B1D35827972E7
+  GameSaveCenter.Core.dll：0.6.73+5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：0DFF000F9993C614F89803B7F5A0A29DBCC2A6655EC32D48FC0A1D88188CDEFF
+  GameSaveCenter.Contracts.dll：0.6.73+5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：4E16A36AD71792CE4FBDAB9AC66A7C2E006215D54B83360B3DBB8F5613E2A3F4
+  Worker/GameSaveCenter.Worker.dll：0.6.73+5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：FFCC5ED5DCBA90B8A3C334CADAD1CDF804635173D860C4641A2F30F10A1784A7
+  Worker/GameSaveCenter.Core.dll：0.6.73+5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：CAA4DEA0886BC4092D45BB54430EEC49D28D32D8FCEECC16BF40A5247B748B25
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：F8C4C0152573B8D4A7615A4555DBC82642C1B152EC80FCA1314453E680D3BF9E

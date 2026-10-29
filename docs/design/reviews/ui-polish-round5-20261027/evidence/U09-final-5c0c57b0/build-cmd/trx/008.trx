@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="83067a40-36aa-462a-8bef-79f7ec89c818" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:49:06.1560501+08:00" queuing="2026-10-29T23:49:06.1560504+08:00" start="2026-10-29T23:49:00.2945884+08:00" finish="2026-10-29T23:49:10.3274597+08:00" />
+  <TestSettings name="default" id="ccafe734-2636-4664-9544-35d34a005a1d">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="debaa508-e7f7-4de6-9a29-38dd68ccdea7" testId="73ce069d-172f-c8f1-da44-affd10322a0a" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.PinnedCommandsSortBeforeRecentCommandsAndCatalogItems" computerName="redacted-host" duration="00:00:00.4820000" startTime="2026-10-29T23:49:06.1428205+08:00" endTime="2026-10-29T23:49:06.5938489+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="debaa508-e7f7-4de6-9a29-38dd68ccdea7" />
+    <UnitTestResult executionId="87983385-0ceb-4598-b59c-340208511cc9" testId="94ab571c-c8e3-82d2-7174-ec593dfc7a20" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.OpenShortcutIsBoundToThePluginShellAndDoesNotCaptureTextEditing" computerName="redacted-host" duration="00:00:00.6160000" startTime="2026-10-29T23:49:07.8222721+08:00" endTime="2026-10-29T23:49:08.4373781+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="87983385-0ceb-4598-b59c-340208511cc9" />
+    <UnitTestResult executionId="10a610c5-5af6-4b6a-8162-d801dbc48899" testId="18bb6cd1-99d5-1438-2cf4-75456d8b8704" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.ImeCompositionKeepsEnterAndEscapeOutOfCommandRoutingUntilCommit" computerName="redacted-host" duration="00:00:00.5310000" startTime="2026-10-29T23:49:09.6025596+08:00" endTime="2026-10-29T23:49:10.1324952+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="10a610c5-5af6-4b6a-8162-d801dbc48899" />
+    <UnitTestResult executionId="96f6c978-cbdd-48ed-a0c6-ca22360c1f76" testId="004944fd-dc3a-9c7a-d6b7-f5e1401740b9" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.SelectedResultUpdatesTheContextPreviewAndShowsItsUnavailableReason" computerName="redacted-host" duration="00:00:00.7340000" startTime="2026-10-29T23:49:06.6058500+08:00" endTime="2026-10-29T23:49:07.3282099+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="96f6c978-cbdd-48ed-a0c6-ca22360c1f76" />
+    <UnitTestResult executionId="9e3bd27b-1c97-4a29-b4cb-141f4908a7dc" testId="d97e6898-067d-ae09-ee8d-f7b354f7322b" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.EmptyResultsConsumeEnterWithoutExecutingAndEscapeReturnsFocus" computerName="redacted-host" duration="00:00:00.4930000" startTime="2026-10-29T23:49:07.3292126+08:00" endTime="2026-10-29T23:49:07.8212701+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e3bd27b-1c97-4a29-b4cb-141f4908a7dc" />
+    <UnitTestResult executionId="e74a337b-5fc0-474f-a4b5-529e8cdaf93d" testId="d90c78c7-eb23-ddbb-c122-c2c666d84033" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.ArrowKeysSelectResultsAndEnterExecutesOnlyTheSelectedCommandOnce" computerName="redacted-host" duration="00:00:01.1630000" startTime="2026-10-29T23:49:08.4393790+08:00" endTime="2026-10-29T23:49:09.6005582+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e74a337b-5fc0-474f-a4b5-529e8cdaf93d" />
+    <UnitTestResult executionId="2d6bc67c-564f-4bae-8a67-3973b9b960b5" testId="b4c466b1-ca60-40c9-c87a-12d7bc97d645" testName="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.DisabledResultsStayOpenAndEditingKeysAreNotCaptured" computerName="redacted-host" duration="00:00:03.2330000" startTime="2026-10-29T23:49:02.9115184+08:00" endTime="2026-10-29T23:49:06.1109471+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2d6bc67c-564f-4bae-8a67-3973b9b960b5" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.OpenShortcutIsBoundToThePluginShellAndDoesNotCaptureTextEditing" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="94ab571c-c8e3-82d2-7174-ec593dfc7a20">
+      <Execution id="87983385-0ceb-4598-b59c-340208511cc9" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests" name="OpenShortcutIsBoundToThePluginShellAndDoesNotCaptureTextEditing" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.SelectedResultUpdatesTheContextPreviewAndShowsItsUnavailableReason" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="004944fd-dc3a-9c7a-d6b7-f5e1401740b9">
+      <Execution id="96f6c978-cbdd-48ed-a0c6-ca22360c1f76" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests" name="SelectedResultUpdatesTheContextPreviewAndShowsItsUnavailableReason" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.ArrowKeysSelectResultsAndEnterExecutesOnlyTheSelectedCommandOnce" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="d90c78c7-eb23-ddbb-c122-c2c666d84033">
+      <Execution id="e74a337b-5fc0-474f-a4b5-529e8cdaf93d" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests" name="ArrowKeysSelectResultsAndEnterExecutesOnlyTheSelectedCommandOnce" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.DisabledResultsStayOpenAndEditingKeysAreNotCaptured" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="b4c466b1-ca60-40c9-c87a-12d7bc97d645">
+      <Execution id="2d6bc67c-564f-4bae-8a67-3973b9b960b5" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests" name="DisabledResultsStayOpenAndEditingKeysAreNotCaptured" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.PinnedCommandsSortBeforeRecentCommandsAndCatalogItems" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="73ce069d-172f-c8f1-da44-affd10322a0a">
+      <Execution id="debaa508-e7f7-4de6-9a29-38dd68ccdea7" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests" name="PinnedCommandsSortBeforeRecentCommandsAndCatalogItems" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.EmptyResultsConsumeEnterWithoutExecutingAndEscapeReturnsFocus" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="d97e6898-067d-ae09-ee8d-f7b354f7322b">
+      <Execution id="9e3bd27b-1c97-4a29-b4cb-141f4908a7dc" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests" name="EmptyResultsConsumeEnterWithoutExecutingAndEscapeReturnsFocus" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests.ImeCompositionKeepsEnterAndEscapeOutOfCommandRoutingUntilCommit" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="18bb6cd1-99d5-1438-2cf4-75456d8b8704">
+      <Execution id="10a610c5-5af6-4b6a-8162-d801dbc48899" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests" name="ImeCompositionKeepsEnterAndEscapeOutOfCommandRoutingUntilCommit" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="73ce069d-172f-c8f1-da44-affd10322a0a" executionId="debaa508-e7f7-4de6-9a29-38dd68ccdea7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="94ab571c-c8e3-82d2-7174-ec593dfc7a20" executionId="87983385-0ceb-4598-b59c-340208511cc9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="18bb6cd1-99d5-1438-2cf4-75456d8b8704" executionId="10a610c5-5af6-4b6a-8162-d801dbc48899" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="004944fd-dc3a-9c7a-d6b7-f5e1401740b9" executionId="96f6c978-cbdd-48ed-a0c6-ca22360c1f76" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d97e6898-067d-ae09-ee8d-f7b354f7322b" executionId="9e3bd27b-1c97-4a29-b4cb-141f4908a7dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d90c78c7-eb23-ddbb-c122-c2c666d84033" executionId="e74a337b-5fc0-474f-a4b5-529e8cdaf93d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b4c466b1-ca60-40c9-c87a-12d7bc97d645" executionId="2d6bc67c-564f-4bae-8a67-3973b9b960b5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.47]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.92]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.96]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:08.28]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:49:10.2946663+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

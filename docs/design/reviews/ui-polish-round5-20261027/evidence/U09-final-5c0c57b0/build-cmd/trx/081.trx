@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="3c864067-e1c4-42b3-939a-6e302d5d4a85" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-29T23:59:47.7525537+08:00" queuing="2026-10-29T23:59:47.7525541+08:00" start="2026-10-29T23:59:34.5910604+08:00" finish="2026-10-29T23:59:53.6291867+08:00" />
+  <TestSettings name="default" id="72ad8d22-2162-4c07-9a2e-d5f0981f2791">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="bbe99e47-5b88-49fe-aaa6-24550d160008" testId="54a6e7db-ab8b-639f-11b1-02ffa0506136" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedWorkspacePagesRestoreTabsAndTaskFiltersWithoutRefreshing" computerName="redacted-host" duration="00:00:02.7290000" startTime="2026-10-29T23:59:50.6952441+08:00" endTime="2026-10-29T23:59:53.4235131+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bbe99e47-5b88-49fe-aaa6-24550d160008">
+      <Output>
+        <StdOut>task filters retained; tabs media/save/maintenance=2/3/5; task selection=q11-07-task-55; scroll=18-&gt;18; cached pages retained; refresh executions=0</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="97c71642-c53c-4199-b01b-1072f3b77d31" testId="43cbde27-d306-37d2-87df-958880702032" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedProductionPagesPreserveBindingSelectionAndScrollAcrossNavigation" computerName="redacted-host" duration="00:00:02.8770000" startTime="2026-10-29T23:59:47.7371322+08:00" endTime="2026-10-29T23:59:50.5785129+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="97c71642-c53c-4199-b01b-1072f3b77d31">
+      <Output>
+        <StdOut>offset=10-&gt;10; to-media measure/arrange=1/1; back measure/arrange=1/1; cached=True; selection=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d1843d8a-afa0-48aa-a169-ca8cafca57a1" testId="095ea878-c6a9-f6c6-aad3-3c54a0b9631b" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" computerName="redacted-host" duration="00:00:10.7940000" startTime="2026-10-29T23:59:36.9363819+08:00" endTime="2026-10-29T23:59:47.7011311+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d1843d8a-afa0-48aa-a169-ca8cafca57a1">
+      <Output>
+        <StdOut>routes=31; final=Tasks; title=任务中心; focus=NavTasks; pageEffects=none</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1414e03a-1ae0-4b3b-b59d-3ed396850963" testId="bd280927-1b9b-14ae-dc28-7d2d654f2d6e" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.ProductionPageHostUsesLightEntranceOnlyWhenContentChangesAndNeverBlurs" computerName="redacted-host" duration="00:00:00.1150000" startTime="2026-10-29T23:59:50.5816904+08:00" endTime="2026-10-29T23:59:50.6941829+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1414e03a-1ae0-4b3b-b59d-3ed396850963" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedProductionPagesPreserveBindingSelectionAndScrollAcrossNavigation" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="43cbde27-d306-37d2-87df-958880702032">
+      <Execution id="97c71642-c53c-4199-b01b-1072f3b77d31" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="CachedProductionPagesPreserveBindingSelectionAndScrollAcrossNavigation" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="095ea878-c6a9-f6c6-aad3-3c54a0b9631b">
+      <Execution id="d1843d8a-afa0-48aa-a169-ca8cafca57a1" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.CachedWorkspacePagesRestoreTabsAndTaskFiltersWithoutRefreshing" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="54a6e7db-ab8b-639f-11b1-02ffa0506136">
+      <Execution id="bbe99e47-5b88-49fe-aaa6-24550d160008" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="CachedWorkspacePagesRestoreTabsAndTaskFiltersWithoutRefreshing" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.ProductionPageHostUsesLightEntranceOnlyWhenContentChangesAndNeverBlurs" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="bd280927-1b9b-14ae-dc28-7d2d654f2d6e">
+      <Execution id="1414e03a-1ae0-4b3b-b59d-3ed396850963" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="ProductionPageHostUsesLightEntranceOnlyWhenContentChangesAndNeverBlurs" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="54a6e7db-ab8b-639f-11b1-02ffa0506136" executionId="bbe99e47-5b88-49fe-aaa6-24550d160008" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="43cbde27-d306-37d2-87df-958880702032" executionId="97c71642-c53c-4199-b01b-1072f3b77d31" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="095ea878-c6a9-f6c6-aad3-3c54a0b9631b" executionId="d1843d8a-afa0-48aa-a169-ca8cafca57a1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bd280927-1b9b-14ae-dc28-7d2d654f2d6e" executionId="1414e03a-1ae0-4b3b-b59d-3ed396850963" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.84]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.88]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:17.45]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-10-29T23:59:53.5926470+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
