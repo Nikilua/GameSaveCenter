@@ -1,3 +1,9 @@
+## 2026-10-30 U09-01补U08-01/02历史配对
+
+历史生产快照`18481e6d8d3415ffc31362764980614e76445848`→`fd2d1316be9ff2d65b0851ac57c45e40064e50ac`；生产差异限于概览眉题与存档摘要所选游戏身份提示。SDK8.0.423 Release两侧真实Worker/RenderHarness构建无警告错误，完整Render QA各394 PNG/0 PROBLEM/exit0；固定样本UTC和运行任务ElapsedSeconds后38张变化、356张像素一致，任务页不变。after定向行为测试1/1通过。当前生产子树WPF静态审查26 XAML/0 error/26 warning/164 info；Overview两条为StackPanel启发式文本邻近误报，实际为Grid内标题区，SaveCenter无警告。Demo-first文档指定的`GameSaveCenter.AcrylicFork/.../Design`树不在本工作树，未声称直接Demo对照。证据、前后目标图、报告、日志、TRX和SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-pair-20261030/`。未改生产源码，U08-01/02仍代码完成待验收，U09-01继续进行。
+
+RenderHarness历史配对必须同时固定假数据UTC和运行中任务`ElapsedSeconds`，否则DTO会回退真实`UtcNow`导致非目标时长漂移；SettingsState探针应以历史源码分别编译真实Worker，不能用占位Worker掩盖首轮错误。net472长路径限制下，本次仅把短临时输出放入仓库`.tmp` junction，源码、筛选和断言未变。阶段临时目录清单、SDK保留理由与空间变化见证据`cleanup.json`。
+
 ## 2026-10-30 U09-04当前源码固定轮次性能补测
 
 当前候选源码（生产与RenderHarness内容等同冻结`5c0c57b0`）使用SDK8.0.423 Release临时探针构建exit0。三轮受控透明WPF STA样本各完成70周期、297操作和30秒settle，0失败；活动托管分配8.8775–8.8779GB，e6旧样本8.8767–8.8769GB；合成搜索/滚动和工作区中位数接近。当前Rendering回调p95 338–360ms、>33.3ms比例18.6–20.5%，工作区逻辑布局p95 709–854ms，均高于旧e6两轮；各页布局中位数接近但最大样本偏高。此为尾部信号，不归因于页签模板/动画。旧e6的SampleTimeUtc相同但pinned=False，当前pinned=True；旧源同探针重建因便携SDK缺`Microsoft.NET.SDK.WorkloadAutoImportPropsLocator`/`Microsoft.NET.SDK.WorkloadManifestTargetsLocator`目录exit1，保留MSB4276原始诊断，未替换SDK。仅清理本批`.tmp/u09-04-currentperf-20261030`（7,481个文件/535,838,263字节），C盘可用空间实测增加551,292,928字节；所有归档SHA校验通过，见`cleanup.json`。临时探针源和测量身份已归档，生产源码无改。U00原始逐帧/分配缺失、真实宿主与实体键盘/IME/呈现帧未验，U09-04继续中。证据见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-currentperf-20261030/BASELINE.md`。

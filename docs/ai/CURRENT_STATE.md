@@ -1,3 +1,7 @@
+## 2026-10-30 U09-01补U08-01/02同数据配对
+
+历史快照`18481e6d8d3415ffc31362764980614e76445848`→`fd2d1316be9ff2d65b0851ac57c45e40064e50ac`的概览与存档页面已完成同数据Light/Dark配对：两侧真实Worker构建成功，Render QA各394图/0 PROBLEM/exit0；固定UTC和运行任务ElapsedSeconds后38图变化、356图一致，after行为回归1/1通过。当前生产子树静态审查26 XAML/0 error/26 warning；Overview两条为标题StackPanel检测启发式误报。Demo-first文档所指Demo树不在本工作树，未声称直接视觉对照。未改生产源码。U08-01/02仍代码完成待验收，U09-01继续盘点其它批次。RenderHarness经验：同时固定假数据UTC与运行任务ElapsedSeconds，并从历史快照构建真实Worker；net472长路径用`.tmp`短junction只改输出目录。证据与清理见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-pair-20261030/`。
+
 ## 2026-10-30 U09-04当前源码固定轮次性能补测
 
 当前冻结候选源码等同于`5c0c57b0`，SDK8.0.423 Release临时探针构建exit0。三轮均70周期/297操作；活动托管分配约8.878GB，和e6约8.877GB持平；合成搜索/滚动延迟及工作区中位数接近，但Rendering回调和工作区逻辑布局p95、逐页最大布局样本偏高。旧e6报告相同SampleTimeUtc但`pinned=False`，当前为`pinned=True`；同探针重建e6因便携SDK缺workload locator目录exit1，保留日志，没有换SDK或关闭检查。结果为离屏尾部信号，不能归因于页签模板或动画。U00原始帧/累计分配和真实Playnite/实体输入仍未验，U09-04继续进行。证据在`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-currentperf-20261030/`；阶段临时目录仅含本批产物，删除和空间记录见`cleanup.json`。

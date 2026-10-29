@@ -1,0 +1,310 @@
+{
+  "task": "U09-01 U08-01/02 historical render pair",
+  "capturedAtUtc": "2026-10-29T20:17:38Z",
+  "target": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-01-pairs-20261030",
+  "rootBoundary": {
+    "withinWorkspace": true,
+    "rootReparsePoint": false,
+    "withinTmp": true,
+    "exactExpectedPath": true,
+    "reparseEntries": 0
+  },
+  "preCleanup": {
+    "fileCount": 17896,
+    "bytes": 2244618874,
+    "topLevelEntries": [
+      {
+        "name": "after-render-final",
+        "kind": "directory",
+        "files": 395,
+        "bytes": 53336936
+      },
+      {
+        "name": "after-render-worker",
+        "kind": "directory",
+        "files": 395,
+        "bytes": 53337032
+      },
+      {
+        "name": "after-source",
+        "kind": "directory",
+        "files": 6407,
+        "bytes": 412335104
+      },
+      {
+        "name": "before-render",
+        "kind": "directory",
+        "files": 395,
+        "bytes": 53355407
+      },
+      {
+        "name": "before-render-final",
+        "kind": "directory",
+        "files": 395,
+        "bytes": 53341704
+      },
+      {
+        "name": "before-render-fixed",
+        "kind": "directory",
+        "files": 297,
+        "bytes": 41027223
+      },
+      {
+        "name": "before-render-worker",
+        "kind": "directory",
+        "files": 395,
+        "bytes": 53341700
+      },
+      {
+        "name": "before-source",
+        "kind": "directory",
+        "files": 6289,
+        "bytes": 394848112
+      },
+      {
+        "name": "behavior-bin",
+        "kind": "directory",
+        "files": 155,
+        "bytes": 15973385
+      },
+      {
+        "name": "behavior-bin-short",
+        "kind": "directory",
+        "files": 155,
+        "bytes": 15972925
+      },
+      {
+        "name": "behavior-results",
+        "kind": "directory",
+        "files": 1,
+        "bytes": 5885
+      },
+      {
+        "name": "behavior-results-junction",
+        "kind": "directory",
+        "files": 1,
+        "bytes": 3195
+      },
+      {
+        "name": "behavior-results-short-output",
+        "kind": "directory",
+        "files": 1,
+        "bytes": 5775
+      },
+      {
+        "name": "build-temp",
+        "kind": "directory",
+        "files": 0,
+        "bytes": 0
+      },
+      {
+        "name": "dotnet-cli-home",
+        "kind": "directory",
+        "files": 89,
+        "bytes": 129749
+      },
+      {
+        "name": "dotnet-home",
+        "kind": "directory",
+        "files": 37,
+        "bytes": 34035
+      },
+      {
+        "name": "download-temp",
+        "kind": "directory",
+        "files": 0,
+        "bytes": 0
+      },
+      {
+        "name": "nuget-packages",
+        "kind": "directory",
+        "files": 2391,
+        "bytes": 682723692
+      },
+      {
+        "name": "offline-nuget-feed",
+        "kind": "directory",
+        "files": 58,
+        "bytes": 166440040
+      },
+      {
+        "name": "temp",
+        "kind": "directory",
+        "files": 18,
+        "bytes": 7724176
+      },
+      {
+        "name": "after-render-final.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 1185848
+      },
+      {
+        "name": "after-render-worker.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 1186631
+      },
+      {
+        "name": "after-source.zip",
+        "kind": "file",
+        "files": 1,
+        "bytes": 117533494
+      },
+      {
+        "name": "after-worker-build.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 759
+      },
+      {
+        "name": "after-worker-restore.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 651
+      },
+      {
+        "name": "before-render-console.txt",
+        "kind": "file",
+        "files": 1,
+        "bytes": 2678
+      },
+      {
+        "name": "before-render-error.txt",
+        "kind": "file",
+        "files": 1,
+        "bytes": 358
+      },
+      {
+        "name": "before-render-final.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 1186398
+      },
+      {
+        "name": "before-render-fixed.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 2035
+      },
+      {
+        "name": "before-render-worker.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 1186815
+      },
+      {
+        "name": "before-source.zip",
+        "kind": "file",
+        "files": 1,
+        "bytes": 117503836
+      },
+      {
+        "name": "before-worker-build.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 762
+      },
+      {
+        "name": "before-worker-offline-diag.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 867172
+      },
+      {
+        "name": "before-worker-offline-restore.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 37
+      },
+      {
+        "name": "before-worker-offline-serial-restore.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 295
+      },
+      {
+        "name": "before-worker-restore.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 37
+      },
+      {
+        "name": "behavior-restore.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 1119
+      },
+      {
+        "name": "behavior-test-junction.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 1465
+      },
+      {
+        "name": "behavior-test-short-output.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 5465
+      },
+      {
+        "name": "behavior-test.log",
+        "kind": "file",
+        "files": 1,
+        "bytes": 5891
+      },
+      {
+        "name": "dotnet-install-retry-transcript.txt",
+        "kind": "file",
+        "files": 1,
+        "bytes": 4072
+      },
+      {
+        "name": "dotnet-install-transcript.txt",
+        "kind": "file",
+        "files": 1,
+        "bytes": 6981
+      }
+    ]
+  },
+  "removed": {
+    "command": "Remove-Item -LiteralPath 'C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-01-pairs-20261030' -Recurse -Force",
+    "unrelatedPathsTouched": false,
+    "targetNoLongerExists": true
+  },
+  "retainedSdk": {
+    "bytes": 748426619,
+    "reason": "本工作树global.json固定8.0.423，系统全局dotnet --list-sdks仅有9.0.302；留作后续冻结门禁复用",
+    "verification": "8.0.423 [C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423\\sdk]",
+    "version": "8.0.423",
+    "fileCount": 5140,
+    "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423"
+  },
+  "preflight": {
+    "commandLineInspection": "Get-CimInstance Win32_Process returned Access Denied; scoped Get-Process filter returned 0",
+    "trackedMarkdownLinkTargetsToPhase": 0,
+    "matchingBuildRenderTestProcesses": 0,
+    "handleEnumeration": "Handle-level lock query was not performed; scoped Get-Process filters returned 0 and exact-path Remove-Item completed successfully."
+  },
+  "diskSpaceC": {
+    "freeBeforeBytes": 3242323968,
+    "observedDeltaBytes": 2288345088,
+    "freeAfterBytes": 5530669056
+  },
+  "evidenceVerification": {
+    "criticalFileHashesVerified": 19,
+    "sourceArchives": [
+      {
+        "file": "before-source.zip",
+        "sha256": "6E2444D0572099CB478AC9CFA6CDDCBFAAAD621DAFA5509F137DC397382E4A9B",
+        "fileCount": 5934
+      },
+      {
+        "file": "after-source.zip",
+        "sha256": "D67749CC49D43A860E2628C61F388D020ABF482A107B57E657FC00F98FA32989",
+        "fileCount": 5940
+      }
+    ],
+    "note": "ZIP hashes and file counts matched pair.json before removal; screenshots, reports, render logs, worker logs, failure diagnostic, behavior log and TRX hashes matched their recorded values."
+  }
+}

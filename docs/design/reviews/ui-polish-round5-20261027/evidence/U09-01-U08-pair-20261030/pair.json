@@ -1,0 +1,155 @@
+{
+  "task": "U09-01",
+  "batch": [
+    "U08-01",
+    "U08-02"
+  ],
+  "capturedDateUtc": "2026-10-30",
+  "sourceSnapshots": {
+    "before": {
+      "commit": "18481e6d8d3415ffc31362764980614e76445848",
+      "archiveSha256": "6E2444D0572099CB478AC9CFA6CDDCBFAAAD621DAFA5509F137DC397382E4A9B",
+      "archiveBytes": 117503836,
+      "archiveFileCount": 5934
+    },
+    "after": {
+      "commit": "fd2d1316be9ff2d65b0851ac57c45e40064e50ac",
+      "archiveSha256": "D67749CC49D43A860E2628C61F388D020ABF482A107B57E657FC00F98FA32989",
+      "archiveBytes": 117533494,
+      "archiveFileCount": 5940
+    }
+  },
+  "productionFiles": [
+    "src/GameSaveCenter.Playnite/Views/OverviewView.xaml",
+    "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml"
+  ],
+  "sourceDelta": "Overview eyebrow 待处理→当前状态；Save History 增加所选游戏名和身份 Tooltip/UIA HelpText。",
+  "testOnlyInstrumentation": {
+    "sampleUtcEnvironment": "GSC_RENDER_SAMPLE_UTC=2026-10-28T09:00:00Z",
+    "runningTaskElapsedSeconds": 126720,
+    "FakeDashboardDataSha256": "507DD0F741AE93680095CDCBC9E8ED1B881CD29ED1FA611CBCFEA3838DE27469",
+    "ProgramSha256": "E8A5BDBBBA75DE5E7FADC0DB830B452FA9529F9F22A6EF75940CB7F326CCF2D9",
+    "FakeSampleClockSha256": "992FEEBBCA8C2B59C2519DD915A22ADB5AE94408434F84E3A407661514E08E83",
+    "sameOnBothSnapshots": true,
+    "productionSourceModified": false
+  },
+  "render": {
+    "sdk": "8.0.423",
+    "configuration": "Release",
+    "entrypoint": "scripts/render-qa.ps1 executed from each source snapshot",
+    "renderQaExitCode": {
+      "before": 0,
+      "after": 0
+    },
+    "workerBuildWarnings": 0,
+    "workerBuildErrors": 0,
+    "workerExeSha256": {
+      "before": "EB807D212EE2A927623ACF6BF12045A36BEB3C53D9C49E13313ED09A6B9AAD32",
+      "after": "EB807D212EE2A927623ACF6BF12045A36BEB3C53D9C49E13313ED09A6B9AAD32"
+    },
+    "pngCountPerSnapshot": 394,
+    "problemCount": {
+      "before": 0,
+      "after": 0
+    },
+    "changedPngCount": 38,
+    "identicalPngCount": 356,
+    "taskPageChangedPngCount": 0,
+    "changedBreakdown": {
+      "overviewMainSizes": 11,
+      "saveHistorySelectedTabMainSizes": 11,
+      "dualThemeOverviewAndSaveCaptures": 16
+    },
+    "reportSha256": {
+      "before": "9941396439A72FA247D24BC32011B982917E383CAD6B7D779560DEEC599A886B",
+      "after": "20C5582EFCB7D2077CFB6146DD32CDD8FC35AD54D6E8ED4C63E20719261498E5"
+    },
+    "entrypointLogSha256": {
+      "before": "BE5F81FCF89A60FF8792686A14C42D27E9BBC456A386E553648FFE38B29616F2",
+      "after": "BECBDAAF1B6BA1EE988FF65673ADBA2241A558F3D563457758D9ED1348AB16D8"
+    },
+    "reportedCommitField": "cc05729c0eab5e0a4498d18abdd2ffb7e0a6f8b5",
+    "reportedCommitIsNotSnapshotIdentity": true
+  },
+  "behaviorTest": {
+    "filter": "FullyQualifiedName~Round5OverviewSaveContextTests",
+    "framework": "net472",
+    "sdk": "8.0.423",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "trxSha256": "F5237F6FF85524E106767E66F7D5C4D550755B80BB142B7C0F814C43E8A45C3F",
+    "runnerPathWorkaround": "Short junction and temp/output under repository .tmp; no source/config/assertion change"
+  },
+  "screenshots": [
+    {
+      "beforeSha256": "DB61608F4BF0A2A1ACC6FBBCAB93AB7208CFAD4E8AAE3B80AE0815904A5A6472",
+      "before": "overview-light-before.png",
+      "afterSha256": "BB8AB24EBCFF07498E98779D661FFF381C0A4B071E908D52862B79EC08A4D582",
+      "after": "overview-light-after.png",
+      "page": "Overview",
+      "theme": "light"
+    },
+    {
+      "beforeSha256": "AB8FFEAF4A0EF9AC9A453FA227788EEFCB4CD06E3850FBE73BA138041DC2503C",
+      "before": "overview-dark-before.png",
+      "afterSha256": "AF70B1E578BCC10111E77175334D2BF732D5D2895469823D50EE7819CC7F135F",
+      "after": "overview-dark-after.png",
+      "page": "Overview",
+      "theme": "dark"
+    },
+    {
+      "beforeSha256": "E34DFA923733F0DCEEED10A13C750B11C815F30EC1DF9C843A0B45373EEC1A7D",
+      "before": "save-light-before.png",
+      "afterSha256": "776ADC518945B243967DFF5A472D636D8F5A2B99C234AABB7587043AF3C6F8E2",
+      "after": "save-light-after.png",
+      "page": "Save History",
+      "theme": "light"
+    },
+    {
+      "beforeSha256": "682C314D68767C4D755AB93ED025A96CF9085206E8522B19F130F247E81DDF74",
+      "before": "save-dark-before.png",
+      "afterSha256": "074985521291748A23D6FA3F03B613F0DFD68CCE467CB9A7E83B9B129C9EE73E",
+      "after": "save-dark-after.png",
+      "page": "Save History",
+      "theme": "dark"
+    }
+  ],
+  "initialWorkerMissingDiagnostic": "initial-worker-missing-render-failure.txt",
+  "limitations": [
+    "RenderHarness 离屏 WPF / 逻辑 DPI 1.00；未验真实 Playnite、物理 DPI 或真实输入/IME。",
+    "未执行真实存档恢复、媒体删除或云端写入。",
+    "其它 U09-01 历史配对仍待盘点。"
+  ],
+  "wpfStaticReview": {
+    "command": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py src/GameSaveCenter.Playnite",
+    "exitCode": 0,
+    "scannedXaml": 26,
+    "errors": 0,
+    "warnings": 26,
+    "info": 164,
+    "targetViews": {
+      "SaveCenterView": {
+        "warnings": 0
+      },
+      "OverviewView": {
+        "assessment": "Script uses 2500-character textual lookahead; each StackPanel contains only header TextBlocks inside a Grid, while the bounded scroll area is a Grid sibling.",
+        "lines": [
+          510,
+          818
+        ],
+        "warnings": 2
+      }
+    },
+    "log": "wpf-static-review.txt",
+    "logSha256": "7A30F9D7A69B87A0ADE89F244C8BA18A89E0FB246724505EFC2B1C90B01A9EBB"
+  },
+  "demoReference": {
+    "expectedPath": "GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design",
+    "presentInSelectedWorkspace": false,
+    "directDemoComparisonPerformed": false,
+    "note": "The U09-01 evidence batch made no production UI edits and did not claim direct Demo alignment."
+  }
+}
