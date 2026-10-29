@@ -1,0 +1,50 @@
+[
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T141616369Z-b78f7f94\\summary.json",
+    "archive": "failed-root-summary.json",
+    "rawSha256": "ae650cdc6924cfdc6a5db9829c2fc3a97016144a805c3524d35441e23be0ffb7",
+    "archivedSha256": "cb54c660b73c8f895c8416490cbbcbaae52883ba4ff7b9ee5780f146100b590d"
+  },
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T141616369Z-b78f7f94\\wpf.R08MotionReverseBehaviorTests-console.txt",
+    "archive": "failed-class.txt",
+    "rawSha256": "084da5cd995e693989489125f89446debd292f28715a5701382a439ba5b89306",
+    "archivedSha256": "2a6688ef80fd510590d1c33f003248491e60d36f9a62d01656835bcef92b3e36"
+  },
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T141616369Z-b78f7f94\\tests\\wpf.R08MotionReverseBehaviorTests\\wpf.R08MotionReverseBehaviorTests.trx",
+    "archive": "failed-class.trx",
+    "rawSha256": "c6e3cb762bbb0a11f6c63d8269da51b4344c76d2677cac212c85fbc9a3d3d08f",
+    "archivedSha256": "b969380b349f038327373f2de111f502502e309eebd4ea6cb52dd20e12bed7e3"
+  },
+  {
+    "source": ".tmp\\u04-dialog-final-20261029\\frozen.json",
+    "archive": "frozen.json",
+    "rawSha256": "963be9b471af0a8820e78b907771863f572c5c880eb32c21ce751678b96f6fd2",
+    "archivedSha256": "ce491e8a51aafa561f09b5bf52fddf636059613aee9c16d21744044342da934d"
+  },
+  {
+    "source": ".tmp\\u04-dialog-final-20261029\\root-console.txt",
+    "archive": "failed-root-console.txt",
+    "rawSha256": "3ba48e167abf2add84a03139f91384ca58cce3bcb2fa77f08d17f7237f803992",
+    "archivedSha256": "9af0008865423bbef47ace90a4173fdf04265233633e31489948bc0adf2c9bab"
+  },
+  {
+    "source": ".tmp\\u04-dialog-final-20261029\\root-exit.txt",
+    "archive": "root-exit.txt",
+    "rawSha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+    "archivedSha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "source": ".tmp\\u04-render-sampling-20261029\\render-observer.txt",
+    "archive": "render-observer.txt",
+    "rawSha256": "32c569970fd04da86db3c2a8f600df10877b7ef973c217fff90f8de9700fb708",
+    "archivedSha256": "9e5f018bd54bf65b0af778bc70cc2c7e94b75f651b48b1847e4af8d9b0938280"
+  },
+  {
+    "source": ".tmp\\u04-render-sampling-20261029\\render-observer.trx",
+    "archive": "render-observer.trx",
+    "rawSha256": "b70610e1e4633e89f55b3e59df85c6cb2a4677c2a41f61404be7a40b015fc879",
+    "archivedSha256": "5b706af59d47392c5e0a5278488a7c2784f95904b0bcbc91f307593b58ff31da"
+  }
+]

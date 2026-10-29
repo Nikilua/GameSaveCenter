@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Markup;
@@ -277,6 +278,9 @@ public sealed class R08MotionReverseBehaviorTests
         var hoverMidpointSampled = false;
         var hoverExitProgressSampled = false;
         var hoverReenterProgressSampled = false;
+        MouseOverSamplingTrace hoverEntryTrace = default;
+        MouseOverSamplingTrace hoverExitTrace = default;
+        MouseOverSamplingTrace hoverReentryTrace = default;
         var pressMidpoint = 0d;
         var pressedOverlayMidpoint = 0d;
         var pressAfterRelease = 0d;
@@ -349,23 +353,20 @@ public sealed class R08MotionReverseBehaviorTests
                 Assert.False(ReadMouseOverProbe(button), "button unexpectedly entered hover before the synthetic probe");
                 Assert.Equal(0, hoverOverlay.Opacity, 3);
 
-                Assert.True(SetMouseOverProbe(button, true));
-                hoverMidpointSampled = PumpMouseOverProbeUntil(button, true,
+                hoverMidpointSampled = ObserveMouseOverTransition(button, true, () => { },
                     () => hoverOverlay.Opacity > 0.05 && hoverOverlay.Opacity < 0.95,
-                    TimeSpan.FromMilliseconds(500));
+                    TimeSpan.FromMilliseconds(500), out hoverEntryTrace);
                 hoverMidpoint = hoverOverlay.Opacity;
-                Assert.True(SetMouseOverProbe(button, false));
-                hoverAfterLeave = hoverOverlay.Opacity;
-                hoverExitProgressSampled = PumpMouseOverProbeUntil(button, false,
+                hoverExitProgressSampled = ObserveMouseOverTransition(button, false,
+                    () => hoverAfterLeave = hoverOverlay.Opacity,
                     () => hoverOverlay.Opacity < hoverAfterLeave - 0.002 && hoverOverlay.Opacity > 0,
-                    TimeSpan.FromMilliseconds(250));
+                    TimeSpan.FromMilliseconds(250), out hoverExitTrace);
                 hoverExitProgress = hoverOverlay.Opacity;
-                Assert.True(SetMouseOverProbe(button, true));
                 hoverBeforeReenter = hoverOverlay.Opacity;
-                hoverAfterReenter = hoverOverlay.Opacity;
-                hoverReenterProgressSampled = PumpMouseOverProbeUntil(button, true,
+                hoverReenterProgressSampled = ObserveMouseOverTransition(button, true,
+                    () => hoverAfterReenter = hoverOverlay.Opacity,
                     () => hoverOverlay.Opacity > hoverAfterReenter + 0.002 && hoverOverlay.Opacity < 1,
-                    TimeSpan.FromMilliseconds(250));
+                    TimeSpan.FromMilliseconds(250), out hoverReentryTrace);
                 hoverReenterProgress = hoverOverlay.Opacity;
                 PumpMouseOverProbeUntil(button, true, () => Math.Abs(hoverOverlay.Opacity - 1) < 0.001, TimeSpan.FromMilliseconds(500));
                 hoverFinal = hoverOverlay.Opacity;
@@ -437,6 +438,7 @@ public sealed class R08MotionReverseBehaviorTests
 
         output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; press midpoint={pressMidpoint:0.###}; release={pressAfterRelease:0.###}->{pressBeforeRepress:0.###}; re-press={pressAfterRepress:0.###}->{pressFinal:0.###}; overlay={pressedOverlayMidpoint:0.###}->{pressedOverlayAfterRelease:0.###}->{pressedOverlayFinal:0.###}; releaseFinal={pressReleasedFinal:0.###}/{pressedOverlayReleasedFinal:0.###}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}; light/dark sibling sweep visited={hoverSweepVisitedCount}; max residual={hoverSweepMaximumResidualOpacity:0.####}; re-entry={hoverSweepLightReentered}/{hoverSweepDarkReentered}");
         Assert.Null(exception);
+        output.WriteLine($"hover rendering sampler entry={hoverEntryTrace}; exit={hoverExitTrace}; reentry={hoverReentryTrace}");
         Assert.True(hoverMidpointSampled, "production hover opacity did not expose an in-flight sample");
         Assert.InRange(Math.Abs(hoverAfterLeave - hoverMidpoint), 0, 0.08);
         Assert.InRange(Math.Abs(hoverAfterReenter - hoverBeforeReenter), 0, 0.08);
@@ -658,6 +660,68 @@ public sealed class R08MotionReverseBehaviorTests
     private static bool ReadMouseOverProbe(UIElement element)
         => (bool)element.GetValue(UIElement.IsMouseOverProperty);
 
+    private struct MouseOverSamplingTrace
+    {
+        public int Frames;
+        public int Resets;
+        public double ElapsedMilliseconds;
+        public override string ToString() => $"frames={Frames},resets={Resets},elapsed={ElapsedMilliseconds:0.###}ms";
+    }
+
+    private static bool ObserveMouseOverTransition(UIElement element, bool value, Action afterSet,
+        Func<bool> condition, TimeSpan timeout, out MouseOverSamplingTrace trace)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Send) { Interval = timeout };
+        var elapsed = new Stopwatch();
+        var armed = false;
+        var sampled = false;
+        var frames = 0;
+        var resets = 0;
+        EventHandler rendering = (_, _) =>
+        {
+            if (!armed) return;
+            frames++;
+            if (ReadMouseOverProbe(element) != value)
+            {
+                resets++;
+                Assert.True(SetMouseOverProbe(element, value));
+            }
+            if (condition())
+            {
+                sampled = true;
+                frame.Continue = false;
+            }
+        };
+        EventHandler deadline = (_, _) => frame.Continue = false;
+        CompositionTarget.Rendering += rendering;
+        timer.Tick += deadline;
+        try
+        {
+            // Attach the observer before changing state so setup and cold sampler work
+            // cannot consume the first rendered intermediate value between polling turns.
+            Assert.True(SetMouseOverProbe(element, value));
+            afterSet();
+            elapsed.Start();
+            armed = true;
+            if (condition()) sampled = true;
+            else
+            {
+                timer.Start();
+                Dispatcher.PushFrame(frame);
+            }
+            return sampled;
+        }
+        finally
+        {
+            armed = false;
+            timer.Stop();
+            timer.Tick -= deadline;
+            CompositionTarget.Rendering -= rendering;
+            trace = new MouseOverSamplingTrace { Frames = frames, Resets = resets, ElapsedMilliseconds = elapsed.Elapsed.TotalMilliseconds };
+        }
+    }
+
     private static bool PumpMouseOverProbeUntil(UIElement element, bool value, Func<bool> condition, TimeSpan timeout)
         => PumpDispatcherUntilFast(() =>
         {
@@ -676,7 +740,8 @@ public sealed class R08MotionReverseBehaviorTests
     }
 
     private static Window CreateWindow(UIElement content, double width, double height)
-        => new Window
+    {
+        var window = new Window
         {
             Content = content,
             Width = width,
@@ -686,6 +751,9 @@ public sealed class R08MotionReverseBehaviorTests
             WindowStyle = WindowStyle.None,
             Opacity = 0.01
         };
+        AutomationProperties.SetName(window, "动效反转行为测试宿主");
+        return window;
+    }
 
     private static void PumpDispatcher(TimeSpan duration)
     {
