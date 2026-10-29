@@ -1,0 +1,206 @@
+{
+  "createdUtc": "2026-10-29T21:24:15.134976Z",
+  "phaseDirectory": ".tmp/u08-pair-20261030",
+  "absolutePhasePath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u08-pair-20261030",
+  "deletionStatus": "completed",
+  "deletionCommand": "PowerShell Remove-Item -LiteralPath <verified phase root> -Recurse -Force",
+  "repoBoundary": {
+    "repoRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+    "allowedParent": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp",
+    "resolvedPathMatchesExpected": true
+  },
+  "phaseContents": {
+    "fileCount": 13816,
+    "bytes": 1189224156,
+    "topLevel": [
+      {
+        "name": "after-media-pair",
+        "directory": true
+      },
+      {
+        "name": "after-render-final",
+        "directory": true
+      },
+      {
+        "name": "before-media-pair",
+        "directory": true
+      },
+      {
+        "name": "before-render",
+        "directory": true
+      },
+      {
+        "name": "before-render-final",
+        "directory": true
+      },
+      {
+        "name": "s-after",
+        "directory": true
+      },
+      {
+        "name": "s-before",
+        "directory": true
+      },
+      {
+        "name": "after-media-probe-build-final.log",
+        "directory": false
+      },
+      {
+        "name": "after-media-probe-build.log",
+        "directory": false
+      },
+      {
+        "name": "after-media-probe-final.log",
+        "directory": false
+      },
+      {
+        "name": "after-media-probe.log",
+        "directory": false
+      },
+      {
+        "name": "after-render-final.log",
+        "directory": false
+      },
+      {
+        "name": "after-worker-build.log",
+        "directory": false
+      },
+      {
+        "name": "after.zip",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-build-final.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-build-v2.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-build-v3.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-build-v4.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-build-v5.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-build-v6.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-build-v7.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-build.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-final.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-v2.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-v3.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-v4.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-v5.log",
+        "directory": false
+      },
+      {
+        "name": "before-media-probe-v6.log",
+        "directory": false
+      },
+      {
+        "name": "before-render-final.log",
+        "directory": false
+      },
+      {
+        "name": "before-render-qa.log",
+        "directory": false
+      },
+      {
+        "name": "before-worker-build.log",
+        "directory": false
+      },
+      {
+        "name": "before.zip",
+        "directory": false
+      },
+      {
+        "name": "initial-before-render-qa-argument-failure.txt",
+        "directory": false
+      }
+    ]
+  },
+  "preflight": {
+    "reparsePointCount": 0,
+    "relatedRunningProcessCount": 0,
+    "docsMarkdownLinksToPhasePath": 0,
+    "unrelatedUserArtifactsTouched": false,
+    "preservedSdk": ".tmp/round5-sdk8-8.0.423",
+    "preservedSdkExists": true
+  },
+  "archivedEvidence": {
+    "fileCount": 20,
+    "directory": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-03-04-pair-20261030",
+    "includesFinalReports": true,
+    "includesRawInitialFailureLog": true
+  },
+  "diskBefore": [
+    {
+      "name": "C",
+      "freeBytes": 4289359872,
+      "usedBytes": 210460049408
+    },
+    {
+      "name": "D",
+      "freeBytes": 18829283328,
+      "usedBytes": 276143529984
+    }
+  ],
+  "diskAfter": [
+    {
+      "name": "C",
+      "freeBytes": 5508378624,
+      "usedBytes": 209241030656
+    },
+    {
+      "name": "D",
+      "freeBytes": 18829217792,
+      "usedBytes": 276143595520
+    }
+  ],
+  "observedFreeSpaceDelta": [
+    {
+      "name": "C",
+      "freeBytesDelta": 1219018752
+    },
+    {
+      "name": "D",
+      "freeBytesDelta": -65536
+    }
+  ],
+  "deletedFiles": 13816,
+  "deletedBytes": 1189224156,
+  "notes": [
+    "The phase root contains only this batch's extracted historical snapshots, build outputs, probe outputs, captures, and logs.",
+    "The initial SettingsState Render QA diagnostic and final before/after reports, successful build logs, and final probe checks were copied to the evidence directory.",
+    "Intermediate probe setup logs and redundant PNGs are disposable after final hashes and evidence checks pass."
+  ],
+  "deletionUtc": "2026-10-29T21:27:29.5373334Z"
+}

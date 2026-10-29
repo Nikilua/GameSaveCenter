@@ -2,6 +2,10 @@
 
 `f8feee813c9aaebecec5ff3f644c8038a599685c`已推送`main`。`windows-build.yml`适用`build`与`sdk10-build`；GitHub连接器HTTP429、公开Actions API未认证速率限制，本机无`gh`，Computer Use kernel初始化失败，所以暂时没有run/job/artifact身份，不能记通过。限流恢复后使用认证API按head SHA查run，再核两job与artifact digest；见`docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md`。
 
+## 2026-10-30 U09-01 U08-03/04历史配对
+
+历史生产快照`c5b03e576edddfe7a5f06172e081407eb9a5ee62`→`18481e6d8d3415ffc31362764980614e76445848`的媒体缩略占位及任务长文本UIA已补浅/深色同数据证据。两侧SDK8.0.423 Release Render QA各394 PNG/0 PROBLEM/exit0；差异4张大窗Media tab1图，390张一致；聚焦卡片探针验证Missing/Video实际文字恢复。任务HelpText不改变像素，后续主线行为基线15/15且目标源文件无后续变化。证据与SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-03-04-pair-20261030/BASELINE.md`。Demo树不在工作树，真实Playnite/外部UIA/实体输入IME/物理DPI未验；U08-03/04仍代码完成待验收，U09-01继续。
+
 ## 2026-10-30 U09-01补U08-01/02同数据配对
 
 历史快照`18481e6d8d3415ffc31362764980614e76445848`→`fd2d1316be9ff2d65b0851ac57c45e40064e50ac`的概览与存档页面已完成同数据Light/Dark配对：两侧真实Worker构建成功，Render QA各394图/0 PROBLEM/exit0；固定UTC和运行任务ElapsedSeconds后38图变化、356图一致，after行为回归1/1通过。当前生产子树静态审查26 XAML/0 error/26 warning；Overview两条为标题StackPanel检测启发式误报。Demo-first文档所指Demo树不在本工作树，未声称直接视觉对照。未改生产源码。U08-01/02仍代码完成待验收，U09-01继续盘点其它批次。RenderHarness经验：同时固定假数据UTC与运行任务ElapsedSeconds，并从历史快照构建真实Worker；net472长路径用`.tmp`短junction只改输出目录。证据与清理见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-pair-20261030/`。

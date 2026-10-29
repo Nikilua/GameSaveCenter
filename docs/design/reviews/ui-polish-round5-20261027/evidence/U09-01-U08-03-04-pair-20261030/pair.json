@@ -1,0 +1,208 @@
+{
+  "task": "U09-01 historical visual pairing for U08-03/U08-04",
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "snapshots": {
+    "before": {
+      "commit": "c5b03e576edddfe7a5f06172e081407eb9a5ee62",
+      "archive": {
+        "file": "before.zip",
+        "bytes": 117497659,
+        "sha256": "2FD1B345CD88DC83327627317B7D6AE00478BA4994B0010EFE1E00D82513BE8C"
+      },
+      "workerSha256": "3953014E47E6423A8CEDE5126CD448139F5524287C30703D739C587B6BE31C3C",
+      "pluginSha256": "56B800A0CDDBCD578632D4B2C1F418B53ED1C40A13642B3A91083B7EE52347B5",
+      "renderHarnessSha256": "44BDC9BB33F78A59EBAD0DAF9958E9AE9252DDC80AA91339259B4D12B8B304DD",
+      "workerBuildExitCode": 0,
+      "renderHarnessBuildExitCode": 0,
+      "workerWarnings": 0,
+      "workerErrors": 0,
+      "renderHarnessWarnings": 0,
+      "renderHarnessErrors": 0,
+      "renderQaExitCode": 0,
+      "renderQaPngCount": 394,
+      "renderQaProblems": 0
+    },
+    "after": {
+      "commit": "18481e6d8d3415ffc31362764980614e76445848",
+      "archive": {
+        "file": "after.zip",
+        "bytes": 117503836,
+        "sha256": "6E2444D0572099CB478AC9CFA6CDDCBFAAAD621DAFA5509F137DC397382E4A9B"
+      },
+      "workerSha256": "BE663549E8CEAB5C66A87BE51BF3DB67FC496B90CEA2582160A7D6DB0BB989FE",
+      "pluginSha256": "B0987FA4DD9CF1D0388DD606C8FEBD37A465C3ED8C9DB656713BAEAAAD142C59",
+      "renderHarnessSha256": "D2EB3DEB7C6F3BD5155CDF8E85CCC82D2E9D6567054D654076890F9D85BA16CE",
+      "workerBuildExitCode": 0,
+      "renderHarnessBuildExitCode": 0,
+      "workerWarnings": 0,
+      "workerErrors": 0,
+      "renderHarnessWarnings": 0,
+      "renderHarnessErrors": 0,
+      "renderQaExitCode": 0,
+      "renderQaPngCount": 394,
+      "renderQaProblems": 0
+    }
+  },
+  "productionDelta": [
+    "MediaThumbnailPreview: bind PlaceholderText to the preview TextBlock.Text.",
+    "TaskCenterView: bind the complete task text to AutomationProperties.HelpText; retain existing ellipsis style."
+  ],
+  "identicalTestInstrumentation": {
+    "fakeSampleClock": "992FEEBBCA8C2B59C2519DD915A22ADB5AE94408434F84E3A407661514E08E83",
+    "fakeDashboardData": "D70EAED295E781A00251672C84D9A4E565E631F67856C78C682837798690BFF8",
+    "u08PairMediaProbe": "5F02B442AA4846B384F32459797E74B0EE1CEE28D0783785D5F378A055674671",
+    "renderHarnessProject": "54A071E4A5DF4ECB3689D0BD289648870D53210FBB665C6EF5833FED8E72439E"
+  },
+  "renderQaComparison": {
+    "matchedPngPairs": 394,
+    "identicalPngPairs": 390,
+    "changedPngPairs": 4,
+    "changedFiles": [
+      "Media-1920x1080-tab1.png",
+      "Media-2048x1152-tab1.png",
+      "Media-2560x1440-tab1.png",
+      "Media-3840x2160-tab1.png"
+    ],
+    "beforeAndAfterTaskPage1366LightSha256": "8E0F470567B740277628CF192463646EACA2DE23022C02C9F76FF6244447387A",
+    "beforeAndAfterTaskPage1366DarkSha256": "C8DB2427B593289F36E2558B7CEFFD1C534EA6F4097FFECE62EC7D8CDF69CFC2"
+  },
+  "focusedProbe": {
+    "exitCodeBefore": 0,
+    "exitCodeAfter": 0,
+    "cardCountPerTheme": 6,
+    "missingScreenshotCountPerTheme": 4,
+    "videoCountPerTheme": 2,
+    "beforeVisibleText": "",
+    "afterMissingText": "媒体文件不存在",
+    "afterVideoText": "录像预览"
+  },
+  "currentMainBehaviorEvidence": {
+    "commit": "8ac477b9fad108d714e94a7da202b5be22ef6b30",
+    "tests": "15 passed, 0 failed, 0 skipped",
+    "targetProductionFilesUnchangedSince": "18481e6d8d3415ffc31362764980614e76445848",
+    "evidence": "../U08-03-04-current-main-8ac477b9/BASELINE.md"
+  },
+  "initialBeforeRenderFailure": "首轮SettingsState hint/summary断言失败报告已保留；分别构建两快照Worker后，两侧完整Render QA重跑成功。",
+  "copiedEvidence": [
+    {
+      "file": "after-media-probe-build.log",
+      "bytes": 916,
+      "sha256": "E9D911E42752826DD87002B218E997CFFA388EAF80BDF08225F6E9487079350E"
+    },
+    {
+      "file": "after-media-probe-checks.txt",
+      "bytes": 3210,
+      "sha256": "F824B4E871DEED4E47FA9BE5F9731775F76048DCE8589886E3A68568121D4827"
+    },
+    {
+      "file": "after-media-probe.log",
+      "bytes": 3212,
+      "sha256": "3BFD6F184F2B7BF7AC1EC8FC39EB705515911203B8C26299D74CE32111607465"
+    },
+    {
+      "file": "after-render-qa-report.txt",
+      "bytes": 1175666,
+      "sha256": "D4D698A4D9FC6B06594EA7F7240CAB723A167C5CD54CD18BCF25916C3168EB24"
+    },
+    {
+      "file": "after-worker-build.log",
+      "bytes": 1314,
+      "sha256": "5C104D186B6AC5657043E338C9E124AC8522388AC827BDC4CBFCDBBF4C90E292"
+    },
+    {
+      "file": "before-initial-render-qa-report.txt",
+      "bytes": 1176580,
+      "sha256": "5F4D68B1B433D99B0457C40CB9E6B9AF7365131128CCF07DF57458C020248896"
+    },
+    {
+      "file": "before-initial-render-qa.log",
+      "bytes": 1178493,
+      "sha256": "E554B65AFAF99AAFA09E185755F7B0F83A2165A4850A70B942EF0B7100DE8883"
+    },
+    {
+      "file": "before-media-probe-build.log",
+      "bytes": 920,
+      "sha256": "19C34CF783288438E2F15D2D5C310ABE62398339255B2A9A7BEF28BF8921158F"
+    },
+    {
+      "file": "before-media-probe-checks.txt",
+      "bytes": 2778,
+      "sha256": "8ED50E59B78F53AFC982E62501697CAA2B5A0D93B5EB88A7B855839CAFB5DFD7"
+    },
+    {
+      "file": "before-media-probe.log",
+      "bytes": 2780,
+      "sha256": "07E58570E3437F085954CCE1FEA327BECEAB665D2BCD5328EC15B3A120470444"
+    },
+    {
+      "file": "before-render-qa-report.txt",
+      "bytes": 1176214,
+      "sha256": "3247BFAB1F50A83F1BCD5737C591DF6B3CFD159B5D9EF8DF38BE6B3E9C4C5BA1"
+    },
+    {
+      "file": "before-worker-build.log",
+      "bytes": 996,
+      "sha256": "0EE004C7EC595143F0B34A054C21731F3210244D5F9E7023FB022945E1795DDF"
+    },
+    {
+      "file": "media-thumbnail-cards-after-dark.png",
+      "bytes": 33164,
+      "sha256": "2245A754BAF05CB5558510558BA7328A1BE8FA75932D8BF19D2C11132AFB2ACA"
+    },
+    {
+      "file": "media-thumbnail-cards-after-light.png",
+      "bytes": 31220,
+      "sha256": "0726FE3519180067F2464E002B8C1F20D9E5D4243A59F4BE9C67431E26FA0322"
+    },
+    {
+      "file": "media-thumbnail-cards-before-dark.png",
+      "bytes": 25670,
+      "sha256": "B8E2F66A818C1F298205C311C44C596B16CADFBD55E14F0D90B0E173B4D6E48E"
+    },
+    {
+      "file": "media-thumbnail-cards-before-light.png",
+      "bytes": 24045,
+      "sha256": "CC86BB1DE1B93F154F6BF2B2CA97F5C4E1A80067566DE3B5CDD7DE0F2E5363F1"
+    },
+    {
+      "file": "task-page-after-dark-1366x768.png",
+      "bytes": 105352,
+      "sha256": "C8DB2427B593289F36E2558B7CEFFD1C534EA6F4097FFECE62EC7D8CDF69CFC2"
+    },
+    {
+      "file": "task-page-after-light-1366x768.png",
+      "bytes": 101862,
+      "sha256": "8E0F470567B740277628CF192463646EACA2DE23022C02C9F76FF6244447387A"
+    },
+    {
+      "file": "task-page-before-dark-1366x768.png",
+      "bytes": 105352,
+      "sha256": "C8DB2427B593289F36E2558B7CEFFD1C534EA6F4097FFECE62EC7D8CDF69CFC2"
+    },
+    {
+      "file": "task-page-before-light-1366x768.png",
+      "bytes": 101862,
+      "sha256": "8E0F470567B740277628CF192463646EACA2DE23022C02C9F76FF6244447387A"
+    }
+  ],
+  "limitations": [
+    "Offscreen WPF only; the repository-specified Demo resource tree was not present in this worktree.",
+    "No real Playnite page, external UIA/Narrator, physical keyboard/IME, hardware DPI, or cross-monitor verification.",
+    "No real save restore, media delete, or cloud write operation."
+  ],
+  "wpfStaticAudit": {
+    "path": "src/GameSaveCenter.Playnite",
+    "command": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py src/GameSaveCenter.Playnite",
+    "exitCode": 0,
+    "xamlCount": 26,
+    "errors": 0,
+    "warnings": 26,
+    "info": 164,
+    "relevantVirtualizedLists": [
+      "MediaDuplicateGroupsList: MaxHeight=430, CanContentScroll=True, IsVirtualizing=True, Recycling",
+      "MediaSourcePreviewItems: MaxHeight=240, CanContentScroll=True, IsVirtualizing=True, Recycling"
+    ]
+  }
+}

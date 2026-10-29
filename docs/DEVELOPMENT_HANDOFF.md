@@ -6,6 +6,10 @@
 
 U08-01/02生产变化已补历史同数据双主题配对与after行为回归，证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-pair-20261030/BASELINE.md`；两项仍代码完成待验收，U09-01仍进行中。继续盘点其它视觉批次，优先依赖满足的独立页面/共享控件项；遵循Demo-first和UI_CHANGE_GATE，不碰真实恢复、媒体删除或云写入。规则指定的`GameSaveCenter.AcrylicFork/.../Design` Demo树不在本工作树，后续生产 UI 变更前先定位权威Demo资源，不能声称直接Demo验收。RenderHarness须固定UTC与运行任务时长，使用对应历史真实Worker。本工作树保留SDK8.0.423副本在`.tmp/round5-sdk8-8.0.423`，不要误清理。
 
+## 2026-10-30 Round5 U09-01 U08-03/04配对完成
+
+U08-03/04历史快照 `c5b03e57`→`18481e6d` 的同数据双主题媒体卡片与任务页截图已归档至 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-03-04-pair-20261030/BASELINE.md`。SDK8.0.423 Release两侧Render QA各394 PNG/0问题；当前主线相关行为证据15/15。U08-03/04仍代码完成待验收；Demo-first直接对照、Playnite/外部UIA/实体输入IME/物理DPI仍待验。继续U09-01其它批次盘点及依赖满足的独立UI项；复用现有SDK，不清理`.tmp/round5-sdk8-8.0.423`。
+
 ## 2026-10-30 U09-04当前源码固定轮次性能补测
 
 当前冻结候选（生产与RenderHarness源码等同`5c0c57b0`）以SDK8.0.423构建离屏诊断探针成功，三轮各70周期/297操作/30秒settle。托管分配与e6旧样本接近；搜索/滚动p95及中位数接近，但当前Rendering回调p95、长间隔比例、工作区布局p95和逐页最大逻辑布局样本较高。旧e6时间字段同值但`pinned=False`、当前`pinned=True`；同探针重建e6遇便携SDK缺两个workload locator目录而exit1，诊断已归档。结论仅为待归因的离屏尾部信号，不能说由页签模板造成，也不能代替真实Playnite/实体键盘/IME/物理呈现帧验证。U00原始帧与累计分配仍缺失，U09-04保持进行中。证据：`../design/reviews/ui-polish-round5-20261027/evidence/U09-04-currentperf-20261030/BASELINE.md`。

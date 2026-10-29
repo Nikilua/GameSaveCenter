@@ -6,6 +6,10 @@ Round5文档提交`f8feee813c9aaebecec5ff3f644c8038a599685c`已推送`main`；`w
 
 对比生产快照`18481e6d8d3415ffc31362764980614e76445848`→`fd2d1316be9ff2d65b0851ac57c45e40064e50ac`：概览眉题从“待处理”变为“当前状态”，存档历史摘要加入所选游戏身份；其它生产行为未改。两侧SDK8.0.423 Release真实Worker与RenderHarness构建成功，完整双主题Render QA各394 PNG/0 PROBLEM/exit0；after定向回归1/1。固定RenderHarness必须同时设置假数据UTC和运行任务`ElapsedSeconds`，否则DTO会用真实`UtcNow`生成动态时长；SettingsState捕获需要编译历史源码对应Worker。net472路径限制可以用仓库`.tmp`短junction承载临时输出，不改源码/断言。技能静态审查生产子树26 XAML/0 error/26 warning；两条Overview warning源于检测器2500字符文本邻近启发式，未反映容器树。规则指定的`GameSaveCenter.AcrylicFork/.../Design`参考树当前未检出，后续UI源改动前需定位到可读的权威Demo资源；本批没有生产源修改。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-pair-20261030/`。本工作树保留SDK8.0.423副本在`.tmp/round5-sdk8-8.0.423`，系统SDK只有9.0.302；该目录只供后续冻结门禁复用。
 
+## 2026-10-30 U09-01 U08-03/04历史配对
+
+固定RenderHarness样本时，同时固定`GSC_RENDER_SAMPLE_UTC`与FakeDashboardData的运行任务`ElapsedSeconds`；让媒体路径在两快照中均不存在，视频项用真实`MediaKind.VideoClip`。历史生产SHA `c5b03e576edddfe7a5f06172e081407eb9a5ee62`→`18481e6d8d3415ffc31362764980614e76445848`分别构建各自Worker后再跑Render QA，双侧均394图/0 PROBLEM/exit0；首轮before的SettingsState诊断报告保留。报告内Commit来自父工作树，不能当历史快照身份。专用轻/深主题卡片探针证明PlaceholderText与实际TextBlock绑定效果；同一探针、Fake数据、时钟、项目文件SHA跨两边一致。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-03-04-pair-20261030/`。Demo树缺失，不声称直比Demo；U08-03/04仍代码完成待验收。
+
 ## 2026-10-30 U09-04当前源码固定轮次性能补测
 
 当前候选源码生产与RenderHarness文件等同`5c0c57b0`，SDK8.0.423 Release临时探针构建exit0。当前三轮70周期/297操作：托管分配约8.878GB，与e6两轮约8.877GB接近；合成搜索/滚动p95和工作区中位数相近，但Rendering回调p95、>33.3ms占比、工作区布局p95和各页最大逻辑布局样本较高。旧e6时间样本字段相同但pinned标记False，当前True；尝试匹配重建e6探针时便携SDK缺workload locator目录导致exit1，证据保留，未改SDK/门禁。差异暂不归因。离屏回调不代表物理呈现，合成搜索不代表键盘/IME；U00原始逐帧/累计分配和真实Playnite/物理DPI仍待验。继续U09-04，不用旧e6全链替代候选门禁。记录：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-currentperf-20261030/`。

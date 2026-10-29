@@ -12836,6 +12836,15 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 证据、探针和SHA清单见`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-07-08/historical-render-pair-20261030/`。归档后仅删除已确认的阶段目录`.tmp/u07-visual-pairs-20261030`：2,708文件/125,652,193字节；21项归档资产大小/SHA均匹配，零reparse、锁定、进程及Markdown引用。C盘可用空间清理前6,220,857,344、清理后6,352,650,240字节，观察净增131,792,896字节；清理数据见同目录`cleanup.json`。未触及其它`artifacts/`、`.tmp/`、TRX/TestResults或未知文件。
 - `validate-source.py`退出0；六份变更Markdown本地相对链接805 checked/0 missing；`git diff --check`退出0（仅提示WORKLOG.md CRLF规范化）。此纯文档批不重复执行完整产品链。
 
+## 2026-10-30 Round5 U09-01补U08-03/04历史配对
+
+- `c5b03e576edddfe7a5f06172e081407eb9a5ee62`→`18481e6d8d3415ffc31362764980614e76445848`两份历史生产快照以同一Fake UTC、任务运行时长和媒体缺失样本配对。两侧分别构建对应Worker/RenderHarness，完整Render QA均SDK8.0.423 Release、exit0、394 PNG、0 PROBLEM；哈希比较390图相同，4张Media tab1大窗图变化。
+- 自有探针浅/深色各6张卡：Missing截图由空白变为“媒体文件不存在”，Video由空白变为“录像预览”；任务页HelpText仅影响UIA，所以两主题Task before/after PNG哈希相同。当前主线15/15既有行为回归、0失败、0 skip；目标源文件至该测试基线未再变化。
+- 仓库WPF静态检查限定到生产子树后exit0：26 XAML/0 error/26 warning/164 info；相关媒体列表有MaxHeight并启用Recycling虚拟化，页面结构本批未改。`validate-source.py` exit0，六份Markdown相对链接815 checked/0 missing，0越出仓库、0指向本批`.tmp`，`git diff --check` exit0（WORKLOG CRLF提示）。
+- 首轮before报告中SettingsState提示/摘要断言失败已保留；两份快照各自构建Worker后再次Render QA通过，没有改变谓词/skip。渲染报告内Commit字段继承父工作树，使用显式快照SHA和归档SHA标识。
+- 归档后仅删除本阶段自有`.tmp/u08-pair-20261030`：13,816文件/1,189,224,156字节；无reparse点、无相关运行进程，文档无指向临时目录的链接。C盘实测空闲增1,219,018,752字节；D盘变化-65,536字节（按实测记录，不归因于本批）。`.tmp/round5-sdk8-8.0.423`保留供后续冻结门禁使用；完整删除记录见同证据目录`cleanup.json`。
+- 证据与清理记录：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-03-04-pair-20261030/`。本阶段只提交证据/记忆文档，U08-03/04仍代码完成待验收；Demo树、真实Playnite/外部UIA/实体输入IME/物理DPI仍待验，没有执行恢复/媒体删除/云写入。
+
 ## 2026-10-30 Round5 U04-01～04冻结状态复核
 
 - 清理进度表中的旧“待跑/旧失败”状态：`631b218e`、`4225eb17`、`c5c86558`、`388c46ea`均是冻结候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`的祖先，相关功能与Q14夹具修复已包含在该精确源中。

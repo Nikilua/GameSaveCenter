@@ -1,0 +1,28 @@
+light: kind=Screenshot; state=Missing; fileExists=False; placeholderProperty='媒体文件不存在'; visibleText='媒体文件不存在'
+light: kind=Screenshot; state=Missing; fileExists=False; placeholderProperty='媒体文件不存在'; visibleText='媒体文件不存在'
+light: kind=VideoClip; state=Video; fileExists=False; placeholderProperty='录像预览'; visibleText='录像预览'
+light: kind=Screenshot; state=Missing; fileExists=False; placeholderProperty='媒体文件不存在'; visibleText='媒体文件不存在'
+light: kind=Screenshot; state=Missing; fileExists=False; placeholderProperty='媒体文件不存在'; visibleText='媒体文件不存在'
+light: kind=VideoClip; state=Video; fileExists=False; placeholderProperty='录像预览'; visibleText='录像预览'
+light: screenshot=media-thumbnail-cards-light.png; visibleCards=6
+light/page: kind=Screenshot; state=Missing; placeholder='媒体文件不存在'; visibleText='媒体文件不存在'
+light/page: kind=Screenshot; state=Missing; placeholder='媒体文件不存在'; visibleText='媒体文件不存在'
+light/page: kind=VideoClip; state=Video; placeholder='录像预览'; visibleText='录像预览'
+light/page: kind=Screenshot; state=Missing; placeholder='媒体文件不存在'; visibleText='媒体文件不存在'
+light/page: kind=Screenshot; state=Missing; placeholder='媒体文件不存在'; visibleText='媒体文件不存在'
+light/page: kind=VideoClip; state=Video; placeholder='录像预览'; visibleText='录像预览'
+light/page: screenshot=media-page-light-1366x768.png; scroll=141.33/141.33; previews=6
+dark: kind=Screenshot; state=Missing; fileExists=False; placeholderProperty='媒体文件不存在'; visibleText='媒体文件不存在'
+dark: kind=Screenshot; state=Missing; fileExists=False; placeholderProperty='媒体文件不存在'; visibleText='媒体文件不存在'
+dark: kind=VideoClip; state=Video; fileExists=False; placeholderProperty='录像预览'; visibleText='录像预览'
+dark: kind=Screenshot; state=Missing; fileExists=False; placeholderProperty='媒体文件不存在'; visibleText='媒体文件不存在'
+dark: kind=Screenshot; state=Missing; fileExists=False; placeholderProperty='媒体文件不存在'; visibleText='媒体文件不存在'
+dark: kind=VideoClip; state=Video; fileExists=False; placeholderProperty='录像预览'; visibleText='录像预览'
+dark: screenshot=media-thumbnail-cards-dark.png; visibleCards=6
+dark/page: kind=Screenshot; state=Missing; placeholder='媒体文件不存在'; visibleText='媒体文件不存在'
+dark/page: kind=Screenshot; state=Missing; placeholder='媒体文件不存在'; visibleText='媒体文件不存在'
+dark/page: kind=VideoClip; state=Video; placeholder='录像预览'; visibleText='录像预览'
+dark/page: kind=Screenshot; state=Missing; placeholder='媒体文件不存在'; visibleText='媒体文件不存在'
+dark/page: kind=Screenshot; state=Missing; placeholder='媒体文件不存在'; visibleText='媒体文件不存在'
+dark/page: kind=VideoClip; state=Video; placeholder='录像预览'; visibleText='录像预览'
+dark/page: screenshot=media-page-dark-1366x768.png; scroll=141.33/141.33; previews=6
