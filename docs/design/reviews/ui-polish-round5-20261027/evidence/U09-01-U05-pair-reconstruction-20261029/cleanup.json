@@ -1,0 +1,52 @@
+{
+  "Retained": "Historical source ZIPs, fixture clock manifest, snapshots, builds and logs are actively used for next animation sample stage",
+  "Before": [
+    {
+      "Name": "C",
+      "Free": 2314285056
+    },
+    {
+      "Name": "D",
+      "Free": 9679282176
+    }
+  ],
+  "Deleted": [
+    {
+      "Path": ".tmp\\round5-u09-pairs-20261029\\u05-before-render",
+      "Files": 395,
+      "Bytes": 53233989.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "References": "Required reports/images archived and SHA verified; snapshots/build retained for dynamic samples"
+    },
+    {
+      "Path": ".tmp\\round5-u09-pairs-20261029\\u05-before-validated-render",
+      "Files": 395,
+      "Bytes": 53218449.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "References": "Required reports/images archived and SHA verified; snapshots/build retained for dynamic samples"
+    },
+    {
+      "Path": ".tmp\\round5-u09-pairs-20261029\\u05-after-validated-render",
+      "Files": 395,
+      "Bytes": 53217408.0,
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "ExclusiveOpenChecked": true,
+      "References": "Required reports/images archived and SHA verified; snapshots/build retained for dynamic samples"
+    }
+  ],
+  "After": [
+    {
+      "Name": "C",
+      "Free": 2314285056
+    },
+    {
+      "Name": "D",
+      "Free": 9841782784
+    }
+  ]
+}

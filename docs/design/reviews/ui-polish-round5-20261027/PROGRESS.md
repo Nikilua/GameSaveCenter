@@ -1,3 +1,11 @@
+## 2026-10-29 U09-01补U05-01/02历史配对
+
+从原始提交48f69413与237e993f重建隔离快照，ZIP注释SHA与文件哈希证明源码身份；仅Fake夹具时钟固定为2026-10-28T09:00:00Z，生产资源未改。两侧SDK8.0.423 Release Worker/Harness编译均0警告0错误，完整Render各394 PNG、0 PROBLEM、exit0。1040×700双主题任务页前后文件SHA相同，已视觉检查；每主题仅存一份图并由两侧引用。历史报告Commit字段沿父目录读取当前仓库，不能作为历史源码身份，详见新证据pair.json。
+
+首次快照渲染因未先编译Worker.exe导致4项SettingsState失败；补齐真实历史Worker编译依赖后通过，未改断言或校验。保留失败报告。该证据只补静态终态配对，不证明页面/详情动画中间状态；U09-01仍进行中，下一步补U05时间采样。历史快照仍在使用，后续归档核对后清理冗余渲染目录；未执行真实恢复/媒体删除/云端写入。
+
+[本次配对证据](evidence/U09-01-U05-pair-reconstruction-20261029/BASELINE.md)
+
 ## 2026-10-29 通知来源批次产物清理
 
 核对321份归档SHA全部一致后，仅删除本批`.tmp/round5-u07-05-source-20261029/`下10个明确目录，共323,762,007 bytes；路径边界、重解析链接及独占打开检查均通过，D盘前后实测增加330,719,232 bytes。保留标准根构建、根诊断、最新包、SDK及其它任务TRX/TestResults；清单见Round5通知来源证据`final-gates/cleanup.json`。U07-05代码完成待验收，U09-01配对/U09-04基线/U09-06保护名单边界继续保留。
@@ -160,7 +168,7 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U08-06 | 维护页密度整理 | 代码完成待验收 | 诊断摘要先呈现；详情渐进展开；完整摘要复制命令保留；短窗可滚达摘要与操作入口 | [当前工作树证据](evidence/U08-05-06-current-main-d6d940e7/BASELINE.md) | SDK8本批5/5；本机WPF 1160×520 DIP覆盖；真实宿主与新SHA CI待验 |
 | U08-07 | 通知页整体一致 | 代码完成待验收 | 无结果可清除筛选并回焦搜索，空态文字复用共享样式；实际WPF窗口回归确认按钮焦点转移 | [局部证据](evidence/U08-07-08/BASELINE.md)；[筛选焦点回归](evidence/U07-05-08/BASELINE.md) | SDK8既有15/15并新增通知视图4/4、0 skip；真实游戏/任务跳转和Playnite宿主待验 |
 | U08-08 | 跨页一致性巡检 | 代码完成待验收 | 八类页面首轮共享资源盘点后，移除Trainer工具列表永久折叠的重复空态文字，保留共享 Presenter 与加载抑制条件 | [盘点与差异](evidence/U08-07-08/BASELINE.md)；[本批复核](evidence/U08-08-09-01/BASELINE.md) | Light `Trainer-1040x700` 删除前后像素SHA一致；其它跨页状态/间距及真实宿主仍需逐项复核 |
-| U09-01 | 对比证据最小集 | 进行中 | RenderHarness固定UTC样本；`8deb17c7`同样本完整双主题复渲，存档图像素稳定。本批通知来源以同数据、主题、1040×700 DIP生成前后图，固定样本`2026-10-28T09:00:00Z`；完整双主题394 PNG/0 PROBLEM。长标题溢出另由长文本UIA行为测试验证 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md)；[跨页截图清单](evidence/U08-08-09-01/screenshots.json)；[标题密度对照](evidence/U07-05-06-title-density/render-pair-dcc288d6.json)；[通知来源对照](evidence/U07-05-notification-source-20261029/render-pair.json) | 其它视觉批次同条件双主题前后配对仍缺；Toast退出/堆叠不在RenderHarness页面图路线中，另由WPF行为验证覆盖 |
+| U09-01 | 对比证据最小集 | 进行中 | RenderHarness固定UTC样本；`8deb17c7`同样本完整双主题复渲，存档图像素稳定。本批通知来源以同数据、主题、1040×700 DIP生成前后图，固定样本`2026-10-28T09:00:00Z`；完整双主题394 PNG/0 PROBLEM。长标题溢出另由长文本UIA行为测试验证 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md)；[跨页截图清单](evidence/U08-08-09-01/screenshots.json)；[标题密度对照](evidence/U07-05-06-title-density/render-pair-dcc288d6.json)；[通知来源对照](evidence/U07-05-notification-source-20261029/render-pair.json) | U05-01/02静态终态双主题同数据配对已补，动画时间采样仍缺；其它视觉批次同条件配对仍缺；Toast退出/堆叠不在RenderHarness页面图路线中，另由WPF行为验证覆盖 |
 | U09-02 | 键盘与UIA回归 | 代码完成待验收 | SDK8.0.423 Release 精确提交`8deb17c7`组合16/16、0失败、0 skip；TRX原始与脱敏SHA已归档。修正R07夹具默认`SaveTabIndex`，增加可见/排列/UIA Invoke断言 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | WPF MoveFocus/UIA Peer不等于实体键盘、IME、外部UIA或Playnite宿主验收 |
 | U09-03 | 尺寸主题交叉回归 | 代码完成待验收 | 精确提交`8deb17c7`：双主题×11窗口尺寸，394 PNG、0 PROBLEM、逻辑DPI1.00；source validation通过、XAML26/26、WPF静态42文件/0 errors。Render QA原始及脱敏报告SHA已记录 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 物理DPI/多屏/Playnite窗口未验；Render报告含未跟踪外部输出，跟踪树在运行时干净 |
 | U09-04 | 动画性能复测 | 进行中 | 精确提交同条件 enduranceprobe 60秒+30秒：操作周期P95 933.16→654.02ms；内存斜率代理下降；三次独立侧栏Shell QA均收敛。明细见[性能复测](evidence/U09-04/PERFORMANCE.md) | [U09-04性能证据](evidence/U09-04/PERFORMANCE.md) | U00无逐帧及累计分配基线；当前单次收起离屏帧间隔P95约90ms，需真实宿主/已呈现帧复核；不据离屏小样本宣称无回退 |

@@ -1,0 +1,101 @@
+{
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "fixedFakeDataUtc": "2026-10-28T09:00:00Z",
+  "sources": [
+    {
+      "side": "before",
+      "commit": "48f69413e137bd0b609c5db618914aaeb4690687",
+      "gitArchiveZipComment": "48f69413e137bd0b609c5db618914aaeb4690687",
+      "archiveSha256": "de418f744517fed5f0e6c61af7e7105d284fde0bedd24fa53cf6000e565c48c1",
+      "renderExitCode": 0,
+      "png": 394,
+      "problem": 0
+    },
+    {
+      "side": "after",
+      "commit": "237e993f9e03541f5e8056c30cab8fdb029c0a77",
+      "gitArchiveZipComment": "237e993f9e03541f5e8056c30cab8fdb029c0a77",
+      "archiveSha256": "59d4a558218346f0373671235316cd7e62e7535e0901801b76a9eca3a94d1a0b",
+      "renderExitCode": 0,
+      "png": 394,
+      "problem": 0
+    }
+  ],
+  "pairs": [
+    {
+      "theme": "light",
+      "windowDip": [
+        1040,
+        700
+      ],
+      "contentDip": [
+        744,
+        460
+      ],
+      "beforeSha256": "1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167",
+      "afterSha256": "1b412ab78b7a3114d7d56a9a8da90832a4e1339bcd5896c393dc121cbef2e167",
+      "sharedImage": "task-light.png",
+      "sameBytes": true,
+      "visualReview": "Task queue, focus selection, status, typography, progress, scrollbars and actions unchanged in static terminal state"
+    },
+    {
+      "theme": "dark",
+      "windowDip": [
+        1040,
+        700
+      ],
+      "contentDip": [
+        744,
+        460
+      ],
+      "beforeSha256": "9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24",
+      "afterSha256": "9ec0a992d62a05f248db231c50a12bdf61f38a457c6c677a6f644f692b1d9a24",
+      "sharedImage": "task-dark.png",
+      "sameBytes": true,
+      "visualReview": "Task queue, focus selection, status, typography, progress, scrollbars and actions unchanged in static terminal state"
+    }
+  ],
+  "archive": [
+    {
+      "source": ".tmp\\round5-u09-pairs-20261029\\u05-before-validated-render\\render-qa-report.txt",
+      "archived": "before-report.txt",
+      "rawSha256": "56a72320db7a8a58c6ec860c3aa2cd4f569f2054f23e18de41664fc7b056468c",
+      "archivedSha256": "55141f4b12466edbf45ad4ffffefef98a9caa7ac4e6ac47ccefaa1cf9e8a4573"
+    },
+    {
+      "source": ".tmp\\round5-u09-pairs-20261029\\u05-before-prerequisite-build.log",
+      "archived": "before-build.log",
+      "rawSha256": "099ac769f86fabce14b7a376c2dabffe3e7e72fa33890de1a44850525fdac170",
+      "archivedSha256": "226af86d3f9a0c8a26c9f735fa2b7dd2ee4888b8814cd580bbd343c095a6922f"
+    },
+    {
+      "source": ".tmp\\round5-u09-pairs-20261029\\u05-after-validated-render\\render-qa-report.txt",
+      "archived": "after-report.txt",
+      "rawSha256": "73b9ed0790feb3f2e1a1243ccc2dfb92a52732fafa664ef5db275e50b74dfd41",
+      "archivedSha256": "796e8081a5dbdb95bd8cc9404ef3ad49a818813ac1b069f1e718497a39be91d7"
+    },
+    {
+      "source": ".tmp\\round5-u09-pairs-20261029\\u05-after-prerequisite-build.log",
+      "archived": "after-build.log",
+      "rawSha256": "0f45b752e8ddd06d5d89f3389cd4cf3d32b44f09935cad66ebbd122c83f50a82",
+      "archivedSha256": "d2a59c460e3a1d4160b68c3ea6a39c952ec0c295c61374a21fa01b234f2b6e3b"
+    },
+    {
+      "source": ".tmp\\round5-u09-pairs-20261029\\u05-before-render\\render-qa-report.txt",
+      "archived": "initial-failed-report.txt",
+      "rawSha256": "60c4b584b081fa1ecca95de88ffb8dae43310e970bedff8dc41de0ca161e911b",
+      "archivedSha256": "ef0db17e1f2d44afbb4e657135712814c5f1d1b4076537980a5d516db0c8a02e"
+    },
+    {
+      "source": ".tmp\\round5-u09-pairs-20261029\\fixture-instrumentation.json",
+      "archived": "fixture-instrumentation.json",
+      "rawSha256": "2e1d67a833a9abec19bb22a4490e7c0b6a8e4c1d2182b286f8c5ba80e682328e",
+      "archivedSha256": "2e1d67a833a9abec19bb22a4490e7c0b6a8e4c1d2182b286f8c5ba80e682328e"
+    }
+  ],
+  "sourceIdentityCaveat": "Historical report Commit field walks parent git repository and reports c2dfc53b, not historical snapshot. Original source identity is established by git archive ZIP comment and SHA, plus explicit Fake fixture instrumentation hashes. Production resource files were not edited.",
+  "failure": "First render lacked compiled Worker.exe required by SettingsState valid fixture; compiled the actual historical Worker dependency and rerendered without modifying assertions/production validation.",
+  "boundary": "Static terminal state pair only; U05 page/details animation timed intermediate samples still missing. No Playnite, physical DPI, external UIA or real restore/media/cloud actions verified.",
+  "retainedTemp": "Historical snapshots and build outputs remain in use for next animation sampling; redundant render trees can be removed only after archive checks."
+}
