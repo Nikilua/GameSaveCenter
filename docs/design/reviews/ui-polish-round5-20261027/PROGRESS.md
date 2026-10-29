@@ -1,3 +1,11 @@
+## 2026-10-29 U09-02/03媒体STA清理候选
+
+f1eb8f8f在C盘真实中文根链退出1：MediaInboxScrollBehaviorTests的WPF TextStore窗口移动回调跨STA访问导致宿主崩溃。该类没有发布用例结果，Sequence标记outputScale1.25未完成；已完成部分1227 pass/18 skip不能代表完整通过，独立build.cmd未启动。诊断及Sequence已用短路径归档。
+
+新增保留IME启用的真实TextBox生命周期回归，旧夹具因Dispatcher未关闭准确失败。仅在共享RunSta finally中于所有者线程InvokeShutdown，清理异常亦返回失败，未关闭IME或改滚动/锚点/虚拟化断言、三种输出缩放或skip。按正式隔离配置连续三轮7/7，共21/21、0 skip。缺失清理已被直接证明，旧崩溃唯一因果不作过度归因；新候选仍须中文根链、独立build.cmd及双SDK CI，U09-05继续进行中。
+
+[STA清理证据](evidence/U09-02-03-sta-20261029/BASELINE.md)
+
 ## 2026-10-29 U09归档路径兼容修正
 
 隔离工作树首次检出因两批归档路径过长失败：长WPF类名在目录及TRX文件名重复。已改为每个run内trx/短编号.trx，清单保留原路径、原始SHA、旧副本SHA及新副本SHA；逐份校验测试名称/结果相同，文本仅归一换行及行尾空白。未修改Git全局配置、源码、workflow或SDK。首次检出失败不记构建通过；下一候选仍需完整链与双SDK CI。旧清理权限拒绝未重试，旧构建发现测试数据库后保留未删。

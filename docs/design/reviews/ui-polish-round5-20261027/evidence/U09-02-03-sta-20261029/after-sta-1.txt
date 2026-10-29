@@ -1,0 +1,30 @@
+  正在确定要还原的项目…
+  所有项目均是最新的，无法还原。
+  GameSaveCenter.Contracts -> [worktree]\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [worktree]\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Playnite -> [worktree]\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [worktree]\tests\GameSaveCenter.Playnite.HostAuditSeeder\bin\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [worktree]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll
+[worktree]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.58]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.00]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:01.05]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1.25) [4 s]
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1.5) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.ProductionInboxInspectorTransfersWheelOnlyAtItsScrollBoundary [748 ms]
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxScrollBarsReserveTheCornerAndKeepTheFinalRowAndRightmostCellInsideViewport [815 ms]
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.WideInboxKeepsRoundedInspectorFixedWhileTableFooterAndDetailsScroll [35 s]
+[xUnit.net 00:00:46.13]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.TextEditorDispatcherIsShutDownBeforeStaFixtureReturns [364 ms]
+
+测试运行成功。
+测试总数: 7
+     通过数: 7
+总时间: 47.9013 秒
+结果文件: [worktree]\.tmp\sta-cleanup-20261029\after-sta-1.trx

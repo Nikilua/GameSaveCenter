@@ -23,6 +23,40 @@ public sealed class MediaInboxScrollBehaviorTests
 
     public MediaInboxScrollBehaviorTests(ITestOutputHelper output) => this.output = output;
 
+    [Fact]
+    public void TextEditorDispatcherIsShutDownBeforeStaFixtureReturns()
+    {
+        Dispatcher? dispatcher = null;
+        RunSta(() =>
+        {
+            dispatcher = Dispatcher.CurrentDispatcher;
+            var editor = new TextBox { Text = "中文输入 / editable text" };
+            Assert.True(InputMethod.GetIsInputMethodEnabled(editor));
+            var window = new Window
+            {
+                Content = editor,
+                Width = 320,
+                Height = 120,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Opacity = 0.01
+            };
+            try
+            {
+                window.Show();
+                DrainDispatcher(window);
+                Assert.True(editor.IsLoaded);
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+        Assert.NotNull(dispatcher);
+        Assert.True(dispatcher.HasShutdownFinished,
+            "the STA fixture must finish dispatcher-owned text-service cleanup before its thread exits");
+    }
+
     [Theory]
     [InlineData(1.0)]
     [InlineData(1.25)]
@@ -768,6 +802,22 @@ public sealed class MediaInboxScrollBehaviorTests
             catch (Exception caught)
             {
                 exception = caught;
+            }
+            finally
+            {
+                // Closing a Window does not finish its Dispatcher. Release the
+                // dispatcher's native text-service hooks on this owning STA
+                // before another case creates a new window/dispatcher.
+                try
+                {
+                    Dispatcher.CurrentDispatcher.InvokeShutdown();
+                }
+                catch (Exception cleanupFailure)
+                {
+                    exception = exception == null
+                        ? cleanupFailure
+                        : new AggregateException(exception, cleanupFailure);
+                }
             }
         });
         thread.SetApartmentState(ApartmentState.STA);

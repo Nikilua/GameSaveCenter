@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<TestSequence>
+  <Test Name="GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize" DisplayName="GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests.InboxRowsStayAnchoredThroughThumbEndRepeatedScrollAndResize(outputScale: 1.25)" Source="[worktree]\artifacts\gsc-b\4be27808\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" Completed="False" />
+</TestSequence>
