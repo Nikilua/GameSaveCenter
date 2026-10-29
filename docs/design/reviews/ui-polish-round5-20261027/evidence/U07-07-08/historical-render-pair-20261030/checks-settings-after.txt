@@ -1,0 +1,2 @@
+settings/light: dependency hint visible=True; fields enabled=False; bounds=19.3333333333333,276,774,16; viewport=0,0,1138,490.666666666667; text=开启自动巡检后，可调整巡检间隔和重新验证有效期；关闭时保留当前数值。
+settings/dark: dependency hint visible=True; fields enabled=False; bounds=19.3333333333333,276,774,16; viewport=0,0,1138,490.666666666667; text=开启自动巡检后，可调整巡检间隔和重新验证有效期；关闭时保留当前数值。

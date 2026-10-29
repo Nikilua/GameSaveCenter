@@ -1,3 +1,9 @@
+## 2026-10-30 Round5 U09-01补U07-07/08配对
+
+设置历史快照`a76de89f`→`c5b03e57`，任务历史快照`17d883ab`→`0aff7f32`；同一只读离屏探针、SDK8.0.423 Release四次构建和捕获均exit0。8张Light/Dark双主题前后图已视觉检查；设置依赖提示通过视口断言，任务卡UIA HelpText与正文相同，任务时间字段固定。初次1040×700设置截屏裁切/动画未稳定，最终按同一间隔字段锚点复拍并排除初图。详细日志与哈希：`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-07-08/historical-render-pair-20261030/`。阶段`.tmp`清理仅删除该目录（2,708文件/125,652,193字节）；SHA、路径、引用、锁定/进程检查及空间前后见同目录`cleanup.json`。
+
+未改生产源码。U07-07/08仍“代码完成待验收”，真实Playnite/外部UIA/实体输入IME/物理DPI未验；U09-01继续查其它缺图批次，U09-04独立性能复测继续。计数6已满足、71代码完成待验收、2进行中、1远端待验。required-check仍因原403权限边界待具权限维护者执行`gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks`。
+
 ## 2026-10-30 U09-05冻结门禁通过
 
 5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7 SDK8.0.423；中文包装器完整链exit0、独立scripts/build.cmd exit0。两入口各158 TRX/2020项：1962通过、0失败、58既有skip，skip不计通过；PEXT 45,737,311 bytes，SHA256 `bce032ef9d6c95aa145d0c99a69ee3be16ef7d8dda59e8964db10bc2eb076ee6`，六个包内/安装DLL逐字节相同。Playnite启动PID30324并响应，实际页面未观察。精确SHA的GitHub run40900374673，两项适用job均success，三artifact的head SHA/ID/digest已核。required-check API既有403未重探，仍待有权限维护者查询。soak一次File.Move访问拒绝完整诊断已归档；新门禁通过但旧失败未查明唯一原因。证据：[冻结本地与CI身份](design/reviews/ui-polish-round5-20261027/evidence/U09-final-5c0c57b0/BASELINE.md)。

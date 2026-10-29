@@ -1,0 +1,2 @@
+task/light: retry guidance card absent; failed task selected
+task/dark: retry guidance card absent; failed task selected

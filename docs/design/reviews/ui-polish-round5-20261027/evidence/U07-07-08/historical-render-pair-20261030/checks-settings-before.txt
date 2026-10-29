@@ -1,0 +1,2 @@
+settings/light: dependency hint absent; interval fields disabled
+settings/dark: dependency hint absent; interval fields disabled

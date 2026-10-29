@@ -1,0 +1,195 @@
+{
+  "phase": "U07-07/U07-08 historical visual pair",
+  "generatedUtc": "2026-10-29T17:45:52.7796591Z",
+  "sdkVersion": "8.0.423",
+  "probeSha256": "e9971aeb78fb45079c6a3eedc6cb7abf46cc1c2b21482d4a1ff83d0b887d17bf",
+  "windowSizes": {
+    "task": "1366x768 logical DIP",
+    "settings": "1600x900 logical DIP"
+  },
+  "snapshots": [
+    {
+      "name": "settings-before",
+      "sourceCommit": "a76de89f932cd10e912b478616524050ba868c79",
+      "runnerSha256": "8f095c40d9f44f315a85af012ef9d7b7f328304b90a1b587baaa0a632703908a",
+      "probeSha256": "e9971aeb78fb45079c6a3eedc6cb7abf46cc1c2b21482d4a1ff83d0b887d17bf",
+      "buildCommand": "dotnet build tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj --configuration Release --no-restore --property:GscBuildCommit=a76de89f932cd10e912b478616524050ba868c79 --property:GscSourceRoot=<snapshot> --verbosity:minimal --nologo -m:1 -nodeReuse:false",
+      "buildExitCode": 0,
+      "buildLog": "settings-before-build.log",
+      "renderCommand": "GameSaveCenter.RenderHarness.exe settings <output-directory>",
+      "renderExitCode": 0,
+      "renderLog": "settings-before-render.log",
+      "checksFile": "checks-settings-before.txt",
+      "screenshotFiles": [
+        "settings-light-before.png",
+        "settings-dark-before.png"
+      ]
+    },
+    {
+      "name": "settings-after",
+      "sourceCommit": "c5b03e576edddfe7a5f06172e081407eb9a5ee62",
+      "runnerSha256": "05d6144deefbc5b768d94856cc76358f2912b17e5452640c97228c2155f6f5e5",
+      "probeSha256": "e9971aeb78fb45079c6a3eedc6cb7abf46cc1c2b21482d4a1ff83d0b887d17bf",
+      "buildCommand": "dotnet build tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj --configuration Release --no-restore --property:GscBuildCommit=c5b03e576edddfe7a5f06172e081407eb9a5ee62 --property:GscSourceRoot=<snapshot> --verbosity:minimal --nologo -m:1 -nodeReuse:false",
+      "buildExitCode": 0,
+      "buildLog": "settings-after-build.log",
+      "renderCommand": "GameSaveCenter.RenderHarness.exe settings <output-directory>",
+      "renderExitCode": 0,
+      "renderLog": "settings-after-render.log",
+      "checksFile": "checks-settings-after.txt",
+      "screenshotFiles": [
+        "settings-light-after.png",
+        "settings-dark-after.png"
+      ]
+    },
+    {
+      "name": "task-before",
+      "sourceCommit": "17d883abd084e3a2a646c1879f45ecbacd6d9dee",
+      "runnerSha256": "d600d8548aa17f8efbec28e04a0e6df8cfcb27a1a58dd4213ab9cd137dab81d9",
+      "probeSha256": "e9971aeb78fb45079c6a3eedc6cb7abf46cc1c2b21482d4a1ff83d0b887d17bf",
+      "buildCommand": "dotnet build tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj --configuration Release --no-restore --property:GscBuildCommit=17d883abd084e3a2a646c1879f45ecbacd6d9dee --property:GscSourceRoot=<snapshot> --verbosity:minimal --nologo -m:1 -nodeReuse:false",
+      "buildExitCode": 0,
+      "buildLog": "task-before-build.log",
+      "renderCommand": "GameSaveCenter.RenderHarness.exe task <output-directory>",
+      "renderExitCode": 0,
+      "renderLog": "task-before-render.log",
+      "checksFile": "checks-task-before.txt",
+      "screenshotFiles": [
+        "task-light-before.png",
+        "task-dark-before.png"
+      ]
+    },
+    {
+      "name": "task-after",
+      "sourceCommit": "0aff7f32aab4fb31940fd791c1486c67d36ebdbd",
+      "runnerSha256": "ffaf8bc2caf250feed88ca88f5eaf656309748a129a2fc49a9cdf8588581344b",
+      "probeSha256": "e9971aeb78fb45079c6a3eedc6cb7abf46cc1c2b21482d4a1ff83d0b887d17bf",
+      "buildCommand": "dotnet build tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj --configuration Release --no-restore --property:GscBuildCommit=0aff7f32aab4fb31940fd791c1486c67d36ebdbd --property:GscSourceRoot=<snapshot> --verbosity:minimal --nologo -m:1 -nodeReuse:false",
+      "buildExitCode": 0,
+      "buildLog": "task-after-build.log",
+      "renderCommand": "GameSaveCenter.RenderHarness.exe task <output-directory>",
+      "renderExitCode": 0,
+      "renderLog": "task-after-render.log",
+      "checksFile": "checks-task-after.txt",
+      "screenshotFiles": [
+        "task-light-after.png",
+        "task-dark-after.png"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "checks-settings-after.txt",
+      "bytes": 497,
+      "sha256": "8d168e599e60dd895644f1980921b9d8a852d0760e51a77884b1164e1fcbffc9"
+    },
+    {
+      "path": "checks-settings-before.txt",
+      "bytes": 131,
+      "sha256": "edf76e3275afe7a869b8a557569084fff873dc992425edc24427da6c8e000d6d"
+    },
+    {
+      "path": "checks-task-after.txt",
+      "bytes": 403,
+      "sha256": "34ee996f9d3ac2d14bb5d0cc989f224998eb50b463f4e9754428f99d09580c7f"
+    },
+    {
+      "path": "checks-task-before.txt",
+      "bytes": 123,
+      "sha256": "948f6c6f553596ffccab3928705a638d171ee4fdad2af9a9fdd836ca6fc5f543"
+    },
+    {
+      "path": "render-probe.cs",
+      "bytes": 12004,
+      "sha256": "e9971aeb78fb45079c6a3eedc6cb7abf46cc1c2b21482d4a1ff83d0b887d17bf"
+    },
+    {
+      "path": "settings-after-build.log",
+      "bytes": 3214,
+      "sha256": "4a4eda7cf3bbb9adf26d0bd5e407cf98d46eb684bbc4db2a770d2b4bee21af31"
+    },
+    {
+      "path": "settings-after-render.log",
+      "bytes": 497,
+      "sha256": "8d168e599e60dd895644f1980921b9d8a852d0760e51a77884b1164e1fcbffc9"
+    },
+    {
+      "path": "settings-before-build.log",
+      "bytes": 3226,
+      "sha256": "c842f4eb0487cdc96840a989051de2ad6f22c193cadc1d40f8b381797f761f16"
+    },
+    {
+      "path": "settings-before-render.log",
+      "bytes": 131,
+      "sha256": "edf76e3275afe7a869b8a557569084fff873dc992425edc24427da6c8e000d6d"
+    },
+    {
+      "path": "settings-dark-after.png",
+      "bytes": 261609,
+      "sha256": "104dee48b28d352e7f3b82bf51c34a2f0d3ae1d15b081bbdb1c111072a761cef"
+    },
+    {
+      "path": "settings-dark-before.png",
+      "bytes": 257288,
+      "sha256": "b82403fbba717e20583f59cc38a9989557534b0bc55a951df32b61db172174e2"
+    },
+    {
+      "path": "settings-light-after.png",
+      "bytes": 215760,
+      "sha256": "3332ed50096f3b61b19f928ba145d9a2667ef54b0598bc02d85a9e0ba54e3b6e"
+    },
+    {
+      "path": "settings-light-before.png",
+      "bytes": 211627,
+      "sha256": "285e80c81a781b6e47827bc160aaca227ee93b501d5d9903fa2ae3be5adf0dff"
+    },
+    {
+      "path": "task-after-build.log",
+      "bytes": 3238,
+      "sha256": "990eaefb3745db1ecc9213a6b91337d28f09dea5ddcf1492b6b7b8845713c188"
+    },
+    {
+      "path": "task-after-render.log",
+      "bytes": 403,
+      "sha256": "34ee996f9d3ac2d14bb5d0cc989f224998eb50b463f4e9754428f99d09580c7f"
+    },
+    {
+      "path": "task-before-build.log",
+      "bytes": 3226,
+      "sha256": "d1495eb38b5ab42c7a2924d9828a283337610d2b20fa83b91a2d2b4d5dba099d"
+    },
+    {
+      "path": "task-before-render.log",
+      "bytes": 123,
+      "sha256": "948f6c6f553596ffccab3928705a638d171ee4fdad2af9a9fdd836ca6fc5f543"
+    },
+    {
+      "path": "task-dark-after.png",
+      "bytes": 178199,
+      "sha256": "77c658267e3c28d2eb9da156152cc2c143258c1d438b2d5579c1401a998b3b72"
+    },
+    {
+      "path": "task-dark-before.png",
+      "bytes": 164971,
+      "sha256": "a9617a932d45e19268bc50ad2d6a0f9d529e52453b926deb7fdd006ae5cf6c38"
+    },
+    {
+      "path": "task-light-after.png",
+      "bytes": 170100,
+      "sha256": "cf6e814cabb2746fb9dd8e70008277f9773e208b19904a4551294ceba6377eb8"
+    },
+    {
+      "path": "task-light-before.png",
+      "bytes": 158182,
+      "sha256": "afde8ff41c632514c71c90da4c232121d53fcef474dc924a07fa028769a0ec63"
+    }
+  ],
+  "warnings": "Each Release --no-restore build exited 0 with four NU1900 vulnerability-source availability warnings and zero errors.",
+  "limitations": [
+    "Offscreen RenderHarness with synthetic readonly data; no Playnite host rendering.",
+    "Logical DPI 96; no physical DPI, multi-monitor, external UIA or IME verification.",
+    "No restore, media deletion or cloud write was executed.",
+    "First capture attempt at 1040x700 was clipped and included an unsettled entrance animation; it was excluded and not archived. Final settings captures disable motion and align the same interval-fields anchor.",
+    "Task timestamps are pinned in the probe to one fixed UTC sample across all rows."
+  ]
+}

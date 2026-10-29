@@ -1,0 +1,2 @@
+task/light: retry card visible=True; text=权限不足。下一步：检查云端账户对目标目录的权限；修复后先核对上次远端结果，再决定是否重试。; UIA help matches=True
+task/dark: retry card visible=True; text=权限不足。下一步：检查云端账户对目标目录的权限；修复后先核对上次远端结果，再决定是否重试。; UIA help matches=True

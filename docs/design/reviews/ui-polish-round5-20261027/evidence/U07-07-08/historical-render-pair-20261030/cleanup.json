@@ -1,0 +1,25 @@
+{
+  "cleanedAtUtc": "2026-10-29T17:53:32Z",
+  "target": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u07-visual-pairs-20261030",
+  "targetNormalizedUnderRepositoryTmp": true,
+  "cleanupCommand": "Remove-Item -LiteralPath <target> -Recurse -Force",
+  "removedFileCount": 2708,
+  "removedPayloadBytes": 125652193,
+  "preflight": {
+    "reparseEntries": 0,
+    "exclusiveOpenFailures": 0,
+    "runningDotnetOrRenderHarnessProcesses": 0,
+    "markdownReferencesToTarget": 0,
+    "archivedManifestEntries": 21,
+    "archiveHashOrSizeFailures": 0,
+    "archivedAssetsMissingFromTemporaryFilesBySha256": 0
+  },
+  "diskSpace": {
+    "drive": "C:",
+    "availableBytesBefore": 6220857344,
+    "availableBytesAfter": 6352650240,
+    "observedDeltaBytes": 131792896
+  },
+  "targetExistsAfter": false,
+  "scope": "Only this phase-owned directory was removed. All other artifacts, .tmp paths, TestResults, TRX, and unknown files were left untouched."
+}

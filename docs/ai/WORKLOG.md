@@ -12814,3 +12814,10 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 
 只读快照 `bca60704cc9eaffdc78b1154e4dfe5873cef10b8`→`969bfc203dc66ec21fe1718b9eae5a7cdfd1fb7c`，SDK8.0.423下RenderHarness Release构建/采样两侧均exit0，分别有4条保留的NU1900警告、0错误。短Loading起始由Visible变Hidden，槽位660×220 DIP固定；慢加载在后续采样可见，Error不延迟。进度未知/0/73/取消73/成功100共10个主题/状态点匹配DTO，52 DIP条宽与100 DIP标签右界稳定。只改临时探针，无生产源码或资源差异。精选PNG、两版CSV、源快照ZIP身份及首次探针失败/修正记录已归档：`docs/design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/historical-render-pair-20261030/`。真实Playnite、外部UIA/IME/物理DPI保持待验；U09-01还有其他历史视觉配对待盘点。
 纯文档源码校验exit0；六份变更Markdown本地相对链接707 checked/0 missing；配对清单19个文件SHA-256/长度复核一致。文档批次不重复运行完整产品链。阶段`.tmp`仅清理本批路径：2252文件/72,113,511字节，C盘可用空间净增77,299,712字节；未发现reparse、引用、占用或运行中的RenderHarness，详见[清理记录](../design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/cleanup-historical-pair-20261030.json)。
+
+## 2026-10-30 Round5 U09-01补U07-07/08历史配对
+
+- 设置快照`a76de89f932cd10e912b478616524050ba868c79`→`c5b03e576edddfe7a5f06172e081407eb9a5ee62`，任务快照`17d883abd084e3a2a646c1879f45ecbacd6d9dee`→`0aff7f32aab4fb31940fd791c1486c67d36ebdbd`。同一只读探针，SDK8.0.423 Release四次构建/捕获exit0，八张Light/Dark前后图已复核。设置依赖说明在视口内，任务卡UIA HelpText与正文一致且样本时间固定；首轮裁切/动画未收敛图未作为证据。
+- 仅归档证据和更新状态文档，生产源码未改；U07-07/08仍代码完成待验收，U09-01继续。真实Playnite、外部UIA、实体输入/IME、物理DPI未验；真实恢复/媒体删除/云写入未运行。构建日志保留四条既有NU1900警告和0错误。
+- 证据、探针和SHA清单见`docs/design/reviews/ui-polish-round5-20261027/evidence/U07-07-08/historical-render-pair-20261030/`。归档后仅删除已确认的阶段目录`.tmp/u07-visual-pairs-20261030`：2,708文件/125,652,193字节；21项归档资产大小/SHA均匹配，零reparse、锁定、进程及Markdown引用。C盘可用空间清理前6,220,857,344、清理后6,352,650,240字节，观察净增131,792,896字节；清理数据见同目录`cleanup.json`。未触及其它`artifacts/`、`.tmp/`、TRX/TestResults或未知文件。
+- `validate-source.py`退出0；六份变更Markdown本地相对链接805 checked/0 missing；`git diff --check`退出0（仅提示WORKLOG.md CRLF规范化）。此纯文档批不重复执行完整产品链。
