@@ -1,0 +1,221 @@
+{
+  "Preserved": "Current package/build/SDK and all user/other task outputs",
+  "After": [
+    {
+      "Name": "C",
+      "Free": 1952759808
+    },
+    {
+      "Name": "D",
+      "Free": 4598489088
+    }
+  ],
+  "Before": [
+    {
+      "Name": "C",
+      "Free": 1952759808
+    },
+    {
+      "Name": "D",
+      "Free": 4386922496
+    }
+  ],
+  "Deleted": [
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 391269.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-finesse",
+      "Files": 4
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 12702.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-finesse-light.log",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 12702.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-finesse-dark.log",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 182.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\sources.json",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 508.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\fixture-instrumentation.json",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 122.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\results.json",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 111.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\disk-before.json",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 789.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\diagnostic-entrypoint.txt",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 94192071.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\before",
+      "Files": 1181
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 6795921.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\before-theme",
+      "Files": 58
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 284800.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\before-states",
+      "Files": 5
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 177645.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\before-states-v2",
+      "Files": 5
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 2394269.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\before.zip",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 2431.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\before-build.log",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 820.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\before-state-build.log",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 820.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\before-state-v2-build.log",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 94225836.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after",
+      "Files": 1182
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 6804724.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-theme",
+      "Files": 58
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 287761.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-states",
+      "Files": 5
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 181162.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-states-v2",
+      "Files": 5
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 2419.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-build.log",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 816.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-state-build.log",
+      "Files": 1
+    },
+    {
+      "BoundaryChecked": true,
+      "NoReparse": true,
+      "Bytes": 816.0,
+      "ExclusiveOpenChecked": true,
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after-state-v2-build.log",
+      "Files": 1
+    }
+  ],
+  "Retained": [
+    {
+      "Reason": "Access to the path 'D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u02-pairs-20261029\\temp\\VBCSCompiler\\AnalyzerAssemblyLoader\\5f3dbd98e7c241cb825a53670c7dccde\\04263cb8-bfe4-4c0a-a089-e4cd54613002\\Microsoft.Interop.JavaScript.JSImportGenerator.dll' is denied.",
+      "Path": ".tmp\\round5-u02-pairs-20261029\\temp"
+    },
+    {
+      "Reason": "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file 'D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u02-pairs-20261029\\after.zip' because it is being used by another process.\"",
+      "Path": ".tmp\\round5-u02-pairs-20261029\\after.zip"
+    }
+  ],
+  "ArchiveVerified": true,
+  "References": "Required source identity/clock/probe, images, theme reports, state checks and diagnostics archived with SHA; only explicitly named own stage outputs removed"
+}

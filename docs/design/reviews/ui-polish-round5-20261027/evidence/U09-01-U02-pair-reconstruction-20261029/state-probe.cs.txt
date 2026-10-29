@@ -1,0 +1,45 @@
+using System;
+using System.IO;
+using System.Text;
+using System.Linq;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Controls;
+using GameSaveCenter.Playnite.Settings;
+using GameSaveCenter.Playnite.ViewModels;
+using GameSaveCenter.Playnite.Views;
+namespace GameSaveCenter.RenderHarness;
+internal static class U02StateProbe
+{
+ static T? Find<T>(DependencyObject root) where T:DependencyObject{if(root is T value)return value;for(int i=0;i<VisualTreeHelper.GetChildrenCount(root);i++){var found=Find<T>(VisualTreeHelper.GetChild(root,i));if(found!=null)return found;}return null;}
+ static void Layout(FrameworkElement root,double w,double h){root.Measure(new Size(w,h));root.Arrange(new Rect(0,0,w,h));root.UpdateLayout();}
+ static void Shot(FrameworkElement root,string path){var bmp=new RenderTargetBitmap((int)root.ActualWidth,(int)root.ActualHeight,96,96,PixelFormats.Pbgra32);bmp.Render(root);var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bmp));using(var s=File.Create(path))encoder.Save(s);}
+ static void ShotCard(FrameworkElement card,string path){var visual=new DrawingVisual();using(var dc=visual.RenderOpen())dc.DrawRectangle(new VisualBrush(card){Stretch=Stretch.Fill},null,new Rect(0,0,card.ActualWidth,card.ActualHeight));var bmp=new RenderTargetBitmap((int)Math.Ceiling(card.ActualWidth),(int)Math.Ceiling(card.ActualHeight),96,96,PixelFormats.Pbgra32);bmp.Render(visual);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(bmp));using(var stream=File.Create(path))png.Save(stream);}
+ public static int Run(string output,bool after)
+ {
+  Directory.CreateDirectory(output);var app=new Application{ShutdownMode=ShutdownMode.OnExplicitShutdown};app.Resources["BaseTextBlockStyle"]=new Style(typeof(TextBlock));var report=new StringBuilder("theme,state,label,glyph_foreground,expected_key,container_height\n");
+  try{foreach(var mode in new[]{GameSaveCenterThemeMode.Light,GameSaveCenterThemeMode.Dark}){
+   var data=new Data();var states=new[]{TaskState.Queued,TaskState.Running,TaskState.Succeeded,TaskState.Failed,TaskState.Cancelled,TaskState.WaitingForUser};var keys=new[]{"GscInfoBrush","GscInfoBrush","GscSuccessBrush","GscErrorBrush","GscMutedStatusBrush","GscWarningBrush"};
+   foreach(var state in states)data.OverviewTasks.Add(new TaskStatusDto{TaskId="state-"+state,TaskType="Backup",GameName="相同状态样本",State=state,Message="生产状态模板",CreatedUtc=new DateTime(2026,10,28,9,0,0,DateTimeKind.Utc)});
+   foreach(var workspace in new[]{RecentAccessRecord.SavesWorkspace,RecentAccessRecord.TasksWorkspace,RecentAccessRecord.MediaWorkspace})data.RecentAccessItems.Add(new RecentAccessItem(new RecentAccessRecord{PlayniteId="game-1",Workspace=workspace,LastAccessUtc=new DateTime(2026,10,28,9,0,0,DateTimeKind.Utc)},"相同游戏 / Same Game"));
+   var source=new OverviewView{DataContext=data};typeof(Program).GetMethod("ApplyThemePalette",BindingFlags.Static|BindingFlags.NonPublic,null,new[]{typeof(UserControl),typeof(GameSaveCenterThemeMode),typeof(bool),typeof(bool)},null)!.Invoke(null,new object[]{source,mode,false,false});
+   var original=(ListBox)source.FindName("OverviewActivityList");var list=new ListBox{ItemTemplate=original.ItemTemplate,ItemContainerStyle=original.ItemContainerStyle,ItemsSource=data.OverviewTasks,HorizontalContentAlignment=HorizontalAlignment.Stretch,Background=Brushes.Transparent,BorderThickness=new Thickness(0)};ScrollViewer.SetVerticalScrollBarVisibility(list,ScrollBarVisibility.Disabled);VirtualizingPanel.SetIsVirtualizing(list,false);
+   var panel=new UserControl{Resources=source.Resources,DataContext=data,Content=list};var host=new Grid{Width=1040,Height=540,Background=source.TryFindResource("GscBackdropBrush") as Brush};host.Children.Add(panel);Layout(host,1040,540);
+   for(int i=0;i<states.Length;i++){var row=(ListBoxItem)list.ItemContainerGenerator.ContainerFromIndex(i);if(row==null||row.ActualHeight<=0)throw new InvalidOperationException("State row not realized");var glyph=Find<ThemeAwareIcon>(row)??throw new InvalidOperationException("Glyph missing");var actual=(glyph.Foreground as SolidColorBrush)?.Color;var expected=(source.TryFindResource(keys[i]) as SolidColorBrush)?.Color;if(after&&actual!=expected)throw new InvalidOperationException("Semantic foreground mismatch: "+states[i]);report.AppendLine(string.Join(",",mode,states[i],data.OverviewTasks[i].StateDisplay,actual,keys[i],row.ActualHeight));}
+   Shot(host,Path.Combine(output,mode+"-six-states.png"));
+   var page=new Grid{Width=1280,Height=980,Background=source.TryFindResource("GscBackdropBrush") as Brush};page.Children.Add(source);typeof(Program).GetMethod("ApplyThemeResponsive",BindingFlags.Static|BindingFlags.NonPublic)!.Invoke(null,new object[]{source,1280d,980d});Layout(page,1280,980);((System.Windows.Controls.Button)source.FindName("OverviewShowRecentAccessButton")).RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));Layout(page,1280,980);if(((FrameworkElement)source.FindName("OverviewRecentAccessCard")).Visibility!=Visibility.Visible||((FrameworkElement)source.FindName("OverviewRecentActivityCard")).Visibility!=Visibility.Collapsed)throw new InvalidOperationException("Recent access card route failed");ShotCard((FrameworkElement)source.FindName("OverviewRecentAccessCard"),Path.Combine(output,mode+"-recent-access.png"));
+  }File.WriteAllText(Path.Combine(output,"states.csv"),report.ToString());return 0;}catch(Exception ex){File.WriteAllText(Path.Combine(output,"failure.txt"),ex.ToString());return 1;}finally{app.Shutdown();}
+ }
+ sealed class Data
+ {
+  public DashboardSnapshotDto Snapshot{get;}=new();public ObservableCollection<RecentAccessItem> RecentAccessItems{get;}=new();public ObservableCollection<TaskStatusDto> OverviewTasks{get;}=new();public ObservableCollection<ActivityEntryDto> Activities{get;}=new();public TaskStatusDto? SelectedTask{get;set;}public bool IsDashboardSnapshotLoaded=>true;public string OverviewTasksCountDisplay=>"六种状态";public string OverviewRecentAccessCountDisplay=>"3 项";public ICommand OpenRecentAccessCommand{get;}=new Empty();public ICommand OpenActivityCommand{get;}=new Empty();public ICommand OpenCloudQueueCommand{get;}=new Empty();public ICommand RefreshCommand{get;}=new Empty();
+ }
+ sealed class Empty:ICommand{public event EventHandler? CanExecuteChanged{add{}remove{}}public bool CanExecute(object? p)=>true;public void Execute(object? p){}}
+}

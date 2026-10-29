@@ -1,0 +1,13 @@
+theme,state,label,glyph_foreground,expected_key,container_height
+Light,Queued,等待中,#FF1F5EA0,GscInfoBrush,54
+Light,Running,执行中,#FF1F5EA0,GscInfoBrush,54
+Light,Succeeded,成功,#FF0F6C3B,GscSuccessBrush,54
+Light,Failed,失败,#FF9B333F,GscErrorBrush,54
+Light,Cancelled,已取消,#FF4E5666,GscMutedStatusBrush,54
+Light,WaitingForUser,等待确认,#FF795310,GscWarningBrush,54
+Dark,Queued,等待中,#FF5CAAF0,GscInfoBrush,54
+Dark,Running,执行中,#FF5CAAF0,GscInfoBrush,54
+Dark,Succeeded,成功,#FF4CDB8E,GscSuccessBrush,54
+Dark,Failed,失败,#FFF37988,GscErrorBrush,54
+Dark,Cancelled,已取消,#FFB9C0CC,GscMutedStatusBrush,54
+Dark,WaitingForUser,等待确认,#FFF0B24E,GscWarningBrush,54
