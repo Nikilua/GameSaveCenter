@@ -1,0 +1,57 @@
+  正在确定要还原的项目…
+  所有项目均是最新的，无法还原。
+  GameSaveCenter.Contracts -> [repo]\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Playnite -> [repo]\src\GameSaveCenter.Playnite\bin\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\tests\GameSaveCenter.Playnite.HostAuditSeeder\bin\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll
+[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:04.95]     GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.ProductionComboBoxKeepsLongSelectionSeparateFromItsChevron [FAIL]
+[xUnit.net 00:00:04.95]     GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.TaskAndMediaSearchClearAndCountsStayOutsideEditableTextLayout [FAIL]
+[xUnit.net 00:00:04.96]     GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.FocusVisualsAndHighContrastFallbackAreShared [FAIL]
+[xUnit.net 00:00:04.96]     GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.SharedTextBoxesUseLeadingCaretAlignment [FAIL]
+[xUnit.net 00:00:04.96]     GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.CtrlFFocusesWorkspaceSearchAndAutomationNamesArePresent [FAIL]
+[xUnit.net 00:00:04.98]     GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.ProductionIconOnlyActionsExposeAutomationNamesAndSharedKeyboardFocus [FAIL]
+  失败 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.ProductionComboBoxKeepsLongSelectionSeparateFromItsChevron [134 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\.tmp\round5-u03-disabled-text-fix-20261029\temp\8ee1204b-a2f0-480c-8df4-02e7847751b7\8ee1204b-a2f0-480c-8df4-02e7847751b7\assembly\dl3\393783f5\334f0030_6467dd01\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.ProductionComboBoxKeepsLongSelectionSeparateFromItsChevron() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\AccessibilitySourceTests.cs:行号 88
+  失败 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.TaskAndMediaSearchClearAndCountsStayOutsideEditableTextLayout [6 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\.tmp\round5-u03-disabled-text-fix-20261029\temp\8ee1204b-a2f0-480c-8df4-02e7847751b7\8ee1204b-a2f0-480c-8df4-02e7847751b7\assembly\dl3\393783f5\334f0030_6467dd01\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.TaskAndMediaSearchClearAndCountsStayOutsideEditableTextLayout() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\AccessibilitySourceTests.cs:行号 110
+  失败 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.FocusVisualsAndHighContrastFallbackAreShared [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\.tmp\round5-u03-disabled-text-fix-20261029\temp\8ee1204b-a2f0-480c-8df4-02e7847751b7\8ee1204b-a2f0-480c-8df4-02e7847751b7\assembly\dl3\393783f5\334f0030_6467dd01\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.FocusVisualsAndHighContrastFallbackAreShared() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\AccessibilitySourceTests.cs:行号 177
+  失败 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.SharedTextBoxesUseLeadingCaretAlignment [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\.tmp\round5-u03-disabled-text-fix-20261029\temp\8ee1204b-a2f0-480c-8df4-02e7847751b7\8ee1204b-a2f0-480c-8df4-02e7847751b7\assembly\dl3\393783f5\334f0030_6467dd01\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.SharedTextBoxesUseLeadingCaretAlignment() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\AccessibilitySourceTests.cs:行号 147
+  失败 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.CtrlFFocusesWorkspaceSearchAndAutomationNamesArePresent [1 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\.tmp\round5-u03-disabled-text-fix-20261029\temp\8ee1204b-a2f0-480c-8df4-02e7847751b7\8ee1204b-a2f0-480c-8df4-02e7847751b7\assembly\dl3\393783f5\334f0030_6467dd01\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.CtrlFFocusesWorkspaceSearchAndAutomationNamesArePresent() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\AccessibilitySourceTests.cs:行号 15
+  失败 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.ProductionIconOnlyActionsExposeAutomationNamesAndSharedKeyboardFocus [3 ms]
+  错误消息:
+   System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：[repo]\.tmp\round5-u03-disabled-text-fix-20261029\temp\8ee1204b-a2f0-480c-8df4-02e7847751b7\8ee1204b-a2f0-480c-8df4-02e7847751b7\assembly\dl3\393783f5\334f0030_6467dd01\GameSaveCenter.Playnite.Tests.dll；源码根：[repo]。
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43
+   在 GameSaveCenter.Playnite.Tests.AccessibilitySourceTests.ProductionIconOnlyActionsExposeAutomationNamesAndSharedKeyboardFocus() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\AccessibilitySourceTests.cs:行号 49
+结果文件: [repo]\.tmp\round5-u03-disabled-text-fix-20261029\after-disabled-foreground.trx
+
+失败!  - 失败:     6，通过:     2，已跳过:     0，总计:     8，持续时间: 3 s - GameSaveCenter.Playnite.Tests.dll (net472)
