@@ -867,6 +867,5 @@ At [repo]\scripts\run-playnite-tests-isolated.ps1:89 char:9
 +         throw "$Label failed; dotnet exit code: $exitCode"
 +         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo          : OperationStopped: (class GameSaveC...et exit code: 1:String) [], RuntimeException
-    + FullyQualifiedErrorId : class GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests failed; dotnet exit co 
+    + FullyQualifiedErrorId : class GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests failed; dotnet exit co
    de: 1
- 

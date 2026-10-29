@@ -1202,4 +1202,4 @@ Playnite 已退出，等待插件回收 Worker...
 [OK] Build, verification, installation and Playnite startup completed.
 See artifacts\last-dev-install.txt for the installed version.
 
-Press any key to continue . . . 
+Press any key to continue . . .

@@ -1437,19 +1437,22 @@
     "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\root-full-console.log",
     "archived": "root-console.txt",
     "rawSha256": "8daa5cd22a283dec2cb58f150664f081e461cc3cbd3b17f9c78cccb44152319d",
-    "sha256": "8c4884cf8adbada34e43e93f1ac1ae44d5d2c44b7e67d023cc88aa92733ba9cd"
+    "sha256": "8c7081194aee509df8c609c5ed68462eeed14e89ee45b1c37ba9974039752989",
+    "textNormalization": "UTF8 LF; redacted repo/user path; trailing whitespace trimmed; original rawSha256 retained"
   },
   {
     "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\build-cmd-full-console.log",
     "archived": "failed-build-cmd-console.txt",
     "rawSha256": "fa571f53f0954732c21da2de3603d3e5ab86b5c6ffc1d9c66bf73816503a7740",
-    "sha256": "8bbd985c37b7eaa92e68580dd50e2a919d6bab657a776592645e0834a9394608"
+    "sha256": "e4e98127b5ecbf2b850ccb8804007533faa88858ca0037a0253ef3eb8c1665da",
+    "textNormalization": "UTF8 LF; redacted repo/user path; trailing whitespace trimmed; original rawSha256 retained"
   },
   {
     "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\last-dev-install-final.txt",
     "archived": "installed-identity.txt",
     "rawSha256": "f8dc5f29813005d2175ca0b4a14f0bf29636b4c50c7fc14d70939afc51714d3f",
-    "sha256": "ef5f584073ff3df089bf6ab221bd9f8d9375be4a8864789629792bee80ee2e27"
+    "sha256": "ef5f584073ff3df089bf6ab221bd9f8d9375be4a8864789629792bee80ee2e27",
+    "textNormalization": "UTF8 LF; redacted repo/user path; trailing whitespace trimmed; original rawSha256 retained"
   },
   {
     "source": ".tmp\\round5-u03-disabled-text-fix-20261029\\host-start-log-proof.json",
