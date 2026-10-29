@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -60,13 +62,18 @@ public sealed class R08DialogOverlayBehaviorTests
                 FlushLayout(window);
 
                 var motion = new DialogOverlayMotion(overlay, card);
+                var duration = GscMotion.GetDuration(card, GscMotion.MotionDurationKind.Normal);
+                Assert.Equal(TimeSpan.FromSeconds(1), duration);
                 var openStarted = DateTime.UtcNow;
+                var openElapsed = Stopwatch.StartNew();
                 motion.BeginOpen(true, () => opened = true);
                 Assert.Equal(Visibility.Visible, overlay.Visibility);
                 Assert.True(WaitFor(window, () => opened));
-                Assert.True(DateTime.UtcNow - openStarted >= TimeSpan.FromMilliseconds(100));
+                Assert.True(openElapsed.Elapsed >= TimeSpan.FromMilliseconds(100),
+                    $"open completed early; monotonic={openElapsed.Elapsed.TotalMilliseconds:0.###}ms; wall={(DateTime.UtcNow - openStarted).TotalMilliseconds:0.###}ms; duration={duration.TotalMilliseconds:0.###}ms; opacity={card.Opacity}; overlay={overlay.Visibility}");
 
                 var closeStarted = DateTime.UtcNow;
+                var closeElapsed = Stopwatch.StartNew();
                 motion.BeginClose(true, () => closed = true);
                 Assert.Equal(Visibility.Visible, overlay.Visibility);
                 Assert.False(closed);
@@ -75,7 +82,8 @@ public sealed class R08DialogOverlayBehaviorTests
                     throw new InvalidOperationException(
                         $"close callback did not run; opacity={card.Opacity}; overlay={overlay.Visibility}; animated={DependencyPropertyHelper.GetValueSource(card, UIElement.OpacityProperty).IsAnimated}");
                 }
-                Assert.True(DateTime.UtcNow - closeStarted >= TimeSpan.FromMilliseconds(100));
+                Assert.True(closeElapsed.Elapsed >= TimeSpan.FromMilliseconds(100),
+                    $"close completed early; monotonic={closeElapsed.Elapsed.TotalMilliseconds:0.###}ms; wall={(DateTime.UtcNow - closeStarted).TotalMilliseconds:0.###}ms; duration={duration.TotalMilliseconds:0.###}ms; opacity={card.Opacity}; overlay={overlay.Visibility}");
                 Assert.Equal(Visibility.Collapsed, overlay.Visibility);
                 Assert.Equal(0d, card.Opacity, 3);
                 var translate = Assert.IsType<System.Windows.Media.TranslateTransform>(card.RenderTransform);
@@ -123,7 +131,8 @@ public sealed class R08DialogOverlayBehaviorTests
     }
 
     private static Window CreateWindow(UIElement content)
-        => new Window
+    {
+        var window = new Window
         {
             Content = content,
             Width = 260,
@@ -133,6 +142,9 @@ public sealed class R08DialogOverlayBehaviorTests
             WindowStyle = WindowStyle.None,
             Opacity = 0.01
         };
+        AutomationProperties.SetName(window, "对话框进入退出动画测试宿主");
+        return window;
+    }
 
     private static void FlushLayout(Window window)
     {
@@ -144,14 +156,14 @@ public sealed class R08DialogOverlayBehaviorTests
     private static bool WaitFor(Window window, Func<bool> predicate)
     {
         var frame = new DispatcherFrame();
-        var deadline = DateTime.UtcNow.AddMilliseconds(1500);
+        var elapsed = Stopwatch.StartNew();
         var timer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
         {
             Interval = TimeSpan.FromMilliseconds(10)
         };
         timer.Tick += (_, __) =>
         {
-            if (predicate() || DateTime.UtcNow >= deadline)
+            if (predicate() || elapsed.Elapsed >= TimeSpan.FromMilliseconds(1500))
             {
                 timer.Stop();
                 frame.Continue = false;

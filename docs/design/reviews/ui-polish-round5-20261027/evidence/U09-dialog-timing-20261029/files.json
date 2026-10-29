@@ -1,0 +1,74 @@
+[
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T133844255Z-9aba5a24\\summary.json",
+    "archive": "failed-root-summary.json",
+    "rawSha256": "c344b858c6a3606a5639a0d4598ffa09561d5ee31d8919fc8be726df4b15c961",
+    "archivedSha256": "1a8c959021f5fce3d2f45bd3d467ebee38ec28fc07944863a520d7ce5f3fd2b0"
+  },
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T133844255Z-9aba5a24\\wpf.R08DialogOverlayBehaviorTests-console.txt",
+    "archive": "failed-class.txt",
+    "rawSha256": "0a7f87e151c990c9f93f76c355ae54d7c742ae1627db39c435e1650bc4cd0686",
+    "archivedSha256": "fb1d12c528f1e27e080b7f3a79efe425500e910d59343d78132008b800917ac1"
+  },
+  {
+    "source": "artifacts\\build-diagnostics\\20261029T133844255Z-9aba5a24\\tests\\wpf.R08DialogOverlayBehaviorTests\\wpf.R08DialogOverlayBehaviorTests.trx",
+    "archive": "failed-class.trx",
+    "rawSha256": "4a1ed6ac17bdd0b19864963c6527f302811021c097dd495200165bf1aa44b7f1",
+    "archivedSha256": "007d06f8b097a50cfcc2183952be39f7b29ae14c3eab07def602b66303037b41"
+  },
+  {
+    "source": ".tmp\\u04-indicator-final-20261029\\frozen.json",
+    "archive": "frozen.json",
+    "rawSha256": "eab0ff74d74c0bcae3e39bf072cf9e36acf66389a1bd0cc2842866aa54c9e353",
+    "archivedSha256": "6bfbab99e4709484022b196b0ae8864b52a5235d6b4ae912bd12e7251b64511e"
+  },
+  {
+    "source": ".tmp\\u04-indicator-final-20261029\\root-console.txt",
+    "archive": "failed-root-console.txt",
+    "rawSha256": "bf66c8247671892aa5222ad423dfee253c30eab96fbd958cd91a5b2384533ea8",
+    "archivedSha256": "0ac1b40cc092988c5c98d0325143d75a9c7216e77f30111562716e6e0b5d1d7f"
+  },
+  {
+    "source": ".tmp\\u04-indicator-final-20261029\\root-exit.txt",
+    "archive": "root-exit.txt",
+    "rawSha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+    "archivedSha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+  },
+  {
+    "source": ".tmp\\u04-dialog-timing-20261029\\focused.txt",
+    "archive": "focused.txt",
+    "rawSha256": "75fac828443ca1269eb5668e1ad4bf9874a582459f719280e4a0c56aa02c5781",
+    "archivedSha256": "c5530180ea716ea769789c2b71c135d4440e9d91d23fa0d605175e0bce06c97f"
+  },
+  {
+    "source": ".tmp\\u04-dialog-timing-20261029\\focused.trx",
+    "archive": "focused.trx",
+    "rawSha256": "a9807d3f4452fd9bc8df475a5f6cc05aea40bf450175de0040aeaf1d6ae3145f",
+    "archivedSha256": "2371438fed0a51415c2dbb4e85ee0df630571f5b1bcb57c758b5c58e2236a9ce"
+  },
+  {
+    "source": ".tmp\\u04-dialog-timing-20261029\\focused-final.txt",
+    "archive": "focused-final.txt",
+    "rawSha256": "a502434a373b2d5c637986b5b5eef2017f89409161b3c43e6c3d916d0a7707dd",
+    "archivedSha256": "2b324e91431bd134f40dcda681e176dc7f0e81fae690ae70ed40b4122e1b005a"
+  },
+  {
+    "source": ".tmp\\u04-dialog-timing-20261029\\focused-final.trx",
+    "archive": "focused-final.trx",
+    "rawSha256": "e318576a0dad826349a19661060d2fb7fca53b60be9ed791c0a7a70836426269",
+    "archivedSha256": "a288bf98cfd0570d8b5a49d8d55c583b83c71784cb7378f5867537bbf7011dce"
+  },
+  {
+    "source": ".tmp\\u04-dialog-timing-20261029\\named-host.txt",
+    "archive": "named-host.txt",
+    "rawSha256": "eaa500c407ac9cac99af3fd246e8c7bc5c6e5f9bf7cc9bdae4528d387352078e",
+    "archivedSha256": "b8df7b0172d49143c43a6396fad31e49633ae494fe5bc0f29bc625b19e9d5c7f"
+  },
+  {
+    "source": ".tmp\\u04-dialog-timing-20261029\\named-host.trx",
+    "archive": "named-host.trx",
+    "rawSha256": "c4c6a7bee02b34ea6010ee35402be0096e35f63f87dccaff6d9c9c880aabfad4",
+    "archivedSha256": "328cf71925f6f5f4fc62874152b9a9afafd73d3d60b057727d797256e864b8b8"
+  }
+]
