@@ -89,12 +89,13 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
         var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
 
-        Assert.True(button.IsPressed);
-        Assert.True(scale.ScaleX < 1);
-        Assert.True(pressedOverlay.Opacity > 0.9);
+        var stateTrace = $"pressed={button.IsPressed}; scale={scale.ScaleX:0.######}; overlay={pressedOverlay.Opacity:0.######}; focus={button.IsKeyboardFocusWithin}; focusedElement={Keyboard.FocusedElement}; windowActive={Window.GetWindow(button)?.IsActive}; enabled={button.IsEnabled}; loaded={button.IsLoaded}";
+        Assert.True(button.IsPressed, "pressed restoration entry: " + stateTrace);
+        Assert.True(scale.ScaleX < 1, "pressed scale entry: " + stateTrace);
+        Assert.True(pressedOverlay.Opacity > 0.9, "pressed overlay entry: " + stateTrace);
         Assert.Equal(0, command.ExecutionCount);
 
-        Assert.True(Keyboard.Focus(focusProxy) == focusProxy);
+        Assert.True(Keyboard.Focus(focusProxy) == focusProxy, "focus proxy transfer: " + stateTrace);
         PumpDispatcher(TimeSpan.FromMilliseconds(180));
         Assert.False(button.IsPressed);
         AssertPressedLayersRestored(pressedOverlay, scale);

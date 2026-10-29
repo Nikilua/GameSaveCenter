@@ -1,0 +1,39 @@
+{
+  "candidate": "2d2485482b43347c37875353a7620f7eb8a37b62",
+  "sdk": "8.0.423",
+  "rootExit": 1,
+  "independentStarted": false,
+  "status": "Unresolved Q06 pressed-restoration failure. Diagnostic-only source messages added, all predicates unchanged. One bounded diagnostic run passed, not treated as a fix or full gate success. Original failed test did not label individual predicate; no unique cause asserted.",
+  "files": [
+    {
+      "archived": "root-summary.json",
+      "rawSha256": "9b899e1900f084b0da70d54e4d0674e875fa2b52fde8ec36659b2eaf32a5d5d1",
+      "sha256": "18452e5fcaaf8c9a1b84c801363bf593c6909399d1acd7adcc0e3f9b6a2fc0a9"
+    },
+    {
+      "archived": "failed-q06.trx",
+      "rawSha256": "6dde1107fc4386d9adb2224bf1312bff7b5faa21aa02ec4d227c4ebf9905a7b9",
+      "sha256": "1a01d1cbc4da98210cb38168a08bb89ed9340a42f6d37db6ad6bc43327b6c0b0"
+    },
+    {
+      "archived": "root-console.txt",
+      "rawSha256": "ded9ce601cc9ea36a234e5c7f1d18a4e8dbc9c35fbb52ef8e735b2a61c017aef",
+      "sha256": "419070446c44aa39c1eeee8a31aa0482cfbb606f83b207229c5a1597ea5fac0c"
+    },
+    {
+      "archived": "frozen.json",
+      "rawSha256": "923d6e79c3a5c913872b61b8a548037edf9c70249c4c7d26785e6d8f8f27d98d",
+      "sha256": "79725e91bf5c0068fac3e015a919653b0d61a4e3f3ed9ab8870a8b60131f0ad2"
+    },
+    {
+      "archived": "diagnostic.txt",
+      "rawSha256": "201f074aa59527b2cd50a1719e664c63e758f94f72f28c73d0e50a84339134ea",
+      "sha256": "75c394755da25da89c36f34a4f428a8faa572e35ae0117e30690eb269eb5ec71"
+    },
+    {
+      "archived": "diagnostic.trx",
+      "rawSha256": "b37f93b19a56a87d668b116b17afef208dae160af9cac78af7aff755740d2583",
+      "sha256": "4181abc797e070c40a17846d3283f68e3423f3600940e443970b96534ccbc3ae"
+    }
+  ]
+}
