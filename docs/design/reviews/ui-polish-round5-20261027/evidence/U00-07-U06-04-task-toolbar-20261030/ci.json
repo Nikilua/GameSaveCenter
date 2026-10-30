@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "workflow": ".github/workflows/windows-build.yml",
+  "requiredChecks": {
+    "status": "remote pending",
+    "reason": "Existing branch-protection/required-check read returned 403; do not repeat the same permission probe.",
+    "nextAction": "A maintainer with read access can query repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks."
+  },
+  "runs": [
+    {
+      "runId": 41017807712,
+      "runNumber": 1417,
+      "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41017807712",
+      "event": "push",
+      "headBranch": "main",
+      "headSha": "d7c4bd5e3fc2ca83d0393ea51fc7f911cb80100f",
+      "status": "completed",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "id": 123938001209,
+          "name": "编译、测试与打包",
+          "conclusion": "failure",
+          "failedStep": "编译与测试",
+          "cause": "Two theme cases in ReportedWorkspaceLayoutBehaviorTests measured the moved configuration-row reset button relative to its old queue-header ancestor."
+        },
+        {
+          "id": 123938000898,
+          "name": ".NET SDK 10.0.401 编译与测试复核",
+          "conclusion": "failure",
+          "failedStep": "隔离工作树并运行 Release 编译与测试",
+          "cause": "Same stale test parent/ancestor assumption in both themes."
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12960828343,
+          "name": "GameSaveCenter-build-diagnostics",
+          "headSha": "d7c4bd5e3fc2ca83d0393ea51fc7f911cb80100f",
+          "digest": "sha256:363237a4aa34d27de7a763ee5fa3db89c9a57d15f5e0b264cc57a2eb2d6b5047"
+        },
+        {
+          "id": 12961133332,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "headSha": "d7c4bd5e3fc2ca83d0393ea51fc7f911cb80100f",
+          "digest": "sha256:86d7af40beb54346e570aaacd114b840481c1f5d28f5460df9070e3f51ded1ab"
+        }
+      ],
+      "logs": [
+        "ci/job-123938001209.log",
+        "ci/job-123938000898.log"
+      ]
+    },
+    {
+      "runId": 41022318628,
+      "runNumber": 1418,
+      "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41022318628",
+      "event": "push",
+      "headBranch": "main",
+      "headSha": "7bc6ab38fa661c11a34086548797f78e02deff43",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 123952247920,
+          "name": "编译、测试与打包",
+          "status": "completed",
+          "conclusion": "success",
+          "completedSteps": 15,
+          "failedSteps": []
+        },
+        {
+          "id": 123952248319,
+          "name": ".NET SDK 10.0.401 编译与测试复核",
+          "status": "completed",
+          "conclusion": "success",
+          "completedSteps": 8,
+          "failedSteps": []
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12965495875,
+          "name": "GameSaveCenter-windows-preview",
+          "sizeInBytes": 90790262,
+          "headSha": "7bc6ab38fa661c11a34086548797f78e02deff43",
+          "digest": "sha256:3c11e22d03e96cf4a41dbdb31eda1a9a53c1939219b38e4e1a75bd6125496b2d"
+        },
+        {
+          "id": 12965211616,
+          "name": "GameSaveCenter-build-diagnostics",
+          "sizeInBytes": 2028205,
+          "headSha": "7bc6ab38fa661c11a34086548797f78e02deff43",
+          "digest": "sha256:53e2ee3a0527c220da41c6a9658aa5a7f8fa09e0f49665fbc6b17538df547755"
+        },
+        {
+          "id": 12963550503,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "sizeInBytes": 969192,
+          "headSha": "7bc6ab38fa661c11a34086548797f78e02deff43",
+          "digest": "sha256:d8712dd12eef90c147c02bb376ca872a8bdda950d93d773f5043084deb0e0b7b"
+        }
+      ]
+    },
+    {
+      "runId": 41017607656,
+      "runNumber": 1416,
+      "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41017607656",
+      "event": "push",
+      "headBranch": "main",
+      "headSha": "4a6154587eb716850f8b5abf69f8faac48484d25",
+      "status": "completed",
+      "conclusion": "success",
+      "kind": "documentation follow-up for previous Save page batch",
+      "jobs": [
+        {
+          "id": 123937379896,
+          "name": "编译、测试与打包",
+          "conclusion": "success"
+        },
+        {
+          "id": 123937380289,
+          "name": ".NET SDK 10.0.401 编译与测试复核",
+          "conclusion": "success"
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 12962256198,
+          "name": "GameSaveCenter-build-diagnostics",
+          "headSha": "4a6154587eb716850f8b5abf69f8faac48484d25",
+          "digest": "sha256:489dfe5d96c4466b8818e4469c42f85f90214578a3613e3e08292fcfd9222375"
+        },
+        {
+          "id": 12961502357,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "headSha": "4a6154587eb716850f8b5abf69f8faac48484d25",
+          "digest": "sha256:72716995d9e3cedf1ede7e202a25b60397a163ec3054c9f8583c89d2b5d24028"
+        },
+        {
+          "id": 12961269671,
+          "name": "GameSaveCenter-windows-preview",
+          "headSha": "4a6154587eb716850f8b5abf69f8faac48484d25",
+          "digest": "sha256:9e495556da574af38d7ae3002c7f037ef30f60c0593e20c23bf2c569f7c674e5"
+        }
+      ]
+    }
+  ]
+}

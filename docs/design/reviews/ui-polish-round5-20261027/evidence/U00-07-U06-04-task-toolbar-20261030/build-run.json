@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "batch": ["U00-07", "U06-04"],
+  "sourceCommits": [
+    {
+      "sha": "d7c4bd5e3fc2ca83d0393ea51fc7f911cb80100f",
+      "message": "整理任务队列操作层级与详情入口",
+      "purpose": "production TaskCenter toolbar hierarchy",
+      "pushedTo": "main"
+    },
+    {
+      "sha": "7bc6ab38fa661c11a34086548797f78e02deff43",
+      "message": "更新任务队列工具栏布局回归断言",
+      "purpose": "test-only update to the moved secondary configuration row",
+      "pushedTo": "main",
+      "productionTaskCenterXamlIdenticalToPreviousCommit": true
+    }
+  ],
+  "sdk": {
+    "globalJsonPinned": "8.0.423",
+    "localSdkUsed": "8.0.423",
+    "localSdkPath": ".tmp/round5-sdk8-8.0.423",
+    "configuration": "Release"
+  },
+  "baselineCapture": {
+    "sourceCommit": "4a6154587eb716850f8b5abf69f8faac48484d25",
+    "workingTreeClean": true,
+    "sampleUtc": "2026-10-28T09:00:00.0000000Z",
+    "harnessBuildExitCode": 0,
+    "harnessBuildWarnings": 0,
+    "harnessBuildErrors": 0,
+    "renderedPngCount": 394,
+    "overallRenderQaExitCode": 1,
+    "overallRenderQaProblems": [
+      "SettingsState normal expected 已保存 but received validation-error message",
+      "SettingsState normal summary visibility mismatch",
+      "SettingsState dirty expected unsaved-changes message but received validation-error message",
+      "SettingsState dirty summary visibility mismatch"
+    ],
+    "taskPageTargetHasReportedProblem": false,
+    "taskScreenshotsArchived": [
+      "screenshots/before-light-Task-1040x700.png",
+      "screenshots/before-dark-Task-1040x700.png"
+    ],
+    "report": "render-qa-baseline-report.txt"
+  },
+  "candidateRenderQa": {
+    "productionUiCommit": "d7c4bd5e3fc2ca83d0393ea51fc7f911cb80100f",
+    "finalSourceCommit": "7bc6ab38fa661c11a34086548797f78e02deff43",
+    "taskCenterXamlIdenticalAtFinalSourceCommit": true,
+    "workingTreeCleanAtRender": true,
+    "sampleUtc": "2026-10-28T09:00:00.0000000Z",
+    "exitCode": 0,
+    "renderedPngCount": 394,
+    "problemCount": 0,
+    "report": "render-qa-report.txt",
+    "consoleLog": "render-qa.log"
+  },
+  "localChecks": {
+    "sourceValidation": {
+      "sourceCommit": "7bc6ab38fa661c11a34086548797f78e02deff43",
+      "exitCode": 0,
+      "log": "source-validation-exact-source.log"
+    },
+    "wpfStaticReview": {
+      "productionUiCommit": "d7c4bd5e3fc2ca83d0393ea51fc7f911cb80100f",
+      "xamlFiles": 10,
+      "errors": 0,
+      "existingWarnings": 23,
+      "info": 4,
+      "taskCenterWarnings": 0,
+      "log": "wpf-static.log"
+    },
+    "isolatedBehaviorTests": {
+      "sourceCommit": "7bc6ab38fa661c11a34086548797f78e02deff43",
+      "processIsolation": "one dotnet test process per test class, matching repository CI isolation policy",
+      "sdk": "8.0.423",
+      "configuration": "Release",
+      "total": 112,
+      "passed": 101,
+      "failed": 0,
+      "existingSkipped": 11,
+      "skippedReason": "assertions for the revoked Today Workspace architecture; skips are not counted as passes",
+      "classes": "tests/summary-exact-source.json"
+    },
+    "combinedSingleProcessAttempt": {
+      "sourceCommit": "7bc6ab38fa661c11a34086548797f78e02deff43",
+      "total": 112,
+      "passed": 95,
+      "failed": 6,
+      "existingSkipped": 11,
+      "note": "kept as a failed non-isolated run; all five classes passed when rerun in separate processes",
+      "trx": "tests/combined-single-process-failure.trx",
+      "log": "tests/combined-single-process-failure.log"
+    },
+    "gitDiffCheck": 0
+  },
+  "roundFinalGate": {
+    "status": "pending final frozen candidate",
+    "note": "This batch is not the Round5 final candidate. The Chinese launcher-to-English-root full install/start chain and independent scripts/build.cmd verification remain for the final candidate."
+  }
+}

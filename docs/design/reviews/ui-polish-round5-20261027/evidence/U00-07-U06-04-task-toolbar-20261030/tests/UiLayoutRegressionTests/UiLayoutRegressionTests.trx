@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c68e20cb-c0b9-4724-a7ac-1a2a3a3d020d" name="lopmatu@SULT 2026-10-30 15:16:19" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-30T15:16:19.6326038+08:00" queuing="2026-10-30T15:16:19.6326042+08:00" start="2026-10-30T15:16:15.3153504+08:00" finish="2026-10-30T15:16:19.9037236+08:00" />
+  <TestSettings name="default" id="4302a735-c8ac-4340-a7eb-e6d5a2a2cef2">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-10-30_15_16_19" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="22941fe9-3e3e-40dd-8724-bbb27050e5c4" testId="1414e510-d823-dbc0-07ac-bc656a8a695f" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.TypographyUsesCentralizedChineseAwareFontChain" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6177533+08:00" endTime="2026-10-30T15:16:19.6177533+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="22941fe9-3e3e-40dd-8724-bbb27050e5c4">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bdac56bd-688f-40ef-9062-1dcba029cd5e" testId="ea5fa867-9bda-afa2-a0dc-bd0a288f9ce2" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SharedInputChromeKeepsRoundedBoundsAndCenteredContent" computerName="SULT" duration="00:00:00.0060000" startTime="2026-10-30T15:16:19.6147512+08:00" endTime="2026-10-30T15:16:19.6167510+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bdac56bd-688f-40ef-9062-1dcba029cd5e" />
+    <UnitTestResult executionId="1a2d1ba1-19eb-4e51-90d9-5a62a5a48ec2" testId="cbc31ec2-0056-c7f8-b716-7adea77625f8" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSearchBoxUsesStretchableColumn" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6467535+08:00" endTime="2026-10-30T15:16:19.6467535+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1a2d1ba1-19eb-4e51-90d9-5a62a5a48ec2">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b7dc730c-237f-47aa-b263-822c789ad77f" testId="ac0c73dc-15ce-84ec-11b5-0778483807c7" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityUsesStableFourColumnRow" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.5817537+08:00" endTime="2026-10-30T15:16:19.5817537+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b7dc730c-237f-47aa-b263-822c789ad77f">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="26726674-d5ab-4724-bf6c-7b923d402bbc" testId="9fb793fd-a293-ec47-732e-2fac6ceded99" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.LaunchDelayEditorExplainsItsUnitAndUsesCompactHeight" computerName="SULT" duration="00:00:00.0060000" startTime="2026-10-30T15:16:19.5847538+08:00" endTime="2026-10-30T15:16:19.5847538+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26726674-d5ab-4724-bf6c-7b923d402bbc" />
+    <UnitTestResult executionId="d68d7993-1810-4573-a054-0711c56106dc" testId="0cfdc0f2-cdce-2bb9-5fc3-8a88a93b8f42" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewPrioritySummaryHidesDuplicateStatusPills" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6337533+08:00" endTime="2026-10-30T15:16:19.6337533+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d68d7993-1810-4573-a054-0711c56106dc">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="529bf256-e61e-4c28-bf47-a25c752e6049" testId="a74d2d7e-6d3a-a270-e999-3ddf60ff2fdd" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SettingsAndMaintenanceExposeLocalMirrorConfiguration" computerName="SULT" duration="00:00:00.0120000" startTime="2026-10-30T15:16:19.6197546+08:00" endTime="2026-10-30T15:16:19.6327511+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="529bf256-e61e-4c28-bf47-a25c752e6049" />
+    <UnitTestResult executionId="1caac99e-45de-4ab9-83c8-edc9019c48d7" testId="a7bfe4a9-2c13-6b1e-89b7-ba3579bc6c2e" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistorySizeUsesNoTrimSemanticStyle" computerName="SULT" duration="00:00:00.0030000" startTime="2026-10-30T15:16:19.6177533+08:00" endTime="2026-10-30T15:16:19.6197546+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1caac99e-45de-4ab9-83c8-edc9019c48d7" />
+    <UnitTestResult executionId="da8366f2-414d-4bf8-9757-20c41fb2dfc8" testId="558e1725-e8bb-e21c-0675-21ac67a72111" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6177533+08:00" endTime="2026-10-30T15:16:19.6177533+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da8366f2-414d-4bf8-9757-20c41fb2dfc8">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fe62c87c-eb1d-4631-aaf9-e698f2a629d0" testId="862b52fa-ecb1-3411-7c70-fd4a69804f1b" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceRetentionSimulationUsesResponsiveMetricsAndConfirmedApply" computerName="SULT" duration="00:00:00.0230000" startTime="2026-10-30T15:16:19.6757537+08:00" endTime="2026-10-30T15:16:19.6977507+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fe62c87c-eb1d-4631-aaf9-e698f2a629d0" />
+    <UnitTestResult executionId="4f5355e2-1954-46a0-90f0-c7569153f528" testId="0e60c3a3-f994-5931-6bb9-14f271060dd0" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceSeverityColumnsUseSharedContentFitWidth" computerName="SULT" duration="00:00:00.0110000" startTime="2026-10-30T15:16:19.6637508+08:00" endTime="2026-10-30T15:16:19.6747508+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4f5355e2-1954-46a0-90f0-c7569153f528" />
+    <UnitTestResult executionId="89698ae3-bfe3-4074-8eac-c1f7b830aa27" testId="269ddc1b-c614-c215-6d33-fef3928f0ea0" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SettingsCompactHeaderKeepsBodyViewportBudget" computerName="SULT" duration="00:00:00.0080000" startTime="2026-10-30T15:16:19.6347518+08:00" endTime="2026-10-30T15:16:19.6407513+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89698ae3-bfe3-4074-8eac-c1f7b830aa27" />
+    <UnitTestResult executionId="d89b58c9-0d5d-4935-8e5f-14b37cf8e181" testId="3b328550-4da0-dc3b-a315-d2e96541917f" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewTodayUsesTheSharedCardSurfaceWithoutNestedWash" computerName="SULT" duration="00:00:00.0020000" startTime="2026-10-30T15:16:19.5857516+08:00" endTime="2026-10-30T15:16:19.5857516+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d89b58c9-0d5d-4935-8e5f-14b37cf8e181" />
+    <UnitTestResult executionId="e3457336-ff16-44a8-9e0c-2f1c17baf10c" testId="442de1f1-22c1-6c06-f35b-cd04385a7674" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SettingsCategoryCardsKeepRoundedCornersVisibleAtShortHeights" computerName="SULT" duration="00:00:00.0190000" startTime="2026-10-30T15:16:19.7147507+08:00" endTime="2026-10-30T15:16:19.7337513+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e3457336-ff16-44a8-9e0c-2f1c17baf10c" />
+    <UnitTestResult executionId="68eb0ca6-1181-46c8-a2ed-60dc7e88c704" testId="f380919a-539e-a3de-3dbb-1da152ec3ee3" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceMiddleHeadersRenderThroughSharedStyle" computerName="SULT" duration="00:00:00.0130000" startTime="2026-10-30T15:16:19.6537534+08:00" endTime="2026-10-30T15:16:19.6587509+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="68eb0ca6-1181-46c8-a2ed-60dc7e88c704" />
+    <UnitTestResult executionId="aa4c28b0-f3d3-4830-9a06-2aa67c067d7f" testId="aa98607d-1d59-2706-c44d-99d249429706" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceStorageAnalysisUsesResponsiveMetricsAndRealCommand" computerName="SULT" duration="00:00:00.0170000" startTime="2026-10-30T15:16:19.6977507+08:00" endTime="2026-10-30T15:16:19.7147507+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa4c28b0-f3d3-4830-9a06-2aa67c067d7f" />
+    <UnitTestResult executionId="afdcf150-390e-4c27-868f-98939685d044" testId="02b32b19-f48f-b384-01cf-94b7eaa0c502" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSourceFormIsVisibleByDefaultAndKeepsFieldsReachable" computerName="SULT" duration="00:00:00.0040000" startTime="2026-10-30T15:16:19.5847538+08:00" endTime="2026-10-30T15:16:19.5857516+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="afdcf150-390e-4c27-868f-98939685d044" />
+    <UnitTestResult executionId="59e7257a-87f4-4b74-9d97-0651110da4d9" testId="21941058-0fc8-d47b-6820-9d4b28849cf7" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.AuditFidelityDetectionsCoverAudit10BlindSpots" computerName="SULT" duration="00:00:00.0050000" startTime="2026-10-30T15:16:19.6587509+08:00" endTime="2026-10-30T15:16:19.6637508+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="59e7257a-87f4-4b74-9d97-0651110da4d9" />
+    <UnitTestResult executionId="fdfb96b8-24a8-43cf-a00c-8de3495b4c5f" testId="430c1f2e-11ec-0086-5405-b041de8d12d3" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewLegacyStatStripIsCollapsedToAvoidDuplicateCounters" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6467535+08:00" endTime="2026-10-30T15:16:19.6467535+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fdfb96b8-24a8-43cf-a00c-8de3495b4c5f">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bbaa8fab-6417-41e8-9191-de126cbb3da9" testId="5c26a0a5-bc6a-7b5c-9a05-740592be600e" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewRecentProtectionCardsMatchDemoWithoutCheckboxOrPerItemAction" computerName="SULT" duration="00:00:00.0040000" startTime="2026-10-30T15:16:19.5807538+08:00" endTime="2026-10-30T15:16:19.5807538+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bbaa8fab-6417-41e8-9191-de126cbb3da9" />
+    <UnitTestResult executionId="bc839894-3326-4ab9-82ae-7574b9d28a96" testId="6b7a8b1b-baf6-6f7c-14e9-1c165c390be9" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6457509+08:00" endTime="2026-10-30T15:16:19.6457509+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bc839894-3326-4ab9-82ae-7574b9d28a96">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e08380a2-27f7-4f1a-b017-ccaabe1e3431" testId="cd59450a-30d2-428a-fff4-5cfccd0d9876" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveCurrentRuleStatusIsOneLineBadgeWithAlignedActions" computerName="SULT" duration="00:00:00.1660000" startTime="2026-10-30T15:16:19.4111485+08:00" endTime="2026-10-30T15:16:19.5617528+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e08380a2-27f7-4f1a-b017-ccaabe1e3431" />
+    <UnitTestResult executionId="da66c261-3294-405d-93e5-4e44d0ed8260" testId="40d43a10-78c6-9caf-8fe5-4aac83177a72" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.AuditTextFitDetectionCoversShortLabels" computerName="SULT" duration="00:00:00.0040000" startTime="2026-10-30T15:16:19.7337513+08:00" endTime="2026-10-30T15:16:19.7377509+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da66c261-3294-405d-93e5-4e44d0ed8260" />
+    <UnitTestResult executionId="dfc66abc-1588-4949-b84b-3210fc90e9e0" testId="983611c1-3520-18d2-0467-3684fd180040" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SettingsSelectedCategoryScrollsIntoView" computerName="SULT" duration="00:00:00.0050000" startTime="2026-10-30T15:16:19.6407513+08:00" endTime="2026-10-30T15:16:19.6457509+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfc66abc-1588-4949-b84b-3210fc90e9e0" />
+    <UnitTestResult executionId="6035c662-8ee1-4274-8e33-56a6b5e55acb" testId="94147a68-4824-ea3f-7626-767ec7ab3d3d" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityTimelineUsesCuratedBusinessEvents" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6147512+08:00" endTime="2026-10-30T15:16:19.6147512+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6035c662-8ee1-4274-8e33-56a6b5e55acb">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d25ff398-0931-4527-8f31-f51b33b170b7" testId="d959e7d6-b2e9-17ff-8aec-7034e0e4fd3c" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceEnvironmentChecksUsePredictableResponsiveColumns" computerName="SULT" duration="00:00:00.0060000" startTime="2026-10-30T15:16:19.6147512+08:00" endTime="2026-10-30T15:16:19.6147512+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d25ff398-0931-4527-8f31-f51b33b170b7" />
+    <UnitTestResult executionId="1aa7ebc0-af98-4db6-a51b-6a1be29182b1" testId="aaf48a96-94a6-67b7-8a81-b540c3bbf580" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.ViewsUseUnifiedDisclosureCardChrome" computerName="SULT" duration="00:00:00.0230000" startTime="2026-10-30T15:16:19.5857516+08:00" endTime="2026-10-30T15:16:19.6057516+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1aa7ebc0-af98-4db6-a51b-6a1be29182b1" />
+    <UnitTestResult executionId="e54e8a38-dfa0-460f-b0be-81761db61ad2" testId="0b2c358c-9535-2992-dd9d-42cb0c9a15c0" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.CompactDetailsButtonsStayWithTheirRelatedControls" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6137533+08:00" endTime="2026-10-30T15:16:19.6137533+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e54e8a38-dfa0-460f-b0be-81761db61ad2">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2bab0c2e-f386-4577-a435-78b561584162" testId="b6ed3433-890b-b499-f2ae-e8d68d591387" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.AuditFidelityDetectionsCoverAudit11BlindSpots" computerName="SULT" duration="00:00:00.0040000" startTime="2026-10-30T15:16:19.5847538+08:00" endTime="2026-10-30T15:16:19.5847538+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2bab0c2e-f386-4577-a435-78b561584162" />
+    <UnitTestResult executionId="a1b41f05-f0b7-48ca-a811-7ed11167f593" testId="961f41c0-c82c-3bbe-9afb-7751408a2fe8" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewProtectionActionsHaveTheirOwnResponsiveRow" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.6147512+08:00" endTime="2026-10-30T15:16:19.6147512+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a1b41f05-f0b7-48ca-a811-7ed11167f593">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0a0d672f-d94e-4d72-96b1-073eb5c48584" testId="621fbc0c-eee7-ef6c-f43f-99dc23c444a6" testName="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistoryStatusStaysInNarrowViewport" computerName="SULT" duration="00:00:00.0010000" startTime="2026-10-30T15:16:19.5857516+08:00" endTime="2026-10-30T15:16:19.5857516+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a0d672f-d94e-4d72-96b1-073eb5c48584">
+      <Output>
+        <ErrorInfo>
+          <Message>该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewPrioritySummaryHidesDuplicateStatusPills" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0cfdc0f2-cdce-2bb9-5fc3-8a88a93b8f42">
+      <Execution id="d68d7993-1810-4573-a054-0711c56106dc" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="OverviewPrioritySummaryHidesDuplicateStatusPills" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewTodayUsesTheSharedCardSurfaceWithoutNestedWash" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3b328550-4da0-dc3b-a315-d2e96541917f">
+      <Execution id="d89b58c9-0d5d-4935-8e5f-14b37cf8e181" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="OverviewTodayUsesTheSharedCardSurfaceWithoutNestedWash" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewLegacyStatStripIsCollapsedToAvoidDuplicateCounters" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="430c1f2e-11ec-0086-5405-b041de8d12d3">
+      <Execution id="fdfb96b8-24a8-43cf-a00c-8de3495b4c5f" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="OverviewLegacyStatStripIsCollapsedToAvoidDuplicateCounters" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.AuditFidelityDetectionsCoverAudit10BlindSpots" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="21941058-0fc8-d47b-6820-9d4b28849cf7">
+      <Execution id="59e7257a-87f4-4b74-9d97-0651110da4d9" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="AuditFidelityDetectionsCoverAudit10BlindSpots" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.TypographyUsesCentralizedChineseAwareFontChain" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1414e510-d823-dbc0-07ac-bc656a8a695f">
+      <Execution id="22941fe9-3e3e-40dd-8724-bbb27050e5c4" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="TypographyUsesCentralizedChineseAwareFontChain" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewRecentProtectionCardsMatchDemoWithoutCheckboxOrPerItemAction" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5c26a0a5-bc6a-7b5c-9a05-740592be600e">
+      <Execution id="bbaa8fab-6417-41e8-9191-de126cbb3da9" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="OverviewRecentProtectionCardsMatchDemoWithoutCheckboxOrPerItemAction" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityUsesStableFourColumnRow" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ac0c73dc-15ce-84ec-11b5-0778483807c7">
+      <Execution id="b7dc730c-237f-47aa-b263-822c789ad77f" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="OverviewGlobalActivityUsesStableFourColumnRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.CompactDetailsButtonsStayWithTheirRelatedControls" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0b2c358c-9535-2992-dd9d-42cb0c9a15c0">
+      <Execution id="e54e8a38-dfa0-460f-b0be-81761db61ad2" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="CompactDetailsButtonsStayWithTheirRelatedControls" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistorySizeUsesNoTrimSemanticStyle" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="a7bfe4a9-2c13-6b1e-89b7-ba3579bc6c2e">
+      <Execution id="1caac99e-45de-4ab9-83c8-edc9019c48d7" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="SaveHistorySizeUsesNoTrimSemanticStyle" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceSeverityColumnsUseSharedContentFitWidth" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0e60c3a3-f994-5931-6bb9-14f271060dd0">
+      <Execution id="4f5355e2-1954-46a0-90f0-c7569153f528" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="MaintenanceSeverityColumnsUseSharedContentFitWidth" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="558e1725-e8bb-e21c-0675-21ac67a72111">
+      <Execution id="da8366f2-414d-4bf8-9757-20c41fb2dfc8" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewProtectionActionsHaveTheirOwnResponsiveRow" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="961f41c0-c82c-3bbe-9afb-7751408a2fe8">
+      <Execution id="a1b41f05-f0b7-48ca-a811-7ed11167f593" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="OverviewProtectionActionsHaveTheirOwnResponsiveRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6b7a8b1b-baf6-6f7c-14e9-1c165c390be9">
+      <Execution id="bc839894-3326-4ab9-82ae-7574b9d28a96" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistoryStatusStaysInNarrowViewport" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="621fbc0c-eee7-ef6c-f43f-99dc23c444a6">
+      <Execution id="0a0d672f-d94e-4d72-96b1-073eb5c48584" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="SaveHistoryStatusStaysInNarrowViewport" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.LaunchDelayEditorExplainsItsUnitAndUsesCompactHeight" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9fb793fd-a293-ec47-732e-2fac6ceded99">
+      <Execution id="26726674-d5ab-4724-bf6c-7b923d402bbc" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="LaunchDelayEditorExplainsItsUnitAndUsesCompactHeight" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityTimelineUsesCuratedBusinessEvents" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="94147a68-4824-ea3f-7626-767ec7ab3d3d">
+      <Execution id="6035c662-8ee1-4274-8e33-56a6b5e55acb" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="OverviewGlobalActivityTimelineUsesCuratedBusinessEvents" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSourceFormIsVisibleByDefaultAndKeepsFieldsReachable" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="02b32b19-f48f-b384-01cf-94b7eaa0c502">
+      <Execution id="afdcf150-390e-4c27-868f-98939685d044" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="MediaSourceFormIsVisibleByDefaultAndKeepsFieldsReachable" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceRetentionSimulationUsesResponsiveMetricsAndConfirmedApply" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="862b52fa-ecb1-3411-7c70-fd4a69804f1b">
+      <Execution id="fe62c87c-eb1d-4631-aaf9-e698f2a629d0" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="MaintenanceRetentionSimulationUsesResponsiveMetricsAndConfirmedApply" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceMiddleHeadersRenderThroughSharedStyle" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f380919a-539e-a3de-3dbb-1da152ec3ee3">
+      <Execution id="68eb0ca6-1181-46c8-a2ed-60dc7e88c704" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="MaintenanceMiddleHeadersRenderThroughSharedStyle" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SettingsCompactHeaderKeepsBodyViewportBudget" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="269ddc1b-c614-c215-6d33-fef3928f0ea0">
+      <Execution id="89698ae3-bfe3-4074-8eac-c1f7b830aa27" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="SettingsCompactHeaderKeepsBodyViewportBudget" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SettingsCategoryCardsKeepRoundedCornersVisibleAtShortHeights" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="442de1f1-22c1-6c06-f35b-cd04385a7674">
+      <Execution id="e3457336-ff16-44a8-9e0c-2f1c17baf10c" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="SettingsCategoryCardsKeepRoundedCornersVisibleAtShortHeights" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.ViewsUseUnifiedDisclosureCardChrome" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="aaf48a96-94a6-67b7-8a81-b540c3bbf580">
+      <Execution id="1aa7ebc0-af98-4db6-a51b-6a1be29182b1" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="ViewsUseUnifiedDisclosureCardChrome" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceStorageAnalysisUsesResponsiveMetricsAndRealCommand" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="aa98607d-1d59-2706-c44d-99d249429706">
+      <Execution id="aa4c28b0-f3d3-4830-9a06-2aa67c067d7f" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="MaintenanceStorageAnalysisUsesResponsiveMetricsAndRealCommand" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SettingsSelectedCategoryScrollsIntoView" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="983611c1-3520-18d2-0467-3684fd180040">
+      <Execution id="dfc66abc-1588-4949-b84b-3210fc90e9e0" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="SettingsSelectedCategoryScrollsIntoView" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SharedInputChromeKeepsRoundedBoundsAndCenteredContent" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ea5fa867-9bda-afa2-a0dc-bd0a288f9ce2">
+      <Execution id="bdac56bd-688f-40ef-9062-1dcba029cd5e" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="SharedInputChromeKeepsRoundedBoundsAndCenteredContent" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.AuditTextFitDetectionCoversShortLabels" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="40d43a10-78c6-9caf-8fe5-4aac83177a72">
+      <Execution id="da66c261-3294-405d-93e5-4e44d0ed8260" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="AuditTextFitDetectionCoversShortLabels" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSearchBoxUsesStretchableColumn" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="cbc31ec2-0056-c7f8-b716-7adea77625f8">
+      <Execution id="1a2d1ba1-19eb-4e51-90d9-5a62a5a48ec2" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="MediaSearchBoxUsesStretchableColumn" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.AuditFidelityDetectionsCoverAudit11BlindSpots" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b6ed3433-890b-b499-f2ae-e8d68d591387">
+      <Execution id="2bab0c2e-f386-4577-a435-78b561584162" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="AuditFidelityDetectionsCoverAudit11BlindSpots" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SettingsAndMaintenanceExposeLocalMirrorConfiguration" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="a74d2d7e-6d3a-a270-e999-3ddf60ff2fdd">
+      <Execution id="529bf256-e61e-4c28-bf47-a25c752e6049" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="SettingsAndMaintenanceExposeLocalMirrorConfiguration" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveCurrentRuleStatusIsOneLineBadgeWithAlignedActions" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="cd59450a-30d2-428a-fff4-5cfccd0d9876">
+      <Execution id="e08380a2-27f7-4f1a-b017-ccaabe1e3431" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="SaveCurrentRuleStatusIsOneLineBadgeWithAlignedActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MaintenanceEnvironmentChecksUsePredictableResponsiveColumns" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\round5-task-toolbar-20261030\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d959e7d6-b2e9-17ff-8aec-7034e0e4fd3c">
+      <Execution id="d25ff398-0931-4527-8f31-f51b33b170b7" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-task-toolbar-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests" name="MaintenanceEnvironmentChecksUsePredictableResponsiveColumns" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="1414e510-d823-dbc0-07ac-bc656a8a695f" executionId="22941fe9-3e3e-40dd-8724-bbb27050e5c4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ea5fa867-9bda-afa2-a0dc-bd0a288f9ce2" executionId="bdac56bd-688f-40ef-9062-1dcba029cd5e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cbc31ec2-0056-c7f8-b716-7adea77625f8" executionId="1a2d1ba1-19eb-4e51-90d9-5a62a5a48ec2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ac0c73dc-15ce-84ec-11b5-0778483807c7" executionId="b7dc730c-237f-47aa-b263-822c789ad77f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9fb793fd-a293-ec47-732e-2fac6ceded99" executionId="26726674-d5ab-4724-bf6c-7b923d402bbc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0cfdc0f2-cdce-2bb9-5fc3-8a88a93b8f42" executionId="d68d7993-1810-4573-a054-0711c56106dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a74d2d7e-6d3a-a270-e999-3ddf60ff2fdd" executionId="529bf256-e61e-4c28-bf47-a25c752e6049" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a7bfe4a9-2c13-6b1e-89b7-ba3579bc6c2e" executionId="1caac99e-45de-4ab9-83c8-edc9019c48d7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="558e1725-e8bb-e21c-0675-21ac67a72111" executionId="da8366f2-414d-4bf8-9757-20c41fb2dfc8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="862b52fa-ecb1-3411-7c70-fd4a69804f1b" executionId="fe62c87c-eb1d-4631-aaf9-e698f2a629d0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0e60c3a3-f994-5931-6bb9-14f271060dd0" executionId="4f5355e2-1954-46a0-90f0-c7569153f528" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="269ddc1b-c614-c215-6d33-fef3928f0ea0" executionId="89698ae3-bfe3-4074-8eac-c1f7b830aa27" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3b328550-4da0-dc3b-a315-d2e96541917f" executionId="d89b58c9-0d5d-4935-8e5f-14b37cf8e181" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="442de1f1-22c1-6c06-f35b-cd04385a7674" executionId="e3457336-ff16-44a8-9e0c-2f1c17baf10c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f380919a-539e-a3de-3dbb-1da152ec3ee3" executionId="68eb0ca6-1181-46c8-a2ed-60dc7e88c704" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa98607d-1d59-2706-c44d-99d249429706" executionId="aa4c28b0-f3d3-4830-9a06-2aa67c067d7f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="02b32b19-f48f-b384-01cf-94b7eaa0c502" executionId="afdcf150-390e-4c27-868f-98939685d044" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="21941058-0fc8-d47b-6820-9d4b28849cf7" executionId="59e7257a-87f4-4b74-9d97-0651110da4d9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="430c1f2e-11ec-0086-5405-b041de8d12d3" executionId="fdfb96b8-24a8-43cf-a00c-8de3495b4c5f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5c26a0a5-bc6a-7b5c-9a05-740592be600e" executionId="bbaa8fab-6417-41e8-9191-de126cbb3da9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b7a8b1b-baf6-6f7c-14e9-1c165c390be9" executionId="bc839894-3326-4ab9-82ae-7574b9d28a96" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd59450a-30d2-428a-fff4-5cfccd0d9876" executionId="e08380a2-27f7-4f1a-b017-ccaabe1e3431" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="40d43a10-78c6-9caf-8fe5-4aac83177a72" executionId="da66c261-3294-405d-93e5-4e44d0ed8260" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="983611c1-3520-18d2-0467-3684fd180040" executionId="dfc66abc-1588-4949-b84b-3210fc90e9e0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="94147a68-4824-ea3f-7626-767ec7ab3d3d" executionId="6035c662-8ee1-4274-8e33-56a6b5e55acb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d959e7d6-b2e9-17ff-8aec-7034e0e4fd3c" executionId="d25ff398-0931-4527-8f31-f51b33b170b7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aaf48a96-94a6-67b7-8a81-b540c3bbf580" executionId="1aa7ebc0-af98-4db6-a51b-6a1be29182b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0b2c358c-9535-2992-dd9d-42cb0c9a15c0" executionId="e54e8a38-dfa0-460f-b0be-81761db61ad2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b6ed3433-890b-b499-f2ae-e8d68d591387" executionId="2bab0c2e-f386-4577-a435-78b561584162" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="961f41c0-c82c-3bbe-9afb-7751408a2fe8" executionId="a1b41f05-f0b7-48ca-a811-7ed11167f593" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="621fbc0c-eee7-ef6c-f43f-99dc23c444a6" executionId="0a0d672f-d94e-4d72-96b1-073eb5c48584" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="31" executed="20" passed="20" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.76]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.80]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.03]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.04]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityUsesStableFourColumnRow”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistoryStatusStaysInNarrowViewport”。&#xD;
+[xUnit.net 00:00:03.07]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.07]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.07]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.07]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.07]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.CompactDetailsButtonsStayWithTheirRelatedControls”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityTimelineUsesCuratedBusinessEvents”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewProtectionActionsHaveTheirOwnResponsiveRow”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.TypographyUsesCentralizedChineseAwareFontChain”。&#xD;
+[xUnit.net 00:00:03.09]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.10]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.10]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+[xUnit.net 00:00:03.10]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewPrioritySummaryHidesDuplicateStatusPills”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewLegacyStatStripIsCollapsedToAvoidDuplicateCounters”。&#xD;
+在测试运行中跳过测试“GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSearchBoxUsesStretchableColumn”。&#xD;
+[xUnit.net 00:00:03.20]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.5839414+08:00">
+        <Text>[xUnit.net 00:00:03.03]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityUsesStableFourColumnRow [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.5862735+08:00">
+        <Text>[xUnit.net 00:00:03.04]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.SaveHistoryStatusStaysInNarrowViewport [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6374291+08:00">
+        <Text>[xUnit.net 00:00:03.06]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.CompactDetailsButtonsStayWithTheirRelatedControls [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6374590+08:00">
+        <Text>[xUnit.net 00:00:03.07]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewGlobalActivityTimelineUsesCuratedBusinessEvents [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6374941+08:00">
+        <Text>[xUnit.net 00:00:03.07]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewProtectionActionsHaveTheirOwnResponsiveRow [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6375238+08:00">
+        <Text>[xUnit.net 00:00:03.07]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaCurrentListStartsAtTheTopOfItsVirtualizedViewport [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6375523+08:00">
+        <Text>[xUnit.net 00:00:03.07]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.TypographyUsesCentralizedChineseAwareFontChain [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6380856+08:00">
+        <Text>[xUnit.net 00:00:03.09]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewPrioritySummaryHidesDuplicateStatusPills [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6467879+08:00">
+        <Text>[xUnit.net 00:00:03.10]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewFlowUsesTheFiniteViewportWhenHorizontalScrollingIsDisabled [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6470614+08:00">
+        <Text>[xUnit.net 00:00:03.10]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.OverviewLegacyStatStripIsCollapsedToAvoidDuplicateCounters [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-10-30T15:16:19.6539428+08:00">
+        <Text>[xUnit.net 00:00:03.10]     GameSaveCenter.Playnite.Tests.UiLayoutRegressionTests.MediaSearchBoxUsesStretchableColumn [SKIP]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

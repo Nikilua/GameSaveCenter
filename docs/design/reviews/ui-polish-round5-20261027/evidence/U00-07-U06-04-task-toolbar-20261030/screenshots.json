@@ -1,0 +1,26 @@
+[
+  {
+    "role": "before-light",
+    "path": "screenshots/before-light-Task-1040x700.png",
+    "bytes": 66599,
+    "sha256": "f6726afcf8ca729fcf6795848686cf50d5ce54a7e39156c48cba05cc1235cae7"
+  },
+  {
+    "role": "before-dark",
+    "path": "screenshots/before-dark-Task-1040x700.png",
+    "bytes": 70672,
+    "sha256": "cdea9885ba39c1841fdd49552cce75f4cbbea9815b24be925f1ede2c9a47521c"
+  },
+  {
+    "role": "after-light",
+    "path": "screenshots/after-light-Task-1040x700.png",
+    "bytes": 65373,
+    "sha256": "f9f4f0bd9ac5aceef9c03053e46ec95ae9c4d7521466cb6eccfe591bf99ab985"
+  },
+  {
+    "role": "after-dark",
+    "path": "screenshots/after-dark-Task-1040x700.png",
+    "bytes": 68967,
+    "sha256": "5dfffb22a3f2e08d92d7c9ca09aa4c7c77d7349b3848e84ad8089fc7b86da1af"
+  }
+]

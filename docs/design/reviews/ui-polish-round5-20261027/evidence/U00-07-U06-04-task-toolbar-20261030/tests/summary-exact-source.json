@@ -1,0 +1,42 @@
+[
+  {
+    "Class": "CompactWorkspaceTableViewportBehaviorTests",
+    "Total": 14,
+    "Passed": 14,
+    "Failed": 0,
+    "Skipped": 0,
+    "Trx": "tests/CompactWorkspaceTableViewportBehaviorTests.trx"
+  },
+  {
+    "Class": "TaskCenterViewResponsiveTests",
+    "Total": 8,
+    "Passed": 8,
+    "Failed": 0,
+    "Skipped": 0,
+    "Trx": "tests/TaskCenterViewResponsiveTests.trx"
+  },
+  {
+    "Class": "UiLayoutRegressionTests",
+    "Total": 31,
+    "Passed": 20,
+    "Failed": 0,
+    "Skipped": 11,
+    "Trx": "tests/UiLayoutRegressionTests.trx"
+  },
+  {
+    "Class": "KeyboardFocusSourceTests",
+    "Total": 5,
+    "Passed": 5,
+    "Failed": 0,
+    "Skipped": 0,
+    "Trx": "tests/KeyboardFocusSourceTests.trx"
+  },
+  {
+    "Class": "ReportedWorkspaceLayoutBehaviorTests",
+    "Total": 54,
+    "Passed": 54,
+    "Failed": 0,
+    "Skipped": 0,
+    "Trx": "tests/ReportedWorkspaceLayoutBehaviorTests.trx"
+  }
+]

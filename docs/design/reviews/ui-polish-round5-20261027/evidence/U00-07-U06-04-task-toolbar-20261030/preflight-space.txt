@@ -1,0 +1,3 @@
+C_FreeBytes=4169297920
+HEAD=3139876b347ae380e663857ed2995605edc95872
+SDK=9.0.302 [C:\Program Files\dotnet\sdk]

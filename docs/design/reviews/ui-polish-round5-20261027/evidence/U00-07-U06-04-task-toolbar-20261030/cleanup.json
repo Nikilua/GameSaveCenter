@@ -1,0 +1,33 @@
+{
+  "stage": "U00-07/U06-04 task toolbar",
+  "date": "2026-10-30",
+  "target": ".tmp/round5-task-toolbar-20261030",
+  "resolvedTarget": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-task-toolbar-20261030",
+  "ownership": "This stage-only render, build, diagnostic, and isolated-test output.",
+  "boundaryVerified": true,
+  "markdownReferences": 0,
+  "reparsePoints": 0,
+  "processExecutablesInsideTarget": 0,
+  "processCommandLineCheck": "Win32_Process command-line inspection was previously denied; did not repeat that permission probe. Get-Process executable path check found no process binary in target.",
+  "deletedFiles": 2232,
+  "deletedDirectories": 347,
+  "deletedBytes": 300996446.0,
+  "freeBytesBefore": {
+    "C": 4668833792,
+    "D": 18827784192
+  },
+  "freeBytesAfter": {
+    "C": 4975980544,
+    "D": 18827784192
+  },
+  "evidenceArchive": "docs/design/reviews/ui-polish-round5-20261027/evidence/U00-07-U06-04-task-toolbar-20261030",
+  "archivedEvidence": [
+    "CI run/job/artifact identities and historical failure logs",
+    "two-theme before/after screenshots; all four source/archive/manifest SHA-256 values matched",
+    "render QA reports/log",
+    "exact-source validation log",
+    "isolated test logs and TRX including failed diagnostics",
+    "WPF static review and source patch"
+  ],
+  "artifactRemoval": "No artifacts/ output removed; only the exact stage-owned .tmp directory."
+}

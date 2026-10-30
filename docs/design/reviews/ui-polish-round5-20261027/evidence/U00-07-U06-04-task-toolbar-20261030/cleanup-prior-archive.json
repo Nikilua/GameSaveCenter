@@ -1,0 +1,25 @@
+{
+  "stage": "U00-07/U06-04 task toolbar",
+  "date": "2026-10-30",
+  "target": ".tmp/u04-indicator-gap-20261029",
+  "reason": "Completed U04 indicator-gap intermediate snapshots. Committed evidence archive exists; all 41 source/archive SHA pairs matched. No Markdown hyperlinks, reparse points, or processes using the path.",
+  "evidenceArchive": "docs/design/reviews/ui-polish-round5-20261027/evidence/U04-indicator-gap-20261029",
+  "verifiedPairs": 41,
+  "sourceHashMismatches": 0,
+  "archiveHashMismatches": 0,
+  "missingFiles": 0,
+  "markdownHyperlinks": 0,
+  "activeProcesses": 0,
+  "reparsePoints": 0,
+  "deletedFiles": 2750,
+  "deletedBytes": 143736114.0,
+  "freeBytesBefore": {
+    "C": 4182487040,
+    "D": 16999460864
+  },
+  "freeBytesAfter": {
+    "C": 4332703744,
+    "D": 16999460864
+  },
+  "notes": "Get-Process path inspection is available; Win32_Process commandline inspection previously returned access denied, so commandlines were not used."
+}

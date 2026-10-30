@@ -1,0 +1,160 @@
+diff --git a/src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml b/src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml
+index c224c1e8..99d3b29f 100644
+--- a/src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml
++++ b/src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml
+@@ -227,6 +227,8 @@
+                     <ui:Button x:Name="TaskViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" ToolTip="删除已保存的任务表格视图并恢复默认布局" AutomationProperties.Name="删除任务表格视图"/>
+                     <TextBlock x:Name="TaskViewConfigurationDirtyStatusText" Text="" Style="{DynamicResource GscCaptionStyle}" Visibility="Collapsed" Focusable="False" IsHitTestVisible="False" AutomationProperties.Name="任务视图保存状态"/>
+                     <ui:Button x:Name="TaskViewConfigurationRestoreButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="恢复已保存" ToolTip="放弃临时视图改动并恢复已保存排列；不更改业务配置" AutomationProperties.Name="恢复已保存任务视图" IsEnabled="False" Visibility="Collapsed"/>
++                    <ui:Button x:Name="TaskGridColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择任务表格显示的列；时间、任务和状态始终显示。" AutomationProperties.Name="设置任务列表显示列" Margin="8,0,0,0" VerticalAlignment="Center"/>
++                    <ui:Button x:Name="TaskQueueResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置布局" ToolTip="先预览范围，再选择只重置任务表格或全部工作视图" AutomationProperties.Name="预览任务表格布局重置范围" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                 </WrapPanel>
+                 <Border x:Name="TaskNavigationSourceBanner" Grid.Row="3" Grid.ColumnSpan="6" Margin="0,8,0,0">
+                     <Border.Style>
+@@ -303,7 +305,7 @@
+                     <Grid.RowDefinitions><RowDefinition x:Name="TaskQueuePrimaryHeaderRow" Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                     <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                     <TextBlock Grid.Row="0" Grid.Column="0" Text="任务队列" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
+-                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
++                    <StackPanel x:Name="TaskQueuePrimaryActionsPanel" Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                         <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding OpenWorklistBrowserCommand}" Content="人工待办" ToolTip="浏览和整理跨页面保存的人工待办；不会改变源对象" AutomationProperties.Name="打开人工待办清单" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                         <ui:Button x:Name="TaskQueueRetryAllButton" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RetryAllTasksCommand}" Content="重试可恢复" ToolTip="只处理当前已加载且符合筛选的记录；按游戏和任务类型各重试一次" AutomationProperties.Name="批量重试当前结果中的可恢复任务" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                         <ui:Button Command="{Binding LoadMoreTasksCommand}" Content="加载更多" ToolTip="按稳定游标继续加载历史任务" VerticalAlignment="Center">
+@@ -314,14 +316,12 @@
+                                 </Style>
+                             </ui:Button.Style>
+                         </ui:Button>
+-                        <ui:Button x:Name="TaskGridColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择任务表格显示的列；时间、任务和状态始终显示。" AutomationProperties.Name="设置任务列表显示列" Margin="8,0,0,0" VerticalAlignment="Center"/>
+-                        <ui:Button x:Name="TaskQueueResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置…" ToolTip="先预览范围，再选择只重置任务表格或全部工作视图" AutomationProperties.Name="预览任务表格布局重置范围" Margin="10,0,0,0" VerticalAlignment="Center"/>
++                        <ui:Button x:Name="TaskCompactDetailsButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="查看任务详情 ›" Visibility="Collapsed" Click="OnTaskCompactDetailsClick" ToolTip="查看或收起所选任务详情" AutomationProperties.Name="查看或收起所选任务详情" AutomationProperties.HelpText="打开或收起当前选择的任务详情；不更改任务状态。" Margin="12,0,0,0"/>
+                     </StackPanel>
+                     <Grid x:Name="TaskQueueSummaryGrid" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,4,0,0">
+                         <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                         <TextBlock x:Name="TaskQueueLoadedSummaryText" Grid.Column="0" Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskLoadedSummary}" VerticalAlignment="Center"/>
+                         <TextBlock x:Name="TaskQueueLastUpdatedSummary" Grid.Column="1" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="12,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" VerticalAlignment="Center"/>
+-                        <ui:Button x:Name="TaskCompactDetailsButton" Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Content="查看任务详情 ›" Visibility="Collapsed" Click="OnTaskCompactDetailsClick" AutomationProperties.Name="查看或收起所选任务详情" Margin="12,0,0,0"/>
+                     </Grid>
+                 </Grid>
+                 <Border x:Name="TaskStaleDataBanner" Grid.Row="1" Padding="10,7" Margin="0,0,0,8">
+diff --git a/tests/GameSaveCenter.Playnite.Tests/CompactWorkspaceTableViewportBehaviorTests.cs b/tests/GameSaveCenter.Playnite.Tests/CompactWorkspaceTableViewportBehaviorTests.cs
+index 46df8516..660d79d7 100644
+--- a/tests/GameSaveCenter.Playnite.Tests/CompactWorkspaceTableViewportBehaviorTests.cs
++++ b/tests/GameSaveCenter.Playnite.Tests/CompactWorkspaceTableViewportBehaviorTests.cs
+@@ -594,11 +594,21 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
+             var taskPage = GetField<ScrollViewer>(taskType, taskView, "TaskPageScrollViewer");
+             var taskFrame = GetField<Border>(taskType, taskView, "TaskTableFrame");
+             var taskDetailsButton = GetField<Button>(taskType, taskView, "TaskCompactDetailsButton");
++            var taskPrimaryActions = GetField<StackPanel>(taskType, taskView, "TaskQueuePrimaryActionsPanel");
++            var taskColumnVisibilityButton = GetField<Button>(taskType, taskView, "TaskGridColumnVisibilityButton");
++            var taskResetLayoutButton = GetField<Button>(taskType, taskView, "TaskQueueResetColumnWidthButton");
+             var taskMoreFilters = GetField<Expander>(taskType, taskView, "TaskMoreFiltersExpander");
+             var taskMoreFiltersHost = GetField<Grid>(taskType, taskView, "TaskMoreFiltersHost");
+             var taskSummary = GetField<Border>(taskType, taskView, "TaskSummaryPanel");
+             var taskFilterPresetRow = GetField<WrapPanel>(taskType, taskView, "TaskFilterPresetRow");
+             var taskViewConfigurationRow = GetField<WrapPanel>(taskType, taskView, "TaskViewConfigurationRow");
++            Assert.Same(taskPrimaryActions, taskDetailsButton.Parent);
++            Assert.Same(taskViewConfigurationRow, taskColumnVisibilityButton.Parent);
++            Assert.Same(taskViewConfigurationRow, taskResetLayoutButton.Parent);
++            Assert.Equal("重置布局", taskResetLayoutButton.Content);
++            Assert.Equal("预览任务表格布局重置范围", AutomationProperties.GetName(taskResetLayoutButton));
++            Assert.Equal("查看或收起所选任务详情", AutomationProperties.GetName(taskDetailsButton));
++            Assert.Contains("不更改任务状态", AutomationProperties.GetHelpText(taskDetailsButton));
+             Assert.True(taskGrid.ActualHeight + 1 >= taskGrid.MinHeight,
+                 $"Task grid must retain four readable rows at {width}x{height} DIP: grid={taskGrid.ActualHeight:0.0}, minimum={taskGrid.MinHeight:0.0}.");
+             Assert.False(taskMoreFilters.IsExpanded);
+@@ -899,8 +909,15 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
+ 
+     private static void AssertPageCanReachEnd(ScrollViewer page)
+     {
+-        Assert.True(page.ScrollableHeight > 0,
+-            $"Expected the page scroller to include its lower content: extent={page.ExtentHeight:0.0}, viewport={page.ViewportHeight:0.0}.");
++        if (page.ScrollableHeight <= 1.5)
++        {
++            // A tighter toolbar can make the complete page fit in the viewport. In
++            // that case, prove there is no hidden page content instead of requiring
++            // an unnecessary scroll bar; pages that overflow still test ScrollToEnd.
++            AssertPageFitsViewport(page);
++            return;
++        }
++
+         page.ScrollToEnd();
+         page.UpdateLayout();
+         Assert.True(page.VerticalOffset >= page.ScrollableHeight - 1,
+diff --git a/tests/GameSaveCenter.Playnite.Tests/ReportedWorkspaceLayoutBehaviorTests.cs b/tests/GameSaveCenter.Playnite.Tests/ReportedWorkspaceLayoutBehaviorTests.cs
+index ddda8d1e..59d75715 100644
+--- a/tests/GameSaveCenter.Playnite.Tests/ReportedWorkspaceLayoutBehaviorTests.cs
++++ b/tests/GameSaveCenter.Playnite.Tests/ReportedWorkspaceLayoutBehaviorTests.cs
+@@ -1891,12 +1891,16 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
+         var summaryHeight = 0d;
+         var primaryRowHeight = 0d;
+         var primaryRowHeightAfterExpansion = 0d;
++        var configurationRowHeight = 0d;
++        var configurationRowHeightAfterExpansion = 0d;
+         var retryHeight = 0d;
+         var resetHeight = 0d;
+         var retryAfterExpansion = 0d;
+         var resetAfterExpansion = 0d;
+         var retryCenterDelta = 0d;
+         var resetCenterDelta = 0d;
++        var resetBelongsToConfigurationRow = false;
++        var configurationDisclosureExpanded = false;
+         var leaveHintForeground = Colors.Transparent;
+         var summaryForeground = Colors.Transparent;
+         var secondaryForeground = Colors.Transparent;
+@@ -1915,6 +1919,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
+                 var viewType = typeof(TaskCenterView);
+                 var header = (Grid)viewType.GetField("TaskQueueHeaderLayoutGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                 var summary = (Grid)viewType.GetField("TaskQueueSummaryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
++                var configurationRow = (FrameworkElement)viewType.GetField("TaskViewConfigurationRow", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
++                var moreFilters = (Expander)viewType.GetField("TaskMoreFiltersExpander", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                 var loadedSummary = (TextBlock)viewType.GetField("TaskQueueLoadedSummaryText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                 var statusSummary = (TextBlock)viewType.GetField("TaskQueueLastUpdatedSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                 var title = FindVisualChildren<TextBlock>(header).Single(text => text.Text == "任务队列");
+@@ -1931,9 +1937,18 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
+                 summaryHeight = summary.ActualHeight;
+                 primaryRowHeight = header.RowDefinitions[0].ActualHeight;
+                 retryHeight = retry.ActualHeight;
++                resetBelongsToConfigurationRow = ReferenceEquals(reset.Parent, configurationRow);
++                if (moreFilters.Visibility == Visibility.Visible)
++                {
++                    moreFilters.IsExpanded = true;
++                    configurationDisclosureExpanded = moreFilters.IsExpanded;
++                    FlushLayout(window);
++                }
++                var configurationTitle = FindVisualChildren<TextBlock>(configurationRow).Single(text => text.Text == "表格视图");
++                configurationRowHeight = configurationRow.ActualHeight;
+                 resetHeight = reset.ActualHeight;
+                 retryCenterDelta = Math.Abs(CenterY(retry, header) - CenterY(title, header));
+-                resetCenterDelta = Math.Abs(CenterY(reset, header) - CenterY(title, header));
++                resetCenterDelta = Math.Abs(CenterY(reset, configurationRow) - CenterY(configurationTitle, configurationRow));
+                 leaveHintForeground = (hint.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
+                 summaryForeground = (loadedSummary.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
+                 secondaryForeground = (view.FindResource("GscSecondaryTextBrush") as SolidColorBrush)?.Color ?? Colors.Transparent;
+@@ -1945,6 +1960,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
+                 statusSummary.Text = "最近更新：刚刚\n刷新时仍保留旧数据\n失败后可以重试读取";
+                 FlushLayout(window);
+                 primaryRowHeightAfterExpansion = header.RowDefinitions[0].ActualHeight;
++                configurationRowHeightAfterExpansion = configurationRow.ActualHeight;
+                 retryAfterExpansion = retry.ActualHeight;
+                 resetAfterExpansion = reset.ActualHeight;
+             }
+@@ -1958,15 +1974,18 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
+             }
+         });
+ 
+-        output.WriteLine($"{theme} Task queue metadata={summaryHeight:0.##} DIP below primary row={primaryRowHeight:0.##} DIP; expanded primary row={primaryRowHeightAfterExpansion:0.##}; retry/reset={retryHeight:0.##}/{resetHeight:0.##}, expanded={retryAfterExpansion:0.##}/{resetAfterExpansion:0.##}, centerΔ={retryCenterDelta:0.##}/{resetCenterDelta:0.##}, hint/summary/muted/info={leaveHintForeground}/{summaryForeground}/{mutedForeground}/{infoForeground}; filter summary duplicated={activeFilterSummaryWasDuplicated}");
++        output.WriteLine($"{theme} Task queue metadata={summaryHeight:0.##} DIP below primary row={primaryRowHeight:0.##} DIP; expanded primary row={primaryRowHeightAfterExpansion:0.##}; retry={retryHeight:0.##}->{retryAfterExpansion:0.##}; view configuration={configurationRowHeight:0.##}->{configurationRowHeightAfterExpansion:0.##}; reset={resetHeight:0.##}->{resetAfterExpansion:0.##}, centerΔ={retryCenterDelta:0.##}/{resetCenterDelta:0.##}; configParent={resetBelongsToConfigurationRow}, disclosureExpanded={configurationDisclosureExpanded}; hint/summary/muted/info={leaveHintForeground}/{summaryForeground}/{mutedForeground}/{infoForeground}; filter summary duplicated={activeFilterSummaryWasDuplicated}");
+         Assert.Null(exception);
+         Assert.True(summaryHeight > 0);
+         Assert.InRange(primaryRowHeight, 28, 44);
+         Assert.InRange(retryHeight, 28, 40);
++        Assert.True(resetBelongsToConfigurationRow, "the reset action stays in the secondary view-configuration row");
++        Assert.True(configurationRowHeight > 0, "the task view configuration row is available when its filters disclosure is open");
+         Assert.InRange(resetHeight, 32, 40);
+         Assert.InRange(retryCenterDelta, 0, 1);
+         Assert.InRange(resetCenterDelta, 0, 1);
+         Assert.InRange(Math.Abs(primaryRowHeightAfterExpansion - primaryRowHeight), 0, 0.5);
++        Assert.InRange(Math.Abs(configurationRowHeightAfterExpansion - configurationRowHeight), 0, 0.5);
+         Assert.InRange(Math.Abs(retryAfterExpansion - retryHeight), 0, 0.5);
+         Assert.InRange(Math.Abs(resetAfterExpansion - resetHeight), 0, 0.5);
+         Assert.False(activeFilterSummaryWasDuplicated, "the selected filter is already visible in the filter controls or compact disclosure header");

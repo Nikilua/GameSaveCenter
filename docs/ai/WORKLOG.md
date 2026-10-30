@@ -1,3 +1,9 @@
+## 2026-10-30 Round5 U00-07/U06-04 任务页工具栏层级
+
+生产提交 `d7c4bd5e3fc2ca83d0393ea51fc7f911cb80100f` 把“查看任务详情”移入队列主操作行，列显隐与布局重置移入已有筛选/视图配置展开区；命令、Binding、取消/重试语义、UIA、滚动条和游戏选框保留。回归修复 `7bc6ab38fa661c11a34086548797f78e02deff43` 只更新迁移后过期的重置按钮祖先断言。双主题、1040×700 DIP同数据前后图和差异见Round5 `evidence/U00-07-U06-04-task-toolbar-20261030/`。
+
+`7bc6ab38` 精确源五类隔离测试101通过、0失败、11条既有“今日工作台”skip；Source Validation通过；`d7c4bd5e` 生产UI Render QA 394图/0 PROBLEM，WPF静态10 XAML/0 error/23条warning均在其它视图。一次合并进程失败已留TRX，五类隔离重跑全部通过。run `41017807712` 对 `d7c4bd5e` 因旧布局断言失败；修复提交run `41022318628` 已completed/success：baseline job `123952247920` 15步完成、SDK10.0.401 job `123952248319` 8步完成。windows-preview artifact `12965495875`（90,790,262 bytes，`sha256:3c11e22d03e96cf4a41dbdb31eda1a9a53c1939219b38e4e1a75bd6125496b2d`）；baseline diagnostics `12965211616`（2,028,205 bytes，`sha256:53e2ee3a0527c220da41c6a9658aa5a7f8fa09e0f49665fbc6b17538df547755`）；SDK10 diagnostics `12963550503`（969,192 bytes，`sha256:d8712dd12eef90c147c02bb376ca872a8bdda950d93d773f5043084deb0e0b7b`）。required-check权限沿用既有403，不重探；Demo缺失，真实Playnite/外部UIA/实体输入/物理DPI待验。真实恢复、媒体删除和云写入未运行。媒体页1040×700仍有页面滚动溢出，留给下一独立P1批次。
+
 ## 2026-10-30 U09-04 U00来源重建补测
 
 从U00历史提交`90bf040567f013f3a8d9ed8667028a4edb2ec524`重建隔离快照，以SDK8.0.423、固定UTC、70周期、297动作、30秒settle比较冻结候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`。U00探针将FakeDashboardData中45处`DateTime.UtcNow`仅在临时副本替换为固定假时钟。两侧对应Release探针构建均0 warning/0 error，各固定周期及动作采样exit0。主题应用p95 448.77→325.97ms、>300ms由133/210降至21/210；布局p95 87.52→97.49ms，两侧>300ms均为0；活动期AppDomain托管分配均值减少20.15%。任务DataGrid滚动两组单轮10样本p95均由约29.4–29.7ms增至37.7–38.2ms，分配也增加；显式`UpdateLayout()`使其仅为逻辑代理。TaskGrid/共享DataGrid模板保持相同，但共享行选中边框token及任务页代码有其它变化，根因未证实。未改生产/测试源；不运行本批无关安装链。证据、分析脚本、日志、原始CSV及SHA位于Round5 `evidence/U09-04-correlation-20261030/u00-reconstructed-20261030/`。清理本阶段自有`.tmp`共13,293文件/860,449,585 bytes，C盘空闲增加888,344,576 bytes；WMI进程命令行查询被拒绝，清理后进程名复查为0，边界和局限见`cleanup.json`。U09-04保持进行中，需窄化滚动探针；状态7/71/1/1。

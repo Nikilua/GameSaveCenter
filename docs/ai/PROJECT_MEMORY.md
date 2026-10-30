@@ -1,3 +1,7 @@
+## 2026-10-30 Round5 U00-07/U06-04 任务页工具栏批次
+
+`d7c4bd5e`将任务详情入口并入队列主操作行，低频列显隐/布局重置移入已有展开区；`7bc6ab38`修正迁移后的布局测试祖先断言，生产XAML未变。精确源隔离测试101/101通过、0失败、11既有skip；Render QA `d7c4bd5e` 394图/0 PROBLEM，Source Validation通过，WPF静态0 error。`41017807712`旧断言失败已由`7bc6ab38`修复；修复提交run `41022318628` 已completed/success：baseline job `123952247920`和SDK10.0.401 job `123952248319`均全部步骤完成。Preview artifact `12965495875`与两份diagnostics artifact `12965211616`、`12963550503`及digest见对应Round5 `ci.json`。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U00-07-U06-04-task-toolbar-20261030/`。required-check读取仍沿用既有403，不重复探测；Demo、Playnite宿主、外部UIA、实体输入/IME、物理DPI仍待验。完成CI/进度与清理记录后，继续处理媒体页1040×700页面滚动挤压这一独立P1候选。
+
 ## 2026-10-30 U09-04 U00固定协议重建
 
 U00源码提交`90bf040567f013f3a8d9ed8667028a4edb2ec524`已从Git快照重建固定周期对照；与候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`均用SDK8.0.423、固定假时钟和相同探针。主题p95与活动期AppDomain托管分配下降，内容布局旧>300ms样本未复现；任务DataGrid内部滚动在两组单轮10样本动作中p95及分配偏高。动作包含强制`UpdateLayout()`；不据此归因到共享行样式或任务详情动效。原始U00帧/分配文件和Playnite/物理输入/IME/呈现帧仍缺，U09-04保持进行中。下一步先用更窄且重复的Task滚动探针确认信号，再决定是否修改生产源。生产与测试源码此次未改。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-correlation-20261030/u00-reconstructed-20261030/BASELINE.md`。
