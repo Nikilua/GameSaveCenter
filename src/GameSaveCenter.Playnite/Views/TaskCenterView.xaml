@@ -227,6 +227,8 @@
                     <ui:Button x:Name="TaskViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" ToolTip="删除已保存的任务表格视图并恢复默认布局" AutomationProperties.Name="删除任务表格视图"/>
                     <TextBlock x:Name="TaskViewConfigurationDirtyStatusText" Text="" Style="{DynamicResource GscCaptionStyle}" Visibility="Collapsed" Focusable="False" IsHitTestVisible="False" AutomationProperties.Name="任务视图保存状态"/>
                     <ui:Button x:Name="TaskViewConfigurationRestoreButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="恢复已保存" ToolTip="放弃临时视图改动并恢复已保存排列；不更改业务配置" AutomationProperties.Name="恢复已保存任务视图" IsEnabled="False" Visibility="Collapsed"/>
+                    <ui:Button x:Name="TaskGridColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择任务表格显示的列；时间、任务和状态始终显示。" AutomationProperties.Name="设置任务列表显示列" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                    <ui:Button x:Name="TaskQueueResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置布局" ToolTip="先预览范围，再选择只重置任务表格或全部工作视图" AutomationProperties.Name="预览任务表格布局重置范围" Margin="10,0,0,0" VerticalAlignment="Center"/>
                 </WrapPanel>
                 <Border x:Name="TaskNavigationSourceBanner" Grid.Row="3" Grid.ColumnSpan="6" Margin="0,8,0,0">
                     <Border.Style>
@@ -303,7 +305,7 @@
                     <Grid.RowDefinitions><RowDefinition x:Name="TaskQueuePrimaryHeaderRow" Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="任务队列" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
-                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <StackPanel x:Name="TaskQueuePrimaryActionsPanel" Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <ui:Button Style="{DynamicResource GscWpfUiSecondaryButton}" Command="{Binding OpenWorklistBrowserCommand}" Content="人工待办" ToolTip="浏览和整理跨页面保存的人工待办；不会改变源对象" AutomationProperties.Name="打开人工待办清单" Margin="0,0,10,0" VerticalAlignment="Center"/>
                         <ui:Button x:Name="TaskQueueRetryAllButton" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding RetryAllTasksCommand}" Content="重试可恢复" ToolTip="只处理当前已加载且符合筛选的记录；按游戏和任务类型各重试一次" AutomationProperties.Name="批量重试当前结果中的可恢复任务" Margin="0,0,10,0" VerticalAlignment="Center"/>
                         <ui:Button Command="{Binding LoadMoreTasksCommand}" Content="加载更多" ToolTip="按稳定游标继续加载历史任务" VerticalAlignment="Center">
@@ -314,14 +316,12 @@
                                 </Style>
                             </ui:Button.Style>
                         </ui:Button>
-                        <ui:Button x:Name="TaskGridColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择任务表格显示的列；时间、任务和状态始终显示。" AutomationProperties.Name="设置任务列表显示列" Margin="8,0,0,0" VerticalAlignment="Center"/>
-                        <ui:Button x:Name="TaskQueueResetColumnWidthButton" Style="{DynamicResource GscWpfUiActionButton}" Content="重置…" ToolTip="先预览范围，再选择只重置任务表格或全部工作视图" AutomationProperties.Name="预览任务表格布局重置范围" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        <ui:Button x:Name="TaskCompactDetailsButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="查看任务详情 ›" Visibility="Collapsed" Click="OnTaskCompactDetailsClick" ToolTip="查看或收起所选任务详情" AutomationProperties.Name="查看或收起所选任务详情" AutomationProperties.HelpText="打开或收起当前选择的任务详情；不更改任务状态。" Margin="12,0,0,0"/>
                     </StackPanel>
                     <Grid x:Name="TaskQueueSummaryGrid" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,4,0,0">
                         <Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                         <TextBlock x:Name="TaskQueueLoadedSummaryText" Grid.Column="0" Text="{Binding TaskLoadedSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskLoadedSummary}" VerticalAlignment="Center"/>
                         <TextBlock x:Name="TaskQueueLastUpdatedSummary" Grid.Column="1" Text="{Binding TaskPageStatusSummary}" Style="{DynamicResource GscCaptionStyle}" Foreground="{DynamicResource GscMutedTextBrush}" Margin="12,0,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding TaskPageStatusSummaryFullDisplay, Mode=OneWay}" VerticalAlignment="Center"/>
-                        <ui:Button x:Name="TaskCompactDetailsButton" Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Content="查看任务详情 ›" Visibility="Collapsed" Click="OnTaskCompactDetailsClick" AutomationProperties.Name="查看或收起所选任务详情" Margin="12,0,0,0"/>
                     </Grid>
                 </Grid>
                 <Border x:Name="TaskStaleDataBanner" Grid.Row="1" Padding="10,7" Margin="0,0,0,8">

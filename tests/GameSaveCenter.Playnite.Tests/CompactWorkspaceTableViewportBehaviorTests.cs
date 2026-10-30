@@ -594,11 +594,21 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var taskPage = GetField<ScrollViewer>(taskType, taskView, "TaskPageScrollViewer");
             var taskFrame = GetField<Border>(taskType, taskView, "TaskTableFrame");
             var taskDetailsButton = GetField<Button>(taskType, taskView, "TaskCompactDetailsButton");
+            var taskPrimaryActions = GetField<StackPanel>(taskType, taskView, "TaskQueuePrimaryActionsPanel");
+            var taskColumnVisibilityButton = GetField<Button>(taskType, taskView, "TaskGridColumnVisibilityButton");
+            var taskResetLayoutButton = GetField<Button>(taskType, taskView, "TaskQueueResetColumnWidthButton");
             var taskMoreFilters = GetField<Expander>(taskType, taskView, "TaskMoreFiltersExpander");
             var taskMoreFiltersHost = GetField<Grid>(taskType, taskView, "TaskMoreFiltersHost");
             var taskSummary = GetField<Border>(taskType, taskView, "TaskSummaryPanel");
             var taskFilterPresetRow = GetField<WrapPanel>(taskType, taskView, "TaskFilterPresetRow");
             var taskViewConfigurationRow = GetField<WrapPanel>(taskType, taskView, "TaskViewConfigurationRow");
+            Assert.Same(taskPrimaryActions, taskDetailsButton.Parent);
+            Assert.Same(taskViewConfigurationRow, taskColumnVisibilityButton.Parent);
+            Assert.Same(taskViewConfigurationRow, taskResetLayoutButton.Parent);
+            Assert.Equal("重置布局", taskResetLayoutButton.Content);
+            Assert.Equal("预览任务表格布局重置范围", AutomationProperties.GetName(taskResetLayoutButton));
+            Assert.Equal("查看或收起所选任务详情", AutomationProperties.GetName(taskDetailsButton));
+            Assert.Contains("不更改任务状态", AutomationProperties.GetHelpText(taskDetailsButton));
             Assert.True(taskGrid.ActualHeight + 1 >= taskGrid.MinHeight,
                 $"Task grid must retain four readable rows at {width}x{height} DIP: grid={taskGrid.ActualHeight:0.0}, minimum={taskGrid.MinHeight:0.0}.");
             Assert.False(taskMoreFilters.IsExpanded);
@@ -899,8 +909,15 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
 
     private static void AssertPageCanReachEnd(ScrollViewer page)
     {
-        Assert.True(page.ScrollableHeight > 0,
-            $"Expected the page scroller to include its lower content: extent={page.ExtentHeight:0.0}, viewport={page.ViewportHeight:0.0}.");
+        if (page.ScrollableHeight <= 1.5)
+        {
+            // A tighter toolbar can make the complete page fit in the viewport. In
+            // that case, prove there is no hidden page content instead of requiring
+            // an unnecessary scroll bar; pages that overflow still test ScrollToEnd.
+            AssertPageFitsViewport(page);
+            return;
+        }
+
         page.ScrollToEnd();
         page.UpdateLayout();
         Assert.True(page.VerticalOffset >= page.ScrollableHeight - 1,
