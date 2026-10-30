@@ -1,0 +1,25 @@
+GameSaveCenter production workspace state fixtures
+Generated: 2026-10-30 13:31:25
+States: Ready, Empty, Loading, Error, Stale, Offline
+Pages: SaveHistory, MediaInbox, MediaDetails, MaintenanceAudit
+  SaveHistory fixture state=Ready theme=Light size=1040x700: target=728x515, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-light-1040x700-Ready.png: 728x515 DIP, 76535 bytes
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  SaveHistory fixture state=Ready theme=Dark size=1040x700: target=728x515, dataSurface=SaveHistoryGrid=725x274, presenters=1, visiblePresenters=0, staleBanners=0, actionItems=3
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  save-history-dark-1040x700-Ready.png: 728x515 DIP, 81340 bytes
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+  SaveHistory fixture data state=Ready: rows=12, emptyText=Collapsed, staleVisible=False, historyOverlay=False
+  SaveHistory long-text contract: selected=2, noteChars=113, noteTrimming=CharacterEllipsis, noteTooltip=True
+statefixtures OK

@@ -1,0 +1,38 @@
+{
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "capture": "Offscreen RenderHarness; window size in DIPs; bitmap pixel dimensions recorded separately",
+  "before": [
+    {
+      "theme": "light",
+      "path": "../U00-04-05/save-history-light-1040x700-Ready.png",
+      "bitmapPixels": "728x566",
+      "sha256": "46d881d7dbff7d41030e2015b75b24cb6981f4572f2d3022c713c7b50ca169cc"
+    },
+    {
+      "theme": "dark",
+      "path": "../U00-04-05/save-history-dark-1040x700-Ready.png",
+      "bitmapPixels": "728x566",
+      "sha256": "f1df932e850122bb5f8f472c8ba2d6ba32c4d0127e38cfea40cc7cc06e67a2d7"
+    }
+  ],
+  "after": [
+    {
+      "theme": "light",
+      "state": "Ready",
+      "parentWindowDips": "1040x700",
+      "bitmapPixels": "728x516",
+      "sampleUtc": "2026-10-28T09:00:00Z",
+      "source": "statefixtures/save-history-light-1040x700-Ready.png",
+      "sha256": "a217172a0b466c5cf143390d7308fe00475ee5d0510ca40bc57504aa02646fcf"
+    },
+    {
+      "theme": "dark",
+      "state": "Ready",
+      "parentWindowDips": "1040x700",
+      "bitmapPixels": "728x516",
+      "sampleUtc": "2026-10-28T09:00:00Z",
+      "source": "statefixtures/save-history-dark-1040x700-Ready.png",
+      "sha256": "d7acb4c8fe4c7f38cee7e2f1a35e9e56d5a4e7db711e02aa194f97ef8a712106"
+    }
+  ]
+}

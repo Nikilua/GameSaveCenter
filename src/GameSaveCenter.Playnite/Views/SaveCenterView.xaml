@@ -203,14 +203,18 @@
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更早版本" Command="{Binding LoadMoreBackupHistoryCommand}" Margin="0,0,8,0" ToolTip="按创建时间继续载入下一段历史；已选版本会保持不变。" AutomationProperties.Name="加载更早的备份历史" AutomationProperties.HelpText="{Binding BackupHistoryRangeSummary, Mode=OneWay}"/>
                                         <ui:Button x:Name="SaveHistoryColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择存档历史表格显示的列；时间、类型和状态始终显示。" AutomationProperties.Name="设置存档历史表格显示列"/>
                                         <ComboBox x:Name="SaveHistoryViewConfigurationComboBox" Width="132" Style="{DynamicResource GscWpfUiFilterComboBox}" ToolTip="选择默认或已保存的存档历史表格布局" AutomationProperties.Name="存档历史表格视图"/>
-                                        <TextBox x:Name="SaveHistoryViewConfigurationNameBox" Width="110" MaxLength="48" Style="{DynamicResource GscWpfUiTextBox}" ToolTip="输入视图名称，最多 48 个字符" AutomationProperties.Name="存档历史视图名称"/>
-                                        <ui:Button x:Name="SaveHistoryViewConfigurationSaveButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="保存当前" AutomationProperties.Name="保存当前存档历史视图"/>
-                                        <ui:Button x:Name="SaveHistoryViewConfigurationCopyButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="另存副本" AutomationProperties.Name="另存存档历史视图副本"/>
-                                        <ui:Button x:Name="SaveHistoryViewConfigurationRenameButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重命名" AutomationProperties.Name="重命名存档历史视图"/>
-                                        <ui:Button x:Name="SaveHistoryViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" AutomationProperties.Name="删除存档历史视图"/>
-                                        <TextBlock x:Name="SaveHistoryViewConfigurationDirtyStatusText" Text="" Style="{DynamicResource GscCaptionStyle}" Visibility="Collapsed" Focusable="False" IsHitTestVisible="False" AutomationProperties.Name="存档历史视图保存状态"/>
-                                        <ui:Button x:Name="SaveHistoryViewConfigurationRestoreButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="恢复已保存" ToolTip="放弃临时视图改动并恢复已保存排列；不更改业务配置" AutomationProperties.Name="恢复已保存存档历史视图" IsEnabled="False" Visibility="Collapsed"/>
-                                        <ui:Button x:Name="SaveHistoryViewConfigurationResetButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重置…" ToolTip="先预览范围，再选择只重置存档历史或全部工作视图" AutomationProperties.Name="预览存档历史布局重置范围"/>
+                                        <Expander x:Name="SaveHistoryViewConfigurationExpander" Style="{StaticResource GscDisclosureCard}" Header="管理视图" IsExpanded="False" MaxWidth="{Binding ActualWidth, ElementName=SaveHistoryTableFrame}" AutomationProperties.Name="存档历史视图管理" AutomationProperties.HelpText="展开后可保存、复制、重命名或删除表格视图；不更改存档数据。">
+                                            <WrapPanel Margin="0,4,0,0" VerticalAlignment="Center">
+                                                <TextBox x:Name="SaveHistoryViewConfigurationNameBox" Width="110" MaxLength="48" Style="{DynamicResource GscWpfUiTextBox}" ToolTip="输入视图名称，最多 48 个字符" AutomationProperties.Name="存档历史视图名称" Margin="0,0,8,4"/>
+                                                <ui:Button x:Name="SaveHistoryViewConfigurationSaveButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="保存当前" AutomationProperties.Name="保存当前存档历史视图" Margin="0,0,8,4"/>
+                                                <ui:Button x:Name="SaveHistoryViewConfigurationCopyButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="另存副本" AutomationProperties.Name="另存存档历史视图副本" Margin="0,0,8,4"/>
+                                                <ui:Button x:Name="SaveHistoryViewConfigurationRenameButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重命名" AutomationProperties.Name="重命名存档历史视图" Margin="0,0,8,4"/>
+                                                <ui:Button x:Name="SaveHistoryViewConfigurationDeleteButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="删除" AutomationProperties.Name="删除存档历史视图" Margin="0,0,8,4"/>
+                                                <TextBlock x:Name="SaveHistoryViewConfigurationDirtyStatusText" Text="" Style="{DynamicResource GscCaptionStyle}" Visibility="Collapsed" Focusable="False" IsHitTestVisible="False" AutomationProperties.Name="存档历史视图保存状态"/>
+                                                <ui:Button x:Name="SaveHistoryViewConfigurationRestoreButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="恢复已保存" ToolTip="放弃临时视图改动并恢复已保存排列；不更改业务配置" AutomationProperties.Name="恢复已保存存档历史视图" IsEnabled="False" Visibility="Collapsed" Margin="0,0,8,4"/>
+                                                <ui:Button x:Name="SaveHistoryViewConfigurationResetButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重置…" ToolTip="先预览范围，再选择只重置存档历史或全部工作视图" AutomationProperties.Name="预览存档历史布局重置范围" Margin="0,0,8,4"/>
+                                            </WrapPanel>
+                                        </Expander>
                                     </WrapPanel>
                                 </Grid>
                             </Border>
@@ -229,12 +233,12 @@
                                 <DataGridTextColumn x:Name="SaveHistoryFileCountColumn" Header="文件数" infra:DataGridColumnHeaderHelpBehavior.Description="文件数量；单位为个。" Binding="{Binding FileCount, Mode=OneWay}" Width="82" MinWidth="56"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveCountValue}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 <DataGridTextColumn x:Name="SaveHistorySizeColumn" Header="大小" infra:DataGridColumnHeaderHelpBehavior.Description="总大小；按 1024 进制显示 B、KiB、MiB 或 GiB。" Binding="{Binding SizeDisplay, Mode=OneWay}" Width="116" MinWidth="78"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveSizeValue}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
                                 <DataGridTextColumn x:Name="SaveHistoryDeviceColumn" Header="设备" Binding="{Binding SourceDisplay, Mode=OneWay}" Width="120" MinWidth="110"><DataGridTextColumn.ElementStyle><Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/></DataGridTextColumn.ElementStyle></DataGridTextColumn>
-                                <DataGridTextColumn x:Name="SaveHistoryNoteColumn" Header="备注" Binding="{Binding Comment, Mode=OneWay}" Width="*" MinWidth="116">
+                                <DataGridTextColumn x:Name="SaveHistoryNoteColumn" HeaderStyle="{StaticResource SaveLastHeader}" Header="备注" Binding="{Binding Comment, Mode=OneWay}" Width="*" MinWidth="116">
                                     <DataGridTextColumn.ElementStyle>
                                         <Style TargetType="TextBlock" BasedOn="{StaticResource SaveLongText}"/>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTemplateColumn x:Name="SaveHistoryStateColumn" HeaderStyle="{StaticResource SaveLastHeader}" Header="状态" infra:DataGridColumnHeaderHelpBehavior.Description="锁定状态与恢复可用性；未验证不表示安全。" Width="106" MinWidth="96">
+                                <DataGridTemplateColumn x:Name="SaveHistoryStateColumn" Header="状态" infra:DataGridColumnHeaderHelpBehavior.Description="锁定状态与恢复可用性；未验证不表示安全。" Width="106" MinWidth="96">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Border BorderThickness="{StaticResource GscHairlineThickness}">

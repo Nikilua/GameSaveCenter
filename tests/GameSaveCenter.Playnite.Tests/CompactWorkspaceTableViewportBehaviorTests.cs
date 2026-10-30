@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -17,6 +18,66 @@ namespace GameSaveCenter.Playnite.Tests;
 [Collection("R09FocusWpf")]
 public sealed class CompactWorkspaceTableViewportBehaviorTests
 {
+    [Fact]
+    public void SaveHistoryKeepsRequiredStatusVisibleAndViewManagementExpandable()
+    {
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new SaveCenterView();
+                var type = typeof(SaveCenterView);
+                var grid = GetField<DataGrid>(type, view, "SaveHistoryGrid");
+                grid.ItemsSource = CreateRows();
+                var host = MeasureInHost(view, 744, 460);
+                window = new Window { Content = host, Width = 744, Height = 460, WindowStyle = WindowStyle.None, ShowActivated = false, ShowInTaskbar = false, Opacity = 0.01 };
+                window.Show();
+                view.ApplyResponsiveLayout(744, 460);
+                FlushWindowLayout(window);
+
+                var time = GetField<DataGridColumn>(type, view, "SaveHistoryTimeColumn");
+                var backupType = GetField<DataGridColumn>(type, view, "SaveHistoryTypeColumn");
+                var state = GetField<DataGridColumn>(type, view, "SaveHistoryStateColumn");
+                Assert.Equal(new[] { 0, 1, 2 }, new[] { time.DisplayIndex, backupType.DisplayIndex, state.DisplayIndex });
+                var requiredWidth = time.ActualWidth + backupType.ActualWidth + state.ActualWidth;
+                Assert.True(requiredWidth <= grid.ActualWidth + 1,
+                    $"The time, type, and required restore-state columns must fit in the first viewport: required={requiredWidth:0.0}, grid={grid.ActualWidth:0.0}.");
+
+                var viewEditor = GetField<Expander>(type, view, "SaveHistoryViewConfigurationExpander");
+                var viewName = GetField<TextBox>(type, view, "SaveHistoryViewConfigurationNameBox");
+                Assert.Equal("存档历史视图管理", AutomationProperties.GetName(viewEditor));
+                Assert.False(viewEditor.IsExpanded);
+                Assert.False(viewName.IsVisible);
+
+                viewEditor.IsExpanded = true;
+                FlushWindowLayout(window);
+                Assert.True(viewName.IsVisible,
+                    $"Expanded view management must expose its name field: expanded={viewEditor.IsExpanded}, editorVisibility={viewEditor.Visibility}, editorVisible={viewEditor.IsVisible}, nameVisibility={viewName.Visibility}, nameVisible={viewName.IsVisible}, nameWidth={viewName.ActualWidth:0.0}.");
+                foreach (var actionName in new[]
+                {
+                    "SaveHistoryViewConfigurationSaveButton",
+                    "SaveHistoryViewConfigurationCopyButton",
+                    "SaveHistoryViewConfigurationRenameButton",
+                    "SaveHistoryViewConfigurationDeleteButton",
+                    "SaveHistoryViewConfigurationResetButton"
+                })
+                {
+                    var action = GetField<FrameworkElement>(type, view, actionName);
+                    Assert.True(action.IsVisible, $"Expanded view management must expose {actionName}.");
+                }
+
+                viewEditor.IsExpanded = false;
+                FlushWindowLayout(window);
+                Assert.False(viewName.IsVisible);
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+    }
+
     [Fact]
     public void WideWorkspacesKeepNestedScrollbarsWithinTheirSurfaces()
     {

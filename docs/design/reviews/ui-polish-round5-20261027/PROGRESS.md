@@ -1,3 +1,11 @@
+## 2026-10-30 U00-03/04与U06-04/07存档页工具栏整理
+
+保留主扫描、预览、校验、重载、筛选和列设置操作；把低频视图名称/保存/复制/改名/删除/重置收进默认折叠的既有`GscDisclosureCard`。存档历史状态列默认紧跟时间和类型，1040×700 DIP首屏可读恢复可用性；没有触碰游戏选框、滚动条或业务安全语义。浅/深主题同数据前后图、源码差异和日志见[本批证据](evidence/U00-03-04-U06-04-07-20261030/BASELINE.md)。
+
+SDK8.0.423 Release的`CompactWorkspaceTableViewportBehaviorTests`为14/14、0 skip；`scripts/build.cmd`编译8项目、0警告/0错误；源码检查通过。10个生产View XAML静态检查0错误，23条既有提示均在其他视图。固定UTC双主题Render QA为334图/0 PROBLEM；隔离状态夹具生成216图，归档两张代表图。首次仅测量宿主导致1条可见性断言失败，改为Window宿主后单测与整类均通过，原始TRX和原因保留。
+
+U00-03、U00-04、U06-04、U06-07仍为“代码完成待验收”；Demo源码、真实Playnite、外部UIA、实体输入/IME及物理DPI仍未验。80项计数保持7项已满足、71项代码完成待验收、1项进行中（U09-04）、1项远端待验（U09-06）。源码提交SHA和精确SHA CI结论将在提交后追加；本批未执行恢复、媒体删除或云端写入。
+
 ## 2026-10-30 U09-04 重建U00基线与任务页滚动复测
 
 从U00源码提交`90bf040567f013f3a8d9ed8667028a4edb2ec524`隔离重建固定周期RenderHarness，与冻结候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`使用SDK8.0.423、固定UTC、70周期/297动作、30秒settle及同尺寸双主题。U00补丁只把45处FakeDashboardData `DateTime.UtcNow`替换为固定假时钟，并加入相同诊断仪表；没有修改生产源码。两侧对应RenderHarness编译均exit0、0 warning/0 error，所有固定周期与动作运行exit0。

@@ -33,6 +33,7 @@ namespace GameSaveCenter.Playnite.Views
         public SaveCenterView()
         {
             InitializeComponent();
+            SaveHistoryStateColumn.DisplayIndex = 2;
             historyActionRowGap = new WrapPanelRowGapController(SaveHistorySummaryActions);
             historyActionRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap);
             SaveHistoryActionsScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;

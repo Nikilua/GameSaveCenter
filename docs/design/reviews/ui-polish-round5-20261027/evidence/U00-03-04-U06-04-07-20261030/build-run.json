@@ -1,0 +1,135 @@
+{
+  "parentCommit": "4f3f82d31cfb9c1208adb5b8841db45afbbae34b",
+  "sourceDiffSha256": "f16f1102084cc576206c6ecdf93a10c5d4a14a4158be7b5e4f8ffdb7dff67623",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "commands": [
+    {
+      "command": "scripts/build.cmd -Configuration Release -OutputRoot [stage-output]/build-output -TestTempRoot [stage-output]/test-temp -DiagnosticsRoot [stage-output]/diagnostics -SkipTests",
+      "exitCode": 0,
+      "result": "8 projects compiled, 0 warnings, 0 errors; tests skipped for this compile pass"
+    },
+    {
+      "command": "dotnet test GameSaveCenter.Playnite.Tests.csproj -c Release --no-build --no-restore --filter FullyQualifiedName~CompactWorkspaceTableViewportBehaviorTests -- RunConfiguration.DisableAppDomain=true",
+      "exitCode": 0,
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "trx": "tests/compact-workspace-final.trx"
+    },
+    {
+      "command": "scripts/validate-source.py",
+      "exitCode": 0
+    },
+    {
+      "command": "validate_wpf_ui.py src/GameSaveCenter.Playnite/Views",
+      "exitCode": 0,
+      "scanned": 10,
+      "errors": 0,
+      "warnings": 23,
+      "info": 4,
+      "changedViewWarnings": 0
+    },
+    {
+      "command": "scripts/render-qa.ps1 -Configuration Release -SampleUtc 2026-10-28T09:00:00Z",
+      "exitCode": 0,
+      "pngCount": 334,
+      "problemCount": 0,
+      "report": "render-qa-report.txt",
+      "reportCommit": "4f3f82d31cfb9c1208adb5b8841db45afbbae34b",
+      "workingTreeCleanAtCapture": false
+    },
+    {
+      "command": "RenderHarness.exe statefixtures",
+      "exitCode": 0,
+      "pngCount": 216,
+      "summary": "statefixtures-summary.txt"
+    }
+  ],
+  "initialFailure": {
+    "total": 14,
+    "passed": 13,
+    "failed": 1,
+    "skipped": 0,
+    "cause": "WPF view was only measured and not attached to a PresentationSource; visibility assertion lacked a real Window host. Test was changed to host the view in a low-opacity Window and flush layout; rerun class then passed 14/14.",
+    "trx": "tests/initial-measure-only-host-failure.trx"
+  },
+  "files": [
+    {
+      "path": "after-save-history-dark-1040x700-Ready.png",
+      "bytes": 81340,
+      "sha256": "d7acb4c8fe4c7f38cee7e2f1a35e9e56d5a4e7db711e02aa194f97ef8a712106"
+    },
+    {
+      "path": "after-save-history-light-1040x700-Ready.png",
+      "bytes": 76535,
+      "sha256": "a217172a0b466c5cf143390d7308fe00475ee5d0510ca40bc57504aa02646fcf"
+    },
+    {
+      "path": "BASELINE.md",
+      "bytes": 3685,
+      "sha256": "8a1e0799bd47c1d5fcfa5411e1908cba303cc2a30bd3ac9f4f0df66c8bc23433"
+    },
+    {
+      "path": "build-compile.log",
+      "bytes": 3477,
+      "sha256": "bf540d8279cf1e59c9b80a1f599f5ae2be04c1e54e1aa4c653e5e04845554cb2"
+    },
+    {
+      "path": "compact-workspace-test.log",
+      "bytes": 3086,
+      "sha256": "73833d9539e32fdb20e2b5ef0c5506ce69fd75a2f36bf62780b9fc6c815546cd"
+    },
+    {
+      "path": "render-qa-report.txt",
+      "bytes": 1143188,
+      "sha256": "cbf3f5b9ad44211b19ebd0d0da1e2c69b27a7bf88e853c3b2bd617e4608cf483"
+    },
+    {
+      "path": "render-qa.log",
+      "bytes": 2108,
+      "sha256": "1474bbdf10e9b1659bab69727eca5a1d7942d2d48e176830af2214e5b89b3956"
+    },
+    {
+      "path": "screenshots.json",
+      "bytes": 1316,
+      "sha256": "70450a3b15af31a497c35b39391f7af11593078c5f3d00d43ed1889baba59c1b"
+    },
+    {
+      "path": "source-diff.patch",
+      "bytes": 14204,
+      "sha256": "1c3ef69954b0660c36278bb6e83fe9f3ee6cf4d94c43a146ca5ceb0d94a649da"
+    },
+    {
+      "path": "source-validation.log",
+      "bytes": 360,
+      "sha256": "f6c3f017fcae7344cee0ec9158036b5b6b8ffa344a7423b2872aeaa076c53b62"
+    },
+    {
+      "path": "statefixtures-summary.txt",
+      "bytes": 2495,
+      "sha256": "5f2fc56608b9edbefc8a1c215fdef8d94538b44d07c93400e446435c1dbb4b7c"
+    },
+    {
+      "path": "wpf-static-views.log",
+      "bytes": 3188,
+      "sha256": "34a24cfeed952a7e5c6360db045b3882d22d6dd3d881855894ea8d46f68359ea"
+    },
+    {
+      "path": "tests/compact-workspace-final.trx",
+      "bytes": 22834,
+      "sha256": "b500724cb842308e4c935ec22a338dbaddf2e4911fba4a40d597ed18b192959d"
+    },
+    {
+      "path": "tests/Failure-analysis.md",
+      "bytes": 572,
+      "sha256": "f34a6ff1f43fa49846d48b0b3db9f9da053ecd8cf5ef7a1adfd34d194c911fbe"
+    },
+    {
+      "path": "tests/initial-measure-only-host-failure.trx",
+      "bytes": 29598,
+      "sha256": "fc935ac07a3071e998ba2f622c3db656d1f2f82c8e6ee2968ad94b724e403864"
+    }
+  ]
+}
