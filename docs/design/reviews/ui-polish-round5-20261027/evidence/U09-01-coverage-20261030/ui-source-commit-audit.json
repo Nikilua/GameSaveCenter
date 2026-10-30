@@ -1,0 +1,373 @@
+{
+  "baselineSourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "frozenCandidateCommit": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+  "currentDocumentationHeadBeforeThisAudit": "f6836930fc67f32a691e9ac26966ca55d80c0062",
+  "sourceAndTestsMatchFrozenCandidate": true,
+  "demoDesignShellAvailableInCurrentCheckout": false,
+  "uiSourceCommitCountBetweenBaselineAndCandidate": 37,
+  "uiSourceCommits": [
+    {
+      "sha": "388c46ea620738f05c127633e4e3b1b7f859a2b9",
+      "subject": "调整页签选中条位置，保留禁用和紧凑布局",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/Redesign.xaml"
+      ]
+    },
+    {
+      "sha": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+      "subject": "合并主题资源更新，减少重复刷新",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Infrastructure/AdaptiveThemePalette.cs"
+      ]
+    },
+    {
+      "sha": "b02ea74dc211f16a01ec7897880b530a0d99a9fd",
+      "subject": "修正禁用输入框的原生文字颜色",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml"
+      ]
+    },
+    {
+      "sha": "cd06253158c0e35d43de84e037548a764629749a",
+      "subject": "补齐通知来源展示与持久化",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml"
+      ]
+    },
+    {
+      "sha": "dcc288d66368b05884e47d57db0749a98ea17a36",
+      "subject": "收拢通知长标题显示",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/Redesign.xaml",
+        "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs",
+        "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml"
+      ]
+    },
+    {
+      "sha": "0aff7f32aab4fb31940fd791c1486c67d36ebdbd",
+      "subject": "补充任务重试恢复指引",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "17d883abd084e3a2a646c1879f45ecbacd6d9dee",
+      "subject": "统一工具空态并修正布局回归",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "d19570fad7f056e44b2f0d5aee2eca3260d04ae7",
+      "subject": "补齐工具启动状态与维护短窗行为",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "d4c4357c4e0c256b4fe0248d7efc25ce5badfd18",
+      "subject": "完善通知空态与筛选恢复",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml",
+        "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml.cs"
+      ]
+    },
+    {
+      "sha": "9181700f1bd72170bdff991b576c0966152b9890",
+      "subject": "完善工具与诊断提示并修正概览校验",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/MaintenanceView.xaml",
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "fd2d1316be9ff2d65b0851ac57c45e40064e50ac",
+      "subject": "明确概览状态与存档目标",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/OverviewView.xaml",
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "18481e6d8d3415ffc31362764980614e76445848",
+      "subject": "修复媒体占位文字并完善任务提示",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "c5b03e576edddfe7a5f06172e081407eb9a5ee62",
+      "subject": "补充巡检依赖与任务重试说明",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "a76de89f932cd10e912b478616524050ba868c79",
+      "subject": "完善通知详情与提示交互",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs",
+        "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml"
+      ]
+    },
+    {
+      "sha": "7c4d07753ec63b32964ebf3bb1f6b66ea7a8724f",
+      "subject": "改善编辑提示与必要列说明",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Infrastructure/DataGridColumnVisibilityController.cs",
+        "src/GameSaveCenter.Playnite/Infrastructure/GscToolTipBehavior.cs"
+      ]
+    },
+    {
+      "sha": "2aba614fddf3f57f632dfeeee134595965a6f313",
+      "subject": "整理确认对话框操作间距",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/DashboardView.xaml"
+      ]
+    },
+    {
+      "sha": "ac0afe7267d17333c5735bc69f7595ce2efc75e4",
+      "subject": "让候选路径表随窗口高度伸缩",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs"
+      ]
+    },
+    {
+      "sha": "5ee7be005452fdcfd08e103959f499a2d3d57190",
+      "subject": "补齐页面离开时的弹层和动画收尾",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs",
+        "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml.cs"
+      ]
+    },
+    {
+      "sha": "969bfc203dc66ec21fe1718b9eae5a7cdfd1fb7c",
+      "subject": "减少加载提示闪烁并验证进度布局稳定",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/Redesign.xaml"
+      ]
+    },
+    {
+      "sha": "bca60704cc9eaffdc78b1154e4dfe5873cef10b8",
+      "subject": "完善键盘说明弹层动效与焦点返回",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ]
+    },
+    {
+      "sha": "237e993f9e03541f5e8056c30cab8fdb029c0a77",
+      "subject": "补齐页面与任务详情轻量过渡",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Infrastructure/GscMotion.cs",
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs",
+        "src/GameSaveCenter.Playnite/Views/DashboardView.xaml.cs",
+        "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml.cs"
+      ]
+    },
+    {
+      "sha": "48f69413e137bd0b609c5db618914aaeb4690687",
+      "subject": "保持任务预设在响应布局切换时选中",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml.cs"
+      ]
+    },
+    {
+      "sha": "150ee893fd3a3b9108441798fe9763690c4c8170",
+      "subject": "修复筛选预设选中内容显示",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml"
+      ]
+    },
+    {
+      "sha": "c5c86558b6232995438657c00810aeb327ed9ba5",
+      "subject": "修复披露卡动画中断状态",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml"
+      ]
+    },
+    {
+      "sha": "4225eb17139a844ede87219f02a9ad97e88a12de",
+      "subject": "增加工作区标签选中动效",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/Redesign.xaml"
+      ]
+    },
+    {
+      "sha": "631b218e48cf2fb3d2be9be02ebf680551398db1",
+      "subject": "统一生产交互动效时长",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/AcrylicReferenceControls.xaml",
+        "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml"
+      ]
+    },
+    {
+      "sha": "d1fc1308317fb805d61d67a7dda77d71e0afff18",
+      "subject": "完善输入框禁用与错误反馈",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml"
+      ]
+    },
+    {
+      "sha": "f59fe4c86c78cb2fc11414a431aceb49821910ee",
+      "subject": "统一生产界面的边框线宽",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/AcrylicProductionResources.xaml",
+        "src/GameSaveCenter.Playnite/Themes/AcrylicReferenceControls.xaml",
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+        "src/GameSaveCenter.Playnite/Views/Development/UiFrameworkProbeView.xaml",
+        "src/GameSaveCenter.Playnite/Views/MaintenanceView.xaml",
+        "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/OverviewView.xaml",
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "417bed510806f965122554beb4419082443b905e",
+      "subject": "收敛共享圆角与边框裁切",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Infrastructure/RoundedClipBehavior.cs",
+        "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml",
+        "src/GameSaveCenter.Playnite/Themes/GeometryTokens.xaml",
+        "src/GameSaveCenter.Playnite/Themes/Redesign.xaml",
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+        "src/GameSaveCenter.Playnite/Views/DashboardView.xaml"
+      ]
+    },
+    {
+      "sha": "504562a7f0dad88454dde57b290b7862f91c93e6",
+      "subject": "校准概览任务语义状态色",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Infrastructure/AdaptiveThemePalette.cs",
+        "src/GameSaveCenter.Playnite/Infrastructure/AdaptiveThemePaletteContrastGuard.cs",
+        "src/GameSaveCenter.Playnite/Views/OverviewView.xaml"
+      ]
+    },
+    {
+      "sha": "813adb09284f3400cd07a758d3eca4d23c34155d",
+      "subject": "提升禁用按钮文字可读性",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Infrastructure/AdaptiveThemePalette.cs",
+        "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml",
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml"
+      ]
+    },
+    {
+      "sha": "7e61bba3f99f202122a01ce96d6944e78f45abf8",
+      "subject": "修正存档间距并校准字体层级",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml",
+        "src/GameSaveCenter.Playnite/Views/Development/UiFrameworkProbeView.xaml",
+        "src/GameSaveCenter.Playnite/Views/Development/UiFrameworkProbeView.xaml.cs",
+        "src/GameSaveCenter.Playnite/Views/MediaCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/NotificationInboxView.xaml",
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/TaskCenterView.xaml",
+        "src/GameSaveCenter.Playnite/Views/TrainerCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "0447237a582eb20c22320657c981245cdfe624a6",
+      "subject": "优化存档摘要间距与状态样张",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml"
+      ]
+    },
+    {
+      "sha": "a83c008ab9228fb477b215d410eb82c2f6d11497",
+      "subject": "修正同页导航重复布局",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs"
+      ]
+    },
+    {
+      "sha": "9dfbf5c4aaa999dabebd8d9dd7851f9fbc379585",
+      "subject": "稳定下拉选中项状态显示",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml"
+      ]
+    },
+    {
+      "sha": "fc1936d6f8151798de0de6c9621a128f6cddcae7",
+      "subject": "修正共享下拉选中项显示",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml"
+      ]
+    },
+    {
+      "sha": "58872f2c579ea1e4da3003881aa55cbd687cbdb0",
+      "subject": "优化存档页层级并固定媒体布局测试",
+      "uiFiles": [
+        "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml"
+      ]
+    }
+  ],
+  "evidenceGroups": [
+    {
+      "tasks": "U01",
+      "path": "U09-01-U01-pair-reconstruction-20261029/BASELINE.md"
+    },
+    {
+      "tasks": "U02",
+      "paths": [
+        "U09-01-U02-pair-reconstruction-20261029/BASELINE.md",
+        "U09-01-U02-geometry-pairs-20261029/BASELINE.md"
+      ]
+    },
+    {
+      "tasks": "U03",
+      "paths": [
+        "U09-01-U03-input-pair-20261029/BASELINE.md",
+        "U03-disabled-native-text-20261029/BASELINE.md"
+      ]
+    },
+    {
+      "tasks": "U04",
+      "paths": [
+        "U09-01-U04-pairs-20261029/BASELINE.md",
+        "U09-01-U04-interrupt-20261029/BASELINE.md",
+        "U04-indicator-gap-20261029/BASELINE.md",
+        "U09-render-sampling-20261029"
+      ]
+    },
+    {
+      "tasks": "U05",
+      "paths": [
+        "U09-01-U05-pair-reconstruction-20261029/BASELINE.md",
+        "U09-01-U05-pair-reconstruction-20261029/motion/BASELINE.md",
+        "U05-04-help/BASELINE.md",
+        "U05-07-08/BASELINE.md"
+      ]
+    },
+    {
+      "tasks": "U06",
+      "path": "U09-01-U06-pair-reconstruction-20261029/BASELINE.md"
+    },
+    {
+      "tasks": "U07",
+      "paths": [
+        "U09-01-U07-01-04-pair-20261030/BASELINE.md",
+        "U07-05-06-title-density/render-pair-dcc288d6.json",
+        "U07-05-notification-source-20261029/render-pair.json",
+        "U07-07-08/historical-render-pair-20261030/BASELINE.md"
+      ]
+    },
+    {
+      "tasks": "U08",
+      "paths": [
+        "U09-01-U08-pair-20261030/BASELINE.md",
+        "U09-01-U08-03-04-pair-20261030/BASELINE.md",
+        "U09-01-U08-05-06-pair-20261030/BASELINE.md",
+        "U09-01-U08-07-08-pair-20261030/BASELINE.md"
+      ]
+    }
+  ],
+  "unmappedVisualBatchFound": false,
+  "limitations": [
+    "The Demo-first DesignShellView.xaml is absent from this checkout and the sibling main worktree; this audit does not claim Demo alignment.",
+    "RenderHarness and synthetic event sequences do not establish real Playnite rendering, physical DPI, physical keyboard/IME, or external UIA behavior."
+  ]
+}

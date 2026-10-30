@@ -1,0 +1,22 @@
+{
+  "algorithm": "SHA-256",
+  "scope": "all evidence files except this self-referential manifest",
+  "fileCount": 3,
+  "files": [
+    {
+      "path": "BASELINE.md",
+      "bytes": 3235,
+      "sha256": "DC77EFD1F963CCB024368DC891A1236A6955939A432D4B3309677BA50B89090B"
+    },
+    {
+      "path": "ci-query-f6836930.json",
+      "bytes": 889,
+      "sha256": "D84A6849A1588E633F81082D542EC18148F20FA657F101A75F1A5E6F2E531269"
+    },
+    {
+      "path": "ui-source-commit-audit.json",
+      "bytes": 13861,
+      "sha256": "B5CF9E9799846D3CAECD1094273E4AB1F302B9E2AFA3A0E34D50972FBBE69B00"
+    }
+  ]
+}

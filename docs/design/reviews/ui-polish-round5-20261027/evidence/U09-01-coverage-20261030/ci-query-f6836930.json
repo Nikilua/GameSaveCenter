@@ -1,0 +1,26 @@
+{
+  "queriedDate": "2026-10-30",
+  "repository": "Nikilua/GameSaveCenter",
+  "commitSha": "f6836930fc67f32a691e9ac26966ca55d80c0062",
+  "workflow": ".github/workflows/windows-build.yml",
+  "applicableJobs": [
+    "build",
+    "sdk10-build"
+  ],
+  "workflowRunQuery": {
+    "tool": "github_fetch_commit_workflow_runs",
+    "structuredResult": {
+      "workflow_runs": []
+    },
+    "capabilityNote": "This connected wrapper currently returns only pull-request-triggered runs."
+  },
+  "combinedCommitStatusQuery": {
+    "tool": "github_get_commit_combined_status",
+    "structuredResult": {
+      "statuses": []
+    }
+  },
+  "conclusion": "remote-pending",
+  "runJobArtifactIdentity": null,
+  "nextStep": "Use an authorized read-only GitHub Actions API listing for this exact head SHA and verify both job conclusions, all steps, and artifact source SHA/digests."
+}

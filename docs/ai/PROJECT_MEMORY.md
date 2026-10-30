@@ -1,3 +1,9 @@
+## 2026-10-30 U09-01视觉证据覆盖关闭
+
+U00-01源基线`90bf0405`到冻结候选`5c0c57b0`共有37个UI源码变更提交；逐批映射到U01–U08双主题历史配对、动态Rendering/时间采样或交互序列，未发现未映射生产UI批次，U09-01“对比证据最小集”标记已满足。当前文档提交前HEAD`f6836930`的src/tests树与候选完全一致。Demo的DesignShellView在当前工作树和旁边旧main工作树都不存在；不得把生产RenderHarness证据说成Demo对照。真实Playnite/物理DPI/实体输入/外部UIA仍待验。
+
+f6836930推送后run与combined status连接器结果为空；workflow适用build和sdk10-build，提交级CI远端待验。完整源码提交清单、证据组和下一步Actions只读查询在Round5 `evidence/U09-01-coverage-20261030/`。当前Round5状态7已满足、71代码完成待验收、1进行中(U09-04)、1远端待验(U09-06)。
+
 ## 2026-10-30 U09-04性能尾部证据与恢复条件
 
 当前候选三轮布局70样本/轮，p95 472–650 ms，17/210次超过300 ms，覆盖七页；分配相关性弱但非因果结论。Rendering回调不是屏幕呈现帧；合成搜索不代表实体键盘/IME；U00原始逐帧/分配与真实Playnite仍缺。补充时间戳/GC探针暂时未编译：同版SDK8.0.423缺WorkloadAutoImportPropsLocator与WorkloadManifestTargetsLocator目录，旧project.assets还指向已清理包目录。不要换SDK/造缺失目录/改动画时长；恢复条件是同版本完整SDK和正确NuGet资产路径，再运行同协议事件对齐。生产代码未改，U09-04保持进行中。

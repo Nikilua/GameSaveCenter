@@ -1,3 +1,9 @@
+## 2026-10-30 U09-01 跨批次配对清查
+
+复核U00-01产品源码基线`90bf0405`至冻结候选`5c0c57b0`之间37个UI源码提交；U01–U08均对应已有同数据主题配对、动态Rendering样本或事件序列，未发现未映射批次。当前HEAD`f6836930`与候选`src/`、`tests/`相同；Demo文件在当前与相邻main工作树缺失，本轮不宣称Demo对齐。U09-01证据最小集标记已满足，Playnite/实体输入/物理DPI边界保留。
+
+精确查询f6836930的GitHub workflow run与combined status均为空；适用build与sdk10-build无可核run/job/artifact身份，记录远端待验及可执行只读Actions查询。覆盖/提交审计及CI查询见docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-coverage-20261030/。当前状态7已满足、71代码完成待验收、1进行中、1远端待验。此批只改文档/证据，不跑完整安装启动链。源码校验通过；Markdown相对链接724/724有效，新增证据SHA 3/3，git diff --check无空白错误（仅既有CRLF转换提示）。
+
 ## 2026-10-30 U09-04 布局尾部统计与探针恢复尝试
 
 对已有当前候选三轮parts.csv/Rendering样本复核：布局70样本/轮，p95为472.10、649.76、620.42 ms；>300 ms共17/210，出现在七页、两主题；时长与分配Pearson r为0.153、0.204、0.318。搜索/滚动和托管分配与e6接近，Rendering回调尾部与布局p95偏高；没有时间戳/GC计数，无法归因。
