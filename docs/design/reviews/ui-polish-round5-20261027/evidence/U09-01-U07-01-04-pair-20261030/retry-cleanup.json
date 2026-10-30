@@ -1,0 +1,20 @@
+{
+  "recordedUtc": "2026-10-29T23:56:55.5905997Z",
+  "workspace": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "deletedRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u07-01-04-pair-20261030",
+  "containedWithinTmp": true,
+  "deletedFileCount": 12569,
+  "deletedLogicalBytes": 788914873,
+  "cFreeBefore": 4611792896,
+  "cFreeAfter": 5424971776,
+  "releasedBytes": 813178880,
+  "reparsePoints": 0,
+  "ownedOnly": true,
+  "sourceSnapshotsFromFirstAttemptsDiscarded": true,
+  "usefulDiagnosticsRetained": [
+    "U07-01-02-before-harness-first-attempt-failure.txt",
+    "U07-01-02-before-dialog-second-attempt-failure.txt",
+    "U07-01-02-after-tooltip-argument-failure.txt",
+    "retry-disk-before.json"
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "label": "U07-03-04-after",
+  "sourceCommit": "7c4d07753ec63b32964ebf3bb1f6b66ea7a8724f",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "archiveBytes": 117484294,
+  "archiveSha256": "D745A1B2AC3D226862368B02D352C945735D5D4A1B58A80A3FECE6A4E719F412",
+  "workerBuildExit": 0,
+  "renderHarnessFinalBuildExit": 0,
+  "workerExeSha256": "11BBC4BC7B4589B09E5F3B54E3677C6ADAA3EAC8E26B58A18D279365E8F7BB98",
+  "renderHarnessFinalExeSha256": "B8A339306C145DF49B252A4569DE19EB739CD00F0AAAE4999B2DF18E3DF05FD2",
+  "fakeDashboardDataSha256": "CD8D3C0EC382BDAB18B4C5F5AC50A1C5BE9683F5DBF2EEFBBBDE41F082CAD570",
+  "fakeSampleClockSha256": "1B4EF22F734190D1DF3A19E844DD1F304DF1D45614812D0926693710CDC7316A",
+  "probeSha256": "06A49745E624EE3953BB770B1E6B910AAC6476F33A762DA4BFAA84BB2E3018ED",
+  "productionSourceSha256": {
+    "src/GameSaveCenter.Playnite/Themes/Redesign.xaml": "1841C9BA7BD375EBA67CF92872CCA432444B3E435E1929072284CBF3519DAC57",
+    "src/GameSaveCenter.Playnite/Infrastructure/DataGridColumnVisibilityController.cs": "7ED71FB95F384D686195036A498A25D6B34E45619BE8487F61D6BCF82CFC6680",
+    "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml": "1021FB73F13CDD2047F031A587B941B86A712EC4A7BEBEA3FBF5BC345EA9C242",
+    "src/GameSaveCenter.Playnite/Infrastructure/GscToolTipBehavior.cs": "CD016E788E9CE3040826B6B089EC25AC5E1791C7B67A1300C8758AEDDF058E1E",
+    "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml": "CDD9706CA42A12558C5C466F06296D6A6E6132062F4F1FB5E74B08591D6C0DC7",
+    "src/GameSaveCenter.Playnite/Views/DashboardView.xaml": "E7079F4D04A551F55A43FEC1F4D3B687094E1536020496530DB2C7AABD7DB8CA",
+    "src/GameSaveCenter.Playnite/Themes/AcrylicReferenceControls.xaml": "D15C51AD96261EF991650C8A00753B603B5A84CF795C084B647B49DFE8058FC0"
+  },
+  "captures": [
+    {
+      "scenario": "tooltip",
+      "theme": "light",
+      "widthDip": 1040,
+      "heightDip": 700,
+      "exitCode": 0
+    },
+    {
+      "scenario": "tooltip",
+      "theme": "dark",
+      "widthDip": 1040,
+      "heightDip": 700,
+      "exitCode": 0
+    },
+    {
+      "scenario": "menu",
+      "theme": "light",
+      "widthDip": 1040,
+      "heightDip": 700,
+      "exitCode": 0
+    },
+    {
+      "scenario": "menu",
+      "theme": "dark",
+      "widthDip": 1040,
+      "heightDip": 700,
+      "exitCode": 0
+    }
+  ],
+  "pngCount": 10,
+  "images": [
+    {
+      "name": "menu-dark-1040x700-column-menu.png",
+      "bytes": 11149,
+      "sha256": "D6D16FC46C7BB8EF302E340D2EDD78744B23636FD8F0F47904D5A1BD4D3F880F"
+    },
+    {
+      "name": "menu-dark-1040x700-required-column-tip.png",
+      "bytes": 5999,
+      "sha256": "563A9725E216E12A4CDB07256546B6BBE688F399DE12258137D6FE96093BB91D"
+    },
+    {
+      "name": "menu-dark-1040x700-task-page.png",
+      "bytes": 120290,
+      "sha256": "A2333ABB58DF761DCD9B01206D6935C79F913334715B5F134F57B7E179CFDE6C"
+    },
+    {
+      "name": "menu-light-1040x700-column-menu.png",
+      "bytes": 10844,
+      "sha256": "FAFAC30ADF83748BB6449E1AB4ABCAEA70526EE73CB5C14CF1F450C69E67ABFC"
+    },
+    {
+      "name": "menu-light-1040x700-required-column-tip.png",
+      "bytes": 5807,
+      "sha256": "821C4D86548DDF8B5FA1AE6392404EF12CD992C56EF79C185460F7369767B3D8"
+    },
+    {
+      "name": "menu-light-1040x700-task-page.png",
+      "bytes": 111738,
+      "sha256": "ED44AFF9C4787BED4CA2AB555C06F2F15A65B5CB469A5157156F742EB15B1454"
+    },
+    {
+      "name": "tooltip-dark-1040x700-popup.png",
+      "bytes": 5331,
+      "sha256": "DA3E176E21CDE69C7315A2113FDAEEA9C5DBAD2E28A23FA0AC6563FBA322000F"
+    },
+    {
+      "name": "tooltip-dark-1040x700-settings.png",
+      "bytes": 265443,
+      "sha256": "B9806552ADFFF973CACE7E9E4FD6BAD015BD7999919C5CDD723356C03800361A"
+    },
+    {
+      "name": "tooltip-light-1040x700-popup.png",
+      "bytes": 4831,
+      "sha256": "4D1C565BE328DD92D9D2B92A6628D1F70E8C4D2288F0EA46C92D1A8A3961B653"
+    },
+    {
+      "name": "tooltip-light-1040x700-settings.png",
+      "bytes": 221992,
+      "sha256": "B23AF2756EAF30449462B0C708F044D0E2D92DF0B6216851EB320465970E16A1"
+    }
+  ],
+  "measurementReports": [
+    {
+      "name": "menu-dark-1040x700-measurements.txt",
+      "sha256": "B10DF415F96EACCF3802352946F4309722AF87777D658099BA78F850CC1B7B9E"
+    },
+    {
+      "name": "menu-light-1040x700-measurements.txt",
+      "sha256": "C6FA51AF2B9438297D7EEC2DAF583257FEEF7008EC87C3AF0C386215BB2249F5"
+    },
+    {
+      "name": "tooltip-dark-1040x700-measurements.txt",
+      "sha256": "03B36693FC5B68F0F2D13FD9A3A8CC2AF275CCA260CDBB99E10AEAF52B2BCDD7"
+    },
+    {
+      "name": "tooltip-light-1040x700-measurements.txt",
+      "sha256": "B211F53B51DA8D6F3F45C5CEF9A390A6D7A49070A0A7AAF22FB4547E71537104"
+    }
+  ],
+  "neutralBaseTextBlockStyleFallback": "Application.Resources BaseTextBlockStyle = new Style(typeof(TextBlock)); no Playnite host loaded",
+  "renderHarnessBuildLogSha256": "35A6C4C9AB3F613B4E02DB109F6617D7453C82B98BC3BE79B3527B5E23CEE858"
+}

@@ -1,0 +1,2 @@
+usage: u07pairprobe <output> <dialog|tooltip|menu> <light|dark> <width> <height>
+

@@ -1,0 +1,4 @@
+System.InvalidOperationException: Dialog message ScrollViewer is missing.
+   在 GameSaveCenter.RenderHarness.U07PairProbe.CaptureDialog(String outputRoot, String sourceRoot, String theme, GameSaveCenterThemeMode mode, Double width, Double height) 位置 <WORKSPACE>\<PHASE>\U07-01-02-before\source\tests\GameSaveCenter.RenderHarness\U07PairProbe.cs:行号 133
+   在 GameSaveCenter.RenderHarness.U07PairProbe.<>c__DisplayClass0_0.<Run>b__0() 位置 <WORKSPACE>\<PHASE>\U07-01-02-before\source\tests\GameSaveCenter.RenderHarness\U07PairProbe.cs:行号 50
+

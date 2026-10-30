@@ -1,0 +1,12 @@
+System.Windows.Markup.XamlParseException: 在“System.Windows.Markup.StaticResourceHolder”上提供值时引发了异常。 ---> System.Exception: 无法找到名为“BaseTextBlockStyle”的资源。资源名称区分大小写。
+   在 System.Windows.StaticResourceExtension.ProvideValueInternal(IServiceProvider serviceProvider, Boolean allowDeferredReference)
+   在 MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   在 System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   在 System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   在 System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   在 GameSaveCenter.Playnite.Settings.GameSaveCenterSettingsView..ctor() 位置 <WORKSPACE>\<PHASE>\U07-01-02-after\source\src\GameSaveCenter.Playnite\Settings\GameSaveCenterSettingsView.xaml.cs:行号 118
+   在 GameSaveCenter.RenderHarness.U07PairProbe.CaptureTooltip(String outputRoot, String theme, GameSaveCenterThemeMode mode, Double width, Double height) 位置 <WORKSPACE>\<PHASE>\U07-01-02-after\source\tests\GameSaveCenter.RenderHarness\U07PairProbe.cs:行号 166
+   在 GameSaveCenter.RenderHarness.U07PairProbe.<>c__DisplayClass0_0.<Run>b__0() 位置 <WORKSPACE>\<PHASE>\U07-01-02-after\source\tests\GameSaveCenter.RenderHarness\U07PairProbe.cs:行号 52
+

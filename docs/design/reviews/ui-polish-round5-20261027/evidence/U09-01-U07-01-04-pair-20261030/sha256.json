@@ -1,0 +1,287 @@
+{
+  "algorithm": "SHA-256",
+  "scope": "all evidence files except this self-referential manifest",
+  "fileCount": 56,
+  "files": [
+    {
+      "path": "BASELINE.md",
+      "bytes": 7530,
+      "sha256": "AF5BE3E3D5DDF920AC5C5B9ABC898E549283097FDAB9FC6DFFAB0B5E4846E7E0"
+    },
+    {
+      "path": "captures/manifests/2aba614f.json",
+      "bytes": 6582,
+      "sha256": "41DF89D869E2225610EC3AE0A611A3FAE87D1997ABBD40E720ED0A306C803413"
+    },
+    {
+      "path": "captures/manifests/7c4d0775.json",
+      "bytes": 5105,
+      "sha256": "56FC3CA39ECD113B10DEA6F95B74861DE07FC9F1F8B3AD1F37808D8BB8E11A16"
+    },
+    {
+      "path": "captures/manifests/ac0afe72.json",
+      "bytes": 4010,
+      "sha256": "7700EEAD5108D9C532BB792072C919BCA029146ED871D7E875624D5563BE46B3"
+    },
+    {
+      "path": "captures/reports/U07-01-02-after/dialog-dark-1040x700-measurements.txt",
+      "bytes": 939,
+      "sha256": "5AD8400FBBF6632DED85A406BD9B9D04FF5C772F38C80093C1AFBA8122FD566B"
+    },
+    {
+      "path": "captures/reports/U07-01-02-after/dialog-dark-1366x768-measurements.txt",
+      "bytes": 939,
+      "sha256": "AB16F52ABA43F632733A5FEC7BC1B7F852100E9FBA0B0A5994B17A318A81A1BF"
+    },
+    {
+      "path": "captures/reports/U07-01-02-after/dialog-light-1040x700-measurements.txt",
+      "bytes": 941,
+      "sha256": "4B02E910649F9EE5CD6B6A524908909EC99B7F81F7E6E93B33536E158A373633"
+    },
+    {
+      "path": "captures/reports/U07-01-02-after/dialog-light-1366x768-measurements.txt",
+      "bytes": 941,
+      "sha256": "BF0330FE305A98C226E7AAC8E8A544117BE4B4598BDF5407280EAD0C870E1CC1"
+    },
+    {
+      "path": "captures/reports/U07-01-02-after/menu-dark-1040x700-measurements.txt",
+      "bytes": 702,
+      "sha256": "4269A3D19DAEE01C001D07B60BD50A38ADC300DE61A68A1343A236BA1B1E9385"
+    },
+    {
+      "path": "captures/reports/U07-01-02-after/menu-light-1040x700-measurements.txt",
+      "bytes": 705,
+      "sha256": "CDB7DE848D3B202C30F02C672C72A2A9B2F6BA6530AF986643401A2416D14582"
+    },
+    {
+      "path": "captures/reports/U07-01-02-after/tooltip-dark-1040x700-measurements.txt",
+      "bytes": 523,
+      "sha256": "182F01743445A2C942F7195C72E6DAB685A05D4807E56EF598ADFB3D91D3A8F6"
+    },
+    {
+      "path": "captures/reports/U07-01-02-after/tooltip-light-1040x700-measurements.txt",
+      "bytes": 526,
+      "sha256": "7B5FCCF154D0B5B7D0419B1B7BA757191D5DF056F65B9457332C5A058933FC33"
+    },
+    {
+      "path": "captures/reports/U07-01-02-before/dialog-dark-1040x700-measurements.txt",
+      "bytes": 954,
+      "sha256": "D6249D311A3CC65958D256B81F9A8CDECD1FC0F00AEBD7231193239DAD447BED"
+    },
+    {
+      "path": "captures/reports/U07-01-02-before/dialog-dark-1366x768-measurements.txt",
+      "bytes": 954,
+      "sha256": "BFCA5FD06760860DBC0AB07FC3971635BC2C4F42BDE35BA6960D8436E2C4BDF3"
+    },
+    {
+      "path": "captures/reports/U07-01-02-before/dialog-light-1040x700-measurements.txt",
+      "bytes": 956,
+      "sha256": "B3FF7693DD8ECF6CE0E2244FA5AE2214BC6F007B4374AA74902905247E78A73E"
+    },
+    {
+      "path": "captures/reports/U07-01-02-before/dialog-light-1366x768-measurements.txt",
+      "bytes": 956,
+      "sha256": "3794F882DE4ABF4E99013C1E8EC13763F1A96141AF009E0C078FC10033E4976F"
+    },
+    {
+      "path": "captures/reports/U07-03-04-after/menu-dark-1040x700-measurements.txt",
+      "bytes": 746,
+      "sha256": "B10DF415F96EACCF3802352946F4309722AF87777D658099BA78F850CC1B7B9E"
+    },
+    {
+      "path": "captures/reports/U07-03-04-after/menu-light-1040x700-measurements.txt",
+      "bytes": 750,
+      "sha256": "C6FA51AF2B9438297D7EEC2DAF583257FEEF7008EC87C3AF0C386215BB2249F5"
+    },
+    {
+      "path": "captures/reports/U07-03-04-after/tooltip-dark-1040x700-measurements.txt",
+      "bytes": 528,
+      "sha256": "03B36693FC5B68F0F2D13FD9A3A8CC2AF275CCA260CDBB99E10AEAF52B2BCDD7"
+    },
+    {
+      "path": "captures/reports/U07-03-04-after/tooltip-light-1040x700-measurements.txt",
+      "bytes": 531,
+      "sha256": "B211F53B51DA8D6F3F45C5CEF9A390A6D7A49070A0A7AAF22FB4547E71537104"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 2384,
+      "sha256": "F403FC87C47ED4AB04D362CFD742453124690FD1CF21F710CBAD2CF93B6D1BBB"
+    },
+    {
+      "path": "logs/build-U07-01-02-after-render-harness.txt",
+      "bytes": 686,
+      "sha256": "87FE7DA5C3D4349FA227E115B93CFEF61B11255BF79981A070280DE4F33A94A0"
+    },
+    {
+      "path": "logs/build-U07-01-02-after-worker.txt",
+      "bytes": 840,
+      "sha256": "FFF8B146F27CF02A6E2DE1465A0B3C7A46D6E328C766B064920044C3E30CFF9E"
+    },
+    {
+      "path": "logs/build-U07-01-02-before-render-harness.txt",
+      "bytes": 686,
+      "sha256": "A27259BA5B12067B31A8E34446DCD01980AFCDD8EF9162CD9177D374BA7F3FF4"
+    },
+    {
+      "path": "logs/build-U07-01-02-before-worker.txt",
+      "bytes": 840,
+      "sha256": "605A31E15F6424A59146069DAC9B4FB722170795AC165952933636EE3BE20C4C"
+    },
+    {
+      "path": "logs/build-U07-03-04-after-render-harness.txt",
+      "bytes": 686,
+      "sha256": "32B603D9A66085FC98E5104C6BF4C2B0883850B76742152B380BD9A52A9C5418"
+    },
+    {
+      "path": "logs/build-U07-03-04-after-worker.txt",
+      "bytes": 840,
+      "sha256": "51BCAD98E02E1EAD08DE8FBF5F93B328EDA431846A0A1D1E96D926B47F464124"
+    },
+    {
+      "path": "logs/recapture-final.ps1",
+      "bytes": 7065,
+      "sha256": "D16C3371F14138B9F72D88CD61D8AC4D26E32454A629F9630F199822F9FD889A"
+    },
+    {
+      "path": "logs/retry-disk-before.json",
+      "bytes": 422,
+      "sha256": "AB4417E344313FA31EF2BF6E4CFF56E6AF78251BF810D2AD7988294320EC6E96"
+    },
+    {
+      "path": "logs/run-snapshots.ps1",
+      "bytes": 9390,
+      "sha256": "EB415F1AAA7022E6758A6C0017CE63A94FDF13EC77C901AE9D402DA0E40E9188"
+    },
+    {
+      "path": "logs/U07-01-02-after-tooltip-argument-failure.txt",
+      "bytes": 84,
+      "sha256": "B6AACB6A3614AB59127D14C57594E7C11451FC9CDAE2389BF2EC5FFE5AD60A8D"
+    },
+    {
+      "path": "logs/U07-01-02-after-tooltip-resources-failure.txt",
+      "bytes": 1830,
+      "sha256": "983785EFFE2FAC38195AA34E1BA32E70283EB11E9B07D95C980AFEDF4DE36958"
+    },
+    {
+      "path": "logs/U07-01-02-before-dialog-second-attempt-failure.txt",
+      "bytes": 560,
+      "sha256": "94FD5DC04E86270976789D5E85C0ABA5F6FFB17B184D4AD9FD988EC23D760956"
+    },
+    {
+      "path": "logs/U07-01-02-before-harness-first-attempt-failure.txt",
+      "bytes": 2962,
+      "sha256": "F7257F2C661E886218ADD212C172367B62784366213418B7D76EC42C787F7829"
+    },
+    {
+      "path": "logs/U07PairProbe.cs",
+      "bytes": 20007,
+      "sha256": "06A49745E624EE3953BB770B1E6B910AAC6476F33A762DA4BFAA84BB2E3018ED"
+    },
+    {
+      "path": "retry-cleanup-attempt-2.json",
+      "bytes": 832,
+      "sha256": "39AC59E24AA855E0ACF3FB6B198B04C23EBE3F535741CFC959D867B0B1272AD6"
+    },
+    {
+      "path": "retry-cleanup.json",
+      "bytes": 798,
+      "sha256": "CFA2657E04800161923856DB841C6A504ABD227B721BCD9D22DEA283D288CD94"
+    },
+    {
+      "path": "run-disk-before-attempt-2.json",
+      "bytes": 473,
+      "sha256": "9B686D8AF517AFFF9DDC1AD643AC48CE8214D577EC8A1F525FE49F1778BC0B0D"
+    },
+    {
+      "path": "screenshots/U07-01-02-after/dialog-dark-1040x700.png",
+      "bytes": 81486,
+      "sha256": "C75DCE1A57D28B2E0BE16B4E6D0AC39743ED584DDAB4FFECCFFC796A03106923"
+    },
+    {
+      "path": "screenshots/U07-01-02-after/dialog-dark-1366x768.png",
+      "bytes": 84468,
+      "sha256": "69810571FB88AA5F5F05382239F62E8B2139B686162E124FBF7F4B83989D526B"
+    },
+    {
+      "path": "screenshots/U07-01-02-after/dialog-light-1040x700.png",
+      "bytes": 79865,
+      "sha256": "57961606A6BBAEFF2F9A5B6481CD9A20327206F60BB037FE55320D8BAD3003BB"
+    },
+    {
+      "path": "screenshots/U07-01-02-after/dialog-light-1366x768.png",
+      "bytes": 82441,
+      "sha256": "7CBF294C0F61061B45C52018EA441A11DC26B8E7FC1CF3135A1E8D5BA44958CC"
+    },
+    {
+      "path": "screenshots/U07-01-02-before/dialog-dark-1040x700.png",
+      "bytes": 75205,
+      "sha256": "7D9BA0AC27171664A8B3A2467044873CB6F4EEB8A6555A839881BD509700CFD9"
+    },
+    {
+      "path": "screenshots/U07-01-02-before/dialog-dark-1366x768.png",
+      "bytes": 77762,
+      "sha256": "F75AF0412EFFA2CA4446F81E30B33AB1A52251AF58C8DA8FD689617EEF4D1031"
+    },
+    {
+      "path": "screenshots/U07-01-02-before/dialog-light-1040x700.png",
+      "bytes": 74266,
+      "sha256": "F57F7486B6888D89758ABE34862F5F34C6A62BA66056EC5A252409E21F2CAFC0"
+    },
+    {
+      "path": "screenshots/U07-01-02-before/dialog-light-1366x768.png",
+      "bytes": 76418,
+      "sha256": "6FAB32B3BF2D99776381ABDAC173F8E54383D177EC09BE3BA1EEE1A9B9CAFBA0"
+    },
+    {
+      "path": "screenshots/U07-03-04-after/menu-dark-1040x700-required-column-tip.png",
+      "bytes": 5999,
+      "sha256": "563A9725E216E12A4CDB07256546B6BBE688F399DE12258137D6FE96093BB91D"
+    },
+    {
+      "path": "screenshots/U07-03-04-after/menu-light-1040x700-required-column-tip.png",
+      "bytes": 5807,
+      "sha256": "821C4D86548DDF8B5FA1AE6392404EF12CD992C56EF79C185460F7369767B3D8"
+    },
+    {
+      "path": "screenshots/U07-03-04-common/menu-dark-1040x700-column-menu.png",
+      "bytes": 11149,
+      "sha256": "D6D16FC46C7BB8EF302E340D2EDD78744B23636FD8F0F47904D5A1BD4D3F880F"
+    },
+    {
+      "path": "screenshots/U07-03-04-common/menu-dark-1040x700-task-page.png",
+      "bytes": 120290,
+      "sha256": "A2333ABB58DF761DCD9B01206D6935C79F913334715B5F134F57B7E179CFDE6C"
+    },
+    {
+      "path": "screenshots/U07-03-04-common/menu-light-1040x700-column-menu.png",
+      "bytes": 10844,
+      "sha256": "FAFAC30ADF83748BB6449E1AB4ABCAEA70526EE73CB5C14CF1F450C69E67ABFC"
+    },
+    {
+      "path": "screenshots/U07-03-04-common/menu-light-1040x700-task-page.png",
+      "bytes": 111738,
+      "sha256": "ED44AFF9C4787BED4CA2AB555C06F2F15A65B5CB469A5157156F742EB15B1454"
+    },
+    {
+      "path": "screenshots/U07-03-04-common/tooltip-dark-1040x700-popup.png",
+      "bytes": 5331,
+      "sha256": "DA3E176E21CDE69C7315A2113FDAEEA9C5DBAD2E28A23FA0AC6563FBA322000F"
+    },
+    {
+      "path": "screenshots/U07-03-04-common/tooltip-dark-1040x700-settings.png",
+      "bytes": 265443,
+      "sha256": "B9806552ADFFF973CACE7E9E4FD6BAD015BD7999919C5CDD723356C03800361A"
+    },
+    {
+      "path": "screenshots/U07-03-04-common/tooltip-light-1040x700-popup.png",
+      "bytes": 4831,
+      "sha256": "4D1C565BE328DD92D9D2B92A6628D1F70E8C4D2288F0EA46C92D1A8A3961B653"
+    },
+    {
+      "path": "screenshots/U07-03-04-common/tooltip-light-1040x700-settings.png",
+      "bytes": 221992,
+      "sha256": "B23AF2756EAF30449462B0C708F044D0E2D92DF0B6216851EB320465970E16A1"
+    }
+  ]
+}

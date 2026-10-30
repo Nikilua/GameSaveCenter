@@ -1,0 +1,18 @@
+{
+  "recordedUtc": "2026-10-29T23:57:10.0016491Z",
+  "phaseRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u07-01-04-pair-20261030",
+  "phaseFiles": 0,
+  "driveSpace": [
+    {
+      "name": "C",
+      "freeBytes": 5424189440,
+      "usedBytes": 209325219840
+    },
+    {
+      "name": "D",
+      "freeBytes": 18822066176,
+      "usedBytes": 276150747136
+    }
+  ],
+  "previousAttemptCleanup": "retry-cleanup.json"
+}

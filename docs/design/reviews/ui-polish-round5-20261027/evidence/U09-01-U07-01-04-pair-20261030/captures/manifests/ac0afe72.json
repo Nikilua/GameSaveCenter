@@ -1,0 +1,98 @@
+{
+  "label": "U07-01-02-before",
+  "sourceCommit": "ac0afe7267d17333c5735bc69f7595ce2efc75e4",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "archiveBytes": 117389756,
+  "archiveSha256": "F4AFA9296A399976D95C144AAD86272B1FF916F8D6773927FF090EC4BE605583",
+  "workerBuildExit": 0,
+  "renderHarnessFinalBuildExit": 0,
+  "workerExeSha256": "E6910BF17CEDA13E932334F3CE67299D221AEB82F7749A9AE6979603131D21DC",
+  "renderHarnessFinalExeSha256": "E46E24E80D7623A5253C83C06FD34719E942F1825017CDCA744D5EA04E18036A",
+  "fakeDashboardDataSha256": "CD8D3C0EC382BDAB18B4C5F5AC50A1C5BE9683F5DBF2EEFBBBDE41F082CAD570",
+  "fakeSampleClockSha256": "1B4EF22F734190D1DF3A19E844DD1F304DF1D45614812D0926693710CDC7316A",
+  "probeSha256": "06A49745E624EE3953BB770B1E6B910AAC6476F33A762DA4BFAA84BB2E3018ED",
+  "productionSourceSha256": {
+    "src/GameSaveCenter.Playnite/Themes/Redesign.xaml": "1841C9BA7BD375EBA67CF92872CCA432444B3E435E1929072284CBF3519DAC57",
+    "src/GameSaveCenter.Playnite/Infrastructure/DataGridColumnVisibilityController.cs": "DCA52FCD93AE3DAACEE56B4EF161D67ECB750DA44D2415F2267308CCB619EBCD",
+    "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml": "1021FB73F13CDD2047F031A587B941B86A712EC4A7BEBEA3FBF5BC345EA9C242",
+    "src/GameSaveCenter.Playnite/Infrastructure/GscToolTipBehavior.cs": "4F4D032B59C870999B57C18C1A682601251DDD5EE92CBF4DC205FC2541D52C19",
+    "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml": "CDD9706CA42A12558C5C466F06296D6A6E6132062F4F1FB5E74B08591D6C0DC7",
+    "src/GameSaveCenter.Playnite/Views/DashboardView.xaml": "3A41A81DD4775099CD08277E3D36F4B91E05EF03E2CA9AA53843DC959BEB4C65",
+    "src/GameSaveCenter.Playnite/Themes/AcrylicReferenceControls.xaml": "D15C51AD96261EF991650C8A00753B603B5A84CF795C084B647B49DFE8058FC0"
+  },
+  "captures": [
+    {
+      "scenario": "dialog",
+      "theme": "light",
+      "widthDip": 1040,
+      "heightDip": 700,
+      "exitCode": 0
+    },
+    {
+      "scenario": "dialog",
+      "theme": "dark",
+      "widthDip": 1040,
+      "heightDip": 700,
+      "exitCode": 0
+    },
+    {
+      "scenario": "dialog",
+      "theme": "light",
+      "widthDip": 1366,
+      "heightDip": 768,
+      "exitCode": 0
+    },
+    {
+      "scenario": "dialog",
+      "theme": "dark",
+      "widthDip": 1366,
+      "heightDip": 768,
+      "exitCode": 0
+    }
+  ],
+  "pngCount": 4,
+  "images": [
+    {
+      "name": "dialog-dark-1040x700.png",
+      "bytes": 75205,
+      "sha256": "7D9BA0AC27171664A8B3A2467044873CB6F4EEB8A6555A839881BD509700CFD9"
+    },
+    {
+      "name": "dialog-dark-1366x768.png",
+      "bytes": 77762,
+      "sha256": "F75AF0412EFFA2CA4446F81E30B33AB1A52251AF58C8DA8FD689617EEF4D1031"
+    },
+    {
+      "name": "dialog-light-1040x700.png",
+      "bytes": 74266,
+      "sha256": "F57F7486B6888D89758ABE34862F5F34C6A62BA66056EC5A252409E21F2CAFC0"
+    },
+    {
+      "name": "dialog-light-1366x768.png",
+      "bytes": 76418,
+      "sha256": "6FAB32B3BF2D99776381ABDAC173F8E54383D177EC09BE3BA1EEE1A9B9CAFBA0"
+    }
+  ],
+  "measurementReports": [
+    {
+      "name": "dialog-dark-1040x700-measurements.txt",
+      "sha256": "D6249D311A3CC65958D256B81F9A8CDECD1FC0F00AEBD7231193239DAD447BED"
+    },
+    {
+      "name": "dialog-dark-1366x768-measurements.txt",
+      "sha256": "BFCA5FD06760860DBC0AB07FC3971635BC2C4F42BDE35BA6960D8436E2C4BDF3"
+    },
+    {
+      "name": "dialog-light-1040x700-measurements.txt",
+      "sha256": "B3FF7693DD8ECF6CE0E2244FA5AE2214BC6F007B4374AA74902905247E78A73E"
+    },
+    {
+      "name": "dialog-light-1366x768-measurements.txt",
+      "sha256": "3794F882DE4ABF4E99013C1E8EC13763F1A96141AF009E0C078FC10033E4976F"
+    }
+  ],
+  "neutralBaseTextBlockStyleFallback": "Application.Resources BaseTextBlockStyle = new Style(typeof(TextBlock)); no Playnite host loaded",
+  "renderHarnessBuildLogSha256": "EE75C21C3586BC70A1C3D224ADC46B0A049DC0776FF916452BC15ABA9E447DD0"
+}

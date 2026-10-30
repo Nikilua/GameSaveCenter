@@ -1,0 +1,20 @@
+scenario=dialog
+theme=light
+logicalSizeDip=1040x700
+hostBaseTextBlockStyle=neutral-render-harness-fallback
+sampleUtc=2026-10-28T09:00:00Z
+dialogSource=src/GameSaveCenter.Playnite/Views/DashboardView.xaml
+title=安全恢复确认 · 静态视觉样张
+actionPanel=WrapPanel
+card=480x628
+messageScrollPresent=True
+messageViewport=433.333333333333x420
+messageTextHeight=726
+scrollVerticalVisibility=Auto
+sample=static-only; restore/delete/cloud-write=not-invoked
+image=dialog-light-1040x700.png
+button=复制详情;margin=0,0,8,8;bounds=0,0,80.6666666666667,36
+button=保留此设置;margin=0,0,8,8;bounds=88.6666666666667,0,92.6666666666667,36
+button=以后再说;margin=0,0,8,8;bounds=189.333333333333,0,80.6666666666667,36
+button=取消;margin=0,0,8,8;bounds=278,0,56.6666666666667,36
+button=确认恢复所选版本并保留当前设备的其他存档与云端同步设置;margin=0,0,0,8;bounds=0,44,356.666666666667,36

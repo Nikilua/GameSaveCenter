@@ -1,0 +1,16 @@
+scenario=menu
+theme=light
+logicalSizeDip=1040x700
+hostBaseTextBlockStyle=neutral-render-harness-fallback
+sampleUtc=2026-10-28T09:00:00Z
+page=TaskCenterView with FakeDashboardData
+menuItems=时间（必要列） | 任务（必要列） | 阶段 | 游戏 | 状态（必要列） | 进度 | 详情 | 恢复默认列显示
+requiredItem=时间（必要列）
+requiredEnabled=False
+showOnDisabled=True
+helpText=用于识别对象或状态，始终保持显示。
+tooltipText=用于识别对象或状态，始终保持显示。
+menuSize=204.666666666667x281.333333333333
+taskPageImage=menu-light-1040x700-task-page.png
+menuPopupImage=menu-light-1040x700-column-menu.png
+requiredColumnTooltipImage=menu-light-1040x700-required-column-tip.png

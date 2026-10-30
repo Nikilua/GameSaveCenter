@@ -1,0 +1,13 @@
+  正在确定要还原的项目…
+  已还原 historical-source\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 169 毫秒)。
+  已还原 historical-source\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 169 毫秒)。
+  已还原 historical-source\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (用时 269 毫秒)。
+  GameSaveCenter.Contracts -> historical-source\src\GameSaveCenter.Contracts\bin\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> historical-source\src\GameSaveCenter.Core\bin\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> historical-source\src\GameSaveCenter.Worker\bin\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:01:07.73

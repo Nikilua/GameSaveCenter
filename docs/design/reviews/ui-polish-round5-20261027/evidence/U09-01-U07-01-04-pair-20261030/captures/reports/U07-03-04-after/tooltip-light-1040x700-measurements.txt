@@ -1,0 +1,14 @@
+scenario=tooltip
+theme=light
+logicalSizeDip=1040x700
+hostBaseTextBlockStyle=neutral-render-harness-fallback
+sampleUtc=2026-10-28T09:00:00Z
+owner=SettingsSearchTextBox
+ownerPlacement=Bottom
+popupPlacement=Bottom
+tooltipSize=382.666666666667x32.6666666666667
+ownerScreenOrigin=217,251
+popupScreenOrigin=217,311
+tooltipText=搜索设置名称、用途或字段；不会修改配置。清空后恢复分类视图。
+settingsHostImage=tooltip-light-1040x700-settings.png
+tooltipPopupImage=tooltip-light-1040x700-popup.png

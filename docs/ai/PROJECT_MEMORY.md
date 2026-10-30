@@ -1652,3 +1652,7 @@ Trainer 工具页清除了永久折叠的重复空态文字，继续使用共享
 ## Round5 U09-01补U05-05/06历史配对（2026-10-30）
 
 已为U05-05/06归档SDK8.0.423 RenderHarness历史双主题配对：短Loading由Visible转为Hidden、慢响应后显示、Error即时可见，660×220 DIP布局槽位不变；五态进度数据匹配DTO，Light/Dark下52 DIP进度条及100 DIP标签边界稳定。两版快照编译与采样均exit0；只使用临时探针，生产代码未改。配对图、CSV、快照身份、首次探针诊断见`docs/design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/historical-render-pair-20261030/`。它仅证明离屏合成RenderHarness，不代表Playnite宿主/实体输入/IME/外部UIA/物理DPI。U09-01其它视觉配对仍待核对；整轮状态为6已满足、71代码完成待验收、2进行中、1远端待验。
+
+## 2026-10-30 Round5 U09-01补U07-01～04历史配对
+
+用SDK8.0.423 Release为三个隔离历史快照分别编译真实Worker与最终RenderHarness，再捕获同一假数据样本。U07-01/02前后对话框覆盖浅/深主题与1040×700、1366×768 DIP；U07-03/04用2aba614f作为前一批后态/后一批前态，分别验证Tooltip屏幕坐标和必要列禁用提示。RenderHarness单独捕获WPF Popup，不包含在宿主窗口Bitmap中，位置差异需用owner/popup屏幕坐标记录。隔离Settings页缺失Playnite的BaseTextBlockStyle时可提供中性测试样式，但结果需明确标为离屏，不代表宿主渲染。相关证据和SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U07-01-04-pair-20261030/`；所有临时build/source树清理后保留已引用截图、报告和构建日志。清理脚本删除目标后未保存递归文件数/字节，`cleanup.json`如实标为未知，并保留实际磁盘空间差。

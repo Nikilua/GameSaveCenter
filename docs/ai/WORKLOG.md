@@ -1,3 +1,9 @@
+## 2026-10-30 U09-01补U07-01～04历史配对
+
+按同一固定假数据时间重建`ac0afe72`、`2aba614f`、`7c4d0775`三个历史生产快照，SDK8.0.423 Release下Worker与修正后RenderHarness均构建退出0；26次双主题定向捕获退出0，覆盖对话框双尺寸。18张唯一图、16份测量报告、三个源码/产物SHA清单和构建日志归档于Round5 `evidence/U09-01-U07-01-04-pair-20261030/`。确认U07-01/02从单行溢出变成安全换行；U07-03 Tooltip从Mouse改为控件下方；U07-04必要列继续禁用并新增鼠标提示，与UIA HelpText一致。首次探针误画空提示、宿主样式缺失等失败诊断保留。
+
+仅更新证据文档，未改生产代码；静态页面使用Fake数据和中性`BaseTextBlockStyle`回退，没有启动Playnite或触发恢复/删除/云端写入。完整安装启动链与独立`build.cmd`不适用于纯文档阶段。清理准确限定本批`.tmp`目录，未触及保留SDK；C盘实测空闲`4,172,505,088→5,007,486,976` bytes（+`834,981,888`），D盘不变。清理调用在移除目标后、保存递归文件数/字节数前结束，数量无法恢复；`cleanup.json`列出四个顶层删除项并如实记录未知值。`scripts/validate-source.py`通过；四份文档的715个相对链接目标存在；`git diff --check`通过（仅有Git提示既有CRLF转换）。U07-01～04维持代码完成待验收，U09-01继续；计数6/71/2/1。
+
 ## 2026-10-29/30 5040ac5 GitHub CI通过
 
 精确SHA run40958239784已completed/success，head=5040ac555c3d202b144c4ca9730a87978d139252。SDK8 baseline job123743921559、SDK10.0.401 job123743921221均success，所有步骤完成；preview artifact12937747846 digest sha256:3b67364eb23b3651011fc372f9f222ee7f9b8f303672f14217c9ccd8d1abe13e；build diagnostics12937583089 digest sha256:210c25bd803e9490874ce902f92c20c37a3c46390a8956727f3da073c0d49dde；SDK10 diagnostics12936770001 digest sha256:bbf7236c8ff949397e2ede03a953c1402264f3950060b85e32d583c3a803ac8f。required-check名单仍因既有403权限不足远端待验，不重复探测。

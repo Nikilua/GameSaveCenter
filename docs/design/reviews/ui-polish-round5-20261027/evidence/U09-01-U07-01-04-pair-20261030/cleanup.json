@@ -1,0 +1,72 @@
+{
+  "task": "U09-01 U07-01/02 and U07-03/04 historical render pair",
+  "recordedAtUtc": "2026-10-30T00:27:36Z",
+  "target": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u07-01-04-pair-20261030",
+  "rootBoundary": {
+    "withinWorkspace": true,
+    "withinRepositoryTmp": true,
+    "exactExpectedPath": true,
+    "rootReparsePoint": false,
+    "reparseEntries": 0
+  },
+  "deletionList": [
+    {
+      "path": "U07-01-02-before/",
+      "kind": "phase-owned historical source/build/render snapshot",
+      "removed": true
+    },
+    {
+      "path": "U07-01-02-after/",
+      "kind": "phase-owned historical source/build/render snapshot",
+      "removed": true
+    },
+    {
+      "path": "U07-03-04-after/",
+      "kind": "phase-owned historical source/build/render snapshot",
+      "removed": true
+    },
+    {
+      "path": "disk-before.json",
+      "kind": "phase disk baseline",
+      "removed": true
+    }
+  ],
+  "preCleanup": {
+    "recursiveFileCount": null,
+    "recursiveBytes": null,
+    "topLevelEntries": 4,
+    "note": "The scoped Remove-Item completed, but its process ended after removal and before the pre-delete recursive count/byte inventory was persisted. Exact recursive count and bytes are unavailable; no estimate is substituted."
+  },
+  "removed": {
+    "command": "Remove-Item -LiteralPath 'C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u07-01-04-pair-20261030' -Recurse -Force",
+    "unrelatedPathsTouched": false,
+    "targetNoLongerExists": true
+  },
+  "preflight": {
+    "markdownReferencesIntoPhase": 0,
+    "matchingBuildRenderTestProcesses": 0,
+    "reparseEntries": 0,
+    "openHandleEnumeration": "not performed; scoped process check was empty and Remove-Item completed",
+    "retainedSdkPath": ".tmp/round5-sdk8-8.0.423",
+    "retainedSdkExists": true
+  },
+  "diskSpace": {
+    "phaseStart": {
+      "CFreeBytes": 5420408832,
+      "DFreeBytes": 18821869568,
+      "source": "phase disk-before.json recorded at 2026-10-30T00:04:25Z"
+    },
+    "immediatelyBeforeCleanup": {
+      "CFreeBytes": 4172505088,
+      "DFreeBytes": 18825588736
+    },
+    "afterCleanup": {
+      "CFreeBytes": 5007486976,
+      "DFreeBytes": 18825588736
+    },
+    "observedDeltaBytes": {
+      "C": 834981888,
+      "D": 0
+    }
+  }
+}
