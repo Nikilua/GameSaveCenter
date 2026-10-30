@@ -1338,10 +1338,26 @@ public sealed class WpfUiResourceDictionaryTests
         var commands = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "ViewModels", "DashboardViewModel.cs"));
         var messages = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Contracts", "MessageTypes.cs"));
         var contracts = File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Contracts", "OperationDtos.cs"));
+        var mediaDocument = XDocument.Parse(media);
+        XName xamlName = XName.Get("Name", "http://schemas.microsoft.com/winfx/2006/xaml");
+        var resetColumnWidth = mediaDocument.Descendants()
+            .Single(element => element.Attribute(xamlName)?.Value == "MediaInboxResetColumnWidthButton");
+        var clearSelection = mediaDocument.Descendants()
+            .Single(element => element.Attribute(xamlName)?.Value == "MediaInboxClearSelectionButton");
+        var mediaInboxFooter = mediaDocument.Descendants()
+            .Single(element => element.Attribute(xamlName)?.Value == "MediaInboxFooter");
+        var batchActionRow = mediaDocument.Descendants()
+            .Single(element => element.Attribute(xamlName)?.Value == "MediaInboxBatchActionRow");
 
         Assert.Contains("SelectionMode=\"Extended\"", media);
         Assert.Contains("SelectionUnit=\"FullRow\"", media);
         Assert.Contains("x:Name=\"MediaInboxBatchActionRow\"", media);
+        Assert.Contains(resetColumnWidth.Ancestors(), element => ReferenceEquals(element, mediaInboxFooter));
+        Assert.DoesNotContain(resetColumnWidth.Ancestors(), element => ReferenceEquals(element, batchActionRow));
+        Assert.Contains(clearSelection.Ancestors(), element => ReferenceEquals(element, mediaInboxFooter));
+        Assert.DoesNotContain(clearSelection.Ancestors(), element => ReferenceEquals(element, batchActionRow));
+        Assert.Equal("OnResetColumnLayoutClick", resetColumnWidth.Attribute("Click")?.Value);
+        Assert.Equal("重置媒体收件箱表格列宽", resetColumnWidth.Attribute("AutomationProperties.Name")?.Value);
         Assert.Contains("x:Name=\"MediaInboxTableFrame\" Style=\"{StaticResource MediaTableFrame}\" Padding=\"14,12,14,12\"", media);
         Assert.Contains("x:Name=\"MediaInboxFooter\" Grid.Row=\"2\" Margin=\"0,10,0,0\"", media);
         Assert.Contains("x:Name=\"MediaFilterPresetRow\" Grid.Row=\"0\"", media);

@@ -62,6 +62,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var footerViewportMetrics = string.Empty;
         var pageScrollProperties = string.Empty;
         var inboxTabVisible = false;
+        var resetColumnActionReachable = false;
+        var clearSelectionActionReachable = false;
         var initialGlobalTargetIsVisibleInBothSummaries = false;
         var globalTargetSwitchUpdatesBothSummaries = false;
         var clearingGlobalTargetUsesEmptyStateInBothSummaries = false;
@@ -168,7 +170,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 clearButtonVisible = clearButton.Visibility == Visibility.Visible && clearButton.ActualHeight > 0;
                 var batchButtons = new FrameworkElement[] { clearButton, resetButton, assignButton };
                 var buttonHeights = batchButtons.Select(button => button.ActualHeight).ToArray();
-                var buttonCenters = batchButtons.Select(button => CenterY(button, window)).ToArray();
+                var buttonCenters = new[] { CenterY(assignButton, window) };
                 buttonHeight = buttonHeights.Max();
                 buttonHeightSpread = buttonHeights.Max() - buttonHeights.Min();
                 modeComboHeight = modeCombo.ActualHeight;
@@ -207,9 +209,17 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 pageScroller.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Render, new Action(() => { }));
                 FlushLayout(window);
                 pageScrollProperties += $", afterScroll={pageScroller.VerticalOffset:0.##}/{pageScroller.ScrollableHeight:0.##}, barAfter={verticalScrollBar?.Value:0.##}";
+                var resetBounds = BoundsIn(resetButton, pageScroller);
+                var clearBounds = BoundsIn(clearButton, pageScroller);
+                resetColumnActionReachable = resetButton.IsVisible
+                    && resetBounds.Top >= -1
+                    && resetBounds.Bottom <= pageScroller.ViewportHeight + 1;
+                clearSelectionActionReachable = clearButton.IsVisible
+                    && clearBounds.Top >= -1
+                    && clearBounds.Bottom <= pageScroller.ViewportHeight + 1;
                 var footerInPage = BoundsIn(footer, pageScroller);
                 footerReachable = footerInPage.Top >= -1 && footerInPage.Bottom <= pageScroller.ViewportHeight + 1;
-                footerViewportMetrics = $"offset={pageScroller.VerticalOffset:0.##}, extent={pageScroller.ExtentHeight:0.##}, viewport={pageScroller.ViewportHeight:0.##}, footer={footerInPage.Top:0.##}..{footerInPage.Bottom:0.##}; {pageScrollProperties}";
+                footerViewportMetrics = $"offset={pageScroller.VerticalOffset:0.##}, extent={pageScroller.ExtentHeight:0.##}, viewport={pageScroller.ViewportHeight:0.##}, clear={clearBounds.Top:0.##}..{clearBounds.Bottom:0.##}, reset={resetBounds.Top:0.##}..{resetBounds.Bottom:0.##}, footer={footerInPage.Top:0.##}..{footerInPage.Bottom:0.##}; {pageScrollProperties}";
             }
             catch (Exception caught)
             {
@@ -239,6 +249,93 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.True(inboxTabVisible, "the geometry probe must measure the selected inbox tab, not a hidden tab template");
         Assert.True(pageScrollable, "compact page fallback should retain its page-level scroll channel");
         Assert.True(footerReachable, $"the page scroll channel should bring the footer into view ({footerViewportMetrics})");
+        Assert.True(clearSelectionActionReachable, $"the relocated selection utility should be reachable in the scrolled footer ({footerViewportMetrics})");
+        Assert.True(resetColumnActionReachable, $"the relocated view action should be reachable in the scrolled footer ({footerViewportMetrics})");
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(GameSaveCenterThemeMode theme)
+    {
+        Exception? exception = null;
+        var visibleRows = 0;
+        var batchActionRows = 0;
+        var viewportHeight = 0d;
+        var selectionText = string.Empty;
+        var modeVisible = false;
+        var geometry = string.Empty;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var view = new MediaCenterView { DataContext = CreateMediaContext() };
+                ApplyTheme(view, theme);
+                var layoutHost = new Grid
+                {
+                    Width = 726,
+                    Height = 570,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top
+                };
+                layoutHost.Children.Add(view);
+                window = CreateWindow(layoutHost, 960, 720);
+                view.ApplyResponsiveLayout(726, 570);
+                window.Show();
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(726, 570);
+                FlushLayout(window);
+
+                var viewType = typeof(MediaCenterView);
+                var grid = (DataGrid)viewType.GetField("MediaInboxGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var pageScroller = (ScrollViewer)viewType.GetField("MediaInboxPageScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var batchRow = (WrapPanel)viewType.GetField("MediaInboxBatchActionRow", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var summary = (TextBlock)viewType.GetField("MediaInboxBatchSelectionSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var modeCombo = (ComboBox)viewType.GetField("MediaInboxModeCombo", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+
+                grid.SelectedIndex = 0;
+                FlushLayout(window);
+                view.ApplyResponsiveLayout(726, 570);
+                FlushLayout(window);
+
+                visibleRows = FindVisualChildren<DataGridRow>(grid)
+                    .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
+                    .Count(row =>
+                    {
+                        var bounds = BoundsIn(row, pageScroller);
+                        return bounds.Top >= -0.5 && bounds.Bottom <= pageScroller.ViewportHeight + 0.5;
+                    });
+                batchActionRows = MeasureWrapRows(batchRow, view).RowCount;
+                viewportHeight = pageScroller.ViewportHeight;
+                selectionText = summary.Text;
+                modeVisible = modeCombo.IsVisible;
+                var actionGeometry = string.Join("; ", batchRow.Children.OfType<FrameworkElement>().Select(child =>
+                {
+                    var bounds = BoundsIn(child, batchRow);
+                    var name = string.IsNullOrWhiteSpace(child.Name) ? child.GetType().Name : child.Name;
+                    return $"{name}={child.ActualWidth:0.##}@{bounds.Left:0.##},{bounds.Top:0.##}";
+                }));
+                geometry = $"grid={grid.ActualWidth:0.##}x{grid.ActualHeight:0.##}, pageViewport={pageScroller.ViewportHeight:0.##}, pageExtent={pageScroller.ExtentHeight:0.##}, batchWidth={batchRow.ActualWidth:0.##}, selection={selectionText}, actions=[{actionGeometry}]";
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        output.WriteLine($"{theme} common shell media inbox: visibleRows={visibleRows}, batchRows={batchActionRows}, modeVisible={modeVisible}; {geometry}");
+        Assert.Null(exception);
+        Assert.True(viewportHeight >= 300, $"the common 1040 shell viewport was unexpectedly short ({geometry})");
+        Assert.True(batchActionRows == 1, $"the selected 1040 shell toolbar should fit one readable action row ({geometry})");
+        Assert.True(modeVisible, "the current inbox mode filter must stay visible");
+        Assert.StartsWith("已选 1 项", selectionText);
+        Assert.True(visibleRows >= 4, $"the selected 1040 shell inbox must show four complete table rows before scrolling ({geometry})");
     }
 
     [Theory]
@@ -1145,11 +1242,11 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var inboxActions = (WrapPanel)typeof(MediaCenterView)
                     .GetField("MediaInboxBatchActionRow", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(mediaView)!;
-                mediaWindow = CreateWindow(mediaView, 700, 720);
+                mediaWindow = CreateWindow(mediaView, 520, 720);
                 mediaWindow.Show();
-                mediaView.ApplyResponsiveLayout(700, 720);
+                mediaView.ApplyResponsiveLayout(520, 720);
                 FlushLayout(mediaWindow);
-                mediaView.ApplyResponsiveLayout(700, 720);
+                mediaView.ApplyResponsiveLayout(520, 720);
                 FlushLayout(mediaWindow);
                 (inboxCompactRows, inboxCompactGap) = MeasureWrapRows(inboxActions, mediaView);
 

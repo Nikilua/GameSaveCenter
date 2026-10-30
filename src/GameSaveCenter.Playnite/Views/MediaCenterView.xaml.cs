@@ -834,6 +834,9 @@ namespace GameSaveCenter.Playnite.Views
             MediaInboxBatchIntroduction.Width = keepActionsTogether
                 ? Math.Max(0, width - MediaInboxBatchIntroduction.Margin.Left - MediaInboxBatchIntroduction.Margin.Right)
                 : double.NaN;
+            var wraps = width > 0 && actionWidth > 0
+                && (actionWidth > width || introductionWidth + actionWidth > width);
+            mediaInboxActionRowGap.SetRowGap(wraps ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
         }
 
         public void ApplyResponsiveLayout(double width, double height)
@@ -864,12 +867,7 @@ namespace GameSaveCenter.Playnite.Views
                 // The secondary inbox actions wrap through 576 DIP. Keep the same
                 // 20-DIP spacing as the other compact action rows in that range.
                 mediaInboxSecondaryActionRowGap.SetRowGap(width < 577d ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0d);
-                var batchActionWidth = MediaInboxBatchActionRow.ActualWidth;
                 UpdateMediaInboxBatchIntroduction();
-                var compactBatchActions = batchActionWidth > 0
-                    ? batchActionWidth < 960
-                    : width < 1040;
-                mediaInboxActionRowGap.SetRowGap(compactBatchActions ? ResponsiveLayoutCoordinator.CompactActionRowGap : 0);
                 // Keep the Demo's four metrics in one continuous strip. The page viewer
                 // carries excess height while each table and inspector keeps a finite
                 // inner scrolling surface.
@@ -999,8 +997,11 @@ namespace GameSaveCenter.Playnite.Views
                     ? Visibility.Visible
                     : Visibility.Collapsed;
                 MediaInboxCompactDetailsButton.Content = mediaInboxInspectorOpen
-                    ? "收起预览与归类 ›"
-                    : "查看预览与归类 ›";
+                    ? "收起详情 ›"
+                    : "查看详情 ›";
+                System.Windows.Automation.AutomationProperties.SetName(
+                    MediaInboxCompactDetailsButton,
+                    mediaInboxInspectorOpen ? "收起所选媒体详情" : "查看所选媒体预览与归类");
 
                 // The inbox table is the star-sized row inside MediaInboxTableFrame. Its
                 // floor is derived from the measured table chrome, not a stale single
