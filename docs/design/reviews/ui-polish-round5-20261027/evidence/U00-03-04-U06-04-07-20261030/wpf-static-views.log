@@ -1,0 +1,29 @@
+WARNING Development\UiFrameworkProbeView.xaml:57  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING Development\UiFrameworkProbeView.xaml:119  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:175  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:304  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:468  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:605  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:731  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:1002  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:1257  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:1295  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MaintenanceView.xaml:1347  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MediaCenterView.xaml:162  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MediaCenterView.xaml:269  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MediaCenterView.xaml:384  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MediaCenterView.xaml:441  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MediaCenterView.xaml:961  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MediaCenterView.xaml:990  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MediaCenterView.xaml:1055  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING MediaCenterView.xaml:1070  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING OverviewView.xaml:510  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING OverviewView.xaml:818  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING TrainerCenterView.xaml:79  Large scrollable control may be inside StackPanel; verify finite remaining size.
+WARNING TrainerCenterView.xaml:170  Large scrollable control may be inside StackPanel; verify finite remaining size.
+INFO    MediaCenterView.xaml:700  Hardcoded color found; views should usually use shared theme resources.
+INFO    MediaCenterView.xaml:701  Hardcoded color found; views should usually use shared theme resources.
+INFO    MediaCenterView.xaml:810  Hardcoded color found; views should usually use shared theme resources.
+INFO    MediaCenterView.xaml:810  Hardcoded color found; views should usually use shared theme resources.
+
+Scanned 10 XAML files: 0 errors, 23 warnings, 4 info.

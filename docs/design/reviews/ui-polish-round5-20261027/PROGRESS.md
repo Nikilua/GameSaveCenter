@@ -4,7 +4,7 @@
 
 SDK8.0.423 Release的`CompactWorkspaceTableViewportBehaviorTests`为14/14、0 skip；`scripts/build.cmd`编译8项目、0警告/0错误；源码检查通过。10个生产View XAML静态检查0错误，23条既有提示均在其他视图。固定UTC双主题Render QA为334图/0 PROBLEM；隔离状态夹具生成216图，归档两张代表图。首次仅测量宿主导致1条可见性断言失败，改为Window宿主后单测与整类均通过，原始TRX和原因保留。
 
-U00-03、U00-04、U06-04、U06-07仍为“代码完成待验收”；Demo源码、真实Playnite、外部UIA、实体输入/IME及物理DPI仍未验。80项计数保持7项已满足、71项代码完成待验收、1项进行中（U09-04）、1项远端待验（U09-06）。源码提交SHA和精确SHA CI结论将在提交后追加；本批未执行恢复、媒体删除或云端写入。
+实现提交`3139876b347ae380e663857ed2995605edc95872`已推送`main`。GitHub `windows-build.yml` run `41010673702`（1415）对精确SHA终态success；baseline job `123915583587`与SDK10.0.401复核 job `123915583967`均success，所有步骤完成。三份artifact均绑定该SHA，ID/digest见[本批证据](evidence/U00-03-04-U06-04-07-20261030/BASELINE.md)。当前workflow job总数2并均已通过；required-checks/branch-protection读取权限沿用U09-06既有403状态，仍记“远端待验”，不重复探测。U00-03、U00-04、U06-04、U06-07仍为“代码完成待验收”；Demo源码、真实Playnite、外部UIA、实体输入/IME及物理DPI仍未验。只清理本批两个自有`.tmp`目录共1,766个文件/292,224,197 bytes；C盘空闲3,908,599,808→4,199,956,480 bytes，D盘约16.99 GB，清理细节见[清单](evidence/U00-03-04-U06-04-07-20261030/cleanup.json)。80项计数保持7项已满足、71项代码完成待验收、1项进行中（U09-04）、1项远端待验（U09-06）。本批未执行恢复、媒体删除或云端写入。
 
 ## 2026-10-30 U09-04 重建U00基线与任务页滚动复测
 

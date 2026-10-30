@@ -37,8 +37,9 @@
       "pngCount": 334,
       "problemCount": 0,
       "report": "render-qa-report.txt",
-      "reportCommit": "4f3f82d31cfb9c1208adb5b8841db45afbbae34b",
-      "workingTreeCleanAtCapture": false
+      "reportCommit": "3139876b347ae380e663857ed2995605edc95872",
+      "workingTreeCleanAtCapture": true,
+      "rawLog": "render-qa.log"
     },
     {
       "command": "RenderHarness.exe statefixtures",
@@ -68,13 +69,18 @@
     },
     {
       "path": "BASELINE.md",
-      "bytes": 3685,
-      "sha256": "8a1e0799bd47c1d5fcfa5411e1908cba303cc2a30bd3ac9f4f0df66c8bc23433"
+      "bytes": 5296,
+      "sha256": "4b339974d752bde00b88cd3d1d5e31e15ea3ded5624d6f551ea8fe54e91bb0f1"
     },
     {
       "path": "build-compile.log",
       "bytes": 3477,
       "sha256": "bf540d8279cf1e59c9b80a1f599f5ae2be04c1e54e1aa4c653e5e04845554cb2"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 2100,
+      "sha256": "48d6c27f527c8d21a3069307fdcd22a797b0ed79b12a25593994c43f4ba7f444"
     },
     {
       "path": "compact-workspace-test.log",
@@ -83,13 +89,13 @@
     },
     {
       "path": "render-qa-report.txt",
-      "bytes": 1143188,
-      "sha256": "cbf3f5b9ad44211b19ebd0d0da1e2c69b27a7bf88e853c3b2bd617e4608cf483"
+      "bytes": 1143208,
+      "sha256": "31e68ac634d8eb7c2c947124a8e0de45ac37e18be948d060426cf6bf4db1a873"
     },
     {
       "path": "render-qa.log",
-      "bytes": 2108,
-      "sha256": "1474bbdf10e9b1659bab69727eca5a1d7942d2d48e176830af2214e5b89b3956"
+      "bytes": 1143866,
+      "sha256": "aeca1c126513a6069fc5451d926ca539c04364e0e6a1d6f5be6e1dc67149f91b"
     },
     {
       "path": "screenshots.json",
@@ -112,11 +118,6 @@
       "sha256": "5f2fc56608b9edbefc8a1c215fdef8d94538b44d07c93400e446435c1dbb4b7c"
     },
     {
-      "path": "wpf-static-views.log",
-      "bytes": 3188,
-      "sha256": "34a24cfeed952a7e5c6360db045b3882d22d6dd3d881855894ea8d46f68359ea"
-    },
-    {
       "path": "tests/compact-workspace-final.trx",
       "bytes": 22834,
       "sha256": "b500724cb842308e4c935ec22a338dbaddf2e4911fba4a40d597ed18b192959d"
@@ -130,6 +131,69 @@
       "path": "tests/initial-measure-only-host-failure.trx",
       "bytes": 29598,
       "sha256": "fc935ac07a3071e998ba2f622c3db656d1f2f82c8e6ee2968ad94b724e403864"
+    },
+    {
+      "path": "wpf-static-views.log",
+      "bytes": 3188,
+      "sha256": "34a24cfeed952a7e5c6360db045b3882d22d6dd3d881855894ea8d46f68359ea"
     }
-  ]
+  ],
+  "candidateCommit": "3139876b347ae380e663857ed2995605edc95872",
+  "postCommitRenderInitialAttempt": {
+    "outcome": "aborted before report generation: the Tee-Object log parent directory did not exist; the displayed stale native exit code was discarded",
+    "retryExitCode": 0,
+    "retryReport": "render-qa-report.txt"
+  },
+  "github": {
+    "workflow": ".github/workflows/windows-build.yml",
+    "runId": 41010673702,
+    "runNumber": 1415,
+    "event": "push",
+    "branch": "main",
+    "headSha": "3139876b347ae380e663857ed2995605edc95872",
+    "status": "completed",
+    "conclusion": "success",
+    "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41010673702",
+    "jobs": [
+      {
+        "name": "编译、测试与打包",
+        "id": 123915583587,
+        "status": "completed",
+        "conclusion": "success",
+        "steps": 15
+      },
+      {
+        "name": ".NET SDK 10.0.401 编译与测试复核",
+        "id": 123915583967,
+        "status": "completed",
+        "conclusion": "success",
+        "steps": 8
+      }
+    ],
+    "jobCount": 2,
+    "artifacts": [
+      {
+        "id": 12960145300,
+        "name": "GameSaveCenter-build-diagnostics",
+        "bytes": 2026907,
+        "headSha": "3139876b347ae380e663857ed2995605edc95872",
+        "digest": "sha256:cfe7ae307f100b990e26cbda61f55eddd4565a959fc3b067553e257d41c415c1"
+      },
+      {
+        "id": 12959623492,
+        "name": "GameSaveCenter-windows-preview",
+        "bytes": 90789336,
+        "headSha": "3139876b347ae380e663857ed2995605edc95872",
+        "digest": "sha256:50ce7b337b3b3b0fcadfcfa4c72b6fc22a2249c26173ac3fad2078d9e6b6e906"
+      },
+      {
+        "id": 12958721156,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "bytes": 970469,
+        "headSha": "3139876b347ae380e663857ed2995605edc95872",
+        "digest": "sha256:11df4fee9e127ebf1e19c701f8fa7c4c249235bb572529ded140cdce2695a543"
+      }
+    ],
+    "requiredChecks": "远端待验：既有required-checks/branch-protection读取返回403；不重复探测，按U09-06由有权限维护者只读核对。"
+  }
 }

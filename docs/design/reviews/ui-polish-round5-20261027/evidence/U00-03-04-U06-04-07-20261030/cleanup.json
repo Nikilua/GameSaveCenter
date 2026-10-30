@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-30",
+  "repoRoot": ".",
+  "allowedDeletionRoot": ".tmp",
+  "before": {
+    "driveSpaceBytes": [
+      {
+        "name": "C",
+        "freeBytes": 3903803392,
+        "usedBytes": 210845605888
+      },
+      {
+        "name": "D",
+        "freeBytes": 16999657472,
+        "usedBytes": 277973155840
+      }
+    ]
+  },
+  "removedTargets": [
+    {
+      "path": ".tmp/round5-save-demo-batch-20261030",
+      "files": 1370,
+      "bytes": 237553615.0,
+      "reparsePoints": 0,
+      "installPackageFiles": [],
+      "generatedExecutables": [
+        "testhost.exe",
+        "GameSaveCenter.Worker.exe",
+        "GameSaveCenter.Worker.exe",
+        "testhost.exe",
+        "apphost.exe"
+      ],
+      "note": "本批隔离编译、行为和渲染输出；生成的exe为testhost/worker/apphost，无zip、nupkg、msi安装包。"
+    },
+    {
+      "path": ".tmp/round5-save-demo-postcommit-renderqa-20261030",
+      "files": 396,
+      "bytes": 54670582.0,
+      "reparsePoints": 0,
+      "installPackageFiles": [],
+      "generatedExecutables": [],
+      "note": "本批隔离编译、行为和渲染输出；生成的exe为testhost/worker/apphost，无zip、nupkg、msi安装包。"
+    }
+  ],
+  "checks": {
+    "normalizedAbsolutePathsWithinRepoTmp": true,
+    "reparsePointCount": 0,
+    "processQuery": "Get-Process; Win32_Process WMI was denied",
+    "relevantProcessesReferencingTargets": 0,
+    "commandLineVisibility": "Get-Process does not expose command lines; relevant executable paths were available",
+    "documentationReferencesToTempRoots": 0,
+    "packageFilesFound": 0,
+    "userOrOtherTaskOutputsTouched": false
+  },
+  "removeCommand": "Remove-Item -LiteralPath <normalized-target> -Recurse -Force",
+  "after": {
+    "driveSpaceBytes": [
+      {
+        "name": "C",
+        "freeBytes": 4199956480,
+        "usedBytes": 210549452800
+      },
+      {
+        "name": "D",
+        "freeBytes": 16999657472,
+        "usedBytes": 277973155840
+      }
+    ],
+    "targetsStillExist": false
+  }
+}

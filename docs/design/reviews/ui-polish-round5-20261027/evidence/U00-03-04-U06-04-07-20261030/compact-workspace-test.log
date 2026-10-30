@@ -1,0 +1,30 @@
+[repo]\[batch]\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.82]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.87]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.PageSizingTracksCurrentHostHeightAndKeepsDetailsReachableAfterResize [3 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.LongHistoryDetailsKeepThreeScrollOffsetsIndependent(dark: True) [742 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.LongHistoryDetailsKeepThreeScrollOffsetsIndependent(dark: False) [497 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.CompactTaskInspectorReversesItsTransitionWithoutMovingTheQueueAnchor [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.SaveHistoryKeepsRequiredStatusVisibleAndViewManagementExpandable [401 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.BulkHistorySelectionSurvivesInspectorBreakpointRoundTrips(dark: True) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.BulkHistorySelectionSurvivesInspectorBreakpointRoundTrips(dark: False) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.SaveHistoryAndPathTablesKeepFiniteInnerScrollbarsInsideScrollablePages [204 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.CompactTaskQueueFrameFitsInsideItsInitialPageViewport [242 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.WideWorkspacesKeepNestedScrollbarsWithinTheirSurfaces [758 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.CompactTaskInspectorHonorsReducedMotionAndClosesImmediately [295 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.CurrentMediaListAndInspectorKeepFiniteScrollbarsInsideScrollablePage [127 ms]
+[xUnit.net 00:00:16.15]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.ScreenshotSizedCompactWorkspacesKeepFourRowsAndReachLowerDetails [494 ms]
+  已通过 GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests.TaskQueueAndCompactInspectorKeepTheirOwnScrollbarsInsideScrollablePage [77 ms]
+
+测试运行成功。
+测试总数: 14
+     通过数: 14
+总时间: 17.5583 秒
+结果文件: [repo]\[batch]\final-class-test-rerun-results\round5-save-demo-final-class-rerun.trx
