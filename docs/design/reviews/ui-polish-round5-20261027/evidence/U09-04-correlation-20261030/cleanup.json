@@ -1,0 +1,82 @@
+{
+  "phase": "U09-04 correlation diagnostic",
+  "initialTempPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-correlation-20261030",
+  "normalizedTempRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp",
+  "insideTmpRoot": true,
+  "containedUserOrSharedFiles": false,
+  "fileCount": 7598,
+  "bytes": 534241468.0,
+  "reparsePointCount": 0,
+  "buildOrRenderProcessesUsingWorkspace": [],
+  "documentationMatches": 0,
+  "processInspection": "Get-Process inventory found no dotnet, MSBuild, or RenderHarness. Win32_Process command-line enumeration returned access denied and was not retried. Existing Playnite process was not terminated.",
+  "reason": "Initial full git archive included unrelated tracked historical evidence; replaced with project-scoped source snapshot before instrumentation.",
+  "requiredCommand": "Remove-Item -LiteralPath <normalized phase path> -Recurse -Force",
+  "diskFreeBefore": {
+    "CBytes": 5387563008,
+    "DBytes": 18823077888
+  },
+  "diskFreeAfter": {
+    "CBytes": 5385109504,
+    "DBytes": 18823012352
+  },
+  "removed": true,
+  "additionalTempCleanup": {
+    "targetPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-correlation-20261030",
+    "normalizedTmpRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp",
+    "insideTmpRoot": true,
+    "ownedByThisPhase": true,
+    "fileCount": 327,
+    "bytes": 7854648.0,
+    "reparsePointCount": 0,
+    "activeSdkBuildProcesses": [],
+    "activeRenderOrMsbuildProcesses": [],
+    "markdownLinksIntoTemp": 0,
+    "historicalTempPathTextInEvidence": "preparation.json and cleanup records retain the deleted path as audit data, not as active links",
+    "buildServerShutdownExit": 0,
+    "stoppedOwnedSdkProcessIds": [
+      1304,
+      4144,
+      11968,
+      12884,
+      24700,
+      25184,
+      27828,
+      28084,
+      28924,
+      29452,
+      29520,
+      30224,
+      30348,
+      30776,
+      30864,
+      31200,
+      31848,
+      32084,
+      32800,
+      33096,
+      33812,
+      33988,
+      34948,
+      35380,
+      35584,
+      35720,
+      35788,
+      36516,
+      36760,
+      36832
+    ],
+    "preservedPlayniteProcessId": 30324,
+    "processCommandLineInspection": "Win32_Process enumeration denied access; not retried. Get-Process confirmed no matching SDK/render processes after owned nodes stopped.",
+    "diskFreeBefore": {
+      "CBytes": 5361762304,
+      "DBytes": 18823012352
+    },
+    "diskFreeAfter": {
+      "CBytes": 5370429440,
+      "DBytes": 18823012352
+    },
+    "removed": true,
+    "command": "Remove-Item -LiteralPath <normalized target path> -Recurse -Force"
+  }
+}

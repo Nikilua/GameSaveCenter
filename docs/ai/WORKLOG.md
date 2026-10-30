@@ -1,3 +1,15 @@
+## 2026-10-30 U09-04 布局尾部统计与探针恢复尝试
+
+对已有当前候选三轮parts.csv/Rendering样本复核：布局70样本/轮，p95为472.10、649.76、620.42 ms；>300 ms共17/210，出现在七页、两主题；时长与分配Pearson r为0.153、0.204、0.318。搜索/滚动和托管分配与e6接近，Rendering回调尾部与布局p95偏高；没有时间戳/GC计数，无法归因。
+
+临时隔离探针已加入布局起止时间与GC计数，但没有编译或运行。SDK8.0.423 restore详细log/binlog显示MSB4276，两个Workload locator目录缺失；--no-restore复制的旧资产路径另报NETSDK1064，用户级Newtonsoft包虽存在，恢复仍受locator失败阻断。未换SDK、补造目录、改依赖或改生产源码。日志、binlog、资产路径、未编译补丁和可复算分析见docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-correlation-20261030/。U09-04继续进行中；以同版完整SDK和有效NuGet资产路径重新构建后，再跑相同70周期三轮做时间/GC关联。
+
+本阶段现有数据分析和文档没有新源码验证需求；未跑完整安装启动链或scripts/build.cmd，不把5c0c57b0旧全链外推到新提交。纯文档阶段源码校验通过；更新文档检查693个相对链接、0个失效；git diff --check通过，仅提示既有CRLF文件的行尾转换警告。状态计数保持6/71/2/1。
+
+## 2026-10-30 Round5提交4e0fb814 GitHub CI远端待验
+
+4e0fb814f7ec2040383a9f34e197790468d6f599推送main后，适用job为build与sdk10-build。现有GitHub run查询只支持PR触发并返回空，combined status为空，直接Actions URL无法由当前工具读取；没有run/job/artifact身份可核，记录远端待验。下一步通过有权限的Actions读取接口按精确SHA检查两job终态、全部步骤和artifact SHA/digest；必要时由有权限维护者作只读查询。证据：docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U07-01-04-pair-20261030/ci-4e0fb814.json。
+
 ## 2026-10-30 U09-01补U07-01～04历史配对
 
 按同一固定假数据时间重建`ac0afe72`、`2aba614f`、`7c4d0775`三个历史生产快照，SDK8.0.423 Release下Worker与修正后RenderHarness均构建退出0；26次双主题定向捕获退出0，覆盖对话框双尺寸。18张唯一图、16份测量报告、三个源码/产物SHA清单和构建日志归档于Round5 `evidence/U09-01-U07-01-04-pair-20261030/`。确认U07-01/02从单行溢出变成安全换行；U07-03 Tooltip从Mouse改为控件下方；U07-04必要列继续禁用并新增鼠标提示，与UIA HelpText一致。首次探针误画空提示、宿主样式缺失等失败诊断保留。

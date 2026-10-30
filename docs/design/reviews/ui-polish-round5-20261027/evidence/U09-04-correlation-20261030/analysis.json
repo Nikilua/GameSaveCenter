@@ -1,0 +1,272 @@
+{
+  "sourceCandidate": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+  "currentRuns": [
+    {
+      "run": "measurement-1-current",
+      "layout": {
+        "samples": 70,
+        "p50Ms": 46.8786,
+        "p95Ms": 472.097,
+        "maxMs": 767.2513,
+        "over300Ms": 4,
+        "pearsonDurationVsAllocation": 0.3178621043183375
+      },
+      "layoutOver300Ms": [
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 767.2513,
+          "allocatedBytes": 10368088
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 577.6409,
+          "allocatedBytes": 5275776
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 472.097,
+          "allocatedBytes": 2949176
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 710.5328,
+          "allocatedBytes": 2949120
+        }
+      ],
+      "activeRenderingIntervals": {
+        "samples": 710,
+        "p50Ms": 16.0051,
+        "p95Ms": 354.4483,
+        "maxMs": 1168.9808,
+        "over33_3Ms": 143,
+        "over100Ms": 139
+      },
+      "partsCsvSha256": "985b6756312a51eeba17a2b14070f5ba80dff79767fd5729a13525978d280767",
+      "framesCsvSha256": "5d8573c8e6d70efac52844ccdb5899ca40d35bdff76e0a048a739ea43bc2d654"
+    },
+    {
+      "run": "measurement-2-current",
+      "layout": {
+        "samples": 70,
+        "p50Ms": 47.4759,
+        "p95Ms": 649.7599,
+        "maxMs": 741.1832,
+        "over300Ms": 7,
+        "pearsonDurationVsAllocation": 0.20427187087135545
+      },
+      "layoutOver300Ms": [
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 738.4854,
+          "allocatedBytes": 5497048
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 455.4478,
+          "allocatedBytes": 2949664
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 441.8977,
+          "allocatedBytes": 2752576
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 741.1832,
+          "allocatedBytes": 4554880
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 453.446,
+          "allocatedBytes": 5866016
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 724.2822,
+          "allocatedBytes": 6086832
+        },
+        {
+          "page": "NotificationInboxView",
+          "theme": "Dark",
+          "durationMs": 649.7599,
+          "allocatedBytes": 3129456
+        }
+      ],
+      "activeRenderingIntervals": {
+        "samples": 697,
+        "p50Ms": 16.0892,
+        "p95Ms": 338.0732,
+        "maxMs": 1184.6039,
+        "over33_3Ms": 143,
+        "over100Ms": 136
+      },
+      "partsCsvSha256": "82483554b1c3b1f40612768a0cf704cb64dfcb153d857301dd15d44e2f246c30",
+      "framesCsvSha256": "288799cccbfd85ca407a39cecfbe2738ebaa362d251cbed6e3ee0286be5be394"
+    },
+    {
+      "run": "measurement-3-current",
+      "layout": {
+        "samples": 70,
+        "p50Ms": 47.7603,
+        "p95Ms": 620.4187,
+        "maxMs": 753.1061,
+        "over300Ms": 6,
+        "pearsonDurationVsAllocation": 0.15251557096696722
+      },
+      "layoutOver300Ms": [
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 753.1061,
+          "allocatedBytes": 7795136
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 687.3595,
+          "allocatedBytes": 2842624
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 588.7575,
+          "allocatedBytes": 5267528
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 530.2075,
+          "allocatedBytes": 2949200
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 620.4187,
+          "allocatedBytes": 2949952
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 657.2283,
+          "allocatedBytes": 2949120
+        }
+      ],
+      "activeRenderingIntervals": {
+        "samples": 657,
+        "p50Ms": 16.1078,
+        "p95Ms": 360.335,
+        "maxMs": 1005.6191,
+        "over33_3Ms": 135,
+        "over100Ms": 132
+      },
+      "partsCsvSha256": "edd9eee6fae8cf0be9e2cb4b607b9d1d955f6e66fd3ddd21294b73053937cbbd",
+      "framesCsvSha256": "09b8d530cdfd8eba33ed3a9fbe2fe09ad93ee1e1cb780e7a62809843f37bec60"
+    }
+  ],
+  "highLevelComparison": [
+    {
+      "series": "current",
+      "run": "1",
+      "active_allocated_bytes": "8877926808",
+      "rendering_samples": "710",
+      "rendering_p50_ms": "16.005",
+      "rendering_p95_ms": "354.448",
+      "rendering_max_ms": "1168.981",
+      "rendering_over_16_7_ms": "268",
+      "rendering_over_33_3_ms": "143",
+      "rendering_over_33_3_pct": "20.14",
+      "workspace_switch_median_ms": "293.48",
+      "workspace_switch_p95_ms": "709.49",
+      "synthetic_search_p95_ms": "6.31",
+      "scroll_p95_ms": "33.18",
+      "details_open_p95_ms": "42.08",
+      "details_close_p95_ms": "20.34"
+    },
+    {
+      "series": "current",
+      "run": "2",
+      "active_allocated_bytes": "8877503440",
+      "rendering_samples": "697",
+      "rendering_p50_ms": "16.089",
+      "rendering_p95_ms": "338.073",
+      "rendering_max_ms": "1184.604",
+      "rendering_over_16_7_ms": "273",
+      "rendering_over_33_3_ms": "143",
+      "rendering_over_33_3_pct": "20.52",
+      "workspace_switch_median_ms": "287.52",
+      "workspace_switch_p95_ms": "832.56",
+      "synthetic_search_p95_ms": "7.14",
+      "scroll_p95_ms": "31.33",
+      "details_open_p95_ms": "39.62",
+      "details_close_p95_ms": "19.01"
+    },
+    {
+      "series": "current",
+      "run": "3",
+      "active_allocated_bytes": "8877843448",
+      "rendering_samples": "657",
+      "rendering_p50_ms": "16.108",
+      "rendering_p95_ms": "360.335",
+      "rendering_max_ms": "1005.619",
+      "rendering_over_16_7_ms": "261",
+      "rendering_over_33_3_ms": "135",
+      "rendering_over_33_3_pct": "20.55",
+      "workspace_switch_median_ms": "292.48",
+      "workspace_switch_p95_ms": "854.35",
+      "synthetic_search_p95_ms": "6.17",
+      "scroll_p95_ms": "30.90",
+      "details_open_p95_ms": "37.75",
+      "details_close_p95_ms": "20.52"
+    },
+    {
+      "series": "e6",
+      "run": "1",
+      "active_allocated_bytes": "8876853888",
+      "rendering_samples": "998",
+      "rendering_p50_ms": "15.758",
+      "rendering_p95_ms": "286.317",
+      "rendering_max_ms": "616.769",
+      "rendering_over_16_7_ms": "285",
+      "rendering_over_33_3_ms": "144",
+      "rendering_over_33_3_pct": "14.43",
+      "workspace_switch_median_ms": "282.96",
+      "workspace_switch_p95_ms": "388.30",
+      "synthetic_search_p95_ms": "6.96",
+      "scroll_p95_ms": "31.06",
+      "details_open_p95_ms": "39.04",
+      "details_close_p95_ms": "18.91"
+    },
+    {
+      "series": "e6",
+      "run": "2",
+      "active_allocated_bytes": "8876745224",
+      "rendering_samples": "863",
+      "rendering_p50_ms": "15.859",
+      "rendering_p95_ms": "305.010",
+      "rendering_max_ms": "600.357",
+      "rendering_over_16_7_ms": "284",
+      "rendering_over_33_3_ms": "143",
+      "rendering_over_33_3_pct": "16.57",
+      "workspace_switch_median_ms": "285.54",
+      "workspace_switch_p95_ms": "413.79",
+      "synthetic_search_p95_ms": "6.38",
+      "scroll_p95_ms": "31.50",
+      "details_open_p95_ms": "38.07",
+      "details_close_p95_ms": "24.29"
+    }
+  ],
+  "totalLayoutSamples": 210,
+  "totalLayoutOver300Ms": 17,
+  "allocationNote": "Pearson correlation is descriptive only; no causal attribution.",
+  "frameNote": "CompositionTarget.Rendering callback gaps are not presented/VSync frames."
+}

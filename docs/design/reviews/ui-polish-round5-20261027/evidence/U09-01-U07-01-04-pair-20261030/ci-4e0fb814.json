@@ -1,0 +1,21 @@
+{
+  "headSha": "4e0fb814f7ec2040383a9f34e197790468d6f599",
+  "branch": "main",
+  "event": "push",
+  "workflow": ".github/workflows/windows-build.yml",
+  "applicableJobs": [
+    "build",
+    "sdk10-build"
+  ],
+  "checks": {
+    "github_fetch_commit_workflow_runs": "[]; available connector method filters pull-request-triggered runs and is not a push-run inventory",
+    "github_get_commit_combined_status": "statuses=[]",
+    "authenticatedActionsRunListing": "not available through current connector",
+    "directActionsApi": "URL not accessible through current web tool",
+    "runIds": [],
+    "jobIds": [],
+    "artifactIds": []
+  },
+  "result": "远端待验",
+  "nextStep": "使用有权限的 GitHub Actions 读取接口按精确 head SHA 查询 push run；确认 build 与 sdk10-build 终态、全部步骤及 artifact head SHA/digest；若本连接器仍不支持，交由有权限维护者执行只读查询。"
+}

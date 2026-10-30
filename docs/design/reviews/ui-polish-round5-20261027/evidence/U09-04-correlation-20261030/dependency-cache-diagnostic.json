@@ -1,0 +1,19 @@
+{
+  "dependency": "Newtonsoft.Json/13.0.3",
+  "stalePackageFolders": [
+    "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-01-pairs-20261030\\nuget-packages",
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+  ],
+  "stalePackageFolderExists": [
+    false,
+    true
+  ],
+  "userGlobalPackageRoot": "C:\\Users\\lopmatu\\.nuget\\packages",
+  "packageExists": true,
+  "restoreDefaultExit": 1,
+  "restoreWithUserCacheExit": 1,
+  "restoreDiagnosticExit": 1,
+  "restoreFailure": "MSB4276: missing Microsoft.NET.SDK.WorkloadAutoImportPropsLocator and Microsoft.NET.SDK.WorkloadManifestTargetsLocator SDK directories",
+  "noRestoreBuildExit": 1,
+  "noRestoreBuildFailure": "NETSDK1064: Newtonsoft.Json 13.0.3 was not found in the stale package folder recorded in copied project.assets.json."
+}

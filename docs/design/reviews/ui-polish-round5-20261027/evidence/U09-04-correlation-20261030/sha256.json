@@ -1,0 +1,97 @@
+{
+  "algorithm": "SHA-256",
+  "scope": "all evidence files except this self-referential manifest",
+  "fileCount": 18,
+  "files": [
+    {
+      "path": "analysis.json",
+      "bytes": 8358,
+      "sha256": "86C1AACC8C047FD97CE01771425061EEC81D6BE0FEB80A2F15CBB8CDF79A3228"
+    },
+    {
+      "path": "analyze-currentperf.py",
+      "bytes": 3114,
+      "sha256": "62C0EF1B66F0F24BD71EC405E5EE70DA4B827FCB745278F60429F22BD1BC5025"
+    },
+    {
+      "path": "BASELINE.md",
+      "bytes": 4295,
+      "sha256": "D9436C3186E8E2168774D6D4C330AB26F7DBA4260C194F4F7284F00DD592F062"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 2821,
+      "sha256": "7DC97DF049C60AF9A544D895146429B7BDCC166BBA363B1BCF4A63E8A4E78E81"
+    },
+    {
+      "path": "dependency-cache-diagnostic.json",
+      "bytes": 876,
+      "sha256": "138D2C99BA1A6EF058075FD287D7E9319776E18B0553E902AB8D705DB650B93B"
+    },
+    {
+      "path": "instrumentation-program-identity.json",
+      "bytes": 328,
+      "sha256": "7537AECC4A7E80976664A348A1F2C5DEC16666B56A5C18E9F6682AC626232299"
+    },
+    {
+      "path": "instrumentation.json",
+      "bytes": 422,
+      "sha256": "44E7C9991132C5F31F376C7854E470273B24A1E1A85D3055AAA40A6F9D74D7B8"
+    },
+    {
+      "path": "logs/build-no-restore.log",
+      "bytes": 1205,
+      "sha256": "163BC3AA213319F010399644AE61083EFC9EDAD8EECE074B508A0BF0F8EC0FF4"
+    },
+    {
+      "path": "logs/restore-default.log",
+      "bytes": 37,
+      "sha256": "6A256436DA3DC88BBFE7E33A2702144E59BF5C3A6DA99D9BDF83E9E778024908"
+    },
+    {
+      "path": "logs/restore-diagnostic.binlog",
+      "bytes": 359989,
+      "sha256": "7F640F686375CBEFC86FC1E9056458C0444CCB31EC7AB5CF204BDFF602A43E8E"
+    },
+    {
+      "path": "logs/restore-diagnostic.log",
+      "bytes": 1265514,
+      "sha256": "033C83E0928EA789B0B8140B26825E3A4FE5E6DD0B4F1960D4EEE6F32EBAB4C1"
+    },
+    {
+      "path": "logs/restore-packagespath.log",
+      "bytes": 37,
+      "sha256": "6A256436DA3DC88BBFE7E33A2702144E59BF5C3A6DA99D9BDF83E9E778024908"
+    },
+    {
+      "path": "original-program.json",
+      "bytes": 106,
+      "sha256": "E8D8D18370EBA1F741819700448FCA73506A4D06EB8BE0718FDC6D4569026305"
+    },
+    {
+      "path": "preparation.json",
+      "bytes": 1409,
+      "sha256": "27E42C942532AF6884541A9FF00EECA29088CFC77BFC0CE2F1865A5B32689962"
+    },
+    {
+      "path": "probe/Program.cs.base-instrumentation.patch.json",
+      "bytes": 7462,
+      "sha256": "52012884D16EB2C43B4C695083E9A01A612B72C18FB4910C997C37A44DA20314"
+    },
+    {
+      "path": "probe/Program.cs.gc-timestamp-delta.uncompiled.patch.json",
+      "bytes": 7567,
+      "sha256": "B9639EED34A43E105AE116C034E12C00A9EA585989B14D571F1008CB0A4F8154"
+    },
+    {
+      "path": "probe/U09Performance.uncompiled.cs",
+      "bytes": 7402,
+      "sha256": "438BEC8510DFD2DC28FD0A04A575FD6A5598FE58CF67CC16B6E46CD80D05F215"
+    },
+    {
+      "path": "restored-assets-copy.json",
+      "bytes": 4397,
+      "sha256": "E99355E8872BBDAF83814E20FD79A1B1F167905CBEBB33D6B05104DF07543657"
+    }
+  ]
+}

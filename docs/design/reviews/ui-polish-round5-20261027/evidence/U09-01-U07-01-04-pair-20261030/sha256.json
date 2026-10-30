@@ -1,7 +1,7 @@
 {
   "algorithm": "SHA-256",
   "scope": "all evidence files except this self-referential manifest",
-  "fileCount": 56,
+  "fileCount": 57,
   "files": [
     {
       "path": "BASELINE.md",
@@ -104,9 +104,39 @@
       "sha256": "B211F53B51DA8D6F3F45C5CEF9A390A6D7A49070A0A7AAF22FB4547E71537104"
     },
     {
+      "path": "ci-4e0fb814.json",
+      "bytes": 944,
+      "sha256": "50F726592C3F977F719DE3E771BFCE0C97C5C1F2559A08F2B110A808B9DF36F0"
+    },
+    {
       "path": "cleanup.json",
       "bytes": 2384,
       "sha256": "F403FC87C47ED4AB04D362CFD742453124690FD1CF21F710CBAD2CF93B6D1BBB"
+    },
+    {
+      "path": "logs/U07-01-02-after-tooltip-argument-failure.txt",
+      "bytes": 84,
+      "sha256": "B6AACB6A3614AB59127D14C57594E7C11451FC9CDAE2389BF2EC5FFE5AD60A8D"
+    },
+    {
+      "path": "logs/U07-01-02-after-tooltip-resources-failure.txt",
+      "bytes": 1830,
+      "sha256": "983785EFFE2FAC38195AA34E1BA32E70283EB11E9B07D95C980AFEDF4DE36958"
+    },
+    {
+      "path": "logs/U07-01-02-before-dialog-second-attempt-failure.txt",
+      "bytes": 560,
+      "sha256": "94FD5DC04E86270976789D5E85C0ABA5F6FFB17B184D4AD9FD988EC23D760956"
+    },
+    {
+      "path": "logs/U07-01-02-before-harness-first-attempt-failure.txt",
+      "bytes": 2962,
+      "sha256": "F7257F2C661E886218ADD212C172367B62784366213418B7D76EC42C787F7829"
+    },
+    {
+      "path": "logs/U07PairProbe.cs",
+      "bytes": 20007,
+      "sha256": "06A49745E624EE3953BB770B1E6B910AAC6476F33A762DA4BFAA84BB2E3018ED"
     },
     {
       "path": "logs/build-U07-01-02-after-render-harness.txt",
@@ -152,31 +182,6 @@
       "path": "logs/run-snapshots.ps1",
       "bytes": 9390,
       "sha256": "EB415F1AAA7022E6758A6C0017CE63A94FDF13EC77C901AE9D402DA0E40E9188"
-    },
-    {
-      "path": "logs/U07-01-02-after-tooltip-argument-failure.txt",
-      "bytes": 84,
-      "sha256": "B6AACB6A3614AB59127D14C57594E7C11451FC9CDAE2389BF2EC5FFE5AD60A8D"
-    },
-    {
-      "path": "logs/U07-01-02-after-tooltip-resources-failure.txt",
-      "bytes": 1830,
-      "sha256": "983785EFFE2FAC38195AA34E1BA32E70283EB11E9B07D95C980AFEDF4DE36958"
-    },
-    {
-      "path": "logs/U07-01-02-before-dialog-second-attempt-failure.txt",
-      "bytes": 560,
-      "sha256": "94FD5DC04E86270976789D5E85C0ABA5F6FFB17B184D4AD9FD988EC23D760956"
-    },
-    {
-      "path": "logs/U07-01-02-before-harness-first-attempt-failure.txt",
-      "bytes": 2962,
-      "sha256": "F7257F2C661E886218ADD212C172367B62784366213418B7D76EC42C787F7829"
-    },
-    {
-      "path": "logs/U07PairProbe.cs",
-      "bytes": 20007,
-      "sha256": "06A49745E624EE3953BB770B1E6B910AAC6476F33A762DA4BFAA84BB2E3018ED"
     },
     {
       "path": "retry-cleanup-attempt-2.json",

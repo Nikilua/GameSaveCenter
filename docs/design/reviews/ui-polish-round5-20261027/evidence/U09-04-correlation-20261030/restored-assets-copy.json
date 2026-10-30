@@ -1,0 +1,110 @@
+[
+  {
+    "project": "GameSaveCenter.Contracts",
+    "source": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\src\\GameSaveCenter.Contracts\\obj",
+    "destination": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-correlation-20261030\\build\\obj\\GameSaveCenter.Contracts",
+    "files": [
+      {
+        "name": "GameSaveCenter.Contracts.csproj.nuget.g.props",
+        "bytes": 1307,
+        "sha256": "86AB9D5EA0F287C5A4583ED6EAEA86C94523AD5ED6F3D10F9EF4CA96A833A32D"
+      },
+      {
+        "name": "GameSaveCenter.Contracts.csproj.nuget.g.targets",
+        "bytes": 489,
+        "sha256": "CD4A8B8D1B46CABB06F8EE4ABF95A51ECB58A5A3AF0391796A629988BC2D1249"
+      },
+      {
+        "name": "project.assets.json",
+        "bytes": 12655,
+        "sha256": "24BDCCF844638BBBD703AE0ED026272B18A8BDC1A945CFD7A0AB71B574525DC4"
+      },
+      {
+        "name": "project.nuget.cache",
+        "bytes": 525,
+        "sha256": "770EBBA90FC440409574A598E531E7CD83FF1172718E4D69CE6429CC22F41544"
+      }
+    ]
+  },
+  {
+    "project": "GameSaveCenter.Core",
+    "source": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\src\\GameSaveCenter.Core\\obj",
+    "destination": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-correlation-20261030\\build\\obj\\GameSaveCenter.Core",
+    "files": [
+      {
+        "name": "GameSaveCenter.Core.csproj.nuget.g.props",
+        "bytes": 1307,
+        "sha256": "86AB9D5EA0F287C5A4583ED6EAEA86C94523AD5ED6F3D10F9EF4CA96A833A32D"
+      },
+      {
+        "name": "GameSaveCenter.Core.csproj.nuget.g.targets",
+        "bytes": 489,
+        "sha256": "CD4A8B8D1B46CABB06F8EE4ABF95A51ECB58A5A3AF0391796A629988BC2D1249"
+      },
+      {
+        "name": "project.assets.json",
+        "bytes": 13584,
+        "sha256": "9E3E4CC5BB7950721F9DB317A12CDA5F10EB5C6F403676D61CA7F09AAA7BB123"
+      },
+      {
+        "name": "project.nuget.cache",
+        "bytes": 515,
+        "sha256": "DA148522715941FA2AA827205983FFC332734113A8A9D2C9CB1BD01CF7A7F7D1"
+      }
+    ]
+  },
+  {
+    "project": "GameSaveCenter.Playnite",
+    "source": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\src\\GameSaveCenter.Playnite\\obj",
+    "destination": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-correlation-20261030\\build\\obj\\GameSaveCenter.Playnite",
+    "files": [
+      {
+        "name": "GameSaveCenter.Playnite.csproj.nuget.g.props",
+        "bytes": 1307,
+        "sha256": "86AB9D5EA0F287C5A4583ED6EAEA86C94523AD5ED6F3D10F9EF4CA96A833A32D"
+      },
+      {
+        "name": "GameSaveCenter.Playnite.csproj.nuget.g.targets",
+        "bytes": 579,
+        "sha256": "F018761F50F541132E1ED87A1F33124DF17E7C9585DAE6B60550ACE455364D90"
+      },
+      {
+        "name": "project.assets.json",
+        "bytes": 30246,
+        "sha256": "C761BDB7EA0CFB548701AE77F08517BB726E9603F6CF7DF8D31020F1A6046C10"
+      },
+      {
+        "name": "project.nuget.cache",
+        "bytes": 660,
+        "sha256": "446D84EC49325D9B5466B6244E785E1B95B31CD2A61E9F36C6A2E2458578E5C5"
+      }
+    ]
+  },
+  {
+    "project": "GameSaveCenter.RenderHarness",
+    "source": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.RenderHarness\\obj",
+    "destination": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-correlation-20261030\\build\\obj\\GameSaveCenter.RenderHarness",
+    "files": [
+      {
+        "name": "GameSaveCenter.RenderHarness.csproj.nuget.g.props",
+        "bytes": 1551,
+        "sha256": "E874C63F2D58A5FBA9EC89BE03485D223153EDC53D708E426AE3D51326C21D2F"
+      },
+      {
+        "name": "GameSaveCenter.RenderHarness.csproj.nuget.g.targets",
+        "bytes": 581,
+        "sha256": "CBF8937FC50E35E71D126BB7FCA1D79622CAC9DBBC3FCE26A22DB36C21D1215D"
+      },
+      {
+        "name": "project.assets.json",
+        "bytes": 32878,
+        "sha256": "C79514F14A25E84B7585723373EE3F1E9796757F13426CE99B22FDD219E85107"
+      },
+      {
+        "name": "project.nuget.cache",
+        "bytes": 933,
+        "sha256": "B5A877921434BADC6F6D150DDB18164B9DDCDA55AF1FC37C47BAF78EAD0A37D1"
+      }
+    ]
+  }
+]

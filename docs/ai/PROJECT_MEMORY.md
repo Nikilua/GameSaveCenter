@@ -1,3 +1,11 @@
+## 2026-10-30 U09-04性能尾部证据与恢复条件
+
+当前候选三轮布局70样本/轮，p95 472–650 ms，17/210次超过300 ms，覆盖七页；分配相关性弱但非因果结论。Rendering回调不是屏幕呈现帧；合成搜索不代表实体键盘/IME；U00原始逐帧/分配与真实Playnite仍缺。补充时间戳/GC探针暂时未编译：同版SDK8.0.423缺WorkloadAutoImportPropsLocator与WorkloadManifestTargetsLocator目录，旧project.assets还指向已清理包目录。不要换SDK/造缺失目录/改动画时长；恢复条件是同版本完整SDK和正确NuGet资产路径，再运行同协议事件对齐。生产代码未改，U09-04保持进行中。
+
+## 2026-10-30 Round5精确提交CI查询边界
+
+4e0fb814f7ec2040383a9f34e197790468d6f599适用build与sdk10-build；本机连接器run查询只过滤PR事件，空结果及空combined status不证明push通过。按精确SHA的push run仍需有权限Actions读取接口查询；required-check保护403不重复试探。
+
 ## 2026-10-30：历史RenderHarness配对取证
 
 `git archive`快照不含`.git`，Render QA文本中的Commit字段会读到外层工作树HEAD，不能作为历史源身份；需以原始Git commit SHA和`git archive` SHA-256共同标识。对动态WPF状态取图时，固定UTC时钟和假数据属性，并保存临时fixture/探针哈希。U08-05/06已补双主题、1040×700/1366×768目标页截图；历史全局QA若有Media/侧栏问题，必须在报告里保留并按目标页逐行核对，不得宣称全局通过。当前行为测试必须设置真实`GSC_BUILD_COMMIT`与`GSC_SOURCE_ROOT`，不得从缺少Git身份的压缩快照直接裸跑。

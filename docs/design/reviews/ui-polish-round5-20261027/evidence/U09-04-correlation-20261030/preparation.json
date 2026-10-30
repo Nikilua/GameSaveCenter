@@ -1,0 +1,44 @@
+{
+  "phase": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-correlation-20261030",
+  "sourceCandidate": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+  "currentHead": "4e0fb814f7ec2040383a9f34e197790468d6f599",
+  "currentProductionAndTestTreeMatchesCandidate": true,
+  "archiveSha256": "95B53BCECE7BAC9DC2CAF35D30567024BE538F8625E90C2893D0CCE712537793",
+  "sourceFileCount": 296,
+  "sourceBytes": 5068629.0,
+  "sdkPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-01-03\\dotnet-sdk8\\dotnet.exe",
+  "sdkVersion": "8.0.423",
+  "diskBefore": [
+    {
+      "name": "C",
+      "freeBytes": 5384773632,
+      "usedBytes": 209364635648
+    },
+    {
+      "name": "D",
+      "freeBytes": 18823077888,
+      "usedBytes": 276149735424
+    }
+  ],
+  "processesBefore": [
+    {
+      "id": 30324,
+      "name": "Playnite.DesktopApp",
+      "cpuSeconds": 39.6875,
+      "workingSetBytes": 321359872,
+      "startTime": "2026-10-29T23:46:00.727525+08:00",
+      "mainWindowHandle": "0x0",
+      "mainWindowTitle": ""
+    }
+  ],
+  "createdAtUtc": "2026-10-30T00:44:12.7041199Z",
+  "archiveScope": [
+    "Directory.Build.props",
+    "Directory.Packages.props",
+    "global.json",
+    "src/GameSaveCenter.Contracts",
+    "src/GameSaveCenter.Core",
+    "src/GameSaveCenter.Playnite",
+    "tests/GameSaveCenter.RenderHarness"
+  ]
+}
