@@ -1,0 +1,33 @@
+{
+  "phase": "U09-04 fixed-clock diagnostic retry cleanup",
+  "deletedPath": ".tmp/u09-04-correlation-retry-20261030",
+  "resolvedPathWasWithinRepositoryTmp": true,
+  "ownedFileCountBeforeDelete": 623,
+  "ownedBytesBeforeDelete": 29048522,
+  "deletedContents": [
+    "isolated RenderHarness source/test copy and instrumented Program.cs",
+    "SDK 8.0.423 probe build-output and intermediate files",
+    "three unpinned exploratory runs excluded from accepted analysis",
+    "three pinned diagnostic runs copied to this evidence directory",
+    "untracked preliminary evidence staging moved into the owned .tmp path before removal"
+  ],
+  "retainedEvidence": [
+    "build.log",
+    "three pinned raw console logs, probe reports, parts.csv, page-cycles.csv and performance-frames.csv",
+    "analysis.json, analysis script, source/patch identities and exact executable SHA-256"
+  ],
+  "checks": {
+    "targetBoundary": "normalized full path remained under repository .tmp",
+    "reparsePoints": 0,
+    "runningRenderHarnessProcesses": 0,
+    "trackedDocumentationReferencesToDeletedPath": 0,
+    "archivedEvidenceShaAndLengthFilesVerifiedBeforeDelete": 25,
+    "otherArtifactsTmpTestResultsAndTRXModified": false
+  },
+  "diskSpaceBytes": {
+    "C": {"before": 3088232448, "after": 3118780416, "delta": 30547968},
+    "D": {"before": 18819260416, "after": 18819260416, "delta": 0}
+  },
+  "preservedExternalSdk": "D:/workplace/github/GameSaveCenter/.tmp/round5-u09-01-03/dotnet-sdk8",
+  "finalFullBuildPackageInstallOutputs": "Not produced by this diagnostic; prior final-chain outputs were left untouched."
+}

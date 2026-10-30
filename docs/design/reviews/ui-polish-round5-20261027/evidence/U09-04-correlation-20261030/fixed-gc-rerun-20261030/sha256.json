@@ -1,0 +1,136 @@
+{
+  "generatedAtUtc": "2026-10-30T02:03:45.3149538Z",
+  "fileCount": 26,
+  "files": [
+    {
+      "path": "analysis.json",
+      "sha256": "58E82EB0A5C0A569523973CA7B37EDF57D4C4D30F268CAA30C59925CC631F7B6",
+      "bytes": 65388
+    },
+    {
+      "path": "analyze-fixed-gc.py",
+      "sha256": "9BD7B0AA70A4C22B843D609C0BCFCC09384925C0B7F1B2D35CD23AD357ECB9B6",
+      "bytes": 6934
+    },
+    {
+      "path": "BASELINE.md",
+      "sha256": "9041644D4F82B19BDECD8CC60ED3DA04F0FB12FCF47A89F021C9FD73C14B35DC",
+      "bytes": 3016
+    },
+    {
+      "path": "build-run.json",
+      "sha256": "4FF7F4C58F3A1FB652144230A57B6CD11ACB249A8B43F9F0D784A651D96C97EB",
+      "bytes": 3049
+    },
+    {
+      "path": "build.log",
+      "sha256": "184975499F8E8118EBB5F832EBA6F707EBB0B2400FA7184F93D839ED0EDBAD13",
+      "bytes": 1825
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "FEB4C3CFD2FB09E113475C4DEC074512FC0AAAAC48F217AF921D80319E9AE5EC",
+      "bytes": 1604
+    },
+    {
+      "path": "Program.cs.instrumentation.patch.json",
+      "sha256": "B9639EED34A43E105AE116C034E12C00A9EA585989B14D571F1008CB0A4F8154",
+      "bytes": 7567
+    },
+    {
+      "path": "U09Performance.cs",
+      "sha256": "438BEC8510DFD2DC28FD0A04A575FD6A5598FE58CF67CC16B6E46CD80D05F215",
+      "bytes": 7402
+    },
+    {
+      "path": "run-1/console.log",
+      "sha256": "2C486A3F3C7FE5AC0A872EDC13BAEB8474CAD609AADE8FDD272D8EF177FA62E9",
+      "bytes": 39280
+    },
+    {
+      "path": "run-1/enduranceprobe-report.txt",
+      "sha256": "DBF5D0DFB86154DF9292CC1CE7E47980E2370526981ABDF95BF2B25D02B4A11C",
+      "bytes": 39270
+    },
+    {
+      "path": "run-1/page-cycles.csv",
+      "sha256": "A48D705341D221D083E5E93EFFCB01B0691797C8A98A96A1FBFEDD3972B2950A",
+      "bytes": 2749
+    },
+    {
+      "path": "run-1/parts.csv",
+      "sha256": "854A504B4F87FEC2D2947E082C6C9B7A2E65C9768AA603970C375855194A67D4",
+      "bytes": 10585
+    },
+    {
+      "path": "run-1/performance-frames.csv",
+      "sha256": "61D35C0A366F668A221852416A5E5A5A8DA33B8B73A64EFADED7301105E79A8F",
+      "bytes": 79898
+    },
+    {
+      "path": "run-1/performance-summary.txt",
+      "sha256": "F8201C127D0287B60CB03E16684DA941DD8EA1D760AE51B1B1A7C3E3F69E0791",
+      "bytes": 828
+    },
+    {
+      "path": "run-2/console.log",
+      "sha256": "3BDA2B5E86B3704388D38BA5ABD6DC7ED2A16D76EE41DC0C224117066DC559E7",
+      "bytes": 39289
+    },
+    {
+      "path": "run-2/enduranceprobe-report.txt",
+      "sha256": "4213A21E0396FAF79CE47E78F7858F6322A21A04072D56C1F2E772B76D91216F",
+      "bytes": 39279
+    },
+    {
+      "path": "run-2/page-cycles.csv",
+      "sha256": "9D0FED5102A6C69084249B7B12A023BCCA80B9275CDD844A1C9A3F8515BD93D0",
+      "bytes": 2749
+    },
+    {
+      "path": "run-2/parts.csv",
+      "sha256": "291DF319B0E551044A1AC9DFB154C791A6493B144051EFF03936DD430C5D7D6B",
+      "bytes": 10585
+    },
+    {
+      "path": "run-2/performance-frames.csv",
+      "sha256": "003123CCBFB395A03C77CAA9D3EBAD4E9654E5974C3E0EDCDCA1A407FAFCE31A",
+      "bytes": 77007
+    },
+    {
+      "path": "run-2/performance-summary.txt",
+      "sha256": "EACD825B523E73222640F90CD4D6B2D0BB8A71A92039EA99BE9C65F1D886632B",
+      "bytes": 828
+    },
+    {
+      "path": "run-3/console.log",
+      "sha256": "71B9E307EA16D3C343E5E9AD5FB13DA0068051F648515337A200EC186CF129EF",
+      "bytes": 39274
+    },
+    {
+      "path": "run-3/enduranceprobe-report.txt",
+      "sha256": "B397520D82AD958FE4B865D3806A088876F801A572953A914CA93A7B6A7081E6",
+      "bytes": 39264
+    },
+    {
+      "path": "run-3/page-cycles.csv",
+      "sha256": "922FD5C755A19A76C70509D335390C8B973FAAA40A05C91AF523B3011E30064D",
+      "bytes": 2749
+    },
+    {
+      "path": "run-3/parts.csv",
+      "sha256": "D0A7B9692189A408B3A5715EE1EE7592F25E4A45371DC3418C31553F22539FC1",
+      "bytes": 10589
+    },
+    {
+      "path": "run-3/performance-frames.csv",
+      "sha256": "43D90F9D18628BEE3865A3E74BD16762334A6F29B62CCEA234308DC7D0B6A114",
+      "bytes": 79294
+    },
+    {
+      "path": "run-3/performance-summary.txt",
+      "sha256": "F28CC3F21C0EFB15D8529CE555360C629FBF083C2A3B329A666664BFAA3712E4",
+      "bytes": 828
+    }
+  ]
+}

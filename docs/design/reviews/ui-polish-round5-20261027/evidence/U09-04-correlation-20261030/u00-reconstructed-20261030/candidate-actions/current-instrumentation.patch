@@ -1,0 +1,96 @@
+--- a/tests/GameSaveCenter.RenderHarness/Program.cs
++++ b/tests/GameSaveCenter.RenderHarness/Program.cs
+@@ -971,7 +971,7 @@
+         report.AppendLine("Actions: workspace navigation, Media preview segment, selected details/inspector, scroll offset changes, synthetic task search text updates, Light/Dark theme");
+         report.AppendLine("Input boundary: TaskSearchTextBox.Text is changed programmatically against FakeDashboardData; this is a logical WPF update/layout proxy, not physical keyboard, IME, or presented-frame latency");
+         report.AppendLine("Resources: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64, handles, timers, managed event handlers, animated owners and thumbnail cache; no forced GC in this probe");
+-        report.AppendLine($"DurationTargetSeconds: {durationSeconds}");
++        report.AppendLine($"FixedCycleTarget: 70; SafetyTimeoutSeconds: {durationSeconds}");
+         report.AppendLine($"PostActionSettleSeconds: {postActionSettleSeconds}");
+         AppendRunMetadata(
+             report,
+@@ -1088,8 +1088,19 @@
+ 
+             void LayoutCurrentPage(UserControl page, GameSaveCenterThemeMode themeMode)
+             {
++                var partBytes = U09Performance.Allocated;
++                var partTicks = Stopwatch.GetTimestamp();
++                var partGc0 = GC.CollectionCount(0);
++                var partGc1 = GC.CollectionCount(1);
++                var partGc2 = GC.CollectionCount(2);
+                 ApplyThemePalette(shell, themeMode, glassEnabled: true, motionEnabled: true);
+                 ApplyThemePalette(page, themeMode, glassEnabled: true, motionEnabled: true);
++                U09Performance.RecordPart("theme", page.GetType().Name, themeMode.ToString(), partBytes, partTicks, partGc0, partGc1, partGc2);
++                partBytes = U09Performance.Allocated;
++                partTicks = Stopwatch.GetTimestamp();
++                partGc0 = GC.CollectionCount(0);
++                partGc1 = GC.CollectionCount(1);
++                partGc2 = GC.CollectionCount(2);
+                 pageHost.Content = page;
+                 shell.ApplyResponsiveLayout(window.Width, window.Height);
+                 ApplyThemeResponsive(page, pageHost.ActualWidth > 0 ? pageHost.ActualWidth : 1040, pageHost.ActualHeight > 0 ? pageHost.ActualHeight : 700);
+@@ -1097,6 +1108,7 @@
+                 shell.ApplyResponsiveLayout(window.ActualWidth, window.ActualHeight);
+                 ApplyThemeResponsive(page, pageHost.ActualWidth, pageHost.ActualHeight);
+                 window.UpdateLayout();
++                U09Performance.RecordPart("layout", page.GetType().Name, themeMode.ToString(), partBytes, partTicks, partGc0, partGc1, partGc2);
+             }
+ 
+             void MeasureAction(string name, Action action)
+@@ -1200,6 +1212,7 @@
+             void RunActionCycle()
+             {
+                 var cycleStopwatch = Stopwatch.StartNew();
++                var allocationStart = AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize;
+                 try
+                 {
+                     var current = pages[pageIndex];
+@@ -1223,6 +1236,7 @@
+                 {
+                     cycleStopwatch.Stop();
+                     var durationMs = cycleStopwatch.Elapsed.TotalMilliseconds;
++                    U09Performance.RecordCycle(currentPage, currentTheme, cycle, durationMs, AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize - allocationStart);
+                     actionDurationsMs.Add(durationMs);
+                     if (durationMs > 100 && slowActionStacks.Count < 8)
+                     {
+@@ -1236,6 +1250,7 @@
+             window.Show();
+             window.UpdateLayout();
+             LayoutCurrentPage(pages[0].View, ThemeModes[0].Mode);
++            U09Performance.Begin();
+             RecordSample(final: false);
+ 
+             actionTimer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+@@ -1254,10 +1269,11 @@
+                     lastProgressAt = elapsed;
+                 }
+ 
+-                if (elapsed >= TimeSpan.FromSeconds(durationSeconds))
++                if (cycle >= 70 || elapsed >= TimeSpan.FromSeconds(durationSeconds))
+                 {
+                     actionTimer!.Stop();
+                     actionStoppedAt = elapsed;
++                    U09Performance.Stop(cycle, completedActions);
+                     settleTimer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+                     {
+                         Interval = TimeSpan.FromSeconds(1)
+@@ -1283,6 +1299,10 @@
+             actionTimer.Start();
+             app.Run();
+             stopwatch.Stop();
++            U09Performance.End(outputRoot);
++
++            if (cycle != 70)
++                problems.Add("Fixed-cycle diagnostic did not complete exactly 70 cycles");
+ 
+             if (samples.Count < 2)
+                 problems.Add($"only {samples.Count} resource samples were recorded");
+@@ -1300,7 +1320,7 @@
+                 cycle,
+                 completedActions,
+                 actionFailureCount,
+-                durationSeconds + postActionSettleSeconds);
++                (int)Math.Ceiling(stopwatch.Elapsed.TotalSeconds));
+             report.AppendLine(problems.Count == 0 ? "enduranceprobe OK" : "enduranceprobe FAILED");
+             foreach (var problem in problems)
+                 report.AppendLine("  PROBLEM " + problem);

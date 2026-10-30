@@ -1,0 +1,6273 @@
+{
+  "schemaVersion": 1,
+  "measurement": "Three fixed-clock, fixed-cycle supplementary diagnostic runs. The combined envelope is reconstructed from adjacent theme and content-layout timestamp segments.",
+  "runs": [
+    {
+      "run": 1,
+      "sampleTimeUtc": "2026-10-28T09:00:00.0000000+00:00 (pinned=True)",
+      "exitCode": 0,
+      "cycles": 70,
+      "completedActions": 297,
+      "themeApplication": {
+        "samples": 70,
+        "p50Ms": 319.8214,
+        "p95Ms": 448.7703,
+        "maxMs": 469.8968,
+        "over100Ms": 70,
+        "over300Ms": 44,
+        "pearsonDurationVsAllocatedBytes": 0.9736439419414894,
+        "pearsonDurationVsGc0Delta": 0.967743737602488,
+        "pearsonDurationVsAnyGc": null,
+        "operationsWithAnyGc": 70,
+        "operationsWithGen0": 70,
+        "operationsWithGen1": 65,
+        "operationsWithGen2": 0,
+        "p95NoGcMs": null,
+        "p95WithGcMs": 448.7703,
+        "over300WithAnyGc": 44,
+        "over300WithRenderingGapOver100Ms": 44,
+        "over300WithRenderingGapOver300Ms": 44,
+        "outliers": [
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 352.2238,
+            "allocatedBytes": 151247144,
+            "gc0": 24,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 595.7397
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 339.868,
+            "allocatedBytes": 166379560,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 433.6495
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 334.0929,
+            "allocatedBytes": 159519256,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 425.2256
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 327.9902,
+            "allocatedBytes": 157653248,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 428.2468
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 305.6778,
+            "allocatedBytes": 149211256,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 437.5894
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 319.8214,
+            "allocatedBytes": 166166920,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 380.0155
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 317.3255,
+            "allocatedBytes": 153959632,
+            "gc0": 24,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 399.1254
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 334.3274,
+            "allocatedBytes": 157575664,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 391.8718
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 385.2954,
+            "allocatedBytes": 181854664,
+            "gc0": 28,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 644.7874
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 323.4016,
+            "allocatedBytes": 166172968,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 390.205
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 316.2442,
+            "allocatedBytes": 153917120,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 403.5983
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 344.3309,
+            "allocatedBytes": 157583184,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 403.4454
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 338.5682,
+            "allocatedBytes": 160981944,
+            "gc0": 26,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 497.8233
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 461.4458,
+            "allocatedBytes": 208192208,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 606.1863
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 328.9513,
+            "allocatedBytes": 166164656,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 374.9631
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 316.9528,
+            "allocatedBytes": 153922744,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 401.6495
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 327.5321,
+            "allocatedBytes": 157574296,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 385.2968
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 395.3311,
+            "allocatedBytes": 180014496,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 476.4542
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 455.7194,
+            "allocatedBytes": 205104736,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 605.1955
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 332.6524,
+            "allocatedBytes": 166163752,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 381.8985
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 317.9933,
+            "allocatedBytes": 153921904,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 403.8293
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 327.0727,
+            "allocatedBytes": 157581320,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 385.2308
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 378.6921,
+            "allocatedBytes": 179200872,
+            "gc0": 28,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 437.199
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 431.9802,
+            "allocatedBytes": 198601608,
+            "gc0": 31,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 556.815
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 326.1862,
+            "allocatedBytes": 166167960,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 377.5124
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 314.126,
+            "allocatedBytes": 153924048,
+            "gc0": 24,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 397.6117
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 330.0666,
+            "allocatedBytes": 157582096,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 388.381
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 379.8489,
+            "allocatedBytes": 175815608,
+            "gc0": 28,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 572.6998
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 432.0898,
+            "allocatedBytes": 197795024,
+            "gc0": 31,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 588.5832
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 332.5418,
+            "allocatedBytes": 166168936,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 387.2044
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 313.6531,
+            "allocatedBytes": 153950040,
+            "gc0": 25,
+            "gc1": 6,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 402.2863
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 328.1462,
+            "allocatedBytes": 157579272,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 413.7725
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 375.7145,
+            "allocatedBytes": 175964744,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 498.3497
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 469.8968,
+            "allocatedBytes": 208250912,
+            "gc0": 33,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 660.348
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 369.0663,
+            "allocatedBytes": 166170568,
+            "gc0": 26,
+            "gc1": 0,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 433.9859
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 325.4884,
+            "allocatedBytes": 153922352,
+            "gc0": 24,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 427.4036
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 332.291,
+            "allocatedBytes": 157574000,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 389.8542
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 379.8504,
+            "allocatedBytes": 180053736,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 459.5482
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 448.7703,
+            "allocatedBytes": 205119312,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 575.6677
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 332.0271,
+            "allocatedBytes": 166179576,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 388.5793
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 317.7975,
+            "allocatedBytes": 153931256,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 410.0617
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 330.5768,
+            "allocatedBytes": 157580264,
+            "gc0": 25,
+            "gc1": 2,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 387.0653
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 388.4903,
+            "allocatedBytes": 179235096,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 444.2684
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 433.9044,
+            "allocatedBytes": 198636080,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 575.9643
+          }
+        ]
+      },
+      "contentLayout": {
+        "samples": 70,
+        "p50Ms": 47.8747,
+        "p95Ms": 87.524,
+        "maxMs": 268.2358,
+        "over100Ms": 3,
+        "over300Ms": 0,
+        "pearsonDurationVsAllocatedBytes": 0.8859371678508794,
+        "pearsonDurationVsGc0Delta": 0.3396928423901826,
+        "pearsonDurationVsAnyGc": 0.2876200393634492,
+        "operationsWithAnyGc": 41,
+        "operationsWithGen0": 41,
+        "operationsWithGen1": 13,
+        "operationsWithGen2": 2,
+        "p95NoGcMs": 64.4346,
+        "p95WithGcMs": 145.5659,
+        "over300WithAnyGc": 0,
+        "over300WithRenderingGapOver100Ms": 0,
+        "over300WithRenderingGapOver300Ms": 0,
+        "outliers": []
+      },
+      "combinedLayoutEnvelope": {
+        "samples": 70,
+        "p50Ms": 376.0509999999968,
+        "p95Ms": 525.3620000000012,
+        "maxMs": 555.1219999999972,
+        "over100Ms": 70,
+        "over300Ms": 55,
+        "pearsonDurationVsAllocatedBytes": 0.8819740361535309,
+        "pearsonDurationVsGc0Delta": 0.8703650142917114,
+        "pearsonDurationVsAnyGc": null,
+        "operationsWithAnyGc": 70,
+        "operationsWithGen0": 70,
+        "operationsWithGen1": 65,
+        "operationsWithGen2": 2,
+        "p95NoGcMs": null,
+        "p95WithGcMs": 525.3620000000012,
+        "over300WithAnyGc": 55,
+        "over300WithRenderingGapOver100Ms": 54,
+        "over300WithRenderingGapOver300Ms": 54,
+        "outliers": [
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 479.40399999999994,
+            "allocatedBytes": 119451232,
+            "gc0": 19,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 759.2315
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 437.58899999999977,
+            "allocatedBytes": 156144168,
+            "gc0": 24,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 595.7397
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 336.7719999999998,
+            "allocatedBytes": 101021816,
+            "gc0": 16,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 389.3943
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 416.582,
+            "allocatedBytes": 132383592,
+            "gc0": 21,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 501.1356
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 395.41499999999985,
+            "allocatedBytes": 170704936,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 433.6495
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 399.1030000000002,
+            "allocatedBytes": 164565600,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 425.2256
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 373.0469999999997,
+            "allocatedBytes": 160495920,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 428.2468
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 362.52900000000034,
+            "allocatedBytes": 154069240,
+            "gc0": 24,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 437.5894
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 364.85099999999983,
+            "allocatedBytes": 169070936,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 380.0155
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 377.0210000000009,
+            "allocatedBytes": 158784776,
+            "gc0": 25,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 399.1254
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 382.4819999999995,
+            "allocatedBytes": 160401904,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 391.8718
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 452.68299999999863,
+            "allocatedBytes": 187041000,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 644.7874
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 303.3389999999994,
+            "allocatedBytes": 141812264,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 322.5146
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 370.91400000000084,
+            "allocatedBytes": 168827176,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 390.205
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 379.2629999999981,
+            "allocatedBytes": 158750456,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 403.5983
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 392.2409999999985,
+            "allocatedBytes": 160425888,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 403.4454
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 388.28200000000027,
+            "allocatedBytes": 163638232,
+            "gc0": 26,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 497.8233
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 535.7899999999986,
+            "allocatedBytes": 213730096,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 606.1863
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 317.49200000000144,
+            "allocatedBytes": 141836232,
+            "gc0": 23,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 345.5566
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 371.47600000000125,
+            "allocatedBytes": 168810672,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 374.9631
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 378.6139999999989,
+            "allocatedBytes": 158739712,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 401.6495
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 375.4200000000019,
+            "allocatedBytes": 160409144,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 385.2968
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 455.7310000000001,
+            "allocatedBytes": 184266528,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 476.4542
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 526.7460000000028,
+            "allocatedBytes": 210625744,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 605.1955
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 301.5420000000013,
+            "allocatedBytes": 141849448,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 317.2516
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 378.85299999999944,
+            "allocatedBytes": 168817960,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 381.8985
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 375.7320000000028,
+            "allocatedBytes": 158744912,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 403.8293
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 375.6699999999995,
+            "allocatedBytes": 160424072,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 385.2308
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 425.4500000000014,
+            "allocatedBytes": 181183464,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 437.199
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 496.3830000000016,
+            "allocatedBytes": 203943512,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 556.815
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 308.999,
+            "allocatedBytes": 141814560,
+            "gc0": 23,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 350.1259
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 370.4099999999997,
+            "allocatedBytes": 168813976,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 377.5124
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 376.0509999999968,
+            "allocatedBytes": 158733344,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 397.6117
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 379.01000000000096,
+            "allocatedBytes": 160416528,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 388.381
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 415.5200000000008,
+            "allocatedBytes": 177740728,
+            "gc0": 28,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 572.6998
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 519.6340000000034,
+            "allocatedBytes": 203114080,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 588.5832
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 336.35800000000415,
+            "allocatedBytes": 141826144,
+            "gc0": 23,
+            "gc1": 0,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 370.2373
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 383.8220000000021,
+            "allocatedBytes": 168823944,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 387.2044
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 373.4269999999995,
+            "allocatedBytes": 158776824,
+            "gc0": 25,
+            "gc1": 6,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 402.2863
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 377.400999999999,
+            "allocatedBytes": 160421896,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 413.7725
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 415.12700000000535,
+            "allocatedBytes": 178720648,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 498.3497
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 555.1219999999972,
+            "allocatedBytes": 213787136,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 660.348
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 304.1199999999975,
+            "allocatedBytes": 141841480,
+            "gc0": 23,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 333.9492
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 415.0450000000063,
+            "allocatedBytes": 168824848,
+            "gc0": 27,
+            "gc1": 0,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 433.9859
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 383.0859999999987,
+            "allocatedBytes": 158755712,
+            "gc0": 25,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 427.4036
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 377.76599999999405,
+            "allocatedBytes": 160416624,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 389.8542
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 443.3909999999983,
+            "allocatedBytes": 184289128,
+            "gc0": 29,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 459.5482
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 525.3620000000012,
+            "allocatedBytes": 210575360,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 575.6677
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 303.64099999999894,
+            "allocatedBytes": 141820432,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 321.1254
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 378.70300000000157,
+            "allocatedBytes": 168850824,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 388.5793
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 383.18399999999997,
+            "allocatedBytes": 158740160,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 410.0617
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 378.04599999999766,
+            "allocatedBytes": 160414920,
+            "gc0": 26,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 387.0653
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 432.4749999999966,
+            "allocatedBytes": 181218264,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 444.2684
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 498.35100000000665,
+            "allocatedBytes": 203979024,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 575.9643
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 302.68999999999835,
+            "allocatedBytes": 141880992,
+            "gc0": 24,
+            "gc1": 5,
+            "gc2": 1,
+            "maxOverlappingRenderingGapMs": 0.0
+          }
+        ]
+      },
+      "activeRenderingIntervals": {
+        "samples": 1140,
+        "p50Ms": 15.6708,
+        "p95Ms": 317.2516,
+        "maxMs": 759.2315,
+        "over100Ms": 143,
+        "over300Ms": 62
+      },
+      "rawSha256": {
+        "page-cycles.csv": "5392fa4fe93e03c5cff7e575ff2fb3f7795fe135a0ab0dd29c0cedaf9e0b2de1",
+        "parts.csv": "641798dac024a846cf9905995609c6f7de378a6f24d4ad50adc34a569a9f9501",
+        "performance-frames.csv": "0ae5ca1e616e120c33df57004bcd28432c48bc74c07f8715d9c547305e31071f",
+        "performance-summary.txt": "cafbeeec59a48a413febc55f4ed8a26df1b17bd8113589ed4d0a9c42ae362751",
+        "enduranceprobe-report.txt": "3be56393f27e33b9e0209b0abed7b19f9603f3b72f2efd1665ca76b3a6fc9f25",
+        "console.log": "36e4aa9e9543a960e5d3c05195544184cb0e290453dc8dba98788a0db4312624"
+      }
+    },
+    {
+      "run": 2,
+      "sampleTimeUtc": "2026-10-28T09:00:00.0000000+00:00 (pinned=True)",
+      "exitCode": 0,
+      "cycles": 70,
+      "completedActions": 297,
+      "themeApplication": {
+        "samples": 70,
+        "p50Ms": 317.9983,
+        "p95Ms": 452.7099,
+        "maxMs": 475.7099,
+        "over100Ms": 70,
+        "over300Ms": 45,
+        "pearsonDurationVsAllocatedBytes": 0.9682414117745547,
+        "pearsonDurationVsGc0Delta": 0.9652195881638466,
+        "pearsonDurationVsAnyGc": null,
+        "operationsWithAnyGc": 70,
+        "operationsWithGen0": 70,
+        "operationsWithGen1": 65,
+        "operationsWithGen2": 0,
+        "p95NoGcMs": null,
+        "p95WithGcMs": 452.7099,
+        "over300WithAnyGc": 45,
+        "over300WithRenderingGapOver100Ms": 45,
+        "over300WithRenderingGapOver300Ms": 45,
+        "outliers": [
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 305.1043,
+            "allocatedBytes": 151254576,
+            "gc0": 24,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 420.9503
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 327.1201,
+            "allocatedBytes": 166378992,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 404.474
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 326.7069,
+            "allocatedBytes": 159513960,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 416.9245
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 323.1028,
+            "allocatedBytes": 157653648,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 425.6962
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 305.0663,
+            "allocatedBytes": 149220136,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 430.111
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 324.7802,
+            "allocatedBytes": 166165552,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 386.0544
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 305.5772,
+            "allocatedBytes": 153957408,
+            "gc0": 24,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 387.659
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 325.9379,
+            "allocatedBytes": 157575944,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 382.2982
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 385.1743,
+            "allocatedBytes": 181854496,
+            "gc0": 28,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 637.9421
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 324.592,
+            "allocatedBytes": 166164304,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 371.9979
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 311.2346,
+            "allocatedBytes": 153921880,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 396.0025
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 326.277,
+            "allocatedBytes": 157582408,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 383.0127
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 332.752,
+            "allocatedBytes": 160983048,
+            "gc0": 26,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 485.575
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 452.7099,
+            "allocatedBytes": 208200904,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 597.1078
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 322.0289,
+            "allocatedBytes": 166170048,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 369.3588
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 315.9242,
+            "allocatedBytes": 153923912,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 402.6182
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 332.5768,
+            "allocatedBytes": 157568824,
+            "gc0": 25,
+            "gc1": 2,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 389.9926
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 382.5032,
+            "allocatedBytes": 180013552,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 475.0818
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 458.4037,
+            "allocatedBytes": 205096376,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 611.5637
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 328.1233,
+            "allocatedBytes": 166167832,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 376.456
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 315.2655,
+            "allocatedBytes": 153919776,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 400.7728
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 325.0801,
+            "allocatedBytes": 157588464,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 383.2025
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 376.2073,
+            "allocatedBytes": 179198416,
+            "gc0": 28,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 433.5134
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 418.2391,
+            "allocatedBytes": 198601296,
+            "gc0": 31,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 544.4684
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 325.4629,
+            "allocatedBytes": 166164624,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 377.9951
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 307.1518,
+            "allocatedBytes": 153914528,
+            "gc0": 24,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 404.349
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 317.9983,
+            "allocatedBytes": 157574432,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 372.8712
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 362.0073,
+            "allocatedBytes": 175820672,
+            "gc0": 28,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 455.8902
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 423.7066,
+            "allocatedBytes": 197793016,
+            "gc0": 31,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 572.4816
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 322.1134,
+            "allocatedBytes": 166168896,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 375.0371
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 369.8407,
+            "allocatedBytes": 153957104,
+            "gc0": 25,
+            "gc1": 6,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 469.0467
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 336.666,
+            "allocatedBytes": 157579216,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 406.5665
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 381.0097,
+            "allocatedBytes": 175955312,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 508.1931
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 474.4737,
+            "allocatedBytes": 208250600,
+            "gc0": 33,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 664.5354
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 312.4842,
+            "allocatedBytes": 138984472,
+            "gc0": 22,
+            "gc1": 0,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 369.2441
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 331.474,
+            "allocatedBytes": 166163336,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 378.0879
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 317.4839,
+            "allocatedBytes": 153922944,
+            "gc0": 24,
+            "gc1": 6,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 402.2317
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 332.3919,
+            "allocatedBytes": 157582536,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 399.8806
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 391.3414,
+            "allocatedBytes": 180052856,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 565.3816
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 475.7099,
+            "allocatedBytes": 205121136,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 601.098
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 341.165,
+            "allocatedBytes": 166180000,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 400.0975
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 318.2312,
+            "allocatedBytes": 153929840,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 406.3873
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 334.0817,
+            "allocatedBytes": 157583352,
+            "gc0": 25,
+            "gc1": 2,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 394.0688
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 380.813,
+            "allocatedBytes": 179228424,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 436.8576
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 436.3112,
+            "allocatedBytes": 198641024,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 577.8153
+          }
+        ]
+      },
+      "contentLayout": {
+        "samples": 70,
+        "p50Ms": 48.4321,
+        "p95Ms": 88.5892,
+        "maxMs": 226.6224,
+        "over100Ms": 3,
+        "over300Ms": 0,
+        "pearsonDurationVsAllocatedBytes": 0.9098598954687279,
+        "pearsonDurationVsGc0Delta": 0.36690545630411486,
+        "pearsonDurationVsAnyGc": 0.30928871049390083,
+        "operationsWithAnyGc": 43,
+        "operationsWithGen0": 43,
+        "operationsWithGen1": 14,
+        "operationsWithGen2": 2,
+        "p95NoGcMs": 68.3258,
+        "p95WithGcMs": 140.2125,
+        "over300WithAnyGc": 0,
+        "over300WithRenderingGapOver100Ms": 0,
+        "over300WithRenderingGapOver300Ms": 0,
+        "outliers": []
+      },
+      "combinedLayoutEnvelope": {
+        "samples": 70,
+        "p50Ms": 372.5459999999998,
+        "p95Ms": 524.5920000000019,
+        "maxMs": 563.0750000000048,
+        "over100Ms": 70,
+        "over300Ms": 54,
+        "pearsonDurationVsAllocatedBytes": 0.9006011879244636,
+        "pearsonDurationVsGc0Delta": 0.8950282111364211,
+        "pearsonDurationVsAnyGc": null,
+        "operationsWithAnyGc": 70,
+        "operationsWithGen0": 70,
+        "operationsWithGen1": 65,
+        "operationsWithGen2": 2,
+        "p95NoGcMs": null,
+        "p95WithGcMs": 524.5920000000019,
+        "over300WithAnyGc": 54,
+        "over300WithRenderingGapOver100Ms": 53,
+        "over300WithRenderingGapOver300Ms": 53,
+        "outliers": [
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 437.04900000000004,
+            "allocatedBytes": 119450080,
+            "gc0": 19,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 688.1084
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 373.44100000000014,
+            "allocatedBytes": 156151600,
+            "gc0": 24,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 420.9503
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 330.2510000000001,
+            "allocatedBytes": 101028112,
+            "gc0": 16,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 397.008
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 401.15999999999997,
+            "allocatedBytes": 132391808,
+            "gc0": 21,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 484.5776
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 380.1680000000003,
+            "allocatedBytes": 170704368,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 404.474
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 390.0550000000003,
+            "allocatedBytes": 164568496,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 416.9245
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 372.54200000000014,
+            "allocatedBytes": 160496496,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 425.6962
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 360.0619999999992,
+            "allocatedBytes": 154078136,
+            "gc0": 24,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 430.111
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 370.2799999999993,
+            "allocatedBytes": 169069568,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 386.0544
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 365.5349999999995,
+            "allocatedBytes": 158782552,
+            "gc0": 25,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 387.659
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 372.84199999999856,
+            "allocatedBytes": 160410376,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 382.2982
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 451.14200000000085,
+            "allocatedBytes": 187040096,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 637.9421
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 304.15600000000074,
+            "allocatedBytes": 141811960,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 322.3366
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 367.9260000000006,
+            "allocatedBytes": 168818512,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 371.9979
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 372.5459999999998,
+            "allocatedBytes": 158755216,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 396.0025
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 372.83399999999745,
+            "allocatedBytes": 160417112,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 383.0127
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 383.56200000000126,
+            "allocatedBytes": 163639336,
+            "gc0": 26,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 485.575
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 524.5920000000019,
+            "allocatedBytes": 213730600,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 597.1078
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 302.3660000000028,
+            "allocatedBytes": 141826760,
+            "gc0": 23,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 334.9718
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 365.513,
+            "allocatedBytes": 168816064,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 369.3588
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 376.13699999999994,
+            "allocatedBytes": 158740920,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 402.6182
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 380.36299999999915,
+            "allocatedBytes": 160403376,
+            "gc0": 26,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 389.9926
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 452.3590000000013,
+            "allocatedBytes": 184257392,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 475.0818
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 528.9849999999988,
+            "allocatedBytes": 210598064,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 611.5637
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 301.5950000000025,
+            "allocatedBytes": 141839640,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 316.5212
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 373.1410000000004,
+            "allocatedBytes": 168822040,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 376.456
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 373.2129999999998,
+            "allocatedBytes": 158742784,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 400.7728
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 374.0799999999993,
+            "allocatedBytes": 160422952,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 383.2025
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 421.3680000000011,
+            "allocatedBytes": 181189248,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 433.5134
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 484.43400000000025,
+            "allocatedBytes": 203942552,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 544.4684
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 371.4440000000039,
+            "allocatedBytes": 168810640,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 377.9951
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 366.29800000000046,
+            "allocatedBytes": 158723288,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 404.349
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 363.6380000000017,
+            "allocatedBytes": 160400672,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 372.8712
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 399.93600000000384,
+            "allocatedBytes": 177745792,
+            "gc0": 28,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 455.8902
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 503.19200000000563,
+            "allocatedBytes": 203112072,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 572.4816
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 328.0940000000001,
+            "allocatedBytes": 141830992,
+            "gc0": 23,
+            "gc1": 0,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 370.0229
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 371.4610000000036,
+            "allocatedBytes": 168823904,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 375.0371
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 430.8679999999967,
+            "allocatedBytes": 158792080,
+            "gc0": 25,
+            "gc1": 6,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 469.0467
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 387.0639999999952,
+            "allocatedBytes": 160413648,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 406.5665
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 422.41200000000134,
+            "allocatedBytes": 178711216,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 508.1931
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 563.0750000000048,
+            "allocatedBytes": 213786248,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 664.5354
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 353.7760000000034,
+            "allocatedBytes": 141843536,
+            "gc0": 23,
+            "gc1": 0,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 369.2441
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 374.2859999999979,
+            "allocatedBytes": 168817616,
+            "gc0": 27,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 378.0879
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 374.64800000000054,
+            "allocatedBytes": 158756976,
+            "gc0": 25,
+            "gc1": 6,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 402.2317
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 377.9230000000027,
+            "allocatedBytes": 160425160,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 399.8806
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 454.8770000000033,
+            "allocatedBytes": 184281968,
+            "gc0": 29,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 565.3816
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 549.0459999999971,
+            "allocatedBytes": 210568880,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 601.098
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 318.89699999999976,
+            "allocatedBytes": 141820536,
+            "gc0": 23,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 338.1402
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 389.60999999999757,
+            "allocatedBytes": 168842400,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 400.0975
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 381.9119999999998,
+            "allocatedBytes": 158738632,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 406.3873
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 383.6119999999994,
+            "allocatedBytes": 160417864,
+            "gc0": 26,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 394.0688
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 416.7190000000005,
+            "allocatedBytes": 181219784,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 436.8576
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 503.5710000000009,
+            "allocatedBytes": 203982256,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 577.8153
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 308.0280000000002,
+            "allocatedBytes": 141886544,
+            "gc0": 24,
+            "gc1": 5,
+            "gc2": 1,
+            "maxOverlappingRenderingGapMs": 0.0
+          }
+        ]
+      },
+      "activeRenderingIntervals": {
+        "samples": 1238,
+        "p50Ms": 15.6061,
+        "p95Ms": 309.8692,
+        "maxMs": 1322.403,
+        "over100Ms": 144,
+        "over300Ms": 64
+      },
+      "rawSha256": {
+        "page-cycles.csv": "4c31cb63c0a7757ffb73c4cceeeb15f2e0c8b1e9e03b316670345827ac5a1ee5",
+        "parts.csv": "e10bb5a63538c07d065e97aa94d6d512fdf6144bcd639db21a8bd62663baa6ab",
+        "performance-frames.csv": "0a4630fb030adba5c425dc11e386ccd893413b11c59a45defd000ab31dcf7321",
+        "performance-summary.txt": "790ef27f52103a31bb937285d6e60c0ac16d7dcbfb3bf5214ad6d7433ec98080",
+        "enduranceprobe-report.txt": "90912b91a8586116a07c3b01c69138397a37a11e077f54a57c1155a1b62de57e",
+        "console.log": "8c42193b9641454b00caa1d5154a0eb41ccbc9f430d8a10c32275373b8801808"
+      }
+    },
+    {
+      "run": 3,
+      "sampleTimeUtc": "2026-10-28T09:00:00.0000000+00:00 (pinned=True)",
+      "exitCode": 0,
+      "cycles": 70,
+      "completedActions": 297,
+      "themeApplication": {
+        "samples": 70,
+        "p50Ms": 314.6825,
+        "p95Ms": 443.7055,
+        "maxMs": 486.2178,
+        "over100Ms": 70,
+        "over300Ms": 44,
+        "pearsonDurationVsAllocatedBytes": 0.9555033160303095,
+        "pearsonDurationVsGc0Delta": 0.951342951508551,
+        "pearsonDurationVsAnyGc": null,
+        "operationsWithAnyGc": 70,
+        "operationsWithGen0": 70,
+        "operationsWithGen1": 66,
+        "operationsWithGen2": 0,
+        "p95NoGcMs": null,
+        "p95WithGcMs": 443.7055,
+        "over300WithAnyGc": 44,
+        "over300WithRenderingGapOver100Ms": 44,
+        "over300WithRenderingGapOver300Ms": 44,
+        "outliers": [
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 312.3643,
+            "allocatedBytes": 151255608,
+            "gc0": 24,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 529.0645
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 328.5076,
+            "allocatedBytes": 166384504,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 405.0482
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 330.6046,
+            "allocatedBytes": 159517616,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 423.5016
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 326.5903,
+            "allocatedBytes": 157655112,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 428.4355
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 310.3025,
+            "allocatedBytes": 149219080,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 441.001
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 314.216,
+            "allocatedBytes": 166173040,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 379.9542
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 313.5969,
+            "allocatedBytes": 153959152,
+            "gc0": 24,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 396.261
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 338.114,
+            "allocatedBytes": 157582152,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 395.9129
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 389.3866,
+            "allocatedBytes": 181844440,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 543.6061
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 324.7333,
+            "allocatedBytes": 166166600,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 376.3045
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 313.9362,
+            "allocatedBytes": 153921032,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 399.7871
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 327.1638,
+            "allocatedBytes": 157575736,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 384.7429
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 339.0916,
+            "allocatedBytes": 160990072,
+            "gc0": 26,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 485.0419
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 486.2178,
+            "allocatedBytes": 208201144,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 653.8339
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 320.3388,
+            "allocatedBytes": 166164816,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 368.2848
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 312.3438,
+            "allocatedBytes": 153923360,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 398.6974
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 327.0508,
+            "allocatedBytes": 157575856,
+            "gc0": 25,
+            "gc1": 2,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 384.936
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 378.7873,
+            "allocatedBytes": 180015936,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 563.3455
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 443.7055,
+            "allocatedBytes": 205099688,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 591.3527
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 327.8997,
+            "allocatedBytes": 166169240,
+            "gc0": 27,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 376.6384
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 314.4243,
+            "allocatedBytes": 153920392,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 400.5309
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 324.9797,
+            "allocatedBytes": 157581888,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 381.6246
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 383.6166,
+            "allocatedBytes": 179192160,
+            "gc0": 28,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 431.9256
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 425.6892,
+            "allocatedBytes": 198601272,
+            "gc0": 31,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 560.7996
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 318.8622,
+            "allocatedBytes": 166167816,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 387.2088
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 309.4563,
+            "allocatedBytes": 153921848,
+            "gc0": 24,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 392.8103
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 323.3073,
+            "allocatedBytes": 157579000,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 379.8307
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 372.755,
+            "allocatedBytes": 175822016,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 471.3777
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 429.8152,
+            "allocatedBytes": 197792232,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 584.2276
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 325.3385,
+            "allocatedBytes": 166171256,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 392.3443
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 317.06,
+            "allocatedBytes": 153958632,
+            "gc0": 25,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 407.2377
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 361.267,
+            "allocatedBytes": 157581016,
+            "gc0": 25,
+            "gc1": 2,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 424.6537
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 371.4981,
+            "allocatedBytes": 175956880,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 529.5371
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 468.4611,
+            "allocatedBytes": 208244768,
+            "gc0": 33,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 618.2245
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 335.9106,
+            "allocatedBytes": 166167808,
+            "gc0": 26,
+            "gc1": 2,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 384.7141
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 316.7023,
+            "allocatedBytes": 153920712,
+            "gc0": 25,
+            "gc1": 6,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 402.1773
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 326.8472,
+            "allocatedBytes": 157579152,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 395.0221
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 389.9783,
+            "allocatedBytes": 180047864,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 572.5347
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 465.9216,
+            "allocatedBytes": 205116720,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 589.2765
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 327.1701,
+            "allocatedBytes": 166168912,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 399.6231
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 314.6825,
+            "allocatedBytes": 153937440,
+            "gc0": 24,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 404.085
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 329.7591,
+            "allocatedBytes": 157587872,
+            "gc0": 26,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 385.5735
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 385.3122,
+            "allocatedBytes": 179240400,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 454.2008
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 432.4415,
+            "allocatedBytes": 198639464,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 600.3345
+          }
+        ]
+      },
+      "contentLayout": {
+        "samples": 70,
+        "p50Ms": 47.615,
+        "p95Ms": 83.8109,
+        "maxMs": 243.5018,
+        "over100Ms": 3,
+        "over300Ms": 0,
+        "pearsonDurationVsAllocatedBytes": 0.9043382283678433,
+        "pearsonDurationVsGc0Delta": 0.36800938351092205,
+        "pearsonDurationVsAnyGc": 0.2746082124061112,
+        "operationsWithAnyGc": 39,
+        "operationsWithGen0": 39,
+        "operationsWithGen1": 10,
+        "operationsWithGen2": 1,
+        "p95NoGcMs": 69.167,
+        "p95WithGcMs": 176.0986,
+        "over300WithAnyGc": 0,
+        "over300WithRenderingGapOver100Ms": 0,
+        "over300WithRenderingGapOver300Ms": 0,
+        "outliers": []
+      },
+      "combinedLayoutEnvelope": {
+        "samples": 70,
+        "p50Ms": 373.457000000001,
+        "p95Ms": 514.0640000000012,
+        "maxMs": 568.7700000000007,
+        "over100Ms": 70,
+        "over300Ms": 54,
+        "pearsonDurationVsAllocatedBytes": 0.8630021825739268,
+        "pearsonDurationVsGc0Delta": 0.8576560677257866,
+        "pearsonDurationVsAnyGc": null,
+        "operationsWithAnyGc": 70,
+        "operationsWithGen0": 70,
+        "operationsWithGen1": 66,
+        "operationsWithGen2": 1,
+        "p95NoGcMs": null,
+        "p95WithGcMs": 514.0640000000012,
+        "over300WithAnyGc": 54,
+        "over300WithRenderingGapOver100Ms": 54,
+        "over300WithRenderingGapOver300Ms": 54,
+        "outliers": [
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 312.401,
+            "allocatedBytes": 111550296,
+            "gc0": 18,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 460.2929
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 476.249,
+            "allocatedBytes": 119451976,
+            "gc0": 19,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 719.9278
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 381.5440000000001,
+            "allocatedBytes": 156152632,
+            "gc0": 24,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 529.0645
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 332.9580000000001,
+            "allocatedBytes": 101027752,
+            "gc0": 16,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 390.1862
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 436.55799999999977,
+            "allocatedBytes": 132399576,
+            "gc0": 21,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 521.973
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 381.91299999999995,
+            "allocatedBytes": 170709880,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 405.0482
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 396.3469999999996,
+            "allocatedBytes": 164563944,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 423.5016
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 373.457000000001,
+            "allocatedBytes": 160498104,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 428.4355
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 366.43899999999974,
+            "allocatedBytes": 154077016,
+            "gc0": 24,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 441.001
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 360.72799999999995,
+            "allocatedBytes": 169073112,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 379.9542
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 374.30300000000113,
+            "allocatedBytes": 158776992,
+            "gc0": 25,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 396.261
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 385.74100000000124,
+            "allocatedBytes": 160416584,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 395.9129
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 301.61499999999995,
+            "allocatedBytes": 130393816,
+            "gc0": 21,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 462.3575
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 454.6790000000005,
+            "allocatedBytes": 187029976,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 543.6061
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 305.53300000000047,
+            "allocatedBytes": 141815192,
+            "gc0": 23,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 324.6752
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 372.29999999999916,
+            "allocatedBytes": 168820808,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 376.3045
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 377.4270000000008,
+            "allocatedBytes": 158754376,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 399.7871
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 375.43899999999655,
+            "allocatedBytes": 160419016,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 384.7429
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 384.6109999999996,
+            "allocatedBytes": 163646360,
+            "gc0": 26,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 485.0419
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 568.7700000000007,
+            "allocatedBytes": 213730824,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 653.8339
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 303.7470000000013,
+            "allocatedBytes": 141836136,
+            "gc0": 22,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 321.489
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 365.1699999999991,
+            "allocatedBytes": 168810832,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 368.2848
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 375.73899999999935,
+            "allocatedBytes": 158740312,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 398.6974
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 374.7889999999998,
+            "allocatedBytes": 160410720,
+            "gc0": 26,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 384.936
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 446.45599999999774,
+            "allocatedBytes": 184267968,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 563.3455
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 514.0640000000012,
+            "allocatedBytes": 210601480,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 591.3527
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 372.63200000000296,
+            "allocatedBytes": 168823448,
+            "gc0": 27,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 376.6384
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 372.64000000000055,
+            "allocatedBytes": 158743400,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 400.5309
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 372.28,
+            "allocatedBytes": 160416384,
+            "gc0": 26,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 381.6246
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 419.80099999999965,
+            "allocatedBytes": 181174696,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 431.9256
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 490.3499999999994,
+            "allocatedBytes": 203942952,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 560.7996
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 365.15900000000556,
+            "allocatedBytes": 168817456,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 387.2088
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 370.3080000000014,
+            "allocatedBytes": 158730672,
+            "gc0": 25,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 392.8103
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 370.3120000000055,
+            "allocatedBytes": 160405240,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 379.8307
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 418.5210000000055,
+            "allocatedBytes": 177747200,
+            "gc0": 29,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 471.3777
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 512.1189999999984,
+            "allocatedBytes": 203118664,
+            "gc0": 32,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 584.2276
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 323.62400000000235,
+            "allocatedBytes": 141832968,
+            "gc0": 23,
+            "gc1": 2,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 358.8689
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 373.8610000000051,
+            "allocatedBytes": 168817272,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 392.3443
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 377.57299999999816,
+            "allocatedBytes": 158785416,
+            "gc0": 25,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 407.2377
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 414.43999999999903,
+            "allocatedBytes": 160415520,
+            "gc0": 26,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 424.6537
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 426.50199999999927,
+            "allocatedBytes": 178712784,
+            "gc0": 28,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 529.5371
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 535.4280000000031,
+            "allocatedBytes": 213779136,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 618.2245
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Dark",
+            "durationMs": 307.4550000000045,
+            "allocatedBytes": 141840408,
+            "gc0": 23,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 322.9738
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Light",
+            "durationMs": 381.1329999999984,
+            "allocatedBytes": 168822064,
+            "gc0": 27,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 384.7141
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Light",
+            "durationMs": 374.4270000000043,
+            "allocatedBytes": 158749808,
+            "gc0": 25,
+            "gc1": 6,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 402.1773
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Light",
+            "durationMs": 379.2349999999942,
+            "allocatedBytes": 160421776,
+            "gc0": 25,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 395.0221
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Light",
+            "durationMs": 452.967000000001,
+            "allocatedBytes": 184267512,
+            "gc0": 29,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 572.5347
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Light",
+            "durationMs": 538.6030000000019,
+            "allocatedBytes": 210580840,
+            "gc0": 34,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 589.2765
+          },
+          {
+            "page": "MaintenanceView",
+            "theme": "Light",
+            "durationMs": 300.9740000000036,
+            "allocatedBytes": 141815200,
+            "gc0": 23,
+            "gc1": 5,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 318.305
+          },
+          {
+            "page": "OverviewView",
+            "theme": "Dark",
+            "durationMs": 374.4399999999999,
+            "allocatedBytes": 168831312,
+            "gc0": 27,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 399.6231
+          },
+          {
+            "page": "SaveCenterView",
+            "theme": "Dark",
+            "durationMs": 379.32099999999735,
+            "allocatedBytes": 158738064,
+            "gc0": 25,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 404.085
+          },
+          {
+            "page": "TrainerCenterView",
+            "theme": "Dark",
+            "durationMs": 376.6689999999997,
+            "allocatedBytes": 160422304,
+            "gc0": 26,
+            "gc1": 3,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 385.5735
+          },
+          {
+            "page": "MediaCenterView",
+            "theme": "Dark",
+            "durationMs": 427.4289999999965,
+            "allocatedBytes": 181226640,
+            "gc0": 29,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 454.2008
+          },
+          {
+            "page": "TaskCenterView",
+            "theme": "Dark",
+            "durationMs": 505.91999999999615,
+            "allocatedBytes": 203988896,
+            "gc0": 33,
+            "gc1": 4,
+            "gc2": 0,
+            "maxOverlappingRenderingGapMs": 600.3345
+          }
+        ]
+      },
+      "activeRenderingIntervals": {
+        "samples": 1231,
+        "p50Ms": 15.743,
+        "p95Ms": 311.9959,
+        "maxMs": 719.9278,
+        "over100Ms": 142,
+        "over300Ms": 63
+      },
+      "rawSha256": {
+        "page-cycles.csv": "ecc3b13c3c84f915461059a9896a95b57e5389963a390d64cd561814b84aaf1c",
+        "parts.csv": "bdd295d0468ba027cab51210959fd2c6758b767e3da5ff5d7df4d20ac39e09ce",
+        "performance-frames.csv": "802ee4e5b4dbe485ab083dda6f9df970e5d5867912d3a0abc84431454a93fce9",
+        "performance-summary.txt": "f3f4b769ca58bbdf5de20680d98c3837b15e924209ff2728f65a9b4ecf9f569f",
+        "enduranceprobe-report.txt": "45a70b1645740ec3c6d96e02d96cb869bcd2e558e37b854bec91a295227e8aab",
+        "console.log": "c7c8f98dca34185101dea1da21c2432d49d408114af2b920c2ca86897ccd79b3"
+      }
+    }
+  ],
+  "combined": {
+    "themeApplication": {
+      "samples": 210,
+      "p50Ms": 317.9933,
+      "p95Ms": 448.7703,
+      "maxMs": 486.2178,
+      "over100Ms": 210,
+      "over300Ms": 133,
+      "pearsonDurationVsAllocatedBytes": 0.9657324219081709,
+      "pearsonDurationVsGc0Delta": 0.9612664614894558,
+      "pearsonDurationVsAnyGc": null,
+      "operationsWithAnyGc": 210,
+      "operationsWithGen0": 210,
+      "operationsWithGen1": 196,
+      "operationsWithGen2": 0,
+      "p95NoGcMs": null,
+      "p95WithGcMs": 448.7703,
+      "over300WithAnyGc": 133,
+      "over300WithRenderingGapOver100Ms": 133,
+      "over300WithRenderingGapOver300Ms": 133,
+      "outliers": [
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 352.2238,
+          "allocatedBytes": 151247144,
+          "gc0": 24,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 595.7397
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 339.868,
+          "allocatedBytes": 166379560,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 433.6495
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 334.0929,
+          "allocatedBytes": 159519256,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 425.2256
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 327.9902,
+          "allocatedBytes": 157653248,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 428.2468
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 305.6778,
+          "allocatedBytes": 149211256,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 437.5894
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 319.8214,
+          "allocatedBytes": 166166920,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 380.0155
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 317.3255,
+          "allocatedBytes": 153959632,
+          "gc0": 24,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 399.1254
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 334.3274,
+          "allocatedBytes": 157575664,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 391.8718
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 385.2954,
+          "allocatedBytes": 181854664,
+          "gc0": 28,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 644.7874
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 323.4016,
+          "allocatedBytes": 166172968,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 390.205
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 316.2442,
+          "allocatedBytes": 153917120,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 403.5983
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 344.3309,
+          "allocatedBytes": 157583184,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 403.4454
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 338.5682,
+          "allocatedBytes": 160981944,
+          "gc0": 26,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 497.8233
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 461.4458,
+          "allocatedBytes": 208192208,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 606.1863
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 328.9513,
+          "allocatedBytes": 166164656,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 374.9631
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 316.9528,
+          "allocatedBytes": 153922744,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 401.6495
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 327.5321,
+          "allocatedBytes": 157574296,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 385.2968
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 395.3311,
+          "allocatedBytes": 180014496,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 476.4542
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 455.7194,
+          "allocatedBytes": 205104736,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 605.1955
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 332.6524,
+          "allocatedBytes": 166163752,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 381.8985
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 317.9933,
+          "allocatedBytes": 153921904,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 403.8293
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 327.0727,
+          "allocatedBytes": 157581320,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 385.2308
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 378.6921,
+          "allocatedBytes": 179200872,
+          "gc0": 28,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 437.199
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 431.9802,
+          "allocatedBytes": 198601608,
+          "gc0": 31,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 556.815
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 326.1862,
+          "allocatedBytes": 166167960,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 377.5124
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 314.126,
+          "allocatedBytes": 153924048,
+          "gc0": 24,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 397.6117
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 330.0666,
+          "allocatedBytes": 157582096,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 388.381
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 379.8489,
+          "allocatedBytes": 175815608,
+          "gc0": 28,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 572.6998
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 432.0898,
+          "allocatedBytes": 197795024,
+          "gc0": 31,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 588.5832
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 332.5418,
+          "allocatedBytes": 166168936,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 387.2044
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 313.6531,
+          "allocatedBytes": 153950040,
+          "gc0": 25,
+          "gc1": 6,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 402.2863
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 328.1462,
+          "allocatedBytes": 157579272,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 413.7725
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 375.7145,
+          "allocatedBytes": 175964744,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 498.3497
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 469.8968,
+          "allocatedBytes": 208250912,
+          "gc0": 33,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 660.348
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 369.0663,
+          "allocatedBytes": 166170568,
+          "gc0": 26,
+          "gc1": 0,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 433.9859
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 325.4884,
+          "allocatedBytes": 153922352,
+          "gc0": 24,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 427.4036
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 332.291,
+          "allocatedBytes": 157574000,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 389.8542
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 379.8504,
+          "allocatedBytes": 180053736,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 459.5482
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 448.7703,
+          "allocatedBytes": 205119312,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 575.6677
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 332.0271,
+          "allocatedBytes": 166179576,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 388.5793
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 317.7975,
+          "allocatedBytes": 153931256,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 410.0617
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 330.5768,
+          "allocatedBytes": 157580264,
+          "gc0": 25,
+          "gc1": 2,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 387.0653
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 388.4903,
+          "allocatedBytes": 179235096,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 444.2684
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 433.9044,
+          "allocatedBytes": 198636080,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 575.9643
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 305.1043,
+          "allocatedBytes": 151254576,
+          "gc0": 24,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 420.9503
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 327.1201,
+          "allocatedBytes": 166378992,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 404.474
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 326.7069,
+          "allocatedBytes": 159513960,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 416.9245
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 323.1028,
+          "allocatedBytes": 157653648,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 425.6962
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 305.0663,
+          "allocatedBytes": 149220136,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 430.111
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 324.7802,
+          "allocatedBytes": 166165552,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 386.0544
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 305.5772,
+          "allocatedBytes": 153957408,
+          "gc0": 24,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 387.659
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 325.9379,
+          "allocatedBytes": 157575944,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 382.2982
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 385.1743,
+          "allocatedBytes": 181854496,
+          "gc0": 28,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 637.9421
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 324.592,
+          "allocatedBytes": 166164304,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 371.9979
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 311.2346,
+          "allocatedBytes": 153921880,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 396.0025
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 326.277,
+          "allocatedBytes": 157582408,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 383.0127
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 332.752,
+          "allocatedBytes": 160983048,
+          "gc0": 26,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 485.575
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 452.7099,
+          "allocatedBytes": 208200904,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 597.1078
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 322.0289,
+          "allocatedBytes": 166170048,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 369.3588
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 315.9242,
+          "allocatedBytes": 153923912,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 402.6182
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 332.5768,
+          "allocatedBytes": 157568824,
+          "gc0": 25,
+          "gc1": 2,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 389.9926
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 382.5032,
+          "allocatedBytes": 180013552,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 475.0818
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 458.4037,
+          "allocatedBytes": 205096376,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 611.5637
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 328.1233,
+          "allocatedBytes": 166167832,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 376.456
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 315.2655,
+          "allocatedBytes": 153919776,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 400.7728
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 325.0801,
+          "allocatedBytes": 157588464,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 383.2025
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 376.2073,
+          "allocatedBytes": 179198416,
+          "gc0": 28,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 433.5134
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 418.2391,
+          "allocatedBytes": 198601296,
+          "gc0": 31,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 544.4684
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 325.4629,
+          "allocatedBytes": 166164624,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 377.9951
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 307.1518,
+          "allocatedBytes": 153914528,
+          "gc0": 24,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 404.349
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 317.9983,
+          "allocatedBytes": 157574432,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 372.8712
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 362.0073,
+          "allocatedBytes": 175820672,
+          "gc0": 28,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 455.8902
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 423.7066,
+          "allocatedBytes": 197793016,
+          "gc0": 31,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 572.4816
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 322.1134,
+          "allocatedBytes": 166168896,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 375.0371
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 369.8407,
+          "allocatedBytes": 153957104,
+          "gc0": 25,
+          "gc1": 6,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 469.0467
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 336.666,
+          "allocatedBytes": 157579216,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 406.5665
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 381.0097,
+          "allocatedBytes": 175955312,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 508.1931
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 474.4737,
+          "allocatedBytes": 208250600,
+          "gc0": 33,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 664.5354
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 312.4842,
+          "allocatedBytes": 138984472,
+          "gc0": 22,
+          "gc1": 0,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 369.2441
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 331.474,
+          "allocatedBytes": 166163336,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 378.0879
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 317.4839,
+          "allocatedBytes": 153922944,
+          "gc0": 24,
+          "gc1": 6,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 402.2317
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 332.3919,
+          "allocatedBytes": 157582536,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 399.8806
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 391.3414,
+          "allocatedBytes": 180052856,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 565.3816
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 475.7099,
+          "allocatedBytes": 205121136,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 601.098
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 341.165,
+          "allocatedBytes": 166180000,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 400.0975
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 318.2312,
+          "allocatedBytes": 153929840,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 406.3873
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 334.0817,
+          "allocatedBytes": 157583352,
+          "gc0": 25,
+          "gc1": 2,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 394.0688
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 380.813,
+          "allocatedBytes": 179228424,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 436.8576
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 436.3112,
+          "allocatedBytes": 198641024,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 577.8153
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 312.3643,
+          "allocatedBytes": 151255608,
+          "gc0": 24,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 529.0645
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 328.5076,
+          "allocatedBytes": 166384504,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 405.0482
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 330.6046,
+          "allocatedBytes": 159517616,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 423.5016
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 326.5903,
+          "allocatedBytes": 157655112,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 428.4355
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 310.3025,
+          "allocatedBytes": 149219080,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 441.001
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 314.216,
+          "allocatedBytes": 166173040,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 379.9542
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 313.5969,
+          "allocatedBytes": 153959152,
+          "gc0": 24,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 396.261
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 338.114,
+          "allocatedBytes": 157582152,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 395.9129
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 389.3866,
+          "allocatedBytes": 181844440,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 543.6061
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 324.7333,
+          "allocatedBytes": 166166600,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 376.3045
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 313.9362,
+          "allocatedBytes": 153921032,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 399.7871
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 327.1638,
+          "allocatedBytes": 157575736,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 384.7429
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 339.0916,
+          "allocatedBytes": 160990072,
+          "gc0": 26,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 485.0419
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 486.2178,
+          "allocatedBytes": 208201144,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 653.8339
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 320.3388,
+          "allocatedBytes": 166164816,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 368.2848
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 312.3438,
+          "allocatedBytes": 153923360,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 398.6974
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 327.0508,
+          "allocatedBytes": 157575856,
+          "gc0": 25,
+          "gc1": 2,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 384.936
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 378.7873,
+          "allocatedBytes": 180015936,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 563.3455
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 443.7055,
+          "allocatedBytes": 205099688,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 591.3527
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 327.8997,
+          "allocatedBytes": 166169240,
+          "gc0": 27,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 376.6384
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 314.4243,
+          "allocatedBytes": 153920392,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 400.5309
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 324.9797,
+          "allocatedBytes": 157581888,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 381.6246
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 383.6166,
+          "allocatedBytes": 179192160,
+          "gc0": 28,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 431.9256
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 425.6892,
+          "allocatedBytes": 198601272,
+          "gc0": 31,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 560.7996
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 318.8622,
+          "allocatedBytes": 166167816,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 387.2088
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 309.4563,
+          "allocatedBytes": 153921848,
+          "gc0": 24,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 392.8103
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 323.3073,
+          "allocatedBytes": 157579000,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 379.8307
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 372.755,
+          "allocatedBytes": 175822016,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 471.3777
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 429.8152,
+          "allocatedBytes": 197792232,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 584.2276
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 325.3385,
+          "allocatedBytes": 166171256,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 392.3443
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 317.06,
+          "allocatedBytes": 153958632,
+          "gc0": 25,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 407.2377
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 361.267,
+          "allocatedBytes": 157581016,
+          "gc0": 25,
+          "gc1": 2,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 424.6537
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 371.4981,
+          "allocatedBytes": 175956880,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 529.5371
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 468.4611,
+          "allocatedBytes": 208244768,
+          "gc0": 33,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 618.2245
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 335.9106,
+          "allocatedBytes": 166167808,
+          "gc0": 26,
+          "gc1": 2,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 384.7141
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 316.7023,
+          "allocatedBytes": 153920712,
+          "gc0": 25,
+          "gc1": 6,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 402.1773
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 326.8472,
+          "allocatedBytes": 157579152,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 395.0221
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 389.9783,
+          "allocatedBytes": 180047864,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 572.5347
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 465.9216,
+          "allocatedBytes": 205116720,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 589.2765
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 327.1701,
+          "allocatedBytes": 166168912,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 399.6231
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 314.6825,
+          "allocatedBytes": 153937440,
+          "gc0": 24,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 404.085
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 329.7591,
+          "allocatedBytes": 157587872,
+          "gc0": 26,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 385.5735
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 385.3122,
+          "allocatedBytes": 179240400,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 454.2008
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 432.4415,
+          "allocatedBytes": 198639464,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 600.3345
+        }
+      ]
+    },
+    "contentLayout": {
+      "samples": 210,
+      "p50Ms": 47.8747,
+      "p95Ms": 87.524,
+      "maxMs": 268.2358,
+      "over100Ms": 9,
+      "over300Ms": 0,
+      "pearsonDurationVsAllocatedBytes": 0.8979846239880135,
+      "pearsonDurationVsGc0Delta": 0.3558360794950758,
+      "pearsonDurationVsAnyGc": 0.2885047955658201,
+      "operationsWithAnyGc": 123,
+      "operationsWithGen0": 123,
+      "operationsWithGen1": 37,
+      "operationsWithGen2": 5,
+      "p95NoGcMs": 68.3258,
+      "p95WithGcMs": 145.5659,
+      "over300WithAnyGc": 0,
+      "over300WithRenderingGapOver100Ms": 0,
+      "over300WithRenderingGapOver300Ms": 0,
+      "outliers": []
+    },
+    "combinedLayoutEnvelope": {
+      "samples": 210,
+      "p50Ms": 373.44100000000014,
+      "p95Ms": 524.5920000000019,
+      "maxMs": 568.7700000000007,
+      "over100Ms": 210,
+      "over300Ms": 163,
+      "pearsonDurationVsAllocatedBytes": 0.881696066557354,
+      "pearsonDurationVsGc0Delta": 0.8739767393289798,
+      "pearsonDurationVsAnyGc": null,
+      "operationsWithAnyGc": 210,
+      "operationsWithGen0": 210,
+      "operationsWithGen1": 196,
+      "operationsWithGen2": 5,
+      "p95NoGcMs": null,
+      "p95WithGcMs": 524.5920000000019,
+      "over300WithAnyGc": 163,
+      "over300WithRenderingGapOver100Ms": 161,
+      "over300WithRenderingGapOver300Ms": 161,
+      "outliers": [
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 479.40399999999994,
+          "allocatedBytes": 119451232,
+          "gc0": 19,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 759.2315
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 437.58899999999977,
+          "allocatedBytes": 156144168,
+          "gc0": 24,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 595.7397
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 336.7719999999998,
+          "allocatedBytes": 101021816,
+          "gc0": 16,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 389.3943
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 416.582,
+          "allocatedBytes": 132383592,
+          "gc0": 21,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 501.1356
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 395.41499999999985,
+          "allocatedBytes": 170704936,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 433.6495
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 399.1030000000002,
+          "allocatedBytes": 164565600,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 425.2256
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 373.0469999999997,
+          "allocatedBytes": 160495920,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 428.2468
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 362.52900000000034,
+          "allocatedBytes": 154069240,
+          "gc0": 24,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 437.5894
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 364.85099999999983,
+          "allocatedBytes": 169070936,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 380.0155
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 377.0210000000009,
+          "allocatedBytes": 158784776,
+          "gc0": 25,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 399.1254
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 382.4819999999995,
+          "allocatedBytes": 160401904,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 391.8718
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 452.68299999999863,
+          "allocatedBytes": 187041000,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 644.7874
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 303.3389999999994,
+          "allocatedBytes": 141812264,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 322.5146
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 370.91400000000084,
+          "allocatedBytes": 168827176,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 390.205
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 379.2629999999981,
+          "allocatedBytes": 158750456,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 403.5983
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 392.2409999999985,
+          "allocatedBytes": 160425888,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 403.4454
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 388.28200000000027,
+          "allocatedBytes": 163638232,
+          "gc0": 26,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 497.8233
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 535.7899999999986,
+          "allocatedBytes": 213730096,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 606.1863
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 317.49200000000144,
+          "allocatedBytes": 141836232,
+          "gc0": 23,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 345.5566
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 371.47600000000125,
+          "allocatedBytes": 168810672,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 374.9631
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 378.6139999999989,
+          "allocatedBytes": 158739712,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 401.6495
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 375.4200000000019,
+          "allocatedBytes": 160409144,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 385.2968
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 455.7310000000001,
+          "allocatedBytes": 184266528,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 476.4542
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 526.7460000000028,
+          "allocatedBytes": 210625744,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 605.1955
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 301.5420000000013,
+          "allocatedBytes": 141849448,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 317.2516
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 378.85299999999944,
+          "allocatedBytes": 168817960,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 381.8985
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 375.7320000000028,
+          "allocatedBytes": 158744912,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 403.8293
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 375.6699999999995,
+          "allocatedBytes": 160424072,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 385.2308
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 425.4500000000014,
+          "allocatedBytes": 181183464,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 437.199
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 496.3830000000016,
+          "allocatedBytes": 203943512,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 556.815
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 308.999,
+          "allocatedBytes": 141814560,
+          "gc0": 23,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 350.1259
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 370.4099999999997,
+          "allocatedBytes": 168813976,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 377.5124
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 376.0509999999968,
+          "allocatedBytes": 158733344,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 397.6117
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 379.01000000000096,
+          "allocatedBytes": 160416528,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 388.381
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 415.5200000000008,
+          "allocatedBytes": 177740728,
+          "gc0": 28,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 572.6998
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 519.6340000000034,
+          "allocatedBytes": 203114080,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 588.5832
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 336.35800000000415,
+          "allocatedBytes": 141826144,
+          "gc0": 23,
+          "gc1": 0,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 370.2373
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 383.8220000000021,
+          "allocatedBytes": 168823944,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 387.2044
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 373.4269999999995,
+          "allocatedBytes": 158776824,
+          "gc0": 25,
+          "gc1": 6,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 402.2863
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 377.400999999999,
+          "allocatedBytes": 160421896,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 413.7725
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 415.12700000000535,
+          "allocatedBytes": 178720648,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 498.3497
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 555.1219999999972,
+          "allocatedBytes": 213787136,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 660.348
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 304.1199999999975,
+          "allocatedBytes": 141841480,
+          "gc0": 23,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 333.9492
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 415.0450000000063,
+          "allocatedBytes": 168824848,
+          "gc0": 27,
+          "gc1": 0,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 433.9859
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 383.0859999999987,
+          "allocatedBytes": 158755712,
+          "gc0": 25,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 427.4036
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 377.76599999999405,
+          "allocatedBytes": 160416624,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 389.8542
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 443.3909999999983,
+          "allocatedBytes": 184289128,
+          "gc0": 29,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 459.5482
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 525.3620000000012,
+          "allocatedBytes": 210575360,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 575.6677
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 303.64099999999894,
+          "allocatedBytes": 141820432,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 321.1254
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 378.70300000000157,
+          "allocatedBytes": 168850824,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 388.5793
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 383.18399999999997,
+          "allocatedBytes": 158740160,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 410.0617
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 378.04599999999766,
+          "allocatedBytes": 160414920,
+          "gc0": 26,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 387.0653
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 432.4749999999966,
+          "allocatedBytes": 181218264,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 444.2684
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 498.35100000000665,
+          "allocatedBytes": 203979024,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 575.9643
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 302.68999999999835,
+          "allocatedBytes": 141880992,
+          "gc0": 24,
+          "gc1": 5,
+          "gc2": 1,
+          "maxOverlappingRenderingGapMs": 0.0
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 437.04900000000004,
+          "allocatedBytes": 119450080,
+          "gc0": 19,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 688.1084
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 373.44100000000014,
+          "allocatedBytes": 156151600,
+          "gc0": 24,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 420.9503
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 330.2510000000001,
+          "allocatedBytes": 101028112,
+          "gc0": 16,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 397.008
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 401.15999999999997,
+          "allocatedBytes": 132391808,
+          "gc0": 21,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 484.5776
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 380.1680000000003,
+          "allocatedBytes": 170704368,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 404.474
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 390.0550000000003,
+          "allocatedBytes": 164568496,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 416.9245
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 372.54200000000014,
+          "allocatedBytes": 160496496,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 425.6962
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 360.0619999999992,
+          "allocatedBytes": 154078136,
+          "gc0": 24,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 430.111
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 370.2799999999993,
+          "allocatedBytes": 169069568,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 386.0544
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 365.5349999999995,
+          "allocatedBytes": 158782552,
+          "gc0": 25,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 387.659
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 372.84199999999856,
+          "allocatedBytes": 160410376,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 382.2982
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 451.14200000000085,
+          "allocatedBytes": 187040096,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 637.9421
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 304.15600000000074,
+          "allocatedBytes": 141811960,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 322.3366
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 367.9260000000006,
+          "allocatedBytes": 168818512,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 371.9979
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 372.5459999999998,
+          "allocatedBytes": 158755216,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 396.0025
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 372.83399999999745,
+          "allocatedBytes": 160417112,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 383.0127
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 383.56200000000126,
+          "allocatedBytes": 163639336,
+          "gc0": 26,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 485.575
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 524.5920000000019,
+          "allocatedBytes": 213730600,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 597.1078
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 302.3660000000028,
+          "allocatedBytes": 141826760,
+          "gc0": 23,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 334.9718
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 365.513,
+          "allocatedBytes": 168816064,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 369.3588
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 376.13699999999994,
+          "allocatedBytes": 158740920,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 402.6182
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 380.36299999999915,
+          "allocatedBytes": 160403376,
+          "gc0": 26,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 389.9926
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 452.3590000000013,
+          "allocatedBytes": 184257392,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 475.0818
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 528.9849999999988,
+          "allocatedBytes": 210598064,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 611.5637
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 301.5950000000025,
+          "allocatedBytes": 141839640,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 316.5212
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 373.1410000000004,
+          "allocatedBytes": 168822040,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 376.456
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 373.2129999999998,
+          "allocatedBytes": 158742784,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 400.7728
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 374.0799999999993,
+          "allocatedBytes": 160422952,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 383.2025
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 421.3680000000011,
+          "allocatedBytes": 181189248,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 433.5134
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 484.43400000000025,
+          "allocatedBytes": 203942552,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 544.4684
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 371.4440000000039,
+          "allocatedBytes": 168810640,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 377.9951
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 366.29800000000046,
+          "allocatedBytes": 158723288,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 404.349
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 363.6380000000017,
+          "allocatedBytes": 160400672,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 372.8712
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 399.93600000000384,
+          "allocatedBytes": 177745792,
+          "gc0": 28,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 455.8902
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 503.19200000000563,
+          "allocatedBytes": 203112072,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 572.4816
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 328.0940000000001,
+          "allocatedBytes": 141830992,
+          "gc0": 23,
+          "gc1": 0,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 370.0229
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 371.4610000000036,
+          "allocatedBytes": 168823904,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 375.0371
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 430.8679999999967,
+          "allocatedBytes": 158792080,
+          "gc0": 25,
+          "gc1": 6,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 469.0467
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 387.0639999999952,
+          "allocatedBytes": 160413648,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 406.5665
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 422.41200000000134,
+          "allocatedBytes": 178711216,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 508.1931
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 563.0750000000048,
+          "allocatedBytes": 213786248,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 664.5354
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 353.7760000000034,
+          "allocatedBytes": 141843536,
+          "gc0": 23,
+          "gc1": 0,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 369.2441
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 374.2859999999979,
+          "allocatedBytes": 168817616,
+          "gc0": 27,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 378.0879
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 374.64800000000054,
+          "allocatedBytes": 158756976,
+          "gc0": 25,
+          "gc1": 6,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 402.2317
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 377.9230000000027,
+          "allocatedBytes": 160425160,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 399.8806
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 454.8770000000033,
+          "allocatedBytes": 184281968,
+          "gc0": 29,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 565.3816
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 549.0459999999971,
+          "allocatedBytes": 210568880,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 601.098
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 318.89699999999976,
+          "allocatedBytes": 141820536,
+          "gc0": 23,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 338.1402
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 389.60999999999757,
+          "allocatedBytes": 168842400,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 400.0975
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 381.9119999999998,
+          "allocatedBytes": 158738632,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 406.3873
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 383.6119999999994,
+          "allocatedBytes": 160417864,
+          "gc0": 26,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 394.0688
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 416.7190000000005,
+          "allocatedBytes": 181219784,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 436.8576
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 503.5710000000009,
+          "allocatedBytes": 203982256,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 577.8153
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 308.0280000000002,
+          "allocatedBytes": 141886544,
+          "gc0": 24,
+          "gc1": 5,
+          "gc2": 1,
+          "maxOverlappingRenderingGapMs": 0.0
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 312.401,
+          "allocatedBytes": 111550296,
+          "gc0": 18,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 460.2929
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 476.249,
+          "allocatedBytes": 119451976,
+          "gc0": 19,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 719.9278
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 381.5440000000001,
+          "allocatedBytes": 156152632,
+          "gc0": 24,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 529.0645
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 332.9580000000001,
+          "allocatedBytes": 101027752,
+          "gc0": 16,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 390.1862
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 436.55799999999977,
+          "allocatedBytes": 132399576,
+          "gc0": 21,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 521.973
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 381.91299999999995,
+          "allocatedBytes": 170709880,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 405.0482
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 396.3469999999996,
+          "allocatedBytes": 164563944,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 423.5016
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 373.457000000001,
+          "allocatedBytes": 160498104,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 428.4355
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 366.43899999999974,
+          "allocatedBytes": 154077016,
+          "gc0": 24,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 441.001
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 360.72799999999995,
+          "allocatedBytes": 169073112,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 379.9542
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 374.30300000000113,
+          "allocatedBytes": 158776992,
+          "gc0": 25,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 396.261
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 385.74100000000124,
+          "allocatedBytes": 160416584,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 395.9129
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 301.61499999999995,
+          "allocatedBytes": 130393816,
+          "gc0": 21,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 462.3575
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 454.6790000000005,
+          "allocatedBytes": 187029976,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 543.6061
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 305.53300000000047,
+          "allocatedBytes": 141815192,
+          "gc0": 23,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 324.6752
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 372.29999999999916,
+          "allocatedBytes": 168820808,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 376.3045
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 377.4270000000008,
+          "allocatedBytes": 158754376,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 399.7871
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 375.43899999999655,
+          "allocatedBytes": 160419016,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 384.7429
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 384.6109999999996,
+          "allocatedBytes": 163646360,
+          "gc0": 26,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 485.0419
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 568.7700000000007,
+          "allocatedBytes": 213730824,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 653.8339
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 303.7470000000013,
+          "allocatedBytes": 141836136,
+          "gc0": 22,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 321.489
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 365.1699999999991,
+          "allocatedBytes": 168810832,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 368.2848
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 375.73899999999935,
+          "allocatedBytes": 158740312,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 398.6974
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 374.7889999999998,
+          "allocatedBytes": 160410720,
+          "gc0": 26,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 384.936
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 446.45599999999774,
+          "allocatedBytes": 184267968,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 563.3455
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 514.0640000000012,
+          "allocatedBytes": 210601480,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 591.3527
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 372.63200000000296,
+          "allocatedBytes": 168823448,
+          "gc0": 27,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 376.6384
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 372.64000000000055,
+          "allocatedBytes": 158743400,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 400.5309
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 372.28,
+          "allocatedBytes": 160416384,
+          "gc0": 26,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 381.6246
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 419.80099999999965,
+          "allocatedBytes": 181174696,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 431.9256
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 490.3499999999994,
+          "allocatedBytes": 203942952,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 560.7996
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 365.15900000000556,
+          "allocatedBytes": 168817456,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 387.2088
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 370.3080000000014,
+          "allocatedBytes": 158730672,
+          "gc0": 25,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 392.8103
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 370.3120000000055,
+          "allocatedBytes": 160405240,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 379.8307
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 418.5210000000055,
+          "allocatedBytes": 177747200,
+          "gc0": 29,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 471.3777
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 512.1189999999984,
+          "allocatedBytes": 203118664,
+          "gc0": 32,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 584.2276
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 323.62400000000235,
+          "allocatedBytes": 141832968,
+          "gc0": 23,
+          "gc1": 2,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 358.8689
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 373.8610000000051,
+          "allocatedBytes": 168817272,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 392.3443
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 377.57299999999816,
+          "allocatedBytes": 158785416,
+          "gc0": 25,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 407.2377
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 414.43999999999903,
+          "allocatedBytes": 160415520,
+          "gc0": 26,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 424.6537
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 426.50199999999927,
+          "allocatedBytes": 178712784,
+          "gc0": 28,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 529.5371
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 535.4280000000031,
+          "allocatedBytes": 213779136,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 618.2245
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Dark",
+          "durationMs": 307.4550000000045,
+          "allocatedBytes": 141840408,
+          "gc0": 23,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 322.9738
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Light",
+          "durationMs": 381.1329999999984,
+          "allocatedBytes": 168822064,
+          "gc0": 27,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 384.7141
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Light",
+          "durationMs": 374.4270000000043,
+          "allocatedBytes": 158749808,
+          "gc0": 25,
+          "gc1": 6,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 402.1773
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Light",
+          "durationMs": 379.2349999999942,
+          "allocatedBytes": 160421776,
+          "gc0": 25,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 395.0221
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Light",
+          "durationMs": 452.967000000001,
+          "allocatedBytes": 184267512,
+          "gc0": 29,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 572.5347
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Light",
+          "durationMs": 538.6030000000019,
+          "allocatedBytes": 210580840,
+          "gc0": 34,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 589.2765
+        },
+        {
+          "page": "MaintenanceView",
+          "theme": "Light",
+          "durationMs": 300.9740000000036,
+          "allocatedBytes": 141815200,
+          "gc0": 23,
+          "gc1": 5,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 318.305
+        },
+        {
+          "page": "OverviewView",
+          "theme": "Dark",
+          "durationMs": 374.4399999999999,
+          "allocatedBytes": 168831312,
+          "gc0": 27,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 399.6231
+        },
+        {
+          "page": "SaveCenterView",
+          "theme": "Dark",
+          "durationMs": 379.32099999999735,
+          "allocatedBytes": 158738064,
+          "gc0": 25,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 404.085
+        },
+        {
+          "page": "TrainerCenterView",
+          "theme": "Dark",
+          "durationMs": 376.6689999999997,
+          "allocatedBytes": 160422304,
+          "gc0": 26,
+          "gc1": 3,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 385.5735
+        },
+        {
+          "page": "MediaCenterView",
+          "theme": "Dark",
+          "durationMs": 427.4289999999965,
+          "allocatedBytes": 181226640,
+          "gc0": 29,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 454.2008
+        },
+        {
+          "page": "TaskCenterView",
+          "theme": "Dark",
+          "durationMs": 505.91999999999615,
+          "allocatedBytes": 203988896,
+          "gc0": 33,
+          "gc1": 4,
+          "gc2": 0,
+          "maxOverlappingRenderingGapMs": 600.3345
+        }
+      ]
+    },
+    "activeRenderingIntervals": {
+      "samples": 3609,
+      "p50Ms": 15.6796,
+      "p95Ms": 310.7595,
+      "maxMs": 1322.403,
+      "over100Ms": 429,
+      "over300Ms": 189
+    }
+  },
+  "interpretation": {
+    "segment": "The themeApplication segment brackets the two ApplyThemePalette calls; contentLayout brackets page-host assignment, responsive layout and UpdateLayout. These are WPF operation timings from the test harness.",
+    "gc": "GC.CollectionCount deltas are operation-window counters, not exact collection timestamps. Correlation is descriptive, not causal.",
+    "overlap": "Rendering callback gaps overlap operation time ranges; they are not physical/presented frames and temporal overlap is not proof of causation.",
+    "comparison": "The composite envelope approximates the older single layout timing boundary. Current U00 original frame/total-allocation baseline remains unavailable, so this does not complete the acceptance comparison.",
+    "input": "Programmatic fake-data text updates are not physical keyboard or IME response.",
+    "host": "The opacity 0.01 controlled STA window is not Playnite host rendering."
+  }
+}

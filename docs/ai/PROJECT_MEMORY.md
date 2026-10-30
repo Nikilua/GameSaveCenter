@@ -1,3 +1,7 @@
+## 2026-10-30 U09-04 U00固定协议重建
+
+U00源码提交`90bf040567f013f3a8d9ed8667028a4edb2ec524`已从Git快照重建固定周期对照；与候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`均用SDK8.0.423、固定假时钟和相同探针。主题p95与活动期AppDomain托管分配下降，内容布局旧>300ms样本未复现；任务DataGrid内部滚动在两组单轮10样本动作中p95及分配偏高。动作包含强制`UpdateLayout()`；不据此归因到共享行样式或任务详情动效。原始U00帧/分配文件和Playnite/物理输入/IME/呈现帧仍缺，U09-04保持进行中。下一步先用更窄且重复的Task滚动探针确认信号，再决定是否修改生产源。生产与测试源码此次未改。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-correlation-20261030/u00-reconstructed-20261030/BASELINE.md`。
+
 ## 2026-10-30 Round5整轮状态更新
 
 U09-01现已满足；状态为7已满足、71代码完成待验收、1进行中(U09-04)、1远端待验(U09-06)。U09-08汇总需沿用该计数，不能再把U09-01列为进行中。提交8d9724be的push run与combined status不可由当前连接器/公开Actions页读取；build与sdk10-build保持远端待验，保留精确SHA查询记录和有权限维护者的只读下一步。

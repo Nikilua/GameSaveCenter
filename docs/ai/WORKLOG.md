@@ -1,3 +1,7 @@
+## 2026-10-30 U09-04 U00来源重建补测
+
+从U00历史提交`90bf040567f013f3a8d9ed8667028a4edb2ec524`重建隔离快照，以SDK8.0.423、固定UTC、70周期、297动作、30秒settle比较冻结候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`。U00探针将FakeDashboardData中45处`DateTime.UtcNow`仅在临时副本替换为固定假时钟。两侧对应Release探针构建均0 warning/0 error，各固定周期及动作采样exit0。主题应用p95 448.77→325.97ms、>300ms由133/210降至21/210；布局p95 87.52→97.49ms，两侧>300ms均为0；活动期AppDomain托管分配均值减少20.15%。任务DataGrid滚动两组单轮10样本p95均由约29.4–29.7ms增至37.7–38.2ms，分配也增加；显式`UpdateLayout()`使其仅为逻辑代理。TaskGrid/共享DataGrid模板保持相同，但共享行选中边框token及任务页代码有其它变化，根因未证实。未改生产/测试源；不运行本批无关安装链。证据、分析脚本、日志、原始CSV及SHA位于Round5 `evidence/U09-04-correlation-20261030/u00-reconstructed-20261030/`。清理本阶段自有`.tmp`共13,293文件/860,449,585 bytes，C盘空闲增加888,344,576 bytes；WMI进程命令行查询被拒绝，清理后进程名复查为0，边界和局限见`cleanup.json`。U09-04保持进行中，需窄化滚动探针；状态7/71/1/1。
+
 ## 2026-10-30 U09-08 终审状态同步
 
 关闭U09-01证据清查后，将整轮计数同步为7项已满足、71项代码完成待验收、1项进行中（U09-04）、1项远端待验（U09-06）。提交8d9724be推送后精确SHA的连接器run/status均为空，公开Actions只读页未能访问；build与sdk10-build仍远端待验。完整查询、run/job/artifact下一步见Round5 `evidence/U09-01-coverage-20261030/ci-query-8d9724be.json`。本次文档校验源码通过、Markdown链接726个全有效、证据SHA 4/4、git diff --check无错误；未跑完整安装启动链。

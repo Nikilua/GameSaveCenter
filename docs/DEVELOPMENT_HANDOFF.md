@@ -1,3 +1,7 @@
+## 2026-10-30 U09-04 U00来源重建更新
+
+U00来源`90bf040567f013f3a8d9ed8667028a4edb2ec524`与冻结候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`已按固定时间和70周期RenderHarness条件补做源码重建比较。主题应用p95和活动期托管分配改善；内容布局>300ms尾样本未复现；任务DataGrid内部滚动两组每侧10样本均显示候选偏慢，但动作含显式`UpdateLayout()`，尚未定位根因。不要仅凭此改共享DataGrid模板或滚动系统。U09-04继续进行中，生产/测试源码未改。证据目录：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-correlation-20261030/u00-reconstructed-20261030/`。下一步在相同快照上运行更窄的Task滚动重复测量，再决定是否需源码优化；U09-06的精确提交GitHub双SDK run仍远端待验。
+
 ## 2026-10-30 Round5 当前交接
 
 U09-01新增U08-05/06同数据双主题配对见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U08-05-06-pair-20261030/BASELINE.md`；当前冻结源码`5040ac555c3d202b144c4ca9730a87978d139252`相关行为5/5，source validation exit0、WPF静态26 XAML/0 error。U08-05/06保持代码完成待验收；U09-01仍需完成剩余配对盘点，U09-04仍待归因，U09-06 required-check仍远端待验。

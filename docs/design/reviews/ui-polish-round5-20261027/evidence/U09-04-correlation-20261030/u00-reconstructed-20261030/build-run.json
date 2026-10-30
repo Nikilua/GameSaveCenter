@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "measuredCommit": "4e214368a310ed0ef892b5e3eebb5ed46fc7adf9",
+  "u00SourceCommit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "candidateSourceCommit": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+  "productionSourceChanged": false,
+  "sdk": {
+    "version": "8.0.423",
+    "path": "D:/workplace/github/GameSaveCenter/.tmp/round5-u09-01-03/dotnet-sdk8/dotnet.exe",
+    "selection": "Exact repo-required SDK; no fallback"
+  },
+  "snapshots": [
+    {
+      "name": "u00-reconstructed",
+      "archive": "u00-source.zip",
+      "archiveSha256": "D810C4950FBD26AAB4936F89C353EFC9F995128BF960C0B12CDF71ECEF8F9835",
+      "archiveBytes": 58832634,
+      "sourceFileCount": 3021,
+      "instrumentedProgramSha256": "0B518A59C00CA09DA76043647DCFAB6D9827696D31EA38B87C0162E2FECA7950",
+      "instrumentedFakeDashboardDataSha256": "035DC6D8C65D1758EA6C81F033C3C3B3B1D3C94C0DC372B5A40C6D0EFFA8D170"
+    },
+    {
+      "name": "candidate",
+      "archive": "current-source.zip",
+      "archiveSha256": "064E5AF6E21ACE8F406D9F15EF107B249416661C40A9F2F0236D127B9783F8FE",
+      "archiveBytes": 139869017,
+      "sourceCommit": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+      "instrumentedProgramSha256": "70CC5EE549EC7CC53119D64DBE97DF4594A3428461A2DF1A4A4997BBD78DC7A0",
+      "instrumentedFakeDashboardDataSha256": "FA6483FB94DF0F39E595324CF344E955B917681EB5180957A115CE16B133B88A",
+      "instrumentationPatchSha256": "06B359AF10644FE52803FE50DC5F9B3C259CA2759E721EDCF0BB08D4000296B0"
+    }
+  ],
+  "build": {
+    "project": "tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj",
+    "configuration": "Release",
+    "targetFramework": "net472",
+    "command": "dotnet build tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj -c Release --nologo -v:minimal -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=<isolated-output>",
+    "restoreIncluded": true,
+    "results": [
+      { "snapshot": "u00-reconstructed", "stage": "initial", "exitCode": 0, "warnings": 0, "errors": 0, "elapsed": "00:01:36.56", "log": "u00/build-initial.log" },
+      { "snapshot": "u00-reconstructed", "stage": "page-actions", "exitCode": 0, "warnings": 0, "errors": 0, "elapsed": "00:00:03.67", "log": "u00/build-page-actions.log" },
+      { "snapshot": "u00-reconstructed", "stage": "scroll-context", "exitCode": 0, "warnings": 0, "errors": 0, "elapsed": "00:00:23.60", "log": "u00/build-final.log" },
+      { "snapshot": "candidate", "stage": "initial", "exitCode": 0, "warnings": 0, "errors": 0, "elapsed": "00:00:37.22", "log": "candidate-actions/build-initial.log" },
+      { "snapshot": "candidate", "stage": "scroll-context", "exitCode": 0, "warnings": 0, "errors": 0, "elapsed": "00:00:23.61", "log": "candidate-actions/build-final.log" }
+    ],
+    "renderHarnessAssemblies": [
+      { "snapshot": "u00-reconstructed", "bytes": 642560, "sha256": "E90BC9163AE2119C5349E69C40AC96A7804F8D3E6BD8A103C8B019615E04BC5A" },
+      { "snapshot": "candidate", "bytes": 650240, "sha256": "07C2B48ECF26653C9C278A7B821C3C6A72A0702A95D564C0DA09753D3B6CD9C8" }
+    ]
+  },
+  "protocol": {
+    "sampleTimeUtc": "2026-10-28T09:00:00Z",
+    "pinned": true,
+    "fixedCycles": 70,
+    "completedActionsPerRun": 297,
+    "postActionSettleSeconds": 30,
+    "safetyTimeoutSeconds": 300,
+    "window": "Controlled WPF STA window, opacity 0.01; 1040x700 DIP; seven workspaces; light/dark",
+    "forcedGc": false,
+    "runCommand": "<GameSaveCenter.RenderHarness.exe> enduranceprobe <output-directory> 300",
+    "sampleClockEnvironment": "GSC_RENDER_SAMPLE_UTC=2026-10-28T09:00:00Z"
+  },
+  "runs": [
+    { "snapshot": "u00-reconstructed", "run": "run-1", "exitCode": 0, "directory": "u00/run-1/" },
+    { "snapshot": "u00-reconstructed", "run": "run-2", "exitCode": 0, "directory": "u00/run-2/" },
+    { "snapshot": "u00-reconstructed", "run": "run-3", "exitCode": 0, "directory": "u00/run-3/" },
+    { "snapshot": "u00-reconstructed", "run": "run-4-page-actions", "exitCode": 0, "directory": "u00/run-4-page-actions/" },
+    { "snapshot": "u00-reconstructed", "run": "run-5-scroll-context", "exitCode": 0, "directory": "u00/run-5-scroll-context/" },
+    { "snapshot": "candidate", "run": "run-1-page-actions", "exitCode": 0, "directory": "candidate-actions/run-1-page-actions/" },
+    { "snapshot": "candidate", "run": "run-2-scroll-context", "exitCode": 0, "directory": "candidate-actions/run-2-scroll-context/" },
+    { "snapshot": "candidate", "run": "fixed run 1-3", "exitCode": 0, "directory": "../fixed-gc-rerun-20261030/run-1..3/", "identity": "See sibling build-run.json and analysis.json" }
+  ],
+  "limitations": [
+    "This is an isolated RenderHarness diagnostic, not the Chinese installer/startup chain or scripts/build.cmd.",
+    "CompositionTarget.Rendering callbacks are not presented or VSync frames.",
+    "The managed allocation counter covers the active AppDomain, excludes native and other-AppDomain allocations, and is not production-only.",
+    "The U00 source did not contain FakeSampleClock; 45 FakeDashboardData DateTime.UtcNow uses were redirected to the fixed fake clock in the probe copy.",
+    "U00 is a reconstructed source baseline; original U00 raw frames and cumulative-allocation evidence remain unavailable.",
+    "Task scroll actions have 10 samples per run and do not establish a causal regression."
+  ]
+}

@@ -1,0 +1,8 @@
+Fixed-cycle supplementary WPF diagnostic; not original historical measurements or presented/VSync frames
+Cycles=70; CompletedActions=297; FixedCycleTarget=70; no forced GC
+ActiveSeconds=52.680923; TotalSeconds=83.541104
+ManagedAllocationCounter=AppDomain.CurrentDomain.MonitoringTotalAllocatedMemorySize; native/other-AppDomain allocations excluded
+Per-operation timestamps use Stopwatch.GetTimestamp relative to Begin; GC columns are per-operation GC.CollectionCount deltas.
+ActiveAllocatedBytes=11118245120; TotalAllocatedBytes=11126644912; ActiveBytesPerCycle=158832073.143; ActiveBytesPerCompletedAction=37435168.754
+Phase=active; Samples=1152; P50Ms=15.751; P95Ms=321.149; MaxMs=672.213; Over16_7Ms=309; Over33_3Ms=142
+Phase=settle; Samples=1912; P50Ms=15.620; P95Ms=18.980; MaxMs=116.405; Over16_7Ms=166; Over33_3Ms=2

@@ -1,0 +1,10 @@
+{
+  "measuredUtc": "2026-10-30T02:10:42.8068261Z",
+  "u00Commit": "90bf040567f013f3a8d9ed8667028a4edb2ec524",
+  "candidateCommit": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+  "cFreeBytesBefore": 3038507008,
+  "dFreeBytesBefore": 18819194880,
+  "target": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-u00-reconstruction-20261030",
+  "sdkPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-01-03\\dotnet-sdk8\\dotnet.exe",
+  "sdkExists": true
+}

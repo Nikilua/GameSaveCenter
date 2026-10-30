@@ -1,0 +1,55 @@
+{
+  "phase": "U09-04 fixed-clock GC/timestamp supplementary diagnostic",
+  "measuredCommit": "4e214368a310ed0ef892b5e3eebb5ed46fc7adf9",
+  "sourceCandidate": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+  "productionAndTestTreeMatchesCandidate": true,
+  "productionSourceFilesChanged": false,
+  "sdk": {
+    "version": "8.0.423",
+    "dotnetPath": "D:/workplace/github/GameSaveCenter/.tmp/round5-u09-01-03/dotnet-sdk8/dotnet.exe",
+    "selection": "exact required SDK; no fallback or SDK switch"
+  },
+  "build": {
+    "project": "tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj",
+    "targetFramework": "net472",
+    "configuration": "Release",
+    "command": "dotnet build tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj -c Release --nologo -v:minimal -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=<isolated output>",
+    "restoreIncluded": true,
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "elapsed": "00:00:54.70",
+    "log": "build.log",
+    "renderHarnessExeSha256": "217DB3EB886AD44BE3CC280334B5CFB774F7C586BBE0324402382F060AE52773",
+    "playniteAssemblySha256": "A3DFDA6166FEB75E6633BBD07B6F21ECC4A9CD0F123574783C9F9A2D0A6EAF37"
+  },
+  "instrumentation": {
+    "originalProgramSha256": "9E349C9E891B8F9B1087EC14873855E125697DC037B21849835539D23885D9A4",
+    "instrumentedProgramSha256": "9AADCEE93B8345B8A9A7C72C5FE98F1DE4C6F83829F7B18F33F99421F08C7CAC",
+    "probeSourceSha256": "438BEC8510DFD2DC28FD0A04A575FD6A5598FE58CF67CC16B6E46CD80D05F215",
+    "deltaPatchSha256": "06B359AF10644FE52803FE50DC5F9B3C259CA2759E721EDCF0BB08D4000296B0",
+    "probeOnlyTemporaryCopy": true
+  },
+  "protocol": {
+    "sampleTimeUtc": "2026-10-28T09:00:00Z",
+    "pinned": true,
+    "cyclesPerRun": 70,
+    "completedActionsPerRun": 297,
+    "safetyTimeoutSeconds": 300,
+    "postActionSettleSeconds": 30,
+    "window": "controlled WPF STA window, opacity 0.01; seven workspaces; 1040x700 DIP; light/dark",
+    "forcedGc": false
+  },
+  "runs": [
+    {"run": 1, "exitCode": 0, "report": "run-1/enduranceprobe-report.txt", "stdout": "run-1/console.log"},
+    {"run": 2, "exitCode": 0, "report": "run-2/enduranceprobe-report.txt", "stdout": "run-2/console.log"},
+    {"run": 3, "exitCode": 0, "report": "run-3/enduranceprobe-report.txt", "stdout": "run-3/console.log"}
+  ],
+  "limitations": [
+    "This is an isolated RenderHarness project build and supplementary performance diagnostic, not the final full installer/startup chain.",
+    "CompositionTarget.Rendering callback intervals are not compositor, VSync, or presented frames.",
+    "Synthetic FakeDashboardData and programmatic text updates do not verify physical keyboard, IME, real Playnite host, physical DPI, restore, media deletion, or cloud writes.",
+    "GC.CollectionCount deltas are operation-window counters, not exact event timestamps or proof of causation.",
+    "The original U00 raw frame and cumulative-allocation baseline is still unavailable; U09-04 remains open."
+  ]
+}

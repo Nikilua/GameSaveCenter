@@ -1,0 +1,52 @@
+{
+  "phase": "U09-04 reconstructed U00 performance evidence",
+  "measuredUtc": "2026-10-30T03:11:38.9641722Z",
+  "repoRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "evidenceDirectory": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-correlation-20261030/u00-reconstructed-20261030",
+  "archiveVerification": {
+    "filesVerified": 83,
+    "method": "SHA-256 match for copied build logs, probe source files, raw run files and CSVs before cleanup"
+  },
+  "deletion": {
+    "targets": [
+      {
+        "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-u00-reconstruction-20261030",
+        "insideTmp": true,
+        "files": 5409,
+        "bytes": 302912291.0,
+        "reparsePoints": 0
+      },
+      {
+        "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\u09-04-current-page-actions-20261030",
+        "insideTmp": true,
+        "files": 7884,
+        "bytes": 557537294.0,
+        "reparsePoints": 0
+      }
+    ],
+    "totalFiles": 13293,
+    "totalBytes": 860449585,
+    "command": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+    "result": "removed and absence verified"
+  },
+  "freeBytesBefore": {
+    "C": 4450738176,
+    "D": 18815148032
+  },
+  "freeBytesAfter": {
+    "C": 5339082752,
+    "D": 18815213568
+  },
+  "freeBytesDelta": {
+    "C": 888344576,
+    "D": 65536
+  },
+  "preserved": [
+    "All new evidence, run CSV, reports, probe source, current candidate fixed-run evidence, and unrelated .tmp/artifacts/TestResults"
+  ],
+  "processCheck": {
+    "beforeDeletion": "Get-CimInstance Win32_Process was denied access; no exact command-line inventory available",
+    "followUp": "After all synchronous probe commands completed and after cleanup, Get-Process found 0 GameSaveCenter.RenderHarness, Playnite, or dotnet processes; Remove-Item completed and both target paths are absent",
+    "limitation": "The follow-up process-name query cannot prove an exact-path process was absent at the instant before deletion"
+  }
+}
