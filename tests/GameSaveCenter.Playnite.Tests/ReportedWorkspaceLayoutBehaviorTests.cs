@@ -1891,12 +1891,16 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         var summaryHeight = 0d;
         var primaryRowHeight = 0d;
         var primaryRowHeightAfterExpansion = 0d;
+        var configurationRowHeight = 0d;
+        var configurationRowHeightAfterExpansion = 0d;
         var retryHeight = 0d;
         var resetHeight = 0d;
         var retryAfterExpansion = 0d;
         var resetAfterExpansion = 0d;
         var retryCenterDelta = 0d;
         var resetCenterDelta = 0d;
+        var resetBelongsToConfigurationRow = false;
+        var configurationDisclosureExpanded = false;
         var leaveHintForeground = Colors.Transparent;
         var summaryForeground = Colors.Transparent;
         var secondaryForeground = Colors.Transparent;
@@ -1915,6 +1919,8 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var viewType = typeof(TaskCenterView);
                 var header = (Grid)viewType.GetField("TaskQueueHeaderLayoutGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var summary = (Grid)viewType.GetField("TaskQueueSummaryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var configurationRow = (FrameworkElement)viewType.GetField("TaskViewConfigurationRow", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var moreFilters = (Expander)viewType.GetField("TaskMoreFiltersExpander", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var loadedSummary = (TextBlock)viewType.GetField("TaskQueueLoadedSummaryText", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var statusSummary = (TextBlock)viewType.GetField("TaskQueueLastUpdatedSummary", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var title = FindVisualChildren<TextBlock>(header).Single(text => text.Text == "任务队列");
@@ -1931,9 +1937,18 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 summaryHeight = summary.ActualHeight;
                 primaryRowHeight = header.RowDefinitions[0].ActualHeight;
                 retryHeight = retry.ActualHeight;
+                resetBelongsToConfigurationRow = ReferenceEquals(reset.Parent, configurationRow);
+                if (moreFilters.Visibility == Visibility.Visible)
+                {
+                    moreFilters.IsExpanded = true;
+                    configurationDisclosureExpanded = moreFilters.IsExpanded;
+                    FlushLayout(window);
+                }
+                var configurationTitle = FindVisualChildren<TextBlock>(configurationRow).Single(text => text.Text == "表格视图");
+                configurationRowHeight = configurationRow.ActualHeight;
                 resetHeight = reset.ActualHeight;
                 retryCenterDelta = Math.Abs(CenterY(retry, header) - CenterY(title, header));
-                resetCenterDelta = Math.Abs(CenterY(reset, header) - CenterY(title, header));
+                resetCenterDelta = Math.Abs(CenterY(reset, configurationRow) - CenterY(configurationTitle, configurationRow));
                 leaveHintForeground = (hint.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
                 summaryForeground = (loadedSummary.Foreground as SolidColorBrush)?.Color ?? Colors.Transparent;
                 secondaryForeground = (view.FindResource("GscSecondaryTextBrush") as SolidColorBrush)?.Color ?? Colors.Transparent;
@@ -1945,6 +1960,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 statusSummary.Text = "最近更新：刚刚\n刷新时仍保留旧数据\n失败后可以重试读取";
                 FlushLayout(window);
                 primaryRowHeightAfterExpansion = header.RowDefinitions[0].ActualHeight;
+                configurationRowHeightAfterExpansion = configurationRow.ActualHeight;
                 retryAfterExpansion = retry.ActualHeight;
                 resetAfterExpansion = reset.ActualHeight;
             }
@@ -1958,15 +1974,18 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} Task queue metadata={summaryHeight:0.##} DIP below primary row={primaryRowHeight:0.##} DIP; expanded primary row={primaryRowHeightAfterExpansion:0.##}; retry/reset={retryHeight:0.##}/{resetHeight:0.##}, expanded={retryAfterExpansion:0.##}/{resetAfterExpansion:0.##}, centerΔ={retryCenterDelta:0.##}/{resetCenterDelta:0.##}, hint/summary/muted/info={leaveHintForeground}/{summaryForeground}/{mutedForeground}/{infoForeground}; filter summary duplicated={activeFilterSummaryWasDuplicated}");
+        output.WriteLine($"{theme} Task queue metadata={summaryHeight:0.##} DIP below primary row={primaryRowHeight:0.##} DIP; expanded primary row={primaryRowHeightAfterExpansion:0.##}; retry={retryHeight:0.##}->{retryAfterExpansion:0.##}; view configuration={configurationRowHeight:0.##}->{configurationRowHeightAfterExpansion:0.##}; reset={resetHeight:0.##}->{resetAfterExpansion:0.##}, centerΔ={retryCenterDelta:0.##}/{resetCenterDelta:0.##}; configParent={resetBelongsToConfigurationRow}, disclosureExpanded={configurationDisclosureExpanded}; hint/summary/muted/info={leaveHintForeground}/{summaryForeground}/{mutedForeground}/{infoForeground}; filter summary duplicated={activeFilterSummaryWasDuplicated}");
         Assert.Null(exception);
         Assert.True(summaryHeight > 0);
         Assert.InRange(primaryRowHeight, 28, 44);
         Assert.InRange(retryHeight, 28, 40);
+        Assert.True(resetBelongsToConfigurationRow, "the reset action stays in the secondary view-configuration row");
+        Assert.True(configurationRowHeight > 0, "the task view configuration row is available when its filters disclosure is open");
         Assert.InRange(resetHeight, 32, 40);
         Assert.InRange(retryCenterDelta, 0, 1);
         Assert.InRange(resetCenterDelta, 0, 1);
         Assert.InRange(Math.Abs(primaryRowHeightAfterExpansion - primaryRowHeight), 0, 0.5);
+        Assert.InRange(Math.Abs(configurationRowHeightAfterExpansion - configurationRowHeight), 0, 0.5);
         Assert.InRange(Math.Abs(retryAfterExpansion - retryHeight), 0, 0.5);
         Assert.InRange(Math.Abs(resetAfterExpansion - resetHeight), 0, 0.5);
         Assert.False(activeFilterSummaryWasDuplicated, "the selected filter is already visible in the filter controls or compact disclosure header");
