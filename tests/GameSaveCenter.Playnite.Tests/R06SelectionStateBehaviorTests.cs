@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -10,7 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Markup;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Settings;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -131,6 +135,88 @@ public sealed class R06SelectionStateBehaviorTests
         Assert.Contains("CellChrome\" Property=\"Background\" Value=\"Transparent\"", production);
     }
 
+    [Fact]
+    public void DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes()
+    {
+        AssertDashboardRowOverlayContract();
+        RunSta(() =>
+        {
+            TestRepositoryContext.AssertAssemblyMatchesSource();
+            EnsureApplicationResources();
+            var resources = LoadDashboardDataGridResources();
+            var rows = new ObservableCollection<TaskStatusDto>
+            {
+                Task("dashboard-row", TaskState.Running),
+                Task("dashboard-row-2", TaskState.Succeeded)
+            };
+            var grid = new DataGrid
+            {
+                AutoGenerateColumns = false,
+                CanUserAddRows = false,
+                HeadersVisibility = DataGridHeadersVisibility.Column,
+                SelectionMode = DataGridSelectionMode.Single,
+                SelectionUnit = DataGridSelectionUnit.FullRow,
+                Height = 150,
+                Width = 520,
+                RowStyle = Assert.IsType<Style>(resources["DashboardCompatibilityDataGridRow"]),
+                ItemsSource = rows
+            };
+            grid.Columns.Add(new DataGridTextColumn { Header = "状态", Binding = new Binding("StateDisplay"), Width = 170 });
+            grid.Columns.Add(new DataGridTextColumn { Header = "游戏", Binding = new Binding(nameof(TaskStatusDto.GameName)), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+
+            var external = new TextBox { Text = "外部焦点" };
+            var root = new StackPanel { Resources = resources };
+            root.Children.Add(grid);
+            root.Children.Add(external);
+            var window = new Window
+            {
+                Width = 640,
+                Height = 240,
+                Content = root,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None
+            };
+
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+                var row = RowFor(grid, rows[0]);
+                Assert.Same(external, Keyboard.Focus(external));
+
+                foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
+                {
+                    ApplyTheme(root, resources, theme);
+                    row.IsSelected = false;
+                    Assert.Same(external, Keyboard.Focus(external));
+                    PumpLayout(window);
+                    var unselectedGeometry = CaptureCellGeometry(row, grid);
+
+                    row.IsSelected = true;
+                    Assert.Same(external, Keyboard.Focus(external));
+                    PumpLayout(window);
+
+                    Assert.True(row.IsSelected, $"{theme}: compatibility row did not enter selected state");
+                    Assert.False(Selector.GetIsSelectionActive(row), $"{theme}: selection should stay inactive while focus is external");
+                    AssertGeometryUnchanged(unselectedGeometry, CaptureCellGeometry(row, grid), $"{theme} selected overlay");
+
+                    var background = Assert.IsType<Border>(row.Template.FindName("RowBackground", row));
+                    var chrome = Assert.IsType<Border>(row.Template.FindName("RowChrome", row));
+                    Assert.Equal(new Thickness(4, 2, 12, 2), background.Margin);
+                    Assert.Equal(new CornerRadius(14), background.CornerRadius);
+                    Assert.Equal(new Thickness(4, 2, 12, 2), chrome.Margin);
+                    Assert.Equal(new CornerRadius(14), chrome.CornerRadius);
+                    Assert.True(chrome.BorderThickness.Left > 0, $"{theme}: selection outline was not retained");
+                    Assert.False(chrome.IsHitTestVisible);
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
     private static DataGridRow RowFor(DataGrid grid, TaskStatusDto item)
         => grid.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow
             ?? throw new InvalidOperationException("DataGrid row was not generated.");
@@ -158,6 +244,18 @@ public sealed class R06SelectionStateBehaviorTests
                 ?? throw new InvalidOperationException("A realized text cell has no TextBlock content.");
             return new[] { BoundsRelativeTo(cell, grid), BoundsRelativeTo(text, grid) };
         }).ToArray();
+    }
+
+    private static Rect[] CaptureCellGeometry(DataGridRow row, DataGrid grid)
+    {
+        var cells = FindVisualChildren<DataGridCell>(row)
+            .Where(cell => cell.Visibility == Visibility.Visible && cell.ActualWidth > 0 && cell.ActualHeight > 0)
+            .OrderBy(cell => cell.Column.DisplayIndex)
+            .ToArray();
+        if (cells.Length != 2)
+            throw new InvalidOperationException($"Expected two realized DataGrid cells, got {cells.Length}.");
+
+        return cells.Select(cell => BoundsRelativeTo(cell, row)).ToArray();
     }
 
     private static Rect BoundsRelativeTo(FrameworkElement element, FrameworkElement ancestor)
@@ -215,6 +313,76 @@ public sealed class R06SelectionStateBehaviorTests
     <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml""/>
     <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/Redesign.xaml""/>
 </ResourceDictionary.MergedDictionaries></ResourceDictionary>");
+
+    private static ResourceDictionary LoadDashboardDataGridResources()
+    {
+        XNamespace presentation = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
+        XNamespace xaml = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var dashboardPath = Path.Combine(TestRepositoryContext.Root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml");
+        var dashboard = XDocument.Load(dashboardPath);
+        var focusStyle = dashboard.Descendants(presentation + "Style")
+            .Single(style => style.Attribute(xaml + "Key")?.Value == "GscFocusVisual");
+        var rowStyle = dashboard.Descendants(presentation + "Style")
+            .Single(style => style.Attribute("TargetType")?.Value == "DataGridRow" && style.Attribute(xaml + "Key") == null);
+        rowStyle.SetAttributeValue(xaml + "Key", "DashboardCompatibilityDataGridRow");
+        var resources = XDocument.Parse(@"
+<ResourceDictionary xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+                    xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""><ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/DesignTokens.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/WpfUiProduction.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/Redesign.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceTokens.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceColorsDark.xaml""/>
+    <ResourceDictionary Source=""/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceControls.xaml""/>
+</ResourceDictionary.MergedDictionaries></ResourceDictionary>");
+        resources.Root!.Add(new XElement(focusStyle));
+        resources.Root.Add(new XElement(rowStyle));
+        return Assert.IsType<ResourceDictionary>(XamlReader.Parse(resources.ToString(SaveOptions.DisableFormatting)));
+    }
+
+    private static void AssertDashboardRowOverlayContract()
+    {
+        XNamespace presentation = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
+        XNamespace xaml = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var dashboardPath = Path.Combine(TestRepositoryContext.Root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml");
+        var dashboard = XDocument.Load(dashboardPath);
+        var template = dashboard.Descendants(presentation + "ControlTemplate")
+            .Single(candidate => candidate.Attribute("TargetType")?.Value == "DataGridRow");
+        var root = template.Elements(presentation + "Grid").Single();
+        var content = root.Elements(presentation + "SelectiveScrollingGrid").Single();
+        var background = root.Elements(presentation + "Border")
+            .Single(element => element.Attribute(xaml + "Name")?.Value == "RowBackground");
+        var chrome = root.Elements(presentation + "Border")
+            .Single(element => element.Attribute(xaml + "Name")?.Value == "RowChrome");
+
+        Assert.Same(root, content.Parent);
+        Assert.Same(root, background.Parent);
+        Assert.Same(root, chrome.Parent);
+        Assert.Equal("False", chrome.Attribute("IsHitTestVisible")?.Value);
+        Assert.Contains(template.Descendants(presentation + "Trigger"), trigger =>
+            trigger.Attribute("Property")?.Value == "IsSelected"
+            && trigger.Descendants(presentation + "Setter").Any(setter =>
+                setter.Attribute("TargetName")?.Value == "RowChrome"
+                && setter.Attribute("Property")?.Value == "Margin"));
+        Assert.Contains(template.Descendants(presentation + "Trigger"), trigger =>
+            trigger.Attribute("Property")?.Value == "IsSelected"
+            && trigger.Descendants(presentation + "Setter").Any(setter =>
+                setter.Attribute("TargetName")?.Value == "RowChrome"
+                && setter.Attribute("Property")?.Value == "BorderBrush"
+                && setter.Attribute("Value")?.Value == "{DynamicResource GscAccentBrush}"));
+    }
+
+    private static void ApplyTheme(FrameworkElement root, ResourceDictionary resources, GameSaveCenterThemeMode mode)
+    {
+        var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
+            root,
+            glassEnabled: true,
+            strengthPercent: 78,
+            themeMode: mode,
+            highContrastOverride: false);
+        AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(resources, palette, glassEnabled: true, motionEnabled: true);
+        root.UpdateLayout();
+    }
 
     private static void PumpLayout(Window window)
     {

@@ -1,3 +1,11 @@
+## 2026-11-03 U06-02 / U08-08 DataGrid兼容行选中框无偏移
+
+继续落实首页选中行蓝色圆角框应保留、内容不右下偏移的要求。首页最近活动的生产样式已由 `f9d09cb2` 修正；本批在 `DashboardView.xaml` 的兼容 DataGrid 行模板中也把内容、选中色背景和圆角框拆成同级层，inset 只留在非交互背景/框线 overlay，不再包住 `SelectiveScrollingGrid`。共享生产 DataGrid、Overview及公共 ListBox 复核均保持内容几何。
+
+SDK8.0.423 Release 新增双主题实际 WPF DataGrid 行回归1/1、共享四页 DataGrid 1/1、最近活动/共享 ListBox 1/1，均0 skip。Source Validation和`git diff --check`通过；WPF静态218 XAML/0 errors。新增测试迭代和组合运行的失败TRX已保留，失败未计通过；精确源码提交后的Render QA与CI待补录。证据：[U06-02 DataGrid行 overlay](evidence/U06-02-datagrid-row-overlay-20261103/BASELINE.md)。
+
+80项状态计数不变：5项已满足、71项代码完成待验收，U09-04/05/08进行中、U09-06远端待验。U09-05先前已在相同PowerShell `ConstrainedLanguage`环境被拒绝，本批不重复试探；需获授权的FullLanguage环境完成完整根入口链与独立`scripts/build.cmd`。Playnite实页、外部UIA、实体输入/IME、物理DPI仍待验。
+
 ## 2026-11-03 Round5 U06-02/U08-08选中/焦点无偏移与当前候选门禁
 
 按用户指出的首页最近活动选中偏移问题，保留此前 `f9d09cb2` 对 `TaskItemChrome.Margin=4,2` 的修复：蓝色圆角选框仍在，整行与图标不随选中框右下移动。共享资源巡查又发现 `AcrylicNavItem` 键盘焦点会把内部内容边框从1 DIP加到2 DIP并叠加蓝线；本批改为独立、不命中的 sibling overlay，维持选中色、焦点环、RadioButton导航、Tag/Checked与UIA语义。源码提交 `77482a9a56f8d1507de3cf819c94559388dddc4f` 已推送 `origin/main`。

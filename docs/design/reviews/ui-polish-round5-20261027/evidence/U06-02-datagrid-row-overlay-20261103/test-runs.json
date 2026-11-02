@@ -1,0 +1,177 @@
+[
+  {
+    "File": "dashboard-row-selection-ancestor-failure.trx",
+    "Outcome": "Failed",
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "BC190D5A9B3953381A46E95F25657F9BF04649205D3CEA9A4A2815A892972DE7",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+        "Message": "System.InvalidOperationException: 指定的 Visual 不是此 Visual 的上级。"
+      }
+    ]
+  },
+  {
+    "File": "dashboard-row-selection-fill-resource-failure.trx",
+    "Outcome": "Failed",
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "2157D951C0D65C6D8E6C363E393BF8F8186AEEC30DE727F6BC2FA42634B099D5",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+        "Message": "Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ"
+      }
+    ]
+  },
+  {
+    "File": "dashboard-row-selection-fixture-failure.trx",
+    "Outcome": "Failed",
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "410274EF3EF8B4CF7941DE4E9158589A2D86E4794F023071BAED5B1B2B5122E5",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+        "Message": "System.Windows.Markup.XamlParseException: 无法找到名为“GscFocusVisual”的资源。资源名称区分大小写。 ---> System.Exception: 无法找到名为“GscFocusVisual”的资源。资源名称区分大小写。"
+      }
+    ]
+  },
+  {
+    "File": "dashboard-row-selection-inactive-brush-failure.trx",
+    "Outcome": "Failed",
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "3F7F64479CB8507206F1D7106FF95B9FB4F282D40E75B2E7495A6A8E5CEDB27E",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+        "Message": "Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ"
+      }
+    ]
+  },
+  {
+    "File": "dashboard-row-selection-model-failure.trx",
+    "Outcome": "Failed",
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "E5EC2FD8F2DD8CDBC36A96565874518F927AD0157717D84DD33F1C7AA35EF68B",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+        "Message": "Xunit.Sdk.TrueException: Light: compatibility row did not enter selected state"
+      }
+    ]
+  },
+  {
+    "File": "dashboard-row-selection-resource-precedence-failure.trx",
+    "Outcome": "Failed",
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "EA583A770B284AD8D4C1630FEE3CABD371C072AA22D18CB50DB44062452420DC",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+        "Message": "Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ"
+      }
+    ]
+  },
+  {
+    "File": "dashboard-row-selection-runtime-brush-failure.trx",
+    "Outcome": "Failed",
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "167BC18F3F04782057E1E10E6B6452BB7EC69139155CE5245154E98F08F65122",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+        "Message": "Xunit.Sdk.IsTypeException: Assert.IsType() Failure: Value is null"
+      }
+    ]
+  },
+  {
+    "File": "dashboard-row-selection-text-cell-assumption-failure.trx",
+    "Outcome": "Failed",
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "37C5C28414C87B9B3A9B1ED5B9EEA80215FCDCD63EE993C61AA6E9352A5B3884",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+        "Message": "System.InvalidOperationException: A realized text cell has no TextBlock content."
+      }
+    ]
+  },
+  {
+    "File": "dashboard-row-selection-verified-6.trx",
+    "Outcome": "Completed",
+    "Passed": 1,
+    "Failed": 0,
+    "Skipped": 0,
+    "Sha256": "340BE996676C4DEF52D74DDCF8AFFDAE0477149CE9E10DAA89EF151C2D887429",
+    "FailureMessages": []
+  },
+  {
+    "File": "r06-selection-isolated.trx",
+    "Outcome": "Failed",
+    "Passed": 2,
+    "Failed": 1,
+    "Skipped": 0,
+    "Sha256": "8539CC4D117F3DB2E7528C009944EED186669F3794652114A154E071C2DE8DCA",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome",
+        "Message": "System.InvalidOperationException: DataGrid row was not generated."
+      }
+    ]
+  },
+  {
+    "File": "recent-activity-selection-regression.trx",
+    "Outcome": "Completed",
+    "Passed": 1,
+    "Failed": 0,
+    "Skipped": 0,
+    "Sha256": "1D735C1C3284C478BBB639D774FAB94F049D21B456BD1A40757E600D10819C7B",
+    "FailureMessages": []
+  },
+  {
+    "File": "selection-overlay-regressions.trx",
+    "Outcome": "Failed",
+    "Passed": 3,
+    "Failed": 3,
+    "Skipped": 0,
+    "Sha256": "753FFC5CD3C1D4E0D0580B2E5987DD017F6D7BF444E5115F2FA4D023225196B5",
+    "FailureMessages": [
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome",
+        "Message": "System.InvalidOperationException: DataGrid row was not generated."
+      },
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.RecentAccessSwitchIsKeyboardReachableAndKeepsTaskHistorySeparate",
+        "Message": "Xunit.Sdk.SameException: Assert.Same() Failure: Values are not the same instance"
+      },
+      {
+        "TestName": "GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition",
+        "Message": "Xunit.Sdk.IsTypeException: Assert.IsType() Failure: Value is null"
+      }
+    ]
+  },
+  {
+    "File": "shared-datagrid-selection-regression.trx",
+    "Outcome": "Completed",
+    "Passed": 1,
+    "Failed": 0,
+    "Skipped": 0,
+    "Sha256": "6F742E654C113F328F10AB4CB70C1921CB440180AAFA0258CCA23DA7C53090C9",
+    "FailureMessages": []
+  }
+]

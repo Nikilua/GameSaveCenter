@@ -421,17 +421,16 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="DataGridRow">
-                        <Border x:Name="RowChrome"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="0"
-                                SnapsToDevicePixels="True">
+                        <Grid SnapsToDevicePixels="True">
+                            <Border x:Name="RowBackground"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="0"
+                                    Margin="0"/>
                             <!-- Preserve WPF's selective scrolling row contract even in this
                                  shell-local compatibility scope. The dashboard no longer owns
                                  a separate table, but old host templates can still resolve this
                                  implicit style while the view is being unloaded. -->
-                            <SelectiveScrollingGrid>
+                            <SelectiveScrollingGrid x:Name="RowContent">
                                 <SelectiveScrollingGrid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
@@ -453,13 +452,24 @@
                                                           SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"
                                                           Visibility="{TemplateBinding DetailsVisibility}"/>
                             </SelectiveScrollingGrid>
-                        </Border>
+                            <!-- Keep the selected frame on a separate, non-hit-testable
+                                 overlay so its inset never remeasures or offsets row content. -->
+                            <Border x:Name="RowChrome"
+                                    Background="Transparent"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="0"
+                                    Margin="0"
+                                    IsHitTestVisible="False"/>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
+                                <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="RowChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
+                                <Setter TargetName="RowBackground" Property="CornerRadius" Value="14"/>
+                                <Setter TargetName="RowBackground" Property="Margin" Value="4,2,12,2"/>
                                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
