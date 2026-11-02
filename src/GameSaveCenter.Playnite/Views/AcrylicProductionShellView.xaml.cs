@@ -625,10 +625,10 @@ namespace GameSaveCenter.Playnite.Views
             {
                 suppressNavigation = false;
             }
-            // The cached workspace already receives live size changes from the shell's
-            // responsive handlers. Reapplying its layout for an identical navigation
-            // request adds an avoidable measure pass while a refresh or selection is
-            // settling; first activation and actual page changes still get a full pass.
+            // The visible page receives live size changes from the shell. Detached cached
+            // pages are recalculated as soon as they are activated, so repeating an
+            // identical navigation request only adds work while a refresh or selection is
+            // settling; first activation and actual page changes still get a layout pass.
             if (contentChanged || firstActivation)
                 ApplyResponsiveLayout(ActualWidth, ActualHeight);
             if (contentChanged)
@@ -1353,7 +1353,8 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         /// <summary>
-        /// Applies the responsive layout to the pages owned by the visible PageHost.
+        /// Applies the responsive layout to the workspace currently hosted by PageHost.
+        /// Detached cached workspaces receive the latest dimensions when activated.
         /// The fallback dimensions are used only during the first measure pass.
         /// </summary>
         public void ApplyResponsiveLayout(double width, double height)
@@ -1373,20 +1374,37 @@ namespace GameSaveCenter.Playnite.Views
                 ? PageHost.ActualHeight
                 : fallbackHeight > 0 ? fallbackHeight : ActualHeight;
             if (width <= 0 || height <= 0) return;
+            var hostedPage = PageHost.Content;
+            if (!pages.Values.Any(page => ReferenceEquals(page, hostedPage)))
+                return;
+
             var layout = ResponsiveLayoutCoordinator.Calculate(width, height);
-            if (pages.TryGetValue(WorkspaceKind.Overview, out var overview))
+            switch (hostedPage)
             {
-                var view = (OverviewView)overview;
-                view.ApplyResponsiveColumns(layout.OverviewUsesStackedColumns);
-                view.ApplyResponsiveWidth(width);
-                view.ApplyResponsiveHeight(height, layout.OverviewUsesStackedColumns);
+                case OverviewView overview:
+                    overview.ApplyResponsiveColumns(layout.OverviewUsesStackedColumns);
+                    overview.ApplyResponsiveWidth(width);
+                    overview.ApplyResponsiveHeight(height, layout.OverviewUsesStackedColumns);
+                    break;
+                case SaveCenterView saves:
+                    saves.ApplyResponsiveLayout(width, height);
+                    break;
+                case TrainerCenterView trainers:
+                    trainers.ApplyResponsiveLayout(width, height);
+                    break;
+                case MediaCenterView media:
+                    media.ApplyResponsiveLayout(width, height);
+                    break;
+                case TaskCenterView tasks:
+                    tasks.ApplyResponsiveLayout(width, height);
+                    break;
+                case NotificationInboxView notifications:
+                    notifications.ApplyResponsiveLayout(width, height);
+                    break;
+                case MaintenanceView maintenance:
+                    maintenance.ApplyResponsiveLayout(width, height);
+                    break;
             }
-            if (pages.TryGetValue(WorkspaceKind.Saves, out var saves)) ((SaveCenterView)saves).ApplyResponsiveLayout(width, height);
-            if (pages.TryGetValue(WorkspaceKind.Trainers, out var trainers)) ((TrainerCenterView)trainers).ApplyResponsiveLayout(width, height);
-            if (pages.TryGetValue(WorkspaceKind.Media, out var media)) ((MediaCenterView)media).ApplyResponsiveLayout(width, height);
-            if (pages.TryGetValue(WorkspaceKind.Tasks, out var tasks)) ((TaskCenterView)tasks).ApplyResponsiveLayout(width, height);
-            if (pages.TryGetValue(WorkspaceKind.Notifications, out var notifications)) ((NotificationInboxView)notifications).ApplyResponsiveLayout(width, height);
-            if (pages.TryGetValue(WorkspaceKind.Maintenance, out var maintenance)) ((MaintenanceView)maintenance).ApplyResponsiveLayout(width, height);
         }
     }
 }

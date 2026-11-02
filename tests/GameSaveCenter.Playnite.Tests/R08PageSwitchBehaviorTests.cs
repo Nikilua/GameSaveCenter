@@ -179,6 +179,70 @@ public sealed class R08PageSwitchBehaviorTests
     }
 
     [Fact]
+    public void ResponsiveLayoutUpdatesOnlyTheHostedPageAndRefreshesItOnActivation()
+    {
+        Exception? exception = null;
+        var observation = string.Empty;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var shell = new AcrylicProductionShellView();
+                typeof(AcrylicProductionShellView)
+                    .GetMethod("CreatePages", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .Invoke(shell, null);
+
+                foreach (var page in shell.WorkspaceViews)
+                    page.DataContext = new object();
+
+                var taskPage = shell.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks)!;
+                var mediaPage = shell.GetWorkspaceView<MediaCenterView>(WorkspaceKind.Media)!;
+                var pageHost = (ContentControl)shell.PageHostForAudit;
+
+                pageHost.Content = taskPage;
+                shell.ApplyResponsiveLayout(1366, 900);
+                var taskWidthAtWide = ReadResponsiveWidth(taskPage);
+                var mediaWidthWhileDetached = ReadResponsiveWidth(mediaPage);
+
+                pageHost.Content = mediaPage;
+                shell.ApplyResponsiveLayout(1040, 700);
+                var mediaWidthAtStandard = ReadResponsiveWidth(mediaPage);
+                var taskWidthWhileDetached = ReadResponsiveWidth(taskPage);
+
+                pageHost.Content = taskPage;
+                shell.ApplyResponsiveLayout(980, 640);
+                var taskWidthAtCompact = ReadResponsiveWidth(taskPage);
+
+                Assert.Equal(1366d, taskWidthAtWide);
+                Assert.Equal(0d, mediaWidthWhileDetached);
+                Assert.Equal(1040d, mediaWidthAtStandard);
+                Assert.Equal(1366d, taskWidthWhileDetached);
+                Assert.Equal(980d, taskWidthAtCompact);
+                observation = $"task=1366→980, media=0→1040, detached widths unchanged";
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.False(string.IsNullOrWhiteSpace(observation));
+        output.WriteLine(observation);
+
+        static double ReadResponsiveWidth(UserControl page)
+        {
+            var field = page.GetType().GetField("responsiveWidth", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(field);
+            return (double)field!.GetValue(page)!;
+        }
+    }
+
+    [Fact]
     public void CachedWorkspacePagesRestoreTabsAndTaskFiltersWithoutRefreshing()
     {
         Exception? exception = null;
