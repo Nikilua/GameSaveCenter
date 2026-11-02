@@ -1,3 +1,7 @@
+## 2026-11-02 Round5 80项状态表校准与CI身份
+
+当前轮次状态为7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。对文档提交`21ba511c357f9525c617cc8734d1d1afecbb28d9`复核的run `41413816012`（#1428）在`.github/workflows/windows-build.yml`下两项适用job全部通过：baseline job `125172732996` 15/15步，SDK10.0.401 job `125172732641` 8/8步；artifact身份见Round5 `evidence/U09-final-cb7b78fd-20261102/ci-run-41413816012.json`。required-check保护API既有403，未重复请求，仍待有权限维护者只读核实。
+
 ## 2026-11-02 Round5 U09-05/U09-08 当前候选门禁结案
 
 生产UI源码为`cb7b78fd514e7d6eaa2a34e341340d5d06610508`；文档冻结候选`0b61ee51ff0d78bf2f0f7c428cf358721753e558`与之源码、测试、脚本、资源树一致。冻结SHA的实际中文根入口与独立`scripts/build.cmd`均在SDK8.0.423 Release退出0；每次2025项/1967通过/0失败/58既有skip，155个WPF隔离类完成。安装包、程序集、日志/TRX哈希见Round5 `evidence/U09-final-cb7b78fd-20261102/local-gates.json`。GitHub run41403537450两个适用job（SDK基线、SDK10.0.401）均success，三artifact身份见同目录`ci-run-41403537450.json`。U09-05/U09-08已满足；总状态7/71/1/1，U09-04仍进行中，U09-06因既有403远端待验。清理仅删除本批专属D盘TEMP目录，细节见`cleanup.json`；真实Playnite页面、外部UIA/物理输入/IME/DPI未验，也未进行真实恢复、媒体删除或云写入。

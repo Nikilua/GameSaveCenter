@@ -1,3 +1,7 @@
+## 2026-11-02 Round5 U09任务状态与远端证据
+
+最终中文入口和独立`scripts/build.cmd`全链已对冻结候选`0b61ee51`验证exit0；计数7/71/1/1，U09-05、U09-08已满足。文档提交`21ba511c`的run `41413816012`（#1428）baseline与SDK10.0.401 job全步骤成功，具体身份在Round5 `evidence/U09-final-cb7b78fd-20261102/ci-run-41413816012.json`。required-check保护API先前403，不再尝试；U09-06仍远端待验。U09-04有U00-06逻辑动作代理数据，但缺原始逐帧/累计分配和真实Playnite测量。
+
 ## 2026-11-02 Round5 U06-02/U08-08 选框叠层回归
 
 修复概览最近任务选中后内容向右下偏移：原选中Border同时承担布局、Padding和`Margin=4,2`，选中边框挤占内容区域。Overlay 只移动框线，保留蓝色填充/描边与14 DIP圆角；公共隐式ListBox模板同理将ItemChrome分离，ContentPresenter.Margin绑定原Padding。不要把选择/焦点装饰放入会改变内容测量的Border。DataGridRow已有RowChrome/RowContent分层、媒体选择框已有独立覆盖层，其它只改色的状态不重复修补。
