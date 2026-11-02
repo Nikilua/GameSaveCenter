@@ -1,0 +1,187 @@
+{
+  "SchemaVersion": 1,
+  "CapturedUtc": "2026-11-02T16:18:07.2715494Z",
+  "SourceCommit": "34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+  "RemovedRoots": [
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\1c0856c2\\bin",
+      "FileCount": 692,
+      "Bytes": 257365404.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\1c0856c2\\obj",
+      "FileCount": 32,
+      "Bytes": 13497852.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\871b9f7b\\bin",
+      "FileCount": 692,
+      "Bytes": 257345772.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\871b9f7b\\obj",
+      "FileCount": 32,
+      "Bytes": 13479828.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\0c313121\\bin",
+      "FileCount": 692,
+      "Bytes": 257338076.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\0c313121\\obj",
+      "FileCount": 32,
+      "Bytes": 13472080.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\241164e5\\bin",
+      "FileCount": 460,
+      "Bytes": 148283544.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\241164e5\\obj",
+      "FileCount": 23,
+      "Bytes": 10430368.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\c438c456\\bin",
+      "FileCount": 460,
+      "Bytes": 148281080.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\c438c456\\obj",
+      "FileCount": 23,
+      "Bytes": 10427860.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\5c822ce9\\bin",
+      "FileCount": 460,
+      "Bytes": 148280456.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\5c822ce9\\obj",
+      "FileCount": 23,
+      "Bytes": 10427228.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\b98f50f5\\bin",
+      "FileCount": 460,
+      "Bytes": 148271368.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\b98f50f5\\obj",
+      "FileCount": 23,
+      "Bytes": 10418800.0
+    }
+  ],
+  "RemovedByExtension": [
+    {
+      "Extension": ".a",
+      "Count": 14,
+      "Bytes": 15713516.0
+    },
+    {
+      "Extension": ".dll",
+      "Count": 3599,
+      "Bytes": 1128250328.0
+    },
+    {
+      "Extension": ".dylib",
+      "Count": 56,
+      "Bytes": 61826548.0
+    },
+    {
+      "Extension": ".exe",
+      "Count": 44,
+      "Bytes": 6428448.0
+    },
+    {
+      "Extension": ".pdb",
+      "Count": 237,
+      "Bytes": 38099596.0
+    },
+    {
+      "Extension": ".so",
+      "Count": 154,
+      "Bytes": 197001280.0
+    }
+  ],
+  "RemovedFileCount": 4104,
+  "RemovedBytes": 1447319716,
+  "RetainedTestTempPaths": [
+    "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\1c0856c2\\test-temp",
+    "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\871b9f7b\\test-temp",
+    "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\0c313121\\test-temp",
+    "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\241164e5\\test-temp",
+    "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\c438c456\\test-temp",
+    "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\5c822ce9\\test-temp",
+    "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\b98f50f5\\test-temp"
+  ],
+  "RetainedUnknownSogouTemp": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\4be27808\\test-temp\\sogou_log_temp",
+  "Checks": {
+    "RootBoundary": "all exact binary files remained beneath repository artifacts/gsc-b",
+    "ReparsePoints": 0,
+    "ProtectedFilesDeleted": 0,
+    "TestResultsDirectoriesDeleted": 0,
+    "ActiveBuildProcessReferences": 0,
+    "ExistingMarkdownReferencesPreserved": [
+      "evidence/U09-final-cb7b78fd-20261102/BASELINE.md references gsc-b/1c0856c2 (root and test-temp retained)",
+      "evidence/U09-soak-diagnostic-20261029/BASELINE.md references gsc-b/241164e5/test-temp (retained)"
+    ]
+  },
+  "DiskBefore": [
+    {
+      "Name": "C",
+      "FreeBytes": 4134359040,
+      "UsedBytes": 210615050240
+    },
+    {
+      "Name": "D",
+      "FreeBytes": 11447615488,
+      "UsedBytes": 283525197824
+    }
+  ],
+  "DiskAfter": [
+    {
+      "Name": "C",
+      "FreeBytes": 5591113728,
+      "UsedBytes": 209158295552
+    },
+    {
+      "Name": "D",
+      "FreeBytes": 11447681024,
+      "UsedBytes": 283525132288
+    }
+  ],
+  "ExpectedCBytesFreed": 1447319716,
+  "ActualCFreeDelta": 1456754688,
+  "Retained": [
+    "current f9d09cb2 source build under .tmp/round5-u09-final-f9d09cb2",
+    "current package, package ownership and install-attempt records",
+    "full build diagnostics, original failure logs and all test-temp directories",
+    "current U06-02 render audit artifacts"
+  ],
+  "DuplicateEvidenceCopiesRemovedAfterArchiveVerification": [
+    {
+      "Path": "artifacts/round5-u09-05-final-gates-20261103-stage-start.json",
+      "Bytes": 6036,
+      "Sha256": "6341C9C5BC0CEBF826807D6DB1289F328B6DB56F327E325F0A4DA980CCC2A419"
+    },
+    {
+      "Path": "artifacts/round5-u09-05-final-gates-20261103-cleanup.json",
+      "Bytes": 5838,
+      "Sha256": "098086FE57018EBBFA5FB81CDA4FE4834C28AA630E66C9A01A23381E7B3B140B"
+    }
+  ],
+  "DuplicateEvidenceCleanupDisk": {
+    "CFreeBefore": 5242568704,
+    "CFreeAfter": 5242585088,
+    "CFreeDelta": 16384,
+    "DFreeBefore": 10245496832,
+    "DFreeAfter": 10245496832,
+    "ActiveBuildTestProcesses": 0,
+    "ArchivedCopiesSha256Verified": true,
+    "MarkdownReferencesToTemporaryCopies": 0,
+    "TemporaryCopiesStillPresent": false
+  }
+}

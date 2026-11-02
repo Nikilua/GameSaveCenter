@@ -12982,3 +12982,12 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - GitHub run41449095659 (#1432)绑定精确SHA `f9d09cb2b7665355a74926e2cd4a801567c60baa`，最终completed/success：baseline job125289540888 15/15步、SDK10.0.401 job125289540494 8/8步均成功。preview artifact13148495442（90,790,562 bytes，`sha256:7e05b81fd9d159308cb4e3a4917dc0daeae91104c339a9895c0f6d7cb10c6304`）、baseline diagnostics13147039787（2,029,488 bytes，`sha256:b184e7e9e0795880bac33a9d2ba72fc20ad7ac5107a8bd829028481bb6691551`）、SDK10 diagnostics13145586337（974,304 bytes，`sha256:2c6258e938242f28c746a7f483e8a9ca3632632f7430b6c90036704bab3f5058`）均绑定当前SHA；完整字段在Round5 `evidence/U06-02-selection-frame-align-20261102/ci-run-41449095659.json`。活动期间日志接口返回BlobNotFound，随后已按run/job终态和artifact列表核实成功，不因日志接口早期结果误判。required-check保护API此前403，不重复查询；U09-06仍远端待验。
 - 本阶段清理前已核实删除两个已废弃的`artifacts/gsc-b/`构建根，共344,142,033 bytes，证据和磁盘记录已保存。当前精确build、包、TRX、394张Render QA图均为最新证据且保留；没有删除其它输出。`D:/Temp/gsc-r5-u09-final-f9d09cb2`仍有47份本批测试临时文件/17,607,936 bytes；它不在限定清理根`artifacts/`或`.tmp/`下，未触碰。
 - 80项计数保持5项已满足、71项代码完成待验收、U09-04/05/08进行中、U09-06远端待验。U06-02/U08-08仍待真实Playnite页面、外部UIA、实体输入/IME、物理DPI；没有执行真实存档恢复、媒体删除或云写入。文档只做源码和链接检查，不重复本地完整链。
+
+## 2026-11-03 Round5 U06-02/U08-08 与 U09-05 最终门禁
+
+- 按用户补充检查最近活动选择框，保持蓝色圆角视觉并清除整行偏移；当前源树内Overview/ListBox与四类DataGrid选择覆盖层都不移动内容。R10几何类3/3，R23跨四页/双主题几何方法通过；效果与边界见Round5 `evidence/U09-05-final-gates-20261103/BASELINE.md`。
+- 精确候选`34d8a99faf7ec827b2fea8303baf8c18a8edbefd`下中文根cmd完整build/test/publish/package/install identity/launch退出0，SDK8.0.423，8项目0 warning/error；独立`scripts/build.cmd`职责build/test退出0。2025项本地TRX中完整链1967通过/0失败/58 skip，build.cmd 1957通过/0失败/68 skip；skip原因逐类保存且不计通过。
+- 源码校验退出0；本地WPF静态218 XAML/0错误，208 warning、1327 info包含历史`.tmp`快照；GitHub精确run41477919033的Render QA和静态步骤成功。基线与SDK10.0.401 jobs（15/15和8/8步）均完成成功，preview和两份诊断artifact绑定该SHA。
+- ZIP/PEXT SHA一致；安装版本0.6.73，六个程序集文件版本/源码身份与SHA见`local-gates.json`。Playnite由根入口启动，未声称真实插件页面已观察。required-check API既有403不重试，U09-06继续远端待验。
+- 空间不足首次预检在构建前exit1；按清单只删归本阶段旧`artifacts/gsc-b`根的可再生编译二进制4104个/1,447,319,716 bytes，所有TRX、test-temp、未知输入法目录、当前构建包和诊断均保留。完整边界和C盘前后空间记录在`cleanup.json`。
+- 当前U09状态：U09-05已满足；U09-04/U09-08进行中；U09-06远端待验；合计6项已满足、71项代码完成待验收、2项进行中、1项远端待验。真实宿主、外部UIA、实体键鼠/IME/物理DPI仍未验，真实恢复/媒体删除/云写入未运行。

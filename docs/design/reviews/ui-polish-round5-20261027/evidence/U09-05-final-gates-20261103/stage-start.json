@@ -1,0 +1,169 @@
+{
+  "SchemaVersion": 1,
+  "CapturedUtc": "2026-11-02T16:17:14.4394830Z",
+  "Purpose": "Round5 exact candidate final gates and owned artifact cleanup",
+  "Source": {
+    "Commit": "34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+    "SourceTree": "9a632fb67999d43ecc1eba689f14f1e7d6c8ed0e",
+    "TestsTree": "749635df57d0c7ab0a86f8a4a9664a40e85978b0",
+    "ScriptsTree": "efbde3774901e75ad253a2d77cd90f83796e2931"
+  },
+  "FailedAttempt": {
+    "Entry": "GameSaveCenter-一键构建安装运行.cmd",
+    "ExitCode": 1,
+    "Failure": "preflight C: space",
+    "AvailableBytes": 4127039488,
+    "RequiredBytes": 5368709120,
+    "BuildOrInstallStarted": false
+  },
+  "DiskSnapshotBeforeCleanup": [
+    {
+      "Name": "C",
+      "FreeBytes": 4135878656,
+      "UsedBytes": 210613530624
+    },
+    {
+      "Name": "D",
+      "FreeBytes": 11447681024,
+      "UsedBytes": 283525132288
+    }
+  ],
+  "PlannedRemovedTrees": [
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\1c0856c2\\bin",
+      "Items": 904,
+      "FileCount": 745,
+      "EligibleBinaryCount": 692,
+      "EligibleBinaryBytes": 257365404.0,
+      "NonEligibleCount": 53,
+      "NonEligibleBytes": 1210838.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\1c0856c2\\obj",
+      "Items": 295,
+      "FileCount": 255,
+      "EligibleBinaryCount": 32,
+      "EligibleBinaryBytes": 13497852.0,
+      "NonEligibleCount": 223,
+      "NonEligibleBytes": 3338958.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\871b9f7b\\bin",
+      "Items": 904,
+      "FileCount": 745,
+      "EligibleBinaryCount": 692,
+      "EligibleBinaryBytes": 257345772.0,
+      "NonEligibleCount": 53,
+      "NonEligibleBytes": 1210660.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\871b9f7b\\obj",
+      "Items": 295,
+      "FileCount": 255,
+      "EligibleBinaryCount": 32,
+      "EligibleBinaryBytes": 13479828.0,
+      "NonEligibleCount": 223,
+      "NonEligibleBytes": 3339446.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\0c313121\\bin",
+      "Items": 904,
+      "FileCount": 745,
+      "EligibleBinaryCount": 692,
+      "EligibleBinaryBytes": 257338076.0,
+      "NonEligibleCount": 53,
+      "NonEligibleBytes": 1210660.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\0c313121\\obj",
+      "Items": 295,
+      "FileCount": 255,
+      "EligibleBinaryCount": 32,
+      "EligibleBinaryBytes": 13472080.0,
+      "NonEligibleCount": 223,
+      "NonEligibleBytes": 3339347.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\241164e5\\bin",
+      "Items": 658,
+      "FileCount": 502,
+      "EligibleBinaryCount": 460,
+      "EligibleBinaryBytes": 148283544.0,
+      "NonEligibleCount": 42,
+      "NonEligibleBytes": 916019.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\241164e5\\obj",
+      "Items": 244,
+      "FileCount": 209,
+      "EligibleBinaryCount": 23,
+      "EligibleBinaryBytes": 10430368.0,
+      "NonEligibleCount": 186,
+      "NonEligibleBytes": 3026791.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\c438c456\\bin",
+      "Items": 658,
+      "FileCount": 502,
+      "EligibleBinaryCount": 460,
+      "EligibleBinaryBytes": 148281080.0,
+      "NonEligibleCount": 42,
+      "NonEligibleBytes": 916019.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\c438c456\\obj",
+      "Items": 244,
+      "FileCount": 209,
+      "EligibleBinaryCount": 23,
+      "EligibleBinaryBytes": 10427860.0,
+      "NonEligibleCount": 186,
+      "NonEligibleBytes": 3026793.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\5c822ce9\\bin",
+      "Items": 658,
+      "FileCount": 502,
+      "EligibleBinaryCount": 460,
+      "EligibleBinaryBytes": 148280456.0,
+      "NonEligibleCount": 42,
+      "NonEligibleBytes": 916019.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\5c822ce9\\obj",
+      "Items": 244,
+      "FileCount": 209,
+      "EligibleBinaryCount": 23,
+      "EligibleBinaryBytes": 10427228.0,
+      "NonEligibleCount": 186,
+      "NonEligibleBytes": 3026794.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\b98f50f5\\bin",
+      "Items": 658,
+      "FileCount": 502,
+      "EligibleBinaryCount": 460,
+      "EligibleBinaryBytes": 148271368.0,
+      "NonEligibleCount": 42,
+      "NonEligibleBytes": 916019.0
+    },
+    {
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\b98f50f5\\obj",
+      "Items": 244,
+      "FileCount": 209,
+      "EligibleBinaryCount": 23,
+      "EligibleBinaryBytes": 10418800.0,
+      "NonEligibleCount": 186,
+      "NonEligibleBytes": 3026693.0
+    }
+  ],
+  "PlannedRemovedFileCount": 4104,
+  "PlannedRemovedBytes": 1447319716.0,
+  "Retained": [
+    "artifacts/gsc-b/4be27808/**, including test-temp/sogou_log_temp",
+    "all selected gsc-b/**/test-temp directories",
+    "artifacts/GameSaveCenter-*.zip/.pext and latest package folder",
+    "artifacts/build-diagnostics and install-attempts",
+    "artifacts/ui-qa/U06-02-selection-frame-align-20261102",
+    "artifacts/round5-u09-final-f9d09cb2 current-source build"
+  ]
+}

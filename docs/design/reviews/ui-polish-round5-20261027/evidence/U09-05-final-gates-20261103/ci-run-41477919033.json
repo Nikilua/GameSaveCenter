@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "run": {
+    "id": 41477919033,
+    "number": 1434,
+    "name": "Windows 构建验证",
+    "workflow": ".github/workflows/windows-build.yml",
+    "event": "push",
+    "branch": "main",
+    "headSha": "34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "startedUtc": "2026-11-02T16:04:49Z",
+    "completedUtc": "2026-11-02T17:06:45Z",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41477919033"
+  },
+  "jobs": [
+    {
+      "id": 125388281628,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK",
+        "源码结构检查",
+        "诊断采集自测",
+        "SDK 基线与缺失负例",
+        "编译与测试",
+        "离屏渲染 QA",
+        "WPF UI 静态审查",
+        "生成 Playnite 扩展包",
+        "上传构建产物",
+        "保留构建与测试诊断（包括失败）",
+        "Post 安装 .NET SDK",
+        "Post 检出代码",
+        "Complete job"
+      ],
+      "allStepsConclusion": "success"
+    },
+    {
+      "id": 125388281904,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK 10.0.401",
+        "隔离工作树并运行 Release 编译与测试",
+        "保留 SDK 10.0.401 构建诊断（包括失败）",
+        "Post 安装 .NET SDK 10.0.401",
+        "Post 检出代码",
+        "Complete job"
+      ],
+      "allStepsConclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13162916529,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2031151,
+      "digest": "sha256:a312d52bd5db444dee470c6125161967309ee826ab7c74e72ff9055074eb2b48",
+      "headSha": "34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+      "expiresUtc": "2026-11-16T17:06:35Z"
+    },
+    {
+      "id": 13161374230,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90790444,
+      "digest": "sha256:a5edd3d1d434d5d37d086e815d073d16ea3d186aa488c63af8a0811d88653e99",
+      "headSha": "34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+      "expiresUtc": "2027-01-31T16:04:50Z"
+    },
+    {
+      "id": 13159293666,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 972930,
+      "digest": "sha256:cad1450447ddd794ebd245fb64a25da003fc0e90827f9e5d6c3072b974a47e5e",
+      "headSha": "34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+      "expiresUtc": "2026-11-16T16:32:38Z"
+    }
+  ],
+  "requiredChecks": {
+    "status": "remote pending",
+    "note": "The previously observed branch protection/required-check API response was 403. Per instruction, that same permission boundary was not retried. The workflow's two configured jobs and all their steps are verified successful; required-check completeness remains for an authorized maintainer to read."
+  }
+}

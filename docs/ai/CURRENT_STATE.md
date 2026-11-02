@@ -1,3 +1,15 @@
+## 2026-11-03 Round5 U09-05 最终入口门禁与选中态复核
+
+候选源码 SHA `34d8a99faf7ec827b2fea8303baf8c18a8edbefd`（source tree `9a632fb67999d43ecc1eba689f14f1e7d6c8ed0e`、tests tree `749635df57d0c7ab0a86f8a4a9664a40e85978b0`、scripts tree `efbde3774901e75ad253a2d77cd90f83796e2931`）已按真实入口验证。中文 `GameSaveCenter-一键构建安装运行.cmd` 经英文 `GameSaveCenter-Run.cmd` 完成 SDK 8.0.423 Release build/test/publish/package/install identity/Playnite launch，最终退出码 0；独立 `scripts/build.cmd` 编译和测试职责退出码 0。包 0.6.73 的ZIP/PEXT SHA-256一致，安装 DLL 均带候选 SHA。完整身份与TRX计数见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-gates-20261103/`。
+
+中文链2025项、1967通过、0失败、58 skip；独立build.cmd 2025项、1957通过、0失败、68 skip。build.cmd多出的10项依赖本地Named Pipe，在当次受限进程被既有环境守卫跳过，不计通过；中文完整链同SHA成功运行这些用例。两链共有57项撤销“今日工作台”架构旧断言和1项默认不移动系统指针测试，skip不计通过，未扩大skip。
+
+用户反馈的首页最近活动选框保留蓝色圆角框但不可推移内容。生产修复 `f9d09cb2` 移除了 `TaskItemChrome` 的 `4,2` DIP margin；公共 ListBox 模板内容层独立。R10三态几何测试3/3，R23四种生产表格跨Light/Dark的单元格/文字几何测试通过。其它选择模板盘点显示 DataGridRow margin 仅应用于背景/框线overlay，媒体卡与Overview保护项也不因选择态位移。
+
+Source Validation退出0；本地WPF扫描218 XAML、0 error，含保留.tmp快照的208 warning/1327 info；精确SHA的GitHub Render QA和WPF静态审查步骤成功。GitHub run41477919033(#1434)下基线及SDK10.0.401 job和所有步骤completed/success，3个artifact绑定同一SHA。required-check API先前403，不重复请求，U09-06仍远端待验；Playnite进程启动但未观察插件页面。
+
+U09-05已满足；U09-04/U09-08进行中，U09-06远端待验。其余71项代码完成待真实宿主验收。真实恢复、媒体删除和云端写入未执行。
+
 ## 2026-11-02 Round5 U06-02/U08-08 选框移除内容偏移
 
 当前生产源码提交为`f9d09cb2b7665355a74926e2cd4a801567c60baa`（`对齐最近活动选框`），已推送`origin/main`。按用户补充的首页最近活动反馈，Overview专用模板已去掉选中态`TaskItemChrome.Margin=4,2`；蓝色边框/底色和14 DIP圆角仍保留，框线不再造成内容偏移。公共隐式ListBoxItem选择/焦点框原已与内容层分开、Margin=0。现有DataGridRow和媒体卡为独立覆盖层，Overview保护项/ComboBox只变色，不为统一而重写无偏移样式。

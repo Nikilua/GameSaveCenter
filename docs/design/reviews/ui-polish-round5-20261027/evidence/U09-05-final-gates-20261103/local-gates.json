@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "candidate": {
+    "commit": "34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+    "sourceTree": "9a632fb67999d43ecc1eba689f14f1e7d6c8ed0e",
+    "testsTree": "749635df57d0c7ab0a86f8a4a9664a40e85978b0",
+    "scriptsTree": "efbde3774901e75ad253a2d77cd90f83796e2931",
+    "workingTreeCleanAtBuildStart": true,
+    "version": "0.6.73"
+  },
+  "entrypoints": {
+    "firstChineseRootAttempt": {
+      "path": "GameSaveCenter-一键构建安装运行.cmd",
+      "exitCode": 1,
+      "reason": "C: free space 4,127,039,488 bytes; preflight required 5,368,709,120 bytes",
+      "buildOrInstallStarted": false
+    },
+    "completeChineseRoot": {
+      "path": "GameSaveCenter-一键构建安装运行.cmd",
+      "dispatch": "GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1 -> scripts/build.ps1/package.ps1/install/launch",
+      "command": "cmd.exe /d /c GameSaveCenter-一键构建安装运行.cmd",
+      "exitCode": 0,
+      "sdk": "8.0.423",
+      "msbuild": "17.11.48",
+      "projectsBuilt": 8,
+      "warnings": 0,
+      "errors": 0,
+      "publish": "Worker win-x64",
+      "completedUtc": "2026-11-02T16:44:20.7740753Z"
+    },
+    "englishRoot": {
+      "path": "GameSaveCenter-Run.cmd",
+      "verification": "invoked through the Chinese wrapper in the same complete chain"
+    },
+    "independentBuild": {
+      "path": "scripts/build.cmd",
+      "command": "cmd.exe /d /c scripts\\build.cmd",
+      "exitCode": 0,
+      "responsibility": "Release solution build and tests via scripts/build.ps1; no package install or Playnite launch",
+      "sdk": "8.0.423",
+      "msbuild": "17.11.48",
+      "projectsBuilt": 8,
+      "warnings": 0,
+      "errors": 0,
+      "completedUtc": "2026-11-02T17:16:09Z"
+    }
+  },
+  "tests": {
+    "completeChineseRoot": {
+      "trxFiles": 158,
+      "isolatedWpfClasses": 155,
+      "total": 2025,
+      "passed": 1967,
+      "failed": 0,
+      "errorTimeoutAborted": 0,
+      "skipped": 58,
+      "skipReasons": {
+        "57": "Retired Today Workbench UI architecture assertions; not applicable to the restored production baseline.",
+        "1": "Moves the real system pointer; disabled unless GSC_RUN_INTERACTIVE_POINTER_TESTS=1."
+      },
+      "namedPipeSkips": 0,
+      "diagnostics": "artifacts/build-diagnostics/20261102T161832992Z-11ce4c4a/summary.json",
+      "summarySha256": "F34F45862E806829D2D85791360CD9CE0B573B80C133ADF8FCFBEEE62F8822AA"
+    },
+    "independentBuildCmd": {
+      "trxFiles": 158,
+      "isolatedWpfClasses": 155,
+      "total": 2025,
+      "passed": 1957,
+      "failed": 0,
+      "errorTimeoutAborted": 0,
+      "skipped": 68,
+      "skipReasons": {
+        "57": "Retired Today Workbench UI architecture assertions; not applicable to the restored production baseline.",
+        "1": "Moves the real system pointer; disabled unless GSC_RUN_INTERACTIVE_POINTER_TESTS=1.",
+        "9": "NamedPipeFact probe reports local Named Pipe clients unavailable in this restricted process.",
+        "1_worker_restart": "WorkerProcessFact probe reports local Named Pipes unavailable for isolated Worker acceptance."
+      },
+      "namedPipeSkipsCountedAsPass": 0,
+      "diagnostics": "artifacts/build-diagnostics/20261102T164541518Z-84099eba/summary.json",
+      "summarySha256": "5D8D45426D6CD420FFE46A1CA7EB99129C2368D58E906AE381817E42514E298B",
+      "workerTrx": "artifacts/build-diagnostics/20261102T164541518Z-84099eba/tests/worker/worker.trx",
+      "workerTrxSha256": "D150ACE2F4FD74482A3813B8B6CE56B1B04C3136A35EDF920D96FC49E8CED486"
+    },
+    "selectionGeometry": {
+      "r10TestClass": "GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests",
+      "r10Passed": 3,
+      "r10Failed": 0,
+      "r10Trx": "artifacts/build-diagnostics/20261102T161832992Z-11ce4c4a/tests/wpf.R10RecentAccessBehaviorTests/wpf.R10RecentAccessBehaviorTests.trx",
+      "r10TrxSha256": "FD3EE9C300418629599475FF67E600493F7A854FF51D14C34FBCF6F69CBFC7B2",
+      "sharedDataGridGeometryTest": "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes",
+      "sharedDataGridGeometryOutcome": "Passed"
+    }
+  },
+  "uiChangeGate": {
+    "sourceValidation": {
+      "command": "python scripts/validate-source.py",
+      "exitCode": 0
+    },
+    "localWpfStaticReview": {
+      "command": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .",
+      "exitCode": 0,
+      "xamlFiles": 218,
+      "errors": 0,
+      "warnings": 208,
+      "information": 1327,
+      "scopeNote": "Whole workspace scan also included retained .tmp XAML snapshots; warnings are not counted as pass."
+    },
+    "ciRenderQaStep": "success",
+    "ciWpfStaticReviewStep": "success"
+  },
+  "package": {
+    "zip": {
+      "path": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "bytes": 45737900,
+      "sha256": "CF08A6A8B0A10F4C8B236202E309957B06EC9AA3D2E194293791ADC0B7D0B256"
+    },
+    "pext": {
+      "path": "artifacts/GameSaveCenter-0.6.73.pext",
+      "bytes": 45737900,
+      "sha256": "CF08A6A8B0A10F4C8B236202E309957B06EC9AA3D2E194293791ADC0B7D0B256"
+    }
+  },
+  "installation": {
+    "path": "C:/Users/lopmatu/AppData/Roaming/Playnite/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "manifestVersion": "0.6.73",
+    "pluginFileVersion": "0.6.73.0",
+    "installedBuildIdentity": "0.6.73+34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+    "report": "artifacts/last-dev-install.txt",
+    "reportSha256": "158A208347A64F274E540945FC534769A56EC2A496D141B3BD2648644C07E1BE",
+    "reportedHashesAreDiskReadAndDoNotAssertRuntimeLoadedAssembly": true,
+    "playniteExe": "D:/software/Playnite/Playnite.DesktopApp.exe",
+    "launchedProcess": {
+      "id": 39452,
+      "startedLocal": "2026-11-03 00:45:10"
+    },
+    "realPluginPageRenderingObserved": false
+  },
+  "logs": {
+    "chineseRootLog": "artifacts/one-click-install.log",
+    "chineseRootLogSha256": "AA03B456138D6277A7397CA2A4E3E73D6273ADBCE45541659749807C75E8715F"
+  },
+  "cleanup": {
+    "removedFileCount": 4104,
+    "removedBytes": 1447319716,
+    "diskCFreeBeforeBytes": 4134359040,
+    "diskCFreeAfterBytes": 5591113728,
+    "diskCFreeActualDeltaBytes": 1456754688,
+    "evidence": "cleanup.json",
+    "duplicateStageJsonCopiesRemoved": 2,
+    "duplicateStageJsonBytes": 11874,
+    "duplicateCopiesCleanupCFreeBeforeBytes": 5242568704,
+    "duplicateCopiesCleanupCFreeAfterBytes": 5242585088
+  }
+}

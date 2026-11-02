@@ -1734,3 +1734,11 @@ Round5当前源64f26f58153efdb4a634bf8a0aa7c832898a581d已含媒体收件箱工�
 用户确认蓝色圆角描边本身可以保留，选中行不应因选框产生右下位置偏移或图标裁切。这条要求优先于同日先前记录的Overview 4×2 DIP inset；当前`f9d09cb2`已将该Margin移除。共享ListBox、页面专用ListBox、DataGridRow、媒体卡等选择实现并非只有一种：改动前分别盘点其模板和覆盖层，只有存在内容位移的样式才修。检查选择与焦点状态时需断言内容及列表槽位几何不变，同时保留颜色/边框反馈；不要为视觉统一给控件添加非必要Margin或Transform。
 
 U06-02/U08-08在精确提交上的离屏双主题验证及R10几何回归已通过，但Playnite宿主实页、外部UIA、实体输入/IME和物理DPI仍待验。当前底层完整脚本成功不代表包装`.cmd`验收成功；包装器在先前源码`0067525f`已被ConstrainedLanguage dot-source拒绝，既无入口改动也不应重复试探。当前80项状态为5已满足、71代码完成待验收、U09-04/05/08进行中、U09-06远端待验；真实存档恢复、媒体删除和云端写入不做。
+
+## Round5 U09-05 最终入口门禁与选中态几何（2026-11-03）
+
+选中框保留视觉反馈，不因Margin、Transform或边框厚度变化挤动行内容。Overview最近活动此前存在`TaskItemChrome.Margin=4,2`偏移，`f9d09cb2`已移除；公共ListBox内容层独立，四页DataGrid圆角框margin只落在背景/框线overlay，R23比较单元格和文字几何，R10覆盖Overview专用与共享ListBox选中/焦点三态。只修有位移的控件，不把其它实现强行统一。
+
+冻结候选`34d8a99faf7ec827b2fea8303baf8c18a8edbefd`的中文一键入口经`GameSaveCenter-Run.cmd`完成完整Release链，最终exit0；独立`scripts/build.cmd`按build/test职责exit0。SDK8.0.423，ZIP/PEXT与安装DLL身份精确匹配候选。中文链2025项/1967通过/0失败/58既有skip；独立build.cmd 2025项/1957通过/0失败/68 skip，其中10项Named Pipe用例因受限执行进程不允许管道而按既有守卫跳过、不计通过；同候选中文完整链没有跳过这10项。skip未扩宽。
+
+GitHub run41477919033(#1434)绑定精确SHA，`.github/workflows/windows-build.yml`下SDK基线与SDK10.0.401 jobs及所有步骤均success，3个artifact ID/digest已归档。required-check/branch-protection API此前403，不重复请求；工作流通过但required-check完整性仍远端待验。U09-05已满足；U09-04与U09-08进行中，U09-06远端待验。真实Playnite页面仍待人工/宿主确认；不得把启动进程说成视觉验收。真实恢复、媒体删除、云写入不属本轮验证。
