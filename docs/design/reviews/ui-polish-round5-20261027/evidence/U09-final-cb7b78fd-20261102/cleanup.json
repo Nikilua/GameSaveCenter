@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-02",
+  "owner": "Round5 U09-05/U09-08 final candidate verification stage",
+  "target": "D:\\Temp\\gsc-r5-u09-final-90196aa2",
+  "intendedParent": "D:\\Temp",
+  "deletionCommand": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+  "resolvedPathChecked": true,
+  "parentAndTargetReparsePoints": 0,
+  "descendantReparsePoints": 0,
+  "exclusiveReadChecks": 259,
+  "lockedFiles": 0,
+  "runningProcessesFromTarget": 0,
+  "filesRemoved": 259,
+  "bytesRemoved": 208671025,
+  "freeSpaceBeforeBytes": {
+    "C": 4586995712,
+    "D": 13725048832
+  },
+  "freeSpaceAfterBytes": {
+    "C": 4586995712,
+    "D": 13934358528
+  },
+  "deletionList": [
+    "preserved-before-run/one-click-install.log",
+    "preserved-before-run/last-dev-install.txt",
+    "preserved-before-run/GameSaveCenter-0.6.73-playnite.zip",
+    "preserved-before-run/GameSaveCenter-0.6.73.pext",
+    "preserved-before-run/package-stage/",
+    "TEMP/TMP outputs and scratch files from this stage"
+  ],
+  "retained": [
+    "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "artifacts/GameSaveCenter-0.6.73.pext",
+    "artifacts/build-diagnostics/20261102T070627247Z-bd4e0e3e/",
+    "artifacts/build-diagnostics/20261102T073356683Z-1ad2c606/",
+    "artifacts/one-click-install.log",
+    "artifacts/last-dev-install.txt",
+    "artifacts/gsc-b/1c0856c2/",
+    ".tmp/ historical and shared outputs"
+  ],
+  "documentationReferenceReview": "The baseline recorded this absolute temp root only as provenance; no Markdown link targeted a file in the directory. The final baseline links this cleanup record.",
+  "initialDefaultSandboxAttempt": "First Remove-Item call was denied by the default workspace sandbox before any file was removed; a second call using the user-authorized elevated PowerShell command completed."
+}

@@ -1,10 +1,16 @@
+## 2026-11-02 Round5 U09-05/U09-08 当前冻结候选完整门禁
+
+生产UI源码提交`cb7b78fd514e7d6eaa2a34e341340d5d06610508`已推送；最终文档冻结候选`0b61ee51ff0d78bf2f0f7c428cf358721753e558`仅追加文档，源码、测试、脚本和资源子树与生产提交一致。冻结候选先提交再执行了实际存在的中文入口`GameSaveCenter-一键构建安装运行.cmd`完整编译、测试、发布、打包、安装核验及Playnite启动，退出码0；随后独立运行`scripts/build.cmd -OutputRoot artifacts\gsc-b\1c0856c2`，退出码0。未创建或改名`run.cmd`等入口。SDK 8.0.423、Release；两入口各158份TRX、2025项，1967通过、0失败、58条既有skip（不计通过），Core 157/157、Worker 401/401、155个WPF隔离类均完成。日志、诊断ID与逐份TRX SHA见[本轮最终证据](evidence/U09-final-cb7b78fd-20261102/BASELINE.md)及[`local-gates.json`](evidence/U09-final-cb7b78fd-20261102/local-gates.json)。
+
+最终ZIP与PEXT均为45,737,895 bytes、SHA-256 `CC3F08165F76AE32CFB48E8EC4A8A4930B2F59B10D1D69021420A5614055D82C`；安装清单0.6.73，插件与Worker程序集身份均为`0.6.73+0b61ee51ff0d78bf2f0f7c428cf358721753e558`，Playnite进程启动成功。GitHub `windows-build.yml` run [41403537450](https://github.com/Nikilua/GameSaveCenter/actions/runs/41403537450)对精确冻结SHA的SDK基线job `125140372775`（15步）和SDK 10.0.401 job `125140372862`（8步）均completed/success；三个artifact ID/digest见[`ci-run-41403537450.json`](evidence/U09-final-cb7b78fd-20261102/ci-run-41403537450.json)。required-check清单继续沿用U09-06既有403限制，保持“远端待验”，不重复请求。只清理本批自有D盘临时目录，清单和空间前后见[`cleanup.json`](evidence/U09-final-cb7b78fd-20261102/cleanup.json)；保留最新包、构建和审计输出以及历史`.tmp/`。U09-05、U09-08已满足；U09-04仍进行中，U09-06远端待验；总计7项已满足、71项代码完成待验收、1项进行中、1项远端待验。真实Playnite页面、外部UIA、实体输入/IME及物理DPI仍未验；没有执行真实存档恢复、媒体删除或云端写入。
+
 ## 2026-11-02 Round5 U06-02/U08-08 选中框与共享列表内容稳定
 
 针对首页最近任务选中后图标随蓝色圆角框右下偏移的问题，生产提交`cb7b78fd514e7d6eaa2a34e341340d5d06610508`已推送`origin/main`。Overview 专用模板把选中框从内容测量层拆出，同时保留原4×2 DIP内缩、蓝色边框和14 DIP圆角；公共`ListBoxItem`模板也把选中/2 DIP焦点框与内容分层。`DataGridRow`、媒体卡片等已是独立覆盖层或仅改颜色，本批未重复改动。
 
 1040×700 DIP、固定`2026-11-02T00:00:00Z`样本的Light/Dark选中态前后图见[本批证据](evidence/U06-02-selection-overlay-20261102/BASELINE.md)：旧图图标贴近右下边界，新图恢复到行内原位，选框仍可见。新WPF回归测真实图标tile相对行容器在未选中/选中/焦点三态的坐标和尺寸，断言误差≤0.01 DIP；共享和局部模板均通过。
 
-SDK8.0.423 Release解决方案编译0 warning/0 error；`R10RecentAccessBehaviorTests` 3/3通过、0失败、0 skip；Source Validation退出0；WPF静态审查218 XAML/0 errors（208 warnings、1327 info，Overview两条滚动容器提示与本次模板无关）；精确提交Render QA双主题394 PNG、0 PROBLEM、WorkingTreeClean=True。完整日志/TRX、394项PNG哈希和清理清单在证据目录。GitHub run `41392841712` (#1425)对精确SHA的SDK8基线job `125107766820`及SDK 10.0.401 job `125107767536`均completed/success、所有步骤完成；preview artifact `13120801010`、基线诊断 `13119839919`、SDK10诊断 `13118807409`均绑定本提交，digest见[当前候选CI记录](evidence/U09-final-cb7b78fd-20261102/ci-run-41392841712.json)。活动期间job日志接口曾返回BlobNotFound，不影响最终job状态。U06-02与U08-08继续“代码完成待验收”，Playnite真实宿主、外部UIA、实体输入/IME与物理DPI仍待验；未触碰恢复、媒体删除或云写入。U09-05和U09-08因当前候选尚待本机根入口复核而重新进行中；当前整轮计数5/71/3/1。
+SDK8.0.423 Release解决方案编译0 warning/0 error；`R10RecentAccessBehaviorTests` 3/3通过、0失败、0 skip；Source Validation退出0；WPF静态审查218 XAML/0 errors（208 warnings、1327 info，Overview两条滚动容器提示与本次模板无关）；精确提交Render QA双主题394 PNG、0 PROBLEM、WorkingTreeClean=True。完整日志/TRX、394项PNG哈希和清理清单在证据目录。GitHub run `41392841712` (#1425)对精确SHA的SDK8基线job `125107766820`及SDK 10.0.401 job `125107767536`均completed/success、所有步骤完成；preview artifact `13120801010`、基线诊断 `13119839919`、SDK10诊断 `13118807409`均绑定本提交，digest见[生产提交CI记录](evidence/U09-final-cb7b78fd-20261102/ci-run-41392841712.json)。活动期间job日志接口曾返回BlobNotFound，不影响最终job状态。U06-02与U08-08仍“代码完成待验收”，Playnite真实页面、外部UIA、实体输入/IME与物理DPI仍待验；未触碰恢复、媒体删除或云写入。U09-05和U09-08已满足，总计7/71/1/1。
 
 另核实U06-03悬停夹具修正候选提交`3ecacdc0dc5376e45a6460b2af2668a1df57f328`：run `40647037308` 的SDK8.0.423基线与SDK10.0.401 jobs均completed/success，所有适用步骤完成；preview及两份诊断artifact均绑定该SHA。旧的39c6ad80/e4285c05失败保留为历史，不再把已修正候选标作CI待验。U06-03仍因真实宿主/物理输入未验而保持代码完成待验收。
 

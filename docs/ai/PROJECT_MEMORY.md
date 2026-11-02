@@ -1705,3 +1705,9 @@ Round5当前源64f26f58153efdb4a634bf8a0aa7c832898a581d已含媒体收件箱工�
 缓存工作区的布局更新必须同时检查PageHost当前内容与缓存集合中的引用身份；按页面类型识别不够，RenderHarness/测试可能注入未缓存的同类内容。隐藏缓存页不需要随每次窗口尺寸变化重排，激活时应用当前窗口宽高即可。行为回归覆盖1366→1040→980宽度并确认未激活页尺寸保持原值。
 
 本轮唯一耐久候选在120秒动作+30秒稳定观察中记录203次workspace_switch_layout，p95 408.80ms。该动作合并主题切换与同步布局，不能作为呈现帧或根因结论；与前两轮p95比较只作为趋势观察。
+
+## 2026-11-02 Round5 U06-02/U08-08 选中几何与最终门禁
+
+选中蓝色圆角框不应改变行内容的测量尺寸或位置。OverviewRecentTaskItemStyle要把`TaskItemChrome`和`ContentPresenter`分层，保留4×2 DIP inset与14 DIP圆角；共享隐式ListBoxItem模板也要让选择/焦点描边覆盖内容容器外侧，不可通过修改Border厚度或Margin挤压图标/文字。对其它选择态先查层级：`DataGridRow`、媒体卡片已有独立覆盖层，Overview保护项/ComboBox仅改颜色，避免为了统一而重写无同类问题的样式。具体几何回归与成对图见Round5 `evidence/U06-02-selection-overlay-20261102/`。
+
+当前生产源码SHA为`cb7b78fd514e7d6eaa2a34e341340d5d06610508`；文档冻结候选`0b61ee51ff0d78bf2f0f7c428cf358721753e558`无src/tests/scripts/resources差异。U09-05最终门禁应按真实`GameSaveCenter-一键构建安装运行.cmd`链和独立`scripts/build.cmd`分别执行，不能用局部`dotnet build`互代；本次两入口SDK8.0.423 Release均exit0，每入口2025测试/1967通过/58既有skip/0失败/155个WPF隔离类，完整TRX与日志哈希在`evidence/U09-final-cb7b78fd-20261102/local-gates.json`。安装包身份、六个DLL哈希、启动进程及GitHub `windows-build.yml` run41403537450两job/artifact身份同目录归档。只删除经核实的阶段专属D盘TEMP副本，保留最新包、诊断、日志与不确定归属的`.tmp/`历史数据。required-check接口既有403不能反复探测，U09-06记远端待验；真实Playnite视觉、外部UIA、实体输入/IME/物理DPI与数据写操作继续按边界如实报告。

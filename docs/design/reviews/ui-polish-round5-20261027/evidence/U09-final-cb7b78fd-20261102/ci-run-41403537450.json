@@ -1,0 +1,56 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "runId": 41403537450,
+  "runNumber": 1427,
+  "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41403537450",
+  "event": "push",
+  "headSha": "0b61ee51ff0d78bf2f0f7c428cf358721753e558",
+  "headBranch": "main",
+  "status": "completed",
+  "conclusion": "success",
+  "verifiedUtc": "2026-11-02T08:00:43Z",
+  "applicableJobCount": 2,
+  "jobs": [
+    {
+      "jobId": 125140372775,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "allStepsCompleted": true,
+      "stepCount": 15
+    },
+    {
+      "jobId": 125140372862,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "allStepsCompleted": true,
+      "stepCount": 8
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13124907150,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90790532,
+      "digest": "sha256:d1ead8bb0662dae1fc771332b19d10901fd1b2c36094ccd38c74916f47be752c",
+      "headSha": "0b61ee51ff0d78bf2f0f7c428cf358721753e558"
+    },
+    {
+      "id": 13124607962,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2032462,
+      "digest": "sha256:279c8e68a0e3f4d52c1de7aee7a1e7542f7fd6f8f4daa1ef287a7bf1b8834b06",
+      "headSha": "0b61ee51ff0d78bf2f0f7c428cf358721753e558"
+    },
+    {
+      "id": 13124035463,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 972248,
+      "digest": "sha256:b2671152c653016798287a31f2ef92bb69670347f0742632cfa163ec5b769fdb",
+      "headSha": "0b61ee51ff0d78bf2f0f7c428cf358721753e558"
+    }
+  ],
+  "requiredChecks": "U09-06 remains remote pending: prior permission read returned 403; no retry."
+}

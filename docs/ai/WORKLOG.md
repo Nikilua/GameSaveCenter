@@ -12937,3 +12937,13 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - f1a614a8双SDK run41371608155与de9fe37d文档run41376045182均已成功；25bcbf79 run41379419270的SDK10 job成功、baseline job查询时仍处编译测试。本批 required-check 名单和本地完整安装启动链未验。
 - 自有临时输出共1921文件/324,644,382字节，精确目标限于.tmp/r5u051与两份artifacts/build-diagnostics子目录；无重解析点、进程占用或文档引用。清理前C盘空闲4,562,968,576字节，清理后4,892,147,712字节；日志与可复用截图/哈希已归档于活动布局证据目录。
 - 纯文档阶段再次运行Source Validation，退出0；五份变更Markdown本地相对链接783项检查、0缺失；git diff --check退出0。按文档-only规则未重复本地完整构建安装链。
+
+## 2026-11-02 Round5 U09-05/U09-08 最终冻结门禁
+
+- 生产源码提交`cb7b78fd514e7d6eaa2a34e341340d5d06610508`；文档冻结候选`0b61ee51ff0d78bf2f0f7c428cf358721753e558`与其src/tests/scripts/resources树一致。按仓库实际入口运行`GameSaveCenter-一键构建安装运行.cmd`完整发布、测试、打包、安装核验并启动Playnite，退出码0；随后独立`scripts/build.cmd -OutputRoot artifacts\gsc-b\1c0856c2`退出码0。没有新建虚假入口。
+- 两个本地入口使用SDK8.0.423 Release，各有158份TRX、2025项/1967通过/0失败/58既有skip；skip不计通过。Core 157/157、Worker 401/401、155个WPF隔离类完成。TRX逐文件哈希、console日志哈希、包与安装程序集身份见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-final-cb7b78fd-20261102/local-gates.json`。
+- ZIP和PEXT均45,737,895 bytes、SHA-256 `CC3F08165F76AE32CFB48E8EC4A8A4930B2F59B10D1D69021420A5614055D82C`；安装清单0.6.73、程序集身份`0.6.73+0b61ee51ff0d78bf2f0f7c428cf358721753e558`，进程PID 35544位于`D:\software\Playnite\Playnite.DesktopApp.exe`。这证明安装和启动，不证明已人工检查插件实际页面。
+- GitHub run41403537450 (#1427)对冻结SHA的baseline job125140372775（15/15步骤）和SDK10.0.401 job125140372862（8/8）均completed/success；preview/基线/SDK10 artifact的ID与digest见`ci-run-41403537450.json`。required-check清单沿用U09-06先前403状态，未重探。
+- 只清理本阶段自有`D:\Temp\gsc-r5-u09-final-90196aa2`：259文件/208,671,025 bytes，绝对路径、根边界、重解析点、占用与文档引用均先核对；默认沙箱首次拒绝外部目录删除后，经批准的提升命令按PowerShell `Remove-Item -LiteralPath -Recurse -Force`完成。D盘空闲13,725,048,832→13,934,358,528 bytes；C盘前后均4,586,995,712 bytes。清理记录为同目录`cleanup.json`；保留当前包、两个诊断目录、最新日志和全部`.tmp/`历史内容。
+- U09-05/U09-08已满足，整轮7/71/1/1；U09-04仍进行中，U09-06远端待验。真实Playnite页面、外部UIA、物理输入/IME/DPI未验；真实存档恢复、媒体删除和云写入均未执行。文档后续只做源码/链接检查，不重复本机完整链。
+- 最终文档校验：`python scripts/validate-source.py`退出0；五份变更Markdown本地链接794 checked/0 missing/0 outside；`git diff --check`退出0。文档记录提交后的GitHub run仍需按精确SHA核对，不再为记录CI结果追加提交。

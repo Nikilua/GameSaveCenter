@@ -1,8 +1,12 @@
+## 2026-11-02 Round5 U09-05/U09-08 当前候选门禁结案
+
+生产UI源码为`cb7b78fd514e7d6eaa2a34e341340d5d06610508`；文档冻结候选`0b61ee51ff0d78bf2f0f7c428cf358721753e558`与之源码、测试、脚本、资源树一致。冻结SHA的实际中文根入口与独立`scripts/build.cmd`均在SDK8.0.423 Release退出0；每次2025项/1967通过/0失败/58既有skip，155个WPF隔离类完成。安装包、程序集、日志/TRX哈希见Round5 `evidence/U09-final-cb7b78fd-20261102/local-gates.json`。GitHub run41403537450两个适用job（SDK基线、SDK10.0.401）均success，三artifact身份见同目录`ci-run-41403537450.json`。U09-05/U09-08已满足；总状态7/71/1/1，U09-04仍进行中，U09-06因既有403远端待验。清理仅删除本批专属D盘TEMP目录，细节见`cleanup.json`；真实Playnite页面、外部UIA/物理输入/IME/DPI未验，也未进行真实恢复、媒体删除或云写入。
+
 ## 2026-11-02 Round5 U06-02/U08-08 选框几何修复
 
 生产提交`cb7b78fd514e7d6eaa2a34e341340d5d06610508`已推送。首页最近任务的选中圆角框移至独立覆盖层，保留4×2 DIP内缩与蓝色外观；共享隐式ListBox选择/焦点线也不再挤压Presenter内距。真实WPF回归验证图标在未选中/选中/焦点三态坐标不变。SDK8.0.423 Release 0 warning/0 error，R10行为3/3，Source Validation 0，精确SHA Render QA双主题394图/0 PROBLEM。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-overlay-20261102/`。
 
-GitHub run 41392841712 (#1425)对精确cb7b78fd的SDK8基线job 125107766820与SDK10.0.401 job 125107767536均全步骤success；preview artifact 13120801010、基线诊断13119839919、SDK10诊断13118807409均绑定该SHA。活动job日志一度BlobNotFound，终态不受影响。U06-02/U08-08继续代码完成待验收；真实Playnite、外部UIA、物理输入/IME、跨屏DPI待验。U09-05/U09-08因当前候选尚待本机最终门禁重新进行中，计数为5/71/3/1；中文根入口完整安装启动链与独立`scripts/build.cmd`正在准备对当前候选执行。真实恢复、媒体删除、云写入不在本批。
+GitHub run 41392841712 (#1425)对精确cb7b78fd的SDK8基线job 125107766820与SDK10.0.401 job 125107767536均全步骤success；preview artifact 13120801010、基线诊断13119839919、SDK10诊断13118807409均绑定该SHA。活动job日志一度BlobNotFound，终态不受影响。U06-02/U08-08继续代码完成待验收；真实Playnite、外部UIA、物理输入/IME、跨屏DPI待验。U09-05/U09-08已由文档冻结候选完整链结案，计数7/71/1/1；U09-04仍进行中，U09-06仍远端待验。真实恢复、媒体删除、云写入不在本批。
 
 同时补查U06-03同步悬停夹具候选`3ecacdc0dc5376e45a6460b2af2668a1df57f328`的精确run `40647037308`：SDK8.0.423与SDK10.0.401 jobs均success，三artifact身份见Round5 `evidence/U06-03-04/ci-run-40647037308.json`。旧失败仍保留历史，真实输入/宿主未验。
 
