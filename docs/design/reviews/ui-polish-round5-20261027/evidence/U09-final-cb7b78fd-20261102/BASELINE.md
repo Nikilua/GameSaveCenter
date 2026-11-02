@@ -20,6 +20,6 @@ run [41392841712](https://github.com/Nikilua/GameSaveCenter/actions/runs/4139284
 
 ## 空间与本阶段输出
 
-阶段开始快照见[`stage-start.json`](stage-start.json)。本地WMI磁盘枚举被系统拒绝访问；改用.NET `DriveInfo` 成功记录。起始C盘空闲4,986,994,688 bytes、D盘15,580,450,816 bytes。包装器默认将输出与测试TEMP放在C盘，配置预留输出2 GiB、测试TEMP 1 GiB、包1 GiB及系统TEMP 1 GiB，默认环境需C盘5 GiB，高于起始空闲约381,714,432 bytes。执行时将系统 `TEMP`/`TMP` 指向仓库自有 `.tmp/r5u09-final-cb7b78fd-system-temp`（D盘），不改变预算/SDK/门禁；C盘三项合计4 GiB预算有充足空间。阶段开始时保留既有 `artifacts/`（7,132文件/1,678,403,921 bytes）、`.tmp/`（14,139文件/1,069,404,099 bytes）、旧安装报告/日志和已有诊断，不将其误认成本阶段输出或清理。初始相关Playnite进程为0。
+阶段开始快照见[`stage-start.json`](stage-start.json)。本地WMI磁盘枚举被系统拒绝访问；改用.NET `DriveInfo` 成功记录。起始C盘空闲4,986,994,688 bytes、D盘15,580,450,816 bytes。包装器默认将输出与测试TEMP放在C盘，配置预留输出2 GiB、测试TEMP 1 GiB、包1 GiB及系统TEMP 1 GiB，默认环境需C盘5 GiB，高于起始空闲约381,714,432 bytes。已确认仓库 `.tmp` 实际位于C盘，不能降低C盘预算；`D:\Temp` 是已存在、非重解析点目录且有足够空间。执行前将申请创建独立 `D:\Temp\gsc-r5-u09-final-90196aa2` 并仅为本链设置 `TEMP`/`TMP`，保持原预算、SDK和门禁。阶段开始时保留既有 `artifacts/`（7,132文件/1,678,403,921 bytes）、`.tmp/`（14,139文件/1,069,404,099 bytes）、旧安装报告/日志和已有诊断，不将其误认成本阶段输出或清理。初始相关Playnite进程为0。
 
 完整根链、独立构建、安装身份、日志/TRX身份、阶段结束空间与仅本阶段输出的安全清理结论将在运行结束后补记。未执行真实存档恢复、媒体删除或云写入。真实Playnite窗口可视内容、外部UIA/实体输入/IME、物理DPI需继续保留验收边界。

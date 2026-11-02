@@ -29,11 +29,26 @@
     {"path": ".tmp/", "files": 14139, "bytes": 1069404099}
   ],
   "relevantProcessesAtStart": [],
-  "temporaryRootForThisStage": ".tmp/r5u09-final-cb7b78fd-system-temp",
+  "temporaryRootForThisStage": "D:\\Temp\\gsc-r5-u09-final-90196aa2",
+  "repositoryTmpRoot": {
+    "path": ".tmp",
+    "resolvedVolume": "C:\\",
+    "attributes": "Directory",
+    "note": "The repository .tmp is on C:, so it does not relocate system TEMP/TMP."
+  },
+  "externalTempParent": {
+    "path": "D:\\Temp",
+    "exists": true,
+    "attributes": "Directory",
+    "linkType": null,
+    "target": null,
+    "freeBytesAtCheck": 15578148864
+  },
+  "externalTempChildExistedAtCheck": false,
   "spaceBudget": {
     "configured": {"outputBytes": 2147483648, "tempBytes": 1073741824, "packageBytes": 1073741824},
     "plannedPlacement": "C: output + test temp + package = 4 GiB; D: system TEMP/TMP = 1 GiB",
-    "reason": "Default four C: requirements total 5 GiB and exceed measured free space. Relocating only system TEMP/TMP to the stage-owned D: path keeps the configured budget unchanged."
+    "reason": "Default four C: requirements total 5 GiB and exceed measured free space. Repository .tmp resolves to C:. A uniquely named D:\\Temp child is selected for system TEMP/TMP, subject to external-path approval, to keep the configured budget unchanged."
   },
   "cleanupAtStageStart": "none; existing artifacts/.tmp include other and prior accepted outputs and are preserved"
 }
