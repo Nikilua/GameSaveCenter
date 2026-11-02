@@ -1,0 +1,176 @@
+{
+  "recordedUtc": "2026-11-02T23:37:28.5350229Z",
+  "candidate": "eebef00978265119e5ed54d96d0053aba4ea147c",
+  "worktreeCleanAtBuildcmd": true,
+  "cleanupPurpose": "Only superseded build output beneath artifacts/gsc-b; preserve diagnostics, TRX, current successful r5eeb output, current package/install evidence, audits, .tmp and unknown files.",
+  "cFreeBeforeBytes": 4683939840,
+  "dFreeBeforeBytes": 8259637248,
+  "rootWrapperConfiguredHeadroomBytes": 5368709120,
+  "successfulBuildcmdOutput": "artifacts/gsc-b/r5eeb",
+  "preservedDiagnostics": [
+    "artifacts/build-diagnostics/round5-u09-final-eebef009-buildcmd-shortroot/20261102T230146151Z-8cc9da65",
+    "artifacts/build-diagnostics/round5-u09-final-eebef009-buildcmd/20261102T225351491Z-66390c07"
+  ],
+  "candidates": [
+    {
+      "Name": "0c313121",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\0c313121",
+      "FileCount": 308,
+      "Bytes": 16828663,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "e6e7f3b931ec767aea353d0998bc12800df16a21",
+          "Outcome": "passed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261029T094602324Z-4c686611\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "1c0856c2",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\1c0856c2",
+      "FileCount": 323,
+      "Bytes": 23279652,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "0b61ee51ff0d78bf2f0f7c428cf358721753e558",
+          "Outcome": "passed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261102T070627247Z-bd4e0e3e\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "241164e5",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\241164e5",
+      "FileCount": 258,
+      "Bytes": 16845210,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "2c4ad8c31dd4329fb26f75fb6ed0f4a05692ddab",
+          "Outcome": "failed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261029T145010628Z-1d5c3fbe\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "4be27808",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\4be27808",
+      "FileCount": 747,
+      "Bytes": 177034126,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "f1eb8f8ff60c88f448b523dc23080fa91647f5a5",
+          "Outcome": "failed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261029T072342294Z-80856435\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "5c822ce9",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\5c822ce9",
+      "FileCount": 260,
+      "Bytes": 16221469,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "388c46ea620738f05c127633e4e3b1b7f859a2b9",
+          "Outcome": "failed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261029T133844255Z-9aba5a24\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "72b38918",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\72b38918",
+      "FileCount": 1032,
+      "Bytes": 287694266,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
+          "Outcome": "passed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261102T161832992Z-11ce4c4a\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "871b9f7b",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\871b9f7b",
+      "FileCount": 308,
+      "Bytes": 16828762,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7",
+          "Outcome": "passed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261029T152006747Z-ea29ece0\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "b98f50f5",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\b98f50f5",
+      "FileCount": 260,
+      "Bytes": 16221368,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "2d2485482b43347c37875353a7620f7eb8a37b62",
+          "Outcome": "failed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261029T081342221Z-c9b80a78\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "c438c456",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\c438c456",
+      "FileCount": 260,
+      "Bytes": 16221468,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "392854b31a0e0cfd0d4e4904b95b3c02aa21ef5a",
+          "Outcome": "failed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261029T141616369Z-b78f7f94\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    },
+    {
+      "Name": "round5-u09-final-eebef009-buildcmd",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\round5-u09-final-eebef009-buildcmd",
+      "FileCount": 743,
+      "Bytes": 175005027,
+      "ReparsePoints": 0,
+      "RunningProcesses": 0,
+      "Owners": [
+        {
+          "SourceCommit": "eebef00978265119e5ed54d96d0053aba4ea147c",
+          "Outcome": "failed",
+          "SummaryPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\round5-u09-final-eebef009-buildcmd\\20261102T225351491Z-66390c07\\summary.json",
+          "Retention": "Latest build output; retain until superseded and reviewed"
+        }
+      ]
+    }
+  ]
+}

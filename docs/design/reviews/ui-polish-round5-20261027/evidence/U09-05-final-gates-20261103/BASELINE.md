@@ -15,7 +15,7 @@
 - 中文入口 TRX 共 158 份、2025 个结果：1967 通过、0 失败/错误/超时/中止、58 跳过；其中 57 项是已撤销“今日工作台”架构断言，1 项需真实系统指针，均不计为通过。独立 `scripts/build.cmd` 共 2025 个结果：1957 通过、0 失败/错误/超时/中止、68 跳过；它有同样 58 项，再加 9 项 IPC Named Pipe 客户端测试和 1 项隔离 Worker 重启测试。其守卫检测到当次受限进程无法创建本地 Named Pipe。未改动或扩大 skip；中文完整链在同一 SHA 上这 10 项没有跳过。
 - `python scripts/validate-source.py` 退出码 0。WPF 静态检查退出码 0；本地扫描 218 个 XAML、0 错误、208 警告、1327 信息（扫描范围含既有 `.tmp/` 快照，警告不作为通过项）。GitHub 精确候选的 render-qa 和 WPF 静态步骤均成功，渲染预览 artifact 绑定同一 SHA。
 
-本地机器记录、包/安装身份、TRX 汇总和检查结果见 [`local-gates.json`](local-gates.json)。完整测试控制台、所有 TRX 与构建诊断保留在 `artifacts/build-diagnostics/20261102T161832992Z-11ce4c4a/` 和 `artifacts/build-diagnostics/20261102T164541518Z-84099eba/`；最新构建目录与包仍保留在 `artifacts/gsc-b/72b38918/` 和 `artifacts/`。没有复制第二份包或截图。
+本地机器记录、包/安装身份、TRX 汇总和检查结果见 [`local-gates.json`](local-gates.json)。完整测试控制台、所有 TRX 与构建诊断保留在 `artifacts/build-diagnostics/20261102T161832992Z-11ce4c4a/` 和 `artifacts/build-diagnostics/20261102T164541518Z-84099eba/`。旧构建输出 `artifacts/gsc-b/72b38918/` 已被后续候选替代并于 2026-11-03 清理；对应诊断/TRX仍在上述目录，旧包仍保存在 `artifacts/r5-prior-34d8-20261103/`。清理身份、边界和磁盘变化见[后续 U09-05 清理证据](../U09-05-final-eebef009-20261103/cleanup.json)。
 
 ## GitHub 与完成边界
 

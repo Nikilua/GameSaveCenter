@@ -1,3 +1,11 @@
+## 2026-11-03 Round5 U09-05 独立build.cmd与旧输出清理
+
+- 共享选择效果按用户构建反馈复核：最近活动继续保留蓝色圆角框，`f9d09cb2`去掉行布局Margin；Dashboard兼容DataGrid框线与内容同级分层。R10 3/3、R06精确提交3/3，修复后GitHub #1439 的SDK基线/SDK10双job所有步骤通过。框线不应推行、图标或内容；真实Playnite页面仍未实测。
+- 当前代码候选`eebef00978265119e5ed54d96d0053aba4ea147c`独立`scripts/build.cmd`使用SDK8.0.423完成Release编译0 warning/0 error并exit0；158份TRX、2026项，1968通过、0失败、58跳过、155个WPF隔离类。58 skip为既有撤销“今日工作台”断言57和默认关闭的系统指针用例1，未扩大skip。完整summary/TRX见Round5 `evidence/U09-05-final-eebef009-20261103/independent-buildcmd.json`及`artifacts/build-diagnostics/round5-u09-final-eebef009-buildcmd-shortroot/20261102T230146151Z-8cc9da65/`。
+- 同一源码较长测试临时根的首次Worker压力测试在第17周期第二次原子写入出现`UnauthorizedAccessException`/`0x80070005`。原因未确认；ACL未发现拒绝，完整失败TRX与诊断保留，没有改源码、断言或skip。改用短测试根后同SDK复跑通过。
+- 依当前任务清理规则核对路径边界、重解析点、活动进程、产物所有权、引用和留存证据后，仅删除本阶段已被替代的`artifacts/gsc-b/`内10个构建输出目录，4499个文件/762180011 bytes；C盘可用空间从4682571776增至5455294464 bytes，实际差772722688。保留成功输出`r5eeb`、失败及成功的所有诊断/TRX、包/安装、审计、`.tmp`和未知文件。清单及前后空间见Round5 `evidence/U09-05-final-eebef009-20261103/cleanup.json`。
+- Source Validation退出0；本批修改Markdown相对链接290条全部解析，JSON证据均可读取。独立入口已验，但冻结候选的中文根完整Release测试、发布、打包、安装身份核验及Playnite启动仍待执行。80项计数5已满足、71代码完成待验收，U09-04/05/08进行中、U09-06远端待验。未运行真实存档恢复、媒体删除或云端写入。
+
 ## 2026-11-03 Round5 U06-02/U08-08 共享焦点框不推动内容
 
 - 在保留 `f9d09cb2` 最近活动修复后，继续巡查共享状态样式；将 `AcrylicNavItem` 的焦点装饰改为独立、不可命中的 overlay，避免焦点边框改变ContentPresenter边界或叠加第二道内框。选中填色、RadioButton导航、焦点视觉样式、Tag/Checked/UIA不变。源码提交 `77482a9a`。
@@ -4597,7 +4605,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 ## 2026-09-10 当前生产源候选包重新生成
 
 - 从生产源提交 `fa9af0a` 运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909-latest`；XAML `19/19`，Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `427/490`（63 skip），均无失败。
-- 六份程序集身份一致为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；[`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 与 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip) 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。
+- 六份程序集身份一致为 `0.6.73+fa9af0ad36db07551bd1c2985258d72eecb9c8e4`；当时生成的 `GameSaveCenter-0.6.73.pext` 与 `GameSaveCenter-0.6.73-playnite.zip` 均 `43,837,868` 字节，SHA-256 为 `631615AB7695C46F943D9546A53369C69ADA49F347C4F7CE33D96A33C3831249`。二进制包已在后续阶段清理，保留本记录中的身份与校验值。
 - 打包 staging 和隔离构建目录已从 `artifacts/`、`.tmp/` 清理；没有安装真实 Playnite，L31 宿主矩阵和原视频操作仍保持未验收。
 - 打包完成后的独立门禁再次通过：`python scripts/validate-source.py`、`scripts/check-xaml.ps1`（19 文件）和 `git diff --check` 均通过；这只加强源码/交付一致性证据，不改变真实宿主待验收边界。
 - L32 文档链接审计扫描 123 个本地 Markdown 链接，缺失数为 `0`；同时确认当前 `.pext/.zip` 均存在。旧的一次性媒体截图链接已改为当前证据索引，不恢复已清理的临时截图。
@@ -4625,7 +4633,7 @@ f08b85be默认中文.cmd在SDK8 Release0/0、Core157/157、Worker400/400后，Pl
 
 - 从提交 `1fdd15e` 重新运行 `scripts/package.ps1 -Configuration Release -BuildOutputRoot .tmp/package-current-20260909`；Release 构建 `0 warning / 0 error`，Core `76/76`、Worker `310/311`（1 skip）、Playnite `426/489`（63 skip），均无失败。
 - 六份程序集身份一致为 `0.6.73+1fdd15eedfa64bb34292b85cb0e4d14bbfa9dd81`；Worker 为 `win-x64` self-contained；`.pext/.zip` 均 `43,837,799` 字节，SHA-256 为 `FD91FB0E0B12ABA2A73F29F76F1E3F90255D6FA4D30798EBA2FEFB53FAD120F9`。
-- 包暂存目录已清理，保留 [`.pext`](../../artifacts/GameSaveCenter-0.6.73.pext) 和 [`.zip`](../../artifacts/GameSaveCenter-0.6.73-playnite.zip)；未安装真实 Playnite，FusionX、DPI 和原视频复测仍待宿主验收。
+- 包暂存目录清理后，当时暂留的 `.pext` 与 `.zip` 也已在后续阶段清理；未安装真实 Playnite，FusionX、DPI 和原视频复测仍待宿主验收。
 
 ## 2026-09-09 前一版源码候选包重新生成（1975d2d）
 
@@ -11176,7 +11184,7 @@ PERF-004～010 与 GAME-TOOL-001/002 主体完成；最近 DataGrid/UI 问题在
 - 读取本机 Playnite 扩展目录文件元数据（不启动/修改宿主）：manifest `0.6.73`；DLL FileVersion `0.6.73.0`、ProductVersion `0.6.73+7a4ba2a94da870c832e59f3ee025f9e34325d175`、SHA-256 `5E02A462F1EDA26D706B550F8B428612CB13F787078A342CF3CFE4850AD50E22`。`7a4ba2a9` 在当前 main 历史中早于设置 `3a1dadd8`、窗口/媒体 `da91bd68`，以及 Task 行框 `9f3d7ab9`、媒体按钮 `a4bac32f` 修正；推断该旧安装可能解释用户截图，但没有正在运行的 Playnite 进程能关联截图载入实例。
 - 当前 main 生产设置视图按截图估算 `1254×800 DIP` 的 Light/Dark STA WPF 复核：icon-title top Δ`11.33`、横向间距 `12`、search-title left Δ`0`、search-icon top gap `72.67`；恢复默认控件中心/高度 spread `0/0`，路径下拉框与四按钮均 `36 DIP` 同中心。假设源于 1881×1208 px 截图中约54px按钮，不等于实测系统 DPI。
 - 一次两主题合跑 xUnit 显示 2 个测试通过后 testhost 不退出且未生成 TRX；等待约2.5分钟后仅中断该自启动 runner，不计通过。按主题单独重跑 Light/Dark 各 `1/1`、VSTest exit `0`、无 COM cleanup 记录。当前源码结构与截图位置不同；不宣称实际 Playnite 已修复。
-- 当前 main `e83d8ba9` 包 [GameSaveCenter-0.6.73.pext](../../artifacts/GameSaveCenter-0.6.73.pext) 已生成；包大小 `45,537,931` bytes、SHA `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，六份 Plugin/Worker 程序集均为 `0.6.73+e83d8ba913080f2700e41f9d0b5f18b98ce04803`，package 内容及 self-contained Worker 校验通过，未安装/替换本机扩展。
+- 当前 main `e83d8ba9` 生成的 `GameSaveCenter-0.6.73.pext` 大小 `45,537,931` bytes、SHA `75A8E5AD1841C7EE6898CCB63BEEF9C216ABFBB8C8CF57693602B667DEB8B73E`，六份 Plugin/Worker 程序集均为 `0.6.73+e83d8ba913080f2700e41f9d0b5f18b98ce04803`，package 内容及 self-contained Worker 校验通过，未安装/替换本机扩展。该历史包已在后续阶段清理，身份数据仍保留在本记录中。
 - 包脚本关联 Release build `0 errors`、两条既有 CS8602；Core `125/125`，Worker `355/356`（一条既有 hard-restart skip）。默认 Playnite 全集含105个隔离 WPF 类；为避免重跑已验证相关类，仅启动到第3类后中断，未取得全量 Playnite 数字。之后 `package.ps1 -SkipBuild` 复用已构建 DLL，完成 Worker 发布和包校验。
 - 证据 `docs/design/reviews/ui-finesse-round3-20260915/evidence/SETTINGS-HEADER-WINDOWED-1254x800-CURRENT-MAIN-20260924.md` 和两份 TRX。候选包留给用户更新核对，不代装；随后推进 R08-05。
 
