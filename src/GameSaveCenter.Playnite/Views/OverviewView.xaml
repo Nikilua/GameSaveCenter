@@ -143,7 +143,6 @@
                                     <Setter TargetName="TaskItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                     <Setter TargetName="TaskItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                                     <Setter TargetName="TaskItemChrome" Property="CornerRadius" Value="14"/>
-                                    <Setter TargetName="TaskItemChrome" Property="Margin" Value="4,2"/>
                                     <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                     <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                 </Trigger>

@@ -215,7 +215,7 @@ public sealed class R10RecentAccessBehaviorTests
 
                     AssertContainerContentDoesNotMove(list, firstTask, "TaskItemChrome", "OverviewTaskStatusPill", host.Window);
                     var selectedChrome = FindItemChrome(list, firstTask, "TaskItemChrome");
-                    Assert.Equal(new Thickness(4, 2, 4, 2), selectedChrome.Margin);
+                    Assert.Equal(new Thickness(), selectedChrome.Margin);
                     Assert.Equal(new CornerRadius(14), selectedChrome.CornerRadius);
                     AssertAccentBorder(list, selectedChrome);
                 }
@@ -231,6 +231,7 @@ public sealed class R10RecentAccessBehaviorTests
                 using var sharedHost = new WindowHost(sharedOverview);
                 AssertContainerContentDoesNotMove(sharedList, firstTask, "ItemChrome", "OverviewTaskStatusPill", sharedHost.Window);
                 var sharedChrome = FindItemChrome(sharedList, firstTask, "ItemChrome");
+                Assert.Equal(new Thickness(), sharedChrome.Margin);
                 AssertAccentBorder(sharedList, sharedChrome);
                 Assert.Equal(8, sharedChrome.CornerRadius.TopLeft);
             }
