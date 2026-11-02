@@ -1,0 +1,63 @@
+{
+  "stage": "U09-04 U00-aligned endurance probes",
+  "repositoryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "temporaryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp",
+  "pathChecks": {
+    "stagePathNormalized": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-04-u00-aligned-20261102",
+    "containedInRepositoryTmp": true,
+    "stageRootOrDescendantReparsePoints": 0,
+    "stageDirectoryContentsMatchedExpectedTwoReports": true,
+    "consoleFilesWereExactStageOwnedNamesDirectlyUnderTmp": true,
+    "markdownReferenceAudit": "Only stage-start.json records the executed .tmp command/output paths; no active report/link depends on the temporary copies. Both reports were archived and SHA-256 matched before deletion."
+  },
+  "lockAndProcessChecks": {
+    "exclusiveFileOpenSucceededForEveryTarget": true,
+    "renderHarnessProcessBeforeDelete": 0,
+    "renderHarnessProcessAfterDelete": 0
+  },
+  "archivedReports": [
+    {
+      "path": "run-1/enduranceprobe-report.txt",
+      "bytes": 38211,
+      "sha256": "0AAA80D2DE7E266E18C38ADC85932F02115AE56CAEAE8FC8372FDBD13303396E"
+    },
+    {
+      "path": "run-2/enduranceprobe-report.txt",
+      "bytes": 38228,
+      "sha256": "0A4D8C5D810F43F582F7BA03E1FEE7B1A7E403730950EB1835808AE976226D7C"
+    }
+  ],
+  "deletedFiles": [
+    {
+      "path": ".tmp/round5-u09-04-u00-aligned-20261102/probe/enduranceprobe-report.txt",
+      "bytes": 38211,
+      "archivedAs": "run-1/enduranceprobe-report.txt"
+    },
+    {
+      "path": ".tmp/round5-u09-04-u00-aligned-20261102/probe-2/enduranceprobe-report.txt",
+      "bytes": 38228,
+      "archivedAs": "run-2/enduranceprobe-report.txt"
+    },
+    {
+      "path": ".tmp/round5-u09-04-u00-aligned-20261102-console.txt",
+      "bytes": 38279,
+      "sha256": "6EFD35D2EB9D261071C0680D5A6600A8DFE217884B42CC0E143DC2752D24A086",
+      "reason": "Redundant console copy of archived report plus progress output."
+    },
+    {
+      "path": ".tmp/round5-u09-04-u00-aligned-20261102-run2-console.txt",
+      "bytes": 38296,
+      "sha256": "B5A6943421C8672F99ABCF7588DED4CC48A493E8B8C1A988E4D129C7B9FA4F99",
+      "reason": "Redundant console copy of archived report plus progress output."
+    }
+  ],
+  "deletedBytes": 153014,
+  "driveFreeBytes": {
+    "CBefore": 4166037504,
+    "CAfter": 4166201344,
+    "CObservedIncrease": 163840,
+    "DBefore": 13922041856,
+    "DAfter": 13922041856
+  },
+  "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force for the exact stage directory; exact console files were removed separately."
+}

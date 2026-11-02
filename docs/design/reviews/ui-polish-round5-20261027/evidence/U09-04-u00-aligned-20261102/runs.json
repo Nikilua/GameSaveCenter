@@ -1,0 +1,94 @@
+{
+  "sourceHead": "a90887a29edce88d85dedc0fa31fa9383091ec47",
+  "productionSourceCommit": "cb7b78fd514e7d6eaa2a34e341340d5d06610508",
+  "sourceTestsScriptsUnchangedSinceProductionCommit": true,
+  "sourceComparison": {
+    "paths": ["src/", "tests/", "scripts/"],
+    "diffCount": 0
+  },
+  "probeBinary": {
+    "path": "tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarness.exe",
+    "sha256": "D8EB122A3A5A81DC33F8232B818C8562543EA3FEB5534E59D5F9146C97B61736",
+    "bytes": 643072,
+    "lastWriteUtc": "2026-11-02T05:17:51.5568877Z"
+  },
+  "productionAssembly": {
+    "path": "tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.Playnite.dll",
+    "sha256": "E719E3C3C5C2710719EF0617DBDA72D73AE489D370639156CC5950453C1FF688",
+    "bytes": 2274304,
+    "lastWriteUtc": "2026-11-02T05:17:28.6395058Z"
+  },
+  "conditions": {
+    "windowDip": "1040x700",
+    "logicalDpiScale": 1.0,
+    "themes": ["Light", "Dark"],
+    "pages": 7,
+    "data": "FakeDashboardData(60)",
+    "activeDurationSeconds": 60,
+    "settleSeconds": 30,
+    "sampleUtc": "2026-11-02T00:00:00Z",
+    "forcedGc": false,
+    "businessCommands": false,
+    "runtime": "prebuilt .NET Framework 4.7.2 executable; no dotnet build",
+    "sdkContext": "global.json requires 8.0.423; only SDK 9.0.302 is installed; no SDK substitution or build"
+  },
+  "baseline": {
+    "sourceCommit": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+    "report": "../U00-06-07/enduranceprobe-report.txt",
+    "reportSha256": "5892C84F0CAB924C7D479B1124D5FA1F3F111F3DE3697581F0CE3C2B0325018A",
+    "durationSeconds": 90.8,
+    "cycles": 68,
+    "completedActions": 290,
+    "samples": 10,
+    "actionFailures": 0,
+    "uiActionP95Ms": 933.16,
+    "uiActionMaxMs": 1138.2,
+    "managedHeapDeltaBytes": 31201328,
+    "cumulativeAllocationsAvailable": false,
+    "sampleUtcPinned": false
+  },
+  "runs": [
+    {
+      "id": 1,
+      "startedAt": "2026-11-02T19:04:39.0188587+08:00",
+      "endedAt": "2026-11-02T19:06:11.9584172+08:00",
+      "exitCode": 0,
+      "report": "run-1/enduranceprobe-report.txt",
+      "reportBytes": 38211,
+      "reportSha256": "0AAA80D2DE7E266E18C38ADC85932F02115AE56CAEAE8FC8372FDBD13303396E",
+      "consoleOmittedAsRedundant": true,
+      "consoleBytes": 38279,
+      "consoleSha256": "6EFD35D2EB9D261071C0680D5A6600A8DFE217884B42CC0E143DC2752D24A086",
+      "durationSeconds": 90.3,
+      "cycles": 100,
+      "completedActions": 425,
+      "samples": 10,
+      "actionFailures": 0,
+      "uiActionP95Ms": 556.48,
+      "uiActionMaxMs": 639.4,
+      "managedHeapDeltaBytes": 27011360,
+      "cumulativeAllocationsAvailable": false
+    },
+    {
+      "id": 2,
+      "startedAt": "2026-11-02T19:07:08.0265439+08:00",
+      "endedAt": "2026-11-02T19:08:40.9894485+08:00",
+      "exitCode": 0,
+      "report": "run-2/enduranceprobe-report.txt",
+      "reportBytes": 38228,
+      "reportSha256": "0A4D8C5D810F43F582F7BA03E1FEE7B1A7E403730950EB1835808AE976226D7C",
+      "consoleOmittedAsRedundant": true,
+      "consoleBytes": 38296,
+      "consoleSha256": "B5A6943421C8672F99ABCF7588DED4CC48A493E8B8C1A988E4D129C7B9FA4F99",
+      "durationSeconds": 90.3,
+      "cycles": 101,
+      "completedActions": 429,
+      "samples": 10,
+      "actionFailures": 0,
+      "uiActionP95Ms": 524.98,
+      "uiActionMaxMs": 639.71,
+      "managedHeapDeltaBytes": 28573344,
+      "cumulativeAllocationsAvailable": false
+    }
+  ]
+}
