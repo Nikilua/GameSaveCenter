@@ -1682,3 +1682,9 @@ Trainer 工具页清除了永久折叠的重复空态文字，继续使用共享
 ## 2026-10-30 Round5 U09-01补U07-01～04历史配对
 
 用SDK8.0.423 Release为三个隔离历史快照分别编译真实Worker与最终RenderHarness，再捕获同一假数据样本。U07-01/02前后对话框覆盖浅/深主题与1040×700、1366×768 DIP；U07-03/04用2aba614f作为前一批后态/后一批前态，分别验证Tooltip屏幕坐标和必要列禁用提示。RenderHarness单独捕获WPF Popup，不包含在宿主窗口Bitmap中，位置差异需用owner/popup屏幕坐标记录。隔离Settings页缺失Playnite的BaseTextBlockStyle时可提供中性测试样式，但结果需明确标为离屏，不代表宿主渲染。相关证据和SHA见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-01-U07-01-04-pair-20261030/`；所有临时build/source树清理后保留已引用截图、报告和构建日志。清理脚本删除目标后未保存递归文件数/字节，`cleanup.json`如实标为未知，并保留实际磁盘空间差。
+
+## Round5 U00-07/U06-04 媒体收件箱批次（2026-11-02）
+
+Round5当前源64f26f58153efdb4a634bf8a0aa7c832898a581d已含媒体收件箱工具栏优化：1040×700壳层批量动作由两行收为一行；模式选择、目标游戏、批量归类和详情保持可见，清空选择/重置列宽在原滚动页脚；未改命令、Binding、媒体安全语义、游戏选择框和滚动条系统。离屏双主题Render QA与Source/WPF静态检查通过；相关行为类218通过、39个“今日工作台”旧架构skip不计通过。提交前定向测试元数据曾指向父SHA，精确SHA已由GitHub run41041454086双SDK job成功覆盖。证据目录为docs/design/reviews/ui-polish-round5-20261027/evidence/U00-07-U06-04-media-inbox-20261030/。
+
+这两项仍是代码完成待验收：Playnite真实页面、外部UIA、实体键盘/IME、物理DPI均未证明。真实恢复、媒体删除和云端写入不运行。GitHub required-checks API此前403，不反复请求；由有权限维护者检查required_status_checks。状态保持7/71/1/1，继续其他依赖已满足的U任务；旧S/T宿主或权限项不阻止独立共享控件、排版和动效工作。

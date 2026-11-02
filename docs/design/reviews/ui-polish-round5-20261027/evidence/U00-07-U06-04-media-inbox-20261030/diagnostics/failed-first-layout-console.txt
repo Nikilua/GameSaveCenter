@@ -1,0 +1,107 @@
+[repo]\.tmp\round5-media-first-view-20261030\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.75]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.83]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Dark) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Light) [594 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize(theme: Dark) [950 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize(theme: Light) [905 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Dark) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Light) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CurrentGameMediaBatchActionRowReportsWrappedGeometry(theme: Light) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CurrentGameMediaBatchActionRowReportsWrappedGeometry(theme: Dark) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: Dark) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: Light) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: FollowPlaynite) [2 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Dark) [965 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Light) [871 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint(theme: Light) [853 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint(theme: Dark) [758 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions(theme: Dark) [373 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions(theme: Light) [387 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths(theme: Dark) [3 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths(theme: Light) [3 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode(theme: Light) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode(theme: Dark) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText(theme: Light) [464 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText(theme: Dark) [463 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle(theme: Light) [969 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle(theme: Dark) [933 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.OverviewHeaderCopyHidesAfterDataLoadsAndMetricUsesThemeAccent(theme: Dark) [541 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.OverviewHeaderCopyHidesAfterDataLoadsAndMetricUsesThemeAccent(theme: Light) [522 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional(theme: Dark) [374 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional(theme: Light) [369 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions(theme: Light) [988 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions(theme: Dark) [879 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt(theme: Dark) [586 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt(theme: Light) [418 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Dark) [610 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Light) [518 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors(theme: Light) [857 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors(theme: Dark) [881 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: Dark) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: Light) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: FollowPlaynite) [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData(theme: Dark) [652 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData(theme: Light) [493 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceActionCategoryUsesSecondaryThemeColor(theme: Light) [466 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceActionCategoryUsesSecondaryThemeColor(theme: Dark) [464 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ShortSettingsPageKeepsCategoryAndBodyViewports(width: 760) [209 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ShortSettingsPageKeepsCategoryAndBodyViewports(width: 920) [121 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths(theme: Dark) [885 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths(theme: Light) [905 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer(theme: Dark) [602 ms]
+[xUnit.net 00:00:58.64]       the selected 1040 shell toolbar should fit one readable action row (grid=663.33x267.33, pageViewport=416.67, pageExtent=612, batchWidth=663.33, selection=已选 1 项 · 可批量处理)
+[xUnit.net 00:00:58.64]       Stack Trace:
+[xUnit.net 00:00:58.64]            在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+[xUnit.net 00:00:58.64]            在 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(GameSaveCenterThemeMode theme) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\ReportedWorkspaceLayoutBehaviorTests.cs:行号 324
+[xUnit.net 00:00:58.64]       Output:
+[xUnit.net 00:00:58.64]         Dark common shell media inbox: visibleRows=4, batchRows=2, modeVisible=True; grid=663.33x267.33, pageViewport=416.67, pageExtent=612, batchWidth=663.33, selection=已选 1 项 · 可批量处理
+[xUnit.net 00:00:59.25]       the selected 1040 shell toolbar should fit one readable action row (grid=663.33x267.33, pageViewport=416.67, pageExtent=612, batchWidth=663.33, selection=已选 1 项 · 可批量处理)
+[xUnit.net 00:00:59.25]       Stack Trace:
+[xUnit.net 00:00:59.25]            在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+[xUnit.net 00:00:59.25]            在 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(GameSaveCenterThemeMode theme) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\ReportedWorkspaceLayoutBehaviorTests.cs:行号 324
+[xUnit.net 00:00:59.25]       Output:
+[xUnit.net 00:00:59.25]         Light common shell media inbox: visibleRows=4, batchRows=2, modeVisible=True; grid=663.33x267.33, pageViewport=416.67, pageExtent=612, batchWidth=663.33, selection=已选 1 项 · 可批量处理
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer(theme: Light) [605 ms]
+  失败 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(theme: Dark) [622 ms]
+  错误消息:
+   the selected 1040 shell toolbar should fit one readable action row (grid=663.33x267.33, pageViewport=416.67, pageExtent=612, batchWidth=663.33, selection=已选 1 项 · 可批量处理)
+  堆栈跟踪:
+     在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(GameSaveCenterThemeMode theme) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\ReportedWorkspaceLayoutBehaviorTests.cs:行号 324
+  标准输出消息:
+ Dark common shell media inbox: visibleRows=4, batchRows=2, modeVisible=True; grid=663.33x267.33, pageViewport=416.67, pageExtent=612, batchWidth=663.33, selection=已选 1 项 · 可批量处理
+
+
+  失败 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(theme: Light) [614 ms]
+  错误消息:
+   the selected 1040 shell toolbar should fit one readable action row (grid=663.33x267.33, pageViewport=416.67, pageExtent=612, batchWidth=663.33, selection=已选 1 项 · 可批量处理)
+  堆栈跟踪:
+     在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(GameSaveCenterThemeMode theme) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\ReportedWorkspaceLayoutBehaviorTests.cs:行号 324
+  标准输出消息:
+ Light common shell media inbox: visibleRows=4, batchRows=2, modeVisible=True; grid=663.33x267.33, pageViewport=416.67, pageExtent=612, batchWidth=663.33, selection=已选 1 项 · 可批量处理
+
+
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands(theme: Light) [513 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands(theme: Dark) [495 ms]
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins(theme: Dark) [5 s]
+[xUnit.net 00:01:11.32]   Finished:    GameSaveCenter.Playnite.Tests
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+  已通过 GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins(theme: Light) [5 s]
+
+测试总数: 56
+     通过数: 54
+     失败数: 2
+总时间: 1.2164 分钟
+结果文件: [repo]\.tmp\round5-media-first-view-20261030\diagnostics-retry\20261030T094640355Z-be8e6f47\tests\wpf.ReportedWorkspaceLayoutBehaviorTests\wpf.ReportedWorkspaceLayoutBehaviorTests.trx
+[xUnit.net 00:00:58.64]     GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(theme: Dark) [FAIL]
+[xUnit.net 00:00:59.25]     GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(theme: Light) [FAIL]
+测试运行失败。
+

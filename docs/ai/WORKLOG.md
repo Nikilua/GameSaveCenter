@@ -12903,3 +12903,11 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 精确冻结源中文根入口与独立`scripts/build.cmd`均exit0，各158 TRX、2020项、1962通过/0失败/58既有skip。run40900374673 baseline `123540700192`与SDK10.0.401 `123540699717`均success；局部SDK8组合15/15及DisclosureCard 13/13、双主题Render QA 394 PNG/0 PROBLEM保留原证据。
 - U04-05～08仍代码完成待验收：真实IME/Playnite UIA、CanExecute取消、窗口失活、系统动画设置和长期宿主内存观察未做。不触发真实恢复、媒体删除或云写入；不重复已拒绝的权限查询。
 - `validate-source.py`退出0；五份变更Markdown本地相对链接795 checked/0 missing；`git diff --check`退出0（仅提示WORKLOG.md CRLF规范化）。纯文档批不重复本地完整产品链。
+
+## 2026-11-02 Round5 U00-07/U06-04 媒体收件箱首屏整理
+
+- 实现提交64f26f58153efdb4a634bf8a0aa7c832898a581d已推送main。1040×700生产壳层媒体批量操作由两行收为一行，模式/目标游戏/批量归类/详情仍可见；低频清空选择和重置列宽在原滚动页脚可达。选框、滚动条系统、命令、绑定和媒体安全操作未移除。
+- SDK8.0.423 Release定向编译0 warning/0 error；行为选择类218通过/0失败/39既有今日工作台架构skip，skip不计通过。构建和测试运行发生在源提交前，构建身份变量还是父SHA 40fd0bc；精确64f26f5由post-commit Render QA及GitHub两SDK jobs验证。
+- Render QA以双主题各394 PNG通过，精确SHA及WorkingTreeClean=true；shell table top上移76 DIP、四行完整数据保持可见。source validation与WPF静态10 XAML/0 errors/23 warnings/4 info通过。
+- GitHub run41041454086（#1420）的SDK8 baseline job124014997522和SDK10.0.401 job124014997301全部步骤success；三个artifact及SHA256见evidence/U00-07-U06-04-media-inbox-20261030/ci.json。required-check名单此前403，不复探。
+- 首轮TEMP路径过深导致3个现存恢复测试失败；短TEMP后通过。第一版动作行断言在两主题失败，按原谓词修复后通过；原TRX在新证据目录保留。U00-07/U06-04仍代码完成待验收，真实Playnite/外部UIA/实体输入IME/物理DPI待验；没有执行恢复、媒体删除或云写入。阶段清理见cleanup.json。

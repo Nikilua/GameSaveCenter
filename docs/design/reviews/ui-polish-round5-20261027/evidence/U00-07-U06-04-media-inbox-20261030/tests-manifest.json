@@ -1,0 +1,80 @@
+{
+  "configuration": "Release",
+  "sdk": "8.0.423",
+  "scope": "selected UI and media behavior classes; not the final full delivery chain",
+  "selected": [
+    {
+      "trx": "tests/ReportedWorkspaceLayoutBehaviorTests.trx",
+      "log": "tests/ReportedWorkspaceLayoutBehaviorTests.log",
+      "class": "ReportedWorkspaceLayoutBehaviorTests",
+      "failed": 0,
+      "skipped": 0,
+      "passed": 56,
+      "total": 56
+    },
+    {
+      "trx": "tests/MediaInboxGeometryTests.trx",
+      "log": "tests/MediaInboxGeometryTests.log",
+      "class": "MediaInboxGeometryTests",
+      "failed": 0,
+      "skipped": 0,
+      "passed": 3,
+      "total": 3
+    },
+    {
+      "trx": "tests/MediaInboxScrollBehaviorTests.trx",
+      "log": "tests/MediaInboxScrollBehaviorTests.log",
+      "class": "MediaInboxScrollBehaviorTests",
+      "failed": 0,
+      "skipped": 0,
+      "passed": 7,
+      "total": 7
+    },
+    {
+      "trx": "tests/R02ActionPriorityTests.trx",
+      "log": "tests/R02ActionPriorityTests.log",
+      "class": "R02ActionPriorityTests",
+      "failed": 0,
+      "skipped": 0,
+      "passed": 3,
+      "total": 3
+    },
+    {
+      "trx": "tests/R05MultiSelectionSummaryBehaviorTests.trx",
+      "log": "tests/R05MultiSelectionSummaryBehaviorTests.log",
+      "class": "R05MultiSelectionSummaryBehaviorTests",
+      "failed": 0,
+      "skipped": 0,
+      "passed": 3,
+      "total": 3
+    },
+    {
+      "trx": "tests/WpfUiResourceDictionaryTests.trx",
+      "log": "tests/WpfUiResourceDictionaryTests.log",
+      "class": "WpfUiResourceDictionaryTests",
+      "failed": 0,
+      "skipped": 39,
+      "passed": 140,
+      "total": 179
+    },
+    {
+      "trx": "tests/AccessibilitySourceTests.trx",
+      "log": "tests/AccessibilitySourceTests.log",
+      "class": "AccessibilitySourceTests",
+      "failed": 0,
+      "skipped": 0,
+      "passed": 6,
+      "total": 6
+    }
+  ],
+  "totals": {
+    "skipReason": "39 pre-existing WpfUiResourceDictionaryTests skips concern the withdrawn 今日工作台 architecture; they are not passes.",
+    "skipsCountAsPass": false,
+    "failed": 0.0,
+    "skipped": 39.0,
+    "passed": 218.0,
+    "total": 257.0
+  },
+  "localBuildIdentity": "The selected compile/test outputs were generated from the final working-tree content before commit; the build identity variable still pointed at parent 40fd0bc438338e4aef45e16ee03df5bd83768b9c. The exact 64f26f5 commit is independently covered by the completed GitHub baseline and SDK10 jobs recorded in ci.json.",
+  "resultingSourceCommit": "64f26f58153efdb4a634bf8a0aa7c832898a581d"
+}

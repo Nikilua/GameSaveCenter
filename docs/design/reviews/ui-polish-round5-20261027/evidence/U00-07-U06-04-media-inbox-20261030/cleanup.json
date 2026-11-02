@@ -1,0 +1,46 @@
+{
+  "evidence": {
+    "localPathsRedactedWithHashManifest": "redaction-manifest.json",
+    "relativePath": "docs/design/reviews/ui-polish-round5-20261027/evidence/U00-07-U06-04-media-inbox-20261030",
+    "selectedPngHashesVerified": true,
+    "trxXmlReparsed": true,
+    "retained": true,
+    "archivedFilesExcludingCleanupManifest": 39,
+    "archivedBytesExcludingCleanupManifest": 5253096,
+    "finalDirectoryFilesIncludingCleanupManifest": 40,
+    "finalDirectoryBytesIncludingCleanupManifest": 5254737
+  },
+  "relevantRunningProcessCount": 0,
+  "diskFreeBeforeBytes": {
+    "C": 4338810880,
+    "D": 18812694528
+  },
+  "markdownStageReferenceCount": 0,
+  "filesRemoved": 1853,
+  "preserved": [
+    "artifacts/ and other .tmp directories",
+    "user/other-task TestResults and TRX",
+    "SDK cache",
+    "latest unrelated build/package outputs"
+  ],
+  "bytesRemoved": 290968319.0,
+  "normalizedTargetMarker": "[repo]\\\\.tmp\\\\round5-media-first-view-20261030",
+  "diskFreeAfterBytes": {
+    "C": 4633923584,
+    "D": 18812694528
+  },
+  "targetRelativePath": ".tmp/round5-media-first-view-20261030",
+  "containmentRootMarker": "[repo]\\\\.tmp",
+  "reparsePointCount": 0,
+  "removeCommand": "Remove-Item -LiteralPath .tmp/round5-media-first-view-20261030 -Recurse -Force",
+  "stage": "U00-07/U06-04 media inbox first viewport",
+  "notes": [
+    "Only this batch-owned directory was removed. Render reports, selected successful TRX/logs, failed diagnostics, screenshots, and identity manifests are archived in docs.",
+    "Current source commit 64f26f5 has completed exact-SHA SDK8 and SDK10 CI; final whole-project Chinese launcher/install/start chain remains a later delivery gate."
+  ],
+  "diskFreeDeltaBytes": {
+    "C": 295112704,
+    "D": 0
+  },
+  "removed": true
+}

@@ -1,0 +1,126 @@
+{
+  "scope": "Only absolute local workspace/stage roots in textual render reports and TRX were replaced; test outcomes, report rows, and commit IDs are unchanged.",
+  "markerForWorkspace": "[repo]",
+  "files": [
+    {
+      "path": "render-qa-after-report.txt",
+      "userWorkspaceRootReplacements": 546,
+      "stagePathReplacements": 0,
+      "sanitizedSha256": "894726f71afad920b31e50e43fdac729b0cc6f57c58131a67b9b234010dd648c",
+      "originalSha256": "feb695ccb8ef3b66096717bde1523f3a9004618a695c5cb33093002e5476d440"
+    },
+    {
+      "path": "render-qa-before-report.txt",
+      "userWorkspaceRootReplacements": 546,
+      "stagePathReplacements": 0,
+      "sanitizedSha256": "b199e706fad4e563fca6c5075556096d663fafdd54e1540460fba999c36be150",
+      "originalSha256": "f55ca4ed7d8f8859e1a1865e0ead6e46b24c8bce19440523147cb2bf7f613311"
+    },
+    {
+      "path": "build/targeted-build.log",
+      "userWorkspaceRootReplacements": 5,
+      "stagePathReplacements": 5,
+      "sanitizedSha256": "d0af609a75965da1d59d344dc63f525918c1af8b208e1dc520c38744ff65d202",
+      "originalSha256": "2d7553ff713fbe7c5b3b9e6457288adfd5d84432b546f2d941e30d4e2863bc92"
+    },
+    {
+      "path": "tests/AccessibilitySourceTests.log",
+      "userWorkspaceRootReplacements": 2,
+      "stagePathReplacements": 2,
+      "sanitizedSha256": "fd803e56ae9366df6cfc25206cebc00d086816d2013f368a1ab62a71fccc0820",
+      "originalSha256": "2863c1ad595995d6a36ccdac4cdf9d91a58a02a7d95f75684c33e26f6a72d9e8"
+    },
+    {
+      "path": "tests/AccessibilitySourceTests.trx",
+      "userWorkspaceRootReplacements": 12,
+      "stagePathReplacements": 12,
+      "sanitizedSha256": "40688a301b9b315a923cecd7071ffc486077062b6ef6f6ef548ffecc5332e7de",
+      "originalSha256": "ebf6c724be76ea8538c19b2c9acc0dd1e555834c93938be247349ff200080222"
+    },
+    {
+      "path": "tests/MediaInboxGeometryTests.log",
+      "userWorkspaceRootReplacements": 2,
+      "stagePathReplacements": 2,
+      "sanitizedSha256": "2271aede94e220b8c697748fe95913f62516f970755b090ac25f99312d497231",
+      "originalSha256": "ae2cb73d00d0d489823a399d2610ad8537662949180435f0de0a566a906a8d2b"
+    },
+    {
+      "path": "tests/MediaInboxGeometryTests.trx",
+      "userWorkspaceRootReplacements": 6,
+      "stagePathReplacements": 6,
+      "sanitizedSha256": "368cf800a881e0b6c96e117e8ba6296b606f0c90e2ec9e579bc6aef3e6b92ec9",
+      "originalSha256": "fb727c4d38bab198c66209357163f41e115343c891d753bd59f17f581b41bdc7"
+    },
+    {
+      "path": "tests/MediaInboxScrollBehaviorTests.log",
+      "userWorkspaceRootReplacements": 2,
+      "stagePathReplacements": 2,
+      "sanitizedSha256": "b06905ed4dfa33f8fefb8541e68b4cb0b74c01677d2385815062158a4d7fb8e3",
+      "originalSha256": "9bfe86e47f5d8459d48cb216aa61bf0d152fe84dfe0b5c348c1bf5a5451daf6b"
+    },
+    {
+      "path": "tests/MediaInboxScrollBehaviorTests.trx",
+      "userWorkspaceRootReplacements": 80,
+      "stagePathReplacements": 80,
+      "sanitizedSha256": "80b7eb86e40b7ba1c123b49f33b469a38a05d9cadfeef447566761404bb4a46b",
+      "originalSha256": "44ae0bda200b8aca5a6590e7c0eca628b803cdb9e7ddaa0263cb91121781983a"
+    },
+    {
+      "path": "tests/R02ActionPriorityTests.log",
+      "userWorkspaceRootReplacements": 2,
+      "stagePathReplacements": 2,
+      "sanitizedSha256": "901254a5e23e6a6f009d7a8f8494a542a1b34a4c2f4a21a82069e65e9a3c24f5",
+      "originalSha256": "b4516376131a51df3cb099e92fcd5e9876139a75c9edfbef69b3fb8804b8441f"
+    },
+    {
+      "path": "tests/R02ActionPriorityTests.trx",
+      "userWorkspaceRootReplacements": 6,
+      "stagePathReplacements": 6,
+      "sanitizedSha256": "6bdedff9c54027299eced7599f3c4bd3cd3c95867cffadbe162f8ed21578e581",
+      "originalSha256": "423fc8ae227a3094b314d469e69c611c825260bd395e0867160df7e39eb29b83"
+    },
+    {
+      "path": "tests/R05MultiSelectionSummaryBehaviorTests.log",
+      "userWorkspaceRootReplacements": 2,
+      "stagePathReplacements": 2,
+      "sanitizedSha256": "54e31c6ff6655e71f4bab2199d720beb3b26592bf2af8daf7d0447d48f1d2b15",
+      "originalSha256": "899a605aeadd7355b41c11ed56343c93f0f4178eb82ce4b2a53893bbf56e3589"
+    },
+    {
+      "path": "tests/R05MultiSelectionSummaryBehaviorTests.trx",
+      "userWorkspaceRootReplacements": 6,
+      "stagePathReplacements": 6,
+      "sanitizedSha256": "d3207f552720ad5477e198bd3cc30fc7ea17db9840c4127847cf7bab6347b9ea",
+      "originalSha256": "ca6cf8042906611355a12499a94954d52ca8cbc831850433641a0e0d77019ea4"
+    },
+    {
+      "path": "tests/ReportedWorkspaceLayoutBehaviorTests.log",
+      "userWorkspaceRootReplacements": 2,
+      "stagePathReplacements": 2,
+      "sanitizedSha256": "20f8661c76212398230b3c180aa5b72db0064030096cd8c126c336f0ef59b5e1",
+      "originalSha256": "22306f3761d72cf121a24ee84f1ffd790aaa0f519921d6143159a177ec735b42"
+    },
+    {
+      "path": "tests/ReportedWorkspaceLayoutBehaviorTests.trx",
+      "userWorkspaceRootReplacements": 112,
+      "stagePathReplacements": 112,
+      "sanitizedSha256": "5ce2f58c499473ec6e5871b0bae426cbd912c5b6fba5ff74cd6d6aed075f6e07",
+      "originalSha256": "cc93533f51470d88fba8f8990695fde7a45c313fc3c164534f072e38dea0cbe7"
+    },
+    {
+      "path": "tests/WpfUiResourceDictionaryTests.log",
+      "userWorkspaceRootReplacements": 2,
+      "stagePathReplacements": 2,
+      "sanitizedSha256": "ba2880706a59dfaa5123c17b2d7159d14fe1332ab3a212011d835c80ea6b0af4",
+      "originalSha256": "f90f1f252bf8990e6241d9778c5c4c42bc608c9559dc1817e6ac8c39e3f3208f"
+    },
+    {
+      "path": "tests/WpfUiResourceDictionaryTests.trx",
+      "userWorkspaceRootReplacements": 358,
+      "stagePathReplacements": 358,
+      "sanitizedSha256": "49397f79a2882d690eab336d6274a431cb0211f9048578400d7c069ffa7bb71d",
+      "originalSha256": "e9c2f10cbb17521ec9de5d0334a5a959c7fff846ce102e3add8e4afd7af67758"
+    }
+  ],
+  "markerForStage": "[stage]"
+}

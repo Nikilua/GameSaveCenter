@@ -1,0 +1,64 @@
+{
+  "afterCommit": "64f26f58153efdb4a634bf8a0aa7c832898a581d",
+  "offscreenDpiScale": 1.0,
+  "renderedPngCountAfter": 394,
+  "renderedPngCountBefore": 394,
+  "sampleUtc": "2026-10-28T09:00:00Z",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "beforeCommit": "40fd0bc438338e4aef45e16ee03df5bd83768b9c",
+  "geometry": {
+    "gridMovesUpDip": 76,
+    "after": "Shell Media 1040x700 tableFrameY=233x558, gridY=300x267, gridTopGap=67; PageHost=726x570, scroll=710x423, extent=558, grid=663x267",
+    "toolbarActionRowsAfter": 1,
+    "completeRows": 4,
+    "before": "Shell Media 1040x700 tableFrameY=233x634, gridY=376x267, gridTopGap=143; PageHost=726x570, scroll=710x423, extent=634, grid=663x267",
+    "toolbarActionRowsBefore": 2
+  },
+  "files": [
+    {
+      "sha256": "056d2c4750b611d604c935fd1ef162618cad9ec4406a5367adcd3d0450a2cb43",
+      "width": 1040,
+      "bytes": 145768,
+      "path": "before/Shell-Media-1040x700.png",
+      "height": 700
+    },
+    {
+      "sha256": "03f9e706cacce27eec6e582417abc86495cc982932ce7f40704301a6da304902",
+      "width": 1040,
+      "bytes": 156129,
+      "path": "after/Shell-Media-1040x700.png",
+      "height": 700
+    },
+    {
+      "sha256": "84a6a0d5bab2ca3b4ca14114745272694ec3fa2764ecc62eff67a00063d6be5d",
+      "width": 744,
+      "bytes": 69887,
+      "path": "before/theme/light/Media-1040x700.png",
+      "height": 460
+    },
+    {
+      "sha256": "96a5140140ead30a6247d3f38fec95250f87e7d08dc2166f1a07a86134d8ddd9",
+      "width": 744,
+      "bytes": 73215,
+      "path": "before/theme/dark/Media-1040x700.png",
+      "height": 460
+    },
+    {
+      "sha256": "b9a541c79d346fa2d48e1fcb403c103951a1fe0c7d171af5bab019ff202ee8ff",
+      "width": 744,
+      "bytes": 81027,
+      "path": "after/theme/light/Media-1040x700.png",
+      "height": 460
+    },
+    {
+      "sha256": "c4b1b09e5630de0b52b807450742061ed10ebe866aa89dd2cf96cd2a7c0e8f9f",
+      "width": 744,
+      "bytes": 84639,
+      "path": "after/theme/dark/Media-1040x700.png",
+      "height": 460
+    }
+  ]
+}

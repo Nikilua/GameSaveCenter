@@ -1,0 +1,3 @@
+Markdown documents scanned: 7
+Markdown local links checked: 767
+Missing: 0

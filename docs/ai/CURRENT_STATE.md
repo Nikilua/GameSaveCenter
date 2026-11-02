@@ -1,3 +1,9 @@
+## 2026-11-02 U00-07/U06-04媒体收件箱批次
+
+源码提交64f26f58153efdb4a634bf8a0aa7c832898a581d已推送main。工具栏在1040×700壳层从两行收为一行，低频清空/重置移至原滚动页脚；DataGrid上移76 DIP，四个完整数据行保持可见。SDK8.0.423定向行为218通过/0失败/39既有skip（skip不计通过）；精确提交的GitHub run41041454086中baseline job124014997522与SDK10.0.401 job124014997301均成功，3个artifact均绑定该SHA。Source Validation、生产Views WPF静态审查及post-commit Render QA通过，细节见Round5 evidence/U00-07-U06-04-media-inbox-20261030/。
+
+两个任务仍“代码完成待验收”；真实Playnite、外部UIA、实体输入/IME、物理DPI未验。本次未执行恢复、媒体删除或云端写入。GitHub required-check清单此前读取返回403，不重复探测，仍由有权限维护者只读查询。总状态7/71/1/1；继续独立任务，U09-04仍进行中，U09-06仍远端待验。
+
 ## 2026-10-30 U09-04 U00源码重建对照
 
 从U00产品源码提交`90bf0405`重建固定时钟/固定周期RenderHarness，与冻结候选`5c0c57b0`同协议比较；两侧相关Release探针构建及运行退出0。主题应用p95 448.77→325.97 ms，候选主题长尾及活动期AppDomain托管分配改善；内容布局p95 87.52→97.49 ms且两侧均无>300 ms样本。任务DataGrid滚动动作两组10样本对照均显示候选较慢，动作包含`UpdateLayout()`；源差异尚未定位为原因。U09-04继续进行中，不改生产源码。详细证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-correlation-20261030/u00-reconstructed-20261030/`。状态7/71/1/1；U09-06仍远端待验。
