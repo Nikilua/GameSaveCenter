@@ -1,0 +1,72 @@
+{
+  "sourceCommit": "f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+  "sdkVersion": "8.0.423",
+  "sourceTreeAfterProbeRestore": "clean",
+  "programAfterRestoreSha256": "9E349C9E891B8F9B1087EC14873855E125697DC037B21849835539D23885D9A4",
+  "solutionBuild": {
+    "entry": "scripts/build.ps1",
+    "arguments": "-Configuration Release -SkipTests -OutputRoot .tmp/round5-u09-04-scroll-followup-20261102/solution-build",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "summary": "build/solution-build-summary.json"
+  },
+  "renderHarnessBuild": {
+    "project": "tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj",
+    "restoreExitCode": 0,
+    "buildExitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "executableSha256": "D235213013B1FEB7DF4AE06815B2CFBB666E146E9EE07AF38604B24D07B8BD97",
+    "productVersion": "0.6.73+f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+    "productAssemblySha256": "584EC0915011A07A92C4E28396E75837CE441074E97F7B68BCF30665F7AE7022",
+    "productAssemblyVersion": "0.6.73+f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+    "originalProgramSha256": "9e349c9e891b8f9b1087ec14873855e125697dc037b21849835539d23885d9a4",
+    "instrumentedProgramSha256": "1A8E86BF90E0D2A1B6C0CB5B5D6978089A17A0F650EAAD056E9283DD82C2B87D",
+    "instrumentationPatchSha256": "74AFB1ECBE049777194A3C6C7F0B1DB2C7DBDA4DAFFB9D0CCFF62542605A92A7"
+  },
+  "r18BehaviorTest": {
+    "test": "GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests.ProductionTablesStayViewportBoundedAcrossLargeSyntheticDatasets",
+    "outputRoot": ".tmp/r5",
+    "runSettings": "RunConfiguration.DisableAppDomain=true",
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "testAssemblySha256": "21B105FCFDE61C3F2E23082DF7E3B2F7F74CC00E7431D0062E1BF8C310E3FC6A",
+    "testProductVersion": "0.6.73+f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+    "trx": "probe/tests/r18-scale-isolated.trx"
+  },
+  "measurement": {
+    "scaleprobeExitCode": 0,
+    "enduranceRuns": [
+      {
+        "targetSeconds": 120,
+        "settleSeconds": 30,
+        "cycles": 196,
+        "samples": 12,
+        "taskScrollSamples": 28,
+        "medianMs": 30.92,
+        "p95Ms": 52.02,
+        "maxMs": 57.42
+      },
+      {
+        "targetSeconds": 120,
+        "settleSeconds": 30,
+        "cycles": 200,
+        "samples": 12,
+        "taskScrollSamples": 28,
+        "medianMs": 29.87,
+        "p95Ms": 42.96,
+        "maxMs": 51.9
+      }
+    ],
+    "taskScrollTarget": "Task-page visible ScrollViewer with greatest ScrollableHeight; probe does not record the selected ScrollViewer name",
+    "taskScrollAction": "ScrollToVerticalOffset and synchronous UpdateLayout are measured together",
+    "environment": "controlled WPF STA window, opacity 0.01, 1040x700 DIP, sample clock pinned, no forced GC",
+    "productionSourceChanged": false,
+    "realPlayniteHostVerified": false,
+    "detachedScaleFixture": "20 media-inbox scroll offsets produced up to 44 visible DataGridRow containers after 2000 UI items; after resize 6",
+    "r18WindowFixture": "At backend 20000 / UI 2000, max realized rows 7 with viewportRows 7; one test passed"
+  }
+}

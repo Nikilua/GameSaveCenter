@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+  "files": [
+    {
+      "path": "BASELINE.md",
+      "bytes": 5500,
+      "sha256": "2BF21E2902998BED2004C9B7238C0E4ED252970169F9ACDE3A37835F57719453"
+    },
+    {
+      "path": "build/initial-direct-restore-diagnostic.log",
+      "bytes": 912022,
+      "sha256": "5234C1F0F1C1A10184358689DB253CA65A878B0A98EFC8B081157097A965AE0D"
+    },
+    {
+      "path": "build/renderharness-build.log",
+      "bytes": 1030,
+      "sha256": "8E4FFFC4A0C4F72C73A47D8EDBBAA57B02D7CCDF16B0CD717362FEB6B2DD5B50"
+    },
+    {
+      "path": "build/renderharness-restore.log",
+      "bytes": 687,
+      "sha256": "38230C9084ECB85F4AAAA2BAB770510AF58DFD74FAC64C2487C87C97F545CE5F"
+    },
+    {
+      "path": "build/sdk-info-console.txt",
+      "bytes": 1556,
+      "sha256": "A6C97A34CF50F10CC5779DC49397FDAFE06792F97B74130BA44C77BCC70C138C"
+    },
+    {
+      "path": "build/sdk-list-console.txt",
+      "bytes": 84,
+      "sha256": "DDDD599880EF5898C8E098C92C2A2153857F828D20040E7C75360138C7045F9F"
+    },
+    {
+      "path": "build/sdk-version-console.txt",
+      "bytes": 9,
+      "sha256": "70EC4CC548877BF3C7F1258C67D15D57E69E464F013BFA39B457BA0B566E6D08"
+    },
+    {
+      "path": "build/solution-build-console.txt",
+      "bytes": 1545,
+      "sha256": "78BB9E7107C2CBA4F797E1CA6F0AE65742A3A767974F6F27F886F130EFD7F628"
+    },
+    {
+      "path": "build/solution-build-summary.json",
+      "bytes": 158195,
+      "sha256": "8075371F7C296EC4864BBA3C2BE0EE22876C210F0C83AEE425F4799B7BE8112F"
+    },
+    {
+      "path": "build/solution-restore-console.txt",
+      "bytes": 907,
+      "sha256": "C75DB57C1AF767E701E004DB46399B1E55E6C8EDC7EE462A8F625D2CD7E5A5B3"
+    },
+    {
+      "path": "ci-f1a614a8-query.json",
+      "bytes": 2599,
+      "sha256": "0A2CF71589F935C7C0F171364BBBA83C0E928D51AA6318E2415F433D96AFB5DE"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 3558,
+      "sha256": "9A74EEB0B9C586BEFC43F16E9CCA692DF3CEC954018A5D2C301F629198387EDF"
+    },
+    {
+      "path": "identity.json",
+      "bytes": 3216,
+      "sha256": "DDEBD6F63F0CF05B8145ADC7947F796C32F523EF6B8276741F67BDE0A2152E87"
+    },
+    {
+      "path": "probe/diagnostics/r18-long-path-runner-failure.txt",
+      "bytes": 4848,
+      "sha256": "5A7EA36DC796047DDFBF17081B0898609A91F10ED28DD508593CC675CF2CB9EB"
+    },
+    {
+      "path": "probe/diagnostics/r18-long-path-runner.trx",
+      "bytes": 5895,
+      "sha256": "9166A603B17226FF6BD52C95F714AE965CB81262034DA76716561341DF0C303E"
+    },
+    {
+      "path": "probe/diagnostics/r18-short-path-runner-failure.txt",
+      "bytes": 6863,
+      "sha256": "3EBF3D3D92F6CCAA2C2E79B73EAF19EDFA8389B97765040E4CA0925A558819BD"
+    },
+    {
+      "path": "probe/diagnostics/r18-short-path-runner.trx",
+      "bytes": 6117,
+      "sha256": "72C2866A48E109565F0AC2E4AB535998CD2790F8291D74E0F1A0DDAF0D4CDA00"
+    },
+    {
+      "path": "probe/instrumentation.patch",
+      "bytes": 748,
+      "sha256": "74AFB1ECBE049777194A3C6C7F0B1DB2C7DBDA4DAFFB9D0CCFF62542605A92A7"
+    },
+    {
+      "path": "probe/perf/run-1/enduranceprobe-report.txt",
+      "bytes": 40137,
+      "sha256": "54D78D52A51A8D197FEBBB022B956161662C06D98F047A38A66A9290A5F8C232"
+    },
+    {
+      "path": "probe/perf/run-2/enduranceprobe-report.txt",
+      "bytes": 40134,
+      "sha256": "8B3CB56DB9D269F0130EB61BB8DFC1D613C7CC0920AE6048E75D21173BACDEF6"
+    },
+    {
+      "path": "probe/preparation.json",
+      "bytes": 620,
+      "sha256": "20D1A7915A2DFCDF93B0E4CFB89A28F7DDB9ED1C2450B32F24AFDF05F25ED568"
+    },
+    {
+      "path": "probe/scaleprobe-report.txt",
+      "bytes": 194999,
+      "sha256": "4853B6BA9AD825B8C2B0EEA3E25A9950A466870C72CD2B1A7231C6744C168107"
+    },
+    {
+      "path": "probe/tests/r18-scale-isolated.trx",
+      "bytes": 5158,
+      "sha256": "1B09CCD396D98CB076BEE15E45C38309F038E3955EB9ABC539FCBDD9F7E317DA"
+    },
+    {
+      "path": "probe/tests/r18-test-console.txt",
+      "bytes": 1105,
+      "sha256": "AD52B9C4A900FE7AA05540403841F9E0E305C08372BCEC9503B45CA2983B6DEF"
+    }
+  ]
+}

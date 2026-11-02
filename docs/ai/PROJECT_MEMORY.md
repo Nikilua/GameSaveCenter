@@ -1688,3 +1688,6 @@ Trainer 工具页清除了永久折叠的重复空态文字，继续使用共享
 Round5当前源64f26f58153efdb4a634bf8a0aa7c832898a581d已含媒体收件箱工具栏优化：1040×700壳层批量动作由两行收为一行；模式选择、目标游戏、批量归类和详情保持可见，清空选择/重置列宽在原滚动页脚；未改命令、Binding、媒体安全语义、游戏选择框和滚动条系统。离屏双主题Render QA与Source/WPF静态检查通过；相关行为类218通过、39个“今日工作台”旧架构skip不计通过。提交前定向测试元数据曾指向父SHA，精确SHA已由GitHub run41041454086双SDK job成功覆盖。证据目录为docs/design/reviews/ui-polish-round5-20261027/evidence/U00-07-U06-04-media-inbox-20261030/。
 
 这两项仍是代码完成待验收：Playnite真实页面、外部UIA、实体键盘/IME、物理DPI均未证明。真实恢复、媒体删除和云端写入不运行。GitHub required-checks API此前403，不反复请求；由有权限维护者检查required_status_checks。状态保持7/71/1/1，继续其他依赖已满足的U任务；旧S/T宿主或权限项不阻止独立共享控件、排版和动效工作。
+
+## Round5 U06-08 / U09-04 大列表滚动复测（2026-11-02）
+在f1a614a8上用8.0.423复查Task与Media Inbox 1k/5k/20k列表。R18测试须按scripts/run-playnite-tests-isolated.ps1传RunConfiguration.DisableAppDomain=true；隔离输出要保持短路径，否则.NET Framework xUnit可能在MAX_PATH或adapter加载阶段失败。正确参数下R18 1/1通过、0 skip。R18真实STA Window与detached scaleprobe测量口径不同：20k媒体分别观测到7和44个容器，不把差异解释成产品回归；保留Standard行模式与禁用列虚拟化，因为共享注释记录了回收行+星号文本列的布局风险。两轮耐久滚动中位约30ms、p95约43–52ms，但workspace_switch_layout p95仍约439–463ms，且操作同时含同步UpdateLayout/整页切换；继续保留U09-04未归因状态。原始报告和清理边界见evidence/U06-08-U09-04-scroll-followup-20261102。

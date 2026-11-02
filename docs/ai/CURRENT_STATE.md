@@ -458,3 +458,6 @@ Trainer 工具列表删除了永久折叠、与共享空态 Presenter 重复的�
 ## 2026-10-30 Round5 U09-01补U05-05/06历史配对
 
 U05加载反馈与真实进度列完成同数据、同主题 before/after RenderHarness 配对。SDK8.0.423 Release 两侧 build/capture 均 exit0；快照 `bca60704` / `969bfc20`，短 Loading 从 Visible 变 Hidden，慢加载在采样点恢复，错误立即可见；660×220 DIP槽位保留。五种进度状态的 Light/Dark 样本和值均匹配 DTO，进度条52 DIP、标签右界100 DIP不变。临时探针只实例化生产控件/资源，没有生产文件变更；真实Playnite、UIA/物理输入DPI和业务写入仍待验。清单、CSV、精选截图与探针失败/修正诊断见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U05-05-06/historical-render-pair-20261030/`；U09-01其余视觉批次配对仍待盘点。
+
+## 2026-11-02 Round5 U06-08 / U09-04 大列表与滚动复测
+当前源码f1a614a8的SDK8.0.423 Release隔离构建exit0、0 warning/0 error；RenderHarness专案构建也exit0。R18大列表受控STA Window测试1/1通过、0 skip：20k Task实现10/8行，20k媒体后端限2k UI项并实现7/7行；detached scaleprobe20个跳点显示44个媒体行容器，已明确不等同宿主容器积累。两轮120秒耐久加30秒观察均exit0，Task页滚动p95为52.02/42.96ms，页面切换布局p95为463.20/439.21ms，不能归因到单一控件或动画。生产源码没有改动，临时RenderHarness标签已还原。证据docs/design/reviews/ui-polish-round5-20261027/evidence/U06-08-U09-04-scroll-followup-20261102/；U06-08仍代码完成待验收，U09-04仍进行中。

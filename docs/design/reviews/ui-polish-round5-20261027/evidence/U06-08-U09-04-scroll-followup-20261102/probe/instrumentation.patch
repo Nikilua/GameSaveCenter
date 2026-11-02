@@ -1,0 +1,13 @@
+diff --git a/tests/GameSaveCenter.RenderHarness/Program.cs b/tests/GameSaveCenter.RenderHarness/Program.cs
+index 2460a5e9..44752c92 100644
+--- a/tests/GameSaveCenter.RenderHarness/Program.cs
++++ b/tests/GameSaveCenter.RenderHarness/Program.cs
+@@ -1176,7 +1176,7 @@ public static class Program
+                 if (scrollSurface != null)
+                 {
+                     var targetOffset = cycle % 2 == 0 ? scrollSurface.ScrollableHeight * 0.75 : 0;
+-                    MeasureAction("scroll_offset", () =>
++                    MeasureAction("scroll_offset_" + currentPage, () =>
+                     {
+                         scrollSurface.ScrollToVerticalOffset(targetOffset);
+                         window.UpdateLayout();

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "queriedAt": "2026-11-02T02:05:09Z",
+  "workflow": ".github/workflows/windows-build.yml",
+  "run": {
+    "id": 41371608155,
+    "number": 1421,
+    "event": "push",
+    "headSha": "f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+    "status": "in_progress",
+    "conclusion": null,
+    "createdAt": "2026-11-02T01:16:23Z",
+    "apiUpdatedAt": "2026-11-02T01:16:31Z",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41371608155"
+  },
+  "jobs": [
+    {
+      "id": 125043065257,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        "Set up job: success",
+        "检出代码: success",
+        "安装 .NET SDK 10.0.401: success",
+        "隔离工作树并运行 Release 编译与测试: success",
+        "保留 SDK 10.0.401 构建诊断（包括失败）: success",
+        "Post 安装 .NET SDK 10.0.401: success",
+        "Post 检出代码: success",
+        "Complete job: success"
+      ]
+    },
+    {
+      "id": 125043065473,
+      "name": "编译、测试与打包",
+      "status": "in_progress",
+      "conclusion": null,
+      "steps": [
+        "Set up job: success",
+        "检出代码: success",
+        "安装 .NET SDK: success",
+        "源码结构检查: success",
+        "诊断采集自测: success",
+        "SDK 基线与缺失负例: success",
+        "编译与测试: success",
+        "离屏渲染 QA: success",
+        "WPF UI 静态审查: success",
+        "生成 Playnite 扩展包: in_progress",
+        "上传构建产物: pending",
+        "保留构建与测试诊断（包括失败）: pending",
+        "Post 安装 .NET SDK: pending",
+        "Post 检出代码: pending"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13110840123,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeInBytes": 972435,
+      "digest": "sha256:8024c1c5b93367c6bde43b19caf3d1c10fcec682a8209f82e0e41e4cccb44c08",
+      "headSha": "f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+      "expired": false
+    }
+  ],
+  "jobLogs": {
+    "jobId": 125043065473,
+    "queriedAt": "2026-11-02T02:03:28Z",
+    "available": false,
+    "response": "404 BlobNotFound while the job was reported in progress; this is not a job failure and provides no package diagnostics."
+  },
+  "interpretation": "At the query time, the run was non-terminal and is not counted as a pass. The run API updatedAt remained 2026-11-02T01:16:31Z, so no later progress timestamp was exposed. Re-query this exact run before recording a final CI conclusion."
+}

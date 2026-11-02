@@ -12911,3 +12911,10 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - Render QA以双主题各394 PNG通过，精确SHA及WorkingTreeClean=true；shell table top上移76 DIP、四行完整数据保持可见。source validation与WPF静态10 XAML/0 errors/23 warnings/4 info通过。
 - GitHub run41041454086（#1420）的SDK8 baseline job124014997522和SDK10.0.401 job124014997301全部步骤success；三个artifact及SHA256见evidence/U00-07-U06-04-media-inbox-20261030/ci.json。required-check名单此前403，不复探。
 - 首轮TEMP路径过深导致3个现存恢复测试失败；短TEMP后通过。第一版动作行断言在两主题失败，按原谓词修复后通过；原TRX在新证据目录保留。U00-07/U06-04仍代码完成待验收，真实Playnite/外部UIA/实体输入IME/物理DPI待验；没有执行恢复、媒体删除或云写入。阶段清理见cleanup.json。
+
+## 2026-11-02 Round5 U06-08 / U09-04 滚动复测
+- 无生产XAML、资源或业务代码变更；RenderHarness临时页名标签改动只用于拆分耐久滚动摘要，随后恢复并核对原SHA。
+- SDK8.0.423：scripts/build.ps1 Release SkipTests exit0、0/0；RenderHarness restore/build exit0、0/0；R18大列表窗口行为1/1、0失败、0 skip；scaleprobe与两轮120秒+30秒耐久探针exit0。
+- 20k Task在R18受控窗口最多实现10行/8行视口；20k媒体后端保留2k UI项且实现7/7。detached scaleprobe的20点后44行容器有夹具差异，不推断宿主累积。耐久Task页滚动p95为52.02和42.96ms；整页切换布局p95为463.20和439.21ms，U09-04不结案。
+- 归档包含源码/程序集身份、构建summary、TRX、完整探针报告及两次测试运行器失败诊断；只清理本批三个隔离目录，具体清单和空间前后见同目录cleanup.json。
+- 纯文档变更按源码/Markdown链接校验；新增CI快照将Run 41371608155绑定到精确SHA f1a614a8：SDK10 job成功，baseline job在查询时仍停在Playnite扩展打包，尚无整体结论。本轮文档提交的精确SHA CI需推送后查询；不声称真实Playnite、外部UIA、实体键鼠/IME、物理DPI或安装启动完整链已验。

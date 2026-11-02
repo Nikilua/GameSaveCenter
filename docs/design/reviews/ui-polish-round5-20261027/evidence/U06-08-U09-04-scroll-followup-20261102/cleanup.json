@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+  "status": "completed",
+  "cleanupCommand": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+  "checkedAt": "2026-11-02T01:54:40.7799306Z",
+  "disksBefore": {
+    "D": 18808934400,
+    "C": 4325675008
+  },
+  "exactTargets": [
+    {
+      "path": ".tmp/round5-u09-04-scroll-followup-20261102",
+      "fullPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-04-scroll-followup-20261102",
+      "designatedRoot": ".tmp",
+      "fileCount": 990,
+      "bytes": 184690404,
+      "reparsePointCount": 0,
+      "ownership": "Created solely for this U06-08/U09-04 follow-up"
+    },
+    {
+      "path": ".tmp/r5",
+      "fullPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\r5",
+      "designatedRoot": ".tmp",
+      "fileCount": 324,
+      "bytes": 29278288,
+      "reparsePointCount": 0,
+      "ownership": "Created solely for this U06-08/U09-04 follow-up"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T012741568Z-eb41e9d5",
+      "fullPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261102T012741568Z-eb41e9d5",
+      "designatedRoot": "artifacts",
+      "fileCount": 6,
+      "bytes": 162296,
+      "reparsePointCount": 0,
+      "ownership": "Created solely for this U06-08/U09-04 follow-up"
+    }
+  ],
+  "containment": "Every full target path was checked under repo .tmp or repo artifacts; no target or nested reparse point was found.",
+  "occupancy": "No RenderHarness, testhost, VSTest.Console, dotnet or MSBuild process was running; exclusive read opens succeeded for the generated harness and test assembly.",
+  "documentationReferences": "Temporary paths occur only as provenance/cleanup details in this evidence folder; no operational documentation requires these disposable outputs.",
+  "archivedEvidence": {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-08-U09-04-scroll-followup-20261102",
+    "shaManifest": "files.json",
+    "sourceHashComparisonsPassed": 20,
+    "manifestedFileCount": 24,
+    "manifestedBytes": 1397532.0,
+    "manifestEntryCount": 24,
+    "finalTotalFileCount": 25,
+    "inventoryNote": "Manifest covers every archived file except files.json itself; manifestedBytes includes cleanup.json. Final counts include the CI snapshot added after temporary-output cleanup; no build intermediates were generated afterward."
+  },
+  "retained": [
+    "Other task/user TRX and TestResults",
+    "archives and configuration",
+    "current packages and prior build outputs",
+    "portable SDK under D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-01-03"
+  ],
+  "disksAfter": {
+    "D": 18808934400,
+    "C": 4991582208
+  },
+  "deletionSummary": {
+    "pathsRemoved": [
+      ".tmp/round5-u09-04-scroll-followup-20261102",
+      ".tmp/r5",
+      "artifacts/build-diagnostics/20261102T012741568Z-eb41e9d5"
+    ],
+    "fileCount": 1320,
+    "logicalBytes": 214130988,
+    "command": "Remove-Item -LiteralPath <exact target> -Recurse -Force"
+  },
+  "measuredSpaceDelta": {
+    "cFreeBytes": 665907200,
+    "dFreeBytes": 0,
+    "cDeltaBeyondOwnedLogicalBytes": 451776212,
+    "note": "Measured volume free space changed more than the declared owned file bytes; external volume activity is not attributed to this cleanup."
+  },
+  "completedAt": "2026-11-02T01:57:51.5932046Z"
+}

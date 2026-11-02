@@ -1,0 +1,14 @@
+{
+  "stage": "U06-08/U09-04 Task list scroll follow-up",
+  "sourceCommit": "f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+  "sdkVersion": "8.0.423",
+  "sdk": "retained portable repository SDK",
+  "cFreeBeforeBytes": 4530159616,
+  "dFreeBeforeBytes": 18810257408,
+  "originalProgramSha256": "9e349c9e891b8f9b1087ec14873855e125697dc037b21849835539d23885d9a4",
+  "targetRelativePath": ".tmp/round5-u09-04-scroll-followup-20261102",
+  "normalizedTarget": ".tmp\\round5-u09-04-scroll-followup-20261102",
+  "containmentRoot": ".tmp",
+  "reparsePointCount": false,
+  "createdAtUtc": "2026-11-02T01:25:08.0001756Z"
+}
