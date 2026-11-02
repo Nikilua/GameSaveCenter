@@ -1,0 +1,120 @@
+{
+  "TestedCommit": "cf5173e75758782ad2bcd372cc9492ad393b908b",
+  "TestSourceWorkingTreeSha256": "E0AB5E6314CB3A227CDC442205235F02BC3F556F1D26F311FE895875325893CA",
+  "Sdk": "8.0.423",
+  "Configuration": "Release",
+  "Command": "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -c Release --filter FullyQualifiedName~R06SelectionStateBehaviorTests",
+  "FixtureCorrection": "WPF compatibility-row geometry assertions now run on the already active STA Application dispatcher before the production-row test closes its primary window; static XML sibling contract remains independent.",
+  "Runs": [
+    {
+      "File": "fixture-lifecycle-r06-repaired.trx",
+      "Outcome": "Failed",
+      "Passed": 2,
+      "Failed": 1,
+      "Skipped": 0,
+      "Sha256": "60DF088F0776461197DCC5E01AADE2B551DC069479DF20C73D0F8921FD39B0B9",
+      "Tests": [
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.SharedStateContractLeavesCellContentSurfaceForStatusBadges",
+          "Outcome": "Passed",
+          "Error": null
+        },
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+          "Outcome": "Passed",
+          "Error": null
+        },
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome",
+          "Outcome": "Failed",
+          "Error": "System.InvalidOperationException: DataGrid row was not generated.\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.RowFor(DataGrid grid, TaskStatusDto item) 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 221\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c.<ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome>b__0_0() 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 66\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c__DisplayClass19_0.<RunSta>b__0() 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 408"
+        }
+      ]
+    },
+    {
+      "File": "fixture-lifecycle-r06-dispatch-cycle.trx",
+      "Outcome": "Failed",
+      "Passed": 2,
+      "Failed": 1,
+      "Skipped": 0,
+      "Sha256": "AC1766227710BF815C57A4178A69D15252AE625761022A65EF19ACC7704EFB09",
+      "Tests": [
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes",
+          "Outcome": "Passed",
+          "Error": null
+        },
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome",
+          "Outcome": "Failed",
+          "Error": "System.InvalidOperationException: DataGrid row was not generated after dispatcher/layout pumping; itemCount=2; generator=NotStarted; realizedRows=0; loaded=False; size=0x0; windowShown=False.\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.RowFor(DataGrid grid, TaskStatusDto item) 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 222\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c.<ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome>b__0_0() 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 66\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c__DisplayClass19_0.<RunSta>b__0() 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 429"
+        },
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.SharedStateContractLeavesCellContentSurfaceForStatusBadges",
+          "Outcome": "Passed",
+          "Error": null
+        }
+      ]
+    },
+    {
+      "File": "fixture-lifecycle-r06-combined-sta.trx",
+      "Outcome": "Failed",
+      "Passed": 2,
+      "Failed": 1,
+      "Skipped": 0,
+      "Sha256": "70EAA8227946592024427778A7BD35CB539E55ADB633A6D90A8719C57D00108C",
+      "Tests": [
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome",
+          "Outcome": "Failed",
+          "Error": "System.InvalidOperationException: DataGrid row was not generated.\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.RowFor(DataGrid grid, TaskStatusDto item) 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 224\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.VerifyDashboardCompatibilityRow() 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 187\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c.<ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome>b__0_0() 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 120\r\n   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c__DisplayClass20_0.<RunSta>b__0() 位置 C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\R06SelectionStateBehaviorTests.cs:行号 411"
+        },
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowOverlayContractKeepsContentAsSibling",
+          "Outcome": "Passed",
+          "Error": null
+        },
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.SharedStateContractLeavesCellContentSurfaceForStatusBadges",
+          "Outcome": "Passed",
+          "Error": null
+        }
+      ]
+    },
+    {
+      "File": "fixture-lifecycle-r06-active-primary-window.trx",
+      "Outcome": "Completed",
+      "Passed": 3,
+      "Failed": 0,
+      "Skipped": 0,
+      "Sha256": "6CB656333C4E0EA8B60F7E4FF36FC988A831497120B847E0C8FA9EA52990786A",
+      "Tests": [
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome",
+          "Outcome": "Passed",
+          "Error": null
+        },
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.SharedStateContractLeavesCellContentSurfaceForStatusBadges",
+          "Outcome": "Passed",
+          "Error": null
+        },
+        {
+          "Test": "GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowOverlayContractKeepsContentAsSibling",
+          "Outcome": "Passed",
+          "Error": null
+        }
+      ]
+    },
+    {
+      "File": "fixture-lifecycle-r06-precommit-final.trx",
+      "Outcome": "Completed",
+      "Passed": 3,
+      "Failed": 0,
+      "Skipped": 0,
+      "Sha256": "19F747F18909C06612DC4D862599D3C7BE35201F0E24A1739F002C3771873EAD",
+      "CommitIdentity": "cf5173e75758782ad2bcd372cc9492ad393b908b",
+      "Note": "Release test build used GSC_BUILD_COMMIT=cf5173; the working tree contained the corrected test source (SHA256 E0AB5E6314CB3A227CDC442205235F02BC3F556F1D26F311FE895875325893CA), not yet committed."
+    }
+  ]
+}

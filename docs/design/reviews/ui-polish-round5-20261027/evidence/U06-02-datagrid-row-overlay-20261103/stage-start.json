@@ -1,0 +1,16 @@
+{
+  "Date": "2026-11-03",
+  "StagePath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u08-08-datagrid-selection-overlay-20261103",
+  "StageAbsentBeforeStart": true,
+  "ParentCommit": "e49c52bead9108a2e8943f79ff206e1ddca256f5",
+  "DiskFreeBytesBeforeStageCreation": {
+    "C": 5208162304,
+    "D": 8469843968
+  },
+  "DiskFreeBytesBeforeFirstRender": {
+    "C": 5054963712,
+    "D": 8367878144
+  },
+  "Sdk": "8.0.423",
+  "CurrentSdkRetained": ".tmp/round5-sdk8-8.0.423"
+}

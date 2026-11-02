@@ -1,0 +1,57 @@
+{
+  "Date": "2026-11-03",
+  "SourceCommit": "cf5173e75758782ad2bcd372cc9492ad393b908b",
+  "StagePathRemoved": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u08-08-datagrid-selection-overlay-20261103",
+  "StageRootBoundaryVerified": true,
+  "ReparsePointsFound": 0,
+  "RunningProcessesFound": 0,
+  "RelativeMarkdownLinksChecked": 280,
+  "BrokenRelativeMarkdownLinks": 0,
+  "RemovedStageFileCount": 338,
+  "RemovedStageBytes": 29705653,
+  "RemovedStageContents": [
+    {
+      "Name": "build",
+      "FileCount": 324,
+      "Bytes": 29321321.0
+    },
+    {
+      "Name": "results",
+      "FileCount": 13,
+      "Bytes": 106496.0
+    },
+    {
+      "Name": "temp",
+      "FileCount": 0,
+      "Bytes": null
+    },
+    {
+      "Name": "wpf-static-review.txt",
+      "FileCount": 1,
+      "Bytes": 277836.0
+    }
+  ],
+  "RemovedDuplicateArtifactReportPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\ui-qa\\U06-02-datagrid-row-overlay-20261103\\render-qa-report.txt",
+  "RemovedDuplicateArtifactReportBytes": 1157391,
+  "DiskFreeBytesBeforeCleanup": {
+    "C": 4985118720,
+    "D": 8367874048
+  },
+  "DiskFreeBytesAfterCleanup": {
+    "C": 5016825856,
+    "D": 8367874048
+  },
+  "RetainedCurrentRenderAuditPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\ui-qa\\U06-02-datagrid-row-overlay-20261103",
+  "RetainedRenderPngCount": 394,
+  "RetainedRenderPngBytes": 52275817,
+  "RetainedEvidence": [
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-datagrid-row-overlay-20261103/tests/*.trx",
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-datagrid-row-overlay-20261103/render-qa-report.txt",
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-datagrid-row-overlay-20261103/wpf-static-review.txt"
+  ],
+  "RetainedBuildOutputs": [
+    "src/**/bin/Release current build outputs",
+    "artifacts/ui-qa/U06-02-datagrid-row-overlay-20261103",
+    "SDK 8.0.423 under .tmp/round5-sdk8-8.0.423"
+  ]
+}

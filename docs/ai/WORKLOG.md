@@ -13005,3 +13005,10 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 实际中文根入口`GameSaveCenter-一键构建安装运行.cmd`经`GameSaveCenter-Run.cmd`转交，以及独立`scripts/build.cmd`，均在进入build/SDK选择/test前因PowerShell`ConstrainedLanguage`拒绝dot-source而exit1；没有本候选全量TRX、发布包、安装身份或Playnite启动。原始日志哈希、入口源码哈希、空间预检、前一候选归档和阶段清理记录见同目录`local-gates.json`与`cleanup.json`。相同受限执行上下文不重复探试；U09-05待组织授权的FullLanguage环境运行实际入口。
 - GitHub精确源码run41498607041（#1436）绑定候选SHA：baseline SDK job125459993079与SDK10.0.401 job125459992623及适用步骤均completed/success，preview和两份diagnostics artifact身份见`ci-run-41498607041.json`。required-check/ruleset API先前403，不重试，U09-06仍远端待验，下一步由有权限维护者只读核对required checks名单。
 - 80项状态为5项已满足、71项代码完成待验收、U09-04/05/08进行中、U09-06远端待验。真实Playnite页面、外部UIA、实体键盘/IME与物理DPI仍未验；真实存档恢复、媒体删除与云端写入未执行。纯文档校验：Source Validation退出0、`git diff --check`退出0；本轮审计的Markdown相对链接890条中5条是旧WORKLOG里指向已退役`artifacts/GameSaveCenter-0.6.73.*`包路径的历史引用（fa9af0a/1fdd15e/e83d8ba9，哈希与本地保留的34d8包不同），当前候选新增证据链接有效。未重复本地完整链。
+
+## 2026-11-03 Round5 U06-02 Dashboard兼容DataGrid测试夹具修正
+
+- 生产改动`cf5173e75758782ad2bcd372cc9492ad393b908b`保留选中蓝色圆角框，同时将Dashboard兼容`DataGridRow`内容、选中色背景和框线分为同级；背景/框线inset仅作用于overlay，不推移行内容。该精确候选的Source Validation、WPF静态审查和Render QA已通过，双主题394 PNG/0 PROBLEM。
+- GitHub run41525415460（#1438）的基线job125551752423与SDK10.0.401 job125551752823均因同一R06 WPF `DataGrid row was not generated`测试异常失败，渲染/静态/package步骤据门禁跳过，两个诊断artifact ID/digest已归档。未rerun或改workflow/skip。
+- 本地诊断发现前一独立测试创建的`Application.Current`保留在已结束STA Dispatcher，令后续窗口未加载。将Dashboard真实双主题几何断言移入同STA仍打开主窗口的生产行测试，并将独立用例保留为纯XML sibling契约检查；没有减断言或改skip。SDK8.0.423 Release整类3/3、0失败、0 skip，TRX及fixture源码哈希见Round5 `evidence/U06-02-datagrid-row-overlay-20261103/r06-fixture-lifecycle-runs.json`。这份测试源码待形成新提交，需按新SHA复跑并核实两SDK CI；不将cf5173 CI标绿。
+- 阶段清理记录保留输出归属、报告引用和磁盘起始空间；新阶段`.tmp`检查与清理结果在Round5证据目录。U09-05完整中文根入口链及独立`scripts/build.cmd`仍未由先前ConstrainedLanguage拒绝后的授权FullLanguage运行，本批不重复尝试。真实Playnite页面、外部UIA、实体输入/IME与物理DPI待验。

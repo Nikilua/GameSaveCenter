@@ -63,7 +63,7 @@ public sealed class R06SelectionStateBehaviorTests
             try
             {
                 window.Show();
-                window.UpdateLayout();
+                PumpLayout(window);
                 var failedRow = RowFor(grid, items[0]);
                 var succeededRow = RowFor(grid, items[1]);
                 Assert.NotNull(failedRow);
@@ -110,6 +110,8 @@ public sealed class R06SelectionStateBehaviorTests
                 Assert.False(Selector.GetIsSelectionActive(succeededRow));
                 Assert.Equal(BrushColor(resources["GscSelectionInactiveBrush"]), BrushColor(inactiveBackground.Background));
                 Assert.Equal(BrushColor(resources["GscMutedStatusBrush"]), BrushColor(inactiveChrome.BorderBrush));
+
+                VerifyDashboardCompatibilityRow();
             }
             finally
             {
@@ -136,85 +138,86 @@ public sealed class R06SelectionStateBehaviorTests
     }
 
     [Fact]
-    public void DashboardCompatibilityRowKeepsCellContentInPlaceWhenSelectedInBothThemes()
+    public void DashboardCompatibilityRowOverlayContractKeepsContentAsSibling()
     {
         AssertDashboardRowOverlayContract();
-        RunSta(() =>
+    }
+
+    private static void VerifyDashboardCompatibilityRow()
+    {
+        TestRepositoryContext.AssertAssemblyMatchesSource();
+        EnsureApplicationResources();
+        var resources = LoadDashboardDataGridResources();
+        var rows = new ObservableCollection<TaskStatusDto>
         {
-            TestRepositoryContext.AssertAssemblyMatchesSource();
-            EnsureApplicationResources();
-            var resources = LoadDashboardDataGridResources();
-            var rows = new ObservableCollection<TaskStatusDto>
-            {
-                Task("dashboard-row", TaskState.Running),
-                Task("dashboard-row-2", TaskState.Succeeded)
-            };
-            var grid = new DataGrid
-            {
-                AutoGenerateColumns = false,
-                CanUserAddRows = false,
-                HeadersVisibility = DataGridHeadersVisibility.Column,
-                SelectionMode = DataGridSelectionMode.Single,
-                SelectionUnit = DataGridSelectionUnit.FullRow,
-                Height = 150,
-                Width = 520,
-                RowStyle = Assert.IsType<Style>(resources["DashboardCompatibilityDataGridRow"]),
-                ItemsSource = rows
-            };
-            grid.Columns.Add(new DataGridTextColumn { Header = "状态", Binding = new Binding("StateDisplay"), Width = 170 });
-            grid.Columns.Add(new DataGridTextColumn { Header = "游戏", Binding = new Binding(nameof(TaskStatusDto.GameName)), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
+            Task("dashboard-row", TaskState.Running),
+            Task("dashboard-row-2", TaskState.Succeeded)
+        };
+        var grid = new DataGrid
+        {
+            AutoGenerateColumns = false,
+            CanUserAddRows = false,
+            HeadersVisibility = DataGridHeadersVisibility.Column,
+            SelectionMode = DataGridSelectionMode.Single,
+            SelectionUnit = DataGridSelectionUnit.FullRow,
+            Height = 150,
+            Width = 520,
+            RowStyle = Assert.IsType<Style>(resources["DashboardCompatibilityDataGridRow"]),
+            ItemsSource = rows
+        };
+        grid.Columns.Add(new DataGridTextColumn { Header = "状态", Binding = new Binding("StateDisplay"), Width = 170 });
+        grid.Columns.Add(new DataGridTextColumn { Header = "游戏", Binding = new Binding(nameof(TaskStatusDto.GameName)), Width = new DataGridLength(1, DataGridLengthUnitType.Star) });
 
-            var external = new TextBox { Text = "外部焦点" };
-            var root = new StackPanel { Resources = resources };
-            root.Children.Add(grid);
-            root.Children.Add(external);
-            var window = new Window
-            {
-                Width = 640,
-                Height = 240,
-                Content = root,
-                ShowInTaskbar = false,
-                WindowStyle = WindowStyle.None
-            };
+        var external = new TextBox { Text = "外部焦点" };
+        var root = new StackPanel { Resources = resources };
+        root.Children.Add(grid);
+        root.Children.Add(external);
+        var window = new Window
+        {
+            Width = 640,
+            Height = 240,
+            Content = root,
+            ShowInTaskbar = false,
+            WindowStyle = WindowStyle.None
+        };
 
-            try
+        try
+        {
+            window.Show();
+            PumpLayout(window);
+            var row = RowFor(grid, rows[0]);
+            Assert.Same(external, Keyboard.Focus(external));
+
+            foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
             {
-                window.Show();
-                PumpLayout(window);
-                var row = RowFor(grid, rows[0]);
+                ApplyTheme(root, resources, theme);
+                row.IsSelected = false;
                 Assert.Same(external, Keyboard.Focus(external));
+                PumpLayout(window);
+                var unselectedGeometry = CaptureCellGeometry(row, grid);
 
-                foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
-                {
-                    ApplyTheme(root, resources, theme);
-                    row.IsSelected = false;
-                    Assert.Same(external, Keyboard.Focus(external));
-                    PumpLayout(window);
-                    var unselectedGeometry = CaptureCellGeometry(row, grid);
+                row.IsSelected = true;
+                Assert.Same(external, Keyboard.Focus(external));
+                PumpLayout(window);
 
-                    row.IsSelected = true;
-                    Assert.Same(external, Keyboard.Focus(external));
-                    PumpLayout(window);
+                Assert.True(row.IsSelected, $"{theme}: compatibility row did not enter selected state");
+                Assert.False(Selector.GetIsSelectionActive(row), $"{theme}: selection should stay inactive while focus is external");
+                AssertGeometryUnchanged(unselectedGeometry, CaptureCellGeometry(row, grid), $"{theme} selected overlay");
 
-                    Assert.True(row.IsSelected, $"{theme}: compatibility row did not enter selected state");
-                    Assert.False(Selector.GetIsSelectionActive(row), $"{theme}: selection should stay inactive while focus is external");
-                    AssertGeometryUnchanged(unselectedGeometry, CaptureCellGeometry(row, grid), $"{theme} selected overlay");
-
-                    var background = Assert.IsType<Border>(row.Template.FindName("RowBackground", row));
-                    var chrome = Assert.IsType<Border>(row.Template.FindName("RowChrome", row));
-                    Assert.Equal(new Thickness(4, 2, 12, 2), background.Margin);
-                    Assert.Equal(new CornerRadius(14), background.CornerRadius);
-                    Assert.Equal(new Thickness(4, 2, 12, 2), chrome.Margin);
-                    Assert.Equal(new CornerRadius(14), chrome.CornerRadius);
-                    Assert.True(chrome.BorderThickness.Left > 0, $"{theme}: selection outline was not retained");
-                    Assert.False(chrome.IsHitTestVisible);
-                }
+                var background = Assert.IsType<Border>(row.Template.FindName("RowBackground", row));
+                var chrome = Assert.IsType<Border>(row.Template.FindName("RowChrome", row));
+                Assert.Equal(new Thickness(4, 2, 12, 2), background.Margin);
+                Assert.Equal(new CornerRadius(14), background.CornerRadius);
+                Assert.Equal(new Thickness(4, 2, 12, 2), chrome.Margin);
+                Assert.Equal(new CornerRadius(14), chrome.CornerRadius);
+                Assert.True(chrome.BorderThickness.Left > 0, $"{theme}: selection outline was not retained");
+                Assert.False(chrome.IsHitTestVisible);
             }
-            finally
-            {
-                window.Close();
-            }
-        });
+        }
+        finally
+        {
+            window.Close();
+        }
     }
 
     private static DataGridRow RowFor(DataGrid grid, TaskStatusDto item)

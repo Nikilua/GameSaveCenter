@@ -1750,3 +1750,9 @@ U06-02/U08-08在精确提交上的离屏双主题验证及R10几何回归已通�
 冻结候选`34d8a99faf7ec827b2fea8303baf8c18a8edbefd`的中文一键入口经`GameSaveCenter-Run.cmd`完成完整Release链，最终exit0；独立`scripts/build.cmd`按build/test职责exit0。SDK8.0.423，ZIP/PEXT与安装DLL身份精确匹配候选。中文链2025项/1967通过/0失败/58既有skip；独立build.cmd 2025项/1957通过/0失败/68 skip，其中10项Named Pipe用例因受限执行进程不允许管道而按既有守卫跳过、不计通过；同候选中文完整链没有跳过这10项。skip未扩宽。
 
 GitHub run41477919033(#1434)绑定精确SHA，`.github/workflows/windows-build.yml`下SDK基线与SDK10.0.401 jobs及所有步骤均success，3个artifact ID/digest已归档。required-check/branch-protection API此前403，不重复请求；工作流通过但required-check完整性仍远端待验。U09-05已满足；U09-04与U09-08进行中，U09-06远端待验。真实Playnite页面仍待人工/宿主确认；不得把启动进程说成视觉验收。真实恢复、媒体删除、云写入不属本轮验证。
+
+## 2026-11-03 Round5 WPF DataGrid测试宿主生命周期
+
+WPF测试中的STA辅助器结束Dispatcher后，进程级`Application.Current`可能仍引用已关闭的Dispatcher。之后在另一个STA线程创建窗口时，`Show()`不保证窗口加载，DataGrid容器保持`NotStarted`，简单追加`UpdateLayout`/Dispatcher pumping不能修复这个错误的夹具生命周期。避免在多个隔离测试中反复新建WPF `Application`：将需要同一真实窗口状态的行为断言放到同一个STA测试，并在关闭当前活动主窗口前创建/验证第二个窗口；纯XAML契约可单独做静态断言，不应初始化Application。
+
+Round5 `cf5173e7`的生产行测试在CI基线与SDK10都因该夹具问题失败；修复后SDK8.0.423 Release R06整类3/3、0 skip。CI失败job/artifact与失败/通过TRX身份见`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-datagrid-row-overlay-20261103/`。只把后续新提交的完整双SDKCI算作通过，不回写历史run结论。UI选中框质量原则继续有效：保留选择色和蓝色圆角描边，测量与内容几何不能因框线Margin/BorderThickness/Transform而变化。
