@@ -1,3 +1,13 @@
+## 2026-11-02 Round5 U06-02/U08-08 整行选中槽位回归
+
+按用户补充的首页最近活动问题，保护选中蓝色圆角框不再推动整行或裁切图标。本批只扩展`R10RecentAccessBehaviorTests.cs`：在Overview专用模板和共享隐式`ListBoxItem`模板上，比较未选中、选中、键盘焦点三态的图标tile及容器相对ListBox的bounds，并断言容器`Margin`、`RenderTransform`、`LayoutTransform`不变。框线依然可见，既有Overview 14 DIP、公共列表8 DIP圆角及图标坐标≤0.01 DIP断言保留。生产XAML/资源/命令/Binding未变，前后图和共享样式审查沿用[cb7b78fd选框证据](evidence/U06-02-selection-overlay-20261102/BASELINE.md)。
+
+SDK 8.0.423 Release编译后按仓库WPF隔离设置运行完整`R10RecentAccessBehaviorTests`类：3/3通过、0失败、0 skip，退出0，干净日志无COM收尾异常。首次还原停滞与默认并行目标运行已取消、未启动测试；单方法1/1运行虽退出0但TestHost收尾有`InvalidComObjectException`，均不冒充干净结果。测试源、程序集身份、TRX/日志SHA和各尝试见[槽位回归证据](evidence/U06-02-selection-slot-guard-20261102/BASELINE.md)。Source Validation与`git diff --check`通过；本批无生产XAML差异，因此重用cb7精确源码的静态审查与Render QA，不声称本批重新渲染。
+
+仅清理本阶段自有`.tmp/round5-u06-02-slot-regression-20261102`输出，5个日志/TRX共13,862 bytes均已先归档并逐项复核长度/SHA，清理后路径不存在且Markdown无残留引用；具体目标见[清理清单](evidence/U06-02-selection-slot-guard-20261102/cleanup.json)。容量前值是阶段开始快照，后值在清理后复核；期间发生SDK编译，净变化不归因于删除，紧邻清理瞬间的控制台容量快照因工具输出截断未留存。
+
+U06-02/U08-08仍为“代码完成待验收”；真实Playnite页面、外部UIA、实体输入/IME及物理DPI未验。测试源码产生了新的最终候选，故U09-05与U09-08重新进行中，需对该候选重新冻结并执行完整链；U09-04仍进行中，U09-06仍远端待验，当前计数5项已满足、71项代码完成待验收、3项进行中、1项远端待验。没有执行真实存档恢复、媒体删除或云端写入。
+
 ## 2026-11-02 Round5 U09-04 U00同条件时长代理复测
 
 在当前生产源码`cb7b78fd`上将U00-06与U09两轮控制在同一60秒活动期、30秒收尾、1040×700 DIP、双主题与七页假数据。页面切换布局p95由U00 803.59ms降至426.38/411.29ms，详情打开125.58降至35.69/34.73ms，滚动36.33降至33.81/31.45ms；程序化搜索更新p95当前14样本下高于U00但中位数更低，样本尾部太少不判定回退。所有值均为受控WPF逻辑动作代理，不是呈现帧/物理输入；托管堆首尾差也不是累计分配。Source Validation exit0；本批进度及证据说明267个相对链接0缺失，全仓自写扫描另报157条历史缺失链接（主要为指向旧`.tmp`/`artifacts`的记录），本批未依赖这些路径且未扩大清理范围。完整原始报告、源码/二进制身份和清理清单见[复测证据](evidence/U09-04-u00-aligned-20261102/BASELINE.md)。U09-04仍进行中，U00原始帧/累计分配及真实Playnite测量仍缺。

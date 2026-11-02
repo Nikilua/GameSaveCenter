@@ -1,3 +1,13 @@
+## 2026-11-02 Round5 U06-02/U08-08 整行选中槽位守护
+
+按用户构建后的观察，蓝色圆角选中框可以保留，但不应让最近活动整行右下偏移、裁切图标。复核cb7b78fd生产XAML后确认Overview局部模板和共享隐式ListBoxItem模板已经分离选框层/内容层；DataGrid行与媒体卡片也使用独立叠层，本批不触碰无关控件。扩展`R10RecentAccessBehaviorTests`，对局部及共享ListBox模板在未选中、选中、键盘焦点三态测量图标tile和整个ListBoxItem相对列表的bounds，并核对容器Margin及Render/LayoutTransform不变。保留框线可见性、圆角和原有图标≤0.01 DIP几何断言。
+
+SDK 8.0.423 Release按仓库`DisableAppDomain=true`、`-m:1`、`-nodeReuse:false`隔离设置运行完整R10类，3/3通过、0失败/skip、exit0；清洁日志无WPF COM teardown。第一次还原停在确定项目，第二次并行目标测试在无输出且生成闲置dotnet进程时取消，均在测试开始前结束。单方法1/1/exit0但TestHost退出时有`InvalidComObjectException`，只保留诊断；证据结论使用之后干净类运行。Source Validation与`git diff --check`通过；没有改生产XAML、资源或业务绑定，因此本批不重复cb7已完成的静态WPF/双主题Render QA。所有日志、TRX及SHA、测试程序集身份、尝试原因见Round5 `evidence/U06-02-selection-slot-guard-20261102/BASELINE.md`。
+
+归档后清理阶段自有`.tmp/round5-u06-02-slot-regression-20261102`中的5个日志/TRX，共13,862 bytes；归档SHA/长度逐项复核、清理路径已不存在且文档没有临时路径引用。容量前值取11:27阶段启动快照，后值清理后读取；中间生成测试程序集，不能用差值宣称释放量；控制台截断未留紧邻Remove-Item前后值。详见证据目录`cleanup.json`。
+
+这一测试改动构成新候选，当前仍需先提交并冻结跟踪文件，再运行中文根入口完整链、独立`scripts/build.cmd`和双SDK CI；不能用本批定向测试代替。U09-05/U09-08重新进行中，整轮计数5/71/3/1（U09-04进行中，U09-06远端待验）。Playnite实际页面、外部UIA、实体输入/IME及物理DPI保持未验；真实存档恢复、媒体删除和云端写入未执行。
+
 ## 2026-11-02 Round5 U09-04 U00同条件时长代理复测
 
 当前源码身份为文档HEAD `a90887a29edce88d85dedc0fa31fa9383091ec47`，其`src/`、`tests/`、`scripts/`与生产提交`cb7b78fd`无差异。使用已有.NET Framework RenderHarness二进制（SHA `D8EB122A...61736`）连续运行两次60秒活动+30秒收尾，窗口1040×700 DIP、双主题、七页假数据、固定样本UTC、无强制GC；两轮均exit0且无动作失败。相对U00-06，当前workspace切页布局p95为426.38/411.29ms（基线803.59），详情打开p95 35.69/34.73ms（基线125.58），滚动p95 33.81/31.45ms（基线36.33）。搜索更新p95为20.8/19.79ms而U00为12.12ms，但每轮仅14次且p95等于最大值；中位数2.43→1.44/1.37ms，不据小样本尾部判定回退。当前全动作p95 556.48/524.98ms，U00 933.16ms，但仍包含主题应用和整页布局，不表示呈现帧或真实输入。`managed_delta`仅为托管堆首尾差，不能冒充累计分配；U00逐帧/累计分配原始文件、真实Playnite和实体输入仍缺，U09-04保持进行中。

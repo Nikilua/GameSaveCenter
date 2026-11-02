@@ -1,0 +1,54 @@
+{
+  "workingTreeHead": "770a0a417870413976708a70f2052f6fd727ac87",
+  "productionSourceCommit": "cb7b78fd514e7d6eaa2a34e341340d5d06610508",
+  "productionSourceUnchangedSinceCommit": true,
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "testSource": {
+    "path": "tests/GameSaveCenter.Playnite.Tests/R10RecentAccessBehaviorTests.cs",
+    "sha256": "5035642259941313D59A2645AF3C237790CB29C8B8D412B79BD1820FF645F812"
+  },
+  "testAssembly": {
+    "path": "tests/GameSaveCenter.Playnite.Tests/bin/Release/net472/GameSaveCenter.Playnite.Tests.dll",
+    "bytes": 2418176,
+    "sha256": "18395732D765F5DA1F67DED6AE1BFCEBDF3163A8BC74474882394AD248CA2573",
+    "lastWriteUtc": "2026-11-02T11:35:24.1913730Z"
+  },
+  "build": {
+    "command": "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj --configuration Release --no-restore --filter FullyQualifiedName~SelectedOverviewAndSharedListItemsKeepTheirContentPosition -m:1 -nodeReuse:false -p:MSBuildEnableWorkloadResolver=false -p:NuGetAudit=false",
+    "exitCode": 0,
+    "compiledProjects": [
+      "GameSaveCenter.Contracts",
+      "GameSaveCenter.Core",
+      "GameSaveCenter.Playnite",
+      "GameSaveCenter.Playnite.HostAuditSeeder",
+      "GameSaveCenter.Playnite.Tests"
+    ],
+    "selectedMethod": {
+      "name": "SelectedOverviewAndSharedListItemsKeepTheirContentPosition",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "trx": "selection-method/selection-container-slot.trx",
+      "trxBytes": 3655,
+      "trxSha256": "7C4A43D1E00E76C58277FA2083FFB8FEF31C47FECCF557E04DDA7EAE0747C922",
+      "consoleLog": "selection-method/build-and-test.log",
+      "consoleLogSha256": "00236123C9E2ECA41CDF83D888F03C19F566A42A73100237619B11F605A67D8C",
+      "consoleTeardownDiagnostic": "InvalidComObjectException from WPF TextServicesContext after the method passed; this run is diagnostic, not the clean class gate."
+    }
+  },
+  "classIsolation": {
+    "command": "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj --configuration Release --no-build --no-restore --filter FullyQualifiedName~R10RecentAccessBehaviorTests -m:1 -nodeReuse:false -p:MSBuildEnableWorkloadResolver=false -p:NuGetAudit=false -- RunConfiguration.DisableAppDomain=true",
+    "exitCode": 0,
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "trx": "r10-class-tests/R10RecentAccessBehaviorTests.trx",
+    "trxBytes": 6319,
+    "trxSha256": "1FF2488C25E774D6ACAA1C3500ACA760639C22A7AD11290A716BE83DED7AC540",
+    "consoleLog": "r10-class-tests/R10RecentAccessBehaviorTests.log",
+    "consoleLogSha256": "58407AACC89B7D8D6EC0537440A67AB3ABCAF9DBC0107B5F23B9D8F267C44C24",
+    "consoleContainsComTeardownDiagnostic": false
+  }
+}

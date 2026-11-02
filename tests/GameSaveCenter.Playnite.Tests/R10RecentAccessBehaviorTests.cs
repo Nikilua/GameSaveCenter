@@ -256,6 +256,11 @@ public sealed class R10RecentAccessBehaviorTests
         list.SelectedItem = null;
         hostWindow.UpdateLayout();
         var container = Assert.IsType<ListBoxItem>(list.ItemContainerGenerator.ContainerFromItem(task));
+        var unselectedContainerBounds = container.TransformToAncestor(list)
+            .TransformBounds(new Rect(new Point(), container.RenderSize));
+        var unselectedContainerMargin = container.Margin;
+        var unselectedRenderTransform = container.RenderTransform.Value;
+        var unselectedLayoutTransform = container.LayoutTransform.Value;
         var tile = FindVisualDescendants<Border>(container).Single(border => border.Name == iconTileName);
         var unselectedBounds = tile.TransformToAncestor(container)
             .TransformBounds(new Rect(new Point(), tile.RenderSize));
@@ -266,6 +271,13 @@ public sealed class R10RecentAccessBehaviorTests
         var selectedBounds = tile.TransformToAncestor(container)
             .TransformBounds(new Rect(new Point(), tile.RenderSize));
         AssertBoundsClose(unselectedBounds, selectedBounds);
+        AssertContainerSlotUnchanged(
+            list,
+            container,
+            unselectedContainerBounds,
+            unselectedContainerMargin,
+            unselectedRenderTransform,
+            unselectedLayoutTransform);
 
         var chrome = FindItemChrome(list, task, chromeName);
         Assert.True(chrome.BorderThickness.Left > 0);
@@ -275,6 +287,29 @@ public sealed class R10RecentAccessBehaviorTests
         var focusedBounds = tile.TransformToAncestor(container)
             .TransformBounds(new Rect(new Point(), tile.RenderSize));
         AssertBoundsClose(unselectedBounds, focusedBounds);
+        AssertContainerSlotUnchanged(
+            list,
+            container,
+            unselectedContainerBounds,
+            unselectedContainerMargin,
+            unselectedRenderTransform,
+            unselectedLayoutTransform);
+    }
+
+    private static void AssertContainerSlotUnchanged(
+        ListBox list,
+        ListBoxItem container,
+        Rect expectedBounds,
+        Thickness expectedMargin,
+        Matrix expectedRenderTransform,
+        Matrix expectedLayoutTransform)
+    {
+        var actualBounds = container.TransformToAncestor(list)
+            .TransformBounds(new Rect(new Point(), container.RenderSize));
+        AssertBoundsClose(expectedBounds, actualBounds);
+        Assert.Equal(expectedMargin, container.Margin);
+        Assert.Equal(expectedRenderTransform, container.RenderTransform.Value);
+        Assert.Equal(expectedLayoutTransform, container.LayoutTransform.Value);
     }
 
     private static Border FindItemChrome(ListBox list, TaskStatusDto task, string name)

@@ -1,0 +1,18 @@
+{
+  "createdUtc": "2026-11-02T11:27:15.8776214Z",
+  "head": "770a0a417870413976708a70f2052f6fd727ac87",
+  "productionSourceCommit": "cb7b78fd514e7d6eaa2a34e341340d5d06610508",
+  "testSourcePath": "tests/GameSaveCenter.Playnite.Tests/R10RecentAccessBehaviorTests.cs",
+  "testSourceSha256": "5035642259941313D59A2645AF3C237790CB29C8B8D412B79BD1820FF645F812",
+  "testProjectSha256": "79BC1FBE2EF460826AB2A156DE0E2FA54BC08B8AA8E87907F1F7904DAF4493BF",
+  "globalJsonSha256": "248C17BB46FD7FF31402C62DC1870E90005FC1D9BCBC9A31CEFCC78691149D76",
+  "sdkVersion": "8.0.423",
+  "dotnetPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423\\dotnet.exe",
+  "testFilter": "FullyQualifiedName~SelectedOverviewAndSharedListItemsKeepTheirContentPosition",
+  "outputRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u06-02-slot-regression-20261102",
+  "outputRootExistedAtStart": false,
+  "repositoryTmpAttributes": "Directory",
+  "repoVolumeFreeBytes": 4494225408,
+  "dVolumeFreeBytes": 13920878592,
+  "testOutputProcesses": []
+}

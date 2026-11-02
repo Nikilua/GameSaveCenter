@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "stage": "U06-02/U08-08 selection-slot regression",
+  "stageDirectory": ".tmp/round5-u06-02-slot-regression-20261102",
+  "stageDirectoryAbsent": true,
+  "cleanupMethod": "PowerShell Remove-Item -LiteralPath -Recurse -Force; stage absence verified after cleanup",
+  "pathsRemoved": [
+    {
+      "temporaryPath": ".tmp/round5-u06-02-slot-regression-20261102/r10-class-isolated.log",
+      "evidencePath": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-slot-guard-20261102/r10-class-tests/R10RecentAccessBehaviorTests.log",
+      "bytes": 1394,
+      "sha256": "58407AACC89B7D8D6EC0537440A67AB3ABCAF9DBC0107B5F23B9D8F267C44C24"
+    },
+    {
+      "temporaryPath": ".tmp/round5-u06-02-slot-regression-20261102/r10-container-slot-test.log",
+      "evidencePath": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-slot-guard-20261102/restore-stall-attempt.log",
+      "bytes": 37,
+      "sha256": "6A256436DA3DC88BBFE7E33A2702144E59BF5C3A6DA99D9BDF83E9E778024908"
+    },
+    {
+      "temporaryPath": ".tmp/round5-u06-02-slot-regression-20261102/r10-slot-target-test.log",
+      "evidencePath": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-slot-guard-20261102/selection-method/build-and-test.log",
+      "bytes": 2457,
+      "sha256": "00236123C9E2ECA41CDF83D888F03C19F566A42A73100237619B11F605A67D8C"
+    },
+    {
+      "temporaryPath": ".tmp/round5-u06-02-slot-regression-20261102/results/selection-container-slot.trx",
+      "evidencePath": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-slot-guard-20261102/selection-method/selection-container-slot.trx",
+      "bytes": 3655,
+      "sha256": "7C4A43D1E00E76C58277FA2083FFB8FEF31C47FECCF557E04DDA7EAE0747C922"
+    },
+    {
+      "temporaryPath": ".tmp/round5-u06-02-slot-regression-20261102/results-isolated/R10RecentAccessBehaviorTests.trx",
+      "evidencePath": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-slot-guard-20261102/r10-class-tests/R10RecentAccessBehaviorTests.trx",
+      "bytes": 6319,
+      "sha256": "1FF2488C25E774D6ACAA1C3500ACA760639C22A7AD11290A716BE83DED7AC540"
+    }
+  ],
+  "removedBytes": 13862.0,
+  "preStageFreeBytes": {
+    "C": 4494225408,
+    "D": 13920878592
+  },
+  "postCleanupObservedFreeBytes": {
+    "C": 4478242816,
+    "D": 13920550912
+  },
+  "spaceNote": "前值来自11:27阶段启动快照，后值为清理完成后复核值；期间发生SDK测试编译，故容量净变化不能归因于删除。清理命令控制台输出截断，未保留紧邻Remove-Item前后的空间快照。",
+  "safetyChecks": {
+    "documentReferencesToDeletedStage": 0,
+    "archiveSizeAndHashVerified": true,
+    "stageWasStageOwned": true,
+    "runningTestProcessesAtStageStart": [],
+    "canonicalRepoRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+    "stagePathWithinRepo": true,
+    "stageAbsentAtVerification": true
+  }
+}

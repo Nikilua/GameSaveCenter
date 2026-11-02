@@ -1,3 +1,11 @@
+## 2026-11-02 Round5 U06-02/U08-08 整行选中槽位守护
+
+用户反馈首页最近活动被选中后蓝色圆角框仍可保留，但整行不能向右下移动以致图标裁切。生产提交`cb7b78fd`的Overview与共享隐式`ListBoxItem`模板已经将选框与内容分层；本批仅修改`R10RecentAccessBehaviorTests.cs`，在未选中、选中、键盘焦点状态检查图标及整行容器几何，锁定相对ListBox的bounds、Margin和Render/LayoutTransform不变。SDK8.0.423 Release下按仓库WPF隔离方式运行R10类，3/3通过、0失败/skip、exit0；源码校验与diff check通过。本批无生产XAML差异，复用cb7对应静态审查/394图Render QA，未把离屏结果称作Playnite人工验收。
+
+证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-slot-guard-20261102/`，含源/程序集身份、两份TRX、日志、取消/诊断尝试及清理清单。首次还原停滞与并行目标运行在测试启动前取消；单方法通过时发生TestHost COM收尾诊断，最终结论只采用隔离完整类结果。阶段专属`.tmp`已归档后清理，5个输出13,862 bytes；空间值说明见`cleanup.json`。
+
+当前本地分支HEAD为`770a0a417870413976708a70f2052f6fd727ac87`（文档提交），测试源码还有未提交的槽位几何守护；下一步完成Source Validation/链接检查，提交当前候选，再冻结跟踪文件运行中文根入口完整编译/测试/发布/打包/安装与启动、独立`scripts/build.cmd`及双SDK CI。新测试源使U09-05/U09-08重新进行中：轮次5项已满足、71项代码完成待验收、3项进行中（U09-04/05/08）、1项远端待验（U09-06）。U06-02/U08-08仍待Playnite宿主、外部UIA、实体输入/IME和物理DPI验收。
+
 ## 2026-11-02 Round5 U09-04 同条件时长性能代理
 
 当前仓库HEAD从`cb7b78fd`起仅增加文档，`src/`、`tests/`、`scripts/`未变。当前预编译RenderHarness SHA `D8EB122A...61736`及生产程序集`E719E3C3...1FF688`的两次60s+30s受控WPF代理运行均exit0：workspace切页布局p95 426.38/411.29ms，详情打开35.69/34.73ms，滚动33.81/31.45ms；U00同为60s+30s代理对应803.59、125.58、36.33ms。合成搜索当前p95较高但每轮仅14样本，不能判断退化。该探针不是物理帧/实体输入测量；托管堆差不是累计分配。原始报告和SDK限制、清理边界见Round5 `evidence/U09-04-u00-aligned-20261102/`。Source Validation exit0，本批267个相对文档链接0缺失；全仓扫描报157条历史缺失链接，主要是旧`.tmp`/`artifacts`路径，未依赖本批临时输出。U09-04继续进行中；无本轮完整构建（仅文档与预编译探针直接运行）。接下来按用户最新反馈给U06-02共享/页面选中态回归补充“容器相对列表槽位不变”断言，保护行整体无位移。

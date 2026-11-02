@@ -1,0 +1,37 @@
+{
+  "sdk": "8.0.423",
+  "attempts": [
+    {
+      "id": 1,
+      "commandProfile": "default dotnet test with --artifacts-path and restore",
+      "result": "Cancelled while still determining project restore after more than two minutes; no build or test started.",
+      "exitCode": 1,
+      "log": "restore-stall-attempt.log",
+      "logBytes": 37,
+      "logSha256": "6A256436DA3DC88BBFE7E33A2702144E59BF5C3A6DA99D9BDF83E9E778024908",
+      "reusedAssetsExisted": true
+    },
+    {
+      "id": 2,
+      "commandProfile": "--no-restore target test using default MSBuild parallelism",
+      "result": "No test output; dozens of low-CPU dotnet/MSBuild processes remained idle. Cancelled before tests began; no separate output log or TRX was produced.",
+      "exitCode": 1,
+      "recovery": "Adopted repository settings -m:1 and -nodeReuse:false."
+    },
+    {
+      "id": 3,
+      "commandProfile": "--no-restore target method build/run with -m:1 -nodeReuse:false",
+      "result": "Method passed 1/1 and process exit was 0, but WPF TextServices emitted InvalidComObjectException during TestHost teardown. Retained as diagnostic only.",
+      "exitCode": 0,
+      "consoleLog": "selection-method/build-and-test.log",
+      "consoleLogSha256": "00236123C9E2ECA41CDF83D888F03C19F566A42A73100237619B11F605A67D8C"
+    },
+    {
+      "id": 4,
+      "commandProfile": "R10 class isolation with no-build/no-restore, -m:1 -nodeReuse:false, RunConfiguration.DisableAppDomain=true",
+      "result": "Authoritative clean class run: 3 passed, 0 failed, 0 skipped; no COM teardown diagnostic.",
+      "exitCode": 0,
+      "trx": "r10-class-tests/R10RecentAccessBehaviorTests.trx"
+    }
+  ]
+}

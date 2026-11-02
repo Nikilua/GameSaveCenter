@@ -1,3 +1,9 @@
+## 2026-11-02 Round5 U06-02/U08-08 整行槽位回归补强
+
+用户实测反馈首页最近活动选中时蓝色圆角框可保留，整行不能随框右下偏移、裁切图标。生产`cb7b78fd`已把Overview选框及共享隐式`ListBoxItem`的选中/焦点框分离到覆盖层；后续共享列表修改应继续维持装饰不参与内容测量。新WPF回归在Overview专用及共享模板中比较未选中、选中、键盘焦点下图标tile与`ListBoxItem`槽位，要求容器相对ListBox bounds、Margin、RenderTransform、LayoutTransform不变，边框仍可见。定向隔离R10类3/3、0 skip；证据与失败尝试见`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-slot-guard-20261102/`。无生产XAML变更，未重复静态审查/Render QA；真实Playnite/UIA/物理输入/DPI仍未验。
+
+该测试源形成新交付候选，所以先前对旧冻结SHA结项的U09-05/U09-08需重新打开，直到对当前冻结候选完成本地中文完整链、独立`scripts/build.cmd`和适用GitHub jobs。当前轮次计数5项已满足、71项代码完成待验收、3项进行中、U09-06远端待验。不要以旧SHA或定向测试替代。
+
 ## 2026-11-02 Round5 U09-04 同条件时长代理复测
 
 当前源码在`cb7b78fd`之后只有文档差异；两轮预编译RenderHarness代理运行使用60秒活动+30秒收尾、1040×700 DIP、双主题及相同假数据，分别100/101周期且均exit0。workspace切页布局p95为426.38/411.29ms，详情打开35.69/34.73ms，滚动31.45/33.81ms；U00-06同目标时长基线为803.59、125.58、36.33ms。程序化搜索每轮仅14样本，p95 19.79/20.80ms大于基线12.12，不能判定退化。探针逻辑时间不等于呈现帧/真实输入，`managed_delta`不等于累计分配；U00逐帧/累计分配及真实Playnite仍缺，U09-04继续进行中。原始报告、样本身份、SDK条件和清理清单见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-u00-aligned-20261102/`。Source Validation与本批267个相对链接校验通过；全仓扫描另报157条历史链接指向不存在路径，主要为旧`.tmp`/`artifacts`记录，本批未依赖。当地global.json要求8.0.423，系统仅有9.0.302；本轮未构建或替代SDK，仅直接运行已有.NET Framework二进制。
