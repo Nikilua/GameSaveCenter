@@ -120,20 +120,23 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ListBoxItem">
-                            <Border x:Name="TaskItemChrome"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="0"
-                                    Padding="{TemplateBinding Padding}"
-                                    SnapsToDevicePixels="True">
-                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            <Grid SnapsToDevicePixels="True">
+                                <!-- Keep the selected frame on its own layer: the inset border
+                                     must not move or clip the fixed-size status icon tile. -->
+                                <Border x:Name="TaskItemChrome"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="0"
+                                        IsHitTestVisible="False"/>
+                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                   Content="{TemplateBinding Content}"
                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                   ContentStringFormat="{TemplateBinding ContentStringFormat}"
                                                   TextElement.Foreground="{TemplateBinding Foreground}"/>
-                            </Border>
+                            </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter TargetName="TaskItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>

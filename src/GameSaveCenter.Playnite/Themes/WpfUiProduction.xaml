@@ -362,16 +362,20 @@
                     <!-- This implicit style can be applied outside the UserControl resource
                          scope. An unresolved dynamic CornerRadius resource becomes UnsetValue
                          and crashes WPF during Border.Arrange. -->
-                    <Border x:Name="ItemChrome"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="8"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    <Grid SnapsToDevicePixels="True">
+                        <!-- Selection and focus borders sit behind content so their thickness
+                             never changes the item inset or shifts an icon/text row. -->
+                        <Border x:Name="ItemChrome"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                IsHitTestVisible="False"/>
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           TextElement.Foreground="{TemplateBinding Foreground}"/>
-                    </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscRowHoverBrush}"/>
