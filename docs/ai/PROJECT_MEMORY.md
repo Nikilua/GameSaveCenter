@@ -1691,3 +1691,9 @@ Round5当前源64f26f58153efdb4a634bf8a0aa7c832898a581d已含媒体收件箱工�
 
 ## Round5 U06-08 / U09-04 大列表滚动复测（2026-11-02）
 在f1a614a8上用8.0.423复查Task与Media Inbox 1k/5k/20k列表。R18测试须按scripts/run-playnite-tests-isolated.ps1传RunConfiguration.DisableAppDomain=true；隔离输出要保持短路径，否则.NET Framework xUnit可能在MAX_PATH或adapter加载阶段失败。正确参数下R18 1/1通过、0 skip。R18真实STA Window与detached scaleprobe测量口径不同：20k媒体分别观测到7和44个容器，不把差异解释成产品回归；保留Standard行模式与禁用列虚拟化，因为共享注释记录了回收行+星号文本列的布局风险。两轮耐久滚动中位约30ms、p95约43–52ms，但workspace_switch_layout p95仍约439–463ms，且操作同时含同步UpdateLayout/整页切换；继续保留U09-04未归因状态。原始报告和清理边界见evidence/U06-08-U09-04-scroll-followup-20261102。
+
+## Round5 页面激活布局经验（2026-11-02）
+
+缓存工作区的布局更新必须同时检查PageHost当前内容与缓存集合中的引用身份；按页面类型识别不够，RenderHarness/测试可能注入未缓存的同类内容。隐藏缓存页不需要随每次窗口尺寸变化重排，激活时应用当前窗口宽高即可。行为回归覆盖1366→1040→980宽度并确认未激活页尺寸保持原值。
+
+本轮唯一耐久候选在120秒动作+30秒稳定观察中记录203次workspace_switch_layout，p95 408.80ms。该动作合并主题切换与同步布局，不能作为呈现帧或根因结论；与前两轮p95比较只作为趋势观察。

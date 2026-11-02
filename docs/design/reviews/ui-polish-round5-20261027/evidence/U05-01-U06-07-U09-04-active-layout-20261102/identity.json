@@ -1,0 +1,57 @@
+{
+  "sourceCommit": "25bcbf7934575e6aa933373e1f508a1234b28b97",
+  "parentCommit": "de9fe37d70d75b9b3d8d1fa02b3cb85d58b35750",
+  "changedFiles": [
+    "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs",
+    "tests/GameSaveCenter.Playnite.Tests/R08PageSwitchBehaviorTests.cs"
+  ],
+  "sourceFileSha256": {
+    "tests/GameSaveCenter.Playnite.Tests/R08PageSwitchBehaviorTests.cs": "d43ce961a6dc6359373176539cd9ad9ba24b8498be90e7b239c6429c27548786",
+    "src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs": "8b97cc5eb0cc0ca1c5815369a6735f38ef84b2d1116545c5479d22ce6844ac7f"
+  },
+  "validation": {
+    "behaviorTests": {
+      "name": "R08PageSwitchBehaviorTests",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "notExecuted": 0,
+      "trxSha256": "e7130d8d2268fae51ba6f29f770da93a17c53b429fb6240b01b28dd4b39d592d"
+    },
+    "renderQa": {
+      "report": "renderqa/render-qa-report.txt",
+      "reportSha256": "9a97e40fab261a72fc469d24a962c3f6ed4affd955e4e3206383d398d417b4de",
+      "pngCount": 394,
+      "pngManifest": "renderqa/png-manifest.json",
+      "pngManifestSha256": "6d72e5c9610e6a26fcc30f250a57e06855d6634cc63c95d570c5fa5534403138",
+      "sampleUtc": "2026-11-02T00:00:00.0000000+00:00",
+      "workingTreeClean": true
+    },
+    "enduranceProbe": {
+      "report": "performance/enduranceprobe-report.txt",
+      "reportSha256": "e36031c54ac571014faa1fa4da85330b079f03cccd6c8baa7f25bac3f0d6a2f6",
+      "durationSeconds": 120,
+      "settleSeconds": 30,
+      "cycles": 203,
+      "workspaceSwitchLayoutP95Ms": 408.8,
+      "workspaceSwitchLayoutMaxMs": 544.66,
+      "workingTreeClean": true
+    },
+    "preCommitBuild": {
+      "diagnostics": "build/20261102T023155274Z-89cfa826/summary.json",
+      "sourceCommit": "de9fe37d70d75b9b3d8d1fa02b3cb85d58b35750",
+      "workingTreeClean": false,
+      "outcome": "passed",
+      "runType": "solution-build",
+      "testsRequested": false,
+      "dirtyPaths": [
+        " M src/GameSaveCenter.Playnite/Views/AcrylicProductionShellView.xaml.cs",
+        " M tests/GameSaveCenter.Playnite.Tests/R08PageSwitchBehaviorTests.cs"
+      ]
+    },
+    "renderHarnessAssembly": {
+      "path": "tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarness.exe",
+      "sha256": "0296f039ca83bbcd2a6bad064af0ebb8ef4cdfd6a470858488bde120df4c7ab5"
+    }
+  }
+}

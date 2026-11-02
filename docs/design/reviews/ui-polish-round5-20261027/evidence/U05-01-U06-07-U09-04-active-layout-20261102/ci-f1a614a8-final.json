@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "runId": 41371608155,
+  "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41371608155",
+  "headBranch": "main",
+  "headSha": "f1a614a8fb4babffaf8cc2b1f7b6d1c1cb773582",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 125043065473,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "allStepsCompleted": true
+    },
+    {
+      "id": 125043065257,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "allStepsCompleted": true
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13112040092,
+      "name": "GameSaveCenter-windows-preview",
+      "bytes": 90790166,
+      "sha256": "c14e51b3fcbb8bf5c3a769bf9a9e120c5ac0df733998fca70044c1015e654c8b"
+    },
+    {
+      "id": 13111820866,
+      "name": "GameSaveCenter-build-diagnostics",
+      "bytes": 2031643,
+      "sha256": "2bc638dd69a59d3c806662993f36062efcf25c4394c31d0034e70341a7c22b8e"
+    },
+    {
+      "id": 13110840123,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "bytes": 972435,
+      "sha256": "8024c1c5b93367c6bde43b19caf3d1c10fcec682a8209f82e0e41e4cccb44c08"
+    }
+  ],
+  "queriedAtUtc": "2026-11-02T03:07:19Z",
+  "notes": [
+    "All two applicable workflow jobs and every listed step completed successfully.",
+    "This resolves the formerly in-progress baseline job recorded by the earlier query snapshot."
+  ]
+}

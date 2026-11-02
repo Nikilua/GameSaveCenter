@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "25bcbf7934575e6aa933373e1f508a1234b28b97",
+  "status": "completed",
+  "cleanupCommand": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+  "exactTargets": [
+    {
+      "relativePath": ".tmp/r5u051",
+      "fullPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\r5u051",
+      "designatedRoot": "tmp",
+      "fileCount": 1909,
+      "bytes": 324321808.0,
+      "directoryCount": 241,
+      "reparsePointCount": 0,
+      "ownership": "本轮U05-01/U06-07/U09-04构建、行为、渲染与耐久探针输出"
+    },
+    {
+      "relativePath": "artifacts/build-diagnostics/20261102T021458454Z-bc361694",
+      "fullPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261102T021458454Z-bc361694",
+      "designatedRoot": "artifacts",
+      "fileCount": 6,
+      "bytes": 161705.0,
+      "directoryCount": 0,
+      "reparsePointCount": 0,
+      "ownership": "本轮首次预提交构建诊断，成功且被后续同源码构建替代"
+    },
+    {
+      "relativePath": "artifacts/build-diagnostics/20261102T023155274Z-89cfa826",
+      "fullPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\build-diagnostics\\20261102T023155274Z-89cfa826",
+      "designatedRoot": "artifacts",
+      "fileCount": 6,
+      "bytes": 160869.0,
+      "directoryCount": 0,
+      "reparsePointCount": 0,
+      "ownership": "本轮最终候选预提交构建诊断，完整归档于evidence/build/"
+    }
+  ],
+  "containment": "Resolved absolute paths were confirmed under this repository .tmp or artifacts root immediately before deletion; no nested reparse points were present.",
+  "occupancy": "No process command line referenced the exact targets; RenderHarness and R08 tests had exited. Generated reports and selected audit evidence were copied and hash-checked before removal.",
+  "documentationReferences": "No operational Markdown/JSON reference to .tmp/r5u051 was found. Temporary provenance is recorded only in this cleanup manifest.",
+  "retained": [
+    "Final Render QA report and SHA manifest for all 394 PNGs",
+    "Four representative Light/Dark PNGs",
+    "Full 120s + 30s endurance report",
+    "R08 test TRX and console log",
+    "Latest build diagnostic summary and logs",
+    "Initial failing and restored-parent Render QA reports",
+    "Other task TRX/TestResults, archives, configs, prior packages and unrelated artifacts"
+  ],
+  "disksBefore": {
+    "C": 4562968576
+  },
+  "disksAfter": {
+    "C": 4892147712
+  },
+  "deletionSummary": {
+    "pathsRemoved": [
+      ".tmp/r5u051",
+      "artifacts/build-diagnostics/20261102T021458454Z-bc361694",
+      "artifacts/build-diagnostics/20261102T023155274Z-89cfa826"
+    ],
+    "command": "Remove-Item -LiteralPath <exact validated target> -Recurse -Force",
+    "fileCount": 1921.0,
+    "logicalBytes": 324644382.0
+  },
+  "measuredSpaceDelta": {
+    "note": "Volume free-space delta includes concurrent system activity and is not attributed solely to deleted logical bytes.",
+    "cFreeBytes": 329179136
+  },
+  "completedAtUtc": "2026-11-02T03:17:36.3832897+00:00"
+}

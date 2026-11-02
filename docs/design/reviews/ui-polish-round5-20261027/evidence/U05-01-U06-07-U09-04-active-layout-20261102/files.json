@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "25bcbf7934575e6aa933373e1f508a1234b28b97",
+  "files": [
+    {
+      "path": "BASELINE.md",
+      "bytes": 5479,
+      "sha256": "c8452e1408bd2f8871c805ac8d3f68db031dc0907f3944f7917e0759a6fa3223"
+    },
+    {
+      "path": "build/20261102T023155274Z-89cfa826/build-console.txt",
+      "bytes": 1289,
+      "sha256": "33ab9521350409339c19ddcc6b5a384018ed4bfb31546521a835dec9a5c9e98b"
+    },
+    {
+      "path": "build/20261102T023155274Z-89cfa826/restore-console.txt",
+      "bytes": 86,
+      "sha256": "0a5293e62d3bb4d8819d8d749f51206d3aa424744e622337bee96070823f245b"
+    },
+    {
+      "path": "build/20261102T023155274Z-89cfa826/sdk-info-console.txt",
+      "bytes": 1606,
+      "sha256": "85a5ee09cb4ec4d1ce14e67a8a421f8514dc955842b7d55c3191eff4534e9d2f"
+    },
+    {
+      "path": "build/20261102T023155274Z-89cfa826/sdk-list-console.txt",
+      "bytes": 78,
+      "sha256": "3959cd1edd590ddb1913a8568f7945a2aaec221c52dd031a4cbd211b167bcae6"
+    },
+    {
+      "path": "build/20261102T023155274Z-89cfa826/sdk-version-console.txt",
+      "bytes": 9,
+      "sha256": "70ec4cc548877bf3c7f1258c67d15d57e69e464f013bfa39b457ba0b566e6d08"
+    },
+    {
+      "path": "build/20261102T023155274Z-89cfa826/summary.json",
+      "bytes": 157801,
+      "sha256": "9fa1b4f0b36a594f5b973a10afad64e825839efccad165414fece8646da68257"
+    },
+    {
+      "path": "ci-25bcbf79-query.json",
+      "bytes": 1306,
+      "sha256": "fe4e0759806c9d34a9e66fcb05a64c1193f2ef24ac3ffa7d58330362c9700eac"
+    },
+    {
+      "path": "ci-de9fe37d-final.json",
+      "bytes": 1552,
+      "sha256": "d9640acaee60f5fdab5ca5397ff401a846ad70ce71e6e58a4b45ef75ce03b117"
+    },
+    {
+      "path": "ci-f1a614a8-final.json",
+      "bytes": 1590,
+      "sha256": "18c79264e0e32a15cb90ed4ea66ec6d27e51cf40e7f4b3bc786931780822b3ad"
+    },
+    {
+      "path": "cleanup.json",
+      "bytes": 3268,
+      "sha256": "0df5c41c332cec99c9046824f48efc73de4b96c81b6ca0336623587ba47261d6"
+    },
+    {
+      "path": "diagnostics/first-candidate-render-qa-failed.txt",
+      "bytes": 1158104,
+      "sha256": "5b4a857be9caaf4e4183c1546f5c44a9a5882af20d685c18d7b785544834b313"
+    },
+    {
+      "path": "diagnostics/restored-parent-render-qa.txt",
+      "bytes": 1157388,
+      "sha256": "f747b46e240b9d3fdf750e867ebe74ff79d15992ff92c5dbef19e2f1edb43120"
+    },
+    {
+      "path": "identity.json",
+      "bytes": 2438,
+      "sha256": "05ec3a64ee86a26a72fda563f4f6901673ad6c06587beeedbdf6248a497e3887"
+    },
+    {
+      "path": "performance/enduranceprobe-report.txt",
+      "bytes": 39597,
+      "sha256": "e36031c54ac571014faa1fa4da85330b079f03cccd6c8baa7f25bac3f0d6a2f6"
+    },
+    {
+      "path": "renderqa/png-manifest.json",
+      "bytes": 62656,
+      "sha256": "6d72e5c9610e6a26fcc30f250a57e06855d6634cc63c95d570c5fa5534403138"
+    },
+    {
+      "path": "renderqa/render-qa-report.txt",
+      "bytes": 1157385,
+      "sha256": "9a97e40fab261a72fc469d24a962c3f6ed4affd955e4e3206383d398d417b4de"
+    },
+    {
+      "path": "renderqa/samples/Overview-1040x700-dark.png",
+      "bytes": 60907,
+      "sha256": "57b59ffe87409138dd3775f5ccc3a99e7cd6aa00d30202af35390843b2f84c6c"
+    },
+    {
+      "path": "renderqa/samples/Overview-1040x700-light.png",
+      "bytes": 58481,
+      "sha256": "e2bce53c5203822814256dea4195b447b269e3f03ee878204ffb91bfea000126"
+    },
+    {
+      "path": "renderqa/samples/Task-1040x700-dark.png",
+      "bytes": 69042,
+      "sha256": "41c245220c36697526081aff9bde984601bc334cfa43dd0afe2b15a56e411e68"
+    },
+    {
+      "path": "renderqa/samples/Task-1040x700-light.png",
+      "bytes": 65375,
+      "sha256": "c758d4aabdcb3204955108815b42f1fb60e5f4565ae6c971e42826e7bc919526"
+    },
+    {
+      "path": "tests/R08PageSwitchBehaviorTests-console.log",
+      "bytes": 1789,
+      "sha256": "b7bc9de8387057786c75cb97b46c71502f5df0adc094382f057d4e23f7fd08e8"
+    },
+    {
+      "path": "tests/R08PageSwitchBehaviorTests-final.trx",
+      "bytes": 10702,
+      "sha256": "e7130d8d2268fae51ba6f29f770da93a17c53b429fb6240b01b28dd4b39d592d"
+    }
+  ],
+  "entryCount": 23,
+  "totalBytes": 4017928.0,
+  "note": "Manifest lists every archived evidence file except files.json itself."
+}

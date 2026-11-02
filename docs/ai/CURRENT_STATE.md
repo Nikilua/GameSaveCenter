@@ -461,3 +461,11 @@ U05加载反馈与真实进度列完成同数据、同主题 before/after Render
 
 ## 2026-11-02 Round5 U06-08 / U09-04 大列表与滚动复测
 当前源码f1a614a8的SDK8.0.423 Release隔离构建exit0、0 warning/0 error；RenderHarness专案构建也exit0。R18大列表受控STA Window测试1/1通过、0 skip：20k Task实现10/8行，20k媒体后端限2k UI项并实现7/7行；detached scaleprobe20个跳点显示44个媒体行容器，已明确不等同宿主容器积累。两轮120秒耐久加30秒观察均exit0，Task页滚动p95为52.02/42.96ms，页面切换布局p95为463.20/439.21ms，不能归因到单一控件或动画。生产源码没有改动，临时RenderHarness标签已还原。证据docs/design/reviews/ui-polish-round5-20261027/evidence/U06-08-U09-04-scroll-followup-20261102/；U06-08仍代码完成待验收，U09-04仍进行中。
+
+## 2026-11-02 Round5 U05-01/U06-07/U09-04 活动工作区重排
+
+生产提交25bcbf7934575e6aa933373e1f508a1234b28b97已推送。仅对PageHost当前托管的缓存页应用响应式布局，隐藏缓存页在重新激活时使用最新尺寸；外部注入内容不会被当作缓存工作区重排。候选Release build与R08切换行为组分别0 warning/error、5/5通过且0 skip；固定UTC双主题Render QA 394图、0 PROBLEM。
+
+受控WPF Window在1040×700 DIP下进行120秒动作与30秒稳定观察，203个页面切换布局样本p95 408.80ms、最大544.66ms，低于f1a614a8两轮463.20/439.21ms；合并计时仍包含主题变化和同步整页布局，不归因单一控件。U09-04继续进行中。U05-01、U06-07维持代码完成待验收，真实Playnite/UIA/实体输入和物理DPI尚未验证。
+
+f1a614a8的baseline与SDK10 CI jobs均已success；文档提交de9fe37d两个适用job均已success。25bcbf79的SDK10 job成功，baseline job最近仍在编译与测试，未计通过。required-checks此前403，不重复查询。证据位于docs/design/reviews/ui-polish-round5-20261027/evidence/U05-01-U06-07-U09-04-active-layout-20261102/，构建安装启动最终门禁仍待冻结候选执行。

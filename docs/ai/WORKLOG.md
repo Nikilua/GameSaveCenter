@@ -12918,3 +12918,12 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 20k Task在R18受控窗口最多实现10行/8行视口；20k媒体后端保留2k UI项且实现7/7。detached scaleprobe的20点后44行容器有夹具差异，不推断宿主累积。耐久Task页滚动p95为52.02和42.96ms；整页切换布局p95为463.20和439.21ms，U09-04不结案。
 - 归档包含源码/程序集身份、构建summary、TRX、完整探针报告及两次测试运行器失败诊断；只清理本批三个隔离目录，具体清单和空间前后见同目录cleanup.json。
 - 纯文档变更按源码/Markdown链接校验；新增CI快照将Run 41371608155绑定到精确SHA f1a614a8：SDK10 job成功，baseline job在查询时仍停在Playnite扩展打包，尚无整体结论。本轮文档提交的精确SHA CI需推送后查询；不声称真实Playnite、外部UIA、实体键鼠/IME、物理DPI或安装启动完整链已验。
+
+## 2026-11-02 Round5 U05-01/U06-07/U09-04 活动页布局
+
+- 源码提交25bcbf7934575e6aa933373e1f508a1234b28b97已推送；PageHost只重排当前托管的缓存页，隐藏页激活时再按最新尺寸更新。
+- SDK8.0.423 Release候选编译0 warning/0 error；R08切换行为5/5、0失败、0 skip。Source Validation通过；WPF静态审查218 XAML/0 errors，208 warnings与1327 info来自根目录扫描，包含其他临时快照，不归因本批。
+- 精确SHA Render QA 394 PNG/0 PROBLEM，双主题固定UTC；120秒+30秒耐久观察203个页面切换布局样本p95 408.80ms、max 544.66ms。仍是合并主题与整页同步布局的逻辑代理，U09-04未结案。
+- f1a614a8双SDK run41371608155与de9fe37d文档run41376045182均已成功；25bcbf79 run41379419270的SDK10 job成功、baseline job查询时仍处编译测试。本批 required-check 名单和本地完整安装启动链未验。
+- 自有临时输出共1921文件/324,644,382字节，精确目标限于.tmp/r5u051与两份artifacts/build-diagnostics子目录；无重解析点、进程占用或文档引用。清理前C盘空闲4,562,968,576字节，清理后4,892,147,712字节；日志与可复用截图/哈希已归档于活动布局证据目录。
+- 纯文档阶段再次运行Source Validation，退出0；五份变更Markdown本地相对链接783项检查、0缺失；git diff --check退出0。按文档-only规则未重复本地完整构建安装链。
