@@ -1725,3 +1725,9 @@ Round5当前源64f26f58153efdb4a634bf8a0aa7c832898a581d已含媒体收件箱工�
 选中蓝色圆角框不应改变行内容的测量尺寸或位置。OverviewRecentTaskItemStyle要把`TaskItemChrome`和`ContentPresenter`分层，保留4×2 DIP inset与14 DIP圆角；共享隐式ListBoxItem模板也要让选择/焦点描边覆盖内容容器外侧，不可通过修改Border厚度或Margin挤压图标/文字。对其它选择态先查层级：`DataGridRow`、媒体卡片已有独立覆盖层，Overview保护项/ComboBox仅改颜色，避免为了统一而重写无同类问题的样式。具体几何回归与成对图见Round5 `evidence/U06-02-selection-overlay-20261102/`。
 
 当前生产源码SHA为`cb7b78fd514e7d6eaa2a34e341340d5d06610508`；文档冻结候选`0b61ee51ff0d78bf2f0f7c428cf358721753e558`无src/tests/scripts/resources差异。U09-05最终门禁应按真实`GameSaveCenter-一键构建安装运行.cmd`链和独立`scripts/build.cmd`分别执行，不能用局部`dotnet build`互代；本次两入口SDK8.0.423 Release均exit0，每入口2025测试/1967通过/58既有skip/0失败/155个WPF隔离类，完整TRX与日志哈希在`evidence/U09-final-cb7b78fd-20261102/local-gates.json`。安装包身份、六个DLL哈希、启动进程及GitHub `windows-build.yml` run41403537450两job/artifact身份同目录归档。只删除经核实的阶段专属D盘TEMP副本，保留最新包、诊断、日志与不确定归属的`.tmp/`历史数据。required-check接口既有403不能反复探测，U09-06记远端待验；真实Playnite视觉、外部UIA、实体输入/IME/物理DPI与数据写操作继续按边界如实报告。
+
+## 2026-11-02 用户复补：选中描边不移动内容
+
+用户确认蓝色圆角描边本身可以保留，选中行不应因选框产生右下位置偏移或图标裁切。这条要求优先于同日先前记录的Overview 4×2 DIP inset；当前`f9d09cb2`已将该Margin移除。共享ListBox、页面专用ListBox、DataGridRow、媒体卡等选择实现并非只有一种：改动前分别盘点其模板和覆盖层，只有存在内容位移的样式才修。检查选择与焦点状态时需断言内容及列表槽位几何不变，同时保留颜色/边框反馈；不要为视觉统一给控件添加非必要Margin或Transform。
+
+U06-02/U08-08在精确提交上的离屏双主题验证及R10几何回归已通过，但Playnite宿主实页、外部UIA、实体输入/IME和物理DPI仍待验。当前底层完整脚本成功不代表包装`.cmd`验收成功；包装器在先前源码`0067525f`已被ConstrainedLanguage dot-source拒绝，既无入口改动也不应重复试探。当前80项状态为5已满足、71代码完成待验收、U09-04/05/08进行中、U09-06远端待验；真实存档恢复、媒体删除和云端写入不做。

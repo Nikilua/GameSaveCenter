@@ -1,0 +1,1054 @@
+{
+  "schemaVersion": 1,
+  "candidateCommit": "f9d09cb2b7665355a74926e2cd4a801567c60baa",
+  "candidateTitle": "对齐最近活动选框",
+  "pushedBranch": "main",
+  "sdk": {
+    "version": "8.0.423",
+    "configuration": "Release",
+    "hostRuntime": "8.0.29",
+    "target": "Windows 10.0.22000"
+  },
+  "selectionAudit": {
+    "overviewLocalTemplate": "移除选中态 TaskItemChrome.Margin=4,2；保留背景/蓝色边框/14 DIP圆角，避免外框内缩造成视觉及内容偏移。",
+    "sharedListBox": "隐式 ListBoxItem 选中/焦点框与内容层分离，Margin为0；不在公共选择态添加位置偏移。",
+    "otherSelectionStyles": "DataGridRow、媒体卡已有独立覆盖层；Overview保护项和ComboBox只改变颜色，本批不做无问题的重写。",
+    "unchanged": [
+      "命令",
+      "Binding",
+      "游戏选框",
+      "滚动条系统",
+      "业务/错误/取消/恢复安全语义"
+    ]
+  },
+  "sourceValidation": {
+    "command": "python scripts/validate-source.py",
+    "exitCode": 0
+  },
+  "wpfStatic": {
+    "command": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py src/GameSaveCenter.Playnite",
+    "xamlFiles": 26,
+    "errors": 0,
+    "warnings": 26,
+    "info": 164
+  },
+  "renderQA": {
+    "reportPath": "artifacts/ui-qa/U06-02-selection-frame-align-20261102/render-qa-report.txt",
+    "reportSha256": "9F0D398B7CA88D934FDC8DAFEA05C952AF04803314424118CAF40373898EE22F",
+    "pngCount": 394,
+    "problemCount": 0,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "sampleTimeUtc": "2026-11-02T00:00:00Z",
+    "dpi": "1.00 offscreen logical DIP; real host DPI not inferred",
+    "screenshots": [
+      {
+        "path": "overview-light-1040x700.png",
+        "sha256": "D8EB9FADBD9B6AB805D911D06BFD09E8916851FA339BB76374372050D7FB08CB",
+        "bytes": 58708
+      },
+      {
+        "path": "overview-dark-1040x700.png",
+        "sha256": "6AC9AA50322330561012CB958BA9BB04DBE6529EA24FD8D770CE5CEF5057B925",
+        "bytes": 61158
+      }
+    ]
+  },
+  "focusedBehavior": {
+    "test": "R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition",
+    "outcome": "3/3 passed, 0 failed, 0 skipped",
+    "trx": {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R10RecentAccessBehaviorTests/wpf.R10RecentAccessBehaviorTests.trx",
+      "bytes": 6426,
+      "sha256": "B6402C00699F2CEDBF4B81C93426C7D21B51E4860D0A2B1561E81E188C6EBA5C"
+    },
+    "fullRunOutcomes": [
+      {
+        "outcome": "Passed",
+        "count": 3
+      }
+    ]
+  },
+  "directFullBuildInstallRun": {
+    "command": "scripts/dev-install-run.ps1 -Configuration Release -PlayniteExecutable D:\\software\\Playnite\\Playnite.DesktopApp.exe -BuildOutputRoot .tmp\\round5-u09-final-f9d09cb2\\build -TestTempRoot D:\\Temp\\gsc-r5-u09-final-f9d09cb2\\tests",
+    "exitCode": 0,
+    "note": "直接调用底层脚本完成Release构建、测试、发布、打包、安装身份核验和启动；这不能代替中文根cmd入口。",
+    "diagnosticsId": "20261102T131143603Z-ca1da7df",
+    "buildOutputRoot": ".tmp/round5-u09-final-f9d09cb2/build",
+    "tempRoot": "D:/Temp/gsc-r5-u09-final-f9d09cb2",
+    "buildConsole": {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/build-console.txt",
+      "bytes": 1369,
+      "sha256": "AB4724811E352000992E2DD794E9E78C305A562636B30519A592EDE3AFFCECE0"
+    },
+    "runLog": {
+      "path": "artifacts/one-click-install.log",
+      "bytes": 121111,
+      "sha256": "0554C330BB8DC1E29ED34F053C67BB42796F3252FF9A962C9C1BBAF2166748BC"
+    },
+    "installReport": {
+      "path": "artifacts/build-diagnostics/U09-final-f9d09cb2/install-report.txt",
+      "bytes": 2347,
+      "sha256": "44A356DDA91BF4C26583F37595EF36156A5E51E11551476FA5DC3E67165A992B"
+    }
+  },
+  "testSummary": {
+    "total": 2025,
+    "passed": 1967,
+    "failed": 0,
+    "skipped": 58,
+    "skippedArePreexisting": true,
+    "skipCountedAsPass": false,
+    "skipReasons": [
+      {
+        "reason": "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。",
+        "count": 57
+      },
+      {
+        "reason": "该测试会移动系统鼠标指针；默认跳过。设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 后可单独运行。",
+        "count": 1
+      }
+    ],
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "trxCount": 158,
+    "wpfIsolatedClassRuns": 155,
+    "projects": [
+      {
+        "name": "core",
+        "total": 157,
+        "passed": 157,
+        "skipped": 0
+      },
+      {
+        "name": "worker",
+        "total": 401,
+        "passed": 401,
+        "skipped": 0
+      },
+      {
+        "name": "playnite-source",
+        "total": 575,
+        "passed": 557,
+        "skipped": 18
+      },
+      {
+        "name": "playnite-wpf-isolated",
+        "total": 892,
+        "passed": 852,
+        "skipped": 40
+      }
+    ]
+  },
+  "package": {
+    "path": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "bytes": 45737931,
+    "sha256": "CE8AE7BBD4E49E1215B6151FD10317F02B22A728BCC966E442BE025D1F81BE29",
+    "pextBytes": 45737931,
+    "pextSha256": "CE8AE7BBD4E49E1215B6151FD10317F02B22A728BCC966E442BE025D1F81BE29",
+    "publicVersion": "0.6.73"
+  },
+  "installed": {
+    "directory": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "manifestVersion": "0.6.73",
+    "pluginInformationalVersion": "0.6.73+f9d09cb2b7665355a74926e2cd4a801567c60baa",
+    "pluginAssemblyVersion": "0.6.73.0",
+    "pluginSha256": "12268C3494A69BD36BD34C38EA7180824BB9D97241E964D6BEDE71B8EEB43060",
+    "installReportNotesDiskIdentityNotRuntimeLoaded": true,
+    "assemblies": [
+      {
+        "path": "GameSaveCenter.Playnite.dll",
+        "informationalVersion": "0.6.73+f9d09cb2b7665355a74926e2cd4a801567c60baa",
+        "sha256": "12268C3494A69BD36BD34C38EA7180824BB9D97241E964D6BEDE71B8EEB43060"
+      },
+      {
+        "path": "GameSaveCenter.Core.dll",
+        "informationalVersion": "0.6.73+f9d09cb2b7665355a74926e2cd4a801567c60baa",
+        "sha256": "3D54F96705DA140AE4B296E2F0455D9ECDAA2F3019B99CF42739C7ADB1592221"
+      },
+      {
+        "path": "GameSaveCenter.Contracts.dll",
+        "informationalVersion": "0.6.73+f9d09cb2b7665355a74926e2cd4a801567c60baa",
+        "sha256": "BE25408CD8F569BF00B010753C9A4CE8D63CC68260C678D62BA8AA1ABED1CD1D"
+      },
+      {
+        "path": "Worker/GameSaveCenter.Worker.dll",
+        "informationalVersion": "0.6.73+f9d09cb2b7665355a74926e2cd4a801567c60baa",
+        "sha256": "7DB4268F942C9FA2D86B220D971A515EF5F78FF294FE3B3CAB72A7BF21D501F1"
+      },
+      {
+        "path": "Worker/GameSaveCenter.Core.dll",
+        "informationalVersion": "0.6.73+f9d09cb2b7665355a74926e2cd4a801567c60baa",
+        "sha256": "604E8BB1CD60F009BCBA3290AF820E3AC71EE31F3FFAFFC974FE3F666222601E"
+      },
+      {
+        "path": "Worker/GameSaveCenter.Contracts.dll",
+        "informationalVersion": "0.6.73+f9d09cb2b7665355a74926e2cd4a801567c60baa",
+        "sha256": "D06B0CB066AA5EFB37C36594C1CA65CE04DAD2C8C97A8D30F6EBBA75B67648DA"
+      }
+    ]
+  },
+  "playnite": {
+    "path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+    "pid": 33440,
+    "startedAt": "2026-11-02T13:33:33.6692082Z",
+    "verified": true,
+    "verification": "process path and start time only; plugin page not manually observed"
+  },
+  "priorEntrypointAttempts": {
+    "chineseRootWrapper": {
+      "attemptCommit": "0067525f768a26b82a00ee0dd7966b51d06c3bfe",
+      "exitCode": 1,
+      "failure": "PowerShell ConstrainedLanguageMode: Cannot dot-source this command because it was defined in a different language mode.",
+      "currentCandidateExactRun": "not repeated because wrapper/script are unchanged and the same language-mode rejection already occurred."
+    },
+    "independentBuildCmd": {
+      "attemptCommit": "0067525f768a26b82a00ee0dd7966b51d06c3bfe",
+      "exitCode": 1,
+      "failure": "PowerShell ConstrainedLanguageMode: DotSourceNotSupported in scripts/build.ps1.",
+      "currentCandidateExactRun": "not repeated because script/wrapper are unchanged and the same language-mode rejection already occurred."
+    }
+  },
+  "ci": {
+    "runId": 41449095659,
+    "runNumber": 1432,
+    "workflow": ".github/workflows/windows-build.yml",
+    "headSha": "f9d09cb2b7665355a74926e2cd4a801567c60baa",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 125289540494,
+        "name": ".NET SDK 10.0.401 编译与测试复核",
+        "status": "completed",
+        "conclusion": "success",
+        "completedSteps": 8,
+        "failedSteps": 0
+      },
+      {
+        "id": 125289540888,
+        "name": "编译、测试与打包",
+        "status": "completed",
+        "conclusion": "success",
+        "completedSteps": 15,
+        "failedSteps": 0
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 13145586337,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "bytes": 974304,
+        "sha256": "2c6258e938242f28c746a7f483e8a9ca3632632f7430b6c90036704bab3f5058"
+      },
+      {
+        "id": 13148495442,
+        "name": "GameSaveCenter-windows-preview",
+        "bytes": 90790562,
+        "sha256": "7e05b81fd9d159308cb4e3a4917dc0daeae91104c339a9895c0f6d7cb10c6304"
+      },
+      {
+        "id": 13147039787,
+        "name": "GameSaveCenter-build-diagnostics",
+        "bytes": 2029488,
+        "sha256": "b184e7e9e0795880bac33a9d2ba72fc20ad7ac5107a8bd829028481bb6691551"
+      }
+    ],
+    "requiredChecks": "仍受此前读取保护/required-check API返回403限制；未重复探测。"
+  },
+  "trxInventory": [
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/core/core.trx",
+      "bytes": 232037,
+      "sha256": "65814DBFE031D20D747523CD478B99BAD8A3B6B2445F83B0D7A6CEC83536E26D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/playnite-source/playnite-source.trx",
+      "bytes": 877168,
+      "sha256": "B6609608F633B145F842B05B4D786956D8BD9B325DBE31F2B5999A210D67BEF5"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/worker/worker.trx",
+      "bytes": 612934,
+      "sha256": "D22FE89041FEFBFB417104E432C3ED9E57A0FFE7C9D0743E9E22C0E093BA25E9"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.AsyncThumbnailImageTests/wpf.AsyncThumbnailImageTests.trx",
+      "bytes": 6339,
+      "sha256": "E6FEE9B3D4E30200DF90B7DD019986CCAAD8A74E9EA833114DAE0243E8219C42"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.AsyncThumbnailLoaderTests/wpf.AsyncThumbnailLoaderTests.trx",
+      "bytes": 12115,
+      "sha256": "B1ECA83497CBE668350E6E36DFFFBD5476FC01228D297535A27D5AA76001AA08"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.CloudTransferSummaryProductionBehaviorTests/wpf.CloudTransferSummaryProductionBehaviorTests.trx",
+      "bytes": 3559,
+      "sha256": "9E3A4D23DA91BDD18DCB336E1CEBF892F86610BACC0D66F587FAFA4AA1378DE6"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.CommandDirectoryBehaviorTests/wpf.CommandDirectoryBehaviorTests.trx",
+      "bytes": 9596,
+      "sha256": "F6285DDC3C7A2CA272ECAE85E236542E9FF48E80E4AA7F2E283C746B0AB265FD"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.CommandDirectoryKeyboardBehaviorTests/wpf.CommandDirectoryKeyboardBehaviorTests.trx",
+      "bytes": 12613,
+      "sha256": "24D652C5B22099809C0531C4A3D0F3CCAC0B7A1E4D5FB01B95A24D662D4F070A"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.CommandDirectoryRegisteredRouteTests/wpf.CommandDirectoryRegisteredRouteTests.trx",
+      "bytes": 61896,
+      "sha256": "7F402670A5A0277C47FED4400B9E0F578F21EED55AF454C1C259A72E3BE83F25"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.CommandDirectoryResultLayoutBehaviorTests/wpf.CommandDirectoryResultLayoutBehaviorTests.trx",
+      "bytes": 5077,
+      "sha256": "0E471E06CA81B21246F0624B9F209007C263564AC24C373FFF3DFE7267AF31DC"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.CommandDirectoryReviewBehaviorTests/wpf.CommandDirectoryReviewBehaviorTests.trx",
+      "bytes": 8500,
+      "sha256": "515ED19538EA1C3615C3EC3BFC20E943AF67978BB5DA06ECD8BEB9C7842A2F80"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.CompactWorkspaceTableViewportBehaviorTests/wpf.CompactWorkspaceTableViewportBehaviorTests.trx",
+      "bytes": 23658,
+      "sha256": "D5E69B4E5FEFFD3B7EB83CC26E475036DBB60C20FB9EA9AEF3D38B06E1DCCE23"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.DataGridColumnVisibilityBehaviorTests/wpf.DataGridColumnVisibilityBehaviorTests.trx",
+      "bytes": 9536,
+      "sha256": "6A2AE65C14FF8A3D19EC2F4B9CFDE570F2C9592D2B41B7B8EC2F3C7FDAC1011F"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.DataGridHorizontalWheelBehaviorTests/wpf.DataGridHorizontalWheelBehaviorTests.trx",
+      "bytes": 3698,
+      "sha256": "D964548AAD2356257D03AC663EDB2281946D52292E15B44BAFC3CC88AC79874E"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.DataGridViewConfigurationBehaviorTests/wpf.DataGridViewConfigurationBehaviorTests.trx",
+      "bytes": 6552,
+      "sha256": "A35DEF28B71E6C7BD9099CC46034A0F4C18471B88258CC12C975C44DEE664C79"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.GamePickerFilterBehaviorTests/wpf.GamePickerFilterBehaviorTests.trx",
+      "bytes": 4892,
+      "sha256": "8D2B1860AAF73B7BC6B869169BDB9B66787FF3AA9888146B12260577BEBE3B20"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.GamePickerKeyboardBehaviorTests/wpf.GamePickerKeyboardBehaviorTests.trx",
+      "bytes": 12532,
+      "sha256": "0979F32F74F44CDE31169DF614A7A86BEF03FF1B9181D6CBBB8EE36218F575D6"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.KeyboardFocusSourceTests/wpf.KeyboardFocusSourceTests.trx",
+      "bytes": 9293,
+      "sha256": "2780B893FB3BE661D86FA50456E0BF527615CA0B45D8F8B678D8B11F6061A0B6"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.MediaComparisonSelectionTests/wpf.MediaComparisonSelectionTests.trx",
+      "bytes": 9512,
+      "sha256": "6010017CC92D153E4527AC7E9A9BF77171EDD0F97710C059718ACE7E40C01A70"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.MediaComparisonViewportBehaviorTests/wpf.MediaComparisonViewportBehaviorTests.trx",
+      "bytes": 8107,
+      "sha256": "E5612797E382CC7A5B297A09E1703C97EB2B69A5A0FF0804ED3697F630CEEF01"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.MediaInboxGeometryTests/wpf.MediaInboxGeometryTests.trx",
+      "bytes": 6306,
+      "sha256": "670370556C2EE44EAF9D9B9E2507F2F594278A57AB570C9035B86F758F4B0FE0"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.MediaInboxScrollBehaviorTests/wpf.MediaInboxScrollBehaviorTests.trx",
+      "bytes": 110651,
+      "sha256": "222258188DDEB09705718F25CBA8798A29DB095A12628063D7A63077E8C5D8CF"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.MediaThumbnailConverterTests/wpf.MediaThumbnailConverterTests.trx",
+      "bytes": 3373,
+      "sha256": "FF7FEF940353828130258025E47E75FF1AB7FE175FFAC2CD81A941457F15E792"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.MediaWindowAnchorContractTests/wpf.MediaWindowAnchorContractTests.trx",
+      "bytes": 16945,
+      "sha256": "B73CAA5E04CCB2F82CB81D1758DD62883854524632E7B1CBDA2D4B67F7536BEE"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.NotificationInboxViewBehaviorTests/wpf.NotificationInboxViewBehaviorTests.trx",
+      "bytes": 9461,
+      "sha256": "1BCEB005E349F461C97AEE058E6E56D3B9A6CC6BF5EA6813102F05D927B683B6"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.NumericCellReadabilityTests/wpf.NumericCellReadabilityTests.trx",
+      "bytes": 4868,
+      "sha256": "BC749CFECC9674E1F35375AC5EC9C772C5E3A93681ECBFE24FC2A0E0D7B61B45"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.NumericInputTests/wpf.NumericInputTests.trx",
+      "bytes": 20152,
+      "sha256": "2D99D353D1B280753CF219040EA846A1162F5F8AFBAEFB373100B9EDCAFDD9BA"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.OverviewInteractionTests/wpf.OverviewInteractionTests.trx",
+      "bytes": 8340,
+      "sha256": "4AC25CB3F30CB987B95EFC9B30D1179E339564CD4815AC99303BCAE787EB8BC7"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.PasteNormalizationTests/wpf.PasteNormalizationTests.trx",
+      "bytes": 12891,
+      "sha256": "22C35D98390D8B10BD1BFCF4B6C0F6761A2DAD5D1E8BC648EA1B36F2EC15311B"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.PlayniteGameIconProviderTests/wpf.PlayniteGameIconProviderTests.trx",
+      "bytes": 7708,
+      "sha256": "C7481BDF2ABDC7F58D2D5EBF10046A57B4A7DFB1843BE0091FDDC504529AE9AE"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.ProcessMappingInlineActionBehaviorTests/wpf.ProcessMappingInlineActionBehaviorTests.trx",
+      "bytes": 3475,
+      "sha256": "9E6504E526E7EAAD4287A5EAD2E5224E293876A0D65B2371658B713DFDD208FC"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.ProductionShellChromeSourceTests/wpf.ProductionShellChromeSourceTests.trx",
+      "bytes": 36405,
+      "sha256": "AFF9F1987806242BA2EC87AAD072C65581F082339E1703129A064141ADB18D01"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q06ButtonStateSequenceBehaviorTests/wpf.Q06ButtonStateSequenceBehaviorTests.trx",
+      "bytes": 3427,
+      "sha256": "953B7149376B62BEE317D731561221C47E07C020BFC264B53B135E74EE2214E5"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q06ContinuousButtonBehaviorTests/wpf.Q06ContinuousButtonBehaviorTests.trx",
+      "bytes": 3433,
+      "sha256": "647742A910184A6C322EC91EFF67BD0267A3F105C5C1D60049DBF609AA131B7F"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q10CheckBoxHitBehaviorTests/wpf.Q10CheckBoxHitBehaviorTests.trx",
+      "bytes": 8084,
+      "sha256": "CC89F0DA437668AD3DE43547664B510878825E9DEB427DD6E89AA806CD4A9244"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q10ToggleSwitchStateBehaviorTests/wpf.Q10ToggleSwitchStateBehaviorTests.trx",
+      "bytes": 3454,
+      "sha256": "C0AA1D960FA4FE927B0AA4A08FC2B13ED467747D918695AE65617F6290EBB328"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q13ColumnResizeBehaviorTests/wpf.Q13ColumnResizeBehaviorTests.trx",
+      "bytes": 3484,
+      "sha256": "228E784B5D8DDD3765617BB85FF56C605F7CE6E4701D27BD4B7CED8B167BB9B7"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q13ScrollBarThumbBehaviorTests/wpf.Q13ScrollBarThumbBehaviorTests.trx",
+      "bytes": 3451,
+      "sha256": "3B464F976F5835C35CE8FE032C994F85AA827FC4733BB49438120689FB106357"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q14FilterLabelBehaviorTests/wpf.Q14FilterLabelBehaviorTests.trx",
+      "bytes": 6286,
+      "sha256": "BA579223B9841437511C4D9FEE05D004F977AC73050884E2C79D26CED01F1B35"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q14ToolbarAlignmentBehaviorTests/wpf.Q14ToolbarAlignmentBehaviorTests.trx",
+      "bytes": 23410,
+      "sha256": "D93CA9E6A7DF7589C548B3DBA4DB306F01686F2AFB51C20E3AB23107367077B1"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q23SettingsActionConfirmationBehaviorTests/wpf.Q23SettingsActionConfirmationBehaviorTests.trx",
+      "bytes": 3454,
+      "sha256": "5AB10E9585D08D8129C397F33AD013E69FC6C25118C64E26C6398524FFDC2767"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Q24FractionalDpiTypographyBehaviorTests/wpf.Q24FractionalDpiTypographyBehaviorTests.trx",
+      "bytes": 4608,
+      "sha256": "AC665183765EBC3E32291725D3F70B9122644F06B04901FA2BF8AE83B71AE344"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R02ActionAvailabilityHintTests/wpf.R02ActionAvailabilityHintTests.trx",
+      "bytes": 7951,
+      "sha256": "A482D5531ACDACF72F4D3688BEB438EC945A1D9CD8E46D598EDA4990AF9C7635"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R02ActionPriorityTests/wpf.R02ActionPriorityTests.trx",
+      "bytes": 6438,
+      "sha256": "C125372ADEBDD750FB6AC0676FC2E463192D0545443482E2093EABD104E91ABF"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R02BusyStateTests/wpf.R02BusyStateTests.trx",
+      "bytes": 9281,
+      "sha256": "6CC027858D7407034E7F69912449F302525FF27382CBCEBB6DF45FB8A355A1C4"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R02HitAreaSpacingTests/wpf.R02HitAreaSpacingTests.trx",
+      "bytes": 4805,
+      "sha256": "538726D95A1F588C2F6D591F4ED86E5962C7D3B076C5502E16605A839289F5A2"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R02OpticalAlignmentTests/wpf.R02OpticalAlignmentTests.trx",
+      "bytes": 12113,
+      "sha256": "1A95B6165D0078AD47A47C2A2731AB6A94D9C74DCEE09E6417982FE04C7B112C"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R03BilingualLengthTests/wpf.R03BilingualLengthTests.trx",
+      "bytes": 4853,
+      "sha256": "13ACE5C11AF7F45922B9E146B8C13666F61C7E4778263C481616665BD6F827B5"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R03CopySafePunctuationTests/wpf.R03CopySafePunctuationTests.trx",
+      "bytes": 6429,
+      "sha256": "4D7E9BC6EFAD4CA44367A60805FDAEF4E6F54376D0A7BA0137C7E8E0D70DF078"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R03LongPathTests/wpf.R03LongPathTests.trx",
+      "bytes": 6282,
+      "sha256": "2A9E1BB6A8882BBEF311A82FEF0B14C939EF712B7C3F89F8815720EBDEE30410"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R03NumericAlignmentTests/wpf.R03NumericAlignmentTests.trx",
+      "bytes": 17660,
+      "sha256": "A0B9C2249A070187BA2BA0D87D94B275642BEBBE884782A06CD26E3AF28DD0FA"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R03TextScaleTests/wpf.R03TextScaleTests.trx",
+      "bytes": 4895,
+      "sha256": "5687B7594F63A1D9A8716EE857E887F4025AA8B8F6289810E2292A9199F6BBD4"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R05FocusBoundaryBehaviorTests/wpf.R05FocusBoundaryBehaviorTests.trx",
+      "bytes": 10020,
+      "sha256": "4904644F9329878BEBE8140735B95313DABB8199C374B9194496C161747F8D26"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R05MultiSelectionSummaryBehaviorTests/wpf.R05MultiSelectionSummaryBehaviorTests.trx",
+      "bytes": 6450,
+      "sha256": "853074C1BE4AE35C482807C8F2B23064F053E9BFBD2F3C934B6731344F2ED995"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R05OptionVirtualizationBehaviorTests/wpf.R05OptionVirtualizationBehaviorTests.trx",
+      "bytes": 9593,
+      "sha256": "2D3F7FDFE6D31C55B626C7A7D0C4DF6F040B3691E723660103397E6F63EA6A9E"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R05PopupBoundaryBehaviorTests/wpf.R05PopupBoundaryBehaviorTests.trx",
+      "bytes": 4991,
+      "sha256": "A24FC80D8DB85E2F7AB8F703B1B72761766220A3EC6A02B693F2BF4C72E8E03A"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R05PopupLifecycleBehaviorTests/wpf.R05PopupLifecycleBehaviorTests.trx",
+      "bytes": 3433,
+      "sha256": "AC437D98B6597F06D5524E8CC552348D90C04B566D29605BA685B776D1096E4D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R05TogglePersistenceBehaviorTests/wpf.R05TogglePersistenceBehaviorTests.trx",
+      "bytes": 3418,
+      "sha256": "76B5CAD3B7496349C22F97C03434B5DE772BDB6629DC62C14F5D908991A6CE48"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R05TooltipTimingBehaviorTests/wpf.R05TooltipTimingBehaviorTests.trx",
+      "bytes": 10297,
+      "sha256": "CEBA7011FD1E5959847ADB7667F12BE768C8C739001D96941834BC66C1676F6D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06ClipboardBehaviorTests/wpf.R06ClipboardBehaviorTests.trx",
+      "bytes": 9365,
+      "sha256": "1FCA7DFBF4CD13BB74884D6C928C318D9A48BF834B5503522290F56AE46C7477"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06ColumnHeaderHelpTests/wpf.R06ColumnHeaderHelpTests.trx",
+      "bytes": 11341,
+      "sha256": "8E66903B47C8E458E64EED58DD5EEED4F37ABCE7C0F3C8F2BB6458DBB7F86624"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06ColumnWidthPersistenceBehaviorTests/wpf.R06ColumnWidthPersistenceBehaviorTests.trx",
+      "bytes": 12676,
+      "sha256": "5B8F80A98DD17044C9CC5149FC5DC2D317856225F0101C617B6A8A6ECE4EAF7B"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06DetailsBudgetBehaviorTests/wpf.R06DetailsBudgetBehaviorTests.trx",
+      "bytes": 9689,
+      "sha256": "3B99DFAE66EFB6FA7C720E076BEC17C92A6EE6545904865F4AF7A8870880B753"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06EmptyStateBehaviorTests/wpf.R06EmptyStateBehaviorTests.trx",
+      "bytes": 6506,
+      "sha256": "FA3BFE65B136BADA2F3E93C6E5B306434E53ED99CA56AC684516CA9C506A4FA3"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06ResponsiveColumnWidthBehaviorTests/wpf.R06ResponsiveColumnWidthBehaviorTests.trx",
+      "bytes": 3502,
+      "sha256": "09D83C54580ED41E74A95E78B8F91F1ACC1C64A790C60663701438897C9B4F6D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06SelectionStateBehaviorTests/wpf.R06SelectionStateBehaviorTests.trx",
+      "bytes": 4955,
+      "sha256": "C352A0C25C7E09D43D8707BD15FBF907480129091D9C2EF098E86D40F1DA1E0A"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06SortingBehaviorTests/wpf.R06SortingBehaviorTests.trx",
+      "bytes": 12298,
+      "sha256": "737DE0D2450FB01FBCC45F9E57C5C4C633DA3747AC75355A55B25DBDD126A59D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R06TaskProgressBehaviorTests/wpf.R06TaskProgressBehaviorTests.trx",
+      "bytes": 10995,
+      "sha256": "7F184003BAC97EDC26B8144214D1E8072CD023455914623C9C05C396E49EFF18"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R07DetailsBreakpointBehaviorTests/wpf.R07DetailsBreakpointBehaviorTests.trx",
+      "bytes": 3448,
+      "sha256": "A744D7F18D7411AEBE555B072A7F9D80CACB707B623E5EDCFD7CDB3C25A81B04"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R07FineScrollBehaviorTests/wpf.R07FineScrollBehaviorTests.trx",
+      "bytes": 5481,
+      "sha256": "E570E0F10E5661361DA4AE7277BE81BE2EB85E64BBB5196F537E92C9A76238AA"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R07ResizeStressBehaviorTests/wpf.R07ResizeStressBehaviorTests.trx",
+      "bytes": 4960,
+      "sha256": "55CA8BF8CDACF142FB131D29DBFE579EAF95499F494D30170C5AD2614273A702"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R07ScrollOwnershipBehaviorTests/wpf.R07ScrollOwnershipBehaviorTests.trx",
+      "bytes": 4874,
+      "sha256": "751B6CCF5EDA617C1F0082554336B28E247D8B6DA07C16F0F5E38DF1D3C8122C"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R07SelectionAnchorBehaviorTests/wpf.R07SelectionAnchorBehaviorTests.trx",
+      "bytes": 7813,
+      "sha256": "5BF1760DB9E57028F66C5E7BE3E1FBA5FD9044F9DBBF73577AD9DDD7ECAEA65F"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R07StatusBannerBudgetBehaviorTests/wpf.R07StatusBannerBudgetBehaviorTests.trx",
+      "bytes": 9458,
+      "sha256": "0B91600ECCC9D312122C0033D85EB82D75E7562346478508FCE53BEDB1E644C6"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R08BusinessFeedbackBehaviorTests/wpf.R08BusinessFeedbackBehaviorTests.trx",
+      "bytes": 9048,
+      "sha256": "2DB2423AB2B8B107FE9D20E90E7AA305222D0117CD736F9B56BB25D657DD9DDB"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R08DialogOverlayBehaviorTests/wpf.R08DialogOverlayBehaviorTests.trx",
+      "bytes": 6435,
+      "sha256": "380CC4647A2B24900A7B591D360A7161C7E7C5A3C5BF3530D9B9A7BDBFFDF645"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R08MotionHotChangeBehaviorTests/wpf.R08MotionHotChangeBehaviorTests.trx",
+      "bytes": 3427,
+      "sha256": "C3667F811D9BD2C9416375DF48F36B8A0D12930B66C9D26E435207FE8169B031"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R08MotionReverseBehaviorTests/wpf.R08MotionReverseBehaviorTests.trx",
+      "bytes": 9108,
+      "sha256": "250569BFAF2191FA7A32FB8B2CE72AB8D886AF6AF6FC5EC0586FC8D36AAC5343"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R08NumericChangeBehaviorTests/wpf.R08NumericChangeBehaviorTests.trx",
+      "bytes": 9305,
+      "sha256": "A6A2D1E20D3089A8B89455F7E3EC0C60688E8F51AA37C5FEB826934FD518A3E8"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R08OffscreenMotionBehaviorTests/wpf.R08OffscreenMotionBehaviorTests.trx",
+      "bytes": 3448,
+      "sha256": "B53FFB931DC7E602AFFF76A1152BE818FE86C74EED982B4690D17EF53DBFD033"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R08PageSwitchBehaviorTests/wpf.R08PageSwitchBehaviorTests.trx",
+      "bytes": 10236,
+      "sha256": "C246439B6145D1A60555D2AC64E32EBA27AD247CF016EBF60E92DF06752599A1"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R08SystemMotionHotChangeBehaviorTests/wpf.R08SystemMotionHotChangeBehaviorTests.trx",
+      "bytes": 3469,
+      "sha256": "6EBEED620E0BCD72E9159B381283140A756CECA5D6C1943D37057B2CE7AF44DE"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R09BackgroundPressureBehaviorTests/wpf.R09BackgroundPressureBehaviorTests.trx",
+      "bytes": 4928,
+      "sha256": "D8EE95AEF62DC7566A5D6C89B86AE3AD535193405DC999A2CBF7C648EC27F4B3"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R09FocusOutlineBehaviorTests/wpf.R09FocusOutlineBehaviorTests.trx",
+      "bytes": 5036,
+      "sha256": "E40598B059B9B066B725B5DF7638751C8E8CC35DA58C1A218637B217D724C185"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R09HighContrastBehaviorTests/wpf.R09HighContrastBehaviorTests.trx",
+      "bytes": 6564,
+      "sha256": "5F688C6DBF06BC492DABCC592D4F391F30CC69D667198FE110883A7140CBE4A8"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R09IconSemanticBehaviorTests/wpf.R09IconSemanticBehaviorTests.trx",
+      "bytes": 4961,
+      "sha256": "593C332CFB7731866D4BF4DDB73B9393EE883370A652246412888F274E365AFE"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R09PixelStrokeBehaviorTests/wpf.R09PixelStrokeBehaviorTests.trx",
+      "bytes": 6492,
+      "sha256": "0830C3C72AEDBA48FD2789DD34C43FD23B310DB732DECA80972582CDCD3C55D6"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R09ShadowBudgetBehaviorTests/wpf.R09ShadowBudgetBehaviorTests.trx",
+      "bytes": 6413,
+      "sha256": "DD0FFF752E3BFD78E16E9FC2AD280EC2AA580242723CE0C65BA24348C44B0DD9"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R09ThemeSwitchBehaviorTests/wpf.R09ThemeSwitchBehaviorTests.trx",
+      "bytes": 3472,
+      "sha256": "F3CA6C35C16E4CC83EBCAFDCF6AB7153B2A3DE3A20B43DFA80EFC68DD9CA55B7"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R09ThumbnailPlaceholderBehaviorTests/wpf.R09ThumbnailPlaceholderBehaviorTests.trx",
+      "bytes": 4955,
+      "sha256": "DCAF4BFE9FFAFCA9F1737ED36F25DABE249988BE998219F7CBF76BD332E0680D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R10FilterPresetBehaviorTests/wpf.R10FilterPresetBehaviorTests.trx",
+      "bytes": 10938,
+      "sha256": "2012893889F59FCA7FE7D1B329498AF81DBB8A74E8EDBC6AD08B9ED109A56328"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R10FilterSourceBehaviorTests/wpf.R10FilterSourceBehaviorTests.trx",
+      "bytes": 6492,
+      "sha256": "C08CB681DFFEFFA46DC12FABC514AA64CD1A61FFD3C461C4C6A707C9A0797C4F"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R10KeyboardShortcutHelpBehaviorTests/wpf.R10KeyboardShortcutHelpBehaviorTests.trx",
+      "bytes": 12448,
+      "sha256": "120B9501A7E5579E5A4B0824ED91F280CB8A04E128F362725EACF4250C428BFD"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R10RecentAccessBehaviorTests/wpf.R10RecentAccessBehaviorTests.trx",
+      "bytes": 6426,
+      "sha256": "B6402C00699F2CEDBF4B81C93426C7D21B51E4860D0A2B1561E81E188C6EBA5C"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R10SearchShortcutBehaviorTests/wpf.R10SearchShortcutBehaviorTests.trx",
+      "bytes": 4862,
+      "sha256": "5EE5408B21F87935B3EE5A46C13AFCE26FE2152BB8FD3809F66B08F5F74ADEBF"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R10SearchShortcutFocusBehaviorTests/wpf.R10SearchShortcutFocusBehaviorTests.trx",
+      "bytes": 3451,
+      "sha256": "D0263488F26F4D40CD352D1B269241BEA799B8D2DB7CBAB6B996028C4B76D534"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R11BackupPreviewBehaviorTests/wpf.R11BackupPreviewBehaviorTests.trx",
+      "bytes": 8002,
+      "sha256": "5F0475752C93884C4A256CBFC425D6DBEA824978E58B528514D74013172D67EA"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R11DiffListSearchBehaviorTests/wpf.R11DiffListSearchBehaviorTests.trx",
+      "bytes": 6438,
+      "sha256": "DEB0C55ADE619D050EC8F1A9E0267E090E205E0898202A952FDD8DE8FD9B0DCE"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R11HistoryTimeNavigationBehaviorTests/wpf.R11HistoryTimeNavigationBehaviorTests.trx",
+      "bytes": 11163,
+      "sha256": "4DBBC09733C09C872DF68DE9C3850E249C2DC7D5E15F84FED83B03706493A6F0"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R11ProtectionBehaviorTests/wpf.R11ProtectionBehaviorTests.trx",
+      "bytes": 6477,
+      "sha256": "895EB5EF52BA246CC5E93BE5E7BF8DDD9A669C9A958036CF1A65E036AF8F24DD"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R11VersionComparisonBehaviorTests/wpf.R11VersionComparisonBehaviorTests.trx",
+      "bytes": 4940,
+      "sha256": "329FCAFF3F00E6C4EB04BB1EA066B1965E2AA6E18712C6AEC876A9BBDEA654D7"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R11VersionNoteBehaviorTests/wpf.R11VersionNoteBehaviorTests.trx",
+      "bytes": 9562,
+      "sha256": "80ADFEF022B206639CDDF64F1C22C2CDFFBA04D0A9875F6C3ED731135E54FD1A"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R11VersionSummaryBehaviorTests/wpf.R11VersionSummaryBehaviorTests.trx",
+      "bytes": 4958,
+      "sha256": "092B1CE50F544BD92CE8C579A391BAE5397C4A5BD9CE0BADE051DD026CAFA215"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R12PathRemapBehaviorTests/wpf.R12PathRemapBehaviorTests.trx",
+      "bytes": 6450,
+      "sha256": "2A859CFCE08319E49B3527BECDCE8A61F30B2846B771A3430217B3C6530692FB"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R12RemoteStageProgressBehaviorTests/wpf.R12RemoteStageProgressBehaviorTests.trx",
+      "bytes": 9512,
+      "sha256": "F48D03D2B73D4DC662CA717377F8CA7B0D0FD7CE918C7465A6ED306010FEAA2D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R12RestorePlanDraftBehaviorTests/wpf.R12RestorePlanDraftBehaviorTests.trx",
+      "bytes": 12583,
+      "sha256": "A628BC1368DDCB23DC155CDE0AD7008DB6A3182E9FBAC25B405DFF70912D6A27"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R12RestoreReadinessViewBehaviorTests/wpf.R12RestoreReadinessViewBehaviorTests.trx",
+      "bytes": 3472,
+      "sha256": "DBCD42D1DE644C0315DC32BBEB046B5F35B8BD364B4218BA73E53397C6483E8B"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R12RestoreWorkflowBehaviorTests/wpf.R12RestoreWorkflowBehaviorTests.trx",
+      "bytes": 13730,
+      "sha256": "D8576B90188ACAAA97FCFCD3746962C3B0C77B2F82D91307704C700D345D146F"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R13CloudTransferStageBehaviorTests/wpf.R13CloudTransferStageBehaviorTests.trx",
+      "bytes": 26600,
+      "sha256": "98A3A63D85719D142297326570267C8A69DEE2A719C36EDF8B91B2D64898090D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R15TaskFailureCopyTests/wpf.R15TaskFailureCopyTests.trx",
+      "bytes": 10872,
+      "sha256": "931EC32666DF74D90CA73060866D9EDBA7FE6031F0AF1E425A42103DBDA73C89"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R16NotificationScheduleBehaviorTests/wpf.R16NotificationScheduleBehaviorTests.trx",
+      "bytes": 3388,
+      "sha256": "0F2845B6CDB655822C9325D8EDD506298B40BDEA88B2E9B078312A717BA7E915"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R16SettingsSearchBehaviorTests/wpf.R16SettingsSearchBehaviorTests.trx",
+      "bytes": 3442,
+      "sha256": "230CB874C2DC0DAA3730978415DA0B4E6DA38B780778F028858793EC251A11F1"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R18DispatcherVisibilityBenchmarkTests/wpf.R18DispatcherVisibilityBenchmarkTests.trx",
+      "bytes": 4413,
+      "sha256": "3D99061AE8FBB1CBF675C19A36DCB1BEA137B93F5A503FA32EDBB90324CF69ED"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R18TableContainerBudgetTests/wpf.R18TableContainerBudgetTests.trx",
+      "bytes": 5352,
+      "sha256": "823EF7887AAD8EE9BD61E7C78369F05B62422F8B18854CFA76B605BED2171937"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R18ThumbnailBudgetTests/wpf.R18ThumbnailBudgetTests.trx",
+      "bytes": 6871,
+      "sha256": "653A4595643758D1083880DA428CCD187267CDF082063AD183C99B43367AA9DB"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R21AsyncCompletionAnnouncementBehaviorTests/wpf.R21AsyncCompletionAnnouncementBehaviorTests.trx",
+      "bytes": 4940,
+      "sha256": "92A0A1596EE67B899908D4F34C2D4308BAC1CD16EF33696F238C8AB9CB85ED76"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R21AutomationValueBehaviorTests/wpf.R21AutomationValueBehaviorTests.trx",
+      "bytes": 37671,
+      "sha256": "641856D89DB7502D0B8DFFBC40C825C71AF2C5D7B4C7F6C49513FBEE10245FA1"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R21DisabledHiddenBehaviorTests/wpf.R21DisabledHiddenBehaviorTests.trx",
+      "bytes": 4943,
+      "sha256": "B7F575991464530AB5F03F67815426869F1AA1CAF1A20050119C59D5E660A7BA"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R21FocusVisualRegressionBehaviorTests/wpf.R21FocusVisualRegressionBehaviorTests.trx",
+      "bytes": 3454,
+      "sha256": "7A5CEE0EFCDF4B16E10B5E0828D9E508C1F9B366AB41D30B3D13AD1D3C7F52C1"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R21KeyboardNavigationTraceTests/wpf.R21KeyboardNavigationTraceTests.trx",
+      "bytes": 20959,
+      "sha256": "D1261E0F130A7E665ED69E4F7F09F3BF9E1E7F6DCF4776BC2BCF6087E6B30F4B"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R21SelectableTechnicalTextBehaviorTests/wpf.R21SelectableTechnicalTextBehaviorTests.trx",
+      "bytes": 4970,
+      "sha256": "CD861B38F568AF9FDD7E2D7623EF07C5024849219E95D4120A488BB816EC1252"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R22BatchCountBehaviorTests/wpf.R22BatchCountBehaviorTests.trx",
+      "bytes": 6417,
+      "sha256": "B1791ACE31959BA56E76BDBA01A1C058FEAFA692B98970B43464FDA20196BE8D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R22ConfirmationStructureBehaviorTests/wpf.R22ConfirmationStructureBehaviorTests.trx",
+      "bytes": 11226,
+      "sha256": "A94CC1722A116E3C0E64C416BDFA10246DFAF09F69814934924B13E3477FBE19"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R22CopyFeedbackBehaviorTests/wpf.R22CopyFeedbackBehaviorTests.trx",
+      "bytes": 4928,
+      "sha256": "D35F1754BA661C41FA6ABED555EBB41C17C6DEC1EAD73212206018D1A9C7A4D5"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R22LongTaskLeavePageBehaviorTests/wpf.R22LongTaskLeavePageBehaviorTests.trx",
+      "bytes": 4946,
+      "sha256": "4EDCAF8D5CF271520A0557B8F3960895CD21086DBE05BC52B62181F45BCBE9FF"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R22MaintenanceActionTimeBehaviorTests/wpf.R22MaintenanceActionTimeBehaviorTests.trx",
+      "bytes": 5006,
+      "sha256": "6BE2164634DF3BF205BE49825841FF074593AF98CF8C2FDFBF09016360854A8B"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R22RemoteStageTimeBehaviorTests/wpf.R22RemoteStageTimeBehaviorTests.trx",
+      "bytes": 6426,
+      "sha256": "E49CB58164E93DEAF13485D2653C003AE1F18B618AFEECAF0F98238541A7AA62"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.R23ProductionResourceStateBehaviorTests/wpf.R23ProductionResourceStateBehaviorTests.trx",
+      "bytes": 20910,
+      "sha256": "5F658E0CCF6B4BDA12F011C90D6C600B33702FB8FC1DE221D9C0337B7A8D6344"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.ReportedWorkspaceLayoutBehaviorTests/wpf.ReportedWorkspaceLayoutBehaviorTests.trx",
+      "bytes": 116450,
+      "sha256": "8D8912FF0C297771BF9E7AE27303B712EA1887F1810F265A9E198873D85147B6"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.RetentionScenarioInputBehaviorTests/wpf.RetentionScenarioInputBehaviorTests.trx",
+      "bytes": 5096,
+      "sha256": "A57F6F786BE3DD4CC0C0C4AA8E4C20B88E42A546185043BE5CE604D71A65279E"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Round5OverviewSaveContextTests/wpf.Round5OverviewSaveContextTests.trx",
+      "bytes": 4925,
+      "sha256": "470685E6778304CA5A200E8527F0C948E3645901477EBF371C13781C900D977D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Round5TaskTextBehaviorTests/wpf.Round5TaskTextBehaviorTests.trx",
+      "bytes": 3391,
+      "sha256": "48B7D7359930A8588FB79291CEF13E91774192580E5E0E962DA4223584EC517F"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Round5ToastBehaviorTests/wpf.Round5ToastBehaviorTests.trx",
+      "bytes": 4871,
+      "sha256": "13A7BAF85EE3EEC6FD4854E063E32637A3D714819A3F943F58879E4D3CC8A222"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.Round5ToolMaintenanceHelpTests/wpf.Round5ToolMaintenanceHelpTests.trx",
+      "bytes": 6423,
+      "sha256": "BBD076DCDC87BD4A7278E808AD8F96DBADD995CCB62BB0414A6BC1662259F3F9"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.RuntimePalettePublicationBehaviorTests/wpf.RuntimePalettePublicationBehaviorTests.trx",
+      "bytes": 8190,
+      "sha256": "A698F8DDD0E66C512FB3924ECB2E3F8A131F27A8021504928C5EE8A9B586896B"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.S05StorageBudgetBreakdownBehaviorTests/wpf.S05StorageBudgetBreakdownBehaviorTests.trx",
+      "bytes": 3505,
+      "sha256": "761F87F74FC887AAF3C03F65851740E2B89EA63B387BEF6AE19C02D6234C879D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.SettingsDraftLifecycleBehaviorTests/wpf.SettingsDraftLifecycleBehaviorTests.trx",
+      "bytes": 3433,
+      "sha256": "2D303723F5EFD80A82AA9E13C001833F5513F5FD97040D0B6DBFA447EA18036D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.SettingsValidationNavigationBehaviorTests/wpf.SettingsValidationNavigationBehaviorTests.trx",
+      "bytes": 3436,
+      "sha256": "EB980ED94970D635B0879FA2526B90172C5F18E1DBE6314B48CDAD2FD7F020A4"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.StatusGlyphConverterTests/wpf.StatusGlyphConverterTests.trx",
+      "bytes": 15656,
+      "sha256": "DD780E4FB29CDA92584CA6ED2560DA2AB6E2FED4491F3F1CCCB716E71E2EDEFD"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.T02TableScrollDriftBehaviorTests/wpf.T02TableScrollDriftBehaviorTests.trx",
+      "bytes": 12461,
+      "sha256": "86067C7A61FA9C4D53373791A7211F230BA7019E672139D4941AB1A54940C520"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.TableDensityPolicyTests/wpf.TableDensityPolicyTests.trx",
+      "bytes": 15617,
+      "sha256": "358CC6B320409D810E7090AC6CE3545DFCD460A9217C371F800CF67C03B79D04"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.TaskCenterViewResponsiveTests/wpf.TaskCenterViewResponsiveTests.trx",
+      "bytes": 13910,
+      "sha256": "1A8F53A2B52FBF4DFAE07128EB53B99BCF89660BE302A1A57D981FD982C59EDD"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.TaskRetryGuidanceViewTests/wpf.TaskRetryGuidanceViewTests.trx",
+      "bytes": 3397,
+      "sha256": "E8983E8EF7E965A46E9CA0715E4B0231154A56BF1150FAF7A6928672EEAA02F2"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.TypographyDiagnosticsTests/wpf.TypographyDiagnosticsTests.trx",
+      "bytes": 18191,
+      "sha256": "1CC9D7E7C4BEFA137EDB1338BF1A9E792BECCE92004EE1AA873D976ECDD89265"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.U02SemanticStatusColorBehaviorTests/wpf.U02SemanticStatusColorBehaviorTests.trx",
+      "bytes": 4976,
+      "sha256": "6160C549ACD42B5A0DED13E6540C93229575393A66714A6EA648A39433E31E26"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.UiAuditBlockerTests/wpf.UiAuditBlockerTests.trx",
+      "bytes": 14667,
+      "sha256": "F1334BBF3ADBC2C55AC9BCFAC619BA9FBE7EBEA1D308BB72534947B5F472120F"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.UiAuditCaptureContractTests/wpf.UiAuditCaptureContractTests.trx",
+      "bytes": 13676,
+      "sha256": "E2AAFE641A51E212AF5D555AF61E76A94FADB83CF1980ECC441370D4AAD7BBAC"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.UiAuditTruthfulnessTests/wpf.UiAuditTruthfulnessTests.trx",
+      "bytes": 14772,
+      "sha256": "BD24E57E3E5F7662028313814E07EFBABEC41486931E31F0A2550DD53E6EB56E"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.UiDiagnosticsExporterTests/wpf.UiDiagnosticsExporterTests.trx",
+      "bytes": 18347,
+      "sha256": "AD452033460958EC21A70A59A53AF08A58341ECD5295D7313B09FDF3305AB304"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.UiFinesseFoundationTests/wpf.UiFinesseFoundationTests.trx",
+      "bytes": 15099,
+      "sha256": "5434CE845BE9C0DB43C8B2089988D1CF962B81727070711A09706BE78394358D"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.UiNegativeFixtureRegistryTests/wpf.UiNegativeFixtureRegistryTests.trx",
+      "bytes": 4564,
+      "sha256": "7FCF478A81B834DE1A566FAA8AA91961E6FC4415529DE90284C4A29BBF12BB44"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.WindowAutomationLifecycleTests/wpf.WindowAutomationLifecycleTests.trx",
+      "bytes": 3400,
+      "sha256": "22E47BBCCE69055BA2E4B6EE7ACB575CD98439CF5781A0C671B2E7BB2398CF91"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.WorklistExportPreviewBehaviorTests/wpf.WorklistExportPreviewBehaviorTests.trx",
+      "bytes": 8053,
+      "sha256": "0B072EFEED718257090F6B53FC5CB544B9263C6BD2D1FCA19DF9D46AC0883C32"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.WorkspaceLoadingFeedbackBehaviorTests/wpf.WorkspaceLoadingFeedbackBehaviorTests.trx",
+      "bytes": 3433,
+      "sha256": "91EB3541E40297613A446355C8412DBEBEE0E5C6D3256A83B55D6FEA63B91E92"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.WorkspaceStatePresenterBehaviorTests/wpf.WorkspaceStatePresenterBehaviorTests.trx",
+      "bytes": 12552,
+      "sha256": "1FD511A5C638D0274DA3B869982D07D6974E48CF9EEF566FEEA11661617E123E"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.WorkspaceTableViewportPolicyTests/wpf.WorkspaceTableViewportPolicyTests.trx",
+      "bytes": 14359,
+      "sha256": "1663BE09E9CC441CC2ACEEC2EC183195F07B2D33377630EDE63F9677166FF248"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.WpfUiResourceDictionaryTests/wpf.WpfUiResourceDictionaryTests.trx",
+      "bytes": 303723,
+      "sha256": "44E13F440803699AA687924A5EE6C803BD0E4785A2B9BDB6D02B1EBEA8EBE7DB"
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df/tests/wpf.WrapPanelRowGapControllerBehaviorTests/wpf.WrapPanelRowGapControllerBehaviorTests.trx",
+      "bytes": 4997,
+      "sha256": "CAEA60B8F0475CF6832DAE8B98A7FAACBDEED669C81A34C2E0033CE12CE35DA8"
+    }
+  ]
+}

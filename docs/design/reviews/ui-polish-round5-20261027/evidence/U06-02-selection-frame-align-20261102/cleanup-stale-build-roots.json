@@ -1,0 +1,61 @@
+{
+  "capturedUtc": "2026-11-02T13:08:20.2462526Z",
+  "candidateCommit": "f9d09cb2b7665355a74926e2cd4a801567c60baa",
+  "repositoryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "scopeRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b",
+  "diskCFreeBefore": 4158541824,
+  "wmiCommandLineCheck": "standard query denied; elevated read-only query showed PID 33872 does not reference either exact target",
+  "processSnapshot": [
+    {
+      "Name": "dotnet",
+      "Id": 33872,
+      "StartTime": "2026-11-02T12:50:58.7157375Z",
+      "Path": "C:\\Users\\lopmatu\\AppData\\Local\\GameSaveCenter\\dotnet-sdk-8.0.423\\dotnet.exe"
+    }
+  ],
+  "exclusiveAssemblyChecks": [
+    {
+      "Path": "artifacts\\gsc-b\\4578354f\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+      "Locked": false
+    },
+    {
+      "Path": "artifacts\\gsc-b\\4578354f\\bin\\GameSaveCenter.Playnite\\Release\\net462\\GameSaveCenter.Playnite.dll",
+      "Locked": false
+    },
+    {
+      "Path": "artifacts\\gsc-b\\b3b889a8\\bin\\GameSaveCenter.Playnite.Tests\\Release\\net472\\GameSaveCenter.Playnite.Tests.dll",
+      "Locked": false
+    }
+  ],
+  "targets": [
+    {
+      "Name": "4578354f",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\4578354f",
+      "Files": 755,
+      "Bytes": 174988139,
+      "ReparsePoint": false
+    },
+    {
+      "Name": "b3b889a8",
+      "Path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\b3b889a8",
+      "Files": 726,
+      "Bytes": 169153894,
+      "ReparsePoint": false
+    }
+  ],
+  "removed": [
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\4578354f",
+      "files": 755,
+      "bytes": 174988139,
+      "confirmedAbsent": true
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\b3b889a8",
+      "files": 726,
+      "bytes": 169153894,
+      "confirmedAbsent": true
+    }
+  ],
+  "diskCFreeAfter": 4505313280
+}

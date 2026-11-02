@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "capturedUtc": "2026-11-02T13:46:10.0483311Z",
+  "stageStart": {
+    "path": ".tmp/round5-u09-final-f9d09cb2/stage-start.json",
+    "candidateCommit": "f9d09cb2b7665355a74926e2cd4a801567c60baa",
+    "cFreeBytes": 4503375872,
+    "dFreeBytes": 11726790656
+  },
+  "postRun": {
+    "cFreeBytes": 4113145856,
+    "dFreeBytes": 11706695680,
+    "externalTempRoot": "D:/Temp/gsc-r5-u09-final-f9d09cb2",
+    "externalTempFiles": 47,
+    "externalTempBytes": 17607936
+  },
+  "deletedPaths": [],
+  "retained": [
+    ".tmp/round5-u09-final-f9d09cb2/build (current exact-candidate output)",
+    "artifacts/build-diagnostics/20261102T131143603Z-ca1da7df (158 TRX and current full diagnostics)",
+    "artifacts/ui-qa/U06-02-selection-frame-align-20261102 (394 PNG audit output)",
+    "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "artifacts/GameSaveCenter-0.6.73.pext",
+    "D:/Temp/gsc-r5-u09-final-f9d09cb2 (stage-owned test temp; outside authorized repo artifacts/.tmp cleanup roots)"
+  ],
+  "priorCleanupEvidence": "cleanup-stale-build-roots.json (two superseded task-owned artifacts/gsc-b roots removed before this final run; 344142033 bytes)",
+  "note": "本阶段没有删除输出；最终源码构建、完整审计和包均保留。"
+}

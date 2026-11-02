@@ -1,3 +1,13 @@
+## 2026-11-02 Round5 U06-02/U08-08 选框移除内容偏移
+
+当前生产源码提交为`f9d09cb2b7665355a74926e2cd4a801567c60baa`（`对齐最近活动选框`），已推送`origin/main`。按用户补充的首页最近活动反馈，Overview专用模板已去掉选中态`TaskItemChrome.Margin=4,2`；蓝色边框/底色和14 DIP圆角仍保留，框线不再造成内容偏移。公共隐式ListBoxItem选择/焦点框原已与内容层分开、Margin=0。现有DataGridRow和媒体卡为独立覆盖层，Overview保护项/ComboBox只变色，不为统一而重写无偏移样式。
+
+`R10RecentAccessBehaviorTests`精确候选3/3；Release完整测试底层脚本直接调用exit0，2025项/1967通过/0失败/58既有skip（57条撤销的“今日工作台”断言与1条系统鼠标指针opt-in，均不计通过），155个WPF类隔离完成。Source Validation exit0；WPF静态审查26 XAML、0错误/26既有warning/164 info；固定时间Light/Dark Render QA 394 PNG、0 PROBLEM、offscreen 1.00逻辑DPI。当前ZIP/PEXT各45,737,931 bytes、SHA-256 `CE8AE7BBD4E49E1215B6151FD10317F02B22A728BCC966E442BE025D1F81BE29`；安装插件程序集身份`0.6.73+f9d09cb2b7665355a74926e2cd4a801567c60baa`，Playnite进程已启动。报告、哈希和截图见Round5 `evidence/U06-02-selection-frame-align-20261102/`。
+
+实际中文root `.cmd`与独立`scripts/build.cmd`仍是U09-05硬门禁：此前在未变化的包装器/脚本版本`0067525f`受PowerShell ConstrainedLanguage dot-source拒绝并exit1；不重复试探该拒绝，当前SHA没有精确入口成功记录。底层脚本exit0不代替cmd结果，因此U09-05、U09-08继续进行中。GitHub精确run41449095659（#1432）completed/success：baseline job125289540888 15/15步、SDK10 job125289540494 8/8步均成功；preview和两份diagnostics artifact均绑定`f9d09cb2`，身份见Round5 evidence。required-check保护接口沿用先前403，不重复查询，U09-06仍远端待验。当前总状态为5项已满足、71项代码完成待验收、U09-04/05/08三项进行中、U09-06一项远端待验。
+
+真实Playnite插件页面、外部UIA、实体键盘/IME和物理DPI未验；本批未执行真实存档恢复、媒体删除或云端写入。当前直接安装脚本在后台启动的Playnite进程不等于宿主视觉验收。
+
 ## 2026-11-02 Round5 U06-02/U08-08 整行选中槽位守护
 
 用户反馈首页最近活动被选中后蓝色圆角框仍可保留，但整行不能向右下移动以致图标裁切。生产提交`cb7b78fd`的Overview与共享隐式`ListBoxItem`模板已经将选框与内容分层；本批仅修改`R10RecentAccessBehaviorTests.cs`，在未选中、选中、键盘焦点状态检查图标及整行容器几何，锁定相对ListBox的bounds、Margin和Render/LayoutTransform不变。SDK8.0.423 Release下按仓库WPF隔离方式运行R10类，3/3通过、0失败/skip、exit0；源码校验与diff check通过。本批无生产XAML差异，复用cb7对应静态审查/394图Render QA，未把离屏结果称作Playnite人工验收。
