@@ -1,0 +1,32 @@
+{
+  "sourceCommit": "cb7b78fd514e7d6eaa2a34e341340d5d06610508",
+  "sourceWorkingTreeCleanAtRender": true,
+  "sampleUtc": "2026-11-02T00:00:00.0000000Z",
+  "pngCount": 394,
+  "problemCount": 0,
+  "report": "renderqa/render-qa-report.txt",
+  "reportSha256": "f67f06704762bb980c36f3b566247155045ec55f3567ab67e39edb480896b3ad",
+  "pngManifest": "renderqa/png-manifest.json",
+  "pngManifestCount": 394,
+  "samples": [
+    {
+      "theme": "light",
+      "windowDip": "1040x700",
+      "before": "../U05-01-U06-07-U09-04-active-layout-20261102/renderqa/samples/Overview-1040x700-light.png",
+      "beforeSha256": "e2bce53c5203822814256dea4195b447b269e3f03ee878204ffb91bfea000126",
+      "after": "renderqa/samples/Overview-light-1040x700-after-cb7b78fd.png",
+      "afterSha256": "6706aa2886ba4729c79b70a149b9a1e8ace11fe27ee0258d5588a2f4479a07e8"
+    },
+    {
+      "theme": "dark",
+      "windowDip": "1040x700",
+      "before": "../U05-01-U06-07-U09-04-active-layout-20261102/renderqa/samples/Overview-1040x700-dark.png",
+      "beforeSha256": "57b59ffe87409138dd3775f5ccc3a99e7cd6aa00d30202af35390843b2f84c6c",
+      "after": "renderqa/samples/Overview-dark-1040x700-after-cb7b78fd.png",
+      "afterSha256": "888349efb79c7c8234ac4a870dc22d37d861e3a52bd0db2b5295d71d35aa145b"
+    }
+  ],
+  "cFreeBytesBefore": 4730654720,
+  "cFreeBytesAfterRender": 4677681152,
+  "worktreeAfterEvidenceRestore": "仅含本批待提交证据目录"
+}

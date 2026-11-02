@@ -1,0 +1,12 @@
+Changed Markdown local targets checked: 10
+evidence/U06-02-selection-overlay-20261102/BASELINE.md : True
+evidence/U06-02-selection-overlay-20261102/BASELINE.md : True
+evidence/U06-03-04/BASELINE.md : True
+evidence/U06-03-04/ci-run-40647037308.json : True
+evidence/U06-02-selection-overlay-20261102/BASELINE.md : True
+../U05-01-U06-07-U09-04-active-layout-20261102/renderqa/samples/Overview-1040x700-light.png : True
+../U05-01-U06-07-U09-04-active-layout-20261102/renderqa/samples/Overview-1040x700-dark.png : True
+renderqa/samples/Overview-light-1040x700-after-cb7b78fd.png : True
+renderqa/samples/Overview-dark-1040x700-after-cb7b78fd.png : True
+ci-run-40647037308.json : True
+Missing targets: 0

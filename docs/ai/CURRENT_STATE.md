@@ -1,3 +1,11 @@
+## 2026-11-02 Round5 U06-02/U08-08 选框几何修复
+
+生产提交`cb7b78fd514e7d6eaa2a34e341340d5d06610508`已推送。首页最近任务的选中圆角框移至独立覆盖层，保留4×2 DIP内缩与蓝色外观；共享隐式ListBox选择/焦点线也不再挤压Presenter内距。真实WPF回归验证图标在未选中/选中/焦点三态坐标不变。SDK8.0.423 Release 0 warning/0 error，R10行为3/3，Source Validation 0，精确SHA Render QA双主题394图/0 PROBLEM。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-overlay-20261102/`。
+
+GitHub run 41392841712 (#1425)对精确cb7b78fd的SDK8基线job 125107766820与SDK10.0.401 job 125107767536均全步骤success；preview artifact 13120801010、基线诊断13119839919、SDK10诊断13118807409均绑定该SHA。活动job日志一度BlobNotFound，终态不受影响。U06-02/U08-08继续代码完成待验收；真实Playnite、外部UIA、物理输入/IME、跨屏DPI待验。U09-05/U09-08因当前候选尚待本机最终门禁重新进行中，计数为5/71/3/1；中文根入口完整安装启动链与独立`scripts/build.cmd`正在准备对当前候选执行。真实恢复、媒体删除、云写入不在本批。
+
+同时补查U06-03同步悬停夹具候选`3ecacdc0dc5376e45a6460b2af2668a1df57f328`的精确run `40647037308`：SDK8.0.423与SDK10.0.401 jobs均success，三artifact身份见Round5 `evidence/U06-03-04/ci-run-40647037308.json`。旧失败仍保留历史，真实输入/宿主未验。
+
 ## 2026-11-02 U00-07/U06-04媒体收件箱批次
 
 源码提交64f26f58153efdb4a634bf8a0aa7c832898a581d已推送main。工具栏在1040×700壳层从两行收为一行，低频清空/重置移至原滚动页脚；DataGrid上移76 DIP，四个完整数据行保持可见。SDK8.0.423定向行为218通过/0失败/39既有skip（skip不计通过）；精确提交的GitHub run41041454086中baseline job124014997522与SDK10.0.401 job124014997301均成功，3个artifact均绑定该SHA。Source Validation、生产Views WPF静态审查及post-commit Render QA通过，细节见Round5 evidence/U00-07-U06-04-media-inbox-20261030/。

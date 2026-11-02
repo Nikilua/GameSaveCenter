@@ -1,0 +1,60 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "runId": 41392841712,
+  "runNumber": 1425,
+  "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41392841712",
+  "headSha": "cb7b78fd514e7d6eaa2a34e341340d5d06610508",
+  "headBranch": "main",
+  "verifiedUtc": "2026-11-02T06:27:29Z",
+  "applicableJobCount": 2,
+  "jobs": [
+    {
+      "jobId": 125107766820,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "allStepsCompleted": true,
+      "completedStepCount": 15,
+      "artifacts": [
+        {
+          "id": 13120801010,
+          "name": "GameSaveCenter-windows-preview",
+          "sizeBytes": 90791456,
+          "digest": "sha256:dffc823d7dd43f9ea543d8219d62045b46ca3e23662308af2d0e6ad031d0aafe",
+          "headSha": "cb7b78fd514e7d6eaa2a34e341340d5d06610508"
+        },
+        {
+          "id": 13119839919,
+          "name": "GameSaveCenter-build-diagnostics",
+          "sizeBytes": 2031384,
+          "digest": "sha256:f0f18a937adfa1c3bd399c1c50191d3e695ba1a10b03bcef4df77ec6dfcd1209",
+          "headSha": "cb7b78fd514e7d6eaa2a34e341340d5d06610508"
+        }
+      ]
+    },
+    {
+      "jobId": 125107767536,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "allStepsCompleted": true,
+      "completedStepCount": 8,
+      "artifacts": [
+        {
+          "id": 13118807409,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "sizeBytes": 971692,
+          "digest": "sha256:7ab7284a14834d66b72c9442d799657584db71ba363c39c24a0fec307ef9aecc",
+          "headSha": "cb7b78fd514e7d6eaa2a34e341340d5d06610508"
+        }
+      ]
+    }
+  ],
+  "logRetrieval": {
+    "jobId": 125107766820,
+    "duringRunResult": "404 BlobNotFound while active",
+    "interpretation": "No job conclusion inferred from the transient log endpoint response; final status and artifacts were queried after completion."
+  },
+  "requiredChecks": "Existing U09-06 403 limitation; not queried again."
+}

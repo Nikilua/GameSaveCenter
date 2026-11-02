@@ -1,3 +1,11 @@
+## 2026-11-02 Round5 U06-02/U08-08 选框叠层回归
+
+修复概览最近任务选中后内容向右下偏移：原选中Border同时承担布局、Padding和`Margin=4,2`，选中边框挤占内容区域。Overlay 只移动框线，保留蓝色填充/描边与14 DIP圆角；公共隐式ListBox模板同理将ItemChrome分离，ContentPresenter.Margin绑定原Padding。不要把选择/焦点装饰放入会改变内容测量的Border。DataGridRow已有RowChrome/RowContent分层、媒体选择框已有独立覆盖层，其它只改色的状态不重复修补。
+
+Source commit `cb7b78fd514e7d6eaa2a34e341340d5d06610508`已push。回归以生产Overview的状态图标tile为几何锚点比较未选中/选中/焦点，容差0.01 DIP，另断言蓝色描边和14 DIP圆角存在；R10类3/3。双主题选中态1040×700前后图见Round5证据目录；source validation、静态审查与394图Render QA通过。远端run `41392841712`中SDK8基线与SDK10 job均全步骤success，preview及两份诊断artifact绑定精确SHA；job运行中获取日志曾返回BlobNotFound，终态已确认成功。真实Playnite/实体输入/外部UIA和物理DPI继续待验；U06-02/U08-08不升为验收完成。U09-05/U09-08以旧冻结SHA结项不适用于cb7，重新进行中，当前计数5/71/3/1。
+
+另：U06-03的同步`UpdateLayout()`悬停夹具修正提交`3ecacdc0`已有精确双SDK run `40647037308`通过；这只关闭其GitHub候选验证，不替代物理鼠标和真实宿主验收。旧失败run仍按历史保留。artifact身份见`evidence/U06-03-04/ci-run-40647037308.json`。
+
 ## 2026-10-30 Round5 U00-07/U06-04 任务页工具栏批次
 
 `d7c4bd5e`将任务详情入口并入队列主操作行，低频列显隐/布局重置移入已有展开区；`7bc6ab38`修正迁移后的布局测试祖先断言，生产XAML未变。精确源隔离测试101/101通过、0失败、11既有skip；Render QA `d7c4bd5e` 394图/0 PROBLEM，Source Validation通过，WPF静态0 error。`41017807712`旧断言失败已由`7bc6ab38`修复；修复提交run `41022318628` 已completed/success：baseline job `123952247920`和SDK10.0.401 job `123952248319`均全部步骤完成。Preview artifact `12965495875`与两份diagnostics artifact `12965211616`、`12963550503`及digest见对应Round5 `ci.json`。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U00-07-U06-04-task-toolbar-20261030/`。required-check读取仍沿用既有403，不重复探测；Demo、Playnite宿主、外部UIA、实体输入/IME、物理DPI仍待验。完成CI/进度与清理记录后，继续处理媒体页1040×700页面滚动挤压这一独立P1候选。

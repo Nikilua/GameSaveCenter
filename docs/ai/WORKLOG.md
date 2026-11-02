@@ -1,3 +1,13 @@
+## 2026-11-02 Round5 U06-02/U08-08 选中框不再推动内容
+
+按用户在构建后发现的首页最近任务选中态偏移处理：蓝色圆角框可以保留，内容不应随框线向右下挪。局部模板将`TaskItemChrome`和内容层分开，保持4×2 DIP内缩和原14 DIP圆角；公共隐式ListBox模板也把ItemChrome移到内容后方，线宽改动不占用图标/文字空间。全量XAML状态盘点确认DataGridRow与媒体卡片早已使用分离覆盖层，ComboBox/Overview保护项只改色，不批量改动无关模板。
+
+生产提交`cb7b78fd514e7d6eaa2a34e341340d5d06610508`已推送`main`。SDK8.0.423 Release构建0 warning/0 error；R10行为类3/3、0 skip，新几何回归逐态比较图标tile位置/尺寸≤0.01 DIP且验证蓝框仍在；Source Validation exit0；WPF根静态审查0 errors；同样本Light/Dark、1040×700前后图；精确SHA Render QA 394 PNG/0 PROBLEM/WorkingTreeClean=True。完整日志、测试TRX、Render QA report与PNG SHA manifest见Round5 `evidence/U06-02-selection-overlay-20261102/`。
+
+CI run `41392841712` (#1425)终态：SDK8基线job `125107766820`与SDK10.0.401 job `125107767536`均completed/success且适用步骤全部完成；preview artifact `13120801010`、基线诊断`13119839919`、SDK10诊断`13118807409`均绑定cb7b78fd，尺寸/digest见`evidence/U09-final-cb7b78fd-20261102/ci-run-41392841712.json`。活动job日志接口此前返回BlobNotFound，未将其误作job结果。required-check名单沿用先前API 403限制，不重复探测。清理只针对本阶段三个`.tmp`输出，1112个文件/216,170,503 bytes；C盘空闲增219,004,928 bytes，详见`cleanup.json`。U06-02/U08-08状态保持代码完成待验收，真实Playnite、实体鼠标/UIA/IME、物理DPI待验。U09-05/U09-08当前源候选本机门禁仍待执行，整轮5/71/3/1。未触发恢复、媒体删除或云写入，也未用旧提交替代当前SHA证据。
+
+同批补齐U06-03悬停同步夹具的远端结论：精确候选`3ecacdc0dc5376e45a6460b2af2668a1df57f328`在run `40647037308`中SDK8基线job `122678147577`和SDK10.0.401 job `122678147262`全步骤success；preview artifact `12800443002`、诊断artifact `12799973355`/`12799640064`均绑定该SHA，digest见U06-03-04 `ci-run` JSON。U06-03仍代码完成待验收，因为真实宿主和实体输入未验。required-checks权限既有403状态不重探。
+
 ## 2026-10-30 Round5 U00-07/U06-04 任务页工具栏层级
 
 生产提交 `d7c4bd5e3fc2ca83d0393ea51fc7f911cb80100f` 把“查看任务详情”移入队列主操作行，列显隐与布局重置移入已有筛选/视图配置展开区；命令、Binding、取消/重试语义、UIA、滚动条和游戏选框保留。回归修复 `7bc6ab38fa661c11a34086548797f78e02deff43` 只更新迁移后过期的重置按钮祖先断言。双主题、1040×700 DIP同数据前后图和差异见Round5 `evidence/U00-07-U06-04-task-toolbar-20261030/`。

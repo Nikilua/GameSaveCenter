@@ -15,3 +15,7 @@ Source validation通过、XAML26/26、WPF静态37 XAML/0 errors/26既有warnings
 两项保持代码完成待验收；真实Playnite、物理输入/UIA/实体DPI及新提交CI待验。最终中文根入口完整构建/测试/发布/打包/安装身份/启动与独立scripts/build.cmd仍需最终候选执行。disk-before/after记录空间，本阶段仅保留当前TRX及脱敏证据，无包或截图副本；没有已确认无用目录，删除清单为空，其他任务TRX/TestResults未动。
 
 2026-10-28 CI新失败：run40644355886 SDK10及run40645391789双SDK在ProcessMappingInlineActionBehaviorTests第87行受控IsMouseOver断言失败；原始job日志与artifact身份见ci-hover-failures.json。生产命令未执行失败；测试在注入状态后泵送后台消息，可能先收到真实桌面指针更新。夹具改为同步UpdateLayout后立即检查进入/退出悬停，保留可见性、焦点、列宽与目标断言。SDK8.0.423本地1/1、0 skip，TRX见tests/ci-hover-synchronous.trx；当时工作树另含U06-07/08候选，SDK10和新提交CI仍待验。假设尚待远端验证，不声称CI已修复。
+
+## 2026-11-02 修正候选远端验证
+
+修正后的夹具提交`3ecacdc0dc5376e45a6460b2af2668a1df57f328`在GitHub run [40647037308](https://github.com/Nikilua/GameSaveCenter/actions/runs/40647037308)（#1349）上已completed/success。基线SDK job `122678147577`与SDK10.0.401 job `122678147262`的所有适用步骤均完成并成功，三份artifact的head SHA、ID、尺寸和digest见[`ci-run-40647037308.json`](ci-run-40647037308.json)。这验证了同步布局夹具修正，旧失败run仍保留历史；不把离屏/STA合成鼠标状态说成物理鼠标或Playnite宿主验收。当前`ProcessMappingInlineActionBehaviorTests.cs`此后未再修改。

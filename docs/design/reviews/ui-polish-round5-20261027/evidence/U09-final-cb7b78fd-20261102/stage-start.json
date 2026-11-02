@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "capturedUtc": "2026-11-02T06:10:45.9371779Z",
+  "repositoryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "headBeforeDocumentationFreeze": "cb7b78fd514e7d6eaa2a34e341340d5d06610508",
+  "workingTreeFilesBeforeDocumentationFreeze": [
+    "docs/ai/CURRENT_STATE.md",
+    "docs/ai/PROJECT_MEMORY.md",
+    "docs/ai/WORKLOG.md",
+    "docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md",
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-03-04/BASELINE.md",
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-overlay-20261102/",
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-03-04/ci-run-40647037308.json"
+  ],
+  "spaceProbe": {
+    "wmiGetCimInstance": "access denied; did not retry",
+    "fallback": ".NET System.IO.DriveInfo",
+    "volumes": {
+      "C:\\": {"freeBytes": 4986994688, "totalBytes": 214749409280},
+      "D:\\": {"freeBytes": 15580450816, "totalBytes": 294972813312}
+    }
+  },
+  "preexistingOutputsPreserved": [
+    {"path": "artifacts/", "files": 7132, "bytes": 1678403921},
+    {"path": "artifacts/one-click-install.log", "bytes": 120262, "sha256": "A5EECB3C5DC880E0EDBCADB32EC7AB3C7EDCB57E0DBA36E043FA8572A99BA044"},
+    {"path": "artifacts/last-dev-install.txt", "bytes": 2335, "sha256": "7BE7310D6F676F556DAB87AF9C23C7D4A3C262A4B2421F9C9366E5439D9997D4"},
+    {"path": "artifacts/gsc-b/", "files": 5781, "bytes": 1452657526},
+    {"path": "artifacts/build-diagnostics/", "files": 1104, "bytes": 22399748},
+    {"path": ".tmp/", "files": 14139, "bytes": 1069404099}
+  ],
+  "relevantProcessesAtStart": [],
+  "temporaryRootForThisStage": ".tmp/r5u09-final-cb7b78fd-system-temp",
+  "spaceBudget": {
+    "configured": {"outputBytes": 2147483648, "tempBytes": 1073741824, "packageBytes": 1073741824},
+    "plannedPlacement": "C: output + test temp + package = 4 GiB; D: system TEMP/TMP = 1 GiB",
+    "reason": "Default four C: requirements total 5 GiB and exceed measured free space. Relocating only system TEMP/TMP to the stage-owned D: path keeps the configured budget unchanged."
+  },
+  "cleanupAtStageStart": "none; existing artifacts/.tmp include other and prior accepted outputs and are preserved"
+}

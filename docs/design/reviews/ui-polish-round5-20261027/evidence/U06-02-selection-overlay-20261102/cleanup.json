@@ -1,0 +1,35 @@
+{
+  "utc": "2026-11-02T05:29:28.9656625Z",
+  "sourceCommit": "cb7b78fd514e7d6eaa2a34e341340d5d06610508",
+  "targets": [
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\r5u052-overview-build",
+      "files": 717,
+      "bytes": 162703101,
+      "reparsePoints": 0
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\r5u052-renderqa",
+      "files": 395,
+      "bytes": 53467402,
+      "reparsePoints": 0
+    },
+    {
+      "path": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\r5u052-renderqa-temp",
+      "files": 0,
+      "bytes": 0,
+      "reparsePoints": 0
+    }
+  ],
+  "removedFiles": 1112,
+  "removedBytes": 216170503,
+  "cFreeBytesBefore": 4673675264,
+  "cFreeBytesAfter": 4892680192,
+  "cBytesReleased": 219004928,
+  "activeRelevantProcesses": [],
+  "markdownTemporaryPathReferences": 0,
+  "retained": [
+    "SDK 8.0.423 cache: .tmp/round5-sdk8-8.0.423",
+    "build diagnostics, test logs/TRX, Render QA report, 394-image SHA manifest, and two representative screenshots in this evidence folder"
+  ]
+}
