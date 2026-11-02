@@ -1,3 +1,8 @@
+## 2026-11-02 Round5 U09-04 TaskGrid滚动归属复测
+
+- 为避免把页面最大`ScrollViewer`误称为任务表格，基于U00 `5d0a2448`及当前生产源`f9d09cb2`分别建立隔离源码快照，临时注入字节一致的RenderHarness探针，直接取`TaskGrid`模板子树中的`DG_ScrollViewer`。SDK8.0.423 Release两侧编译均0 warning/0 error；同探针Light/Dark各60秒活动+30秒收尾，四轮全部exit0、动作失败0。
+- U00/current的Light p95为16.526/16.409ms（428/441次），Dark为16.498/16.499ms（430/446次）；60项列表、6行视口、7个可见实现行、垂直范围54，样本实际上下移动。未见该受控逻辑动作的p95回退，不据此声称呈现帧或真实输入改善。旧整页滚动值不能归因TaskGrid；缺失的U00原始帧/累计分配和真实Playnite验收仍使U09-04保持进行中。没有生产源码/UI资源变更，也没有运行真实恢复、媒体删除或云端写入。
+- 源码/程序集SHA、构建命令与日志、四份原始报告及restore失败诊断见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-taskgrid-scroll-20261102/`。只清理唯一自有阶段目录`.tmp/round5-u09-04-taskgrid-20261102`，空间、边界、路径引用和删除清单留在`cleanup.json`。Source Validation、文档链接与diff校验在提交前运行；文档提交CI不触发追记提交。
 ## 2026-11-02 Round5 U06-02/U08-08 整行选中槽位守护
 
 按用户构建后的观察，蓝色圆角选中框可以保留，但不应让最近活动整行右下偏移、裁切图标。复核cb7b78fd生产XAML后确认Overview局部模板和共享隐式ListBoxItem模板已经分离选框层/内容层；DataGrid行与媒体卡片也使用独立叠层，本批不触碰无关控件。扩展`R10RecentAccessBehaviorTests`，对局部及共享ListBox模板在未选中、选中、键盘焦点三态测量图标tile和整个ListBoxItem相对列表的bounds，并核对容器Margin及Render/LayoutTransform不变。保留框线可见性、圆角和原有图标≤0.01 DIP几何断言。

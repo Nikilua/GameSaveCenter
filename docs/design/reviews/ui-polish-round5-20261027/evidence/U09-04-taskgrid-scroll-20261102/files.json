@@ -1,0 +1,81 @@
+{
+  "createdAt": "2026-11-03T00:01:32.2306628+08:00",
+  "note": "This manifest lists all evidence-directory files except files.json itself, plus its adjacent stage-start JSON.",
+  "files": [
+    {
+      "sha256": "62AA0221E0F694F60C2670938BCC2B13F7F34404A3B168AFED79627460A692B8",
+      "bytes": 3864,
+      "path": "BASELINE.md"
+    },
+    {
+      "sha256": "EA99474957789B1E41AEA4F495A8D4856CE912042A70928C0D44CE1D37A91B6D",
+      "bytes": 972,
+      "path": "build/current-build.log"
+    },
+    {
+      "sha256": "23302585CFF3D5E0613B6AD8913EFA96E7EAEC80D3272AF4F4C208B62B4F6B3A",
+      "bytes": 867,
+      "path": "build/current-restore.log"
+    },
+    {
+      "sha256": "1C9061359E445F572B6767670AC8D5537E05D18A0CCE89B7485424873F1CB991",
+      "bytes": 956,
+      "path": "build/u00-build.log"
+    },
+    {
+      "sha256": "641EEFA0CFCA1F90F6FA6D1C63903F412FE7A9D6B09BAA55300E05C2B7CDAFE1",
+      "bytes": 851,
+      "path": "build/u00-restore.log"
+    },
+    {
+      "sha256": "30555B80695476A62B4B800F417F01444540DBFAECA80C1B11B843C4CC311C2D",
+      "bytes": 3876,
+      "path": "cleanup.json"
+    },
+    {
+      "sha256": "BB6A4681B658F8751B2ABCE3C0570B3F3C8AE2DE018D78700F88A720A3EB6796",
+      "bytes": 89016,
+      "path": "diagnostics/restore-failure-diagnostics.zip"
+    },
+    {
+      "sha256": "D6A372F3EEA657F74C13291E0C69574CDA145132AF7C2D618F49BC54D94570B2",
+      "bytes": 9456,
+      "path": "identity.json"
+    },
+    {
+      "sha256": "17EF6A984916740A26A289A0863912297B6C20A5225B62B3FA6FDC5AED90F4D7",
+      "bytes": 34279,
+      "path": "probe/current-dark-1.txt"
+    },
+    {
+      "sha256": "24E6076EBAA7966ABDFD2FAEFB4AB91B91B47C38FDEDC2A32813F3B13C327B54",
+      "bytes": 33905,
+      "path": "probe/current-light-1.txt"
+    },
+    {
+      "sha256": "0F2DB69DF22CA5AED900CE84FFA75FB8D43B56BB1272AD8B8BDCD3789426D4AF",
+      "bytes": 10152,
+      "path": "probe/instrumentation-current.txt"
+    },
+    {
+      "sha256": "0F2DB69DF22CA5AED900CE84FFA75FB8D43B56BB1272AD8B8BDCD3789426D4AF",
+      "bytes": 10152,
+      "path": "probe/instrumentation-u00.txt"
+    },
+    {
+      "sha256": "64BCF11AC5F6D76340ACD438F669BDABA684095FD808E7638A6663AB133B4926",
+      "bytes": 33092,
+      "path": "probe/u00-dark-1.txt"
+    },
+    {
+      "sha256": "26349FD47747125CFAF09833996151ABEEC9EA64E74239AB6D2933A1A4C946CF",
+      "bytes": 32941,
+      "path": "probe/u00-light-1.txt"
+    },
+    {
+      "sha256": "D1F1AA423D7C0C9960B63B8F481E1B735E480CB165FBA6456D905333FC34C3AE",
+      "bytes": 976,
+      "path": "../U09-04-taskgrid-scroll-20261102-stage-start.json"
+    }
+  ]
+}

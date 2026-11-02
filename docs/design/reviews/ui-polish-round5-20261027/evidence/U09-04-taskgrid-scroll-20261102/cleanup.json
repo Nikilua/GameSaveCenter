@@ -1,0 +1,112 @@
+{
+  "stage": "U09-04 TaskGrid scroll attribution",
+  "removedAt": "2026-11-02T23:52:32.9700505+08:00",
+  "targetRelative": ".tmp/round5-u09-04-taskgrid-20261102",
+  "targetNormalized": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-04-taskgrid-20261102",
+  "repositoryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "boundaryVerified": "Target was a unique directory below repository .tmp; .tmp and target were not reparse points",
+  "ownedFiles": 14165,
+  "ownedBytes": 1417978815.0,
+  "topLevelOutputs": [
+    {
+      "bytes": 472409418.0,
+      "path": "current",
+      "fileCount": 8726
+    },
+    {
+      "bytes": 252562435.0,
+      "path": "u00",
+      "fileCount": 5430
+    },
+    {
+      "bytes": 972,
+      "path": "current-build.log",
+      "fileCount": 1
+    },
+    {
+      "bytes": 867,
+      "path": "current-restore.log",
+      "fileCount": 1
+    },
+    {
+      "bytes": 457236480,
+      "path": "current.tar",
+      "fileCount": 1
+    },
+    {
+      "bytes": 10152,
+      "path": "snippet-GameSaveCenter.RenderHarness.txt",
+      "fileCount": 1
+    },
+    {
+      "bytes": 956,
+      "path": "u00-build.log",
+      "fileCount": 1
+    },
+    {
+      "bytes": 901586,
+      "path": "u00-restore-diag.log",
+      "fileCount": 1
+    },
+    {
+      "bytes": 698,
+      "path": "u00-restore-fallback.log",
+      "fileCount": 1
+    },
+    {
+      "bytes": 851,
+      "path": "u00-restore-script-flags.log",
+      "fileCount": 1
+    },
+    {
+      "bytes": 234854400,
+      "path": "u00.tar",
+      "fileCount": 1
+    }
+  ],
+  "reparsePoints": 0,
+  "processPathMatches": [],
+  "markdownLinkReferences": [],
+  "plainTextMentions": [
+    "docs\\ai\\WORKLOG.md:5:- 源码/程序集SHA、构建命令与日志、四份原始报告及restore失败诊断见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-taskgrid-scroll-20261102/`。只清理唯一自有阶段目录`.tmp/round5-u09-04-taskgrid-20261102`，空间、边界、路径引用和删除清单留在`cleanup.json`。Source Validation、文档链接与diff校验在提交前运行；文档提交CI不触发追记提交。",
+    "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-04-taskgrid-scroll-20261102\\BASELINE.md:26:只清理本阶段唯一自有 `.tmp/round5-u09-04-taskgrid-20261102` 快照和构建目录。证据归档与逐项 SHA 核验、根路径/重解析点/进程/文档引用检查、删除清单和磁盘前后空间见 [`cleanup.json`](cleanup.json)。"
+  ],
+  "evidenceReportsVerified": 4,
+  "probeSnippetSha256": "0F2DB69DF22CA5AED900CE84FFA75FB8D43B56BB1272AD8B8BDCD3789426D4AF",
+  "removedUsing": "PowerShell Remove-Item -LiteralPath C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-04-taskgrid-20261102 -Recurse -Force",
+  "removed": true,
+  "diskSpaceBytes": {
+    "beforeStageCreation": {
+      "C": 4097310720,
+      "D": 11449233408
+    },
+    "afterSnapshotsCreated": {
+      "C": 2690523136,
+      "D": 11449298944
+    },
+    "immediatelyBeforeCleanup": {
+      "C": 2632728576,
+      "D": 11449167872
+    },
+    "immediatelyAfterCleanup": {
+      "C": 4083453952,
+      "D": 11449102336
+    },
+    "netReleased": {
+      "C": 1450725376,
+      "D": -65536
+    }
+  },
+  "retained": [
+    "4 raw TaskGrid probe reports, with SHA verified",
+    "probe instrumentation snippets, matching SHA",
+    "SDK8.0.423 U00/current restore and build logs",
+    "initial restore failure diagnostics",
+    "binary/source identities and comparison summary"
+  ],
+  "notDeleted": [
+    "all other .tmp and artifacts paths",
+    "user and other-task TRX/TestResults, saves, configuration, unknown files",
+    "shared SDK8.0.423 cache"
+  ]
+}

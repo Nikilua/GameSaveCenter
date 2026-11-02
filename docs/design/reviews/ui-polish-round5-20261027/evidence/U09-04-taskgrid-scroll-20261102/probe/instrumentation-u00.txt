@@ -1,0 +1,186 @@
+    private static int RunTaskGridProbe(string outputRoot, int durationSeconds, string themeName)
+    {
+        const int settleSeconds = 30;
+        Directory.CreateDirectory(outputRoot);
+        var reportPath = Path.Combine(outputRoot, "taskgridprobe-report.txt");
+        var report = new StringBuilder();
+        report.AppendLine("GameSaveCenter TaskGrid scroll probe");
+        report.AppendLine("Host: controlled WPF STA Window, opacity 0.01 at offscreen coordinates");
+        report.AppendLine("Action: TaskGrid template ScrollViewer.ScrollToVerticalOffset + Window.UpdateLayout");
+        report.AppendLine("Input boundary: programmatic WPF logical scroll proxy; no physical wheel/drag, Playnite host, compositor frame, or user latency claim");
+        report.AppendLine("Window: 1040x700 DIP; data: FakeDashboardData(60); forced GC: false");
+        report.AppendLine("Duration: " + durationSeconds + "s active + " + settleSeconds + "s settle; theme: " + themeName);
+        var problems = new List<string>();
+        var actionSamples = new List<double>();
+        var actionOffsets = new List<double>();
+
+        try
+        {
+            var selectedTheme = ThemeModes.First(theme => string.Equals(theme.Name, themeName, StringComparison.OrdinalIgnoreCase));
+            var app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var data = new FakeDashboardData(60);
+            var shell = new AcrylicProductionShellView
+            {
+                DataContext = data,
+                MotionEnabledProvider = () => true
+            };
+            var page = new TaskCenterView { DataContext = data };
+            var pageHost = shell.PageHostForAudit as ContentControl
+                ?? throw new InvalidOperationException("Production shell PageHost is not a ContentControl.");
+            var window = new Window
+            {
+                Width = 1040,
+                Height = 700,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Left = -32000,
+                Top = -32000,
+                Opacity = 0.01,
+                Content = shell
+            };
+
+            ApplyThemePalette(shell, selectedTheme.Mode, glassEnabled: true, motionEnabled: true);
+            ApplyThemePalette(page, selectedTheme.Mode, glassEnabled: true, motionEnabled: true);
+            pageHost.Content = page;
+            shell.ApplyResponsiveLayout(window.Width, window.Height);
+            ApplyThemeResponsive(page, window.Width, window.Height);
+            window.Show();
+            window.UpdateLayout();
+            shell.ApplyResponsiveLayout(window.ActualWidth, window.ActualHeight);
+            ApplyThemeResponsive(page, pageHost.ActualWidth, pageHost.ActualHeight);
+            window.UpdateLayout();
+
+            var grid = FindVisualChildren<DataGrid>(page).SingleOrDefault(candidate => candidate.Name == "TaskGrid");
+            if (grid == null)
+                throw new InvalidOperationException("TaskCenterView did not create TaskGrid.");
+            var candidates = FindVisualChildren<ScrollViewer>(grid).ToList();
+            var scrollSurface = candidates
+                .Where(viewer => viewer.IsVisible && viewer.ScrollableHeight > 0)
+                .OrderByDescending(viewer => viewer.ScrollableHeight)
+                .FirstOrDefault();
+            if (scrollSurface == null)
+                throw new InvalidOperationException("TaskGrid has no visible internal ScrollViewer with vertical overflow.");
+
+            var realizedRows = FindVisualChildren<DataGridRow>(grid).Count(row => row.IsVisible);
+            report.AppendLine(
+                "TASKGRID_TARGET owner=DataGrid:TaskGrid templateSubtree=true "
+                + "items=" + grid.Items.Count
+                + " realizedVisibleRows=" + realizedRows
+                + " internalScrollViewerCandidates=" + candidates.Count
+                + " selectedScrollViewerName=" + (string.IsNullOrWhiteSpace(scrollSurface.Name) ? "<unnamed>" : scrollSurface.Name)
+                + " canContentScroll=" + scrollSurface.CanContentScroll
+                + " viewport=" + scrollSurface.ViewportHeight.ToString("0.##")
+                + " extent=" + scrollSurface.ExtentHeight.ToString("0.##")
+                + " scrollable=" + scrollSurface.ScrollableHeight.ToString("0.##")
+                + " initialOffset=" + scrollSurface.VerticalOffset.ToString("0.##"));
+
+            var stopwatch = Stopwatch.StartNew();
+            var actionIndex = 0;
+            var actionFailures = 0;
+            var actionTimer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+            {
+                Interval = TimeSpan.FromMilliseconds(100)
+            };
+            var settleTimer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            TimeSpan actionStoppedAt = TimeSpan.Zero;
+            actionTimer.Tick += (sender, args) =>
+            {
+                if (stopwatch.Elapsed >= TimeSpan.FromSeconds(durationSeconds))
+                {
+                    actionTimer.Stop();
+                    actionStoppedAt = stopwatch.Elapsed;
+                    settleTimer.Start();
+                    return;
+                }
+
+                try
+                {
+                    var targetOffset = actionIndex % 2 == 0 ? scrollSurface.ScrollableHeight * 0.75 : 0;
+                    var actionTimer = Stopwatch.StartNew();
+                    scrollSurface.ScrollToVerticalOffset(targetOffset);
+                    window.UpdateLayout();
+                    actionTimer.Stop();
+                    actionSamples.Add(actionTimer.Elapsed.TotalMilliseconds);
+                    actionOffsets.Add(scrollSurface.VerticalOffset);
+                    report.AppendLine(
+                        "ACTION index=" + actionIndex
+                        + " elapsed_s=" + stopwatch.Elapsed.TotalSeconds.ToString("0.000")
+                        + " target=" + targetOffset.ToString("0.##")
+                        + " actual=" + scrollSurface.VerticalOffset.ToString("0.##")
+                        + " duration_ms=" + actionTimer.Elapsed.TotalMilliseconds.ToString("0.###"));
+                    actionIndex++;
+                }
+                catch (Exception ex)
+                {
+                    actionFailures++;
+                    problems.Add("scroll action failed: " + ex.GetType().Name + ": " + ex.Message);
+                    actionTimer.Stop();
+                    window.Close();
+                    app.Shutdown();
+                }
+            };
+            settleTimer.Tick += (sender, args) =>
+            {
+                if (stopwatch.Elapsed - actionStoppedAt < TimeSpan.FromSeconds(settleSeconds))
+                    return;
+                settleTimer.Stop();
+                window.Close();
+                app.Shutdown();
+            };
+            actionTimer.Start();
+            app.Run();
+            stopwatch.Stop();
+
+            if (actionSamples.Count < 30)
+                problems.Add("only " + actionSamples.Count + " TaskGrid scroll samples were recorded");
+            if (actionFailures != 0)
+                problems.Add("actionFailures=" + actionFailures);
+            if (actionOffsets.Count > 0 && actionOffsets.All(offset => offset <= 0.5))
+                problems.Add("TaskGrid scroll offset never moved away from the top");
+            report.AppendLine(
+                "SUMMARY action=TaskGrid.ScrollToVerticalOffset+Window.UpdateLayout"
+                + " samples=" + actionSamples.Count
+                + " median_ms=" + CalculatePercentile(actionSamples, 0.50).ToString("0.###")
+                + " p95_ms=" + CalculatePercentile(actionSamples, 0.95).ToString("0.###")
+                + " max_ms=" + (actionSamples.Count == 0 ? 0 : actionSamples.Max()).ToString("0.###")
+                + " min_ms=" + (actionSamples.Count == 0 ? 0 : actionSamples.Min()).ToString("0.###")
+                + " movedSamples=" + actionOffsets.Count(offset => offset > 0.5));
+            report.AppendLine("SUMMARY completedActiveSeconds=" + Math.Min(durationSeconds, stopwatch.Elapsed.TotalSeconds).ToString("0.0")
+                + " settleSeconds=" + settleSeconds + " actionFailures=" + actionFailures);
+            report.AppendLine("BOUNDARY: offscreen controlled WPF layout/action duration is not physical input latency, Playnite rendering, or presented-frame rate.");
+            report.AppendLine(problems.Count == 0 ? "taskgridprobe OK" : "taskgridprobe FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(reportPath, report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("taskgridprobe FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(reportPath, report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+        if (args.Length > 0 && args[0].Equals("taskgridprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1 ? Path.GetFullPath(args[1]) : Path.Combine(AppContext.BaseDirectory, "taskgridprobe");
+            var durationSeconds = 60;
+            if (args.Length > 2 && (!int.TryParse(args[2], out durationSeconds) || durationSeconds < 1))
+                durationSeconds = 60;
+            var themeName = args.Length > 3 ? args[3] : "Light";
+            var probeExitCode = 0;
+            var probeThread = new Thread(() => { probeExitCode = RunTaskGridProbe(outputRoot, durationSeconds, themeName); });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }

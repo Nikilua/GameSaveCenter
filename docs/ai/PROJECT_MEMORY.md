@@ -1,3 +1,6 @@
+## 2026-11-02 Round5 U09-04 TaskGrid滚动归属复测
+
+U00 `5d0a2448`与当前生产源`f9d09cb2`用相同临时RenderHarness探针直接测TaskGrid模板`DG_ScrollViewer`。SDK8.0.423 Release双侧编译0 warning/0 error；Light/Dark同条件60秒+30秒，各源各主题一轮均exit0。Light滚动p95 16.526→16.409ms，Dark 16.498→16.499ms，样本量428–446；列表60项、可见实现7行、范围54，受控逻辑动作没有显示p95回退。该结果不代表实际Playnite帧、物理滚动/输入、IME/UIA或DPI；U00原始逐帧/累计分配仍缺，U09-04继续进行中。证据与四份报告见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-taskgrid-scroll-20261102/`。当前总状态5项已满足、71项代码完成待验收、3项进行中、1项远端待验；本批没有生产UI变更。
 ## 2026-11-02 Round5 U06-02/U08-08 整行槽位回归补强
 
 用户实测反馈首页最近活动选中时蓝色圆角框可保留，整行不能随框右下偏移、裁切图标。生产`cb7b78fd`已把Overview选框及共享隐式`ListBoxItem`的选中/焦点框分离到覆盖层；后续共享列表修改应继续维持装饰不参与内容测量。新WPF回归在Overview专用及共享模板中比较未选中、选中、键盘焦点下图标tile与`ListBoxItem`槽位，要求容器相对ListBox bounds、Margin、RenderTransform、LayoutTransform不变，边框仍可见。定向隔离R10类3/3、0 skip；证据与失败尝试见`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-selection-slot-guard-20261102/`。无生产XAML变更，未重复静态审查/Render QA；真实Playnite/UIA/物理输入/DPI仍未验。

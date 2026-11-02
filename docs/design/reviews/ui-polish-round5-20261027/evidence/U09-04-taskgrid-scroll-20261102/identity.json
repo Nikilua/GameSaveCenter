@@ -1,0 +1,180 @@
+{
+  "stage": "U09-04 TaskGrid scroll attribution",
+  "createdAt": "2026-11-02T23:45:45.9580428+08:00",
+  "repositoryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "baselineSource": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+  "currentSource": "f9d09cb2b7665355a74926e2cd4a801567c60baa",
+  "documentationHeadAtStart": "2cbe584fda43789a4436382442365c8afb0ce2a6",
+  "sourceSubtreesUnchangedBetweenCurrentSourceAndDocumentationHead": true,
+  "sdk": {
+    "version": "8.0.423",
+    "repositoryGlobalJson": "8.0.423",
+    "path": ".tmp/round5-sdk8-8.0.423/dotnet.exe"
+  },
+  "probe": {
+    "kind": "temporary RenderHarness instrumentation in isolated git-archive snapshots",
+    "action": "TaskGrid template ScrollViewer.ScrollToVerticalOffset plus Window.UpdateLayout",
+    "instrumentationSnippetSha256": "0F2DB69DF22CA5AED900CE84FFA75FB8D43B56BB1272AD8B8BDCD3789426D4AF",
+    "u00AndCurrentSnippetIdentical": true,
+    "windowDip": "1040x700",
+    "windowOpacity": 0.01,
+    "windowPosition": "-32000,-32000",
+    "data": "FakeDashboardData(60)",
+    "sampleUtc": "2026-11-02T00:00:00Z",
+    "perRunActiveSeconds": 60,
+    "perRunSettleSeconds": 30,
+    "themes": [
+      "Light",
+      "Dark"
+    ],
+    "forcedGc": false,
+    "physicalInput": false,
+    "playniteHost": false,
+    "presentedFrames": false
+  },
+  "builds": [
+    {
+      "buildLog": "build/u00-build.log",
+      "buildExitCode": 0,
+      "sourceSnapshot": "u00",
+      "source": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+      "warnings": 0,
+      "probeProgramSha256": "92B987BAC7C384D2A0CFBAD329CE1E378A363F1E6B707B8A4338AD38EC10EE1D",
+      "productionAssembly": {
+        "targetFramework": "net462",
+        "path": ".tmp/round5-u09-04-taskgrid-20261102/u00/tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.Playnite.dll",
+        "bytes": 2250752,
+        "sha256": "BB8A99EEAF544729660DE41B199A47344C3D45963E358683F418EE869815BF7C"
+      },
+      "restoreLogSha256": "641EEFA0CFCA1F90F6FA6D1C63903F412FE7A9D6B09BAA55300E05C2B7CDAFE1",
+      "buildLogSha256": "1C9061359E445F572B6767670AC8D5537E05D18A0CCE89B7485424873F1CB991",
+      "errors": 0,
+      "harness": {
+        "targetFramework": "net472",
+        "path": ".tmp/round5-u09-04-taskgrid-20261102/u00/tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarness.exe",
+        "bytes": 638976,
+        "sha256": "40055DD9881EDAA1115B56A1CFE958507ECF665D1845822EA7D8AC5CA2CAD359"
+      },
+      "restoreLog": "build/u00-restore.log",
+      "restoreExitCode": 0,
+      "restoreCommand": "\"C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423\\dotnet.exe\" restore tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj --verbosity minimal -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false",
+      "buildCommand": "\"C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423\\dotnet.exe\" build tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj --configuration Release --no-restore --nologo --verbosity minimal -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildCommit=5d0a2448d6315af61571d0d3fbecfd902e5344fc"
+    },
+    {
+      "buildLog": "build/current-build.log",
+      "buildExitCode": 0,
+      "sourceSnapshot": "current",
+      "source": "f9d09cb2b7665355a74926e2cd4a801567c60baa",
+      "warnings": 0,
+      "probeProgramSha256": "E58419B9AADFA5B106253CB1810BC97023D89C80DB60D6C78F45F4DDD1F16F94",
+      "productionAssembly": {
+        "targetFramework": "net462",
+        "path": ".tmp/round5-u09-04-taskgrid-20261102/current/tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.Playnite.dll",
+        "bytes": 2274304,
+        "sha256": "29ACD20B9267947E0672F0516EEB2607517E27D6A664BE23D8AC8864661F64C1"
+      },
+      "restoreLogSha256": "23302585CFF3D5E0613B6AD8913EFA96E7EAEC80D3272AF4F4C208B62B4F6B3A",
+      "buildLogSha256": "EA99474957789B1E41AEA4F495A8D4856CE912042A70928C0D44CE1D37A91B6D",
+      "errors": 0,
+      "harness": {
+        "targetFramework": "net472",
+        "path": ".tmp/round5-u09-04-taskgrid-20261102/current/tests/GameSaveCenter.RenderHarness/bin/Release/net472/GameSaveCenter.RenderHarness.exe",
+        "bytes": 650752,
+        "sha256": "BA653CDBCF1E7B4041D0A46D5C1D6EE1577124D4E5C86EE057C38BB84125153F"
+      },
+      "restoreLog": "build/current-restore.log",
+      "restoreExitCode": 0,
+      "restoreCommand": "\"C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423\\dotnet.exe\" restore tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj --verbosity minimal -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false",
+      "buildCommand": "\"C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423\\dotnet.exe\" build tests/GameSaveCenter.RenderHarness/GameSaveCenter.RenderHarness.csproj --configuration Release --no-restore --nologo --verbosity minimal -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildCommit=f9d09cb2b7665355a74926e2cd4a801567c60baa -p:GscSourceRoot=C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-04-taskgrid-20261102\\current"
+    }
+  ],
+  "runs": [
+    {
+      "source": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+      "target": "TASKGRID_TARGET owner=DataGrid:TaskGrid templateSubtree=true items=60 realizedVisibleRows=7 internalScrollViewerCandidates=1 selectedScrollViewerName=DG_ScrollViewer canContentScroll=True viewport=6 extent=60 scrollable=54 initialOffset=0",
+      "theme": "Light",
+      "reportBytes": 32941,
+      "reportSha256": "26349FD47747125CFAF09833996151ABEEC9EA64E74239AB6D2933A1A4C946CF",
+      "endedAt": "2026-11-02T23:33:42.9488364+08:00",
+      "exitCode": 0,
+      "startedAt": "2026-11-02T23:32:08.8359082+08:00",
+      "metrics": {
+        "samples": 428,
+        "medianMs": 13.847,
+        "p95Ms": 16.526,
+        "maxMs": 31.858
+      },
+      "report": "probe/u00-light-1.txt"
+    },
+    {
+      "source": "f9d09cb2b7665355a74926e2cd4a801567c60baa",
+      "target": "TASKGRID_TARGET owner=DataGrid:TaskGrid templateSubtree=true items=60 realizedVisibleRows=7 internalScrollViewerCandidates=1 selectedScrollViewerName=DG_ScrollViewer canContentScroll=True viewport=6 extent=60 scrollable=54 initialOffset=0",
+      "theme": "Light",
+      "reportBytes": 33905,
+      "reportSha256": "24E6076EBAA7966ABDFD2FAEFB4AB91B91B47C38FDEDC2A32813F3B13C327B54",
+      "endedAt": "2026-11-02T23:36:32.9283847+08:00",
+      "exitCode": 0,
+      "startedAt": "2026-11-02T23:34:59.6302185+08:00",
+      "metrics": {
+        "samples": 441,
+        "medianMs": 13.863,
+        "p95Ms": 16.409,
+        "maxMs": 22.844
+      },
+      "report": "probe/current-light-1.txt"
+    },
+    {
+      "source": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+      "target": "TASKGRID_TARGET owner=DataGrid:TaskGrid templateSubtree=true items=60 realizedVisibleRows=7 internalScrollViewerCandidates=1 selectedScrollViewerName=DG_ScrollViewer canContentScroll=True viewport=6 extent=60 scrollable=54 initialOffset=0",
+      "theme": "Dark",
+      "reportBytes": 33092,
+      "reportSha256": "64BCF11AC5F6D76340ACD438F669BDABA684095FD808E7638A6663AB133B4926",
+      "endedAt": "2026-11-02T23:38:22.9537452+08:00",
+      "exitCode": 0,
+      "startedAt": "2026-11-02T23:36:49.422785+08:00",
+      "metrics": {
+        "samples": 430,
+        "medianMs": 13.787,
+        "p95Ms": 16.498,
+        "maxMs": 23.372
+      },
+      "report": "probe/u00-dark-1.txt"
+    },
+    {
+      "source": "f9d09cb2b7665355a74926e2cd4a801567c60baa",
+      "target": "TASKGRID_TARGET owner=DataGrid:TaskGrid templateSubtree=true items=60 realizedVisibleRows=7 internalScrollViewerCandidates=1 selectedScrollViewerName=DG_ScrollViewer canContentScroll=True viewport=6 extent=60 scrollable=54 initialOffset=0",
+      "theme": "Dark",
+      "reportBytes": 34279,
+      "reportSha256": "17EF6A984916740A26A289A0863912297B6C20A5225B62B3FA6FDC5AED90F4D7",
+      "endedAt": "2026-11-02T23:40:05.933636+08:00",
+      "exitCode": 0,
+      "startedAt": "2026-11-02T23:38:31.9566332+08:00",
+      "metrics": {
+        "samples": 446,
+        "medianMs": 13.89,
+        "p95Ms": 16.499,
+        "maxMs": 28.365
+      },
+      "report": "probe/current-dark-1.txt"
+    }
+  ],
+  "restoreFailureDiagnosticsArchive": {
+    "path": "diagnostics/restore-failure-diagnostics.zip",
+    "bytes": 89016,
+    "sha256": "BB6A4681B658F8751B2ABCE3C0570B3F3C8AE2DE018D78700F88A720A3EB6796",
+    "entries": [
+      {
+        "note": "Verbose failure with empty MSB/NU diagnostics",
+        "bytes": 901586,
+        "sha256": "97DC8DED38FE9F1D2D1A5D838970005269083D2E053E8765FA516BE86FAB1CF3",
+        "name": "u00-initial-restore-graph-failure.log"
+      },
+      {
+        "note": "Static-graph-disabled retry, exit 1",
+        "bytes": 698,
+        "sha256": "BF04EB4D302FB35AD7B65E9AD93B0E2E5005EC97D7906FE4690E8952C3E7F166",
+        "name": "u00-static-graph-disabled-restore-failure.log"
+      }
+    ]
+  }
+}

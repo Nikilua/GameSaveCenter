@@ -1,0 +1,25 @@
+{
+  "stage": "U09-04 TaskGrid scroll attribution probe",
+  "repositoryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "stageRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-04-taskgrid-20261102",
+  "baselineCommit": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+  "currentSourceCommit": "f9d09cb2",
+  "currentDocsHead": "2cbe584fda43789a4436382442365c8afb0ce2a6",
+  "sdk": "8.0.423",
+  "diskFreeBeforeStageCreation": {
+    "C": 4097310720,
+    "D": 11449233408
+  },
+  "diskFreeAfterSnapshotsCreated": {
+    "C": 2690523136,
+    "D": 11449298944
+  },
+  "snapshotCreatedAt": "2026-11-02T23:23:18.030695+08:00",
+  "ownedOutputs": [
+    "U00/current git-archive snapshots and tar files",
+    "temporary identical TaskGrid probe instrumentation",
+    "SDK8.0.423 restore/build outputs and logs",
+    "four Light/Dark probe reports",
+    "restore failure diagnostics"
+  ]
+}
