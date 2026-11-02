@@ -1,0 +1,60 @@
+{
+  "capturedAtLocal": "2026-11-03T02:05:22.8080610+08:00",
+  "sourceHead": "e5bb6db3a62ed68fc9e7cf154ce8310d21ee779f",
+  "sourceDirty": true,
+  "sourceFiles": [
+    "src/GameSaveCenter.Playnite/Themes/AcrylicProductionResources.xaml",
+    "tests/GameSaveCenter.Playnite.Tests/R23ProductionResourceStateBehaviorTests.cs"
+  ],
+  "sdk": "8.0.423",
+  "renderQa": {
+    "reportPath": "artifacts/ui-qa/U06-02-selection-frame-align-20261102/render-qa-report.txt",
+    "reportSha256": "CFECEFC15B66AB7F66E3442933CF847F1A2701B10A4601326AB04F709CEDF073",
+    "pngCount": 394,
+    "problemLines": 0,
+    "reportedClean": false,
+    "reportedCommit": "e5bb6db3a62ed68fc9e7cf154ce8310d21ee779f"
+  },
+  "cleanupBefore": {
+    "volumes": [
+      {
+        "drive": "C",
+        "freeBytes": 5185601536
+      },
+      {
+        "drive": "D",
+        "freeBytes": 9161506816
+      }
+    ],
+    "currentOwnedTemp": {
+      "path": ".tmp/r5-focus-20261103",
+      "resolvedPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\r5-focus-20261103",
+      "files": 363,
+      "bytes": 45522160.0,
+      "trxCount": 2,
+      "disposition": "Move two TRX files into current local audit, then remove this temporary output root after boundary and process checks."
+    },
+    "reviewedPriorOutput": {
+      "path": "artifacts/gsc-b/4be27808",
+      "resolvedPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\gsc-b\\4be27808",
+      "files": 747,
+      "bytes": 177034126.0,
+      "binaryFiles": 502,
+      "binaryBytes": 166639308.0,
+      "externalTrackedEvidenceReferences": 27,
+      "disposition": "Retain: prior failure evidence references this output; do not clean it."
+    },
+    "finalGatePreflight": {
+      "environmentTemp": "D:\\Temp",
+      "systemTempBudgetBytes": 1073741824,
+      "buildOutputBudgetBytes": 2147483648,
+      "testTempBudgetBytes": 1073741824,
+      "packageBudgetBytes": 1073741824,
+      "requiredFreeBytesC": 4294967296,
+      "availableFreeBytesC": 5185601536,
+      "requiredFreeBytesD": 1073741824,
+      "availableFreeBytesD": 9161506816,
+      "sufficient": true
+    }
+  }
+}

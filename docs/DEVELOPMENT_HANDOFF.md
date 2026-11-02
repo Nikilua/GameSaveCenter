@@ -1,3 +1,11 @@
+## 2026-11-03 Round5 当前交接：共享焦点框源码候选
+
+本批 `AcrylicNavItem` 键盘焦点环已改成独立overlay，避免选中/焦点框缩进导航内容；首页最近活动的 `TaskItemChrome.Margin=4,2` 先前已移除。两主题R23聚焦测试2/2、Source Validation、WPF静态及本机394图 Render QA通过。详细证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-nav-focus-overlay-20261103/`。
+
+本批源码提交后冻结跟踪文件，用实际 `GameSaveCenter-一键构建安装运行.cmd`→`GameSaveCenter-Run.cmd` 完成当前SHA的Release完整链；另独立验证 `scripts/build.cmd`。执行时将该进程 `TEMP/TMP` 指向已有 `D:\Temp` 以保持系统临时空间预算分离；不要覆盖 `global.json` SDK基线。入口链应核验exit0、SDK/源码身份、安装DLL与包SHA、Playnite启动进程和TRX。
+
+推送后查 `.github/workflows/windows-build.yml` 当前SHA所有适用jobs（SDK基线、SDK10.0.401）、步骤结论与run/job/artifact身份。required-check API先前403，不重试，CI终态后记录“远端待验”和有权限维护者只读核对的下一步。不要用 `34d8a99f` 或纯文档提交的run代替新源码候选。
+
 ## 2026-10-30 U09-04 U00来源重建更新
 
 U00来源`90bf040567f013f3a8d9ed8667028a4edb2ec524`与冻结候选`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`已按固定时间和70周期RenderHarness条件补做源码重建比较。主题应用p95和活动期托管分配改善；内容布局>300ms尾样本未复现；任务DataGrid内部滚动两组每侧10样本均显示候选偏慢，但动作含显式`UpdateLayout()`，尚未定位根因。不要仅凭此改共享DataGrid模板或滚动系统。U09-04继续进行中，生产/测试源码未改。证据目录：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-correlation-20261030/u00-reconstructed-20261030/`。下一步在相同快照上运行更窄的Task滚动重复测量，再决定是否需源码优化；U09-06的精确提交GitHub双SDK run仍远端待验。

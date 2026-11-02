@@ -84,14 +84,26 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
-                    <Border x:Name="NavChrome" Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="12" Padding="{TemplateBinding Padding}"
-                            SnapsToDevicePixels="True" UseLayoutRounding="True">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="Center"/>
-                    </Border>
+                    <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
+                        <Border x:Name="NavChrome" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12" Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True" UseLayoutRounding="True">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <!-- Keep the keyboard ring on its own overlay so its stroke never
+                             changes the navigation label's measured or arranged bounds. -->
+                        <Border x:Name="NavFocusChrome"
+                                Background="Transparent"
+                                BorderBrush="{DynamicResource GscAccentBrush}"
+                                BorderThickness="2"
+                                CornerRadius="12"
+                                Visibility="Collapsed"
+                                IsHitTestVisible="False"
+                                SnapsToDevicePixels="True" UseLayoutRounding="True"/>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="NavChrome" Property="Background" Value="{DynamicResource GscAccentTintStrongBrush}"/>
@@ -114,8 +126,7 @@
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                         </MultiTrigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter TargetName="NavChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
-                            <Setter TargetName="NavChrome" Property="BorderThickness" Value="2"/>
+                            <Setter TargetName="NavFocusChrome" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="NavChrome" Property="Opacity" Value="0.46"/>

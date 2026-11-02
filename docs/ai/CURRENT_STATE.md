@@ -1,3 +1,9 @@
+## 2026-11-03 Round5 共享导航焦点框新源码候选待最终门禁
+
+本批修正 `AcrylicNavItem`：焦点蓝色圆角框改为不参与内容测量的 sibling overlay，选中填色与RadioButton导航语义保留；Overview最近活动此前的选中位移修复仍在。R23导航定向用例两主题2/2，Source Validation退出0，WPF静态218 XAML/0 error，本机Render QA 394 PNG/0 PROBLEM。测试编译、TRX摘要、dirty-tree渲染身份和清理记录见Round5 `evidence/U06-02-nav-focus-overlay-20261103/`。
+
+新生产XAML使冻结候选重新打开：必须先提交并推送本批源码，再对准确SHA重跑实际中文根入口完整链、独立 `scripts/build.cmd`、安装程序集身份/启动及workflow双SDK job。之前 `34d8a99f` 成功保持为历史，不替代本批。最新已提交文档HEAD `e5bb6db3` 的CI run `41493023902`（#1435）查询时仍运行；它是文档提交，不代替源码候选。状态暂为5项已满足、71项代码完成待验收、U09-04/05/06/08进行中。真实Playnite视觉、外部UIA、实体输入/IME与物理DPI未验；required-check API先前403，不重试。
+
 ## 2026-11-03 Round5 U09-05 最终入口门禁与选中态复核
 
 候选源码 SHA `34d8a99faf7ec827b2fea8303baf8c18a8edbefd`（source tree `9a632fb67999d43ecc1eba689f14f1e7d6c8ed0e`、tests tree `749635df57d0c7ab0a86f8a4a9664a40e85978b0`、scripts tree `efbde3774901e75ad253a2d77cd90f83796e2931`）已按真实入口验证。中文 `GameSaveCenter-一键构建安装运行.cmd` 经英文 `GameSaveCenter-Run.cmd` 完成 SDK 8.0.423 Release build/test/publish/package/install identity/Playnite launch，最终退出码 0；独立 `scripts/build.cmd` 编译和测试职责退出码 0。包 0.6.73 的ZIP/PEXT SHA-256一致，安装 DLL 均带候选 SHA。完整身份与TRX计数见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-gates-20261103/`。

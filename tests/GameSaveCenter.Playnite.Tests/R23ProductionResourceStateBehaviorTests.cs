@@ -58,6 +58,8 @@ public sealed class R23ProductionResourceStateBehaviorTests
                 FlushLayout(window);
                 navigation.ApplyTemplate();
                 var chrome = Assert.IsType<Border>(navigation.Template.FindName("NavChrome", navigation));
+                var focusChrome = Assert.IsType<Border>(navigation.Template.FindName("NavFocusChrome", navigation));
+                var contentPresenter = Assert.Single(FindVisualChildren<ContentPresenter>(chrome));
                 Color? lightPrimaryText = null;
 
                 foreach (var mode in Themes)
@@ -70,30 +72,58 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         Assert.NotEqual(lightPrimaryText, primaryText);
                     navigation.IsEnabled = true;
                     navigation.IsChecked = false;
+                    Assert.Same(external, Keyboard.Focus(external));
                     FlushLayout(window);
+                    Assert.False(navigation.IsKeyboardFocusWithin);
 
                     Assert.Equal(Colors.Transparent, BrushColor(chrome.Background));
                     Assert.Equal(1d, chrome.Opacity);
                     Assert.Equal(new Thickness(1), chrome.BorderThickness);
+                    Assert.Equal(Visibility.Collapsed, focusChrome.Visibility);
+                    var unfocusedContentBounds = BoundsRelativeTo(contentPresenter, navigation);
 
                     navigation.IsChecked = true;
                     FlushLayout(window);
                     Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.Background));
                     Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.BorderBrush));
+                    Assert.Equal(new Thickness(1), chrome.BorderThickness);
+                    Assert.Equal(Visibility.Collapsed, focusChrome.Visibility);
+                    AssertRowGeometryUnchanged(
+                        new[] { unfocusedContentBounds },
+                        new[] { BoundsRelativeTo(contentPresenter, navigation) },
+                        "Acrylic navigation",
+                        mode,
+                        "selected");
 
                     navigation.IsChecked = false;
                     Assert.Same(navigation, Keyboard.Focus(navigation));
                     FlushLayout(window);
                     Assert.True(navigation.IsKeyboardFocusWithin);
                     Assert.Same(resources["GscSharedFocusVisual"], navigation.FocusVisualStyle);
-                    Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(chrome.BorderBrush));
-                    Assert.Equal(new Thickness(2), chrome.BorderThickness);
+                    Assert.Equal(Colors.Transparent, BrushColor(chrome.BorderBrush));
+                    Assert.Equal(new Thickness(1), chrome.BorderThickness);
+                    Assert.Equal(Visibility.Visible, focusChrome.Visibility);
+                    Assert.Equal(new Thickness(2), focusChrome.BorderThickness);
+                    Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(focusChrome.BorderBrush));
+                    AssertRowGeometryUnchanged(
+                        new[] { unfocusedContentBounds },
+                        new[] { BoundsRelativeTo(contentPresenter, navigation) },
+                        "Acrylic navigation",
+                        mode,
+                        "keyboard focus");
 
                     Assert.Same(external, Keyboard.Focus(external));
                     FlushLayout(window);
                     Assert.False(navigation.IsKeyboardFocusWithin);
                     Assert.Equal(Colors.Transparent, BrushColor(chrome.BorderBrush));
                     Assert.Equal(new Thickness(1), chrome.BorderThickness);
+                    Assert.Equal(Visibility.Collapsed, focusChrome.Visibility);
+                    AssertRowGeometryUnchanged(
+                        new[] { unfocusedContentBounds },
+                        new[] { BoundsRelativeTo(contentPresenter, navigation) },
+                        "Acrylic navigation",
+                        mode,
+                        "focus cleared");
 
                     navigation.IsEnabled = false;
                     FlushLayout(window);
@@ -135,11 +165,19 @@ public sealed class R23ProductionResourceStateBehaviorTests
                 FlushLayout(window);
                 navigation.ApplyTemplate();
                 var chrome = Assert.IsType<Border>(navigation.Template.FindName("NavChrome", navigation));
+                var focusChrome = Assert.IsType<Border>(navigation.Template.FindName("NavFocusChrome", navigation));
+                var contentPresenter = Assert.Single(FindVisualChildren<ContentPresenter>(chrome));
 
                 foreach (var mode in Themes)
                 {
                     ApplyTheme(root, mode);
                     navigation.IsEnabled = true;
+                    navigation.IsChecked = false;
+                    Assert.Same(external, Keyboard.Focus(external));
+                    FlushLayout(window);
+                    Assert.Equal(Visibility.Collapsed, focusChrome.Visibility);
+                    var unfocusedContentBounds = BoundsRelativeTo(contentPresenter, navigation);
+
                     navigation.IsChecked = true;
                     Assert.Same(navigation, Keyboard.Focus(navigation));
                     FlushLayout(window);
@@ -147,8 +185,16 @@ public sealed class R23ProductionResourceStateBehaviorTests
                     Assert.True(navigation.IsChecked, $"{mode}: current page selection was lost");
                     Assert.True(navigation.IsKeyboardFocusWithin, $"{mode}: keyboard focus was not retained");
                     Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.Background));
-                    Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(chrome.BorderBrush));
-                    Assert.Equal(new Thickness(2), chrome.BorderThickness);
+                    Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.BorderBrush));
+                    Assert.Equal(new Thickness(1), chrome.BorderThickness);
+                    Assert.Equal(Visibility.Visible, focusChrome.Visibility);
+                    Assert.Equal(new Thickness(2), focusChrome.BorderThickness);
+                    AssertRowGeometryUnchanged(
+                        new[] { unfocusedContentBounds },
+                        new[] { BoundsRelativeTo(contentPresenter, navigation) },
+                        "Acrylic navigation",
+                        mode,
+                        "selected keyboard focus");
 
                     Assert.Same(external, Keyboard.Focus(external));
                     FlushLayout(window);
@@ -157,6 +203,13 @@ public sealed class R23ProductionResourceStateBehaviorTests
                     Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.Background));
                     Assert.Equal(BrushColor(resources["GscAccentTintStrongBrush"]), BrushColor(chrome.BorderBrush));
                     Assert.Equal(new Thickness(1), chrome.BorderThickness);
+                    Assert.Equal(Visibility.Collapsed, focusChrome.Visibility);
+                    AssertRowGeometryUnchanged(
+                        new[] { unfocusedContentBounds },
+                        new[] { BoundsRelativeTo(contentPresenter, navigation) },
+                        "Acrylic navigation",
+                        mode,
+                        "selected after focus clears");
 
                     navigation.IsChecked = false;
                     Assert.Same(navigation, Keyboard.Focus(navigation));
@@ -164,8 +217,16 @@ public sealed class R23ProductionResourceStateBehaviorTests
                     Assert.False(navigation.IsChecked);
                     Assert.True(navigation.IsKeyboardFocusWithin);
                     Assert.Equal(Colors.Transparent, BrushColor(chrome.Background));
-                    Assert.Equal(BrushColor(resources["GscAccentBrush"]), BrushColor(chrome.BorderBrush));
-                    Assert.Equal(new Thickness(2), chrome.BorderThickness);
+                    Assert.Equal(Colors.Transparent, BrushColor(chrome.BorderBrush));
+                    Assert.Equal(new Thickness(1), chrome.BorderThickness);
+                    Assert.Equal(Visibility.Visible, focusChrome.Visibility);
+                    Assert.Equal(new Thickness(2), focusChrome.BorderThickness);
+                    AssertRowGeometryUnchanged(
+                        new[] { unfocusedContentBounds },
+                        new[] { BoundsRelativeTo(contentPresenter, navigation) },
+                        "Acrylic navigation",
+                        mode,
+                        "unselected keyboard focus");
 
                     Assert.Same(external, Keyboard.Focus(external));
                     navigation.IsEnabled = false;

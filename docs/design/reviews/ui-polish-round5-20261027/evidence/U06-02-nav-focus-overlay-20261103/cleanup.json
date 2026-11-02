@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "phase": "U06-02/U08-08 AcrylicNavItem focus overlay",
+  "capturedAtLocal": "2026-11-03T02:06:00+08:00",
+  "preflight": {
+    "stageStart": "stage-start.json",
+    "temporarySystemPath": "D:\\Temp",
+    "budgetBasis": "scripts/space-budget.json: output 2 GiB, test temp 1 GiB, system temp 1 GiB, package 1 GiB",
+    "fullChainCRequiredBytes": 4294967296,
+    "fullChainCAvailableBytes": 5184966656,
+    "fullChainDRequiredBytes": 1073741824,
+    "fullChainDAvailableBytes": 9161441280,
+    "sufficient": true
+  },
+  "archivedEvidence": [
+    {
+      "source": ".tmp/r5-focus-20261103/results/acrylic-navigation.trx",
+      "archive": "artifacts/ui-qa/U06-02-selection-frame-align-20261102/focused-tests/acrylic-navigation.trx",
+      "sha256": "07B3682242228C237EEE84EFF6D209B705DE7EF02FB703AD6FB3A1928FB352D3",
+      "bytes": 9827,
+      "total": 3,
+      "passed": 2,
+      "failed": 1,
+      "note": "Broad filter included a source-only test that stopped at the required GscBuildCommit identity guard; R23 navigation behavior cases passed."
+    },
+    {
+      "source": ".tmp/r5-focus-20261103/results/acrylic-navigation-wpf.trx",
+      "archive": "artifacts/ui-qa/U06-02-selection-frame-align-20261102/focused-tests/acrylic-navigation-wpf.trx",
+      "sha256": "B0EE2AB9E4D4E6A1C5FD20C46F4B126FF7D34D28B052CA85DAC243544FCB964D",
+      "bytes": 5008,
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    }
+  ],
+  "deleted": [
+    {
+      "path": ".tmp/r5-focus-20261103",
+      "resolvedPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\r5-focus-20261103",
+      "scopeCheck": "resolved below repository .tmp; no reparse point; no dotnet, vstest, MSBuild or RenderHarness process active",
+      "originalFiles": 363,
+      "originalBytes": 45522160,
+      "archivedTrxCount": 2,
+      "removedFilesAfterArchive": 361,
+      "removedBytesAfterArchive": 45507325,
+      "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force"
+    }
+  ],
+  "retained": [
+    "artifacts/ui-qa/U06-02-selection-frame-align-20261102 current Render QA audit; post-commit candidate run will overwrite the same screenshot/report names",
+    "artifacts/build-diagnostics and the current 34d8a99f build/package/install report",
+    "artifacts/gsc-b/4be27808 because earlier tracked failed-root evidence refers to its binaries; it was not deleted",
+    "all other artifacts, .tmp outputs, databases, configurations, user files and unknown files"
+  ],
+  "volumeFreeBytes": {
+    "C": {
+      "before": 5184966656,
+      "after": 5231345664,
+      "delta": 46379008
+    },
+    "D": {
+      "before": 9161441280,
+      "after": 9161441280,
+      "delta": 0
+    }
+  }
+}

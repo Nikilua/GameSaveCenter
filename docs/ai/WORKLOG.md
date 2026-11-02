@@ -1,3 +1,9 @@
+## 2026-11-03 Round5 U06-02/U08-08 共享焦点框不推动内容
+
+- 在保留 `f9d09cb2` 最近活动修复后，继续巡查共享状态样式；发现 `AcrylicNavItem` 的焦点触发器把含 `ContentPresenter` 的边框由1 DIP增至2 DIP，并将选中边框改成焦点蓝，形成潜在内容内缩/双线。
+- 将焦点装饰改为独立、不可命中的 overlay；选中填色、导航RadioButton、焦点视觉样式、Tag/Checked/UIA不变。R23 `AcrylicNavigation` 两条Light/Dark状态几何测试2/2，`validate-source.py`退出0，WPF静态审查218 XAML/0 errors，UI_CHANGE_GATE Render QA 394图/0 PROBLEM。日志/TRX SHA与失败宽筛选解释在Round5 `evidence/U06-02-nav-focus-overlay-20261103/`。
+- 本批产生新源码候选，`34d8a99f` 的入口/安装和CI成功只保留历史；提交后冻结源码，再跑真实中文完整链、独立 `scripts/build.cmd` 与两项GitHub workflow jobs。required-check API既有403不重复访问。
+
 ## 2026-11-02 Round5 U09-04 TaskGrid滚动归属复测
 
 - 为避免把页面最大`ScrollViewer`误称为任务表格，基于U00 `5d0a2448`及当前生产源`f9d09cb2`分别建立隔离源码快照，临时注入字节一致的RenderHarness探针，直接取`TaskGrid`模板子树中的`DG_ScrollViewer`。SDK8.0.423 Release两侧编译均0 warning/0 error；同探针Light/Dark各60秒活动+30秒收尾，四轮全部exit0、动作失败0。

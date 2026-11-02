@@ -1,3 +1,9 @@
+## 2026-11-03 选中/焦点装饰保持内容几何
+
+- 最近活动的蓝色圆角选中框不应推动行或图标；Overview行选中不能加布局Margin。公共 `ListBoxItem`、`DataGridRow`、媒体卡和共享导航应把框线放在内容边界之外的独立装饰层。边框可以加粗/变色，但不得因此缩小或移动内容测量边界，也不要为选中与焦点叠加两道相同的内框。
+- `AcrylicNavItem` 的键盘焦点边框必须使用不可命中的 overlay；`RadioButton`焦点/选中、内容、UIA及导航处理器保持。R23两主题内容bounds是回归契约；真实Playnite视觉/输入仍需宿主验收。
+- 2026-11-03 本批代码已完成定向R23、Source Validation、WPF静态和离屏Render QA；生产源改变后重新打开U09-05，最终中文入口、独立 `scripts/build.cmd` 和双SDK CI必须绑定新源码SHA。见Round5 `evidence/U06-02-nav-focus-overlay-20261103/`。
+
 ## 2026-11-02 Round5 U09-04 TaskGrid滚动归属复测
 
 U00 `5d0a2448`与当前生产源`f9d09cb2`用相同临时RenderHarness探针直接测TaskGrid模板`DG_ScrollViewer`。SDK8.0.423 Release双侧编译0 warning/0 error；Light/Dark同条件60秒+30秒，各源各主题一轮均exit0。Light滚动p95 16.526→16.409ms，Dark 16.498→16.499ms，样本量428–446；列表60项、可见实现7行、范围54，受控逻辑动作没有显示p95回退。该结果不代表实际Playnite帧、物理滚动/输入、IME/UIA或DPI；U00原始逐帧/累计分配仍缺，U09-04继续进行中。证据与四份报告见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-taskgrid-scroll-20261102/`。当前总状态5项已满足、71项代码完成待验收、3项进行中、1项远端待验；本批没有生产UI变更。
