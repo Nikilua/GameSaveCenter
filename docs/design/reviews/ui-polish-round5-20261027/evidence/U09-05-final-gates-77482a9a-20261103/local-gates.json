@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "candidate": {
+    "commit": "77482a9a56f8d1507de3cf819c94559388dddc4f",
+    "message": "修正共享导航焦点框位移",
+    "branch": "main",
+    "sourceTree": "969c175762168e3de37e548d447dc5f659986549",
+    "testsTree": "622aa8c606d8b2ef1a963c34947dff27db3daf2b",
+    "scriptsTree": "efbde3774901e75ad253a2d77cd90f83796e2931",
+    "version": "0.6.73",
+    "workingTreeCleanAtPostCommitRender": true
+  },
+  "toolchain": {
+    "globalJsonSdk": "8.0.423",
+    "locallySelectedForFocusedTestsAndRenderQa": "8.0.423",
+    "localFullEntrypointSdkSelection": "not reached; both command wrappers stopped before SDK selection",
+    "githubSdkBaseline": "8.0.423",
+    "githubSdkReview": "10.0.401"
+  },
+  "localBehavior": {
+    "focusedWpfTests": {
+      "filter": "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigation",
+      "total": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "timing": "before commit; production/test contents are identical to candidate, TRX build metadata is not asserted as candidate SHA",
+      "trx": "artifacts/ui-qa/U06-02-selection-frame-align-20261102/focused-tests/acrylic-navigation-wpf.trx",
+      "trxBytes": 5008,
+      "trxSha256": "B0EE2AB9E4D4E6A1C5FD20C46F4B126FF7D34D28B052CA85DAC243544FCB964D"
+    },
+    "broadFilterDiagnostic": {
+      "trx": "artifacts/ui-qa/U06-02-selection-frame-align-20261102/focused-tests/acrylic-navigation.trx",
+      "trxBytes": 9827,
+      "trxSha256": "07B3682242228C237EEE84EFF6D209B705DE7EF02FB703AD6FB3A1928FB352D3",
+      "total": 3,
+      "passed": 2,
+      "failed": 1,
+      "notPassedReason": "A source-only test reached its required GscBuildCommit guard because the direct invocation did not inject commit identity; not a navigation behavior assertion. The narrower two WPF behavior tests passed."
+    },
+    "sourceValidation": {
+      "command": "python scripts/validate-source.py",
+      "exitCode": 0
+    },
+    "wpfStaticReview": {
+      "command": "python .codex/skills/wpf-apple-desktop-ui/scripts/validate_wpf_ui.py .",
+      "exitCode": 0,
+      "xamlFiles": 218,
+      "errors": 0,
+      "warnings": 208,
+      "info": 1327,
+      "scopeNote": "Warnings/info include retained historical .tmp snapshots."
+    },
+    "postCommitRenderQa": {
+      "command": "scripts/render-qa.ps1 -Configuration Release",
+      "exitCode": 0,
+      "report": "artifacts/ui-qa/U06-02-selection-frame-align-20261102/render-qa-report.txt",
+      "reportSha256": "560A572CA52573D477F01F6DF25D8DD7D3A96E2E78B3EDC8C64A71C16695F3DB",
+      "reportedCommit": "77482a9a56f8d1507de3cf819c94559388dddc4f",
+      "workingTreeClean": true,
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "pngCount": 394,
+      "problemCount": 0,
+      "dpiScale": 1.0,
+      "sampleUtc": "2026-11-03T00:00:00Z"
+    }
+  },
+  "localHardEntrypoints": [
+    {
+      "path": "GameSaveCenter-一键构建安装运行.cmd",
+      "sha256": "958D2FA746F78CDD381AE5A72B9A24CFC779743E91EF4AA577212E01972494FA",
+      "mapping": "calls GameSaveCenter-Run.cmd, which calls scripts/dev-install-run.ps1",
+      "attemptedAs": "actual Chinese root wrapper, default Release, stdin NUL for its pause",
+      "exitCode": 1,
+      "stage": "PowerShell startup before build/SDK selection/tests",
+      "reason": "ConstrainedLanguage rejected dot-source with DotSourceNotSupported / different language mode",
+      "consoleLog": "artifacts/r5-u09-77482a9a-wrapper-console.txt",
+      "consoleLogBytes": 472,
+      "consoleLogSha256": "364D3BE9A9F4CE243C7A0F88B1B47F6240E29F401A3BCF465877976EAA99C0D1"
+    },
+    {
+      "path": "GameSaveCenter-Run.cmd",
+      "sha256": "405F30591DE559519F49D028FAB5C639C6F04D4844F18764FA6D3C8A07A1D0BF",
+      "invocation": "covered through the Chinese wrapper; not independently repeated because it delegates to the same rejected PowerShell entry",
+      "chainExitCode": 1
+    },
+    {
+      "path": "scripts/build.cmd",
+      "sha256": "873C6AECBC86876BADC7ED6458F9CD735EF9E0FA1A7FB4756C0476E97291A552",
+      "attemptedAs": "actual independent build.cmd, default Release",
+      "exitCode": 1,
+      "stage": "PowerShell startup before build/SDK selection/tests",
+      "reason": "ConstrainedLanguage rejected dot-source with DotSourceNotSupported / different language mode",
+      "consoleLog": "artifacts/r5-u09-77482a9a-buildcmd-console.txt",
+      "consoleLogBytes": 407,
+      "consoleLogSha256": "EEC452AB309677056BDD0487879796844116C23948B8988CB6823E804475A7F6"
+    }
+  ],
+  "installPackageIdentity": {
+    "candidatePackage": null,
+    "candidateInstallReport": null,
+    "candidateInstalledAssemblyIdentity": null,
+    "candidatePlayniteLaunch": null,
+    "reason": "The local root and build wrappers were rejected before building, packaging, installing or launching. Previous 34d8a99f identity is historical and not substituted."
+  },
+  "githubRun": "ci-run-41498607041.json",
+  "previousDocumentationRun": "ci-run-41493023902.json",
+  "requiredChecks": {
+    "status": "remote pending",
+    "note": "Previously observed required-check/ruleset API response was HTTP 403. The same boundary was not retried.",
+    "nextAction": "An authorized maintainer should read the required checks/ruleset and compare it with the two successful jobs in the exact-SHA workflow run."
+  }
+}

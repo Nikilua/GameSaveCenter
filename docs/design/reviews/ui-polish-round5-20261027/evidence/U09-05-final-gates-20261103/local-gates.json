@@ -111,12 +111,12 @@
   },
   "package": {
     "zip": {
-      "path": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "path": "artifacts/r5-prior-34d8-20261103/GameSaveCenter-0.6.73-playnite.zip",
       "bytes": 45737900,
       "sha256": "CF08A6A8B0A10F4C8B236202E309957B06EC9AA3D2E194293791ADC0B7D0B256"
     },
     "pext": {
-      "path": "artifacts/GameSaveCenter-0.6.73.pext",
+      "path": "artifacts/r5-prior-34d8-20261103/GameSaveCenter-0.6.73.pext",
       "bytes": 45737900,
       "sha256": "CF08A6A8B0A10F4C8B236202E309957B06EC9AA3D2E194293791ADC0B7D0B256"
     }
@@ -126,7 +126,7 @@
     "manifestVersion": "0.6.73",
     "pluginFileVersion": "0.6.73.0",
     "installedBuildIdentity": "0.6.73+34d8a99faf7ec827b2fea8303baf8c18a8edbefd",
-    "report": "artifacts/last-dev-install.txt",
+    "report": "artifacts/r5-prior-34d8-20261103/last-dev-install.txt",
     "reportSha256": "158A208347A64F274E540945FC534769A56EC2A496D141B3BD2648644C07E1BE",
     "reportedHashesAreDiskReadAndDoNotAssertRuntimeLoadedAssembly": true,
     "playniteExe": "D:/software/Playnite/Playnite.DesktopApp.exe",
@@ -137,7 +137,7 @@
     "realPluginPageRenderingObserved": false
   },
   "logs": {
-    "chineseRootLog": "artifacts/one-click-install.log",
+    "chineseRootLog": "artifacts/r5-prior-34d8-20261103/one-click-install.log",
     "chineseRootLogSha256": "AA03B456138D6277A7397CA2A4E3E73D6273ADBCE45541659749807C75E8715F"
   },
   "cleanup": {

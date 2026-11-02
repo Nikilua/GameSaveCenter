@@ -1,10 +1,10 @@
-## 2026-11-03 Round5 当前交接：共享焦点框源码候选
+## 2026-11-03 Round5 当前交接：候选77482a9a与本机入口限制
 
-本批 `AcrylicNavItem` 键盘焦点环已改成独立overlay，避免选中/焦点框缩进导航内容；首页最近活动的 `TaskItemChrome.Margin=4,2` 先前已移除。两主题R23聚焦测试2/2、Source Validation、WPF静态及本机394图 Render QA通过。详细证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-nav-focus-overlay-20261103/`。
+当前源码候选 `77482a9a56f8d1507de3cf819c94559388dddc4f` 已推送。最近活动选中框保留且不推移内容；`AcrylicNavItem` 焦点框已移至独立overlay。定向R23两主题2/2、Source Validation/WPF静态和精确SHA的双主题Render QA通过；GitHub run #1436 `41498607041` 两个适用job及所有步骤成功，artifact身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-gates-77482a9a-20261103/`。
 
-本批源码提交后冻结跟踪文件，用实际 `GameSaveCenter-一键构建安装运行.cmd`→`GameSaveCenter-Run.cmd` 完成当前SHA的Release完整链；另独立验证 `scripts/build.cmd`。执行时将该进程 `TEMP/TMP` 指向已有 `D:\Temp` 以保持系统临时空间预算分离；不要覆盖 `global.json` SDK基线。入口链应核验exit0、SDK/源码身份、安装DLL与包SHA、Playnite启动进程和TRX。
+本机实际中文根入口链和独立 `scripts/build.cmd` 都因PowerShell `ConstrainedLanguage` 拒绝dot-source，在构建开始前退出1；没有生成候选测试TRX、包、安装报告/程序集身份或Playnite启动。控制台诊断路径和SHA已归档，不要在同一受限环境重复试探。完成U09-05的下一步是在组织允许的标准FullLanguage环境运行现有入口；不要覆盖SDK基线、关闭或绕过安全策略。上一候选 `34d8a99f` 成功只作历史。
 
-推送后查 `.github/workflows/windows-build.yml` 当前SHA所有适用jobs（SDK基线、SDK10.0.401）、步骤结论与run/job/artifact身份。required-check API先前403，不重试，CI终态后记录“远端待验”和有权限维护者只读核对的下一步。不要用 `34d8a99f` 或纯文档提交的run代替新源码候选。
+required-check/保护规则API先前403，不重试；U09-06保持“远端待验”，需要有权限维护者只读核对required checks。状态：5项已满足、71项代码完成待验收、U09-04/05/08进行中、U09-06远端待验。真实Playnite界面、外部UIA、实体键盘/IME和物理DPI仍待验；真实恢复/删除/云写入未执行。
 
 ## 2026-10-30 U09-04 U00来源重建更新
 

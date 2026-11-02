@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "phase": "U09-05 final gate verification for 77482a9a",
+  "capturedAtLocal": "2026-11-03T03:16:35+08:00",
+  "preflight": {
+    "command": "scripts/space-budget.ps1 Invoke-GscSpacePreflight",
+    "temporarySystemPath": "D:\\Temp",
+    "outputPath": "artifacts",
+    "testTempPath": "artifacts\\test-temp",
+    "requiredCBytes": 4294967296,
+    "availableCBytes": 5232709632,
+    "requiredDBytes": 1073741824,
+    "availableDBytes": 8472412160,
+    "sufficient": true,
+    "budgetBasis": "scripts/space-budget.json; no SDK/NuGet cache growth or host data included"
+  },
+  "preservedPreviousCandidateFiles": {
+    "destination": "artifacts/r5-prior-34d8-20261103",
+    "operation": "PowerShell Move-Item -LiteralPath; within artifacts; verified source hashes matched the 34d8a99f local-gates manifest before move",
+    "files": [
+      {
+        "name": "GameSaveCenter-0.6.73-playnite.zip",
+        "bytes": 45737900,
+        "sha256": "CF08A6A8B0A10F4C8B236202E309957B06EC9AA3D2E194293791ADC0B7D0B256"
+      },
+      {
+        "name": "GameSaveCenter-0.6.73.pext",
+        "bytes": 45737900,
+        "sha256": "CF08A6A8B0A10F4C8B236202E309957B06EC9AA3D2E194293791ADC0B7D0B256"
+      },
+      {
+        "name": "last-dev-install.txt",
+        "bytes": 2335,
+        "sha256": "158A208347A64F274E540945FC534769A56EC2A496D141B3BD2648644C07E1BE"
+      },
+      {
+        "name": "one-click-install.log",
+        "bytes": 120290,
+        "sha256": "AA03B456138D6277A7397CA2A4E3E73D6273ADBCE45541659749807C75E8715F"
+      }
+    ],
+    "deleted": false
+  },
+  "removed": [
+    {
+      "path": ".tmp/qa-temp/130a00f6-5afc-4793-b8b5-e2f10dcb1634",
+      "resolvedPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\qa-temp\\130a00f6-5afc-4793-b8b5-e2f10dcb1634",
+      "scopeCheck": "resolved below repository .tmp; verified no files remained; render process had exited",
+      "files": 0,
+      "bytes": 0,
+      "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force"
+    },
+    {
+      "path": ".tmp/qa-temp/e38bf004-88fd-4d84-89bc-8313fc8aceaa",
+      "resolvedPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\qa-temp\\e38bf004-88fd-4d84-89bc-8313fc8aceaa",
+      "scopeCheck": "resolved below repository .tmp; verified no files remained; render process had exited",
+      "files": 0,
+      "bytes": 0,
+      "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force"
+    },
+    {
+      "path": ".tmp/qa-temp/MSBuildTemp",
+      "resolvedPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\qa-temp\\MSBuildTemp",
+      "scopeCheck": "resolved below repository .tmp; verified no files remained; render process had exited",
+      "files": 0,
+      "bytes": 0,
+      "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force"
+    }
+  ],
+  "failedGateOutputsRetained": [
+    {
+      "path": "artifacts/r5-u09-77482a9a-wrapper-console.txt",
+      "bytes": 472,
+      "sha256": "364D3BE9A9F4CE243C7A0F88B1B47F6240E29F401A3BCF465877976EAA99C0D1"
+    },
+    {
+      "path": "artifacts/r5-u09-77482a9a-buildcmd-console.txt",
+      "bytes": 407,
+      "sha256": "EEC452AB309677056BDD0487879796844116C23948B8988CB6823E804475A7F6"
+    }
+  ],
+  "retained": [
+    "artifacts/ui-qa/U06-02-selection-frame-align-20261102 exact 77482a9a Render QA report and 394 PNG",
+    "artifacts/ui-qa/U06-02-selection-frame-align-20261102/focused-tests original targeted and broad-filter TRX files",
+    "artifacts/gsc-b/4be27808 because tracked failed-root evidence refers to its binaries",
+    "all other artifacts, .tmp outputs, user/other-task TRX/TestResults, archives, databases, configurations and unknown files"
+  ],
+  "volumeFreeBytes": {
+    "beforePreflight": {
+      "C": 5232709632,
+      "D": 8472412160
+    },
+    "afterFailedLocalEntrypoints": {
+      "C": 5222977536,
+      "D": 8471662592
+    },
+    "note": "Observed availability only; the small changes are not attributed solely to this stage. No broad cleanup was run."
+  }
+}

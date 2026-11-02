@@ -47,7 +47,7 @@
     }
   ],
   "retained": [
-    "artifacts/ui-qa/U06-02-selection-frame-align-20261102 current Render QA audit; post-commit candidate run will overwrite the same screenshot/report names",
+    "artifacts/ui-qa/U06-02-selection-frame-align-20261102 exact candidate 77482a9a Render QA report and 394 PNG",
     "artifacts/build-diagnostics and the current 34d8a99f build/package/install report",
     "artifacts/gsc-b/4be27808 because earlier tracked failed-root evidence refers to its binaries; it was not deleted",
     "all other artifacts, .tmp outputs, databases, configurations, user files and unknown files"

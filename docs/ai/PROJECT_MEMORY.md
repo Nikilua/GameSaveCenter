@@ -2,7 +2,9 @@
 
 - 最近活动的蓝色圆角选中框不应推动行或图标；Overview行选中不能加布局Margin。公共 `ListBoxItem`、`DataGridRow`、媒体卡和共享导航应把框线放在内容边界之外的独立装饰层。边框可以加粗/变色，但不得因此缩小或移动内容测量边界，也不要为选中与焦点叠加两道相同的内框。
 - `AcrylicNavItem` 的键盘焦点边框必须使用不可命中的 overlay；`RadioButton`焦点/选中、内容、UIA及导航处理器保持。R23两主题内容bounds是回归契约；真实Playnite视觉/输入仍需宿主验收。
-- 2026-11-03 本批代码已完成定向R23、Source Validation、WPF静态和离屏Render QA；生产源改变后重新打开U09-05，最终中文入口、独立 `scripts/build.cmd` 和双SDK CI必须绑定新源码SHA。见Round5 `evidence/U06-02-nav-focus-overlay-20261103/`。
+- 最新源码候选 `77482a9a56f8d1507de3cf819c94559388dddc4f` 已推送；最近活动选框不推行/图标，`AcrylicNavItem` 焦点圈由独立 overlay 绘制。定向R23两主题2/2、Source Validation、WPF静态与提交后双主题394图 Render QA通过；源码证据见Round5 `evidence/U06-02-nav-focus-overlay-20261103/`。
+- 该候选的实际中文根入口链与独立 `scripts/build.cmd` 都在构建前遭 `ConstrainedLanguage` dot-source拒绝，退出1；没有本机完整测试/包/安装身份。不得在未变化的受限执行上下文重试或修改语言策略绕过门禁；下一步需使用组织允许的标准FullLanguage开发环境运行既有入口，或由管理员提供获准执行环境。不要用上一候选 `34d8a99f` 代替。
+- GitHub run #1436 `41498607041` 验证精确SHA `77482a9a`：基线SDK与SDK10.0.401两个job及所有步骤成功，预览/诊断artifact均绑定同SHA。required-check/规则集API既有403不重试，U09-06保持“远端待验”。80项计数为5满足、71代码完成待验收、U09-04/05/08进行中、U09-06远端待验；真实Playnite/外部UIA/实体输入IME/物理DPI仍需验收。
 
 ## 2026-11-02 Round5 U09-04 TaskGrid滚动归属复测
 

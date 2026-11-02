@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "run": {
+    "id": 41498607041,
+    "number": 1436,
+    "name": "Windows 构建验证",
+    "workflow": ".github/workflows/windows-build.yml",
+    "event": "push",
+    "branch": "main",
+    "headSha": "77482a9a56f8d1507de3cf819c94559388dddc4f",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "startedUtc": "2026-11-02T18:14:07Z",
+    "completedUtc": "2026-11-02T19:15:13Z",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41498607041"
+  },
+  "jobs": [
+    {
+      "id": 125459993079,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "status": "completed",
+      "conclusion": "success",
+      "allStepsConclusion": "success",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK",
+        "源码结构检查",
+        "诊断采集自测",
+        "SDK 基线与缺失负例",
+        "编译与测试",
+        "离屏渲染 QA",
+        "WPF UI 静态审查",
+        "生成 Playnite 扩展包",
+        "上传构建产物",
+        "保留构建与测试诊断（包括失败）",
+        "Post 安装 .NET SDK",
+        "Post 检出代码",
+        "Complete job"
+      ]
+    },
+    {
+      "id": 125459992623,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "success",
+      "allStepsConclusion": "success",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK 10.0.401",
+        "隔离工作树并运行 Release 编译与测试",
+        "保留 SDK 10.0.401 构建诊断（包括失败）",
+        "Post 安装 .NET SDK 10.0.401",
+        "Post 检出代码",
+        "Complete job"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13171462396,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90790660,
+      "digest": "sha256:b6fe07e5fd2fdcfa9ee4949ce26de58d7c5dcc19860d9b98a88a8463dd1691c8",
+      "headSha": "77482a9a56f8d1507de3cf819c94559388dddc4f",
+      "expiresUtc": "2027-01-31T18:14:07Z"
+    },
+    {
+      "id": 13171302333,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2032253,
+      "digest": "sha256:75f6210dcf5892312a65b351decec033c16d89c3f3316fdd876fc9bc9add2742",
+      "headSha": "77482a9a56f8d1507de3cf819c94559388dddc4f",
+      "expiresUtc": "2026-11-16T19:15:05Z"
+    },
+    {
+      "id": 13168659315,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 973373,
+      "digest": "sha256:3df17b522bbc2b8ed9d44477000b40bf7d86d1a1f58ed6d29bd8f683ce021101",
+      "headSha": "77482a9a56f8d1507de3cf819c94559388dddc4f",
+      "expiresUtc": "2026-11-16T18:41:41Z"
+    }
+  ],
+  "requiredChecks": {
+    "status": "remote pending",
+    "note": "The configured workflow run is successful and its two jobs are verified; required-check/ruleset API returned 403 earlier and was not retried."
+  }
+}

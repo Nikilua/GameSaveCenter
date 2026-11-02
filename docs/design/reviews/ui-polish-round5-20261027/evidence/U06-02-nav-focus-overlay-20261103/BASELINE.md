@@ -13,10 +13,10 @@
 - SDK 8.0.423 Release 精确构建 `R23ProductionResourceStateBehaviorTests.AcrylicNavigation` 的两条 WPF 用例，2/2 通过、0 失败、0 skip。两种主题分别覆盖未选中、选中、选中且键盘聚焦、焦点移出；断言 ContentPresenter 的相对导航边界和边框宽度稳定，焦点 overlay 始终可见且不命中鼠标。
 - 第一次过宽筛选额外命中 `UiFinesseRound2ControlSourceTests` 的源码身份守卫；直接调用没有注入 `GSC_BUILD_COMMIT`，该守卫失败，不是导航断言失败。收窄筛选后两条 R23 WPF 用例均通过。两个原始 TRX 的 SHA/计数见本地审计路径 `artifacts/ui-qa/U06-02-selection-frame-align-20261102/focused-tests/`；测试编译临时目录已按 `cleanup.json` 清除。
 - `python scripts/validate-source.py` 退出码 0。WPF 静态检查覆盖 218 份 XAML，0 errors、208 warnings、1327 info；warning/info 包含仓库保留的历史 `.tmp` 快照。
-- UI_CHANGE_GATE 的 `scripts/render-qa.ps1` 退出码 0，Light/Dark 共 394 PNG、0 `PROBLEM`。第一次输出在源码工作树未提交时生成（报告 SHA `CFECEFC15B66AB7F66E3442933CF847F1A2701B10A4601326AB04F709CEDF073`，报告标记 `WorkingTreeClean=False`），所以它只证明该工作树渲染成功。冻结候选提交后会在原审计目录覆盖运行，另记绑定正式候选 SHA 的报告身份。
+- UI_CHANGE_GATE 的 `scripts/render-qa.ps1` 在冻结提交后退出码 0，Light/Dark 共 394 PNG、0 `PROBLEM`。报告绑定候选SHA `77482a9a56f8d1507de3cf819c94559388dddc4f`，标记 `WorkingTreeClean: True`；SHA-256 `560A572CA52573D477F01F6DF25D8DD7D3A96E2E78B3EDC8C64A71C16695F3DB`，固定样本UTC `2026-11-03T00:00:00Z`。截图与报告保留于 `artifacts/ui-qa/U06-02-selection-frame-align-20261102/`。这不是Playnite实际宿主呈现验证。
 
 ## 交付边界
 
-本阶段源码提交后的中文根入口、独立 `scripts/build.cmd`、安装身份、启动和 GitHub 双 SDK jobs 尚未运行；上一冻结候选的通过记录不用于替代。Playnite 实际页面、外部 UIA、实体键盘/IME、物理 DPI 与宿主焦点行为未验。没有执行真实存档恢复、媒体删除或云端写入。
+本批提交后已运行GitHub精确候选双SDK jobs并全部成功，run/job/artifact身份见相邻U09-05证据。实际中文根入口经`GameSaveCenter-Run.cmd`转交后、以及独立`scripts/build.cmd`均在PowerShell启动时因`ConstrainedLanguage`拒绝dot-source而exit1；两者均未进入构建、SDK选择、测试、打包或安装。记录与下一步见`../U09-05-final-gates-77482a9a-20261103/BASELINE.md`；上一候选不替代当前硬门禁。Playnite实际页面、外部UIA、实体键盘/IME、物理DPI与宿主焦点行为未验。没有执行真实存档恢复、媒体删除或云端写入。
 
 磁盘起点、历史构建保留理由与本阶段临时输出见 [`stage-start.json`](stage-start.json) 和 [`cleanup.json`](cleanup.json)。
