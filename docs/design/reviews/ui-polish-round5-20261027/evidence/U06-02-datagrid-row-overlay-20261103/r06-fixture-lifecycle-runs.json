@@ -115,6 +115,17 @@
       "Sha256": "19F747F18909C06612DC4D862599D3C7BE35201F0E24A1739F002C3771873EAD",
       "CommitIdentity": "cf5173e75758782ad2bcd372cc9492ad393b908b",
       "Note": "Release test build used GSC_BUILD_COMMIT=cf5173; the working tree contained the corrected test source (SHA256 E0AB5E6314CB3A227CDC442205235F02BC3F556F1D26F311FE895875325893CA), not yet committed."
+    },
+    {
+      "File": "fixture-lifecycle-r06-committed-exact.trx",
+      "Outcome": "Completed",
+      "Passed": 3,
+      "Failed": 0,
+      "Skipped": 0,
+      "Sha256": "500540C9F7904553CDAC9F0DED57DBC815418A40BF975C783E8578A251256DB3",
+      "CommitIdentity": "d5387b39dc1a3bc1e10ba0a61363e48876faca38",
+      "Sdk": "8.0.423",
+      "ExitCode": 0
     }
   ]
 }

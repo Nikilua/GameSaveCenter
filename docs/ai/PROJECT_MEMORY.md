@@ -1756,3 +1756,9 @@ GitHub run41477919033(#1434)绑定精确SHA，`.github/workflows/windows-build.y
 WPF测试中的STA辅助器结束Dispatcher后，进程级`Application.Current`可能仍引用已关闭的Dispatcher。之后在另一个STA线程创建窗口时，`Show()`不保证窗口加载，DataGrid容器保持`NotStarted`，简单追加`UpdateLayout`/Dispatcher pumping不能修复这个错误的夹具生命周期。避免在多个隔离测试中反复新建WPF `Application`：将需要同一真实窗口状态的行为断言放到同一个STA测试，并在关闭当前活动主窗口前创建/验证第二个窗口；纯XAML契约可单独做静态断言，不应初始化Application。
 
 Round5 `cf5173e7`的生产行测试在CI基线与SDK10都因该夹具问题失败；修复后SDK8.0.423 Release R06整类3/3、0 skip。CI失败job/artifact与失败/通过TRX身份见`docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-datagrid-row-overlay-20261103/`。只把后续新提交的完整双SDKCI算作通过，不回写历史run结论。UI选中框质量原则继续有效：保留选择色和蓝色圆角描边，测量与内容几何不能因框线Margin/BorderThickness/Transform而变化。
+
+## 2026-11-03 Round5 R06修复提交CI终态
+
+提交d5387b39dc1a3bc1e10ba0a61363e48876faca38的GitHub run41529821227（#1439）completed/success。工作流定义与实际列表均为两个适用job：SDK8基线job125566804922 15/15步、SDK10.0.401 job125566804561 8/8步全成功。基线全测试和package.ps1内嵌全测试各2026项/1968通过/0失败/58既有skip/155个WPF隔离类；SDK10同样全通过。Render QA成功，WPF静态审查32 XAML/0错误。包脚本验证Playnite、Worker及共享程序集身份均为0.6.73+d5387b39dc1a3bc1e10ba0a61363e48876faca38，预览包及两诊断artifact均绑定该SHA；三者ID/digest见Round5 evidence/U06-02-datagrid-row-overlay-20261103/ci-run-41529821227.json。
+
+这只结案精确候选的GitHub workflow jobs；required-check/branch-protection读取既有403限制不重复请求，完整required checks列表仍远端待验。U09-05本地中文根入口及独立scripts/build.cmd因既有ConstrainedLanguage dot-source拒绝仍需组织授权FullLanguage环境验证，不能以CI或局部测试代替。R06历史run #1438失败保持原样。选中/焦点描边继续应位于独立overlay，不推移或裁切行内容；Playnite真实页面、外部UIA、实体输入/IME、物理DPI仍待验。

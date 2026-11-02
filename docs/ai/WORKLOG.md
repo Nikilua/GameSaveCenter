@@ -13012,3 +13012,11 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - GitHub run41525415460（#1438）的基线job125551752423与SDK10.0.401 job125551752823均因同一R06 WPF `DataGrid row was not generated`测试异常失败，渲染/静态/package步骤据门禁跳过，两个诊断artifact ID/digest已归档。未rerun或改workflow/skip。
 - 本地诊断发现前一独立测试创建的`Application.Current`保留在已结束STA Dispatcher，令后续窗口未加载。将Dashboard真实双主题几何断言移入同STA仍打开主窗口的生产行测试，并将独立用例保留为纯XML sibling契约检查；没有减断言或改skip。SDK8.0.423 Release整类3/3、0失败、0 skip，TRX及fixture源码哈希见Round5 `evidence/U06-02-datagrid-row-overlay-20261103/r06-fixture-lifecycle-runs.json`。这份测试源码待形成新提交，需按新SHA复跑并核实两SDK CI；不将cf5173 CI标绿。
 - 阶段清理记录保留输出归属、报告引用和磁盘起始空间；新阶段`.tmp`检查与清理结果在Round5证据目录。U09-05完整中文根入口链及独立`scripts/build.cmd`仍未由先前ConstrainedLanguage拒绝后的授权FullLanguage运行，本批不重复尝试。真实Playnite页面、外部UIA、实体输入/IME与物理DPI待验。
+
+## 2026-11-03 Round5 U06-02/U08-08 R06精确候选CI复核
+
+- 修复测试夹具提交d5387b39dc1a3bc1e10ba0a61363e48876faca38已推送。R06 SDK8.0.423 Release精确提交整类3/3通过、0失败、0 skip，TRX SHA-256 500540C9F7904553CDAC9F0DED57DBC815418A40BF975C783E8578A251256DB3。
+- 精确windows-build.yml run 41529821227（#1439）head SHA正确且completed/success。基线job125566804922的15/15步骤及SDK10.0.401 job125566804561的8/8步骤全部成功。Source/诊断/SDK基线检查、Release全测试、Render QA、WPF静态、Worker发布、包装验证及artifact上传均通过；静态扫描32 XAML、0 errors。基线Release完整测试在主编译步骤及package.ps1内嵌构建各跑一次，SDK10再跑一次，三次均2026项/1968通过/0失败/58既有skip/155个WPF隔离类。包及六个程序集身份精确匹配0.6.73+d5387b39dc1a3bc1e10ba0a61363e48876faca38。
+- 预览、baseline诊断、SDK10诊断artifact ID分别13185515505、13185097388、13182029784，size/digest/head SHA见Round5 evidence/U06-02-datagrid-row-overlay-20261103/ci-run-41529821227.json。前一cf5173的#1438双job失败保留历史，未rerun或改skip。required-check/保护规则接口此前403，不重复请求，required check完整性仍远端待验。
+- U09-05中文根入口与独立scripts/build.cmd先前因ConstrainedLanguage拒绝dot-source而未进入build/test/install，本批不在相同环境重试；需获授权FullLanguage环境验证。真实Playnite宿主、外部UIA、实体输入/IME和物理DPI待验；未执行真实存档恢复、媒体删除或云写入。
+- 文档源码校验通过，Markdown相对链接检查776条中新增引用均存在；5条缺失均为早期WORKLOG指向已退役artifacts/GameSaveCenter-0.6.73.pext或GameSaveCenter-0.6.73-playnite.zip的历史链接。git diff --check通过，仅有仓库文档CRLF转LF提示。

@@ -1,0 +1,121 @@
+{
+  "runId": 41529821227,
+  "runNumber": 1439,
+  "workflow": ".github/workflows/windows-build.yml",
+  "event": "push",
+  "branch": "main",
+  "headSha": "d5387b39dc1a3bc1e10ba0a61363e48876faca38",
+  "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41529821227",
+  "startedAt": "2026-11-02T21:36:03Z",
+  "completedAt": "2026-11-02T22:34:14Z",
+  "status": "completed",
+  "conclusion": "success",
+  "runAttempt": 1,
+  "workflowJobCount": 2,
+  "jobs": [
+    {
+      "id": 125566804922,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "stepsCompleted": 15,
+      "stepsFailed": 0,
+      "stepsSkipped": 0,
+      "stepSummaries": {
+        "源码结构检查": "success",
+        "诊断采集自测": "success",
+        "SDK基线与缺失负例": "success",
+        "编译与测试": "success",
+        "离屏渲染QA": "success",
+        "WPF UI静态审查": {
+          "conclusion": "success",
+          "xamlFiles": 32,
+          "errors": 0,
+          "warnings": 26,
+          "info": 179
+        },
+        "生成Playnite扩展包": "success",
+        "上传构建产物": "success",
+        "保留构建与测试诊断": "success"
+      },
+      "fullTestRuns": [
+        {
+          "stage": "编译与测试",
+          "sdk": "8.0.423",
+          "configuration": "Release",
+          "total": 2026,
+          "passed": 1968,
+          "failed": 0,
+          "skipped": 58,
+          "wpfIsolatedClasses": 155
+        },
+        {
+          "stage": "package.ps1内嵌build/test",
+          "sdk": "8.0.423",
+          "configuration": "Release",
+          "total": 2026,
+          "passed": 1968,
+          "failed": 0,
+          "skipped": 58,
+          "wpfIsolatedClasses": 155
+        }
+      ],
+      "packageIdentity": "0.6.73+d5387b39dc1a3bc1e10ba0a61363e48876faca38",
+      "packageFiles": [
+        "GameSaveCenter-0.6.73-playnite.zip",
+        "GameSaveCenter-0.6.73.pext"
+      ],
+      "artifacts": [
+        {
+          "id": 13185515505,
+          "name": "GameSaveCenter-windows-preview",
+          "sizeBytes": 90790822,
+          "digest": "sha256:eb87bc0bd2618bd18a51dc8bddd78e1bab5b525e2fdb84d824ee035b5bfaae26",
+          "expiresAt": "2027-01-31T21:36:03Z",
+          "headSha": "d5387b39dc1a3bc1e10ba0a61363e48876faca38"
+        },
+        {
+          "id": 13185097388,
+          "name": "GameSaveCenter-build-diagnostics",
+          "sizeBytes": 2032144,
+          "digest": "sha256:219d7e221db5eaf7ced48afb98d7a2351454adeea4e34df16e48c6e169ee58e8",
+          "expiresAt": "2026-11-16T22:34:08Z",
+          "headSha": "d5387b39dc1a3bc1e10ba0a61363e48876faca38"
+        }
+      ]
+    },
+    {
+      "id": 125566804561,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "stepsCompleted": 8,
+      "stepsFailed": 0,
+      "stepsSkipped": 0,
+      "sdk": "10.0.401",
+      "configuration": "Release",
+      "total": 2026,
+      "passed": 1968,
+      "failed": 0,
+      "skipped": 58,
+      "wpfIsolatedClasses": 155,
+      "artifacts": [
+        {
+          "id": 13182029784,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "sizeBytes": 972520,
+          "digest": "sha256:d592fb94da12eed93e3eebf03055faad3618bca8d528fa9c69a05fc25b76e29d",
+          "expiresAt": "2026-11-16T22:04:48Z",
+          "headSha": "d5387b39dc1a3bc1e10ba0a61363e48876faca38"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "所有workflow job与步骤均以completed/success结束；两个适用job均绑定相同headSha。",
+    "基线job的package.ps1又运行一次Release build/test；两个基线完整测试和SDK10完整测试均为2026项、1968通过、0失败、58既有skip、155个WPF隔离类。",
+    "诊断采集自测会生成设计上的失败样本；该自测通过，不属于产品完整测试失败。",
+    "58条skip按既有记录说明，不计通过，也未扩大skip。",
+    "required-check/规则集读取此前返回403，仍标记远端待验；未重复请求权限接口。"
+  ]
+}

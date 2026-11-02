@@ -1,0 +1,48 @@
+{
+  "Date": "2026-11-03",
+  "SourceCommit": "d5387b39dc1a3bc1e10ba0a61363e48876faca38",
+  "StagePathRemoved": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u09-06-sdk10-r06-fix-20261103",
+  "StageRootBoundaryVerified": true,
+  "ReparsePointsFound": 0,
+  "RelevantRunningProcessesFound": 0,
+  "MarkdownLinksToStageChecked": true,
+  "RemovedFileCount": 337,
+  "RemovedBytes": 29378923,
+  "RemovedContents": [
+    {
+      "Name": "build",
+      "FileCount": 330,
+      "Bytes": 29328859
+    },
+    {
+      "Name": "results",
+      "FileCount": 6,
+      "Bytes": 49736
+    },
+    {
+      "Name": "temp",
+      "FileCount": 0,
+      "Bytes": 0
+    },
+    {
+      "Name": "preflight.json",
+      "FileCount": 1,
+      "Bytes": 328
+    }
+  ],
+  "DiskFreeBytesBeforeCleanup": {
+    "D": 8366694400,
+    "C": 5000470528
+  },
+  "DiskFreeBytesAfterCleanup": {
+    "D": 8366694400,
+    "C": 5030694912
+  },
+  "RetainedEvidence": [
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-datagrid-row-overlay-20261103/tests/*.trx",
+    "r06-fixture-stage-preflight.json",
+    "r06-fixture-lifecycle-runs.json"
+  ],
+  "RetainedSdk": ".tmp/round5-sdk8-8.0.423",
+  "RetainedRenderAudit": "artifacts/ui-qa/U06-02-datagrid-row-overlay-20261103"
+}
