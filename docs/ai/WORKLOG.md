@@ -1,8 +1,8 @@
-## 2026-11-04 Round5 文档证据 Windows checkout 路径修正
+## 2026-11-04 Round5 证据归档修复与 CI 验收：f203f15f
 
-- 文档提交 967e07e1 的精确 CI run #1451 / 41681642551 两个 workflow job 都在 checkout 阶段报 `Filename too long`，后续 source/build/test/render/package 未运行且无 artifact；不是源码测试失败。原始 job 日志及 job ID 见 `reviews/ui-polish-round5-20261027/evidence/U06-02-3aa-20261104/ci-run-41681642551-failure.json`。
-- 本次压短 Round5 证据目录并展平 TRX 到 `t/r`、`t/b`、`t/f`；320 份全链/独立 TRX 与 6 份 focused TRX 的字节、SHA-256 不变。源码候选仍是 3aaae534。新提交的两个 SDK job 需重新查询；required-check 403 仍不重试。
-- Round5 仍为7项满足、71项代码完成待验收、U09-04进行中、U09-06远端待验；真实 Playnite 页面/UIA/输入/物理DPI和真实业务写操作边界不变。
+- 文档提交967e07e1的run #1451两job在Windows checkout因TRX长路径失败，源/测试/渲染/打包未运行且无artifact；原始job日志及归因见`reviews/ui-polish-round5-20261027/evidence/U06-02-3aa-20261104/ci-run-41681642551-failure.json`。
+- 修复提交f203f15f18bf8ce5f84c38ae7e3f03a407ab3a3e缩短归档路径，320份全链/独立build TRX及6份focused TRX字节与SHA-256不变。run #1452 / 41684052918 completed/success：baseline job126084964467 15/15步、SDK10 job126084964958 8/8步；编译测试、Render QA、WPF审查、打包和artifact上传全通过。artifact ID/digest见`reviews/ui-polish-round5-20261027/evidence/U06-02-3aa-20261104/ci-run-41684052918.json`。
+- 源码候选仍为3aaae534。required-check/ruleset接口先前403，不重试，U09-06仍远端待验；真实Playnite页面/UIA/键盘IME/物理DPI与真实业务写操作边界不变。Round5状态7满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。
 ## 2026-11-04 Round5 U06-02/U08-08 选框完整包裹与冻结候选门禁
 
 用户附图明确指出 Overview 日期时间、存档末列和任务状态未被选中框包住。DataGrid 选框框宽曾收至4，导致边缘与滚动轨道零间隙并触发R23；提交3aaae534恢复宽度参数8（焦点7）及Dashboard兼容资源宽度，保留行内容内裁切。Save History夹具使用740 DIP以重现用户截图的窄表和横向滚动。U00-01既有基线/去重经本批复核，未重复生成。

@@ -29,9 +29,13 @@ U00-01 已有存档、任务、媒体、设置四页各五项基线观察、双�
 
 文档证据提交 967e07e1c2d2c530620fee4300e8566e02b318b4 触发 [GitHub run #1451](https://github.com/Nikilua/GameSaveCenter/actions/runs/41681642551)。两个 job（126076537301、126076536778）都在 checkout 时因证据目录中重复嵌套的 TRX 路径超出 Windows 文件名限制而失败；后续源码检查、构建、测试、Render QA、WPF 审查和打包步骤均被跳过，未产生 artifact。原始 job 日志保留在[失败诊断 JSON](ci-run-41681642551-failure.json)链接的 GitHub job 页面。
 
-本次只缩短证据目录并把完整链、独立 build 与六个 focused TRX 分别展平至 `t/r`、`t/b`、`t/f`；TRX 文件原名、字节和 SHA-256 均校验保持不变，映射见 `diagnostics/local-gates-3aaae534.json`。源码候选仍为 3aaae534；这是文档证据路径兼容性修正，新提交的 CI 将重新核验。
+修复提交 `f203f15f18bf8ce5f84c38ae7e3f03a407ab3a3e` 将完整链、独立 build 与六个 focused TRX 分别展平至 `t/r`、`t/b`、`t/f`；TRX 文件原名、字节和 SHA-256 均校验保持不变，映射见 `diagnostics/local-gates-3aaae534.json`。
+
+修复提交的 [GitHub run #1452](https://github.com/Nikilua/GameSaveCenter/actions/runs/41684052918) completed/success：主 job 126084964467 的 15/15 步和 SDK 10.0.401 job 126084964958 的 8/8 步全部成功，含编译/测试、Render QA、WPF 静态审查、Playnite 扩展包及诊断 artifact 上传。三个 artifact 的 ID、大小及 SHA-256 见[成功 CI 身份记录](ci-run-41684052918.json)。源码候选仍为 3aaae534；branch required-check/ruleset 读取既有403，U09-06继续“远端待验”。
 
 ## 文件索引与状态
+
+- [修复提交精确双 SDK CI 与 artifact 身份](ci-run-41684052918.json)
 
 - [完整本地构建/安装/CI 摘要及 TRX SHA 清单](diagnostics/local-gates-3aaae534.json)
 - [中文入口最终成功日志](logs/rootchain-success.log)、[安装身份报告](logs/last-dev-install-sanitized.txt)
