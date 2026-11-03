@@ -143,7 +143,7 @@
                                     <Setter TargetName="TaskItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                     <Setter TargetName="TaskItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                                     <Setter TargetName="TaskItemChrome" Property="CornerRadius" Value="14"/>
-                                    <Setter TargetName="TaskItemChrome" Property="Margin" Value="0,0,16,0"/>
+                                    <Setter TargetName="TaskItemChrome" Property="Margin" Value="0,0,4,0"/>
                                     <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                     <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                 </Trigger>
@@ -613,7 +613,7 @@
                             <ListBox x:Name="OverviewActivityList" ItemsSource="{Binding OverviewTasks}" SelectedItem="{Binding SelectedTask}" ItemContainerStyle="{StaticResource OverviewRecentTaskItemStyle}" HorizontalContentAlignment="Stretch" MinHeight="0" MaxHeight="420" Background="Transparent" BorderThickness="0" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid Margin="0">
+                                        <Grid Margin="0,0,4,0">
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="38"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="74"/><ColumnDefinition Width="96"/></Grid.ColumnDefinitions>
                                             <Border x:Name="OverviewTaskStatusPill" Width="34" Height="34" CornerRadius="10" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}" HorizontalAlignment="Left" VerticalAlignment="Top">
                                                 <ui:ThemeAwareIcon x:Name="RecentActivityGlyph" Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconStatusInfo}" Width="18" Height="18" Foreground="{DynamicResource GscMutedStatusBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -636,7 +636,7 @@
                                             <Border x:Name="OverviewTaskResultChip" Grid.Column="3" Style="{DynamicResource GscRedesignTableStatusPill}" MinWidth="56" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                 <TextBlock x:Name="OverviewTaskResultText" Text="{Binding StateDisplay, Mode=OneWay}" Foreground="{DynamicResource GscPrimaryTextBrush}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding StateDisplay, Mode=OneWay}"/>
                                             </Border>
-                                            <TextBlock Grid.Column="4" Text="{Binding CreatedRelativeDisplay, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CreatedFullDisplay, Mode=OneWay}"/>
+                                            <TextBlock x:Name="OverviewTaskTimeText" Grid.Column="4" Text="{Binding CreatedRelativeDisplay, Mode=OneWay}" FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding CreatedFullDisplay, Mode=OneWay}"/>
                                         </Grid>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding State}" Value="Failed">

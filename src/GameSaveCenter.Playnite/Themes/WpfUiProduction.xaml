@@ -387,7 +387,7 @@
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
-                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,16,0"/>
+                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,4,0"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                         </Trigger>
                         <MultiTrigger>
@@ -398,13 +398,13 @@
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
-                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,16,0"/>
+                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,4,0"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                         </MultiTrigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderThickness" Value="2"/>
-                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,16,0"/>
+                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,4,0"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ItemChrome" Property="Opacity" Value="0.42"/>
@@ -702,16 +702,15 @@
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
                 <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
-                <Setter TargetName="RowBackground" Property="Margin" Value="4,2,12,2"/>
+                <Setter TargetName="RowBackground" Property="Margin" Value="4,2,4,2"/>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
-                <!-- Leave a safe area at the right edge. Playnite's host ScrollViewer
-                     can overlay the last device pixels with its vertical track; keeping the
-                     selected outline inside the rounded frame makes both side corners visible. -->
-                <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
+                <!-- Keep a narrow four-DIP gap before the vertical track while letting the
+                     selection frame reach the last visible cell content. -->
+                <Setter TargetName="RowChrome" Property="Margin" Value="4,2,4,2"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=16}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
@@ -722,13 +721,13 @@
                     <Condition Property="Selector.IsSelectionActive" Value="False"/>
                 </MultiTrigger.Conditions>
                 <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
-                <Setter TargetName="RowBackground" Property="Margin" Value="4,2,12,2"/>
+                <Setter TargetName="RowBackground" Property="Margin" Value="4,2,4,2"/>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
-                <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
+                <Setter TargetName="RowChrome" Property="Margin" Value="4,2,4,2"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=16}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
@@ -736,11 +735,11 @@
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="2"/>
-                <Setter TargetName="RowChrome" Property="Margin" Value="3,1,11,1"/>
+                <Setter TargetName="RowChrome" Property="Margin" Value="3,1,4,1"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=14}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=7}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
-                <Setter TargetName="RowBackground" Property="Margin" Value="3,1,11,1"/>
+                <Setter TargetName="RowBackground" Property="Margin" Value="3,1,4,1"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.42"/>

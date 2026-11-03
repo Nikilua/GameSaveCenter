@@ -217,7 +217,7 @@ public sealed class R10RecentAccessBehaviorTests
 
                     AssertContainerContentDoesNotMove(list, firstTask, "TaskItemChrome", "OverviewTaskStatusPill", host.Window);
                     var selectedChrome = FindItemChrome(list, firstTask, "TaskItemChrome");
-                    Assert.Equal(new Thickness(0, 0, 16, 0), selectedChrome.Margin);
+                    Assert.Equal(new Thickness(0, 0, 4, 0), selectedChrome.Margin);
                     Assert.Equal(new CornerRadius(14), selectedChrome.CornerRadius);
                     AssertAccentBorder(list, selectedChrome);
                 }
@@ -233,7 +233,7 @@ public sealed class R10RecentAccessBehaviorTests
                 using var sharedHost = new WindowHost(sharedOverview);
                 AssertContainerContentDoesNotMove(sharedList, firstTask, "ItemChrome", "OverviewTaskStatusPill", sharedHost.Window);
                 var sharedChrome = FindItemChrome(sharedList, firstTask, "ItemChrome");
-                Assert.Equal(new Thickness(0, 0, 16, 0), sharedChrome.Margin);
+                Assert.Equal(new Thickness(0, 0, 4, 0), sharedChrome.Margin);
                 AssertAccentBorder(sharedList, sharedChrome);
                 Assert.Equal(8, sharedChrome.CornerRadius.TopLeft);
             }
@@ -291,6 +291,14 @@ public sealed class R10RecentAccessBehaviorTests
         var chrome = FindItemChrome(list, task, chromeName);
         Assert.True(chrome.BorderThickness.Left > 0);
         Assert.True(chrome.CornerRadius.TopLeft > 0);
+        var timeText = FindVisualDescendants<TextBlock>(container)
+            .Single(text => text.Name == "OverviewTaskTimeText");
+        var timeBounds = timeText.TransformToAncestor(container)
+            .TransformBounds(new Rect(new Point(), timeText.RenderSize));
+        var chromeBounds = chrome.TransformToAncestor(container)
+            .TransformBounds(new Rect(new Point(), chrome.RenderSize));
+        Assert.True(timeBounds.Left >= chromeBounds.Left - 0.5 && timeBounds.Right <= chromeBounds.Right + 0.5,
+            $"the recent-task time must stay inside the selected frame; text={timeBounds}, frame={chromeBounds}");
         Assert.True(selectedBounds.Left >= 0 && selectedBounds.Right <= container.ActualWidth,
             "the recent-activity icon tile must remain inside the row while selected");
         if (chromeName == "TaskItemChrome")

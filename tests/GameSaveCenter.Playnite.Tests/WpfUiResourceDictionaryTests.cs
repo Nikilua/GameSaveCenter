@@ -3852,12 +3852,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "Margin"
-            && element.Attribute("Value")?.Value == "4,2,12,2");
+            && element.Attribute("Value")?.Value == "4,2,4,2");
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "Width"
             && (element.Attribute("Value")?.Value ?? "").Contains("DataGridRowsPresenter")
-            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=16"));
+            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=8"));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "HorizontalAlignment"
@@ -3865,7 +3865,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowBackground"
             && element.Attribute("Property")?.Value == "Margin"
-            && element.Attribute("Value")?.Value == "4,2,12,2");
+            && element.Attribute("Value")?.Value == "4,2,4,2");
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "BorderBrush"
@@ -3921,7 +3921,10 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(selectedTask.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "TaskItemChrome"
             && element.Attribute("Property")?.Value == "Margin"
-            && element.Attribute("Value")?.Value == "0,0,16,0");
+            && element.Attribute("Value")?.Value == "0,0,4,0");
+        var overviewTime = grid.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewTaskTimeText");
+        Assert.Equal("Right", overviewTime.Attribute("HorizontalAlignment")?.Value);
+        Assert.Equal("0,0,4,0", grid.Attribute("Margin")?.Value);
         Assert.Contains("Text=\"&#xE73E;\"", overviewText);
 
         // Long names and details must trim with a tooltip instead of pushing the row.
