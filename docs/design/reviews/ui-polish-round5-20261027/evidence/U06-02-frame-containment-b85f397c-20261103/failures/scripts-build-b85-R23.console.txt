@@ -1,0 +1,46 @@
+[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.81]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.86]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes [4 s]
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.TaskSelectionKeepsFailureBadgeAndCancelActionUsableAcrossThemes [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes [1 s]
+[xUnit.net 00:00:11.65]       Xunit.Sdk.TrueException: Task/Light inactive selection leaves 0 DIP between the selection frame and rows viewport; expected a DPI-rounded four-DIP gap.
+[xUnit.net 00:00:11.65]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+[xUnit.net 00:00:11.65]          在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AssertSelectionChromeUsesRowsViewport(DataGridRow row, DataGrid grid, Border chrome, String page, GameSaveCenterThemeMode theme, String state) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1592
+[xUnit.net 00:00:11.65]          在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes>b__11_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1208
+[xUnit.net 00:00:11.65]          在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c__DisplayClass36_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1677
+[xUnit.net 00:00:11.65]       Stack Trace:
+[xUnit.net 00:00:11.65]            在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1689
+  失败 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes [498 ms]
+  错误消息:
+   Xunit.Sdk.TrueException: Task/Light inactive selection leaves 0 DIP between the selection frame and rows viewport; expected a DPI-rounded four-DIP gap.
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AssertSelectionChromeUsesRowsViewport(DataGridRow row, DataGrid grid, Border chrome, String page, GameSaveCenterThemeMode theme, String state) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1592
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes>b__11_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1208
+   在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c__DisplayClass36_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1677
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:行号 1689
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabContentsStretchAcrossNarrowViewportRegardlessOfHeaderWidthInBothThemes [159 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes [157 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles [1 m 7 s]
+[xUnit.net 00:01:21.01]   Finished:    GameSaveCenter.Playnite.Tests
+数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.SettingsSectionTabsUseTheirGeneratedStyleForSelectionFocusAndDisabledNegativeInBothThemes [157 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationExposesFocusAndDisabledStatesAfterSelectionClearsInBothThemes [150 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationKeepsKeyboardFocusOutlineVisibleWhileSelectedInBothThemes [146 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabIndicatorsKeepCompactPaddingAndDisabledDimmingInBothThemes [150 ms]
+
+测试总数: 12
+     通过数: 11
+     失败数: 1
+总时间: 1.3771 分钟
+结果文件: [repo]\artifacts\build-diagnostics\20261103T140917544Z-4152ee00\tests\wpf.R23ProductionResourceStateBehaviorTests\wpf.R23ProductionResourceStateBehaviorTests.trx
+[xUnit.net 00:00:11.65]     GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes [FAIL]
+测试运行失败。

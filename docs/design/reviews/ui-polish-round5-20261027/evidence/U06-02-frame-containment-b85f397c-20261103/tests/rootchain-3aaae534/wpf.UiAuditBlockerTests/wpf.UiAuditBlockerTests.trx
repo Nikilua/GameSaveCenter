@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6f8ac43c-8532-4fa0-a80c-9ab63b686227" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-04T00:53:33.3451738+08:00" queuing="2026-11-04T00:53:33.3451742+08:00" start="2026-11-04T00:53:30.5724978+08:00" finish="2026-11-04T00:53:34.4249691+08:00" />
+  <TestSettings name="default" id="7b610aa8-f72d-49a8-a34c-e7e9c14d5a9d">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="30b7e6b0-6e7b-4f87-969f-3f7f24737599" testId="dea765f1-d138-0847-e5a8-b04270311c73" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.ScrollViewerContentOverflowIsIntentional" computerName="redacted-host" duration="00:00:00.0810000" startTime="2026-11-04T00:53:34.1324770+08:00" endTime="2026-11-04T00:53:34.2112940+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="30b7e6b0-6e7b-4f87-969f-3f7f24737599" />
+    <UnitTestResult executionId="c050f6df-d550-4e7d-933b-631966c05c98" testId="7a153541-94a3-737c-81e6-2b842efa3d7a" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.SettingsAuditWaitsForEntranceMotionBeforeTakingTheViewport" computerName="redacted-host" duration="00:00:00.1190000" startTime="2026-11-04T00:53:32.9241263+08:00" endTime="2026-11-04T00:53:33.0184069+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c050f6df-d550-4e7d-933b-631966c05c98" />
+    <UnitTestResult executionId="100e7a32-3922-45b8-81d2-79fc4bbb51a0" testId="c3187b64-4667-3b83-7474-d02875ded254" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.DecorativeOverflowIsExcluded" computerName="redacted-host" duration="00:00:00.3060000" startTime="2026-11-04T00:53:33.0524083+08:00" endTime="2026-11-04T00:53:33.3243917+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="100e7a32-3922-45b8-81d2-79fc4bbb51a0" />
+    <UnitTestResult executionId="eac3a2fd-f537-4d44-89d6-93e9046782ca" testId="ae9b2d23-910b-8d26-9d22-23e2ffaa222a" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.FixedChildOverflowIsRealLayoutOverflow" computerName="redacted-host" duration="00:00:00.0100000" startTime="2026-11-04T00:53:34.2172996+08:00" endTime="2026-11-04T00:53:34.2252930+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eac3a2fd-f537-4d44-89d6-93e9046782ca" />
+    <UnitTestResult executionId="4136ed34-ebbd-42c4-b738-ec912de09e41" testId="a618725e-1314-8f0e-1b09-e659bc76f4e7" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.ManifestAndGatesCarryScopeAndHighGates" computerName="redacted-host" duration="00:00:00.0070000" startTime="2026-11-04T00:53:33.3284000+08:00" endTime="2026-11-04T00:53:33.3344003+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4136ed34-ebbd-42c4-b738-ec912de09e41" />
+    <UnitTestResult executionId="c71fd46c-a343-46fa-a493-8a86d3fd9ee6" testId="5a068efb-0e16-e599-7df7-a65baeb86b25" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.SafeFileNamePreservesChineseAndCollapsesInvalidChars" computerName="redacted-host" duration="00:00:00.0040000" startTime="2026-11-04T00:53:34.2132940+08:00" endTime="2026-11-04T00:53:34.2162935+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c71fd46c-a343-46fa-a493-8a86d3fd9ee6" />
+    <UnitTestResult executionId="a0d95980-6685-4f87-9afa-d5fb536af927" testId="f0dad5e5-cad4-29f0-23f8-46f82f535169" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.AuditFallbackWindowComparisonIsExplicit" computerName="redacted-host" duration="00:00:00.0030000" startTime="2026-11-04T00:53:33.3264004+08:00" endTime="2026-11-04T00:53:33.3274020+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0d95980-6685-4f87-9afa-d5fb536af927" />
+    <UnitTestResult executionId="6e5c19fe-66fe-4d75-859f-20dc53cfbf70" testId="8303b2de-0a92-dbc7-411c-6f7ca3fbd84c" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.InternalTextBoxScrollerIsFiltered" computerName="redacted-host" duration="00:00:00.7910000" startTime="2026-11-04T00:53:33.3404076+08:00" endTime="2026-11-04T00:53:34.1303680+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e5c19fe-66fe-4d75-859f-20dc53cfbf70" />
+    <UnitTestResult executionId="60f3f625-8e1a-4b1f-bdf3-eb50924ce329" testId="0edc9244-ef9a-011d-7384-7a685561e76b" testName="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.EmbeddedIdentityUsesHostWindowNotStaticNull" computerName="redacted-host" duration="00:00:00.0050000" startTime="2026-11-04T00:53:33.3354006+08:00" endTime="2026-11-04T00:53:33.3384004+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="60f3f625-8e1a-4b1f-bdf3-eb50924ce329" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.SafeFileNamePreservesChineseAndCollapsesInvalidChars" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5a068efb-0e16-e599-7df7-a65baeb86b25">
+      <Execution id="c71fd46c-a343-46fa-a493-8a86d3fd9ee6" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="SafeFileNamePreservesChineseAndCollapsesInvalidChars" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.EmbeddedIdentityUsesHostWindowNotStaticNull" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0edc9244-ef9a-011d-7384-7a685561e76b">
+      <Execution id="60f3f625-8e1a-4b1f-bdf3-eb50924ce329" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="EmbeddedIdentityUsesHostWindowNotStaticNull" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.FixedChildOverflowIsRealLayoutOverflow" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ae9b2d23-910b-8d26-9d22-23e2ffaa222a">
+      <Execution id="eac3a2fd-f537-4d44-89d6-93e9046782ca" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="FixedChildOverflowIsRealLayoutOverflow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.InternalTextBoxScrollerIsFiltered" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="8303b2de-0a92-dbc7-411c-6f7ca3fbd84c">
+      <Execution id="6e5c19fe-66fe-4d75-859f-20dc53cfbf70" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="InternalTextBoxScrollerIsFiltered" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.AuditFallbackWindowComparisonIsExplicit" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f0dad5e5-cad4-29f0-23f8-46f82f535169">
+      <Execution id="a0d95980-6685-4f87-9afa-d5fb536af927" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="AuditFallbackWindowComparisonIsExplicit" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.SettingsAuditWaitsForEntranceMotionBeforeTakingTheViewport" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7a153541-94a3-737c-81e6-2b842efa3d7a">
+      <Execution id="c050f6df-d550-4e7d-933b-631966c05c98" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="SettingsAuditWaitsForEntranceMotionBeforeTakingTheViewport" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.DecorativeOverflowIsExcluded" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c3187b64-4667-3b83-7474-d02875ded254">
+      <Execution id="100e7a32-3922-45b8-81d2-79fc4bbb51a0" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="DecorativeOverflowIsExcluded" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.ScrollViewerContentOverflowIsIntentional" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="dea765f1-d138-0847-e5a8-b04270311c73">
+      <Execution id="30b7e6b0-6e7b-4f87-969f-3f7f24737599" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="ScrollViewerContentOverflowIsIntentional" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests.ManifestAndGatesCarryScopeAndHighGates" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="a618725e-1314-8f0e-1b09-e659bc76f4e7">
+      <Execution id="4136ed34-ebbd-42c4-b738-ec912de09e41" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.UiAuditBlockerTests" name="ManifestAndGatesCarryScopeAndHighGates" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="dea765f1-d138-0847-e5a8-b04270311c73" executionId="30b7e6b0-6e7b-4f87-969f-3f7f24737599" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7a153541-94a3-737c-81e6-2b842efa3d7a" executionId="c050f6df-d550-4e7d-933b-631966c05c98" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c3187b64-4667-3b83-7474-d02875ded254" executionId="100e7a32-3922-45b8-81d2-79fc4bbb51a0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ae9b2d23-910b-8d26-9d22-23e2ffaa222a" executionId="eac3a2fd-f537-4d44-89d6-93e9046782ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a618725e-1314-8f0e-1b09-e659bc76f4e7" executionId="4136ed34-ebbd-42c4-b738-ec912de09e41" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5a068efb-0e16-e599-7df7-a65baeb86b25" executionId="c71fd46c-a343-46fa-a493-8a86d3fd9ee6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f0dad5e5-cad4-29f0-23f8-46f82f535169" executionId="a0d95980-6685-4f87-9afa-d5fb536af927" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8303b2de-0a92-dbc7-411c-6f7ca3fbd84c" executionId="6e5c19fe-66fe-4d75-859f-20dc53cfbf70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0edc9244-ef9a-011d-7384-7a685561e76b" executionId="60f3f625-8e1a-4b1f-bdf3-eb50924ce329" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="9" executed="9" passed="9" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.82]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.86]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.24]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-04T00:53:34.3878916+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,182 @@
+{
+  "queriedAt": "2026-11-03T16:35:13.6181206Z",
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": "https://github.com/Nikilua/GameSaveCenter/actions/workflows/windows-build.yml",
+  "run": {
+    "id": 41659230554,
+    "number": 1450,
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41659230554",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "headBranch": "main",
+    "headSha": "3aaae5345012938f83ca8af6194cc13c56bfe5cd",
+    "attempt": 1
+  },
+  "jobs": [
+    {
+      "id": 125997757253,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "stepCount": 15,
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "检出代码",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "安装 .NET SDK",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "源码结构检查",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "诊断采集自测",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "SDK 基线与缺失负例",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "编译与测试",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "离屏渲染 QA",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "WPF UI 静态审查",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "生成 Playnite 扩展包",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "上传构建产物",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "保留构建与测试诊断（包括失败）",
+          "conclusion": "success"
+        },
+        {
+          "number": 23,
+          "name": "Post 安装 .NET SDK",
+          "conclusion": "success"
+        },
+        {
+          "number": 24,
+          "name": "Post 检出代码",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 125997757096,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "stepCount": 8,
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "检出代码",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "安装 .NET SDK 10.0.401",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "隔离工作树并运行 Release 编译与测试",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "保留 SDK 10.0.401 构建诊断（包括失败）",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Post 安装 .NET SDK 10.0.401",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "Post 检出代码",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13248315253,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90792150,
+      "digest": "sha256:ebfcc960c0902ee5c2256d03b6144640f14490b755098c6a3909b3e1f4b95fb0",
+      "expiresAt": "2027-02-01T14:59:50Z",
+      "headSha": "3aaae5345012938f83ca8af6194cc13c56bfe5cd"
+    },
+    {
+      "id": 13246754943,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2045247,
+      "digest": "sha256:12729fb224024901b8546bdadf89bc2f09dd1775650076270c570d5c84b05e6f",
+      "expiresAt": "2026-11-17T16:02:17Z",
+      "headSha": "3aaae5345012938f83ca8af6194cc13c56bfe5cd"
+    },
+    {
+      "id": 13243786493,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 978078,
+      "digest": "sha256:0d3b2a158a322c9bb569cfe35eed649c96a363051095d72d5fad56be7511c717",
+      "expiresAt": "2026-11-17T15:24:57Z",
+      "headSha": "3aaae5345012938f83ca8af6194cc13c56bfe5cd"
+    }
+  ],
+  "requiredChecks": {
+    "state": "远端待验",
+    "reason": "仓库记忆记录required-check/ruleset只读接口先前403；遵守“不重复试探同一权限拒绝”，本轮不再调用。workflow定义和精确push runs/jobs/全部步骤已读取。",
+    "nextStep": "有权限维护者只读核对main required status checks。"
+  }
+}

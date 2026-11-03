@@ -1,0 +1,83 @@
+{
+  "sourceCommit": "3aaae5345012938f83ca8af6194cc13c56bfe5cd",
+  "recordedUtc": "2026-11-03T15:18:23.2423684Z",
+  "drive": "D:",
+  "freeBytesBefore": 4112113664,
+  "budgetBytes": 4294967296,
+  "targets": [
+    {
+      "Name": "compile-b85-width-fix",
+      "Bytes": 162769137,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u06-frame-and-u09-perf-20261103\\compile-b85-width-fix",
+      "FileCount": 723
+    },
+    {
+      "Name": "render-qa-b85f397c",
+      "Bytes": 53464000,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u06-frame-and-u09-perf-20261103\\render-qa-b85f397c",
+      "FileCount": 395
+    },
+    {
+      "Name": "render-qa-clipped",
+      "Bytes": 53448752,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u06-frame-and-u09-perf-20261103\\render-qa-clipped",
+      "FileCount": 395
+    },
+    {
+      "Name": "render-qa-3aaae534",
+      "Bytes": 53461780,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u06-frame-and-u09-perf-20261103\\render-qa-3aaae534",
+      "FileCount": 395
+    },
+    {
+      "Name": "tests-width-fix",
+      "Bytes": 39338,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u06-frame-and-u09-perf-20261103\\tests-width-fix",
+      "FileCount": 6
+    },
+    {
+      "Name": "tests-width-fix-final",
+      "Bytes": 35258,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u06-frame-and-u09-perf-20261103\\tests-width-fix-final",
+      "FileCount": 2
+    },
+    {
+      "Name": "tests-width-fix-final-identity",
+      "Bytes": 55993,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u06-frame-and-u09-perf-20261103\\tests-width-fix-final-identity",
+      "FileCount": 12
+    },
+    {
+      "Name": "tests-savehistory-viewport-740",
+      "Bytes": 4525,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u06-frame-and-u09-perf-20261103\\tests-savehistory-viewport-740",
+      "FileCount": 2
+    }
+  ],
+  "documentReferences": [
+    "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U06-02-frame-containment-b85f397c-20261103\\failures\\save-history-wide-fixture.trx",
+    "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U06-02-frame-containment-b85f397c-20261103\\tests\\R06SaveHistorySelectionFrameBehaviorTests.trx",
+    "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U06-02-frame-containment-b85f397c-20261103\\tests\\R06SelectionStateBehaviorTests.trx",
+    "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U06-02-frame-containment-b85f397c-20261103\\tests\\R06TaskGridSelectionFrameBehaviorTests.trx",
+    "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U06-02-frame-containment-b85f397c-20261103\\tests\\R10RecentAccessBehaviorTests.trx",
+    "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U06-02-frame-containment-b85f397c-20261103\\tests\\R23ProductionResourceStateBehaviorTests.trx",
+    "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U06-02-frame-containment-b85f397c-20261103\\tests\\RepositoryIdentityTests.trx"
+  ],
+  "activeBuildProcesses": [],
+  "activePlaynite": {
+    "ModulesScanned": 193,
+    "ModulesUnderStage": [],
+    "Pid": 55088,
+    "Path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe"
+  },
+  "archivedEvidenceRoot": "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U06-02-frame-containment-b85f397c-20261103",
+  "checks": [
+    "all targets resolve under this phase .tmp root",
+    "no reparse points in target trees",
+    "no active dotnet/MSBuild/testhost process",
+    "Playnite module paths do not use phase outputs",
+    "Render QA report and representative screenshots copied to docs evidence",
+    "focused test logs/TRX and valuable failure logs copied to docs evidence",
+    "diagnostic roots under artifacts/build-diagnostics remain untouched"
+  ]
+}

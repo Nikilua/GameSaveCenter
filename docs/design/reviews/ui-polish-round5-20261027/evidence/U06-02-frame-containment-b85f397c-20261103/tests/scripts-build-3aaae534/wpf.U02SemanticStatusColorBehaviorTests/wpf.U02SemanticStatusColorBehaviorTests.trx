@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c964777c-d290-4f02-ab72-c32fd7660cb7" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T23:47:32.3127713+08:00" queuing="2026-11-03T23:47:32.3127715+08:00" start="2026-11-03T23:47:25.4968577+08:00" finish="2026-11-03T23:47:32.6725534+08:00" />
+  <TestSettings name="default" id="ac9e4751-372d-465f-a0b7-c0daabc7637e">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="eb95f77d-16c6-4949-b741-433c3ff9e5c1" testId="2bf07cc4-05a2-e974-40c1-3021bb270c9f" testName="GameSaveCenter.Playnite.Tests.U02SemanticStatusColorBehaviorTests.OverviewTaskRowsUseTextIconAndContrastingSemanticColor(theme: Dark)" computerName="redacted-host" duration="00:00:00.2250000" startTime="2026-11-03T23:47:32.2982902+08:00" endTime="2026-11-03T23:47:32.4849316+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eb95f77d-16c6-4949-b741-433c3ff9e5c1" />
+    <UnitTestResult executionId="94541be3-d1b6-4445-abf0-d82752378e39" testId="037025a4-97b9-3936-1afe-55a1d377d75e" testName="GameSaveCenter.Playnite.Tests.U02SemanticStatusColorBehaviorTests.OverviewTaskRowsUseTextIconAndContrastingSemanticColor(theme: Light)" computerName="redacted-host" duration="00:00:02.3530000" startTime="2026-11-03T23:47:29.9550522+08:00" endTime="2026-11-03T23:47:32.2592899+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="94541be3-d1b6-4445-abf0-d82752378e39" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.U02SemanticStatusColorBehaviorTests.OverviewTaskRowsUseTextIconAndContrastingSemanticColor(theme: Dark)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="2bf07cc4-05a2-e974-40c1-3021bb270c9f">
+      <Execution id="eb95f77d-16c6-4949-b741-433c3ff9e5c1" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.U02SemanticStatusColorBehaviorTests" name="OverviewTaskRowsUseTextIconAndContrastingSemanticColor" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.U02SemanticStatusColorBehaviorTests.OverviewTaskRowsUseTextIconAndContrastingSemanticColor(theme: Light)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="037025a4-97b9-3936-1afe-55a1d377d75e">
+      <Execution id="94541be3-d1b6-4445-abf0-d82752378e39" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.U02SemanticStatusColorBehaviorTests" name="OverviewTaskRowsUseTextIconAndContrastingSemanticColor" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2bf07cc4-05a2-e974-40c1-3021bb270c9f" executionId="eb95f77d-16c6-4949-b741-433c3ff9e5c1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="037025a4-97b9-3936-1afe-55a1d377d75e" executionId="94541be3-d1b6-4445-abf0-d82752378e39" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.85]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.90]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.53]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-03T23:47:32.6392709+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

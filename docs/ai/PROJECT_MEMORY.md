@@ -1,3 +1,11 @@
+## 2026-11-04 Round5 当前候选与用户框外文字反馈：3aaae534
+
+- 用户附图中的三个目标是 Overview 最近任务时间、Save History 末列、Task 队列状态标签。U00-01 视觉基线和旧任务去重已经记录在 reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md，本批沿用而不重复。
+- b85f397c/28ff5e0f 行内容裁切候选曾将 DataGrid 选框 width 参数改为4，R23证实破坏4 DIP滚动轨道。3aaae534修复后恢复 DataGrid/Dashboard 参数8、焦点框7，并保留RowContent向内裁切。R06 SaveHistory夹具固定740 DIP以复现截图窄表横向滚动；R06/R10/R23目标回归已在独立build和完整中文链运行通过。
+- 3aaae534已推送main。SDK8.0.423 / MSBuild17.11.48；中文实际入口exit0，160份TRX 2028项/1970通过/0失败/58既有skip；独立scripts/build.cmd exit0，2028/1960/0/68。所有skip按TRX保留原因且不计通过。
+- 精确CI run #1450 / 41659230554 completed/success：基线job125997757253 15步、SDK10.0.401 job125997757096 8步、全部适用steps成功；artifact ID/digest见同Round5 evidence目录ci-run JSON。required-check/ruleset只读接口此前403，不重试；U09-06仍远端待验。
+- 中文入口安装0.6.73，ZIP/PEXT SHA一致，六个安装程序集带候选SHA，Playnite/Worker进程响应并记录插件加载；未观察实际插件页面。屏幕页、UIA、实体键盘/IME、物理DPI仍待验；不执行真实恢复、媒体删除或云写入。
+- Round5状态7满足、71代码完成待验收、U09-04进行中、U09-06远端待验。详细测试/包/安装/CI身份见reviews/ui-polish-round5-20261027/evidence/U06-02-frame-containment-b85f397c-20261103/BASELINE.md。
 ## 2026-11-03 Round5 当前状态：6cd0f9ec 右缘包裹修复
 
 - 精确候选6cd0f9ec55ada37f03a88d24bc46690ed1837a06修复共享ListBox/DataGrid选框右缘过早结束造成的日期/末列文字看起来框外。选框及底色overlay统一约4 DIP右侧inset，保持文字、图标、命令、Binding、虚拟化和现有滚动条不变；Overview/Save/Task/Shell修复后截图与334图Render QA、R06/R10/R23行为几何回归见docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/。

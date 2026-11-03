@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d94d554a-fc19-431d-9526-a200e3a6ea7d" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T23:37:06.3313238+08:00" queuing="2026-11-03T23:37:06.3313241+08:00" start="2026-11-03T23:37:00.4515248+08:00" finish="2026-11-03T23:37:07.3652147+08:00" />
+  <TestSettings name="default" id="d25399f9-2128-400d-8c55-fcbbddaddfce">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="6a38b94d-54e1-497e-a371-524a44c2f0b0" testId="cd16595b-8c21-9f32-1817-183c99c617fe" testName="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests.ProductionSharedSurfacesClipChildrenToTheirRoundedGeometryAtFractionalDpi" computerName="redacted-host" duration="00:00:00.3940000" startTime="2026-11-03T23:37:06.7791056+08:00" endTime="2026-11-03T23:37:07.1697435+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6a38b94d-54e1-497e-a371-524a44c2f0b0" />
+    <UnitTestResult executionId="d34ffe0f-dbb5-4e85-9002-b70961ec7bd1" testId="12c4d6d4-3b6d-874a-991d-3b5ea4547912" testName="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests.DashboardCopiesKeepTheSamePixelSnappingContractAsSharedChrome" computerName="redacted-host" duration="00:00:00.1130000" startTime="2026-11-03T23:37:04.8299607+08:00" endTime="2026-11-03T23:37:04.9044087+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d34ffe0f-dbb5-4e85-9002-b70961ec7bd1" />
+    <UnitTestResult executionId="f0d7ff2d-2043-48aa-a3c2-b08a7e1e5d21" testId="b9dc7d2d-38d0-690e-0375-96a5b003d85a" testName="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests.ProductionSelectedChromeAndNavigationChromeKeepOneDipRoundedStrokeContract" computerName="redacted-host" duration="00:00:01.8720000" startTime="2026-11-03T23:37:04.9391163+08:00" endTime="2026-11-03T23:37:06.7761066+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f0d7ff2d-2043-48aa-a3c2-b08a7e1e5d21" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests.DashboardCopiesKeepTheSamePixelSnappingContractAsSharedChrome" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="12c4d6d4-3b6d-874a-991d-3b5ea4547912">
+      <Execution id="d34ffe0f-dbb5-4e85-9002-b70961ec7bd1" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests" name="DashboardCopiesKeepTheSamePixelSnappingContractAsSharedChrome" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests.ProductionSelectedChromeAndNavigationChromeKeepOneDipRoundedStrokeContract" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="b9dc7d2d-38d0-690e-0375-96a5b003d85a">
+      <Execution id="f0d7ff2d-2043-48aa-a3c2-b08a7e1e5d21" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests" name="ProductionSelectedChromeAndNavigationChromeKeepOneDipRoundedStrokeContract" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests.ProductionSharedSurfacesClipChildrenToTheirRoundedGeometryAtFractionalDpi" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="cd16595b-8c21-9f32-1817-183c99c617fe">
+      <Execution id="6a38b94d-54e1-497e-a371-524a44c2f0b0" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests" name="ProductionSharedSurfacesClipChildrenToTheirRoundedGeometryAtFractionalDpi" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="cd16595b-8c21-9f32-1817-183c99c617fe" executionId="6a38b94d-54e1-497e-a371-524a44c2f0b0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="12c4d6d4-3b6d-874a-991d-3b5ea4547912" executionId="d34ffe0f-dbb5-4e85-9002-b70961ec7bd1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b9dc7d2d-38d0-690e-0375-96a5b003d85a" executionId="f0d7ff2d-2043-48aa-a3c2-b08a7e1e5d21" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.81]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.85]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.28]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-03T23:37:07.3290155+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,24 @@
+{
+  "sourceCommit": "b85f397ccaa9fea6357b759698a9df597259477a",
+  "recordedUtc": "2026-11-03T14:08:54.3493791Z",
+  "drive": "D:",
+  "freeBytesBefore": 4068958208,
+  "path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\28c23fae",
+  "bytes": 281868781,
+  "fileCount": 1015,
+  "sourceCommitOfOutput": "80bae77c0b9fe7e6b4a891c9c63259fdb4af1915",
+  "supersededBy": "de2d9cd7 output for 6cd0f9ec; current candidate b85f397c",
+  "ownershipDiagnostic": "artifacts/build-diagnostics/20261103T061116810Z-a773d6d8/summary.json",
+  "ownerPid": 41428,
+  "ownerAlive": false,
+  "activePlaynite": {
+    "Path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+    "ModulesScanned": 193,
+    "TargetModuleHits": [],
+    "Started": "2026-11-03T10:47:49.5730959Z",
+    "Pid": 55088
+  },
+  "documentReferences": [],
+  "reparsePoints": 0,
+  "decision": "superseded successful output, retain diagnostic summary and existing current 6cd package/build; remove only this output directory"
+}

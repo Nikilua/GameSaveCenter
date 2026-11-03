@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="dd80f119-1453-43a0-b1cb-64c68bf5b28b" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-04T00:42:24.7847541+08:00" queuing="2026-11-04T00:42:24.7847543+08:00" start="2026-11-04T00:42:20.4984474+08:00" finish="2026-11-04T00:42:25.1635338+08:00" />
+  <TestSettings name="default" id="95be2b21-5c03-4e6e-b3ce-7ac447d26a30">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="da75ca9f-bedf-4201-8678-2a5eb0eb664d" testId="45ca60d6-d390-c69e-a909-c1ac80ac8456" testName="GameSaveCenter.Playnite.Tests.R07FineScrollBehaviorTests.AcceleratedBoundaryWheelTransfersMultipleLinesWithoutOvershootingOuterEnd" computerName="redacted-host" duration="00:00:01.2730000" startTime="2026-11-04T00:42:22.8755535+08:00" endTime="2026-11-04T00:42:24.1252324+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da75ca9f-bedf-4201-8678-2a5eb0eb664d">
+      <Output>
+        <StdOut>outerOffset=32-&gt;80/432; innerOffset=628-&gt;628&#xD;
+layoutCount=1; visibleBorderCount=2</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cd34c5be-77c1-4777-9827-9fd3a1015ec4" testId="fa0ee173-b173-f0d2-ffd0-2a6a457cfe40" testName="GameSaveCenter.Playnite.Tests.R07FineScrollBehaviorTests.FineReverseAndTerminalWheelSequenceKeepsViewportAndLayoutBounded" computerName="redacted-host" duration="00:00:00.8380000" startTime="2026-11-04T00:42:24.1542321+08:00" endTime="2026-11-04T00:42:24.9635072+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd34c5be-77c1-4777-9827-9fd3a1015ec4">
+      <Output>
+        <StdOut>smallOffsets=0,3,6,9,12,15,18,21,24,27,30,33,36&#xD;
+reverseOffsets=33,30,27&#xD;
+terminalOffset=154; scrollableHeight=154; finalOffset=154&#xD;
+layoutCount=17; wheelCount=20; terminalLayoutDelta=0&#xD;
+visibleRowCounts=7,8,8,8,8,8,8,8,8,8,8,8,9,9,9,6,6,6,6,6; min=6; max=9</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07FineScrollBehaviorTests.AcceleratedBoundaryWheelTransfersMultipleLinesWithoutOvershootingOuterEnd" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="45ca60d6-d390-c69e-a909-c1ac80ac8456">
+      <Execution id="da75ca9f-bedf-4201-8678-2a5eb0eb664d" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07FineScrollBehaviorTests" name="AcceleratedBoundaryWheelTransfersMultipleLinesWithoutOvershootingOuterEnd" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R07FineScrollBehaviorTests.FineReverseAndTerminalWheelSequenceKeepsViewportAndLayoutBounded" storage="[repo]\artifacts\gsc-b\2169eb16\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="fa0ee173-b173-f0d2-ffd0-2a6a457cfe40">
+      <Execution id="cd34c5be-77c1-4777-9827-9fd3a1015ec4" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\2169eb16\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R07FineScrollBehaviorTests" name="FineReverseAndTerminalWheelSequenceKeepsViewportAndLayoutBounded" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="45ca60d6-d390-c69e-a909-c1ac80ac8456" executionId="da75ca9f-bedf-4201-8678-2a5eb0eb664d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fa0ee173-b173-f0d2-ffd0-2a6a457cfe40" executionId="cd34c5be-77c1-4777-9827-9fd3a1015ec4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.83]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.87]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.04]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-04T00:42:25.1302882+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

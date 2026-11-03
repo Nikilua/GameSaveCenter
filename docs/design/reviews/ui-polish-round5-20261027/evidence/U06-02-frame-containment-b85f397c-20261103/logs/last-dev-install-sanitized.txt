@@ -1,0 +1,26 @@
+时间：2026-11-04 00:55:00
+安装运行 ID：20261103T163042848Z-f58440e1
+源码版本：0.6.73
+隔离构建目录：%REPO_ROOT%\artifacts\gsc-b\2169eb16
+安装目录：%USERPROFILE%\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+3aaae5345012938f83ca8af6194cc13c56bfe5cd
+  文件路径：%USERPROFILE%\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：7444DF675FAED470B39ACA30F36FF93A54C87B05FF91642A9878FF3382F28E72
+  GameSaveCenter.Core.dll：0.6.73+3aaae5345012938f83ca8af6194cc13c56bfe5cd
+  文件路径：%USERPROFILE%\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：B67D70CFAA3DE439174253B8843417B1BB5C15C97A220AA0177D86F4A0FC5F0D
+  GameSaveCenter.Contracts.dll：0.6.73+3aaae5345012938f83ca8af6194cc13c56bfe5cd
+  文件路径：%USERPROFILE%\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：53F9957948D81DA58AB7CEC98EF3DEBDDDD42F642E392C5E9D12E4671F6472BC
+  Worker/GameSaveCenter.Worker.dll：0.6.73+3aaae5345012938f83ca8af6194cc13c56bfe5cd
+  文件路径：%USERPROFILE%\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：A7593BA0E167E20C52AF8E4A26843DB39DA29AF78497429837D7D407ABD595DD
+  Worker/GameSaveCenter.Core.dll：0.6.73+3aaae5345012938f83ca8af6194cc13c56bfe5cd
+  文件路径：%USERPROFILE%\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：3730608FF6CAE1D9FD1B464B04F88468EBCAD8354D50734B3455BB883EA94409
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+3aaae5345012938f83ca8af6194cc13c56bfe5cd
+  文件路径：%USERPROFILE%\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：246608E6CF79E2404DC9846CA9516FE608851A83FF3F9AA92726BBA5061F2308

@@ -1,0 +1,43 @@
+{
+  "headSha": "b85f397ccaa9fea6357b759698a9df597259477a",
+  "runId": 41648040636,
+  "runNumber": 1449,
+  "workflow": ".github/workflows/windows-build.yml",
+  "event": "push",
+  "jobs": [
+    {
+      "artifactDigest": "sha256:24e47ed14dea558ed0abb07db947ea4fa3e7c910fe4ebe0f077b110609c5d2fb",
+      "sdk": "8.0.423",
+      "skipped": 29,
+      "failed": 1,
+      "testTotal": 1664,
+      "failedTest": "R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes",
+      "artifactName": "GameSaveCenter-build-diagnostics",
+      "name": "编译、测试与打包",
+      "conclusion": "failure",
+      "artifactId": 13237542400,
+      "artifactSizeBytes": 909831,
+      "message": "Task/Light inactive selection leaves 0 DIP between the selection frame and rows viewport; expected a DPI-rounded four-DIP gap.",
+      "passed": 1634,
+      "id": 125958489050
+    },
+    {
+      "artifactDigest": "sha256:e356f004747b1023ca9a5e70f0a0e3574d88ea93fcb4ccbb25d856aac57993f2",
+      "sdk": "10.0.401",
+      "skipped": 19,
+      "failed": 1,
+      "testTotal": 1664,
+      "failedTest": "R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes",
+      "artifactName": "GameSaveCenter-sdk10-build-diagnostics",
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "failure",
+      "artifactId": 13237531930,
+      "artifactSizeBytes": 818756,
+      "message": "Task/Light inactive selection leaves 0 DIP between the selection frame and rows viewport; expected a DPI-rounded four-DIP gap.",
+      "passed": 1644,
+      "id": 125958489702
+    }
+  ],
+  "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41648040636",
+  "resolution": "Restored the 4-DIP frame gap, retained the row content clip, and added a 740-DIP horizontal-scroll test fixture. R23 later passed 12/12 in the serial focused run."
+}

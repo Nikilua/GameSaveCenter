@@ -1,0 +1,58 @@
+{
+  "sourceCommit": "b85f397ccaa9fea6357b759698a9df597259477a",
+  "recordedUtc": "2026-11-03T14:07:21.6228295Z",
+  "drive": "D:",
+  "freeBytesBefore": 3694858240,
+  "budgetBytes": 4294967296,
+  "targets": [
+    {
+      "FileCount": 1032,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\1d6595d1",
+      "Id": "1d6595d1",
+      "Bytes": 287696238
+    },
+    {
+      "FileCount": 743,
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\3e6676af",
+      "Id": "3e6676af",
+      "Bytes": 174990593
+    }
+  ],
+  "ownership": [
+    {
+      "PreservedDiagnosticPath": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\build-diagnostics\\20261103T072004941Z-774e7add",
+      "Id": "1d6595d1",
+      "OwnerAlive": false,
+      "DiagnosticDirectory": "20261103T072004941Z-774e7add",
+      "SourceCommit": "80bae77c0b9fe7e6b4a891c9c63259fdb4af1915",
+      "OwnerPid": 50228
+    },
+    {
+      "PreservedDiagnosticPath": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\build-diagnostics\\20261103T064632229Z-5f915a96",
+      "Id": "3e6676af",
+      "OwnerAlive": false,
+      "DiagnosticDirectory": "20261103T064632229Z-5f915a96",
+      "SourceCommit": "80bae77c0b9fe7e6b4a891c9c63259fdb4af1915",
+      "OwnerPid": 44288
+    }
+  ],
+  "activePlaynite": {
+    "Pid": 55088,
+    "Started": "2026-11-03T10:47:49.5730959Z",
+    "Path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+    "ModulesScanned": 193,
+    "ModulesUnderGscBuildRoot": [],
+    "Process": "Playnite.DesktopApp"
+  },
+  "documentReferences": [],
+  "retainedDiagnosticRoot": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\build-diagnostics",
+  "checks": [
+    "resolved targets remain under artifacts/gsc-b",
+    "no reparse points in target trees",
+    "ownership summary confirms old source 80bae77c build-output, created by its run",
+    "owner PIDs are not running",
+    "Playnite executable is outside target tree and loaded module paths contain no candidate build output path",
+    "no doc references by target ID",
+    "original per-run diagnostics and TRX remain under artifacts/build-diagnostics"
+  ]
+}

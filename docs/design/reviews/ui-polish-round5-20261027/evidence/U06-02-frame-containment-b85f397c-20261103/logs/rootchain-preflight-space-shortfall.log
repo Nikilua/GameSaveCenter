@@ -1,0 +1,18 @@
+==============================================
+  GameSaveCenter build, install and run
+==============================================
+
+Space preflight D:\: available 4284928000 bytes, configured headroom 4294967296 bytes
+Space preflight C:\: available 5200109568 bytes, configured headroom 1073741824 bytes
+Budget basis: Conservative configurable headroom, not measured peak usage. SDK downloads, NuGet cache growth and host data are additional unknowns.
+Exception: %REPO_ROOT%\scripts\space-budget.ps1:34
+Line |
+  34 |  … rt.Count) { throw ('Insufficient free space; review owned artifact cl …
+     |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Insufficient free space; review owned artifact cleanup before retry: D:\ needs 4294967296 bytes; available
+     | 4284928000
+
+[FAILED] Build or installation did not complete. Exit code: 1
+See artifacts\one-click-install.log for details.
+Press any key to continue . . . 
+

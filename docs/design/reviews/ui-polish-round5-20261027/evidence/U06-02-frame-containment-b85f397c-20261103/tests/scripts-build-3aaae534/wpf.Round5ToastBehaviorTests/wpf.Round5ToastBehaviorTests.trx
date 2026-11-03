@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="c13778e2-4063-42d9-a3ca-bf5764619799" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T23:46:02.0781431+08:00" queuing="2026-11-03T23:46:02.0781434+08:00" start="2026-11-03T23:45:55.2377109+08:00" finish="2026-11-03T23:46:02.4423550+08:00" />
+  <TestSettings name="default" id="e74f6152-81f9-40bd-96fd-47ec489b868e">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="820c6922-a51f-4e16-b4e7-13bbf89b5503" testId="157168ca-78de-c406-663f-538eda4015d3" testName="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests.LongMessageHasFullDetailAndKeyboardFocusPausesItsTimer" computerName="redacted-host" duration="00:00:00.2240000" startTime="2026-11-03T23:46:02.0637776+08:00" endTime="2026-11-03T23:46:02.2567313+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="820c6922-a51f-4e16-b4e7-13bbf89b5503" />
+    <UnitTestResult executionId="afcd7b25-afc5-409c-b433-191df05d6d4c" testId="b0f66cae-404b-b83e-0d09-ff03fe31276f" testName="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests.ToastStackKeepsNewestFirstAndRetainsOrderWhileOneToastExits" computerName="redacted-host" duration="00:00:02.5040000" startTime="2026-11-03T23:45:59.5695710+08:00" endTime="2026-11-03T23:46:02.0321421+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="afcd7b25-afc5-409c-b433-191df05d6d4c" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests.LongMessageHasFullDetailAndKeyboardFocusPausesItsTimer" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="157168ca-78de-c406-663f-538eda4015d3">
+      <Execution id="820c6922-a51f-4e16-b4e7-13bbf89b5503" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests" name="LongMessageHasFullDetailAndKeyboardFocusPausesItsTimer" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests.ToastStackKeepsNewestFirstAndRetainsOrderWhileOneToastExits" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="b0f66cae-404b-b83e-0d09-ff03fe31276f">
+      <Execution id="afcd7b25-afc5-409c-b433-191df05d6d4c" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests" name="ToastStackKeepsNewestFirstAndRetainsOrderWhileOneToastExits" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="157168ca-78de-c406-663f-538eda4015d3" executionId="820c6922-a51f-4e16-b4e7-13bbf89b5503" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b0f66cae-404b-b83e-0d09-ff03fe31276f" executionId="afcd7b25-afc5-409c-b433-191df05d6d4c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.77]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.82]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.60]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-03T23:46:02.4090813+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

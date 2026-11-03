@@ -1,0 +1,16 @@
+{
+  "time": "2026-11-04T00:30:26.1187550+08:00",
+  "commit": "3aaae5345012938f83ca8af6194cc13c56bfe5cd",
+  "deletedPath": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\4ac8b9e6",
+  "files": 1015,
+  "bytes": 281907597,
+  "diskFreeBefore": {
+    "C": 5197574144,
+    "D": 4483354624
+  },
+  "diskFreeAfter": {
+    "C": 5197312000,
+    "D": 4767887360
+  },
+  "diagnosticsAndPackagePreserved": true
+}

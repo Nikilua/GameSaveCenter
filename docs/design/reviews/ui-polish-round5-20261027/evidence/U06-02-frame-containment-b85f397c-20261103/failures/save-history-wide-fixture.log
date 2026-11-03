@@ -1,0 +1,31 @@
+D:\workplace\github\GameSaveCenter\.tmp\round5-u06-frame-and-u09-perf-20261103\compile-b85-width-fix\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.78]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.83]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:05.96]     GameSaveCenter.Playnite.Tests.R06SaveHistorySelectionFrameBehaviorTests.SelectedSaveHistoryFrameContainsVisibleTextAfterHorizontalScrollInBothThemes [FAIL]
+[xUnit.net 00:00:05.96]       Xunit.Sdk.TrueException: Light: fixture must retain the horizontal-scroll viewport shown in the user screenshot; extent=1261.33, viewport=1261.33.
+[xUnit.net 00:00:05.96]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+[xUnit.net 00:00:05.96]          在 GameSaveCenter.Playnite.Tests.R06SaveHistorySelectionFrameBehaviorTests.<>c.<SelectedSaveHistoryFrameContainsVisibleTextAfterHorizontalScrollInBothThemes>b__0_0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R06SaveHistorySelectionFrameBehaviorTests.cs:行号 60
+[xUnit.net 00:00:05.96]          在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c__DisplayClass21_0.<RunSta>b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 436
+[xUnit.net 00:00:05.96]       Stack Trace:
+[xUnit.net 00:00:05.96]            在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.RunSta(Action action) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 448
+[xUnit.net 00:00:05.98]   Finished:    GameSaveCenter.Playnite.Tests
+  失败 GameSaveCenter.Playnite.Tests.R06SaveHistorySelectionFrameBehaviorTests.SelectedSaveHistoryFrameContainsVisibleTextAfterHorizontalScrollInBothThemes [3 s]
+  错误消息:
+   Xunit.Sdk.TrueException: Light: fixture must retain the horizontal-scroll viewport shown in the user screenshot; extent=1261.33, viewport=1261.33.
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.R06SaveHistorySelectionFrameBehaviorTests.<>c.<SelectedSaveHistoryFrameContainsVisibleTextAfterHorizontalScrollInBothThemes>b__0_0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R06SaveHistorySelectionFrameBehaviorTests.cs:行号 60
+   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c__DisplayClass21_0.<RunSta>b__0() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 436
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.RunSta(Action action) 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 448
+
+测试运行失败。
+测试总数: 1
+     失败数: 1
+总时间: 7.3675 秒
+结果文件: D:\workplace\github\GameSaveCenter\.tmp\round5-u06-frame-and-u09-perf-20261103\tests-width-fix\R06SaveHistorySelectionFrameBehaviorTests\R06SaveHistorySelectionFrameBehaviorTests.trx

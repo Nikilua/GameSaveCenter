@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="f232ae62-105b-48bc-b37b-bc2010edab9d" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T23:25:48.8609753+08:00" queuing="2026-11-03T23:25:48.8609755+08:00" start="2026-11-03T23:25:41.0224399+08:00" finish="2026-11-03T23:25:50.7880212+08:00" />
+  <TestSettings name="default" id="4f8cb160-7805-4295-a192-dc457a8e09bb">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="9e002c24-631a-4858-88d5-8d64c77b05ed" testId="997f3b04-2858-f16f-c965-c674defaaecb" testName="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.CandidateButtonsKeepReferenceAndDetailsSkipFilteredAndBrokenImages" computerName="redacted-host" duration="00:00:00.4190000" startTime="2026-11-03T23:25:50.1773781+08:00" endTime="2026-11-03T23:25:50.5948723+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e002c24-631a-4858-88d5-8d64c77b05ed" />
+    <UnitTestResult executionId="5014d2fc-0deb-4a5f-888e-eccbb391b40a" testId="174dd301-ff64-e46e-5d28-0591de165bb1" testName="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.WipeComparisonReusesDecodedImagesShowsTransparencyGridAndMovesByKeyboard" computerName="redacted-host" duration="00:00:00.7620000" startTime="2026-11-03T23:25:49.4162281+08:00" endTime="2026-11-03T23:25:50.1763719+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5014d2fc-0deb-4a5f-888e-eccbb391b40a" />
+    <UnitTestResult executionId="bf4941c9-56d8-463b-a356-1418dd2bc28c" testId="aa908fc8-2e7a-9435-720d-2b61e7aa42b2" testName="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.ComparisonToolbarFitsUsesOneToOneZoomsAndSynchronizesNormalizedPan" computerName="redacted-host" duration="00:00:00.6030000" startTime="2026-11-03T23:25:48.8470752+08:00" endTime="2026-11-03T23:25:49.4142261+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bf4941c9-56d8-463b-a356-1418dd2bc28c" />
+    <UnitTestResult executionId="5c1c0a20-0cf0-44e4-a01f-40b5ef046fbc" testId="4c221623-893a-bcf2-890e-be177e29e50c" testName="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.ComparisonOpinionButtonsTrackCandidatesUndoAndClearOnlySessionMarks" computerName="redacted-host" duration="00:00:03.2210000" startTime="2026-11-03T23:25:45.6391603+08:00" endTime="2026-11-03T23:25:48.8122900+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5c1c0a20-0cf0-44e4-a01f-40b5ef046fbc" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.WipeComparisonReusesDecodedImagesShowsTransparencyGridAndMovesByKeyboard" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="174dd301-ff64-e46e-5d28-0591de165bb1">
+      <Execution id="5014d2fc-0deb-4a5f-888e-eccbb391b40a" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests" name="WipeComparisonReusesDecodedImagesShowsTransparencyGridAndMovesByKeyboard" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.ComparisonToolbarFitsUsesOneToOneZoomsAndSynchronizesNormalizedPan" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="aa908fc8-2e7a-9435-720d-2b61e7aa42b2">
+      <Execution id="bf4941c9-56d8-463b-a356-1418dd2bc28c" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests" name="ComparisonToolbarFitsUsesOneToOneZoomsAndSynchronizesNormalizedPan" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.ComparisonOpinionButtonsTrackCandidatesUndoAndClearOnlySessionMarks" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="4c221623-893a-bcf2-890e-be177e29e50c">
+      <Execution id="5c1c0a20-0cf0-44e4-a01f-40b5ef046fbc" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests" name="ComparisonOpinionButtonsTrackCandidatesUndoAndClearOnlySessionMarks" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests.CandidateButtonsKeepReferenceAndDetailsSkipFilteredAndBrokenImages" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="997f3b04-2858-f16f-c965-c674defaaecb">
+      <Execution id="9e002c24-631a-4858-88d5-8d64c77b05ed" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests" name="CandidateButtonsKeepReferenceAndDetailsSkipFilteredAndBrokenImages" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="997f3b04-2858-f16f-c965-c674defaaecb" executionId="9e002c24-631a-4858-88d5-8d64c77b05ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="174dd301-ff64-e46e-5d28-0591de165bb1" executionId="5014d2fc-0deb-4a5f-888e-eccbb391b40a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aa908fc8-2e7a-9435-720d-2b61e7aa42b2" executionId="bf4941c9-56d8-463b-a356-1418dd2bc28c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c221623-893a-bcf2-890e-be177e29e50c" executionId="5c1c0a20-0cf0-44e4-a01f-40b5ef046fbc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.58]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.94]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.98]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:08.04]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-03T23:25:50.7488931+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

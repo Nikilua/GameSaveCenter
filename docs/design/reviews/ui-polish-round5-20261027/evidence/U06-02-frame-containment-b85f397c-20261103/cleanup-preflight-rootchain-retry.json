@@ -1,0 +1,23 @@
+{
+  "time": "2026-11-04T00:30:25.4629256+08:00",
+  "commit": "3aaae5345012938f83ca8af6194cc13c56bfe5cd",
+  "owner": "This root-chain run: installRunId 20261103T155601297Z-0d9ab871; isolated output printed by this run",
+  "target": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\4ac8b9e6",
+  "boundaryVerified": true,
+  "gitignored": true,
+  "files": 1015,
+  "bytes": 281907597,
+  "reparsePoints": 0,
+  "activeProcessesReferencingTarget": [],
+  "retained": [
+    "artifacts/build-diagnostics/20261103T155603445Z-ed1e14e3: full root compile/test diagnostic and TRX",
+    "artifacts/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec: latest packaged staging payload",
+    "artifacts/GameSaveCenter-0.6.73-playnite.zip and .pext: current candidate package",
+    "scripts-build-3aa run and render QA evidence"
+  ],
+  "reason": "Complete tests and package already recorded; isolated bin/test-temp outputs are reproducible and not referenced by docs. Remove to recover space after failed preflight; a fresh isolated root will be created for the required full retry.",
+  "diskFreeBefore": {
+    "C": 5197574144,
+    "D": 4483354624
+  }
+}

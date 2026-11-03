@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="f7cb33ae-fe7e-4ee0-8de7-a32ecf003916" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T23:27:24.2967006+08:00" queuing="2026-11-03T23:27:24.2967009+08:00" start="2026-11-03T23:27:18.2541880+08:00" finish="2026-11-03T23:27:24.6243224+08:00" />
+  <TestSettings name="default" id="5195e41a-9ef9-4fe5-abc5-8e2e54cae8f5">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f2327330-c065-4901-b35d-1ebb64a5ec00" testId="9e86ad0a-0cd5-af76-3bc2-eba306b5eccc" testName="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.PriorityHeroClickOpensTheResolvedGamePickerWithoutStartingBulkBackup(matched: False, expectedKind: &quot;Unmatched&quot;, expectedFilter: &quot;未匹配&quot;)" computerName="redacted-host" duration="00:00:00.0590000" startTime="2026-11-03T23:27:24.2823471+08:00" endTime="2026-11-03T23:27:24.3003448+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f2327330-c065-4901-b35d-1ebb64a5ec00" />
+    <UnitTestResult executionId="364c91da-b0f6-4a49-9cd4-23f6b3a6f7d1" testId="ef85d836-4407-b03d-1b58-abe1dead025e" testName="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.OverviewKeepsLegacyActivityHiddenAndMetricCommandWiredBehindCollapsedStrip" computerName="redacted-host" duration="00:00:00.0640000" startTime="2026-11-03T23:27:24.3703314+08:00" endTime="2026-11-03T23:27:24.4331203+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="364c91da-b0f6-4a49-9cd4-23f6b3a6f7d1" />
+    <UnitTestResult executionId="0918a4cf-e3d1-485c-bafb-21be161cc181" testId="ed25dde3-c808-d242-afc0-d404b3591215" testName="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.OverviewLatestBackupRendersRelativeTextAndFullAutomationEvidence" computerName="redacted-host" duration="00:00:00.0670000" startTime="2026-11-03T23:27:24.3033447+08:00" endTime="2026-11-03T23:27:24.3684866+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0918a4cf-e3d1-485c-bafb-21be161cc181" />
+    <UnitTestResult executionId="c8e65120-3701-442c-a578-571b9bf31d06" testId="6d88e4b5-553e-a29a-d667-4f87d20ce7e8" testName="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.PriorityHeroClickOpensTheResolvedGamePickerWithoutStartingBulkBackup(matched: True, expectedKind: &quot;Backupable&quot;, expectedFilter: &quot;可备份&quot;)" computerName="redacted-host" duration="00:00:01.6880000" startTime="2026-11-03T23:27:22.6024781+08:00" endTime="2026-11-03T23:27:24.2413449+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c8e65120-3701-442c-a578-571b9bf31d06" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.PriorityHeroClickOpensTheResolvedGamePickerWithoutStartingBulkBackup(matched: False, expectedKind: &quot;Unmatched&quot;, expectedFilter: &quot;未匹配&quot;)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="9e86ad0a-0cd5-af76-3bc2-eba306b5eccc">
+      <Execution id="f2327330-c065-4901-b35d-1ebb64a5ec00" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.OverviewInteractionTests" name="PriorityHeroClickOpensTheResolvedGamePickerWithoutStartingBulkBackup" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.PriorityHeroClickOpensTheResolvedGamePickerWithoutStartingBulkBackup(matched: True, expectedKind: &quot;Backupable&quot;, expectedFilter: &quot;可备份&quot;)" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="6d88e4b5-553e-a29a-d667-4f87d20ce7e8">
+      <Execution id="c8e65120-3701-442c-a578-571b9bf31d06" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.OverviewInteractionTests" name="PriorityHeroClickOpensTheResolvedGamePickerWithoutStartingBulkBackup" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.OverviewKeepsLegacyActivityHiddenAndMetricCommandWiredBehindCollapsedStrip" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="ef85d836-4407-b03d-1b58-abe1dead025e">
+      <Execution id="364c91da-b0f6-4a49-9cd4-23f6b3a6f7d1" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.OverviewInteractionTests" name="OverviewKeepsLegacyActivityHiddenAndMetricCommandWiredBehindCollapsedStrip" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.OverviewInteractionTests.OverviewLatestBackupRendersRelativeTextAndFullAutomationEvidence" storage="[repo]\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="ed25dde3-c808-d242-afc0-d404b3591215">
+      <Execution id="0918a4cf-e3d1-485c-bafb-21be161cc181" />
+      <TestMethod codeBase="[repo]\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.OverviewInteractionTests" name="OverviewLatestBackupRendersRelativeTextAndFullAutomationEvidence" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="9e86ad0a-0cd5-af76-3bc2-eba306b5eccc" executionId="f2327330-c065-4901-b35d-1ebb64a5ec00" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ef85d836-4407-b03d-1b58-abe1dead025e" executionId="364c91da-b0f6-4a49-9cd4-23f6b3a6f7d1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ed25dde3-c808-d242-afc0-d404b3591215" executionId="0918a4cf-e3d1-485c-bafb-21be161cc181" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6d88e4b5-553e-a29a-d667-4f87d20ce7e8" executionId="c8e65120-3701-442c-a578-571b9bf31d06" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.79]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.84]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.78]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-03T23:27:24.5898534+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
