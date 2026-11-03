@@ -16,6 +16,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <converters:ViewportInsetWidthConverter x:Key="GscViewportInsetWidthConverter"/>
+    <converters:ViewportInsetClipGeometryConverter x:Key="GscViewportInsetClipGeometryConverter"/>
 
     <!-- Production adapters keep WPF-UI templates while applying GameSaveCenter's spacing,
          focus and material tokens. This dictionary is merged only after DesignTokens.xaml
@@ -703,14 +704,23 @@
             <Trigger Property="IsSelected" Value="True">
                 <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                 <Setter TargetName="RowBackground" Property="Margin" Value="4,2,4,2"/>
+                <Setter TargetName="RowContent" Property="Clip">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource GscViewportInsetClipGeometryConverter}" ConverterParameter="8">
+                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type DataGridRowsPresenter}}"/>
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}"/>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
-                <!-- Keep a narrow four-DIP gap before the vertical track while letting the
-                     selection frame reach the last visible cell content. -->
+                <!-- DataGridRowsPresenter already ends at the visible cells viewport (before
+                     any scroll track). Subtract only the leading margin so the frame reaches
+                     the trailing visible text instead of leaving a second four-DIP gap. -->
                 <Setter TargetName="RowChrome" Property="Margin" Value="4,2,4,2"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=4}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
@@ -722,22 +732,38 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="RowBackground" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
                 <Setter TargetName="RowBackground" Property="Margin" Value="4,2,4,2"/>
+                <Setter TargetName="RowContent" Property="Clip">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource GscViewportInsetClipGeometryConverter}" ConverterParameter="8">
+                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type DataGridRowsPresenter}}"/>
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}"/>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
                 <Setter TargetName="RowChrome" Property="Margin" Value="4,2,4,2"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=4}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
             </MultiTrigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter TargetName="RowContent" Property="Clip">
+                    <Setter.Value>
+                        <MultiBinding Converter="{StaticResource GscViewportInsetClipGeometryConverter}" ConverterParameter="8">
+                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType={x:Type DataGridRowsPresenter}}"/>
+                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType={x:Type DataGridRow}}"/>
+                        </MultiBinding>
+                    </Setter.Value>
+                </Setter>
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="2"/>
                 <Setter TargetName="RowChrome" Property="Margin" Value="3,1,4,1"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=7}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=3}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter TargetName="RowBackground" Property="Margin" Value="3,1,4,1"/>
             </Trigger>

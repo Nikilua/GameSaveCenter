@@ -224,7 +224,7 @@ public sealed class R06SelectionStateBehaviorTests
         => grid.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow
             ?? throw new InvalidOperationException("DataGrid row was not generated.");
 
-    private static Border ChromeFor(DataGridRow row)
+    internal static Border ChromeFor(DataGridRow row)
         => row.Template.FindName("RowChrome", row) as Border
             ?? throw new InvalidOperationException("Shared DataGrid row chrome was not generated.");
 
@@ -261,10 +261,35 @@ public sealed class R06SelectionStateBehaviorTests
         return cells.Select(cell => BoundsRelativeTo(cell, row)).ToArray();
     }
 
-    private static Rect BoundsRelativeTo(FrameworkElement element, FrameworkElement ancestor)
+    internal static Rect BoundsRelativeTo(FrameworkElement element, FrameworkElement ancestor)
     {
         var origin = element.TransformToAncestor(ancestor).Transform(new Point(0, 0));
         return new Rect(origin.X, origin.Y, element.ActualWidth, element.ActualHeight);
+    }
+
+    internal static Rect VisibleBoundsRelativeTo(FrameworkElement element, FrameworkElement ancestor)
+    {
+        var bounds = BoundsRelativeTo(element, ancestor);
+        DependencyObject? current = element;
+        while (current != null && !ReferenceEquals(current, ancestor))
+        {
+            if (current is ScrollContentPresenter scrollContent && scrollContent.ClipToBounds)
+                bounds.Intersect(BoundsRelativeTo(scrollContent, ancestor));
+            else if (current is FrameworkElement frameworkElement
+                     && frameworkElement.ClipToBounds
+                     && frameworkElement.ActualWidth > 0
+                     && frameworkElement.ActualHeight > 0)
+                bounds.Intersect(BoundsRelativeTo(frameworkElement, ancestor));
+            if (current is FrameworkElement clippedElement && clippedElement.Clip is Geometry clip && !clip.Bounds.IsEmpty)
+            {
+                var transform = clippedElement.TransformToAncestor(ancestor);
+                var topLeft = transform.Transform(clip.Bounds.TopLeft);
+                var bottomRight = transform.Transform(clip.Bounds.BottomRight);
+                bounds.Intersect(new Rect(topLeft, bottomRight));
+            }
+            current = VisualTreeHelper.GetParent(current);
+        }
+        return bounds;
     }
 
     private static void AssertGeometryUnchanged(Rect[] expected, Rect[] actual, string state)
@@ -283,7 +308,7 @@ public sealed class R06SelectionStateBehaviorTests
         }
     }
 
-    private static System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject root)
+    internal static System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject root)
         where T : DependencyObject
     {
         for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
@@ -375,7 +400,7 @@ public sealed class R06SelectionStateBehaviorTests
                 && setter.Attribute("Value")?.Value == "{DynamicResource GscAccentBrush}"));
     }
 
-    private static void ApplyTheme(FrameworkElement root, ResourceDictionary resources, GameSaveCenterThemeMode mode)
+    internal static void ApplyTheme(FrameworkElement root, ResourceDictionary resources, GameSaveCenterThemeMode mode)
     {
         var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
             root,
@@ -387,21 +412,21 @@ public sealed class R06SelectionStateBehaviorTests
         root.UpdateLayout();
     }
 
-    private static void PumpLayout(Window window)
+    internal static void PumpLayout(Window window)
     {
         window.UpdateLayout();
         Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
         window.UpdateLayout();
     }
 
-    private static void EnsureApplicationResources()
+    internal static void EnsureApplicationResources()
     {
         var application = Application.Current ?? new Application();
         if (!application.Resources.Contains("BaseTextBlockStyle"))
             application.Resources.Add("BaseTextBlockStyle", new Style(typeof(TextBlock)));
     }
 
-    private static void RunSta(Action action)
+    internal static void RunSta(Action action)
     {
         Exception? failure = null;
         var thread = new Thread(() =>

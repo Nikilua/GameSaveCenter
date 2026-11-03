@@ -1,0 +1,110 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Settings;
+using GameSaveCenter.Playnite.Views;
+using Xunit;
+using static GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests;
+
+namespace GameSaveCenter.Playnite.Tests;
+
+public sealed class R06TaskGridSelectionFrameBehaviorTests
+{
+    [Fact]
+    public void SelectedFrameContainsVisibleTextAtTheHorizontalViewportEdgeInEveryTheme()
+    {
+        RunSta(() =>
+        {
+            EnsureApplicationResources();
+            var window = new Window
+            {
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Opacity = 0.01
+            };
+
+            try
+            {
+                foreach (var scenario in new[]
+                {
+                    (GameSaveCenterThemeMode.Light, Width: 760d, Height: 640d),
+                    (GameSaveCenterThemeMode.Dark, Width: 760d, Height: 640d),
+                    (GameSaveCenterThemeMode.Light, Width: 1040d, Height: 700d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1040d, Height: 700d)
+                })
+                {
+                    var selected = new TaskStatusDto
+                    {
+                        TaskId = "selected-frame-tail",
+                        TaskType = "MediaInbox",
+                        GameName = "长游戏名称用于横向表格末端测量",
+                        State = TaskState.Failed,
+                        ErrorCode = "WORKER_RESTARTED_RETRYABLE",
+                        ErrorMessage = "Worker 意外退出，任务中断；请确认目标文件状态后重新执行。末端文本必须落在选择框内。",
+                        CreatedUtc = new DateTime(2026, 10, 20, 10, 36, 0, DateTimeKind.Utc)
+                    };
+                    var fixture = new TaskGridSelectionFixture(selected);
+                    var view = new TaskCenterView { DataContext = fixture, UiAnimationsEnabled = false };
+                    var taskGrid = Assert.IsType<DataGrid>(view.FindName("TaskGrid"));
+
+                    window.Width = scenario.Width;
+                    window.Height = scenario.Height;
+                    window.Content = view;
+                    ApplyTheme(view, view.Resources, scenario.Item1);
+                    view.ApplyResponsiveLayout(scenario.Width, scenario.Height);
+                    if (!window.IsVisible)
+                        window.Show();
+                    PumpLayout(window);
+                    taskGrid.SelectedItem = selected;
+                    PumpLayout(window);
+
+                    var row = taskGrid.ItemContainerGenerator.ContainerFromItem(selected) as DataGridRow;
+                    if (row == null)
+                        throw new InvalidOperationException($"Task row was not realized for {scenario.Item1} {scenario.Width} DIP; items={taskGrid.Items.Count}, source={taskGrid.ItemsSource?.GetType().Name ?? "null"}, grid={taskGrid.ActualWidth:0.##}x{taskGrid.ActualHeight:0.##}, visible={taskGrid.Visibility}, loaded={taskGrid.IsLoaded}, viewLoaded={view.IsLoaded}.");
+                    var chromeBounds = BoundsRelativeTo(ChromeFor(row), taskGrid);
+                    var visibleTexts = FindVisualChildren<DataGridCell>(row)
+                        .Where(cell => cell.Visibility == Visibility.Visible && cell.ActualWidth > 0 && cell.ActualHeight > 0)
+                        .Select(cell =>
+                        {
+                            var text = FindVisualChildren<TextBlock>(cell).FirstOrDefault()
+                                ?? throw new InvalidOperationException($"Visible task cell {cell.Column.DisplayIndex} has no TextBlock.");
+                            return new
+                            {
+                                cell.Column.DisplayIndex,
+                                Cell = VisibleBoundsRelativeTo(cell, taskGrid),
+                                Text = VisibleBoundsRelativeTo(text, taskGrid),
+                                Value = text.Text
+                            };
+                        })
+                        .Where(item => !item.Cell.IsEmpty && item.Text.Width > 0 && !string.IsNullOrWhiteSpace(item.Value))
+                        .ToArray();
+                    var rightmost = Assert.Single(visibleTexts.OrderByDescending(item => item.DisplayIndex).Take(1));
+                    var diagnostic = $"{scenario.Item1} {scenario.Width} DIP: grid={taskGrid.ActualWidth:0.##}, row={row.ActualWidth:0.##}, chrome={chromeBounds}, rightmostCell[{rightmost.DisplayIndex}]={rightmost.Cell}, text={rightmost.Text} '{rightmost.Value}'";
+
+                    Assert.True(rightmost.Text.Right <= chromeBounds.Right - 4d, diagnostic);
+                }
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    private sealed class TaskGridSelectionFixture
+    {
+        public TaskGridSelectionFixture(TaskStatusDto selected)
+        {
+            SelectedTask = selected;
+            TasksView = new ObservableCollection<TaskStatusDto> { selected };
+        }
+
+        public ObservableCollection<TaskStatusDto> TasksView { get; }
+        public TaskStatusDto SelectedTask { get; set; }
+    }
+}
