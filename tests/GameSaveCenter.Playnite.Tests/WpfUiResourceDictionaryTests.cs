@@ -5798,7 +5798,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("KeyboardNavigation.TabNavigation\" Value=\"Local\"", production);
         Assert.Contains("FocusVisualStyle\" Value=\"{DynamicResource GscSharedFocusVisual}\"", production);
         Assert.Contains("CornerRadius=\"8\"", production);
-        Assert.Contains("Property=\"Margin\" Value=\"0,0,16,0\"", production);
+        Assert.Contains("Property=\"Margin\" Value=\"0,0,4,0\"", production);
         Assert.DoesNotContain("CornerRadius=\"{DynamicResource GscCornerSmall}\"", production);
         Assert.DoesNotContain("CornerRadius=\"{Binding Tag", production);
         Assert.DoesNotContain("CornerRadius=\"{Binding Tag", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml")));
