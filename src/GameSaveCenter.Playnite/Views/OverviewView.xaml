@@ -120,7 +120,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ListBoxItem">
-                            <Grid SnapsToDevicePixels="True">
+                            <Grid SnapsToDevicePixels="True" ClipToBounds="True">
                                 <!-- Keep the selected frame on its own layer: the inset border
                                      must not move or clip the fixed-size status icon tile. -->
                                 <Border x:Name="TaskItemChrome"
@@ -131,6 +131,7 @@
                                         IsHitTestVisible="False"/>
                                 <ContentPresenter x:Name="TaskItemContent"
                                                   Margin="{TemplateBinding Padding}"
+                                                  Width="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=20}"
                                                   ClipToBounds="True"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -145,7 +146,10 @@
                                     <Setter TargetName="TaskItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                                     <Setter TargetName="TaskItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                                     <Setter TargetName="TaskItemChrome" Property="CornerRadius" Value="14"/>
-                                    <Setter TargetName="TaskItemChrome" Property="Margin" Value="0,0,4,0"/>
+                                    <Setter TargetName="TaskItemChrome" Property="Margin" Value="4,0,4,0"/>
+                                    <Setter TargetName="TaskItemChrome" Property="Width"
+                                            Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
+                                    <Setter TargetName="TaskItemChrome" Property="HorizontalAlignment" Value="Left"/>
                                     <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                     <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                 </Trigger>

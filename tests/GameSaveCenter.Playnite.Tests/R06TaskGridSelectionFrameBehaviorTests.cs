@@ -11,6 +11,7 @@ using static GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests;
 
 namespace GameSaveCenter.Playnite.Tests;
 
+[Collection("SelectionFrameWpf")]
 public sealed class R06TaskGridSelectionFrameBehaviorTests
 {
     [Fact]
@@ -18,7 +19,6 @@ public sealed class R06TaskGridSelectionFrameBehaviorTests
     {
         RunSta(() =>
         {
-            EnsureApplicationResources();
             var window = new Window
             {
                 WindowStyle = WindowStyle.None,
@@ -35,7 +35,9 @@ public sealed class R06TaskGridSelectionFrameBehaviorTests
                     (GameSaveCenterThemeMode.Light, Width: 760d, Height: 640d),
                     (GameSaveCenterThemeMode.Dark, Width: 760d, Height: 640d),
                     (GameSaveCenterThemeMode.Light, Width: 1040d, Height: 700d),
-                    (GameSaveCenterThemeMode.Dark, Width: 1040d, Height: 700d)
+                    (GameSaveCenterThemeMode.Dark, Width: 1040d, Height: 700d),
+                    (GameSaveCenterThemeMode.Light, Width: 1600d, Height: 900d),
+                    (GameSaveCenterThemeMode.Dark, Width: 1600d, Height: 900d)
                 })
                 {
                     var selected = new TaskStatusDto
@@ -66,27 +68,30 @@ public sealed class R06TaskGridSelectionFrameBehaviorTests
                     var row = taskGrid.ItemContainerGenerator.ContainerFromItem(selected) as DataGridRow;
                     if (row == null)
                         throw new InvalidOperationException($"Task row was not realized for {scenario.Item1} {scenario.Width} DIP; items={taskGrid.Items.Count}, source={taskGrid.ItemsSource?.GetType().Name ?? "null"}, grid={taskGrid.ActualWidth:0.##}x{taskGrid.ActualHeight:0.##}, visible={taskGrid.Visibility}, loaded={taskGrid.IsLoaded}, viewLoaded={view.IsLoaded}.");
-                    var chromeBounds = BoundsRelativeTo(ChromeFor(row), taskGrid);
-                    var visibleTexts = FindVisualChildren<DataGridCell>(row)
+                    var chrome = ChromeFor(row);
+                    var chromeBounds = VisibleBoundsRelativeTo(chrome, taskGrid);
+                    var visibleContent = FindVisualChildren<DataGridCell>(row)
                         .Where(cell => cell.Visibility == Visibility.Visible && cell.ActualWidth > 0 && cell.ActualHeight > 0)
-                        .Select(cell =>
-                        {
-                            var text = FindVisualChildren<TextBlock>(cell).FirstOrDefault()
-                                ?? throw new InvalidOperationException($"Visible task cell {cell.Column.DisplayIndex} has no TextBlock.");
-                            return new
+                        .SelectMany(cell => FindVisualChildren<FrameworkElement>(cell)
+                            .Where(element => element is TextBlock or ProgressBar
+                                || element is Border border && !string.Equals(border.Name, "CellChrome", StringComparison.Ordinal))
+                            .Select(element => new
                             {
                                 cell.Column.DisplayIndex,
-                                Cell = VisibleBoundsRelativeTo(cell, taskGrid),
-                                Text = VisibleBoundsRelativeTo(text, taskGrid),
-                                Value = text.Text
-                            };
-                        })
-                        .Where(item => !item.Cell.IsEmpty && item.Text.Width > 0 && !string.IsNullOrWhiteSpace(item.Value))
+                                Element = element,
+                                Bounds = VisibleBoundsRelativeTo(element, taskGrid),
+                                Value = element is TextBlock text ? text.Text : element.Name
+                            }))
+                        .Where(item => !item.Bounds.IsEmpty && item.Bounds.Width > 0 && item.Bounds.Height > 0)
                         .ToArray();
-                    var rightmost = Assert.Single(visibleTexts.OrderByDescending(item => item.DisplayIndex).Take(1));
-                    var diagnostic = $"{scenario.Item1} {scenario.Width} DIP: grid={taskGrid.ActualWidth:0.##}, row={row.ActualWidth:0.##}, chrome={chromeBounds}, rightmostCell[{rightmost.DisplayIndex}]={rightmost.Cell}, text={rightmost.Text} '{rightmost.Value}'";
+                    var rightmost = visibleContent.OrderByDescending(item => item.Bounds.Right).FirstOrDefault()
+                        ?? throw new InvalidOperationException($"{scenario.Item1} {scenario.Width} DIP: no visible task cell content was measured.");
+                    var diagnostic = $"{scenario.Item1} {scenario.Width} DIP: grid={taskGrid.ActualWidth:0.##}, row={row.ActualWidth:0.##}, chromeActual={chrome.ActualWidth:0.##}, chromeBinding={System.Windows.Data.BindingOperations.GetBindingExpression(chrome, FrameworkElement.WidthProperty)?.Status}, visibleChrome={chromeBounds}, ancestors={DescribeVisualAncestors(chrome, taskGrid)}, rightmostCell[{rightmost.DisplayIndex}]={rightmost.Bounds}, element={rightmost.Element.GetType().Name}/{rightmost.Element.Name} '{rightmost.Value}'";
 
-                    Assert.True(rightmost.Text.Right <= chromeBounds.Right - 4d, diagnostic);
+                    Assert.True(chromeBounds.Width > 0 && chromeBounds.Height > 0, $"Selected frame is not visible: {diagnostic}");
+                    Assert.All(visibleContent, item => Assert.True(
+                        item.Bounds.Right <= chromeBounds.Right - 1d,
+                        $"Visible task content escaped the selected frame: {diagnostic}; offendingCell[{item.DisplayIndex}]={item.Bounds} element={item.Element.GetType().Name}/{item.Element.Name} '{item.Value}'."));
                 }
             }
             finally
@@ -107,4 +112,9 @@ public sealed class R06TaskGridSelectionFrameBehaviorTests
         public ObservableCollection<TaskStatusDto> TasksView { get; }
         public TaskStatusDto SelectedTask { get; set; }
     }
+}
+
+[CollectionDefinition("SelectionFrameWpf", DisableParallelization = true)]
+public sealed class SelectionFrameWpfCollection
+{
 }

@@ -10,7 +10,7 @@ public sealed class ViewportInsetWidthConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is not double viewportWidth || double.IsNaN(viewportWidth) || double.IsInfinity(viewportWidth))
+        if (value is not double viewportWidth || double.IsNaN(viewportWidth) || double.IsInfinity(viewportWidth) || viewportWidth <= 0)
             return DependencyProperty.UnsetValue;
 
         if (!double.TryParse(parameter?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out var inset))

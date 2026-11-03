@@ -292,6 +292,38 @@ public sealed class R06SelectionStateBehaviorTests
         return bounds;
     }
 
+    internal static string DescribeVisualAncestors(FrameworkElement element, FrameworkElement ancestor)
+    {
+        var descriptions = new System.Collections.Generic.List<string>();
+        DependencyObject? current = element;
+        while (current != null)
+        {
+            if (current is ScrollContentPresenter scrollContent)
+            {
+                var bounds = ReferenceEquals(scrollContent, ancestor)
+                    ? new Rect(0, 0, scrollContent.ActualWidth, scrollContent.ActualHeight)
+                    : BoundsRelativeTo(scrollContent, ancestor);
+                descriptions.Add($"SCP[{bounds}; actual={scrollContent.ActualWidth:0.##}x{scrollContent.ActualHeight:0.##}; viewport={scrollContent.ViewportWidth:0.##}x{scrollContent.ViewportHeight:0.##}; offset={scrollContent.HorizontalOffset:0.##}; extent={scrollContent.ExtentWidth:0.##}; clip={scrollContent.ClipToBounds}]");
+            }
+            else if (current is ScrollViewer scrollViewer)
+            {
+                var bounds = ReferenceEquals(scrollViewer, ancestor)
+                    ? new Rect(0, 0, scrollViewer.ActualWidth, scrollViewer.ActualHeight)
+                    : BoundsRelativeTo(scrollViewer, ancestor);
+                descriptions.Add($"SV[{bounds}; viewport={scrollViewer.ViewportWidth:0.##}x{scrollViewer.ViewportHeight:0.##}; offset={scrollViewer.HorizontalOffset:0.##}; extent={scrollViewer.ExtentWidth:0.##}]");
+            }
+            else if (current is FrameworkElement frameworkElement)
+            {
+                descriptions.Add($"{frameworkElement.GetType().Name}#{frameworkElement.Name}[{frameworkElement.ActualWidth:0.##}x{frameworkElement.ActualHeight:0.##}; clip={frameworkElement.ClipToBounds}]");
+            }
+
+            if (ReferenceEquals(current, ancestor)) break;
+            current = VisualTreeHelper.GetParent(current);
+        }
+
+        return string.Join(" <- ", descriptions);
+    }
+
     private static void AssertGeometryUnchanged(Rect[] expected, Rect[] actual, string state)
     {
         Assert.Equal(expected.Length, actual.Length);

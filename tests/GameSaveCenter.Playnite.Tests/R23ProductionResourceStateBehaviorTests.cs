@@ -1203,7 +1203,7 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         var inactiveSelectionGeometry = CaptureCellAndTextGeometry(row, grid);
                         AssertRowGeometryUnchanged(unselectedGeometry, inactiveSelectionGeometry, fixture.Name, theme, "inactive selection");
                         var chrome = Assert.IsType<Border>(row.Template.FindName("RowChrome", row));
-                        AssertSelectionChromeUsesRowsViewport(row, grid, chrome, fixture.Name, theme, "inactive selection");
+                        AssertSelectionChromeUsesVisibleViewport(row, grid, chrome, fixture.Name, theme, "inactive selection");
 
                         var cell = FindVisualChildren<DataGridCell>(row)
                             .FirstOrDefault(candidate => candidate.IsVisible && candidate.ActualWidth > 0);
@@ -1213,7 +1213,7 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         Assert.True(row.IsKeyboardFocusWithin, $"{fixture.Name} row did not retain keyboard focus");
                         var keyboardFocusedGeometry = CaptureCellAndTextGeometry(row, grid);
                         AssertRowGeometryUnchanged(unselectedGeometry, keyboardFocusedGeometry, fixture.Name, theme, "keyboard-focused selection");
-                        AssertSelectionChromeUsesRowsViewport(row, grid, chrome, fixture.Name, theme, "keyboard-focused selection");
+                        AssertSelectionChromeUsesVisibleViewport(row, grid, chrome, fixture.Name, theme, "keyboard-focused selection");
                         Assert.Equal(BrushColor(page.Resources["GscAccentBrush"]), BrushColor(chrome.BorderBrush));
                         Assert.Equal(new Thickness(2), chrome.BorderThickness);
 
@@ -1223,7 +1223,7 @@ public sealed class R23ProductionResourceStateBehaviorTests
                         var selectedBackground = Assert.IsType<Border>(row.Template.FindName("RowBackground", row));
                         Assert.Equal(BrushColor(page.Resources["GscAccentTintBrush"]), BrushColor(selectedBackground.Background));
                         Assert.Equal(new Thickness(2), chrome.BorderThickness);
-                        AssertSelectionChromeUsesRowsViewport(row, grid, chrome, fixture.Name, theme, "hovered keyboard selection");
+                        AssertSelectionChromeUsesVisibleViewport(row, grid, chrome, fixture.Name, theme, "hovered keyboard selection");
                         AssertRowGeometryUnchanged(unselectedGeometry, CaptureCellAndTextGeometry(row, grid), fixture.Name, theme, "hovered keyboard selection");
                         Assert.Same(external, Keyboard.Focus(external));
                         FlushLayout(window);
@@ -1574,7 +1574,7 @@ public sealed class R23ProductionResourceStateBehaviorTests
         }).ToArray();
     }
 
-    private static void AssertSelectionChromeUsesRowsViewport(
+    private static void AssertSelectionChromeUsesVisibleViewport(
         DataGridRow row,
         DataGrid grid,
         Border chrome,
@@ -1582,13 +1582,13 @@ public sealed class R23ProductionResourceStateBehaviorTests
         GameSaveCenterThemeMode theme,
         string state)
     {
-        var rowsPresenter = FindVisualAncestor<DataGridRowsPresenter>(row)
-            ?? throw new InvalidOperationException($"{page}/{theme} selected row has no DataGridRowsPresenter.");
-        var viewport = BoundsRelativeTo(rowsPresenter, grid);
+        var scrollContentPresenter = FindVisualAncestor<ScrollContentPresenter>(row)
+            ?? throw new InvalidOperationException($"{page}/{theme} selected row has no ScrollContentPresenter.");
+        var viewport = BoundsRelativeTo(scrollContentPresenter, grid);
         var frame = BoundsRelativeTo(chrome, grid);
         var rightInset = viewport.Right - frame.Right;
         Assert.True(rightInset >= 3.5 && rightInset <= 5.5,
-            $"{page}/{theme} {state} leaves {rightInset:0.##} DIP between the selection frame and rows viewport; expected a DPI-rounded four-DIP gap.");
+            $"{page}/{theme} {state} leaves {rightInset:0.##} DIP between the selection frame and visible viewport; expected a DPI-rounded four-DIP gap.");
     }
 
     private static Rect BoundsRelativeTo(FrameworkElement element, FrameworkElement ancestor)

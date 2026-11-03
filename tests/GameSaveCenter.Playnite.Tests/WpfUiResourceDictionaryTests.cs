@@ -3852,11 +3852,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "Margin"
-            && element.Attribute("Value")?.Value == "4,2,4,2");
+            && element.Descendants().Any(binding => binding.Name.LocalName == "MultiBinding"
+                && binding.Attribute("Converter")?.Value == "{StaticResource GscViewportSelectionFrameMarginConverter}"
+                && binding.Attribute("ConverterParameter")?.Value == "4,2,4,2"));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "Width"
-            && (element.Attribute("Value")?.Value ?? "").Contains("DataGridRowsPresenter")
+            && (element.Attribute("Value")?.Value ?? "").Contains("ScrollViewer")
+            && (element.Attribute("Value")?.Value ?? "").Contains("ViewportWidth")
             && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=8"));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
@@ -3865,7 +3868,18 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowBackground"
             && element.Attribute("Property")?.Value == "Margin"
-            && element.Attribute("Value")?.Value == "4,2,4,2");
+            && element.Descendants().Any(binding => binding.Name.LocalName == "MultiBinding"
+                && binding.Attribute("Converter")?.Value == "{StaticResource GscViewportSelectionFrameMarginConverter}"
+                && binding.Attribute("ConverterParameter")?.Value == "4,2,4,2"));
+        Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "RowContent"
+            && element.Attribute("Property")?.Value == "Clip"
+            && element.Descendants().Any(binding => binding.Name.LocalName == "Binding"
+                && binding.Attribute("Path")?.Value == "ViewportWidth"
+                && binding.Attribute("RelativeSource")?.Value?.Contains("ScrollViewer") == true)
+            && element.Descendants().Any(binding => binding.Name.LocalName == "Binding"
+                && binding.Attribute("Path")?.Value == "HorizontalOffset"
+                && binding.Attribute("RelativeSource")?.Value?.Contains("ScrollViewer") == true));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "BorderBrush"

@@ -11,11 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
 
 namespace GameSaveCenter.Playnite.Tests;
 
+[Collection("SelectionFrameWpf")]
 public sealed class Round5OverviewSaveContextTests
 {
     [Fact]
@@ -54,6 +57,74 @@ public sealed class Round5OverviewSaveContextTests
                 var pageScroll = Assert.IsType<ScrollViewer>(overview.FindName("OverviewStackScrollSurface"));
                 Assert.Equal(ScrollBarVisibility.Auto, pageScroll.VerticalScrollBarVisibility);
                 Assert.Equal(ScrollBarVisibility.Disabled, pageScroll.HorizontalScrollBarVisibility);
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(GameSaveCenterThemeMode theme)
+    {
+        RunSta(() =>
+        {
+            var selected = new TaskStatusDto
+            {
+                TaskId = "overview-selected-time-boundary",
+                TaskType = "MediaInbox",
+                GameName = "公共媒体收件箱",
+                State = TaskState.Failed,
+                ErrorCode = "WORKER_RESTARTED_RETRYABLE",
+                ErrorMessage = "Worker 意外退出，任务中断；请确认目标文件状态后重新执行。",
+                CreatedUtc = new DateTime(2026, 10, 20, 10, 36, 0, DateTimeKind.Utc)
+            };
+            var data = new OverviewFixture { SelectedTask = selected };
+            data.OverviewTasks.Add(selected);
+            var overview = new OverviewView { DataContext = data };
+            var window = Show(overview, 1040, 700);
+            try
+            {
+                var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
+                    overview, glassEnabled: true, strengthPercent: 78, themeMode: theme, highContrastOverride: false);
+                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(overview.Resources, palette, glassEnabled: true, motionEnabled: true);
+                overview.ApplyResponsiveColumns(stack: true);
+                overview.ApplyResponsiveWidth(1040);
+                overview.ApplyResponsiveHeight(700, stack: true);
+                PumpLayout(window);
+
+                var list = Assert.IsType<ListBox>(overview.FindName("OverviewActivityList"));
+                var showRecentTasks = Assert.IsAssignableFrom<ButtonBase>(overview.FindName("OverviewShowRecentTasksButton"));
+                showRecentTasks.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                list.SelectedItem = selected;
+                list.ScrollIntoView(selected);
+                PumpLayout(window);
+                var item = list.ItemContainerGenerator.ContainerFromItem(selected) as ListBoxItem
+                    ?? throw new InvalidOperationException($"The selected recent task was not realized in {theme}; list={list.ActualWidth:0.##}x{list.ActualHeight:0.##}, visible={list.IsVisible}, loaded={list.IsLoaded}, items={list.Items.Count}, card={overview.FindName("OverviewRecentActivityCard") is FrameworkElement card && card.IsVisible}.");
+                var chrome = item.Template.FindName("TaskItemChrome", item) as Border
+                    ?? throw new InvalidOperationException($"The recent-task selection frame was not generated in {theme}.");
+                var frame = R06SelectionStateBehaviorTests.VisibleBoundsRelativeTo(chrome, list);
+                var time = R06SelectionStateBehaviorTests.FindVisualChildren<TextBlock>(item)
+                    .Single(element => string.Equals(element.Name, "OverviewTaskTimeText", StringComparison.Ordinal));
+                var visibleContent = R06SelectionStateBehaviorTests.FindVisualChildren<TextBlock>(item)
+                    .Cast<FrameworkElement>()
+                    .Concat(R06SelectionStateBehaviorTests.FindVisualChildren<Border>(item)
+                        .Where(element => !string.Equals(element.Name, "TaskItemChrome", StringComparison.Ordinal)))
+                    .Select(element => new { Element = element, Bounds = R06SelectionStateBehaviorTests.VisibleBoundsRelativeTo(element, list) })
+                    .Where(element => !element.Bounds.IsEmpty && element.Bounds.Width > 0 && element.Bounds.Height > 0)
+                    .ToArray();
+                var timeBounds = R06SelectionStateBehaviorTests.VisibleBoundsRelativeTo(time, list);
+                var diagnostic = $"{theme}: list={list.ActualWidth:0.##}, item={item.ActualWidth:0.##}, chromeActual={chrome.ActualWidth:0.##}, chromeBinding={System.Windows.Data.BindingOperations.GetBindingExpression(chrome, FrameworkElement.WidthProperty)?.Status}, frame={frame}, ancestors={R06SelectionStateBehaviorTests.DescribeVisualAncestors(chrome, list)}, time={timeBounds} '{time.Text}'";
+
+                Assert.True(item.IsSelected, $"The recent task selection was not applied: {diagnostic}");
+                Assert.True(timeBounds.Right <= frame.Right - 1d,
+                    $"The recent-task timestamp escaped its selection frame: {diagnostic}");
+                Assert.All(visibleContent, element => Assert.True(
+                    element.Bounds.Right <= frame.Right - 1d,
+                    $"Visible recent-task content escaped its selection frame: {diagnostic}; {element.Element.GetType().Name}/{element.Element.Name}={element.Bounds}."));
             }
             finally
             {
@@ -200,6 +271,8 @@ public sealed class Round5OverviewSaveContextTests
         public ICommand RefreshCommand { get; } = new TestCommand();
         public ICommand OpenCloudQueueCommand { get; } = new TestCommand();
         public ICommand OpenActivityCommand { get; } = new TestCommand();
+        public TaskStatusDto? SelectedTask { get; set; }
+        public string OverviewTasksCountDisplay => $"全部 {OverviewTasks.Count} 个";
     }
 
     private sealed class SaveFixture : INotifyPropertyChanged

@@ -49,9 +49,10 @@ public sealed class T02TableScrollDriftBehaviorTests
                     var scroll = Descendants<ScrollViewer>(grid).First();
                     Assert.True(scroll.ScrollableHeight > 0);
                     Assert.True(scroll.ScrollableWidth > 0);
+                    var viewportPresenter = Descendants<ScrollContentPresenter>(scroll).First();
 
                     var baselineCellTops = new Dictionary<string, double>();
-                    var baselineChromeBounds = new Dictionary<int, Rect>();
+                    var baselineViewportChromeBounds = new Dictionary<int, Rect>();
                     for (var cycle = 0; cycle < 8; cycle++)
                     {
                         foreach (var index in new[] { 0, items.Count - 1, 0 })
@@ -83,16 +84,25 @@ public sealed class T02TableScrollDriftBehaviorTests
                             Assert.True(chrome.BorderThickness.Left > 0);
                             Assert.True(chrome.CornerRadius.TopLeft > 0);
                             var chromeBounds = BoundsRelativeTo(chrome, row);
+                            var viewportChromeBounds = new Rect(
+                                chromeBounds.X - scroll.HorizontalOffset,
+                                chromeBounds.Y,
+                                chromeBounds.Width,
+                                chromeBounds.Height);
+                            var chromeInGrid = BoundsRelativeTo(chrome, grid);
+                            var viewportInGrid = BoundsRelativeTo(viewportPresenter, grid);
                             Assert.InRange(chromeBounds.Top, -0.5, row.ActualHeight + 0.5);
                             Assert.InRange(chromeBounds.Bottom, 0, row.ActualHeight + 0.5);
-                            if (baselineChromeBounds.TryGetValue(index, out var previousChromeBounds))
+                            Assert.InRange(chromeInGrid.Left - viewportInGrid.Left, 2.5, 5.5);
+                            Assert.InRange(viewportInGrid.Right - chromeInGrid.Right, 3.5, 5.5);
+                            if (baselineViewportChromeBounds.TryGetValue(index, out var previousChromeBounds))
                             {
-                                AssertGeometryNear(previousChromeBounds, chromeBounds, 0.25,
-                                    $"{theme} selected outline for row {index} moved during cycle {cycle}");
+                                AssertGeometryNear(previousChromeBounds, viewportChromeBounds, 0.25,
+                                    $"{theme} selected outline for row {index} drifted inside the viewport during cycle {cycle}");
                             }
                             else
                             {
-                                baselineChromeBounds[index] = chromeBounds;
+                                baselineViewportChromeBounds[index] = viewportChromeBounds;
                             }
 
                             var cells = Descendants<DataGridCell>(row)
@@ -120,7 +130,8 @@ public sealed class T02TableScrollDriftBehaviorTests
                             observations.Add(
                                 $"theme={theme} cycle={cycle} item={index} verticalOffset={Format(scroll.VerticalOffset)} "
                                 + $"horizontalOffset={Format(scroll.HorizontalOffset)} rowHeader={rowHeader.Visibility} "
-                                + $"rowHeight={Format(row.ActualHeight)} selectionChrome={Format(chromeBounds)} "
+                                + $"rowHeight={Format(row.ActualHeight)} rowChrome={Format(chromeBounds)} "
+                                + $"viewportChrome={Format(viewportChromeBounds)} viewport={Format(viewportInGrid)} "
                                 + "cells=["
                                 + string.Join(";", cellBoundsByDisplayIndex.Select(cell =>
                                     $"column={cell.DisplayIndex}:{Format(cell.Bounds)}"))
