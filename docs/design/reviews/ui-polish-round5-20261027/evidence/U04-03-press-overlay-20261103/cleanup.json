@@ -1,0 +1,22 @@
+{
+  "capturedAtUtc": "2026-11-03T02:32:58.1874033Z",
+  "root": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "deleted": [
+    {
+      "path": ".tmp/round5-u04-03-selection-offset-20261103/build",
+      "files": 711,
+      "bytes": 162729858,
+      "createdDuringStage": true,
+      "underRepoTmp": true,
+      "reparsePoints": 0,
+      "documentReferences": 0,
+      "compilerOrTestProcesses": 0
+    }
+  ],
+  "disk": {
+    "driveCFreeBefore": 4228907008,
+    "driveCFreeAfter": 4393517056,
+    "driveCRecovered": 164610048,
+    "driveDFree": 9447776256
+  }
+}

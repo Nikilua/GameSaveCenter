@@ -1,0 +1,42 @@
+{
+  "capturedAt": "2026-11-03T02:07:16.1941623Z",
+  "repositoryRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter",
+  "sourceStartCommit": "10682b05209d1b0784f52dbed7195c8d31a7d297",
+  "sourceStartClean": false,
+  "stageRoot": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-u04-03-selection-offset-20261103",
+  "stageRootExisted": false,
+  "stageRootContentsBefore": null,
+  "diskSpaceBeforeBytes": [
+    {
+      "Name": "C",
+      "Free": 4942561280,
+      "Used": 209806848000
+    },
+    {
+      "Name": "D",
+      "Free": 9448181760,
+      "Used": 285524631552
+    }
+  ],
+  "pinnedSdkPath": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423\\dotnet.exe",
+  "pinnedSdkAvailable": true,
+  "outputPlan": [
+    "SDK8.0.423隔离Release编译",
+    "Q06双主题五态按钮探针/最近活动图标与ListBox选中压下几何/R08反转/R09降低动态效果/静态源码行为检查",
+    "source validation/XAML结构/WPF静态审查",
+    "Render QA双主题",
+    "提交并冻结后中文入口完整安装启动链与独立scripts/build.cmd"
+  ],
+  "sourceSnapshot": "工作树已应用候选源码/测试改动，提交前；sourceStartCommit仍为父提交",
+  "sourceDirtyAtSnapshot": true,
+  "sdk": {
+    "required": "8.0.423",
+    "selected": "8.0.423",
+    "repoInstallDirectory": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\.tmp\\round5-sdk8-8.0.423",
+    "repoInstallAvailable": true,
+    "userCacheDirectory": "C:\\Users\\lopmatu\\AppData\\Local\\GameSaveCenter\\dotnet-sdk-8.0.423",
+    "userCacheAvailable": true,
+    "selectionReason": "使用仓库现存的8.0.423 SDK；只读记录用户缓存状态"
+  },
+  "powershellLanguageMode": "FullLanguage"
+}

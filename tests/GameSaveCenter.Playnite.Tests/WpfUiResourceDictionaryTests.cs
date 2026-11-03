@@ -256,8 +256,9 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("x:Key=\"GscDangerButton\"", buttonStyles);
         Assert.Contains("x:Key=\"GscIconButton\"", buttonStyles);
         Assert.Contains("Appearance\" Value=\"Danger\"", production);
-        Assert.Contains("RenderTransform.(ScaleTransform.ScaleX)", production);
-        Assert.Contains("RenderTransform.(ScaleTransform.ScaleY)", production);
+        Assert.Contains("Storyboard.TargetName=\"PressedOverlay\" Storyboard.TargetProperty=\"Opacity\"", production);
+        Assert.DoesNotContain("RenderTransform.(ScaleTransform.ScaleX)", production);
+        Assert.DoesNotContain("RenderTransform.(ScaleTransform.ScaleY)", production);
         Assert.Contains("Themes/ButtonStyles.xaml", redesign);
         Assert.DoesNotContain("BlurEffect", buttonStyles);
     }
@@ -3853,6 +3854,15 @@ public sealed class WpfUiResourceDictionaryTests
             && element.Attribute("Property")?.Value == "Margin"
             && element.Attribute("Value")?.Value == "4,2,12,2");
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "RowChrome"
+            && element.Attribute("Property")?.Value == "Width"
+            && (element.Attribute("Value")?.Value ?? "").Contains("DataGridRowsPresenter")
+            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=16"));
+        Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "RowChrome"
+            && element.Attribute("Property")?.Value == "HorizontalAlignment"
+            && element.Attribute("Value")?.Value == "Left");
+        Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowBackground"
             && element.Attribute("Property")?.Value == "Margin"
             && element.Attribute("Value")?.Value == "4,2,12,2");
@@ -3904,6 +3914,14 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Equal("34", tile.Attribute("Height")?.Value);
         Assert.Equal("10", tile.Attribute("CornerRadius")?.Value);
         Assert.Equal("{DynamicResource GscAccentTintBrush}", tile.Attribute("Background")?.Value);
+        var overviewRowStyle = overview.Descendants().Single(element => element.Name.LocalName == "Style"
+            && element.Attribute(XName.Get("Key", "http://schemas.microsoft.com/winfx/2006/xaml"))?.Value == "OverviewRecentTaskItemStyle");
+        var selectedTask = overviewRowStyle.Descendants().Single(element => element.Name.LocalName == "Trigger"
+            && element.Attribute("Property")?.Value == "IsSelected");
+        Assert.Contains(selectedTask.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "TaskItemChrome"
+            && element.Attribute("Property")?.Value == "Margin"
+            && element.Attribute("Value")?.Value == "0,0,16,0");
         Assert.Contains("Text=\"&#xE73E;\"", overviewText);
 
         // Long names and details must trim with a tooltip instead of pushing the row.
@@ -5777,6 +5795,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("KeyboardNavigation.TabNavigation\" Value=\"Local\"", production);
         Assert.Contains("FocusVisualStyle\" Value=\"{DynamicResource GscSharedFocusVisual}\"", production);
         Assert.Contains("CornerRadius=\"8\"", production);
+        Assert.Contains("Property=\"Margin\" Value=\"0,0,16,0\"", production);
         Assert.DoesNotContain("CornerRadius=\"{DynamicResource GscCornerSmall}\"", production);
         Assert.DoesNotContain("CornerRadius=\"{Binding Tag", production);
         Assert.DoesNotContain("CornerRadius=\"{Binding Tag", File.ReadAllText(Path.Combine(repositoryRoot, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml")));

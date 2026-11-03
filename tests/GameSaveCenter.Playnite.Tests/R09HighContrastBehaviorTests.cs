@@ -364,6 +364,9 @@ public sealed class R09HighContrastBehaviorTests
                 Assert.True(DependencyPropertyHelper.GetValueSource(normalChevron, RotateTransform.AngleProperty).IsAnimated);
                 Assert.True(DependencyPropertyHelper.GetValueSource(pressedOverlay, UIElement.OpacityProperty).IsAnimated);
                 Assert.True(button.IsPressed);
+                Assert.True(buttonChrome.RenderTransform.Value.IsIdentity,
+                    "shared press feedback must leave the button's measured and rendered geometry unchanged");
+                Assert.False(DependencyPropertyHelper.GetValueSource(buttonChrome, UIElement.RenderTransformProperty).IsAnimated);
 
                 var highContrast = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
                     host,
@@ -384,14 +387,12 @@ public sealed class R09HighContrastBehaviorTests
                     throw new InvalidOperationException(
                         $"High-contrast transition kept the button overlay clock: pressed={button.IsPressed}; opacity={pressedOverlay.Opacity}; motion={AdaptiveThemePaletteFactory.GetMotionEnabledActive(button)}; source={highContrastOverlaySource.BaseValueSource}/{highContrastOverlaySource.IsAnimated}");
                 }
-                var reducedMotionScale = Assert.IsType<ScaleTransform>(buttonChrome.RenderTransform);
-                Assert.Equal(1d, reducedMotionScale.ScaleX);
-                Assert.Equal(1d, reducedMotionScale.ScaleY);
-                var highContrastScaleSource = DependencyPropertyHelper.GetValueSource(reducedMotionScale, ScaleTransform.ScaleXProperty);
-                if (highContrastScaleSource.IsAnimated)
+                Assert.True(buttonChrome.RenderTransform.Value.IsIdentity);
+                var highContrastTransformSource = DependencyPropertyHelper.GetValueSource(buttonChrome, UIElement.RenderTransformProperty);
+                if (highContrastTransformSource.IsAnimated)
                 {
                     throw new InvalidOperationException(
-                        $"High-contrast transition kept the button scale clock: x={reducedMotionScale.ScaleX}; y={reducedMotionScale.ScaleY}; motion={AdaptiveThemePaletteFactory.GetMotionEnabledActive(button)}; source={highContrastScaleSource.BaseValueSource}/{highContrastScaleSource.IsAnimated}");
+                        $"High-contrast transition kept a button transform clock: transform={buttonChrome.RenderTransform.Value}; motion={AdaptiveThemePaletteFactory.GetMotionEnabledActive(button)}; source={highContrastTransformSource.BaseValueSource}/{highContrastTransformSource.IsAnimated}");
                 }
                 var reducedMotionChevron = Assert.IsType<RotateTransform>(chevron.RenderTransform);
                 Assert.Equal(0d, reducedMotionChevron.Angle);

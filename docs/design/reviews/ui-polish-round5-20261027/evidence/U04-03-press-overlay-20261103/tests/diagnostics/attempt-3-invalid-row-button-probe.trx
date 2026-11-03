@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a64981e1-aebe-4a0c-bfe2-1cf3d23f1e90" name="lopmatu@SULT 2026-11-03 10:38:42" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T10:38:42.8373992+08:00" queuing="2026-11-03T10:38:42.8373995+08:00" start="2026-11-03T10:38:35.3947121+08:00" finish="2026-11-03T10:38:57.9144359+08:00" />
+  <TestSettings name="default" id="eba9fb7a-fc96-45a1-b649-8e93a8dd387f">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-03_10_38_42" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e7c42bf1-4e84-4e3a-a32e-afca3fab6d59" testId="7fca2483-c0c6-6c5e-b00f-22069d60c395" testName="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition" computerName="SULT" duration="00:00:02.2370000" startTime="2026-11-03T10:38:39.8006804+08:00" endTime="2026-11-03T10:38:42.0528743+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e7c42bf1-4e84-4e3a-a32e-afca3fab6d59">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException: 序列不包含任何元素&#xD;
+   在 System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)&#xD;
+   在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.AssertContainerContentDoesNotMove(ListBox list, TaskStatusDto task, String chromeName, String iconTileName, Window hostWindow) 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 299&#xD;
+   在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;SelectedOverviewAndSharedListItemsKeepTheirContentPosition&gt;b__0() 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 214</Message>
+          <StackTrace>   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+   在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition() 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 248</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\u4p-20261103b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7fca2483-c0c6-6c5e-b00f-22069d60c395">
+      <Execution id="e7c42bf1-4e84-4e3a-a32e-afca3fab6d59" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\u4p-20261103b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests" name="SelectedOverviewAndSharedListItemsKeepTheirContentPosition" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7fca2483-c0c6-6c5e-b00f-22069d60c395" executionId="e7c42bf1-4e84-4e3a-a32e-afca3fab6d59" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.27]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.33]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.65]       System.InvalidOperationException: 序列不包含任何元素&#xD;
+[xUnit.net 00:00:05.65]          在 System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)&#xD;
+[xUnit.net 00:00:05.65]          在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.AssertContainerContentDoesNotMove(ListBox list, TaskStatusDto task, String chromeName, String iconTileName, Window hostWindow) 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 299&#xD;
+[xUnit.net 00:00:05.65]          在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;SelectedOverviewAndSharedListItemsKeepTheirContentPosition&gt;b__0() 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 214&#xD;
+[xUnit.net 00:00:05.65]       Stack Trace:&#xD;
+[xUnit.net 00:00:05.65]            在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+[xUnit.net 00:00:05.65]            在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition() 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 248&#xD;
+[xUnit.net 00:00:05.67]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-11-03T10:38:42.0580538+08:00">
+        <Text>[xUnit.net 00:00:05.65]     GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

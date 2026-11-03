@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "sourceParent": "10682b05209d1b0784f52dbed7195c8d31a7d297",
+  "sdk": "8.0.423",
+  "build": "Release",
+  "targetedCases": [
+    {
+      "name": "q06-button-states",
+      "file": "tests/passed/q06-button-states.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "C9BB5DF7789E7154E7C57C039499F26B37C5C2874E0B31E90032B578A30E35C6"
+    },
+    {
+      "name": "r08-press-reversal",
+      "file": "tests/passed/r08-press-reversal.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "1B54448B48299A19517CF13E149CC5644F36377B83DD6056988596B652BDD4E7"
+    },
+    {
+      "name": "r09-high-contrast",
+      "file": "tests/passed/r09-high-contrast.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "7A27B0BEB0B223CFDFAB6CD71B6E152774C580F7A663C22512C3E1FC6D8728DD"
+    },
+    {
+      "name": "horizontal-scroll-selected-frame",
+      "file": "tests/passed/horizontal-scroll-selected-frame.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "9AC26762DF4F74BBCA7346D436DA1C4E2C15BC7F5AECE8A4B5EB5BAF8BAF2ED3"
+    },
+    {
+      "name": "r23-cross-page-datagrid-states",
+      "file": "tests/passed/r23-cross-page-datagrid-states.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "34E4751A41ED313F92230C77EFED2412E6EC94F04C127C452DB7A3DBC0E1247C"
+    },
+    {
+      "name": "shared-datagrid-selection-contract",
+      "file": "tests/passed/shared-datagrid-selection-contract.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "8B222ADF3974D73293908DA314ABF05BFE2CBEA20DF1398A0FA3079DF8296661"
+    },
+    {
+      "name": "shared-listbox-selection-contract",
+      "file": "tests/passed/shared-listbox-selection-contract.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "820039CB8A5DBBAC5610491D01A30E0B28E12EA860DA80F3B03BFEB4DD716AF0"
+    },
+    {
+      "name": "shared-button-resource-contract",
+      "file": "tests/passed/shared-button-resource-contract.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "1697643F2B7EC0D3AEB0ADC150F2798729DF669EEE1F33F3D98963C32309DE63"
+    },
+    {
+      "name": "r10-recent-activity-geometry",
+      "file": "tests/passed/r10-recent-activity-geometry.trx",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "9D815154812DDBBD83B5FB60F509B0964C7DE145D0308406361226291867200E"
+    },
+    {
+      "name": "r06-selection-overlay",
+      "file": "tests/passed/r06-selection-overlay.trx",
+      "total": 3,
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "notExecuted": 0,
+      "sha256": "6BBE6B707816A056E07090833A6356D7C0D65892A0C4CEB85407CE94CC8B4256"
+    }
+  ],
+  "passedTests": 12,
+  "failedTests": 0,
+  "skippedTests": 0,
+  "renderQaPrecommitExitCode": 0,
+  "renderQaPrecommitPngs": 394,
+  "renderQaPrecommitProblemLines": 0,
+  "legacyStaticOverviewSkip": {
+    "file": "tests/diagnostics/legacy-static-overview-contract-skipped.trx",
+    "reason": "LegacyProductionUiBaselineFact; conditional legacy-only baseline is not counted as pass."
+  },
+  "q06States": {
+    "files": [
+      "dark-disabled.png",
+      "dark-focus.png",
+      "dark-hover.png",
+      "dark-normal.png",
+      "dark-pressed.png",
+      "light-disabled.png",
+      "light-focus.png",
+      "light-hover.png",
+      "light-normal.png",
+      "light-pressed.png"
+    ],
+    "reportSha256": "C31B1C9487D52A2436FCC85CD4C7C305BA53DB9DCDCEC14F4843BF8E21027A56"
+  },
+  "selectionFrames": [
+    "home-recent-activity-selected-focused.png",
+    "home-recent-activity-selected.png",
+    "home-recent-activity-unselected.png"
+  ]
+}

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="806968b2-ac53-46c3-8d06-a8e7902f427b" name="lopmatu@SULT 2026-11-03 10:19:54" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T10:19:54.3224587+08:00" queuing="2026-11-03T10:19:54.3224590+08:00" start="2026-11-03T10:19:52.3682870+08:00" finish="2026-11-03T10:19:54.3228556+08:00" />
+  <TestSettings name="default" id="262c5a82-e42c-4ffc-8d37-0f42016dfb99">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-03_10_19_54" />
+  </TestSettings>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="0" executed="0" passed="0" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-11-03T10:19:54.2314994+08:00">
+        <Text>[xUnit.net 00:00:00.35] GameSaveCenter.Playnite.Tests: Catastrophic failure: System.IO.FileLoadException: 完全限定后路径太长。请确保完整路径少于 260 个字符，并且目录名称少于 248 个字符。&#xD;
+文件名:“xunit.runner.visualstudio.testadapter, Version=3.1.4.0, Culture=neutral, PublicKeyToken=null” ---&gt; System.IO.FileLoadException: 完全限定后路径太长。请确保完整路径少于 260 个字符，并且目录名称少于 248 个字符。&#xD;
+文件名:“file:///C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-u04-03-selection-offset-20261103\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\xunit.runner.visualstudio.testadapter.dll”&#xD;
+&#xD;
+&#xD;
+警告: 程序集绑定日志记录被关闭。&#xD;
+要启用程序集绑定失败日志记录，请将注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD)设置为 1。&#xD;
+注意: 会有一些与程序集绑定失败日志记录关联的性能损失。&#xD;
+要关闭此功能，请移除注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog]。&#xD;
+&#xD;
+   在 System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)&#xD;
+   在 System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark&amp; stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)&#xD;
+   在 System.Reflection.RuntimeAssembly.InternalLoadFrom(String assemblyFile, Evidence securityEvidence, Byte[] hashValue, AssemblyHashAlgorithm hashAlgorithm, Boolean forIntrospection, Boolean suppressSecurityChecks, StackCrawlMark&amp; stackMark)&#xD;
+   在 System.Reflection.Assembly.LoadFrom(String assemblyFile, Evidence securityEvidence)&#xD;
+   在 System.Activator.CreateInstanceFromInternal(String assemblyFile, String typeName, Boolean ignoreCase, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, Evidence securityInfo)&#xD;
+   在 System.AppDomain.CreateInstanceFromAndUnwrap(String assemblyFile, String typeName, Boolean ignoreCase, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)&#xD;
+   在 System.AppDomain.CreateInstanceFromAndUnwrap(String assemblyFile, String typeName, Boolean ignoreCase, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)&#xD;
+   在 Xunit.AppDomainManager_AppDomain.CreateObjectFrom[TObject](String assemblyLocation, String typeName, Object[] args)&#xD;
+   在 Xunit.Runner.v2.Xunit2..ctor(IMessageSink diagnosticMessageSink, AppDomainSupport appDomainSupport, ISourceInformationProvider sourceInformationProvider, IAssemblyInfo assemblyInfo, String assemblyFileName, String xunitExecutionAssemblyPath, String configFileName, Boolean shadowCopy, String shadowCopyFolder, Boolean verifyAssembliesOnDisk)&#xD;
+   在 Xunit.Runner.v2.Xunit2.ForDiscoveryAndExecution(XunitProjectAssembly projectAssembly, ISourceInformationProvider sourceInformationProvider, IMessageSink diagnosticMessageSink, Boolean verifyAssembliesOnDisk)&#xD;
+   在 Xunit.XunitFrontController.Create(XunitProjectAssembly projectAssembly, ISourceInformationProvider sourceInformationProvider, IMessageSink diagnosticMessageSink, ITestProcessLauncher testProcessLauncher)&#xD;
+   在 Xunit.Runner.VisualStudio.VsTestRunner.&lt;RunTestsInAssembly&gt;d__33.MoveNext()&#xD;
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---&#xD;
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()&#xD;
+   在 Xunit.Runner.VisualStudio.VsTestRunner.&lt;RunTestsInAssembly&gt;d__33.MoveNext()&#xD;
+&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Warning" timestamp="2026-11-03T10:19:54.2440637+08:00">
+        <Text>没有测试匹配 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\round5-u04-03-selection-offset-20261103\build\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll 中的给定用例测试筛选器“FullyQualifiedName~Q06ButtonStateSequenceBehaviorTests”</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

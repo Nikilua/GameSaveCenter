@@ -87,18 +87,17 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
     {
         var chrome = Assert.IsType<Border>(button.Template!.FindName("ButtonChrome", button));
         var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
-        var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
 
-        var stateTrace = $"pressed={button.IsPressed}; scale={scale.ScaleX:0.######}; overlay={pressedOverlay.Opacity:0.######}; focus={button.IsKeyboardFocusWithin}; focusedElement={Keyboard.FocusedElement}; windowActive={Window.GetWindow(button)?.IsActive}; enabled={button.IsEnabled}; loaded={button.IsLoaded}";
+        var stateTrace = $"pressed={button.IsPressed}; transform={chrome.RenderTransform.Value}; overlay={pressedOverlay.Opacity:0.######}; focus={button.IsKeyboardFocusWithin}; focusedElement={Keyboard.FocusedElement}; windowActive={Window.GetWindow(button)?.IsActive}; enabled={button.IsEnabled}; loaded={button.IsLoaded}";
         Assert.True(button.IsPressed, "pressed restoration entry: " + stateTrace);
-        Assert.True(scale.ScaleX < 1, "pressed scale entry: " + stateTrace);
+        Assert.True(chrome.RenderTransform.Value.IsIdentity, "pressed feedback must not move or scale button content: " + stateTrace);
         Assert.True(pressedOverlay.Opacity > 0.9, "pressed overlay entry: " + stateTrace);
         Assert.Equal(0, command.ExecutionCount);
 
         Assert.True(Keyboard.Focus(focusProxy) == focusProxy, "focus proxy transfer: " + stateTrace);
         PumpDispatcher(TimeSpan.FromMilliseconds(180));
         Assert.False(button.IsPressed);
-        AssertPressedLayersRestored(pressedOverlay, scale);
+        AssertPressedLayersRestored(pressedOverlay, chrome);
         Assert.Equal(0, command.ExecutionCount);
 
         FocusAndPressSpace(button);
@@ -107,7 +106,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         PumpDispatcher(TimeSpan.FromMilliseconds(180));
         Assert.False(button.IsEnabled);
         Assert.False(button.IsPressed);
-        AssertPressedLayersRestored(pressedOverlay, scale);
+        AssertPressedLayersRestored(pressedOverlay, chrome);
         Assert.Equal(0, command.ExecutionCount);
 
         button.IsEnabled = true;
@@ -118,7 +117,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         content.UpdateLayout();
         PumpDispatcher(TimeSpan.FromMilliseconds(20));
         Assert.False(button.IsLoaded);
-        AssertPressedLayersRestored(pressedOverlay, scale);
+        AssertPressedLayersRestored(pressedOverlay, chrome);
         Assert.Equal(0, command.ExecutionCount);
     }
 
@@ -133,11 +132,10 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         });
     }
 
-    private static void AssertPressedLayersRestored(Border pressedOverlay, ScaleTransform scale)
+    private static void AssertPressedLayersRestored(Border pressedOverlay, Border chrome)
     {
         Assert.InRange(pressedOverlay.Opacity, 0, 0.01);
-        Assert.InRange(scale.ScaleX, 0.99, 1.01);
-        Assert.InRange(scale.ScaleY, 0.99, 1.01);
+        Assert.True(chrome.RenderTransform.Value.IsIdentity, "pressed-state cleanup must leave button geometry unchanged");
     }
 
     private static StateCapture CaptureState(
@@ -267,7 +265,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             var hoverOverlay = Assert.IsType<Border>(button.Template.FindName("HoverOverlay", button));
             var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
             var focusOverlay = Assert.IsType<Border>(button.Template.FindName("FocusOverlay", button));
-            var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
+            var transformIsIdentity = chrome.RenderTransform.Value.IsIdentity;
             var disabledTextMatches = state.Name != "disabled"
                 || HasSameSolidColor(button.Foreground, root.TryFindResource("GscDisabledTextBrush"));
             var disabledFillMatches = state.Name != "disabled"
@@ -280,11 +278,11 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 "normal" => button.IsEnabled && !ReadMouseOverProbe(button) && !button.IsPressed
                     && !button.IsKeyboardFocusWithin && hoverOverlay.Opacity == 0
                     && pressedOverlay.Opacity == 0 && focusOverlay.Opacity == 0
-                    && Math.Abs(scale.ScaleX - 1) < 0.01 && Math.Abs(chrome.Opacity - 1) < 0.01,
+                    && transformIsIdentity && Math.Abs(chrome.Opacity - 1) < 0.01,
                 "hover" => hoverSet && ReadMouseOverProbe(button) && hoverOverlay.Opacity > 0.9
                     && !button.IsPressed && chrome.BorderBrush != null,
                 "pressed" => button.IsPressed && pressedOverlay.Opacity > 0.9
-                    && scale.ScaleX < 0.99 && button.IsKeyboardFocusWithin,
+                    && transformIsIdentity && button.IsKeyboardFocusWithin,
                 "focus" => button.IsKeyboardFocusWithin && focusOverlay.Opacity == 1
                     && button.FocusVisualStyle != null,
                 "disabled" => !button.IsEnabled && !button.Command!.CanExecute(null)
@@ -320,7 +318,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
                 pressedOverlay.Opacity,
                 focusOverlay.Opacity,
                 chrome.Opacity,
-                scale.ScaleX,
+                transformIsIdentity,
                 disabledTextMatches,
                 disabledFillMatches,
                 disabledBorderMatches,
@@ -469,7 +467,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             double pressedOpacity,
             double focusOpacity,
             double chromeOpacity,
-            double scaleX,
+            bool transformIsIdentity,
             bool disabledTextMatches,
             bool disabledFillMatches,
             bool disabledBorderMatches,
@@ -487,7 +485,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             PressedOpacity = pressedOpacity;
             FocusOpacity = focusOpacity;
             ChromeOpacity = chromeOpacity;
-            ScaleX = scaleX;
+            TransformIsIdentity = transformIsIdentity;
             DisabledTextMatches = disabledTextMatches;
             DisabledFillMatches = disabledFillMatches;
             DisabledBorderMatches = disabledBorderMatches;
@@ -506,7 +504,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
         public double PressedOpacity { get; }
         public double FocusOpacity { get; }
         public double ChromeOpacity { get; }
-        public double ScaleX { get; }
+        public bool TransformIsIdentity { get; }
         public bool DisabledTextMatches { get; }
         public bool DisabledFillMatches { get; }
         public bool DisabledBorderMatches { get; }
@@ -516,7 +514,7 @@ public sealed class Q06ButtonStateSequenceBehaviorTests
             => $"theme={Theme}; state={State}; activation={Activation}; passed={StatePassed}; enabled={Enabled}; "
                 + $"mouseOver={MouseOver}; pressed={Pressed}; focus={FocusWithin}; hoverOverlay={HoverOpacity:0.###}; "
                 + $"pressedOverlay={PressedOpacity:0.###}; focusOverlay={FocusOpacity:0.###}; "
-                + $"chromeOpacity={ChromeOpacity:0.###}; scaleX={ScaleX:0.###}; "
+                + $"chromeOpacity={ChromeOpacity:0.###}; transformIdentity={TransformIsIdentity}; "
                 + $"disabledTextMatch={DisabledTextMatches}; disabledFillMatch={DisabledFillMatches}; "
                 + $"disabledBorderMatch={DisabledBorderMatches}; png={Path ?? "not-requested"}";
     }

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="78863ea8-7601-47fb-aa1c-732e8a0671b6" name="lopmatu@SULT 2026-11-03 11:29:21" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T11:29:21.3035807+08:00" queuing="2026-11-03T11:29:21.3035808+08:00" start="2026-11-03T11:29:13.9396704+08:00" finish="2026-11-03T11:29:36.9500396+08:00" />
+  <TestSettings name="default" id="3e1b92ee-8df7-41f1-86eb-a7211cce52ed">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-03_11_29_21" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="4ed1e3c4-c06e-4307-9c01-5db251e95ef0" testId="c1d9e055-3e0f-c671-812f-433dcf061b02" testName="GameSaveCenter.Playnite.Tests.DataGridHorizontalWheelBehaviorTests.ShiftWheelAndNativeHorizontalWheelMoveProductionMediaGridAndClampAtBothEnds" computerName="SULT" duration="00:00:02.5950000" startTime="2026-11-03T11:29:18.2584165+08:00" endTime="2026-11-03T11:29:20.8385661+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4ed1e3c4-c06e-4307-9c01-5db251e95ef0">
+      <Output>
+        <StdOut>items=2000,realizedRows=6,virtualization=Standard/Item/column=False,range=680,shift=0-&gt;48-&gt;0,fineDelta=4.8,ends=0-&gt;680-&gt;0</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridHorizontalWheelBehaviorTests.ShiftWheelAndNativeHorizontalWheelMoveProductionMediaGridAndClampAtBothEnds" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\u4p-20261103b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c1d9e055-3e0f-c671-812f-433dcf061b02">
+      <Execution id="4ed1e3c4-c06e-4307-9c01-5db251e95ef0" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\u4p-20261103b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridHorizontalWheelBehaviorTests" name="ShiftWheelAndNativeHorizontalWheelMoveProductionMediaGridAndClampAtBothEnds" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c1d9e055-3e0f-c671-812f-433dcf061b02" executionId="4ed1e3c4-c06e-4307-9c01-5db251e95ef0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.20]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.27]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.94]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Documents.TextServicesHost.OnUnregisterTextStore(Object arg)&#xD;
+   �� System.Windows.Documents.TextStore.OnDetach(Boolean finalizer)&#xD;
+   �� System.Windows.Documents.TextEditor.DetachTextStore(Boolean finalizer)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

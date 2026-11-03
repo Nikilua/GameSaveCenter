@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
                     xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
+                    xmlns:converters="clr-namespace:GameSaveCenter.Playnite.Converters"
                     xmlns:contracts="clr-namespace:GameSaveCenter.Contracts;assembly=GameSaveCenter.Contracts">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GeometryTokens.xaml"/>
@@ -13,6 +14,8 @@
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GscIconPack.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GscIconButtonPack.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
+    <converters:ViewportInsetWidthConverter x:Key="GscViewportInsetWidthConverter"/>
 
     <!-- Production adapters keep WPF-UI templates while applying GameSaveCenter's spacing,
          focus and material tokens. This dictionary is merged only after DesignTokens.xaml
@@ -384,6 +387,7 @@
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscAccentTintBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,16,0"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                         </Trigger>
                         <MultiTrigger>
@@ -394,11 +398,13 @@
                             <Setter TargetName="ItemChrome" Property="Background" Value="{DynamicResource GscSelectionInactiveBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscMutedStatusBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
+                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,16,0"/>
                             <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                         </MultiTrigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter TargetName="ItemChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                             <Setter TargetName="ItemChrome" Property="BorderThickness" Value="2"/>
+                            <Setter TargetName="ItemChrome" Property="Margin" Value="0,0,16,0"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="ItemChrome" Property="Opacity" Value="0.42"/>
@@ -704,6 +710,9 @@
                      can overlay the last device pixels with its vertical track; keeping the
                      selected outline inside the rounded frame makes both side corners visible. -->
                 <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
+                <Setter TargetName="RowChrome" Property="Width"
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=16}"/>
+                <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
             </Trigger>
@@ -718,6 +727,9 @@
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
                 <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
+                <Setter TargetName="RowChrome" Property="Width"
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=16}"/>
+                <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
             </MultiTrigger>
@@ -725,6 +737,9 @@
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="2"/>
                 <Setter TargetName="RowChrome" Property="Margin" Value="3,1,11,1"/>
+                <Setter TargetName="RowChrome" Property="Width"
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=14}"/>
+                <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter TargetName="RowBackground" Property="Margin" Value="3,1,11,1"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
@@ -956,13 +971,7 @@
                             Padding="0"
                             CornerRadius="14"
                             ClipToBounds="True"
-                            RenderTransformOrigin="0.5,0.5"
                             SnapsToDevicePixels="True">
-                        <Border.RenderTransform>
-                            <!-- The transform belongs to each template instance, so press feedback
-                                 never mutates a shared Style Freezable or triggers layout. -->
-                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                        </Border.RenderTransform>
                         <Grid ClipToBounds="True">
                             <!-- Focus is a complete selected-like surface; the shared focus
                                  adorner remains active as the high-contrast keyboard ring. -->
@@ -1081,9 +1090,8 @@
                             </MultiTrigger.ExitActions>
                         </MultiTrigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <!-- Keep the pressed dim subtle: the overlay and scale already
-                                 carry the tactile state, while a large parent opacity can
-                                 push black OnAccent text below the light-theme threshold. -->
+                            <!-- Keep press feedback inside the overlay so a command row or
+                                 icon button never shifts or clips its content while pressed. -->
                             <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.96"/>
                             <Setter TargetName="PressedOverlay" Property="Opacity" Value="{DynamicResource GscButtonPressedOverlayOpacity}"/>
                         </Trigger>
@@ -1097,8 +1105,6 @@
                                 <BeginStoryboard x:Name="GscButtonPressInStoryboard">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
-                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="0.97" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
-                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="0.97" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </MultiTrigger.EnterActions>
@@ -1116,8 +1122,6 @@
                                 <BeginStoryboard x:Name="GscButtonPressOutStoryboard">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="PressedOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
-                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
-                                        <DoubleAnimation Storyboard.TargetName="ButtonChrome" Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)" To="1" Duration="{StaticResource GscMotionPress}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </MultiTrigger.EnterActions>

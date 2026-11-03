@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -87,6 +88,12 @@ public sealed class DataGridHorizontalWheelBehaviorTests
                 viewer.ScrollToHorizontalOffset(0);
                 DrainDispatcher(window);
 
+                grid.SelectedItem = grid.Items[0];
+                DrainDispatcher(window);
+                var selectedFrameAtLeft = CaptureSelectedFrameBounds(grid, grid.Items[0], out var selectionViewportWidth);
+                Assert.True(selectedFrameAtLeft.Right <= selectionViewportWidth + 0.5,
+                    $"selected row chrome must keep its rounded right edge inside a narrow overflowing table viewport: frame={selectedFrameAtLeft}, viewport={selectionViewportWidth:0.##}, extent={viewer.ExtentWidth:0.##}");
+
                 var start = viewer.HorizontalOffset;
                 Assert.True(DataGridHorizontalWheelBehavior.TryHandleShiftWheel(grid, -120, ModifierKeys.Shift));
                 DrainDispatcher(window);
@@ -118,6 +125,9 @@ public sealed class DataGridHorizontalWheelBehaviorTests
                 DrainDispatcher(window);
                 var rightEnd = viewer.HorizontalOffset;
                 Assert.InRange(Math.Abs(rightEnd - viewer.ScrollableWidth), 0, 0.5);
+                var selectedFrameAtRight = CaptureSelectedFrameBounds(grid, grid.Items[0], out selectionViewportWidth);
+                Assert.True(selectedFrameAtRight.Right <= selectionViewportWidth + 0.5,
+                    $"selected row chrome must keep its rounded right edge visible after horizontal scrolling: frame={selectedFrameAtRight}, viewport={selectionViewportWidth:0.##}, offset={viewer.HorizontalOffset:0.##}");
                 RouteHorizontalWheel(grid, screenPoint, 120);
                 DrainDispatcher(window);
                 Assert.InRange(Math.Abs(viewer.HorizontalOffset - rightEnd), 0, 0.5);
@@ -200,6 +210,20 @@ public sealed class DataGridHorizontalWheelBehaviorTests
 
     private static ScrollViewer FindGridViewer(DataGrid grid)
         => FindVisualChildren<ScrollViewer>(grid).First(viewer => viewer.Name == "DG_ScrollViewer");
+
+    private static Rect CaptureSelectedFrameBounds(DataGrid grid, object item, out double viewportWidth)
+    {
+        var row = Assert.IsType<DataGridRow>(grid.ItemContainerGenerator.ContainerFromItem(item));
+        Assert.True(row.IsSelected, "the viewport probe must measure a selected production row");
+        var rowsPresenter = FindVisualChildren<DataGridRowsPresenter>(grid).Single();
+        viewportWidth = rowsPresenter.ActualWidth;
+        Assert.True(viewportWidth > 0, "the production rows presenter must have a measured viewport");
+        var chrome = Assert.IsType<Border>(row.Template!.FindName("RowChrome", row));
+        Assert.True(chrome.CornerRadius.TopRight > 0 && chrome.CornerRadius.BottomRight > 0,
+            "the selected row must retain its rounded right corners");
+        return chrome.TransformToAncestor(rowsPresenter)
+            .TransformBounds(new Rect(new Point(), chrome.RenderSize));
+    }
 
     private static MediaItemDto[] CreateSyntheticMedia(int count)
         => Enumerable.Range(0, count)

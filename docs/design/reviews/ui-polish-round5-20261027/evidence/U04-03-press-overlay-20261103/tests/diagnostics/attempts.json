@@ -1,0 +1,71 @@
+{
+  "capturedAt": "2026-11-03T04:00:00Z",
+  "diagnostics": [
+    {
+      "attempt": 1,
+      "skipCount": 0,
+      "exitCode": 1,
+      "category": "Infrastructure: test adapter shadow-load hit .NET Framework MAX_PATH under the initial long isolated build root",
+      "action": "Rebuild the same source under a shorter unique .tmp root",
+      "trx": {
+        "path": "attempt-1-path-too-long.trx",
+        "sha256": "ED05DC86B1A2C1212B09DF40D460525B0511829D18CAD9C542B99CFBDF33085C",
+        "result": []
+      },
+      "testsExecuted": 0
+    },
+    {
+      "skipCount": 0,
+      "exitCode": 1,
+      "category": "Test fixture still expected the removed two scale animations",
+      "action": "Align the sampling fixture animation count with the remaining four opacity storyboards; retain all runtime assertions",
+      "attempt": 2,
+      "failed": 1,
+      "testsExecuted": 1,
+      "trx": {
+        "path": "attempt-2-obsolete-animation-count.trx",
+        "sha256": "C469E7B7D9D3C5CE6869C0FBF4E38AD2AB114333B339699EA877107ADCADCAED",
+        "result": []
+      }
+    },
+    {
+      "trx": "attempt-3-invalid-row-button-probe.trx",
+      "skipCount": 0,
+      "exitCode": 1,
+      "action": "删除错误按压探针，改为真实ListBox选择/焦点几何并归档三帧截图",
+      "attempt": 3,
+      "category": "R10探针误把最近任务ListBoxItem当作内含ui:Button；生产XAML确认该行无按钮；既有选中、焦点与图标几何断言已通过"
+    },
+    {
+      "trx": "attempt-4-selected-frame-exceeded-viewport.trx",
+      "skipCount": 0,
+      "exitCode": 1,
+      "action": "共享RowChrome绑定RowsPresenter宽度，并保留水平滚动/虚拟化",
+      "attempt": 4,
+      "category": "首次窄视口生产DataGrid选中框实测1336 DIP，RowsPresenter视口672 DIP；右圆角确被裁切"
+    },
+    {
+      "trx": "attempt-5-obsolete-zero-inset-expectation.trx",
+      "skipCount": 0,
+      "exitCode": 1,
+      "action": "更新为验证chrome留白改变而内容边界/行槽不变，R10精确用例随后1/1通过",
+      "attempt": 5,
+      "category": "R10断言仍要求选中框Margin=0，与新增右侧滚动条留白16 DIP冲突；内容坐标检查无偏移"
+    },
+    {
+      "skipCount": 0,
+      "exitCode": 1,
+      "diagnostics": "attempt-6-build-missing-primitives-using/summary.json",
+      "action": "添加命名空间using并重编解决方案，后续编译0 warning/0 error",
+      "attempt": 6,
+      "category": "编译探针缺少System.Windows.Controls.Primitives using，DataGridRowsPresenter解析失败"
+    },
+    {
+      "skipCount": 0,
+      "attempt": 7,
+      "category": "最终定向验证：12 tests passed, 0 failed, 0 skipped；legacy static test单独标记NotExecuted",
+      "action": "归档在tests/passed与test-results.json",
+      "exitCode": 0
+    }
+  ]
+}

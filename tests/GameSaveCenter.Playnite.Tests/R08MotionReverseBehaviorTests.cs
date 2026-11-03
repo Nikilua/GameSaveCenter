@@ -281,27 +281,20 @@ public sealed class R08MotionReverseBehaviorTests
         MouseOverSamplingTrace hoverEntryTrace = default;
         MouseOverSamplingTrace hoverExitTrace = default;
         MouseOverSamplingTrace hoverReentryTrace = default;
-        var pressMidpoint = 0d;
         var pressedOverlayMidpoint = 0d;
-        var pressAfterRelease = 0d;
         var pressedOverlayAfterRelease = 0d;
         var pressedOverlayReleaseProgress = 0d;
-        var pressBeforeRepress = 0d;
-        var pressAfterRepress = 0d;
         var pressedOverlayBeforeRepress = 0d;
         var pressedOverlayAfterRepress = 0d;
         var pressedOverlayRepressProgress = 0d;
         var pressedOverlayFinal = 0d;
         var pressedOverlayReleasedFinal = 0d;
-        var pressFinal = 0d;
         var pressMidpointSampled = false;
         var pressReleasedContinuously = false;
-        var pressedOverlayReleasedContinuously = false;
         var pressReleaseProgressSampled = false;
         var pressReversedContinuously = false;
-        var pressedOverlayReversedContinuously = false;
         var pressRepressProgressSampled = false;
-        var pressReleasedFinal = 0d;
+        var pressTransformStayedIdentity = false;
         var hoverSweepVisitedCount = 0;
         var hoverSweepMaximumResidualOpacity = 0d;
         var hoverSweepLightReentered = false;
@@ -347,7 +340,6 @@ public sealed class R08MotionReverseBehaviorTests
                 var hoverOverlay = Assert.IsType<Border>(button.Template!.FindName("HoverOverlay", button));
                 var chrome = Assert.IsType<Border>(button.Template.FindName("ButtonChrome", button));
                 var pressedOverlay = Assert.IsType<Border>(button.Template.FindName("PressedOverlay", button));
-                var scale = Assert.IsType<ScaleTransform>(chrome.RenderTransform);
 
                 PumpDispatcher(animationSamplingWindow + TimeSpan.FromMilliseconds(40));
                 Assert.False(ReadMouseOverProbe(button), "button unexpectedly entered hover before the synthetic probe");
@@ -374,46 +366,40 @@ public sealed class R08MotionReverseBehaviorTests
                 SetPressedStateProbe(button, true);
                 Assert.True(button.IsPressed, "synthetic state probe did not enter the production button's pressed state.");
                 pressMidpointSampled = PumpDispatcherUntilFast(
-                    () => scale.ScaleX <= 0.99 && scale.ScaleX > 0.9701
-                        && pressedOverlay.Opacity > 0.01 && pressedOverlay.Opacity < 0.99,
+                    () => pressedOverlay.Opacity > 0.01 && pressedOverlay.Opacity < 0.99,
                     TimeSpan.FromMilliseconds(1000));
-                pressMidpoint = scale.ScaleX;
                 pressedOverlayMidpoint = pressedOverlay.Opacity;
+                pressTransformStayedIdentity = chrome.RenderTransform.Value.IsIdentity
+                    && !DependencyPropertyHelper.GetValueSource(chrome, UIElement.RenderTransformProperty).IsAnimated;
                 SetPressedStateProbe(button, false);
                 Assert.False(button.IsPressed, "synthetic state probe did not leave the production button's pressed state.");
-                pressAfterRelease = scale.ScaleX;
                 pressedOverlayAfterRelease = pressedOverlay.Opacity;
-                pressReleasedContinuously = Math.Abs(pressAfterRelease - pressMidpoint) <= 0.01;
-                pressedOverlayReleasedContinuously = Math.Abs(pressedOverlayAfterRelease - pressedOverlayMidpoint) <= 0.08;
+                pressReleasedContinuously = Math.Abs(pressedOverlayAfterRelease - pressedOverlayMidpoint) <= 0.08;
 
                 pressReleaseProgressSampled = PumpDispatcherUntilFast(
-                    () => scale.ScaleX > pressAfterRelease + 0.002 && scale.ScaleX < 1
-                        && pressedOverlay.Opacity < pressedOverlayAfterRelease - 0.002 && pressedOverlay.Opacity > 0,
+                    () => pressedOverlay.Opacity < pressedOverlayAfterRelease - 0.002 && pressedOverlay.Opacity > 0,
                     TimeSpan.FromMilliseconds(250));
                 pressedOverlayReleaseProgress = pressedOverlay.Opacity;
-                pressBeforeRepress = scale.ScaleX;
                 pressedOverlayBeforeRepress = pressedOverlay.Opacity;
                 SetPressedStateProbe(button, true);
-                pressAfterRepress = scale.ScaleX;
                 pressedOverlayAfterRepress = pressedOverlay.Opacity;
-                pressReversedContinuously = Math.Abs(pressAfterRepress - pressBeforeRepress) <= 0.01;
-                pressedOverlayReversedContinuously = Math.Abs(pressedOverlayAfterRepress - pressedOverlayBeforeRepress) <= 0.08;
+                pressReversedContinuously = Math.Abs(pressedOverlayAfterRepress - pressedOverlayBeforeRepress) <= 0.08;
+                pressTransformStayedIdentity &= chrome.RenderTransform.Value.IsIdentity
+                    && !DependencyPropertyHelper.GetValueSource(chrome, UIElement.RenderTransformProperty).IsAnimated;
                 Assert.True(button.IsPressed, "Second Space key down did not re-enter the pressed state.");
                 pressRepressProgressSampled = PumpDispatcherUntilFast(
-                    () => scale.ScaleX < pressAfterRepress - 0.002 && scale.ScaleX > 0.97
-                        && pressedOverlay.Opacity > pressedOverlayAfterRepress + 0.002 && pressedOverlay.Opacity < 1,
+                    () => pressedOverlay.Opacity > pressedOverlayAfterRepress + 0.002 && pressedOverlay.Opacity < 1,
                     TimeSpan.FromMilliseconds(250));
                 pressedOverlayRepressProgress = pressedOverlay.Opacity;
                 PumpDispatcherUntilFast(
-                    () => Math.Abs(scale.ScaleX - 0.97) < 0.001 && Math.Abs(pressedOverlay.Opacity - 1) < 0.001,
+                    () => Math.Abs(pressedOverlay.Opacity - 1) < 0.001,
                     TimeSpan.FromMilliseconds(500));
-                pressFinal = scale.ScaleX;
                 pressedOverlayFinal = pressedOverlay.Opacity;
                 SetPressedStateProbe(button, false);
-                PumpDispatcherUntil(() => Math.Abs(scale.ScaleX - 1) < 0.001, TimeSpan.FromMilliseconds(500));
-                pressReleasedFinal = scale.ScaleX;
                 PumpDispatcherUntil(() => Math.Abs(pressedOverlay.Opacity) < 0.001, TimeSpan.FromMilliseconds(500));
                 pressedOverlayReleasedFinal = pressedOverlay.Opacity;
+                pressTransformStayedIdentity &= chrome.RenderTransform.Value.IsIdentity
+                    && !DependencyPropertyHelper.GetValueSource(chrome, UIElement.RenderTransformProperty).IsAnimated;
 
                 hoverSweepLightReentered = RunProductionButtonHoverSweep(resources, buttonStyle,
                     GameSaveCenterThemeMode.Light, out var lightVisitedCount, out var lightResidualOpacity);
@@ -436,7 +422,7 @@ public sealed class R08MotionReverseBehaviorTests
         thread.Start();
         thread.Join();
 
-        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; press midpoint={pressMidpoint:0.###}; release={pressAfterRelease:0.###}->{pressBeforeRepress:0.###}; re-press={pressAfterRepress:0.###}->{pressFinal:0.###}; overlay={pressedOverlayMidpoint:0.###}->{pressedOverlayAfterRelease:0.###}->{pressedOverlayFinal:0.###}; releaseFinal={pressReleasedFinal:0.###}/{pressedOverlayReleasedFinal:0.###}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}; light/dark sibling sweep visited={hoverSweepVisitedCount}; max residual={hoverSweepMaximumResidualOpacity:0.####}; re-entry={hoverSweepLightReentered}/{hoverSweepDarkReentered}");
+        output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; pressed overlay midpoint={pressedOverlayMidpoint:0.###}; release={pressedOverlayAfterRelease:0.###}->{pressedOverlayBeforeRepress:0.###}; re-press={pressedOverlayAfterRepress:0.###}->{pressedOverlayFinal:0.###}; releaseProgress={pressedOverlayReleaseProgress:0.###}; re-pressProgress={pressedOverlayRepressProgress:0.###}; releasedFinal={pressedOverlayReleasedFinal:0.###}; transformIdentity={pressTransformStayedIdentity}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}; light/dark sibling sweep visited={hoverSweepVisitedCount}; max residual={hoverSweepMaximumResidualOpacity:0.####}; re-entry={hoverSweepLightReentered}/{hoverSweepDarkReentered}");
         Assert.Null(exception);
         output.WriteLine($"hover rendering sampler entry={hoverEntryTrace}; exit={hoverExitTrace}; reentry={hoverReentryTrace}");
         Assert.True(hoverMidpointSampled, "production hover opacity did not expose an in-flight sample");
@@ -447,19 +433,16 @@ public sealed class R08MotionReverseBehaviorTests
         Assert.True(hoverExitProgress < hoverAfterLeave, "hover exit did not continue toward zero");
         Assert.True(hoverReenterProgress > hoverAfterReenter, "hover re-entry did not continue toward one");
         Assert.Equal(1, hoverFinal, 2);
-        Assert.True(pressMidpointSampled, "production press scale did not expose an in-flight sample");
-        Assert.True(pressReleasedContinuously, "production press release jumped away from the rendered scale");
+        Assert.True(pressMidpointSampled, "production press opacity did not expose an in-flight sample");
+        Assert.True(pressReleasedContinuously, "production press release jumped away from the rendered overlay opacity");
         Assert.True(pressReleaseProgressSampled, "production press release did not expose an in-flight return sample");
-        Assert.True(pressBeforeRepress > pressAfterRelease, "press release did not continue toward the neutral scale");
-        Assert.True(pressReversedContinuously, "production rapid re-press jumped away from the rendered scale");
+        Assert.True(pressedOverlayReleaseProgress < pressedOverlayAfterRelease, "press release did not continue toward the neutral overlay opacity");
+        Assert.True(pressReversedContinuously, "production rapid re-press jumped away from the rendered overlay opacity");
         Assert.True(pressRepressProgressSampled, "production rapid re-press did not expose an in-flight sample");
-        Assert.Equal(0.97, pressFinal, 2);
-        Assert.Equal(1, pressReleasedFinal, 2);
+        Assert.True(pressTransformStayedIdentity, "shared press feedback must not scale or translate the button while its overlay animates");
         Assert.True(pressedOverlayMidpoint > 0 && pressedOverlayMidpoint < 1, "production pressed overlay did not expose an in-flight sample");
-        Assert.True(pressedOverlayReleasedContinuously, "production pressed overlay release jumped away from its rendered opacity");
         Assert.InRange(Math.Abs(pressedOverlayAfterRelease - pressedOverlayMidpoint), 0, 0.08);
         Assert.True(pressedOverlayReleaseProgress < pressedOverlayAfterRelease, "pressed overlay release did not continue toward zero");
-        Assert.True(pressedOverlayReversedContinuously, "production pressed overlay re-press jumped away from its rendered opacity");
         Assert.InRange(Math.Abs(pressedOverlayAfterRepress - pressedOverlayBeforeRepress), 0, 0.08);
         Assert.True(pressedOverlayRepressProgress > pressedOverlayAfterRepress, "pressed overlay re-press did not continue toward one");
         Assert.Equal(1, pressedOverlayFinal, 2);
@@ -645,7 +628,7 @@ public sealed class R08MotionReverseBehaviorTests
         }
 
         Assert.Equal(4, adjustedStoryboards);
-        Assert.Equal(8, adjustedAnimations);
+        Assert.Equal(4, adjustedAnimations);
         return animationSamplingWindow;
     }
 

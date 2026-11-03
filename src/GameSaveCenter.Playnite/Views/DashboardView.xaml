@@ -474,6 +474,9 @@
                                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
                                 <Setter TargetName="RowChrome" Property="Margin" Value="4,2,12,2"/>
+                                <Setter TargetName="RowChrome" Property="Width"
+                                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=16}"/>
+                                <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                             </Trigger>

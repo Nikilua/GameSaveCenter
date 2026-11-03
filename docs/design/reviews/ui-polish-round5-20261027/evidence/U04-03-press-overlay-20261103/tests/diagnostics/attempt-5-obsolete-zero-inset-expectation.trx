@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="dc93cd2a-b10b-411a-b3d3-ee34d00fa2b2" name="lopmatu@SULT 2026-11-03 11:28:57" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T11:28:57.9154240+08:00" queuing="2026-11-03T11:28:57.9154245+08:00" start="2026-11-03T11:28:50.6114994+08:00" finish="2026-11-03T11:29:13.1644227+08:00" />
+  <TestSettings name="default" id="0cc0c1c2-62e3-4ad4-8ac4-0ff1df01e181">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-03_11_28_57" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="bc52cb8b-1b54-4921-bf1f-5b48d11ee9e6" testId="7fca2483-c0c6-6c5e-b00f-22069d60c395" testName="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition" computerName="SULT" duration="00:00:02.2110000" startTime="2026-11-03T11:28:54.8837779+08:00" endTime="2026-11-03T11:28:57.0802831+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bc52cb8b-1b54-4921-bf1f-5b48d11ee9e6">
+      <Output>
+        <ErrorInfo>
+          <Message>Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ&#xD;
+Expected: 0,0,0,0&#xD;
+Actual:   0,0,16,0&#xD;
+   在 Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/EqualityAsserts.cs:行号 154&#xD;
+   在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;SelectedOverviewAndSharedListItemsKeepTheirContentPosition&gt;b__0() 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 221</Message>
+          <StackTrace>   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+   在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition() 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 250</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition" storage="c:\users\lopmatu\.codex\worktrees\round5-r08-gates\gamesavecenter\.tmp\u4p-20261103b\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7fca2483-c0c6-6c5e-b00f-22069d60c395">
+      <Execution id="bc52cb8b-1b54-4921-bf1f-5b48d11ee9e6" />
+      <TestMethod codeBase="C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\.tmp\u4p-20261103b\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests" name="SelectedOverviewAndSharedListItemsKeepTheirContentPosition" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7fca2483-c0c6-6c5e-b00f-22069d60c395" executionId="bc52cb8b-1b54-4921-bf1f-5b48d11ee9e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.20]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.27]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.53]       Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:05.53]       Expected: 0,0,0,0&#xD;
+[xUnit.net 00:00:05.53]       Actual:   0,0,16,0&#xD;
+[xUnit.net 00:00:05.53]          在 Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/EqualityAsserts.cs:行号 154&#xD;
+[xUnit.net 00:00:05.53]          在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;SelectedOverviewAndSharedListItemsKeepTheirContentPosition&gt;b__0() 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 221&#xD;
+[xUnit.net 00:00:05.53]       Stack Trace:&#xD;
+[xUnit.net 00:00:05.53]            在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+[xUnit.net 00:00:05.53]            在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition() 位置 C:\Users\lopmatu\.codex\worktrees\round5-r08-gates\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 250&#xD;
+[xUnit.net 00:00:05.55]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+δ���������쳣:  System.Runtime.InteropServices.InvalidComObjectException: COM ����������� RCW �ֿ���Ͳ�����ʹ�á�&#xD;
+   �� System.Windows.Input.TextServicesContext.StopTransitoryExtension()&#xD;
+   �� System.Windows.Input.TextServicesContext.Uninitialize(Boolean appDomainShutdown)&#xD;
+   �� MS.Internal.ShutDownListener.HandleShutDown(Object sender, EventArgs e)&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-11-03T11:28:57.0860820+08:00">
+        <Text>[xUnit.net 00:00:05.53]     GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

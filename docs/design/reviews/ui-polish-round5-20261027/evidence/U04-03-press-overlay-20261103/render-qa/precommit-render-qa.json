@@ -1,0 +1,28 @@
+{
+  "exitCode": 0,
+  "sourceCommit": "10682b05209d1b0784f52dbed7195c8d31a7d297",
+  "workingTreeClean": false,
+  "sampleTimeUtc": "2026-11-03T02:00:00Z",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "rootPngCount": 334,
+  "recursivePngCount": 394,
+  "problemLines": [],
+  "reportSha256": "06F6A94C940C11599552F5AD389F44CB184057555A1F9619DE82F985621AE198",
+  "screenshots": [
+    {
+      "file": "Overview-1040x700.png",
+      "sha256": "86756D9677AED7BA35AA4AFBA271827B672111DB4D93A9A4B9E43F20DF5B072E"
+    },
+    {
+      "file": "Save-1040x700-tab1.png",
+      "sha256": "AC2C9FB0B3258060586CF6F266ED0082117CCCC35B6BE4F58337BEE08E8DA5DB"
+    },
+    {
+      "file": "Task-1040x700.png",
+      "sha256": "8C03510AB01556EA5EA3529679757CF9D6EB11F6AE8D99C4B1FF326BE6CDBCD5"
+    }
+  ]
+}

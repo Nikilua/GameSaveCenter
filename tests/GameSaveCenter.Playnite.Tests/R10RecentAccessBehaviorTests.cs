@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -9,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
@@ -215,7 +217,7 @@ public sealed class R10RecentAccessBehaviorTests
 
                     AssertContainerContentDoesNotMove(list, firstTask, "TaskItemChrome", "OverviewTaskStatusPill", host.Window);
                     var selectedChrome = FindItemChrome(list, firstTask, "TaskItemChrome");
-                    Assert.Equal(new Thickness(), selectedChrome.Margin);
+                    Assert.Equal(new Thickness(0, 0, 16, 0), selectedChrome.Margin);
                     Assert.Equal(new CornerRadius(14), selectedChrome.CornerRadius);
                     AssertAccentBorder(list, selectedChrome);
                 }
@@ -231,7 +233,7 @@ public sealed class R10RecentAccessBehaviorTests
                 using var sharedHost = new WindowHost(sharedOverview);
                 AssertContainerContentDoesNotMove(sharedList, firstTask, "ItemChrome", "OverviewTaskStatusPill", sharedHost.Window);
                 var sharedChrome = FindItemChrome(sharedList, firstTask, "ItemChrome");
-                Assert.Equal(new Thickness(), sharedChrome.Margin);
+                Assert.Equal(new Thickness(0, 0, 16, 0), sharedChrome.Margin);
                 AssertAccentBorder(sharedList, sharedChrome);
                 Assert.Equal(8, sharedChrome.CornerRadius.TopLeft);
             }
@@ -265,6 +267,12 @@ public sealed class R10RecentAccessBehaviorTests
         var tile = FindVisualDescendants<Border>(container).Single(border => border.Name == iconTileName);
         var unselectedBounds = tile.TransformToAncestor(container)
             .TransformBounds(new Rect(new Point(), tile.RenderSize));
+        Assert.Equal(34, unselectedBounds.Width, 2);
+        Assert.Equal(34, unselectedBounds.Height, 2);
+        Assert.True(unselectedBounds.Left >= 0 && unselectedBounds.Right <= container.ActualWidth,
+            "the recent-activity icon tile must remain inside the row before selection");
+        if (chromeName == "TaskItemChrome")
+            SaveSelectionFrame(container, "unselected");
 
         list.SelectedItem = task;
         hostWindow.UpdateLayout();
@@ -283,6 +291,11 @@ public sealed class R10RecentAccessBehaviorTests
         var chrome = FindItemChrome(list, task, chromeName);
         Assert.True(chrome.BorderThickness.Left > 0);
         Assert.True(chrome.CornerRadius.TopLeft > 0);
+        Assert.True(selectedBounds.Left >= 0 && selectedBounds.Right <= container.ActualWidth,
+            "the recent-activity icon tile must remain inside the row while selected");
+        if (chromeName == "TaskItemChrome")
+            SaveSelectionFrame(container, "selected");
+
         Assert.True(container.Focus());
         hostWindow.UpdateLayout();
         var focusedBounds = tile.TransformToAncestor(container)
@@ -295,6 +308,31 @@ public sealed class R10RecentAccessBehaviorTests
             unselectedContainerMargin,
             unselectedRenderTransform,
             unselectedLayoutTransform);
+
+        if (chromeName == "TaskItemChrome")
+            SaveSelectionFrame(container, "selected-focused");
+    }
+
+    private static void SaveSelectionFrame(ListBoxItem container, string state)
+    {
+        var outputRoot = Environment.GetEnvironmentVariable("GSC_R10_SELECTION_OUTPUT");
+        if (string.IsNullOrWhiteSpace(outputRoot))
+            return;
+
+        Directory.CreateDirectory(outputRoot);
+        var dpi = VisualTreeHelper.GetDpi(container);
+        var size = container.RenderSize;
+        var bitmap = new RenderTargetBitmap(
+            Math.Max(1, (int)Math.Ceiling(size.Width * dpi.DpiScaleX)),
+            Math.Max(1, (int)Math.Ceiling(size.Height * dpi.DpiScaleY)),
+            96 * dpi.DpiScaleX,
+            96 * dpi.DpiScaleY,
+            PixelFormats.Pbgra32);
+        bitmap.Render(container);
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using var stream = File.Create(Path.Combine(outputRoot, "home-recent-activity-" + state + ".png"));
+        encoder.Save(stream);
     }
 
     private static void AssertContainerSlotUnchanged(
