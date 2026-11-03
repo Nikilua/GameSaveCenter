@@ -715,12 +715,11 @@
                 <Setter TargetName="RowChrome" Property="BorderBrush" Value="{DynamicResource GscAccentBrush}"/>
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
-                <!-- DataGridRowsPresenter already ends at the visible cells viewport (before
-                     any scroll track). Subtract only the leading margin so the frame reaches
-                     the trailing visible text instead of leaving a second four-DIP gap. -->
+                <!-- Keep the selection frame four DIPs inside the visible cells viewport;
+                     the row-content clip below keeps trailing text inside that frame. -->
                 <Setter TargetName="RowChrome" Property="Margin" Value="4,2,4,2"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=4}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
@@ -745,7 +744,7 @@
                 <Setter TargetName="RowChrome" Property="CornerRadius" Value="14"/>
                 <Setter TargetName="RowChrome" Property="Margin" Value="4,2,4,2"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=4}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
@@ -763,7 +762,7 @@
                 <Setter TargetName="RowChrome" Property="BorderThickness" Value="2"/>
                 <Setter TargetName="RowChrome" Property="Margin" Value="3,1,4,1"/>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=3}"/>
+                        Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DataGridRowsPresenter}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=7}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter TargetName="RowBackground" Property="Margin" Value="3,1,4,1"/>
             </Trigger>

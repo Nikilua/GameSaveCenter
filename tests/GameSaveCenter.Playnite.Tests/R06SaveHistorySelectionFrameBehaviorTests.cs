@@ -52,6 +52,11 @@ public sealed class R06SaveHistorySelectionFrameBehaviorTests
                     PumpLayout(window);
 
                     var grid = Assert.IsType<DataGrid>(view.FindName("SaveHistoryGrid"));
+                    // Match the table pane width in the supplied capture. At the full page
+                    // width the star-sized note column expands and leaves no scroll range.
+                    grid.Width = 740;
+                    grid.HorizontalAlignment = HorizontalAlignment.Left;
+                    PumpLayout(window);
                     var row = grid.ItemContainerGenerator.ContainerFromItem(selected) as DataGridRow
                         ?? throw new InvalidOperationException($"Save-history row was not realized in {theme}; grid={grid.ActualWidth:0.##}x{grid.ActualHeight:0.##}, items={grid.Items.Count}.");
                     grid.SelectedItem = selected;
