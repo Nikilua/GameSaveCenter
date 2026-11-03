@@ -1,0 +1,29 @@
+{
+  "Repository": "Nikilua/GameSaveCenter",
+  "Commit": "967e07e1c2d2c530620fee4300e8566e02b318b4",
+  "Branch": "main",
+  "Workflow": ".github/workflows/windows-build.yml",
+  "RunNumber": 1451,
+  "RunId": 41681642551,
+  "Conclusion": "failure",
+  "RunUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41681642551",
+  "Jobs": [
+    {
+      "Name": "编译、测试与打包",
+      "JobId": 126076537301,
+      "Conclusion": "failure",
+      "FailedStep": "检出代码",
+      "RawLogUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41681642551/job/126076537301"
+    },
+    {
+      "Name": ".NET SDK 10.0.401 编译与测试复核",
+      "JobId": 126076536778,
+      "Conclusion": "failure",
+      "FailedStep": "检出代码",
+      "RawLogUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41681642551/job/126076536778"
+    }
+  ],
+  "Artifacts": [],
+  "Classification": "Checkout path length in the documentation evidence tree; both jobs stopped before source validation, compilation, tests, render QA, WPF audit, and packaging. No source-code failure was exercised.",
+  "Repair": "Shortened the evidence directory and flattened TRX files while preserving original filenames, bytes, and SHA-256 entries."
+}

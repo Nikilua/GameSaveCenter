@@ -1,3 +1,8 @@
+## 2026-11-04 Round5 文档证据 Windows checkout 路径修正
+
+- 文档提交 967e07e1 的精确 CI run #1451 / 41681642551 两个 workflow job 都在 checkout 阶段报 `Filename too long`，后续 source/build/test/render/package 未运行且无 artifact；不是源码测试失败。原始 job 日志及 job ID 见 `reviews/ui-polish-round5-20261027/evidence/U06-02-3aa-20261104/ci-run-41681642551-failure.json`。
+- 本次压短 Round5 证据目录并展平 TRX 到 `t/r`、`t/b`、`t/f`；320 份全链/独立 TRX 与 6 份 focused TRX 的字节、SHA-256 不变。源码候选仍是 3aaae534。新提交的两个 SDK job 需重新查询；required-check 403 仍不重试。
+- Round5 仍为7项满足、71项代码完成待验收、U09-04进行中、U09-06远端待验；真实 Playnite 页面/UIA/输入/物理DPI和真实业务写操作边界不变。
 ## 2026-11-04 Round5 U06-02/U08-08 选框完整包裹与冻结候选门禁
 
 用户附图明确指出 Overview 日期时间、存档末列和任务状态未被选中框包住。DataGrid 选框框宽曾收至4，导致边缘与滚动轨道零间隙并触发R23；提交3aaae534恢复宽度参数8（焦点7）及Dashboard兼容资源宽度，保留行内容内裁切。Save History夹具使用740 DIP以重现用户截图的窄表和横向滚动。U00-01既有基线/去重经本批复核，未重复生成。
@@ -6,7 +11,7 @@ SDK8.0.423 / MSBuild17.11.48。Source Validation exit0，WPF静态88 XAML/0 erro
 
 3aaae534已推送。精确 GitHub run #1450 / 41659230554 completed/success；baseline job 125997757253全15步与SDK10.0.401 job125997757096全8步成功。ZIP/PEXT均45,738,426 bytes、SHA-256 62550D4029212FBE7F6F1D34B12380236D880883132E259BBACE7ACDD09A4AD3。安装清单0.6.73、六个DLL身份含候选SHA，Playnite与Worker响应且插件加载日志观察到3个游戏。根入口曾在非提权安装权限及一次预检空间不足时失败；原诊断保留，只删除本阶段已完成且被替代的4ac8b9e6隔离输出1015文件/281,907,597 bytes，并记录D盘空间前后；完整重跑成功。
 
-required-check/ruleset API既有403不重复探测，U09-06远端待验。Playnite实际插件页、外部UIA、实体键盘/IME、物理DPI未验，不能以进程/加载日志代替页面验收。未执行真实存档恢复、媒体删除、云端写入。整轮仍7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。测试、安装身份、CI和清理证据见Round5 evidence/U06-02-frame-containment-b85f397c-20261103/。
+required-check/ruleset API既有403不重复探测，U09-06远端待验。Playnite实际插件页、外部UIA、实体键盘/IME、物理DPI未验，不能以进程/加载日志代替页面验收。未执行真实存档恢复、媒体删除、云端写入。整轮仍7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。测试、安装身份、CI和清理证据见Round5 evidence/U06-02-3aa-20261104/。
 ## 2026-11-03 Round5 U06-02/U08-08 右缘包裹修复与 U09 最终门禁（6cd0f9ec）
 
 - 按用户截图修正最近任务时间和生产列表末列落在选框外：公共ListBox/DataGrid选框与背景overlay的右侧inset/行宽换算统一收至约4 DIP，不挤压内容或更换滚动条；修复后Overview、Save、Task、Shell任务表截图归档至Round5证据目录。
