@@ -1,4 +1,12 @@
-## 2026-11-03 Round5 当前交接：候选77482a9a与本机入口限制
+## 2026-11-03 Round5 当前交接：精确候选 6cd0f9ec
+
+用户新截图反馈最近任务时间和存档/任务列表末列文字没有被选中框完整包住。共享ListBox/DataGrid选框右inset和宽度换算已修正至约4 DIP；Overview、Save、Task、Shell修复后截图与行为/几何测试已归档在docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/。真实Playnite插件页未实看，因此U06-02/U08-08仍是“代码完成待验收”。
+
+冻结候选6cd0f9ec55ada37f03a88d24bc46690ed1837a06已提交推送。SDK8.0.423独立scripts/build.cmd exit0；中文GameSaveCenter-一键构建安装运行.cmd转交GameSaveCenter-Run.cmd完成完整编译/测试/发布/打包/安装身份核验/启动链exit0。精确push run #1446两适用job（SDK基线、SDK10.0.401）均完成成功，身份见上述证据。纯文档阶段不重复完整链，不新增仅记录文档CI的提交。
+
+继续范围仅限已列80项。当前状态7已满足、71代码完成待验收、U09-04进行中、U09-06远端待验。U09-04下一步需要U00原始逐帧/累计分配和真实Playnite呈现数据；U09-06仅待有读取权限的维护者只读核对required-check名单（先前403不重复请求）。可继续推进其他独立共享控件/页面范围，不因S/T旧宿主/权限记录停住，也不复测同一拒绝。保持Demo-first、UI_CHANGE_GATE、命令/Binding/UIA/键盘IME/虚拟化/主题DPI和Playnite兼容；游戏选框/滚动条系统不动，不恢复“今日工作台”，不因视觉简化删除安全语义。真实恢复、媒体删除、云端写入不做视觉验证。
+
+## 历史交接（2026-11-03）：候选77482a9a
 
 当前源码候选 `77482a9a56f8d1507de3cf819c94559388dddc4f` 已推送。最近活动选中框保留且不推移内容；`AcrylicNavItem` 焦点框已移至独立overlay。定向R23两主题2/2、Source Validation/WPF静态和精确SHA的双主题Render QA通过；GitHub run #1436 `41498607041` 两个适用job及所有步骤成功，artifact身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-gates-77482a9a-20261103/`。
 

@@ -1,4 +1,11 @@
-## 2026-11-03 Round5 当前状态：冻结候选 de6f7f82
+## 2026-11-03 Round5 当前状态：6cd0f9ec 右缘包裹修复
+
+- 精确候选6cd0f9ec55ada37f03a88d24bc46690ed1837a06修复共享ListBox/DataGrid选框右缘过早结束造成的日期/末列文字看起来框外。选框及底色overlay统一约4 DIP右侧inset，保持文字、图标、命令、Binding、虚拟化和现有滚动条不变；Overview/Save/Task/Shell修复后截图与334图Render QA、R06/R10/R23行为几何回归见docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/。
+- SDK8.0.423源检查/WPF静态审查通过。独立scripts/build.cmd exit0（2026项/1958通过/0失败/68 skip）；中文入口经英文根入口执行完整Release编译、测试、发布、打包、安装身份核对及Playnite启动exit0（2026项/1968通过/0失败/58 skip）。skip单独记录且不当通过。ZIP/PEXT SHA相同、安装DLL版本/SHA与源码相符。
+- 精确SHA push run #1446（41613860203）的SDK基线job 125842266009与SDK10.0.401 job 125842265806均completed/success，所有步骤成功；artifact绑定源码SHA。required-check/规则集读取曾403，不再重复请求，U09-06为远端待验，待有权限维护者只读核对。
+- 状态：7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。Playnite真实插件页面未观察；启动和已安装身份不等于视觉验收。UIA、实体键盘/IME、物理DPI与U09-04真实帧/累计分配仍待验。真实恢复、媒体删除和云端写入没有执行。
+
+## 历史记录：2026-11-03 Round5 冻结候选 de6f7f82
 
 - 当前源码候选 `de6f7f82038c59c5fbdbb9b366c3e280354ffc5f` 已推送。中文 `GameSaveCenter-一键构建安装运行.cmd` 经 `GameSaveCenter-Run.cmd` 完成SDK8.0.423 Release完整编译、测试、发布、打包、安装身份核验和Playnite启动，最终exit0；8项目、0 warning/0 error，158份TRX共2026项、1968通过、0失败、58既有skip不计通过。汇总和摘要SHA见Round5 `evidence/U09-05-final-root-de6f7f82-20261103/root-gates.json`。
 - 独立 `scripts/build.cmd` 在 `eebef009` 按真实编译/测试职责exit0；其 `src/`、`tests/`、`scripts/` tree与de6相同。长临时根首次Worker原子写失败的原因未确认，原始证据保留；短临时根在相同源码/SDK/断言下通过，未改源码、断言或skip。它不能代替中文完整链。

@@ -1,0 +1,172 @@
+[
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/BASELINE.md",
+    "bytes": 4633,
+    "sha256": "F5016572DC172011E7795233676B8362B2B6DF2FB404270E997D9246F564E34D"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/buildcmd-console.txt",
+    "bytes": 117960,
+    "sha256": "7186D4EDD1254BEA2C49826900222711C59715F40759FAD281C8498846DB87AF"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/buildcmd-exit.txt",
+    "bytes": 12,
+    "sha256": "E05222033CD2C7B46B6FAD5EC87B44B62F844DBB6F004476498F71D0E3C9875B"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/buildcmd-summary.json",
+    "bytes": 903895,
+    "sha256": "F7623FD4D5F0938D760EA11AF74CDF6F410495067AE688689B3B942A730D27EE"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/ci-run-41613860203.json",
+    "bytes": 1881,
+    "sha256": "FC3020470D6D50D50AC859C8DE0773CA677AEDE255082BD8E87BACA462452B8A"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/cleanup-before-root.json",
+    "bytes": 1740,
+    "sha256": "70CAF239D6BE6743F3A0CF9CF4655F148EAB601F626B97729B0BBAE090D35976"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/cleanup-final.json",
+    "bytes": 1643,
+    "sha256": "54723EFEF8A94744B597FAA2FA595EDF5B069FE62A7732379A9ADA8721C2ADEF"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/last-dev-install.txt",
+    "bytes": 2143,
+    "sha256": "0430F31BAB3823910AF50C0EB4BE104B0A9AB19569EA6BBCAD0702E695DA4D2A"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/log-redaction.json",
+    "bytes": 2063,
+    "sha256": "70D595389BA7C297B5B674E965A1857C796C964163FA18495F63A7C539DB0518"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/one-click-install.log",
+    "bytes": 119671,
+    "sha256": "51F57DB8376F40D6C8330F8D6664852BD08DCB2665AE3440023ACA19CED141CE"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/render-qa-exit.txt",
+    "bytes": 12,
+    "sha256": "E05222033CD2C7B46B6FAD5EC87B44B62F844DBB6F004476498F71D0E3C9875B"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/render-qa-report.txt",
+    "bytes": 1140775,
+    "sha256": "5E1D25692EFDB9477C0EA35B1FDE2A0D598B2CCC879CFCDBA738C7F498F8B8E3"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/root-gates.json",
+    "bytes": 4799,
+    "sha256": "2FE5B70B309C1EC0DF36D7816B6F105C506AF1A9AA8396F0ED306C5469C80614"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/root-install-console.txt",
+    "bytes": 120685,
+    "sha256": "D14304C1C5DB490477490DD1A91CF67DC0BB76E14B8D2170317E3C0A2CAA7A52"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/root-install-exit.txt",
+    "bytes": 12,
+    "sha256": "E05222033CD2C7B46B6FAD5EC87B44B62F844DBB6F004476498F71D0E3C9875B"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/root-summary.json",
+    "bytes": 513105,
+    "sha256": "4DABC1694AA1B3E9C07E5DB28865A8D13E07395394126EBD7AFB30D3F2B76FCF"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/screenshots/Overview-1040x700.png",
+    "bytes": 59152,
+    "sha256": "3EB31034D6CC310FDC72AB2B518A4E65387F4AE763356F554E5B0D897601A3EE"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/screenshots/Save-1040x700-tab0.png",
+    "bytes": 71383,
+    "sha256": "85D8E9DE0C99319ED24663D36F66EE73C4F081407A7C64D85672D0C66433048A"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/screenshots/Shell-Tasks-1040x700.png",
+    "bytes": 133465,
+    "sha256": "B670D4DD7446D9C3EC4C221250A37C79A71B738525DB559C88515C52C0087D34"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/screenshots/Task-1040x700.png",
+    "bytes": 64570,
+    "sha256": "685ED1142F434E6B5D2102D266640B9262AB6A88F83BEABDF988885A4CF7387C"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/source-validation.txt",
+    "bytes": 361,
+    "sha256": "30760E7082311AC27AA2D981C07638FC2A4B11D039C265AFB40365B1F98FBCA6"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/stage-start.json",
+    "bytes": 273,
+    "sha256": "B1E70206182FFA2BA886FB7B1E2196D4E5BF8BAB4049FE3BE782012169322A20"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/buildcmd/playnite-source__playnite-source.trx",
+    "bytes": 906846,
+    "sha256": "641AEB9ABBE19C75ED5D08C082B2543ACDB9437BEE91C88A73F12786ABCBC15A"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/buildcmd/worker__worker.trx",
+    "bytes": 629015,
+    "sha256": "45900248DF52C7E8AD73F4E75C6A636FEDF86AFD13BCB36BF17C1FE577AB6A66"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/buildcmd/wpf.R05TooltipTimingBehaviorTests__wpf.R05TooltipTimingBehaviorTests.trx",
+    "bytes": 10487,
+    "sha256": "96D4141E9F9B4FF66A2800A53E287AFDC4F19510C0A764282E69652BA2509D35"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/buildcmd/wpf.WpfUiResourceDictionaryTests__wpf.WpfUiResourceDictionaryTests.trx",
+    "bytes": 310525,
+    "sha256": "1AF51D557C093F8054AECF1E8D07878FA06063FF2BBAB70BA6CE0D33893117AB"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/core__core.trx",
+    "bytes": 228269,
+    "sha256": "85B40F1E2DEDFFB4CDEDD179C6CE126673493234718B541FBB2B915B779D8A6E"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/playnite-source__playnite-source.trx",
+    "bytes": 863373,
+    "sha256": "DD31433B565D17ACB5553FF7E5F8A48CA24BB4C9F7BD0A5FF4E765A626BC3AAB"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/worker__worker.trx",
+    "bytes": 603310,
+    "sha256": "B0CACF79442C7EDC0627A3F6C7D2761EB8F509B50F17DB41FFC741AC542CAECF"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/wpf.R06SelectionStateBehaviorTests__wpf.R06SelectionStateBehaviorTests.trx",
+    "bytes": 6393,
+    "sha256": "022D3977D510E779AFC3C6A97E42C942DF6B74E92C3BEC33A3DDE21DECB28D09"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/wpf.R10RecentAccessBehaviorTests__wpf.R10RecentAccessBehaviorTests.trx",
+    "bytes": 6354,
+    "sha256": "954AC7EE5BD3009B20C2BDC88BF63469AE04A8CFE172DD3FD3C54BE07BA39519"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/wpf.R23ProductionResourceStateBehaviorTests__wpf.R23ProductionResourceStateBehaviorTests.trx",
+    "bytes": 20622,
+    "sha256": "740382475041729662298834F4B57BA877880AEC714859E5341730B0F5DAB591"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/tests/wpf.WpfUiResourceDictionaryTests__wpf.WpfUiResourceDictionaryTests.trx",
+    "bytes": 299427,
+    "sha256": "EDD1D3E2AA4806CA2C5BE392A05BD333D7ED7A2E68F4DBC0E5A71A45C5DDF051"
+  },
+  {
+    "path": "docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/wpf-static-audit.txt",
+    "bytes": 100963,
+    "sha256": "64A6497D8AF2E751ED07684C66AFFBD7CAAB89B8B1D8FFA94D2B1FD366364228"
+  }
+]

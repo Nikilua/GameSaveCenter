@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "purpose": "在已归档的运行日志中隐藏本机账户/机器标识，安装位置规范化为APPDATA；测试输出和构建结果未改",
+  "sourceTranscript": "artifacts/one-click-install.log",
+  "sourceTranscriptSha256": "DA0C20B4B146300ABA59D1E2BC54BF748B1B24DA6E85A957C06366AD5AB37E83",
+  "files": [
+    {
+      "path": "one-click-install.log",
+      "beforeSha256": "DA0C20B4B146300ABA59D1E2BC54BF748B1B24DA6E85A957C06366AD5AB37E83",
+      "afterSha256": "51F57DB8376F40D6C8330F8D6664852BD08DCB2665AE3440023ACA19CED141CE",
+      "changes": [
+        "Username/RunAs User/Machine values redacted",
+        "APPDATA root normalized",
+        "trailing whitespace trimmed",
+        "all trailing whitespace trimmed"
+      ]
+    },
+    {
+      "path": "root-install-console.txt",
+      "beforeSha256": "72481A43CD6BB1A6AB0F77D38A6C7434767F1200B57CF21E543B28BB15C105D2",
+      "afterSha256": "D14304C1C5DB490477490DD1A91CF67DC0BB76E14B8D2170317E3C0A2CAA7A52",
+      "changes": [
+        "APPDATA root normalized",
+        "trailing whitespace trimmed"
+      ]
+    },
+    {
+      "path": "last-dev-install.txt",
+      "beforeSha256": "17E6AC1D432E711871CC47C232A418E0BE5D853CBE1D800EEF2AE2FAF6459F71",
+      "afterSha256": "0430F31BAB3823910AF50C0EB4BE104B0A9AB19569EA6BBCAD0702E695DA4D2A",
+      "changes": [
+        "APPDATA root normalized"
+      ]
+    },
+    {
+      "path": "root-gates.json",
+      "beforeSha256": "50AB060926D269E8A96184082C32D9C8782E8005C0775113CB243B89C6BF82F3",
+      "afterSha256": "2FE5B70B309C1EC0DF36D7816B6F105C506AF1A9AA8396F0ED306C5469C80614",
+      "changes": [
+        "installed extension path normalized to APPDATA"
+      ]
+    },
+    {
+      "path": "cleanup-final.json",
+      "beforeSha256": "3633B9AD2D2B70921258F6BD81926A0AD73F2C60B8DFBD8CDB60F3FD5074B812",
+      "afterSha256": "54723EFEF8A94744B597FAA2FA595EDF5B069FE62A7732379A9ADA8721C2ADEF",
+      "changes": [
+        "Worker process path normalized to APPDATA"
+      ]
+    }
+  ]
+}

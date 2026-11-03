@@ -1,0 +1,48 @@
+{
+  "candidate": "6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+  "utc": "2026-11-03T10:23:43.1863404Z",
+  "driveDFreeBeforeBytes": 3943645184,
+  "driveDFreeAfterBytes": 4346200064,
+  "bytesReleased": 402554880,
+  "deleted": [
+    {
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-219ae1d6-20261103\\buildcmd-output",
+      "Files": 711,
+      "Bytes": 162723070.0
+    },
+    {
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-219ae1d6-20261103\\focused-output",
+      "Files": 324,
+      "Bytes": 29328423.0
+    },
+    {
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-219ae1d6-20261103\\buildcmd-test-temp",
+      "Files": 15,
+      "Bytes": 6451200.0
+    },
+    {
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-be2b54ab-20261103\\buildcmd-output",
+      "Files": 711,
+      "Bytes": 162723056.0
+    },
+    {
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-be2b54ab-20261103\\focused-output",
+      "Files": 324,
+      "Bytes": 29328444.0
+    },
+    {
+      "Path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-be2b54ab-20261103\\buildcmd-retry-test-temp",
+      "Files": 15,
+      "Bytes": 6451200.0
+    }
+  ],
+  "preserved": [
+    "first-attempt failure diagnostics and TRX for 219ae1d6",
+    "be2b initial SQLite-lock diagnostics, TRX and failing temp database",
+    "be2b full WPF resource-contract failure diagnostics and TRX",
+    "current 6cd0f9ec build output, diagnostics/TRX and render QA"
+  ],
+  "referencesChecked": "No docs or skill files reference the candidate temporary paths",
+  "reparsePoints": 0,
+  "activeRelatedProcesses": 0
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "status": "completed",
+  "stagePath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-final-6cd0f9ec-20261103",
+  "resolvedStageInsideTmp": true,
+  "fileCount": 1454,
+  "bytes": 229398142,
+  "deleted": [
+    ".tmp/round5-u09-final-6cd0f9ec-20261103/"
+  ],
+  "reparsePoints": 0,
+  "exclusiveOpenProbe": {
+    "filesChecked": 1454,
+    "lockedFiles": 0,
+    "result": "passed"
+  },
+  "processCheck": {
+    "method": "Get-Process name/path inventory plus exclusive-open probe",
+    "buildOrTestProcesses": [
+      {
+        "pid": 40292,
+        "name": "GameSaveCenter.Worker",
+        "path": "%APPDATA%\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.exe"
+      }
+    ],
+    "playnitePid": 55088,
+    "workerPid": 40292,
+    "workerPathOutsideStage": true,
+    "note": "Playnite and its installed extension Worker remain running outside the cleanup target; CIM command-line query was access-denied, so cleanup was gated on the fallback inventory and every staged file opening exclusively."
+  },
+  "documentsReferencingStage": 0,
+  "disk": {
+    "drive": "D:",
+    "beforeBytes": 4048928768,
+    "afterBytes": 4282720256,
+    "freedBytes": 233791488
+  },
+  "preserved": [
+    "artifacts/build-diagnostics/20261103T102359048Z-aef72d16/",
+    "artifacts/gsc-b/de2d9cd7/",
+    "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "artifacts/GameSaveCenter-0.6.73.pext",
+    "artifacts/one-click-install.log",
+    "artifacts/last-dev-install.txt",
+    "unrelated user/other-task TestResults and evidence"
+  ]
+}

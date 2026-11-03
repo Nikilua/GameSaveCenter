@@ -1,3 +1,13 @@
+## 2026-11-03 Round5 U06-02/U08-08 右缘包裹修复与 U09 最终门禁（6cd0f9ec）
+
+- 按用户截图修正最近任务时间和生产列表末列落在选框外：公共ListBox/DataGrid选框与背景overlay的右侧inset/行宽换算统一收至约4 DIP，不挤压内容或更换滚动条；修复后Overview、Save、Task、Shell任务表截图归档至Round5证据目录。
+- 源码提交6cd0f9ec55ada37f03a88d24bc46690ed1837a06经Source Validation、WPF静态审查（88 XAML/0错误）与Render QA（334图/0 PROBLEM）。R06、R10、R23及共享资源断言在精确候选根测试中通过；完整TRX摘要和相关TRX一并留存。
+- scripts/build.cmd SDK8.0.423 Release退出0：2026项，1958通过、0失败、68 skip。68项中57条为撤销的“今日工作台”架构断言、1条系统鼠标opt-in、10条Named Pipe在此执行环境不可用；所有skip均不计通过且保留TRX。中文实际入口GameSaveCenter-一键构建安装运行.cmd转交GameSaveCenter-Run.cmd，完整编译/测试/发布/打包/安装核验/Playnite启动exit0：2026项、1968通过、0失败、58 skip（57条撤销架构断言、1条鼠标opt-in）。
+- 根入口首次仅因D盘空余不足4GiB在预检退出；逐路径确认后删除6个本阶段已被后续输出取代的旧构建目录，释放402,554,880 bytes，保留全部失败诊断/TRX、SQLite临时库和当前审计，再运行完整链成功。包与PEXT各45,737,900 bytes，SHA-256相同；安装六个DLL身份和Playnite启动路径/PID见evidence/U06-02-frame-wrap-6cd0f9ec-20261103/。 归档本批证据后清理阶段.tmp目录1,454个文件/229,398,142 bytes，D盘空余4,048,928,768→4,282,720,256 bytes，清单见cleanup-final.json。
+- 精确SHA的GitHub run #1446 41613860203 completed/success：基线job 125842266009 15步、SDK10.0.401 job 125842265806 8步全部成功；三份artifact ID/digest见同目录CI JSON。required-check只读接口既有403未重试，U09-06保留远端待验。
+- 用户的框外文本问题在离屏图与行为/几何测试中已修；Playnite实际页面未观察，外部UIA、实体键盘/IME、物理DPI仍待验。未执行真实存档恢复、媒体删除或云端写入。U06-02/U08-08代码完成待验收，U09-05/U09-08已满足，状态7/71/1/1。
+- 本次纯文档检查：Source Validation exit0；本批23条Markdown相对链接全部存在且未越界，9份新JSON可解析，80项任务状态计数为7/71/1/1，git diff --check exit0。未重复完整构建，也不为文档触发的CI成功另建记录提交。
+
 ## 2026-11-03 Round5 U09-05/U09-08 de6f7f82 冻结候选最终门禁
 
 - 候选 `de6f7f82038c59c5fbdbb9b366c3e280354ffc5f` 的中文根入口 `GameSaveCenter-一键构建安装运行.cmd` 经 `GameSaveCenter-Run.cmd` 完成SDK8.0.423 Release编译、完整测试、Worker发布、打包、安装身份核验和Playnite启动，最终exit0；8项目、0 warning/0 error，158份TRX/2026项、1968通过、0失败、58条既有skip不计通过。完整摘要SHA、SDK、TRX组及安装DLL身份见Round5 `evidence/U09-05-final-root-de6f7f82-20261103/`。

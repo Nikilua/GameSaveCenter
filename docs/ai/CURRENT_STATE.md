@@ -1,4 +1,14 @@
-## 2026-11-03 Round5 当前源码与门禁状态：de6f7f82
+## 2026-11-03 Round5 当前源码与验收：6cd0f9ec
+
+精确源码6cd0f9ec55ada37f03a88d24bc46690ed1837a06已推送。共享ListBox与生产DataGrid选框右侧inset收至约4 DIP，修复最近任务时间、存档末列及任务状态看起来在框外的问题；选框overlay不挤文本/图标。用户图所指出的位置已通过Overview/Save/Task/Shell修复后Render QA图和R06/R10/R23测试复核。Render QA 334图、0条PROBLEM；Source Validation及WPF静态扫描88 XAML/0错误。
+
+实际中文入口GameSaveCenter-一键构建安装运行.cmd转交GameSaveCenter-Run.cmd，SDK8.0.423完整Release编译、测试、发布、打包、安装身份核验和Playnite启动exit0；8项目0警告/错误，158份TRX、2026项、1968通过、0失败、58 skip。独立scripts/build.cmd按职责exit0，2026项/1958通过/0失败/68 skip；skip不计通过。安装DLL和ZIP/PEXT均对应精确源码SHA。第一次根入口调用只在D盘空间预检不足时退出；记录并安全清理6个旧阶段输出后完整重跑成功。
+
+精确push run [41613860203（#1446）](https://github.com/Nikilua/GameSaveCenter/actions/runs/41613860203) completed/success：SDK基线job 125842266009的15步和SDK10.0.401 job 125842265806的8步通过；三个artifact ID/digest及全部测试/安装证据见Round5 evidence/U06-02-frame-wrap-6cd0f9ec-20261103/。required-check读取此前403，不重试；U09-06仍远端待验。
+
+本轮计数7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。Playnite启动/安装身份不证明页面布局；实际插件页、外部UIA、实体键盘/IME和物理DPI未验证。真实存档恢复、媒体删除、云端写入未运行。U09-04仍缺U00原始逐帧/累计分配及真实宿主呈现。
+
+## 历史记录：2026-11-03 Round5 源码与门禁状态 de6f7f82
 
 源码候选 `de6f7f82038c59c5fbdbb9b366c3e280354ffc5f` 已提交并推送。最近活动的蓝色圆角选框保留，但不推移整行或图标；共享焦点圈和DataGrid兼容行选框使用独立overlay。选框几何回归R10类3/3通过，生产资源状态R23类12/12通过。
 

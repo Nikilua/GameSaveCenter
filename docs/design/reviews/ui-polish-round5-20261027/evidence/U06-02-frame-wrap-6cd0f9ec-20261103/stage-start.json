@@ -1,0 +1,10 @@
+{
+  "candidate": "6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+  "branch": "main",
+  "configuration": "Release",
+  "sdk": "8.0.423",
+  "startUtc": "2026-11-03T09:48:08.5381606Z",
+  "driveCFreeBytes": 5406998528,
+  "driveDFreeBytes": 4182732800,
+  "processes": []
+}

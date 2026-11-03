@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+  "sdk": "8.0.423",
+  "rootEntry": "GameSaveCenter-一键构建安装运行.cmd -> GameSaveCenter-Run.cmd",
+  "rootChain": {
+    "outcome": "passed",
+    "exitCode": 0,
+    "trxFileCount": 158,
+    "testCaseCount": 2026,
+    "passed": 1968,
+    "failed": 0,
+    "skipped": 58,
+    "wpfIsolatedClassRuns": 155,
+    "diagnostics": "artifacts/build-diagnostics/20261103T102359048Z-aef72d16",
+    "installRunId": "20261103T102356746Z-f7bf2f90",
+    "installedExtension": "%APPDATA%/Playnite/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "installedAssemblies": [
+      {
+        "name": "GameSaveCenter.Playnite.dll",
+        "version": "0.6.73+6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+        "sha256": "F0713F490488DF70F09B3E1B1DE00839ED289B7197055F67F3A62FDF2500AF1E"
+      },
+      {
+        "name": "GameSaveCenter.Core.dll",
+        "version": "0.6.73+6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+        "sha256": "6CF9374F9796109D1354438D59C91D0E95895733338852437EF80934542293E4"
+      },
+      {
+        "name": "GameSaveCenter.Contracts.dll",
+        "version": "0.6.73+6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+        "sha256": "8FB70D22AA35BC93BBCCCFA4FBC525BF17A7C80D6DF7B6E382AE92F3B0BFF3D1"
+      },
+      {
+        "name": "Worker/GameSaveCenter.Worker.dll",
+        "version": "0.6.73+6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+        "sha256": "6AB2BF01A80BB8E52DA98A82059935233D7E8FB9789BCDF38A1D139C9EF27D91"
+      },
+      {
+        "name": "Worker/GameSaveCenter.Core.dll",
+        "version": "0.6.73+6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+        "sha256": "A6AEC78465525A6E4B1E79C0063323F7C9965EB8541150520AEB775724E66FA5"
+      },
+      {
+        "name": "Worker/GameSaveCenter.Contracts.dll",
+        "version": "0.6.73+6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+        "sha256": "7C7FACCBFD00568EEFDEC98C52C9B9E6493BE73BBB1F3372D339BAB8B8454A9B"
+      }
+    ],
+    "playnite": {
+      "path": "D:/software/Playnite/Playnite.DesktopApp.exe",
+      "pid": 55088,
+      "started": "2026-11-03 18:47:49",
+      "launched": true,
+      "extensionLoaded": true,
+      "actualPageObserved": false
+    }
+  },
+  "independentBuildCmd": {
+    "entry": "scripts/build.cmd",
+    "sourceCommit": "6cd0f9ec55ada37f03a88d24bc46690ed1837a06",
+    "exitCode": 0,
+    "testCaseCount": 2026,
+    "passed": 1958,
+    "failed": 0,
+    "skipped": 68,
+    "trxFileCount": 158,
+    "summary": "buildcmd-summary.json"
+  },
+  "packages": [
+    {
+      "name": "GameSaveCenter-0.6.73-playnite.zip",
+      "bytes": 45737900,
+      "sha256": "B184FBFA5A6904084BD354BBF406EDFBCEDA00BFDF1CBFB79ECAE2C915F4D2DF"
+    },
+    {
+      "name": "GameSaveCenter-0.6.73.pext",
+      "bytes": 45737900,
+      "sha256": "B184FBFA5A6904084BD354BBF406EDFBCEDA00BFDF1CBFB79ECAE2C915F4D2DF"
+    }
+  ],
+  "renderQa": {
+    "report": "render-qa-report.txt",
+    "sha256": "5E1D25692EFDB9477C0EA35B1FDE2A0D598B2CCC879CFCDBA738C7F498F8B8E3",
+    "pngCount": 4,
+    "problemLines": 0,
+    "result": "render-qa OK",
+    "selectedImages": [
+      {
+        "path": "screenshots/Overview-1040x700.png",
+        "bytes": 59152,
+        "sha256": "3EB31034D6CC310FDC72AB2B518A4E65387F4AE763356F554E5B0D897601A3EE"
+      },
+      {
+        "path": "screenshots/Save-1040x700-tab0.png",
+        "bytes": 71383,
+        "sha256": "85D8E9DE0C99319ED24663D36F66EE73C4F081407A7C64D85672D0C66433048A"
+      },
+      {
+        "path": "screenshots/Shell-Tasks-1040x700.png",
+        "bytes": 133465,
+        "sha256": "B670D4DD7446D9C3EC4C221250A37C79A71B738525DB559C88515C52C0087D34"
+      },
+      {
+        "path": "screenshots/Task-1040x700.png",
+        "bytes": 64570,
+        "sha256": "685ED1142F434E6B5D2102D266640B9262AB6A88F83BEABDF988885A4CF7387C"
+      }
+    ],
+    "offscreenLogicalDpi": "1.00",
+    "realHostVisualObserved": false
+  },
+  "checks": {
+    "sourceValidationExitCode": 0,
+    "wpfStaticAuditExitCode": 0,
+    "xamlFiles": 88,
+    "staticErrors": 0,
+    "staticWarnings": 78,
+    "staticInfo": 507
+  },
+  "space": {
+    "firstRootAttempt": "preflight only; insufficient free space",
+    "beforeCleanupBytes": 3943645184,
+    "cleanupFreedBytes": 402554880,
+    "afterCleanupBytes": 4346200064,
+    "cleanupRecord": "cleanup-before-root.json",
+    "successfulRetryExitCode": 0
+  },
+  "scope": {
+    "restoreTested": false,
+    "mediaDeleteTested": false,
+    "cloudWriteTested": false
+  },
+  "workingTreeAtBuild": {
+    "clean": false,
+    "trackedSourcesUnmodified": true,
+    "note": "Pre-existing unrelated untracked evidence/TestResults were present."
+  }
+}
