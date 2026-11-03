@@ -129,7 +129,9 @@
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         CornerRadius="0"
                                         IsHitTestVisible="False"/>
-                                <ContentPresenter Margin="{TemplateBinding Padding}"
+                                <ContentPresenter x:Name="TaskItemContent"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  ClipToBounds="True"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                   Content="{TemplateBinding Content}"

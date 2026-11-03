@@ -192,7 +192,9 @@ public sealed class R10RecentAccessBehaviorTests
                     GameName = "选择位置测试",
                     State = TaskState.Running,
                     Message = "执行中",
-                    CreatedUtc = new DateTime(2026, 11, 2, 2, 0, 0, DateTimeKind.Utc)
+                    // Match the long date-time rendered at the trailing edge in the user
+                    // report; yesterday's short relative label cannot expose frame overflow.
+                    CreatedUtc = new DateTime(2026, 10, 20, 2, 0, 0, DateTimeKind.Utc)
                 };
                 data.OverviewTasks.Add(firstTask);
                 data.OverviewTasks.Add(new TaskStatusDto
@@ -297,8 +299,23 @@ public sealed class R10RecentAccessBehaviorTests
             .TransformBounds(new Rect(new Point(), timeText.RenderSize));
         var chromeBounds = chrome.TransformToAncestor(container)
             .TransformBounds(new Rect(new Point(), chrome.RenderSize));
-        Assert.True(timeBounds.Left >= chromeBounds.Left - 0.5 && timeBounds.Right <= chromeBounds.Right + 0.5,
-            $"the recent-task time must stay inside the selected frame; text={timeBounds}, frame={chromeBounds}");
+        if (chromeName == "TaskItemChrome")
+        {
+            Assert.Equal(task.CreatedFullDisplay, timeText.ToolTip);
+            var content = FindVisualDescendants<ContentPresenter>(container)
+                .Single(presenter => presenter.Name == "TaskItemContent");
+            Assert.True(content.ClipToBounds,
+                "recent-task content must be clipped to the padded row viewport so long time text cannot paint beyond the selected frame");
+            var contentBounds = content.TransformToAncestor(container)
+                .TransformBounds(new Rect(new Point(), content.RenderSize));
+            Assert.True(timeBounds.Left >= chromeBounds.Left - 0.5 && contentBounds.Right <= chromeBounds.Right - 4,
+                $"the padded content clip must end at least 4 DIP inside the selected frame; text={timeBounds}, content={contentBounds}, frame={chromeBounds}");
+        }
+        else
+        {
+            Assert.True(timeBounds.Left >= chromeBounds.Left - 0.5 && timeBounds.Right <= chromeBounds.Right - 4,
+                $"the recent-task time must remain at least 4 DIP inside the shared selected frame; text={timeBounds}, frame={chromeBounds}");
+        }
         Assert.True(selectedBounds.Left >= 0 && selectedBounds.Right <= container.ActualWidth,
             "the recent-activity icon tile must remain inside the row while selected");
         if (chromeName == "TaskItemChrome")
