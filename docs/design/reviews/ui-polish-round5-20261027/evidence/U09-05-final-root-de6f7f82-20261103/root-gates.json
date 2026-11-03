@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "candidate": {
+    "commit": "de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+    "tree": "6377a8a71c2ca5a0a07533190b43d11a451c01c7",
+    "srcTree": "b5d4721c8df7acf643ccbea1d8597cffa1bba163",
+    "testsTree": "fd800e3c82f5f8a27bd15547f613cf22fb277768",
+    "scriptsTree": "efbde3774901e75ad253a2d77cd90f83796e2931",
+    "workingTreeCleanAtBuildStart": true,
+    "version": "0.6.73"
+  },
+  "entrypoint": {
+    "command": "cmd.exe /d /s /c call \"GameSaveCenter-一键构建安装运行.cmd\" < NUL",
+    "path": "GameSaveCenter-一键构建安装运行.cmd",
+    "delegatesTo": "GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1 -Configuration Release",
+    "exitCode": 0,
+    "runId": "20261102T234429462Z-1192e63c",
+    "buildOutputRoot": "artifacts/gsc-b/11edc7b0",
+    "sdk": "8.0.423",
+    "msbuild": "17.11.48",
+    "projectsBuilt": 8,
+    "xamlStructuralFiles": 26,
+    "buildWarnings": 0,
+    "buildErrors": 0
+  },
+  "tests": {
+    "trxFiles": 158,
+    "total": 2026,
+    "passed": 1968,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "skipped": 58,
+    "wpfIsolatedClassRunCount": 155,
+    "groups": [
+      {
+        "id": "core",
+        "total": 157,
+        "passed": 157,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "id": "playnite-source",
+        "total": 575,
+        "passed": 557,
+        "failed": 0,
+        "skipped": 18
+      },
+      {
+        "id": "worker",
+        "total": 401,
+        "passed": 401,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "id": "playnite-wpf-isolated",
+        "total": 893,
+        "passed": 853,
+        "failed": 0,
+        "skipped": 40
+      }
+    ],
+    "skipReasons": {
+      "1": "真实系统指针测试默认关闭；不计通过",
+      "57": "撤销的“今日工作台”UI架构断言；不计通过"
+    },
+    "diagnostics": "artifacts/build-diagnostics/20261102T234431737Z-92dfb8a2",
+    "summarySha256": "AA568BA46900DE559F63A8B72E7EF9723DB9DCBD6F4B63160B084A40112A1C11",
+    "selectionGeometry": [
+      {
+        "class": "R10RecentAccessBehaviorTests",
+        "path": "artifacts\\build-diagnostics\\20261102T234431737Z-92dfb8a2\\tests\\wpf.R10RecentAccessBehaviorTests\\wpf.R10RecentAccessBehaviorTests.trx",
+        "sha256": "BD743FB74205DA04745A892F4F733048C544DDB81F1F2BED4CBC01F3C524F78D",
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "testNames": [
+          "GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition",
+          "GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.RecentAccessRecordsAreBoundedStableIdOnlyAndPruneRemovedGames",
+          "GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.RecentAccessSwitchIsKeyboardReachableAndKeepsTaskHistorySeparate"
+        ]
+      },
+      {
+        "class": "R23ProductionResourceStateBehaviorTests",
+        "path": "artifacts\\build-diagnostics\\20261102T234431737Z-92dfb8a2\\tests\\wpf.R23ProductionResourceStateBehaviorTests\\wpf.R23ProductionResourceStateBehaviorTests.trx",
+        "sha256": "BA202D912A4BCCE90B6391DBF529FC6E3D69C2A65A2B987031BE8723C94CEA8D",
+        "total": 12,
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0,
+        "testNames": [
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabIndicatorsKeepCompactPaddingAndDisabledDimmingInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabContentsStretchAcrossNarrowViewportRegardlessOfHeaderWidthInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.SettingsSectionTabsUseTheirGeneratedStyleForSelectionFocusAndDisabledNegativeInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationExposesFocusAndDisabledStatesAfterSelectionClearsInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationKeepsKeyboardFocusOutlineVisibleWhileSelectedInBothThemes",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles",
+          "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.TaskSelectionKeepsFailureBadgeAndCancelActionUsableAcrossThemes"
+        ]
+      }
+    ]
+  },
+  "independentBuildCmd": {
+    "commit": "eebef00978265119e5ed54d96d0053aba4ea147c",
+    "summary": "artifacts/build-diagnostics/round5-u09-final-eebef009-buildcmd-shortroot/20261102T230146151Z-8cc9da65/summary.json",
+    "summarySha256": "26A9E6E2526D0C98B43C788DCCC8E4785364E81470D55F40815F84ED988353D5",
+    "exitCode": 0,
+    "testCases": 2026,
+    "passed": 1968,
+    "failed": 0,
+    "skipped": 58,
+    "sourceTestScriptTreesMatchCurrentDe6": true,
+    "currentTree": {
+      "src": "b5d4721c8df7acf643ccbea1d8597cffa1bba163",
+      "tests": "fd800e3c82f5f8a27bd15547f613cf22fb277768",
+      "scripts": "efbde3774901e75ad253a2d77cd90f83796e2931"
+    }
+  },
+  "package": {
+    "zip": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "pext": "artifacts/GameSaveCenter-0.6.73.pext",
+    "bytes": 45737961,
+    "zipSha256": "4C03AF7D78FCA82BD23D27D37934B44BEFF1598EAC57EF5CC57A942C19A7E243",
+    "pextSha256": "4C03AF7D78FCA82BD23D27D37934B44BEFF1598EAC57EF5CC57A942C19A7E243",
+    "sameContent": true
+  },
+  "installation": {
+    "path": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "manifestVersion": "0.6.73",
+    "pluginFileVersion": "0.6.73.0",
+    "runReport": "C:\\Users\\lopmatu\\.codex\\worktrees\\round5-r08-gates\\GameSaveCenter\\artifacts\\last-dev-install.txt",
+    "runReportSha256": "089143FDC70117857FA241C68B8F264CFF8BD8845511A426D0DD3C446944CF6D",
+    "files": [
+      {
+        "relativePath": "GameSaveCenter.Playnite.dll",
+        "sha256": "E2B7FFD5D01D092C7AA0469534446088ADF7065D5379B7154046FDF56AA3F312",
+        "productVersion": "0.6.73+de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+        "bytes": 2274816,
+        "matchesInstallReport": true,
+        "matchesPackageStage": true
+      },
+      {
+        "relativePath": "GameSaveCenter.Core.dll",
+        "sha256": "C85DFDAE1DE4C92CFB9BFB1FC6CA24C9EE04C7C723FFA231413BCB8DFBE5B67C",
+        "productVersion": "0.6.73+de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+        "bytes": 79872,
+        "matchesInstallReport": true,
+        "matchesPackageStage": true
+      },
+      {
+        "relativePath": "GameSaveCenter.Contracts.dll",
+        "sha256": "7F6316FD106B4BD92629DAE8664376EF64DAD2CD2518D8E376D1A5D842252D77",
+        "productVersion": "0.6.73+de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+        "bytes": 317440,
+        "matchesInstallReport": true,
+        "matchesPackageStage": true
+      },
+      {
+        "relativePath": "Worker\\GameSaveCenter.Worker.dll",
+        "sha256": "2B4E8C0FC801970CADC95F408F5E293423A546DA64D793D854F55CB1F8A49FD4",
+        "productVersion": "0.6.73+de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+        "bytes": 1545216,
+        "matchesInstallReport": true,
+        "matchesPackageStage": true
+      },
+      {
+        "relativePath": "Worker\\GameSaveCenter.Core.dll",
+        "sha256": "217B4C0165DCE8A38AF0D0159A3F911E54E6B767E6FF128095B919BA0C245CAE",
+        "productVersion": "0.6.73+de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+        "bytes": 79360,
+        "matchesInstallReport": true,
+        "matchesPackageStage": true
+      },
+      {
+        "relativePath": "Worker\\GameSaveCenter.Contracts.dll",
+        "sha256": "4D993EB7A161FDDE57F1F5BDC42514E948FA843B2295C3F2C600C7416000F3D6",
+        "productVersion": "0.6.73+de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+        "bytes": 316928,
+        "matchesInstallReport": true,
+        "matchesPackageStage": true
+      }
+    ],
+    "playniteProcess": {
+      "id": 43332,
+      "path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+      "startedLocal": "2026-11-03 08:11:33"
+    },
+    "playniteLogPluginLoadedLine": "03-11 08:11:37.047|INFO |ExtensionFactory:Loaded plugin: GameSaveCenter, version 0.6.73",
+    "diskReadDoesNotProveLoadedAssembly": true
+  },
+  "logs": {
+    "wrapperLog": "artifacts/one-click-install.log",
+    "wrapperLogBytes": 120302,
+    "wrapperLogSha256": "B01FC51E212178B464B1D93841B0029D3C7764C15BF73B9C648F9DBB441B7A93"
+  },
+  "ciRun": {
+    "id": 41547554497,
+    "runNumber": 1441,
+    "workflow": ".github/workflows/windows-build.yml",
+    "headSha": "de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": {
+      "baseline": {
+        "id": 125626741394,
+        "status": "completed",
+        "conclusion": "success",
+        "allStepsSucceeded": true,
+        "renderQa": "success",
+        "wpfStaticReview": "success",
+        "package": "success"
+      },
+      "sdk10": {
+        "id": 125626741153,
+        "status": "completed",
+        "conclusion": "success",
+        "allStepsSucceeded": true
+      }
+    },
+    "artifactEvidence": "ci-run-41547554497.json",
+    "requiredChecks": "remote-pending: prior protected-check/ruleset request returned HTTP 403; maintainer with read permission must inspect the required-check list"
+  },
+  "uiChangeGate": {
+    "sourceValidationExitCode": 0,
+    "markdownLinksChangedFiles": 4,
+    "markdownRelativeLinks": 764,
+    "markdownMissing": 0,
+    "ciRenderQa": "success: run #1441 baseline job 125626741394",
+    "ciWpfStatic": "success: run #1441 baseline job 125626741394",
+    "realPluginPageObserved": false,
+    "computerUse": "not completed: node_repl initialization failed twice with missing-path error (os error 3), including once after kernel reset; no UI input was sent"
+  },
+  "safety": {
+    "realSaveRestoreRun": false,
+    "mediaDeleteRun": false,
+    "cloudWriteRun": false
+  }
+}

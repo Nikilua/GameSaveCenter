@@ -1,3 +1,12 @@
+## 2026-11-03 Round5 U09-05/U09-08 de6f7f82 冻结候选最终门禁
+
+- 候选 `de6f7f82038c59c5fbdbb9b366c3e280354ffc5f` 的中文根入口 `GameSaveCenter-一键构建安装运行.cmd` 经 `GameSaveCenter-Run.cmd` 完成SDK8.0.423 Release编译、完整测试、Worker发布、打包、安装身份核验和Playnite启动，最终exit0；8项目、0 warning/0 error，158份TRX/2026项、1968通过、0失败、58条既有skip不计通过。完整摘要SHA、SDK、TRX组及安装DLL身份见Round5 `evidence/U09-05-final-root-de6f7f82-20261103/`。
+- 独立`scripts/build.cmd`在`eebef009`按编译/测试职责exit0，`src/`、`tests/`、`scripts/`树与de6相同；这项结果没有替代中文完整链。长测试临时根一次Worker原子写失败原因未确认；保留诊断，并在相同源码、SDK、断言的短根复跑通过，未改变断言/skip。
+- 精确push run #1441 `41547554497`已completed/success：基线job `125626741394` 全15步（含双主题Render QA、WPF静态审查、扩展包/诊断上传）成功，SDK10.0.401 job `125626741153` 全8步成功。preview和两份诊断artifact均绑定de6，ID/digest见 `evidence/U09-05-final-root-de6f7f82-20261103/ci-run-41547554497.json`。required-check规则集此前403，不重试；U09-06保留“远端待验”，下一步需有读权限维护者核查名单。
+- 最近活动与共享/兼容选中装饰保留蓝色圆角框/焦点圈，不推移行内容或图标；R10几何3/3、R23状态12/12通过。Playnite启动日志确认0.6.73已加载，但实际插件页面没有观察；计算机控制运行时因缺路径两次初始化失败且未发送UI输入。真实宿主页面、外部UIA、实体键盘/IME、物理DPI及U09-04的U00原始帧/累计分配仍待验；真实存档恢复、媒体删除和云端写入未运行。
+- U09-05、U09-08已满足；80项状态7已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。最终报告见Round5 `evidence/U09-05-final-root-de6f7f82-20261103/BASELINE.md` 与进度表。纯文档更改只跑源码/链接/JSON和diff检查，不重复本地完整链，也不再为其CI成功追加记录提交。
+- 本次纯文档检查：`python scripts/validate-source.py` exit0；`git diff --check` exit0（Git仅提示保留现有CRLF）；5个改动Markdown文件的807个相对链接无缺失/越界，2份新JSON解析通过；PROGRESS.md含80条任务行，状态计数7/71/1/1。没有重复本地完整构建链。
+
 ## 2026-11-03 Round5 U09-05 独立build.cmd与旧输出清理
 
 - 共享选择效果按用户构建反馈复核：最近活动继续保留蓝色圆角框，`f9d09cb2`去掉行布局Margin；Dashboard兼容DataGrid框线与内容同级分层。R10 3/3、R06精确提交3/3，修复后GitHub #1439 的SDK基线/SDK10双job所有步骤通过。框线不应推行、图标或内容；真实Playnite页面仍未实测。

@@ -1,0 +1,24 @@
+{
+  "recordedUtc": "2026-11-03T00:19:38.7559563Z",
+  "candidate": "de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+  "removed": [
+    {
+      "path": ".tmp/round5-u09-05-root-de6f7f82",
+      "fileCount": 1,
+      "bytes": 1381,
+      "archivedAs": "stage-start.json",
+      "archiveSha256": "1E9A22761FFCC5D3A9ADBB5D26B6F0CC274916ED99ABC72DE886ED39FA4BCBD0",
+      "reparsePoints": 0,
+      "activeProcesses": 0
+    }
+  ],
+  "diskCFreeBeforeBytes": 5034541056,
+  "diskCFreeAfterBytes": 5034545152,
+  "diskCActualDeltaBytes": 4096,
+  "otherTempPathsTouched": 0,
+  "retained": [
+    "artifacts/gsc-b/11edc7b0",
+    "artifacts/build-diagnostics/20261102T234431737Z-92dfb8a2",
+    "current ZIP/PEXT/install report and Playnite install"
+  ]
+}

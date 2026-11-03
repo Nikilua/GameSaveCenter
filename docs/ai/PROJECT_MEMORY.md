@@ -1,10 +1,10 @@
-## 2026-11-03 当前 U09-05 本机门禁进度
+## 2026-11-03 Round5 当前状态：冻结候选 de6f7f82
 
-- 最近活动选中反馈的要求固定为：可以保留蓝色圆角描边、填色或其他不改布局的反馈；选中态不得推移整行或图标，不因内容边界缩小而裁切。Overview历史修复、共享`ListBoxItem`及DataGrid选择覆盖层与Dashboard兼容行覆层均按此几何契约检查；R10三态3/3、Dashboard/R06修复测试和R06精确CI #1439已通过。真实Playnite页面仍待观察。
-- 当前代码候选`eebef00978265119e5ed54d96d0053aba4ea147c`的独立`scripts/build.cmd`在SDK8.0.423 Release编译/测试exit0：2026项，1968通过、0失败、58既有skip、155个WPF隔离类。第一次长临时路径的Worker压力用例因第17周期第二次原子写入被拒绝而失败，原因未确认，原始失败诊断/TRX保留；短路径同码复跑通过，未改行为、断言或skip。详细身份见Round5 `evidence/U09-05-final-eebef009-20261103/independent-buildcmd.json`。
-- 2026-11-03只清理`artifacts/gsc-b/`中诊断确认本阶段创建且非活动的10个旧构建输出目录；保留`r5eeb`、全部build diagnostics/TRX、当前包/安装和审计，未清`.tmp`、用户/其他任务数据或未知文件。释放762180011逻辑bytes，C盘实际增加772722688 bytes；记录见同目录`cleanup.json`。旧34d8基线已注明`72b38918`被替代及清理，历史诊断仍保留。
-- 下一步必须先提交并冻结含本进度/证据的候选，再从实际存在的`GameSaveCenter-一键构建安装运行.cmd`经`GameSaveCenter-Run.cmd`执行当前SHA的Release全测试、Worker发布、打包、安装身份核验和Playnite启动，记录exit0、源码/程序集/安装身份、SDK、TRX和日志；独立`scripts/build.cmd`已经按自身职责验证但不能替代完整链。启动前核查C盘空间与Playnite PID。入口失败先读原始日志并修复，不以旧SHA/CI/local build替代。
-- 当前80项计数5已满足、71代码完成待验收、U09-04/05/08进行中、U09-06远端待验。GitHub #1439针对R06修复SHA的两个适用job已全通过；required-check/规则集接口此前403，禁止重复试探同一拒绝，待有权限维护者只读核验。没有真实恢复、媒体删除或云端写入。
+- 当前源码候选 `de6f7f82038c59c5fbdbb9b366c3e280354ffc5f` 已推送。中文 `GameSaveCenter-一键构建安装运行.cmd` 经 `GameSaveCenter-Run.cmd` 完成SDK8.0.423 Release完整编译、测试、发布、打包、安装身份核验和Playnite启动，最终exit0；8项目、0 warning/0 error，158份TRX共2026项、1968通过、0失败、58既有skip不计通过。汇总和摘要SHA见Round5 `evidence/U09-05-final-root-de6f7f82-20261103/root-gates.json`。
+- 独立 `scripts/build.cmd` 在 `eebef009` 按真实编译/测试职责exit0；其 `src/`、`tests/`、`scripts/` tree与de6相同。长临时根首次Worker原子写失败的原因未确认，原始证据保留；短临时根在相同源码/SDK/断言下通过，未改源码、断言或skip。它不能代替中文完整链。
+- 精确源码run #1441 `41547554497` 的SDK基线 job `125626741394`（15步）与SDK10.0.401 job `125626741153`（8步）全部completed/success，包含Render QA、WPF静态审查、package和上传；preview、基线诊断、SDK10诊断三artifact的ID、digest与head SHA见 `evidence/U09-05-final-root-de6f7f82-20261103/ci-run-41547554497.json`。
+- 最近活动和共享列表/DataGrid选框保留蓝色圆角反馈与焦点环，独立overlay不推动行内容或图标；R10几何类3/3、R23状态类12/12。不要把选择/焦点边框、Margin或动画Transform放入会改变内容测量的层。
+- U09-05、U09-08已满足；状态为7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。真实Playnite插件页面未观察；日志只证明0.6.73加载。UI控制运行时因缺路径两次初始化失败，未发送输入；外部UIA、实体键盘/IME、物理DPI与Playnite实际渲染仍待验。U09-04缺U00原始逐帧/累计分配及宿主呈现数据。required-check/规则集读取既有403不重试，下一步为有权限维护者只读核对required-check名单。真实恢复、媒体删除、云端写入未运行。
 
 ## 2026-11-03 前一源码候选 77482a9 选中/焦点装饰保持内容几何
 

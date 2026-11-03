@@ -1,0 +1,37 @@
+{
+  "recordedUtc": "2026-11-02T23:43:44.8170056Z",
+  "commit": "de6f7f82038c59c5fbdbb9b366c3e280354ffc5f",
+  "tree": "6377a8a71c2ca5a0a07533190b43d11a451c01c7",
+  "trackedAndUntrackedWorktreeClean": true,
+  "branch": "detached",
+  "remoteTarget": "origin/main",
+  "rootWrapper": "GameSaveCenter-一键构建安装运行.cmd",
+  "delegatedRoot": "GameSaveCenter-Run.cmd",
+  "delegatedScript": "scripts/dev-install-run.ps1 -Configuration Release",
+  "independentBuild": "scripts/build.cmd (already exit 0 on source eebef009)",
+  "sdkBaseline": "8.0.423",
+  "installedSdks": [
+    "9.0.302 [C:\\Program Files\\dotnet\\sdk]"
+  ],
+  "diskCFreeBytes": 5449072640,
+  "diskDFreeBytes": 8258379776,
+  "configuredHeadroomBytes": 5368709120,
+  "wrapperPreflightPass": true,
+  "playniteProcess": {
+    "id": 39452,
+    "path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+    "startTime": "2026-11-03T00:45:10.5264094+08:00"
+  },
+  "expectedLogs": [
+    "artifacts/one-click-install.log",
+    "artifacts/last-dev-install.txt"
+  ],
+  "expectedOutput": "artifacts/gsc-b/<wrapper-created-id>",
+  "destructiveBusinessFlowsRun": false,
+  "sdkCache": {
+    "directory": "C:\\Users\\lopmatu\\AppData\\Local\\GameSaveCenter\\dotnet-sdk-8.0.423",
+    "selectedVersion": "8.0.423",
+    "directVersionCheckExitCode": 0,
+    "languageMode": "FullLanguage"
+  }
+}

@@ -1,10 +1,12 @@
-## 2026-11-03 Round5 当前源码候选与门禁状态
+## 2026-11-03 Round5 当前源码与门禁状态：de6f7f82
 
-源码候选 `77482a9a56f8d1507de3cf819c94559388dddc4f` 已提交并推送。选中/焦点框沿用内容外层装饰：最近活动保留蓝色圆角框但不再用 `TaskItemChrome.Margin=4,2` 推动整行；共享 `AcrylicNavItem` 焦点框移到独立 overlay。SDK 8.0.423 定向R23两条WPF用例2/2、Source Validation退出0、WPF静态扫描218 XAML/0错误，提交后Render QA为双主题394 PNG/0 PROBLEM，报告绑定该SHA且WorkingTreeClean为True。详细证据见Round5 `evidence/U06-02-nav-focus-overlay-20261103/` 与 `evidence/U09-05-final-gates-77482a9a-20261103/`。
+源码候选 `de6f7f82038c59c5fbdbb9b366c3e280354ffc5f` 已提交并推送。最近活动的蓝色圆角选框保留，但不推移整行或图标；共享焦点圈和DataGrid兼容行选框使用独立overlay。选框几何回归R10类3/3通过，生产资源状态R23类12/12通过。
 
-本地实际中文包装器链与独立 `scripts/build.cmd` 均在构建前被PowerShell `ConstrainedLanguage` dot-source限制拒绝，退出码均为1；没有本机测试/TRX、包或本候选安装身份。原始日志已按SHA保留，当前入口/脚本未变，不在同一被拒绝的执行上下文重试。完成U09-05的下一步是在组织允许的标准FullLanguage开发环境运行原入口；不得关闭或绕过策略/门禁。GitHub精确源码run #1436 `41498607041` 两个job、全部步骤和三个artifact均绑定候选SHA并成功。required-check/规则集接口既有403不重试，U09-06仍“远端待验”；前一纯文档run #1435成功不替代源码结果。
+实际中文根入口 `GameSaveCenter-一键构建安装运行.cmd` 经 `GameSaveCenter-Run.cmd` 对精确候选执行完整SDK8.0.423 Release编译、测试、Worker发布、打包、安装核验和Playnite启动，exit0。8项目、0 warning/error，158份TRX、2026项、1968通过、0失败、58既有skip（不计通过）；155个WPF隔离类。独立`scripts/build.cmd`在`eebef009`按职责exit0，`src/`、`tests/`、`scripts/`树与de6一致。安装清单0.6.73、六个DLL程序集身份均含de6 SHA；Playnite日志确认插件加载，但没有观察实际插件页面。完整本机证据：Round5 `evidence/U09-05-final-root-de6f7f82-20261103/`。
 
-当前80项状态为5项已满足、71项代码完成待验收、U09-04/05/08进行中、U09-06远端待验。U06-02/U08-08仍待Playnite实际页面、外部UIA、实体输入/IME与物理DPI验收；真实存档恢复、媒体删除与云端写入未执行。
+精确push run [41547554497（#1441）](https://github.com/Nikilua/GameSaveCenter/actions/runs/41547554497) completed/success。基线job `125626741394` 的15步和SDK10.0.401 job `125626741153` 的8步均通过，包括Render QA、WPF静态审查、打包及上传；三artifact ID/digest见同证据目录 `ci-run-41547554497.json`。required-check/规则集读取此前返回403；不重试同一拒绝，U09-06仍“远端待验”，由有读取权限的维护者核对规则集与required-check名单。
+
+U09-05和U09-08已满足；80项状态7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。真实Playnite页面、外部UIA、实体键盘/IME、物理DPI/跨屏仍待宿主验收；计算机控制运行时缺路径两次初始化失败，没有发送UI输入。U09-04的U00原始逐帧/累计分配及Playnite呈现数据仍缺。真实恢复、媒体删除和云端写入未运行。
 
 ## 2026-11-03 Round5 前一冻结候选34d8a99f历史入口门禁与选中态复核
 
