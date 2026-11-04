@@ -1,3 +1,16 @@
+## 2026-11-04 Round5 U09-05/U09-08 本机最终验收：292f3bc6
+
+冻结候选 `292f3bc63a8ab08c57505d50ac5ba68b6c0d431a` 的独立 `scripts/build.cmd` 与真实中文入口均按 SDK 8.0.423 / Release 完成。独立入口 exit 0，run `20261104T030507692Z-10c2f177`；中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 根进程 exit 0，安装 run `20261104T060044161Z-375720ee`，诊断 run `20261104T060046800Z-ba7cae6d`。
+
+两入口各 160 份 TRX、2030 项、0 失败/错误/超时/中止。独立 build 为1962通过/68跳过；中文完整链为1972通过/58跳过，157/157个WPF隔离组完成。完整链58个跳过为57条已撤销“今日工作台”断言和1条鼠标opt-in；独立入口另有10条Named Pipe环境限制，完整授权入口中这10项已通过。跳过不计通过。包 ZIP/PEXT 各45,739,194 bytes、SHA-256 `91F4C4FCAB4CF88DC9C3D5E2921AF9A4055A550F36E9B450639B7EDE6D29BD1E`。
+
+安装清单0.6.73、DLL文件版本0.6.73.0；Plugin DLL SHA-256 `D066E97586A4FA55B4851127ACB70A3E5C001CD011653188D6AFF47BE03D80E3`，Worker DLL SHA-256 `C8A5C7B86D0CAA619BC1361A72DA9D1B93C39BFFD26225A5F154C699B517CA1B`，身份均含候选SHA。Playnite PID 50956保持响应，扩展日志确认 `0.6.73.0` 已加载并观察到3个游戏。窗口标题“Playnite”在非活动隐藏桌面枚举到；没有切换桌面或捕获实机图。收尾辅助程序未能通过WM_CLOSE关闭该实例，未强杀、未启动重复实例；这个辅助程序退出1，中文根入口本身仍为exit 0。
+
+精确源码 CI run [#1454](https://github.com/Nikilua/GameSaveCenter/actions/runs/41742480073) 已成功：SDK8.0.423 job126287170658、SDK10.0.401 job126287170119。required-check/ruleset读取沿用此前403，不重试，U09-06标记远端待验。
+
+U09-05与U09-08完成。80项状态更新为7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。U09-04缺U00同条件真实帧时与分配数据；真实插件页视觉检查、外部UIA、实体键盘/IME、物理DPI/跨屏仍待宿主验收。U06-02/U08-08状态仍为代码完成待验收。未运行真实存档恢复、媒体删除或云端写入。详见[本机最终门禁](evidence/U09-05-final-292f3bc6/FINAL-ACCEPTANCE.md)及[结构化身份](evidence/U09-05-final-292f3bc6/local-gates.json)。
+
+阶段清理仅删除已由诊断摘要确认归属本阶段且被当前构建替代的三个旧 `artifacts/gsc-b/` 编译输出（2485文件/626,324,030 bytes）和本批一次性隐藏桌面启动脚本；当前构建87dcfccd、ZIP/PEXT、TRX、诊断及失败日志保留。删除清单和前后空间见[cleanup.json](evidence/U09-05-final-292f3bc6/cleanup.json)。按用户要求解除R:的SUBST映射，底层C盘目录保留，C/D盘符未改。
 ## 2026-11-04 U06-02/U08-08 用户框外文字跟进：292f3bc6
 
 针对三张新截图修复最近任务时间、存档行最右侧文字和任务队列状态/详情落在选框外的问题。提交 `4ded0f52` 修正共享行视口裁切与选框范围，`3e98148e` 补充缺少祖先滚动绑定时的配置内边距回退，`292f3bc6` 保持 Overview 框线与列表行内容对齐；三次均为中文提交且已推送 main。选框没有把内容向左挤，也未改变命令、Binding、UIA、键盘输入、虚拟化、主题或现有滚动条。

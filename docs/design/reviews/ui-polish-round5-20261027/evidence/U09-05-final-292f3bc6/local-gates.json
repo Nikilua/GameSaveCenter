@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "candidateSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+  "workingTreeClean": true,
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "independentBuild": {
+    "entrypoint": "scripts/build.cmd",
+    "exitCode": 0,
+    "diagnosticRunId": "20261104T030507692Z-10c2f177",
+    "trxCount": 160,
+    "testCaseCount": 2030,
+    "passed": 1962,
+    "failed": 0,
+    "skipped": 68,
+    "skipReasons": {
+      "withdrawnTodayDashboardAssertions": 57,
+      "restrictedNamedPipeEnvironment": 10,
+      "interactivePointerOptIn": 1
+    }
+  },
+  "fullChain": {
+    "entrypoint": "GameSaveCenter-一键构建安装运行.cmd -> GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1",
+    "exitCode": 0,
+    "installRunId": "20261104T060044161Z-375720ee",
+    "diagnosticRunId": "20261104T060046800Z-ba7cae6d",
+    "startedUtc": "2026-11-04T06:00:48.8839731Z",
+    "buildCompletedUtc": "2026-11-04T06:27:33.2985712Z",
+    "harnessExitAfterRoot": 1,
+    "harnessExitReason": "Playnite stayed active on its hidden desktop after WM_CLOSE; it was not force-terminated and no duplicate was launched.",
+    "trxCount": 160,
+    "testCaseCount": 2030,
+    "passed": 1972,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 58,
+    "wpfIsolatedClassRuns": 157,
+    "skipReasons": {
+      "withdrawnTodayDashboardAssertions": 57,
+      "interactivePointerOptIn": 1
+    }
+  },
+  "package": {
+    "zip": {
+      "file": "GameSaveCenter-0.6.73-playnite.zip",
+      "bytes": 45739194,
+      "sha256": "91F4C4FCAB4CF88DC9C3D5E2921AF9A4055A550F36E9B450639B7EDE6D29BD1E"
+    },
+    "pext": {
+      "file": "GameSaveCenter-0.6.73.pext",
+      "bytes": 45739194,
+      "sha256": "91F4C4FCAB4CF88DC9C3D5E2921AF9A4055A550F36E9B450639B7EDE6D29BD1E"
+    }
+  },
+  "installation": {
+    "path": "[user-profile]/AppData/Roaming/Playnite/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "manifestVersion": "0.6.73",
+    "dllVersion": "0.6.73.0",
+    "pluginAssemblyIdentity": "0.6.73+292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+    "pluginDllSha256": "D066E97586A4FA55B4851127ACB70A3E5C001CD011653188D6AFF47BE03D80E3",
+    "workerAssemblyIdentity": "0.6.73+292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+    "workerDllSha256": "C8A5C7B86D0CAA619BC1361A72DA9D1B93C39BFFD26225A5F154C699B517CA1B"
+  },
+  "hostStartup": {
+    "executable": "D:/software/Playnite/Playnite.DesktopApp.exe",
+    "playniteVersion": "10.56.0.23531",
+    "pid": 50956,
+    "responding": true,
+    "extensionLoaded": true,
+    "extensionVersion": "0.6.73.0",
+    "observedGameCount": 3,
+    "windowTitleOnInactiveDesktop": "Playnite",
+    "screenshotCaptured": false,
+    "realPageVisualAcceptance": false,
+    "processStillRunning": true
+  },
+  "sourceCi": {
+    "workflow": ".github/workflows/windows-build.yml",
+    "runNumber": 1454,
+    "runId": 41742480073,
+    "headSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "SDK 8.0.423",
+        "jobId": 126287170658,
+        "conclusion": "success"
+      },
+      {
+        "name": "SDK 10.0.401",
+        "jobId": 126287170119,
+        "conclusion": "success"
+      }
+    ]
+  },
+  "requiredCheckList": {
+    "status": "remote-wait",
+    "reason": "The prior read-only ruleset/required-check request returned 403; do not retry the same denied request."
+  },
+  "hostAndBusinessBoundaries": {
+    "u09_04": "in-progress: real Playnite frame/allocation comparison with U00 remains missing",
+    "unverified": [
+      "actual plugin page visual inspection",
+      "external UI Automation",
+      "physical keyboard and IME",
+      "physical DPI and multi-monitor behavior"
+    ],
+    "notRun": [
+      "real save restore",
+      "media deletion",
+      "cloud write"
+    ]
+  },
+  "driveMappingAction": {
+    "removedMapping": "R:",
+    "mappingType": "SUBST",
+    "target": "C:/Users/[user-profile]/.codex/visualizations/2026/11/03/01a19fd6-259f-7813-82a4-7cfab2ed9d26",
+    "underlyingDirectoryPreserved": true,
+    "cAndDDriveLettersChanged": false,
+    "currentSubstMappings": []
+  }
+}

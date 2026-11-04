@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-04",
+  "candidateSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+  "cleanupRoot": "[candidate]/artifacts/gsc-b",
+  "deletionReason": "Three stage-owned build-output directories were superseded by current build 87dcfccd. Their build summaries, TRX, and failure diagnostics remain under build-diagnostics. Current package and current build were preserved.",
+  "deletedBuildOutputs": [
+    {
+      "id": "59364234",
+      "sourceSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+      "runId": "20261104T011439180Z-fef94c7c",
+      "outcome": "failed",
+      "files": 744,
+      "bytes": 175130192
+    },
+    {
+      "id": "ba5a54a4",
+      "sourceSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+      "runId": "20261104T013218146Z-6f6e5335",
+      "outcome": "failed",
+      "files": 726,
+      "bytes": 169232217
+    },
+    {
+      "id": "e5462af9",
+      "sourceSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+      "runId": "20261104T050135263Z-e674c29b",
+      "outcome": "passed",
+      "files": 1015,
+      "bytes": 281961621
+    }
+  ],
+  "deletedHelper": {
+    "path": ".tmp/round5-selection-frame-repro-20261104/run-hidden-root-escalated.ps1",
+    "bytes": 14436
+  },
+  "deletedFiles": 2485,
+  "deletedBytes": 626338466,
+  "diskFreeBytes": {
+    "before": {
+      "c": 6305751040,
+      "d": 3291828224
+    },
+    "after": {
+      "c": 6937497600,
+      "d": 3057487872
+    }
+  },
+  "preserved": [
+    "[candidate]/artifacts/gsc-b/87dcfccd",
+    "[candidate]/artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "[candidate]/artifacts/GameSaveCenter-0.6.73.pext",
+    "[candidate]/artifacts/build-diagnostics/20261104T060046800Z-ba7cae6d",
+    "[candidate]/artifacts/build-diagnostics/20261104T050135263Z-e674c29b",
+    "Previous failure summaries and TRX under build-diagnostics",
+    "Current and historical Render QA evidence"
+  ],
+  "substMappingsAfter": [],
+  "currentCandidateJunctionPreserved": true
+}

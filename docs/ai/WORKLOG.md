@@ -13067,3 +13067,12 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 预览、baseline诊断、SDK10诊断artifact ID分别13185515505、13185097388、13182029784，size/digest/head SHA见Round5 evidence/U06-02-datagrid-row-overlay-20261103/ci-run-41529821227.json。前一cf5173的#1438双job失败保留历史，未rerun或改skip。required-check/保护规则接口此前403，不重复请求，required check完整性仍远端待验。
 - U09-05中文根入口与独立scripts/build.cmd先前因ConstrainedLanguage拒绝dot-source而未进入build/test/install，本批不在相同环境重试；需获授权FullLanguage环境验证。真实Playnite宿主、外部UIA、实体输入/IME和物理DPI待验；未执行真实存档恢复、媒体删除或云写入。
 - 文档源码校验通过，Markdown相对链接检查776条中新增引用均存在；5条缺失均为早期WORKLOG指向已退役artifacts/GameSaveCenter-0.6.73.pext或GameSaveCenter-0.6.73-playnite.zip的历史链接。git diff --check通过，仅有仓库文档CRLF转LF提示。
+
+## 2026-11-04 Round5 U09-05/U09-08 本机最终验收与R盘映射处理
+
+- 精确候选292f3bc63a8ab08c57505d50ac5ba68b6c0d431a，跟踪树干净；独立 `scripts/build.cmd` 与真实中文完整入口均用SDK 8.0.423/Release。独立入口exit0、160 TRX/2030项/1962通过/0失败/68跳过；中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 根进程exit0，安装run 20261104T060044161Z-375720ee、诊断run 20261104T060046800Z-ba7cae6d，160 TRX/2030项/1972通过/0失败/58跳过。157个WPF隔离组均完成。完整链58 skip为57条已撤销“今日工作台”架构断言和1条鼠标opt-in；独立入口另10条Named Pipe环境限制在授权完整入口已通过。所有skip均不计通过。
+- ZIP/PEXT各45,739,194 bytes，SHA-256均为91F4C4FCAB4CF88DC9C3D5E2921AF9A4055A550F36E9B450639B7EDE6D29BD1E。安装manifest 0.6.73、DLL 0.6.73.0；Plugin/Worker程序集身份和SHA与精确源码一致。Playnite PID 50956响应，扩展日志确认插件加载并观察到3个游戏。窗口在非活动隐藏桌面；没有切换桌面或实机截图。辅助脚本未能WM_CLOSE结束该进程，未强杀、未启动重复实例；辅助脚本退出1，实际中文根入口exit0。
+- 精确源码Windows CI run #1454 / 41742480073 completed/success：SDK8 job126287170658、SDK10 job126287170119。U09-06 required-check/ruleset列表此前403，不重试并保留远端待验；U09-04真实帧时/分配数据仍缺。U09-05/U09-08完成后为7项满足、71项代码完成待验收、1项进行中、1项远端待验。
+- 用户要求解除R:。复核R:是SUBST到C盘Codex可视化目录；`subst R: /D`因默认sandbox拒绝后以用户授权的仅映射操作解除，目录内容保留，C/D盘符未变，当前subst为空。
+- 阶段清理前确认三个旧gsc-b输出由本阶段诊断摘要创建、无重解析点、无活跃dotnet、无文档引用，并由当前构建87dcfccd替代；按literal路径删除59364234、ba5a54a4、e5462af9（2485文件/626,324,030 bytes）及一次性启动脚本。保留当前87dc构建、zip/pext、160份TRX、所有诊断摘要和失败日志。磁盘可用字节C: 6,305,751,040→6,937,497,600；D: 3,291,828,224→3,057,487,872（该时段D盘读数波动，不归因于删除内容）。完整清理清单见 `evidence/U09-05-final-292f3bc6/cleanup.json`。
+- 本机最终入口、身份、skip和host边界见 `evidence/U09-05-final-292f3bc6/FINAL-ACCEPTANCE.md` 与 `local-gates.json`。U06-02/U08-08仍代码完成待真实宿主视觉验收；未执行真实存档恢复、媒体删除或云端写入。
