@@ -1,0 +1,47 @@
+[
+  {
+    "class": "R06SelectionStateBehaviorTests",
+    "total": 3,
+    "outcomes": {
+      "Passed": 3
+    },
+    "trx": "tests/t067.trx",
+    "sha256": "1d8ebb552be72a4fe5cd0914974b76e64a3908cd65efc3c1a413a2d7097ca594"
+  },
+  {
+    "class": "R06SaveHistorySelectionFrameBehaviorTests",
+    "total": 1,
+    "outcomes": {
+      "Passed": 1
+    },
+    "trx": "tests/t066.trx",
+    "sha256": "bc2c03295419ca5f38a6bf299c9b76ffdae882b5e80e5558f00f3d4b629ea36e"
+  },
+  {
+    "class": "R06TaskGridSelectionFrameBehaviorTests",
+    "total": 1,
+    "outcomes": {
+      "Passed": 1
+    },
+    "trx": "tests/t069.trx",
+    "sha256": "2563d90931ba5cfbe14347152c8774e91b24f4dd80a2deed5d8af75630562a80"
+  },
+  {
+    "class": "R10RecentAccessBehaviorTests",
+    "total": 3,
+    "outcomes": {
+      "Passed": 3
+    },
+    "trx": "tests/t096.trx",
+    "sha256": "714a812df503cff5b20f8703a09f7582b4e568bee8bce4afec9e4bb326e463c0"
+  },
+  {
+    "class": "R23ProductionResourceStateBehaviorTests",
+    "total": 12,
+    "outcomes": {
+      "Passed": 12
+    },
+    "trx": "tests/t130.trx",
+    "sha256": "9517e6e5d546da7221ace2d987fadc65560e13088c84efaf003a5b8fb0c0443e"
+  }
+]

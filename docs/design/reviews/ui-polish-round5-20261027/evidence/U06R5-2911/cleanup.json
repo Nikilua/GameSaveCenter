@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-04",
+  "cloneRoot": "isolated checkout path redacted",
+  "beforeCBytes": 3546300416,
+  "afterCBytes": 3832193024,
+  "releasedBytes": 285892608,
+  "targets": [
+    {
+      "path": "artifacts\\gsc-b\\bcd7e225",
+      "files": 738,
+      "bytes": 169240487.0,
+      "root": "artifacts"
+    },
+    {
+      "path": "artifacts\\build-diagnostics\\20261103T230041179Z-cf838589",
+      "files": 327,
+      "bytes": 5033292.0,
+      "root": "artifacts"
+    },
+    {
+      "path": ".tmp\\render-qa-292f3bc6",
+      "files": 395,
+      "bytes": 53467366.0,
+      "root": ".tmp"
+    },
+    {
+      "path": ".tmp\\render-qa-4ded0f52",
+      "files": 395,
+      "bytes": 53422077.0,
+      "root": ".tmp"
+    },
+    {
+      "path": ".tmp\\round5-selection-frame-4ded0f52-system-temp",
+      "files": 0,
+      "bytes": 0,
+      "root": ".tmp"
+    }
+  ],
+  "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force after root, reparse point, process, archive hash and reference checks",
+  "archivedTrxCount": 160,
+  "archivedTrxBytes": 3486857,
+  "cleanupComplete": true
+}

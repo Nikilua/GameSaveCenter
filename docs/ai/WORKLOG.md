@@ -1,3 +1,9 @@
+## 2026-11-04 Round5 当前框外文字修复候选：292f3bc6
+
+- 用户新图的问题是 Overview 时间、Save History 最右列文字与 Task 队列状态/详情落在选框右缘外。源码 `4ded0f52` 修复共享视口裁切和选框几何，`3e98148e` 增加没有祖先滚动绑定时的配置边距回退，`292f3bc6` 对齐 Overview 框线；三次中文提交均已推送。
+- 精确候选 SDK8.0.423 独立 `scripts/build.cmd` 2030项、1962通过、0失败、68 skip；Source Validation、WPF static 26 XAML/0 errors、XAML结构检查、Render QA 394 PNG/0 PROBLEM均通过。证据在 `reviews/ui-polish-round5-20261027/evidence/U06R5-2911/`，含六张双主题关键图与160 TRX。
+- 同 SHA 中文完整链在编译前因 C 盘 4 GiB 预检失败（exit1）。安全清理task-owned isolated checkout artifacts/.tmp释放285,892,608 bytes，清理后仍短462,774,272 bytes；未安装、未核对安装身份、未启动本候选Playnite。不得借独立build或旧候选结果结项。U09-05与U09-08重新进行中。
+- 精确源码 GitHub run #1454 / 41742480073仍在运行：SDK10 job126287170119 completed/success（8/8）；基线job126287170658编译/测试、Render QA、WPF审查均成功，正在打包；artifact待核对，required-check/ruleset读取先前403不重试。状态5/71/3/1。实际Playnite页面、UIA、实体键盘IME、物理DPI与真实业务写入边界不变。
 ## 2026-11-04 Round5 证据归档修复与 CI 验收：f203f15f
 
 - 文档提交967e07e1的run #1451两job在Windows checkout因TRX长路径失败，源/测试/渲染/打包未运行且无artifact；原始job日志及归因见`reviews/ui-polish-round5-20261027/evidence/U06-02-3aa-20261104/ci-run-41681642551-failure.json`。

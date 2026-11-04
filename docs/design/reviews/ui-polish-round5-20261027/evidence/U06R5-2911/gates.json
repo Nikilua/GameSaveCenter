@@ -1,0 +1,160 @@
+{
+  "sourceCommit": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+  "sdk": "8.0.423",
+  "msbuild": "17.11.48",
+  "independentBuildExitCode": 0,
+  "runId": "20261103T230041179Z-cf838589",
+  "testTotals": {
+    "testCaseCount": 2030,
+    "passed": 1962,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 68,
+    "notRunnable": 0,
+    "inconclusive": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "otherOutcome": 0,
+    "reportedCounterTotal": 2030,
+    "reportedCounterFileCount": 160,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "trxFileCount": 160,
+    "distinctTestClassCount": 374,
+    "wpfIsolatedClassRunCount": 157
+  },
+  "trxCount": 160,
+  "trxBytes": 3486857.0,
+  "trxManifestSha256": "2440269c3db8f576f448ab5b79b5a3a581ec93eec5f880165e29d07e34a9b7dd",
+  "renderQa": {
+    "exitCode": 0,
+    "result": "render-qa OK",
+    "pngCount": 394,
+    "problemCount": 0,
+    "dpiScale": 1.0,
+    "reportSha256": "c78f6fb4717d9305d780d074b793afc578c974ac8978a2b316a2ec07270f6de2",
+    "screenshots": [
+      {
+        "file": "screens/overview-dark.png",
+        "theme": "dark",
+        "page": "Overview",
+        "bytes": 61134,
+        "sha256": "e3cce6bb4f35e90640838a911a7e8494efa9e804d1fce6f140fc515afc508b66"
+      },
+      {
+        "file": "screens/overview-light.png",
+        "theme": "light",
+        "page": "Overview",
+        "bytes": 58701,
+        "sha256": "bf77c82cd0456bddc33c70157e7be2b65cda72b472d470663e4ad3da37d5bdd6"
+      },
+      {
+        "file": "screens/save-dark.png",
+        "theme": "dark",
+        "page": "Save",
+        "bytes": 76365,
+        "sha256": "ef8fdf2b01624afd28618949d27930b8518707bc4ec72117169bda1e53a0068d"
+      },
+      {
+        "file": "screens/save-light.png",
+        "theme": "light",
+        "page": "Save",
+        "bytes": 71514,
+        "sha256": "c1c20df6e8c29bf41fa99dbbe3b53e7e0794b48521956075763a185b766d7a32"
+      },
+      {
+        "file": "screens/task-dark.png",
+        "theme": "dark",
+        "page": "Task",
+        "bytes": 68858,
+        "sha256": "07a38cfd53d65d86769e39804bd21572d846944fd4f1846e337864ffe7083877"
+      },
+      {
+        "file": "screens/task-light.png",
+        "theme": "light",
+        "page": "Task",
+        "bytes": 65151,
+        "sha256": "3a0cf67426fd191fe2e584cbe809e0ce9771c12be36deaa2a789d86615c01fad"
+      }
+    ],
+    "reportBytes": 1131500
+  },
+  "validation": {
+    "sourceExit": 0,
+    "wpfStaticExit": 0,
+    "xamlCheckExit": 0,
+    "wpfScannedXaml": 26,
+    "wpfErrors": 0,
+    "wpfWarnings": 26,
+    "wpfInfo": 164
+  },
+  "fullChineseRoot": {
+    "wrapper": "GameSaveCenter-一键构建安装运行.cmd",
+    "delegatesTo": "GameSaveCenter-Run.cmd",
+    "exitCode": 1,
+    "failedAt": "space preflight before build",
+    "cAvailableBytes": 3473227776,
+    "cRequiredBytes": 4294967296,
+    "shortfallBytes": 821739520,
+    "installIdentityVerified": false,
+    "playniteStarted": false
+  },
+  "screenshots": [
+    {
+      "file": "screens/overview-dark.png",
+      "theme": "dark",
+      "page": "Overview",
+      "bytes": 61134,
+      "sha256": "e3cce6bb4f35e90640838a911a7e8494efa9e804d1fce6f140fc515afc508b66"
+    },
+    {
+      "file": "screens/overview-light.png",
+      "theme": "light",
+      "page": "Overview",
+      "bytes": 58701,
+      "sha256": "bf77c82cd0456bddc33c70157e7be2b65cda72b472d470663e4ad3da37d5bdd6"
+    },
+    {
+      "file": "screens/save-dark.png",
+      "theme": "dark",
+      "page": "Save",
+      "bytes": 76365,
+      "sha256": "ef8fdf2b01624afd28618949d27930b8518707bc4ec72117169bda1e53a0068d"
+    },
+    {
+      "file": "screens/save-light.png",
+      "theme": "light",
+      "page": "Save",
+      "bytes": 71514,
+      "sha256": "c1c20df6e8c29bf41fa99dbbe3b53e7e0794b48521956075763a185b766d7a32"
+    },
+    {
+      "file": "screens/task-dark.png",
+      "theme": "dark",
+      "page": "Task",
+      "bytes": 68858,
+      "sha256": "07a38cfd53d65d86769e39804bd21572d846944fd4f1846e337864ffe7083877"
+    },
+    {
+      "file": "screens/task-light.png",
+      "theme": "light",
+      "page": "Task",
+      "bytes": 65151,
+      "sha256": "3a0cf67426fd191fe2e584cbe809e0ce9771c12be36deaa2a789d86615c01fad"
+    }
+  ],
+  "reportBytes": 1131502,
+  "buildSummarySha256": "922329086827c11cfedc01074735f5e187aaf8081954af370a6bb47843e3a171",
+  "testSummarySha256": "922329086827c11cfedc01074735f5e187aaf8081954af370a6bb47843e3a171",
+  "rootLogSha256": "cdb007160126f2019fc2f3797767ed654818f3b9b38e81cc33d22fe7758ea581",
+  "screenshotCount": 6,
+  "buildLogSha256": "39a3c404ef1b507866aff8613b7582f10431d02cfb883d0c61b57adb251f9d05",
+  "cleanupSha256": "5df7181994368d93693ab5251df634eddd1816e95ac161e038cc396ce003bc22",
+  "postCleanupCBytes": 3832193024,
+  "postCleanupCShortfallBytes": 462774272,
+  "cleanupEvidence": "cleanup.json",
+  "focusedResultsSha256": "6dc94ef75d3c87fb361c843296490cd210ddbbab82b382844ed7371b00f8ad0a",
+  "sourceValidationLogSha256": "30760e7082311ac27aa2d981c07638fc2a4b11d039c265afb40365b1f98fbca6"
+}

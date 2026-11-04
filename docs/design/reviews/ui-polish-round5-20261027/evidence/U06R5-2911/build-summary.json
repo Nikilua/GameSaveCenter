@@ -1,0 +1,32 @@
+{
+  "sourceCommit": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
+  "runId": "20261103T230041179Z-cf838589",
+  "runType": "scripts/build.cmd solution-build",
+  "sdk": "8.0.423",
+  "msbuild": "17.11.48",
+  "exitCode": 0,
+  "testSummary": {
+    "testCaseCount": 2030,
+    "passed": 1962,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 68,
+    "notRunnable": 0,
+    "inconclusive": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "otherOutcome": 0,
+    "reportedCounterTotal": 2030,
+    "reportedCounterFileCount": 160,
+    "counterMismatchCount": 0,
+    "parseErrorCount": 0,
+    "trxFileCount": 160,
+    "distinctTestClassCount": 374,
+    "wpfIsolatedClassRunCount": 157
+  },
+  "trxCount": 160,
+  "trxBytes": 3486857,
+  "trxMap": "trx-map.json"
+}
