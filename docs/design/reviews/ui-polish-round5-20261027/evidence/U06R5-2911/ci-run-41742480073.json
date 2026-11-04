@@ -6,14 +6,17 @@
   "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/41742480073",
   "event": "push",
   "headSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a",
-  "status": "in_progress",
-  "conclusion": null,
+  "status": "completed",
+  "conclusion": "success",
   "jobs": [
     {
       "id": 126287170658,
       "name": "编译、测试与打包",
-      "sdk": "baseline",
-      "status": "in_progress",
+      "sdk": "8.0.423",
+      "status": "completed",
+      "conclusion": "success",
+      "completedSteps": 15,
+      "totalSteps": 15,
       "steps": [
         {
           "number": 1,
@@ -48,18 +51,58 @@
         {
           "number": 7,
           "name": "编译与测试",
-          "status": "in_progress"
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "离屏渲染 QA",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "WPF UI 静态审查",
+          "conclusion": "success"
+        },
+        {
+          "number": 10,
+          "name": "生成 Playnite 扩展包",
+          "conclusion": "success"
+        },
+        {
+          "number": 11,
+          "name": "上传构建产物",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "保留构建与测试诊断（包括失败）",
+          "conclusion": "success"
+        },
+        {
+          "number": 23,
+          "name": "Post 安装 .NET SDK",
+          "conclusion": "success"
+        },
+        {
+          "number": 24,
+          "name": "Post 检出代码",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Complete job",
+          "conclusion": "success"
         }
-      ],
-      "completedSteps": 9,
-      "totalSteps": 14,
-      "currentStep": "生成 Playnite 扩展包"
+      ]
     },
     {
       "id": 126287170119,
       "name": ".NET SDK 10.0.401 编译与测试复核",
       "sdk": "10.0.401",
       "status": "completed",
+      "conclusion": "success",
+      "completedSteps": 8,
+      "totalSteps": 8,
       "steps": [
         {
           "number": 1,
@@ -101,12 +144,35 @@
           "name": "Complete job",
           "conclusion": "success"
         }
-      ],
-      "conclusion": "success",
-      "completedSteps": 8,
-      "totalSteps": 8
+      ]
     }
   ],
-  "artifacts": [],
-  "requiredChecks": "远端待验：既有branch protection/ruleset只读接口403，不重复探测"
+  "artifacts": [
+    {
+      "id": 13285722410,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeInBytes": 2043876,
+      "digest": "sha256:a3c9f3596578f1cd539d8616219848b00d0aa14e5aba8b9a9fc842e58704e453",
+      "expired": false,
+      "headSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a"
+    },
+    {
+      "id": 13285597578,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeInBytes": 90794124,
+      "digest": "sha256:1d47945c1059545e59231a5728a18b697ce95aa73698ffa0656a086195e9c65c",
+      "expired": false,
+      "headSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a"
+    },
+    {
+      "id": 13283196951,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeInBytes": 976992,
+      "digest": "sha256:c4237ec546e26158cd9aa609ef9a442763216ed0938aac423b3c90f9f21f2b0e",
+      "expired": false,
+      "headSha": "292f3bc63a8ab08c57505d50ac5ba68b6c0d431a"
+    }
+  ],
+  "requiredChecks": "远端待验：既有 branch protection/ruleset 只读接口返回403，不重复探测；由具备读取权限的维护者核对main required-check名单。",
+  "updatedAt": "2026-11-04T00:52:31Z"
 }
