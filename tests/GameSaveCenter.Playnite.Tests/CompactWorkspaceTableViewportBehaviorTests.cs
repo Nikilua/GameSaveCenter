@@ -327,6 +327,8 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                 Assert.False(frame.IsHitTestVisible);
                 Assert.True(layout.RowDefinitions[4].Height.IsAuto);
                 Assert.Equal(Visibility.Visible, openButton.Visibility);
+                Assert.Equal("查看任务详情 ›", openButton.Content?.ToString());
+                Assert.Equal(Visibility.Collapsed, closeButton.Visibility);
                 Assert.True(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
                 Assert.Same(openButton, Keyboard.FocusedElement);
 

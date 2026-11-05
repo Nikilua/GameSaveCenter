@@ -578,13 +578,19 @@ namespace GameSaveCenter.Playnite.Views
             taskInspectorClosing = true;
             var generation = ++taskInspectorTransitionGeneration;
             TaskDetailInspectorFrame.IsHitTestVisible = false;
-            ApplyLatestResponsiveLayout();
 
             if (!IsInspectorMotionEnabled)
             {
                 CompleteTaskInspectorClose(generation);
                 return;
             }
+
+            // The inspector keeps its measured slot until the exit animation ends.
+            // Update only the compact actions here; a full responsive measure pass
+            // would repeat work without changing the inspector's geometry.
+            TaskCompactDetailsButton.Content = "查看任务详情 ›";
+            TaskCompactDetailsButton.Visibility = Visibility.Visible;
+            TaskCompactCloseDetailsButton.Visibility = Visibility.Collapsed;
 
             GscMotion.AnimateExit(
                 TaskDetailInspectorFrame,
