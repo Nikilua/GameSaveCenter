@@ -1,3 +1,11 @@
+## 2026-11-06 Round5 最终入口门禁与当前未验项：a13a7dbb
+
+- 冻结源码 `a13a7dbbe27f4cb90d37057163e1481aa8abf355`。本机 SDK 8.0.423 / Release：独立 `scripts/build.cmd` exit0，160 TRX / 2030项 / 1962通过 / 0失败 / 68跳过；中文根入口完整编译、测试、Worker发布、打包、安装身份和启动链 exit0，160 TRX / 2030项 / 1972通过 / 0失败 / 58跳过。跳过原因、320份TRX、包/安装SHA见 `reviews/ui-polish-round5-20261027/evidence/U09-05-final-a13a7dbb/`。
+- UI_CHANGE_GATE：Source Validation与XAML结构检查通过；WPF静态审查26 XAML/0 error/26 warnings/164 info；精确候选Render QA 394张/0 PROBLEM。用户要求的时间/选框边缘文字没有回归；R08/Q10行为TRX见上述证据。
+- 精确源码run #1461 / 42110142797 completed/success：baseline SDK8 job127535228072 15/15步，SDK10.0.401 job127535227511 8/8步，artifact身份见 `windows-ci.json`。required-check/ruleset读取已有403，不重试，U09-06远端待验。
+- Playnite日志证实 `0.6.73.0` 已加载并观察3个游戏，但本次进程窗口句柄为0，没有显示实际插件页；页面视觉、外部UIA、实体键盘/IME、物理DPI/跨屏仍待真实宿主验收。未执行真实存档恢复、媒体删除或云端写入。本轮未触碰驱动器映射。
+- 状态：7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。继续补足U00同条件帧时/累计分配来源或可比复测，不用逻辑proxy冒充呈现帧；旧S/T宿主/权限待验不阻断可独立工作。
+
 ## 2026-11-04 Round5 U09-05/U09-08 本机最终验收：292f3bc6
 
 - 精确候选 `292f3bc63a8ab08c57505d50ac5ba68b6c0d431a`：独立 `scripts/build.cmd` exit 0，中文实际根入口 exit 0；SDK 8.0.423 / Release。根安装run `20261104T060044161Z-375720ee`，诊断run `20261104T060046800Z-ba7cae6d`。

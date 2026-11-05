@@ -1,0 +1,12 @@
+{
+  "timeUtc": "2026-11-05T22:55:38.5556043Z",
+  "pid": 26216,
+  "parentPid": 13848,
+  "path": "<user-profile>\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.exe",
+  "session": 1,
+  "sessionVerified": true,
+  "windowHandle": "0",
+  "reason": "The root Chinese entry had finished host loading and was waiting on the child worker after the explicitly launched Playnite process closed.",
+  "action": "Stopped only the verified current-extension worker using the repository shutdown policy.",
+  "remainsRunning": false
+}

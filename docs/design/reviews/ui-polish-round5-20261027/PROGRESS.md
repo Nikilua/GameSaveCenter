@@ -1,3 +1,15 @@
+## 2026-11-06 Round5 U09-05/U09-08 冻结候选最终门禁：a13a7dbb
+
+冻结源码候选 `a13a7dbbe27f4cb90d37057163e1481aa8abf355`。独立 `scripts/build.cmd` 以 SDK 8.0.423 / Release 退出0：160份TRX、2030项、1962通过、0失败、68跳过；真实中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 完成编译、测试、win-x64 Worker发布、ZIP/PEXT打包、安装身份核验和Playnite启动，入口及外层退出码均为0：160份TRX、2030项、1972通过、0失败、58跳过，157/157个WPF隔离组完成。跳过的原因和数量均保留在TRX，且不计通过。320份TRX及逐文件SHA见[evidence/U09-05-final-a13a7dbb](evidence/U09-05-final-a13a7dbb/FINAL-ACCEPTANCE.md)。
+
+Source Validation、XAML结构检查、WPF静态审查通过（26 XAML、0错误、26 warning、164 info）；精确SHA Render QA为394张、0 `PROBLEM`。ZIP/PEXT各45,739,077 bytes，SHA-256相同：`DD9156E61EC1132B65A9FC906A9D3E58B731C50232B47625DFEE2AF19F450045`。安装清单0.6.73、DLL 0.6.73.0，六个程序集身份带候选SHA；入口、日志、TRX、包、安装和 UI_CHANGE_GATE 细节见[`local-gates.json`](evidence/U09-05-final-a13a7dbb/local-gates.json)。
+
+根入口启动的Playnite加载 `GameSaveCenter 0.6.73.0` 并观察到3个游戏。构建控制台与Playnite窗口句柄均为0；没有把窗口带到用户桌面。实际插件页面没有显示或捕获，所以页面视觉、外部UIA、实体键盘/IME、物理DPI/跨屏仍待宿主验收。仅结束本次入口启动的无窗口Playnite实例及其经过路径/父进程核对的当前扩展Worker。此次未操作 `subst`、磁盘管理或盘符；未执行真实存档恢复、媒体删除或云端写入。
+
+精确源码GitHub [run #1461](https://github.com/Nikilua/GameSaveCenter/actions/runs/42110142797) completed/success：SDK 8.0.423 job `127535228072` 的15/15步及SDK 10.0.401 job `127535227511` 的8/8步全部成功；三个artifact身份见[`windows-ci.json`](evidence/U09-05-final-a13a7dbb/windows-ci.json)。required-check/ruleset读取现有权限返回403，不重复请求；U09-06仍“远端待验”。
+
+U09-05本机最终验收通过；U09-08完成80项状态审查，没有把未验项目标为结项。整轮状态仍为7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。U09-04将继续查找/重建可比U00实际帧时和累计分配证据；不以离屏逻辑测量代替Playnite帧，也不重复试探required-check权限拒绝。
+
 ## 2026-11-04 Round5 U09-05/U09-08 本机最终验收：292f3bc6
 
 冻结候选 `292f3bc63a8ab08c57505d50ac5ba68b6c0d431a` 的独立 `scripts/build.cmd` 与真实中文入口均按 SDK 8.0.423 / Release 完成。独立入口 exit 0，run `20261104T030507692Z-10c2f177`；中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 根进程 exit 0，安装 run `20261104T060044161Z-375720ee`，诊断 run `20261104T060046800Z-ba7cae6d`。

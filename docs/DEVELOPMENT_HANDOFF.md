@@ -1,3 +1,11 @@
+## 2026-11-06 Round5 接续：冻结候选 a13a7dbb
+
+冻结源码 `a13a7dbbe27f4cb90d37057163e1481aa8abf355` 的独立 `scripts/build.cmd` 和中文 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 完整链均在 SDK8.0.423 / Release 退出0；完整门禁、320份TRX、安装程序集、包SHA和当前宿主限制见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-a13a7dbb/FINAL-ACCEPTANCE.md`。精确源码run #1461的baseline及SDK10 job均success。
+
+下一步持续核对U09-04：既有同条件TaskGrid受控滚动p95没有显示回退，但一次运行/主题且动作包含同步 `UpdateLayout()`，只能算逻辑代理；既有U00报告缺实际呈现帧和累计分配来源。先读 `evidence/U09-04-*` 的采样定义、源SHA和失败记录，再评估能否以同一探针从可恢复的U00源提交与a13做离屏配对；不能将探针的逻辑耗时写成实际帧时。若方法不可比，保留进行中并推进其它独立任务。
+
+U09-06的required-check/ruleset API已有403，不重复请求；维护者有权限时只读核对 `main` 的 required checks 与 `build`、`sdk10-build`。真实Playnite页面未显示，外部UIA、实体键盘/IME、物理DPI/跨屏仍属待验；进程加载日志不等于页面视觉验收。继续只做80项范围；不恢复“今日工作台”，保留游戏选框/滚动条和业务/错误/取消/恢复安全语义。真实存档恢复、媒体删除和云端写入不用于视觉验证。
+
 ## 2026-11-03 Round5 当前交接：精确候选 6cd0f9ec
 
 用户新截图反馈最近任务时间和存档/任务列表末列文字没有被选中框完整包住。共享ListBox/DataGrid选框右inset和宽度换算已修正至约4 DIP；Overview、Save、Task、Shell修复后截图与行为/几何测试已归档在docs/design/reviews/ui-polish-round5-20261027/evidence/U06-02-frame-wrap-6cd0f9ec-20261103/。真实Playnite插件页未实看，因此U06-02/U08-08仍是“代码完成待验收”。

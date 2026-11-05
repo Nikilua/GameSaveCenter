@@ -1,3 +1,10 @@
+## 2026-11-06 Round5 当前冻结候选：a13a7dbb
+
+- `a13a7dbbe27f4cb90d37057163e1481aa8abf355` 的SDK8.0.423独立 `scripts/build.cmd` exit0；真实中文根入口转交英文 `GameSaveCenter-Run.cmd` 后完整编译、测试、发布、打包、安装核验和Playnite启动exit0。两入口各160 TRX / 2030项 / 0失败，独立构建68跳过，完整入口58跳过；skip均保留原因且不计通过。320份TRX归档、包/安装身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-a13a7dbb/`。
+- Source Validation、XAML结构、WPF静态审查、精确SHA Render QA全部通过；精确源码GitHub run #1461双SDK job均success。required-check读取已有403，U09-06“远端待验”，不重复请求。
+- Playnite已从本次隐藏启动加载扩展，但实际页面未显示/捕获；不得把进程日志或offscreen Render QA写成宿主视觉验收。所有构建控制台均隐藏，窗口句柄为0。仅结束本轮自有的Playnite和经路径/父进程确认的Worker。未变更驱动器映射或执行恢复、媒体删除、云写入。
+- U09-05本机门禁通过，U09-08完成状态审查；整轮仍7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。下一步独立继续U09-04的U00帧时/累计分配可比来源；缺少真实宿主数据时保留边界，不假绿。
+
 ## 2026-11-04 Round5 U09-05/U09-08 本机最终验收：292f3bc6
 
 - 精确候选 `292f3bc63a8ab08c57505d50ac5ba68b6c0d431a`：独立 `scripts/build.cmd` exit 0，中文实际根入口 exit 0；SDK 8.0.423 / Release。根安装run `20261104T060044161Z-375720ee`，诊断run `20261104T060046800Z-ba7cae6d`。

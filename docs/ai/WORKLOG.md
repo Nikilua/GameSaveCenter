@@ -13076,3 +13076,11 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 用户要求解除R:。复核R:是SUBST到C盘Codex可视化目录；`subst R: /D`因默认sandbox拒绝后以用户授权的仅映射操作解除，目录内容保留，C/D盘符未变，当前subst为空。
 - 阶段清理前确认三个旧gsc-b输出由本阶段诊断摘要创建、无重解析点、无活跃dotnet、无文档引用，并由当前构建87dcfccd替代；按literal路径删除59364234、ba5a54a4、e5462af9（2485文件/626,324,030 bytes）及一次性启动脚本。保留当前87dc构建、zip/pext、160份TRX、所有诊断摘要和失败日志。磁盘可用字节C: 6,305,751,040→6,937,497,600；D: 3,291,828,224→3,057,487,872（该时段D盘读数波动，不归因于删除内容）。完整清理清单见 `evidence/U09-05-final-292f3bc6/cleanup.json`。
 - 本机最终入口、身份、skip和host边界见 `evidence/U09-05-final-292f3bc6/FINAL-ACCEPTANCE.md` 与 `local-gates.json`。U06-02/U08-08仍代码完成待真实宿主视觉验收；未执行真实存档恢复、媒体删除或云端写入。
+
+## 2026-11-06 Round5 U09-05/U09-08 a13a7dbb 最终入口验收
+
+- 冻结候选 `a13a7dbbe27f4cb90d37057163e1481aa8abf355`。独立 `scripts/build.cmd` 与中文 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 均使用 SDK 8.0.423 / Release 并退出0；独立 160 TRX / 2030项 / 1962通过 / 0失败 / 68跳过，完整链 160 TRX / 2030项 / 1972通过 / 0失败 / 58跳过，157/157 WPF隔离组完成。所有skip均记录原因且不计通过。
+- 完整链完成Win-x64 Worker发布、ZIP/PEXT、安装清单/DLL身份核验和Playnite启动。ZIP/PEXT 45,739,077 bytes，SHA-256 `DD9156E61EC1132B65A9FC906A9D3E58B731C50232B47625DFEE2AF19F450045`。六个程序集身份与源码SHA一致；入口、测试包、脱敏日志和清单见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-a13a7dbb/`。
+- Source Validation、XAML结构、WPF静态审查（26 XAML/0错误/26 warnings/164 info）、Render QA（394图/0 PROBLEM）均通过。精确SHA GitHub run #1461 / 42110142797：SDK8 job127535228072 15/15、SDK10.0.401 job127535227511 8/8成功，artifact身份已归档。required-check读取仍403，不重试，U09-06远端待验。
+- Playnite日志确认插件版本0.6.73.0加载并观察到3个游戏，但窗口句柄0，未显示实际页面；页面视觉/UIA/实体键盘IME/物理DPI仍待真实宿主验收。构建窗口隐藏；只收尾本轮启动的Playnite及路径/父PID验证过的Worker。本轮未操作盘符，未执行恢复/媒体删除/云写入。
+- U09-05本机验收通过，U09-08状态审查完成。整轮仍为7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验；继续独立推进U09-04可比性能来源，不将逻辑代理当作实际呈现帧。

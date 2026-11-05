@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "candidate": {
+    "commit": "a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+    "version": "0.6.73",
+    "configuration": "Release",
+    "sdk": "8.0.423",
+    "msbuild": "17.11.48"
+  },
+  "independentBuild": {
+    "entry": "scripts/build.cmd",
+    "entrySha256": "873C6AECBC86876BADC7ED6458F9CD735EF9E0FA1A7FB4756C0476E97291A552",
+    "exitCode": 0,
+    "diagnosticRunId": "20261105T203658658Z-674b405d",
+    "testResults": {
+      "trxFiles": 160,
+      "total": 2030,
+      "passed": 1962,
+      "failed": 0,
+      "skipped": 68,
+      "wpfIsolatedGroups": 157,
+      "skipReasons": [
+        "57 withdrawn 今日工作台 architecture assertions",
+        "10 Named Pipe tests unavailable in this environment",
+        "1 opt-in system mouse test"
+      ]
+    },
+    "summary": ".tmp/round5-u09-04-final-20261106/scripts-build-a13a7dbb/diagnostics/20261105T203658658Z-674b405d/summary.json",
+    "summarySha256": "3BEDB02BEA180927D6290CA37BEFFCD39B8BA843ACA8C5F04DB15B5C861FB4F7",
+    "stdoutSanitized": "scripts-build.stdout.sanitized.log",
+    "stdoutOriginalSha256": "A5A60D037D6E18FA3B4125870E6712B9F29075D750CB8E0229DF2DA90E06F747"
+  },
+  "chineseRootChain": {
+    "entry": "GameSaveCenter-一键构建安装运行.cmd",
+    "entrySha256": "958D2FA746F78CDD381AE5A72B9A24CFC779743E91EF4AA577212E01972494FA",
+    "delegate": "GameSaveCenter-Run.cmd",
+    "delegateSha256": "405F30591DE559519F49D028FAB5C639C6F04D4844F18764FA6D3C8A07A1D0BF",
+    "exitCode": 0,
+    "processId": 18852,
+    "completedUtc": "2026-11-05T22:55:38.4512101Z",
+    "installRunId": "20261105T221652535Z-f5de8c72",
+    "diagnosticRunId": "20261105T221654437Z-c0f512f6",
+    "diagnosticSummary": "artifacts/build-diagnostics/20261105T221654437Z-c0f512f6/summary.json",
+    "diagnosticSummarySha256": "2B1DDC4222CA10B5CF99C8FA622FA75475B3D7556F7B59A02E4251BD7D7080BB",
+    "testResults": {
+      "trxFiles": 160,
+      "total": 2030,
+      "passed": 1972,
+      "failed": 0,
+      "skipped": 58,
+      "wpfIsolatedGroups": 157,
+      "skipReasons": [
+        "57 withdrawn 今日工作台 architecture assertions",
+        "1 opt-in system mouse test"
+      ]
+    },
+    "stdoutSanitized": "root-entry.stdout.sanitized.log",
+    "stdoutOriginalSha256": "3B5997E26489A4A74D57BED647C65F7948C418990676554CA1FB2E4E28B17383"
+  },
+  "uiChangeGate": {
+    "sourceValidation": "passed",
+    "xamlStructuralReview": "passed",
+    "wpfStaticReview": {
+      "xamlFiles": 26,
+      "errors": 0,
+      "warnings": 26,
+      "info": 164
+    },
+    "renderQa": {
+      "exitCode": 0,
+      "pngCount": 394,
+      "problems": 0,
+      "dpi": "1.00 offscreen logical DIP",
+      "report": "render-qa-report.txt",
+      "reportSha256": "F4AB5AC0A27CB4CA628CED3A484035FE70F6841A25EF35D7F68C3C4E426FF461"
+    },
+    "focusedBehavior": [
+      {
+        "test": "R08MotionReverseBehaviorTests",
+        "result": "passed",
+        "trxSha256": "8FDA95D46476C78F78D312BE413F21DA9DE87535B532F6867F29787BB8D72A07"
+      },
+      {
+        "test": "Q10CheckBoxHitBehaviorTests",
+        "result": "passed",
+        "trxSha256": "F7415C91309D97727CA7E0B47459126AA9332BCA438412A3F676508B4864357D"
+      }
+    ]
+  },
+  "testArchive": {
+    "file": "final-trx-a13a7dbb.zip",
+    "entries": 320,
+    "bytes": 1419902,
+    "sha256": "4DFC422A9403CCB80CE6B3ECD4B2F9B0FA44F956D8113EF8998DC3AE96F62774",
+    "manifest": "trx-manifest.json"
+  },
+  "package": {
+    "zip": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "pext": "artifacts/GameSaveCenter-0.6.73.pext",
+    "bytesEach": 45739077,
+    "sha256Both": "DD9156E61EC1132B65A9FC906A9D3E58B731C50232B47625DFEE2AF19F450045"
+  },
+  "installation": {
+    "extensionId": "66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "manifestVersion": "0.6.73",
+    "dllVersion": "0.6.73.0",
+    "sourceCommit": "a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+    "report": "artifacts/last-dev-install.txt",
+    "assemblies": [
+      {
+        "file": "GameSaveCenter.Playnite.dll",
+        "identity": "0.6.73+a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+        "sha256": "3417A6A31A27D7EE676E5D6EAAD59FB1730AAFA0AB7A932CCCF2C54CE21809D5"
+      },
+      {
+        "file": "GameSaveCenter.Core.dll",
+        "identity": "0.6.73+a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+        "sha256": "C28E96F8FB2EC03E7E5C9040A7F1B1219EA4E8AA92F54E0183BD20818F506DD3"
+      },
+      {
+        "file": "GameSaveCenter.Contracts.dll",
+        "identity": "0.6.73+a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+        "sha256": "90C10D1263BF4122980C2BF0C257563AC5551AFB5697237EF0AD81C830CF0ACC"
+      },
+      {
+        "file": "Worker/GameSaveCenter.Worker.dll",
+        "identity": "0.6.73+a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+        "sha256": "D920BEC7792C1FCD6DDB65FFB6B8969019112BFA8E12C3B5EBCE457366EAA176"
+      },
+      {
+        "file": "Worker/GameSaveCenter.Core.dll",
+        "identity": "0.6.73+a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+        "sha256": "E592FA8D5B56D53A21E849CA9B01F5A4A0769B916D3C1874FFAF1FF0313F6D28"
+      },
+      {
+        "file": "Worker/GameSaveCenter.Contracts.dll",
+        "identity": "0.6.73+a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+        "sha256": "36E956E76E3CAD306FAB5B7E36F200F56DF0929D4477AEBD85AE2A1A2434D50A"
+      }
+    ]
+  },
+  "playniteHost": {
+    "executable": "D:/software/Playnite/Playnite.DesktopApp.exe",
+    "processId": 13848,
+    "mainWindowHandle": 0,
+    "extensionLog": "playnite-host-load.sanitized.txt",
+    "loadedPluginVersion": "0.6.73.0",
+    "observedGameCount": 3,
+    "actualPluginPageVisuallyVerified": false,
+    "playniteShutdown": "playnite-shutdown.json",
+    "ownedWorkerShutdown": "worker-shutdown.json"
+  },
+  "businessOperations": {
+    "realSaveRestore": false,
+    "mediaDeletion": false,
+    "cloudWrite": false
+  },
+  "driveMappingsChanged": false
+}

@@ -1,0 +1,53 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "runNumber": 1461,
+  "runId": "42110142797",
+  "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42110142797",
+  "branch": "main",
+  "headSha": "a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "build",
+      "id": "127535228072",
+      "sdk": "8.0.423",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": "15/15 success"
+    },
+    {
+      "name": "sdk10-build",
+      "id": "127535227511",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": "8/8 success"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "GameSaveCenter-build-diagnostics",
+      "id": "13457018859",
+      "bytes": 2043777,
+      "sha256": "a76ea8c3ec44a7a89ae1a345627e962b42e4506ac1be986b5727052debbfc6be"
+    },
+    {
+      "name": "GameSaveCenter-windows-preview",
+      "id": "13456819189",
+      "bytes": 90793702,
+      "sha256": "f084060ea7d237739db056de6abf00323f60468f081e5545714b69f9eb2762ec"
+    },
+    {
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "id": "13455029050",
+      "bytes": 978747,
+      "sha256": "d7709f80271fb614a27080093dea436fa57d947caccc202413479a49eed618ac"
+    }
+  ],
+  "requiredChecks": {
+    "status": "远端待验",
+    "reason": "读取 main required checks/ruleset 的现有权限返回403；未重复请求。",
+    "nextAction": "有读取权限的维护者只读执行 gh api repos/Nikilua/GameSaveCenter/branches/main/protection/required_status_checks 并核对 build 与 sdk10-build。"
+  }
+}

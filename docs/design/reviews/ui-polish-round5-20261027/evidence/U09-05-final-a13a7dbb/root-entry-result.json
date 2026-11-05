@@ -1,0 +1,13 @@
+{
+  "completedUtc": "2026-11-05T22:55:38.4512101Z",
+  "sourceCommit": "a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+  "entry": "GameSaveCenter-一键构建安装运行.cmd",
+  "entrySha256": "958D2FA746F78CDD381AE5A72B9A24CFC779743E91EF4AA577212E01972494FA",
+  "processId": 18852,
+  "processWindowHandle": 0,
+  "processExitCode": 0,
+  "outerCommandExitCode": 0,
+  "stdout": "root-entry.stdout.sanitized.log",
+  "stdoutOriginalSha256": "3B5997E26489A4A74D57BED647C65F7948C418990676554CA1FB2E4E28B17383",
+  "stderrBytes": 0
+}

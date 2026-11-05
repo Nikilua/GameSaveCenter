@@ -1,0 +1,11 @@
+{
+  "requestedUtc": "2026-11-05T22:51:52.4311688Z",
+  "pid": 13848,
+  "executable": "<software>\\Playnite\\Playnite.DesktopApp.exe",
+  "session": 1,
+  "windowHandle": "0",
+  "closeMainWindowReturned": false,
+  "forceStopped": true,
+  "remainsRunning": false,
+  "reason": "Only the Playnite instance launched by this final root chain; no other Playnite process existed. Its window handle was zero."
+}

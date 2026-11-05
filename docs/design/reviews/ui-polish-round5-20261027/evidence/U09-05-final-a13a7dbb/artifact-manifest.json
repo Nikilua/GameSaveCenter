@@ -1,0 +1,33 @@
+{
+  "candidate": "a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+  "archive": {
+    "file": "final-trx-a13a7dbb.zip",
+    "entries": 320,
+    "bytes": 1419902,
+    "sha256": "4DFC422A9403CCB80CE6B3ECD4B2F9B0FA44F956D8113EF8998DC3AE96F62774"
+  },
+  "logFiles": [
+    {
+      "sanitized": "root-entry.stdout.sanitized.log",
+      "rawRelative": ".tmp/round5-u09-05-root-a13a7dbb/root-entry.stdout.log",
+      "rawSha256": "3B5997E26489A4A74D57BED647C65F7948C418990676554CA1FB2E4E28B17383",
+      "sanitizedSha256": "982893219930F0DFBC9DFF78266E51105409A60B25090D32CFD7A028C831A96A"
+    },
+    {
+      "sanitized": "scripts-build.stdout.sanitized.log",
+      "rawRelative": ".tmp/round5-u09-04-final-20261106/scripts-build-a13a7dbb/logs/stdout.log",
+      "rawSha256": "A5A60D037D6E18FA3B4125870E6712B9F29075D750CB8E0229DF2DA90E06F747",
+      "sanitizedSha256": "26896BC72E105730AD7ABEDC3ADB991A85504AFD88DE7C1B62F04BD5B118D6EF"
+    }
+  ],
+  "renderReport": {
+    "file": "render-qa-report.txt",
+    "sha256": "F4AB5AC0A27CB4CA628CED3A484035FE70F6841A25EF35D7F68C3C4E426FF461"
+  },
+  "hostLoadExcerpt": {
+    "file": "playnite-host-load.sanitized.txt",
+    "source": "%APPDATA%/Playnite/extensions.log",
+    "profilePathRedacted": true
+  },
+  "originalRawLogsRemainAtReferencedLocalPaths": true
+}
