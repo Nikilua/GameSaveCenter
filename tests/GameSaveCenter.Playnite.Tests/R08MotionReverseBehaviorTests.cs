@@ -299,6 +299,13 @@ public sealed class R08MotionReverseBehaviorTests
         var pressReversedContinuously = false;
         var pressRepressProgressSampled = false;
         var pressTransformStayedIdentity = false;
+        PressedRenderingTrace pressEntryTrace = default;
+        PressedRenderingTrace pressExitTrace = default;
+        PressedRenderingTrace pressReentryTrace = default;
+        PressedRenderingTrace pressFinalPressTrace = default;
+        PressedRenderingTrace pressFinalReleaseTrace = default;
+        var pressFinalPressCompleted = false;
+        var pressFinalReleaseCompleted = false;
         var hoverSweepVisitedCount = 0;
         var hoverSweepMaximumResidualOpacity = 0d;
         var hoverSweepLightReentered = false;
@@ -367,41 +374,44 @@ public sealed class R08MotionReverseBehaviorTests
                 PumpMouseOverProbeUntil(button, true, () => Math.Abs(hoverOverlay.Opacity - 1) < 0.001, ButtonMotionCompletionTimeout);
                 hoverFinal = hoverOverlay.Opacity;
 
-                SetPressedStateProbe(button, true);
-                Assert.True(button.IsPressed, "synthetic state probe did not enter the production button's pressed state.");
-                pressMidpointSampled = PumpDispatcherUntilFast(
+                pressMidpointSampled = ObserveButtonPressedTransition(button, pressedOverlay, true, () => { },
                     () => pressedOverlay.Opacity > 0.01 && pressedOverlay.Opacity < 0.99,
-                    ButtonMotionCompletionTimeout);
+                    ButtonMotionCompletionTimeout, out pressEntryTrace);
                 pressedOverlayMidpoint = pressedOverlay.Opacity;
+                Assert.True(button.IsPressed, "synthetic state probe did not enter the production button's pressed state.");
                 pressTransformStayedIdentity = chrome.RenderTransform.Value.IsIdentity
                     && !DependencyPropertyHelper.GetValueSource(chrome, UIElement.RenderTransformProperty).IsAnimated;
-                SetPressedStateProbe(button, false);
-                Assert.False(button.IsPressed, "synthetic state probe did not leave the production button's pressed state.");
-                pressedOverlayAfterRelease = pressedOverlay.Opacity;
-                pressReleasedContinuously = Math.Abs(pressedOverlayAfterRelease - pressedOverlayMidpoint) <= 0.08;
-
-                pressReleaseProgressSampled = PumpDispatcherUntilFast(
+                pressReleaseProgressSampled = ObserveButtonPressedTransition(button, pressedOverlay, false,
+                    () =>
+                    {
+                        pressedOverlayAfterRelease = pressedOverlay.Opacity;
+                        pressReleasedContinuously = Math.Abs(pressedOverlayAfterRelease - pressedOverlayMidpoint) <= 0.08;
+                    },
                     () => pressedOverlay.Opacity < pressedOverlayAfterRelease - 0.002 && pressedOverlay.Opacity > 0,
-                    ButtonMotionTransitionTimeout);
+                    ButtonMotionTransitionTimeout, out pressExitTrace);
+                Assert.False(button.IsPressed, "synthetic state probe did not leave the production button's pressed state.");
                 pressedOverlayReleaseProgress = pressedOverlay.Opacity;
                 pressedOverlayBeforeRepress = pressedOverlay.Opacity;
-                SetPressedStateProbe(button, true);
-                pressedOverlayAfterRepress = pressedOverlay.Opacity;
-                pressReversedContinuously = Math.Abs(pressedOverlayAfterRepress - pressedOverlayBeforeRepress) <= 0.08;
-                pressTransformStayedIdentity &= chrome.RenderTransform.Value.IsIdentity
-                    && !DependencyPropertyHelper.GetValueSource(chrome, UIElement.RenderTransformProperty).IsAnimated;
-                Assert.True(button.IsPressed, "Second Space key down did not re-enter the pressed state.");
-                pressRepressProgressSampled = PumpDispatcherUntilFast(
+                pressRepressProgressSampled = ObserveButtonPressedTransition(button, pressedOverlay, true,
+                    () =>
+                    {
+                        pressedOverlayAfterRepress = pressedOverlay.Opacity;
+                        pressReversedContinuously = Math.Abs(pressedOverlayAfterRepress - pressedOverlayBeforeRepress) <= 0.08;
+                        pressTransformStayedIdentity &= chrome.RenderTransform.Value.IsIdentity
+                            && !DependencyPropertyHelper.GetValueSource(chrome, UIElement.RenderTransformProperty).IsAnimated;
+                    },
                     () => pressedOverlay.Opacity > pressedOverlayAfterRepress + 0.002 && pressedOverlay.Opacity < 1,
-                    ButtonMotionTransitionTimeout);
+                    ButtonMotionTransitionTimeout, out pressReentryTrace);
+                Assert.True(button.IsPressed, "Second Space key down did not re-enter the pressed state.");
                 pressedOverlayRepressProgress = pressedOverlay.Opacity;
-                PumpDispatcherUntilFast(
+                pressFinalPressCompleted = ObserveButtonPressedTransition(button, pressedOverlay, true, () => { },
                     () => Math.Abs(pressedOverlay.Opacity - 1) < 0.001,
-                    ButtonMotionCompletionTimeout);
+                    ButtonMotionCompletionTimeout, out pressFinalPressTrace);
                 pressedOverlayFinal = pressedOverlay.Opacity;
-                SetPressedStateProbe(button, false);
+                pressFinalReleaseCompleted = ObserveButtonPressedTransition(button, pressedOverlay, false, () => { },
+                    () => Math.Abs(pressedOverlay.Opacity) < 0.001,
+                    ButtonMotionCompletionTimeout, out pressFinalReleaseTrace);
                 Assert.False(button.IsPressed, "second synthetic press did not leave the production button's pressed state.");
-                PumpDispatcherUntil(() => Math.Abs(pressedOverlay.Opacity) < 0.001, ButtonMotionCompletionTimeout);
                 pressedOverlayReleasedFinal = pressedOverlay.Opacity;
                 pressTransformStayedIdentity &= chrome.RenderTransform.Value.IsIdentity
                     && !DependencyPropertyHelper.GetValueSource(chrome, UIElement.RenderTransformProperty).IsAnimated;
@@ -430,6 +440,7 @@ public sealed class R08MotionReverseBehaviorTests
         output.WriteLine($"button hover midpoint={hoverMidpoint:0.###}; exit={hoverExitProgress:0.###}/{hoverAfterLeave:0.###}; reenter={hoverReenterProgress:0.###}/{hoverBeforeReenter:0.###}; final={hoverFinal:0.###}; samples={hoverMidpointSampled}/{hoverExitProgressSampled}/{hoverReenterProgressSampled}; pressed overlay midpoint={pressedOverlayMidpoint:0.###}; release={pressedOverlayAfterRelease:0.###}->{pressedOverlayBeforeRepress:0.###}; re-press={pressedOverlayAfterRepress:0.###}->{pressedOverlayFinal:0.###}; releaseProgress={pressedOverlayReleaseProgress:0.###}; re-pressProgress={pressedOverlayRepressProgress:0.###}; releasedFinal={pressedOverlayReleasedFinal:0.###}; transformIdentity={pressTransformStayedIdentity}; transitions={pressMidpointSampled}/{pressReleaseProgressSampled}/{pressRepressProgressSampled}; light/dark sibling sweep visited={hoverSweepVisitedCount}; max residual={hoverSweepMaximumResidualOpacity:0.####}; re-entry={hoverSweepLightReentered}/{hoverSweepDarkReentered}");
         Assert.Null(exception);
         output.WriteLine($"hover rendering sampler entry={hoverEntryTrace}; exit={hoverExitTrace}; reentry={hoverReentryTrace}");
+        output.WriteLine($"pressed rendering sampler entry={pressEntryTrace}; release={pressExitTrace}; re-entry={pressReentryTrace}; final press={pressFinalPressTrace}; final release={pressFinalReleaseTrace}");
         Assert.True(hoverMidpointSampled, "production hover opacity did not expose an in-flight sample");
         Assert.InRange(Math.Abs(hoverAfterLeave - hoverMidpoint), 0, 0.08);
         Assert.InRange(Math.Abs(hoverAfterReenter - hoverBeforeReenter), 0, 0.08);
@@ -450,7 +461,9 @@ public sealed class R08MotionReverseBehaviorTests
         Assert.True(pressedOverlayReleaseProgress < pressedOverlayAfterRelease, "pressed overlay release did not continue toward zero");
         Assert.InRange(Math.Abs(pressedOverlayAfterRepress - pressedOverlayBeforeRepress), 0, 0.08);
         Assert.True(pressedOverlayRepressProgress > pressedOverlayAfterRepress, "pressed overlay re-press did not continue toward one");
+        Assert.True(pressFinalPressCompleted, "production final press did not render to its pressed value");
         Assert.Equal(1, pressedOverlayFinal, 2);
+        Assert.True(pressFinalReleaseCompleted, "production final press release did not render to its neutral value");
         Assert.Equal(0, pressedOverlayReleasedFinal, 2);
         Assert.Equal(48, hoverSweepVisitedCount);
         Assert.True(hoverSweepLightReentered, "light theme production hover did not respond after a rapid sibling sweep");
@@ -656,6 +669,15 @@ public sealed class R08MotionReverseBehaviorTests
         public override string ToString() => $"frames={Frames},resets={Resets},elapsed={ElapsedMilliseconds:0.###}ms";
     }
 
+    private struct PressedRenderingTrace
+    {
+        public int Frames;
+        public int Resets;
+        public double ElapsedMilliseconds;
+        public double LastOpacity;
+        public override string ToString() => $"frames={Frames},resets={Resets},elapsed={ElapsedMilliseconds:0.###}ms,opacity={LastOpacity:0.###}";
+    }
+
     private static bool ObserveMouseOverTransition(UIElement element, bool value, Action afterSet,
         Func<bool> condition, TimeSpan timeout, out MouseOverSamplingTrace trace)
     {
@@ -707,6 +729,61 @@ public sealed class R08MotionReverseBehaviorTests
             timer.Tick -= deadline;
             CompositionTarget.Rendering -= rendering;
             trace = new MouseOverSamplingTrace { Frames = frames, Resets = resets, ElapsedMilliseconds = elapsed.Elapsed.TotalMilliseconds };
+        }
+    }
+
+    private static bool ObserveButtonPressedTransition(ButtonBase button, Border overlay, bool value, Action afterSet,
+        Func<bool> condition, TimeSpan timeout, out PressedRenderingTrace trace)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Send) { Interval = timeout };
+        var elapsed = new Stopwatch();
+        var armed = false;
+        var sampled = false;
+        var frames = 0;
+        var resets = 0;
+        var lastOpacity = overlay.Opacity;
+        EventHandler rendering = (_, _) =>
+        {
+            if (!armed) return;
+            frames++;
+            if (button.IsPressed != value)
+            {
+                resets++;
+                SetPressedStateProbe(button, value);
+            }
+            lastOpacity = overlay.Opacity;
+            if (condition())
+            {
+                sampled = true;
+                frame.Continue = false;
+            }
+        };
+        EventHandler deadline = (_, _) => frame.Continue = false;
+        CompositionTarget.Rendering += rendering;
+        timer.Tick += deadline;
+        try
+        {
+            SetPressedStateProbe(button, value);
+            afterSet();
+            elapsed.Start();
+            armed = true;
+            lastOpacity = overlay.Opacity;
+            if (condition()) sampled = true;
+            else
+            {
+                timer.Start();
+                Dispatcher.PushFrame(frame);
+            }
+            return sampled;
+        }
+        finally
+        {
+            armed = false;
+            timer.Stop();
+            timer.Tick -= deadline;
+            CompositionTarget.Rendering -= rendering;
+            trace = new PressedRenderingTrace { Frames = frames, Resets = resets, ElapsedMilliseconds = elapsed.Elapsed.TotalMilliseconds, LastOpacity = lastOpacity };
         }
     }
 
