@@ -1165,8 +1165,14 @@
                             <!-- Keep press feedback inside the overlay so a command row or
                                  icon button never shifts or clips its content while pressed. -->
                             <Setter TargetName="ButtonChrome" Property="Opacity" Value="0.96"/>
-                            <Setter TargetName="PressedOverlay" Property="Opacity" Value="{DynamicResource GscButtonPressedOverlayOpacity}"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPressed" Value="True"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PressedOverlay" Property="Opacity" Value="{DynamicResource GscButtonPressedOverlayOpacity}"/>
+                        </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsPressed" Value="True"/>
