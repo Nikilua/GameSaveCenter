@@ -109,7 +109,7 @@ public sealed class Q10ToggleSwitchStateBehaviorTests
                         return GetThumbX(host.Thumb) > 1 && GetThumbX(host.Thumb) < 16;
                     },
                     400,
-                    $"The production toggle animation must expose an in-flight visual value. X={GetThumbX(host.Thumb):0.###}, transform={GetMotionTransformState(host.Toggle, host.Thumb)}.");
+                    $"The production toggle animation must expose an in-flight visual value for {mode}. X={GetThumbX(host.Thumb):0.###}, transform={GetMotionTransformState(host.Toggle, host.Thumb)}.");
             }
             ToggleViaAutomation(host.Toggle);
             Assert.False(state.Value);
@@ -247,7 +247,8 @@ public sealed class Q10ToggleSwitchStateBehaviorTests
     private static void PumpDispatcher(TimeSpan duration)
     {
         var frame = new DispatcherFrame();
-        var timer = new DispatcherTimer { Interval = duration };
+        // Let WPF's render-priority animation clock update before this wait expires.
+        var timer = new DispatcherTimer(DispatcherPriority.Background) { Interval = duration };
         timer.Tick += (_, _) =>
         {
             timer.Stop();
