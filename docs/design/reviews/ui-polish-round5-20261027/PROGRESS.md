@@ -1,3 +1,11 @@
+## 2026-11-06 Round5 真实 Playnite 嵌入页面抽查
+
+冻结源码 f0d2b8f1 使用独立资料、独立 Worker 管道和 64 个合成游戏。首次配置初始化未正常退出，随后用 Playnite 官方退出命令关闭并确认资料根。第二次在过深的测试临时目录中有三条设置恢复测试失败。第三次通过 TestTempRoot 指定较短目录，三条用例均通过，审计最终退出 0。
+
+宿主报告实际 DashboardView 已嵌入 Playnite，未使用专用审计窗口，源身份匹配，视口 1313.33×898 DIP，DPI 150%，使用宿主当前主题。核对了任务空态截图。首页、存档和任务视口已归档。任务队列没有记录，这组截图无法核验选中行边框。审计输出还保留两条在安装测试期间生成的高等级记录。其摘要曾为 unknown 且未捕获 Dashboard，之后真实宿主才写出匹配源码的元数据和图像，不能把整个审计目录当作无问题通过。外部 UIA 未定位侧栏入口，单显示器环境未验证跨屏，实体输入、IME 和呈现帧仍待验。
+
+[真实宿主元数据](evidence/U09-host-f0d2/metadata.json) · [审计摘要](evidence/U09-host-f0d2/summary.json) · [任务页截图](evidence/U09-host-f0d2/tasks.png) · [外部 UIA 边界](evidence/U09-host-f0d2/host-window-exposure.json)
+
 ## 2026-11-06 Round5 U09-02 焦点边界诊断
 
 R05 失败信息增加 Tab 步数、前后控件名称、模板宿主和窗口激活状态，原焦点断言与范围保持。首次定向执行缺少 GscBuildCommit，源码身份门禁拒绝该次结果。补齐真实身份后在非活动桌面编译及复核 5/5 通过，0 跳过。偶发焦点逸出未复现，完整构建仍待验。 [定向 TRX](evidence/U05-02-reduced-motion-focus/focus-boundary-diagnostics.trx)

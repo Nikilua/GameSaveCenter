@@ -1,0 +1,4 @@
+{
+  "Code": "AUDIT_SOURCE_REVISION_MISSING",
+  "Message": "GSC_UI_AUDIT_COMMIT was not set and no assembly informational version was available."
+}

@@ -1,0 +1,562 @@
+{
+  "Scenario": "real-host-window-exposure",
+  "EvidenceSource": "RealPlaynite",
+  "Classification": "top-level-window-observed-ui-automation-not-confirmed",
+  "ObservedUtc": "2026-11-06T10:30:48.8364786Z",
+  "OutputRoot": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-desktop-probe\\frozen\\artifacts\\round5-real-host-f0d2-short",
+  "UserDataMode": "isolated-user-data",
+  "PlayniteExecutable": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+  "StartedProcessId": 11820,
+  "UiAutomationProbeSeconds": 60,
+  "SidebarAutomationFound": false,
+  "UiAutomation": {
+    "Found": false,
+    "Action": "not-found",
+    "Attempts": 26,
+    "ProbeSeconds": 60,
+    "CandidateWindows": [
+      {
+        "Handle": 27724220,
+        "HandleHex": "0x1A709BC",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "CiceroUIWndFrame",
+        "ClassName": "CiceroUIWndFrame",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "CiceroUIWndFrame",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 25365230,
+        "HandleHex": "0x1830AEE",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "WMPMessenger",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 16452158,
+        "HandleHex": "0xFB0A3E",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "WMPMessenger",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 21563350,
+        "HandleHex": "0x14907D6",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "WMPMessenger",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 21367436,
+        "HandleHex": "0x1460A8C",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "WMPMessenger",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 34081172,
+        "HandleHex": "0x2080994",
+        "ProcessId": 11820,
+        "IsVisible": true,
+        "Title": "GameSaveCenter 设置",
+        "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;016e81d7-7db1-4893-a55e-e4ec6876e4fb]",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "EmptyWindowAutomationPeer",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 23464606,
+        "HandleHex": "0x1660A9E",
+        "ProcessId": 11820,
+        "IsVisible": true,
+        "Title": "Playnite",
+        "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;e5c13bfd-ab1a-4644-876c-0e2894848bf7]",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "EmptyWindowAutomationPeer",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 33488918,
+        "HandleHex": "0x1FF0016",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "WPFTaskbarIcon_52ed088c-b3a2-44d7-a725-72e42f7a9e9a",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 19727840,
+        "HandleHex": "0x12D05E0",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "CiceroUIWndFrame",
+        "ClassName": "CiceroUIWndFrame",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "CiceroUIWndFrame",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 20122042,
+        "HandleHex": "0x13309BA",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "WISPTIS",
+        "ClassName": "TabletPenServiceHelperClass",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "WISPTIS",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 29887058,
+        "HandleHex": "0x1C80A52",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "MediaContextNotificationWindow",
+        "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;30f23cca-6d8b-4cf6-afc1-2976e81c2f09]",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "MediaContextNotificationWindow",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 3214002,
+        "HandleHex": "0x310AB2",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;bb3d9850-75dc-4d00-a7df-18c7f9f0c6be]",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 20449662,
+        "HandleHex": "0x138097E",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "Chrome_WidgetWin_0",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 14550140,
+        "HandleHex": "0xDE047C",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "Base_PowerMessageWindow",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 29231156,
+        "HandleHex": "0x1BE0834",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;78b2569c-6adc-4951-9591-aca5326489b8]",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 18483046,
+        "HandleHex": "0x11A0766",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "GDI+ Window (Playnite.DesktopApp.exe)",
+        "ClassName": "GDI+ Hook Window Class",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "GDI+ Window (Playnite.DesktopApp.exe)",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 22088352,
+        "HandleHex": "0x1510AA0",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "SystemResourceNotifyWindow",
+        "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;1a06833c-8d18-48ea-9215-655f1469b24c]",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "SystemResourceNotifyWindow",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 26543968,
+        "HandleHex": "0x1950760",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": ".NET-BroadcastEventWindow.4.0.0.0.14ca613.0",
+        "ClassName": ".NET-BroadcastEventWindow.4.0.0.0.14ca613.0",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": ".NET-BroadcastEventWindow.4.0.0.0.14ca613.0",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 26544708,
+        "HandleHex": "0x1950A44",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "",
+        "ClassName": "CicLoaderWndClass",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "",
+        "AutomationRootControlType": "ControlType.Window"
+      },
+      {
+        "Handle": 29886958,
+        "HandleHex": "0x1C809EE",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "Default IME",
+        "ClassName": "IME",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "Default IME",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 23594830,
+        "HandleHex": "0x168074E",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "Default IME",
+        "ClassName": "IME",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "Default IME",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 8325940,
+        "HandleHex": "0x7F0B34",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "MSCTFIME UI",
+        "ClassName": "MSCTFIME UI",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "MSCTFIME UI",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 20384382,
+        "HandleHex": "0x1370A7E",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "Default IME",
+        "ClassName": "IME",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "Default IME",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 18876134,
+        "HandleHex": "0x12006E6",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "Default IME",
+        "ClassName": "IME",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "Default IME",
+        "AutomationRootControlType": "ControlType.Pane"
+      },
+      {
+        "Handle": 31590418,
+        "HandleHex": "0x1E20812",
+        "ProcessId": 11820,
+        "IsVisible": false,
+        "Title": "Default IME",
+        "ClassName": "IME",
+        "Source": "win32-top-level-enumeration",
+        "AutomationRootFound": true,
+        "SidebarElementFound": false,
+        "AutomationRootName": "Default IME",
+        "AutomationRootControlType": "ControlType.Pane"
+      }
+    ],
+    "MatchedWindows": []
+  },
+  "ProcessSnapshots": [
+    {
+      "ProcessId": 11820,
+      "ProcessName": "Playnite.DesktopApp",
+      "HasExited": false,
+      "MainWindowHandle": 23464606,
+      "MainWindowHandleHex": "0x1660A9E",
+      "MainWindowTitle": "Playnite"
+    }
+  ],
+  "TopLevelWindows": [
+    {
+      "Handle": 27724220,
+      "HandleHex": "0x1A709BC",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "CiceroUIWndFrame",
+      "ClassName": "CiceroUIWndFrame"
+    },
+    {
+      "Handle": 25365230,
+      "HandleHex": "0x1830AEE",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "WMPMessenger"
+    },
+    {
+      "Handle": 16452158,
+      "HandleHex": "0xFB0A3E",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "WMPMessenger"
+    },
+    {
+      "Handle": 21563350,
+      "HandleHex": "0x14907D6",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "WMPMessenger"
+    },
+    {
+      "Handle": 21367436,
+      "HandleHex": "0x1460A8C",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "WMPMessenger"
+    },
+    {
+      "Handle": 34081172,
+      "HandleHex": "0x2080994",
+      "ProcessId": 11820,
+      "IsVisible": true,
+      "Title": "GameSaveCenter 设置",
+      "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;016e81d7-7db1-4893-a55e-e4ec6876e4fb]"
+    },
+    {
+      "Handle": 23464606,
+      "HandleHex": "0x1660A9E",
+      "ProcessId": 11820,
+      "IsVisible": true,
+      "Title": "Playnite",
+      "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;e5c13bfd-ab1a-4644-876c-0e2894848bf7]"
+    },
+    {
+      "Handle": 33488918,
+      "HandleHex": "0x1FF0016",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "WPFTaskbarIcon_52ed088c-b3a2-44d7-a725-72e42f7a9e9a"
+    },
+    {
+      "Handle": 19727840,
+      "HandleHex": "0x12D05E0",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "CiceroUIWndFrame",
+      "ClassName": "CiceroUIWndFrame"
+    },
+    {
+      "Handle": 20122042,
+      "HandleHex": "0x13309BA",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "WISPTIS",
+      "ClassName": "TabletPenServiceHelperClass"
+    },
+    {
+      "Handle": 29887058,
+      "HandleHex": "0x1C80A52",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "MediaContextNotificationWindow",
+      "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;30f23cca-6d8b-4cf6-afc1-2976e81c2f09]"
+    },
+    {
+      "Handle": 3214002,
+      "HandleHex": "0x310AB2",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;bb3d9850-75dc-4d00-a7df-18c7f9f0c6be]"
+    },
+    {
+      "Handle": 20449662,
+      "HandleHex": "0x138097E",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "Chrome_WidgetWin_0"
+    },
+    {
+      "Handle": 14550140,
+      "HandleHex": "0xDE047C",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "Base_PowerMessageWindow"
+    },
+    {
+      "Handle": 29231156,
+      "HandleHex": "0x1BE0834",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;78b2569c-6adc-4951-9591-aca5326489b8]"
+    },
+    {
+      "Handle": 18483046,
+      "HandleHex": "0x11A0766",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "GDI+ Window (Playnite.DesktopApp.exe)",
+      "ClassName": "GDI+ Hook Window Class"
+    },
+    {
+      "Handle": 22088352,
+      "HandleHex": "0x1510AA0",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "SystemResourceNotifyWindow",
+      "ClassName": "HwndWrapper[Playnite.DesktopApp.exe;;1a06833c-8d18-48ea-9215-655f1469b24c]"
+    },
+    {
+      "Handle": 26543968,
+      "HandleHex": "0x1950760",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": ".NET-BroadcastEventWindow.4.0.0.0.14ca613.0",
+      "ClassName": ".NET-BroadcastEventWindow.4.0.0.0.14ca613.0"
+    },
+    {
+      "Handle": 26544708,
+      "HandleHex": "0x1950A44",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "",
+      "ClassName": "CicLoaderWndClass"
+    },
+    {
+      "Handle": 29886958,
+      "HandleHex": "0x1C809EE",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "Default IME",
+      "ClassName": "IME"
+    },
+    {
+      "Handle": 23594830,
+      "HandleHex": "0x168074E",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "Default IME",
+      "ClassName": "IME"
+    },
+    {
+      "Handle": 8325940,
+      "HandleHex": "0x7F0B34",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "MSCTFIME UI",
+      "ClassName": "MSCTFIME UI"
+    },
+    {
+      "Handle": 20384382,
+      "HandleHex": "0x1370A7E",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "Default IME",
+      "ClassName": "IME"
+    },
+    {
+      "Handle": 18876134,
+      "HandleHex": "0x12006E6",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "Default IME",
+      "ClassName": "IME"
+    },
+    {
+      "Handle": 31590418,
+      "HandleHex": "0x1E20812",
+      "ProcessId": 11820,
+      "IsVisible": false,
+      "Title": "Default IME",
+      "ClassName": "IME"
+    }
+  ],
+  "MainWindowHandleNonZero": 1,
+  "TopLevelWindowCount": 25,
+  "VisualEvidenceCaptured": false,
+  "CountsAsVisualPass": false
+}
