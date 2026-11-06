@@ -4,6 +4,8 @@
 
 将分类与退避的纯逻辑用例移到无数据库夹具的 CloudRetryPolicyTests。持久化用例仍使用原数据库夹具。SDK 8.0.423 Release 定向测试 12/12 通过，0 跳过。后续候选双 SDK 及桌面隔离环境的本机完整链仍待验。 [Worker 定向 TRX](evidence/U05-02-reduced-motion-focus/worker-policy.trx)
 
+修复提交 `c44abbac647749522184913bf7ae3affa26c91d8` 的 [Windows CI #1469](https://github.com/Nikilua/GameSaveCenter/actions/runs/42174313887) 已通过双 SDK。SDK 8 作业 127749131247 通过 15/15 步，包括打包和上传。SDK 10 作业 127749131015 通过 8/8 步。预览包 13485421973、基线诊断 13485277562、SDK 10 诊断 13483612639 均对应此 SHA。当前候选的本机完整链、真实 Playnite 输入和分支必需检查名单仍待验。
+
 ## 2026-11-06 Round5 本机构建中断与桌面隔离要求
 
 候选 4719a59c 首次独立构建退出 1。构建期间共享 checkout 的 HEAD 前进到 d7f82e44，R06 源码身份门禁拒绝程序集与当前源码混用。此前焦点相关测试类 14/14 通过。随后从 4719a59c 的独立固定检出重新执行，但 WPF 测试窗口仍出现在用户桌面。已终止该次构建进程树，中文安装启动入口未运行。
