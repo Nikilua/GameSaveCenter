@@ -1,0 +1,38 @@
+--- a/tests/GameSaveCenter.RenderHarness/Program.cs
++++ b/tests/GameSaveCenter.RenderHarness/Program.cs
+@@ -1114,0 +1115,16 @@
++            var taskScrollObservations = new List<string>();
++            var taskCloseObservations = new List<string>();
++
++            string DescribeTaskScrollers(TaskCenterView task, ScrollViewer? selected)
++            {
++                return string.Join(" | ", FindVisualChildren<ScrollViewer>(task)
++                    .Where(viewer => viewer.IsVisible && viewer.ScrollableHeight > 0)
++                    .Select(viewer =>
++                    {
++                        var owner = (viewer.TemplatedParent as FrameworkElement)?.Name;
++                        var id = string.IsNullOrEmpty(owner) ? viewer.Name : owner + "/" + viewer.Name;
++                        return FormattableString.Invariant(
++                            $"{id} selected={ReferenceEquals(viewer, selected)} logicalAllowed={viewer.CanContentScroll} range={viewer.ScrollableHeight:0.###} viewport={viewer.ViewportHeight:0.###} offset={viewer.VerticalOffset:0.###}");
++                    }));
++            }
++
+@@ -1163,0 +1180,3 @@
++                        var beforeClose = page is TaskCenterView taskBeforeClose
++                            ? DescribeTaskScrollers(taskBeforeClose, null)
++                            : null;
+@@ -1168,0 +1188,3 @@
++                        if (page is TaskCenterView taskAfterClose)
++                            taskCloseObservations.Add(
++                                $"TASK_CLOSE cycle={cycle} theme={currentTheme} ms={actionMeasurementsMs["details_close"].Last():0.###} before=[{beforeClose}] after=[{DescribeTaskScrollers(taskAfterClose, null)}]");
+@@ -1178,0 +1201,3 @@
++                    var beforeScroll = page is TaskCenterView taskBeforeScroll
++                        ? DescribeTaskScrollers(taskBeforeScroll, scrollSurface)
++                        : null;
+@@ -1184,0 +1210,3 @@
++                    if (page is TaskCenterView)
++                        taskScrollObservations.Add(
++                            $"TASK_SCROLL cycle={cycle} theme={currentTheme} ms={actionMeasurementsMs["scroll_offset"].Last():0.###} target={targetOffset:0.###} actual={scrollSurface.VerticalOffset:0.###} before=[{beforeScroll}]");
+@@ -1303,0 +1332,2 @@
++            foreach (var observation in taskCloseObservations.Concat(taskScrollObservations))
++                report.AppendLine(observation);
