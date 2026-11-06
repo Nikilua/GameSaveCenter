@@ -129,10 +129,12 @@ public sealed class WorkerIpcClientBehaviorTests : IAsyncLifetime
     public async Task HostShutdownDuringReadIsDistinctFromCallerCancellation()
     {
         var connected = NewSignal();
+        var received = NewSignal();
         var server = RunServerAsync(async pipe =>
         {
             connected.TrySetResult(true);
             await ReadRequestAsync(pipe);
+            received.TrySetResult(true);
             await releaseServer.Task;
         });
 
@@ -144,6 +146,7 @@ public sealed class WorkerIpcClientBehaviorTests : IAsyncLifetime
             CancellationToken.None,
             hostStopping.Token);
         await WaitForSignalAsync(connected.Task, "server connection", server, pending);
+        await WaitForSignalAsync(received.Task, "request receipt", server, pending);
         hostStopping.Cancel();
 
         var exception = await Assert.ThrowsAsync<WorkerIpcCancellationException>(() => AwaitWithTimeout(pending, "host-cancelled read"));

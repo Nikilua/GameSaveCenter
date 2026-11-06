@@ -1848,3 +1848,11 @@ Round5 `cf5173e7`的生产行测试在CI基线与SDK10都因该夹具问题失�
 提交d5387b39dc1a3bc1e10ba0a61363e48876faca38的GitHub run41529821227（#1439）completed/success。工作流定义与实际列表均为两个适用job：SDK8基线job125566804922 15/15步、SDK10.0.401 job125566804561 8/8步全成功。基线全测试和package.ps1内嵌全测试各2026项/1968通过/0失败/58既有skip/155个WPF隔离类；SDK10同样全通过。Render QA成功，WPF静态审查32 XAML/0错误。包脚本验证Playnite、Worker及共享程序集身份均为0.6.73+d5387b39dc1a3bc1e10ba0a61363e48876faca38，预览包及两诊断artifact均绑定该SHA；三者ID/digest见Round5 evidence/U06-02-datagrid-row-overlay-20261103/ci-run-41529821227.json。
 
 这只结案精确候选的GitHub workflow jobs；required-check/branch-protection读取既有403限制不重复请求，完整required checks列表仍远端待验。U09-05本地中文根入口及独立scripts/build.cmd因既有ConstrainedLanguage dot-source拒绝仍需组织授权FullLanguage环境验证，不能以CI或局部测试代替。R06历史run #1438失败保持原样。选中/焦点描边继续应位于独立overlay，不推移或裁切行内容；Playnite真实页面、外部UIA、实体输入/IME、物理DPI仍待验。
+
+## 2026-11-07 Round5 黑窗复核与本机 WPF 执行隔离
+
+`ProcessStartInfo.UseShellExecute = false` 只避免 ShellExecute/Explorer 转交，不隐藏 GUI 应用窗口；`CreateNoWindow` 只处理控制台窗口，WPF HWND 仍会建立在创建进程所在线程桌面。用户截图未提供 HWND/PID，不能据此归因到 Playnite、WPF testhost 或命令行窗口。周期轮询也不能证明采样间隔内没有短闪现。用户再次报告后，必须重开 U09-05，不能继续引用旧 25 ms 结果称问题已解决。
+
+本机运行 WPF 测试、Render QA 或 Playnite 时，将整个父进程树放在 `WinSta0` 的非活动 desktop 上；启动前检查实际线程 desktop 与 input desktop 不同，完成后确认 input desktop 未改变。隐藏 console 不等于桌面隔离。完整中文根入口可能关闭并重启正在运行的 Playnite；代理验收前先识别是否已有用户实例，不能为避免闪屏而在用户桌面执行它。
+
+SDK10 的 `HostShutdownDuringReadIsDistinctFromCallerCancellation` 失败可由测试时序解释：连接信号早于完整请求解析；取消宿主前先等待服务完成 `ReadRequestAsync` 并发出 received 信号，才能保证覆盖“响应读取期间关闭”，不能删除断言、跳过该测试或调整 SDK 基线。此类本地 Named Pipe 行为因权限而跳过时，必须记录为未验证，由 CI 实际执行确认。

@@ -596,3 +596,9 @@ U05加载反馈与真实进度列完成同数据、同主题 before/after Render
 受控WPF Window在1040×700 DIP下进行120秒动作与30秒稳定观察，203个页面切换布局样本p95 408.80ms、最大544.66ms，低于f1a614a8两轮463.20/439.21ms；合并计时仍包含主题变化和同步整页布局，不归因单一控件。U09-04继续进行中。U05-01、U06-07维持代码完成待验收，真实Playnite/UIA/实体输入和物理DPI尚未验证。
 
 f1a614a8的baseline与SDK10 CI jobs均已success；文档提交de9fe37d两个适用job均已success。25bcbf79的SDK10 job成功，baseline job最近仍在编译与测试，未计通过。required-checks此前403，不重复查询。证据位于docs/design/reviews/ui-polish-round5-20261027/evidence/U05-01-U06-07-U09-04-active-layout-20261102/，构建安装启动最终门禁仍待冻结候选执行。
+
+## 2026-11-07 Round5 U09-05 用户黑窗反馈重开
+
+用户新截图再次显示构建期间的黑色窗口，未提供窗口句柄或进程身份。先前 `Default` 25 ms 轮询只适用于指定受控运行，无法排除短于采样间隔的闪现；U09-05 已重开。后续本机 WPF/Playnite 验收须将整个进程树放在非活动 desktop，验证 input desktop 保持 `Default`，不得据此宣称用户截图根因已确认。
+
+`e65a719` 的 SDK10 CI #1482 在 `HostShutdownDuringReadIsDistinctFromCallerCancellation` 发生测试夹具时序竞态：已连管道即取消，但服务还未读完请求。源码测试现补 received 信号与取消前等待。SDK8.0.423 本地 Release 编译成功，目标测试受 Named Pipe 权限限制跳过（1 skip、0 pass）；不算行为验收。精确修复提交、CI 双 SDK、中文根入口完整链与独立 `scripts/build.cmd` 仍待验。U09-05、U09-04、U09-08进行中；U09-06远端待验；Round5计数为5已满足、71代码完成待验收、3进行中、1远端待验。

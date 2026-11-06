@@ -13127,3 +13127,13 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 初次临时Restore漏传仓库标准NuGet/MSBuild参数并停在元数据源；记录失败后使用`build.ps1`标准参数重建并通过，未改SDK基线。另有一次MotionProbe样本失败保留，没有删除或放宽断言。所有RenderHarness窗口以Hidden/Opacity0.01在屏幕外运行，没有闪到用户桌面。
 - 阶段仅清理归属本批的`.tmp/round5-u09-04-aligned-20261106`：边界已核对，0重解析点、无活跃dotnet/RenderHarness和指向临时根的Markdown链接；移除20,405文件/1,010,046,290 bytes。D盘可用字节18,790,506,496→19,848,515,584（净增1,058,009,088）；C盘7,157,215,232→7,156,948,992（同期减266,240，不归因）。SHA、87个顶层输出项、删除命令和保留范围见`cleanup.json`；其它artifacts/.tmp、TRX/TestResults、存档、配置与未知文件未动，盘符和映射未改。
 - 文档提交`5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93`的GitHub `windows-build.yml` run #1462 / 42127707158现已completed/success：SDK8 job127596045500 15/15步、SDK10.0.401 job127596045343 8/8步；预览包/两份诊断artifact ID、大小、digest与head SHA见`ci-run-42127707158.json`。required-check/规则集此前403，不重试，U09-06继续远端待验。纯文档变更按源码/链接检查，不重复本机完整安装启动链；本批新文档提交的CI需推送后查验。状态仍7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验；未进行真实恢复、媒体删除或云写入。
+
+## 2026-11-07 Round5 U09-05 黑窗反馈重开与 SDK10 测试竞态
+
+用户再次提供构建期间黑色窗口覆盖 GameSaveCenter/Playnite 的截图；截图未含 HWND、PID 或桌面身份。此前 25 ms 轮询仅描述受控运行，不能排除采样间隔内闪现或识别本次截图窗口，故 U09-05 从“已满足”重开为“进行中”。不把隔离运行或此处的定向编译描述为黑窗已修复。
+
+精确 docs 提交 e65a719 的 GitHub run #1482 中 SDK 10 job `128131713053` 的原始日志显示 `HostShutdownDuringReadIsDistinctFromCallerCancellation` 因测试服务读到无效/不完整 IPC 请求而失败。测试在确认管道连接后立即取消，但尚未等 `ReadRequestAsync` 完成。修复夹具：服务完整解析请求后置位独立信号，测试在宿主取消前等待该信号；Worker 生产代码和取消语义断言不变。run #1482 的基线 job `128131712735` 当时仍在运行，需记录其终态及 artifact。
+
+本机 SDK 8.0.423 / Release 聚焦执行编译退出 0；1 个目标 Named Pipe 用例因本地环境不允许 Named Pipe 客户端而跳过，0 项通过、0 项失败，不计行为通过。测试进程从 Win32 非活动桌面启动，执行桌面 `GscR5Fix_4ce70e69939641448b1089511bdfa785` 与输入桌面不同；输入桌面前后均为 `Default`。结构化记录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/followup-local-run.json`。
+
+当前工作树仍需提交此测试修复及状态记录，随后查询精确新 SHA 的双 SDK workflow。完整 WPF、Render QA、中文根入口和独立 `scripts/build.cmd` 验收继续在非活动桌面执行；U09-05 需额外定位用户截图的 HWND/进程或完成有瞬态事件覆盖的桌面监测，方可重新结项。当前 Round5 状态为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验。未操作任何盘符或映射；未执行真实存档恢复、媒体删除或云端写入。

@@ -1,0 +1,43 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "runNumber": 1482,
+  "runId": 42287411506,
+  "headSha": "e65a719190e86adb2832d20be80fe482be30544d",
+  "event": "push",
+  "statusAtCapture": "in_progress",
+  "observedAtUtc": "2026-11-06T20:41:20Z",
+  "jobs": [
+    {
+      "id": 128131712735,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423",
+      "statusAtCapture": "in_progress",
+      "inProgressStep": "编译与测试"
+    },
+    {
+      "id": 128131713053,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "failure",
+      "failedStep": "隔离工作树并运行 Release 编译与测试"
+    }
+  ],
+  "sdk10DiagnosticsArtifact": {
+    "id": 13538287193,
+    "name": "GameSaveCenter-sdk10-build-diagnostics",
+    "sizeBytes": 408398,
+    "digest": "sha256:776798f7c2af4b80aa086d4714649b884a2cc088035b01df3bfb0fa45f063723",
+    "headSha": "e65a719190e86adb2832d20be80fe482be30544d"
+  },
+  "failingTest": "GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.HostShutdownDuringReadIsDistinctFromCallerCancellation",
+  "sdk10SourceTestCounts": {
+    "total": 575,
+    "passed": 556,
+    "failed": 1,
+    "skipped": 18
+  },
+  "failure": "The CI test server raised InvalidOperationException in ReadRequestAsync while parsing the request. The test cancelled host shutdown after connection but before confirming receipt. The source shows a race between cancellation and request consumption; production cancellation semantics were not changed.",
+  "jobUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42287411506/job/128131713053"
+}

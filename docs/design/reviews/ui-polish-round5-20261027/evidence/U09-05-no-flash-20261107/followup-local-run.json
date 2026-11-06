@@ -1,0 +1,20 @@
+{
+  "sourceCommitBeforeFixCommit": "e65a719190e86adb2832d20be80fe482be30544d",
+  "workingTreeTestFileSha256": "8819CAFB0C22086742DC7B6F8F53CC64A65887F9D06A86FA054B5C7E57C945BA",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "test": "GameSaveCenter.Playnite.Tests.WorkerIpcClientBehaviorTests.HostShutdownDuringReadIsDistinctFromCallerCancellation",
+  "compileAndTestCommandExitCode": 0,
+  "testCases": 1,
+  "passed": 0,
+  "failed": 0,
+  "skipped": 1,
+  "skipReason": "当前执行环境禁止创建本地 Named Pipe 客户端；在完整 Windows/Playnite 环境执行该行为套件。",
+  "testProcessId": 5652,
+  "testProcessStartedUtc": "2026-11-06T20:40:43.2350177Z",
+  "executionDesktop": "GscR5Fix_4ce70e69939641448b1089511bdfa785",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "behaviorVerified": false,
+  "trx": "worker-ipc-host-shutdown.trx"
+}
