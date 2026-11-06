@@ -1861,3 +1861,11 @@ SDK10 的 `HostShutdownDuringReadIsDistinctFromCallerCancellation` 失败可由�
 Codex 构建执行进程可能位于 `CodexSandboxWindowStation`：其中名为 `Default` 的桌面不等于用户的 `WinSta0\Default`。将 WPF 动画测试放在非活动桌面会冻结/错过 CompositionTarget 动画帧，不能作本地动画验收。启动真实交互桌面进程时显式使用 `lpDesktop="WinSta0\Default"`，并以 `CREATE_NO_WINDOW` 抑制命令控制台；WPF 测试夹具现有 `ShowActivated=false`、`ShowInTaskbar=false`、`Opacity=0.01` 保留。完整运行应以 WinEvent 窗口事件确认只有测试宿主窗和最后预期的稳定 Playnite 窗，不接受控制台窗。
 
 `GameSaveCenter-Run.cmd` 的 `pause` 会在完成/失败后保留命令窗口。本轮移除 pause、明确成功退出 0，并隐藏安装脚本 PowerShell 子进程；独立 `scripts/build.cmd` 同样隐藏其 PowerShell 子进程且保留 `%*` 参数转交。仅聚焦 Q10 在真实桌面通过还不足以结项；须先提交/冻结修订候选，再运行独立 build.cmd 与中文根完整链及 CI。精确历史截图没有 HWND/PID，不能倒推认领为当前发现的控制台。
+
+### 2026-11-07 Round5 U09-05 再次黑窗反馈
+
+移除 pause 不会隐藏 .cmd 自身的控制台。中文根 .cmd 通过 call 等待英文 .cmd 完成，仍可能全程覆盖 Playnite；PowerShell 的 -WindowStyle Hidden 只作用于其子进程。scripts/hide-console.ps1 已加在三条真实入口前，意图仅在 Explorer→cmd→PowerShell 进程链隐藏自有控制台，保留已有终端；当前保护分支尚未以完整父链行为探针验收，旧 true→false probe 早于保护逻辑。控制台隐藏也不等于隔离 WPF HWND。
+
+全量 WPF 构建应放在 **WinSta0 下的非活动 desktop**：CodexSandbox window station 的同名 Default 会使 R08/Q10 动画时钟失败，真实 `WinSta0\Default` 会让 WPF 测试宿主窗口出现在用户桌面。使用同一 WinSta0 新建非活动 desktop、确认 input desktop 始终为 Default，并保留适用 R08/Q10 完整测试；仅在 Default 启动事件监视器。测试窗口仍使用现有无激活/无任务栏/1% opacity 夹具，不改断言或 skip。只有通过真实 desktop 与测试结果复核后才记录其输入桌面未闪屏。
+
+本机 Q10 WPF 动效用例曾运行在 WinSta0 输入桌面，WinEvent 捕获 8 个无标题 testhost HWND show 事件，夹具 Opacity=0.01。这是代理验证会在用户桌面闪现暗色 UI 测试窗的已证实来源；用户截图无 HWND/PID，不能认定就是该窗口。后续本机完整 WPF 构建、Render QA 与 Playnite 启动都放在 WinSta0 非活动 desktop，并监测输入 Default；不要再通过输入桌面跑聚焦 WPF 用例。CodexSandboxWindowStation 的同名 Default/非活动桌面会冻结动画，不能拿来替代。

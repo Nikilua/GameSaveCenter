@@ -8,6 +8,11 @@ where pwsh.exe >nul 2>nul
 if not errorlevel 1 set "PS_EXE=pwsh.exe"
 if not defined PS_EXE set "PS_EXE=powershell.exe"
 
+if not defined GSC_CONSOLE_HIDE_DONE (
+    "%PS_EXE%" -WindowStyle Hidden -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\hide-console.ps1" >nul 2>nul
+    if errorlevel 1 exit /b 90
+)
+
 if not exist "%~dp0scripts\dev-install-run.ps1" (
     echo [FAILED] Missing scripts\dev-install-run.ps1
     exit /b 2

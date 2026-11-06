@@ -1,3 +1,11 @@
+## 2026-11-07 U09-05 再次黑窗反馈：修订未验收
+
+用户再次报告黑窗/闪屏。历史截图没有 HWND/PID，无法确认窗口身份。此前移除 pause 和隐藏 PowerShell 子进程只处理控制台遗留问题；更直接的验证风险已确认：本机曾把 Q10 WPF 动效测试放在输入桌面，WinEvent 捕获 8 个无标题 testhost.net472.exe 窗口显示事件。测试夹具使用 Opacity=0.01，会在用户桌面留下极暗的 UI 画面；这足以解释本轮验证会闪，但不能追溯认定截图中的 HWND 就是这些窗口。
+
+当前工作树增加 scripts/hide-console.ps1，并接入中文入口、英文入口和独立 scripts/build.cmd。它仅尝试隐藏 Explorer 双击命令链自有控制台；从现有终端启动时保持终端可见。既有 true→false 原生控制台探针早于父链保护逻辑，不能作当前保护分支的验收；本候选的无控制台 smoke、Source Validation、git diff --check、未知参数/退出码以及入口参数传播 9/9 通过。控制台隐藏不隔离 WPF 测试 HWND。
+
+本候选尚未提交/冻结。后续所有本机 WPF 构建、Render QA 和 Playnite 启动均需从 WinSta0 的非活动 desktop 执行，并监测输入 Default；不再把 WPF 用例放到用户前台。独立完整 scripts/build.cmd、中文入口完整安装启动链和新 SHA Windows CI 均待验；U09-05 保持进行中。详见[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)与[黑窗反馈诊断](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/followup-user-feedback.md)。
+
 ## 2026-11-07 Round5 U09-05 黑窗复核与冻结验收
 
 精确 SHA `76e5670f02a3bf85432c312a27d1ae51fc379678`：中文真实入口完整构建/测试/发布/打包/安装身份/启动链 exit 0，独立 `scripts/build.cmd` exit 0，SDK 8.0.423 / Release。根链2030项/1972通过/0失败/58跳过；独立构建2030项/1962通过/0失败/68跳过；两轮各157个隔离WPF类，skip均保留原因且不计通过。ZIP/PEXT各45,739,053 bytes、同 SHA-256；6个安装程序集与包内项逐一匹配。

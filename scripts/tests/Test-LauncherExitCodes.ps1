@@ -11,6 +11,7 @@ if ($FixtureRoot) {
 New-Item -ItemType Directory -Path (Join-Path $output 'scripts') -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $repo 'GameSaveCenter-Run.cmd'), (Join-Path $repo 'GameSaveCenter-一键构建安装运行.cmd') -Destination $output
 Copy-Item -LiteralPath (Join-Path $repo 'scripts/build.cmd') -Destination (Join-Path $output 'scripts')
+Copy-Item -LiteralPath (Join-Path $repo 'scripts/hide-console.ps1') -Destination (Join-Path $output 'scripts')
 Set-Content -LiteralPath (Join-Path $output 'scripts/dev-install-run.ps1') -Value '# DEV-INSTALL-010 isolated fixture'
 Set-Content -LiteralPath (Join-Path $output 'scripts/build.ps1') -Value '# isolated fixture'
 $installSource = Get-Content -LiteralPath (Join-Path $repo 'scripts/dev-install-run.ps1') -Raw

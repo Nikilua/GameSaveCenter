@@ -1,3 +1,11 @@
+## 2026-11-07 U09-05 黑窗重复反馈与控制台修订候选
+
+用户再次报告黑窗/闪屏。截图无 HWND/PID，不能认领具体窗口；但我确认之前曾将 Q10 WPF 动效测试直接跑在 WinSta0 输入桌面，WinEvent 记录到 8 个 testhost.net472.exe 无标题 WPF 窗口显示，夹具透明度 1%。这是本轮验证会闪的确定来源，黑屏截图可能与此有关但无法追溯证明。我已停止在输入桌面运行 WPF 测试。
+
+新增 scripts/hide-console.ps1 并接入三条真实入口，解决 Explorer 双击入口的自有控制台遗留。此前 true→false 控制台 probe 早于祖先保护，不能替当前分支背书；本候选只通过无控制台 smoke。Test-LauncherExitCodes.ps1 的三入口×三退出码参数传播 9/9 通过，Source Validation 与 git diff --check 通过。控制台隐藏与 WPF 测试窗口隔离是两件事。
+
+后续本机 WPF 测试、Render QA 和宿主启动都放在 WinSta0 非活动 desktop，并同时监听输入 Default；此前 CodexSandbox 的同名 desktop 会冻结动画时钟，不能替代。独立完整 scripts/build.cmd、中文完整安装启动链、输入桌面窗口事件以及新 SHA CI 仍待完成。U09-05 保持进行中；计数 5 项已满足、71 项代码完成待验收、U09-04/05/08 进行中、U09-06 远端待验。详见[本轮诊断](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/followup-user-feedback.md)。
+
 ## 2026-11-07 Round5 U09-05 隔离桌面完整验收
 
 用户报告验收期间仍闪出黑窗。提交 `76e5670f02a3bf85432c312a27d1ae51fc379678` 将 `dev-install-run.ps1` 的 Playnite 启动改为 `ProcessStartInfo.UseShellExecute = false`，入口修订号 `DEV-INSTALL-010`，并加入口源码守卫。精确源码的中文根入口完整安装启动链与独立 `scripts/build.cmd` 均以 SDK 8.0.423 / Release 退出 0；包和六个安装程序集逐项核验一致。普通权限安装写入拒绝保留为失败，提升后的全链才计通过。

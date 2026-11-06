@@ -23,3 +23,19 @@
 精确 SHA `62a363d3a34ea9b9678aee3e8424113416778eae` 的 GitHub run #1483 已完成：SDK 8.0.423 baseline job `128148639481` 与 SDK 10.0.401 job `128148639830` 均 success；Artifact 身份、大小与 digest 见 [`ci-run-1483.json`](ci-run-1483.json)。这些结果验证的是前一提交的 Worker 测试修复，尚非当前批处理修订候选。
 
 本次修订尚未完成其独立 `scripts/build.cmd` 以及中文入口完整安装启动链，也尚未覆盖其全过程窗口事件。因此仍不声称用户截图中的黑窗已被识别或修复；原截图无 HWND/PID 的限制继续有效。完整链将使用 `WinSta0\Default` 和隐藏控制台，WPF 测试仍在可推进动画时钟的桌面执行；仅接受测试宿主的 1% 透明非激活窗以及最终稳定的 Playnite 启动窗。
+
+## 2026-11-07 再次反馈：父命令窗口仍可见
+
+用户指出上述修订后仍闪屏。进一步核对后，中文入口 `GameSaveCenter-一键构建安装运行.cmd` 仍以同步 `call` 执行 `GameSaveCenter-Run.cmd`；这两个批处理共享并保留外层 `cmd.exe` 窗口直到整个构建完成。移除末尾 `pause` 只能防止完成后等待，隐藏 PowerShell 子进程不能隐藏这个父窗口。独立 `scripts/build.cmd` 也存在相同的入口控制台问题。这是明确的源码缺陷，但截图仍没有 HWND/PID，不能追溯认领截图中的历史窗口。
+
+修订候选新增 `scripts/hide-console.ps1`，并从中文入口、英文入口及 `scripts/build.cmd` 在开始构建前调用。脚本验证当前 PowerShell 的父链是 Explorer→`cmd.exe` 后才隐藏，已打开的终端保持可见；如果控制台隐藏不成功则入口退出 90。WinSta0 非活动 desktop 上的原生控制台 probe 读取到 `beforeVisible=true`、`afterVisible=false`，exit 0；不切换输入 desktop。Source Validation、`git diff --check`、隐藏脚本无控制台 smoke exit 0、build.cmd 未知参数探针 exit 1 且 `NamedParameterNotFound` 均通过。新增 PowerShell 文件已按 Windows PowerShell 5.1 约束加 UTF‑8 BOM。
+
+该证据只证明隐藏函数对 Explorer 自有控制台的核心隐藏调用有效；全链/独立 build 的新提交验收仍待完成。所有 WPF 测试与 Playnite 启动会放在 WinSta0 非活动 desktop 上，另在输入 `WinSta0\Default` 监控窗口事件，防止测试宿主覆盖用户桌面。用户截图窗口身份仍未知，故完整链门禁和后续用户验收前 U09-05 不结项。
+
+## 2026-11-07 用户再次指出仍然闪屏
+
+新截图显示黑色窗口遮挡 Playnite/GameSaveCenter，但没有 HWND、PID 或窗口类；当前没有 Playnite 进程，无法追溯识别截图中的窗口。控制台隐藏改动未能解释截图中的完整 UI 内容，也不能据此声称已经解决。
+
+复核本机验证手法后发现此前 Q10 动效聚焦测试在 WinSta0 输入桌面运行。WinEvent 在测试全过程记录 8 个 testhost.net472.exe 无标题 HwndWrapper 显示事件，未记录控制台或 Playnite；对应 WPF 夹具设置 Opacity=0.01。这确认本轮测试会把极暗的 UI 测试窗显示到用户桌面，可能造成截图所见的闪现，但缺少截图 HWND/PID，不能把二者等同。后续测试改在 WinSta0 的非活动 desktop，测试期间监测输入 Default，不再在用户前台启动 WPF 测试。
+
+入口行为探针在更新夹具以包含新隐藏脚本后通过三入口×三退出码 9/9，Source Validation、git diff --check 通过。此前原生控制台 true→false 结果早于祖先进程保护的加入；当前保护分支没有经过 Explorer→cmd→PowerShell 的完整行为探针，故不作已验收声明。完整 build.cmd、中文根链、输入桌面 WinEvent 和当前 SHA CI 均待验，U09-05 保持进行中。
