@@ -1,0 +1,58 @@
+{
+  "recordedAtUtc": "2026-11-05T23:29:04.4258632Z",
+  "reason": "Initial isolated restore omitted the repository build.ps1 MSBuild arguments; restore stalled before assets. Retained the stdout/stderr logs. Restart uses the repository build flags and stage-local TEMP.",
+  "runnerPid": 22736,
+  "runnerStarted": "2026-11-06T07:25:20.4239944+08:00",
+  "dotnetProcesses": [
+    {
+      "Id": 4148,
+      "StartTime": "2026-11-06T07:25:23.7307895+08:00",
+      "CPU": 0.109375
+    },
+    {
+      "Id": 9744,
+      "StartTime": "2026-11-06T07:25:23.1731126+08:00",
+      "CPU": 0.09375
+    },
+    {
+      "Id": 11592,
+      "StartTime": "2026-11-06T07:25:22.7533308+08:00",
+      "CPU": 0.109375
+    },
+    {
+      "Id": 19184,
+      "StartTime": "2026-11-06T07:25:23.0325839+08:00",
+      "CPU": 0.109375
+    },
+    {
+      "Id": 19304,
+      "StartTime": "2026-11-06T07:25:23.452138+08:00",
+      "CPU": 0.09375
+    },
+    {
+      "Id": 19324,
+      "StartTime": "2026-11-06T07:25:23.5911396+08:00",
+      "CPU": 0.109375
+    },
+    {
+      "Id": 21568,
+      "StartTime": "2026-11-06T07:25:22.6072917+08:00",
+      "CPU": 0.09375
+    },
+    {
+      "Id": 25948,
+      "StartTime": "2026-11-06T07:25:23.8702072+08:00",
+      "CPU": 0.09375
+    },
+    {
+      "Id": 26004,
+      "StartTime": "2026-11-06T07:25:23.311025+08:00",
+      "CPU": 0.078125
+    },
+    {
+      "Id": 26732,
+      "StartTime": "2026-11-06T07:25:22.8936483+08:00",
+      "CPU": 0.09375
+    }
+  ]
+}

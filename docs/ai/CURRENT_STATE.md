@@ -1,3 +1,10 @@
+## 2026-11-06 Round5 U09-04 同条件离屏复测更新
+
+- U00 `5d0a2448d6315af61571d0d3fbecfd902e5344fc` 与冻结候选 `a13a7dbbe27f4cb90d37057163e1481aa8abf355` 已在统一 Harness、固定样本时间、1040×700 DIP、双主题和60秒+30秒时长下完成正序/反序配对。托管累计分配降低约12.6%–13.4%；全局P95方向不一致，滚动与详情收起代理两轮有回退信号，不能冒充实际帧/物理输入测量。
+- Task整页外层滚动代理较慢，TaskGrid内部滚动专项持平；逐页小样本和Dispatcher长尾未锁定单一源码因果。动效探针保留一次深色中点失败和681.6ms回调长尾；另一反转轮正常。全部窗口隐藏、屏幕外且Opacity 0.01；没有为测试打开可见窗口，也没有更改C/D/R盘符、SUBST或映射。
+- 原始报告、哈希、失败中点图、CI身份和清理明细见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-aligned-20261106/`。唯一阶段根`.tmp/round5-u09-04-aligned-20261106`已按literal路径清理20,405文件/1,010,046,290 bytes；D可用空间净增1,058,009,088 bytes，C变化-266,240 bytes（同期波动，不归因）。其它artifacts/.tmp/TestResults/配置/存档均未触碰。
+- U09-04仍进行中，因没有Playnite前台ETW/DWM帧或物理输入测量，不把离屏回调当真实呈现；U09-06 required-check名单仍远端待验。文档提交 `5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93` 的CI #1462（run 42127707158）completed/success：SDK8 job127596045500 15/15步、SDK10 job127596045343 8/8步，artifact身份见该复测证据目录 `ci-run-42127707158.json`。状态计数7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。
+
 ## 2026-11-06 Round5 最终入口门禁与当前未验项：a13a7dbb
 
 - 冻结源码 `a13a7dbbe27f4cb90d37057163e1481aa8abf355`。本机 SDK 8.0.423 / Release：独立 `scripts/build.cmd` exit0，160 TRX / 2030项 / 1962通过 / 0失败 / 68跳过；中文根入口完整编译、测试、Worker发布、打包、安装身份和启动链 exit0，160 TRX / 2030项 / 1972通过 / 0失败 / 58跳过。跳过原因、320份TRX、包/安装SHA见 `reviews/ui-polish-round5-20261027/evidence/U09-05-final-a13a7dbb/`。

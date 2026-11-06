@@ -1,3 +1,13 @@
+## 2026-11-06 Round5 U09-04 同夹具正反序复测：U00 / a13a7dbb
+
+在 SDK 8.0.423 下，用 U00 `5d0a2448d6315af61571d0d3fbecfd902e5344fc` 和候选 `a13a7dbbe27f4cb90d37057163e1481aa8abf355` 做了两组顺序相反的 60 秒活动 + 30 秒稳定观察，统一 1040×700 DIP、双主题、七个假工作区和固定样本UTC。窗口隐藏且位于屏幕外，复用相同Harness源码。两个候选运行均 actionFailures=0。
+
+活动段托管累计分配下降12.64%–13.36%；全局周期P95两组方向相反，不能判断稳定回退。最大滚动器 `scroll_offset` P95 两组均上升（16.61–17.65 → 29.42–31.60 ms），详情收起P95从10.67–10.85升到18.99–19.68 ms。后续逐页采样将滚动差异定位到Task整页外层滚动代理、不是TaskGrid内部滚动器；已有TaskGrid专项Light 16.526→16.409 ms、Dark 16.498→16.499 ms。逐页样本仅约5–7个且出现分散的Dispatcher长尾，尚未定位到单一生产控件/源码因果，不据此延长动画或盲改布局。
+
+候选动效回调探针一次深色中点失败、精确重试通过；重试有一个681.6 ms `CompositionTarget.Rendering`回调间隔，另一轮正反切换约34.5/36.7 ms。该事件不是合成器真实呈现帧，物理输入响应、Playnite前台ETW/DWM帧仍待宿主验收，因此U09-04继续“进行中”。完整指标、原始报告/失败证据、固定Harness源码哈希见[本批复测证据](evidence/U09-04-aligned-20261106/BASELINE.md)和[`metrics.json`](evidence/U09-04-aligned-20261106/metrics.json)。无生产UI源码变更，未执行存档恢复、媒体删除或云写入。
+
+本机中文根入口完整链及独立`scripts/build.cmd`由冻结候选`a13a7dbb`的既有验收覆盖；精确源码CI #1461 两SDK已成功。文档提交`5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93`对应CI #1462（run 42127707158）现已completed/success：SDK8 job `127596045500` 15/15步、SDK10 job `127596045343` 8/8步成功，三个 artifact ID/digest 见[`ci-run-42127707158.json`](evidence/U09-04-aligned-20261106/ci-run-42127707158.json)。唯一阶段目录`.tmp/round5-u09-04-aligned-20261106`已归档核验后清理，20,405文件/1,010,046,290 bytes，净释放D盘1,058,009,088 bytes；精确路径、边界和C/D前后空间见[`cleanup.json`](evidence/U09-04-aligned-20261106/cleanup.json)。required-check名单仍因既有403“远端待验”，不重复请求。当前80项状态仍7项已满足、71项代码完成待验收、U09-04进行中、U09-06远端待验。
+
 ## 2026-11-06 Round5 U09-05/U09-08 冻结候选最终门禁：a13a7dbb
 
 冻结源码候选 `a13a7dbbe27f4cb90d37057163e1481aa8abf355`。独立 `scripts/build.cmd` 以 SDK 8.0.423 / Release 退出0：160份TRX、2030项、1962通过、0失败、68跳过；真实中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 完成编译、测试、win-x64 Worker发布、ZIP/PEXT打包、安装身份核验和Playnite启动，入口及外层退出码均为0：160份TRX、2030项、1972通过、0失败、58跳过，157/157个WPF隔离组完成。跳过的原因和数量均保留在TRX，且不计通过。320份TRX及逐文件SHA见[evidence/U09-05-final-a13a7dbb](evidence/U09-05-final-a13a7dbb/FINAL-ACCEPTANCE.md)。

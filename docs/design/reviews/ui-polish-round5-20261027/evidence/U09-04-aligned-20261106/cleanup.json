@@ -1,0 +1,483 @@
+{
+  "stage": "U09-04 aligned offscreen baseline/candidate comparison",
+  "targetRelative": ".tmp/round5-u09-04-aligned-20261106",
+  "targetNormalized": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-04-aligned-20261106",
+  "repositoryRoot": "D:\\workplace\\github\\GameSaveCenter",
+  "boundaryVerified": "Resolved target is a unique direct descendant of repository .tmp; target and .tmp are not reparse points; no nested reparse points.",
+  "ownedFiles": 20405,
+  "ownedBytes": 1010046290,
+  "topLevelOutputs": [
+    {
+      "path": "candidate-attrib-motion-output",
+      "fileCount": 8,
+      "bytes": 689339.0
+    },
+    {
+      "path": "candidate-attrib-motion-retry-output",
+      "fileCount": 9,
+      "bytes": 803585.0
+    },
+    {
+      "path": "candidate-attrib-output",
+      "fileCount": 1,
+      "bytes": 68979.0
+    },
+    {
+      "path": "candidate-common-fixed-output",
+      "fileCount": 1,
+      "bytes": 38850.0
+    },
+    {
+      "path": "candidate-common-rep2-output",
+      "fileCount": 1,
+      "bytes": 38896.0
+    },
+    {
+      "path": "candidate-fixed-output",
+      "fileCount": 1,
+      "bytes": 38851.0
+    },
+    {
+      "path": "candidate-motion-output",
+      "fileCount": 9,
+      "bytes": 803100.0
+    },
+    {
+      "path": "candidate-output",
+      "fileCount": 1,
+      "bytes": 38868.0
+    },
+    {
+      "path": "current",
+      "fileCount": 9430,
+      "bytes": 500565119.0
+    },
+    {
+      "path": "test-temp",
+      "fileCount": 0,
+      "bytes": 0
+    },
+    {
+      "path": "u00",
+      "fileCount": 5427,
+      "bytes": 252390937.0
+    },
+    {
+      "path": "u00-attrib-output",
+      "fileCount": 1,
+      "bytes": 67067.0
+    },
+    {
+      "path": "u00-common",
+      "fileCount": 5427,
+      "bytes": 252438481.0
+    },
+    {
+      "path": "u00-common-fixed-output",
+      "fileCount": 1,
+      "bytes": 38942.0
+    },
+    {
+      "path": "u00-common-motion-output",
+      "fileCount": 9,
+      "bytes": 786190.0
+    },
+    {
+      "path": "u00-common-rep2-output",
+      "fileCount": 1,
+      "bytes": 38941.0
+    },
+    {
+      "path": "u00-fixed-output",
+      "fileCount": 1,
+      "bytes": 37914.0
+    },
+    {
+      "path": "u00-motion-output",
+      "fileCount": 4,
+      "bytes": 272649.0
+    },
+    {
+      "path": "u00-motion-retry-output",
+      "fileCount": 5,
+      "bytes": 359316.0
+    },
+    {
+      "path": "u00-output",
+      "fileCount": 1,
+      "bytes": 37959.0
+    },
+    {
+      "path": "attribution-build-status.json",
+      "fileCount": 1,
+      "bytes": 219
+    },
+    {
+      "path": "attribution-probe-status.json",
+      "fileCount": 1,
+      "bytes": 247
+    },
+    {
+      "path": "build-attribution.ps1",
+      "fileCount": 1,
+      "bytes": 2171
+    },
+    {
+      "path": "build-u00-common.ps1",
+      "fileCount": 1,
+      "bytes": 2337
+    },
+    {
+      "path": "candidate-attrib-motion-retry.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "candidate-attrib-motion-retry.stdout.log",
+      "fileCount": 1,
+      "bytes": 2266
+    },
+    {
+      "path": "common-build-status.json",
+      "fileCount": 1,
+      "bytes": 337
+    },
+    {
+      "path": "common-harness-amendment.json",
+      "fileCount": 1,
+      "bytes": 967
+    },
+    {
+      "path": "common-probe-status.json",
+      "fileCount": 1,
+      "bytes": 256
+    },
+    {
+      "path": "common-rep2-status.json",
+      "fileCount": 1,
+      "bytes": 226
+    },
+    {
+      "path": "current-attrib-motion.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-attrib-motion.stdout.log",
+      "fileCount": 1,
+      "bytes": 1496
+    },
+    {
+      "path": "current-attrib-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-attrib-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 68646
+    },
+    {
+      "path": "current-attribution-build.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-attribution-build.stdout.log",
+      "fileCount": 1,
+      "bytes": 844
+    },
+    {
+      "path": "current-build.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-build.stdout.log",
+      "fileCount": 1,
+      "bytes": 844
+    },
+    {
+      "path": "current-common-fixed-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-common-fixed-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 38517
+    },
+    {
+      "path": "current-fixed-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-fixed-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 38518
+    },
+    {
+      "path": "current-motion.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-motion.stdout.log",
+      "fileCount": 1,
+      "bytes": 2266
+    },
+    {
+      "path": "current-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 38535
+    },
+    {
+      "path": "current-rep2-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-rep2-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 38563
+    },
+    {
+      "path": "current-restore.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "current-restore.stdout.log",
+      "fileCount": 1,
+      "bytes": 739
+    },
+    {
+      "path": "fixed-runner-status.json",
+      "fileCount": 1,
+      "bytes": 245
+    },
+    {
+      "path": "inject-allocation.ps1",
+      "fileCount": 1,
+      "bytes": 7916
+    },
+    {
+      "path": "page-attribution-instrumentation.json",
+      "fileCount": 1,
+      "bytes": 1043
+    },
+    {
+      "path": "restore-abort-note.json",
+      "fileCount": 1,
+      "bytes": 1526
+    },
+    {
+      "path": "run-attribution-probes.ps1",
+      "fileCount": 1,
+      "bytes": 2545
+    },
+    {
+      "path": "run-common-probes.ps1",
+      "fileCount": 1,
+      "bytes": 2870
+    },
+    {
+      "path": "run-common-rep2.ps1",
+      "fileCount": 1,
+      "bytes": 2452
+    },
+    {
+      "path": "run-fixed-probes.ps1",
+      "fileCount": 1,
+      "bytes": 2789
+    },
+    {
+      "path": "run-probes.ps1",
+      "fileCount": 1,
+      "bytes": 3823
+    },
+    {
+      "path": "runner-status.json",
+      "fileCount": 1,
+      "bytes": 229
+    },
+    {
+      "path": "stage-start.json",
+      "fileCount": 1,
+      "bytes": 922
+    },
+    {
+      "path": "u00-build.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-build.stdout.log",
+      "fileCount": 1,
+      "bytes": 828
+    },
+    {
+      "path": "u00-common-attrib-motion.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-common-attrib-motion.stdout.log",
+      "fileCount": 1,
+      "bytes": 2266
+    },
+    {
+      "path": "u00-common-attrib-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-common-attrib-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 66734
+    },
+    {
+      "path": "u00-common-attribution-build.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-common-attribution-build.stdout.log",
+      "fileCount": 1,
+      "bytes": 856
+    },
+    {
+      "path": "u00-common-build.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-common-build.stdout.log",
+      "fileCount": 1,
+      "bytes": 856
+    },
+    {
+      "path": "u00-common-common-fixed-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-common-common-fixed-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 38609
+    },
+    {
+      "path": "u00-common-rep2-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-common-rep2-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 38608
+    },
+    {
+      "path": "u00-common-restore.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-common-restore.stdout.log",
+      "fileCount": 1,
+      "bytes": 751
+    },
+    {
+      "path": "u00-fixed-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-fixed-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 37581
+    },
+    {
+      "path": "u00-motion-retry.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-motion-retry.stdout.log",
+      "fileCount": 1,
+      "bytes": 1302
+    },
+    {
+      "path": "u00-motion.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-motion.stdout.log",
+      "fileCount": 1,
+      "bytes": 1213
+    },
+    {
+      "path": "u00-probe.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-probe.stdout.log",
+      "fileCount": 1,
+      "bytes": 37626
+    },
+    {
+      "path": "u00-restore.stderr.log",
+      "fileCount": 1,
+      "bytes": 0
+    },
+    {
+      "path": "u00-restore.stdout.log",
+      "fileCount": 1,
+      "bytes": 723
+    }
+  ],
+  "reparsePoints": 0,
+  "activeBuildOrHarnessProcesses": [],
+  "markdownLinkReferences": [],
+  "evidenceFilesVerifiedBeforeCleanup": 35,
+  "evidenceDirectory": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-04-aligned-20261106",
+  "removedUsing": "PowerShell Remove-Item -LiteralPath 'D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-04-aligned-20261106' -Recurse -Force",
+  "removed": true,
+  "diskSpaceBytes": {
+    "beforeStageCreation": {
+      "C": 9167724544,
+      "D": 19847577600
+    },
+    "immediatelyBeforeCleanup": {
+      "C": 7157215232,
+      "D": 18790506496
+    },
+    "immediatelyAfterCleanup": {
+      "C": 7156948992,
+      "D": 19848515584
+    },
+    "netReleased": {
+      "C": -266240,
+      "D": 1058009088
+    }
+  },
+  "retained": [
+    "Six fixed-time endurance reports, including two paired replications and one low-overhead attribution pair",
+    "U00 and candidate motion reports, initial failure and exact retry, selected midpoint PNGs",
+    "SDK8.0.423 harness build and restore diagnostics, status JSON, source/harness identity and SHA manifests",
+    "All other artifacts/.tmp paths, user and other-task TRX/TestResults, saves, configuration, unknown files, and SDK cache"
+  ],
+  "notDeleted": [
+    "all other .tmp and artifacts paths",
+    "user and other-task TestResults/TRX, saves, configuration, and unknown files",
+    "SDK cache and every drive letter or mapping"
+  ],
+  "removedAtUtc": "2026-11-06T00:21:42Z"
+}

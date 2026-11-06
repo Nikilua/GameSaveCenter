@@ -1,0 +1,17 @@
+{
+  "stage": "U09-04 aligned offscreen baseline/candidate rerun",
+  "recordedAtUtc": "2026-11-05T23:22:58.4147333Z",
+  "recordedAtShanghai": "2026-11-06T07:22:58.4170756+08:00",
+  "repositoryRoot": "D:\\workplace\\github\\GameSaveCenter",
+  "baselineSource": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+  "candidateSource": "a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+  "sdkVersion": "8.0.423",
+  "sdkPath": "C:\\Users\\lopmatu\\AppData\\Local\\GameSaveCenter\\dotnet-sdk-8.0.423\\dotnet.exe",
+  "preStageFreeBytes": {
+    "C": 9167724544,
+    "D": 19847577600
+  },
+  "temporaryRoot": ".tmp/round5-u09-04-aligned-20261106",
+  "evidenceRoot": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-aligned-20261106",
+  "planned": "Two sequential snapshots; same existing measurement injection script; hidden Release restore/build; 60s active plus 30s settling per source; no visible host window"
+}

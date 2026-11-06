@@ -1,0 +1,63 @@
+{
+  "runId": 42127707158,
+  "runNumber": 1462,
+  "workflow": ".github/workflows/windows-build.yml",
+  "workflowName": "Windows 构建验证",
+  "event": "push",
+  "headBranch": "main",
+  "headSha": "5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93",
+  "status": "completed",
+  "conclusion": "success",
+  "queriedAtUtc": "2026-11-06T00:19:10Z",
+  "jobs": [
+    {
+      "id": 127596045500,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423 repository baseline",
+      "status": "completed",
+      "conclusion": "success",
+      "completedSteps": 15,
+      "applicableSteps": 15,
+      "includes": ["source structure", "diagnostic self-test", "SDK baseline", "Release build/tests", "Render QA", "WPF static review", "Playnite package", "artifact upload"]
+    },
+    {
+      "id": 127596045343,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "success",
+      "completedSteps": 8,
+      "applicableSteps": 8
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13465940230,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90793446,
+      "digest": "sha256:2d439bddb00ee0c4805dfe75788ef20ee5acc892fe340398e01c2372de2c289e",
+      "expiresAt": "2027-02-03T23:11:40Z",
+      "headSha": "5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93"
+    },
+    {
+      "id": 13465530937,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2043472,
+      "digest": "sha256:03947814a51cff43c405f9b94286d0747cb51a42efdfccb2a14e1dc13facac1a",
+      "expiresAt": "2026-11-20T00:13:32Z",
+      "headSha": "5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93"
+    },
+    {
+      "id": 13462524350,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 978450,
+      "digest": "sha256:4ac167d7baa995b9971c0ac7727216d807e4f92472ddea58c31b86bf551ebbc9",
+      "expiresAt": "2026-11-19T23:39:55Z",
+      "headSha": "5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93"
+    }
+  ],
+  "requiredChecks": {
+    "status": "remote pending",
+    "note": "Branch protection/required-status-check read previously returned 403. The same read is not retried; a maintainer with access must read the required checks for main. The two applicable workflow jobs are enumerated above and both succeeded."
+  }
+}

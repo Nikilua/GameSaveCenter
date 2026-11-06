@@ -1,3 +1,9 @@
+## 2026-11-06 Round5 U09-04 固定Harness配对复测
+
+- U00 `5d0a2448d6315af61571d0d3fbecfd902e5344fc` 与候选 `a13a7dbbe27f4cb90d37057163e1481aa8abf355` 用一致的 RenderHarness 文件、固定UTC、双主题、1040×700 DIP和60秒活动+30秒稳定段做正序/反序配对。活动段托管累计分配降低12.64%–13.36%；Task整页最大滚动与详情收起逻辑布局代理较慢，TaskGrid内部滚动专项持平。逐页尾部样本少且桌面Dispatcher长尾明显，没有锁定生产源码单点因果，不能以延长动画规避。
+- `CompositionTarget.Rendering`只反映受控窗口Dispatcher回调：候选一次成功重试有681.6ms长间隔，另一快速反转约34.5/36.7ms；首次深色中点异常保留。该指标不是实际合成器帧。U09-04继续进行中，待真实Playnite前台呈现/物理输入证据；原始报告、失败图、哈希在Round5 `evidence/U09-04-aligned-20261106/`。
+- 本阶段只清理自有`.tmp/round5-u09-04-aligned-20261106`，20,405文件/1,010,046,290 bytes、0重解析点、无活跃dotnet/RenderHarness；SHA/删除清单在同目录`cleanup.json`与`files.json`。D可用空间净增1,058,009,088 bytes，C变化-266,240 bytes，不归因。构建/渲染窗口隐藏、离屏；本阶段不操作盘符或映射。文档SHA `5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93` 的run #1462（42127707158）两个适用job completed/success，SDK8 15/15步、SDK10 8/8步，三份artifact绑定SHA。U09-06保护API403沿用既有权限结果，不重试。
+
 ## 2026-11-06 Round5 当前冻结候选：a13a7dbb
 
 - `a13a7dbbe27f4cb90d37057163e1481aa8abf355` 的SDK8.0.423独立 `scripts/build.cmd` exit0；真实中文根入口转交英文 `GameSaveCenter-Run.cmd` 后完整编译、测试、发布、打包、安装核验和Playnite启动exit0。两入口各160 TRX / 2030项 / 0失败，独立构建68跳过，完整入口58跳过；skip均保留原因且不计通过。320份TRX归档、包/安装身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-a13a7dbb/`。

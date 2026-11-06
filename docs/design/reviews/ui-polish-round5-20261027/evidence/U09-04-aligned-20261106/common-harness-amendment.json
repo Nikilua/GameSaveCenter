@@ -1,0 +1,18 @@
+{
+  "createdAtUtc": "2026-11-05T23:45:33.5051969Z",
+  "sourceProduction": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+  "probeHarness": "a13a7dbbe27f4cb90d37057163e1481aa8abf355 plus same temporary allocation/frame instrumentation",
+  "copiedFiles": [
+    "Program.cs",
+    "FakeDashboardData.cs",
+    "FakeSampleClock.cs"
+  ],
+  "compatibilityPatch": "Removed only three NotificationRecordDto.Source initializers unsupported by U00 DTO; temporary harness fixture only",
+  "programSha256": "59DE608B4F30B518B6D877F05663EF0A4056A829178D3BD45BFD3F5A25A67627",
+  "candidateProgramSha256": "59DE608B4F30B518B6D877F05663EF0A4056A829178D3BD45BFD3F5A25A67627",
+  "fakeSampleClockSha256": "992FEEBBCA8C2B59C2519DD915A22ADB5AE94408434F84E3A407661514E08E83",
+  "removedSourceInitializers": 3,
+  "dFreeBefore": 19055595520,
+  "dFreeAfter": 18817003520,
+  "next": "Restore/build U00 production with shared a13 harness, then fixed-time U00/current probe pair"
+}

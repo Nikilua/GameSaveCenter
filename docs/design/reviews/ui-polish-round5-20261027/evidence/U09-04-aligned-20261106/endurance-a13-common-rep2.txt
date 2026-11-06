@@ -1,0 +1,317 @@
+GameSaveCenter 30-minute endurance probe
+Generated: 2026-11-06 07:53:27
+Host: real WPF STA Window with opacity 0.01; Playnite host and user input are not inferred
+Actions: workspace navigation, Media preview segment, selected details/inspector, scroll offset changes, synthetic task search text updates, Light/Dark theme
+Input boundary: TaskSearchTextBox.Text is changed programmatically against FakeDashboardData; this is a logical WPF update/layout proxy, not physical keyboard, IME, or presented-frame latency
+Resources: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64, handles, timers, managed event handlers, animated owners and thumbnail cache; no forced GC in this probe
+DurationTargetSeconds: 60
+PostActionSettleSeconds: 30
+Scenario: enduranceprobe
+EvidenceSource: ControlledWpfWindow
+Commit: a13a7dbbe27f4cb90d37057163e1481aa8abf355
+WorkingTreeClean: False
+IdentityNote: source SHA is GscBuildCommit metadata; temporary measurement instrumentation is applied and production-tree cleanliness is not inferred.
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: seven workspaces; 1040x700 DIP; sample every 10s; no forced GC
+SampleTimeUtc: 2026-10-27T00:00:00.0000000+00:00 (pinned=True)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+
+SAMPLE elapsed_s=1.2 cycle=0 page=Overview theme=light managed=28344672 private=179765248 workingSet=166027264 threads=23 handles=1098 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=11.8 cycle=16 page=Save theme=light managed=48405720 private=231407616 workingSet=233889792 threads=27 handles=1183 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=22.4 cycle=32 page=Media theme=light managed=54020448 private=262230016 workingSet=256835584 threads=41 handles=1261 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=32.5 cycle=48 page=Notifications theme=light managed=56431840 private=276938752 workingSet=273113088 threads=41 handles=1263 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=42.6 cycle=63 page=Maintenance theme=light managed=51327992 private=269709312 workingSet=267616256 threads=41 handles=1263 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=53.2 cycle=79 page=Save theme=dark managed=51876112 private=262795264 workingSet=264134656 threads=41 handles=1263 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=63.8 cycle=90 page=Notifications theme=light managed=45627256 private=249188352 workingSet=256671744 threads=37 handles=1255 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=73.8 cycle=90 page=Notifications theme=light managed=46765944 private=248561664 workingSet=256376832 threads=23 handles=1255 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=83.8 cycle=90 page=Notifications theme=light managed=47413112 private=248520704 workingSet=256364544 threads=22 handles=1250 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=90.8 cycle=90 page=Notifications theme=light managed=48052088 private=248520704 workingSet=256364544 threads=22 handles=1250 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=True
+
+SUMMARY duration_s=90.8/90 cycles=90 completedActions=384 samples=10 actionFailures=0
+SUMMARY private_delta=68755456 private_peak_delta=97173504 private_head_avg=247763763 private_tail_avg=247763763 private_slope_bytes_per_min=21312865.97
+SUMMARY managed_delta=19707416 managed_peak_delta=28087168 managed_head_avg=47826518 managed_tail_avg=47826518 managed_slope_bytes_per_min=3774661.54
+SUMMARY resources_first=threads:23,handles:1098 timers:0,subscriptions:1,animated_owners:0,thumb_cache:0/96 resources_last=threads:22,handles:1250 timers:0,subscriptions:1,animated_owners:0,thumb_cache:0/96
+SUMMARY ui_action_p95_ms=888.74 ui_action_max_ms=1275.41 ui_action_slow_over_100ms=90/90
+SUMMARY ui_action_hotspot_stacks=8 (captured after action completion)
+HOTSPOT cycle=1 page=Overview duration_ms=208.5
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1206
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1253
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1291
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=2 page=Save duration_ms=605.0
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1206
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1253
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1291
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=3 page=Trainer duration_ms=332.7
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1206
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1253
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1291
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=4 page=Media duration_ms=341.6
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1206
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1253
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1291
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=5 page=Task duration_ms=464.9
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1206
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1253
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1291
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=6 page=Notifications duration_ms=238.8
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1206
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1253
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1291
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=7 page=Maintenance duration_ms=292.5
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1206
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1253
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1291
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=8 page=Overview duration_ms=714.8
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1206
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1253
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1291
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+SUMMARY action=details_close samples=13 median_ms=18.38 p95_ms=19.68 max_ms=19.68
+SUMMARY action=details_open samples=70 median_ms=6.99 p95_ms=36.84 max_ms=677.74
+SUMMARY action=scroll_offset samples=84 median_ms=0.59 p95_ms=29.42 max_ms=44.22
+SUMMARY action=synthetic_search_input samples=13 median_ms=1.38 p95_ms=6.04 max_ms=6.04
+SUMMARY action=workspace_switch_layout samples=90 median_ms=292.23 p95_ms=791.78 max_ms=1163.41
+SUMMARY interpretation=bounded-window observation; trend fields are evidence, not proof of Playnite-host or mathematically unbounded behavior; WPF action durations are logical layout proxies and do not measure compositor/presented frames or physical input latency
+ALLOCATED_MANAGED_BYTES active=11509964064 postSettle=4677720 total=11514641784
+enduranceprobe OK

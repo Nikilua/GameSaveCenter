@@ -1,0 +1,7 @@
+{
+  "updatedAtUtc": "2026-11-05T23:58:56.7289017Z",
+  "snapshot": "both",
+  "status": "success",
+  "exitCode": 0,
+  "detail": "Both exact source snapshots compiled with the same temporary page-attribution probe"
+}

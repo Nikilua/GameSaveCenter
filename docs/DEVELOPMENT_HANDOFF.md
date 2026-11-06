@@ -1,3 +1,11 @@
+## 2026-11-06 Round5 U09-04 接续：同夹具U00/a13性能代理已复测
+
+U09-05/U09-08已在冻结源码`a13a7dbbe27f4cb90d37057163e1481aa8abf355`通过本机最终门禁；U09-04完成两组相反顺序的同Harness、固定样本、双主题、60秒+30秒离屏配对。活动托管累计分配下降约12.6%–13.4%，但Task整页滚动及详情收起布局代理上升；TaskGrid内部滚动保持接近。逐页长尾受Dispatcher调度影响，尚未归因单一生产控件。动效回调存在一次681.6ms离屏长间隔和一次深色中点失败，重试通过；不得将回调等同于合成器帧或据此加长动画。
+
+原始数据和限制见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-aligned-20261106/BASELINE.md`、`metrics.json`、`files.json`、`cleanup.json`与`ci-run-42127707158.json`。唯一自有临时根已清理，净增D盘可用空间1,058,009,088 bytes；构建/渲染窗口全程隐藏，不动盘符或映射。文档SHA `5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93` 的CI #1462已completed/success：SDK8 15/15步、SDK10 8/8步。下一步只做文档源码/链接检查、中文提交推送，并核对新提交所有适用CI job。U09-04仍待真实Playnite前台呈现时序和物理输入；U09-06 required-check名单因既有403保持“远端待验”，不重试。
+
+U09-04仍“进行中”，待真实Playnite呈现时序和物理输入验证；U09-06 required-check名单因已有403保持“远端待验”，不重复访问。文档SHA `5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93` 的run #1462（42127707158）已completed/success，SDK8基线job127596045500 15/15步、SDK10 job127596045343 8/8步，三个artifact身份见同目录`ci-run-42127707158.json`。状态计数仍7项已满足、71项代码完成待验收、1项进行中、1项远端待验。真实存档恢复、媒体删除和云端写入均不在验证范围。不要改盘符、SUBST或其他映射，不要启动可见构建/渲染窗口。
+
 ## 2026-11-06 Round5 接续：冻结候选 a13a7dbb
 
 冻结源码 `a13a7dbbe27f4cb90d37057163e1481aa8abf355` 的独立 `scripts/build.cmd` 和中文 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 完整链均在 SDK8.0.423 / Release 退出0；完整门禁、320份TRX、安装程序集、包SHA和当前宿主限制见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-final-a13a7dbb/FINAL-ACCEPTANCE.md`。精确源码run #1461的baseline及SDK10 job均success。

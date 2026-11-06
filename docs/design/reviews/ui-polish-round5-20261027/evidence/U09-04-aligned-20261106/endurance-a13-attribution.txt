@@ -1,0 +1,673 @@
+GameSaveCenter 30-minute endurance probe
+Generated: 2026-11-06 08:01:22
+Host: real WPF STA Window with opacity 0.01; Playnite host and user input are not inferred
+Actions: workspace navigation, Media preview segment, selected details/inspector, scroll offset changes, synthetic task search text updates, Light/Dark theme
+Input boundary: TaskSearchTextBox.Text is changed programmatically against FakeDashboardData; this is a logical WPF update/layout proxy, not physical keyboard, IME, or presented-frame latency
+Resources: GC.GetTotalMemory(false), PrivateMemorySize64, WorkingSet64, handles, timers, managed event handlers, animated owners and thumbnail cache; no forced GC in this probe
+DurationTargetSeconds: 60
+PostActionSettleSeconds: 30
+Scenario: enduranceprobe
+EvidenceSource: ControlledWpfWindow
+Commit: a13a7dbbe27f4cb90d37057163e1481aa8abf355
+WorkingTreeClean: False
+IdentityNote: source SHA is GscBuildCommit metadata; temporary measurement instrumentation is applied and production-tree cleanliness is not inferred.
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: seven workspaces; 1040x700 DIP; sample every 10s; no forced GC
+SampleTimeUtc: 2026-10-27T00:00:00.0000000+00:00 (pinned=True)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+
+SAMPLE elapsed_s=1.7 cycle=0 page=Overview theme=light managed=28391896 private=178003968 workingSet=166653952 threads=23 handles=1098 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=12.2 cycle=16 page=Save theme=light managed=48457016 private=250937344 workingSet=240730112 threads=27 handles=1183 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=22.9 cycle=32 page=Media theme=light managed=54215536 private=269512704 workingSet=263294976 threads=41 handles=1261 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=33.0 cycle=47 page=Task theme=light managed=55981696 private=272326656 workingSet=262754304 threads=42 handles=1264 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=43.1 cycle=63 page=Maintenance theme=light managed=50751080 private=277577728 workingSet=275845120 threads=41 handles=1263 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=53.3 cycle=78 page=Overview theme=dark managed=52008080 private=275247104 workingSet=280723456 threads=41 handles=1263 timers=1 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=63.7 cycle=89 page=Task theme=light managed=42673248 private=232579072 workingSet=242409472 threads=37 handles=1255 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=74.7 cycle=89 page=Task theme=light managed=43844704 private=231956480 workingSet=242118656 threads=23 handles=1255 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=84.7 cycle=89 page=Task theme=light managed=44524640 private=231915520 workingSet=242106368 threads=22 handles=1250 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=False
+SAMPLE elapsed_s=90.7 cycle=89 page=Task theme=light managed=45188192 private=231915520 workingSet=242106368 threads=22 handles=1250 timers=0 subscriptions=1 animated_owners=0 thumb_cache=0/96 thumb_active=0 final=True
+
+SUMMARY duration_s=90.7/90 cycles=89 completedActions=380 samples=10 actionFailures=0
+SUMMARY private_delta=53911552 private_peak_delta=99573760 private_head_avg=245197210 private_tail_avg=245197210 private_slope_bytes_per_min=2005155.6
+SUMMARY managed_delta=16796296 managed_peak_delta=27589800 managed_head_avg=46603609 managed_tail_avg=46603609 managed_slope_bytes_per_min=1285899.57
+SUMMARY resources_first=threads:23,handles:1098 timers:0,subscriptions:1,animated_owners:0,thumb_cache:0/96 resources_last=threads:22,handles:1250 timers:0,subscriptions:1,animated_owners:0,thumb_cache:0/96
+SUMMARY ui_action_p95_ms=907.08 ui_action_max_ms=1300.36 ui_action_slow_over_100ms=89/89
+SUMMARY ui_action_hotspot_stacks=8 (captured after action completion)
+HOTSPOT cycle=1 page=Overview duration_ms=195.7
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1209
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1257
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1295
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=2 page=Save duration_ms=596.1
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1209
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1257
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1295
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=3 page=Trainer duration_ms=325.3
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1209
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1257
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1295
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=4 page=Media duration_ms=338.7
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1209
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1257
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1295
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=5 page=Task duration_ms=470.7
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1209
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1257
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1295
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=6 page=Notifications duration_ms=232.3
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1209
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1257
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1295
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=7 page=Maintenance duration_ms=979.4
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1209
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1257
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1295
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+HOTSPOT cycle=8 page=Overview duration_ms=316.7
+   在 System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+HOTSPOT    在 System.Environment.get_StackTrace()
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>g__RunActionCycle|5() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1209
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass14_1.<RunEnduranceProbe>b__6(Object _, EventArgs _) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1257
+HOTSPOT    在 System.Windows.Threading.DispatcherTimer.FireTick(Object unused)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.InvokeImpl()
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.CallbackWrapper(Object obj)
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 MS.Internal.CulturePreservingExecutionContext.Run(CulturePreservingExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Windows.Threading.DispatcherOperation.Invoke()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.ProcessQueue()
+HOTSPOT    在 System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+HOTSPOT    在 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+HOTSPOT    在 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+HOTSPOT    在 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+HOTSPOT    在 System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+HOTSPOT    在 System.Windows.Application.RunDispatcher(Object ignore)
+HOTSPOT    在 System.Windows.Application.RunInternal(Window window)
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.RunEnduranceProbe(String outputRoot, Int32 durationSeconds) 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 1295
+HOTSPOT    在 GameSaveCenter.RenderHarness.Program.<>c__DisplayClass7_32.<Main>b__32() 位置 D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:行号 610
+HOTSPOT    在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+HOTSPOT    在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+HOTSPOT    在 System.Threading.ThreadHelper.ThreadStart()
+SUMMARY action=details_close samples=13 median_ms=18.62 p95_ms=677.48 max_ms=677.48
+SUMMARY action=details_open samples=69 median_ms=6.88 p95_ms=35.99 max_ms=692.1
+SUMMARY action=scroll_offset samples=83 median_ms=0.6 p95_ms=29.24 max_ms=46.49
+SUMMARY action=synthetic_search_input samples=13 median_ms=1.3 p95_ms=19.62 max_ms=19.62
+SUMMARY action=workspace_switch_layout samples=89 median_ms=291.93 p95_ms=691.18 max_ms=1006.46
+SUMMARY interpretation=bounded-window observation; trend fields are evidence, not proof of Playnite-host or mathematically unbounded behavior; WPF action durations are logical layout proxies and do not measure compositor/presented frames or physical input latency
+CYCLE_SAMPLE cycle=1 page=Overview theme=light duration_ms=195.7
+CYCLE_SAMPLE cycle=2 page=Save theme=light duration_ms=596.13
+CYCLE_SAMPLE cycle=3 page=Trainer theme=light duration_ms=325.35
+CYCLE_SAMPLE cycle=4 page=Media theme=light duration_ms=338.69
+CYCLE_SAMPLE cycle=5 page=Task theme=light duration_ms=470.72
+CYCLE_SAMPLE cycle=6 page=Notifications theme=light duration_ms=232.34
+CYCLE_SAMPLE cycle=7 page=Maintenance theme=light duration_ms=979.42
+CYCLE_SAMPLE cycle=8 page=Overview theme=dark duration_ms=316.65
+CYCLE_SAMPLE cycle=9 page=Save theme=dark duration_ms=346.46
+CYCLE_SAMPLE cycle=10 page=Trainer theme=dark duration_ms=327.67
+CYCLE_SAMPLE cycle=11 page=Media theme=dark duration_ms=254.63
+CYCLE_SAMPLE cycle=12 page=Task theme=dark duration_ms=414.82
+CYCLE_SAMPLE cycle=13 page=Notifications theme=dark duration_ms=225.4
+CYCLE_SAMPLE cycle=14 page=Maintenance theme=dark duration_ms=266.17
+CYCLE_SAMPLE cycle=15 page=Overview theme=light duration_ms=861.41
+CYCLE_SAMPLE cycle=16 page=Save theme=light duration_ms=328.6
+CYCLE_SAMPLE cycle=17 page=Trainer theme=light duration_ms=284.05
+CYCLE_SAMPLE cycle=18 page=Media theme=light duration_ms=352.17
+CYCLE_SAMPLE cycle=19 page=Task theme=light duration_ms=478.7
+CYCLE_SAMPLE cycle=20 page=Notifications theme=light duration_ms=236.73
+CYCLE_SAMPLE cycle=21 page=Maintenance theme=light duration_ms=258.81
+CYCLE_SAMPLE cycle=22 page=Overview theme=dark duration_ms=282.57
+CYCLE_SAMPLE cycle=23 page=Save theme=dark duration_ms=336.16
+CYCLE_SAMPLE cycle=24 page=Trainer theme=dark duration_ms=314.75
+CYCLE_SAMPLE cycle=25 page=Media theme=dark duration_ms=370.9
+CYCLE_SAMPLE cycle=26 page=Task theme=dark duration_ms=545.76
+CYCLE_SAMPLE cycle=27 page=Notifications theme=dark duration_ms=234.84
+CYCLE_SAMPLE cycle=28 page=Maintenance theme=dark duration_ms=270.19
+CYCLE_SAMPLE cycle=29 page=Overview theme=light duration_ms=305.58
+CYCLE_SAMPLE cycle=30 page=Save theme=light duration_ms=907.08
+CYCLE_SAMPLE cycle=31 page=Trainer theme=light duration_ms=291.34
+CYCLE_SAMPLE cycle=32 page=Media theme=light duration_ms=375.58
+CYCLE_SAMPLE cycle=33 page=Task theme=light duration_ms=528.8
+CYCLE_SAMPLE cycle=34 page=Notifications theme=light duration_ms=223.55
+CYCLE_SAMPLE cycle=35 page=Maintenance theme=light duration_ms=259.79
+CYCLE_SAMPLE cycle=36 page=Overview theme=dark duration_ms=280.78
+CYCLE_SAMPLE cycle=37 page=Save theme=dark duration_ms=324.51
+CYCLE_SAMPLE cycle=38 page=Trainer theme=dark duration_ms=297.94
+CYCLE_SAMPLE cycle=39 page=Media theme=dark duration_ms=346.75
+CYCLE_SAMPLE cycle=40 page=Task theme=dark duration_ms=514.43
+CYCLE_SAMPLE cycle=41 page=Notifications theme=dark duration_ms=254.5
+CYCLE_SAMPLE cycle=42 page=Maintenance theme=dark duration_ms=261.52
+CYCLE_SAMPLE cycle=43 page=Overview theme=light duration_ms=318
+CYCLE_SAMPLE cycle=44 page=Save theme=light duration_ms=328.15
+CYCLE_SAMPLE cycle=45 page=Trainer theme=light duration_ms=945.69
+CYCLE_SAMPLE cycle=46 page=Media theme=light duration_ms=352.4
+CYCLE_SAMPLE cycle=47 page=Task theme=light duration_ms=510.41
+CYCLE_SAMPLE cycle=48 page=Notifications theme=light duration_ms=219.96
+CYCLE_SAMPLE cycle=49 page=Maintenance theme=light duration_ms=262.55
+CYCLE_SAMPLE cycle=50 page=Overview theme=dark duration_ms=315.44
+CYCLE_SAMPLE cycle=51 page=Save theme=dark duration_ms=336.08
+CYCLE_SAMPLE cycle=52 page=Trainer theme=dark duration_ms=293.84
+CYCLE_SAMPLE cycle=53 page=Media theme=dark duration_ms=793.56
+CYCLE_SAMPLE cycle=54 page=Task theme=dark duration_ms=671.09
+CYCLE_SAMPLE cycle=55 page=Notifications theme=dark duration_ms=250.05
+CYCLE_SAMPLE cycle=56 page=Maintenance theme=dark duration_ms=262.12
+CYCLE_SAMPLE cycle=57 page=Overview theme=light duration_ms=283.81
+CYCLE_SAMPLE cycle=58 page=Save theme=light duration_ms=336.66
+CYCLE_SAMPLE cycle=59 page=Trainer theme=light duration_ms=305.49
+CYCLE_SAMPLE cycle=60 page=Media theme=light duration_ms=352.33
+CYCLE_SAMPLE cycle=61 page=Task theme=light duration_ms=496.16
+CYCLE_SAMPLE cycle=62 page=Notifications theme=light duration_ms=221.44
+CYCLE_SAMPLE cycle=63 page=Maintenance theme=light duration_ms=266.03
+CYCLE_SAMPLE cycle=64 page=Overview theme=dark duration_ms=290.27
+CYCLE_SAMPLE cycle=65 page=Save theme=dark duration_ms=331.48
+CYCLE_SAMPLE cycle=66 page=Trainer theme=dark duration_ms=287.7
+CYCLE_SAMPLE cycle=67 page=Media theme=dark duration_ms=339.36
+CYCLE_SAMPLE cycle=68 page=Task theme=dark duration_ms=1119.9
+CYCLE_SAMPLE cycle=69 page=Notifications theme=dark duration_ms=296.57
+CYCLE_SAMPLE cycle=70 page=Maintenance theme=dark duration_ms=262.7
+CYCLE_SAMPLE cycle=71 page=Overview theme=light duration_ms=316.81
+CYCLE_SAMPLE cycle=72 page=Save theme=light duration_ms=332.37
+CYCLE_SAMPLE cycle=73 page=Trainer theme=light duration_ms=293.87
+CYCLE_SAMPLE cycle=74 page=Media theme=light duration_ms=357.01
+CYCLE_SAMPLE cycle=75 page=Task theme=light duration_ms=1300.36
+CYCLE_SAMPLE cycle=76 page=Notifications theme=light duration_ms=252.07
+CYCLE_SAMPLE cycle=77 page=Maintenance theme=light duration_ms=252.97
+CYCLE_SAMPLE cycle=78 page=Overview theme=dark duration_ms=291.21
+CYCLE_SAMPLE cycle=79 page=Save theme=dark duration_ms=332.82
+CYCLE_SAMPLE cycle=80 page=Trainer theme=dark duration_ms=290.06
+CYCLE_SAMPLE cycle=81 page=Media theme=dark duration_ms=398.68
+CYCLE_SAMPLE cycle=82 page=Task theme=dark duration_ms=514.36
+CYCLE_SAMPLE cycle=83 page=Notifications theme=dark duration_ms=244.43
+CYCLE_SAMPLE cycle=84 page=Maintenance theme=dark duration_ms=272.84
+CYCLE_SAMPLE cycle=85 page=Overview theme=light duration_ms=295.39
+CYCLE_SAMPLE cycle=86 page=Save theme=light duration_ms=354.44
+CYCLE_SAMPLE cycle=87 page=Trainer theme=light duration_ms=293.68
+CYCLE_SAMPLE cycle=88 page=Media theme=light duration_ms=377.38
+CYCLE_SAMPLE cycle=89 page=Task theme=light duration_ms=513.82
+ACTION_SAMPLE cycle=0 page=Overview theme=light action=workspace_switch_layout duration_ms=178.2
+ACTION_SAMPLE cycle=0 page=Overview theme=light action=scroll_offset duration_ms=1.08
+ACTION_SAMPLE cycle=1 page=Save theme=light action=workspace_switch_layout duration_ms=380.67
+ACTION_SAMPLE cycle=1 page=Save theme=light action=details_open duration_ms=197.15
+ACTION_SAMPLE cycle=1 page=Save theme=light action=scroll_offset duration_ms=1.17
+ACTION_SAMPLE cycle=2 page=Trainer theme=light action=workspace_switch_layout duration_ms=288.54
+ACTION_SAMPLE cycle=2 page=Trainer theme=light action=details_open duration_ms=25.42
+ACTION_SAMPLE cycle=2 page=Trainer theme=light action=scroll_offset duration_ms=0.54
+ACTION_SAMPLE cycle=3 page=Media theme=light action=workspace_switch_layout duration_ms=291.93
+ACTION_SAMPLE cycle=3 page=Media theme=light action=scroll_offset duration_ms=0.35
+ACTION_SAMPLE cycle=4 page=Task theme=light action=workspace_switch_layout duration_ms=361.04
+ACTION_SAMPLE cycle=4 page=Task theme=light action=details_open duration_ms=35.85
+ACTION_SAMPLE cycle=4 page=Task theme=light action=details_close duration_ms=17.56
+ACTION_SAMPLE cycle=4 page=Task theme=light action=scroll_offset duration_ms=34.55
+ACTION_SAMPLE cycle=4 page=Task theme=light action=synthetic_search_input duration_ms=6.42
+ACTION_SAMPLE cycle=5 page=Notifications theme=light action=workspace_switch_layout duration_ms=207.77
+ACTION_SAMPLE cycle=5 page=Notifications theme=light action=details_open duration_ms=18.99
+ACTION_SAMPLE cycle=5 page=Notifications theme=light action=scroll_offset duration_ms=1.01
+ACTION_SAMPLE cycle=6 page=Maintenance theme=light action=workspace_switch_layout duration_ms=282.07
+ACTION_SAMPLE cycle=6 page=Maintenance theme=light action=details_open duration_ms=692.1
+ACTION_SAMPLE cycle=6 page=Maintenance theme=light action=scroll_offset duration_ms=0.81
+ACTION_SAMPLE cycle=7 page=Overview theme=dark action=workspace_switch_layout duration_ms=299.09
+ACTION_SAMPLE cycle=7 page=Overview theme=dark action=scroll_offset duration_ms=0.26
+ACTION_SAMPLE cycle=8 page=Save theme=dark action=workspace_switch_layout duration_ms=308.52
+ACTION_SAMPLE cycle=8 page=Save theme=dark action=details_open duration_ms=4.02
+ACTION_SAMPLE cycle=8 page=Save theme=dark action=scroll_offset duration_ms=0.6
+ACTION_SAMPLE cycle=9 page=Trainer theme=dark action=workspace_switch_layout duration_ms=289.08
+ACTION_SAMPLE cycle=9 page=Trainer theme=dark action=details_open duration_ms=6.43
+ACTION_SAMPLE cycle=9 page=Trainer theme=dark action=scroll_offset duration_ms=3.35
+ACTION_SAMPLE cycle=10 page=Media theme=dark action=workspace_switch_layout duration_ms=223.53
+ACTION_SAMPLE cycle=10 page=Media theme=dark action=scroll_offset duration_ms=0.46
+ACTION_SAMPLE cycle=11 page=Task theme=dark action=workspace_switch_layout duration_ms=312.25
+ACTION_SAMPLE cycle=11 page=Task theme=dark action=details_open duration_ms=23.42
+ACTION_SAMPLE cycle=11 page=Task theme=dark action=details_close duration_ms=16.09
+ACTION_SAMPLE cycle=11 page=Task theme=dark action=scroll_offset duration_ms=28.87
+ACTION_SAMPLE cycle=11 page=Task theme=dark action=synthetic_search_input duration_ms=2.8
+ACTION_SAMPLE cycle=12 page=Notifications theme=dark action=workspace_switch_layout duration_ms=204.67
+ACTION_SAMPLE cycle=12 page=Notifications theme=dark action=details_open duration_ms=15.42
+ACTION_SAMPLE cycle=13 page=Maintenance theme=dark action=workspace_switch_layout duration_ms=247
+ACTION_SAMPLE cycle=13 page=Maintenance theme=dark action=details_open duration_ms=7.03
+ACTION_SAMPLE cycle=13 page=Maintenance theme=dark action=scroll_offset duration_ms=0.7
+ACTION_SAMPLE cycle=14 page=Overview theme=light action=workspace_switch_layout duration_ms=854.45
+ACTION_SAMPLE cycle=14 page=Overview theme=light action=scroll_offset duration_ms=2.13
+ACTION_SAMPLE cycle=15 page=Save theme=light action=workspace_switch_layout duration_ms=297.68
+ACTION_SAMPLE cycle=15 page=Save theme=light action=details_open duration_ms=3.83
+ACTION_SAMPLE cycle=15 page=Save theme=light action=scroll_offset duration_ms=0.57
+ACTION_SAMPLE cycle=16 page=Trainer theme=light action=workspace_switch_layout duration_ms=275.35
+ACTION_SAMPLE cycle=16 page=Trainer theme=light action=details_open duration_ms=6.21
+ACTION_SAMPLE cycle=16 page=Trainer theme=light action=scroll_offset duration_ms=0.52
+ACTION_SAMPLE cycle=17 page=Media theme=light action=workspace_switch_layout duration_ms=236.14
+ACTION_SAMPLE cycle=17 page=Media theme=light action=details_open duration_ms=35.99
+ACTION_SAMPLE cycle=17 page=Media theme=light action=scroll_offset duration_ms=0.48
+ACTION_SAMPLE cycle=18 page=Task theme=light action=workspace_switch_layout duration_ms=363.66
+ACTION_SAMPLE cycle=18 page=Task theme=light action=details_open duration_ms=27.03
+ACTION_SAMPLE cycle=18 page=Task theme=light action=details_close duration_ms=18.62
+ACTION_SAMPLE cycle=18 page=Task theme=light action=scroll_offset duration_ms=27.12
+ACTION_SAMPLE cycle=18 page=Task theme=light action=synthetic_search_input duration_ms=0.99
+ACTION_SAMPLE cycle=19 page=Notifications theme=light action=workspace_switch_layout duration_ms=219.86
+ACTION_SAMPLE cycle=19 page=Notifications theme=light action=details_open duration_ms=10.12
+ACTION_SAMPLE cycle=19 page=Notifications theme=light action=scroll_offset duration_ms=0.71
+ACTION_SAMPLE cycle=20 page=Maintenance theme=light action=workspace_switch_layout duration_ms=238.39
+ACTION_SAMPLE cycle=20 page=Maintenance theme=light action=details_open duration_ms=3.06
+ACTION_SAMPLE cycle=20 page=Maintenance theme=light action=scroll_offset duration_ms=0.67
+ACTION_SAMPLE cycle=21 page=Overview theme=dark action=workspace_switch_layout duration_ms=279.96
+ACTION_SAMPLE cycle=21 page=Overview theme=dark action=scroll_offset duration_ms=0.24
+ACTION_SAMPLE cycle=22 page=Save theme=dark action=workspace_switch_layout duration_ms=301.81
+ACTION_SAMPLE cycle=22 page=Save theme=dark action=details_open duration_ms=4.22
+ACTION_SAMPLE cycle=22 page=Save theme=dark action=scroll_offset duration_ms=0.61
+ACTION_SAMPLE cycle=23 page=Trainer theme=dark action=workspace_switch_layout duration_ms=275.83
+ACTION_SAMPLE cycle=23 page=Trainer theme=dark action=details_open duration_ms=33.81
+ACTION_SAMPLE cycle=23 page=Trainer theme=dark action=scroll_offset duration_ms=0.49
+ACTION_SAMPLE cycle=24 page=Media theme=dark action=workspace_switch_layout duration_ms=279.1
+ACTION_SAMPLE cycle=24 page=Media theme=dark action=details_open duration_ms=48.62
+ACTION_SAMPLE cycle=24 page=Media theme=dark action=scroll_offset duration_ms=5.67
+ACTION_SAMPLE cycle=25 page=Task theme=dark action=workspace_switch_layout duration_ms=422.21
+ACTION_SAMPLE cycle=25 page=Task theme=dark action=details_open duration_ms=19.55
+ACTION_SAMPLE cycle=25 page=Task theme=dark action=details_close duration_ms=19.75
+ACTION_SAMPLE cycle=25 page=Task theme=dark action=scroll_offset duration_ms=26.59
+ACTION_SAMPLE cycle=25 page=Task theme=dark action=synthetic_search_input duration_ms=19.62
+ACTION_SAMPLE cycle=26 page=Notifications theme=dark action=workspace_switch_layout duration_ms=206.86
+ACTION_SAMPLE cycle=26 page=Notifications theme=dark action=details_open duration_ms=14.92
+ACTION_SAMPLE cycle=27 page=Maintenance theme=dark action=workspace_switch_layout duration_ms=248.2
+ACTION_SAMPLE cycle=27 page=Maintenance theme=dark action=details_open duration_ms=3.27
+ACTION_SAMPLE cycle=27 page=Maintenance theme=dark action=scroll_offset duration_ms=0.7
+ACTION_SAMPLE cycle=28 page=Overview theme=light action=workspace_switch_layout duration_ms=303.3
+ACTION_SAMPLE cycle=28 page=Overview theme=light action=scroll_offset duration_ms=0.25
+ACTION_SAMPLE cycle=29 page=Save theme=light action=workspace_switch_layout duration_ms=873.04
+ACTION_SAMPLE cycle=29 page=Save theme=light action=details_open duration_ms=4.06
+ACTION_SAMPLE cycle=29 page=Save theme=light action=scroll_offset duration_ms=0.59
+ACTION_SAMPLE cycle=30 page=Trainer theme=light action=workspace_switch_layout duration_ms=283.23
+ACTION_SAMPLE cycle=30 page=Trainer theme=light action=details_open duration_ms=5.65
+ACTION_SAMPLE cycle=30 page=Trainer theme=light action=scroll_offset duration_ms=0.48
+ACTION_SAMPLE cycle=31 page=Media theme=light action=workspace_switch_layout duration_ms=361.02
+ACTION_SAMPLE cycle=31 page=Media theme=light action=scroll_offset duration_ms=0.38
+ACTION_SAMPLE cycle=32 page=Task theme=light action=workspace_switch_layout duration_ms=408.21
+ACTION_SAMPLE cycle=32 page=Task theme=light action=details_open duration_ms=18.9
+ACTION_SAMPLE cycle=32 page=Task theme=light action=details_close duration_ms=18.68
+ACTION_SAMPLE cycle=32 page=Task theme=light action=scroll_offset duration_ms=46.49
+ACTION_SAMPLE cycle=32 page=Task theme=light action=synthetic_search_input duration_ms=1.3
+ACTION_SAMPLE cycle=33 page=Notifications theme=light action=workspace_switch_layout duration_ms=206.67
+ACTION_SAMPLE cycle=33 page=Notifications theme=light action=details_open duration_ms=10.41
+ACTION_SAMPLE cycle=33 page=Notifications theme=light action=scroll_offset duration_ms=0.63
+ACTION_SAMPLE cycle=34 page=Maintenance theme=light action=workspace_switch_layout duration_ms=242.61
+ACTION_SAMPLE cycle=34 page=Maintenance theme=light action=details_open duration_ms=3.12
+ACTION_SAMPLE cycle=34 page=Maintenance theme=light action=scroll_offset duration_ms=0.68
+ACTION_SAMPLE cycle=35 page=Overview theme=dark action=workspace_switch_layout duration_ms=277.81
+ACTION_SAMPLE cycle=35 page=Overview theme=dark action=scroll_offset duration_ms=0.43
+ACTION_SAMPLE cycle=36 page=Save theme=dark action=workspace_switch_layout duration_ms=292.3
+ACTION_SAMPLE cycle=36 page=Save theme=dark action=details_open duration_ms=4.48
+ACTION_SAMPLE cycle=36 page=Save theme=dark action=scroll_offset duration_ms=0.61
+ACTION_SAMPLE cycle=37 page=Trainer theme=dark action=workspace_switch_layout duration_ms=288.19
+ACTION_SAMPLE cycle=37 page=Trainer theme=dark action=details_open duration_ms=6.59
+ACTION_SAMPLE cycle=37 page=Trainer theme=dark action=scroll_offset duration_ms=0.51
+ACTION_SAMPLE cycle=38 page=Media theme=dark action=workspace_switch_layout duration_ms=333.63
+ACTION_SAMPLE cycle=38 page=Media theme=dark action=scroll_offset duration_ms=0.37
+ACTION_SAMPLE cycle=39 page=Task theme=dark action=workspace_switch_layout duration_ms=419.08
+ACTION_SAMPLE cycle=39 page=Task theme=dark action=details_open duration_ms=22.24
+ACTION_SAMPLE cycle=39 page=Task theme=dark action=details_close duration_ms=17.11
+ACTION_SAMPLE cycle=39 page=Task theme=dark action=scroll_offset duration_ms=26.58
+ACTION_SAMPLE cycle=39 page=Task theme=dark action=synthetic_search_input duration_ms=1.19
+ACTION_SAMPLE cycle=40 page=Notifications theme=dark action=workspace_switch_layout duration_ms=235.29
+ACTION_SAMPLE cycle=40 page=Notifications theme=dark action=details_open duration_ms=10.03
+ACTION_SAMPLE cycle=41 page=Maintenance theme=dark action=workspace_switch_layout duration_ms=242.11
+ACTION_SAMPLE cycle=41 page=Maintenance theme=dark action=details_open duration_ms=3.18
+ACTION_SAMPLE cycle=41 page=Maintenance theme=dark action=scroll_offset duration_ms=0.8
+ACTION_SAMPLE cycle=42 page=Overview theme=light action=workspace_switch_layout duration_ms=315.55
+ACTION_SAMPLE cycle=42 page=Overview theme=light action=scroll_offset duration_ms=0.28
+ACTION_SAMPLE cycle=43 page=Save theme=light action=workspace_switch_layout duration_ms=296.36
+ACTION_SAMPLE cycle=43 page=Save theme=light action=details_open duration_ms=4.27
+ACTION_SAMPLE cycle=43 page=Save theme=light action=scroll_offset duration_ms=0.57
+ACTION_SAMPLE cycle=44 page=Trainer theme=light action=workspace_switch_layout duration_ms=929.03
+ACTION_SAMPLE cycle=44 page=Trainer theme=light action=details_open duration_ms=12.94
+ACTION_SAMPLE cycle=44 page=Trainer theme=light action=scroll_offset duration_ms=0.53
+ACTION_SAMPLE cycle=45 page=Media theme=light action=workspace_switch_layout duration_ms=312.49
+ACTION_SAMPLE cycle=45 page=Media theme=light action=details_open duration_ms=3.56
+ACTION_SAMPLE cycle=45 page=Media theme=light action=scroll_offset duration_ms=0.45
+ACTION_SAMPLE cycle=46 page=Task theme=light action=workspace_switch_layout duration_ms=396.87
+ACTION_SAMPLE cycle=46 page=Task theme=light action=details_open duration_ms=22.16
+ACTION_SAMPLE cycle=46 page=Task theme=light action=details_close duration_ms=23.21
+ACTION_SAMPLE cycle=46 page=Task theme=light action=scroll_offset duration_ms=25.9
+ACTION_SAMPLE cycle=46 page=Task theme=light action=synthetic_search_input duration_ms=1.26
+ACTION_SAMPLE cycle=47 page=Notifications theme=light action=workspace_switch_layout duration_ms=206.24
+ACTION_SAMPLE cycle=47 page=Notifications theme=light action=details_open duration_ms=7.35
+ACTION_SAMPLE cycle=47 page=Notifications theme=light action=scroll_offset duration_ms=0.6
+ACTION_SAMPLE cycle=48 page=Maintenance theme=light action=workspace_switch_layout duration_ms=242.22
+ACTION_SAMPLE cycle=48 page=Maintenance theme=light action=details_open duration_ms=3.01
+ACTION_SAMPLE cycle=48 page=Maintenance theme=light action=scroll_offset duration_ms=0.69
+ACTION_SAMPLE cycle=49 page=Overview theme=dark action=workspace_switch_layout duration_ms=312.53
+ACTION_SAMPLE cycle=49 page=Overview theme=dark action=scroll_offset duration_ms=0.26
+ACTION_SAMPLE cycle=50 page=Save theme=dark action=workspace_switch_layout duration_ms=303.03
+ACTION_SAMPLE cycle=50 page=Save theme=dark action=details_open duration_ms=4.06
+ACTION_SAMPLE cycle=50 page=Save theme=dark action=scroll_offset duration_ms=0.59
+ACTION_SAMPLE cycle=51 page=Trainer theme=dark action=workspace_switch_layout duration_ms=284.89
+ACTION_SAMPLE cycle=51 page=Trainer theme=dark action=details_open duration_ms=6.19
+ACTION_SAMPLE cycle=51 page=Trainer theme=dark action=scroll_offset duration_ms=0.54
+ACTION_SAMPLE cycle=52 page=Media theme=dark action=workspace_switch_layout duration_ms=691.18
+ACTION_SAMPLE cycle=52 page=Media theme=dark action=details_open duration_ms=6.68
+ACTION_SAMPLE cycle=52 page=Media theme=dark action=scroll_offset duration_ms=0.37
+ACTION_SAMPLE cycle=53 page=Task theme=dark action=workspace_switch_layout duration_ms=561.21
+ACTION_SAMPLE cycle=53 page=Task theme=dark action=details_open duration_ms=28.89
+ACTION_SAMPLE cycle=53 page=Task theme=dark action=details_close duration_ms=16.73
+ACTION_SAMPLE cycle=53 page=Task theme=dark action=scroll_offset duration_ms=27.37
+ACTION_SAMPLE cycle=53 page=Task theme=dark action=synthetic_search_input duration_ms=1.4
+ACTION_SAMPLE cycle=54 page=Notifications theme=dark action=workspace_switch_layout duration_ms=233.25
+ACTION_SAMPLE cycle=54 page=Notifications theme=dark action=details_open duration_ms=10.47
+ACTION_SAMPLE cycle=55 page=Maintenance theme=dark action=workspace_switch_layout duration_ms=245.65
+ACTION_SAMPLE cycle=55 page=Maintenance theme=dark action=details_open duration_ms=2.97
+ACTION_SAMPLE cycle=55 page=Maintenance theme=dark action=scroll_offset duration_ms=0.75
+ACTION_SAMPLE cycle=56 page=Overview theme=light action=workspace_switch_layout duration_ms=281.48
+ACTION_SAMPLE cycle=56 page=Overview theme=light action=scroll_offset duration_ms=0.26
+ACTION_SAMPLE cycle=57 page=Save theme=light action=workspace_switch_layout duration_ms=301.65
+ACTION_SAMPLE cycle=57 page=Save theme=light action=details_open duration_ms=4.34
+ACTION_SAMPLE cycle=57 page=Save theme=light action=scroll_offset duration_ms=0.64
+ACTION_SAMPLE cycle=58 page=Trainer theme=light action=workspace_switch_layout duration_ms=297.06
+ACTION_SAMPLE cycle=58 page=Trainer theme=light action=details_open duration_ms=5.98
+ACTION_SAMPLE cycle=58 page=Trainer theme=light action=scroll_offset duration_ms=0.5
+ACTION_SAMPLE cycle=59 page=Media theme=light action=workspace_switch_layout duration_ms=337.92
+ACTION_SAMPLE cycle=59 page=Media theme=light action=scroll_offset duration_ms=0.37
+ACTION_SAMPLE cycle=60 page=Task theme=light action=workspace_switch_layout duration_ms=418.08
+ACTION_SAMPLE cycle=60 page=Task theme=light action=details_open duration_ms=23
+ACTION_SAMPLE cycle=60 page=Task theme=light action=details_close duration_ms=17.23
+ACTION_SAMPLE cycle=60 page=Task theme=light action=scroll_offset duration_ms=25.23
+ACTION_SAMPLE cycle=60 page=Task theme=light action=synthetic_search_input duration_ms=1.23
+ACTION_SAMPLE cycle=61 page=Notifications theme=light action=workspace_switch_layout duration_ms=204.74
+ACTION_SAMPLE cycle=61 page=Notifications theme=light action=details_open duration_ms=6.95
+ACTION_SAMPLE cycle=61 page=Notifications theme=light action=scroll_offset duration_ms=0.56
+ACTION_SAMPLE cycle=62 page=Maintenance theme=light action=workspace_switch_layout duration_ms=241.77
+ACTION_SAMPLE cycle=62 page=Maintenance theme=light action=details_open duration_ms=3.12
+ACTION_SAMPLE cycle=62 page=Maintenance theme=light action=scroll_offset duration_ms=0.79
+ACTION_SAMPLE cycle=63 page=Overview theme=dark action=workspace_switch_layout duration_ms=286.13
+ACTION_SAMPLE cycle=63 page=Overview theme=dark action=scroll_offset duration_ms=0.3
+ACTION_SAMPLE cycle=64 page=Save theme=dark action=workspace_switch_layout duration_ms=301.5
+ACTION_SAMPLE cycle=64 page=Save theme=dark action=details_open duration_ms=4.95
+ACTION_SAMPLE cycle=64 page=Save theme=dark action=scroll_offset duration_ms=0.61
+ACTION_SAMPLE cycle=65 page=Trainer theme=dark action=workspace_switch_layout duration_ms=279.25
+ACTION_SAMPLE cycle=65 page=Trainer theme=dark action=details_open duration_ms=5.93
+ACTION_SAMPLE cycle=65 page=Trainer theme=dark action=scroll_offset duration_ms=0.59
+ACTION_SAMPLE cycle=66 page=Media theme=dark action=workspace_switch_layout duration_ms=327.82
+ACTION_SAMPLE cycle=66 page=Media theme=dark action=scroll_offset duration_ms=0.34
+ACTION_SAMPLE cycle=67 page=Task theme=dark action=workspace_switch_layout duration_ms=1006.46
+ACTION_SAMPLE cycle=67 page=Task theme=dark action=details_open duration_ms=19.23
+ACTION_SAMPLE cycle=67 page=Task theme=dark action=details_close duration_ms=19.05
+ACTION_SAMPLE cycle=67 page=Task theme=dark action=scroll_offset duration_ms=38.41
+ACTION_SAMPLE cycle=67 page=Task theme=dark action=synthetic_search_input duration_ms=1.18
+ACTION_SAMPLE cycle=68 page=Notifications theme=dark action=workspace_switch_layout duration_ms=235.99
+ACTION_SAMPLE cycle=68 page=Notifications theme=dark action=details_open duration_ms=13.4
+ACTION_SAMPLE cycle=69 page=Maintenance theme=dark action=workspace_switch_layout duration_ms=244.12
+ACTION_SAMPLE cycle=69 page=Maintenance theme=dark action=details_open duration_ms=3.06
+ACTION_SAMPLE cycle=69 page=Maintenance theme=dark action=scroll_offset duration_ms=0.66
+ACTION_SAMPLE cycle=70 page=Overview theme=light action=workspace_switch_layout duration_ms=313.2
+ACTION_SAMPLE cycle=70 page=Overview theme=light action=scroll_offset duration_ms=0.24
+ACTION_SAMPLE cycle=71 page=Save theme=light action=workspace_switch_layout duration_ms=302.47
+ACTION_SAMPLE cycle=71 page=Save theme=light action=details_open duration_ms=8.59
+ACTION_SAMPLE cycle=71 page=Save theme=light action=scroll_offset duration_ms=0.65
+ACTION_SAMPLE cycle=72 page=Trainer theme=light action=workspace_switch_layout duration_ms=285.72
+ACTION_SAMPLE cycle=72 page=Trainer theme=light action=details_open duration_ms=5.79
+ACTION_SAMPLE cycle=72 page=Trainer theme=light action=scroll_offset duration_ms=0.5
+ACTION_SAMPLE cycle=73 page=Media theme=light action=workspace_switch_layout duration_ms=314.18
+ACTION_SAMPLE cycle=73 page=Media theme=light action=details_open duration_ms=3.76
+ACTION_SAMPLE cycle=73 page=Media theme=light action=scroll_offset duration_ms=0.49
+ACTION_SAMPLE cycle=74 page=Task theme=light action=workspace_switch_layout duration_ms=530.7
+ACTION_SAMPLE cycle=74 page=Task theme=light action=details_open duration_ms=21.93
+ACTION_SAMPLE cycle=74 page=Task theme=light action=details_close duration_ms=677.48
+ACTION_SAMPLE cycle=74 page=Task theme=light action=scroll_offset duration_ms=29.91
+ACTION_SAMPLE cycle=74 page=Task theme=light action=synthetic_search_input duration_ms=1.12
+ACTION_SAMPLE cycle=75 page=Notifications theme=light action=workspace_switch_layout duration_ms=235.53
+ACTION_SAMPLE cycle=75 page=Notifications theme=light action=details_open duration_ms=6.54
+ACTION_SAMPLE cycle=75 page=Notifications theme=light action=scroll_offset duration_ms=0.53
+ACTION_SAMPLE cycle=76 page=Maintenance theme=light action=workspace_switch_layout duration_ms=236.81
+ACTION_SAMPLE cycle=76 page=Maintenance theme=light action=details_open duration_ms=2.99
+ACTION_SAMPLE cycle=76 page=Maintenance theme=light action=scroll_offset duration_ms=0.66
+ACTION_SAMPLE cycle=77 page=Overview theme=dark action=workspace_switch_layout duration_ms=288.47
+ACTION_SAMPLE cycle=77 page=Overview theme=dark action=scroll_offset duration_ms=0.27
+ACTION_SAMPLE cycle=78 page=Save theme=dark action=workspace_switch_layout duration_ms=303.09
+ACTION_SAMPLE cycle=78 page=Save theme=dark action=details_open duration_ms=4.41
+ACTION_SAMPLE cycle=78 page=Save theme=dark action=scroll_offset duration_ms=0.63
+ACTION_SAMPLE cycle=79 page=Trainer theme=dark action=workspace_switch_layout duration_ms=282
+ACTION_SAMPLE cycle=79 page=Trainer theme=dark action=details_open duration_ms=5.74
+ACTION_SAMPLE cycle=79 page=Trainer theme=dark action=scroll_offset duration_ms=0.46
+ACTION_SAMPLE cycle=80 page=Media theme=dark action=workspace_switch_layout duration_ms=327.37
+ACTION_SAMPLE cycle=80 page=Media theme=dark action=details_open duration_ms=5.59
+ACTION_SAMPLE cycle=80 page=Media theme=dark action=scroll_offset duration_ms=0.39
+ACTION_SAMPLE cycle=81 page=Task theme=dark action=workspace_switch_layout duration_ms=409.64
+ACTION_SAMPLE cycle=81 page=Task theme=dark action=details_open duration_ms=22.31
+ACTION_SAMPLE cycle=81 page=Task theme=dark action=details_close duration_ms=15.83
+ACTION_SAMPLE cycle=81 page=Task theme=dark action=scroll_offset duration_ms=29.24
+ACTION_SAMPLE cycle=81 page=Task theme=dark action=synthetic_search_input duration_ms=1.35
+ACTION_SAMPLE cycle=82 page=Notifications theme=dark action=workspace_switch_layout duration_ms=219.71
+ACTION_SAMPLE cycle=82 page=Notifications theme=dark action=details_open duration_ms=10.99
+ACTION_SAMPLE cycle=83 page=Maintenance theme=dark action=workspace_switch_layout duration_ms=249.08
+ACTION_SAMPLE cycle=83 page=Maintenance theme=dark action=details_open duration_ms=6.88
+ACTION_SAMPLE cycle=83 page=Maintenance theme=dark action=scroll_offset duration_ms=0.74
+ACTION_SAMPLE cycle=84 page=Overview theme=light action=workspace_switch_layout duration_ms=292.71
+ACTION_SAMPLE cycle=84 page=Overview theme=light action=scroll_offset duration_ms=0.29
+ACTION_SAMPLE cycle=85 page=Save theme=light action=workspace_switch_layout duration_ms=305.92
+ACTION_SAMPLE cycle=85 page=Save theme=light action=details_open duration_ms=19.99
+ACTION_SAMPLE cycle=85 page=Save theme=light action=scroll_offset duration_ms=0.82
+ACTION_SAMPLE cycle=86 page=Trainer theme=light action=workspace_switch_layout duration_ms=285.44
+ACTION_SAMPLE cycle=86 page=Trainer theme=light action=details_open duration_ms=5.77
+ACTION_SAMPLE cycle=86 page=Trainer theme=light action=scroll_offset duration_ms=0.54
+ACTION_SAMPLE cycle=87 page=Media theme=light action=workspace_switch_layout duration_ms=357.56
+ACTION_SAMPLE cycle=87 page=Media theme=light action=scroll_offset duration_ms=0.38
+ACTION_SAMPLE cycle=88 page=Task theme=light action=workspace_switch_layout duration_ms=407.91
+ACTION_SAMPLE cycle=88 page=Task theme=light action=details_open duration_ms=19.23
+ACTION_SAMPLE cycle=88 page=Task theme=light action=details_close duration_ms=19.56
+ACTION_SAMPLE cycle=88 page=Task theme=light action=scroll_offset duration_ms=28.85
+ACTION_SAMPLE cycle=88 page=Task theme=light action=synthetic_search_input duration_ms=1.53
+ALLOCATED_MANAGED_BYTES active=11415336048 postSettle=8470264 total=11423806312
+enduranceprobe OK

@@ -1,0 +1,25 @@
+Production shell motion probe (controlled STA WPF Window)
+Scenario: motionprobe
+EvidenceSource: ControlledWpfWindow
+Commit: a13a7dbbe27f4cb90d37057163e1481aa8abf355
+WorkingTreeClean: False
+IdentityNote: source SHA is GscBuildCommit metadata; temporary measurement instrumentation is applied and production-tree cleanliness is not inferred.
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production shell; audit-only GscMotionNormal=700ms override; 900x640 DIP
+SampleTimeUtc: 2026-11-05T23:38:09.2287013+00:00 (pinned=False)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+Motion[light] duration_ms=700 midpoint_ms=210 midWidth=139.13 midOpacity=0.661 midAnimated=True endWidth=72 endOpacity=1 endX=0 endAnimated=False
+Reentry[light] interruptedWidth=217 finalWidth=72 finalX=0 running=False
+Unload[light] running=False opacity=1 x=0 animated=False
+Motion[dark] duration_ms=700 midpoint_ms=210 midWidth=89.33 midOpacity=0.912 midAnimated=True endWidth=72 endOpacity=1 endX=0 endAnimated=False
+Reentry[dark] interruptedWidth=216.85 finalWidth=72 finalX=0 running=False
+Unload[dark] running=False opacity=1 x=0 animated=False
+
+Sidebar transition performance probe (2000x1100 host)
+  single-toggle motion=True duration=278.1ms layout=21 measure=21/0.0ms arrange=18/59.0ms frames=22 frameGapP95=31.4ms maxFrameGap=42.5ms slowFrameRatio=0.286 secondClick=False finalWidth=72.0 collapsed=True settled=True
+  rapid-toggle motion=True duration=486.9ms layout=42 measure=39/0.0ms arrange=35/134.9ms frames=45 frameGapP95=29.2ms maxFrameGap=33.8ms slowFrameRatio=0.205 secondClick=True finalWidth=270.0 collapsed=False settled=True
+  atomic-final motion=False duration=64.4ms layout=3 measure=2/0.0ms arrange=2/9.2ms frames=5 frameGapP95=22.8ms maxFrameGap=22.8ms slowFrameRatio=0.250 secondClick=False finalWidth=72.0 collapsed=True settled=True
+MotionProbeBoundary: screenshots and animation states use a controlled offscreen WPF host; CompositionTarget.Rendering gaps are dispatcher callback proxies, not proof of presented frames. Real Playnite cadence and ETW evidence remain host checks.
+MotionProbe OK

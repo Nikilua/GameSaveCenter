@@ -1,0 +1,8 @@
+{
+  "updatedAtUtc": "2026-11-05T23:34:52.5964215Z",
+  "phase": "complete",
+  "snapshot": "both",
+  "status": "success",
+  "exitCode": 0,
+  "detail": "Both snapshots built and probes completed with report identity checks"
+}

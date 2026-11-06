@@ -1,0 +1,113 @@
+{
+  "stage": "U09-04 U00/current aligned offscreen performance comparison",
+  "baselineSource": "5d0a2448d6315af61571d0d3fbecfd902e5344fc",
+  "candidateSource": "a13a7dbbe27f4cb90d37057163e1481aa8abf355",
+  "sdk": "8.0.423",
+  "sampleUtc": "2026-10-27T00:00:00Z",
+  "window": "1040x700 DIP; opacity 0.01; offscreen hidden WPF STA window",
+  "durationSeconds": { "active": 60, "settle": 30 },
+  "pairedRuns": [
+    {
+      "order": "U00 then candidate",
+      "u00": {
+        "cycles": 82,
+        "actions": 351,
+        "actionFailures": 0,
+        "overallActionP95Ms": 731.13,
+        "detailsCloseP95Ms": 10.85,
+        "detailsOpenP95Ms": 37.13,
+        "scrollOffsetP95Ms": 17.65,
+        "workspaceSwitchP95Ms": 711.45,
+        "activeManagedAllocationBytes": 13175764656,
+        "postSettleAllocationBytes": 5871776,
+        "totalManagedAllocationBytes": 13181636432,
+        "managedMemoryDeltaBytes": 28414328,
+        "privateMemoryDeltaBytes": 83841024
+      },
+      "candidate": {
+        "cycles": 89,
+        "actions": 380,
+        "actionFailures": 0,
+        "overallActionP95Ms": 862.94,
+        "detailsCloseP95Ms": 18.99,
+        "detailsOpenP95Ms": 40.13,
+        "scrollOffsetP95Ms": 31.6,
+        "workspaceSwitchP95Ms": 766.91,
+        "activeManagedAllocationBytes": 11415327064,
+        "postSettleAllocationBytes": 8470480,
+        "totalManagedAllocationBytes": 11423797544,
+        "managedMemoryDeltaBytes": 16787240,
+        "privateMemoryDeltaBytes": 51744768
+      }
+    },
+    {
+      "order": "candidate then U00",
+      "u00": {
+        "cycles": 82,
+        "actions": 351,
+        "actionFailures": 0,
+        "overallActionP95Ms": 889.21,
+        "detailsCloseP95Ms": 10.67,
+        "detailsOpenP95Ms": 37.0,
+        "scrollOffsetP95Ms": 16.61,
+        "workspaceSwitchP95Ms": 711.17,
+        "activeManagedAllocationBytes": 13175959496,
+        "postSettleAllocationBytes": 5789144,
+        "totalManagedAllocationBytes": 13181748640,
+        "managedMemoryDeltaBytes": 28473448,
+        "privateMemoryDeltaBytes": 83042304
+      },
+      "candidate": {
+        "cycles": 90,
+        "actions": 384,
+        "actionFailures": 0,
+        "overallActionP95Ms": 888.74,
+        "detailsCloseP95Ms": 19.68,
+        "detailsOpenP95Ms": 36.84,
+        "scrollOffsetP95Ms": 29.42,
+        "workspaceSwitchP95Ms": 791.78,
+        "activeManagedAllocationBytes": 11509964064,
+        "postSettleAllocationBytes": 4677720,
+        "totalManagedAllocationBytes": 11514641784,
+        "managedMemoryDeltaBytes": 19707416,
+        "privateMemoryDeltaBytes": 68755456
+      }
+    }
+  ],
+  "allocationReductionPercent": { "firstPair": 13.36, "reversePair": 12.64 },
+  "pageAttributionRun": {
+    "instrumentedProgramSha256": "91DB657C89B088B6C2145ADA286914DEFB443A7B2EC1CA225A516E62E6482FD9",
+    "baselineProgramSha256BeforeInstrumentation": "59DE608B4F30B518B6D877F05663EF0A4056A829178D3BD45BFD3F5A25A67627",
+    "candidateProgramSha256BeforeInstrumentation": "59DE608B4F30B518B6D877F05663EF0A4056A829178D3BD45BFD3F5A25A67627",
+    "u00OverallActionP95Ms": 1088.83,
+    "candidateOverallActionP95Ms": 907.08,
+    "u00TaskScrollMedianMs": { "light": 14.1, "dark": 15.98 },
+    "u00TaskScrollMaxMs": { "light": 28.23, "dark": 690.84 },
+    "candidateTaskScrollMedianMs": { "light": 28.85, "dark": 27.37 },
+    "candidateTaskScrollMaxMs": { "light": 46.49, "dark": 38.41 },
+    "u00TaskDetailsCloseTypicalMs": 7,
+    "candidateTaskDetailsCloseTypicalMs": "18-19; one 677.48 ms outlier",
+    "measurementNote": "Per-page/theme tails use only about 5-7 samples; p95 is max-like. The instrumentation appends preallocated tuples after each stopwatch stops and formats after allocatedAtRunEnd."
+  },
+  "taskGridReference": {
+    "evidence": "../U09-04-taskgrid-scroll-20261102/BASELINE.md",
+    "lightP95Ms": { "u00": 16.526, "candidate": 16.409 },
+    "darkP95Ms": { "u00": 16.498, "candidate": 16.499 },
+    "note": "This is TaskGrid's internal DG_ScrollViewer, separate from the outer Task page scroll action above."
+  },
+  "motionCallbackProbe": {
+    "baselineSingleToggleFrameGapP95Ms": 33.6,
+    "baselineSingleToggleFrameGapMaxMs": 39.2,
+    "candidateEarlierSuccessfulSingleToggleFrameGapP95Ms": 31.4,
+    "candidateEarlierSuccessfulSingleToggleFrameGapMaxMs": 42.5,
+    "candidateEarlierSuccessfulSampleTimePinned": false,
+    "candidateRetrySingleToggleDurationMs": 718.0,
+    "candidateRetrySingleToggleFrameGapP95Ms": 681.6,
+    "candidateRetrySingleToggleFrameGapMaxMs": 681.6,
+    "candidateRetryRapidToggleFrameGapP95Ms": 34.5,
+    "candidateFirstAttempt": "Failed dark transition sample: width 270, opacity 0 at 210 ms while animation remained active; exact retry passed.",
+    "boundary": "CompositionTarget.Rendering dispatcher callback gaps are not compositor-presented frame timings."
+  },
+  "processResourceBoundary": "Post-settle timers=0, animated owners=0 and event subscriptions=1 in the paired probes; handles remained within roughly 1100-1251.",
+  "productionSourceChangedByThisStage": false
+}
