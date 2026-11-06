@@ -1,3 +1,7 @@
+## 2026-11-07 Round5 U09-05 启动黑窗复核
+
+用户报告上一次验收期间仍有黑窗闪现。安装器的 Playnite 启动改为 `ProcessStartInfo.UseShellExecute = false`，入口版本为 `DEV-INSTALL-010`；该新候选尚未完成完整链。隐藏桌面探针确认直接创建的子进程继承非活动桌面，但 Shell 隐藏启动也通过同桌面探针，根因仍需按实际 Playnite 窗口核验，不能把该代码改动宣称为已解决。当前状态按 Round5 总表为5项已满足、71项代码完成待验收、3项进行中、1项远端待验。 [Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md) · [闪现复核](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/BASELINE.md)
+
 ## 2026-11-06 Round5 当前冻结候选与真实宿主边界
 
 冻结源码 f0d2b8f1 在非活动桌面通过独立 build.cmd 及中文根入口完整链，两个入口均退出 0。Windows CI #1473 双 SDK 通过。当前状态以 Round5 总表为准，6 项已满足、71 项代码完成待验收、2 项进行中、1 项远端待验。 [Round5 进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)

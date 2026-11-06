@@ -1,3 +1,9 @@
+## 2026-11-07 Round5 U09-05 验收期间黑窗复核
+
+用户报告上次验收后桌面仍闪出黑窗，之前结束后的窗口快照不能排除瞬时显示。将 `dev-install-run.ps1` 的 Playnite 启动改为 `ProcessStartInfo.UseShellExecute = false`，更新入口修订号并在 LauncherExitCodes 检查中加入源码守卫。隐藏子进程探针确认直接创建的 PowerShell 窗口继承非活动桌面；`Start-Process -WindowStyle Hidden` 的受控探针也继承同一桌面，因此尚不能断言黑窗唯一由旧 Playnite 启动调用导致。完整根链仍需核对 Playnite 实际窗口桌面及运行期间用户桌面的可见状态。
+
+PowerShell解析、Source Validation、diff check 与三入口退出码矩阵9/9通过。一次直接定向 `dotnet test` 在不带 `GscBuildCommit` 的情况下被原源码身份守卫拒绝（4/8），TRX已归档，不计通过；不改门禁。代码候选提交后通过仓库入口重新运行。详见[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)及[闪现复核证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/BASELINE.md)。当前U09-05进行中，状态5/71/3/1；真实插件页、实体输入/UIA/DPI与业务写入边界不变。
+
 ## 2026-11-06 Round5 Windows CI #1466 Worker 夹具修复
 
 候选 4719a59c 的 [SDK 8 作业 127733032844](https://github.com/Nikilua/GameSaveCenter/actions/runs/42169279866/job/127733032844) 在打包步骤的 Worker 集成测试失败。原始日志显示 400 通过、1 失败。Rclone 不完整传输分类用例在 Dispose 删除临时 gamesavecenter.db 时遇到文件占用，分类断言未报告失败。诊断产物 13481573092。SDK 10 作业 127733033114 的 8 步通过，诊断产物 13480957381。

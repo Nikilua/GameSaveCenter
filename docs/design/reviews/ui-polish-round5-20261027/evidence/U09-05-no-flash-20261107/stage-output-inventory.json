@@ -1,0 +1,42 @@
+[
+  {
+    "relativePath": ".tmp/r5-launch-no-flash-exit-check",
+    "resolvedPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-launch-no-flash-exit-check",
+    "fileCount": 15,
+    "bytes": 5949.0,
+    "reparsePoints": 0,
+    "exists": true
+  },
+  {
+    "relativePath": ".tmp/r5-launch-no-flash-e5bb3462ad974d6585e52412cb11ee15",
+    "resolvedPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-launch-no-flash-e5bb3462ad974d6585e52412cb11ee15",
+    "fileCount": 15,
+    "bytes": 5949.0,
+    "reparsePoints": 0,
+    "exists": true
+  },
+  {
+    "relativePath": ".tmp/r5-desktop-inherit-ad5f6237ae9c4436a86265dccb6cfe6e",
+    "resolvedPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-desktop-inherit-ad5f6237ae9c4436a86265dccb6cfe6e",
+    "fileCount": 2,
+    "bytes": 1680.0,
+    "reparsePoints": 0,
+    "exists": true
+  },
+  {
+    "relativePath": ".tmp/r5-desktop-shell-route-0cd3456ba3fb4cdc9bddf93094a8352a",
+    "resolvedPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-desktop-shell-route-0cd3456ba3fb4cdc9bddf93094a8352a",
+    "fileCount": 5,
+    "bytes": 890485.0,
+    "reparsePoints": 0,
+    "exists": true
+  },
+  {
+    "relativePath": ".tmp/r5-launch-focused-test-094cdcecea9d450fb2ebb5ecb4b3c920",
+    "resolvedPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-launch-focused-test-094cdcecea9d450fb2ebb5ecb4b3c920",
+    "fileCount": 2,
+    "bytes": 24577.0,
+    "reparsePoints": 0,
+    "exists": true
+  }
+]

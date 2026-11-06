@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="8c4f16e4-ad4a-4f0b-972b-c4944a227fa8" name="lopmatu@SULT 2026-11-07 01:41:00" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T01:41:00.0294757+08:00" queuing="2026-11-07T01:41:00.0294761+08:00" start="2026-11-07T01:40:54.2427762+08:00" finish="2026-11-07T01:41:15.6566972+08:00" />
+  <TestSettings name="default" id="d2113ed9-5216-43dd-b541-334a173c8b99">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-07_01_41_00" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="31485798-7810-4429-a928-1588a63e91e9" testId="5c1df42e-dceb-8322-7372-5ae9469b7398" testName="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets(count: 64)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-11-07T01:40:58.5553840+08:00" endTime="2026-11-07T01:40:58.5563833+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="31485798-7810-4429-a928-1588a63e91e9" />
+    <UnitTestResult executionId="de816431-f88b-484a-bd4e-39fd443027ab" testId="7f6eeb7d-e06c-8628-3214-7378ef5cdcfd" testName="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.SyntheticHostAuditCatalogRejectsUnboundedRequests" computerName="SULT" duration="00:00:00.0010000" startTime="2026-11-07T01:40:58.6842273+08:00" endTime="2026-11-07T01:40:58.6852255+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="de816431-f88b-484a-bd4e-39fd443027ab" />
+    <UnitTestResult executionId="83c3d72b-d522-4689-b957-9295805702bd" testId="88875196-3233-b6d8-acfe-7cfc02f486af" testName="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostAuditFailsClosedAndNeverShutsDownTheUserHost" computerName="SULT" duration="00:00:00.0970000" startTime="2026-11-07T01:40:58.5583838+08:00" endTime="2026-11-07T01:40:58.6722273+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="83c3d72b-d522-4689-b957-9295805702bd">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：C:\Users\lopmatu\AppData\Local\Temp\bf3cc83a-5fca-4b91-ae7c-1507ec635606\bf3cc83a-5fca-4b91-ae7c-1507ec635606\assembly\dl3\2d58e5e2\6674def8_156edd01\GameSaveCenter.Playnite.Tests.dll；源码根：D:\workplace\github\GameSaveCenter。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostAuditFailsClosedAndNeverShutsDownTheUserHost() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\DiagnosticsEvidenceSourceTests.cs:行号 13</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c9cfc428-7fc7-4248-94dd-d5ed46c624cd" testId="a35fe6f7-fb5c-8dc8-68a9-86e5165b622f" testName="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.RenderAndHostAuditEntriesDeclareEvidenceBoundariesAndTimingFields" computerName="SULT" duration="00:00:00.0020000" startTime="2026-11-07T01:40:58.6923030+08:00" endTime="2026-11-07T01:40:58.6933012+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c9cfc428-7fc7-4248-94dd-d5ed46c624cd">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：C:\Users\lopmatu\AppData\Local\Temp\bf3cc83a-5fca-4b91-ae7c-1507ec635606\bf3cc83a-5fca-4b91-ae7c-1507ec635606\assembly\dl3\2d58e5e2\6674def8_156edd01\GameSaveCenter.Playnite.Tests.dll；源码根：D:\workplace\github\GameSaveCenter。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.RenderAndHostAuditEntriesDeclareEvidenceBoundariesAndTimingFields() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\DiagnosticsEvidenceSourceTests.cs:行号 53</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7835a1c0-3145-4cbf-9672-fe81483b9760" testId="296d941a-58f3-f7ba-3cd6-af42d899252f" testName="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping" computerName="SULT" duration="00:00:00.0020000" startTime="2026-11-07T01:40:58.6812264+08:00" endTime="2026-11-07T01:40:58.6822262+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7835a1c0-3145-4cbf-9672-fe81483b9760">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：C:\Users\lopmatu\AppData\Local\Temp\bf3cc83a-5fca-4b91-ae7c-1507ec635606\bf3cc83a-5fca-4b91-ae7c-1507ec635606\assembly\dl3\2d58e5e2\6674def8_156edd01\GameSaveCenter.Playnite.Tests.dll；源码根：D:\workplace\github\GameSaveCenter。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\DiagnosticsEvidenceSourceTests.cs:行号 165</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a090c2f2-6346-4c55-99d9-19dee45c5f37" testId="addc913c-a8a5-f264-f95a-8f5ad7d7bb4e" testName="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets(count: 512)" computerName="SULT" duration="00:00:00.0630000" startTime="2026-11-07T01:40:58.4897197+08:00" endTime="2026-11-07T01:40:58.5352637+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a090c2f2-6346-4c55-99d9-19dee45c5f37" />
+    <UnitTestResult executionId="ee2123e9-9550-464d-866e-fc2ffedf85e8" testId="ebd76b9b-7394-3174-9d96-603164150982" testName="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets(count: 1)" computerName="SULT" duration="00:00:00.0010000" startTime="2026-11-07T01:40:58.5523840+08:00" endTime="2026-11-07T01:40:58.5533842+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee2123e9-9550-464d-866e-fc2ffedf85e8" />
+    <UnitTestResult executionId="8846f637-fe05-4115-8f58-382db202dc60" testId="17d94007-d697-5f98-6953-ae61aac28e9f" testName="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostBootstrapClosesGracefullyAndFindsInstalledDesktopThemes" computerName="SULT" duration="00:00:00.0010000" startTime="2026-11-07T01:40:58.6893009+08:00" endTime="2026-11-07T01:40:58.6903024+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8846f637-fe05-4115-8f58-382db202dc60">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：C:\Users\lopmatu\AppData\Local\Temp\bf3cc83a-5fca-4b91-ae7c-1507ec635606\bf3cc83a-5fca-4b91-ae7c-1507ec635606\assembly\dl3\2d58e5e2\6674def8_156edd01\GameSaveCenter.Playnite.Tests.dll；源码根：D:\workplace\github\GameSaveCenter。</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+   在 GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostBootstrapClosesGracefullyAndFindsInstalledDesktopThemes() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\DiagnosticsEvidenceSourceTests.cs:行号 132</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets(count: 64)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="5c1df42e-dceb-8322-7372-5ae9469b7398">
+      <Execution id="31485798-7810-4429-a928-1588a63e91e9" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests" name="SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.SyntheticHostAuditCatalogRejectsUnboundedRequests" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="7f6eeb7d-e06c-8628-3214-7378ef5cdcfd">
+      <Execution id="de816431-f88b-484a-bd4e-39fd443027ab" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests" name="SyntheticHostAuditCatalogRejectsUnboundedRequests" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostAuditFailsClosedAndNeverShutsDownTheUserHost" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="88875196-3233-b6d8-acfe-7cfc02f486af">
+      <Execution id="83c3d72b-d522-4689-b957-9295805702bd" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests" name="IsolatedHostAuditFailsClosedAndNeverShutsDownTheUserHost" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostBootstrapClosesGracefullyAndFindsInstalledDesktopThemes" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="17d94007-d697-5f98-6953-ae61aac28e9f">
+      <Execution id="8846f637-fe05-4115-8f58-382db202dc60" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests" name="IsolatedHostBootstrapClosesGracefullyAndFindsInstalledDesktopThemes" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets(count: 1)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="ebd76b9b-7394-3174-9d96-603164150982">
+      <Execution id="ee2123e9-9550-464d-866e-fc2ffedf85e8" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests" name="SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets(count: 512)" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="addc913c-a8a5-f264-f95a-8f5ad7d7bb4e">
+      <Execution id="a090c2f2-6346-4c55-99d9-19dee45c5f37" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests" name="SyntheticHostAuditCatalogIsBoundedStableAndHasNoInstallTargets" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="296d941a-58f3-f7ba-3cd6-af42d899252f">
+      <Execution id="7835a1c0-3145-4cbf-9672-fe81483b9760" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests" name="Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.RenderAndHostAuditEntriesDeclareEvidenceBoundariesAndTimingFields" storage="d:\workplace\github\gamesavecenter\tests\gamesavecenter.playnite.tests\bin\release\net472\gamesavecenter.playnite.tests.dll" id="a35fe6f7-fb5c-8dc8-68a9-86e5165b622f">
+      <Execution id="c9cfc428-7fc7-4248-94dd-d5ed46c624cd" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\bin\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests" name="RenderAndHostAuditEntriesDeclareEvidenceBoundariesAndTimingFields" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5c1df42e-dceb-8322-7372-5ae9469b7398" executionId="31485798-7810-4429-a928-1588a63e91e9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7f6eeb7d-e06c-8628-3214-7378ef5cdcfd" executionId="de816431-f88b-484a-bd4e-39fd443027ab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="88875196-3233-b6d8-acfe-7cfc02f486af" executionId="83c3d72b-d522-4689-b957-9295805702bd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a35fe6f7-fb5c-8dc8-68a9-86e5165b622f" executionId="c9cfc428-7fc7-4248-94dd-d5ed46c624cd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="296d941a-58f3-f7ba-3cd6-af42d899252f" executionId="7835a1c0-3145-4cbf-9672-fe81483b9760" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="addc913c-a8a5-f264-f95a-8f5ad7d7bb4e" executionId="a090c2f2-6346-4c55-99d9-19dee45c5f37" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ebd76b9b-7394-3174-9d96-603164150982" executionId="ee2123e9-9550-464d-866e-fc2ffedf85e8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="17d94007-d697-5f98-6953-ae61aac28e9f" executionId="8846f637-fe05-4115-8f58-382db202dc60" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="8" executed="8" passed="4" failed="4" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.18]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.23]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.48]       System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：C:\Users\lopmatu\AppData\Local\Temp\bf3cc83a-5fca-4b91-ae7c-1507ec635606\bf3cc83a-5fca-4b91-ae7c-1507ec635606\assembly\dl3\2d58e5e2\6674def8_156edd01\GameSaveCenter.Playnite.Tests.dll；源码根：D:\workplace\github\GameSaveCenter。&#xD;
+[xUnit.net 00:00:03.48]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.48]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:03.48]            在 GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostAuditFailsClosedAndNeverShutsDownTheUserHost() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\DiagnosticsEvidenceSourceTests.cs:行号 13&#xD;
+[xUnit.net 00:00:03.49]       System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：C:\Users\lopmatu\AppData\Local\Temp\bf3cc83a-5fca-4b91-ae7c-1507ec635606\bf3cc83a-5fca-4b91-ae7c-1507ec635606\assembly\dl3\2d58e5e2\6674def8_156edd01\GameSaveCenter.Playnite.Tests.dll；源码根：D:\workplace\github\GameSaveCenter。&#xD;
+[xUnit.net 00:00:03.49]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.49]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:03.49]            在 GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\DiagnosticsEvidenceSourceTests.cs:行号 165&#xD;
+[xUnit.net 00:00:03.50]       System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：C:\Users\lopmatu\AppData\Local\Temp\bf3cc83a-5fca-4b91-ae7c-1507ec635606\bf3cc83a-5fca-4b91-ae7c-1507ec635606\assembly\dl3\2d58e5e2\6674def8_156edd01\GameSaveCenter.Playnite.Tests.dll；源码根：D:\workplace\github\GameSaveCenter。&#xD;
+[xUnit.net 00:00:03.50]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.50]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:03.50]            在 GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostBootstrapClosesGracefullyAndFindsInstalledDesktopThemes() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\DiagnosticsEvidenceSourceTests.cs:行号 132&#xD;
+[xUnit.net 00:00:03.50]       System.InvalidOperationException : Playnite 源码测试缺少 GscBuildCommit。请从 scripts/build.ps1 运行，或在构建时显式设置 GSC_BUILD_COMMIT；程序集位置：C:\Users\lopmatu\AppData\Local\Temp\bf3cc83a-5fca-4b91-ae7c-1507ec635606\bf3cc83a-5fca-4b91-ae7c-1507ec635606\assembly\dl3\2d58e5e2\6674def8_156edd01\GameSaveCenter.Playnite.Tests.dll；源码根：D:\workplace\github\GameSaveCenter。&#xD;
+[xUnit.net 00:00:03.50]       Stack Trace:&#xD;
+[xUnit.net 00:00:03.50]            在 GameSaveCenter.Playnite.Tests.TestRepositoryContext.GetValidatedIdentity() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\TestRepositoryContext.cs:行号 43&#xD;
+[xUnit.net 00:00:03.50]            在 GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.RenderAndHostAuditEntriesDeclareEvidenceBoundariesAndTimingFields() 位置 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Playnite.Tests\DiagnosticsEvidenceSourceTests.cs:行号 53&#xD;
+[xUnit.net 00:00:03.51]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-11-07T01:40:58.6769764+08:00">
+        <Text>[xUnit.net 00:00:03.48]     GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostAuditFailsClosedAndNeverShutsDownTheUserHost [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-11-07T01:40:58.6831367+08:00">
+        <Text>[xUnit.net 00:00:03.49]     GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.Legacy52ReviewTableKeepsEveryOriginalStateReasonAndNewMapping [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-11-07T01:40:58.6914842+08:00">
+        <Text>[xUnit.net 00:00:03.50]     GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.IsolatedHostBootstrapClosesGracefullyAndFindsInstalledDesktopThemes [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="SULT" outcome="Error" timestamp="2026-11-07T01:40:58.6939675+08:00">
+        <Text>[xUnit.net 00:00:03.50]     GameSaveCenter.Playnite.Tests.DiagnosticsEvidenceSourceTests.RenderAndHostAuditEntriesDeclareEvidenceBoundariesAndTimingFields [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

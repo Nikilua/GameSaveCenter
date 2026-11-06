@@ -370,7 +370,7 @@ def check_delivery_guards() -> None:
     if "打包目录不存在：$stage" not in dev_install:
         fail("Development installation must reject a missing staging directory")
     for token in (
-        "DEV-INSTALL-009",
+        "DEV-INSTALL-010",
         "Initialize-GscSdkBaseline -ProjectRoot $root",
         "TrustedPlayniteExecutables",
         "AllowEmptyCollection",

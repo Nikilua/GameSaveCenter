@@ -1,3 +1,11 @@
+## 2026-11-07 U09-05 验收期间黑窗闪现复核
+
+用户指出上一轮验收后仍有黑窗短暂出现；结束后的窗口快照不足以排除瞬时闪现。安装脚本启动 Playnite 的路径改为 `ProcessStartInfo` 并显式 `UseShellExecute = false`，入口修订号更新为 `DEV-INSTALL-010`，入口退出码测试新增该桌面继承守卫。
+
+受控非活动桌面探针中，直接启动与 `Start-Process -WindowStyle Hidden` 的 PowerShell 子进程都继承 `GscGate_14ca4d1c4a2a4c10baa8f4c5fae2d5c6`，输入桌面保持 `Default`，退出码均为 0。探针确认新路径具备桌面继承，但未单独定位用户黑窗的唯一来源；需要在提交后的中文根完整链核对实际 Playnite 窗口桌面及运行期间可见状态。
+
+PowerShell 语法、源码结构检查、`git diff --check` 通过；三个真实入口的退出码矩阵 9/9。直接定向 .NET 测试在未提供 `GscBuildCommit` 时被源码身份守卫拒绝，4/8；TRX 已保留，不计通过，不修改身份门禁。候选提交后通过仓库完整入口重新验收。当前 U09-05 进行中、U09-04 与 U09-08 进行中、U09-06 远端待验；计数为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验。实现和测试边界见[黑窗复核记录](evidence/U09-05-no-flash-20261107/BASELINE.md)。
+
 ## 2026-11-07 Round5 U09-05 / U09-06 冻结候选门禁：2bb24aab
 
 冻结源码 `2bb24aabede7d98ecbed47c967df24418bcd8312` 的独立 `scripts/build.cmd` 与真实中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1` 均以 SDK 8.0.423、Release 完成，入口/根链退出码均为 0；两次工作树跟踪文件均干净。每次 160 份 TRX，2030 项、1972 通过、0 失败、58 跳过；157 个 WPF 隔离组全部完成。58 个跳过原因未更改：57 条属于已撤销的“今日工作台”架构断言，1 条是默认 opt-in 的物理鼠标指针测试。两次诊断摘要、入口日志、原始 TRX 与哈希见 [本机门禁证据](evidence/U09-05-2bb24aab/BASELINE.md)。
@@ -645,7 +653,7 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U09-02 | 键盘与UIA回归 | 代码完成待验收 | SDK8.0.423 Release 精确提交`8deb17c7`组合16/16、0失败、0 skip；TRX原始与脱敏SHA已归档。修正R07夹具默认`SaveTabIndex`，增加可见/排列/UIA Invoke断言 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | WPF MoveFocus/UIA Peer不等于实体键盘、IME、外部UIA或Playnite宿主验收 |
 | U09-03 | 尺寸主题交叉回归 | 代码完成待验收 | 精确提交`8deb17c7`：双主题×11窗口尺寸，394 PNG、0 PROBLEM、逻辑DPI1.00；source validation通过、XAML26/26、WPF静态42文件/0 errors。Render QA原始及脱敏报告SHA已记录 | [U09-01/02/03证据](evidence/U09-01-03/BASELINE.md) | 物理DPI/多屏/Playnite窗口未验；Render报告含未跟踪外部输出，跟踪树在运行时干净 |
 | U09-04 | 动画性能复测 | 进行中 | U00 与 a13a7dbb 的同夹具活动段托管累计分配下降 12.64%–13.36%。固定布局独立滚表基本持平。后续探针确认详情收起后立即滚动的对象是 TaskGrid，9 个对齐样本中滚动代理中位数由 38.84 增至 52.61 ms，收起代理由 13.06 增至 21.19 ms | [同夹具复测](evidence/U09-04-aligned-20261106/BASELINE.md) · [滚动器归属](evidence/U09-04-scroll-owner-20261106/README.md) · [独立表格滚动](evidence/U09-04-taskgrid-scroll-20261102/BASELINE.md) | 组合场景布局耗时增加，尚未定位到具体改动。真实 Playnite 呈现帧和物理输入待验 |
-| U09-05 | 标准cmd最终验收 | 已满足 | 冻结候选 `2bb24aab` 的独立 scripts/build.cmd 与中文根完整链均退出 0；SDK 8.0.423，两次各 160 份 TRX / 2030 项，1972 通过、0 失败、58 既有 skip；PEXT 安装清单 0.6.73，六个安装 DLL 与包内哈希相同 | [本机最终门禁](evidence/U09-05-2bb24aab/verified-local.json) · [安装核验](evidence/U09-05-2bb24aab/install-identity.txt) · [320份 TRX 清单](evidence/U09-05-2bb24aab/trx-manifest.json) | 根链及宿主启动走非活动桌面；前台窗口仅做时点快照，不代表证明全程无瞬时闪现。真实插件页/实体输入/外部 UIA/物理 DPI仍待验 |
+| U09-05 | 标准cmd最终验收 | 进行中 | `2bb24aab` 的历史完整链/安装身份证据仍有效；新修订 `DEV-INSTALL-010` 改用不经 Shell 的进程创建。当前候选待重新冻结并运行独立 build.cmd 与中文根完整链 | [历史完整链](evidence/U09-05-2bb24aab/verified-local.json) · [本轮闪现复核](evidence/U09-05-no-flash-20261107/BASELINE.md) | 定向测试缺少提交身份而由原守卫拒绝，不计通过；提交后须以精确 SHA 重跑。需核对实际 Playnite 窗口桌面和根链期间可见状态；真实插件页/实体输入/外部 UIA/物理 DPI仍待验 |
 | U09-06 | GitHub双SDK门禁 | 远端待验 | 精确 `2bb24aab` 的 CI #1479 completed/success；baseline job `127984550172` 与 SDK10 job `127984549862` 均成功，三个 artifact 对应此源码 SHA | [作业及产物身份](evidence/U09-05-2bb24aab/ci-run-1479.json) | 分支必需检查及规则集此前返回 403，需有权限的维护者只读核对；不把 CI job 成功推断为保护规则已配置 |
 | U09-07 | 产物清理与可追溯 | 已满足 | 当前源码/构建/CI证据已脱敏归档；仅删除两组本阶段`.tmp`输出，保留最新构建、诊断、包、安装报告、文档证据；旧9份失败TRX脱敏归档。D盘两批实测释放191,361,024与115,417,088 bytes | [清单、路径检查、前后空间、保留SDK理由](evidence/U09-05-final-5f0eb620/cleanup.json)；[历史失败TRX](evidence/U09-01-03/historical-failed-local-trx-manifest.json) · [本批清理记录](evidence/U09-05-f0d2b8f1/cleanup-obj.json) | 保留`.tmp/round5-u09-01-03/dotnet-sdk8`与bootstrap脚本：系统全局仅SDK9.0.302，后续本地运行需仓库基线SDK8.0.423；未删用户/其他任务TRX/TestResults |
-| U09-08 | 整轮交付审查 | 进行中 | 最新审查将计划与状态表的 80 个任务 ID 逐一核对，无缺项或重复。当前冻结候选 `2bb24aab` 的本机完整链和 CI #1479 双 SDK 已通过；表中计数为 6 项已满足、71 项代码完成待验收、2 项进行中、1 项远端待验 | [焦点回归 TRX](evidence/U05-02-reduced-motion-focus/after.trx) · [当前源码 CI #1479](evidence/U09-05-2bb24aab/ci-run-1479.json) | U09-04 动画性能结论、真实插件页/实体输入/外部 UIA/物理 DPI 与分支必需检查仍待验 |
+| U09-08 | 整轮交付审查 | 进行中 | 计划与状态表的 80 个任务 ID 逐一核对，无缺项或重复。`2bb24aab` 的本机完整链和 CI #1479 双 SDK 已通过；U09-05 启动闪现补修尚待最终完整链与新候选 CI；当前计数为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验 | [焦点回归 TRX](evidence/U05-02-reduced-motion-focus/after.trx) · [历史源码 CI #1479](evidence/U09-05-2bb24aab/ci-run-1479.json) · [闪现复核](evidence/U09-05-no-flash-20261107/BASELINE.md) | U09-04 动画性能结论、U09-05完整验收、真实插件页/实体输入/外部 UIA/物理 DPI 与分支必需检查仍待验 |

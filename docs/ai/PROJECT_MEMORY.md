@@ -1,3 +1,7 @@
+## 2026-11-07 Round5 非活动桌面的宿主启动核验
+
+验收工具运行在非活动桌面时，直接 GUI 子进程应显式用 `ProcessStartInfo.UseShellExecute = false` 创建，确保由调用线程所在桌面创建。结束后只看前台窗口清单不足以排除运行中的瞬时窗口；应在隔离桌面查实际窗口线程/桌面，并确认输入桌面仍为 `Default`。受控 PowerShell 子进程比较中，Shell 隐藏启动与直接创建都继承了非活动桌面；因此不要仅凭启动API推断用户看到的黑窗原因，须以真实 Playnite HWND 与完整链中的用户桌面观测核实。Round5当前 U09-05 修订 `DEV-INSTALL-010` 的完整链/CI待验。
+
 ## 2026-11-06 Round5 Windows CI #1466 Worker 夹具修复
 
 候选 4719a59c 的 [SDK 8 作业 127733032844](https://github.com/Nikilua/GameSaveCenter/actions/runs/42169279866/job/127733032844) 在打包步骤的 Worker 集成测试失败。原始日志显示 400 通过、1 失败。Rclone 不完整传输分类用例在 Dispose 删除临时 gamesavecenter.db 时遇到文件占用，分类断言未报告失败。诊断产物 13481573092。SDK 10 作业 127733033114 的 8 步通过，诊断产物 13480957381。

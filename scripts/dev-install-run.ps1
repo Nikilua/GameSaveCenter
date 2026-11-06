@@ -15,7 +15,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$installerRevision = 'DEV-INSTALL-009'
+$installerRevision = 'DEV-INSTALL-010'
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
@@ -652,7 +652,18 @@ try {
         $playniteExe = $playniteExecutables | Select-Object -First 1
         if ($playniteExe) {
             Write-Host "`n启动 Playnite：$playniteExe" -ForegroundColor Cyan
-            Start-Process -FilePath $playniteExe -WorkingDirectory (Split-Path -Parent $playniteExe)
+            $playniteStartInfo = [System.Diagnostics.ProcessStartInfo]::new()
+            $playniteStartInfo.FileName = $playniteExe
+            $playniteStartInfo.WorkingDirectory = Split-Path -Parent $playniteExe
+            # Do not route through ShellExecute/Explorer: the installer may be
+            # running on an isolated desktop for acceptance, and the shell can
+            # otherwise surface Playnite on the user's active desktop.
+            $playniteStartInfo.UseShellExecute = $false
+            $playniteProcess = [System.Diagnostics.Process]::Start($playniteStartInfo)
+            if ($null -eq $playniteProcess) {
+                throw "无法启动 Playnite：$playniteExe"
+            }
+            $playniteProcess.Dispose()
         }
         else {
             Write-Host "`n未自动找到 Playnite.DesktopApp.exe，请手工启动 Playnite。" -ForegroundColor Yellow

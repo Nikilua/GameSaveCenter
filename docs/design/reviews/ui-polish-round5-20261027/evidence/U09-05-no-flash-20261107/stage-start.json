@@ -1,0 +1,12 @@
+{
+  "capturedAt": "2026-11-06T17:36:42.6342618Z",
+  "sourceSha": "ca53c5fa9e71a3e62d5572d26472b3b2b31df96c",
+  "CFreeBytes": 8396914688,
+  "DFreeBytes": 15972220928,
+  "ownedOutputs": [
+    ".tmp/r5-launch-no-flash-exit-check",
+    ".tmp/r5-launch-no-flash-e5bb3462ad974d6585e52412cb11ee15",
+    ".tmp/r5-desktop-inherit-ad5f6237ae9c4436a86265dccb6cfe6e"
+  ],
+  "evidenceRoot": "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107"
+}

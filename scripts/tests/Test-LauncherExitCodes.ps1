@@ -11,8 +11,22 @@ if ($FixtureRoot) {
 New-Item -ItemType Directory -Path (Join-Path $output 'scripts') -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $repo 'GameSaveCenter-Run.cmd'), (Join-Path $repo 'GameSaveCenter-一键构建安装运行.cmd') -Destination $output
 Copy-Item -LiteralPath (Join-Path $repo 'scripts/build.cmd') -Destination (Join-Path $output 'scripts')
-Set-Content -LiteralPath (Join-Path $output 'scripts/dev-install-run.ps1') -Value '# DEV-INSTALL-009 isolated fixture'
+Set-Content -LiteralPath (Join-Path $output 'scripts/dev-install-run.ps1') -Value '# DEV-INSTALL-010 isolated fixture'
 Set-Content -LiteralPath (Join-Path $output 'scripts/build.ps1') -Value '# isolated fixture'
+$installSource = Get-Content -LiteralPath (Join-Path $repo 'scripts/dev-install-run.ps1') -Raw
+$startupIndex = $installSource.LastIndexOf('if (-not $NoStart)', [StringComparison]::Ordinal)
+if ($startupIndex -lt 0) { throw 'Playnite startup block is missing.' }
+$startupBlock = $installSource.Substring($startupIndex)
+foreach ($required in @(
+    '[System.Diagnostics.ProcessStartInfo]::new()',
+    '$playniteStartInfo.UseShellExecute = $false',
+    '[System.Diagnostics.Process]::Start($playniteStartInfo)'
+)) {
+    if (-not $startupBlock.Contains($required)) { throw "Playnite startup must preserve the caller desktop; missing: $required" }
+}
+if ($startupBlock.Contains('Start-Process -FilePath $playniteExe')) {
+    throw 'Playnite startup must not route through ShellExecute.'
+}
 $results = @()
 $parentModulePath = $env:PSModulePath
 foreach ($entry in @('GameSaveCenter-Run.cmd', 'GameSaveCenter-一键构建安装运行.cmd', 'scripts/build.cmd')) {
@@ -21,7 +35,7 @@ foreach ($entry in @('GameSaveCenter-Run.cmd', 'GameSaveCenter-一键构建安�
         $moduleProbe = if ($entry -eq 'scripts/build.cmd') {
             '$ErrorActionPreference = ''Stop''; $hash = Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256; if ($hash.Hash.Length -ne 64) { throw ''Hash probe failed'' }; Write-Output ''DESKTOP_HASH_OK'''
         } else { '' }
-        Set-Content -LiteralPath (Join-Path $output ('scripts/' + $scriptName)) -Value "# DEV-INSTALL-009 isolated fixture`n$moduleProbe`nexit $code"
+        Set-Content -LiteralPath (Join-Path $output ('scripts/' + $scriptName)) -Value "# DEV-INSTALL-010 isolated fixture`n$moduleProbe`nexit $code"
         $log = Join-Path $output (($entry -replace '[/\\]', '-') + "-$code.log")
         & cmd.exe /d /c ('"' + (Join-Path $output $entry) + '" < nul > "' + $log + '" 2>&1')
         $actual = $LASTEXITCODE
