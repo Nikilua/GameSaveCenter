@@ -1,3 +1,7 @@
+## 2026-11-06 Round5 U05-02 / U09-02 任务详情收起焦点
+
+关闭动效时任务详情立即收起，原分支跳过焦点归还。补齐后，收起按钮和 Escape 共用的关闭路径会把焦点还给“查看任务详情”。SDK 8.0.423 Release 定向行为测试先失败（焦点仍在详情 ScrollViewer），修复后 1/1 通过。源码检查通过，WPF 静态审查 0 错误。离屏渲染、冻结候选完整链与双 SDK CI 待核，实际 Playnite 键盘及外部 UIA 仍待宿主验收。 [修复前 TRX](evidence/U05-02-reduced-motion-focus/before.trx) · [修复后 TRX](evidence/U05-02-reduced-motion-focus/after.trx)
+
 ## 2026-11-06 Round5 U09-04 收起详情后的滚动器归属
 
 收起详情并同步布局后，双版本全部样本都选中了表格滚动器。9 个对齐周期中，候选的组合场景更慢，具体测法、边界与原始报告见[滚动器归属证据](evidence/U09-04-scroll-owner-20261106/README.md)。U09-04 仍进行中。

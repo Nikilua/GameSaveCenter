@@ -582,6 +582,7 @@ namespace GameSaveCenter.Playnite.Views
             if (!IsInspectorMotionEnabled)
             {
                 CompleteTaskInspectorClose(generation);
+                FocusElement(TaskCompactDetailsButton);
                 return;
             }
 

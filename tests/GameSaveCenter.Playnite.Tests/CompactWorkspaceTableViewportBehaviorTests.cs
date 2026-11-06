@@ -391,6 +391,8 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                     WindowStyle = WindowStyle.None,
                     ShowInTaskbar = false,
                     ShowActivated = false,
+                    Left = -32000,
+                    Top = -32000,
                     Opacity = 0.01
                 };
                 view.ApplyResponsiveLayout(960, 640);
@@ -407,6 +409,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                 Assert.Equal(Visibility.Collapsed, frame.Visibility);
                 Assert.Equal(new GridLength(0), layout.RowDefinitions[4].Height);
                 Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
+                Assert.Same(openButton, Keyboard.FocusedElement);
             }
             finally
             {
