@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d6664332-4860-4ef2-96ad-d773f1255456" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T00:20:19.3593439+08:00" queuing="2026-11-07T00:20:19.3593448+08:00" start="2026-11-07T00:20:15.0799067+08:00" finish="2026-11-07T00:20:21.0328813+08:00" />
+  <TestSettings name="default" id="a43dee20-6144-4d90-a1c6-41aa84f25a5f">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="df6426c3-749f-4058-9ef0-c7672032a9ed" testId="794a2f9a-d00e-8bcb-51b4-5ab3cc718bc9" testName="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.ProductionSaveHistoryRangeAndNavigationControlsFilterRestoreAndSelectVersions" computerName="redacted-host" duration="00:00:02.8960000" startTime="2026-11-07T00:20:17.9601144+08:00" endTime="2026-11-07T00:20:20.8481036+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="df6426c3-749f-4058-9ef0-c7672032a9ed" />
+    <UnitTestResult executionId="4bd4a5fa-32c3-4805-9526-072b00f7446d" testId="63cb2bc9-0c61-c5f6-2949-2702aa6c0d29" testName="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.NavigationKeepsSameSecondOrderStableAndLeavesUnknownLast" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-11-07T00:20:20.8552068+08:00" endTime="2026-11-07T00:20:20.8552068+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4bd4a5fa-32c3-4805-9526-072b00f7446d" />
+    <UnitTestResult executionId="dbcdb794-80bd-46c6-a906-e25e9c9f0f7b" testId="12fadfc2-1ce9-3751-5bcc-b440154d9b70" testName="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.JumpStatusUsesRelativeTextAndFullTimeEvidence" computerName="redacted-host" duration="00:00:00.0040000" startTime="2026-11-07T00:20:17.9525402+08:00" endTime="2026-11-07T00:20:17.9525402+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dbcdb794-80bd-46c6-a906-e25e9c9f0f7b" />
+    <UnitTestResult executionId="e92149e8-e088-43c1-bb43-58b95280c5ef" testId="4b7d7d90-e050-cc7d-402f-37778cc78e69" testName="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.LocalCalendarRangesHandleTodayYesterdayAndUnknownDates" computerName="redacted-host" duration="00:00:00.0020000" startTime="2026-11-07T00:20:17.9525402+08:00" endTime="2026-11-07T00:20:17.9525402+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e92149e8-e088-43c1-bb43-58b95280c5ef" />
+    <UnitTestResult executionId="97506b5c-82d5-4e08-8fb1-261ed32b815e" testId="4dcbe8e2-a265-cca6-367a-8e71d100310d" testName="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.SaveHistoryExposesLocalRangeAndNavigationCommandsWithoutReplacingTheBackupCollectionBinding" computerName="redacted-host" duration="00:00:00.1080000" startTime="2026-11-07T00:20:17.8556848+08:00" endTime="2026-11-07T00:20:17.9249791+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="97506b5c-82d5-4e08-8fb1-261ed32b815e" />
+    <UnitTestResult executionId="b0a7c93b-0401-4e85-b14b-40033a671412" testId="882c03bc-404c-a625-a8d9-d8cdfe2a35c9" testName="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.DaylightSavingTransitionsUseTargetLocalDateAndUtcNavigationOrder" computerName="redacted-host" duration="00:00:00.0240000" startTime="2026-11-07T00:20:17.9545706+08:00" endTime="2026-11-07T00:20:17.9545706+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b0a7c93b-0401-4e85-b14b-40033a671412" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.DaylightSavingTransitionsUseTargetLocalDateAndUtcNavigationOrder" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="882c03bc-404c-a625-a8d9-d8cdfe2a35c9">
+      <Execution id="b0a7c93b-0401-4e85-b14b-40033a671412" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests" name="DaylightSavingTransitionsUseTargetLocalDateAndUtcNavigationOrder" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.JumpStatusUsesRelativeTextAndFullTimeEvidence" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="12fadfc2-1ce9-3751-5bcc-b440154d9b70">
+      <Execution id="dbcdb794-80bd-46c6-a906-e25e9c9f0f7b" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests" name="JumpStatusUsesRelativeTextAndFullTimeEvidence" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.SaveHistoryExposesLocalRangeAndNavigationCommandsWithoutReplacingTheBackupCollectionBinding" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4dcbe8e2-a265-cca6-367a-8e71d100310d">
+      <Execution id="97506b5c-82d5-4e08-8fb1-261ed32b815e" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests" name="SaveHistoryExposesLocalRangeAndNavigationCommandsWithoutReplacingTheBackupCollectionBinding" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.LocalCalendarRangesHandleTodayYesterdayAndUnknownDates" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4b7d7d90-e050-cc7d-402f-37778cc78e69">
+      <Execution id="e92149e8-e088-43c1-bb43-58b95280c5ef" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests" name="LocalCalendarRangesHandleTodayYesterdayAndUnknownDates" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.NavigationKeepsSameSecondOrderStableAndLeavesUnknownLast" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="63cb2bc9-0c61-c5f6-2949-2702aa6c0d29">
+      <Execution id="4bd4a5fa-32c3-4805-9526-072b00f7446d" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests" name="NavigationKeepsSameSecondOrderStableAndLeavesUnknownLast" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests.ProductionSaveHistoryRangeAndNavigationControlsFilterRestoreAndSelectVersions" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="794a2f9a-d00e-8bcb-51b4-5ab3cc718bc9">
+      <Execution id="df6426c3-749f-4058-9ef0-c7672032a9ed" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests" name="ProductionSaveHistoryRangeAndNavigationControlsFilterRestoreAndSelectVersions" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="794a2f9a-d00e-8bcb-51b4-5ab3cc718bc9" executionId="df6426c3-749f-4058-9ef0-c7672032a9ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="63cb2bc9-0c61-c5f6-2949-2702aa6c0d29" executionId="4bd4a5fa-32c3-4805-9526-072b00f7446d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="12fadfc2-1ce9-3751-5bcc-b440154d9b70" executionId="dbcdb794-80bd-46c6-a906-e25e9c9f0f7b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b7d7d90-e050-cc7d-402f-37778cc78e69" executionId="e92149e8-e088-43c1-bb43-58b95280c5ef" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4dcbe8e2-a265-cca6-367a-8e71d100310d" executionId="97506b5c-82d5-4e08-8fb1-261ed32b815e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="882c03bc-404c-a625-a8d9-d8cdfe2a35c9" executionId="b0a7c93b-0401-4e85-b14b-40033a671412" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="6" executed="6" passed="6" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.93]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.30]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.34]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.43]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-07T00:20:21.0016243+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

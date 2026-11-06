@@ -1,0 +1,26 @@
+时间：2026-11-07 00:29:50
+安装运行 ID：20261106T160423077Z-d6c96b69
+源码版本：0.6.73
+隔离构建目录：D:\workplace\github\GameSaveCenter\.tmp\r5-desktop-probe\frozen\artifacts\gsc-b\49fc3662
+安装目录：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+2bb24aabede7d98ecbed47c967df24418bcd8312
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：58B9D92FA68C88C736543A65699B60AED6D6D7AB08EC5F30BA0170316FAD5A23
+  GameSaveCenter.Core.dll：0.6.73+2bb24aabede7d98ecbed47c967df24418bcd8312
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：70C6890369FCC7361029A474441F237FF36E9C957BA0137864E22313942F17E4
+  GameSaveCenter.Contracts.dll：0.6.73+2bb24aabede7d98ecbed47c967df24418bcd8312
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：C28C10EFC4ECCD7E967ECAA0403AB03E6536DBF50B3B9A5A5414A80F8CA5E87C
+  Worker/GameSaveCenter.Worker.dll：0.6.73+2bb24aabede7d98ecbed47c967df24418bcd8312
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：221E48C010F5776DD3AD9A64F5E26A11B133FC425A848C8E0B172920842CB36C
+  Worker/GameSaveCenter.Core.dll：0.6.73+2bb24aabede7d98ecbed47c967df24418bcd8312
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：2BE97F21E0FE8FA54742B844E23FCD798649A66CA85E96D0326C9A8149F26276
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+2bb24aabede7d98ecbed47c967df24418bcd8312
+  文件路径：[user-profile]\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：2B94B0BF56134FD6F1FCB67D217D8292477F4BB7BE79AECEC20DB4609EC52C34

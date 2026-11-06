@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2153cbf8-e79d-4f69-8beb-943de42ed1c3" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T00:21:54.9442613+08:00" queuing="2026-11-07T00:21:54.9442613+08:00" start="2026-11-07T00:21:49.2041189+08:00" finish="2026-11-07T00:21:54.9511859+08:00" />
+  <TestSettings name="default" id="560c1901-3526-4d35-b4e4-a6603c5e8d9e">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="22ec56f3-44f9-406d-8635-18c9e10c1c1c" testId="643d9e53-926c-e796-37a9-a17a3559b49d" testName="GameSaveCenter.Playnite.Tests.R18DispatcherVisibilityBenchmarkTests.GamePickerDispatcherSeparatesViewModelCompletionFromVisibleContainer" computerName="redacted-host" duration="00:00:03.3200000" startTime="2026-11-07T00:21:51.4390339+08:00" endTime="2026-11-07T00:21:54.7372863+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="22ec56f3-44f9-406d-8635-18c9e10c1c1c">
+      <Output>
+        <StdOut>R18-02 dispatcher benchmark: samples=20,vm_p95_ms=45.047,visible_feedback_p95_ms=38.444,visible_feedback_max_ms=47.095,source=ListBox.ItemContainerGenerator+IsVisible+ActualWidthHeight+UpdateLayout&#xD;
+R18-02 raw vm_ms=49.87,31.274,36.024,38.504,45.047,41.002,33.604,40.503,33.067,27.673,24.149,42.117,33.652,33.098,38.92,40.106,32.821,39.695,43.905,37.493&#xD;
+R18-02 raw visible_feedback_ms=26.067,47.095,14.038,14.277,13.154,12.708,13.687,22.062,13.145,38.444,13.383,36.367,13.373,35.154,13.617,12.147,9.84,28.298,13.393,13.308&#xD;
+R18-02 raw visible_counts=1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1&#xD;
+R18-02 raw container_heights=19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24,19.24&#xD;
+R18-02 raw container_widths=476,476,476,476,476,476,476,476,476,476,476,476,476,476,476,476,476,476,476,476</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R18DispatcherVisibilityBenchmarkTests.GamePickerDispatcherSeparatesViewModelCompletionFromVisibleContainer" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="643d9e53-926c-e796-37a9-a17a3559b49d">
+      <Execution id="22ec56f3-44f9-406d-8635-18c9e10c1c1c" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R18DispatcherVisibilityBenchmarkTests" name="GamePickerDispatcherSeparatesViewModelCompletionFromVisibleContainer" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="643d9e53-926c-e796-37a9-a17a3559b49d" executionId="22ec56f3-44f9-406d-8635-18c9e10c1c1c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.76]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.80]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.19]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-07T00:21:54.9076111+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

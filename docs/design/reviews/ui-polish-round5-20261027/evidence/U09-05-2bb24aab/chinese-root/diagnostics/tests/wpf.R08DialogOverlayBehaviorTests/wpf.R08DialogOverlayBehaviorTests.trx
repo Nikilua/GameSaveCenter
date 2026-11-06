@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="b5db022a-9d25-4041-9923-3092023db83e" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T00:17:00.6324226+08:00" queuing="2026-11-07T00:17:00.6324230+08:00" start="2026-11-07T00:16:57.8689266+08:00" finish="2026-11-07T00:17:03.6076056+08:00" />
+  <TestSettings name="default" id="18b89956-f4d2-4a99-8367-9e8f7f16c67c">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="5a23c838-b761-48c9-a349-16909d5d92d5" testId="63bf9e90-448b-d0bb-05ff-c859f1145858" testName="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests.OverlayStaysVisibleDuringCardExitAndCollapsesAfterTheTransition" computerName="redacted-host" duration="00:00:03.1390000" startTime="2026-11-07T00:17:00.2789484+08:00" endTime="2026-11-07T00:17:03.4167630+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a23c838-b761-48c9-a349-16909d5d92d5" />
+    <UnitTestResult executionId="4e788b6e-ec06-4263-a9cb-e2f4e82ce0bd" testId="157ea5c8-a649-0847-b2ca-39e8ec719489" testName="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests.DashboardUsesTheSharedOverlayLifecycleForCompletionAndFocusGuards" computerName="redacted-host" duration="00:00:00.1040000" startTime="2026-11-07T00:17:00.2063940+08:00" endTime="2026-11-07T00:17:00.2729069+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4e788b6e-ec06-4263-a9cb-e2f4e82ce0bd" />
+    <UnitTestResult executionId="e8d59fd1-206d-4c5d-bbf7-90ef1c70e31f" testId="80b83ab1-0915-284b-989d-3aa2c25ac192" testName="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests.LifecycleClaimsCompletionOnceAndBlocksReentryDuringExit" computerName="redacted-host" duration="00:00:00.0190000" startTime="2026-11-07T00:17:00.1780231+08:00" endTime="2026-11-07T00:17:00.1820229+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8d59fd1-206d-4c5d-bbf7-90ef1c70e31f" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests.LifecycleClaimsCompletionOnceAndBlocksReentryDuringExit" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="80b83ab1-0915-284b-989d-3aa2c25ac192">
+      <Execution id="e8d59fd1-206d-4c5d-bbf7-90ef1c70e31f" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests" name="LifecycleClaimsCompletionOnceAndBlocksReentryDuringExit" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests.OverlayStaysVisibleDuringCardExitAndCollapsesAfterTheTransition" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="63bf9e90-448b-d0bb-05ff-c859f1145858">
+      <Execution id="5a23c838-b761-48c9-a349-16909d5d92d5" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests" name="OverlayStaysVisibleDuringCardExitAndCollapsesAfterTheTransition" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests.DashboardUsesTheSharedOverlayLifecycleForCompletionAndFocusGuards" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="157ea5c8-a649-0847-b2ca-39e8ec719489">
+      <Execution id="4e788b6e-ec06-4263-a9cb-e2f4e82ce0bd" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests" name="DashboardUsesTheSharedOverlayLifecycleForCompletionAndFocusGuards" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="63bf9e90-448b-d0bb-05ff-c859f1145858" executionId="5a23c838-b761-48c9-a349-16909d5d92d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="157ea5c8-a649-0847-b2ca-39e8ec719489" executionId="4e788b6e-ec06-4263-a9cb-e2f4e82ce0bd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80b83ab1-0915-284b-989d-3aa2c25ac192" executionId="e8d59fd1-206d-4c5d-bbf7-90ef1c70e31f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.79]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.84]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.16]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-07T00:17:03.5756431+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

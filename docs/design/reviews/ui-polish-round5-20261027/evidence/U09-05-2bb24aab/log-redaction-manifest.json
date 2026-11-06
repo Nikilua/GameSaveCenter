@@ -1,0 +1,19 @@
+[
+  {
+    "name": "scripts-build",
+    "sourceSha256": "50E45A0F82AE8FC22458D30C1F86F871E44E47401F876EA2A20F2D1D10338BA1",
+    "archivedSha256": "060145353095F41951CD719260E55829107FED00BF5C4311926544868727A9B5",
+    "redactedUserProfileOccurrences": 1,
+    "sourceEncoding": "CP936",
+    "archiveEncoding": "UTF-8"
+  },
+  {
+    "name": "chinese-root",
+    "sourceSha256": "A624117E4FC7E786D1F80CCD66409B423FE83CF341E18A6021A79EB89DA11DFC",
+    "archivedSha256": "2FFE42F0F6FC3A98EC8533D6FBFEFAFB8CBE232B919CB861C0A3FE84866AB38C",
+    "redactedUserProfileOccurrences": 2,
+    "sourceEncoding": "CP936",
+    "archiveEncoding": "UTF-8",
+    "trimmedTrailingWhitespaceLines": 1
+  }
+]

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="e5f14481-0297-4b3a-826c-df6e53b2b2d5" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T23:44:22.2638048+08:00" queuing="2026-11-06T23:44:22.2638052+08:00" start="2026-11-06T23:44:16.4072899+08:00" finish="2026-11-06T23:44:22.6732477+08:00" />
+  <TestSettings name="default" id="b35f4af7-dce0-4d3a-9f15-82e9c2320a33">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="4a351100-c475-43b8-9803-6ccc3c72793c" testId="0d207de1-b728-45f6-6b86-cbe2604ec1eb" testName="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.ReadableFloorUsesTableChromeAndFrameChromeIndependently" computerName="redacted-host" duration="00:00:00.0120000" startTime="2026-11-06T23:44:22.2487132+08:00" endTime="2026-11-06T23:44:22.2487132+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4a351100-c475-43b8-9803-6ccc3c72793c" />
+    <UnitTestResult executionId="ebae22be-07a8-4eb2-a225-814c6d28a22e" testId="2b1bd52c-eae4-fa9a-03f5-5680e0a5546d" testName="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.ProductionInboxKeepsFourRowsOrExposesThePageFallback" computerName="redacted-host" duration="00:00:03.0280000" startTime="2026-11-06T23:44:19.2061345+08:00" endTime="2026-11-06T23:44:22.2097560+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ebae22be-07a8-4eb2-a225-814c6d28a22e" />
+    <UnitTestResult executionId="6244bb09-7b94-40f8-aea4-26e3bfc13ee2" testId="6fee876a-0e57-e7b4-851c-4a1af830dee0" testName="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.NarrowInboxKeepsThePageScrollChannelWhenFooterWraps" computerName="redacted-host" duration="00:00:00.2420000" startTime="2026-11-06T23:44:22.2513136+08:00" endTime="2026-11-06T23:44:22.4641631+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6244bb09-7b94-40f8-aea4-26e3bfc13ee2" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.ReadableFloorUsesTableChromeAndFrameChromeIndependently" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0d207de1-b728-45f6-6b86-cbe2604ec1eb">
+      <Execution id="4a351100-c475-43b8-9803-6ccc3c72793c" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests" name="ReadableFloorUsesTableChromeAndFrameChromeIndependently" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.ProductionInboxKeepsFourRowsOrExposesThePageFallback" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2b1bd52c-eae4-fa9a-03f5-5680e0a5546d">
+      <Execution id="ebae22be-07a8-4eb2-a225-814c6d28a22e" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests" name="ProductionInboxKeepsFourRowsOrExposesThePageFallback" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests.NarrowInboxKeepsThePageScrollChannelWhenFooterWraps" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6fee876a-0e57-e7b4-851c-4a1af830dee0">
+      <Execution id="6244bb09-7b94-40f8-aea4-26e3bfc13ee2" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests" name="NarrowInboxKeepsThePageScrollChannelWhenFooterWraps" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="0d207de1-b728-45f6-6b86-cbe2604ec1eb" executionId="4a351100-c475-43b8-9803-6ccc3c72793c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2b1bd52c-eae4-fa9a-03f5-5680e0a5546d" executionId="ebae22be-07a8-4eb2-a225-814c6d28a22e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6fee876a-0e57-e7b4-851c-4a1af830dee0" executionId="6244bb09-7b94-40f8-aea4-26e3bfc13ee2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.81]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.85]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:04.19]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-06T23:44:22.6399348+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

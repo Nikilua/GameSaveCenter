@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1b51f689-8326-4f95-9865-d51364272700" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T00:08:37.8917648+08:00" queuing="2026-11-07T00:08:37.8917650+08:00" start="2026-11-07T00:08:33.6477897+08:00" finish="2026-11-07T00:08:37.8991726+08:00" />
+  <TestSettings name="default" id="88479772-82f9-4107-bda0-9d232ddb1398">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2bcb319e-f91b-4621-b675-5d43a5c4e1af" testId="f381bd60-e646-0daf-e988-7a67ba53a03d" testName="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests.LayoutResetPreviewsScopeAndPreservesFiltersAndBusinessSettings" computerName="redacted-host" duration="00:00:00.0340000" startTime="2026-11-07T00:08:37.6760147+08:00" endTime="2026-11-07T00:08:37.6930855+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2bcb319e-f91b-4621-b675-5d43a5c4e1af" />
+    <UnitTestResult executionId="962cc957-3fd4-4062-afea-82bfbbb2bc6e" testId="cd3c09c0-a46f-eb00-0750-de779cbc05f8" testName="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests.SavedViewAppliesAndRestoresWithoutChangingDefaultColumnPreferences" computerName="redacted-host" duration="00:00:01.7470000" startTime="2026-11-07T00:08:35.9076232+08:00" endTime="2026-11-07T00:08:37.6392881+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="962cc957-3fd4-4062-afea-82bfbbb2bc6e" />
+    <UnitTestResult executionId="4f242297-d6c7-4926-91b2-ffb15322ce08" testId="fbc6884a-863a-9bb3-c393-63deafaec4eb" testName="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests.SavedViewWithMissingOrRenamedColumnsFallsBackToCurrentTableDefaults" computerName="redacted-host" duration="00:00:00.0140000" startTime="2026-11-07T00:08:37.6740171+08:00" endTime="2026-11-07T00:08:37.6740171+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4f242297-d6c7-4926-91b2-ffb15322ce08" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests.SavedViewAppliesAndRestoresWithoutChangingDefaultColumnPreferences" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="cd3c09c0-a46f-eb00-0750-de779cbc05f8">
+      <Execution id="962cc957-3fd4-4062-afea-82bfbbb2bc6e" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests" name="SavedViewAppliesAndRestoresWithoutChangingDefaultColumnPreferences" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests.LayoutResetPreviewsScopeAndPreservesFiltersAndBusinessSettings" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f381bd60-e646-0daf-e988-7a67ba53a03d">
+      <Execution id="2bcb319e-f91b-4621-b675-5d43a5c4e1af" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests" name="LayoutResetPreviewsScopeAndPreservesFiltersAndBusinessSettings" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests.SavedViewWithMissingOrRenamedColumnsFallsBackToCurrentTableDefaults" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="fbc6884a-863a-9bb3-c393-63deafaec4eb">
+      <Execution id="4f242297-d6c7-4926-91b2-ffb15322ce08" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests" name="SavedViewWithMissingOrRenamedColumnsFallsBackToCurrentTableDefaults" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="f381bd60-e646-0daf-e988-7a67ba53a03d" executionId="2bcb319e-f91b-4621-b675-5d43a5c4e1af" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd3c09c0-a46f-eb00-0750-de779cbc05f8" executionId="962cc957-3fd4-4062-afea-82bfbbb2bc6e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fbc6884a-863a-9bb3-c393-63deafaec4eb" executionId="4f242297-d6c7-4926-91b2-ffb15322ce08" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.79]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.83]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.68]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-07T00:08:37.8523332+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

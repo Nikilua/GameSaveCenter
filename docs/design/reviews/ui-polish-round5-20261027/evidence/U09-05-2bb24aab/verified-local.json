@@ -1,0 +1,139 @@
+{
+  "sourceCommit": "2bb24aabede7d98ecbed47c967df24418bcd8312",
+  "frozenTrackedTreeClean": true,
+  "sdk": "8.0.423",
+  "entries": [
+    {
+      "entry": "scripts-build",
+      "diagnosticRun": "20261106T153929800Z-f0f861d2",
+      "sdk": "8.0.423",
+      "sourceCommit": "2bb24aabede7d98ecbed47c967df24418bcd8312",
+      "workingTreeClean": true,
+      "outcome": "passed",
+      "startedUtc": "2026-11-06T15:39:31.1120898Z",
+      "completedUtc": "2026-11-06T16:04:20.1471595Z",
+      "steps": 166,
+      "allStepExitCodesZero": true,
+      "trxFiles": 160,
+      "testCases": 2030,
+      "passed": 1972,
+      "failed": 0,
+      "skipped": 58,
+      "skipReasons": [
+        {
+          "count": 1,
+          "reason": "该测试会移动系统鼠标指针；默认跳过。设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 后可单独运行。"
+        },
+        {
+          "count": 57,
+          "reason": "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。"
+        }
+      ]
+    },
+    {
+      "entry": "chinese-root",
+      "diagnosticRun": "20261106T160424739Z-36376e15",
+      "sdk": "8.0.423",
+      "sourceCommit": "2bb24aabede7d98ecbed47c967df24418bcd8312",
+      "workingTreeClean": true,
+      "outcome": "passed",
+      "startedUtc": "2026-11-06T16:04:25.6577436Z",
+      "completedUtc": "2026-11-06T16:29:38.3478745Z",
+      "steps": 166,
+      "allStepExitCodesZero": true,
+      "trxFiles": 160,
+      "testCases": 2030,
+      "passed": 1972,
+      "failed": 0,
+      "skipped": 58,
+      "skipReasons": [
+        {
+          "count": 1,
+          "reason": "该测试会移动系统鼠标指针；默认跳过。设置 GSC_RUN_INTERACTIVE_POINTER_TESTS=1 后可单独运行。"
+        },
+        {
+          "count": 57,
+          "reason": "该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。"
+        }
+      ]
+    }
+  ],
+  "exits": {
+    "scriptsBuildCmd": 0,
+    "chineseWrapper": 0,
+    "englishRoot": 0,
+    "rootChain": 0
+  },
+  "install": {
+    "manifestVersion": "0.6.73",
+    "dllVersion": "0.6.73.0",
+    "packageName": "GameSaveCenter-0.6.73.pext",
+    "packageBytes": 45739381,
+    "packageSha256": "2B1BBE74ADDAE42B7A86830C2CA5E12C0F28C32859724725D038442D4198445F",
+    "installedDlls": [
+      {
+        "packageEntry": "GameSaveCenter.Playnite.dll",
+        "installedPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Playnite.dll",
+        "packageSha256": "58B9D92FA68C88C736543A65699B60AED6D6D7AB08EC5F30BA0170316FAD5A23",
+        "installedSha256": "58B9D92FA68C88C736543A65699B60AED6D6D7AB08EC5F30BA0170316FAD5A23",
+        "matches": true,
+        "fileVersion": "0.6.73.0"
+      },
+      {
+        "packageEntry": "GameSaveCenter.Core.dll",
+        "installedPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Core.dll",
+        "packageSha256": "70C6890369FCC7361029A474441F237FF36E9C957BA0137864E22313942F17E4",
+        "installedSha256": "70C6890369FCC7361029A474441F237FF36E9C957BA0137864E22313942F17E4",
+        "matches": true,
+        "fileVersion": "0.6.73.0"
+      },
+      {
+        "packageEntry": "GameSaveCenter.Contracts.dll",
+        "installedPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\GameSaveCenter.Contracts.dll",
+        "packageSha256": "C28C10EFC4ECCD7E967ECAA0403AB03E6536DBF50B3B9A5A5414A80F8CA5E87C",
+        "installedSha256": "C28C10EFC4ECCD7E967ECAA0403AB03E6536DBF50B3B9A5A5414A80F8CA5E87C",
+        "matches": true,
+        "fileVersion": "0.6.73.0"
+      },
+      {
+        "packageEntry": "Worker/GameSaveCenter.Worker.dll",
+        "installedPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.dll",
+        "packageSha256": "221E48C010F5776DD3AD9A64F5E26A11B133FC425A848C8E0B172920842CB36C",
+        "installedSha256": "221E48C010F5776DD3AD9A64F5E26A11B133FC425A848C8E0B172920842CB36C",
+        "matches": true,
+        "fileVersion": "0.6.73.0"
+      },
+      {
+        "packageEntry": "Worker/GameSaveCenter.Core.dll",
+        "installedPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Core.dll",
+        "packageSha256": "2BE97F21E0FE8FA54742B844E23FCD798649A66CA85E96D0326C9A8149F26276",
+        "installedSha256": "2BE97F21E0FE8FA54742B844E23FCD798649A66CA85E96D0326C9A8149F26276",
+        "matches": true,
+        "fileVersion": "0.6.73.0"
+      },
+      {
+        "packageEntry": "Worker/GameSaveCenter.Contracts.dll",
+        "installedPath": "[user-profile]\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Contracts.dll",
+        "packageSha256": "2B94B0BF56134FD6F1FCB67D217D8292477F4BB7BE79AECEC20DB4609EC52C34",
+        "installedSha256": "2B94B0BF56134FD6F1FCB67D217D8292477F4BB7BE79AECEC20DB4609EC52C34",
+        "matches": true,
+        "fileVersion": "0.6.73.0"
+      }
+    ]
+  },
+  "pipeline": {
+    "chinese": "GameSaveCenter-一键构建安装运行.cmd",
+    "english": "GameSaveCenter-Run.cmd",
+    "installer": "scripts/dev-install-run.ps1",
+    "independent": "scripts/build.cmd"
+  },
+  "visibleWindowCheck": {
+    "method": "CUA listWindows",
+    "activeWindows": [
+      "ChatGPT",
+      "FlClash"
+    ],
+    "playniteOrBuildWindowVisible": false,
+    "scope": "检查时点的前台窗口清单；不能证明检查前后的短暂帧始终没有闪现"
+  }
+}

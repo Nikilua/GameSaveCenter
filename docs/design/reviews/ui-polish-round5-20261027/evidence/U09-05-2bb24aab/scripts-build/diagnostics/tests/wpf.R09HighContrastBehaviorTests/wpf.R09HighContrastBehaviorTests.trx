@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="69b9591e-a719-408d-a0e0-e189e6f6b2f3" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T23:53:42.8971087+08:00" queuing="2026-11-06T23:53:42.8971090+08:00" start="2026-11-06T23:53:20.9538005+08:00" finish="2026-11-06T23:53:43.2408820+08:00" />
+  <TestSettings name="default" id="0d641be9-b4d6-4548-97d2-c6297994111b">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ca308ff0-4aa1-45cf-acbf-4fc1769a0151" testId="c39f7cb5-75bc-0942-e148-8d0ec16db369" testName="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.HighContrastStopsActiveButtonAndDisclosureAnimationsAndRestoresThemAfterRecovery" computerName="redacted-host" duration="00:00:00.1670000" startTime="2026-11-06T23:53:42.8833057+08:00" endTime="2026-11-06T23:53:43.0169270+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ca308ff0-4aa1-45cf-acbf-4fc1769a0151" />
+    <UnitTestResult executionId="80ed55a0-e9bd-4c00-a38f-45163a79ed09" testId="7789f1da-2b52-b213-80c0-d44dd6dc42c1" testName="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion" computerName="redacted-host" duration="00:00:19.4720000" startTime="2026-11-06T23:53:23.4003146+08:00" endTime="2026-11-06T23:53:42.8491380+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="80ed55a0-e9bd-4c00-a38f-45163a79ed09" />
+    <UnitTestResult executionId="e3f06206-d1d8-436d-850e-dc643ddccf17" testId="0fb84401-f41e-552b-5245-cd86e0f516cb" testName="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.HighContrastUsesSystemSemanticTokensAndRestoresMaterialAfterRecovery" computerName="redacted-host" duration="00:00:00.0340000" startTime="2026-11-06T23:53:43.0189586+08:00" endTime="2026-11-06T23:53:43.0509424+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e3f06206-d1d8-436d-850e-dc643ddccf17" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.HighContrastUsesSystemSemanticTokensAndRestoresMaterialAfterRecovery" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0fb84401-f41e-552b-5245-cd86e0f516cb">
+      <Execution id="e3f06206-d1d8-436d-850e-dc643ddccf17" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests" name="HighContrastUsesSystemSemanticTokensAndRestoresMaterialAfterRecovery" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.HighContrastStopsActiveButtonAndDisclosureAnimationsAndRestoresThemAfterRecovery" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c39f7cb5-75bc-0942-e148-8d0ec16db369">
+      <Execution id="ca308ff0-4aa1-45cf-acbf-4fc1769a0151" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests" name="HighContrastStopsActiveButtonAndDisclosureAnimationsAndRestoresThemAfterRecovery" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests.HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7789f1da-2b52-b213-80c0-d44dd6dc42c1">
+      <Execution id="80ed55a0-e9bd-4c00-a38f-45163a79ed09" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests" name="HighContrastCombinationsKeepDisabledSelectedFocusAndPopupReadableAndRecoverMotion" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c39f7cb5-75bc-0942-e148-8d0ec16db369" executionId="ca308ff0-4aa1-45cf-acbf-4fc1769a0151" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7789f1da-2b52-b213-80c0-d44dd6dc42c1" executionId="80ed55a0-e9bd-4c00-a38f-45163a79ed09" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0fb84401-f41e-552b-5245-cd86e0f516cb" executionId="e3f06206-d1d8-436d-850e-dc643ddccf17" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.40]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.75]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.79]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:20.52]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-06T23:53:43.2064968+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

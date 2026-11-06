@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a63c9d16-4f1b-4ff1-85a2-24ed9b2b80c9" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T00:17:19.5556423+08:00" queuing="2026-11-07T00:17:19.5556427+08:00" start="2026-11-07T00:17:13.3750315+08:00" finish="2026-11-07T00:17:31.4658542+08:00" />
+  <TestSettings name="default" id="149d2fef-2c81-4a61-b02f-c946d600312e">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="17d03b8a-ced0-4426-b0eb-cac515a73b56" testId="be5b923e-ad7a-cf67-60b8-2c11fea6272a" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" computerName="redacted-host" duration="00:00:03.3700000" startTime="2026-11-07T00:17:19.5391075+08:00" endTime="2026-11-07T00:17:22.8748310+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17d03b8a-ced0-4426-b0eb-cac515a73b56">
+      <Output>
+        <StdOut>sidebar collapseMid=261.333; reversalStart=261.333; reverseMid=262; final=270; opacity=1; completed=True; trace=after-collapse collapsed=True; running=True; base=261.159; actual=261.333 | after-reverse-progress collapsed=False; running=True; base=261.687; actual=262</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a8d99e31-8c8c-4462-95cd-fd30d41c93f8" testId="b0340ce6-688e-c340-02d5-18ae291f41df" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" computerName="redacted-host" duration="00:00:03.8670000" startTime="2026-11-07T00:17:15.6584656+08:00" endTime="2026-11-07T00:17:19.5043848+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a8d99e31-8c8c-4462-95cd-fd30d41c93f8">
+      <Output>
+        <StdOut>translate midpoint=0.935; sampled=True; reversalStart=0.935; final=-8; completed=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ad438445-e9e2-4641-abb9-1caead44a2ed" testId="f76a1e63-ce4b-6f54-9297-65e161b3e757" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SamplingDeadlineReturnsBeforeQueuedRenderWorkDrains" computerName="redacted-host" duration="00:00:00.0130000" startTime="2026-11-07T00:17:22.8768312+08:00" endTime="2026-11-07T00:17:22.8877180+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad438445-e9e2-4641-abb9-1caead44a2ed">
+      <Output>
+        <StdOut>render turns before sampling deadline: 2/40</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c48339ec-d846-4055-9481-e449e1a6b1b3" testId="2db61859-6b6e-8e9c-63a7-f573aeffb663" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues" computerName="redacted-host" duration="00:00:08.3860000" startTime="2026-11-07T00:17:22.8897349+08:00" endTime="2026-11-07T00:17:31.2742803+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c48339ec-d846-4055-9481-e449e1a6b1b3">
+      <Output>
+        <StdOut>button hover midpoint=0.066; exit=0.032/0.066; reenter=0.581/0.032; final=1; samples=True/True/True; pressed overlay midpoint=0.566; release=0.566-&gt;0.229; re-press=0.229-&gt;1; releaseProgress=0.229; re-pressProgress=0.581; releasedFinal=0; transformIdentity=True; transitions=True/True/True; light/dark sibling sweep visited=48; max residual=0.0007; re-entry=True/True&#xD;
+hover rendering sampler entry=frames=2,resets=0,elapsed=18.892ms; exit=frames=2,resets=0,elapsed=168.022ms; reentry=frames=2,resets=0,elapsed=204.495ms&#xD;
+pressed rendering sampler entry=frames=2,resets=0,elapsed=192.086ms,opacity=0.566; release=frames=2,resets=0,elapsed=205.055ms,opacity=0.229; re-entry=frames=2,resets=0,elapsed=204.801ms,opacity=0.581; final press=frames=4,resets=0,elapsed=613.397ms,opacity=1; final release=frames=3,resets=0,elapsed=1011.394ms,opacity=0</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2db61859-6b6e-8e9c-63a7-f573aeffb663">
+      <Execution id="c48339ec-d846-4055-9481-e449e1a6b1b3" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="ProductionButtonHoverAndPressReverseFromTheirRenderedValues" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b0340ce6-688e-c340-02d5-18ae291f41df">
+      <Execution id="a8d99e31-8c8c-4462-95cd-fd30d41c93f8" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="TranslateReversalStartsAtRenderedValueAndFinishesAtLatestTarget" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SamplingDeadlineReturnsBeforeQueuedRenderWorkDrains" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f76a1e63-ce4b-6f54-9297-65e161b3e757">
+      <Execution id="ad438445-e9e2-4641-abb9-1caead44a2ed" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="SamplingDeadlineReturnsBeforeQueuedRenderWorkDrains" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" storage="[repo]\artifacts\gsc-b\49fc3662\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="be5b923e-ad7a-cf67-60b8-2c11fea6272a">
+      <Execution id="17d03b8a-ced0-4426-b0eb-cac515a73b56" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\49fc3662\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="SidebarRapidReversalUsesLatestTargetAndReleasesOldClock" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="be5b923e-ad7a-cf67-60b8-2c11fea6272a" executionId="17d03b8a-ced0-4426-b0eb-cac515a73b56" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b0340ce6-688e-c340-02d5-18ae291f41df" executionId="a8d99e31-8c8c-4462-95cd-fd30d41c93f8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f76a1e63-ce4b-6f54-9297-65e161b3e757" executionId="ad438445-e9e2-4641-abb9-1caead44a2ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2db61859-6b6e-8e9c-63a7-f573aeffb663" executionId="c48339ec-d846-4055-9481-e449e1a6b1b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.78]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.82]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:16.52]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-07T00:17:31.4296502+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

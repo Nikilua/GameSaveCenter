@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="5d43030d-aa4f-421f-804e-a0bd05096158" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T23:54:30.0818438+08:00" queuing="2026-11-06T23:54:30.0818439+08:00" start="2026-11-06T23:54:25.2930191+08:00" finish="2026-11-06T23:54:33.5735232+08:00" />
+  <TestSettings name="default" id="d3993fc0-3feb-4253-ba87-b19ccbf0bf99">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="878d1150-1bee-4203-b4be-d3b1080d09d1" testId="1703deed-fb45-e480-0384-20421c8e5f68" testName="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.CatalogListsOnlyCommandsThatCanExecute" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-11-06T23:54:33.2939072+08:00" endTime="2026-11-06T23:54:33.2939072+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="878d1150-1bee-4203-b4be-d3b1080d09d1" />
+    <UnitTestResult executionId="3259cae5-79d0-4725-b52a-3bf14f39f747" testId="3b1d8d5e-e3c5-5383-b29a-c14876834ebe" testName="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.ClickingHelpButtonOpensPopupWithCurrentPageEntry" computerName="redacted-host" duration="00:00:00.3600000" startTime="2026-11-06T23:54:32.9336568+08:00" endTime="2026-11-06T23:54:33.2919080+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3259cae5-79d0-4725-b52a-3bf14f39f747" />
+    <UnitTestResult executionId="3d6361f7-faf1-4ad0-a593-b8dfb89eedbe" testId="2c1dc6e3-f59d-37ac-b5de-d3b3da0e491f" testName="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.CatalogKeepsCurrentWorkspaceInHelpDescription" computerName="redacted-host" duration="00:00:00.0010000" startTime="2026-11-06T23:54:33.2929101+08:00" endTime="2026-11-06T23:54:33.2929101+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3d6361f7-faf1-4ad0-a593-b8dfb89eedbe" />
+    <UnitTestResult executionId="bce6f44f-e739-4794-8bde-de95639afa1f" testId="ad6ace2a-ab13-4405-8ccf-141193db43f5" testName="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.ProductionHelpUsesShellEntryAndActualSearchCommand" computerName="redacted-host" duration="00:00:00.0930000" startTime="2026-11-06T23:54:33.2949095+08:00" endTime="2026-11-06T23:54:33.3785447+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bce6f44f-e739-4794-8bde-de95639afa1f" />
+    <UnitTestResult executionId="5a3f5466-e7c3-49f1-b6ed-bd9f6d8f9c70" testId="cb5e830b-f998-6d61-02d1-6797eb1cfa31" testName="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.ClickingHelpButtonOmitsSearchWhenActualShellCommandCannotExecute" computerName="redacted-host" duration="00:00:01.9700000" startTime="2026-11-06T23:54:28.0829215+08:00" endTime="2026-11-06T23:54:30.0248009+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a3f5466-e7c3-49f1-b6ed-bd9f6d8f9c70" />
+    <UnitTestResult executionId="d0409fb5-ef9f-4ac8-8458-4bd4d5ef32cb" testId="eee0636d-4797-59ee-df03-af8b86ecd2a8" testName="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.HelpPopupUsesSharedMotionAndEscapeReturnsToItsTrigger(animated: False)" computerName="redacted-host" duration="00:00:01.1580000" startTime="2026-11-06T23:54:30.0681248+08:00" endTime="2026-11-06T23:54:31.1823302+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d0409fb5-ef9f-4ac8-8458-4bd4d5ef32cb" />
+    <UnitTestResult executionId="4a1a033c-7297-40a5-9a68-84e39f15fd82" testId="68bf1804-cffb-cb32-c937-665dbc1b66cb" testName="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.HelpPopupUsesSharedMotionAndEscapeReturnsToItsTrigger(animated: True)" computerName="redacted-host" duration="00:00:01.7490000" startTime="2026-11-06T23:54:31.1843287+08:00" endTime="2026-11-06T23:54:32.9316535+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4a1a033c-7297-40a5-9a68-84e39f15fd82" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.ProductionHelpUsesShellEntryAndActualSearchCommand" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ad6ace2a-ab13-4405-8ccf-141193db43f5">
+      <Execution id="bce6f44f-e739-4794-8bde-de95639afa1f" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests" name="ProductionHelpUsesShellEntryAndActualSearchCommand" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.HelpPopupUsesSharedMotionAndEscapeReturnsToItsTrigger(animated: True)" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="68bf1804-cffb-cb32-c937-665dbc1b66cb">
+      <Execution id="4a1a033c-7297-40a5-9a68-84e39f15fd82" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests" name="HelpPopupUsesSharedMotionAndEscapeReturnsToItsTrigger" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.CatalogListsOnlyCommandsThatCanExecute" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1703deed-fb45-e480-0384-20421c8e5f68">
+      <Execution id="878d1150-1bee-4203-b4be-d3b1080d09d1" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests" name="CatalogListsOnlyCommandsThatCanExecute" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.ClickingHelpButtonOpensPopupWithCurrentPageEntry" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3b1d8d5e-e3c5-5383-b29a-c14876834ebe">
+      <Execution id="3259cae5-79d0-4725-b52a-3bf14f39f747" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests" name="ClickingHelpButtonOpensPopupWithCurrentPageEntry" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.ClickingHelpButtonOmitsSearchWhenActualShellCommandCannotExecute" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="cb5e830b-f998-6d61-02d1-6797eb1cfa31">
+      <Execution id="5a3f5466-e7c3-49f1-b6ed-bd9f6d8f9c70" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests" name="ClickingHelpButtonOmitsSearchWhenActualShellCommandCannotExecute" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.HelpPopupUsesSharedMotionAndEscapeReturnsToItsTrigger(animated: False)" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="eee0636d-4797-59ee-df03-af8b86ecd2a8">
+      <Execution id="d0409fb5-ef9f-4ac8-8458-4bd4d5ef32cb" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests" name="HelpPopupUsesSharedMotionAndEscapeReturnsToItsTrigger" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests.CatalogKeepsCurrentWorkspaceInHelpDescription" storage="d:\workplace\github\gamesavecenter\.tmp\r5-gate-2bb2\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2c1dc6e3-f59d-37ac-b5de-d3b3da0e491f">
+      <Execution id="3d6361f7-faf1-4ad0-a593-b8dfb89eedbe" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-gate-2bb2\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests" name="CatalogKeepsCurrentWorkspaceInHelpDescription" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="1703deed-fb45-e480-0384-20421c8e5f68" executionId="878d1150-1bee-4203-b4be-d3b1080d09d1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3b1d8d5e-e3c5-5383-b29a-c14876834ebe" executionId="3259cae5-79d0-4725-b52a-3bf14f39f747" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2c1dc6e3-f59d-37ac-b5de-d3b3da0e491f" executionId="3d6361f7-faf1-4ad0-a593-b8dfb89eedbe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ad6ace2a-ab13-4405-8ccf-141193db43f5" executionId="bce6f44f-e739-4794-8bde-de95639afa1f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cb5e830b-f998-6d61-02d1-6797eb1cfa31" executionId="5a3f5466-e7c3-49f1-b6ed-bd9f6d8f9c70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eee0636d-4797-59ee-df03-af8b86ecd2a8" executionId="d0409fb5-ef9f-4ac8-8458-4bd4d5ef32cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="68bf1804-cffb-cb32-c937-665dbc1b66cb" executionId="4a1a033c-7297-40a5-9a68-84e39f15fd82" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="7" passed="7" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.41]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.77]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.82]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.21]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-06T23:54:33.5415906+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
