@@ -16,9 +16,9 @@ U00 与候选复用同一版 a13 RenderHarness `Program.cs`、`FakeDashboardData
 | 活动段托管累计分配 | 13,175,764,656 → 11,415,327,064 bytes | 13,175,959,496 → 11,509,964,064 bytes | 候选总分配低约 13.36% / 12.64%，尽管完成动作更多。 |
 | 稳定段托管存活量变化 | 28.4 → 16.8 MB | 28.5 → 19.7 MB | 是进程存活量差，不等价于累计分配或泄漏证明。 |
 
-更细的页面归属采样把较慢的滚动定位到 Task 页的外层最大滚动容器：其每主题约 5–7 个样本，候选中位数约 27–29 ms，U00 约 14–16 ms。一次 U00 深色样本为 690.84 ms。详情收起通常约 7 ms 对 18–19 ms，但候选单次出现 677.48 ms 尖峰。小样本和反向顺序的全局周期 P95 变化说明桌面/Dispatcher 噪声显著。现有 TaskGrid 内部 `DG_ScrollViewer` 专项没有同样回退：Light P95 16.526→16.409 ms，Dark 16.498→16.499 ms，详见[TaskGrid 归属复测](../U09-04-taskgrid-scroll-20261102/BASELINE.md)。
+更细的页面归属采样把较慢的滚动样本定位到 Task 页，但未记录具体滚动器身份：其每主题约 5–7 个样本，候选中位数约 27–29 ms，U00 约 14–16 ms。一次 U00 深色样本为 690.84 ms。详情收起通常约 7 ms 对 18–19 ms，但候选单次出现 677.48 ms 尖峰。小样本和反向顺序的全局周期 P95 变化说明桌面/Dispatcher 噪声显著。现有 TaskGrid 内部 `DG_ScrollViewer` 专项没有同样回退：Light P95 16.526→16.409 ms，Dark 16.498→16.499 ms，详见[TaskGrid 归属复测](../U09-04-taskgrid-scroll-20261102/BASELINE.md)。
 
-因此，当前能确认的是**Task 整页滚动与详情收起的受控布局代理较慢**，TaskGrid 内部滚动代理基本持平，累计托管分配下降；目前没有足够稳定的测量把差异归因到单一控件或源代码改动。没有延长动画来掩盖差异，也没有为离屏单次长尾贸然更改生产实现。
+因此，当前能确认的是**Task 页所选滚动器与详情收起的受控布局代理较慢**，TaskGrid 内部滚动代理基本持平，累计托管分配下降；目前没有足够稳定的测量把差异归因到单一控件或源代码改动。源码复核：探针先触发详情收起和同步布局，再从当前可见滚动器中按 ScrollableHeight 取最大值，未记录 Name、模板宿主、视口或实际位移。TaskPageScrollViewer 明确使用 DIP，TaskGrid 允许内容逻辑滚动，两者的 ScrollableHeight 不能直接按同一物理距离比较。专项结果只证明 TaskGrid 在独立固定场景下持平，无法排除其参与综合探针。下次同条件测量应分别绑定页面、详情和表格滚动器，固定布局与详情状态，并记录目标和实际偏移后再比较。没有延长动画来掩盖差异，也没有为离屏单次长尾贸然更改生产实现。
 
 ## 动效与验证边界
 
@@ -30,6 +30,6 @@ U00 与候选复用同一版 a13 RenderHarness `Program.cs`、`FakeDashboardData
 
 Harness 快照按仓库 `scripts/build.ps1` 使用 SDK 8.0.423 Release 参数构建，包含 `-m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false`。测量使用临时 `EnduranceProbe`/`MotionProbe` 命令，报告记录精确源码 SHA、固定样本时间、动作、资源计数、分配量和退出结果。
 
-配对及归属原始报告、动效成功/失败报告、构建/恢复诊断、运行状态和复用 Harness 身份见[`files.json`](files.json)。摘要数值另见[`metrics.json`](metrics.json)；文档SHA `5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93` 对应的双SDK run #1462结果及三个artifact身份见[`ci-run-42127707158.json`](ci-run-42127707158.json)。这些文件由 SHA-256 清单逐项校验。
+配对及归属原始报告、动效成功/失败报告、构建/恢复诊断、运行状态和复用 Harness 身份见[`files.json`](files.json)。摘要数值另见[`metrics.json`](metrics.json)；文档SHA `5cb4a68c0eb843c3c6657fb6cdc84cfac9aade93` 对应的双SDK run #1462结果及三个artifact身份见[`ci-run-42127707158.json`](ci-run-42127707158.json)。清单保留归档字节的 SHA-256；Git 对文本换行有转换时，另列仓库 blob 的字节数及 SHA-256。
 
 证据归档并核对SHA后，只清理本阶段自有 `.tmp/round5-u09-04-aligned-20261106`：20,405个文件、1,010,046,290 bytes，87个顶层输出项、0个重解析点、没有运行中的dotnet/RenderHarness或指向临时目录的Markdown链接。按 PowerShell `Remove-Item -LiteralPath -Recurse -Force` 删除该精确路径。清理时D盘可用空间 18,790,506,496→19,848,515,584 bytes（净增1,058,009,088）；C盘 7,157,215,232→7,156,948,992 bytes（净减266,240，视为同期波动，不归因）。逐项删除范围与空间记录见[`cleanup.json`](cleanup.json)。其它 `.tmp/`、`artifacts/`、用户/其他任务TRX和TestResults、存档、配置与未知文件均未触碰。

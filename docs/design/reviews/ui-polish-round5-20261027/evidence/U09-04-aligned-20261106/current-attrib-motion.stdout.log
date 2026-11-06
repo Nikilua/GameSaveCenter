@@ -1,0 +1,20 @@
+Production shell motion probe (controlled STA WPF Window)
+Scenario: motionprobe
+EvidenceSource: ControlledWpfWindow
+Commit: a13a7dbbe27f4cb90d37057163e1481aa8abf355
+WorkingTreeClean: False
+IdentityNote: source SHA is GscBuildCommit metadata; temporary measurement instrumentation is applied and production-tree cleanliness is not inferred.
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: production shell; audit-only GscMotionNormal=700ms override; 900x640 DIP
+SampleTimeUtc: 2026-10-27T00:00:00.0000000+00:00 (pinned=True)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+Motion[light] duration_ms=700 midpoint_ms=210 midWidth=145.45 midOpacity=0.629 midAnimated=True endWidth=72 endOpacity=1 endX=0 endAnimated=False
+Reentry[light] interruptedWidth=218.46 finalWidth=72 finalX=0 running=False
+Unload[light] running=False opacity=1 x=0 animated=False
+Motion[dark] duration_ms=700 midpoint_ms=210 midWidth=270 midOpacity=0 midAnimated=True endWidth=72 endOpacity=1 endX=0 endAnimated=False
+MotionProbe FAILED
+System.InvalidOperationException: Motion probe did not observe a clean dark transition.
+   ÔÚ GameSaveCenter.RenderHarness.Program.RunMotionProbe(String outputRoot, StringBuilder report) Î»ÖÃ D:\workplace\github\GameSaveCenter\.tmp\round5-u09-04-aligned-20261106\current\tests\GameSaveCenter.RenderHarness\Program.cs:ÐÐºÅ 6745
+
