@@ -1,3 +1,9 @@
+## 2026-11-06 Round5 Windows CI #1466 Worker 夹具修复
+
+候选 4719a59c 的 [SDK 8 作业 127733032844](https://github.com/Nikilua/GameSaveCenter/actions/runs/42169279866/job/127733032844) 在打包步骤的 Worker 集成测试失败。原始日志显示 400 通过、1 失败。Rclone 不完整传输分类用例在 Dispose 删除临时 gamesavecenter.db 时遇到文件占用，分类断言未报告失败。诊断产物 13481573092。SDK 10 作业 127733033114 的 8 步通过，诊断产物 13480957381。
+
+将分类与退避的纯逻辑用例移到无数据库夹具的 CloudRetryPolicyTests。持久化用例仍使用原数据库夹具。SDK 8.0.423 Release 定向测试 12/12 通过，0 跳过。后续候选双 SDK 及桌面隔离环境的本机完整链仍待验。 [Worker 定向 TRX](evidence/U05-02-reduced-motion-focus/worker-policy.trx)
+
 ## 2026-11-06 Round5 本机构建中断与桌面隔离要求
 
 候选 4719a59c 首次独立构建退出 1。构建期间共享 checkout 的 HEAD 前进到 d7f82e44，R06 源码身份门禁拒绝程序集与当前源码混用。此前焦点相关测试类 14/14 通过。随后从 4719a59c 的独立固定检出重新执行，但 WPF 测试窗口仍出现在用户桌面。已终止该次构建进程树，中文安装启动入口未运行。
