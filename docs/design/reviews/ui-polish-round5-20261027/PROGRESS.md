@@ -1,3 +1,7 @@
+## 2026-11-06 Round5 非活动桌面构建与焦点诊断
+
+Win32 隔离探针证实父、子进程和实际 WPF HWND 位于非活动桌面，输入桌面保持 Default。冻结候选 c44abbac 的独立 scripts/build.cmd 在该环境运行，SDK 8.0.423，诊断 20261106T075942754Z-00b1925a。第 50 个 WPF 隔离组 R05FocusBoundaryBehaviorTests 失败，测试 1380 项，1361 通过、1 失败、18 跳过。正常尺寸游戏选框在 MoveFocus 遍历时焦点落到选框外。独立入口退出 1，中文根入口未运行。同程序集在另一个非活动桌面定向复核 5/5 通过，仍未定位完整运行中的偶发条件。保留失败，定向通过不计作完整链通过。 [隔离探针](evidence/U05-02-reduced-motion-focus/desktop-probe.txt) · [失败 TRX](evidence/U05-02-reduced-motion-focus/desktop-focus-fail.trx) · [定向复核 TRX](evidence/U05-02-reduced-motion-focus/desktop-focus-recheck.trx)
+
 ## 2026-11-06 Round5 Windows CI #1466 Worker 夹具修复
 
 候选 4719a59c 的 [SDK 8 作业 127733032844](https://github.com/Nikilua/GameSaveCenter/actions/runs/42169279866/job/127733032844) 在打包步骤的 Worker 集成测试失败。原始日志显示 400 通过、1 失败。Rclone 不完整传输分类用例在 Dispose 删除临时 gamesavecenter.db 时遇到文件占用，分类断言未报告失败。诊断产物 13481573092。SDK 10 作业 127733033114 的 8 步通过，诊断产物 13480957381。

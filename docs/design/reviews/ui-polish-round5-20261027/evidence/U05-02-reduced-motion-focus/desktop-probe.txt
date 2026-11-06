@@ -1,0 +1,3 @@
+{"pid":41400,"desktop":"GscProbe_56d219248c2e4cfca72401d6eaf53800","input":"Default","nested":false}
+{"pid":21800,"desktop":"GscProbe_56d219248c2e4cfca72401d6eaf53800","input":"Default","nested":true}
+{"desktop":"GscProbe_56d219248c2e4cfca72401d6eaf53800","input":"Default","hasHwnd":true}

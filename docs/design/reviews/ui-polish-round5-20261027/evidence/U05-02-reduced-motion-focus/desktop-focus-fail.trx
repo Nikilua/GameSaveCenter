@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="f95e2e56-eb9c-4869-a032-eda8b93295bd" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T16:09:16.0835277+08:00" queuing="2026-11-06T16:09:16.0835281+08:00" start="2026-11-06T16:09:10.3651795+08:00" finish="2026-11-06T16:09:17.9053185+08:00" />
+  <TestSettings name="default" id="d945df4f-8e60-48ed-b1be-8c0209249585">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c93392e0-f801-4476-a466-ff5bb6f1916e" testId="eb268dbf-2279-015a-92d4-96a0d14539cd" testName="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.DashboardDialogDeclaresAnOverlayFocusScopeAndReturnFocusPath" computerName="redacted-host" duration="00:00:00.1220000" startTime="2026-11-06T16:09:17.0376023+08:00" endTime="2026-11-06T16:09:17.1355998+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c93392e0-f801-4476-a466-ff5bb6f1916e" />
+    <UnitTestResult executionId="fbc3e833-97e9-4edf-b1ad-3b5513dfdef1" testId="d7e17bcc-af87-988e-3268-733feac1bcb9" testName="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay(height: 640, compact: False)" computerName="redacted-host" duration="00:00:00.3040000" startTime="2026-11-06T16:09:16.7103962+08:00" endTime="2026-11-06T16:09:17.0155999+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fbc3e833-97e9-4edf-b1ad-3b5513dfdef1">
+      <Output>
+        <ErrorInfo>
+          <Message>Xunit.Sdk.TrueException: Focus=TextBox, inside=False&#xD;
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+   在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 68&#xD;
+   在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.&lt;&gt;c__DisplayClass14_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 420</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 432</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="01fffe44-8d9b-4edb-8959-141d410869d7" testId="601b31de-8371-b905-fe98-2c9aad89f20d" testName="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.DashboardConfirmationKeepsTabFocusInsideAndRestoresItsTriggerAfterClose" computerName="redacted-host" duration="00:00:03.0970000" startTime="2026-11-06T16:09:12.9642299+08:00" endTime="2026-11-06T16:09:16.0352738+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="01fffe44-8d9b-4edb-8959-141d410869d7" />
+    <UnitTestResult executionId="643c4a76-b061-4c49-9b4e-477bc5069f97" testId="c898ee7f-2bf9-fe65-7283-22a8daa1da90" testName="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay(height: 320, compact: True)" computerName="redacted-host" duration="00:00:00.6720000" startTime="2026-11-06T16:09:16.0682797+08:00" endTime="2026-11-06T16:09:16.7083975+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="643c4a76-b061-4c49-9b4e-477bc5069f97" />
+    <UnitTestResult executionId="d22a893f-b9b6-43a9-9bc8-4b20f0eda78d" testId="3cb82896-2027-3305-fb5d-420590cb8e06" testName="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm" computerName="redacted-host" duration="00:00:00.5710000" startTime="2026-11-06T16:09:17.1376017+08:00" endTime="2026-11-06T16:09:17.7067505+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d22a893f-b9b6-43a9-9bc8-4b20f0eda78d">
+      <Output>
+        <StdOut>Before open: Focus()=True, keyboard=GamePickerStatusComboBox, visible=True, focusWithin=True, combo=139.333333333333x36, overlay=572.666666666667x419.333333333333, filterRow=Visible&#xD;
+After open: Focus=ComboBox, inside=True, focusWithin=True&#xD;
+After traversal: Focus=ComboBox, inside=True, focusWithin=False, open=False</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay(height: 640, compact: False)" storage="d:\workplace\github\gamesavecenter\.tmp\r5-desktop-probe\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d7e17bcc-af87-988e-3268-733feac1bcb9">
+      <Execution id="fbc3e833-97e9-4edf-b1ad-3b5513dfdef1" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-desktop-probe\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests" name="OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.DashboardDialogDeclaresAnOverlayFocusScopeAndReturnFocusPath" storage="d:\workplace\github\gamesavecenter\.tmp\r5-desktop-probe\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="eb268dbf-2279-015a-92d4-96a0d14539cd">
+      <Execution id="c93392e0-f801-4476-a466-ff5bb6f1916e" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-desktop-probe\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests" name="DashboardDialogDeclaresAnOverlayFocusScopeAndReturnFocusPath" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.DashboardConfirmationKeepsTabFocusInsideAndRestoresItsTriggerAfterClose" storage="d:\workplace\github\gamesavecenter\.tmp\r5-desktop-probe\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="601b31de-8371-b905-fe98-2c9aad89f20d">
+      <Execution id="01fffe44-8d9b-4edb-8959-141d410869d7" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-desktop-probe\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests" name="DashboardConfirmationKeepsTabFocusInsideAndRestoresItsTriggerAfterClose" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay(height: 320, compact: True)" storage="d:\workplace\github\gamesavecenter\.tmp\r5-desktop-probe\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c898ee7f-2bf9-fe65-7283-22a8daa1da90">
+      <Execution id="643c4a76-b061-4c49-9b4e-477bc5069f97" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-desktop-probe\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests" name="OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm" storage="d:\workplace\github\gamesavecenter\.tmp\r5-desktop-probe\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3cb82896-2027-3305-fb5d-420590cb8e06">
+      <Execution id="d22a893f-b9b6-43a9-9bc8-4b20f0eda78d" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\r5-desktop-probe\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests" name="ComboBoxPopupKeepsDirectionalSelectionInsideItemsAndTabReturnsToTheForm" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="eb268dbf-2279-015a-92d4-96a0d14539cd" executionId="c93392e0-f801-4476-a466-ff5bb6f1916e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d7e17bcc-af87-988e-3268-733feac1bcb9" executionId="fbc3e833-97e9-4edf-b1ad-3b5513dfdef1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="601b31de-8371-b905-fe98-2c9aad89f20d" executionId="01fffe44-8d9b-4edb-8959-141d410869d7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c898ee7f-2bf9-fe65-7283-22a8daa1da90" executionId="643c4a76-b061-4c49-9b4e-477bc5069f97" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3cb82896-2027-3305-fb5d-420590cb8e06" executionId="d22a893f-b9b6-43a9-9bc8-4b20f0eda78d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="4" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.57]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.95]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.01]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.15]       Xunit.Sdk.TrueException: Focus=TextBox, inside=False&#xD;
+[xUnit.net 00:00:05.15]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+[xUnit.net 00:00:05.15]          在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 68&#xD;
+[xUnit.net 00:00:05.15]          在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.&lt;&gt;c__DisplayClass14_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 420&#xD;
+[xUnit.net 00:00:05.15]       Stack Trace:&#xD;
+[xUnit.net 00:00:05.15]            在 GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R05FocusBoundaryBehaviorTests.cs:行号 432&#xD;
+[xUnit.net 00:00:05.83]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-11-06T16:09:17.0339854+08:00">
+        <Text>[xUnit.net 00:00:05.15]     GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests.OpeningPickerEntersContentAndTabDoesNotReachBehindTheOverlay(height: 640, compact: False) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-06T16:09:17.8703312+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
