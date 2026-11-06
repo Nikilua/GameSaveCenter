@@ -1,3 +1,7 @@
+## 2026-11-06 综合评估与后续16项计划
+
+新增[综合评估与计划](PROJECT_ASSESSMENT_2026-11-06.md)，基线4719a59c。结论是优先真实体验、性能归因和稳定性收口；10项质量任务、3项维护治理、3项可选功能发现。A01先核对最新焦点修复门禁，其余按依赖去重推进；不重复Round5/S/T实现，不解除旧宿主与权限待验。此次仅文档抽查与规划，未运行产品或查询实时CI，不宣称新漏洞或功能缺失已证实。构建、CI和安全清理要求见计划。
+
 ## 2026-10-30 U09-05冻结门禁通过
 
 5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7 SDK8.0.423；中文包装器完整链exit0、独立scripts/build.cmd exit0。两入口各158 TRX/2020项：1962通过、0失败、58既有skip，skip不计通过；PEXT 45,737,311 bytes，SHA256 `bce032ef9d6c95aa145d0c99a69ee3be16ef7d8dda59e8964db10bc2eb076ee6`，六个包内/安装DLL逐字节相同。Playnite启动PID30324并响应，实际页面未观察。精确SHA的GitHub run40900374673，两项适用job均success，三artifact的head SHA/ID/digest已核。required-check API既有403未重探，仍待有权限维护者查询。soak一次File.Move访问拒绝完整诊断已归档；新门禁通过但旧失败未查明唯一原因。证据：[冻结本地与CI身份](design/reviews/ui-polish-round5-20261027/evidence/U09-final-5c0c57b0/BASELINE.md)。
