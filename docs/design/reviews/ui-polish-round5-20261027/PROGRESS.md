@@ -1,3 +1,7 @@
+## 2026-11-06 Round5 U09-02 焦点边界诊断
+
+R05 失败信息增加 Tab 步数、前后控件名称、模板宿主和窗口激活状态，原焦点断言与范围保持。首次定向执行缺少 GscBuildCommit，源码身份门禁拒绝该次结果。补齐真实身份后在非活动桌面编译及复核 5/5 通过，0 跳过。偶发焦点逸出未复现，完整构建仍待验。 [定向 TRX](evidence/U05-02-reduced-motion-focus/focus-boundary-diagnostics.trx)
+
 ## 2026-11-06 Round5 非活动桌面构建与焦点诊断
 
 Win32 隔离探针证实父、子进程和实际 WPF HWND 位于非活动桌面，输入桌面保持 Default。冻结候选 c44abbac 的独立 scripts/build.cmd 在该环境运行，SDK 8.0.423，诊断 20261106T075942754Z-00b1925a。第 50 个 WPF 隔离组 R05FocusBoundaryBehaviorTests 失败，测试 1380 项，1361 通过、1 失败、18 跳过。正常尺寸游戏选框在 MoveFocus 遍历时焦点落到选框外。独立入口退出 1，中文根入口未运行。同程序集在另一个非活动桌面定向复核 5/5 通过，仍未定位完整运行中的偶发条件。保留失败，定向通过不计作完整链通过。 [隔离探针](evidence/U05-02-reduced-motion-focus/desktop-probe.txt) · [失败 TRX](evidence/U05-02-reduced-motion-focus/desktop-focus-fail.trx) · [定向复核 TRX](evidence/U05-02-reduced-motion-focus/desktop-focus-recheck.trx)

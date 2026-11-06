@@ -64,7 +64,9 @@ public sealed class R05FocusBoundaryBehaviorTests
             {
                 var current = Keyboard.FocusedElement;
                 Assert.NotNull(current);
-                Assert.True(IsDescendantOf(current!, overlay), DescribeFocus(current, overlay));
+                Assert.True(IsDescendantOf(current!, overlay),
+                    $"Tab step {index}; previous={DescribeFocus(visited.LastOrDefault(), overlay)}; "
+                    + $"current={DescribeFocus(current, overlay)}; hostActive={host.Window.IsActive}");
                 visited.Add(current!);
 
                 var element = current as UIElement;
@@ -377,7 +379,13 @@ public sealed class R05FocusBoundaryBehaviorTests
     }
 
     private static string DescribeFocus(IInputElement? element, DependencyObject ancestor)
-        => $"Focus={element?.GetType().Name ?? "null"}, inside={IsDescendantOf(element, ancestor)}";
+    {
+        var control = element as FrameworkElement;
+        var name = control?.Name;
+        var parent = control?.TemplatedParent as FrameworkElement;
+        return $"Focus={element?.GetType().Name ?? "null"}, name={name}, "
+            + $"templateOwner={parent?.GetType().Name}/{parent?.Name}, inside={IsDescendantOf(element, ancestor)}";
+    }
 
     private static void RaiseConfirmationRequest(
         DashboardView dashboard,
