@@ -39,7 +39,6 @@ $UserDataDir = $isolatedProfile.Path
 New-Item -ItemType Directory -Path $Output | Out-Null
 $artifactsRoot = [System.IO.Path]::GetFullPath((Join-Path $root 'artifacts'))
 
-$env:GSC_REAL_HOST_AUDIT = $Output
 $previousWorkerDataDirectory = [Environment]::GetEnvironmentVariable('GameSaveCenter__DataDirectory', 'Process')
 $previousWorkerPipeName = [Environment]::GetEnvironmentVariable('GameSaveCenter__PipeName', 'Process')
 $previousWorkerEventPipeName = [Environment]::GetEnvironmentVariable('GameSaveCenter__EventPipeName', 'Process')
@@ -386,7 +385,15 @@ $startedPlayniteProcess = $null
 
 Push-Location $root
 try {
-    & (Join-Path $root 'scripts\dev-install-run.ps1') @installArguments
+    # Build and test processes must not write into the embedded host evidence directory.
+    $previousAuditOutput = [Environment]::GetEnvironmentVariable('GSC_REAL_HOST_AUDIT', 'Process')
+    try {
+        [Environment]::SetEnvironmentVariable('GSC_REAL_HOST_AUDIT', $null, 'Process')
+        & (Join-Path $root 'scripts\dev-install-run.ps1') @installArguments
+    }
+    finally {
+        [Environment]::SetEnvironmentVariable('GSC_REAL_HOST_AUDIT', $previousAuditOutput, 'Process')
+    }
     if ($LASTEXITCODE -ne 0) { throw "dev-install-run failed: $LASTEXITCODE" }
 
     if (-not [string]::IsNullOrWhiteSpace($UserDataDir)) {
@@ -469,10 +476,16 @@ try {
         $launchConflicts = @(Get-GscPlayniteConflictingProcesses)
         Assert-GscNoActivePlayniteProcesses -Processes $launchConflicts
         $playniteStartupArguments = New-GscPlayniteUserDataArguments -UserDataDir $UserDataDir
-        $startedPlayniteProcess = Start-Process -FilePath $PlayniteExecutable `
-            -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `
-            -ArgumentList $playniteStartupArguments `
-            -PassThru
+        try {
+            [Environment]::SetEnvironmentVariable('GSC_REAL_HOST_AUDIT', $Output, 'Process')
+            $startedPlayniteProcess = Start-Process -FilePath $PlayniteExecutable `
+                -WorkingDirectory (Split-Path -Parent $PlayniteExecutable) `
+                -ArgumentList $playniteStartupArguments `
+                -PassThru
+        }
+        finally {
+            [Environment]::SetEnvironmentVariable('GSC_REAL_HOST_AUDIT', $previousAuditOutput, 'Process')
+        }
         $runnerMetadata.PlayniteLaunch = Get-GscPlayniteProcessStartEvidence `
             -StartedProcess $startedPlayniteProcess `
             -ExpectedExecutable $PlayniteExecutable `
