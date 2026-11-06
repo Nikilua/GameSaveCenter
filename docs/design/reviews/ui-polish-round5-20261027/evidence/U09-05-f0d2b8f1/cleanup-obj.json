@@ -1,0 +1,25 @@
+{
+  "path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-desktop-probe\\output\\obj",
+  "files": 209,
+  "bytes": 13535666.0,
+  "before": [
+    {
+      "Name": "C",
+      "Free": 8476180480
+    },
+    {
+      "Name": "D",
+      "Free": 17423073280
+    }
+  ],
+  "after": [
+    {
+      "Name": "C",
+      "Free": 8476180480
+    },
+    {
+      "Name": "D",
+      "Free": 17437007872
+    }
+  ]
+}
