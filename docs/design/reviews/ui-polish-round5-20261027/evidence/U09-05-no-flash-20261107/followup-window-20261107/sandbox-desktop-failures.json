@@ -1,0 +1,36 @@
+{
+  "candidateSha": "62a363d3a34ea9b9678aee3e8424113416778eae",
+  "desktop": "CodexSandboxDesktop / GscR5Build_* (not WinSta0\\Default)",
+  "cause": "WPF animation clocks did not advance consistently on non-interactive desktops; retained as failed diagnostics, not accepted as source behavior results.",
+  "runs": [
+    {
+      "entry": "scripts/build.cmd",
+      "failedTest": "R08OffscreenMotionBehaviorTests.IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes",
+      "counts": {
+        "total": 1475,
+        "passed": 1445,
+        "failed": 1,
+        "skipped": 29
+      },
+      "sourceSha256": "EFFC1D2A1385FE44E07AACE6D26A36A7808AE5CDB797137127C238BA9738AD51",
+      "redactedTrx": "sandbox-desktop-r08-failure.trx",
+      "redactedSha256": "82ED2537959FDFC3D9B28C57B0E34529108D67C6860AED729A8BC27389B26D4D",
+      "focusedRetry": "R08 exact retry passed 1/1 on a non-interactive desktop; it does not replace a full run."
+    },
+    {
+      "entry": "scripts/build.cmd",
+      "failedTest": "Q10ToggleSwitchStateBehaviorTests.ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates",
+      "counts": {
+        "total": 1328,
+        "passed": 1299,
+        "failed": 1,
+        "skipped": 28
+      },
+      "sourceSha256": "4A83B5DC46781D1D8DFDF53CCD2D7AD38C90C1DE011B98E0865E19D501FB8B8F",
+      "redactedTrx": "sandbox-desktop-q10-failure.trx",
+      "redactedSha256": "F586B822EF96FC7E428BFDCC9EE98FE043C618AE509C657E6D23EC8AAEFDAB94",
+      "focusedRetry": "Same class passed 1/1 on WinSta0\\Default with CREATE_NO_WINDOW."
+    }
+  ],
+  "note": "No assertion or skip was changed. Future full local WPF acceptance runs on actual WinSta0\\Default with console suppressed."
+}

@@ -1,0 +1,119 @@
+{
+  "candidateSha": "62a363d3a34ea9b9678aee3e8424113416778eae",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "desktop": "WinSta0\\Default",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "launcher": "CreateProcess CREATE_NO_WINDOW; explicit WinSta0\\Default",
+  "testAssemblySha256": "CBCB249C1A5CCA7C2637D625D32B7B260C05E93AE45F6267D2BC0136BAE91682",
+  "filter": "Q10ToggleSwitchStateBehaviorTests",
+  "trx": {
+    "file": "q10-focused.trx",
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "sourceSha256": "2BA6AA88A1616D2825CB8E9793076CB40D5D0AAED5B71A2B5080848CEF916502",
+    "redactedCopySha256": "E3ABF88BE5855D3D2521073C1316F00BFC0E5B2925D1DCE3354513124DABE8A4"
+  },
+  "log": {
+    "file": "q10-focused.log",
+    "sha256": "EFEA2DE5673137F316944DA195F81B2678599C8A14698FD11BE6EBC2370DE7E2"
+  },
+  "monitor": {
+    "sourceSha256": "E83283341C4A13796D1290E01BF057AFAB9625B54D70928D5E7ECC92FDAA19AA",
+    "method": "WinEvent EVENT_OBJECT_SHOW on WinSta0\\Default",
+    "showEventCount": 8,
+    "consoleWindows": 0,
+    "playniteWindows": 0,
+    "allObservedTestHostWindows": true,
+    "windows": [
+      {
+        "timeUtc": "2026-11-06T21:57:53.5275776Z",
+        "event": "show",
+        "hwnd": "0x6080764",
+        "processId": 14108,
+        "process": "testhost.net472.exe",
+        "windowClass": "HwndWrapper[TestHostAppDomain;;a95625d3-f661-4da4-9b93-4f44aea2b45a]",
+        "title": ""
+      },
+      {
+        "timeUtc": "2026-11-06T21:57:54.1508122Z",
+        "event": "show",
+        "hwnd": "0x36106F2",
+        "processId": 14108,
+        "process": "testhost.net472.exe",
+        "windowClass": "HwndWrapper[TestHostAppDomain;;5eea2724-a53d-489b-acb8-a9ccd86ffbbf]",
+        "title": ""
+      },
+      {
+        "timeUtc": "2026-11-06T21:57:54.692603Z",
+        "event": "show",
+        "hwnd": "0x1C40206",
+        "processId": 14108,
+        "process": "testhost.net472.exe",
+        "windowClass": "HwndWrapper[TestHostAppDomain;;ab9a5c80-9b41-4f54-8cd2-ece7a34bf525]",
+        "title": ""
+      },
+      {
+        "timeUtc": "2026-11-06T21:57:55.6280214Z",
+        "event": "show",
+        "hwnd": "0xDB0A80",
+        "processId": 14108,
+        "process": "testhost.net472.exe",
+        "windowClass": "HwndWrapper[TestHostAppDomain;;10e58609-28e9-41a0-bc79-56cce34e2d9a]",
+        "title": ""
+      },
+      {
+        "timeUtc": "2026-11-06T21:57:56.1077939Z",
+        "event": "show",
+        "hwnd": "0x1FF01E8",
+        "processId": 14108,
+        "process": "testhost.net472.exe",
+        "windowClass": "HwndWrapper[TestHostAppDomain;;ca11174a-ca1c-42dc-806c-199bbbb8cc11]",
+        "title": ""
+      },
+      {
+        "timeUtc": "2026-11-06T21:57:57.611899Z",
+        "event": "show",
+        "hwnd": "0x1DB0212",
+        "processId": 14108,
+        "process": "testhost.net472.exe",
+        "windowClass": "HwndWrapper[TestHostAppDomain;;66f91129-abe7-4617-b4c7-46e57c0a20b9]",
+        "title": ""
+      },
+      {
+        "timeUtc": "2026-11-06T21:57:58.1126591Z",
+        "event": "show",
+        "hwnd": "0x1BC0878",
+        "processId": 14108,
+        "process": "testhost.net472.exe",
+        "windowClass": "HwndWrapper[TestHostAppDomain;;278cde30-22ee-448f-b3b4-8a2f97af4bbd]",
+        "title": ""
+      },
+      {
+        "timeUtc": "2026-11-06T21:57:59.0607011Z",
+        "event": "show",
+        "hwnd": "0x3690AC6",
+        "processId": 14108,
+        "process": "testhost.net472.exe",
+        "windowClass": "HwndWrapper[TestHostAppDomain;;4c6bf7bf-3bfe-4214-8f36-5d7c9b6c48da]",
+        "title": ""
+      }
+    ]
+  },
+  "testWindowSource": {
+    "windowStyle": "None",
+    "showInTaskbar": false,
+    "showActivated": false,
+    "opacity": 0.01,
+    "sourceFile": "tests/GameSaveCenter.Playnite.Tests/Q10ToggleSwitchStateBehaviorTests.cs",
+    "line": 195
+  },
+  "limitations": [
+    "Only the Q10 focused class was run on the interactive desktop.",
+    "The screenshot windows are not identified by this later run.",
+    "The full standalone build and Chinese root installation/startup chain for the patched commit are still pending."
+  ]
+}

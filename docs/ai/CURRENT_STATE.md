@@ -602,3 +602,10 @@ f1a614a8的baseline与SDK10 CI jobs均已success；文档提交de9fe37d两个适
 用户新截图再次显示构建期间的黑色窗口，未提供窗口句柄或进程身份。先前 `Default` 25 ms 轮询只适用于指定受控运行，无法排除短于采样间隔的闪现；U09-05 已重开。后续本机 WPF/Playnite 验收须将整个进程树放在非活动 desktop，验证 input desktop 保持 `Default`，不得据此宣称用户截图根因已确认。
 
 `e65a719` 的 SDK10 CI #1482 在 `HostShutdownDuringReadIsDistinctFromCallerCancellation` 发生测试夹具时序竞态：已连管道即取消，但服务还未读完请求。源码测试现补 received 信号与取消前等待。SDK8.0.423 本地 Release 编译成功，目标测试受 Named Pipe 权限限制跳过（1 skip、0 pass）；不算行为验收。精确修复提交、CI 双 SDK、中文根入口完整链与独立 `scripts/build.cmd` 仍待验。U09-05、U09-04、U09-08进行中；U09-06远端待验；Round5计数为5已满足、71代码完成待验收、3进行中、1远端待验。
+## 2026-11-07 U09-05 入口窗口修订接续
+
+已确认之前在 `CodexSandboxDesktop` 观察到的 `Default` 不是用户实际输入桌面；非活动 WPF 动画测试因此出现 R08/Q10 时钟未前进失败。后续 WPF 行为验收使用 `WinSta0\Default`，并用 Win32 `CREATE_NO_WINDOW` 隐藏控制台；真实桌面 Q10 聚焦类 1/1 通过，8 个顶层显示事件均为 1% 透明、无激活、无任务栏的 testhost 窗口，未出现 Console/Playnite 窗口。
+
+`GameSaveCenter-Run.cmd` 原成功/失败分支的 `pause` 会留下黑色命令窗口；当前工作树已删除等待，隐藏安装 PowerShell 子进程。`scripts/build.cmd` 也隐藏 PowerShell 子进程并保留 `%*`。source validation、命令行隐藏参数 smoke、未知 build 参数拒绝和 `git diff --check` 通过。精确 SHA `62a363d3` 的 CI #1483 baseline SDK8 与 SDK10 两 job 均 success，见 Round5 `evidence/U09-05-no-flash-20261107/ci-run-1483.json`。
+
+入口修改仍待中文根完整安装启动链、独立 `scripts/build.cmd` 与全程窗口事件复核；U09-05 继续进行中，不声称已确认历史截图 HWND。状态计数仍为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验。真实恢复、媒体删除和云端写入未执行。

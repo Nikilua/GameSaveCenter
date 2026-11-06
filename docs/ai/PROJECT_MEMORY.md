@@ -1856,3 +1856,8 @@ Round5 `cf5173e7`的生产行测试在CI基线与SDK10都因该夹具问题失�
 本机运行 WPF 测试、Render QA 或 Playnite 时，将整个父进程树放在 `WinSta0` 的非活动 desktop 上；启动前检查实际线程 desktop 与 input desktop 不同，完成后确认 input desktop 未改变。隐藏 console 不等于桌面隔离。完整中文根入口可能关闭并重启正在运行的 Playnite；代理验收前先识别是否已有用户实例，不能为避免闪屏而在用户桌面执行它。
 
 SDK10 的 `HostShutdownDuringReadIsDistinctFromCallerCancellation` 失败可由测试时序解释：连接信号早于完整请求解析；取消宿主前先等待服务完成 `ReadRequestAsync` 并发出 received 信号，才能保证覆盖“响应读取期间关闭”，不能删除断言、跳过该测试或调整 SDK 基线。此类本地 Named Pipe 行为因权限而跳过时，必须记录为未验证，由 CI 实际执行确认。
+### 2026-11-07 Round5 U09-05 桌面身份纠正
+
+Codex 构建执行进程可能位于 `CodexSandboxWindowStation`：其中名为 `Default` 的桌面不等于用户的 `WinSta0\Default`。将 WPF 动画测试放在非活动桌面会冻结/错过 CompositionTarget 动画帧，不能作本地动画验收。启动真实交互桌面进程时显式使用 `lpDesktop="WinSta0\Default"`，并以 `CREATE_NO_WINDOW` 抑制命令控制台；WPF 测试夹具现有 `ShowActivated=false`、`ShowInTaskbar=false`、`Opacity=0.01` 保留。完整运行应以 WinEvent 窗口事件确认只有测试宿主窗和最后预期的稳定 Playnite 窗，不接受控制台窗。
+
+`GameSaveCenter-Run.cmd` 的 `pause` 会在完成/失败后保留命令窗口。本轮移除 pause、明确成功退出 0，并隐藏安装脚本 PowerShell 子进程；独立 `scripts/build.cmd` 同样隐藏其 PowerShell 子进程且保留 `%*` 参数转交。仅聚焦 Q10 在真实桌面通过还不足以结项；须先提交/冻结修订候选，再运行独立 build.cmd 与中文根完整链及 CI。精确历史截图没有 HWND/PID，不能倒推认领为当前发现的控制台。

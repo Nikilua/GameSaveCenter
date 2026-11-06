@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a069c9ea-97c1-4be7-9ea3-dd52875a3a12" name="redacted-host" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T05:31:27.6681562+08:00" queuing="2026-11-07T05:31:27.6681563+08:00" start="2026-11-07T05:31:16.3711387+08:00" finish="2026-11-07T05:31:27.6754505+08:00" />
+  <TestSettings name="default" id="1843a30f-b6fb-470c-ac45-363dd1b6fbf6">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="4754c23a-d574-4090-a3c4-8b7b28eeb522" testId="034299c9-dd26-51dd-c356-d6a10d5b4829" testName="GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates" computerName="redacted-host" duration="00:00:06.3290000" startTime="2026-11-07T05:31:21.1288751+08:00" endTime="2026-11-07T05:31:27.4216246+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4754c23a-d574-4090-a3c4-8b7b28eeb522">
+      <Output>
+        <ErrorInfo>
+          <Message>Xunit.Sdk.TrueException: The production toggle animation must expose an in-flight visual value for Dark. X=0, transform=same=True, frozen=False, animated=True.
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.WaitFor(Func`1 condition, Int32 timeoutMilliseconds, String message) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 245
+   在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.VerifyReversedChanges(GameSaveCenterThemeMode mode) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 114
+   在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.&lt;&gt;c__DisplayClass14_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 274</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 289
+   在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 36</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates" storage="[repo]\.tmp\r5-build-62a363d3\full-recheck\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="034299c9-dd26-51dd-c356-d6a10d5b4829">
+      <Execution id="4754c23a-d574-4090-a3c4-8b7b28eeb522" />
+      <TestMethod codeBase="[repo]\.tmp\r5-build-62a363d3\full-recheck\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests" name="ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="034299c9-dd26-51dd-c356-d6a10d5b4829" executionId="4754c23a-d574-4090-a3c4-8b7b28eeb522" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.74]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.78]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:09.18]       Xunit.Sdk.TrueException: The production toggle animation must expose an in-flight visual value for Dark. X=0, transform=same=True, frozen=False, animated=True.
+[xUnit.net 00:00:09.18]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+[xUnit.net 00:00:09.18]          在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.WaitFor(Func`1 condition, Int32 timeoutMilliseconds, String message) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 245
+[xUnit.net 00:00:09.18]          在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.VerifyReversedChanges(GameSaveCenterThemeMode mode) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 114
+[xUnit.net 00:00:09.18]          在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.&lt;&gt;c__DisplayClass14_0.&lt;RunSta&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 274
+[xUnit.net 00:00:09.18]       Stack Trace:
+[xUnit.net 00:00:09.18]            在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 289
+[xUnit.net 00:00:09.18]            在 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\Q10ToggleSwitchStateBehaviorTests.cs:行号 36
+[xUnit.net 00:00:09.21]   Finished:    GameSaveCenter.Playnite.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-11-07T05:31:27.4433023+08:00">
+        <Text>[xUnit.net 00:00:09.18]     GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-07T05:31:27.6292472+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

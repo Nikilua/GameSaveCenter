@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4137c114-e3bd-4e40-92de-a9fd90e40e11" name="redacted-host" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T05:16:27.4677991+08:00" queuing="2026-11-07T05:16:27.4677993+08:00" start="2026-11-07T05:16:19.8326366+08:00" finish="2026-11-07T05:16:27.4753744+08:00" />
+  <TestSettings name="default" id="8a4225cd-ca3e-435d-a260-18b8a57504ac">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="fe05c29a-b56b-4776-8236-31e8de3fcfec" testId="ea2d6e30-fcff-7c44-508a-50c758cac215" testName="GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests.IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes" computerName="redacted-host" duration="00:00:02.6620000" startTime="2026-11-07T05:16:24.5964685+08:00" endTime="2026-11-07T05:16:27.2213954+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fe05c29a-b56b-4776-8236-31e8de3fcfec">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Null() Failure: Value is not null
+Expected: null
+Actual:   Xunit.Sdk.TrueException: active spinner did not move: 60.107376 -&gt; 60.107376
+   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+   在 GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests.&lt;&gt;c__DisplayClass0_0.&lt;IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R08OffscreenMotionBehaviorTests.cs:行号 72</Message>
+          <StackTrace>   在 GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests.IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R08OffscreenMotionBehaviorTests.cs:行号 118</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests.IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes" storage="[repo]\.tmp\r5-build-62a363d3\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ea2d6e30-fcff-7c44-508a-50c758cac215">
+      <Execution id="fe05c29a-b56b-4776-8236-31e8de3fcfec" />
+      <TestMethod codeBase="[repo]\.tmp\r5-build-62a363d3\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests" name="IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ea2d6e30-fcff-7c44-508a-50c758cac215" executionId="fe05c29a-b56b-4776-8236-31e8de3fcfec" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.23]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.27]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:06.00]       Assert.Null() Failure: Value is not null
+[xUnit.net 00:00:06.00]       Expected: null
+[xUnit.net 00:00:06.00]       Actual:   Xunit.Sdk.TrueException: active spinner did not move: 60.107376 -&gt; 60.107376
+[xUnit.net 00:00:06.00]          在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142
+[xUnit.net 00:00:06.00]          在 GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests.&lt;&gt;c__DisplayClass0_0.&lt;IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R08OffscreenMotionBehaviorTests.cs:行号 72
+[xUnit.net 00:00:06.00]       Stack Trace:
+[xUnit.net 00:00:06.00]            在 GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests.IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R08OffscreenMotionBehaviorTests.cs:行号 118
+[xUnit.net 00:00:06.03]   Finished:    GameSaveCenter.Playnite.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-11-07T05:16:27.2398228+08:00">
+        <Text>[xUnit.net 00:00:06.00]     GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests.IndeterminateProgressPausesForHiddenTabAndMinimizedWindowThenResumes [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-07T05:16:27.4302256+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

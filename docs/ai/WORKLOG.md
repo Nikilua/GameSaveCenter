@@ -13137,3 +13137,10 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 本机 SDK 8.0.423 / Release 聚焦执行编译退出 0；1 个目标 Named Pipe 用例因本地环境不允许 Named Pipe 客户端而跳过，0 项通过、0 项失败，不计行为通过。测试进程从 Win32 非活动桌面启动，执行桌面 `GscR5Fix_4ce70e69939641448b1089511bdfa785` 与输入桌面不同；输入桌面前后均为 `Default`。结构化记录见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/followup-local-run.json`。
 
 当前工作树仍需提交此测试修复及状态记录，随后查询精确新 SHA 的双 SDK workflow。完整 WPF、Render QA、中文根入口和独立 `scripts/build.cmd` 验收继续在非活动桌面执行；U09-05 需额外定位用户截图的 HWND/进程或完成有瞬态事件覆盖的桌面监测，方可重新结项。当前 Round5 状态为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验。未操作任何盘符或映射；未执行真实存档恢复、媒体删除或云端写入。
+## 2026-11-07 Round5 U09-05 黑窗复核与入口修订
+
+- 用户再次报告命令/黑窗闪现，保留其截图无 HWND/PID 的事实，U09-05 重新进行中。静态代码定位到 `GameSaveCenter-Run.cmd` 原成功和失败分支都会 `pause`；工作树修订为删除等待、成功显式 `exit /b 0`，并给 PowerShell 子进程加 `-WindowStyle Hidden`。独立 `scripts/build.cmd` 同样隐藏其 PowerShell 子进程，`%*` 参数转交不变。
+- 更正桌面身份：旧隔离进程的 `Default` 属于 CodexSandbox 窗口站；R08/Q10 两次完整独立构建分别在动画测试失败，原因是非活动桌面不可靠推进 WPF 动画时钟。原失败脱敏 TRX、源码 SHA 和测试计数归档在 Round5 `evidence/U09-05-no-flash-20261107/followup-window-20261107/`，失败没有删除，没有改断言/skip。
+- 真实 `WinSta0\Default` 上使用 `CreateProcess CREATE_NO_WINDOW` 重跑 Q10，SDK8.0.423/Release，精确候选 `62a363d3a34ea9b9678aee3e8424113416778eae`，test assembly SHA `CBCB249C1A5CCA7C2637D625D32B7B260C05E93AE45F6267D2BC0136BAE91682`，1/1、0 skip。WinEvent覆盖全程仅记录8个无标题 testhost WPF窗，0 Console、0 Playnite窗；测试窗口已有1%透明、无边框、无激活、无任务栏设置。测试与事件原始 SHA、脱敏TRX见该目录。
+- `scripts/build.cmd -__gsc_invalid_parameter_probe__` 退出1且按预期报告未知参数；`pwsh -WindowStyle Hidden -Command exit 0` 退出0；source validation、`git diff --check` 通过。精确 SHA `62a363d3` 的 GitHub run #1483 / 42292326933 结束成功：SDK8 job128148639481 15/15步、SDK10 job128148639830 11/11步；预览包和两套诊断artifact ID、大小、digest见 `evidence/U09-05-no-flash-20261107/ci-run-1483.json`。required-checks/ruleset此前403，不重试。
+- 两个当前入口文件的小修订仍需先提交，再对冻结 SHA 在 `WinSta0\Default` 运行独立 `scripts/build.cmd` 和中文入口完整编译、测试、发布、打包、安装身份核验及启动，并监测其窗口事件。当前未声称黑窗已修复，未操作盘符/映射，未进行真实存档恢复、媒体删除或云端写入。

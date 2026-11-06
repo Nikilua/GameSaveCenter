@@ -10,7 +10,6 @@ if not defined PS_EXE set "PS_EXE=powershell.exe"
 
 if not exist "%~dp0scripts\dev-install-run.ps1" (
     echo [FAILED] Missing scripts\dev-install-run.ps1
-    pause
     exit /b 2
 )
 
@@ -19,7 +18,6 @@ if errorlevel 1 (
     echo [FAILED] The installer script is stale or this is not the source checkout.
     echo Expected: %~dp0scripts\dev-install-run.ps1
     echo Please run this file from the current GameSaveCenter source directory.
-    pause
     exit /b 3
 )
 
@@ -28,18 +26,17 @@ echo   GameSaveCenter build, install and run
 echo ==============================================
 echo.
 
-"%PS_EXE%" -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\dev-install-run.ps1" -Configuration Release
+"%PS_EXE%" -WindowStyle Hidden -NoLogo -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\dev-install-run.ps1" -Configuration Release
 set "EXIT_CODE=%ERRORLEVEL%"
 
 echo.
 if not "%EXIT_CODE%"=="0" (
     echo [FAILED] Build or installation did not complete. Exit code: %EXIT_CODE%
     echo See artifacts\one-click-install.log for details.
-    pause
     exit /b %EXIT_CODE%
 )
 
 echo [OK] Build, verification, installation and Playnite startup completed.
 echo See artifacts\last-dev-install.txt for the installed version.
 echo.
-pause
+exit /b 0

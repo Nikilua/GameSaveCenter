@@ -1,0 +1,20 @@
+D:\workplace\github\GameSaveCenter\.tmp\r5-build-62a363d3\full-recheck\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)鐨勬祴璇曡繍琛?
+VSTest 鐗堟湰 17.11.1 (x64)
+
+姝ｅ湪鍚姩娴嬭瘯鎵ц锛岃绋嶅€?..
+鎬诲叡 1 涓祴璇曟枃浠朵笌鎸囧畾妯″紡鐩稿尮閰嶃€?
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.42]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.76]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.80]   Starting:    GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:10.48]   Finished:    GameSaveCenter.Playnite.Tests
+鏁版嵁鏀堕泦鍣ㄢ€淏lame鈥濇秷鎭? 鎵€鏈夋祴璇曢兘宸茶繍琛屽畬姣曪紝灏嗕笉鐢熸垚搴忓垪鏂囦欢銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests.ProductionToggleHonorsRejectedDisabledReversedAndReducedMotionStates [7 s]
+
+娴嬭瘯杩愯鎴愬姛銆?
+娴嬭瘯鎬绘暟: 1
+     閫氳繃鏁? 1
+鎬绘椂闂? 12.1328 绉?
+缁撴灉鏂囦欢: D:\workplace\github\GameSaveCenter\.tmp\r5-build-62a363d3\window-watch\winsta0-q10-3\tests\Q10-focused.trx
+
+--- STDERR ---
