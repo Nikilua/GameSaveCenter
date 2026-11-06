@@ -1,3 +1,9 @@
+## 2026-11-06 Round5 本机构建中断与桌面隔离要求
+
+候选 4719a59c 首次独立构建退出 1。构建期间共享 checkout 的 HEAD 前进到 d7f82e44，R06 源码身份门禁拒绝程序集与当前源码混用。此前焦点相关测试类 14/14 通过。随后从 4719a59c 的独立固定检出重新执行，但 WPF 测试窗口仍出现在用户桌面。已终止该次构建进程树，中文安装启动入口未运行。
+
+隐藏构建控制台不足以隐藏 WPF 子窗口。当前桌面只执行不会创建应用窗口的操作。先通过 GitHub runner 执行编译、测试与渲染。本机完整链需在与日常桌面隔离且能满足原测试及安装核验的环境中运行，确认隔离前不启动 WPF 用例、渲染夹具或 Playnite。两次未完成执行均不计通过。 [身份失败 TRX](evidence/U05-02-reduced-motion-focus/identity-failure.trx) · [定向门禁与入口身份](evidence/U05-02-reduced-motion-focus/ui-gates.json)
+
 ## 2026-11-06 Round5 U05-02 / U09-02 任务详情收起焦点
 
 关闭动效时任务详情立即收起，原分支跳过焦点归还。补齐后，收起按钮和 Escape 共用的关闭路径会把焦点还给“查看任务详情”。SDK 8.0.423 Release 定向行为测试先失败（焦点仍在详情 ScrollViewer），修复后 1/1 通过。源码检查通过，WPF 静态审查 0 错误。离屏渲染、冻结候选完整链与双 SDK CI 待核，实际 Playnite 键盘及外部 UIA 仍待宿主验收。 [修复前 TRX](evidence/U05-02-reduced-motion-focus/before.trx) · [修复后 TRX](evidence/U05-02-reduced-motion-focus/after.trx)

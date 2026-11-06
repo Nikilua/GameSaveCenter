@@ -1,0 +1,42 @@
+{
+  "sourceCommit": "4719a59cdbd7499e1db2541dc9293d21559ed6ec",
+  "frozenIndexSha256": "E280D188E2AC05A7A057013161A3A5B5B7B349DCED03D9D348EE97046D7511F5",
+  "entryAndChangedFiles": [
+    {
+      "path": "GameSaveCenter-一键构建安装运行.cmd",
+      "Hash": "958D2FA746F78CDD381AE5A72B9A24CFC779743E91EF4AA577212E01972494FA"
+    },
+    {
+      "path": "GameSaveCenter-Run.cmd",
+      "Hash": "405F30591DE559519F49D028FAB5C639C6F04D4844F18764FA6D3C8A07A1D0BF"
+    },
+    {
+      "path": "scripts\\build.cmd",
+      "Hash": "873C6AECBC86876BADC7ED6458F9CD735EF9E0FA1A7FB4756C0476E97291A552"
+    },
+    {
+      "path": "src\\GameSaveCenter.Playnite\\Views\\TaskCenterView.xaml.cs",
+      "Hash": "04060A4446975525999A35C1EC7B65D8A510880077BF7EB68D016EB48DD44335"
+    },
+    {
+      "path": "tests\\GameSaveCenter.Playnite.Tests\\CompactWorkspaceTableViewportBehaviorTests.cs",
+      "Hash": "44B19EA786D9B30502F5E920D29D94A4586FE30A27466E3129A01F879393508A"
+    }
+  ],
+  "focusedTrx": [
+    {
+      "name": "before.trx",
+      "Hash": "34D4585D77B53BF78568D563B661487A2E21D4949922F9D88FF3DD833F9E2296"
+    },
+    {
+      "name": "after.trx",
+      "Hash": "421701F29192B86EA95992F18E3D927F868A9CBA30B6758464FB9539A23E4902"
+    }
+  ],
+  "renderExit": 0,
+  "renderPngCount": 394,
+  "renderProblemCount": 0,
+  "renderReportSha256": "015450BAABDF9A450B8C3283CC01597D9BA906DFB0D42EEFBD43494BDF6BB4D3",
+  "sourceValidation": "Source validation passed: JSON/XML/YAML, XAML semantics/resources, C# delimiters, solution, IPC constants, version consistency, delivery guards, media/game-tool SQLite guards, large-library performance guards, Windows launchers, Round4 status and environment capability cache.",
+  "wpfValidation": "Scanned 166 XAML files: 0 errors, 156 warnings, 1014 info."
+}
