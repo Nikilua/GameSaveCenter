@@ -1,0 +1,14 @@
+Playnite 已退出，等待插件回收 Worker...
+
+安装验证成功
+  目录：[APPDATA]\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+  extension.yaml：0.6.73
+  DLL：0.6.73.0
+  报告：D:\workplace\github\GameSaveCenter\.tmp\r5-desktop-probe\frozen\artifacts\last-dev-install.txt
+
+启动 Playnite：D:\software\Playnite\Playnite.DesktopApp.exe
+
+[OK] Build, verification, installation and Playnite startup completed.
+See artifacts\last-dev-install.txt for the installed version.
+
+Press any key to continue . . .

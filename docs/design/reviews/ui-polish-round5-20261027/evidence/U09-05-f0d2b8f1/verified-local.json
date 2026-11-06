@@ -1,0 +1,74 @@
+{
+  "source": "f0d2b8f136423dbc8ec8aac71c182a39dfe9f72e",
+  "independentExit": 0,
+  "rootExit": 0,
+  "tests": [
+    {
+      "summary": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-focus-gate\\diagnostics\\20261106T084120643Z-1eb21776\\summary.json",
+      "hash": "FBA02422B89204165ECA5B2BE29A7F993E1EFEE6CD3AD82FAE9C9CF6610EE845",
+      "sdk": "8.0.423",
+      "totals": {
+        "testCaseCount": 2030,
+        "passed": 1972,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 58,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2030,
+        "reportedCounterFileCount": 160,
+        "counterMismatchCount": 0,
+        "parseErrorCount": 0,
+        "trxFileCount": 160,
+        "distinctTestClassCount": 375,
+        "wpfIsolatedClassRunCount": 157
+      }
+    },
+    {
+      "summary": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-desktop-probe\\frozen\\artifacts\\build-diagnostics\\20261106T090351024Z-8602adab\\summary.json",
+      "hash": "8D9F3D2A73F271F92C3D0FA84D3B0A731473AADE8A390539B3A0B773CCD54619",
+      "sdk": "8.0.423",
+      "totals": {
+        "testCaseCount": 2030,
+        "passed": 1972,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "skipped": 58,
+        "notRunnable": 0,
+        "inconclusive": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "otherOutcome": 0,
+        "reportedCounterTotal": 2030,
+        "reportedCounterFileCount": 160,
+        "counterMismatchCount": 0,
+        "parseErrorCount": 0,
+        "trxFileCount": 160,
+        "distinctTestClassCount": 375,
+        "wpfIsolatedClassRunCount": 157
+      }
+    }
+  ],
+  "packageSha256": "52F30C9870B9D3B5D7FAD0851D7C9BDEE4DB8751B933CE34AEB96D77F9905991",
+  "installReport": ".tmp/r5-desktop-probe/frozen/artifacts/last-dev-install.txt",
+  "installReportSha256": "09DC0BB44E27039269BEA860EC745C72E55A64E836B7C21773F25861B0F66232",
+  "processes": [
+    {
+      "Id": 21664,
+      "Name": "GameSaveCenter.Worker",
+      "Responding": true
+    },
+    {
+      "Id": 23448,
+      "Name": "Playnite.DesktopApp",
+      "Responding": true
+    }
+  ]
+}
