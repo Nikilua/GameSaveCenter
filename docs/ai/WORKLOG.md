@@ -1,8 +1,8 @@
-## 2026-11-07 Round5 U09-05 验收期间黑窗复核
+## 2026-11-07 Round5 U09-05 隔离桌面完整验收
 
-用户报告上次验收后桌面仍闪出黑窗，之前结束后的窗口快照不能排除瞬时显示。将 `dev-install-run.ps1` 的 Playnite 启动改为 `ProcessStartInfo.UseShellExecute = false`，更新入口修订号并在 LauncherExitCodes 检查中加入源码守卫。隐藏子进程探针确认直接创建的 PowerShell 窗口继承非活动桌面；`Start-Process -WindowStyle Hidden` 的受控探针也继承同一桌面，因此尚不能断言黑窗唯一由旧 Playnite 启动调用导致。完整根链仍需核对 Playnite 实际窗口桌面及运行期间用户桌面的可见状态。
+用户报告验收期间仍闪出黑窗。提交 `76e5670f02a3bf85432c312a27d1ae51fc379678` 将 `dev-install-run.ps1` 的 Playnite 启动改为 `ProcessStartInfo.UseShellExecute = false`，入口修订号 `DEV-INSTALL-010`，并加入口源码守卫。精确源码的中文根入口完整安装启动链与独立 `scripts/build.cmd` 均以 SDK 8.0.423 / Release 退出 0；包和六个安装程序集逐项核验一致。普通权限安装写入拒绝保留为失败，提升后的全链才计通过。
 
-PowerShell解析、Source Validation、diff check 与三入口退出码矩阵9/9通过。一次直接定向 `dotnet test` 在不带 `GscBuildCommit` 的情况下被原源码身份守卫拒绝（4/8），TRX已归档，不计通过；不改门禁。代码候选提交后通过仓库入口重新运行。详见[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)及[闪现复核证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/BASELINE.md)。当前U09-05进行中，状态5/71/3/1；真实插件页、实体输入/UIA/DPI与业务写入边界不变。
+25 ms `Default` 窗口探针覆盖两个根链尝试和独立构建，2026-11-06T18:05:55.628Z 至 19:52:36.302Z 之间无目标窗口事件。成功根链实际 Playnite HWND 位于非活动桌面，输入桌面保持 Default。采样不排除短于25 ms的瞬时窗口，不能回溯识别用户截图中的 HWND；后续自动验收继续隔离执行。精确 SHA 的 GitHub run #1481 两个适用 SDK job均 completed/success。U09-05 标记已满足，但不代表真实插件页面、实体 UIA/输入/IME/DPI 或分支保护 required-check 名单已验证；U09-06仍远端待验。状态6/71/2/1，U09-04与U09-08继续进行中。[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md) · [验收证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/BASELINE.md)
 
 ## 2026-11-06 Round5 Windows CI #1466 Worker 夹具修复
 

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-07",
+  "sourceCommit": "76e5670f02a3bf85432c312a27d1ae51fc379678",
+  "installerRevision": "DEV-INSTALL-010",
+  "entryChain": [
+    "GameSaveCenter-一键构建安装运行.cmd",
+    "GameSaveCenter-Run.cmd",
+    "scripts/dev-install-run.ps1"
+  ],
+  "sourceTreeAtRuns": {
+    "trackedFilesClean": true,
+    "preserved": [
+      "pre-existing UI evidence",
+      "pre-existing tests/GameSaveCenter.Playnite.Tests/TestResults"
+    ],
+    "untrackedPathsPresent": true
+  },
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "rootChain": {
+    "trxFiles": 160,
+    "wpfIsolatedClasses": 157,
+    "testCases": 2030,
+    "diagnostics": "artifacts/build-diagnostics/20261106T184403270Z-818963d1",
+    "skipped": 58,
+    "durationSeconds": 1607.1,
+    "skipReasons": [
+      {
+        "count": 57,
+        "reason": "Legacy assertions for the withdrawn 今日工作台 architecture",
+        "countedAsPassed": false
+      },
+      {
+        "count": 1,
+        "reason": "Opt-in physical mouse-pointer test",
+        "countedAsPassed": false
+      }
+    ],
+    "errorsTimeoutsAborts": 0,
+    "summary": "artifacts/build-diagnostics/20261106T184403270Z-818963d1/summary.json",
+    "failed": 0,
+    "passed": 1972,
+    "exitCode": 0
+  },
+  "independentBuild": {
+    "errorsTimeoutsAborts": 0,
+    "wpfIsolatedClasses": 157,
+    "trxFiles": 160,
+    "skipReasons": [
+      {
+        "count": 57,
+        "reason": "Legacy assertions for the withdrawn 今日工作台 architecture",
+        "countedAsPassed": false
+      },
+      {
+        "count": 9,
+        "reason": "Named Pipe client tests unavailable in restricted environment",
+        "countedAsPassed": false
+      },
+      {
+        "count": 1,
+        "reason": "Worker Named Pipe restart test unavailable in restricted environment",
+        "countedAsPassed": false
+      },
+      {
+        "count": 1,
+        "reason": "Opt-in physical mouse-pointer test",
+        "countedAsPassed": false
+      }
+    ],
+    "summary": "artifacts/build-diagnostics/20261106T191851252Z-884a1cd6/summary.json",
+    "entry": "scripts/build.cmd",
+    "exitCode": 0,
+    "passed": 1962,
+    "durationSeconds": 1974.2,
+    "testCases": 2030,
+    "skipped": 68,
+    "diagnostics": "artifacts/build-diagnostics/20261106T191851252Z-884a1cd6",
+    "failed": 0
+  },
+  "ordinaryPermissionAttempt": {
+    "countedAsPass": false,
+    "rawLog": "not retained; sanitized summary is sandbox-install-denial.txt",
+    "failure": "Write to the real per-user Playnite extension directory was denied by the sandbox",
+    "exitCode": 1
+  },
+  "package": {
+    "manifestVersion": "0.6.73",
+    "zip": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "pext": "artifacts/GameSaveCenter-0.6.73.pext",
+    "sha256": "99A86E7CF42CCE127A0EB0B76E0E8E674207F6D4E37F53359FC21036E88C56D0",
+    "allSixPackagedAssembliesMatchInstalledFiles": true,
+    "assemblies": [
+      {
+        "path": "GameSaveCenter.Playnite.dll",
+        "sha256": "75B464DB8176C49371134F6D519E8707F29AA8A4B5C951D46A9351F536555342"
+      },
+      {
+        "path": "GameSaveCenter.Contracts.dll",
+        "sha256": "CBC0DEC7E3E67890F70A8A99BC1C550F91D770FDEB25401B8DB9EB358EDF36BE"
+      },
+      {
+        "path": "GameSaveCenter.Core.dll",
+        "sha256": "1D096B92773E4208E5663B636EC781E273AC915029A57D3989257A772EFC8316"
+      },
+      {
+        "path": "Worker/GameSaveCenter.Worker.Contracts.dll",
+        "sha256": "B50C48740BE11FE53218EE1BB09DAD8D6CA1DF20F4AA91CB225DE36BAC97CD64"
+      },
+      {
+        "path": "Worker/GameSaveCenter.Worker.Core.dll",
+        "sha256": "227EEEFA159DCBEE7DD07FC2E63DB2AB6426B2BACB468694111002829CC3D782"
+      },
+      {
+        "path": "Worker/GameSaveCenter.Worker.dll",
+        "sha256": "7A850054C435D534C7EB620B2CB280BBA037E32955D526B1E509FB4D79D32D4E"
+      }
+    ],
+    "assemblyVersion": "0.6.73.0",
+    "installedExtensionIdentity": "GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "bytesEach": 45739053
+  }
+}

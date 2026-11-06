@@ -1,6 +1,8 @@
-## 2026-11-07 Round5 U09-05 启动黑窗复核
+## 2026-11-07 Round5 U09-05 黑窗复核与冻结验收
 
-用户报告上一次验收期间仍有黑窗闪现。安装器的 Playnite 启动改为 `ProcessStartInfo.UseShellExecute = false`，入口版本为 `DEV-INSTALL-010`；该新候选尚未完成完整链。隐藏桌面探针确认直接创建的子进程继承非活动桌面，但 Shell 隐藏启动也通过同桌面探针，根因仍需按实际 Playnite 窗口核验，不能把该代码改动宣称为已解决。当前状态按 Round5 总表为5项已满足、71项代码完成待验收、3项进行中、1项远端待验。 [Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md) · [闪现复核](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/BASELINE.md)
+精确 SHA `76e5670f02a3bf85432c312a27d1ae51fc379678`：中文真实入口完整构建/测试/发布/打包/安装身份/启动链 exit 0，独立 `scripts/build.cmd` exit 0，SDK 8.0.423 / Release。根链2030项/1972通过/0失败/58跳过；独立构建2030项/1962通过/0失败/68跳过；两轮各157个隔离WPF类，skip均保留原因且不计通过。ZIP/PEXT各45,739,053 bytes、同 SHA-256；6个安装程序集与包内项逐一匹配。
+
+25 ms `Default` 桌面监测覆盖根链两次尝试和独立构建，无目标窗口出现/消失事件；成功根链的可见Playnite HWND属于非活动桌面。监测不能排除短于25 ms的窗口，也没有回溯识别用户截图HWND。`DEV-INSTALL-010`修正不经Shell的Playnite进程创建；未来验收继续以非活动桌面运行，不能将隔离采样说成绝对无闪保证。源码run #1481双SDK通过。U09-05已满足；状态6/71/2/1，U09-04、U09-08进行中，U09-06因required-check端点先前403仍远端待验。详见[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)及[窗口/安装/CI证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/BASELINE.md)。
 
 ## 2026-11-06 Round5 当前冻结候选与真实宿主边界
 

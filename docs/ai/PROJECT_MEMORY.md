@@ -1,6 +1,8 @@
-## 2026-11-07 Round5 非活动桌面的宿主启动核验
+## 2026-11-07 Round5 非活动桌面窗口验收结论
 
-验收工具运行在非活动桌面时，直接 GUI 子进程应显式用 `ProcessStartInfo.UseShellExecute = false` 创建，确保由调用线程所在桌面创建。结束后只看前台窗口清单不足以排除运行中的瞬时窗口；应在隔离桌面查实际窗口线程/桌面，并确认输入桌面仍为 `Default`。受控 PowerShell 子进程比较中，Shell 隐藏启动与直接创建都继承了非活动桌面；因此不要仅凭启动API推断用户看到的黑窗原因，须以真实 Playnite HWND 与完整链中的用户桌面观测核实。Round5当前 U09-05 修订 `DEV-INSTALL-010` 的完整链/CI待验。
+U09-05 精确提交 `76e5670f02a3bf85432c312a27d1ae51fc379678` 已完成中文真实根入口与独立 `scripts/build.cmd` 的 SDK8.0.423 完整验收，精确 CI #1481 双 SDK通过。`Default` 桌面以25 ms间隔监测完整链与独立构建，无筛选目标进程窗口出现/消失事件；真实可见Playnite HWND在线程桌面 `GscR5Elev_e8bce0044f4a4413bbcb73faa69d1c31`。轮询无法排除短于25 ms的窗口或回溯识别旧截图HWND，因此仅对该次运行作“不曾观察到目标窗口进入Default”的结论，不承诺所有手动启动路径绝对无闪。
+
+工具运行在非活动桌面时，GUI 子进程需通过 `ProcessStartInfo.UseShellExecute = false` 创建，继承调用线程桌面。未来构建/验收必须在非活动桌面运行，并在全程轮询Default窗口；隐藏控制台本身不足以隐藏WPF子窗口。若用户再次看到闪窗，应抓取当时PID/HWND/class以定位新窗口，不要把之前的截图或一次轮询当作完整根因证据。验收身份与边界见Round5 [窗口报告](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/BASELINE.md)。
 
 ## 2026-11-06 Round5 Windows CI #1466 Worker 夹具修复
 

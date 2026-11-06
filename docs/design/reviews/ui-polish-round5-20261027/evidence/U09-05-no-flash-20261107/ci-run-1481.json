@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "event": "push",
+  "branch": "main",
+  "sourceCommit": "76e5670f02a3bf85432c312a27d1ae51fc379678",
+  "run": {
+    "id": "42265616989",
+    "number": 1481,
+    "conclusion": "success",
+    "status": "completed",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42265616989"
+  },
+  "jobs": [
+    {
+      "id": "128056627907",
+      "sdk": "8.0.423",
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": "all applicable steps successful"
+    },
+    {
+      "id": "128056628466",
+      "sdk": "10.0.401",
+      "name": "复核",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": "all applicable steps successful"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "GameSaveCenter-build-diagnostics",
+      "id": "13532880739",
+      "sourceCommit": "76e5670f02a3bf85432c312a27d1ae51fc379678",
+      "digest": "sha256:f512371c2387e0dd92f271160578c78f1b881eeb0d1d5b46670e4d88eee38321",
+      "bytes": 2041023
+    },
+    {
+      "name": "GameSaveCenter-windows-preview",
+      "id": "13532560696",
+      "sourceCommit": "76e5670f02a3bf85432c312a27d1ae51fc379678",
+      "digest": "sha256:efdf8096b8f86d1f99cf2aab12eefc35a6aa36fffb53de50a0dd23195881cad9",
+      "bytes": 90793624
+    },
+    {
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "id": "13528528230",
+      "sourceCommit": "76e5670f02a3bf85432c312a27d1ae51fc379678",
+      "digest": "sha256:f9ac8c05093a8c8a9ffac0df906b4deef4a8662c82c004222586d61709ba1f91",
+      "bytes": 977712
+    }
+  ],
+  "requiredChecks": {
+    "status": "remote pending",
+    "priorReadResult": "403",
+    "nextStep": "A maintainer with permission performs a read-only required-check/ruleset query; do not infer branch protection from successful workflow jobs"
+  }
+}

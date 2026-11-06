@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "stage": "U09-05-no-flash-20261107",
+  "repositoryRoot": "D:\\workplace\\github\\GameSaveCenter",
+  "targetRoot": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-gate-76e5670f",
+  "diskBytesBefore": {
+    "C": 8345137152,
+    "D": 15383097344
+  },
+  "deleted": [
+    {
+      "path": "default-window-events.jsonl",
+      "bytes": 81,
+      "sha256": "AB7F3C73C80043AC0FD33D41525B135CC2583B52D47B1463A584E06A92BF33F3"
+    },
+    {
+      "path": "default-window-watch.ps1",
+      "bytes": 3128,
+      "sha256": "6CF1C98031068DD1703A2ABAB8EBBC82427FCD165721AD8D6DA7891E1BA52E1A"
+    },
+    {
+      "path": "playnite-window-audit-close.ps1",
+      "bytes": 1752,
+      "sha256": "58FC46ECDF1C35DA1751839D78287FF938AD45A107EC8141DD7394A12114251D"
+    },
+    {
+      "path": "root-chain-start.json",
+      "bytes": 1139,
+      "sha256": "0880A590C2E852160FDEEC77D640D00D4CF54E6CBC7C29B70C89BAD9DB12C67A"
+    },
+    {
+      "path": "watch-stop.flag",
+      "bytes": 6,
+      "sha256": "A0B28CDF92E250A1A93294D91144A0F893D27197D56B39991CC421768794005F"
+    },
+    {
+      "path": "independent-build/scripts-build-console.log",
+      "bytes": 109320,
+      "sha256": "7C5C5BF5136118B9F3C894923FA9CCB0D7415146EAAD4BCAC7855F2E4621A430"
+    },
+    {
+      "path": "independent-build/start.json",
+      "bytes": 320,
+      "sha256": "0294EF32B1FD8A12150920FB7185E67CD4EAE1A33673F1DB62BFE0AD02EDC88D"
+    },
+    {
+      "path": "root-chain/root-console.log",
+      "bytes": 122244,
+      "sha256": "3A49DEC6795C891430631E4859FD2F616A5BAA5638FC61FF932B6A2E6B42E880"
+    },
+    {
+      "path": "root-chain-elevated/start.json",
+      "bytes": 188,
+      "sha256": "942E88D3CBD41611AE2F44E20B7ED58815BD1B6CB7DEB391F619B44741B7A0BF"
+    }
+  ],
+  "deletedFileCount": 9,
+  "deletedBytes": 238178.0,
+  "diskBytesAfterRemovalBeforeEvidenceWrite": {
+    "C": 8345137152,
+    "D": 15383343104
+  },
+  "changeBytes": {
+    "C": 0,
+    "D": 245760
+  },
+  "retained": [
+    {
+      "reason": "Exclusive-open validation found an external file handle; preserved without terminating an unidentified owner",
+      "sha256": "5F6713C66C8DBA5737B1B45149EEA3D7D6D719BC3D80B01DB63493D0F29DECAA",
+      "bytes": 121734,
+      "path": ".tmp/r5-gate-76e5670f/root-chain-elevated/root-console.log"
+    }
+  ],
+  "preDeleteChecks": {
+    "packageAndInstallEvidence": "evidence/U09-05-no-flash-20261107/verification.json",
+    "reparsePoints": 0,
+    "runningBuildOrHostProcesses": 0,
+    "onlyLockedFile": "root-chain-elevated/root-console.log",
+    "documentationReferences": 0,
+    "lockedFiles": 1,
+    "normalizedUnderRepositoryTmp": true,
+    "toolShellProcesses": "cmd/pwsh were execution shells and were not terminated"
+  }
+}

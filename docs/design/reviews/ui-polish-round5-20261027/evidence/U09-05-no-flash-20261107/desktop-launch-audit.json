@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "76e5670f02a3bf85432c312a27d1ae51fc379678",
+  "probe": {
+    "processNames": [
+      "Playnite*",
+      "GameSaveCenter*",
+      "cmd",
+      "powershell",
+      "pwsh",
+      "dotnet",
+      "testhost"
+    ],
+    "targetWindowGoneEvents": 0,
+    "stoppedUtc": "2026-11-06T19:52:36.3019935Z",
+    "intervalMilliseconds": 25,
+    "desktop": "Default",
+    "eventFile": "probe recorded START and STOP only",
+    "targetWindowSeenEvents": 0,
+    "startedUtc": "2026-11-06T18:05:55.6282003Z",
+    "recordsWindowTitles": false
+  },
+  "runs": [
+    {
+      "kind": "ordinary-permission full root-chain attempt",
+      "result": "install write denied; exit 1",
+      "executionDesktop": "non-default caller desktop"
+    },
+    {
+      "executionDesktop": "GscR5Elev_e8bce0044f4a4413bbcb73faa69d1c31",
+      "playniteProcessId": 10076,
+      "cleanup": "only verified acceptance Playnite PID stopped after exact path/name/start-time check",
+      "inputDesktop": "Default",
+      "kind": "authorized full root-chain rerun",
+      "playniteExecutable": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+      "mainWindowClass": "HwndWrapper[Playnite.DesktopApp.exe;…]",
+      "result": "exit 0",
+      "mainWindowVisible": true
+    },
+    {
+      "inputDesktop": "Default",
+      "kind": "independent scripts/build.cmd",
+      "result": "exit 0",
+      "executionDesktop": "GscR5Build_b6882b54b8644a07aa1eb0b66f5193a5"
+    }
+  ],
+  "limitations": [
+    "25 ms sampling cannot exclude a transient shorter than the interval",
+    "does not recover the HWND/class for the user screenshot captured earlier",
+    "proves only these controlled runs did not produce observed target windows on Default"
+  ]
+}
