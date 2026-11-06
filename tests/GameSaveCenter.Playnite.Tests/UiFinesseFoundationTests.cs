@@ -246,19 +246,36 @@ public sealed class UiFinesseFoundationTests
                 window.UpdateLayout();
 
                 var translate = GscMotion.GetMutableTranslateTransform(host);
-                GscMotion.AnimateEntrance(host, 12);
-                PumpDispatcher(TimeSpan.FromMilliseconds(120));
-                var renderedY = translate.Y;
-                var renderedOpacity = host.Opacity;
-                Assert.InRange(renderedY, 0.01, 11.99);
-                Assert.InRange(renderedOpacity, 0.01, 0.99);
+                (double BeforeY, double BeforeOpacity, double AfterY, double AfterOpacity)? sample = null;
+                EventHandler rendering = (_, __) =>
+                {
+                    var y = translate.Y;
+                    var opacity = host.Opacity;
+                    if (sample.HasValue || y < 0.01 || y > 11.99 || opacity < 0.01 || opacity > 0.99)
+                        return;
 
-                GscMotion.AnimateEntrance(host, 24);
-                translate.BeginAnimation(TranslateTransform.YProperty, null);
-                host.BeginAnimation(UIElement.OpacityProperty, null);
+                    GscMotion.AnimateEntrance(host, 24);
+                    translate.BeginAnimation(TranslateTransform.YProperty, null);
+                    host.BeginAnimation(UIElement.OpacityProperty, null);
+                    sample = (y, opacity, translate.Y, host.Opacity);
+                };
+                CompositionTarget.Rendering += rendering;
+                try
+                {
+                    GscMotion.AnimateEntrance(host, 12);
+                    Assert.True(PumpDispatcherUntil(() => sample.HasValue, TimeSpan.FromMilliseconds(700)),
+                        $"No intermediate entrance frame observed. Y={translate.Y}, opacity={host.Opacity}.");
+                }
+                finally
+                {
+                    CompositionTarget.Rendering -= rendering;
+                }
 
-                Assert.InRange(Math.Abs(translate.Y - renderedY), 0, 0.8);
-                Assert.InRange(Math.Abs(host.Opacity - renderedOpacity), 0, 0.08);
+                var rendered = sample!.Value;
+                Assert.InRange(rendered.BeforeY, 0.01, 11.99);
+                Assert.InRange(rendered.BeforeOpacity, 0.01, 0.99);
+                Assert.InRange(Math.Abs(rendered.AfterY - rendered.BeforeY), 0, 0.8);
+                Assert.InRange(Math.Abs(rendered.AfterOpacity - rendered.BeforeOpacity), 0, 0.08);
             }
             catch (Exception caught)
             {
