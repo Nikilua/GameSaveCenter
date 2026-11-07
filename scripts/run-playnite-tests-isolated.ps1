@@ -13,6 +13,7 @@ $previousTemp = [Environment]::GetEnvironmentVariable('TEMP', 'Process')
 $previousTmp = [Environment]::GetEnvironmentVariable('TMP', 'Process')
 . (Join-Path $PSScriptRoot 'build-diagnostics.ps1')
 . (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
+. (Join-Path $PSScriptRoot 'windows-desktop-process.ps1')
 $ownsDiagnostics = $null -eq $DiagnosticsContext
 if ($ownsDiagnostics) {
     $DiagnosticsContext = New-GscDiagnosticContext $ProjectRoot $DiagnosticsRoot
@@ -37,7 +38,8 @@ function Invoke-PlayniteTestProcess {
     param(
         [Parameter(Mandatory = $true)][string]$Filter,
         [Parameter(Mandatory = $true)][string]$Label,
-        [Parameter(Mandatory = $true)][string]$StepId
+        [Parameter(Mandatory = $true)][string]$StepId,
+        [switch]$HiddenDesktop
     )
 
     $testProject = Join-Path $ProjectRoot 'tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj'
@@ -80,7 +82,105 @@ function Invoke-PlayniteTestProcess {
             }
         }
     }
-    $result = Invoke-GscRecordedCommand $DiagnosticsContext $StepId dotnet $arguments -TimeoutSeconds 300
+    if ($HiddenDesktop) {
+        $windowStation = [GscHiddenDesktopProcess]::CurrentWindowStation()
+        if (-not [string]::Equals($windowStation, 'WinSta0', [StringComparison]::OrdinalIgnoreCase)) {
+            # Hosted CI commonly runs in a noninteractive service station. WPF
+            # windows there cannot appear on the developer's input desktop; keep
+            # the complete test run and diagnostics without trying to access WinSta0.
+            Write-Host "    noninteractive station '$windowStation'; running the complete WPF class without a user-visible desktop" -ForegroundColor DarkCyan
+            $result = Invoke-GscRecordedCommand $DiagnosticsContext $StepId dotnet $arguments -TimeoutSeconds 300
+        }
+        else {
+            $inputDesktopBefore = [GscHiddenDesktopProcess]::InputDesktop()
+            $desktop = 'GscWpfTest_' + [Guid]::NewGuid().ToString('N')
+            $testRunner = Join-Path $PSScriptRoot 'run-playnite-wpf-test-child.ps1'
+            $testDirectory = Join-Path $DiagnosticsContext.RunRoot ('tests/' + $StepId)
+            New-Item -ItemType Directory -Path $testDirectory -Force | Out-Null
+            $consolePath = Join-Path $DiagnosticsContext.RunRoot ($StepId + '-console.txt')
+            $resultPath = Join-Path $testDirectory ($StepId + '-desktop-result.json')
+            $specificationPath = Join-Path $testDirectory ($StepId + '-desktop-specification.json')
+            $specification = [ordered]@{
+                FilePath = 'dotnet'
+                Arguments = @($arguments)
+                WorkingDirectory = [System.IO.Path]::GetFullPath($ProjectRoot)
+                RepositoryRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
+                ConsolePath = $consolePath
+                ResultPath = $resultPath
+                ExpectedDesktop = $desktop
+                TimeoutSeconds = 300
+            }
+            [IO.File]::WriteAllText($specificationPath, (ConvertTo-Json -InputObject $specification -Depth 5), [Text.UTF8Encoding]::new($false))
+
+            $powershell = Join-Path $env:SystemRoot 'System32/WindowsPowerShell/v1.0/powershell.exe'
+            $hiddenArguments = @('-NoLogo', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $testRunner, '-SpecificationPath', $specificationPath)
+            $desktopResult = Invoke-GscHiddenDesktopProcess -Application $powershell -Arguments $hiddenArguments -WorkingDirectory ([System.IO.Path]::GetFullPath($ProjectRoot)) -TimeoutSeconds 360 -DesktopName $desktop
+            if ($desktopResult.TimedOut) {
+                $ownedProcess = $null
+                try {
+                    $ownedProcess = [Diagnostics.Process]::GetProcessById([int]$desktopResult.ProcessId)
+                    Stop-GscOwnedProcessTree $ownedProcess
+                }
+                finally {
+                    if ($ownedProcess) { $ownedProcess.Dispose() }
+                }
+                throw "WPF hidden desktop runner exceeded 360 seconds for $Label."
+            }
+            if (-not $desktopResult.Exited) {
+                throw "WPF hidden desktop runner did not exit for $Label."
+            }
+            if (-not (Test-Path -LiteralPath $resultPath -PathType Leaf)) {
+                throw "WPF hidden desktop runner did not produce its result record for $Label."
+            }
+
+            $childResult = Get-Content -LiteralPath $resultPath -Raw | ConvertFrom-Json
+            $inputDesktopAfter = [GscHiddenDesktopProcess]::InputDesktop()
+            if ($desktopResult.InputDesktopBefore -ne $inputDesktopBefore -or
+                $desktopResult.InputDesktopAfter -ne $inputDesktopBefore -or
+                $inputDesktopAfter -ne $inputDesktopBefore -or
+                $childResult.windowStation -ne 'WinSta0' -or
+                $childResult.desktop -ne $desktop -or
+                $childResult.inputDesktopBefore -ne $inputDesktopBefore -or
+                $childResult.inputDesktopAfter -ne $inputDesktopBefore -or
+                [int]$desktopResult.ExitCode -ne [int]$childResult.exitCode) {
+                throw "WPF hidden desktop identity or input desktop changed during $Label."
+            }
+
+            $processEvidence = [ordered]@{
+                ExitCode = [int]$childResult.exitCode
+                TimedOut = [bool]$childResult.timedOut
+                OutputDrained = [bool]$childResult.outputDrained
+                ProcessId = $childResult.testProcessId
+                ProcessStartedUtc = $childResult.testProcessStartedUtc
+                ProcessExited = [bool]$childResult.testProcessExited
+                RunnerProcessId = [int]$desktopResult.ProcessId
+                RunnerProcessStartedUtc = [string]$desktopResult.ProcessStartedUtc
+                RunnerProcessExited = [bool]$desktopResult.Exited
+                WindowStation = [string]$childResult.windowStation
+                Desktop = [string]$childResult.desktop
+                InputDesktopBefore = [string]$inputDesktopBefore
+                InputDesktopAfter = [string]$inputDesktopAfter
+            }
+            $DiagnosticsContext.Steps.Add([ordered]@{
+                id = $StepId
+                command = 'dotnet'
+                arguments = $arguments
+                startedUtc = [string]$childResult.startedUtc
+                completedUtc = [string]$childResult.completedUtc
+                exitCode = [int]$childResult.exitCode
+                console = [IO.Path]::GetFileName($consolePath)
+                launchError = $childResult.launchError
+                process = $processEvidence
+            })
+            if ([int]$childResult.exitCode -ne 0 -or $childResult.launchError) { $DiagnosticsContext.FailedStageId = $StepId }
+            Write-GscDiagnosticSummary $DiagnosticsContext
+            $outputText = if (Test-Path -LiteralPath $consolePath -PathType Leaf) { Get-Content -LiteralPath $consolePath -Raw } else { '' }
+            $result = [pscustomobject]@{ ExitCode = [int]$childResult.exitCode; Output = @($outputText -split '\r?\n') }
+        }
+    }
+    else {
+        $result = Invoke-GscRecordedCommand $DiagnosticsContext $StepId dotnet $arguments -TimeoutSeconds 300
+    }
     $output = $result.Output
     $exitCode = $result.ExitCode
     Complete-GscTestDiagnostics $DiagnosticsContext (Join-Path $DiagnosticsContext.RunRoot ('tests/' + $StepId))
@@ -179,7 +279,7 @@ try {
     for ($index = 0; $index -lt $wpfClasses.Count; $index++) {
         $class = $wpfClasses[$index]
         Write-Host "  WPF isolated process [$($index + 1)/$($wpfClasses.Count)] $class" -ForegroundColor DarkCyan
-        Invoke-PlayniteTestProcess -Filter ("FullyQualifiedName~$class") -Label "class $class" -StepId ('wpf.' + $class.Substring($class.LastIndexOf('.') + 1))
+        Invoke-PlayniteTestProcess -Filter ("FullyQualifiedName~$class") -Label "class $class" -StepId ('wpf.' + $class.Substring($class.LastIndexOf('.') + 1)) -HiddenDesktop
     }
 
     Write-Host 'All Playnite tests passed with WPF classes isolated by process.' -ForegroundColor Green
