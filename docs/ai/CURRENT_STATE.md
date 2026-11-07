@@ -1,3 +1,9 @@
+## 2026-11-07 Round5 U09-05 WPF 测试窗隔离更新：0feff185
+
+提交 `0feff18501a5ec971e3d7fb2ba212e8d0d28e0ac` 已推送。交互式本机的每个 WPF 测试类现运行在 WinSta0 私有非输入桌面；SDK8.0.423 的独立 `scripts/build.cmd` 完整链为 2030 项 / 1962 通过 / 0 失败 / 68 既有 skip，157 个 WPF 类隔离，Default 桌面事件监测 0 次显示。Q10 定向动画 1/1；源检查、PowerShell 语法、WPF 静态审查均通过。精确 SHA 的 Windows CI #1486 双 SDK job 均成功。细节见[Round5 进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)及[本批证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-hidden-wpf-20261107/README.md)。
+
+中文根入口输出 `[OK]`，完整摘要 2030/1972/0/58，安装版本和六个程序集 SHA 已核对。入口明确成功分支最终 `exit /b 0`；外层 PowerShell 日志捕获因启动后的 Playnite/Worker 保留重定向句柄没有记录自身最终退出，因此不伪称该包装器退出状态已观察。官方 `--shutdown` 等待超时，未强杀。Default 桌面监测事件为 0，但原截图无 HWND/PID，不能确认窗口身份或推广为所有手动启动绝不闪现；U09-05 仍进行中。U09-04、U09-08 继续，U09-06 required-check 权限沿用此前 403 并保持远端待验。未触碰盘符或映射，也未做真实存档恢复、媒体删除或云端写入。
+
 ## 2026-11-07 U09-05 再次黑窗反馈：修订未验收
 
 用户再次报告黑窗/闪屏。历史截图没有 HWND/PID，无法确认窗口身份。此前移除 pause 和隐藏 PowerShell 子进程只处理控制台遗留问题；更直接的验证风险已确认：本机曾把 Q10 WPF 动效测试放在输入桌面，WinEvent 捕获 8 个无标题 testhost.net472.exe 窗口显示事件。测试夹具使用 Opacity=0.01，会在用户桌面留下极暗的 UI 画面；这足以解释本轮验证会闪，但不能追溯认定截图中的 HWND 就是这些窗口。

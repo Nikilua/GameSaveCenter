@@ -1,0 +1,25 @@
+{
+    "sourceSha":  "0feff18501a5ec971e3d7fb2ba212e8d0d28e0ac",
+    "kind":  "independent",
+    "monitorToken":  "d0ffbd14ef78429cb5f9d060653b9a89",
+    "startedUtc":  "2026-11-07T01:58:52.5993605Z",
+    "completedUtc":  "2026-11-07T02:33:48.4902065Z",
+    "runnerCurrentDesktop":  "Default",
+    "inputDesktopAfter":  "Default",
+    "monitorExitCode":  0,
+    "runs":  [
+                 {
+                     "inputAfter":  "Default",
+                     "exitCode":  0,
+                     "completedUtc":  "2026-11-07T02:33:48.2860464Z",
+                     "startedUtc":  "2026-11-07T01:58:53.9403051Z",
+                     "kind":  "independent",
+                     "desktop":  "GscR5_independent_3c2f90c3"
+                 }
+             ],
+    "inputShowEventCount":  0,
+    "events":  [
+
+               ],
+    "trackedTreeClean":  true
+}

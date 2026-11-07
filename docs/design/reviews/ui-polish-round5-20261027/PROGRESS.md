@@ -1,3 +1,13 @@
+## 2026-11-07 U09-05 隔离 WPF 测试窗口修复：0feff185
+
+用户再次报告黑窗后，确认此前 WPF 测试虽设为 1% 透明，仍在 `WinSta0\Default` 创建窗口。提交 `0feff18501a5ec971e3d7fb2ba212e8d0d28e0ac` 将交互式本机 WPF 测试类逐类放到 WinSta0 非输入桌面；子进程检查 station、desktop 和 input desktop。测试断言与 skip 未改。非交互 CI 保留完整测试路径。
+
+精确源码 SDK 8.0.423 / Release 的独立 `scripts/build.cmd` 完整链 exit 0：160 TRX、2030 项、1962 通过、0 失败、68 个既有 skip；157 个 WPF 类均隔离运行。Default 桌面监测全程 0 次窗口显示事件。Q10 动效定向回归在 `WinSta0` 私有桌面 1/1、0 skip，输入桌面前后均为 Default。PowerShell 语法、Source Validation、`git diff --check` 和 WPF 静态审查 exit 0（26 XAML、0 errors、218 warnings、1440 info）；本提交不改生产 XAML/资源。证据见 [U09-05 隐藏 WPF 测试复核](evidence/U09-05-hidden-wpf-20261107/README.md)。
+
+中文根入口完整编译、测试、Worker 发布、打包、安装身份核验及 Playnite 启动均完成。摘要为 2030 项、1972 通过、0 失败、58 skip，157 个 WPF 类隔离；ZIP/PEXT 各 45,739,058 bytes、SHA-256 `CA3374AE521C6E4D4047F8B73D52E7469DADB0CACFDA5144CBFE487BB0617A94`，安装六个程序集含精确源码身份。入口日志到达 `[OK]` 成功分支，其源码随后 `exit /b 0`，中文包装器原样转交 errorlevel；但外层 PowerShell 日志捕获因 Playnite/Worker 继承重定向句柄，没有生成自己的最终退出记录，故不把该包装器观察记作已完成。官方 `--shutdown` 等待超时，未强制结束进程。Default 桌面监测覆盖构建、测试及启动收尾，0 次窗口显示事件。
+
+精确 SHA GitHub `windows-build.yml` run [#1486](https://github.com/Nikilua/GameSaveCenter/actions/runs/42326547974) completed/success：SDK 8.0.423 job `128263060304` 与 SDK 10.0.401 job `128263060528` 均通过；artifact ID、digest 见上方证据 JSON。required-check/ruleset 读权限此前返回 403，不重复试探，U09-06 仍“远端待验”。用户截图无 HWND/PID，本批受控运行的零事件不能反向识别截图黑窗，也不能证明所有手动启动路径都绝无闪现；因此 U09-05 继续进行中。U09-04、U09-08 继续推进。状态为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验。未做真实存档恢复、媒体删除或云端写入。
+
 ## 2026-11-07 U09-05 用户再次报告黑窗：重新进行中
 
 用户再次提供了构建期间出现黑色窗口的截图。截图中能看到黑色窗口覆盖 Playnite/GameSaveCenter 界面，但没有 HWND、PID 或所属桌面信息，不能确认窗口由 Playnite、WPF 测试宿主或控制台创建。此前 25 ms 轮询只覆盖了特定进程和受控运行；它不能排除短于采样间隔的窗口，也没有识别用户本次截图中的窗口。因此撤回“U09-05 已满足”的当前结论；旧运行数据仍作为历史证据保留，当前状态重新设为“进行中”。

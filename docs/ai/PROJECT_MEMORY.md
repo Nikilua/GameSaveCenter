@@ -1,3 +1,9 @@
+## 2026-11-07 Round5 U09-05 WPF 窗口隔离实施提示
+
+冻结候选 `0feff18501a5ec971e3d7fb2ba212e8d0d28e0ac` 已把交互式本机 WPF 测试类放到 WinSta0 私有非输入桌面；不能再将它们移回 Default，也不要用CodexSandbox desktop验收动画时钟。完整独立 `scripts/build.cmd` 与精确 SHA CI 双 SDK 均通过，Default 桌面事件监测为 0。中文根入口安装/启动到达明确成功分支，但外层 PowerShell 输出捕获被 Playnite/Worker 继承的句柄留住，关闭 `--shutdown` 也超时；没有强杀。复查时保持候选不变，先读Round5最新 PROGRESS 与 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-hidden-wpf-20261107/local-results.json`。截图仍无 HWND/PID，所以不能宣称窗口身份已识别或所有手动启动绝无闪现；U09-05尚未结项。
+
+后续本机 WPF/安装启动验收继续从 WinSta0 非活动桌面运行，并记录输入桌面事件；不要重复用 PowerShell 管道重定向捕获会启动长期 GUI 子进程的根入口输出。若必须重跑，先改临时验收包装器为 CMD 自己重定向到受控日志文件，完成以后再冻结并核对所有证据；不得借此改变正式入口、测试断言或业务行为。Playnite 的 `--shutdown` 在相同状态下已超时，未核实新关闭机制前不重复启动同一宿主，也不强杀。真实页面/UIA、实体键盘/IME、物理 DPI 与帧呈现边界仍按 PROGRESS 保留。
+
 ## 2026-11-07 Round5 非活动桌面窗口验收结论
 
 U09-05 精确提交 `76e5670f02a3bf85432c312a27d1ae51fc379678` 已完成中文真实根入口与独立 `scripts/build.cmd` 的 SDK8.0.423 完整验收，精确 CI #1481 双 SDK通过。`Default` 桌面以25 ms间隔监测完整链与独立构建，无筛选目标进程窗口出现/消失事件；真实可见Playnite HWND在线程桌面 `GscR5Elev_e8bce0044f4a4413bbcb73faa69d1c31`。轮询无法排除短于25 ms的窗口或回溯识别旧截图HWND，因此仅对该次运行作“不曾观察到目标窗口进入Default”的结论，不承诺所有手动启动路径绝对无闪。
