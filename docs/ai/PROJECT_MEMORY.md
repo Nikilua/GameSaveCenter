@@ -1875,3 +1875,7 @@ Codex 构建执行进程可能位于 `CodexSandboxWindowStation`：其中名为 
 全量 WPF 构建应放在 **WinSta0 下的非活动 desktop**：CodexSandbox window station 的同名 Default 会使 R08/Q10 动画时钟失败，真实 `WinSta0\Default` 会让 WPF 测试宿主窗口出现在用户桌面。使用同一 WinSta0 新建非活动 desktop、确认 input desktop 始终为 Default，并保留适用 R08/Q10 完整测试；仅在 Default 启动事件监视器。测试窗口仍使用现有无激活/无任务栏/1% opacity 夹具，不改断言或 skip。只有通过真实 desktop 与测试结果复核后才记录其输入桌面未闪屏。
 
 本机 Q10 WPF 动效用例曾运行在 WinSta0 输入桌面，WinEvent 捕获 8 个无标题 testhost HWND show 事件，夹具 Opacity=0.01。这是代理验证会在用户桌面闪现暗色 UI 测试窗的已证实来源；用户截图无 HWND/PID，不能认定就是该窗口。后续本机完整 WPF 构建、Render QA 与 Playnite 启动都放在 WinSta0 非活动 desktop，并监测输入 Default；不要再通过输入桌面跑聚焦 WPF 用例。CodexSandboxWindowStation 的同名 Default/非活动桌面会冻结动画，不能拿来替代。
+
+### 2026-11-07 R23 生产标签动画 CI 复核
+
+SDK10 隔离 WPF 桌面没有在 250ms 内稳定产生 Storyboard 进入/退出的中间帧；不要把特定合成帧时序当行为断言，也不要删减真实状态断言来追求绿色。R23 测试现核对生产模板实际 Storyboard 的目标、属性、时长、缓动曲线，并执行两主题选择最终态和减弱动效检查。SDK8.0.423 私有桌面目标用例 3 次均 1/1。该测试稳定性与“不闪屏”是两件事：用户黑窗截图仍无 HWND/PID/桌面身份，U09-05 继续进行中，不能将隔离测试或前台快照写成已定位/已修复。

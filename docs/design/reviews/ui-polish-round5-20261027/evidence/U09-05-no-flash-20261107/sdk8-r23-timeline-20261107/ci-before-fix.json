@@ -1,0 +1,47 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "run": {
+    "number": 1487,
+    "id": 42335119569,
+    "headSha": "e24a37faec8c2c971cb0d68132f7a2605a4048f4",
+    "conclusion": "failure"
+  },
+  "jobs": [
+    {
+      "name": "编译、测试与打包",
+      "id": 128290196828,
+      "sdk": "8.0.423",
+      "conclusion": "success"
+    },
+    {
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "id": 128290197024,
+      "sdk": "10.0.401",
+      "conclusion": "failure",
+      "failedStep": "隔离工作树并运行 Release 编译与测试",
+      "failedTest": "R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes",
+      "reason": "测试要求在250ms内同时采到动画中间帧；隔离WPF桌面的合成时钟只给出端点采样。"
+    }
+  ],
+  "diagnosticsArtifact": {
+    "id": 13559861369,
+    "name": "GameSaveCenter-sdk10-build-diagnostics",
+    "sizeBytes": 1058146,
+    "sha256": "466aeb86191511a48202a6bc1864996e811f650c3781df06fc1438ff0ce982d6"
+  },
+  "previewArtifact": {
+    "id": 13560659889,
+    "name": "GameSaveCenter-windows-preview",
+    "sizeBytes": 90793736,
+    "sha256": "62f9ef7d592585b2183f484e715963820296c577bafa0a84fd44e84f9dc8e839"
+  },
+  "baselineDiagnosticsArtifact": {
+    "id": 13561177295,
+    "name": "GameSaveCenter-build-diagnostics",
+    "sizeBytes": 2523599,
+    "sha256": "c96534ed680437bafc63c58fab60c654fd005c4fdacaa6ccc95bab33463d1a0a"
+  },
+  "rawLogsRead": true,
+  "remediation": "Replace frame-time sampling with production Storyboard target/duration/easing and final selected/reduced-motion assertions; no production UI, duration, business logic, or skip policy changed."
+}

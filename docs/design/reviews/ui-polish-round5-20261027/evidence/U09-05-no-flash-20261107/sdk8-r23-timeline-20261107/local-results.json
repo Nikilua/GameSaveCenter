@@ -1,0 +1,56 @@
+{
+  "sourceCommitBase": "e24a37faec8c2c971cb0d68132f7a2605a4048f4",
+  "testSourceBlob": "09d619c4d2885c4796e86ec95e468fa18ad5bb9d",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "testAssemblySha256": "118AEDA80B5D403000ACF957C90BC78A3027272A2A4B64EBDB5A779B6A731E58",
+  "test": "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorUsesProductionTimelinesAndHonorsReducedMotionInBothThemes",
+  "totalRuns": 3,
+  "passedRuns": 3,
+  "failedRuns": 0,
+  "iterations": [
+    {
+      "iteration": 1,
+      "exitCode": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "windowStation": "WinSta0",
+      "testDesktop": "GscR23Rep_249d5e729f4144bdb03fa9a2053408aa",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "trx": "tests/R23ProductionResourceStateBehaviorTests-01.trx",
+      "trxSha256": "DBA3CF5EBD01F7426472D576B36C657955A523F682273B1A6BAC737EDAF1D3CD",
+      "originalTrxSha256": "4896C56D637252CD5984A7A663EBCC2B15B85416CB21BBF3CAAD48E8BC995F83"
+    },
+    {
+      "iteration": 2,
+      "exitCode": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "windowStation": "WinSta0",
+      "testDesktop": "GscR23Rep_8b75526754f24c4683564022ba4e09d9",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "trx": "tests/R23ProductionResourceStateBehaviorTests-02.trx",
+      "trxSha256": "8E97A3B7700ACCA87672EC26C0477D175818D0BB0B6C021320CDEC77ED8A237E",
+      "originalTrxSha256": "456FC4835AF5DE523ECD2C58E39CCFCBB88E634E73F9DE5F3BF704259AA4D448"
+    },
+    {
+      "iteration": 3,
+      "exitCode": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "windowStation": "WinSta0",
+      "testDesktop": "GscR23Rep_400fbac86b0944d5b931d328b5d104aa",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "trx": "tests/R23ProductionResourceStateBehaviorTests-03.trx",
+      "trxSha256": "41A77EF18899ED3B40669EA0819BC740E9980F1DC91B91ECC48560E49E24DE85",
+      "originalTrxSha256": "BEC97E8D689EA22FDC81A1B3E97314E778EF2B01B7654DF1EE02092FC5A72436"
+    }
+  ],
+  "boundary": "WPF tests ran on WinSta0 private non-input desktops; input desktop remained Default. This verifies test isolation, not the user-reported black window or every manual launcher path."
+}

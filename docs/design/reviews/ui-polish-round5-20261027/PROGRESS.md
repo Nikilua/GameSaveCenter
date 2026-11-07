@@ -679,3 +679,14 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U09-06 | GitHub双SDK门禁 | 远端待验 | 精确 SHA `62a363d3` 的 CI #1483 completed/success；SDK8.0.423 baseline job `128148639481` 与 SDK10.0.401 job `128148639830` 均完成，包和诊断 artifact 见 [CI #1483](evidence/U09-05-no-flash-20261107/ci-run-1483.json) | [CI #1481](evidence/U09-05-no-flash-20261107/ci-run-1481.json) · [CI #1482 失败复核](evidence/U09-05-no-flash-20261107/ci-run-1482.json) · [CI #1483](evidence/U09-05-no-flash-20261107/ci-run-1483.json) | 分支必需检查及规则集此前返回 403；不据 workflow job 结果推断保护规则已核验，需维护者只读确认 |
 | U09-07 | 产物清理与可追溯 | 已满足 | 当前源码/构建/CI证据已脱敏归档；仅删除两组本阶段`.tmp`输出，保留最新构建、诊断、包、安装报告、文档证据；旧9份失败TRX脱敏归档。D盘两批实测释放191,361,024与115,417,088 bytes | [清单、路径检查、前后空间、保留SDK理由](evidence/U09-05-final-5f0eb620/cleanup.json)；[历史失败TRX](evidence/U09-01-03/historical-failed-local-trx-manifest.json) · [本批清理记录](evidence/U09-05-f0d2b8f1/cleanup-obj.json) | 保留`.tmp/round5-u09-01-03/dotnet-sdk8`与bootstrap脚本：系统全局仅SDK9.0.302，后续本地运行需仓库基线SDK8.0.423；未删用户/其他任务TRX/TestResults |
 | U09-08 | 整轮交付审查 | 进行中 | 计划与状态表的 80 个任务 ID 逐一核对，无缺项或重复。U09-05 因用户新反馈重新进行中；当前计数为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验 | [焦点回归 TRX](evidence/U05-02-reduced-motion-focus/after.trx) · [CI #1483](evidence/U09-05-no-flash-20261107/ci-run-1483.json) · [本次黑窗与桌面复核](evidence/U09-05-no-flash-20261107/followup-window-20261107/README.md) | U09-04 动画性能结论、U09-05黑窗与完整链验收、真实插件页/实体输入/外部 UIA/物理 DPI 与分支必需检查仍待验 |
+## 2026-11-07 Round5 U09-05 用户再次报告闪屏与 R23 SDK10 用例修正
+
+用户再次表示黑窗仍然出现，因此 U09-05 继续“进行中”。当前截图文件记录时间为 2026-11-06 13:59:27，没有 HWND、PID 或所属桌面；它早于 11/7 的 WPF 测试隔离提交，不能用来判断该提交后的窗口来源，也不能据它宣称问题已解决。
+
+精确 pre-fix 提交 `e24a37faec8c2c971cb0d68132f7a2605a4048f4` 的 Windows CI run [#1487](https://github.com/Nikilua/GameSaveCenter/actions/runs/42335119569) 中，SDK 8 job `128290196828` 成功，SDK 10.0.401 job `128290197024` 失败于 `WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes`：隔离桌面在 250ms 窗口内未同时给出进入/退出的中间帧。已读取原始 SDK10 日志；失败诊断 artifact `13559861369`，1,058,146 bytes，SHA-256 `466aeb86191511a48202a6bc1864996e811f650c3781df06fc1438ff0ce982d6`。其它 artifact 与 job 身份见 [pre-fix CI 记录](evidence/U09-05-no-flash-20261107/sdk8-r23-timeline-20261107/ci-before-fix.json)。
+
+测试现在从生产 `GscRedesignWorkspaceTabItem` 读取 Storyboard，检查目标、Opacity 属性、时长、缓动中点，以及浅/深主题切换最终态和减弱动效状态；不再依赖隔离桌面合成器在固定 250ms 内提供帧样本。未改生产 XAML、动效时长、业务代码、断言 skip。SDK 8.0.423 / Release 当前精确程序集 `118AEDA80B5D403000ACF957C90BC78A3027272A2A4B64EBDB5A779B6A731E58` 下，定向用例在 3 个独立 WinSta0 私有非输入桌面各 1/1 通过、0 失败、0 skip；输入桌面前后均为 `Default`。编译、Source Validation 与 `git diff --check` 通过。脱敏 TRX、SHA 与运行身份见 [R23 定向证据](evidence/U09-05-no-flash-20261107/sdk8-r23-timeline-20261107/README.md)。
+
+这些结果只证明该测试不再依赖不稳定的合成帧采样，不证明用户所见黑窗已定位或消失；本批也没有真实 Playnite 页面视觉或手动 Explorer 启动验收。当前工作树的 `scripts/build.cmd` 完整构建测试和中文入口完整安装启动/身份核验仍待冻结提交后运行；上一轮 Playnite/Worker 仍有进程且官方关闭等待超时，未强杀或重复启动。提交后的双 SDK workflow、run/job/artifact 身份待查。U09-05 继续进行中，整轮计数仍为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验。未操作盘符或映射，也未执行真实存档恢复、媒体删除或云端写入。
+
+## 2026-11-07 U09-05 隔离 WPF 测试窗口修复：0feff185

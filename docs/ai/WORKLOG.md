@@ -13159,3 +13159,11 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 - 中文根入口完成编译、160 TRX、发布、打包、安装身份核验与 Playnite 启动，诊断 passed：2030 项/1972 通过/0失败/58 skip。ZIP/PEXT 哈希均为 `CA3374AE521C6E4D4047F8B73D52E7469DADB0CACFDA5144CBFE487BB0617A94`；包大小45,739,058 bytes，六个安装程序集含候选源码SHA。成功日志到达 `[OK]`，脚本该分支明确 `exit /b 0` 且中文包装器转交errorlevel；外层PowerShell重定向没有写出post-command退出记录，因Playnite/Worker保留日志句柄。官方 `--shutdown` 超时，未强杀。Default 窗口监测至启动收尾事件为0。包装器退出状态仍未直接观察。
 - GitHub 精确 SHA run #1486 / 42326547974 completed/success，SDK8 job128263060304、SDK10.0.401 job128263060528通过；preview、两套diagnostics artifact与digest见 `evidence/U09-05-hidden-wpf-20261107/local-results.json`。 required-check/ruleset接口先前403，不重复请求。截图没有HWND/PID，受控本轮0事件不识别历史截图来源，不等于所有手动运行路径均绝无闪。U09-05保持进行中；U09-04/U09-08继续，U09-06远端待验。状态5/71/3/1。真实恢复、媒体删除及云端写入均未执行。
 - 新增证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-hidden-wpf-20261107/`。当前 Playnite/Worker 和隐藏桌面根链辅助进程仍活跃，相关日志、包、诊断和监测结果保持不删；本阶段暂不清理任何未知或仍被进程引用的输出。
+
+## 2026-11-07 U09-05 闪屏反馈与 SDK10 R23 动画测试修正
+
+用户再次指出黑窗仍出现；该截图文件时间为 2026-11-06 13:59:27，未包含 HWND、PID 或桌面身份，早于本轮隔离测试提交。U09-05 不结项，也不以隐藏 WPF 测试窗或一次桌面快照声称彻底解决。
+
+读取 pre-fix SHA `e24a37faec8c2c971cb0d68132f7a2605a4048f4` 的 GitHub run #1487 原始 SDK10 日志：SDK8 job `128290196828` 成功；SDK10 job `128290197024` 在 R23 生产标签动画行为类失败，因为非输入桌面的合成帧在 250ms 内没有同时提供进入/退出中间值。失败 artifact `13559861369` / SHA-256 `466aeb86191511a48202a6bc1864996e811f650c3781df06fc1438ff0ce982d6`。修正只改行为测试：读取真实生产模板 Storyboard 并核对目标、属性、时长和缓动，同时验证两主题选择最终态及减弱动效；未更改生产 XAML、业务代码、动效时长、断言 skip 或 SDK 基线。
+
+SDK8.0.423 / Release 解决方案编译 exit 0，0 warning/0 error；目标行为测试在 WinSta0 三个独立非输入桌面各 1/1 通过，合计 3/3、0失败、0 skip，输入桌面前后 `Default`。编译器程序集 SHA-256 `118AEDA80B5D403000ACF957C90BC78A3027272A2A4B64EBDB5A779B6A731E58`。Source Validation 与 `git diff --check` 通过。脱敏 TRX、源码 blob、程序集和运行身份见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/sdk8-r23-timeline-20261107/`。该测试只覆盖行为与窗口隔离，不定位用户所见黑窗。当前源码仍待提交冻结；独立 `scripts/build.cmd`、中文完整构建安装启动链及新 SHA 双 SDK CI 尚未完成。上一轮 Playnite/Worker 进程仍活跃且官方关闭等待超时，未强杀或重复启动。未操作盘符、存档、媒体删除或云端写入。

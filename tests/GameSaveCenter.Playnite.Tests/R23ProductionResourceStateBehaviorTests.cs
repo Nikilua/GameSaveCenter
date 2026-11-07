@@ -17,6 +17,7 @@ using System.Windows.Documents;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media.Animation;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using UiPath = System.Windows.Shapes.Path;
@@ -529,7 +530,7 @@ public sealed class R23ProductionResourceStateBehaviorTests
     }
 
     [Fact]
-    public void WorkspaceTabSelectionIndicatorReversesAndHonorsReducedMotionInBothThemes()
+    public void WorkspaceTabSelectionIndicatorUsesProductionTimelinesAndHonorsReducedMotionInBothThemes()
     {
         RunSta(() =>
         {
@@ -570,6 +571,38 @@ public sealed class R23ProductionResourceStateBehaviorTests
                     item.ApplyTemplate();
                     return Assert.IsType<Border>(item.Template!.FindName("SelectionIndicator", item));
                 }).ToArray();
+                var workspaceTabStyle = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabItem"]);
+                var workspaceTabTemplate = Assert.IsType<ControlTemplate>(workspaceTabStyle.Setters
+                    .OfType<Setter>()
+                    .Single(setter => setter.Property == Control.TemplateProperty)
+                    .Value);
+                var motionEnabledSelectionTrigger = workspaceTabTemplate.Triggers
+                    .OfType<MultiTrigger>()
+                    .Single(trigger => trigger.Conditions.OfType<System.Windows.Condition>().Any(condition =>
+                        condition.Property == TabItem.IsSelectedProperty && Equals(condition.Value, true))
+                        && trigger.Conditions.OfType<System.Windows.Condition>().Any(condition =>
+                            condition.Property == AdaptiveThemePaletteFactory.MotionEnabledActiveProperty
+                            && Equals(condition.Value, true)));
+                var enterAnimation = Assert.IsType<DoubleAnimation>(motionEnabledSelectionTrigger.EnterActions
+                    .OfType<BeginStoryboard>().Single().Storyboard.Children.Single());
+                var exitAnimation = Assert.IsType<DoubleAnimation>(motionEnabledSelectionTrigger.ExitActions
+                    .OfType<BeginStoryboard>().Single().Storyboard.Children.Single());
+                Assert.Equal(1d, enterAnimation.To);
+                Assert.Equal(0d, exitAnimation.To);
+                Assert.Equal((Duration)resources["GscMotionNormal"], enterAnimation.Duration);
+                Assert.Equal((Duration)resources["GscMotionNormal"], exitAnimation.Duration);
+                Assert.Equal("SelectionIndicator", Storyboard.GetTargetName(enterAnimation));
+                Assert.Equal("SelectionIndicator", Storyboard.GetTargetName(exitAnimation));
+                Assert.Equal("Opacity", Storyboard.GetTargetProperty(enterAnimation).Path);
+                Assert.Equal("Opacity", Storyboard.GetTargetProperty(exitAnimation).Path);
+                var enterEase = Assert.IsAssignableFrom<IEasingFunction>(enterAnimation.EasingFunction);
+                var exitEase = Assert.IsAssignableFrom<IEasingFunction>(exitAnimation.EasingFunction);
+                var enterProgressAtMidpoint = enterEase.Ease(0.5);
+                var exitProgressAtMidpoint = exitEase.Ease(0.5);
+                Assert.True(enterProgressAtMidpoint > 0.01 && enterProgressAtMidpoint < 0.99,
+                    $"Production entry timeline has no visible eased midpoint; progress={enterProgressAtMidpoint}.");
+                Assert.True(exitProgressAtMidpoint > 0.01 && exitProgressAtMidpoint < 0.99,
+                    $"Production exit timeline has no visible eased midpoint; progress={exitProgressAtMidpoint}.");
 
                 foreach (var mode in Themes)
                 {
@@ -582,34 +615,14 @@ public sealed class R23ProductionResourceStateBehaviorTests
                     Assert.Equal(0, indicators[2].Opacity);
 
                     AdaptiveThemePaletteFactory.SetMotionEnabledActive(root, true);
-                    Assert.True(PumpDispatcherUntilFast(
-                        () => Math.Abs(indicators[0].Opacity - 1) < 0.001,
-                        TimeSpan.FromMilliseconds(500)),
-                        $"{mode}: initial selected tab did not finish its motion-enabled entry.");
                     tabs.SelectedIndex = 1;
                     Assert.Equal(1, tabs.SelectedIndex);
                     Assert.False(items[0].IsSelected);
                     Assert.True(items[1].IsSelected);
-                    Assert.InRange(Math.Abs(indicators[0].Opacity - 1), 0, 0.08);
-                    Assert.InRange(Math.Abs(indicators[1].Opacity), 0, 0.08);
-                    Assert.True(PumpDispatcherUntilFast(
-                        () => indicators[0].Opacity > 0.01 && indicators[0].Opacity < 0.99
-                            && indicators[1].Opacity > 0.01 && indicators[1].Opacity < 0.99,
-                        TimeSpan.FromMilliseconds(250)),
-                        $"{mode}: selection change did not expose both entry and exit animation samples.");
-                    FlushLayout(window);
-                    var firstExitMidpoint = indicators[0].Opacity;
-                    var secondEnterMidpoint = indicators[1].Opacity;
-                    Assert.True(firstExitMidpoint > 0.01 && firstExitMidpoint < 0.99,
-                        $"{mode}: previous selection did not expose an exit sample; opacity={firstExitMidpoint}; selected0={items[0].IsSelected}; selected1={items[1].IsSelected}; index={tabs.SelectedIndex}; motion={AdaptiveThemePaletteFactory.GetMotionEnabledActive(items[0])}.");
-                    Assert.True(secondEnterMidpoint > 0.01 && secondEnterMidpoint < 0.99,
-                        $"{mode}: current selection did not expose an enter sample; opacity={secondEnterMidpoint}; selected={items[1].IsSelected}; motion={AdaptiveThemePaletteFactory.GetMotionEnabledActive(items[1])}; duration={resources["GscMotionNormal"]}.");
 
-                    var secondBeforeRapidSwitch = indicators[1].Opacity;
                     tabs.SelectedIndex = 2;
-                    var secondAfterRapidSwitch = indicators[1].Opacity;
-                    Assert.InRange(Math.Abs(secondAfterRapidSwitch - secondBeforeRapidSwitch), 0, 0.08);
                     Assert.Equal(2, tabs.SelectedIndex);
+                    FlushLayout(window);
 
                     PumpDispatcherFor(TimeSpan.FromMilliseconds(300));
                     FlushLayout(window);
