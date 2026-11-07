@@ -13167,3 +13167,10 @@ GitHub已确认commit，但当前combined-status返回空、可用workflow-run�
 读取 pre-fix SHA `e24a37faec8c2c971cb0d68132f7a2605a4048f4` 的 GitHub run #1487 原始 SDK10 日志：SDK8 job `128290196828` 成功；SDK10 job `128290197024` 在 R23 生产标签动画行为类失败，因为非输入桌面的合成帧在 250ms 内没有同时提供进入/退出中间值。失败 artifact `13559861369` / SHA-256 `466aeb86191511a48202a6bc1864996e811f650c3781df06fc1438ff0ce982d6`。修正只改行为测试：读取真实生产模板 Storyboard 并核对目标、属性、时长和缓动，同时验证两主题选择最终态及减弱动效；未更改生产 XAML、业务代码、动效时长、断言 skip 或 SDK 基线。
 
 SDK8.0.423 / Release 解决方案编译 exit 0，0 warning/0 error；目标行为测试在 WinSta0 三个独立非输入桌面各 1/1 通过，合计 3/3、0失败、0 skip，输入桌面前后 `Default`。编译器程序集 SHA-256 `118AEDA80B5D403000ACF957C90BC78A3027272A2A4B64EBDB5A779B6A731E58`。Source Validation 与 `git diff --check` 通过。脱敏 TRX、源码 blob、程序集和运行身份见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/sdk8-r23-timeline-20261107/`。该测试只覆盖行为与窗口隔离，不定位用户所见黑窗。当前源码仍待提交冻结；独立 `scripts/build.cmd`、中文完整构建安装启动链及新 SHA 双 SDK CI 尚未完成。上一轮 Playnite/Worker 进程仍活跃且官方关闭等待超时，未强杀或重复启动。未操作盘符、存档、媒体删除或云端写入。
+## 2026-11-07 Round5 U09-05 用户继续报告黑窗；稳定 CI #1488 动画等待
+
+用户明确表示仍然闪屏。新附图文件 LastWriteTime 为 2026-11-06 13:59:27，未带 HWND/PID/desktop 身份；只读枚举当前 WinSta0\Default 时没有发现可见 GameSaveCenter/Playnite 窗口，但该单次快照不覆盖闪现，故 U09-05 继续进行中。此前输入桌面上曾捕获的 8 次 testhost WPF show 事件是确定存在的代理验证干扰源，不能据此归因本次截图。
+
+处理前工作树只有 `CompactWorkspaceTableViewportBehaviorTests.cs` 源码改动；SDK8.0.423 Release 通过仓库 `scripts/build.cmd -SkipTests -OutputRoot .tmp\r5-cw-settled-final\output` 编译，0 warning/0 error、XAML26/26。`CompactTaskInspectorReversesItsTransitionWithoutMovingTheQueueAnchor` 用 WinSta0 三个独立私有非输入桌面各运行一次，共3/3通过、0失败、0 skip，输入桌面均保持Default。Source Validation、WPF静态审查（398 XAML/0 errors/218 warnings/1440 info）和`git diff --check`通过。证据见`docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/sdk8-animation-wait-fix-20261107/`。
+
+当前测试改动仅修复上个 CI #1488 SDK8 的固定等待时序，不改生产UI，也不声称修复黑窗。下一步提交并推送候选，查新SHA SDK8/SDK10 jobs；随后在冻结源上运行独立` scripts/build.cmd`全测与合规中文根链。Playnite/Worker宿主状态未处理，不启动重复实例、不强杀；盘符与映射未操作。

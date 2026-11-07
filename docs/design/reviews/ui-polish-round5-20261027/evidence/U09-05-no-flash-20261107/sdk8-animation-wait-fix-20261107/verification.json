@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "purpose": "CI SDK8 animation assertion timing stabilization; test-only, not a black-window fix",
+  "sourceParentCommit": "2699e3ec6e3020ba31129cc0f816287d27988bf8",
+  "changedSourceFile": "tests/GameSaveCenter.Playnite.Tests/CompactWorkspaceTableViewportBehaviorTests.cs",
+  "changedSourceSha256": "CA0025FD6D45963DF576A6019E020E9C679ACCAE29390271CAC827962F4FCC40",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "compile": {
+    "command": ".\\scripts\\build.cmd -SkipTests -OutputRoot .tmp\\r5-cw-settled-final\\output",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "xamlStructuralFilesPassed": 26,
+    "diagnosticRun": "artifacts/build-diagnostics/20261107T064230190Z-6c883146",
+    "testAssemblySha256": "658E59D6903E570914DCBD22D683AD9D3C83FA3CEB5D5CECCB16A92F0AC401C0"
+  },
+  "focusedBehavior": {
+    "filter": "FullyQualifiedName~CompactTaskInspectorReversesItsTransitionWithoutMovingTheQueueAnchor",
+    "repetitions": 3,
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "execution": "scripts/windows-desktop-process.ps1 + scripts/run-playnite-wpf-test-child.ps1; private WinSta0 desktops, not the input desktop",
+    "results": [
+      {
+        "file": "tests/compact-inspector-run-1.trx",
+        "sha256": "0529E4E4E21936FFD442E8372941BAF8862915A7FDFD1079EDAA0EC6AE05B502",
+        "sourceSha256": "DF4933B799EAA076F43CB268DCBDD218CB5BFA720B05DFDC423CF6D2CB3CA465",
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "notExecuted": 0,
+        "desktop": "GscWpfTest_c7dcb2172889432a8bcc58c3afc9d0b6",
+        "testProcessId": 32108,
+        "inputDesktopBefore": "Default",
+        "inputDesktopAfter": "Default"
+      },
+      {
+        "file": "tests/compact-inspector-run-2.trx",
+        "sha256": "D54FDA2183E83E9A02860597428B96420BC438439E8F6BB952116136C030908A",
+        "sourceSha256": "F01D97F27F248408D97A201B031A7B76009F563F4B6E6DB849602FE1A334B351",
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "notExecuted": 0,
+        "desktop": "GscWpfTest_ac78b63bd4394b439c43b7b006482e4d",
+        "testProcessId": 31964,
+        "inputDesktopBefore": "Default",
+        "inputDesktopAfter": "Default"
+      },
+      {
+        "file": "tests/compact-inspector-run-3.trx",
+        "sha256": "56790BCC945414CEF7621D4B8F0A13FA336D22D4953E95EB6687B3810A981965",
+        "sourceSha256": "FBBF8BA6A9FD5E7F4C7DA5E92B5B997C6DC0668B8F51CA26C1771A4CFAFB0AA6",
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "notExecuted": 0,
+        "desktop": "GscWpfTest_f34c660bf8cc43f090b04ac5117c2790",
+        "testProcessId": 34600,
+        "inputDesktopBefore": "Default",
+        "inputDesktopAfter": "Default"
+      }
+    ]
+  },
+  "checks": {
+    "sourceValidation": "passed",
+    "wpfStaticReview": "passed: 398 XAML, 0 errors, 218 warnings, 1440 info",
+    "diffCheck": "passed",
+    "renderQa": "not applicable: no production XAML/resource changed"
+  },
+  "userBlackWindow": {
+    "status": "unresolved",
+    "screenshotLastWriteLocal": "2026-11-06T13:59:27",
+    "screenshotContainsWindowIdentity": false,
+    "sampledDefaultDesktopAfterTestsHadMatchingVisibleGameSaveCenterOrPlayniteWindow": false,
+    "sampleWasDuringBuild": false,
+    "conclusion": "No root cause or resolution claimed; post-test snapshot is not a continuous WinEvent trace."
+  },
+  "fullIndependentBuildTestsRootInstallStartupAndNewShaCi": "pending",
+  "checkedAtUtc": "2026-11-07T06:56:46.2840845Z"
+}

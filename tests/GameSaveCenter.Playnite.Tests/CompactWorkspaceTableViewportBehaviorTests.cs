@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -309,7 +310,9 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                 if (!ReferenceEquals(selectedAnchor, grid.SelectedItem))
                     throw new InvalidOperationException(
                         $"Selection moved during the open layout: selectedIndex={Array.IndexOf(rows, grid.SelectedItem)}; details={detailsViewer.Visibility}; open={GetField<bool>(type, view, "taskInspectorOpen")}.");
-                PumpDispatcherFor(TimeSpan.FromMilliseconds(180));
+                PumpDispatcherUntil(
+                    () => frame.Opacity == 1 && !DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated,
+                    "opening the compact task inspector");
                 FlushWindowLayout(window);
                 Assert.Equal(1, frame.Opacity);
                 Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
@@ -320,6 +323,8 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                 if (!isCompact || grid.SelectedItem == null)
                     throw new InvalidOperationException(
                         $"Close preconditions changed: compact={isCompact}; selected={grid.SelectedItem != null}; workspaceWidth={layout.ActualWidth:0.##}; surfaceWidth={GetField<FrameworkElement>(type, view, "TaskPageScrollSurface").ActualWidth:0.##}.");
+                // Keep the exit in flight while the test verifies its intermediate focus/layout state.
+                view.Resources["GscMotionFast"] = new Duration(TimeSpan.FromSeconds(1));
                 InvokeTaskDetailsClick(view, closeButton);
                 Assert.True(GetField<bool>(type, view, "taskInspectorClosing"));
                 FlushWindowLayout(window);
@@ -333,18 +338,29 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
                 Assert.Same(openButton, Keyboard.FocusedElement);
 
                 // Reopen during the exit. The newer target must cancel the pending collapse.
+                PumpDispatcherUntil(
+                    () => frame.Opacity < 0.95 &&
+                        DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated,
+                    "the compact task inspector exit to advance before reversal");
+                Assert.True(GetField<bool>(type, view, "taskInspectorClosing"));
                 InvokeTaskDetailsClick(view, openButton);
                 Assert.Equal(Visibility.Visible, frame.Visibility);
                 Assert.True(frame.IsHitTestVisible);
                 Assert.Same(detailsViewer, Keyboard.FocusedElement);
-                PumpDispatcherFor(TimeSpan.FromMilliseconds(180));
+                PumpDispatcherUntil(
+                    () => frame.Visibility == Visibility.Visible && frame.Opacity == 1 &&
+                        !DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated,
+                    "reopening the compact task inspector");
                 FlushWindowLayout(window);
                 Assert.Equal(Visibility.Visible, frame.Visibility);
                 Assert.Equal(1, frame.Opacity);
                 Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
 
                 InvokeTaskDetailsClick(view, closeButton);
-                PumpDispatcherFor(TimeSpan.FromMilliseconds(180));
+                PumpDispatcherUntil(
+                    () => frame.Visibility == Visibility.Collapsed &&
+                        !DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated,
+                    "closing the compact task inspector");
                 FlushWindowLayout(window);
                 Assert.Equal(Visibility.Collapsed, frame.Visibility);
                 Assert.Equal(new GridLength(0), layout.RowDefinitions[4].Height);
@@ -676,6 +692,19 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         };
         timer.Start();
         Dispatcher.PushFrame(frame);
+    }
+
+    private static void PumpDispatcherUntil(Func<bool> condition, string transition)
+    {
+        var timeout = TimeSpan.FromSeconds(5);
+        var stopwatch = Stopwatch.StartNew();
+        while (!condition())
+        {
+            if (stopwatch.Elapsed >= timeout)
+                throw new TimeoutException($"Timed out waiting for {transition} to settle after {timeout.TotalSeconds:0.#} seconds.");
+
+            PumpDispatcherFor(TimeSpan.FromMilliseconds(10));
+        }
     }
 
     [Theory]

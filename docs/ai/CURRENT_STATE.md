@@ -623,3 +623,8 @@ f1a614a8的baseline与SDK10 CI jobs均已success；文档提交de9fe37d两个适
 `GameSaveCenter-Run.cmd` 原成功/失败分支的 `pause` 会留下黑色命令窗口；当前工作树已删除等待，隐藏安装 PowerShell 子进程。`scripts/build.cmd` 也隐藏 PowerShell 子进程并保留 `%*`。source validation、命令行隐藏参数 smoke、未知 build 参数拒绝和 `git diff --check` 通过。精确 SHA `62a363d3` 的 CI #1483 baseline SDK8 与 SDK10 两 job 均 success，见 Round5 `evidence/U09-05-no-flash-20261107/ci-run-1483.json`。
 
 入口修改仍待中文根完整安装启动链、独立 `scripts/build.cmd` 与全程窗口事件复核；U09-05 继续进行中，不声称已确认历史截图 HWND。状态计数仍为 5 项已满足、71 项代码完成待验收、3 项进行中、1 项远端待验。真实恢复、媒体删除和云端写入未执行。
+## 2026-11-07 Round5 当前状态补充：用户黑窗仍未解决
+
+用户再次报告闪屏。所附文件记录时间为 2026-11-06 13:59:27，无 HWND/PID/desktop 身份；本轮单次只读 Default 窗口快照没有匹配的 Playnite/GameSaveCenter 窗口，但不是连续事件监测。U09-05保持进行中，不能因 WPF 测试隔离或受控快照结项。
+
+SDK8.0.423 Release 的 CI #1488 紧凑任务详情动画等待测试改用有界状态轮询并保留全部行为断言；本地目标用例在三个 WinSta0 私有桌面各1/1通过。该改动是测试稳定性修正，与黑窗根因无关。证据与未验边界见[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。
