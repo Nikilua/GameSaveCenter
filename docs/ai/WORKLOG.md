@@ -1,3 +1,12 @@
+## 2026-11-09 U09-05 补齐 Render QA 桌面隔离
+
+精确代码提交 `0258ab3513c7d1bc95b8b622eead42a0fab30a76` 已推送。`scripts/render-qa.ps1` 选项目SDK基线并在WinSta0私有非输入桌面运行RenderHarness，父/子执行前后校验输入桌面；`scripts/validate-source.py` 对隔离逻辑加源码守卫。旧截图SHA与11月6日相同，没有新窗口身份；因此记录修复了一个可控闪窗路径，但不认定历史/当前用户黑窗由它造成。
+
+本地精确提交 `scripts/build.cmd` SDK8.0.423/Release exit0：160 TRX，2030项、1962通过、0失败、68跳过；157个WPF类隔离。
+逐项核验完整构建的157份 WPF 测试桌面结果：157个唯一 WinSta0 私有桌面、Default 输入桌面前后未变、157个退出码为0；清单见 [逐类桌面身份](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-renderqa-private-20261109/wpf-desktop-identities.json)。
+源码层面仍有一个未复现的入口竞态：从 Explorer 直接打开 `.cmd` 时，控制台可能先创建、再由隐藏辅助进程隐藏；这不能认定为用户所见黑窗来源。后续本机验收从非输入桌面发起，并继续保留黑窗未归因状态。Render QA exit0，394 PNG且报告无问题，Default桌面监听在Render QA全程与WPF测试中后段（最早几个类未监听）均为0目标SHOW/HIDE，输入桌面保持Default。`Source Validation`、PowerShell语法、`git diff --check`通过；无生产XAML变更。证据/原始诊断摘要见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-renderqa-private-20261109/`；本阶段仅删除自己预提交副本和监控脚手架，释放D盘8,503,296 bytes，其他任务TRX/TestResults保留。
+
+GitHub windows-build run #1494（commit `0258ab35`）基线 `128830946846` 与SDK10 `128830946943` 仍在运行，等待核对所有步骤/产物。中文完整根入口和安装身份最终复验留待整轮冻结候选，不在每批重复启动宿主。U09-05继续进行中。
 ## 2026-11-07 U09-05 黑窗重复反馈与控制台修订候选
 
 用户再次报告黑窗/闪屏。截图无 HWND/PID，不能认领具体窗口；但我确认之前曾将 Q10 WPF 动效测试直接跑在 WinSta0 输入桌面，WinEvent 记录到 8 个 testhost.net472.exe 无标题 WPF 窗口显示，夹具透明度 1%。这是本轮验证会闪的确定来源，黑屏截图可能与此有关但无法追溯证明。我已停止在输入桌面运行 WPF 测试。
@@ -13220,3 +13229,13 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 复核入口职责：独立 `scripts/build.cmd` 只编译/测试且不启动Playnite；中文完整链会关闭、安装后再启动宿主。因此后续小批编译不调用完整链，只使用 `scripts/build.cmd`/隔离定向行为检查；根入口验收继续放到非输入私有桌面。附件、根结果、脱敏日志、160份TRX哈希/包身份见上述证据目录。
 - e42 精确 SHA 的 windows-build.yml run #1492 / `42485016157` 双SDK适用job completed/success，job/artifact身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-root-e42da2a5-20261108/ci-run-1492.json`；required-checks/ruleset权限此前403，不重复试探，U09-06远端待验。当前仍5项已满足、71项代码完成待验收、3项进行中、1项远端待验。未操作卷、盘符、映射或用户存档。
 - 核对`.tmp/round5-u09-05-root-exit-20261108/`边界和0个重解析点后，仅删除本批一次性关闭脚本（1,124 bytes）；StageStart、两次根结果和首轮失败日志/摘要留存为当前审计。D盘空闲 10,900,512,768→10,900,516,864 bytes，C盘不变；清理清单见证据目录 cleanup.json。未清理其它任务TRX/TestResults/存档/配置或当前包。
+
+## 2026-11-09 Round5 U09-04/U09-05：任务详情探针与再次闪屏反馈
+
+- 用户再次报告仍闪屏。当前附件大小150,954 bytes、SHA-256 `67C3EBB175A78E5969A80137CFECB8C3F982C92507D14CEC868A202243159195`、原始文件时间2026-11-06 13:59:27 +08:00，与11/6附件完全相同且没有HWND/PID/desktop信息。用户反馈作为未解决问题处理；不能用这张旧图定位新窗口。Computer Use helper与node_repl首次初始化都返回 `failed to write kernel assets: 系统找不到指定的路径`；按工具恢复规则停止，没有尝试替代UI自动化。当前exec进程位于CodexSandboxDesktop；私有WPF运行验证input desktop前后为Default。本批没有调用完整安装启动链，也没有重启Playnite。
+- 在RenderHarness添加任务详情面板开合探针及证据身份保护。Assembly metadata `GscBuildCommit`优先于外层Git；对git archive快照，工作树字段输出unknown而不误报外层仓库状态。静态守卫加入 `validate-source.py`。Source检查首次因静态守卫只匹配 `return metadata;`、未识别实际可空流 `return metadata!;`而失败；修正守卫以匹配实际表达式，没有删除检查，完整重跑通过。`git diff --check`通过。
+- U00 `5d0a2448d6315af61571d0d3fbecfd902e5344fc`与生产代码基线`0258ab3513c7d1bc95b8b622eead42a0fab30a76`的RenderHarness Release均使用SDK8.0.423重建，0 warning/0 error。两主题各12个开合对；U00没有面板动画，当前版启用动画，选择行与折叠终态稳定。当前动作到终态p95为light open/close 415.58/250.16ms、dark 348.09/250.56ms；Rendering callback gap p95 124.78–149ms；不能视为DWM帧或真实输入响应，且该探针未测累计分配，U09-04仍进行中。Harness与快照source hash及桌面身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-task-inspector-motion-20261109/`。
+- `scripts/render-qa.ps1`在SDK8.0.423 / Release重跑成功：RenderHarness build 0 warning/0 error、394 PNG、0 PROBLEM/FAILED/ERROR，输出报告SHA `8EEC10D09CEDF51179D40C07A2A5CC354FA01CF636CF5CA9D862117473F69C5B`。WinSta0私有桌面`GscRenderQA_e9c34f8c3c3b4bba95237089c55f09d5`，input Default前后不变。只改Harness/validator/docs，没有生产XAML/资源改动。
+- 精确旧基线0258的GitHub workflow #1494 / run `42513349534`现已completed/success：baseline job `128830946846`、SDK10.0.401 job `128830946943`均completed/success。artifact IDs 13633085156 / 13632631485 / 13631431008及SHA-256存于 `evidence/U09-05-renderqa-private-20261109/ci-run-1494.json`。required-checks/ruleset先前403不重试，U09-06继续“远端待验”；该CI不覆盖当前未提交Harness改动。
+- 磁盘快照：Render QA之前C可用7,125,041,152 bytes、D 9,752,682,496 bytes；之后C 7,123,173,376、D 9,698,320,384 bytes。变化来自构建/394张Render QA输出及系统并发I/O；没有更改卷、映射或盘符。当前stage `.tmp/round5-u09-04-taskmotion-20261109/` 归档/清理清单另附，完整双源快照和重复Render QA输出不长期保留。
+- 清理核对：边界内本阶段目录18,054文件/1,092,348,656 bytes；删除前后D盘空闲9,696,845,824→10,832,625,664 bytes，C盘7,123,787,776→7,123,333,120 bytes（期间C盘有其他I/O变化，不据此推算清理体积）。路径、占用/重解析核查、留存及删除分类见本批 `cleanup.json`。另在2026-11-09 05:51 +08:00做一次只读窗口快照，过滤目标无可见匹配窗口；Playnite/Worker当前进程无主窗口句柄。快照不是瞬态监测，且不归因用户附件；JSON见 `current-window-snapshot.json`。

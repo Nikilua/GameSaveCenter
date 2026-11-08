@@ -1,0 +1,57 @@
+{
+  "run": {
+    "id": 42513349534,
+    "number": 1494,
+    "workflow": ".github/workflows/windows-build.yml",
+    "branch": "main",
+    "headSha": "0258ab3513c7d1bc95b8b622eead42a0fab30a76",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "attempt": 1,
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42513349534",
+    "createdAt": "2026-11-08T19:06:35Z",
+    "updatedAt": "2026-11-08T20:11:58Z"
+  },
+  "jobs": [
+    {
+      "conclusion": "success",
+      "id": 128830946846,
+      "name": "编译、测试与打包",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 128830946943,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed"
+    }
+  ],
+  "artifacts": [
+    {
+      "sha256": "43b60004a0e4fe49defbdac7a7045ae3eecc38f325b2f329289944d041556d3b",
+      "sizeBytes": 2522626,
+      "expired": false,
+      "id": 13633085156,
+      "name": "GameSaveCenter-build-diagnostics"
+    },
+    {
+      "sha256": "fbeb7e614010167f3c5a2a93e2e746c842162e430838e14f3cef3958a7121518",
+      "sizeBytes": 90793478,
+      "expired": false,
+      "id": 13632631485,
+      "name": "GameSaveCenter-windows-preview"
+    },
+    {
+      "sha256": "21e1768f760d993cf58dd0f1f58270dfe0d393bd480d4256bbe8c0265bc6e38c",
+      "sizeBytes": 1276746,
+      "expired": false,
+      "id": 13631431008,
+      "name": "GameSaveCenter-sdk10-build-diagnostics"
+    }
+  ],
+  "requiredChecks": {
+    "conclusion": "远端待验",
+    "note": "此前规则集/required-checks读取返回403，不重复请求；成功的workflow jobs不替代保护规则列表核验。"
+  }
+}

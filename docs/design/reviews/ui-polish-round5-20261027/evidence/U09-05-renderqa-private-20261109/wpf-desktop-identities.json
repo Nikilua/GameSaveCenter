@@ -1,0 +1,1273 @@
+{
+  "sourceCommit": "0258ab3513c7d1bc95b8b622eead42a0fab30a76",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "sourceDiagnostics": ".tmp/round5-renderqa-private-20261109/build-diagnostics-0258ab35/20261108T182144753Z-1fda5f14/tests",
+  "classRecords": 157,
+  "uniquePrivateDesktops": 157,
+  "windowStation": "WinSta0",
+  "desktopNamePrefix": "GscWpfTest_",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "successfulExitRecords": 157,
+  "invalidRecords": 0,
+  "classes": [
+    {
+      "testClass": "AsyncThumbnailImageTests",
+      "runnerDesktop": "GscWpfTest_4caa601171714604a6cec342c93d402d",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "AsyncThumbnailLoaderTests",
+      "runnerDesktop": "GscWpfTest_2e681263251949e8afa0928732b4db54",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "CloudTransferSummaryProductionBehaviorTests",
+      "runnerDesktop": "GscWpfTest_a2bd9f67f82d4d26899b6d4efab338ab",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "CommandDirectoryBehaviorTests",
+      "runnerDesktop": "GscWpfTest_0fdefe2cc83249c0ab3e71ea5be98ab4",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "CommandDirectoryKeyboardBehaviorTests",
+      "runnerDesktop": "GscWpfTest_e65110529a2d44ccb6ecab6e42dad908",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "CommandDirectoryRegisteredRouteTests",
+      "runnerDesktop": "GscWpfTest_a5d51fcac4cb4fac982e1bc4fc85b57f",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "CommandDirectoryResultLayoutBehaviorTests",
+      "runnerDesktop": "GscWpfTest_4870d984273f4190b90e3d42ab72a094",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "CommandDirectoryReviewBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b3adea1191ca47d7ae4d0f3be7111998",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "CompactWorkspaceTableViewportBehaviorTests",
+      "runnerDesktop": "GscWpfTest_f97542d940b240049d41fdd834ba79be",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "DataGridColumnVisibilityBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7005f5cee1e545fcb60fc43ada971234",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "DataGridHorizontalWheelBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7f4846f557da4ec8868c5ecd29382f15",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "DataGridViewConfigurationBehaviorTests",
+      "runnerDesktop": "GscWpfTest_e3898b6121e843fe98c52bae6d1c6c1f",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "GamePickerFilterBehaviorTests",
+      "runnerDesktop": "GscWpfTest_baf4f1d2eb8f4ce098ff1c6bdf4944c4",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "GamePickerKeyboardBehaviorTests",
+      "runnerDesktop": "GscWpfTest_5a4266223f5e4109b7c7e1216f2e4e26",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "KeyboardFocusSourceTests",
+      "runnerDesktop": "GscWpfTest_9d6705e06536484bad2dfae7eb3e89d7",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "MediaComparisonSelectionTests",
+      "runnerDesktop": "GscWpfTest_151aa6c20d6d431288497bce63c0df65",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "MediaComparisonViewportBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b88ce0fef49748d39a3854d61253e72c",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "MediaInboxGeometryTests",
+      "runnerDesktop": "GscWpfTest_950156d35d7d49a9a5e501a547e7f289",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "MediaInboxScrollBehaviorTests",
+      "runnerDesktop": "GscWpfTest_348dfa49c68f4e21b79d4dcc3583de57",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "MediaThumbnailConverterTests",
+      "runnerDesktop": "GscWpfTest_94d5e7494c1d4bc3bef3fb821a4a4fc5",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "MediaWindowAnchorContractTests",
+      "runnerDesktop": "GscWpfTest_8d99e8813212485f9bfa05f844c41f6c",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "NotificationInboxViewBehaviorTests",
+      "runnerDesktop": "GscWpfTest_443e0d1a836b4b228b990fe148871408",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "NumericCellReadabilityTests",
+      "runnerDesktop": "GscWpfTest_869fe0d435d84d748693fed5bc09c641",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "NumericInputTests",
+      "runnerDesktop": "GscWpfTest_3b9497e5dbfe45a2b32739de2aad66af",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "OverviewInteractionTests",
+      "runnerDesktop": "GscWpfTest_8eaa76b963e2462180f00bfe9af813d7",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "PasteNormalizationTests",
+      "runnerDesktop": "GscWpfTest_23028fe6969443c594fecb787f497671",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "PlayniteGameIconProviderTests",
+      "runnerDesktop": "GscWpfTest_f75757fe561246669e8168ef21491c19",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "ProcessMappingInlineActionBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b334bdcd750e45768f4e73548ff32230",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "ProductionShellChromeSourceTests",
+      "runnerDesktop": "GscWpfTest_0e980fcc27e84e799ba0a3220b5b112c",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q06ButtonStateSequenceBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b63d35297f61497a8a72d2b4e8d7a749",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q06ContinuousButtonBehaviorTests",
+      "runnerDesktop": "GscWpfTest_11f712e6d66d4d7983c2949229282c08",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q10CheckBoxHitBehaviorTests",
+      "runnerDesktop": "GscWpfTest_034ce93e972546af8cdba9bb4291510f",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q10ToggleSwitchStateBehaviorTests",
+      "runnerDesktop": "GscWpfTest_f4ec029740944d0d8f28dde3a8c64787",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q13ColumnResizeBehaviorTests",
+      "runnerDesktop": "GscWpfTest_dbad56144bd14be580d89f9ef326b734",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q13ScrollBarThumbBehaviorTests",
+      "runnerDesktop": "GscWpfTest_6f2339c1726f49a5988f32480150ef69",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q14FilterLabelBehaviorTests",
+      "runnerDesktop": "GscWpfTest_744e2fc45f1f44eb87a5bc0a5759a44d",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q14ToolbarAlignmentBehaviorTests",
+      "runnerDesktop": "GscWpfTest_fae9f51ca62846b0b2d6670e3246de01",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q23SettingsActionConfirmationBehaviorTests",
+      "runnerDesktop": "GscWpfTest_ec123297f4b44a6bba0d11f62a0a2398",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Q24FractionalDpiTypographyBehaviorTests",
+      "runnerDesktop": "GscWpfTest_d235368c21154fffb23ab2cf0ea00384",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R02ActionAvailabilityHintTests",
+      "runnerDesktop": "GscWpfTest_2b90fd67d4454da5843fe3ed1120c7fd",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R02ActionPriorityTests",
+      "runnerDesktop": "GscWpfTest_cab16ccaf41b4e8e9e883dfcaddbe9f7",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R02BusyStateTests",
+      "runnerDesktop": "GscWpfTest_a7299293fc714a12a048365c11ec322c",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R02HitAreaSpacingTests",
+      "runnerDesktop": "GscWpfTest_8e2ef6a58b224133b62a809ea5878e82",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R02OpticalAlignmentTests",
+      "runnerDesktop": "GscWpfTest_b47c3f24bf2c4067aa06667012f9c703",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R03BilingualLengthTests",
+      "runnerDesktop": "GscWpfTest_ed6ea777693e42f8bd623597244fb865",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R03CopySafePunctuationTests",
+      "runnerDesktop": "GscWpfTest_1192bd40187f4f6b85701b1ed9c0e8e0",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R03LongPathTests",
+      "runnerDesktop": "GscWpfTest_726abbcc39d44b98a7068deff8f5fc81",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R03NumericAlignmentTests",
+      "runnerDesktop": "GscWpfTest_b2fb189e660749fd8ffba5fb9a99e362",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R03TextScaleTests",
+      "runnerDesktop": "GscWpfTest_8efd60c89e194d99a94f0928c8d9f4d6",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R05FocusBoundaryBehaviorTests",
+      "runnerDesktop": "GscWpfTest_f52c3d6b145047f9b7f7e79855896930",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R05MultiSelectionSummaryBehaviorTests",
+      "runnerDesktop": "GscWpfTest_21ac7f3cc15f4bc293a5717dc5ea4ed6",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R05OptionVirtualizationBehaviorTests",
+      "runnerDesktop": "GscWpfTest_d293798df6ac4ddd81fc8c359b062722",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R05PopupBoundaryBehaviorTests",
+      "runnerDesktop": "GscWpfTest_6cbe9d9ae2184e2d9c0e80a40cfe3dd7",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R05PopupLifecycleBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7af49e9a9286446c800cbef0aa9c299f",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R05TogglePersistenceBehaviorTests",
+      "runnerDesktop": "GscWpfTest_1a63c2c4cabc49d2bbb4de9521f41e77",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R05TooltipTimingBehaviorTests",
+      "runnerDesktop": "GscWpfTest_91f5569bf32c469ca70356b97c2bd222",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06ClipboardBehaviorTests",
+      "runnerDesktop": "GscWpfTest_c248c57b646a41f38410e9d5757dc491",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06ColumnHeaderHelpTests",
+      "runnerDesktop": "GscWpfTest_184bfc1c935841ff9834a9c8fb0342df",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06ColumnWidthPersistenceBehaviorTests",
+      "runnerDesktop": "GscWpfTest_2e184df0c3ce450cab9c504cc4b4c6d5",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06DetailsBudgetBehaviorTests",
+      "runnerDesktop": "GscWpfTest_e578929c39c74187b0cb329ddeb4a2f9",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06EmptyStateBehaviorTests",
+      "runnerDesktop": "GscWpfTest_6afd495c96424d2796863e1b194a653a",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06ResponsiveColumnWidthBehaviorTests",
+      "runnerDesktop": "GscWpfTest_18ff84410c5041be997770827f6df33c",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06SaveHistorySelectionFrameBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b2005734c5544d5b8fae3d8d1d3e5260",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06SelectionStateBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7c544bc3f7ac44749a334c0260fed8fc",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06SortingBehaviorTests",
+      "runnerDesktop": "GscWpfTest_5918b3e1a2bd45c3904231e31b94b440",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06TaskGridSelectionFrameBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b05a10b7c6624464956a31eca0a6ab69",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R06TaskProgressBehaviorTests",
+      "runnerDesktop": "GscWpfTest_71db764ec3c940a094998d6eebe957fa",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R07DetailsBreakpointBehaviorTests",
+      "runnerDesktop": "GscWpfTest_f76fa7a5114744c898e18e3d68207fee",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R07FineScrollBehaviorTests",
+      "runnerDesktop": "GscWpfTest_8b2c193267184634a4c27f51023b5f94",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R07ResizeStressBehaviorTests",
+      "runnerDesktop": "GscWpfTest_45242680adb649b7a4efa089a3cd58bb",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R07ScrollOwnershipBehaviorTests",
+      "runnerDesktop": "GscWpfTest_0832940741b845ca86a8840abaf88b97",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R07SelectionAnchorBehaviorTests",
+      "runnerDesktop": "GscWpfTest_2522901c1b114a83ba02e4f7f4578f8d",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R07StatusBannerBudgetBehaviorTests",
+      "runnerDesktop": "GscWpfTest_8080cb4b0e234e4a99829d78bad31db1",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R08BusinessFeedbackBehaviorTests",
+      "runnerDesktop": "GscWpfTest_1580ee6e085b4ddf86f9a00d8ef4aa2d",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R08DialogOverlayBehaviorTests",
+      "runnerDesktop": "GscWpfTest_615d22224f094b349f05460bcd303ce8",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R08MotionHotChangeBehaviorTests",
+      "runnerDesktop": "GscWpfTest_9b6080a600cd4ce69dc137f7e3e51000",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R08MotionReverseBehaviorTests",
+      "runnerDesktop": "GscWpfTest_9d665183bc1549aa98713e4cf0d9ee69",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R08NumericChangeBehaviorTests",
+      "runnerDesktop": "GscWpfTest_a6c7aa4c4218401f8108ca3740bae1cb",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R08OffscreenMotionBehaviorTests",
+      "runnerDesktop": "GscWpfTest_a3fa8d4493574e0dba0d52da31f9955b",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R08PageSwitchBehaviorTests",
+      "runnerDesktop": "GscWpfTest_724e88008b104d3098ab6e9e8bba2839",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R08SystemMotionHotChangeBehaviorTests",
+      "runnerDesktop": "GscWpfTest_8f0539e682e04c28afa03b2d8d7033b3",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R09BackgroundPressureBehaviorTests",
+      "runnerDesktop": "GscWpfTest_62b91575cc764e2bbe4feeb61b03124d",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R09FocusOutlineBehaviorTests",
+      "runnerDesktop": "GscWpfTest_4520253be3b54eca8c3a71147a9f146b",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R09HighContrastBehaviorTests",
+      "runnerDesktop": "GscWpfTest_1ce7cddad49f44fa8072760b4e0d1383",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R09IconSemanticBehaviorTests",
+      "runnerDesktop": "GscWpfTest_ddbd3fb566694af788a0c0dc8cf7fb92",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R09PixelStrokeBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7e0d3b9bd0b74b08a413706e9076b45d",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R09ShadowBudgetBehaviorTests",
+      "runnerDesktop": "GscWpfTest_9a8f8c2d52d7404b90a340e90bd02486",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R09ThemeSwitchBehaviorTests",
+      "runnerDesktop": "GscWpfTest_cea527b843df49f9929932df1f28c840",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R09ThumbnailPlaceholderBehaviorTests",
+      "runnerDesktop": "GscWpfTest_3ad0003edd0f443badf308ebe284034a",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R10FilterPresetBehaviorTests",
+      "runnerDesktop": "GscWpfTest_86538a8b49eb47c985ce8cf5be9c6fde",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R10FilterSourceBehaviorTests",
+      "runnerDesktop": "GscWpfTest_4903a804fc84446cb8d3c26af1147aa6",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R10KeyboardShortcutHelpBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b5f96f7d0de04c19a418ac611d039c23",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R10RecentAccessBehaviorTests",
+      "runnerDesktop": "GscWpfTest_c59089a48b0d47aea53410e5ad6fd4eb",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R10SearchShortcutBehaviorTests",
+      "runnerDesktop": "GscWpfTest_bebd27677bf54c288009fbe1b01c847d",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R10SearchShortcutFocusBehaviorTests",
+      "runnerDesktop": "GscWpfTest_ce471ef339434c8c9c2b0ea243a14ba8",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R11BackupPreviewBehaviorTests",
+      "runnerDesktop": "GscWpfTest_fa7da01ee19746bebacb095b9206d500",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R11DiffListSearchBehaviorTests",
+      "runnerDesktop": "GscWpfTest_285d560acc164b5d963db1bfb5f8b0ee",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R11HistoryTimeNavigationBehaviorTests",
+      "runnerDesktop": "GscWpfTest_5de51cdb42ec44398b35652957498e28",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R11ProtectionBehaviorTests",
+      "runnerDesktop": "GscWpfTest_56d9d2f192a94df19edac5d53e1de533",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R11VersionComparisonBehaviorTests",
+      "runnerDesktop": "GscWpfTest_39969c089a8e48abb058a8d6ab006941",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R11VersionNoteBehaviorTests",
+      "runnerDesktop": "GscWpfTest_0a983ca8df674cca90884ae90df1808f",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R11VersionSummaryBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7d6a53fe261b422cb6d0477455d73664",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R12PathRemapBehaviorTests",
+      "runnerDesktop": "GscWpfTest_3ad3ffd7da6748bdb008fc9701f45f4f",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R12RemoteStageProgressBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b80ecb25c3dc499ab1b7375665f95a5b",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R12RestorePlanDraftBehaviorTests",
+      "runnerDesktop": "GscWpfTest_e29ee999f68b4cdbb632a5b2fb0e2e3b",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R12RestoreReadinessViewBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7bc52211f7824479aa043aa422942c17",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R12RestoreWorkflowBehaviorTests",
+      "runnerDesktop": "GscWpfTest_dd76997566864358b8564c684fc0c4d7",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R13CloudTransferStageBehaviorTests",
+      "runnerDesktop": "GscWpfTest_165440ebabf94110bbaab7f2a4f3408b",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R15TaskFailureCopyTests",
+      "runnerDesktop": "GscWpfTest_75b48846f0c547469133952c284e2572",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R16NotificationScheduleBehaviorTests",
+      "runnerDesktop": "GscWpfTest_04866313c99f4e56aff97da973936fb1",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R16SettingsSearchBehaviorTests",
+      "runnerDesktop": "GscWpfTest_4dff319b26574905a68b2e0153974cea",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R18DispatcherVisibilityBenchmarkTests",
+      "runnerDesktop": "GscWpfTest_8e93fdfc406740d09bd846c24d6411c3",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R18TableContainerBudgetTests",
+      "runnerDesktop": "GscWpfTest_e94b5b92d3fe4de2af0c342772956db4",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R18ThumbnailBudgetTests",
+      "runnerDesktop": "GscWpfTest_d5ecf8424ef246a6a25aad61e9d3ce4b",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R21AsyncCompletionAnnouncementBehaviorTests",
+      "runnerDesktop": "GscWpfTest_ed653aec27ea4b9fa23e49d0a2953a7c",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R21AutomationValueBehaviorTests",
+      "runnerDesktop": "GscWpfTest_0e8a5c339893410ea91a15c866ba385e",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R21DisabledHiddenBehaviorTests",
+      "runnerDesktop": "GscWpfTest_cf0e96fb7aba42db898d1f9f73dad636",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R21FocusVisualRegressionBehaviorTests",
+      "runnerDesktop": "GscWpfTest_12814b70f2d54211b37f4b70c2394bed",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R21KeyboardNavigationTraceTests",
+      "runnerDesktop": "GscWpfTest_5045820e74604eaebdad6302d54389a5",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R21SelectableTechnicalTextBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7666ebd2437b4ab4adb281e559aa6f96",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R22BatchCountBehaviorTests",
+      "runnerDesktop": "GscWpfTest_a13be73b7c1c4acb85bd4e4bccd3bee3",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R22ConfirmationStructureBehaviorTests",
+      "runnerDesktop": "GscWpfTest_253773e969e744c187ee2fc83af06f6b",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R22CopyFeedbackBehaviorTests",
+      "runnerDesktop": "GscWpfTest_98ca493745584dcca1db6e3111d2dc08",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R22LongTaskLeavePageBehaviorTests",
+      "runnerDesktop": "GscWpfTest_56a57b3ace7a4727851ec321203c7384",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R22MaintenanceActionTimeBehaviorTests",
+      "runnerDesktop": "GscWpfTest_4795689755ce43049a263ae854ebcc34",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R22RemoteStageTimeBehaviorTests",
+      "runnerDesktop": "GscWpfTest_6dc4bb13b664467ab92fe6691e2501c3",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "R23ProductionResourceStateBehaviorTests",
+      "runnerDesktop": "GscWpfTest_4c3c961b604d4f3e9f4a22ffd2e4e1bd",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "ReportedWorkspaceLayoutBehaviorTests",
+      "runnerDesktop": "GscWpfTest_91ce409ef6cd4524b5d6fd145743bff7",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "RetentionScenarioInputBehaviorTests",
+      "runnerDesktop": "GscWpfTest_b68b37380e3d41ed8394047b43ae5419",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Round5OverviewSaveContextTests",
+      "runnerDesktop": "GscWpfTest_132ae38e55a446228d9a396f68915efb",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Round5TaskTextBehaviorTests",
+      "runnerDesktop": "GscWpfTest_363cc6b601b54da89cb6d8b02f3dc9e0",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Round5ToastBehaviorTests",
+      "runnerDesktop": "GscWpfTest_7a13328a5d2649eb8484bfbce3e5e208",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "Round5ToolMaintenanceHelpTests",
+      "runnerDesktop": "GscWpfTest_d6700866517b4a04ab2c67233f78c009",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "RuntimePalettePublicationBehaviorTests",
+      "runnerDesktop": "GscWpfTest_ec58933906d64d69802b643c39b01531",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "S05StorageBudgetBreakdownBehaviorTests",
+      "runnerDesktop": "GscWpfTest_6f3b9cf3dfa64e088c65fba6af6ce5ee",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "SettingsDraftLifecycleBehaviorTests",
+      "runnerDesktop": "GscWpfTest_d22caa5ed98a4233a01ca4b8ad5a8422",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "SettingsValidationNavigationBehaviorTests",
+      "runnerDesktop": "GscWpfTest_68bd08a606834a7e85eca868c328dbb5",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "StatusGlyphConverterTests",
+      "runnerDesktop": "GscWpfTest_a5a25abaeb1c45119945c61638502091",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "T02TableScrollDriftBehaviorTests",
+      "runnerDesktop": "GscWpfTest_4007c541885d4c3db8545e5e5e86b6a1",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "TableDensityPolicyTests",
+      "runnerDesktop": "GscWpfTest_ffa08f5cce7f4a8c8e1e52080b8f93f1",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "TaskCenterViewResponsiveTests",
+      "runnerDesktop": "GscWpfTest_debaeefd25e74b46a2c122b45f8b8f55",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "TaskRetryGuidanceViewTests",
+      "runnerDesktop": "GscWpfTest_de25784c29684519867e7a312ebfd850",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "TypographyDiagnosticsTests",
+      "runnerDesktop": "GscWpfTest_ca4186381b13416da13c44510b869ec8",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "U02SemanticStatusColorBehaviorTests",
+      "runnerDesktop": "GscWpfTest_9de9daacfc434422b500c7a838f55d70",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "UiAuditBlockerTests",
+      "runnerDesktop": "GscWpfTest_f6342a46124c4a6ca0e497b27b08551e",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "UiAuditCaptureContractTests",
+      "runnerDesktop": "GscWpfTest_4cf9c32d9bd040c09c8bddacad7db0e8",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "UiAuditTruthfulnessTests",
+      "runnerDesktop": "GscWpfTest_3a6c0d44b3d744b980f7747dffcaeee9",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "UiDiagnosticsExporterTests",
+      "runnerDesktop": "GscWpfTest_7ac20d112a1645839bf2fdd517aa96ac",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "UiFinesseFoundationTests",
+      "runnerDesktop": "GscWpfTest_77812cf2237b49e9a0bebfbaf3e22df6",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "UiNegativeFixtureRegistryTests",
+      "runnerDesktop": "GscWpfTest_52a9037436954a50ab1d3de43b4e3c13",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "WindowAutomationLifecycleTests",
+      "runnerDesktop": "GscWpfTest_e934b016a17f4140a23511b006568d5c",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "WorklistExportPreviewBehaviorTests",
+      "runnerDesktop": "GscWpfTest_ae02acdd70be4bf6a79ab08c1ba7146c",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "WorkspaceLoadingFeedbackBehaviorTests",
+      "runnerDesktop": "GscWpfTest_80f4a9d9d1f94872b55c32a742afaa9f",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "WorkspaceStatePresenterBehaviorTests",
+      "runnerDesktop": "GscWpfTest_4576231f790f471aac3cb389b5187c41",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "WorkspaceTableViewportPolicyTests",
+      "runnerDesktop": "GscWpfTest_ef2ffb595294483fae39af237bcc25aa",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "WpfUiResourceDictionaryTests",
+      "runnerDesktop": "GscWpfTest_b0594beb4a904a478401331c233fb029",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    },
+    {
+      "testClass": "WrapPanelRowGapControllerBehaviorTests",
+      "runnerDesktop": "GscWpfTest_853ab4063386442ca8359155c450ae21",
+      "windowStation": "WinSta0",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "exitCode": 0
+    }
+  ],
+  "interpretation": "Runner identity covers all 157 per-class WPF isolation records. This does not identify the user-reported window or prove a general zero-flicker guarantee."
+}

@@ -1,0 +1,168 @@
+{
+  "cleanedUtc": "2026-11-08T21:47:24.0945261+00:00",
+  "removedRoot": ".tmp/round5-u09-04-taskmotion-20261109",
+  "boundaryVerified": true,
+  "reparsePoints": 0,
+  "activeBuildOrHarnessProcesses": 0,
+  "before": {
+    "cFreeBytes": 7123787776,
+    "dFreeBytes": 9696845824,
+    "fileCount": 18054,
+    "bytes": 1092348656,
+    "topLevel": [
+      {
+        "path": "current-build",
+        "files": 261,
+        "bytes": 20027093
+      },
+      {
+        "path": "diagnostics",
+        "files": 641,
+        "bytes": 5295205
+      },
+      {
+        "path": "official-build",
+        "files": 711,
+        "bytes": 162818001
+      },
+      {
+        "path": "render-qa",
+        "files": 395,
+        "bytes": 53441444
+      },
+      {
+        "path": "render-qa-after-identity",
+        "files": 395,
+        "bytes": 53398450
+      },
+      {
+        "path": "snapshots",
+        "files": 15614,
+        "bytes": 789991677
+      },
+      {
+        "path": "task-motion-current",
+        "files": 1,
+        "bytes": 2380
+      },
+      {
+        "path": "task-motion-identity-current",
+        "files": 2,
+        "bytes": 2738
+      },
+      {
+        "path": "task-motion-identity-u00",
+        "files": 2,
+        "bytes": 2635
+      },
+      {
+        "path": "task-motion-pair-a-current",
+        "files": 1,
+        "bytes": 2385
+      },
+      {
+        "path": "task-motion-pair-a-u00",
+        "files": 1,
+        "bytes": 2286
+      },
+      {
+        "path": "task-motion-pair-b-current",
+        "files": 1,
+        "bytes": 2388
+      },
+      {
+        "path": "task-motion-pair-b-u00",
+        "files": 1,
+        "bytes": 2286
+      },
+      {
+        "path": "test-temp",
+        "files": 15,
+        "bytes": 6451200
+      },
+      {
+        "path": "current-build-diagnostic.log",
+        "files": 1,
+        "bytes": 896584
+      },
+      {
+        "path": "paired-current-build-identity-final.log",
+        "files": 1,
+        "bytes": 896
+      },
+      {
+        "path": "paired-current-build-identity-fixed.log",
+        "files": 1,
+        "bytes": 896
+      },
+      {
+        "path": "paired-current-build.log",
+        "files": 1,
+        "bytes": 1687
+      },
+      {
+        "path": "paired-u00-build-after-identity-fix.log",
+        "files": 1,
+        "bytes": 2379
+      },
+      {
+        "path": "paired-u00-build-identity-final.log",
+        "files": 1,
+        "bytes": 880
+      },
+      {
+        "path": "paired-u00-build-identity-fixed.log",
+        "files": 1,
+        "bytes": 880
+      },
+      {
+        "path": "paired-u00-build.log",
+        "files": 1,
+        "bytes": 1655
+      },
+      {
+        "path": "render-harness-build.log",
+        "files": 1,
+        "bytes": 118
+      },
+      {
+        "path": "render-harness-targeted-build.log",
+        "files": 1,
+        "bytes": 754
+      },
+      {
+        "path": "resource-snapshot-after-render.json",
+        "files": 1,
+        "bytes": 380
+      },
+      {
+        "path": "resource-snapshot-before-render.json",
+        "files": 1,
+        "bytes": 381
+      },
+      {
+        "path": "stage-start.json",
+        "files": 1,
+        "bytes": 998
+      }
+    ]
+  },
+  "after": {
+    "cFreeBytes": 7123333120,
+    "dFreeBytes": 10832625664
+  },
+  "retainedEvidence": [
+    "u00/current task-inspector motion reports and desktop-run identities",
+    "SDK8.0.423 final build logs, 0 warning/0 error",
+    "Render QA report and three representative task screenshots",
+    "one superseded U00 report showing the old enclosing-commit attribution",
+    "one nullable warning log showing the warning corrected before final clean builds",
+    "GitHub #1494 run/job/artifact identity JSON"
+  ],
+  "removedOutputCategories": [
+    "git archive source snapshots and temporary build outputs",
+    "full intermediate/duplicate Render QA PNG runs",
+    "invalid paired reports superseded by corrected source identity",
+    "temporary test folders, diagnostics and build outputs from this stage"
+  ]
+}

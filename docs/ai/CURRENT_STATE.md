@@ -1,3 +1,18 @@
+## 2026-11-09 U09-04/U09-05 继续：任务详情探针与闪屏未归因
+
+本批从已推送基线 `0258ab3513c7d1bc95b8b622eead42a0fab30a76` 继续。RenderHarness新增双主题任务详情开合探针及显式构建身份守卫；U00/current快照的Harness编译均SDK8.0.423 Release、0 warning/0 error，探针12轮/主题完成。当前受控窗口p95和Rendering回调不是实际呈现帧，且未测分配，U09-04继续进行中。Render QA重跑394 PNG、无问题；代码没有生产XAML改动。证据见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-04-task-inspector-motion-20261109/README.md`。
+
+用户再次报告仍闪屏；本次图片SHA与11月6日相同、文件原始时间11月6日且无HWND/PID。只读Computer Use插件初始化失败，无法读取当前可见窗口；本批探针与Render QA在WinSta0私有桌面，输入Default未变，但不能由此称用户桌面“无闪”。本批没有运行安装启动根入口或重启Playnite。U09-05保持进行中。
+
+精确旧基线 `0258ab35` 的 GitHub #1494 已 completed/success：baseline job `128830946846`、SDK10.0.401 job `128830946943` 均通过；artifact详情见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-renderqa-private-20261109/ci-run-1494.json`。required-checks/ruleset仍因既往403远端待验。当前修改尚待提交、push及新SHA CI；本轮80项最终冻结候选的中文→英文根入口完整安装/启动链仍待一次性执行。未操作盘符/卷、存档、媒体或云端数据。
+
+## 2026-11-09 U09-05 Render QA 隔离已推送；根入口最终复验待做
+
+本地 `main` 已推送提交 `0258ab3513c7d1bc95b8b622eead42a0fab30a76`。Render QA 的 WPF宿主改在 `WinSta0\GscRenderQA_<guid>` 运行，SDK按项目基线初始化并核验父子/输入desktop身份；Source Validation加入守卫。精确提交 `scripts/build.cmd` exit0：2030项、1962通过、0失败、68 skip，157个WPF类隔离；Render QA exit0、394 PNG、无问题行。位于WinSta0\Default的WinEvent监听在Render QA全程与WPF测试监听就绪后的中后段目标SHOW/HIDE均为0（最早几个类未监听）；截图附件仍是11月6日同一文件，黑窗身份未确认。证据见 [U09-05 本批记录](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-renderqa-private-20261109/README.md)。
+逐项核验完整构建的157份 WPF 测试桌面结果：157个唯一 WinSta0 私有桌面、Default 输入桌面前后未变、157个退出码为0；清单见 [逐类桌面身份](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-renderqa-private-20261109/wpf-desktop-identities.json)。
+源码层面仍有一个未复现的入口竞态：从 Explorer 直接打开 `.cmd` 时，控制台可能先创建、再由隐藏辅助进程隐藏；这不能认定为用户所见黑窗来源。后续本机验收从非输入桌面发起，并继续保留黑窗未归因状态。
+
+GitHub run #1494 / `42513349534` 的两个job `128830946846`（基线）和 `128830946943`（SDK10.0.401）已 `completed/success`，job/artifact身份见本轮证据。U09-05不结项；整轮80项最终冻结候选仍需中文根入口完整安装/启动验收及该候选新SHA CI。每批局部构建继续用隔离测试路径，不要把安装器关闭/重启宿主误当普通编译。required-checks/ruleset权限之前403，不重复试探；真实用户黑窗仍需新鲜窗口身份或实际宿主时段确认。未改盘符/卷、用户存档、媒体或云数据。
 ## 2026-11-08 U09-05 根入口复核后仍收到闪屏反馈
 
 精确 `626a3ad90cd5b0cf72d1fbe9d8d6f566e0744ddf` 的中文完整入口成功完成 build/test、Worker发布、打包、安装身份核验并到达Playnite启动成功分支：2030项、1972通过、0失败、58 skip，SDK8.0.423，ZIP/PEXT一致 SHA 与六个安装程序集身份见 [根入口证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/root-entry-626a3ad9-20261108/README.md)。但外层监控因输出文件锁退出125，没有捕获根命令进程最终码；不能记录为观察到的 exit 0。

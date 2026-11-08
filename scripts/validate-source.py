@@ -669,6 +669,32 @@ def check_windows_launchers() -> None:
         if not path.read_bytes().startswith(b"\xef\xbb\xbf"):
             fail(f"PowerShell script must include a UTF-8 BOM for Windows PowerShell 5.1: {path.relative_to(ROOT)}")
 
+def check_render_harness_evidence_identity() -> None:
+    """Prefer the explicit build identity when evidence comes from archived source snapshots."""
+    harness = (ROOT / "tests/GameSaveCenter.RenderHarness/Program.cs").read_text(encoding="utf-8")
+    start = harness.find("private static string ResolveBuildCommit()")
+    end = harness.find("private static string ResolveGitValue(", start)
+    resolver = harness[start:end] if start >= 0 and end > start else ""
+    required = (
+        'attribute.Key, "GscBuildCommit"',
+        "return metadata!;",
+        'return ResolveGitValue("rev-parse HEAD");',
+    )
+    if not resolver or any(token not in resolver for token in required):
+        fail("Render harness must prefer its explicit GscBuildCommit metadata before falling back to the enclosing Git checkout")
+    elif not (resolver.index(required[0]) < resolver.index(required[1]) < resolver.index(required[2])):
+        fail("Render harness build identity must be checked before Git fallback")
+
+    state_start = harness.find("private static string ResolveWorkingTreeCleanliness()")
+    state_end = harness.find("private static string ResolveGitValue(", state_start)
+    state_resolver = harness[state_start:state_end] if state_start >= 0 and state_end > state_start else ""
+    if any(token not in state_resolver for token in (
+        '"rev-parse --show-toplevel"',
+        '"unknown (source root is not the Git worktree)"',
+        '"status --porcelain"',
+    )):
+        fail("Render harness must not report the enclosing repository's cleanliness for an archived source snapshot")
+
 def check_large_library_performance_guards() -> None:
     plugin = (ROOT / "src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs").read_text(encoding="utf-8")
     view_model = read_dashboard_view_model()
@@ -1893,6 +1919,7 @@ def main() -> int:
     check_media_sql_migration()
     check_game_tools_guards()
     check_windows_launchers()
+    check_render_harness_evidence_identity()
     check_external_process_guards()
     check_large_library_performance_guards()
     check_061_reliability_guards()

@@ -1,0 +1,24 @@
+Task inspector transition performance probe (controlled STA WPF Window)
+Scenario: taskinspectormotionprobe
+EvidenceSource: ControlledWpfWindow
+Commit: 0258ab3513c7d1bc95b8b622eead42a0fab30a76
+WorkingTreeClean: False
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: compact task inspector; 960x640 DIP; 12 open/close pairs per theme; no artificial duration override
+SampleTimeUtc: 2026-10-27T00:00:00.0000000+00:00 (pinned=True)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+Input boundary: routed Button.Click events are logical input proxies, not physical mouse/keyboard latency.
+Frame boundary: CompositionTarget.Rendering callback gaps and sampled intermediate opacity counts are diagnostics, not compositor-presented frame timings or animation pass/fail criteria.
+
+TaskInspector[light] animationMode=not present in this source baseline iterations=12 selectedIndex=4 finalVisibility=Collapsed finalOpacity=1 finalY=0
+SUMMARY task_inspector_open[light] samples=12 median_ms=9.02 p95_ms=195.19 max_ms=195.19 sampled_intermediate=0/12 rendering_frames=0 frame_intervals=0 frame_gap_p95_ms=0 max_frame_gap_ms=0 slow_over_16_67ms=0/0
+SUMMARY task_inspector_close[light] samples=12 median_ms=7.17 p95_ms=11.76 max_ms=11.76 sampled_intermediate=0/12 rendering_frames=0 frame_intervals=0 frame_gap_p95_ms=0 max_frame_gap_ms=0 slow_over_16_67ms=0/0
+
+TaskInspector[dark] animationMode=not present in this source baseline iterations=12 selectedIndex=4 finalVisibility=Collapsed finalOpacity=1 finalY=0
+SUMMARY task_inspector_open[dark] samples=12 median_ms=8.96 p95_ms=26.42 max_ms=26.42 sampled_intermediate=0/12 rendering_frames=0 frame_intervals=0 frame_gap_p95_ms=0 max_frame_gap_ms=0 slow_over_16_67ms=0/0
+SUMMARY task_inspector_close[dark] samples=12 median_ms=7.06 p95_ms=7.69 max_ms=7.69 sampled_intermediate=0/12 rendering_frames=0 frame_intervals=0 frame_gap_p95_ms=0 max_frame_gap_ms=0 slow_over_16_67ms=0/0
+
+TaskInspectorMotionProbeBoundary: routed events and Rendering callbacks are controlled WPF proxies; no Playnite host, physical input, IME or DWM presented-frame timing was sampled.
+TaskInspectorMotionProbe OK

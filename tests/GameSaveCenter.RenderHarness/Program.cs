@@ -488,6 +488,33 @@ public static class Program
             return probeExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("taskinspectormotionprobe", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "task-inspector-motion-probe");
+            Directory.CreateDirectory(outputRoot);
+            var probeExitCode = 0;
+            var probeThread = new Thread(() =>
+            {
+                var app = new Application
+                {
+                    ShutdownMode = ShutdownMode.OnExplicitShutdown
+                };
+                app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+                var report = new StringBuilder();
+                s_problems.Clear();
+                RunTaskInspectorMotionProbe(outputRoot, report);
+                File.WriteAllText(Path.Combine(outputRoot, "task-inspector-motion-probe-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                probeExitCode = s_problems.Count == 0 ? 0 : 1;
+            });
+            probeThread.SetApartmentState(ApartmentState.STA);
+            probeThread.Start();
+            probeThread.Join();
+            return probeExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("motionhotprobe", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5056,18 +5083,49 @@ public static class Program
         string themes,
         string dataVolumes)
     {
-        var commit = ResolveGitValue("rev-parse HEAD");
-        var workingTree = ResolveGitValue("status --porcelain");
+        var commit = ResolveBuildCommit();
+        var workingTree = ResolveWorkingTreeCleanliness();
         report.AppendLine($"Scenario: {scenario}");
         report.AppendLine($"EvidenceSource: {sourceKind}");
         report.AppendLine($"Commit: {commit}");
-        report.AppendLine($"WorkingTreeClean: {workingTree.Length == 0}");
+        report.AppendLine($"WorkingTreeClean: {workingTree}");
         report.AppendLine("DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)");
         report.AppendLine("WindowDip: per-case window_dip/content_dip fields");
         report.AppendLine($"Themes: {themes}");
         report.AppendLine($"DataVolumes: {dataVolumes}");
         report.AppendLine($"SampleTimeUtc: {FakeSampleClock.SampleUtc.ToString("O", System.Globalization.CultureInfo.InvariantCulture)} (pinned={FakeSampleClock.IsPinned})");
         report.AppendLine("TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness");
+    }
+
+    private static string ResolveBuildCommit()
+    {
+        var metadata = typeof(Program).Assembly
+            .GetCustomAttributes<AssemblyMetadataAttribute>()
+            .FirstOrDefault(attribute => string.Equals(attribute.Key, "GscBuildCommit", StringComparison.OrdinalIgnoreCase))
+            ?.Value;
+        if (!string.IsNullOrWhiteSpace(metadata)
+            && !string.Equals(metadata, "unknown", StringComparison.OrdinalIgnoreCase))
+        {
+            return metadata!;
+        }
+
+        return ResolveGitValue("rev-parse HEAD");
+    }
+
+    private static string ResolveWorkingTreeCleanliness()
+    {
+        var repositoryRoot = Path.GetFullPath(RepositoryRoot).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        var gitRoot = ResolveGitValue("rev-parse --show-toplevel");
+        if (!Path.IsPathRooted(gitRoot)
+            || !string.Equals(
+                Path.GetFullPath(gitRoot).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar),
+                repositoryRoot,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            return "unknown (source root is not the Git worktree)";
+        }
+
+        return ResolveGitValue("status --porcelain").Length == 0 ? "true" : "false";
     }
 
     private static string ResolveGitValue(string arguments)
@@ -6792,6 +6850,298 @@ public static class Program
         {
             window?.Close();
         }
+    }
+
+    private static void RunTaskInspectorMotionProbe(string outputRoot, StringBuilder report)
+    {
+        const int iterations = 12;
+        const int transitionTimeoutMilliseconds = 1500;
+        report.AppendLine("Task inspector transition performance probe (controlled STA WPF Window)");
+        AppendRunMetadata(
+            report,
+            "taskinspectormotionprobe",
+            "ControlledWpfWindow",
+            "light,dark",
+            "compact task inspector; 960x640 DIP; 12 open/close pairs per theme; no artificial duration override");
+        report.AppendLine("Input boundary: routed Button.Click events are logical input proxies, not physical mouse/keyboard latency.");
+        report.AppendLine("Frame boundary: CompositionTarget.Rendering callback gaps and sampled intermediate opacity counts are diagnostics, not compositor-presented frame timings or animation pass/fail criteria.");
+
+        foreach (var (themeName, themeMode) in ThemeModes)
+        {
+            Window? window = null;
+            try
+            {
+                var view = new TaskCenterView
+                {
+                    DataContext = new FakeDashboardData(96)
+                };
+                var motionProfile = EnableTaskInspectorMotionForProbe(view);
+                ApplyThemePalette(view, themeMode, glassEnabled: true, motionEnabled: true);
+
+                window = new Window
+                {
+                    Width = 960,
+                    Height = 640,
+                    WindowStyle = WindowStyle.None,
+                    ResizeMode = ResizeMode.NoResize,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                    Content = view
+                };
+                view.ApplyResponsiveLayout(960, 640);
+                window.Show();
+                window.UpdateLayout();
+                view.ApplyResponsiveLayout(window.ActualWidth, window.ActualHeight);
+                window.UpdateLayout();
+
+                var grid = FindVisualChildren<DataGrid>(view)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskGrid")
+                    ?? throw new InvalidOperationException("Task inspector probe could not find TaskGrid after loading the view.");
+                if (grid.Items.Count < 5)
+                    throw new InvalidOperationException($"Task inspector probe expected at least five bound rows in {themeName}, found {grid.Items.Count}.");
+                var selectedTask = grid.Items[4];
+                grid.SelectedItem = selectedTask;
+                grid.ScrollIntoView(selectedTask);
+                window.UpdateLayout();
+
+                var frame = FindVisualChildren<FrameworkElement>(view)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskDetailInspectorFrame")
+                    ?? throw new InvalidOperationException("Task inspector probe could not find TaskDetailInspectorFrame.");
+                var openButton = FindVisualChildren<Button>(view)
+                    .FirstOrDefault(candidate => candidate.Name == "TaskCompactDetailsButton")
+                    ?? throw new InvalidOperationException("Task inspector probe could not find the compact open-details button.");
+                if (openButton.Visibility != Visibility.Visible)
+                    throw new InvalidOperationException($"Compact details action is not visible at 960 DIP in {themeName}.");
+
+                var openDurations = new List<double>();
+                var closeDurations = new List<double>();
+                var openFrameGaps = new List<double>();
+                var closeFrameGaps = new List<double>();
+                var openFrameCounts = 0;
+                var closeFrameCounts = 0;
+                var openIntermediateCount = 0;
+                var closeIntermediateCount = 0;
+                var selectedAnchor = grid.SelectedItem;
+
+                for (var iteration = 0; iteration < iterations; iteration++)
+                {
+                    var open = MeasureTaskInspectorTransition(
+                        window,
+                        frame,
+                        () => openButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent)),
+                        () => frame.Visibility == Visibility.Visible
+                            && Math.Abs(frame.Opacity - 1) <= 0.001
+                            && !IsTaskInspectorElementAnimating(frame),
+                        () => IsTaskInspectorElementAnimating(frame)
+                            && frame.Opacity > 0.05
+                            && frame.Opacity < 0.95,
+                        transitionTimeoutMilliseconds);
+                    openDurations.Add(open.DurationMs);
+                    openFrameGaps.AddRange(open.FrameGapsMs);
+                    openFrameCounts += open.RenderingFrames;
+                    if (open.IntermediateObserved) openIntermediateCount++;
+                    if (!open.Completed)
+                        throw new InvalidOperationException($"Task inspector did not finish opening in {themeName}, iteration {iteration + 1}.");
+                    if (grid.SelectedItem != selectedAnchor)
+                        throw new InvalidOperationException($"Task selection moved while opening the inspector in {themeName}.");
+
+                    var closeButton = FindVisualChildren<Button>(view)
+                        .FirstOrDefault(candidate => candidate.Name == "TaskCompactCloseDetailsButton")
+                        ?? throw new InvalidOperationException("Task inspector probe could not find the compact close-details button after opening the inspector.");
+                    if (closeButton.Visibility != Visibility.Visible)
+                        throw new InvalidOperationException($"Compact close-details action is not visible while the inspector is open in {themeName}.");
+
+                    var close = MeasureTaskInspectorTransition(
+                        window,
+                        frame,
+                        () => closeButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent)),
+                        () => frame.Visibility == Visibility.Collapsed
+                            && Math.Abs(frame.Opacity - 1) <= 0.001
+                            && !IsTaskInspectorElementAnimating(frame),
+                        () => IsTaskInspectorElementAnimating(frame)
+                            && frame.Opacity > 0.05
+                            && frame.Opacity < 0.95,
+                        transitionTimeoutMilliseconds);
+                    closeDurations.Add(close.DurationMs);
+                    closeFrameGaps.AddRange(close.FrameGapsMs);
+                    closeFrameCounts += close.RenderingFrames;
+                    if (close.IntermediateObserved) closeIntermediateCount++;
+                    if (!close.Completed)
+                        throw new InvalidOperationException($"Task inspector did not finish closing in {themeName}, iteration {iteration + 1}.");
+                    if (grid.SelectedItem != selectedAnchor)
+                        throw new InvalidOperationException($"Task selection moved while closing the inspector in {themeName}.");
+                }
+
+                var closeFrame = (frame.RenderTransform as TranslateTransform)?.Y ?? 0;
+                if (frame.Visibility != Visibility.Collapsed
+                    || Math.Abs(frame.Opacity - 1) > 0.001
+                    || Math.Abs(closeFrame) > 0.001
+                    || IsTaskInspectorElementAnimating(frame))
+                {
+                    throw new InvalidOperationException($"Task inspector did not normalize after {themeName} transitions.");
+                }
+
+                report.AppendLine();
+                report.AppendLine(
+                    $"TaskInspector[{themeName}] animationMode={motionProfile.Description} iterations={iterations} "
+                    + $"selectedIndex={grid.SelectedIndex} finalVisibility={frame.Visibility} finalOpacity={frame.Opacity:0.###} finalY={closeFrame:0.###}");
+                AppendTaskInspectorTransitionSummary(report, themeName, "open", openDurations, openFrameGaps, openFrameCounts, openIntermediateCount);
+                AppendTaskInspectorTransitionSummary(report, themeName, "close", closeDurations, closeFrameGaps, closeFrameCounts, closeIntermediateCount);
+            }
+            catch (Exception ex)
+            {
+                s_problems.Add($"Task inspector motion probe failed in {themeName}: {ex.Message}");
+                report.AppendLine($"TaskInspector[{themeName}] FAILED");
+                report.AppendLine(ex.ToString());
+            }
+            finally
+            {
+                window?.Close();
+            }
+        }
+
+        report.AppendLine();
+        report.AppendLine("TaskInspectorMotionProbeBoundary: routed events and Rendering callbacks are controlled WPF proxies; no Playnite host, physical input, IME or DWM presented-frame timing was sampled.");
+        foreach (var problem in s_problems)
+            report.AppendLine("PROBLEM: " + problem);
+        report.AppendLine(s_problems.Count == 0 ? "TaskInspectorMotionProbe OK" : "TaskInspectorMotionProbe FAILED");
+    }
+
+    private static TaskInspectorMotionProfile EnableTaskInspectorMotionForProbe(TaskCenterView view)
+    {
+        const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+        var animationProperty = view.GetType().GetProperty("UiAnimationsEnabled", flags);
+        if (animationProperty == null || !animationProperty.CanWrite)
+            return new TaskInspectorMotionProfile(false, "not present in this source baseline");
+
+        animationProperty.SetValue(view, true, null);
+        var systemMotionProperty = view.GetType().GetProperty("SystemMotionEnabledProviderForAudit", flags);
+        if (systemMotionProperty != null && systemMotionProperty.CanWrite)
+        {
+            systemMotionProperty.SetValue(view, new Func<bool>(() => true), null);
+            return new TaskInspectorMotionProfile(true, "enabled; audit system-motion provider pinned true");
+        }
+
+        return new TaskInspectorMotionProfile(true, "enabled; native system-motion policy");
+    }
+
+    private static TaskInspectorTransitionMeasurement MeasureTaskInspectorTransition(
+        Window window,
+        FrameworkElement frame,
+        Action trigger,
+        Func<bool> completed,
+        Func<bool> intermediate,
+        int timeoutMilliseconds)
+    {
+        var frameGaps = new List<double>();
+        var renderingFrames = 0;
+        long lastFrameTimestamp = 0;
+        EventHandler renderingHandler = (_, _) =>
+        {
+            renderingFrames++;
+            var now = Stopwatch.GetTimestamp();
+            if (lastFrameTimestamp != 0)
+                frameGaps.Add(ToMilliseconds(now - lastFrameTimestamp));
+            lastFrameTimestamp = now;
+        };
+
+        var intermediateObserved = false;
+        var stopwatch = Stopwatch.StartNew();
+        CompositionTarget.Rendering += renderingHandler;
+        try
+        {
+            trigger();
+            window.UpdateLayout();
+            var deadline = DateTime.UtcNow.AddMilliseconds(timeoutMilliseconds);
+            while (!completed() && DateTime.UtcNow < deadline)
+            {
+                PumpDispatcher(5);
+                if (!intermediateObserved && intermediate())
+                    intermediateObserved = true;
+            }
+
+            stopwatch.Stop();
+            return new TaskInspectorTransitionMeasurement(
+                stopwatch.Elapsed.TotalMilliseconds,
+                completed(),
+                intermediateObserved,
+                renderingFrames,
+                frameGaps);
+        }
+        finally
+        {
+            stopwatch.Stop();
+            CompositionTarget.Rendering -= renderingHandler;
+        }
+    }
+
+    private static bool IsTaskInspectorElementAnimating(FrameworkElement element)
+    {
+        if (DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty).IsAnimated)
+            return true;
+
+        if (element.RenderTransform is TranslateTransform translate)
+        {
+            return DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.XProperty).IsAnimated
+                || DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated;
+        }
+
+        return false;
+    }
+
+    private static void AppendTaskInspectorTransitionSummary(
+        StringBuilder report,
+        string themeName,
+        string transitionName,
+        IReadOnlyList<double> durationsMs,
+        IReadOnlyList<double> frameGapsMs,
+        int renderingFrames,
+        int intermediateObservations)
+    {
+        report.AppendLine(
+            $"SUMMARY task_inspector_{transitionName}[{themeName}] samples={durationsMs.Count} "
+            + $"median_ms={CalculatePercentile(durationsMs, 0.50):0.##} "
+            + $"p95_ms={CalculatePercentile(durationsMs, 0.95):0.##} "
+            + $"max_ms={durationsMs.Max():0.##} sampled_intermediate={intermediateObservations}/{durationsMs.Count} "
+            + $"rendering_frames={renderingFrames} frame_intervals={frameGapsMs.Count} "
+            + $"frame_gap_p95_ms={(frameGapsMs.Count == 0 ? 0 : CalculatePercentile(frameGapsMs, 0.95)):0.##} "
+            + $"max_frame_gap_ms={(frameGapsMs.Count == 0 ? 0 : frameGapsMs.Max()):0.##} "
+            + $"slow_over_16_67ms={(frameGapsMs.Count == 0 ? 0 : frameGapsMs.Count(gap => gap > 1000d / 60d))}/{frameGapsMs.Count}");
+    }
+
+    private sealed class TaskInspectorMotionProfile
+    {
+        public TaskInspectorMotionProfile(bool animationSettingAvailable, string description)
+        {
+            AnimationSettingAvailable = animationSettingAvailable;
+            Description = description;
+        }
+
+        public bool AnimationSettingAvailable { get; }
+        public string Description { get; }
+    }
+
+    private sealed class TaskInspectorTransitionMeasurement
+    {
+        public TaskInspectorTransitionMeasurement(
+            double durationMs,
+            bool completed,
+            bool intermediateObserved,
+            int renderingFrames,
+            List<double> frameGapsMs)
+        {
+            DurationMs = durationMs;
+            Completed = completed;
+            IntermediateObserved = intermediateObserved;
+            RenderingFrames = renderingFrames;
+            FrameGapsMs = frameGapsMs;
+        }
+
+        public double DurationMs { get; }
+        public bool Completed { get; }
+        public bool IntermediateObserved { get; }
+        public int RenderingFrames { get; }
+        public List<double> FrameGapsMs { get; }
     }
 
     private static void RunMotionHotChangeProbe(string outputRoot, StringBuilder report)

@@ -1,0 +1,23 @@
+{
+  "stage": ".tmp/round5-renderqa-private-20261109",
+  "before": {
+    "CFreeBytes": 7320080384,
+    "DFreeBytes": 10823155712
+  },
+  "after": {
+    "CFreeBytes": 7320076288,
+    "DFreeBytes": 10831659008
+  },
+  "deleted": [
+    ".tmp/round5-renderqa-private-20261109/build-diagnostics/ (precommit duplicate)",
+    " .tmp/round5-renderqa-private-20261109/build.cmd-console.log (precommit duplicate)",
+    ".tmp/round5-renderqa-private-20261109/default-window-monitor/ (monitor source, binaries, logs and stop flags after archiving event logs)"
+  ],
+  "retained": [
+    ".tmp/round5-renderqa-private-20261109/build-diagnostics-0258ab35/ (exact source commit; current TRX and diagnostics)",
+    ".tmp/round5-renderqa-private-20261109/output/ (latest render audit, 394 PNG)"
+  ],
+  "bytesFreedOnD": 8503296,
+  "bytesCChanged": -4096,
+  "otherTasksFilesTouched": false
+}

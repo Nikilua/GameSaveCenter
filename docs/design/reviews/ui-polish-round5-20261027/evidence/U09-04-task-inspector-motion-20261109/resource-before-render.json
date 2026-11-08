@@ -1,0 +1,21 @@
+{
+  "capturedUtc": "2026-11-08T21:20:39.9074606+00:00",
+  "drives": [
+    {
+      "name": "C",
+      "freeBytes": 7125041152,
+      "usedBytes": 207624368128
+    },
+    {
+      "name": "D",
+      "freeBytes": 9752682496,
+      "usedBytes": 285220130816
+    }
+  ],
+  "stageFilesBefore": [
+    {
+      "fileCount": 17657,
+      "bytes": 1038949445.0
+    }
+  ]
+}

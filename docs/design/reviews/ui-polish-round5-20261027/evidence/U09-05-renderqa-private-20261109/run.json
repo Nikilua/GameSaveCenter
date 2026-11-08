@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "0258ab3513c7d1bc95b8b622eead42a0fab30a76",
+  "branch": "main",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "renderQA": {
+    "exitCode": 0,
+    "desktop": "WinSta0\\GscRenderQA_da5c2ca1379f46eba408b9618c1f69bf",
+    "inputDesktopBefore": "Default",
+    "inputDesktopAfter": "Default",
+    "targetWindowShowHideEvents": 0,
+    "pngCount": 394,
+    "problemFailureErrorLines": 0,
+    "report": "render-qa-report.txt",
+    "reportBytes": 1140771,
+    "reportSha256": "3625C3992BF17CB84D7BA3F3776BF0808C84C8C9623D7252B217CDC176419751",
+    "reportSaysWorkingTreeClean": false
+  },
+  "desktopEventMonitors": {
+    "renderQA": {
+      "startUtc": "2026-11-08T18:56:33.3239365Z",
+      "endUtc": "2026-11-08T19:00:23.8016456Z",
+      "station": "WinSta0",
+      "desktop": "Default",
+      "inputDesktopStart": "Default",
+      "inputDesktopEnd": "Default",
+      "showCount": 0,
+      "hideCount": 0,
+      "exitCode": 0
+    },
+    "buildWpfTests": {
+      "startUtc": "2026-11-08T18:26:21.7459497Z",
+      "endUtc": "2026-11-08T18:55:59.1565864Z",
+      "station": "WinSta0",
+      "desktop": "Default",
+      "inputDesktopStart": "Default",
+      "inputDesktopEnd": "Default",
+      "showCount": 0,
+      "hideCount": 0,
+      "exitCode": 0,
+      "coverage": "listener started after the isolated WPF test segment had begun; covers the observed middle-to-final portion through the last class, not the earliest classes; core and Worker phases occurred before monitor start"
+    }
+  },
+  "scriptsBuild": {
+    "exitCode": 0,
+    "startedUtc": "2026-11-08T18:21:46.2340677Z",
+    "completedUtc": "2026-11-08T18:55:40.3936797Z",
+    "diagnosticDirectory": ".tmp\\round5-renderqa-private-20261109\\build-diagnostics-0258ab35\\20261108T182144753Z-1fda5f14",
+    "trxFiles": 160,
+    "testCases": 2030,
+    "passed": 1962,
+    "failed": 0,
+    "skipped": 68,
+    "wpfIsolatedClasses": 157,
+    "workingTreeClean": false,
+    "trackedSourceDiffCount": 0
+  },
+  "screenshot": {
+    "lastWriteTimeLocal": "2026-11-06T13:59:27.2791277+08:00",
+    "sha256": "67C3EBB175A78E5969A80137CFECB8C3F982C92507D14CEC868A202243159195",
+    "sameBytesAsPriorAttachment": true
+  },
+  "boundaries": [
+    "The attachment is byte-identical to the 2026-11-06 image and has no HWND/PID/desktop identity.",
+    "No production XAML changed in this batch.",
+    "No current user-visible Playnite session was observed; the exact screenshot window remains unattributed.",
+    "This is not the final Chinese root install/start acceptance; that remains required for the frozen 80-task candidate.",
+    "Untracked evidence and TestResults predating this batch were preserved; WorkingTreeClean is false because of existing untracked paths."
+  ],
+  "wpfTestIsolationIdentity": {
+    "classRecords": 157,
+    "uniquePrivateDesktops": 157,
+    "invalidRecords": 0,
+    "evidence": "wpf-desktop-identities.json"
+  }
+}

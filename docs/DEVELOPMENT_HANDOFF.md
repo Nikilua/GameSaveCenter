@@ -1,3 +1,18 @@
+## 2026-11-09 Round5 接续：闪屏未归因，U09-04探针已补充
+
+用户再次报告仍闪屏。附件二进制与11月6日相同（SHA `67C3EBB...`，原始时间11月6日），无HWND/PID/desktop；只读Computer Use本次初始化失败，无法看当前窗口。不要用私有桌面探针的Default前后稳定替代用户桌面事件证据。小批没有运行完整安装入口或重启Playnite。
+
+U09-04新探针双主题任务详情面板各12轮开合，U00没有动画、当前版有动画，选择项与终态稳定；private desktop Rendering回调间隔不是真实呈现帧，没测累计分配，任务仍进行中。Source Validation、git diff和Render QA通过；新证据见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-task-inspector-motion-20261109/README.md`。旧基线 `0258ab35` 的GitHub #1494两个SDK job均通过，证据 `evidence/U09-05-renderqa-private-20261109/ci-run-1494.json`；required-checks/ruleset依旧远端待验。
+
+本批源码改动待commit/push和新SHA CI；继续推进范围内独立UI项，不要只维护阻塞记录。U09-05最终还需对整轮冻结候选执行中文→英文完整构建/测试/打包/安装身份/启动链，独立 `scripts/build.cmd` 也按职责验证。安装入口会关闭/启动Playnite，只在最终候选运行于WinSta0私有desktop一次，绝不重复试探旧权限拒绝。未改盘符、卷、存档、媒体或云数据。
+
+## 2026-11-09 Round5 接续：Render QA 已隔离，最终宿主链待验
+
+当前远端 `main` 已包含 `0258ab3513c7d1bc95b8b622eead42a0fab30a76`。Render QA在WinSta0私有非输入桌面启动RenderHarness，按SDK8.0.423基线运行并核验输入desktop；source guard、独立build.cmd和render-qa均通过。Default桌面监听覆盖Render QA全程及WPF隔离测试中后段（最早几个类未监听），目标窗口事件均为0；旧附件SHA对应11月6日文件，无HWND/PID，因此真实用户黑窗仍未归因。证据见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-renderqa-private-20261109/README.md`。
+逐项核验完整构建的157份 WPF 测试桌面结果：157个唯一 WinSta0 私有桌面、Default 输入桌面前后未变、157个退出码为0；清单见 [逐类桌面身份](design/reviews/ui-polish-round5-20261027/evidence/U09-05-renderqa-private-20261109/wpf-desktop-identities.json)。
+源码层面仍有一个未复现的入口竞态：从 Explorer 直接打开 `.cmd` 时，控制台可能先创建、再由隐藏辅助进程隐藏；这不能认定为用户所见黑窗来源。后续本机验收从非输入桌面发起，并继续保留黑窗未归因状态。
+
+GitHub run #1494 对精确源码两个job `128830946846` 与 `128830946943` 现均completed/success，artifact身份见 `evidence/U09-05-renderqa-private-20261109/ci-run-1494.json`。U09-05保持进行中：整轮80项最终冻结候选仍须中文→英文根入口完整安装/启动链和安装身份检查；入口会关闭/重启Playnite，仅在私有desktop执行一次。后续独立UI项继续推进；不要只维护阻塞记录，也不要在小批里反复安装重启宿主。U09-06 required-check/ruleset权限此前403不重复请求。其它任务TRX/TestResults保留，不改盘符、映射、存档、媒体或云数据。
 ## 2026-11-08 Round5 接续：U09-05 黑窗仍未定位
 
 当前 `main` 为 `626a3ad90cd5b0cf72d1fbe9d8d6f566e0744ddf`，用户仍报告编译闪屏。精确中文根入口完成构建、测试、发布、打包、安装身份核验并到达 Playnite 启动成功分支，但外层日志捕获因重定向文件锁返回125，实际根进程退出码没有观察到；Default窗口监测仅过滤目标并省略初始270个窗口，不能证明全桌面无闪。入口源码会关闭/重启 Playnite，可能造成宿主切换；不要每小批反复运行它。后续小批使用独立 `scripts/build.cmd` 与 WPF私有桌面行为检查，真实用户黑窗仍需当时 HWND/PID/class/desktop 才能归因。

@@ -1,0 +1,11 @@
+{
+  "ProcessId": 23708,
+  "ExitCode": 0,
+  "Exited": true,
+  "TimedOut": false,
+  "ProcessStartedUtc": "2026-11-08T21:17:27.9402734Z",
+  "WindowStation": "WinSta0",
+  "Desktop": "GscTaskMotion_u00_52bc2a426fcd486cad6ff43a7b1e5135",
+  "InputDesktopBefore": "Default",
+  "InputDesktopAfter": "Default"
+}

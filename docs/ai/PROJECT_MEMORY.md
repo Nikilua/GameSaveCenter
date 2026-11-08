@@ -1,3 +1,19 @@
+## 2026-11-09 Round5 接续：用户仍报告闪屏，U09-04补充受控探针
+
+U09-04任务详情探针在U00 `5d0a244` 与当前生产基线 `0258ab35` 上同条件运行，Harness SHA/快照边界与报告已归档到 `evidence/U09-04-task-inspector-motion-20261109/`。当前动画和U00无动画的Action-to-settled不等价，受控私有desktop Rendering回调p95不能替代DWM帧；没有累计分配与物理输入响应，不能结项。
+
+用户仍报告屏幕闪烁。本次附件重传的是11月6日同SHA图片，无HWND/PID；Computer Use工具无法初始化，所以没有当前桌面窗口身份。所有本批WPF探针和Render QA运行在WinSta0私有非输入desktop，Default前后未变；不把该结果扩展成用户所有启动路径无闪。小批编译/行为验证不运行会关闭并重启Playnite的中文根入口；最终冻结候选仍需按授权执行一次完整链。
+
+GitHub精确旧基线 `0258ab35` run #1494 / `42513349534` 已completed/success；baseline job `128830946846` 与SDK10.0.401 job `128830946943`均成功，三份artifact identity见 `evidence/U09-05-renderqa-private-20261109/ci-run-1494.json`。required-checks/ruleset此前403，不重复请求；U09-06仍“远端待验”。当前阶段源变更待中文commit/push及新SHA CI。未触碰盘符、存档、媒体删除或云写入。
+
+## 2026-11-09 U09-05 Render QA 黑窗路径修正
+
+继续前查看Round5 `PROGRESS.md` 和 `evidence/U09-05-renderqa-private-20261109/README.md`。源码提交 `0258ab3513c7d1bc95b8b622eead42a0fab30a76` 已推送：Render QA 在私有WinSta0桌面运行并做输入桌面核验；脚本固定选择SDK8.0.423。精确提交 `scripts/build.cmd` 2030项/1962通过/0失败/68 skip，157个WPF类隔离；Default监听在WPF测试中后段目标窗口SHOW/HIDE为0（最早几个类未监听）。Render QA 394 PNG、0问题、Default窗口事件0。
+
+逐项核验完整构建的157份 WPF 测试桌面结果：157个唯一 WinSta0 私有桌面、Default 输入桌面前后未变、157个退出码为0；清单见 [逐类桌面身份](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-renderqa-private-20261109/wpf-desktop-identities.json)。
+源码层面仍有一个未复现的入口竞态：从 Explorer 直接打开 `.cmd` 时，控制台可能先创建、再由隐藏辅助进程隐藏；这不能认定为用户所见黑窗来源。后续本机验收从非输入桌面发起，并继续保留黑窗未归因状态。
+
+附件与11月6日截图SHA相同且无HWND/PID；不要据此宣称新一次闪屏已定位。U09-05仍需对整轮最终冻结候选执行真实中文→英文根入口完整链、安装身份检查并查新SHA CI；运行入口会重启Playnite，只在WinSta0私有desktop验收，不在日常桌面重复。GitHub #1494 的双SDK jobs现已completed/success，artifact identity见对应JSON；U09-06 required-check/ruleset API此前403，不重试。外部Playnite实际页面/视觉当前未验。保留既有Skip原因，不删除其它任务产物，不操作盘符、存档、媒体删除或云写。
 ## 2026-11-08 U09-05 根入口及闪屏反馈
 
 当前根入口复核在 `626a3ad90cd5b0cf72d1fbe9d8d6f566e0744ddf` 完成2030项测试（1972通过、0失败、58按原因跳过）、安装身份核验并到达Playnite启动成功分支；SDK8.0.423，ZIP/PEXT SHA `14C025D4921F1B6FA31272E8058CFC530DD953F1FE7C0B28EABBDAC7467A5383`。外层验收进程遇到重定向输出文件锁，返回125，未观察到根命令的数值退出码；不得表述为严格捕获 exit 0。Default监测只针对筛选进程，初始枚举省略270窗口；用户仍报告黑窗，U09-05不能结项。当前点位 CUA 没有可见 Playnite 条目不覆盖瞬时帧。根脚本会关闭后启动 Playnite；每批只用 `scripts/build.cmd`，不反复重启宿主。详情与 CI #1491 的 job/artifact身份见Round5 `evidence/U09-05-no-flash-20261107/root-entry-626a3ad9-20261108/README.md` 和 `ci-run-1491.json`。required-checks此前403，不重复探测，U09-06仍远端待验。Playnite/Worker无窗残留不强杀；不动盘符、映射、存档或用户数据。

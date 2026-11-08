@@ -1,0 +1,44 @@
+{
+  "capturedUtc": "2026-11-08T21:51:31.9906242Z",
+  "capturedLocal": "2026-11-09T05:51:31.9906242+08:00",
+  "scope": "One read-only EnumWindows snapshot on the current interactive session; output filtered to Playnite, GameSaveCenter, testhost, dotnet, cmd, PowerShell, and WPF/console wrapper classes.",
+  "matchingVisibleTopLevelWindows": [],
+  "matchingProcesses": [
+    {
+      "pid": 24044,
+      "name": "cmd",
+      "mainWindowHandle": "0x0",
+      "mainWindowTitle": "",
+      "startUtc": "2026-11-08T13:42:19.9376729Z"
+    },
+    {
+      "pid": 42704,
+      "name": "GameSaveCenter.Worker",
+      "mainWindowHandle": "0x0",
+      "mainWindowTitle": "",
+      "startUtc": "2026-11-08T15:40:53.5721503Z"
+    },
+    {
+      "pid": 24248,
+      "name": "Playnite.DesktopApp",
+      "mainWindowHandle": "0x0",
+      "mainWindowTitle": "",
+      "startUtc": "2026-11-08T15:40:44.1255867Z"
+    },
+    {
+      "pid": 26856,
+      "name": "pwsh",
+      "mainWindowHandle": "0x0",
+      "mainWindowTitle": "",
+      "startUtc": null
+    },
+    {
+      "pid": 44608,
+      "name": "pwsh",
+      "mainWindowHandle": "0x0",
+      "mainWindowTitle": "",
+      "startUtc": "2026-11-08T21:51:31.0299125Z"
+    }
+  ],
+  "interpretation": "No currently visible top-level window matched the listed process/class filter. This single snapshot does not detect short-lived windows, identify the attached screenshot, or establish flash-free behavior."
+}
