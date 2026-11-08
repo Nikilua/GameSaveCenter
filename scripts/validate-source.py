@@ -363,6 +363,7 @@ def check_delivery_guards() -> None:
         fail("Missing project memory document")
     package = (ROOT / "scripts/package.ps1").read_text(encoding="utf-8")
     dev_install = (ROOT / "scripts/dev-install-run.ps1").read_text(encoding="utf-8")
+    render_qa = (ROOT / "scripts/render-qa.ps1").read_text(encoding="utf-8")
     if "if ($file -eq 'extension.yaml')" not in package or "$source = $sourceManifest" not in package:
         fail("Packaging must copy extension.yaml from the source manifest, not stale bin output")
     if "Remove-Item $stage -Recurse -Force" not in package:
@@ -390,6 +391,19 @@ def check_delivery_guards() -> None:
     install_position = dev_install.find("Install-ExtensionAtomically -Source $stage")
     if not (0 <= preflight_position < build_position < package_position < shutdown_position < install_position):
         fail("Development installation must prepare the SDK, build/test/package, then stop Playnite immediately before installing")
+
+    for token in (
+        "Initialize-GscSdkBaseline -ProjectRoot $root",
+        "windows-desktop-process.ps1",
+        "GscHiddenDesktopProcess]::CurrentWindowStation()",
+        "GscHiddenDesktopProcess]::InputDesktop()",
+        "Invoke-GscHiddenDesktopProcess",
+        "GscRenderQA_",
+        "Render harness desktop isolation failed",
+        "else {\n        # Service and CI sessions do not have an interactive user desktop.",
+    ):
+        if token not in render_qa:
+            fail(f"Render QA user-desktop isolation guard is missing: {token}")
 
 
 def check_current_state_documentation() -> None:

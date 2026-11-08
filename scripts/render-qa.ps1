@@ -15,6 +15,9 @@ if ([string]::IsNullOrWhiteSpace($Output)) {
 
 Push-Location $root
 try {
+    . (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
+    Initialize-GscSdkBaseline -ProjectRoot $root | Out-Null
+
     Write-Host "==> Building render harness ($Configuration)" -ForegroundColor Cyan
     & dotnet build $harness -c $Configuration -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false
     if ($LASTEXITCODE -ne 0) { throw "render harness build failed: $LASTEXITCODE" }
@@ -39,9 +42,58 @@ try {
     $env:GSC_RENDER_SAMPLE_UTC = $sampleTime.ToUniversalTime().ToString('O', [Globalization.CultureInfo]::InvariantCulture)
     Write-Host "Sample data UTC: $env:GSC_RENDER_SAMPLE_UTC" -ForegroundColor Cyan
 
-    Write-Host "==> Rendering workspace views to $Output" -ForegroundColor Cyan
-    & $exe $Output
-    if ($LASTEXITCODE -ne 0) { throw "render harness failed: $LASTEXITCODE" }
+    $outputPath = [System.IO.Path]::GetFullPath($Output)
+    Write-Host "==> Rendering workspace views to $outputPath" -ForegroundColor Cyan
+
+    . (Join-Path $PSScriptRoot 'windows-desktop-process.ps1')
+    . (Join-Path $PSScriptRoot 'bounded-process.ps1')
+    $renderExitCode = 0
+    $windowStation = [GscHiddenDesktopProcess]::CurrentWindowStation()
+    if ([string]::Equals($windowStation, 'WinSta0', [StringComparison]::OrdinalIgnoreCase)) {
+        $inputDesktopBefore = [GscHiddenDesktopProcess]::InputDesktop()
+        $renderDesktop = 'GscRenderQA_' + [Guid]::NewGuid().ToString('N')
+        $desktopResult = Invoke-GscHiddenDesktopProcess `
+            -Application $exe `
+            -Arguments @($outputPath) `
+            -WorkingDirectory $root `
+            -TimeoutSeconds 1800 `
+            -DesktopName $renderDesktop
+
+        if ($desktopResult.TimedOut) {
+            $ownedProcess = $null
+            try {
+                $ownedProcess = [System.Diagnostics.Process]::GetProcessById([int]$desktopResult.ProcessId)
+                Stop-GscOwnedProcessTree $ownedProcess
+            }
+            finally {
+                if ($ownedProcess) { $ownedProcess.Dispose() }
+            }
+            throw "Render harness exceeded 1800 seconds on WinSta0\$renderDesktop."
+        }
+        if (-not $desktopResult.Exited) {
+            throw "Render harness did not exit on WinSta0\$renderDesktop."
+        }
+
+        $inputDesktopAfter = [GscHiddenDesktopProcess]::InputDesktop()
+        if ($desktopResult.WindowStation -ne 'WinSta0' -or
+            $desktopResult.Desktop -ne $renderDesktop -or
+            $desktopResult.InputDesktopBefore -ne $inputDesktopBefore -or
+            $desktopResult.InputDesktopAfter -ne $inputDesktopBefore -or
+            $inputDesktopAfter -ne $inputDesktopBefore) {
+            throw "Render harness desktop isolation failed. Input desktop before='$inputDesktopBefore', runner before='$($desktopResult.InputDesktopBefore)', runner after='$($desktopResult.InputDesktopAfter)', parent after='$inputDesktopAfter', runner desktop='$($desktopResult.WindowStation)\$($desktopResult.Desktop)'."
+        }
+
+        $renderExitCode = [int]$desktopResult.ExitCode
+        Write-Host "Render harness desktop: WinSta0\$renderDesktop; input desktop remained $inputDesktopBefore." -ForegroundColor DarkCyan
+    }
+    else {
+        # Service and CI sessions do not have an interactive user desktop. Keep
+        # their established execution path instead of creating an unavailable WinSta0 desktop.
+        & $exe $outputPath
+        $renderExitCode = $LASTEXITCODE
+    }
+
+    if ($renderExitCode -ne 0) { throw "render harness failed: $renderExitCode" }
     Write-Host "PNG report: $(Join-Path $Output 'render-qa-report.txt')" -ForegroundColor Green
 }
 finally {
