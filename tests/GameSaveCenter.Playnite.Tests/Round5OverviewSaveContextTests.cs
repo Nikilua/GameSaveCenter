@@ -15,12 +15,20 @@ using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GameSaveCenter.Playnite.Tests;
 
 [Collection("SelectionFrameWpf")]
 public sealed class Round5OverviewSaveContextTests
 {
+    private readonly ITestOutputHelper output;
+
+    public Round5OverviewSaveContextTests(ITestOutputHelper output)
+    {
+        this.output = output;
+    }
+
     [Fact]
     public void OverviewHeroKeepsNeutralStatusAndNextStepInStandardWindow()
     {
@@ -84,6 +92,18 @@ public sealed class Round5OverviewSaveContextTests
             };
             var data = new OverviewFixture { SelectedTask = selected };
             data.OverviewTasks.Add(selected);
+            for (var index = 1; index < 12; index++)
+            {
+                data.OverviewTasks.Add(new TaskStatusDto
+                {
+                    TaskId = "overview-background-frame-" + index,
+                    TaskType = "Backup",
+                    GameName = "合成概览任务 " + index,
+                    State = TaskState.Succeeded,
+                    ProgressPercent = 100,
+                    CreatedUtc = new DateTime(2026, 10, 20, 10, 36, 0, DateTimeKind.Utc).AddMinutes(-index)
+                });
+            }
             var overview = new OverviewView { DataContext = data };
             var window = Show(overview, 1040, 700);
             try
@@ -117,7 +137,16 @@ public sealed class Round5OverviewSaveContextTests
                     .Where(element => !element.Bounds.IsEmpty && element.Bounds.Width > 0 && element.Bounds.Height > 0)
                     .ToArray();
                 var timeBounds = R06SelectionStateBehaviorTests.VisibleBoundsRelativeTo(time, list);
-                var diagnostic = $"{theme}: list={list.ActualWidth:0.##}, item={item.ActualWidth:0.##}, chromeActual={chrome.ActualWidth:0.##}, chromeBinding={System.Windows.Data.BindingOperations.GetBindingExpression(chrome, FrameworkElement.WidthProperty)?.Status}, frame={frame}, ancestors={R06SelectionStateBehaviorTests.DescribeVisualAncestors(chrome, list)}, time={timeBounds} '{time.Text}'";
+                var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(window);
+                var listScroll = R06SelectionStateBehaviorTests.FindVisualChildren<ScrollViewer>(list).SingleOrDefault();
+                Assert.NotNull(listScroll);
+                Assert.True(listScroll!.ScrollableHeight > 0,
+                    $"{theme}: the recent-task list fixture must contain the vertical scroll range shown in production; extent={listScroll.ExtentHeight:0.##}, viewport={listScroll.ViewportHeight:0.##}.");
+                var contentPresenter = item.Template.FindName("TaskItemContent", item) as FrameworkElement;
+                var contentWidth = contentPresenter?.ActualWidth.ToString("0.##") ?? "missing";
+                var diagnostic = $"{theme} DPI={dpi.DpiScaleX:0.##}x{dpi.DpiScaleY:0.##}: list={list.ActualWidth:0.##}, viewport={listScroll?.ViewportWidth:0.##}, item={item.ActualWidth:0.##}, content={contentWidth}, chromeActual={chrome.ActualWidth:0.##}, chromeBinding={System.Windows.Data.BindingOperations.GetBindingExpression(chrome, FrameworkElement.WidthProperty)?.Status}, frame={frame}, ancestors={R06SelectionStateBehaviorTests.DescribeVisualAncestors(chrome, list)}, time={timeBounds} '{time.Text}'";
+                output.WriteLine(diagnostic);
+                R06SelectionStateBehaviorTests.CaptureVisualIfRequested(list, $"overview-{theme}.png");
 
                 Assert.True(item.IsSelected, $"The recent task selection was not applied: {diagnostic}");
                 Assert.True(timeBounds.Right <= frame.Right - 1d,

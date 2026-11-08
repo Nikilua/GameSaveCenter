@@ -1,3 +1,9 @@
+## 2026-11-09 Round5 U09-05 选框与长文像素复核
+
+基于 `3dc59152fee9e2e7e18872c13cadaee2e1c28dc8`，在三类选框回归中加入长列表/窄视口夹具与环境变量开启的像素捕获；任务详情用例同步生成窄栏长文截图。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0；8个适用WPF断言通过、0失败、0 skip，四个独立WinSta0私有桌面上的 input desktop 均保持Default。7张离屏图显示当前控件树中日期、状态/设备文字在框内，详情文字换行；这没有复现用户越界图。本批未改生产XAML/资源，不能替代Playnite宿主页。
+
+Source validation通过；WPF静态审查26 XAML、0 errors/26 warnings/164 info。证据与TRX/桌面身份/PNG见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-frame-pixel-check-20261109/README.md`。用户仍报告闪屏，截图无HWND/PID/desktop且与11月6日附件相同；本批构建/测试均隔离运行，没有重启Playnite。U09-05仍进行中，不宣称无闪已解决。入口隐藏助手在非 Explorer -> cmd 调用链保留交互终端；代理发起的构建后续须从启动时隐藏并重定向日志，不能据此反推用户截图来源。当前精确提交的CI待push后核对，整轮中文根入口完整安装启动仍待最终冻结候选。
+
 ## 2026-11-09 Round5 接续：用户仍报告闪屏，U09-04补充受控探针
 
 U09-04任务详情探针在U00 `5d0a244` 与当前生产基线 `0258ab35` 上同条件运行，Harness SHA/快照边界与报告已归档到 `evidence/U09-04-task-inspector-motion-20261109/`。当前动画和U00无动画的Action-to-settled不等价，受控私有desktop Rendering回调p95不能替代DWM帧；没有累计分配与物理输入响应，不能结项。

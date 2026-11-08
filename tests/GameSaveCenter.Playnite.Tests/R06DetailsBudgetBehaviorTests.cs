@@ -171,6 +171,8 @@ public sealed class R06DetailsBudgetBehaviorTests
                     var bounds = text.TransformToAncestor(detailCard).TransformBounds(new Rect(0, 0, text.ActualWidth, text.ActualHeight));
                     Assert.True(bounds.Left >= -1 && bounds.Right <= detailCard.ActualWidth + 1, $"Long detail overflow at {width}: {bounds}, card={detailCard.ActualWidth}.");
                 }
+                if (width == 1120 && dark)
+                    R06SelectionStateBehaviorTests.CaptureVisualIfRequested(detailCard, "task-detail-1120-dark.png");
                 var rows = FindVisualChildren<DataGridRow>(grid)
                     .Where(row => row.Visibility == Visibility.Visible && row.ActualHeight > 0)
                     .ToArray();

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="530bdfcf-4a9c-4b79-b8d8-107e34e7fc21" name="lopmatu@SULT 2026-11-09 07:04:00" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-09T07:04:00.9254519+08:00" queuing="2026-11-09T07:04:00.9254525+08:00" start="2026-11-09T07:03:54.0231743+08:00" finish="2026-11-09T07:04:02.0381169+08:00" />
+  <TestSettings name="default" id="58fa70ff-fed1-49c3-b7d0-c72ab1d3c43f">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-09_07_04_00" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="fb7c2f77-82c3-479e-82c0-444397fc8c45" testId="140ffc38-b07b-c930-d8a1-ca0658b1f3e8" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: False)" computerName="SULT" duration="00:00:00.3090000" startTime="2026-11-09T07:04:01.5658510+08:00" endTime="2026-11-09T07:04:01.8754429+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fb7c2f77-82c3-479e-82c0-444397fc8c45" />
+    <UnitTestResult executionId="7178436f-7051-4008-887a-2b00e65c5fcf" testId="7e759d9f-cf3c-d5f0-b289-1ab00ccd60f5" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: False)" computerName="SULT" duration="00:00:02.8370000" startTime="2026-11-09T07:03:58.0617147+08:00" endTime="2026-11-09T07:04:00.8837858+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7178436f-7051-4008-887a-2b00e65c5fcf" />
+    <UnitTestResult executionId="f92758f8-7b10-4f49-91c7-10d89511b936" testId="29d13afc-01bb-7773-b1f8-e1de8b1d0922" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True)" computerName="SULT" duration="00:00:00.3400000" startTime="2026-11-09T07:04:00.9090512+08:00" endTime="2026-11-09T07:04:01.2226211+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f92758f8-7b10-4f49-91c7-10d89511b936" />
+    <UnitTestResult executionId="0c91a6d4-39de-4ad1-b074-ae1d72c82339" testId="2c059097-2d84-70ba-0502-254e9210362d" testName="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: True)" computerName="SULT" duration="00:00:00.3420000" startTime="2026-11-09T07:04:01.2236204+08:00" endTime="2026-11-09T07:04:01.5658510+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c91a6d4-39de-4ad1-b074-ae1d72c82339" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: False)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="140ffc38-b07b-c930-d8a1-ca0658b1f3e8">
+      <Execution id="fb7c2f77-82c3-479e-82c0-444397fc8c45" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: True)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="29d13afc-01bb-7773-b1f8-e1de8b1d0922">
+      <Execution id="f92758f8-7b10-4f49-91c7-10d89511b936" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1120, dark: True)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2c059097-2d84-70ba-0502-254e9210362d">
+      <Execution id="0c91a6d4-39de-4ad1-b074-ae1d72c82339" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests.LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject(width: 1400, dark: False)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7e759d9f-cf3c-d5f0-b289-1ab00ccd60f5">
+      <Execution id="7178436f-7051-4008-887a-2b00e65c5fcf" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests" name="LongTaskDetailsStayInInspectorAndSelectionUpdatesTheDetailObject" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="140ffc38-b07b-c930-d8a1-ca0658b1f3e8" executionId="fb7c2f77-82c3-479e-82c0-444397fc8c45" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7e759d9f-cf3c-d5f0-b289-1ab00ccd60f5" executionId="7178436f-7051-4008-887a-2b00e65c5fcf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="29d13afc-01bb-7773-b1f8-e1de8b1d0922" executionId="f92758f8-7b10-4f49-91c7-10d89511b936" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2c059097-2d84-70ba-0502-254e9210362d" executionId="0c91a6d4-39de-4ad1-b074-ae1d72c82339" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.76]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.82]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:06.70]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

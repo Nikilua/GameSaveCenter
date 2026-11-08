@@ -1,3 +1,9 @@
+## 2026-11-09 U09-05 选框像素复核；闪屏继续未归因
+
+基于已推送 `3dc59152fee9e2e7e18872c13cadaee2e1c28dc8`，扩大 Overview/Task Grid/Save History 长列表窄视口回归，并为任务详情长文增加可选离屏截图。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0、0 warning/error；四个私有WPF测试类8/8通过、0失败、0 skip；Source Validation通过，WPF静态26 XAML/0 errors/26 warnings/164 info。7张RenderTargetBitmap显示选框内时间、任务状态/进度、存档设备字样都在框内，长详情会换行；本批未改生产XAML或资源。详细日志、TRX、桌面身份、图片哈希见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-frame-pixel-check-20261109/README.md`。
+
+用户仍报告闪屏。附件没有HWND/PID/desktop，与11月6日图片相同；本批WPF窗口全在WinSta0私有非输入桌面，未执行完整安装启动入口、没有重启Playnite。此受控结果不能证明用户桌面无闪；U09-05继续进行中。 入口隐藏助手只在 Explorer -> cmd 链路实际隐藏父控制台；Codex/PowerShell链路会保留其交互终端，是本代理直接启动命令时的潜在闪窗路径。后续代理构建从启动时使用隐藏进程并重定向日志；这不识别用户截图中的黑窗来源。精确候选CI待push后核对；Round5最终中文根入口链、真实宿主页和required-checks均未因本批结项。未操作盘符/卷/映射、存档、媒体或云数据。
+
 ## 2026-11-09 U09-04/U09-05 继续：任务详情探针与闪屏未归因
 
 本批从已推送基线 `0258ab3513c7d1bc95b8b622eead42a0fab30a76` 继续。RenderHarness新增双主题任务详情开合探针及显式构建身份守卫；U00/current快照的Harness编译均SDK8.0.423 Release、0 warning/0 error，探针12轮/主题完成。当前受控窗口p95和Rendering回调不是实际呈现帧，且未测分配，U09-04继续进行中。Render QA重跑394 PNG、无问题；代码没有生产XAML改动。证据见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-04-task-inspector-motion-20261109/README.md`。

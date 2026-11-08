@@ -1,3 +1,11 @@
+## 2026-11-09 U09-05：选框离屏像素复核
+
+沿用户指出的右缘问题扩展三类既有选框WPF回归至长列表与约493–500 DIP窄视口，并在任务详情长文用例加入环境变量启用的离屏截图。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0、0警告/错误；定向四用例8/8通过，覆盖双主题/多尺寸的 Overview、Task Grid、Save History 与 Task Detail。七张 `RenderTargetBitmap` 图显示当前控件树中时间、状态、设备文字在选框内，详情文字换行；未复现框外文字。本批没有改生产XAML/共享资源/业务命令。
+
+Source validation通过；WPF静态审查26个生产XAML、0 error/26 warning/164 info。测试进程各在唯一 `WinSta0\GscR5Capture_*` 私有桌面，输入桌面前后均为Default。证据与PNG/TRX/哈希见 [U09-05像素复核](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-frame-pixel-check-20261109/README.md)。离屏控件树不等于真实Playnite页面。
+
+用户继续报告闪屏，U09-05仍未解决。本批没有运行安装/启动入口或重启Playnite，截图没有窗口身份，隔离测试通过不能作为无闪保证。入口隐藏助手在非 Explorer -> cmd 调用链保留交互终端，后续代理发起的构建需全程隐藏并写日志；这只是代理运行路径的潜在闪窗来源，未确认用户黑窗身份。精确提交的CI与最终中文完整构建/安装启动链仍待核。未触碰盘符、映射、存档、媒体或云端数据。
+
 ## 2026-11-09 U09-05 补齐 Render QA 桌面隔离
 
 精确代码提交 `0258ab3513c7d1bc95b8b622eead42a0fab30a76` 已推送。`scripts/render-qa.ps1` 选项目SDK基线并在WinSta0私有非输入桌面运行RenderHarness，父/子执行前后校验输入桌面；`scripts/validate-source.py` 对隔离逻辑加源码守卫。旧截图SHA与11月6日相同，没有新窗口身份；因此记录修复了一个可控闪窗路径，但不认定历史/当前用户黑窗由它造成。

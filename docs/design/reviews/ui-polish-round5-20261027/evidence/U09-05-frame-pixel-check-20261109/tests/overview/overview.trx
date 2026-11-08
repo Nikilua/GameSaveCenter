@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="71e05dc3-5426-40f2-a5cf-1247fc694325" name="lopmatu@SULT 2026-11-09 07:03:28" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-09T07:03:28.8219868+08:00" queuing="2026-11-09T07:03:28.8219871+08:00" start="2026-11-09T07:03:22.2777349+08:00" finish="2026-11-09T07:03:29.1716902+08:00" />
+  <TestSettings name="default" id="78929bc6-11a2-4775-877f-9d7b0fa8dfbb">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-09_07_03_28" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="384f7da9-a3fa-4db7-b494-14dd053026a2" testId="ea123e8a-c669-fe4d-b0d0-f851a070cd79" testName="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Dark)" computerName="SULT" duration="00:00:02.4970000" startTime="2026-11-09T07:03:26.3024257+08:00" endTime="2026-11-09T07:03:28.7852479+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="384f7da9-a3fa-4db7-b494-14dd053026a2">
+      <Output>
+        <StdOut>Dark DPI=1.5x1.5: list=957.33, viewport=943.33, item=943.33, content=923.33, chromeActual=939.33, chromeBinding=Active, frame=1.33333333333333,1.33333333333333,939.333333333333,54, ancestors=Border#TaskItemChrome[939.33x54; clip=False] &lt;- Grid#[943.33x54; clip=True] &lt;- ListBoxItem#[943.33x54; clip=False] &lt;- VirtualizingStackPanel#[943.33x418; clip=False] &lt;- ItemsPresenter#[943.33x418; clip=False] &lt;- SCP[1.33333333333333,1.33333333333333,943.333333333333,418; actual=943.33x418; viewport=0x0; offset=0; extent=0; clip=False] &lt;- Grid#[955.33x418; clip=False] &lt;- SV[1.33333333333333,1.33333333333333,955.333333333333,418; viewport=943.33x7; offset=0; extent=943.33] &lt;- Border#Bd[957.33x420; clip=False] &lt;- ListBox#OverviewActivityList[957.33x420; clip=False], time=872,20,58.6666666666666,16 '10-20 18:36'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="afc01825-9333-457f-94ca-9e83747f7025" testId="0e168926-643b-05d1-df78-26ca5acbdac1" testName="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Light)" computerName="SULT" duration="00:00:00.2230000" startTime="2026-11-09T07:03:28.8052289+08:00" endTime="2026-11-09T07:03:29.0088508+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="afc01825-9333-457f-94ca-9e83747f7025">
+      <Output>
+        <StdOut>Light DPI=1.5x1.5: list=957.33, viewport=943.33, item=943.33, content=923.33, chromeActual=939.33, chromeBinding=Active, frame=1.33333333333333,1.33333333333333,939.333333333333,54, ancestors=Border#TaskItemChrome[939.33x54; clip=False] &lt;- Grid#[943.33x54; clip=True] &lt;- ListBoxItem#[943.33x54; clip=False] &lt;- VirtualizingStackPanel#[943.33x418; clip=False] &lt;- ItemsPresenter#[943.33x418; clip=False] &lt;- SCP[1.33333333333333,1.33333333333333,943.333333333333,418; actual=943.33x418; viewport=0x0; offset=0; extent=0; clip=False] &lt;- Grid#[955.33x418; clip=False] &lt;- SV[1.33333333333333,1.33333333333333,955.333333333333,418; viewport=943.33x7; offset=0; extent=943.33] &lt;- Border#Bd[957.33x420; clip=False] &lt;- ListBox#OverviewActivityList[957.33x420; clip=False], time=872,20,58.6666666666666,16 '10-20 18:36'</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Dark)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ea123e8a-c669-fe4d-b0d0-f851a070cd79">
+      <Execution id="384f7da9-a3fa-4db7-b494-14dd053026a2" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests" name="SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Light)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0e168926-643b-05d1-df78-26ca5acbdac1">
+      <Execution id="afc01825-9333-457f-94ca-9e83747f7025" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests" name="SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ea123e8a-c669-fe4d-b0d0-f851a070cd79" executionId="384f7da9-a3fa-4db7-b494-14dd053026a2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0e168926-643b-05d1-df78-26ca5acbdac1" executionId="afc01825-9333-457f-94ca-9e83747f7025" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.43]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.77]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.82]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.59]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,147 @@
+[
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\build\\build-console.txt",
+    "Bytes": 1481,
+    "Sha256": "28D202A05E7983C36719BB9A11EFC3F5627B3E648A5CD10EAE8270B47699A137"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\build\\restore-console.txt",
+    "Bytes": 86,
+    "Sha256": "0A5293E62D3BB4D8819D8D749F51206D3AA424744E622337BEE96070823F245B"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\build\\sdk-info-console.txt",
+    "Bytes": 1606,
+    "Sha256": "85A5EE09CB4EC4D1CE14E67A8A421F8514DC955842B7D55C3191EFF4534E9D2F"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\build\\sdk-list-console.txt",
+    "Bytes": 78,
+    "Sha256": "3959CD1EDD590DDB1913A8568F7945A2AAEC221C52DD031A4CBD211B167BCAE6"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\build\\sdk-version-console.txt",
+    "Bytes": 9,
+    "Sha256": "70EC4CC548877BF3C7F1258C67D15D57E69E464F013BFA39B457BA0B566E6D08"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\build\\summary.json",
+    "Bytes": 242439,
+    "Sha256": "386A5E535A1660C1122962B55BBF6B7CDD371AB551291E3195FE130EF8B0247E"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\captures\\overview-Dark.png",
+    "Bytes": 114951,
+    "Sha256": "A84EEA9E5DBB663250BDF7C1BBB67FD63529D02590C6A6DC128859FA46936A99"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\captures\\overview-Light.png",
+    "Bytes": 114128,
+    "Sha256": "775575981271760F4E67E9F51DCDB59A361C6045D738B5ADD9087C0C8E2A2C45"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\captures\\save-history-Dark-493.png",
+    "Bytes": 18872,
+    "Sha256": "6A4A4802E5C07F0CFE7DF0D3F0019F35BDBFA30BE1E297B3057CC9FC2DEDBED3"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\captures\\save-history-Light-493.png",
+    "Bytes": 21029,
+    "Sha256": "59BC8AE4797E543FCB8EE3BDC35A2E14966DDDF79BADC98B9F4CC7A3316C61DB"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\captures\\task-detail-1120-dark.png",
+    "Bytes": 214894,
+    "Sha256": "A832BF2F37B492B61883EB2CD37736FA9ABFC2D213AD644D4494C223478DF49E"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\captures\\task-grid-Dark-500.png",
+    "Bytes": 103157,
+    "Sha256": "B4B598CE29E9E95B0DE08957C77B4E4F500A3411AF604971978CD40E3B3BCC40"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\captures\\task-grid-Light-500.png",
+    "Bytes": 101291,
+    "Sha256": "6868CD7E7FB294267CF82BF0BAC38F91BF5DBB0C5496F086ED33E19800D1952F"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\diagnostics\\initial-build-failure\\build-console.txt",
+    "Bytes": 3227,
+    "Sha256": "457309E6E99701757B4ADB6B5214A63E8220C6F242BF0838CE5322BC0B9A59C4"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\diagnostics\\initial-build-failure\\summary.json",
+    "Bytes": 236139,
+    "Sha256": "6E850716C63B03BE3359CA4C5B1CDCCCDB6E03B141D1F985E4A59903C1E09545"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\quality-checks.txt",
+    "Bytes": 1295,
+    "Sha256": "DD7E14CFA3FAB0D32B2E1EF6F1A44B6CE1E6824B63D3FE56B5B10800E5D93627"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\README.md",
+    "Bytes": 4079,
+    "Sha256": "1AFA994498A319BE3EA9851D5004938C710C885F2FCA0CF2FEA2309A2E7663D9"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\overview\\overview-console.txt",
+    "Bytes": 1294,
+    "Sha256": "8FBAE295BA76B410DB12EAE9AC3BF3BAE9F2D9822960948F1A6C89771E0D4A66"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\overview\\overview-result.json",
+    "Bytes": 588,
+    "Sha256": "E6CC0BED73524AE2A8CB5AACFC00732592267913D5297394D2A3CBFFAF9FC4E8"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\overview\\overview.trx",
+    "Bytes": 6683,
+    "Sha256": "96CB86FBD0BA360DC7F3EA60942F0DEB967199E961380A7A95121F0DDAAD5112"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\save-history\\save-history-console.txt",
+    "Bytes": 1176,
+    "Sha256": "AD7998B4AADC87154A6D70C64D213F09B08BDABD3EC57F19D8EFCA8FF1A07FE6"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\save-history\\save-history-result.json",
+    "Bytes": 588,
+    "Sha256": "EA722C80FBE69509447606C058125E58B2FDAD77B6B3FAA2338A7CCF3267DE3C"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\save-history\\save-history.trx",
+    "Bytes": 14305,
+    "Sha256": "409BF7DA006F0A95BD456CA6F06CB46C11ED73CED2FC18F4E2FEC881321A66AB"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\task-detail\\task-detail-console.txt",
+    "Bytes": 1691,
+    "Sha256": "0E8D978BCA72713537996D117D752FC4AABE5460C2E1651AB95CF99851703E89"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\task-detail\\task-detail-result.json",
+    "Bytes": 588,
+    "Sha256": "3ED154FD7AE4167DCC412377114CB65C6D5C584AA011C6CED856F2F2AEB1DF5F"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\task-detail\\task-detail.trx",
+    "Bytes": 8234,
+    "Sha256": "A22ED46FA76896E4D7382051E9CF8D7F545F4A36CB4CF4754BFC7B97DDBDEE53"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\task-grid\\task-grid-console.txt",
+    "Bytes": 1157,
+    "Sha256": "541A50C6B4F5802DB7B92EF804BE93A76F27E485A40D82BBEC4D0A2D88449AEB"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\task-grid\\task-grid-result.json",
+    "Bytes": 588,
+    "Sha256": "2A861110B9E9C1E7A02E15D44072873A3A6CA031866584B3359781B6E01700FB"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\task-grid\\task-grid.trx",
+    "Bytes": 10620,
+    "Sha256": "3540B09BEA6AB442F15A63C08AF149ADB907E9919A64A63B1D6FEA7695425B9B"
+  }
+]

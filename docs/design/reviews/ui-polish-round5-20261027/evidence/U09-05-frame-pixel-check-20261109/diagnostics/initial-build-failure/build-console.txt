@@ -1,0 +1,22 @@
+  GameSaveCenter.Contracts -> [repo]\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> [repo]\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> [repo]\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> [repo]\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\.tmp\round5-frame-boundaries-20261109\build-output\bin\GameSaveCenter.Playnite.HostAuditSeeder\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+[repo]\tests\GameSaveCenter.Playnite.Tests\Round5OverviewSaveContextTests.cs(130,201): error CS8076: 以“{”开头的插补的表达式缺少结束分隔符“}”。 [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\tests\GameSaveCenter.Playnite.Tests\Round5OverviewSaveContextTests.cs(130,203): error CS8361: 不可在字符串内插中直接使用条件表达式，因为内插已 “:” 结尾。请用括号将条件表达式括起来。 [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\tests\GameSaveCenter.Playnite.Tests\Round5OverviewSaveContextTests.cs(130,321): error CS1002: 应输入 ; [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\tests\GameSaveCenter.Playnite.Tests\Round5OverviewSaveContextTests.cs(130,328): error CS1002: 应输入 ; [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+
+生成失败。
+
+[repo]\tests\GameSaveCenter.Playnite.Tests\Round5OverviewSaveContextTests.cs(130,201): error CS8076: 以“{”开头的插补的表达式缺少结束分隔符“}”。 [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\tests\GameSaveCenter.Playnite.Tests\Round5OverviewSaveContextTests.cs(130,203): error CS8361: 不可在字符串内插中直接使用条件表达式，因为内插已 “:” 结尾。请用括号将条件表达式括起来。 [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\tests\GameSaveCenter.Playnite.Tests\Round5OverviewSaveContextTests.cs(130,321): error CS1002: 应输入 ; [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+[repo]\tests\GameSaveCenter.Playnite.Tests\Round5OverviewSaveContextTests.cs(130,328): error CS1002: 应输入 ; [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+    0 个警告
+    4 个错误
+
+已用时间 00:02:21.23

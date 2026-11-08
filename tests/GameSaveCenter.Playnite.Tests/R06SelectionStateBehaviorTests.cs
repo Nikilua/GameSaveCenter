@@ -9,6 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Markup;
 using System.Windows.Threading;
 using System.Xml.Linq;
@@ -322,6 +323,30 @@ public sealed class R06SelectionStateBehaviorTests
         }
 
         return string.Join(" <- ", descriptions);
+    }
+
+    internal static void CaptureVisualIfRequested(FrameworkElement visual, string fileName)
+    {
+        var captureRoot = Environment.GetEnvironmentVariable("GSC_SELECTION_FRAME_CAPTURE_ROOT");
+        if (string.IsNullOrWhiteSpace(captureRoot))
+            return;
+
+        if (visual.ActualWidth <= 0 || visual.ActualHeight <= 0)
+            throw new InvalidOperationException($"Cannot capture an unrealized selection-frame visual: {visual.GetType().Name} {visual.ActualWidth:0.##}x{visual.ActualHeight:0.##}.");
+
+        Directory.CreateDirectory(captureRoot);
+        var dpi = VisualTreeHelper.GetDpi(visual);
+        var bitmap = new RenderTargetBitmap(
+            (int)Math.Ceiling(visual.ActualWidth * dpi.DpiScaleX),
+            (int)Math.Ceiling(visual.ActualHeight * dpi.DpiScaleY),
+            dpi.PixelsPerInchX,
+            dpi.PixelsPerInchY,
+            PixelFormats.Pbgra32);
+        bitmap.Render(visual);
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using var stream = File.Create(Path.Combine(captureRoot, fileName));
+        encoder.Save(stream);
     }
 
     private static void AssertGeometryUnchanged(Rect[] expected, Rect[] actual, string state)

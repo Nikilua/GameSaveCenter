@@ -7,6 +7,7 @@ using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
+using Xunit.Abstractions;
 using static GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests;
 
 namespace GameSaveCenter.Playnite.Tests;
@@ -14,6 +15,13 @@ namespace GameSaveCenter.Playnite.Tests;
 [Collection("SelectionFrameWpf")]
 public sealed class R06SaveHistorySelectionFrameBehaviorTests
 {
+    private readonly ITestOutputHelper output;
+
+    public R06SaveHistorySelectionFrameBehaviorTests(ITestOutputHelper output)
+    {
+        this.output = output;
+    }
+
     [Fact]
     public void SelectedSaveHistoryFrameContainsVisibleTextAfterHorizontalScrollInBothThemes()
     {
@@ -44,6 +52,7 @@ public sealed class R06SaveHistorySelectionFrameBehaviorTests
             try
             {
                 foreach (var theme in new[] { GameSaveCenterThemeMode.Light, GameSaveCenterThemeMode.Dark })
+                foreach (var gridWidth in new[] { 493d, 740d })
                 {
                     ApplyTheme(view, view.Resources, theme);
                     if (!window.IsVisible)
@@ -52,9 +61,10 @@ public sealed class R06SaveHistorySelectionFrameBehaviorTests
                     PumpLayout(window);
 
                     var grid = Assert.IsType<DataGrid>(view.FindName("SaveHistoryGrid"));
-                    // Match the table pane width in the supplied capture. At the full page
-                    // width the star-sized note column expands and leaves no scroll range.
-                    grid.Width = 740;
+                    // The supplied capture is about 740 physical pixels wide. At the
+                    // current 150% display scale that is about 493 DIP; keep the former
+                    // 740-DIP case as a comparison so narrow-host regressions cannot hide.
+                    grid.Width = gridWidth;
                     grid.HorizontalAlignment = HorizontalAlignment.Left;
                     PumpLayout(window);
                     var row = grid.ItemContainerGenerator.ContainerFromItem(selected) as DataGridRow
@@ -65,31 +75,40 @@ public sealed class R06SaveHistorySelectionFrameBehaviorTests
                     var scroll = Assert.Single(FindVisualChildren<ScrollViewer>(grid));
                     Assert.True(scroll.ScrollableWidth > 0,
                         $"{theme}: fixture must retain the horizontal-scroll viewport shown in the user screenshot; extent={scroll.ExtentWidth:0.##}, viewport={scroll.ViewportWidth:0.##}.");
-                    scroll.ScrollToHorizontalOffset(Math.Min(88, scroll.ScrollableWidth));
-                    PumpLayout(window);
+                    Assert.True(scroll.ScrollableHeight > 0,
+                        $"{theme} {gridWidth:0.##} DIP: fixture must retain the version-history vertical scroll range; extent={scroll.ExtentHeight:0.##}, viewport={scroll.ViewportHeight:0.##}.");
+                    if (gridWidth < 500)
+                        CaptureVisualIfRequested(grid, $"save-history-{theme}-{gridWidth:0}.png");
+                    foreach (var requestedOffset in new[] { 0d, Math.Min(88, scroll.ScrollableWidth), scroll.ScrollableWidth }.Distinct())
+                    {
+                        scroll.ScrollToHorizontalOffset(requestedOffset);
+                        PumpLayout(window);
 
-                    var frame = VisibleBoundsRelativeTo(ChromeFor(row), grid);
-                    var visibleContent = FindVisualChildren<DataGridCell>(row)
-                        .SelectMany(cell => FindVisualChildren<FrameworkElement>(cell)
-                            .Where(element => element is TextBlock
-                                || element is Border border && !string.Equals(border.Name, "CellChrome", StringComparison.Ordinal))
-                            .Select(element => new
-                            {
-                                Cell = cell.Column.DisplayIndex,
-                                Element = element,
-                                Bounds = VisibleBoundsRelativeTo(element, grid),
-                                Value = element is TextBlock text ? text.Text : element.Name
-                            }))
-                        .Where(item => !item.Bounds.IsEmpty && item.Bounds.Width > 0 && item.Bounds.Height > 0)
-                        .ToArray();
-                    var rightmost = visibleContent.OrderByDescending(item => item.Bounds.Right).FirstOrDefault()
-                        ?? throw new InvalidOperationException($"{theme}: no visible save-history cell content was measured after horizontal scrolling.");
-                    var diagnostic = $"{theme}: grid={grid.ActualWidth:0.##}, row={row.ActualWidth:0.##}, visibleFrame={frame}, ancestors={DescribeVisualAncestors(ChromeFor(row), grid)}, rightmostCell[{rightmost.Cell}]={rightmost.Bounds}, element={rightmost.Element.GetType().Name}/{rightmost.Element.Name} '{rightmost.Value}', offset={scroll.HorizontalOffset:0.##}, viewport={scroll.ViewportWidth:0.##}, extent={scroll.ExtentWidth:0.##}";
+                        var frame = VisibleBoundsRelativeTo(ChromeFor(row), grid);
+                        var visibleContent = FindVisualChildren<DataGridCell>(row)
+                            .SelectMany(cell => FindVisualChildren<FrameworkElement>(cell)
+                                .Where(element => element is TextBlock
+                                    || element is Border border && !string.Equals(border.Name, "CellChrome", StringComparison.Ordinal))
+                                .Select(element => new
+                                {
+                                    Cell = cell.Column.DisplayIndex,
+                                    Element = element,
+                                    Bounds = VisibleBoundsRelativeTo(element, grid),
+                                    Value = element is TextBlock text ? text.Text : element.Name
+                                }))
+                            .Where(item => !item.Bounds.IsEmpty && item.Bounds.Width > 0 && item.Bounds.Height > 0)
+                            .ToArray();
+                        var rightmost = visibleContent.OrderByDescending(item => item.Bounds.Right).FirstOrDefault()
+                            ?? throw new InvalidOperationException($"{theme} {gridWidth:0.##} DIP offset {scroll.HorizontalOffset:0.##}: no visible save-history cell content was measured.");
+                        var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(window);
+                        var diagnostic = $"{theme} gridTarget={gridWidth:0.##} DIP DPI={dpi.DpiScaleX:0.##}x{dpi.DpiScaleY:0.##}: grid={grid.ActualWidth:0.##}, row={row.ActualWidth:0.##}, visibleFrame={frame}, ancestors={DescribeVisualAncestors(ChromeFor(row), grid)}, rightmostCell[{rightmost.Cell}]={rightmost.Bounds}, element={rightmost.Element.GetType().Name}/{rightmost.Element.Name} '{rightmost.Value}', offset={scroll.HorizontalOffset:0.##}/{scroll.ScrollableWidth:0.##}, viewport={scroll.ViewportWidth:0.##}, extent={scroll.ExtentWidth:0.##}";
+                        output.WriteLine(diagnostic);
 
-                    Assert.True(frame.Width > 0 && frame.Height > 0, $"Selected frame is not visible: {diagnostic}");
-                    Assert.All(visibleContent, item => Assert.True(
-                        item.Bounds.Right <= frame.Right - 1d,
-                        $"Visible save-history content escaped the selected frame: {diagnostic}; offendingCell[{item.Cell}]={item.Bounds} element={item.Element.GetType().Name}/{item.Element.Name} '{item.Value}'."));
+                        Assert.True(frame.Width > 0 && frame.Height > 0, $"Selected frame is not visible: {diagnostic}");
+                        Assert.All(visibleContent, item => Assert.True(
+                            item.Bounds.Right <= frame.Right - 1d,
+                            $"Visible save-history content escaped the selected frame: {diagnostic}; offendingCell[{item.Cell}]={item.Bounds} element={item.Element.GetType().Name}/{item.Element.Name} '{item.Value}'."));
+                    }
                 }
             }
             finally
@@ -105,6 +124,18 @@ public sealed class R06SaveHistorySelectionFrameBehaviorTests
         {
             SelectedBackup = selected;
             Backups = new ObservableCollection<BackupVersionDto> { selected };
+            for (var index = 1; index < 20; index++)
+            {
+                Backups.Add(new BackupVersionDto
+                {
+                    BackupId = "background-save-history-" + index,
+                    CreatedUtc = new DateTime(2026, 7, 29, 13, 5, 0, DateTimeKind.Utc).AddMinutes(-index * 10),
+                    FileCount = 2,
+                    TotalBytes = 10_000 + index,
+                    SourceDevice = "备用合成设备 " + index,
+                    Comment = "用于形成真实滚动区域的合成历史行。"
+                });
+            }
         }
 
         public ObservableCollection<BackupVersionDto> Backups { get; }

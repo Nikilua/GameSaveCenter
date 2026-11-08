@@ -1,0 +1,7 @@
+Source validation: PASS, scripts/validate-source.py .
+WPF static review: PASS, 26 production XAML files; 0 errors, 26 existing warnings, 164 info. Scan scoped to src/GameSaveCenter.Playnite.
+Focused WPF behavior: PASS, four isolated test processes; 8 passed, 0 failed, 0 skipped. Each process was WinSta0 on a unique GscR5Capture_* desktop; input desktop remained Default before/after.
+Pixel captures: seven RenderTargetBitmap images at current 150% process DPI, screenshots reviewed for selected Overview timestamp/status, Task queue status/progress, Save History text, and long Task detail wrapping. This is a controlled WPF render, not a screen capture or Playnite host run.
+Production XAML/resources: unchanged in this batch. Full render-qa was not repeated; current commit 3dc59152 has its own run #1495 successful baseline and SDK10 jobs.
+Flash status: unresolved. This batch used private WPF desktops and did not launch, close, or restart Playnite. The attached dark window has no HWND/PID/desktop identity; a current process snapshot alone cannot explain an intermittent flash.
+Local build: scripts/build.cmd -SkipTests, Release, .NET SDK 8.0.423, exit 0, 0 warnings/errors. Focused behavior tests are recorded separately; this is not the required final full build/install/start chain.
