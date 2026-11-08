@@ -1,3 +1,9 @@
+## 2026-11-08 Round5 接续：U09-05 黑窗仍未定位
+
+当前 `main` 为 `626a3ad90cd5b0cf72d1fbe9d8d6f566e0744ddf`，用户仍报告编译闪屏。精确中文根入口完成构建、测试、发布、打包、安装身份核验并到达 Playnite 启动成功分支，但外层日志捕获因重定向文件锁返回125，实际根进程退出码没有观察到；Default窗口监测仅过滤目标并省略初始270个窗口，不能证明全桌面无闪。入口源码会关闭/重启 Playnite，可能造成宿主切换；不要每小批反复运行它。后续小批使用独立 `scripts/build.cmd` 与 WPF私有桌面行为检查，真实用户黑窗仍需当时 HWND/PID/class/desktop 才能归因。
+
+精确SHA workflow #1491 双SDK jobs均success（baseline `128691845992`、SDK10 `128691846130`），required-checks/ruleset读取此前403，U09-06远端待验。根入口日志、安装报告、包与窗口监测边界见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/root-entry-626a3ad9-20261108/README.md`。旧 Playnite/Worker 无窗进程不强杀；不改盘符、映射、存档或用户数据。
+
 ## 2026-11-06 Round5 当前冻结候选与真实宿主边界
 
 冻结源码 f0d2b8f1 在非活动桌面通过独立 build.cmd 及中文根入口完整链，两个入口均退出 0。Windows CI #1473 双 SDK 通过。当前状态以 Round5 总表为准，6 项已满足、71 项代码完成待验收、2 项进行中、1 项远端待验。 [Round5 进度](design/reviews/ui-polish-round5-20261027/PROGRESS.md)

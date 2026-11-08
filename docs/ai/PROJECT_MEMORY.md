@@ -1,3 +1,7 @@
+## 2026-11-08 U09-05 根入口及闪屏反馈
+
+当前根入口复核在 `626a3ad90cd5b0cf72d1fbe9d8d6f566e0744ddf` 完成2030项测试（1972通过、0失败、58按原因跳过）、安装身份核验并到达Playnite启动成功分支；SDK8.0.423，ZIP/PEXT SHA `14C025D4921F1B6FA31272E8058CFC530DD953F1FE7C0B28EABBDAC7467A5383`。外层验收进程遇到重定向输出文件锁，返回125，未观察到根命令的数值退出码；不得表述为严格捕获 exit 0。Default监测只针对筛选进程，初始枚举省略270窗口；用户仍报告黑窗，U09-05不能结项。当前点位 CUA 没有可见 Playnite 条目不覆盖瞬时帧。根脚本会关闭后启动 Playnite；每批只用 `scripts/build.cmd`，不反复重启宿主。详情与 CI #1491 的 job/artifact身份见Round5 `evidence/U09-05-no-flash-20261107/root-entry-626a3ad9-20261108/README.md` 和 `ci-run-1491.json`。required-checks此前403，不重复探测，U09-06仍远端待验。Playnite/Worker无窗残留不强杀；不动盘符、映射、存档或用户数据。
+
 ## 2026-11-08 Round5 U09-05 / R08 按压采样复查
 
 继续任务前先读最新 Round5 `PROGRESS.md` 和证据 `evidence/U09-05-no-flash-20261107/r08-press-capture-20261108/README.md`。用户仍报告黑窗。`b573fea` 的 10 分钟输入 Default WinEvent监测0次，只覆盖独立全测后段；不能宣称手动启动或宿主已无闪。附件截图为11/6文件时间，无HWND/PID。新测试修正仅把测试克隆模板内 PressedOverlay 时窗设到1600ms并放宽有界采样超时；不要把它改成生产动画，也不能删断言或扩大skip。

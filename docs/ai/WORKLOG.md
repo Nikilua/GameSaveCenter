@@ -13202,3 +13202,12 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 
 - 用户最新反馈仍有闪屏。静态检查确认 `scripts/build.cmd` 调用隐藏 PowerShell 的 `build.ps1`，不启动 Playnite；中文完整入口转交 `GameSaveCenter-Run.cmd`，执行 `dev-install-run.ps1`，在 build/test/package 后关闭 Playnite 和其自有 Worker、替换扩展，再普通显示启动 Playnite。重复完整链会重复切换宿主窗口；这是已确认的闪窗候选机制，截图缺 HWND/PID，尚不能把当时窗口确认为该机制产生。
 - 调整后续验证方式：依赖满足的小批编译/行为检查使用 build.cmd，不反复运行重启宿主的全链。冻结候选仍需完整根链，验收启动要避免重复打扰用户桌面。当前旧 Playnite/Worker PID 23488/30516未操作；没有操作卷、盘符、映射、存档或用户数据。
+
+## 2026-11-08 U09-05 中文根入口核对与再次闪屏反馈
+
+- 在精确提交 `626a3ad90cd5b0cf72d1fbe9d8d6f566e0744ddf` 上运行真实中文入口 `GameSaveCenter-一键构建安装运行.cmd`，经 `GameSaveCenter-Run.cmd` 调用 `scripts/dev-install-run.ps1`。SDK8.0.423 / Release，构建/发布/打包/安装身份核验成功并到达 `[OK] Build, verification, installation and Playnite startup completed.`。160份TRX共2030项、1972通过、0失败、0 error/timeout/abort、58 skip、157个WPF隔离类；58 skip为57条旧“今日工作台”架构断言和1条默认跳过的系统指针用例，不计通过。更早的第一次根链有10个Named Pipe skip并在安装权限处失败，保留为失败历史。
+- ZIP与PEXT各45,739,069 bytes、同SHA-256 `14C025D4921F1B6FA31272E8058CFC530DD953F1FE7C0B28EABBDAC7467A5383`；安装版本0.6.73 / DLL 0.6.73.0，六个程序集构建身份及 SHA 见[根入口证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/root-entry-626a3ad9-20261108/README.md)。源码`src/tests/scripts`与此前已验证SHA `92bd9de`一致；工作树存在其他任务未跟踪结果，未纳入本次变更或清理。
+- 外层验收器因 stdout 重定向文件锁报 `RunnerExit=125`，根日志本身到达成功分支；源文件写明该分支 `exit /b 0` 且中文包装器转交 `%ERRORLEVEL%`，但没有捕获根进程数值退出码。严格最终exit-code门禁未满足记录要求，不能把外层125或源码路径推断写成“观察到根入口0”。
+- `WinSta0\Default`过滤监测从19:58:19至20:27:54、目标事件0；初始枚举省略270个其他窗口，故不能证明全桌面无闪。用户再次指出仍有黑窗；截图无HWND/PID/class。脚本会先关闭Playnite/Worker，再普通启动Playnite，是宿主界面变化候选，但没有归因证据。CUA只读清单当前没有可见Playnite条目，不能排除历史/瞬时窗口。Playnite PID35464与Worker PID36964在进程快照仍存活、主窗口句柄0；非破坏性WM_CLOSE等待超时后窗口数降为0，未强杀。
+- GitHub workflow #1491 / run `42467986641` 精确绑定该SHA且completed/success；baseline job `128691845992` 15/15步、SDK10.0.401 job `128691846130` 8/8步。预览artifact `13614316082`（90,793,906 bytes，digest `191d38469bbad2c4e241e489c98322e10dc4b37661896378d345dc44d0d8fe01`），baseline诊断 `13614211372`（2,524,233 bytes，digest `29f2077b4b681527466f2ceaa0481c96be22a83da6832c6d4b840af7ddb0c8c7`），SDK10诊断 `13613231252`（1,279,813 bytes，digest `d8de151fdd02e397c3fcfad5f4afe0d3d681bad20754660b11214dccadd9dcf2`）。required-checks/ruleset此前403，不重试，U09-06仍远端待验；证据 `ci-run-1491.json`。
+- U09-05保持进行中；后续小批只运行独立 `scripts/build.cmd` 或隔离定向检查，不反复运行完整入口重启宿主。未操作盘符/卷/映射、真实恢复、媒体删除、云写入。`artifacts/`包、完整诊断与 `.tmp`任务审计/性能目录保留供当前阶段使用，不清理未知或运行占用文件。

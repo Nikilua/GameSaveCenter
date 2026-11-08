@@ -1,3 +1,11 @@
+## 2026-11-08 U09-05 根入口复核后仍收到闪屏反馈
+
+精确 `626a3ad90cd5b0cf72d1fbe9d8d6f566e0744ddf` 的中文完整入口成功完成 build/test、Worker发布、打包、安装身份核验并到达Playnite启动成功分支：2030项、1972通过、0失败、58 skip，SDK8.0.423，ZIP/PEXT一致 SHA 与六个安装程序集身份见 [根入口证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/root-entry-626a3ad9-20261108/README.md)。但外层监控因输出文件锁退出125，没有捕获根命令进程最终码；不能记录为观察到的 exit 0。
+
+用户指出仍闪屏。`Default` 监控目标事件为0，但初始枚举省略270个窗口；当前 CUA 应用清单也只是时点快照。该完整入口会关闭并重启 Playnite，是潜在可见变化，尚无 HWND/PID/class 可将其认定为用户黑窗来源。Playnite/Worker 当前只读进程快照仍存活且没有主窗口句柄，未强杀。小批继续仅用独立 `scripts/build.cmd` 和隔离行为检查；不重复运行完整安装入口。U09-05保持进行中，U09-06 required-checks/ruleset权限此前403仍远端待验。
+
+当前 SHA `626a3ad` 的 GitHub run #1491 / `42467986641` 已 completed/success：baseline job `128691845992` 15/15步，SDK10 job `128691846130` 8/8步；artifact identity见上述证据 `ci-run-1491.json`。未修改盘符、卷或映射；未操作存档、媒体、云端数据。
+
 ## 2026-11-08 Round5 U09-05 黑窗复核与 R08 本机采样修正
 
 用户再次报告编译仍闪屏。附件文件记录时间为 2026-11-06 13:59:27，没有 HWND/PID/桌面身份；U09-05 保持进行中。`b573fea7210d810eef221721395b007da96d7458` 的 10 分钟 `WinSta0\Default` 顶层 `EVENT_OBJECT_SHOW/HIDE` 监听为 0 次，覆盖该次独立全测后段；不能外推至手动 Explorer 启动或真实 Playnite 页面。本次只读桌面清单没有 Playnite 窗口，旧进程 23488/30516 无 MainWindowHandle；不重复启动、不强杀。
