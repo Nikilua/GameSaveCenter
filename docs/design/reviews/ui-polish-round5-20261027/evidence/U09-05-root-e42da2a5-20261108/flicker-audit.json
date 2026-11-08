@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "observedAtLocal": "2026-11-09T00:05:48.1710211+08:00",
+  "rootRun": {
+    "executionDesktop": "GscRootExitRetry_6fae9270ee654214bacc2368bd247805",
+    "inputDesktopBefore": "Default",
+    "inputDesktopAfter": "Default",
+    "rootExitCode": 0
+  },
+  "screenshotFileMetadata": {
+    "available": true,
+    "lastWriteTime": "2026-11-06T13:59:27.2791277+08:00",
+    "bytes": 150954,
+    "sha256": "67C3EBB175A78E5969A80137CFECB8C3F982C92507D14CEC868A202243159195",
+    "hasHwndPidOrDesktopIdentity": false
+  },
+  "targetPids": [
+    24248,
+    42704
+  ],
+  "processSnapshot": [
+    {
+      "pid": 42704,
+      "name": "GameSaveCenter.Worker",
+      "startTime": "2026-11-08T23:40:53.5721503+08:00",
+      "windowHandleFromDefaultProbe": "0x0",
+      "responding": true
+    },
+    {
+      "pid": 24248,
+      "name": "Playnite.DesktopApp",
+      "startTime": "2026-11-08T23:40:44.1255867+08:00",
+      "windowHandleFromDefaultProbe": "0x0",
+      "responding": true
+    }
+  ],
+  "visibleWindowsByDesktop": [
+    {
+      "desktop": "Default",
+      "openSucceeded": true,
+      "windows": []
+    },
+    {
+      "desktop": "GscRootExitRetry_6fae9270ee654214bacc2368bd247805",
+      "openSucceeded": true,
+      "windows": [
+        {
+          "hwnd": "0x3630A2C",
+          "pid": 24248,
+          "title": "Playnite",
+          "class": "HwndWrapper[Playnite.DesktopApp.exe;;60dc4b3e-2a61-4b44-9520-36ff6e5eadd4]",
+          "rect": "86,84-2265,1237"
+        }
+      ]
+    }
+  ],
+  "limitation": "Point-in-time enumeration only; it does not capture transient windows and does not identify the screenshot HWND/PID."
+}

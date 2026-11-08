@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+  "extensionManifestVersion": "0.6.73",
+  "dllFileVersion": "0.6.73.0",
+  "package": [
+    {
+      "file": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "bytes": 45739040,
+      "sha256": "9A99CCC6293D88D1D7F24384FFFA4B7E88BA00DCB98033F0A32DE1C82641ADDD"
+    },
+    {
+      "file": "artifacts/GameSaveCenter-0.6.73.pext",
+      "bytes": 45739040,
+      "sha256": "9A99CCC6293D88D1D7F24384FFFA4B7E88BA00DCB98033F0A32DE1C82641ADDD"
+    }
+  ],
+  "installedAssemblyRoot": "[user-profile]/AppData/Roaming/Playnite/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+  "installedAssemblies": [
+    {
+      "file": "GameSaveCenter.Playnite.dll",
+      "buildIdentity": "0.6.73+e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+      "fileVersion": "0.6.73.0",
+      "bytes": 2279936,
+      "sha256": "8426332EF19439907551F19F77750728D2880ACA26F03D9FD75474506F3DF34E"
+    },
+    {
+      "file": "GameSaveCenter.Core.dll",
+      "buildIdentity": "0.6.73+e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+      "fileVersion": "0.6.73.0",
+      "bytes": 79872,
+      "sha256": "16DD2305C1AFB12AA4B6D29A8784632C10D37FA275896DF9C9625C8B8CCDCE60"
+    },
+    {
+      "file": "GameSaveCenter.Contracts.dll",
+      "buildIdentity": "0.6.73+e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+      "fileVersion": "0.6.73.0",
+      "bytes": 317440,
+      "sha256": "4E711BEE79E41A509DB7113277126A953A10AC11D1F0C4C2E65B49B89DDC8E50"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Worker.dll",
+      "buildIdentity": "0.6.73+e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+      "fileVersion": "0.6.73.0",
+      "bytes": 1545216,
+      "sha256": "CBCFB8D0714BDEF92D73B99BF9B51F7612ACE2E8F3501DFD06A75194D564D78A"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Core.dll",
+      "buildIdentity": "0.6.73+e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+      "fileVersion": "0.6.73.0",
+      "bytes": 79360,
+      "sha256": "925A7E9F644266969559384300E1EFDDD905A7EB25A0DB5775DF30BC91616C07"
+    },
+    {
+      "file": "Worker/GameSaveCenter.Contracts.dll",
+      "buildIdentity": "0.6.73+e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+      "fileVersion": "0.6.73.0",
+      "bytes": 316928,
+      "sha256": "94F3F49373C6E5DC342D1E8BD84F05077D6CCFE87BF6D7EA1A25444E57BA8A22"
+    }
+  ],
+  "allAssemblyBuildIdentitiesMatchSource": true
+}

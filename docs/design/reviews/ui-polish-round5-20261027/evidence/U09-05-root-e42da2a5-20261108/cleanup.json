@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "stage": ".tmp/round5-u09-05-root-exit-20261108/",
+  "deleted": [
+    {
+      "path": ".tmp/round5-u09-05-root-exit-20261108/graceful-close-private-playnite.ps1",
+      "bytes": 1124,
+      "reason": "One-off graceful-close helper was not launched: CreateProcess failed before the script ran. No product process was terminated."
+    }
+  ],
+  "retained": [
+    "stage-start.json",
+    "root-entry-result.json",
+    "root-entry-result-retry.json",
+    "failure-1/failure-record.json",
+    "failure-1/build-summary.json",
+    "failure-1/one-click-install-failure.log",
+    "failure-1/root-entry-result.json",
+    "graceful-close-result.json"
+  ],
+  "reparsePointsChecked": 0,
+  "docsReferencesChecked": 0,
+  "diskFreeBytes": {
+    "C": {
+      "before": 7089999872,
+      "after": 7089999872,
+      "delta": 0
+    },
+    "D": {
+      "before": 10900512768,
+      "after": 10900516864,
+      "delta": 4096
+    }
+  },
+  "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force; exact file path only"
+}

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+  "sourceEquivalentCommit": "626a3ad90cd5b0cf72d1fbe9d8d6f566e0744ddf",
+  "trackedSourceScriptChangesSinceEquivalentCommit": [],
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "entrypoint": "GameSaveCenter-一键构建安装运行.cmd -> GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1",
+  "attempts": [
+    {
+      "attempt": 1,
+      "startedUtc": "2026-11-08T14:37:19.7823445Z",
+      "completedUtc": "2026-11-08T15:11:57.7919699Z",
+      "exitCode": 1,
+      "outcome": "failed during extension install because workspace sandbox denied the authorized Playnite AppData write",
+      "buildTestPackageStages": "passed before install",
+      "rawFailureLogSha256": "511A3D30280DA2AC3F98DDE073667AFF8120E23FB63803A3ECA5A3CA024942FD",
+      "failureSummarySha256": "DC6533566C391EAA408C10D50C4784EB563E5AE7B469D3A52D8104A9B16D244D"
+    },
+    {
+      "attempt": 2,
+      "startedUtc": "2026-11-08T15:14:48.4140693Z",
+      "completedUtc": "2026-11-08T15:40:44.4242354Z",
+      "exitCode": 0,
+      "processExited": true,
+      "timedOut": false,
+      "stdoutRedirected": false,
+      "stderrRedirected": false,
+      "windowStation": "WinSta0",
+      "executionDesktop": "GscRootExitRetry_6fae9270ee654214bacc2368bd247805",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default"
+    }
+  ],
+  "testSummary": {
+    "source": "artifacts/build-diagnostics/20261108T151452539Z-a56b3d8a/summary.json",
+    "sha256": "265AEE16101BC45AD29F0ABE9822B65E349A7353F28880868C1E8584B0FACC3F",
+    "trxFileCount": 160,
+    "testCaseCount": 2030,
+    "passed": 1972,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "skipped": 58,
+    "wpfIsolatedClassRunCount": 157,
+    "counterMismatchCount": 0,
+    "groups": [
+      {
+        "id": "core",
+        "testCaseCount": 157,
+        "passed": 157,
+        "failed": 0,
+        "skipped": 0,
+        "trxFileCount": 1
+      },
+      {
+        "id": "playnite-source",
+        "testCaseCount": 575,
+        "passed": 557,
+        "failed": 0,
+        "skipped": 18,
+        "trxFileCount": 1
+      },
+      {
+        "id": "worker",
+        "testCaseCount": 401,
+        "passed": 401,
+        "failed": 0,
+        "skipped": 0,
+        "trxFileCount": 1
+      },
+      {
+        "id": "playnite-wpf-isolated",
+        "testCaseCount": 897,
+        "passed": 857,
+        "failed": 0,
+        "skipped": 40,
+        "trxFileCount": 157
+      }
+    ],
+    "skippedReasons": [
+      {
+        "count": 57,
+        "reason": "Assertions tied to the previously revoked 今日工作台 UI architecture; not counted as passed."
+      },
+      {
+        "count": 1,
+        "reason": "System pointer movement test is opt-in; not counted as passed."
+      }
+    ]
+  },
+  "buildDiagnosticLogDirectory": "artifacts/build-diagnostics/20261108T151452539Z-a56b3d8a/",
+  "successfulRootLog": {
+    "path": "artifacts/one-click-install.log",
+    "bytes": 121564,
+    "sha256": "6289D2D3DF1102E22E2B38195F6DD4A23F77BAB271AC898B3733241E0E062180",
+    "redactedPath": "one-click-redacted.log",
+    "redactedBytes": 121154,
+    "redactedSha256": "6E658E613DCA53CB78A28F1588C0243AE40469E7B81ACF6B6D173423F8AFCD6A"
+  },
+  "firstAttemptFailureArtifactsRetained": true,
+  "sourceTreeChangedDuringRootRun": false
+}

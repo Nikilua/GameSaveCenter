@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "observedAtLocal": "2026-11-09T00:24:12.7977587+08:00",
+  "playnitePID": 24248,
+  "workerPID": 42704,
+  "executionDesktop": "GscRootExitRetry_6fae9270ee654214bacc2368bd247805",
+  "closeRequest": {
+    "hwnd": "0x3630A2C",
+    "windowTitle": "Playnite",
+    "windowClass": "HwndWrapper[Playnite.DesktopApp.exe;;60dc4b3e-2a61-4b44-9520-36ff6e5eadd4]",
+    "posted": true,
+    "win32Error": 0
+  },
+  "wait": {
+    "playniteExitedAfter20Seconds": false,
+    "workerExitedAfter10Seconds": false
+  },
+  "remaining": [
+    {
+      "Id": 42704,
+      "ProcessName": "GameSaveCenter.Worker"
+    },
+    {
+      "Id": 24248,
+      "ProcessName": "Playnite.DesktopApp"
+    }
+  ],
+  "forcedTermination": false,
+  "conclusion": "A normal WM_CLOSE was posted on the same private desktop. Both processes remained after the bounded wait; no forced termination was performed. Default desktop visibility conclusion remains the separate point-in-time record in flicker-audit.json."
+}

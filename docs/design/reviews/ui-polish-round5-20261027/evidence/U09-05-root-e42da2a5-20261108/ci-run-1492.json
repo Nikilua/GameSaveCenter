@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "workflow": {
+    "name": "Windows 构建验证",
+    "path": ".github/workflows/windows-build.yml",
+    "runNumber": 1492,
+    "runId": 42485016157,
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42485016157",
+    "event": "push",
+    "branch": "main",
+    "headSha": "e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+    "status": "completed",
+    "conclusion": "success",
+    "attempt": 1,
+    "startedUtc": "2026-11-08T13:27:02Z",
+    "completedUtc": "2026-11-08T14:26:46Z"
+  },
+  "jobs": [
+    {
+      "id": 128744888778,
+      "name": "编译、测试与打包",
+      "sdk": "8.0.423 (repository baseline)",
+      "headSha": "e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+      "status": "completed",
+      "conclusion": "success",
+      "completedSteps": 15,
+      "jobUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42485016157/job/128744888778",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK",
+        "源码结构检查",
+        "诊断采集自测",
+        "SDK 基线与缺失负例",
+        "编译与测试",
+        "离屏渲染 QA",
+        "WPF UI 静态审查",
+        "生成 Playnite 扩展包",
+        "上传构建产物",
+        "保留构建与测试诊断（包括失败）",
+        "Post 安装 .NET SDK",
+        "Post 检出代码",
+        "Complete job"
+      ]
+    },
+    {
+      "id": 128744889050,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "headSha": "e42da2a5bd33e8988acb0b31218bdd66b3d96048",
+      "status": "completed",
+      "conclusion": "success",
+      "completedSteps": 8,
+      "jobUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42485016157/job/128744889050",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK 10.0.401",
+        "隔离工作树并运行 Release 编译与测试",
+        "保留 SDK 10.0.401 构建诊断（包括失败）",
+        "Post 安装 .NET SDK 10.0.401",
+        "Post 检出代码",
+        "Complete job"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13620617446,
+      "name": "GameSaveCenter-build-diagnostics",
+      "bytes": 2521232,
+      "digest": "sha256:7255293622c04b7440fc367c17ffeebc007c08f3f562e21c5b5ad5b1f3424829",
+      "headSha": "e42da2a5bd33e8988acb0b31218bdd66b3d96048"
+    },
+    {
+      "id": 13620569198,
+      "name": "GameSaveCenter-windows-preview",
+      "bytes": 90793236,
+      "digest": "sha256:710ad03b5ac5dc860557e5d086c21923541417174257ed635fc1c33466335d10",
+      "headSha": "e42da2a5bd33e8988acb0b31218bdd66b3d96048"
+    },
+    {
+      "id": 13620171847,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "bytes": 1277613,
+      "digest": "sha256:d097a99bc7a27400c2c96e5bfda9cc2f9dd00036410ccfe865d1de143a04dbb9",
+      "headSha": "e42da2a5bd33e8988acb0b31218bdd66b3d96048"
+    }
+  ],
+  "requiredChecks": {
+    "status": "remote-pending",
+    "reason": "Branch-protection/ruleset required-check read previously returned HTTP 403; no permission retry was made.",
+    "nextStep": "A maintainer supplies read-only branch-protection access or the configured required-check names."
+  },
+  "source": "GitHub Actions read-only run, jobs, and artifacts API responses fetched during this stage."
+}
