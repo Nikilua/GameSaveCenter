@@ -1,0 +1,39 @@
+{
+  "phase": "2026-11-08 R08 press capture fix",
+  "preflight": {
+    "normalizedRepoRoot": "D:\\workplace\\github\\GameSaveCenter",
+    "normalizedTmpRoot": "D:\\workplace\\github\\GameSaveCenter\\.tmp",
+    "pathsWithinTmp": true,
+    "reparsePoints": 0,
+    "runningTesthostOrDotnetProcesses": 0,
+    "archivedEvidenceVerified": true
+  },
+  "removed": [
+    {
+      "path": ".tmp/r5-r08-recheck-20261108",
+      "entries": 18,
+      "bytes": 22360,
+      "reparsePoints": 0
+    },
+    {
+      "path": ".tmp/r5-r08-fixture-fix-20261108/recheck",
+      "entries": 27,
+      "bytes": 21792,
+      "reparsePoints": 0
+    }
+  ],
+  "remainingPathsExist": false,
+  "removeCommand": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+  "freeSpaceBytes": {
+    "before": { "C": 4905639936, "D": 12138852352 },
+    "after": { "C": 4905639936, "D": 12138979328 },
+    "change": { "C": 0, "D": 126976 }
+  },
+  "retained": [
+    ".tmp/r5-r08-fixture-fix-20261108/output",
+    "artifacts/build-diagnostics/20261107T070912587Z-cbd34762",
+    "artifacts/build-diagnostics/20261108T071604443Z-5eabd02b",
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/r08-press-capture-20261108"
+  ],
+  "otherTaskOutputsTouched": false
+}

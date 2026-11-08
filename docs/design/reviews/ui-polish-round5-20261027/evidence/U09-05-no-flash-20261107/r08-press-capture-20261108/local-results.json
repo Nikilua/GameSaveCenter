@@ -1,0 +1,42 @@
+{
+  "testedCommitBeforePatch": "b573fea7210d810eef221721395b007da96d7458",
+  "testedSourceBlobAfterPatch": "c9432aab21e1b5559da1582e0add0d02c7fc4baf",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "compile": {
+    "command": "scripts/build.cmd -SkipTests -OutputRoot .tmp/r5-r08-fixture-fix-20261108/output",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0,
+    "xamlFiles": 26,
+    "diagnostics": "artifacts/build-diagnostics/20261108T071604443Z-5eabd02b"
+  },
+  "sourceValidation": { "passed": true, "command": "python scripts/validate-source.py" },
+  "gitDiffCheck": { "passed": true, "command": "git diff --check" },
+  "testAssemblySha256": "BF037240E27CF8631C74A0C621EFFA061EAD679B578F783EC244D888EBD2C4B0",
+  "patchedFocusedRuns": [
+    { "desktop": "GscWpfTest_db98064e396243968b6aa4e8becd1674", "inputDesktopBefore": "Default", "inputDesktopAfter": "Default", "total": 1, "passed": 1, "failed": 0, "skipped": 0, "exitCode": 0, "trx": "tests/press-sampling-after-fix-01.trx", "trxSha256": "03708A076D059DF70D64E1C8A6A3CC74A56D01A55DE5DCF9AF1B6D82B02CDC21" },
+    { "desktop": "GscWpfTest_94f2e36118534ea496c6dde4adcad1f1", "inputDesktopBefore": "Default", "inputDesktopAfter": "Default", "total": 1, "passed": 1, "failed": 0, "skipped": 0, "exitCode": 0, "trx": "tests/press-sampling-after-fix-02.trx", "trxSha256": "42CBDB5527177FF7935448C0BEEB57005C51BA4EAA8B37ADC0B562BB3D51DA57" },
+    { "desktop": "GscWpfTest_d0143f8ad4884e3c9f33309b2dcf47b1", "inputDesktopBefore": "Default", "inputDesktopAfter": "Default", "total": 1, "passed": 1, "failed": 0, "skipped": 0, "exitCode": 0, "trx": "tests/press-sampling-after-fix-03.trx", "trxSha256": "477B33E8BEA2AD2C5ED75D18AC8601444F70776869E16529C813C6ADA8B3895D" }
+  ],
+  "prePatchRechecks": {
+    "focusedCase": "tests/single-case-b573-pre-fix-pass.trx",
+    "focusedCaseSha256": "541D4E2083F470E5071FEF41543679CCCEBCE3814A66EF1CBD720E3DC84E37DC",
+    "fullR08Class": "tests/full-class-b573-pre-fix-pass.trx",
+    "fullR08ClassSha256": "F67C52E3C1004249E427C2CBD105ACD9788FA61B2DB702DE5BF2CDB6FC85C811",
+    "previousFullBuildFailure": "tests/full-build-b573-pre-fix-failure.trx",
+    "previousFullBuildFailureSha256": "4B35B9797D0B81335F8B8DA5E2CA680903820CDDEC035F3966667B30B461D379"
+  },
+  "windowMonitor": {
+    "commit": "b573fea7210d810eef221721395b007da96d7458",
+    "windowStationDesktop": "WinSta0\\Default",
+    "startedUtc": "2026-11-07T07:19:36.8677304Z",
+    "completedUtc": "2026-11-07T07:29:36.9389121Z",
+    "durationSeconds": 600,
+    "eventCount": 0,
+    "scope": "top-level EVENT_OBJECT_SHOW/HIDE; covers the latter part of that isolated test run only"
+  },
+  "fullBuildAndInstallStartup": "pending on the frozen patch commit",
+  "playniteVisualHost": "not launched or visually verified in this batch",
+  "requiredChecks": "remote pending; prior branch-protection/ruleset read returned 403"
+}

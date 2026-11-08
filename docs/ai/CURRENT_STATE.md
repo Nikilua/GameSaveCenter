@@ -1,3 +1,11 @@
+## 2026-11-08 Round5 U09-05 黑窗复核与 R08 本机采样修正
+
+用户再次报告编译仍闪屏。附件文件记录时间为 2026-11-06 13:59:27，没有 HWND/PID/桌面身份；U09-05 保持进行中。`b573fea7210d810eef221721395b007da96d7458` 的 10 分钟 `WinSta0\Default` 顶层 `EVENT_OBJECT_SHOW/HIDE` 监听为 0 次，覆盖该次独立全测后段；不能外推至手动 Explorer 启动或真实 Playnite 页面。本次只读桌面清单没有 Playnite 窗口，旧进程 23488/30516 无 MainWindowHandle；不重复启动、不强杀。
+
+该 SHA 的本机独立完整 `scripts/build.cmd` 在 R08 按压入口中间帧断言失败（第77/157个WPF类）；测试未被删弱。相同旧程序集的单用例1/1、类4/4通过后，当前只调整测试夹具：PressedOverlay本地时窗1600ms，探针超时有界覆盖，生产XAML/动效资源和断言未改。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0、0 warning/0 error、XAML26/26；Source Validation、diff-check通过；当前精确测试程序集SHA `BF037240E27CF8631C74A0C621EFFA061EAD679B578F783EC244D888EBD2C4B0` 下定向1/1运行三次均通过、0 skip，三次均在私有非输入桌面且Default不变。证据见[本批目录](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/r08-press-capture-20261108/README.md)。更新源码的独立完整测试、中文安装启动链、新 SHA 双 SDK CI仍待做；当前未声称黑窗已解决。
+
+`b573fea` CI #1489 / run `42349851252` 两个适用 job成功：SDK基线 `128335451147`、SDK10.0.401 `128335451280`；required checks/ruleset仍因先前403远端待验。Playnite实际UI、实体键盘/IME/UIA/物理DPI未验；未操作盘符或映射，未做真实恢复/媒体删除/云写入。
+
 ## 2026-11-07 Round5 U09-05 WPF 测试窗隔离更新：0feff185
 
 提交 `0feff18501a5ec971e3d7fb2ba212e8d0d28e0ac` 已推送。交互式本机的每个 WPF 测试类现运行在 WinSta0 私有非输入桌面；SDK8.0.423 的独立 `scripts/build.cmd` 完整链为 2030 项 / 1962 通过 / 0 失败 / 68 既有 skip，157 个 WPF 类隔离，Default 桌面事件监测 0 次显示。Q10 定向动画 1/1；源检查、PowerShell 语法、WPF 静态审查均通过。精确 SHA 的 Windows CI #1486 双 SDK job 均成功。细节见[Round5 进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)及[本批证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-hidden-wpf-20261107/README.md)。

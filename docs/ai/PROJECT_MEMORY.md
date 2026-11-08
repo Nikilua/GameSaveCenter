@@ -1,3 +1,11 @@
+## 2026-11-08 Round5 U09-05 / R08 按压采样复查
+
+继续任务前先读最新 Round5 `PROGRESS.md` 和证据 `evidence/U09-05-no-flash-20261107/r08-press-capture-20261108/README.md`。用户仍报告黑窗。`b573fea` 的 10 分钟输入 Default WinEvent监测0次，只覆盖独立全测后段；不能宣称手动启动或宿主已无闪。附件截图为11/6文件时间，无HWND/PID。新测试修正仅把测试克隆模板内 PressedOverlay 时窗设到1600ms并放宽有界采样超时；不要把它改成生产动画，也不能删断言或扩大skip。
+
+该 SHA 的全量 `scripts/build.cmd` 曾在R08按压入口中点失败；同一旧程序集定向1/1、R08完整类4/4通过。新夹具源码本地SDK8.0.423 `scripts/build.cmd -SkipTests`编译0 warning/error、XAML26/26、Source Validation和diff-check通过；目标行为三次分别在WinSta0私有桌面1/1、输入 Default未变。下一步提交中文修正并push，查新SHA workflow两个SDK job；随后对冻结新SHA运行独立完整`build.cmd`和中文根入口完整安装身份/启动链。真实Playnite进程23488与Worker 30516仍存在、无主窗口句柄；不要重复启动或强杀。所有测试和安装启动继续放到非输入桌面，完整记录Default窗口事件。
+
+CI `b573fea` run #1489 (`42349851252`) 已成功：SDK基线job `128335451147`、SDK10 job `128335451280`，artifact身份见本批README。required-checks/ruleset接口此前403，不重试，U09-06仍远端待验。U09-05不结项。未操作盘符/用户数据。
+
 ## 2026-11-07 Round5 U09-05 WPF 窗口隔离实施提示
 
 冻结候选 `0feff18501a5ec971e3d7fb2ba212e8d0d28e0ac` 已把交互式本机 WPF 测试类放到 WinSta0 私有非输入桌面；不能再将它们移回 Default，也不要用CodexSandbox desktop验收动画时钟。完整独立 `scripts/build.cmd` 与精确 SHA CI 双 SDK 均通过，Default 桌面事件监测为 0。中文根入口安装/启动到达明确成功分支，但外层 PowerShell 输出捕获被 Playnite/Worker 继承的句柄留住，关闭 `--shutdown` 也超时；没有强杀。复查时保持候选不变，先读Round5最新 PROGRESS 与 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-hidden-wpf-20261107/local-results.json`。截图仍无 HWND/PID，所以不能宣称窗口身份已识别或所有手动启动绝无闪现；U09-05尚未结项。
