@@ -1,0 +1,29 @@
+{
+  "sha": "92bd9de13bd40c13806fb0cba8900ada2e379fc2",
+  "run": "scripts/build.cmd",
+  "arguments": [
+    "-OutputRoot",
+    ".tmp/r5-r08-final-full-20261108/output"
+  ],
+  "sdk": "8.0.423",
+  "station": "WinSta0",
+  "monitoredDesktop": "WinSta0\\Default",
+  "inputDesktop": "Default",
+  "monitorStartedUtc": "2026-11-08T07:49:26.5131228Z",
+  "buildStartedUtc": "2026-11-08T07:49:26.5157664Z",
+  "buildCompletedUtc": "2026-11-08T08:26:34.9348950Z",
+  "monitorCompletedUtc": "2026-11-08T08:26:34.9402675Z",
+  "buildExitCode": 0,
+  "observedTopLevelShowHideEvents": 0,
+  "matchingWindowEvents": [],
+  "matchingProcessFilter": [
+    "testhost",
+    "Playnite",
+    "GameSaveCenter",
+    "cmd",
+    "powershell",
+    "pwsh",
+    "WerFault",
+    "ConsoleWindowClass"
+  ]
+}

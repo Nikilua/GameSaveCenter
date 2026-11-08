@@ -1,0 +1,36 @@
+{
+  "stage": "U09-05 full build no-flash 2026-11-08",
+  "deletedPaths": [
+    ".tmp/r5-r08-final-full-20261108/"
+  ],
+  "resolvedTarget": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\r5-r08-final-full-20261108",
+  "targetBytes": 169300382.0,
+  "outputBytes": 169265234.0,
+  "files": 728,
+  "reparsePoints": 0,
+  "activeBuildProcesses": 0,
+  "evidenceCopiesVerified": {
+    "windowMonitorSha256": "04154750660F17296FD2E076A3AF9B5AFD405D890622194C578343FA5312CDAB",
+    "trxManifestSha256": "379BC12F3EE4D734720BA586AED9153B83BE4D58B5149D629D84BC7824E8545E"
+  },
+  "freeBytesBefore": {
+    "D": 11950292992,
+    "C": 4907458560
+  },
+  "freeBytesAfter": {
+    "D": 12121559040,
+    "C": 4907458560
+  },
+  "observedFreeSpaceDelta": {
+    "D": 171266048,
+    "C": 0
+  },
+  "retained": [
+    "artifacts/build-diagnostics/20261108T074929337Z-a6ae1e37/",
+    "docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/full-build-no-flash-20261108/",
+    "tests/GameSaveCenter.Playnite.Tests/TestResults/ (其他任务输出，未触碰)"
+  ],
+  "volumeMappingsModified": false,
+  "otherTaskArtifactsOrTestResultsTouched": false,
+  "deletedAtUtc": "2026-11-08T08:59:17.5326247Z"
+}

@@ -1,0 +1,69 @@
+{
+  "workflow": {
+    "name": "Windows 构建验证",
+    "path": ".github/workflows/windows-build.yml",
+    "runNumber": 1490,
+    "runId": 42459902671,
+    "attempt": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "headBranch": "main",
+    "headSha": "92bd9de13bd40c13806fb0cba8900ada2e379fc2",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42459902671"
+  },
+  "jobs": [
+    {
+      "id": 128666747381,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAtUtc": "2026-11-08T07:42:49Z",
+      "completedAtUtc": "2026-11-08T08:15:41Z",
+      "steps": 8,
+      "diagnosticsArtifact": {
+        "id": 13610475659,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "sizeBytes": 1278945,
+        "sha256": "4876f23877623874671e8f2a16221d1f8302350b3d84a592832305dce2d1d196",
+        "expiresAtUtc": "2026-11-22T08:15:35Z"
+      }
+    },
+    {
+      "id": 128666747608,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAtUtc": "2026-11-08T07:42:50Z",
+      "completedAtUtc": "2026-11-08T08:49:08Z",
+      "steps": 15
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13610836964,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90793668,
+      "sha256": "162f7b7955c8b0a2ef7c87425329afa13241c4f821247ab8881ae2e51de2e4bf",
+      "expiresAtUtc": "2027-02-06T07:42:47Z"
+    },
+    {
+      "id": 13610448945,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2524028,
+      "sha256": "89ccc21dd9929d63fdf8da5a10e6a757f41c6ad2e08d0c9e368f53bb3d82131e",
+      "expiresAtUtc": "2026-11-22T08:49:02Z"
+    },
+    {
+      "id": 13610475659,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 1278945,
+      "sha256": "4876f23877623874671e8f2a16221d1f8302350b3d84a592832305dce2d1d196",
+      "expiresAtUtc": "2026-11-22T08:15:35Z"
+    }
+  ],
+  "requiredChecks": {
+    "read": false,
+    "reason": "此前读取分支保护/规则集返回403；不重复试探。维护者提供只读读取权限或当前required-checks截图后再核对。"
+  }
+}

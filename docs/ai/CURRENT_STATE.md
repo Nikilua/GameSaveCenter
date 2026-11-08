@@ -636,3 +636,15 @@ f1a614a8的baseline与SDK10 CI jobs均已success；文档提交de9fe37d两个适
 用户再次报告闪屏。所附文件记录时间为 2026-11-06 13:59:27，无 HWND/PID/desktop 身份；本轮单次只读 Default 窗口快照没有匹配的 Playnite/GameSaveCenter 窗口，但不是连续事件监测。U09-05保持进行中，不能因 WPF 测试隔离或受控快照结项。
 
 SDK8.0.423 Release 的 CI #1488 紧凑任务详情动画等待测试改用有界状态轮询并保留全部行为断言；本地目标用例在三个 WinSta0 私有桌面各1/1通过。该改动是测试稳定性修正，与黑窗根因无关。证据与未验边界见[Round5进度](../design/reviews/ui-polish-round5-20261027/PROGRESS.md)。
+
+## 2026-11-08 Round5 U09-05 当前候选与桌面事件核验
+
+当前 `main` 提交为 `92bd9de13bd40c13806fb0cba8900ada2e379fc2`，工作区跟踪源码无修改。精确提交上 `scripts/build.cmd -OutputRoot .tmp/r5-r08-final-full-20261108/output` 使用 SDK `8.0.423` 完整构建/测试 exit 0：2030 项、1962 通过、0 失败、68 个明确原因 skip、157 个 WPF 隔离类；skip 不计通过。WinEvent 监听明确绑定实际 `WinSta0\Default` input desktop，从构建启动至结束约37分钟记录 0 个顶层显示/隐藏事件。证据 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/full-build-no-flash-20261108/`。
+
+这只证明独立 build.cmd 在该次运行没有向用户交互桌面显示窗口，不证明用户黑窗来源或中文安装运行入口无闪窗。中文 `GameSaveCenter-Run.cmd` 会启动 Playnite；本轮未调用该入口。既有 Playnite PID 23488 与 Worker PID 30516 无主窗口句柄，均未结束或重复启动；未更改卷/盘符/映射。GitHub run #1490 / `42459902671` 两个适用job均success：SDK10 job `128666747381` 8/8步，baseline job `128666747608` 15/15步。预览artifact `13610836964`（90,793,668 bytes，digest `162f7b7955c8b0a2ef7c87425329afa13241c4f821247ab8881ae2e51de2e4bf`），基线诊断 `13610448945`（2,524,028 bytes，digest `89ccc21dd9929d63fdf8da5a10e6a757f41c6ad2e08d0c9e368f53bb3d82131e`），SDK10诊断 `13610475659`（1,278,945 bytes，digest `4876f23877623874671e8f2a16221d1f8302350b3d84a592832305dce2d1d196`）；记录见Round5 `evidence/U09-05-no-flash-20261107/full-build-no-flash-20261108/ci-run-1490.json`。required-checks仍受此前403限制，U09-06保持远端待验。U09-05仍进行中，不能因独立build或CI通过将未验的黑窗结项。
+
+本阶段清理只删除本任务隔离根 `.tmp/r5-r08-final-full-20261108/`：728文件、169,300,382 bytes，路径在仓库`.tmp/`内且无重解析点/占用。证据副本哈希已核对；原始artifacts诊断/TRX保留，其他任务TestResults未触碰。D盘空闲实测11,950,292,992→12,121,559,040 bytes（+171,266,048；与删除目录大小略有差额，可能包含并发I/O），C盘前后4,907,458,560 bytes；未改卷、盘符或映射。详细清单见`evidence/U09-05-no-flash-20261107/full-build-no-flash-20261108/cleanup.json`。
+
+### 用户再次报告闪屏：区分build与完整运行入口
+
+只读核对当前脚本：`scripts/build.cmd` 最终只运行 `build.ps1`，不启动 Playnite；完整中文包装器转交 `GameSaveCenter-Run.cmd`，其 `dev-install-run.ps1` 在打包后关闭 Playnite/自有 Worker、安装插件，再普通启动 Playnite。重复完整链会重复重启宿主，属于潜在可见闪窗路径；但截图无 HWND/PID，不能将具体黑窗归因于它。小批只用 build.cmd；冻结候选完整安装启动另择不打扰交互桌面的验收方式。旧 Playnite PID 23488、Worker PID 30516 未操作。

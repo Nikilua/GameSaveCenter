@@ -1,0 +1,84 @@
+{
+  "sourceCommit": "92bd9de13bd40c13806fb0cba8900ada2e379fc2",
+  "runId": "20261108T074929337Z-a6ae1e37",
+  "entry": "scripts/build.cmd",
+  "arguments": ["-OutputRoot", ".tmp/r5-r08-final-full-20261108/output"],
+  "sdk": "8.0.423",
+  "exitCode": 0,
+  "startedUtc": "2026-11-08T07:49:30.8814879Z",
+  "completedUtc": "2026-11-08T08:26:34.8312303Z",
+  "tests": {
+    "trxFiles": 160,
+    "testCases": 2030,
+    "passed": 1962,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborted": 0,
+    "skipped": 68,
+    "counterMismatches": 0,
+    "wpfIsolatedClasses": 157,
+    "skipReasons": [
+      {
+        "count": 57,
+        "reason": "既有断言属于已撤销的‘今日工作台’UI架构。"
+      },
+      {
+        "count": 9,
+        "reason": "当前执行环境禁止创建本地 Named Pipe 客户端。"
+      },
+      {
+        "count": 1,
+        "reason": "当前执行环境禁止创建本地 Named Pipe 服务端。"
+      },
+      {
+        "count": 1,
+        "reason": "测试会移动系统鼠标指针，默认跳过。"
+      }
+    ]
+  },
+  "inputDesktopWindowEvents": {
+    "windowStation": "WinSta0",
+    "inputDesktop": "Default",
+    "monitoredDesktop": "WinSta0\\Default",
+    "monitorStartedUtc": "2026-11-08T07:49:26.5131228Z",
+    "monitorCompletedUtc": "2026-11-08T08:26:34.9402675Z",
+    "topLevelShowHideEvents": 0,
+    "launchEntryOrPlayniteStarted": false
+  },
+  "paths": {
+    "diagnostics": "artifacts/build-diagnostics/20261108T074929337Z-a6ae1e37",
+    "trxManifest": "trx-manifest.csv",
+    "r08Trx": "r08-motion-reverse.trx",
+    "windowMonitor": "window-monitor-and-build.json"
+  },
+  "sha256": {
+    "buildConsole": "588031E7EB77D795BBABB649DD71153682A16B5BBDA189178D2DE5DBEA10B359",
+    "summaryJsonAtDiagnosticsPath": "1E460C09BD4DE0271D1F6F638842333CF41E3FF5D004A49836BDFAC9AE64E775",
+    "trxManifest": "379BC12F3EE4D734720BA586AED9153B83BE4D58B5149D629D84BC7824E8545E",
+    "r08MotionReverseTrx": "541784B55326FBF9037B229FEFAD3B0DA2D4BF8D35A435797E6C13071F90550F",
+    "windowMonitor": "04154750660F17296FD2E076A3AF9B5AFD405D890622194C578343FA5312CDAB"
+  },
+  "disk": {
+    "buildOutputRoot": ".tmp/r5-r08-final-full-20261108/output",
+    "buildOutputBytes": 169265234,
+    "diagnosticsTrxBytes": 3623158,
+    "cFreeBytesAtPreflight": 4901519360,
+    "cFreeBytesAfterBuild": 4913553408,
+    "dFreeBytesAtPreflight": 12137074688,
+    "dFreeBytesAfterBuild": 11951099904,
+    "volumeOrDriveMappingsChanged": false
+  },
+  "githubCi": {
+    "runNumber": 1490,
+    "runId": 42459902671,
+    "conclusion": "success",
+    "baselineJobId": 128666747608,
+    "sdk10JobId": 128666747381,
+    "previewArtifactId": 13610836964,
+    "baselineDiagnosticsArtifactId": 13610448945,
+    "sdk10DiagnosticsArtifactId": 13610475659,
+    "requiredChecksRead": false
+  },
+  "boundary": "此证据只证明 scripts/build.cmd 的 Release 编译/测试未在 WinSta0\\Default 产生顶层显示/隐藏事件；尚未验证中文安装运行入口或真实 Playnite 启动，也不能单凭截图确定黑窗来源。"
+}

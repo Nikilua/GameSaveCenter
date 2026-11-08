@@ -13185,3 +13185,20 @@ SDK8.0.423 / Release 解决方案编译 exit 0，0 warning/0 error；目标行�
 - 同一 `b573fea` 全测后段 `WinSta0\Default` 10分钟顶层 `EVENT_OBJECT_SHOW/HIDE` 连续监听0次事件；这是受控测试桌面结论，不能识别用户截图，也不覆盖手动入口。只读应用清单无Playnite窗口，旧进程23488/Worker30516主窗口句柄为0；没有重复启动、关闭或强杀。未操作盘符或映射、真实存档、媒体删除、云端写入。完整中文根链仍待在安全隔离环境核验。
 
 本批 TRX 已脱敏归档后，只清理本阶段自建的 `.tmp/r5-r08-recheck-20261108/` 和 `.tmp/r5-r08-fixture-fix-20261108/recheck/`；路径均位于仓库 `.tmp/`、无重解析点、无运行中的 testhost/dotnet。D 盘释放126,976 bytes，C盘变化0；当前Release输出、诊断和归档证据保留。完整清单见`r08-press-capture-20261108/cleanup.json`。
+
+## 2026-11-08 U09-05 独立完整构建与默认桌面事件监听
+
+- 在已推送提交 `92bd9de13bd40c13806fb0cba8900ada2e379fc2` 运行 `scripts/build.cmd -OutputRoot .tmp/r5-r08-final-full-20261108/output`，SDK `8.0.423`，exit `0`；原始诊断目录 `artifacts/build-diagnostics/20261108T074929337Z-a6ae1e37/`。`summary.json` SHA-256 `1E460C09BD4DE0271D1F6F638842333CF41E3FF5D004A49836BDFAC9AE64E775`；构建控制台 SHA-256 `588031E7EB77D795BBABB649DD71153682A16B5BBDA189178D2DE5DBEA10B359`。
+- 160份TRX共2030项：1962通过、0失败、0 error/timeout/abort、68 skip，所有TRX计数一致，157个WPF隔离类完成。skip按明确原因：57条对应已撤销“今日工作台”结构断言；9条Named Pipe客户端、1条Named Pipe服务端受当前执行环境限制；1条移动系统指针的用例默认skip。均不计为通过。全TRX哈希清单和R08目标TRX见[本批证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/full-build-no-flash-20261108/README.md)。
+- WinEvent线程监听 `WinSta0\\Default`，该桌面也是当时 input desktop `Default`；监听从 `2026-11-08T07:49:26.5131228Z` 到 `08:26:34.9402675Z`，顶层窗口 show/hide 事件0。运行仅使用D盘隔离输出，输出目录169,265,234 bytes；C盘空闲从4,901,519,360增至4,913,553,408 bytes，D盘从12,137,074,688降至11,951,099,904 bytes（与输出目录169,265,234 bytes同量级，另有诊断/其它使用）。没有修改卷、盘符、映射或用户数据。
+- 该证据只说明本次独立构建/测试没有使窗口显示在用户交互桌面；没有调用会启动 Playnite 的 `GameSaveCenter-Run.cmd`。旧 Playnite PID 23488/Worker PID 30516仍无主窗口句柄，未结束或重复启动，故历史黑窗仍未归因。
+- GitHub CI #1490 / run `42459902671` 已 completed/success：SDK10.0.401 job `128666747381` 8/8步、baseline job `128666747608` 15/15步均success，含打包与上传。预览artifact `13610836964`（90,793,668 bytes，digest `162f7b7955c8b0a2ef7c87425329afa13241c4f821247ab8881ae2e51de2e4bf`）；基线诊断 `13610448945`（2,524,028 bytes，digest `89ccc21dd9929d63fdf8da5a10e6a757f41c6ad2e08d0c9e368f53bb3d82131e`）；SDK10诊断 `13610475659`（1,278,945 bytes，digest `4876f23877623874671e8f2a16221d1f8302350b3d84a592832305dce2d1d196`）。全部绑定 `92bd9de13bd40c13806fb0cba8900ada2e379fc2`。required-checks读取此前403，仍单独记“远端待验”，未由jobs结论代替。
+
+U09-05继续进行中；完整中文安装运行入口的安装身份/启动未验，真实Playnite视觉、外部UIA、实体输入/IME/物理DPI未验。进度表、空间/哈希及窗口监测报告见[本批证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-no-flash-20261107/full-build-no-flash-20261108/README.md)。
+
+本阶段产物归档并逐项比对hash后，只删除 `.tmp/r5-r08-final-full-20261108/`：728文件/169,300,382 bytes，输出目录169,265,234 bytes；路径位于仓库`.tmp/`，0重解析点、0活动build进程。D盘空闲11,950,292,992→12,121,559,040 bytes（+171,266,048，差额可能含并发I/O），C盘前后4,907,458,560 bytes。原始artifacts日志/160份TRX及证据目录保留；其他任务`TestResults`、存档、配置未触碰；卷/盘符/映射未改。记录见Round5 `evidence/U09-05-no-flash-20261107/full-build-no-flash-20261108/cleanup.json`。
+
+## 2026-11-08 U09-05 用户再次报告闪屏：追踪实际入口
+
+- 用户最新反馈仍有闪屏。静态检查确认 `scripts/build.cmd` 调用隐藏 PowerShell 的 `build.ps1`，不启动 Playnite；中文完整入口转交 `GameSaveCenter-Run.cmd`，执行 `dev-install-run.ps1`，在 build/test/package 后关闭 Playnite 和其自有 Worker、替换扩展，再普通显示启动 Playnite。重复完整链会重复切换宿主窗口；这是已确认的闪窗候选机制，截图缺 HWND/PID，尚不能把当时窗口确认为该机制产生。
+- 调整后续验证方式：依赖满足的小批编译/行为检查使用 build.cmd，不反复运行重启宿主的全链。冻结候选仍需完整根链，验收启动要避免重复打扰用户桌面。当前旧 Playnite/Worker PID 23488/30516未操作；没有操作卷、盘符、映射、存档或用户数据。

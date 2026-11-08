@@ -1892,3 +1892,15 @@ SDK10 隔离 WPF 桌面没有在 250ms 内稳定产生 Storyboard 进入/退出�
 用户再次明确报告仍闪屏。附件截图文件元数据早于本轮WPF私有桌面修订，且不带窗口身份；一次 Default 桌面枚举无匹配窗口也不能覆盖短暂闪现。因此 U09-05 不能按“隔离构建通过”结项。把受控桌面采样、隐藏控制台、WPF窗口隔离与真实用户黑窗分开陈述，后续应在用户报告发生时捕获 HWND/PID/class/desktop；不重复运行会在 Default 建窗的旧路径。
 
 另：CI #1488 的紧凑任务详情动画固定延时失败与黑窗问题无关。其测试等待修订经 SDK8.0.423 编译、私有桌面3次重复及 Source/WPF 静态审查后，仍须新SHA双SDK CI与独立完整构建；该局部测试结果不能替代最终链。
+
+### 2026-11-08 U09-05 闪窗排查：构建与运行入口分开
+
+不要把“隐藏控制台”当成“没有 GUI 窗口”。`scripts/build.cmd` 在精确提交 `92bd9de13bd40c13806fb0cba8900ada2e379fc2`、SDK8.0.423 完整 Release 测试阶段，以 WinEvent 监听用户真实 `WinSta0\Default` 37分钟，0 个顶层 show/hide 事件；2030项中1962通过、0失败、68个按原因跳过，157个WPF类隔离。它未启动 Playnite，因此只说明该入口的这次编译/测试没有引起交互桌面闪窗。`GameSaveCenter-Run.cmd` 最终会启动 Playnite，视觉黑窗来源仍需有HWND/PID/desktop的同一时段捕获才能定位。已知无主窗口的旧 Playnite/Worker 进程不要强杀或重复启动，确认前不执行可见宿主入口。
+
+证据、TRX清单与哈希见 Round5 `evidence/U09-05-no-flash-20261107/full-build-no-flash-20261108/`；原始160份TRX保留于本机 `artifacts/build-diagnostics/20261108T074929337Z-a6ae1e37/`。CI #1490 / run `42459902671` 的两个适用job均success：baseline job `128666747608` 15/15步、SDK10 job `128666747381` 8/8步。预览包artifact `13610836964`（90,793,668 bytes，SHA-256 `162f7b7955c8b0a2ef7c87425329afa13241c4f821247ab8881ae2e51de2e4bf`），基线诊断 `13610448945`（2,524,028 bytes，SHA-256 `89ccc21dd9929d63fdf8da5a10e6a757f41c6ad2e08d0c9e368f53bb3d82131e`），SDK10诊断 `13610475659`（1,278,945 bytes，SHA-256 `4876f23877623874671e8f2a16221d1f8302350b3d84a592832305dce2d1d196`）；完整身份见 `ci-run-1490.json`。required-checks读取仍因既有403远端待验，不据CI jobs推断分支保护。
+
+本阶段清理只删自有`.tmp/r5-r08-final-full-20261108/`（728文件/169,300,382 bytes，无reparse point/活动build进程）；原始诊断与TRX留在`artifacts/build-diagnostics/20261108T074929337Z-a6ae1e37/`，其他任务TestResults保留。D盘空闲测得+171,266,048 bytes，C盘0变化，卷/盘符/映射未触碰；前后值和清单见Round5证据目录`full-build-no-flash-20261108/cleanup.json`。
+
+### 用户再次报告闪屏：入口行为已核对，问题仍未归因
+
+`scripts/build.cmd` 不启动 Playnite；中文完整Run入口会在安装插件前关闭 Playnite，安装完成后再普通启动。反复跑完整链会反复切换宿主进程/窗口，所以它是构建时可见窗口变化的潜在来源；用户截图没有 HWND/PID，不能声称已确认。以后小批只用 build.cmd；完整根链按最终候选一次执行，需先确定安全的宿主启动路径。现存无主窗 Playnite/Worker 未动，盘符/挂载也不动。
