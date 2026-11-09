@@ -6,4 +6,12 @@
 
 SDK 8.0.423 Release 定向 5/5、0 失败、0 skip，检验默认/显式提示位置、必要列禁用原因和列状态；[脱敏 TRX](tests-redacted.trx)，原始 TRX SHA256 `5EC18A2FC0857E38307433BEF538184206CE0A4BD236106B7A01782065856DD9`。测试编译使用基线身份且工作树含本批修改，并非精确新提交复测。源码检查通过、XAML 26/26、WPF 静态检查 37 文件 0 错误/26 既有警告/179 info。RenderHarness 0 警告/0 错误，render-qa exit 0、双主题 394 PNG/0 PROBLEM；报告 SHA256 `F479B1130EC34275483FCBA6404C928796EF243ABC9DB3BBCC5276F198922903`，报告基线 `2aba614f`、WorkingTreeClean=False。离屏页面渲染未驱动真实弹出层。
 
+## 2026-11-10 当前共同源码复核
+
+当前`src/tests/scripts`相对共同源码e570f7b7没有差异；该精确SHA的GitHub [run #1500基线/SDK10与artifact身份](../U09-05-full-build-e570f7b7-20261109/ci-run-1500.json)均为完整workflow成功，覆盖当前Release测试、WPF静态审查与394图Render QA。Tooltip边缘回退仍由真实WPF ToolTip隔离回归覆盖；7项中6通过、系统指针移动1项既有opt-in skip，保留且不计通过。列菜单定向5/5验证稳定顺序、必要列禁用、提示/UIA文本、名称与ItemsPresenter循环设置。
+
+列菜单仅含可见列勾选和“恢复默认列”，没有图标/快捷键/子菜单数据，未补造视觉列。程序化Popup/MenuItem.Focus探针的已知焦点行为及失败诊断继续保留；不把它解释成实体方向键结果。当前Playnite菜单、实体输入、Narrator、编辑IME和混合DPI仍待验，U07-03/04保持代码完成待验收。本批只复核既有源码与证据，不改生产资源；未重复本机编译/测试/渲染。
+
+本批文档门禁：Source Validation exit0；6份Markdown共1,013条本地链接均存在且在仓库内；git diff --check exit0。仅清理本批`.tmp/r5-u07-03-04-doc-check-20261110`的3个日志/1,278 bytes；C/D前后3,109,629,952 / 20,174,999,552与3,109,355,520 / 20,174,999,552 bytes，不将磁盘变化归因于该清理。
+
 清理：本批自有 `.tmp/round5-u07-03-04/` 包含最终 TRX 和 render 日志，暂保留作为当前证据；`artifacts/ui-qa/render/` 为当前审计输出，保留。没有删除其他任务、用户 TRX/TestResults、存档或配置。C/D 可用空间由 3,098,091,520 / 14,673,887,232 字节变为 3,086,909,440 / 14,615,859,200 字节。真实 Playnite、物理鼠标/键盘、UIA 客户端、IME、真实 DPI 和边缘布局待验；整轮完整构建安装启动及新提交双 SDK CI 未完成。

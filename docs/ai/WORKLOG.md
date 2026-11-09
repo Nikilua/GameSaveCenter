@@ -13429,3 +13429,10 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 当前src/tests/scripts与e570f7b7一致，#1500双SDK全流程、完整测试、WPF静态和394图Render QA成功。真实Playnite长正文滚动、UIA/实体键鼠IME/物理DPI未验；任务状态继续代码完成待验收。
 - CI快照：#1513/#1514双job成功；#1515基线打包中/SDK10成功；#1516/#1517/#1518/#1519双job测试中。当前提交CI待查，required-checks保持远端待验。C盘3,113,365,504 bytes、距4GiB差1,181,601,792；D盘20,176,363,520。下一批U07-03/04。
 - 文档门禁通过：`scripts/validate-source.py` exit 0；6份变更Markdown相对链接缺失/越界0；`git diff --check` exit 0。仓库`.tmp/r5-u07-01-02-doc-check-20261110`仅有本批3个校验日志/1,278 bytes，已核对边界与重解析点后精确删除。C校验前/后3,113,865,216 / 3,117,977,600 bytes，D均20,176,359,424 bytes；没有把空间变化算作清理回收。
+
+## 2026-11-10 Round5 U07-03/04 提示框与列菜单复核
+
+- 复核共同源码e570f7b7：TextBox默认Tooltip下锚并尊重显式Placement，真实WPF ToolTip在主显示器工作区底边翻到控件上方；长路径换行保持。必要列仍禁用并同时提供鼠标Tooltip/UIA说明；菜单顺序、可访问名称及生产ItemsPresenter循环导航设置保持。
+- 旧SDK8 Tooltip边缘组7项中6通过，系统指针移动1项为既有opt-in skip且不计通过；列菜单SDK8 5/5。精确共同源码GitHub #1500双SDK完整workflow成功。没有伪造未提供的图标/快捷键/子菜单列；程序化Popup焦点失败探针继续留档。实体输入、Narrator、IME/混合DPI和Playnite宿主待验，任务继续代码完成待验收；未改源码资源。
+- GitHub：#1519和#1520双job仍运行；#1515/#1516/#1517基线job运行、对应SDK10 job成功；#1518双job运行。无失败结论，不重试；required-checks此前403，远端待验。下一批U07-05/06。
+- 本批文档门禁：Source Validation exit0；6份变更Markdown共1,013本地链接无缺失/越界；`git diff --check` exit0。只删除本批`.tmp/r5-u07-03-04-doc-check-20261110`的3个日志/1,278 bytes，路径在仓库.tmp内且无重解析点。C/D前后为3,109,629,952 / 20,174,999,552与3,109,355,520 / 20,174,999,552 bytes，不宣称空间回收。
