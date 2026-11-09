@@ -1,3 +1,9 @@
+## 2026-11-09 U09-05 冻结候选完整build/CI已验，根链受C盘空间门禁
+
+选框修改提交 `e570f7b7e0d5019b7f57c411237de3abb55a6e89` 的独立 `scripts/build.cmd -Configuration Release` 在 SDK 8.0.423 完整 exit 0，TRX 2032项、1964通过、0失败，157个WPF隔离类；68个既有skip按原因记录并不计通过。WinSta0默认桌面全程监听show=0/hide=0，仅说明此build/test时段，不能据此宣称用户黑窗已定位或所有根入口无闪。
+
+GitHub workflow run #1500 / `42579208247` 的基线和SDK 10.0.401 job及全部步骤均success；required-checks/ruleset此前403，维持远端待验，不重复探测。中文完整入口要求C盘空闲4GiB；实测3,238,178,816 bytes，差1,056,788,480 bytes，`%TEMP%\GameSaveCenter.Tests`为空，未发现可安全释放的项目专属数据。D盘满足门槛。当前Playnite/Worker未运行。不得降低空间门槛或删除未知C盘内容；空间达标后再执行最终安装身份与启动链。
+
 ## 2026-11-09 U09-05 Render QA 资源释放候选已全量通过
 
 旧选框基线的 Render QA 在289张图片后因 WPF/WIC 4K RenderTargetBitmap 内存压力失败。当前只在 RenderHarness 的 SavePng 中清空编码器帧并每8张图回收一次；没有改生产UI、Render QA页面/尺寸或覆盖点。改后 SDK8.0.423 Release Harness build 0 warning/error；全量394 PNG、0 PROBLEM、exit0；WinSta0私有RenderQA desktop，Default input desktop前后Default。报告SHA和源文件SHA见 Round5 evidence `right-inset-regression-20261109/renderqa-success.json`。失败报告保留。后续必须提交/push后验精确SHA双SDK CI、独立完整 scripts/build.cmd、冻结候选中文完整安装启动链；用户黑窗仍未知身份且发生于编译/检查时，本批隐藏启动不等于证明用户桌面无闪。U09-06 required-checks此前403不重试，保持远端待验。

@@ -1,0 +1,56 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "runNumber": 1500,
+  "runId": 42579208247,
+  "branch": "main",
+  "headSha": "e570f7b7e0d5019b7f57c411237de3abb55a6e89",
+  "status": "completed",
+  "conclusion": "success",
+  "applicableJobs": [
+    {
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "jobId": 129033708730,
+      "conclusion": "success",
+      "steps": "all successful"
+    },
+    {
+      "name": "编译、测试与打包",
+      "jobId": 129033708852,
+      "conclusion": "success",
+      "steps": "all successful"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "GameSaveCenter-windows-preview",
+      "id": 13659279142,
+      "sizeBytes": 90793412,
+      "digest": "sha256:69e5d9e2beb07cf53ae1a7fab5c8e6a6a3374450131c4e7aed3cfc1b0ffd2562",
+      "expired": false
+    },
+    {
+      "name": "GameSaveCenter-build-diagnostics",
+      "id": 13658924742,
+      "sizeBytes": 2530284,
+      "digest": "sha256:e36ab8521f479e548e72c33171cddde0537f56b953a35319ff148cd1cae04cf7",
+      "expired": false
+    },
+    {
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "id": 13657259512,
+      "sizeBytes": 1281613,
+      "digest": "sha256:86407c6b5dea2de9cada3db2db012ed53b1f96f4eacc2042347dfff76ef106ff",
+      "expired": false
+    }
+  ],
+  "requiredChecks": {
+    "status": "remote-pending",
+    "reason": "The connected GitHub account previously received HTTP 403 reading branch-protection/ruleset required-check configuration. That same permission failure is not being retried.",
+    "nextStep": "A repository maintainer with read access to the required-check configuration can provide the applicable required checks, or enable read access for the connected account."
+  },
+  "notes": [
+    "Both applicable jobs in this workflow run completed successfully for the exact e570f7b7 source commit.",
+    "A successful workflow run does not prove the configured required-check set is complete while that configuration remains unreadable."
+  ]
+}

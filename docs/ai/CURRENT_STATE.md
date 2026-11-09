@@ -1,3 +1,9 @@
+## 2026-11-09 U09-05 精确SHA完整build与CI通过；中文根链待C盘空间
+
+当前冻结源码为 `e570f7b7e0d5019b7f57c411237de3abb55a6e89`。独立 `scripts/build.cmd -Configuration Release` 使用 SDK 8.0.423 完整 exit 0：160份TRX、2032项、1964通过、0失败，157个WPF隔离类；68个既有skip按撤销架构、Named Pipe环境和默认交互指针原因记录，不计通过。完整日志/TRX在本机 `artifacts/build-diagnostics/round5-u09-05-detached-e570f7b7/20261109T085813954Z-7831612a/`，摘要见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-full-build-e570f7b7-20261109/`。
+
+GitHub run #1500 / `42579208247` 对同一SHA的基线与SDK10.0.401 job均success；required-checks/ruleset仍因既有403未能读取，标“远端待验”。完整本地build监测WinSta0默认桌面33分45秒，show/hide为0；这不归因用户报告的黑窗，也不覆盖最终Playnite入口。当前根入口要求C盘4GiB空闲，实际3,238,178,816 bytes，差1,056,788,480 bytes；专属临时测试目录为空，没有确认可清理的项目文件补足差额。D盘空闲19,902,840,832 bytes。Playnite/Worker都未运行。不要降低空间门槛或清理未知数据；等待C盘达到门槛后按中文入口做安装身份和启动验收。
+
 ## 2026-11-09 U09-05 选框修正及Render QA全量复验通过
 
 a74287e7暴露共享DataGrid选框离视口仅1 DIP。当前源修正普通/非活动框为视口减8 DIP、左边距4；2 DIP键盘框为视口减7 DIP、左边距3，内容8 DIP裁切/水平滚动不变。SDK8.0.423 Release隔离重编0 warning/error，五类定向几何/状态/资源测试157通过、0失败；39个既有“今日工作台”历史结构断言NotExecuted不计通过。Source Validation exit0，WPF静态398 XAML/0 errors。Render QA首轮在289图OOM后，通过仅测试Harness的WPF/WIC每8图回收修正完成全量重跑：SDK8.0.423，exit0，394 PNG/0 PROBLEM；Harness在WinSta0私有desktop，输入Default保持不变。源码SHA/报告SHA在 Round5 `right-inset-regression-20261109/`。下一步先提交并push候选，独立跑精确SHA `scripts/build.cmd` 和新SHA workflow全部适用job，冻结后通过中文包装器/英文根入口验收完整安装启动和身份。用户确认闪窗在编译/检查时发生；本批工具进程创建时隐藏并重定向，不代表已确认黑窗原因。未操作盘符、卷、映射、存档、媒体或云写入；required checks仍因先前403远端待验，不重试。

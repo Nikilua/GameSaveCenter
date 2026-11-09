@@ -1,0 +1,61 @@
+{
+  "command": "scripts/build.cmd -Configuration Release",
+  "sourceCommit": "e570f7b7e0d5019b7f57c411237de3abb55a6e89",
+  "expectedCommit": "e570f7b7e0d5019b7f57c411237de3abb55a6e89",
+  "trackedWorkingTreeClean": true,
+  "sdk": "8.0.423",
+  "startedUtc": "2026-11-09T08:58:11.3465680Z",
+  "completedUtc": "2026-11-09T09:31:56.0921047Z",
+  "exitCode": 0,
+  "tests": {
+    "trxFiles": 160,
+    "testCases": 2032,
+    "passed": 1964,
+    "failed": 0,
+    "errors": 0,
+    "timeouts": 0,
+    "aborts": 0,
+    "skipped": 68,
+    "wpfIsolatedClassRuns": 157,
+    "counterMismatches": 0,
+    "skippedReasons": {
+      "withdrawnTodayWorkbenchArchitecture": 57,
+      "namedPipeClientUnavailableInExecutionEnvironment": 9,
+      "namedPipeServerUnavailableInExecutionEnvironment": 1,
+      "interactiveSystemPointerTestNotEnabled": 1
+    },
+    "skipPolicy": "Skipped tests are documented existing environment or withdrawn-architecture cases and are not counted as passed."
+  },
+  "windowMonitor": {
+    "station": "WinSta0",
+    "desktop": "Default",
+    "inputDesktop": "Default",
+    "startedUtc": "2026-11-09T08:58:11.2785679Z",
+    "endedUtc": "2026-11-09T09:31:56.1951488Z",
+    "showEvents": 0,
+    "hideEvents": 0,
+    "interpretation": "This records only the monitored build/test interval; it does not identify or disprove the user's reported black window from another run or the Playnite startup path."
+  },
+  "diagnosticsRoot": "artifacts/build-diagnostics/round5-u09-05-detached-e570f7b7/20261109T085813954Z-7831612a",
+  "buildOutputRoot": "artifacts/gsc-b/e570f7b7-detached-full-20261109",
+  "retainedOutputBytes": {
+    "diagnostics": 5800203,
+    "buildOutput": 169282412
+  },
+  "installationStartupChain": {
+    "status": "not-run",
+    "reason": "The final root entry preflight requires at least 4 GiB free on C:. The measured free space was 3238178816 bytes, leaving a deficit of 1056788480 bytes. The independent build output and current diagnostics are retained for the next authorized stage.",
+    "driveDFreeBytes": 19902840832,
+    "playniteProcessAtCheck": "not running",
+    "workerProcessAtCheck": "not running"
+  },
+  "cleanup": {
+    "projectTempGameSaveCenterTestsRemainingFiles": 0,
+    "deletedByThisBuildStage": [],
+    "retainedBecauseStillNeeded": [
+      "current e570f7b7 build output",
+      "current full-build diagnostics and TRX",
+      "prior latest package until superseded by the final root chain"
+    ]
+  }
+}

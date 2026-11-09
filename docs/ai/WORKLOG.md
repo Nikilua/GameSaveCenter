@@ -13272,3 +13272,11 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 仅将 `R10RecentAccessBehaviorTests` 中Overview专用Margin期待改为0；内容不位移检查、共享ListBox的4-DIP断言及其他行为断言原样保留。SDK8.0.423重新编译并在WinSta0私有桌面重跑整个R10类，3/3通过、0失败/skip，子进程和桌面helper exit 0；Default input desktop前后不变。TRX SHA-256 `BE33AE2D2C3D943318E5A9AB0F15F5ACFC249D49FBB24897FCAEB857DA639D47`；修正测试源Git blob `77520274af3ca108c54386f5e65b06815cc80bb4`，文件SHA-256 `C91DB32736D2BBE7250C23D322E79753695A2870BC3216B6334B3D8F7A290068`。完整上下文见证据 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/focused-r10-fix/README.md`。
 - 验证从隐藏PowerShell启动、输出写入阶段私有日志；私有WPF desktop没有改变Default input desktop。上轮Playnite PID24248和Worker PID42704在03:40 UTC后进程快照已不存在，本轮没有结束任何宿主进程；最终中文入口前仍要重新核验。未操作盘符、卷、映射、用户存档、媒体或云端数据。
 - 当前修正测试及进度文档待本批commit/push；精确新SHA双SDK CI、修正后全量独立build、中文完整安装启动链与安装身份尚待做。U09-05/U09-08保持进行中，U09-06 required-checks因既往403继续“远端待验”。
+
+## 2026-11-09 Round5 U09-05：冻结选框修正候选完整build与CI
+
+- 精确SHA `e570f7b7e0d5019b7f57c411237de3abb55a6e89` 使用SDK8.0.423执行独立 `scripts/build.cmd -Configuration Release`，exit 0；2032项/1964通过/0失败/68既有skip，157个WPF隔离类全部完成。skip原因按已撤销架构、Named Pipe执行环境限制、默认系统指针测试记录，未计通过。
+- SDK 8基线和SDK10.0.401 GitHub jobs在run #1500 / `42579208247`均completed/success；package/diagnostic artifact ID、大小和digest见Round5 evidence `U09-05-full-build-e570f7b7-20261109/ci-run-1500.json`。required-checks/ruleset此前403，继续远端待验。
+- 完整隐藏构建期间 `WinSta0\Default` 与input desktop相同，WinEvent show/hide均0；不据此认定用户闪屏已解决。Source Validation/WPF静态/Render QA的选框源代码批次证据仍见`U09-05-selection-boundary-20261109/`。
+- 根入口C盘门槛4GiB，实测空闲3,238,178,816 bytes，差1,056,788,480 bytes；D盘空闲19,902,840,832 bytes。项目专属临时测试目录为空，当前本阶段build/diagnostics仍保留为最新交付证据；不清理未知文件或改盘符。Playnite/Worker均未运行。
+- 由于空间预检未满足，没有执行中文包装器转交英文根入口的最终安装、身份核验和启动；U09-05/U09-08继续。精确数据与本机TRX路径见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-full-build-e570f7b7-20261109/`。
