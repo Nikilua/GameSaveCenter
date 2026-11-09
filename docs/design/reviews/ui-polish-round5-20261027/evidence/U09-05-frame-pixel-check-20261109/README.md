@@ -28,3 +28,11 @@ U09-05 仍为“进行中”。用户本次附图没有 HWND、PID 或 desktop �
 ## 2026-11-09 代理命令黑窗反馈续记
 
 用户再次明确表示执行期间仍有闪屏。当前附图没有窗口身份；本次命令进程所在窗口站不能访问交互桌面（EnumWindows 返回 false、前台 HWND 为0），不将快照空值写成“没有窗口”。源码中 hide-console.ps1 为避免关闭现有交互终端，仅在祖先进程精确为 Explorer -> cmd 时隐藏调用者控制台；从 Codex/PowerShell 运行会保留调用终端。后续代理构建必须在启动 .cmd 前就通过隐藏进程运行、输出重定向到阶段日志，不能先显示后隐藏。该路径解释本代理构建可能带来的闪窗风险，但尚未证明其就是用户所见黑窗；Playnite/Worker运行窗口与用户桌面当前事件仍待拿到新鲜 HWND/PID/desktop 证据。
+
+## 本批清理
+
+像素图、四组 TRX/控制台与桌面身份、成功构建摘要及初次编译失败诊断已归档后，移除本阶段拥有的 .tmp/round5-frame-boundaries-20261109：802 个文件、164,938,833 bytes。删除前确认该路径在仓库 .tmp 内、无重解析点、无运行构建/测试进程引用、没有 Markdown 证据链接指向临时副本；其他任务的 TestResults/存档/配置未触碰。D 盘观测可用空间增加 167,067,648 bytes；C 盘测量间系统占用略增。详细前后数值见 [清理记录](cleanup.json)。
+
+## 当前源码 SHA 的 GitHub CI
+
+提交 `c30e2b7371b370a11cd255438c095545e29b927c` 的 [Windows 构建验证 #1496](https://github.com/Nikilua/GameSaveCenter/actions/runs/42535222553) 已 completed/success。基线 job `128897926440` 的 15/15 步成功，SDK 8.0.423 Release 测试为 2030 项、1972 通过、0 失败、58 个既有 skip（skip 不计通过），157 个 WPF 隔离类；离屏 Render QA、WPF 静态审查、Playnite 扩展打包与上传通过。SDK 10.0.401 job `128897926646` 的 8/8 步成功。原始日志及三个 artifact 的 run/job/SHA/大小/digest 见 [ci-run-1496.json](ci-run-1496.json)。

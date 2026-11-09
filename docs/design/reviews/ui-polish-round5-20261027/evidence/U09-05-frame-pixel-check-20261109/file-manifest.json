@@ -65,6 +65,16 @@
     "Sha256": "6868CD7E7FB294267CF82BF0BAC38F91BF5DBB0C5496F086ED33E19800D1952F"
   },
   {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\ci-run-1496.json",
+    "Bytes": 2614,
+    "Sha256": "98827F72E8D1C988190B71B7E95C20BCEAD1BCAE1F8157B2E0D5983D754D77FE"
+  },
+  {
+    "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\cleanup.json",
+    "Bytes": 921,
+    "Sha256": "86FE2E571C520B7D295F3EF4D4105D8CA5880C5F628BC6EB246427AF02B63E48"
+  },
+  {
     "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\diagnostics\\initial-build-failure\\build-console.txt",
     "Bytes": 3227,
     "Sha256": "457309E6E99701757B4ADB6B5214A63E8220C6F242BF0838CE5322BC0B9A59C4"
@@ -81,8 +91,8 @@
   },
   {
     "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\README.md",
-    "Bytes": 4079,
-    "Sha256": "1AFA994498A319BE3EA9851D5004938C710C885F2FCA0CF2FEA2309A2E7663D9"
+    "Bytes": 5275,
+    "Sha256": "A5156176ADB3CE3792F54C491C3094A4F8425DEA81813606BCEFF2F1D21992EB"
   },
   {
     "Path": "docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-frame-pixel-check-20261109\\tests\\overview\\overview-console.txt",

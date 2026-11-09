@@ -1,0 +1,91 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "run": {
+    "id": 42535222553,
+    "number": 1496,
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42535222553",
+    "event": "push",
+    "branch": "main",
+    "headSha": "c30e2b7371b370a11cd255438c095545e29b927c",
+    "status": "completed",
+    "conclusion": "success",
+    "attempt": 1
+  },
+  "jobs": [
+    {
+      "id": 128897926440,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "stepsCompleted": 15,
+      "sdk": "8.0.423",
+      "configuration": "Release",
+      "tests": {
+        "total": 2030,
+        "passed": 1972,
+        "failed": 0,
+        "skipped": 58,
+        "errorsTimeoutsAborts": 0,
+        "wpfIsolatedClassRuns": 157,
+        "skipCountsAsPassed": false
+      },
+      "renderQa": "success",
+      "wpfStaticReview": "success",
+      "package": "success",
+      "artifactUpload": "success"
+    },
+    {
+      "id": 128897926646,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "stepsCompleted": 8,
+      "sdk": "10.0.401",
+      "configuration": "Release",
+      "tests": {
+        "total": 2030,
+        "passed": 1972,
+        "failed": 0,
+        "skipped": 58,
+        "errorsTimeoutsAborts": 0,
+        "wpfIsolatedClassRuns": 157,
+        "skipCountsAsPassed": false
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13641277386,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90793604,
+      "sha256": "8b60ef440e98d78c05da76a9dcf654974d7bab19c48931a14b7c285b2ca14cbf"
+    },
+    {
+      "id": 13641227797,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2527334,
+      "sha256": "3a5e0eaed268ad6525d26f3e4017f7b834448e2a195fa304d996e2d416d20762"
+    },
+    {
+      "id": 13640086626,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 1280926,
+      "sha256": "6d4483d9a29bde8e4205b42854abe8fb7c9b82c1342e7bb62e146d6262ff710b"
+    }
+  ],
+  "coreCheckRuns": [
+    {
+      "id": 128897926646,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "headSha": "c30e2b7371b370a11cd255438c095545e29b927c",
+      "conclusion": "success"
+    },
+    {
+      "id": 128897926440,
+      "name": "编译、测试与打包",
+      "headSha": "c30e2b7371b370a11cd255438c095545e29b927c",
+      "conclusion": "success"
+    }
+  ],
+  "negativeFixtureNote": "诊断采集自测内含预期失败的合成 TRX（真实退出码 7/0）；该自测本身通过，产品编译与全量测试均为 0 失败。"
+}
