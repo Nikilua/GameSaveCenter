@@ -1,6 +1,6 @@
 # U03-08 / U04-01 / U04-02 去重与验证
 
-日期：2026-10-28。状态：代码完成待验收；当前远端双 SDK workflow 尚未结束。
+日期：2026-10-28；状态复核：代码完成待验收。真实 Playnite/实体输入仍待验；早期 CI 失败保留，后续冻结整合候选的双 SDK 完整 workflow 已成功。
 
 ## 范围与前后变化
 
@@ -19,9 +19,9 @@
 
 ## GitHub Actions
 
-每次 push 都检查 `.github/workflows/windows-build.yml` 的两个适用 job：SDK 基线 `编译、测试与打包` 和 SDK 10.0.401 复核。run/job/artifact 状态见 [`ci-runs.json`](ci-runs.json)。提交 `631b218e` 的baseline与SDK10 job `122424019673`/`122424019068`均失败于同一 `R08MotionReverseBehaviorTests.ProductionButtonHoverAndPressReverseFromTheirRenderedValues` STA夹具：另一线程拥有的WPF `Application` 导致`Application.set_ShutdownMode`跨线程异常；两job均为1425 pass、1 fail、19 skip。原始日志已读取，baseline诊断artifact `12767366434`（738991 bytes，SHA-256 `d3fe80b3267c55515af4d5057ce0cf978fc1557c7e10f0ed447b24e3fc7d2913`），SDK10诊断artifact `12765473491`（645803 bytes，SHA-256 `477d13c3bd5a3bf5f13ce0e5d9ed61d10d22258221de3016b2f0ddf42e603fa0`）。提交 `95b5dbf9` 将场景并入同一 STA 用例，`0c7c4268` 再加入深色覆盖；两者的远端 job 仍在运行，不能据此结项。
+每次 push 都检查 `.github/workflows/windows-build.yml` 的两个适用 job：SDK 基线 `编译、测试与打包` 和 SDK 10.0.401 复核。run/job/artifact 原始历史见 [`ci-runs.json`](ci-runs.json)。提交 `631b218e` 的两个 job 均失败于跨 STA 的 WPF `Application` 访问；后续 `95b5dbf9`/`0c7c4268` 的旧 DisclosureChevron 150 ms 字面量断言也导致双 SDK 失败。其后 `40575315327`（#1333，文档 SHA `06d4e854`）和 `40578426793`（#1334，源码 SHA `4225eb17`）均已结束为双 job failure；不再标为运行中，历史诊断按原结论保留。令牌断言修复及后续视觉任务已合入冻结候选 `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`，该精确 SHA 的 GitHub run `40900374673`（#1398）baseline job `123540700192` 与 SDK10 job `123540699717` 全部成功；包含完整构建、测试、Render QA、WPF 静态审查与打包。三个 artifact ID、digest、head SHA 和有效期记录在[冻结门禁证据](../U09-final-5c0c57b0/BASELINE.md)及其 `github-ci.json`。这份整合构建覆盖本批共享资源；仍未证明真实 Playnite 页面或物理输入。
 
-读取 `main` 的 required status checks 接口返回 HTTP 403 `Resource not accessible by integration`，因此不对分支保护配置作推断。失败历史保留，不修改 workflow 或保护规则。
+读取 `main` 的 required status checks 接口此前返回 HTTP 403 `Resource not accessible by integration`，因此不对分支保护配置作推断、不重复试探同一拒绝。失败历史保留，不修改 workflow 或保护规则。
 
 ## 输出与清理
 

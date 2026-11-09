@@ -13334,3 +13334,10 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 本批未运行本地WPF窗口、编译、行为测试或Render QA。隐藏Source Validation产生日志2份/361 bytes，放在精确阶段`.tmp/round5-u03-06-07-doc-check-20261109/`，确认无引用、重解析点或占用后使用PowerShell `Remove-Item -LiteralPath -Recurse -Force`清除；该次C盘前后均3,197,964,288 bytes、D盘前后均20,197,036,032 bytes，没有释放有效空间。只读阶段观察C盘3,200,520,192→3,197,964,288 bytes、D盘20,197,179,392→20,197,036,032 bytes；波动不归因本批。没有操作用户及其他任务TRX、共享TestResults、存档或盘符。
 - 本批Source Validation exit 0，PROGRESS 2条链接和U03-06/07 BASELINE 4条链接均可解析；3个相关JSON有效，8份TRX SHA-256匹配，`git diff --check`通过。纯文档与证据更新不重复本地WPF/完整链。
 - U03-06/07继续“代码完成待验收”，真实Playnite、Narrator/实际UIA客户端、物理鼠标与实体DPI未验。整轮任务计数未变。
+
+## 2026-11-09 Round5 U03-08 / U04-01/02 CI 与清理状态复核
+
+- 复核U03-08的数值范围、溢出、滚轮边界与路径预览/验证/本地打开保护，确认既有行为覆盖完整，本批不改生产控件。复看U04共享动效与快速掠过的双主题行为、Render QA证据；早期 #1330–#1334 失败和之后的修复诊断均保留，不把已结束失败留作“仍运行”。
+- 冻结整合提交 `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7` 的 GitHub run `40900374673` / #1398 两个适用 job 全部 success，包含全链 build/test/render/static review/package。artifact SHA 与 job ID 已在Round5 `evidence/U09-final-5c0c57b0/github-ci.json`核对；该整合门禁覆盖本批资源。U03-08/U04-01/02仍因真实Playnite、UIA客户端、物理输入和实体DPI未验而保持“代码完成待验收”。
+- `.tmp/round5-u03-08-u04-01-02-render-95b5dbf9`复核时已不存在；未执行删除，也不把不可归因的空间变化计入回收。文档检查日志2份/361 bytes随后从精确阶段`.tmp/round5-u03-08-doc-check-20261109/`删除；清理前后C盘均3,193,511,936 bytes、D盘均20,195,618,816 bytes，未增加空间。C仍低于完整根入口4 GiB；未触碰系统缓存、卷/盘符、用户/其他任务TRX或TestResults。
+- 隐藏Source Validation exit 0，Markdown链接1007条/缺失0，3个JSON有效，`git diff --check`通过；不重跑本地完整链。分支保护required-check API既有403，仍“远端待验”，不重试同一权限拒绝。

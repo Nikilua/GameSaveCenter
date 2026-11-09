@@ -10,7 +10,9 @@
   "archivedReport": "render-qa/render-qa-report.txt",
   "archivedReportSha256": "567a6fe8fd2f98d8b996527e54b270cdc25597c40b077cab24ecabfacdc10971",
   "removed": false,
-  "reason": "A prior PowerShell Remove-Item for another Round5 .tmp output was rejected before launch. Per the instruction not to repeat the same denied action, this stage output remains in place; no alternate shell or deletion route was used.",
+  "latestRecheckAt": "2026-11-09",
+  "existsAtLatestRecheck": false,
+  "reason": "At the 2026-11-09 boundary-checked recheck, the exact .tmp output path was already absent. No deletion was attempted and no reclaimed space is attributed. The previous removal attempt was rejected before launch; unrelated paths were not touched.",
   "freeBytesBeforeRender": {"C": 1582723072, "D": 6429085696},
   "freeBytesAfterRender": {"C": 1569579008, "D": 5419372544},
   "spaceDeltaAttribution": "unattributed; no other outputs were removed"
