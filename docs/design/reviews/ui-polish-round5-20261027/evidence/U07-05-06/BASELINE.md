@@ -17,3 +17,14 @@ SDK 8.0.423 Release / net472 定向 `NotificationInboxViewBehaviorTests|Round5To
 `validate-source.py`通过；WPF静态42 XAML / 0 error / 26既有warning / 179 info。`scripts/render-qa.ps1`固定样本 `2026-10-27T00:00:00Z`，双主题和11个逻辑窗口共394 PNG、0 PROBLEM、退出0；RenderHarness Release编译0警告/0错误。[前后通知页截图及SHA](../U07-05-06-title-density/render-pair-dcc288d6.json)，[提交后Render QA报告](../U07-05-06-title-density/render/render-qa-dcc288d6-report.txt) SHA-256 `FB85ADECFB9A5E5AD859EB03033CE92A6B0510E2AEF6D8F01B142BBFCC00B93F`。前后1040×700 DIP通知页样本未含溢出标题，故截图用于尺寸/主题无回归核对；长标题行为由WPF测试覆盖。渲染是1.00逻辑DPI离屏Harness，不代表物理DPI或真实Playnite弹层；toast遮挡关键操作的真实宿主关系仍待验。Demo目录本地副本缺失，本批只调整真实生产通知/Toast资源，不声称完成Demo对照。
 
 源码验证、测试、截图和CI状态的结构化清单见[本批验证记录](../U07-05-06-title-density/validation-dcc288d6.json)、[CI查询记录](../U07-05-06-title-density/ci-progress-dcc288d6.json)。代码已推送，但GitHub连接对该SHA combined status为空、PR-only workflow-run查询为空；公开check-runs API返回403 rate limit。无可核run/job/artifact身份，标为“远端待验”，不按本地绿灯推断CI通过。CI恢复后的精确查询步骤见CI记录。
+
+
+## 2026-11-10 当前共同源码复核
+
+当前`src/tests/scripts`相对共同源码e570f7b7没有差异；精确源码GitHub [run #1500](../U09-05-full-build-e570f7b7-20261109/ci-run-1500.json)基线job `129033708852`与SDK10 job `129033708730`全workflow成功，覆盖当前Release测试、WPF静态与双主题394图Render QA。通知来源和标题密度历史浅/深主题对照图位于[来源行浅色](../U07-05-notification-source-20261029/render/Notifications-after-light-1040x700.png)、[来源行深色](../U07-05-notification-source-20261029/render/Notifications-after-dark-1040x700.png)，1040×700 DIP离屏图仅用于视觉层级核对。
+
+通知源字段保持限定来源：任务显示名和明确会话事件；旧记录为空源显示“来源未记录”。长标题Tooltip/UIA和结果详情保留全文，列表排序/复制/筛选/虚拟化与新通知到达时焦点保持。Toast完整查看、焦点暂停计时、四条上限、最新优先、中间卡片退出期间顺序稳定及计时器回收均有历史定向行为覆盖；多卡/计时组系统指针opt-in skip单列且不计通过。
+
+未验证真实Playnite数据刷新、外部UIA/Narrator、实体键鼠/IME/物理DPI或Toast在宿主中对关键操作区的遮挡；不将离屏历史截图说成当前宿主验收。本批无生产代码、测试或资源改动，因此没有重新构建、测试或Render QA，U07-05/06仍代码完成待验收。
+
+本批文档门禁：Source Validation exit0，6份Markdown 1,025条本地链接缺失/越界均0，git diff --check exit0；只删除仓库.tmp/r5-u07-05-06-doc-check-20261110内3个本批日志共1,278 bytes，路径边界与重解析点已核对。C/D校验前3,106,439,168 / 20,173,574,144 bytes，校验后3,106,230,272 / 20,173,574,144 bytes；不把空间变化归因于临时日志清理。#1518 SDK10 job 129271907547已成功、基线job 129271907043仍运行；#1519/#1520/#1521双job仍运行。
