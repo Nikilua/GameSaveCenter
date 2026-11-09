@@ -11,3 +11,11 @@ Source validation、XAML26/26、WPF静态37 XAML/0 error/26既有warnings/179 in
 旧CI悬停失败修正3ecacdc0的[run 40647037308](https://github.com/Nikilua/GameSaveCenter/actions/runs/40647037308) SDK10 job 122678147262已成功，1987总/1929通过/58既有skip/0失败；artifact身份见[清单](ci-hover-fix-sdk10.json)。基线job122678147577仍在运行，不能称整run成功。required-checks接口此前403不推断保护状态。
 
 U07-01/02代码完成待验收；真实Playnite、物理键盘/IME/UIA、实体DPI和长正文实际宿主交互未验。本批新提交双SDK CI及整轮最终中文根入口完整构建/测试/发布/打包/安装身份/启动、独立scripts/build.cmd仍待验证。
+
+## 2026-11-10 当前共同源码复核
+
+Dashboard当前共享DialogOverlay保留请求提供的标题、对象与影响说明、独立正文ScrollViewer以及可换行动作区。危险确认结构没有Enter默认确认；取消为安全Cancel动作，Escape关闭后回到原焦点。最终定向TRX 10/10且哈希匹配清单，旧反射重载导致的9/10失败TRX继续保留，不计通过。
+
+双主题1040×700及1366×768对照是2026-10-30历史渲染，不视为当前真实宿主截图。当前src/tests/scripts与共同SHA e570f7b7无差异；#1500基线/SDK10全流程成功，覆盖Release测试、WPF静态审查及Render QA 394图/0 PROBLEM。当前对话框长正文真实Playnite滚动、外部UIA、实体键盘/IME、物理DPI仍待验。没有执行真实存档恢复、媒体删除或云端写入，U07-01/02保持代码完成待验收。
+
+本批文档复核：Source Validation exit0，6份Markdown相对链接缺失/越界均0，git diff --check exit0。只清理仓库`.tmp/r5-u07-01-02-doc-check-20261110`中的3份校验日志/1,278 bytes；C清理前/后3,113,865,216 / 3,117,977,600 bytes、D均20,176,359,424 bytes，不将空间变化归因为临时日志。

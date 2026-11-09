@@ -1572,3 +1572,7 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 2026-11-10 Round5第十一批接续：U06-07/08复核完成。高窗不再截断于560 DIP，窄窗回缩/内部滚动保留；受控窗口20k Task与Media列表实现行数有限，Media Standard例外不动。Detached scaleprobe峰值44不等同真实滚动容器或帧率。R18 TRX 1/1，当前共同源码e570f7b7的#1500双SDK全量测试、Render QA和WPF静态审查成功。其旧files.json记录checkout规范化前原始字节，3个临时构建日志缺失，19项文本当前hash/大小不同；当前sdk-version还原CRLF可匹配原清单，故将其限定为原始采集manifest，不作当前checkout hash证明。没有改产品代码或本机重跑构建。真实Playnite/物理4K/DPI/UIA/实体输入/帧率未验。#1513/#1514成功，#1515基线打包/SDK10成功，#1516/#1517/#1518测试中。C盘3,098,148,864 bytes，差4GiB 1,196,818,432；D盘20,177,862,656。继续U07-01/02。
 
 本批文档门禁：Source Validation exit0，6份Markdown的1,013条本地链接均有效，缺失/越界0，diff-check exit0；只清理自建日志2份/361 bytes。C/D清理前后为3,097,378,816 / 20,177,711,104 bytes，没有空间回收。
+
+2026-11-10 Round5第十二批接续：U07-01/02对话框层级和确认动作复核。真实请求标题/对象影响文本、独立正文ScrollViewer、可换行操作区仍在；危险确认不默认Enter，Escape取消并回焦。SDK8最终10/10、hash匹配，早期9/10反射重载失败保留。2026-10-30双主题双尺寸图片仅作历史，不声称当前宿主验收。当前共同源码e570f7b7的#1500双SDK完整测试、Render QA和WPF静态成功；真实Playnite长正文/UIA/键鼠IME/DPI待验，未触发恢复、删除或云写入。#1513/#1514两job成功，#1515基线打包/SDK10成功，#1516-1519双job测试中；本批CI待查。C盘3,113,365,504 bytes、距4GiB差1,181,601,792；D盘20,176,363,520。继续U07-03/04。
+
+本批文档门禁：Source Validation exit0；6份Markdown相对链接缺失0/越界0，diff-check exit0。只生成并删除仓库.tmp内3个校验日志/1,278 bytes；C盘校验前/后3,113,865,216 / 3,117,977,600 bytes，D盘均20,176,359,424 bytes，不声称空间回收。
