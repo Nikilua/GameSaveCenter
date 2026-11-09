@@ -13411,3 +13411,13 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - CI快照：#1513两job成功；#1514基线打包/SDK10成功；#1515基线打包/SDK10成功；#1516双job测试中；#1517双job测试中。当前提交CI待查，required-checks仍因403标远端待验。C盘3,087,306,752 bytes，离4GiB差1,207,660,544；D盘20,179,832,832。最终中文入口仍等准确SDK8.0.423、空间与用户正常退出Playnite。下一批U06-07/08。
 
 - 文档Source Validation exit 0、6份Markdown 1,010本地链接无缺失/越界、git diff --check exit 0。精确清理自建临时日志2份/361 bytes；C/D前后3,085,688,832 / 20,179,759,104 bytes，无可归因空间回收，其他阶段输出未清。
+
+## 2026-11-10 Round5 U06-07/08 高窗与大列表复核
+
+- U06-07取消候选表560 DIP高度上限，保留剩余高度预算、900×600回缩/内部滚动及1040×700可达；当前Task活动页样张用于窗口高度核对，实际物理4K与Playnite仍待验。
+- U06-08按受控窗口核对20k列表虚拟化：Task视口8行实现10行；Media后端20k通过业务上限显示2k UI项、实现7行；保留Media Inbox Standard安全例外。Detached scaleprobe的44行峰值不等于生产滚动泄漏或帧率。R18 TRX 1/1，主批hash清单匹配；早期失败TRX仍保留不算通过。
+- 当前src/tests/scripts与e570f7b7无差异；#1500双SDK全流程覆盖当前Release测试、WPF静态审查和Render QA 394图/0 PROBLEM。U06-08 follow-up原始files.json是checkout规范化前字节清单：24项中3个已删除临时日志缺失，21项可见且19项hash/bytes不同；sdk-version示例由LF还原CRLF后匹配原哈希。保留历史manifest，不把它说成当前checkout逐字节证明。
+- 本批仅文档整理，不运行本机编译/行为测试/截图，也没有新构建输出可清理；最新构建、package、审计与失败诊断保留。C盘3,098,148,864 bytes、距4GiB差1,196,818,432；D盘20,177,862,656。
+- CI快照：#1513/#1514双job成功；#1515基线打包、SDK10成功；#1516/#1517双job测试中；#1518双job测试中。required-checks既有403，仍远端待验。下一批U07-01/02。
+
+- 文档Source Validation exit 0、6份Markdown共1,013本地链接无缺失/越界、git diff --check exit 0。只删除本批临时日志2份/361 bytes；C/D清理前后3,097,378,816 / 20,177,711,104 bytes，无可归因空间回收。

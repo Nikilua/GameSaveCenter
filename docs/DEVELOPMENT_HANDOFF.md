@@ -1568,3 +1568,7 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 2026-11-09 Round5第十批接续：U06-05/06复核完成。存档多选非零锚点进入/清除40项、Escape、双主题断点往返保持选择/焦点；最终17/17、补测3/3、0 skip，早期15通过/2失败的夹具诊断保留不计通过。TaskCenter Empty/FilterEmpty/Error语义清楚，清筛选不会误刷新，错误重试调用刷新并保留旧数据。当前源码与e570f7b7一致，#1500双SDK完整测试、Render QA和WPF静态成功；真实宿主/外部UIA/实体输入与DPI仍未验。#1513双job成功，#1514/#1515基线生成包中、SDK10成功，#1516/#1517双job测试中。C盘3,087,306,752 bytes，距离4GiB差1,207,660,544；D盘20,179,832,832。继续U06-07/08，最终中文入口仍需SDK8.0.423、空间与用户正常退出Playnite。
 
 文档门禁：Source Validation exit0，6份Markdown的1,010条本地链接均存在、无越界，diff-check exit0；只清理自建日志2份/361 bytes。C/D清理前后分别3,085,688,832 / 20,179,759,104 bytes，没有可归因的空间回收。
+
+2026-11-10 Round5第十一批接续：U06-07/08复核完成。高窗不再截断于560 DIP，窄窗回缩/内部滚动保留；受控窗口20k Task与Media列表实现行数有限，Media Standard例外不动。Detached scaleprobe峰值44不等同真实滚动容器或帧率。R18 TRX 1/1，当前共同源码e570f7b7的#1500双SDK全量测试、Render QA和WPF静态审查成功。其旧files.json记录checkout规范化前原始字节，3个临时构建日志缺失，19项文本当前hash/大小不同；当前sdk-version还原CRLF可匹配原清单，故将其限定为原始采集manifest，不作当前checkout hash证明。没有改产品代码或本机重跑构建。真实Playnite/物理4K/DPI/UIA/实体输入/帧率未验。#1513/#1514成功，#1515基线打包/SDK10成功，#1516/#1517/#1518测试中。C盘3,098,148,864 bytes，差4GiB 1,196,818,432；D盘20,177,862,656。继续U07-01/02。
+
+本批文档门禁：Source Validation exit0，6份Markdown的1,013条本地链接均有效，缺失/越界0，diff-check exit0；只清理自建日志2份/361 bytes。C/D清理前后为3,097,378,816 / 20,177,711,104 bytes，没有空间回收。
