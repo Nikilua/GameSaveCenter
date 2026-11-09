@@ -20,3 +20,14 @@ SDK 8.0.423 Release 组合 31 通过、1 既有旧“今日工作台”架构断
 - 精确提交已推送。GitHub连接查询该SHA的combined status为空，工作流run接口只返回PR触发而未给出本次push run；公开Actions页面为旧缓存。没有本提交可核的run/job/artifact身份，当前按“远端待验”处理，详情见[CI查询快照](ci-progress-957ee.json)。`windows-build.yml`中的基线和SDK10两个job均待用可列push run的连接继续核对。
 
 清理完成：路径规范化并确认目标位于仓库 `.tmp/`、无重解析点、没有本阶段活动构建进程或文件锁、无指向该目录的Markdown链接后，使用 PowerShell `Remove-Item -LiteralPath -Recurse -Force` 删除本批自建 `.tmp/round5-u08-01-02-next` 的3个日志/TRX文件，逻辑字节13,032。D盘可用空间 `12,463,370,240 → 12,463,390,720` 字节，C盘保持 `2,406,744,064` 字节。路径、逐文件清单和检查结果见[清理记录](cleanup.json)。旧Round3/Round5结果、用户TestResults、配置和其他阶段审计均保留。
+
+
+## 2026-11-10 当前共同源码与选框边界复核
+
+2026-10-29可见窗口测试提交`957ee036`的U08-01/02行为仍为精确Release 2/2、0失败/0 skip；未选择游戏上下文、命令、UIA、页面滚动和恢复对象均保留。旧U09-01双主题同数据配对是2026-10-30页面布局图；存档历史页的最右列受横向视口裁切，这类旧图不用于判断用户提出的选框右边界问题，也不因此删除滚动条。
+
+用户指出的“时间/右侧文字没被边框完整包住”已由U09-05共享选框几何修正覆盖：当前浅/深主题Overview 992 DIP及Save History 493 DIP多横向偏移截图见[选框边界复测](../U09-05-selection-boundary-20261109/README.md)。查看后确认概览选中任务的时间在轮廓内；存档表右侧徽标与备注省略内容也在轮廓内，内容按可用列宽省略；水平滚动与列虚拟化保留。定向覆盖概览6、存档1、任务表1、共享选框状态3，合计11/11、0 skip。没有恢复存档。
+
+当前`src/tests/scripts`相对精确共同源码e570f7b7无差异；GitHub [run #1500双SDK与artifact身份](../U09-05-full-build-e570f7b7-20261109/ci-run-1500.json)两job全workflow success，覆盖当前测试、WPF静态和双主题394图Render QA。当前图是合成WPF输出，不是Playnite宿主或物理DPI验收；真实UIA/IME/键鼠/宿主仍待验。U08-01/02保持代码完成待验收，Demo-first架构边界继续生效。
+
+本批文档门禁：Source Validation exit0；6份Markdown共1,027条本地链接缺失/越界均0；git diff --check exit0。只生成并精确清理仓库.tmp/r5-u08-01-02-doc-check-20261110内3个本批日志共1,278 bytes，确认仓库.tmp边界及无重解析点。C/D校验前3,101,450,240 / 20,170,543,104 bytes，校验后3,100,766,208 / 20,170,543,104 bytes，不将空间变化归因于日志清理。
