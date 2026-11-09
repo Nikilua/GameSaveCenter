@@ -1,0 +1,212 @@
+[
+  {
+    "path": "gates.json",
+    "length": 2826,
+    "sha256": "DBD4E8661AE387934291FE807EDDC28F44F88CF9A1871CC1676A8F65AC1BE796"
+  },
+  {
+    "path": "README.md",
+    "length": 4926,
+    "sha256": "AB4037C498C58F66AA001EB66018BFF25DFFE4A0591FE559ECE5FA87D0ADAB9C"
+  },
+  {
+    "path": "tested-source-files.json",
+    "length": 1663,
+    "sha256": "CDF72CA0A7DCD1E7D36E276A60FFAD6C3281F7C28FABECA0B45A9DF753A32E8D"
+  },
+  {
+    "path": "build/compile-launch-summary.json",
+    "length": 1372,
+    "sha256": "9E48F4A80D1C7C3FF1A9F1D1DE0F67B47D362195D4C81B315753D02666D7DDF5"
+  },
+  {
+    "path": "build/compile-summary.json",
+    "length": 242727,
+    "sha256": "99D978EE7B847FB89592B704B05E594AA5E3AD882C762B6B1F96B626F0A8EF1A"
+  },
+  {
+    "path": "captures/overview-dark-992.png",
+    "length": 114170,
+    "sha256": "6623BFECD4577FC403F4CD105A854B79623256495BC617AD526AF29F30B03F85"
+  },
+  {
+    "path": "captures/overview-light-992.png",
+    "length": 113351,
+    "sha256": "F88BACEA6036093939A13CA105826A02101E367E4DCDBE6558850E437B6458BC"
+  },
+  {
+    "path": "captures/save-history-dark-493-offset-0.png",
+    "length": 19901,
+    "sha256": "F82DAB565769210FA140BB0E80DFCD1953562ED885D6F0759744A0655278EA9D"
+  },
+  {
+    "path": "captures/save-history-dark-493-offset-max.png",
+    "length": 18220,
+    "sha256": "102CD568EAE4B5380C3595325706A8A61DA662EFF6F9AC4BBB03B15659D19D47"
+  },
+  {
+    "path": "captures/save-history-light-493-offset-0.png",
+    "length": 21025,
+    "sha256": "FEB748E5B14D66E77D4EC10E145865596C8C1414368E5077CB38784AE828FF6F"
+  },
+  {
+    "path": "captures/save-history-light-493-offset-max.png",
+    "length": 18808,
+    "sha256": "A637FDF713DB819913611AC412D1F17B4845C0A26DC826077275F456C961B6CC"
+  },
+  {
+    "path": "captures/task-grid-dark-500-offset-0.png",
+    "length": 127189,
+    "sha256": "853284562B0DE6518C23D800F06AF924590290BDB6D448AA620949FAA3E6EA5D"
+  },
+  {
+    "path": "captures/task-grid-dark-500-offset-max.png",
+    "length": 76253,
+    "sha256": "080B16AF12CEE75F1EF1299AE889ADE8BF998EA88B61E2A97359353903651A7E"
+  },
+  {
+    "path": "captures/task-grid-light-500-offset-0.png",
+    "length": 124629,
+    "sha256": "E06307264F8294E1F39472504A5679DA432698EE8185D494875F6EA2C8CCEE98"
+  },
+  {
+    "path": "captures/task-grid-light-500-offset-max.png",
+    "length": 75009,
+    "sha256": "BD84D20AA689243A1D9AE8E7DE07B59B464615A4352E8211FE3B7920A19D5237"
+  },
+  {
+    "path": "desktop-identities/R06SaveHistorySelectionFrameBehaviorTests.json",
+    "length": 584,
+    "sha256": "E76C596F85BC87BCC7C9579AE2090A6B99897D7EBE19C601D288DB83FD470FBD"
+  },
+  {
+    "path": "desktop-identities/R06SelectionStateBehaviorTests.json",
+    "length": 584,
+    "sha256": "3961BAC0F555D3FE97C30DBECDBB33CD64E3EE05A5C6AD0FD00E901B849ED156"
+  },
+  {
+    "path": "desktop-identities/R06TaskGridSelectionFrameBehaviorTests.json",
+    "length": 584,
+    "sha256": "F34F7C13EECE5A491A0B04C6EFBC205037AD2F64F51B35D63CE89BF7FCC703C6"
+  },
+  {
+    "path": "desktop-identities/Round5OverviewSaveContextTests.json",
+    "length": 584,
+    "sha256": "66E3898307033CE2CAC77FCD829963688CAE2267467D7E0CD51B88919E943506"
+  },
+  {
+    "path": "desktop-identities/WpfUiResourceDictionaryTests.json",
+    "length": 584,
+    "sha256": "08B02272BC3326E8A9F7C55CD7D2775984FF299997B9E21BDE0C28AD13DBE1B2"
+  },
+  {
+    "path": "diagnostics/stale-margin-expectation/console.txt",
+    "length": 3641,
+    "sha256": "47A8EC59F30825602F6B400B502DCBE0EF204785DBC16EC9263AE9EAF619F2A4"
+  },
+  {
+    "path": "diagnostics/stale-margin-expectation/desktop-result.json",
+    "length": 584,
+    "sha256": "0ADBCCF5EC9A5E689EAB2DBF3876B6E5C3C52464FCCCE7460A11C702FCCD4AF9"
+  },
+  {
+    "path": "diagnostics/stale-margin-expectation/R06SelectionStateBehaviorTests-stale-margin.trx",
+    "length": 9212,
+    "sha256": "C05AB07B11C0F9DFA63F88C2F436CDD0681AB8459C5E5F16516A05708F78B70E"
+  },
+  {
+    "path": "render-qa/render-qa-report.txt",
+    "length": 1140754,
+    "sha256": "235202255F569BFF6AE40C37CF64B83C07A6F8495C64BCC307E57ECB9C684F91"
+  },
+  {
+    "path": "render-qa/run-summary.json",
+    "length": 1149,
+    "sha256": "2EEC2682C424D995BB854604F95601930E871CE844C1AF447104C9739CD12608"
+  },
+  {
+    "path": "source-checks/final-doc-link-check.json",
+    "length": 857,
+    "sha256": "11DA9BBDF5BCD3BBB23E96B09DFE3423EA2009F502F34F56BFAD8968F11CC617"
+  },
+  {
+    "path": "source-checks/final-source-link-check.log",
+    "length": 408,
+    "sha256": "F0BE8A6A6D7BCAB35113D5B74418EBABB8EF56539F17F0732B6DBF82B15027A9"
+  },
+  {
+    "path": "source-checks/run-summary.json",
+    "length": 842,
+    "sha256": "2FB5A3EFFE8C8838E913705B3FD93AD7D70112200C2A3D3D6E6374DF3935A5BC"
+  },
+  {
+    "path": "source-checks/source-checks.log",
+    "length": 288961,
+    "sha256": "2D58938DF3EB1CC1CA313B0E6BAD1F5374FA5912340404F3EE067606F5894D45"
+  },
+  {
+    "path": "source-checks/source-checks.stderr.log",
+    "length": 0,
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "path": "tests/behavior-run-summary.json",
+    "length": 1008,
+    "sha256": "23F4E01E7A737C5EDE10982F3DC9775367EFD77F521699EBF23261D26456BB65"
+  },
+  {
+    "path": "tests/R06SaveHistorySelectionFrameBehaviorTests-console.txt",
+    "length": 1150,
+    "sha256": "F801E74097A5D39C89014D18EF90CC7FDC5562F11CF3D98738F8379B2486422E"
+  },
+  {
+    "path": "tests/R06SaveHistorySelectionFrameBehaviorTests.trx",
+    "length": 13357,
+    "sha256": "E908F621856788C2B504F1B5FEAE40AD654F0C8C8A478EC17C3C59E91F5D4751"
+  },
+  {
+    "path": "tests/R06SelectionStateBehaviorTests-console.txt",
+    "length": 1398,
+    "sha256": "656587FEA1C9A637AFCAF39ACBA42B9E9FEFB109A6CF577952EA297BA350FBA2"
+  },
+  {
+    "path": "tests/R06SelectionStateBehaviorTests.trx",
+    "length": 6418,
+    "sha256": "1AEFE963D62C2CA3E14A76490F64CE4D6700AB0723A418041AEAEC43C0CBB56D"
+  },
+  {
+    "path": "tests/R06TaskGridSelectionFrameBehaviorTests-console.txt",
+    "length": 1137,
+    "sha256": "ADCC846E16DB1C9E6A2BECA732835C826E2D9C622AF183E4F5F02DDB583F21E7"
+  },
+  {
+    "path": "tests/R06TaskGridSelectionFrameBehaviorTests.trx",
+    "length": 14328,
+    "sha256": "EDE813141C6FDB625B24A994004FE5F858EFC9114FA2D1D4A77945D402EEDC96"
+  },
+  {
+    "path": "tests/resource-static-run-summary.json",
+    "length": 1014,
+    "sha256": "8915C13DC49C8752646FD6569EFA910BF9089DE8A16BB96A6D1F8F46C6BBBC1B"
+  },
+  {
+    "path": "tests/Round5OverviewSaveContextTests-console.txt",
+    "length": 1956,
+    "sha256": "5F08C5026123DB230FFD334F183ABFF5ACDC962FA126EE7FD7A13DDFAC296632"
+  },
+  {
+    "path": "tests/Round5OverviewSaveContextTests.trx",
+    "length": 14981,
+    "sha256": "3FA98FFA5E7D3CCF37FB24395755424C0B243456700581C1EC58848580B42A31"
+  },
+  {
+    "path": "tests/WpfUiResourceDictionaryTests-console.txt",
+    "length": 37685,
+    "sha256": "2672711739EFF9BD43AE133D24D68C3A290A233972034799D516285AE6BF9E7E"
+  },
+  {
+    "path": "tests/WpfUiResourceDictionaryTests.trx",
+    "length": 315150,
+    "sha256": "4F7BC157CE3682DF27538E4E54B9055437D8F501AECEA91E1D7B3F841827A2A8"
+  }
+]

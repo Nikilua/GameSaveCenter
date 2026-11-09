@@ -1,0 +1,274 @@
+[repo]\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.61]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.00]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:03.07]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProcessMappingEditorUsesDemoWidthAndStacksAtNarrowWidth [1 s]
+[xUnit.net 00:00:05.69]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected [SKIP]
+[xUnit.net 00:00:05.69]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditUsesDemoInspectorAndInternalAuditViewport [134 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxInspectorKeepsActionsOutsideTheGridScrollSurface [18 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SidebarStatusUsesRealBooleanStatesInsteadOfRawBooleanText [11 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(mode: Light) [854 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(mode: Dark) [49 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspaceViewsConstructInsideSta [457 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxUsesStableLargeDataVirtualizationAndMaintenanceHeadersOwnTheirTheme [58 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDoesNotRenderASecondLegacyOverviewMetricStrip [9 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryMaintenanceDataGridHasAnEmptyStateOverlay [23 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsUsesSharedResponsiveFieldGroupsWithoutShrinkingNumericInputs [20 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignKeepsNavigationAndStatusCardsInsideCompactSidebarBounds [13 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewActivityRowsAndCloudQueueCardKeepVisualContentAndOneClickNavigation [4 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupDefersWorkerUntilExplicitUserIntent [4 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCardsUseReadableAutoStartStatusInsteadOfRawBoolean [3 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.UiFilterSelectionRestoresOnlyEmptySelections [15 ms]
+[xUnit.net 00:00:06.61]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:06.61]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:06.61]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn [SKIP]
+[xUnit.net 00:00:06.61]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture [137 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionAdaptersResolveGameSaveCenterTokensFromTheUserControlScope [173 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReleasesEmptyRightColumn [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridReservesFourRowsAndCompactInspectorKeepsBottomInset [144 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionAdaptersOwnRoundedInputTemplatesAndPopupItems [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSummaryStripFollowsTheDemoMetricRhythm [46 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignUsesExplicitHeaderRowsAndSharedGameContextAtEveryBreakpoint [26 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeGameLibrariesUseOneVirtualizedSearchableSelectorSurface [68 ms]
+[xUnit.net 00:00:06.97]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterProvidesDemoComparisonAndRetentionInspector [SKIP]
+[xUnit.net 00:00:06.97]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:06.98]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:06.98]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SemanticStatusColorsAreLocalDynamicResourcesInHighContrast [42 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskSearchTextKeepsVisibleViewportAtExistingFieldHeight [12 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveShellReclaimsCompactPaddingForWorkspaceScrollRows [9 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TableDensitySettingUsesSharedTokensWithoutChangingBodyTypography [9 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FixedAmbientMaterialLayersUseTheOpaqueAccessibilityFallback [6 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterProvidesDemoComparisonAndRetentionInspector [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCardAliasesKeepReadingSurfacesFlatAndConsistent [10 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorReleasesEmptyRightColumn [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxSupportsNonIntrusiveBatchClassificationActions [46 ms]
+[xUnit.net 00:00:07.03]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap [SKIP]
+[xUnit.net 00:00:07.03]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:07.03]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:07.03]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsOnlyTheWorkerOwnedByThisPluginInstance [3 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorReleasesEmptyRightColumn [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardLargeScrollableControlsStayInsideFiniteGridLayouts [3 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedMotionPrimitivesCloneFrozenTransformsBeforeTheyAreAnimated [5 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryReadinessProbeNeverEagerlyStartsWorkerAfterASettledPartialSnapshot [4 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoVisualVocabularyAndWorkspaceStretchContractRemainAvailable [36 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionXamlUsesOnlyRealDockEnumValues [128 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStopsHiddenNotificationPollingWhenDetached [4 ms]
+[xUnit.net 00:00:07.35]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor [SKIP]
+[xUnit.net 00:00:07.35]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:07.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorRestoresAfterCompactResize [SKIP]
+[xUnit.net 00:00:07.41]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridUsesDemoBodyAndCaptionFontTokens [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCorePaletteWinsOverHostNeutralBrushesOutsideHighContrast [11 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AsyncUiEventBoundariesDoNotLeakFailuresIntoThePlayniteDispatcher [88 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSliderDeclaresReadableTrackAndExpandedInputTarget [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterKeepsTableRowsVisibleWhenMetadataActionsWrap [18 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignResourceDictionaryParsesInsideThePluginScope [8 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactModeKeepsRestoreAvailabilityAccessibleWithoutTakingTableRows [55 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorRestoresAfterCompactResize [1 ms]
+[xUnit.net 00:00:07.43]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceCompactInspectorTogglesToUsableHeight [SKIP]
+[xUnit.net 00:00:07.43]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:07.43]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard [SKIP]
+[xUnit.net 00:00:07.43]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:07.43]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors [SKIP]
+[xUnit.net 00:00:07.43]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:07.45]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints [SKIP]
+[xUnit.net 00:00:07.45]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSearchRowStacksButtonsBelowTheSearchBoxSoNarrowWindowsDoNotClip [4 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskSummaryMatchesDemoStateBreakdownWithRealCounts [18 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceCompactInspectorTogglesToUsableHeight [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardToastTimersAreReleasedOnUnloadAndCapacityEviction [17 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryPrewarmsWorkerWithoutBlockingDashboardOnLudusaviVersion [8 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCurrentActionsReserveACompactDetailsLane [80 ms]
+[xUnit.net 00:00:07.54]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorRestoresAfterCompactResize [SKIP]
+[xUnit.net 00:00:07.54]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorRestoresAfterCompactResize [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.BackgroundWorkerCollectionUpdatesRespectThePlayniteDispatcherLifecycle [24 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedGlassButtonAliasesKeepThemeStatesAndPressFeedback [10 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProtectionPromptUsesThreeExplicitChoices [8 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DenseGridLongTextUsesTheSharedEllipsisAndTooltipStyle [44 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceActionsUseSingleFiniteScrollChannel [28 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionAdaptersResolveWpfUiButtonDefaultsInsideTheirOwnParseScope [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReturnsWhenWideLayoutIsRestoredAfterCompactResize [53 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.UiFilterSelectionRepairsAValidButStaleSelection [2 ms]
+[xUnit.net 00:00:07.80]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable [SKIP]
+[xUnit.net 00:00:07.80]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceRetentionPreviewReflowsDetailsAtNarrowWidth [72 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterPathWorkspaceShowsRealRuleAndValidationEntryPoints [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDataGridsDeclareExplicitFirstAndLastHeaderStyles [4 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryTaskNotificationsDoNotOpenAWorkerLongPollBeforeTheDashboardIsOpened [5 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeferredDashboardCallbacksAreProtectedDuringPlayniteUnload [18 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsSectionRhythmUsesTitlePlusCaptionRowsForToggles [19 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsStoragePolicyFieldsUseASafeCompactSingleColumnLayout [9 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewPrioritizesPendingAndRecentTasksBeforeSecondaryContent [7 ms]
+[xUnit.net 00:00:07.85]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary [SKIP]
+[xUnit.net 00:00:07.85]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:07.89]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterReleasesEmptyHistoryAndCandidateInspectors [SKIP]
+[xUnit.net 00:00:07.89]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PluginNotificationAndConfirmationDispatchRespectPlayniteShutdown [10 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourcesKeepPathEditingAndSafetyCommandsReachableInCompactLayouts [22 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterReleasesEmptyHistoryAndCandidateInspectors [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardUsesSidebarAsTheOnlyWorkspaceSwitcher [16 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorFillsTheWorkspaceAndOnlyCapsWhenStacked [5 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedListBoxItemsStayRoundedAndKeyboardFocusable [18 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridUsesTheSharedViewportWithoutFixedBottomCompensation [34 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerHandshakeRejectsHealthyStaleVersionBeforeLargeLibraryReuse [7 ms]
+[xUnit.net 00:00:07.97]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterInspectorsRestoreAfterCompactResize [SKIP]
+[xUnit.net 00:00:07.97]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsTheDemoShellAtItsCommonMinimumWidth [2 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterInspectorsRestoreAfterCompactResize [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode [60 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskAndMaintenanceTablesUseReadableSemanticStatusTemplates [13 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmbeddedPlayniteViewsDoNotRegisterWindowScopedContentDialogHosts [1 s]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceReleasesEmptyInspectorColumns [85 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault [117 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewMetricSeparatorsOccupyGapsBetweenSixCards [3 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsPathFieldsAreFullWidthReadableRowsPreservingEveryBinding [10 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDataGridHeaderKeepsSortGlyphAndResizePartsVisible [3 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.HeaderActionsKeepAnInternalHorizontalScrollChannelAtNarrowWidths [3 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedPageScrollViewerStretchesContentAndLeavesBottomBreathingRoom [2 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceIsPhysicallyExtractedAsAGlobalVirtualizedSurface [30 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport [17 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStartsDescriptorSynchronizationWithoutBlockingTheFirstPaint [32 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SafeFallbackUsesSystemThemeResourcesInsteadOfHardCodedDarkColors [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionFindingRowsUseDemoIconTileRhythmWithSuggestedActionText [8 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAndSidebarUseTheSharedPageScrollChannel [8 ms]
+[xUnit.net 00:00:09.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator [SKIP]
+[xUnit.net 00:00:09.41]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:09.46]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:09.46]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:09.47]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot [SKIP]
+[xUnit.net 00:00:09.47]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceShowsSafeModeBannerBoundToSnapshot [21 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveLayoutsCoalesceResizeStormsWithoutUpdatingUnloadedViews [8 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibraryKeepsBusyWorkerInsteadOfKillingItAfterPingTimeout [10 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FollowPlayniteUsesTheActiveThemeModeWhenBothThemeBrushSetsArePublished [5 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.InitialSynchronizationCancellationToleratesCompletionRace [13 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibrariesSyncDescriptorsAndKeepMatchingInTheWorkerQueue [43 ms]
+[xUnit.net 00:00:09.55]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands [SKIP]
+[xUnit.net 00:00:09.55]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCenterKeepsProjectImportConfirmationTab [3 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedButtonsAndTogglesKeepDemoStateLayersWithoutChangingTheirCommands [33 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionNavigationCentersEachIconAndLabelOnTheSameRow [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProvidesReadOnlyRetentionPreviewTab [46 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSelectionLoadsReleasesInTheExtractedWorkspace [4 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseTheSharedDemoLayoutWithoutReplacingTheirRealContent [74 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceCompactInspectorsDefaultClosedAndToggleOpen [99 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FloatingThemeResourcesStayLocalToDashboardAndSettingsOwners [20 ms]
+[xUnit.net 00:00:09.80]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces [SKIP]
+[xUnit.net 00:00:09.80]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:09.80]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactLayoutsKeepSummaryInformationAndUseThePageScroller [SKIP]
+[xUnit.net 00:00:09.80]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:09.88]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover [SKIP]
+[xUnit.net 00:00:09.88]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactLayoutsKeepSummaryInformationAndUseThePageScroller [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerDownloadFeedbackKeepsStableRequestContextAndOffersSafeCancellation [65 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsDemoFooterHierarchyWithoutReintroducingStatusBarLayout [15 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSectionCardMatchesDemoReadingSurfaceGeometry [2 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ThemeAwareIconPackUsesSharedGeometryAndInheritableForeground [6 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkspaceTableHeadersShareTheReadingSurfaceWithoutDividerBands [20 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupRendersCacheWithoutKillingBusyWorker [15 ms]
+[xUnit.net 00:00:09.94]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [SKIP]
+[xUnit.net 00:00:09.95]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:09.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:09.95]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:09.99]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorStacksBeforeItsEditingControlsAreCompressed [SKIP]
+[xUnit.net 00:00:09.99]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:09.99]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionActionsExposeAnAccessibleExplanationPath [SKIP]
+[xUnit.net 00:00:09.99]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:10.00]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.RecentProtectionCardSupportsSelectionAndRecommendedBatchAction [SKIP]
+[xUnit.net 00:00:10.00]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.GameContextButtonKeepsCompositeGridContentThroughItsRuntimeTemplate [22 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsRedesignMovesCategoriesWithoutRemovingExistingFieldsOrSaveSemantics [49 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorStacksBeforeItsEditingControlsAreCompressed [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionActionsExposeAnAccessibleExplanationPath [1 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.RecentProtectionCardSupportsSelectionAndRecommendedBatchAction [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.GlobalWorkspaceViewsHaveOneVisibleMigrationEntryAndKeepVirtualization [59 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsQueuedCallbacksBeforeTheyTouchWorkerOrUi [8 ms]
+[xUnit.net 00:00:10.08]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:10.08]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:10.14]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial [SKIP]
+[xUnit.net 00:00:10.14]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FollowPlaynitePrefersTheDisplayingWindowOverAChildFallbackResource [45 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibrarySynchronizationWaitsForAnInteractiveSurface [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryUsesReadableStatusLabelsAndRoundedStatusTemplates [4 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming [8 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryInspectorDoesNotShowDisabledControlsOrUnlabelledPillsWithoutASelection [12 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExistingButtonsUseGlassSurfaceAndSidebarIconUsesPlayniteGlyphBrush [12 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi [20 ms]
+[xUnit.net 00:00:10.19]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:10.19]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:10.21]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGameFilterMovesIntoMoreFiltersOnCompactPanes [SKIP]
+[xUnit.net 00:00:10.22]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:10.25]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected [SKIP]
+[xUnit.net 00:00:10.25]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:10.26]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable [SKIP]
+[xUnit.net 00:00:10.26]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProcessTableSpansFullWidthUntilAMappingIsSelected [31 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGameFilterMovesIntoMoreFiltersOnCompactPanes [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CustomToolSettingsExposeConservativeProcessAndRiskPolicies [14 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OptionalWpfUiProbeKeepsItsChecklistInsideAFixedGridRow [2 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseGridRootsAndInternalTableScrolling [16 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridSelectionUsesTrainerRoundedCardChrome [8 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable [1 ms]
+[xUnit.net 00:00:10.34]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers [SKIP]
+[xUnit.net 00:00:10.34]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:10.35]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling [SKIP]
+[xUnit.net 00:00:10.35]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NativeConfirmationFallbackAlsoRunsInsideTheUiBoundary [5 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourceRulesUseAVisibleWideFormAndResponsiveStackedList [29 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmptyDataSurfacesExplainNextStepsWithoutBreakingLocalScrolling [49 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeviceDecisionsPreserveProtectedRecoveryAndReadableCompactFields [13 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardWorkspacePresentationKeepsHeaderContextInSync [5 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PreDashboardCatalogGuardCoversPartialLargeLibrariesAndDatabaseShutdowns [7 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAsyncFeedbackDoesNotTargetAnUnloadedPlaynitePage [7 ms]
+[xUnit.net 00:00:10.42]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles [SKIP]
+[xUnit.net 00:00:10.42]       该断言属于已撤销的今日工作台 UI 架构，当前生产页面恢复 AcrylicFork 基线后不再适用。
+[xUnit.net 00:00:10.49]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerLaunchLogRecordsExpectedVersionForStaleInstallationDiagnostics [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip [15 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ToastElevationFallsBackToAnOpaqueAccessibleSurface [8 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedTextInputsAndComboItemsKeepDemoFocusAndSelectionLanguage [5 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardViewModelEventsFollowTheLoadedViewLifecycle [18 ms]
+  已跳过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles [1 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AccentBrandMarksUseTheComputedOnAccentForegroundInEveryTheme [9 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerDuplicateNormalExitReusesHealthyExistingInstance [2 ms]
+  已通过 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FiniteWidthComboBoxesUseTheSharedLongTextTemplate [56 ms]
+
+测试运行成功。
+测试总数: 179
+     通过数: 140
+    跳过数: 39
+总时间: 11.9223 秒
+结果文件: [repo]\.tmp\round5-u09-05-final-20261109\selection-frame-fix-20261109\resource-dictionary-static-final\WpfUiResourceDictionaryTests\trx\WpfUiResourceDictionaryTests.trx

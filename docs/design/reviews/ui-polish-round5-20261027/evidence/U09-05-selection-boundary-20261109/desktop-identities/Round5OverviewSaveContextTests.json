@@ -1,0 +1,16 @@
+{
+    "exitCode":  0,
+    "timedOut":  false,
+    "outputDrained":  true,
+    "testProcessId":  43756,
+    "testProcessStartedUtc":  "2026-11-09T02:33:51.2903385Z",
+    "testProcessExited":  true,
+    "startedUtc":  "2026-11-09T02:33:51.2064860Z",
+    "completedUtc":  "2026-11-09T02:34:02.1671819Z",
+    "windowStation":  "WinSta0",
+    "desktop":  "GscWpfTest_071116ccd40f4b3ea9e29b0fa0e0e411",
+    "expectedDesktop":  "GscWpfTest_071116ccd40f4b3ea9e29b0fa0e0e411",
+    "inputDesktopBefore":  "Default",
+    "inputDesktopAfter":  "Default",
+    "launchError":  null
+}

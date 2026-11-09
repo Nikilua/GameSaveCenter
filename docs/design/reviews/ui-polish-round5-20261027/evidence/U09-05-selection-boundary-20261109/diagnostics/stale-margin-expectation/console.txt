@@ -1,0 +1,38 @@
+[repo]\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.79]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.83]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.SharedStateContractLeavesCellContentSurfaceForStatusBadges [120 ms]
+  已通过 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowOverlayContractKeepsContentAsSibling [17 ms]
+[xUnit.net 00:00:05.49]       Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:05.49]       Expected: 4,2,4,2
+[xUnit.net 00:00:05.49]       Actual:   4,2,0,2
+[xUnit.net 00:00:05.49]          在 Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/EqualityAsserts.cs:行号 154
+[xUnit.net 00:00:05.49]          在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c.<ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome>b__0_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 91
+[xUnit.net 00:00:05.49]          在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c__DisplayClass23_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 493
+[xUnit.net 00:00:05.49]       Stack Trace:
+[xUnit.net 00:00:05.49]            在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 505
+[xUnit.net 00:00:05.50]   Finished:    GameSaveCenter.Playnite.Tests
+  失败 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome [2 s]
+  错误消息:
+   Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ
+Expected: 4,2,4,2
+Actual:   4,2,0,2
+   在 Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/EqualityAsserts.cs:行号 154
+   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c.<ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome>b__0_0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 91
+   在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.<>c__DisplayClass23_0.<RunSta>b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 493
+  堆栈跟踪:
+     在 GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.RunSta(Action action) 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R06SelectionStateBehaviorTests.cs:行号 505
+
+测试总数: 3
+     通过数: 2
+     失败数: 1
+总时间: 6.8634 秒
+结果文件: [repo]\.tmp\round5-u09-05-final-20261109\selection-frame-fix-20261109\frame-recheck-final\R06SelectionStateBehaviorTests\trx\R06SelectionStateBehaviorTests.trx
+[xUnit.net 00:00:05.49]     GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome [FAIL]
+测试运行失败。

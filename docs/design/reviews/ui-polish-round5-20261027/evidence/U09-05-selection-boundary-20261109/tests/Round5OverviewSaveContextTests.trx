@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="5b27f6d2-28ba-4f7d-bd00-a42be9321eac" name="lopmatu@SULT 2026-11-09 10:34:00" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-09T10:34:00.1266410+08:00" queuing="2026-11-09T10:34:00.1266419+08:00" start="2026-11-09T10:33:52.1430172+08:00" finish="2026-11-09T10:34:02.0377329+08:00" />
+  <TestSettings name="default" id="ba62ca31-a8cd-4740-ad46-61c8eb0d4ef6">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-09_10_34_00" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d0e399d8-9414-4736-a1db-77a782f07d6e" testId="9bba814c-9123-d04c-25ad-fc41f40faed1" testName="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Light, width: 992, height: 400)" computerName="SULT" duration="00:00:00.2460000" startTime="2026-11-09T10:34:00.8386507+08:00" endTime="2026-11-09T10:34:01.0858927+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d0e399d8-9414-4736-a1db-77a782f07d6e">
+      <Output>
+        <StdOut>Light DPI=1.5x1.5: list=909.33, viewport=895.33, item=895.33, content=875.33, chromeActual=895.33, chromeBinding=, frame=1.33333333333333,1.33333333333333,895.333333333333,54, ancestors=Border#TaskItemChrome[895.33x54; clip=False] &lt;- Grid#[895.33x54; clip=True] &lt;- ListBoxItem#[895.33x54; clip=False] &lt;- VirtualizingStackPanel#[895.33x418; clip=False] &lt;- ItemsPresenter#[895.33x418; clip=False] &lt;- SCP[1.33333333333333,1.33333333333333,895.333333333333,418; actual=895.33x418; viewport=0x0; offset=0; extent=0; clip=False] &lt;- Grid#[907.33x418; clip=False] &lt;- SV[1.33333333333333,1.33333333333333,907.333333333333,418; viewport=895.33x7; offset=0; extent=818] &lt;- Border#Bd[909.33x420; clip=False] &lt;- ListBox#OverviewActivityList[909.33x420; clip=False], time=824,20,58.6666666666666,16 '10-20 18:36'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2f537244-e87c-46b0-ab0a-e17f343c582c" testId="fa48efed-148d-2317-f84d-b58385f8e73f" testName="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Light, width: 1040, height: 700)" computerName="SULT" duration="00:00:03.3260000" startTime="2026-11-09T10:33:56.7860324+08:00" endTime="2026-11-09T10:34:00.0829657+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f537244-e87c-46b0-ab0a-e17f343c582c">
+      <Output>
+        <StdOut>Light DPI=1.5x1.5: list=957.33, viewport=943.33, item=943.33, content=923.33, chromeActual=943.33, chromeBinding=, frame=1.33333333333333,1.33333333333333,943.333333333333,54, ancestors=Border#TaskItemChrome[943.33x54; clip=False] &lt;- Grid#[943.33x54; clip=True] &lt;- ListBoxItem#[943.33x54; clip=False] &lt;- VirtualizingStackPanel#[943.33x418; clip=False] &lt;- ItemsPresenter#[943.33x418; clip=False] &lt;- SCP[1.33333333333333,1.33333333333333,943.333333333333,418; actual=943.33x418; viewport=0x0; offset=0; extent=0; clip=False] &lt;- Grid#[955.33x418; clip=False] &lt;- SV[1.33333333333333,1.33333333333333,955.333333333333,418; viewport=943.33x7; offset=0; extent=818] &lt;- Border#Bd[957.33x420; clip=False] &lt;- ListBox#OverviewActivityList[957.33x420; clip=False], time=872,20,58.6666666666666,16 '10-20 18:36'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e370ab7c-a929-4efb-855c-8a84a536afb4" testId="168c39e2-131c-4a67-34f1-94de1c051d5f" testName="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SaveHistoryShowsAndUpdatesSelectedGameIdentityInStandardWindow" computerName="SULT" duration="00:00:00.5420000" startTime="2026-11-09T10:34:01.3179304+08:00" endTime="2026-11-09T10:34:01.8599841+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e370ab7c-a929-4efb-855c-8a84a536afb4" />
+    <UnitTestResult executionId="ab61d9c0-4772-4695-945b-6e0072d39055" testId="5e9546f5-614c-2e44-0fb7-9ede2df20bbb" testName="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Dark, width: 992, height: 400)" computerName="SULT" duration="00:00:00.3880000" startTime="2026-11-09T10:34:00.4504898+08:00" endTime="2026-11-09T10:34:00.8386507+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab61d9c0-4772-4695-945b-6e0072d39055">
+      <Output>
+        <StdOut>Dark DPI=1.5x1.5: list=909.33, viewport=895.33, item=895.33, content=875.33, chromeActual=895.33, chromeBinding=, frame=1.33333333333333,1.33333333333333,895.333333333333,54, ancestors=Border#TaskItemChrome[895.33x54; clip=False] &lt;- Grid#[895.33x54; clip=True] &lt;- ListBoxItem#[895.33x54; clip=False] &lt;- VirtualizingStackPanel#[895.33x418; clip=False] &lt;- ItemsPresenter#[895.33x418; clip=False] &lt;- SCP[1.33333333333333,1.33333333333333,895.333333333333,418; actual=895.33x418; viewport=0x0; offset=0; extent=0; clip=False] &lt;- Grid#[907.33x418; clip=False] &lt;- SV[1.33333333333333,1.33333333333333,907.333333333333,418; viewport=895.33x7; offset=0; extent=818] &lt;- Border#Bd[909.33x420; clip=False] &lt;- ListBox#OverviewActivityList[909.33x420; clip=False], time=824,20,58.6666666666666,16 '10-20 18:36'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="63eab014-a25c-4075-9f2f-f13167f1d749" testId="150bc10b-2fed-2317-54d3-9347e4d3ae31" testName="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.OverviewHeroKeepsNeutralStatusAndNextStepInStandardWindow" computerName="SULT" duration="00:00:00.2310000" startTime="2026-11-09T10:34:01.0868930+08:00" endTime="2026-11-09T10:34:01.3169309+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="63eab014-a25c-4075-9f2f-f13167f1d749" />
+    <UnitTestResult executionId="5ce64c2c-625a-42bb-bc40-24440f2d6697" testId="70400cc3-187d-fe03-8214-3608ce616654" testName="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Dark, width: 1040, height: 700)" computerName="SULT" duration="00:00:00.3680000" startTime="2026-11-09T10:34:00.1046410+08:00" endTime="2026-11-09T10:34:00.4504898+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5ce64c2c-625a-42bb-bc40-24440f2d6697">
+      <Output>
+        <StdOut>Dark DPI=1.5x1.5: list=957.33, viewport=943.33, item=943.33, content=923.33, chromeActual=943.33, chromeBinding=, frame=1.33333333333333,1.33333333333333,943.333333333333,54, ancestors=Border#TaskItemChrome[943.33x54; clip=False] &lt;- Grid#[943.33x54; clip=True] &lt;- ListBoxItem#[943.33x54; clip=False] &lt;- VirtualizingStackPanel#[943.33x418; clip=False] &lt;- ItemsPresenter#[943.33x418; clip=False] &lt;- SCP[1.33333333333333,1.33333333333333,943.333333333333,418; actual=943.33x418; viewport=0x0; offset=0; extent=0; clip=False] &lt;- Grid#[955.33x418; clip=False] &lt;- SV[1.33333333333333,1.33333333333333,955.333333333333,418; viewport=943.33x7; offset=0; extent=818] &lt;- Border#Bd[957.33x420; clip=False] &lt;- ListBox#OverviewActivityList[957.33x420; clip=False], time=872,20,58.6666666666666,16 '10-20 18:36'</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Dark, width: 1040, height: 700)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="70400cc3-187d-fe03-8214-3608ce616654">
+      <Execution id="5ce64c2c-625a-42bb-bc40-24440f2d6697" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests" name="SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SaveHistoryShowsAndUpdatesSelectedGameIdentityInStandardWindow" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="168c39e2-131c-4a67-34f1-94de1c051d5f">
+      <Execution id="e370ab7c-a929-4efb-855c-8a84a536afb4" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests" name="SaveHistoryShowsAndUpdatesSelectedGameIdentityInStandardWindow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.OverviewHeroKeepsNeutralStatusAndNextStepInStandardWindow" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="150bc10b-2fed-2317-54d3-9347e4d3ae31">
+      <Execution id="63eab014-a25c-4075-9f2f-f13167f1d749" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests" name="OverviewHeroKeepsNeutralStatusAndNextStepInStandardWindow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Dark, width: 992, height: 400)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5e9546f5-614c-2e44-0fb7-9ede2df20bbb">
+      <Execution id="ab61d9c0-4772-4695-945b-6e0072d39055" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests" name="SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Light, width: 992, height: 400)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9bba814c-9123-d04c-25ad-fc41f40faed1">
+      <Execution id="d0e399d8-9414-4736-a1db-77a782f07d6e" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests" name="SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Light, width: 1040, height: 700)" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="fa48efed-148d-2317-f84d-b58385f8e73f">
+      <Execution id="2f537244-e87c-46b0-ab0a-e17f343c582c" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests" name="SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="9bba814c-9123-d04c-25ad-fc41f40faed1" executionId="d0e399d8-9414-4736-a1db-77a782f07d6e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fa48efed-148d-2317-f84d-b58385f8e73f" executionId="2f537244-e87c-46b0-ab0a-e17f343c582c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="168c39e2-131c-4a67-34f1-94de1c051d5f" executionId="e370ab7c-a929-4efb-855c-8a84a536afb4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e9546f5-614c-2e44-0fb7-9ede2df20bbb" executionId="ab61d9c0-4772-4695-945b-6e0072d39055" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="150bc10b-2fed-2317-54d3-9347e4d3ae31" executionId="63eab014-a25c-4075-9f2f-f13167f1d749" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="70400cc3-187d-fe03-8214-3608ce616654" executionId="5ce64c2c-625a-42bb-bc40-24440f2d6697" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="6" executed="6" passed="6" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.54]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.93]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.99]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:08.15]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

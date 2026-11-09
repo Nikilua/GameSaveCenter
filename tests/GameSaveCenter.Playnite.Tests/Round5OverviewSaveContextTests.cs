@@ -74,9 +74,11 @@ public sealed class Round5OverviewSaveContextTests
     }
 
     [Theory]
-    [InlineData(GameSaveCenterThemeMode.Light)]
-    [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(GameSaveCenterThemeMode theme)
+    [InlineData(GameSaveCenterThemeMode.Light, 1040d, 700d)]
+    [InlineData(GameSaveCenterThemeMode.Dark, 1040d, 700d)]
+    [InlineData(GameSaveCenterThemeMode.Light, 992d, 400d)]
+    [InlineData(GameSaveCenterThemeMode.Dark, 992d, 400d)]
+    public void SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(GameSaveCenterThemeMode theme, double width, double height)
     {
         RunSta(() =>
         {
@@ -105,15 +107,15 @@ public sealed class Round5OverviewSaveContextTests
                 });
             }
             var overview = new OverviewView { DataContext = data };
-            var window = Show(overview, 1040, 700);
+            var window = Show(overview, width, height);
             try
             {
                 var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(
                     overview, glassEnabled: true, strengthPercent: 78, themeMode: theme, highContrastOverride: false);
                 AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(overview.Resources, palette, glassEnabled: true, motionEnabled: true);
                 overview.ApplyResponsiveColumns(stack: true);
-                overview.ApplyResponsiveWidth(1040);
-                overview.ApplyResponsiveHeight(700, stack: true);
+                overview.ApplyResponsiveWidth(width);
+                overview.ApplyResponsiveHeight(height, stack: true);
                 PumpLayout(window);
 
                 var list = Assert.IsType<ListBox>(overview.FindName("OverviewActivityList"));
@@ -146,7 +148,7 @@ public sealed class Round5OverviewSaveContextTests
                 var contentWidth = contentPresenter?.ActualWidth.ToString("0.##") ?? "missing";
                 var diagnostic = $"{theme} DPI={dpi.DpiScaleX:0.##}x{dpi.DpiScaleY:0.##}: list={list.ActualWidth:0.##}, viewport={listScroll?.ViewportWidth:0.##}, item={item.ActualWidth:0.##}, content={contentWidth}, chromeActual={chrome.ActualWidth:0.##}, chromeBinding={System.Windows.Data.BindingOperations.GetBindingExpression(chrome, FrameworkElement.WidthProperty)?.Status}, frame={frame}, ancestors={R06SelectionStateBehaviorTests.DescribeVisualAncestors(chrome, list)}, time={timeBounds} '{time.Text}'";
                 output.WriteLine(diagnostic);
-                R06SelectionStateBehaviorTests.CaptureVisualIfRequested(list, $"overview-{theme}.png");
+                R06SelectionStateBehaviorTests.CaptureVisualIfRequested(list, $"overview-{theme}-{width:0}.png");
 
                 Assert.True(item.IsSelected, $"The recent task selection was not applied: {diagnostic}");
                 Assert.True(timeBounds.Right <= frame.Right - 1d,

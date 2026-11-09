@@ -1,0 +1,22 @@
+{
+  "sourceSha": "17dc5fd0dbaffd8fe2f2c5398aa0a37b5f77f498",
+  "entry": "scripts/build.cmd -SkipTests",
+  "arguments": "scripts\\build.cmd -SkipTests -Configuration Release -OutputRoot .tmp\\round5-u09-05-final-20261109\\build-output -TestTempRoot .tmp\\round5-u09-05-final-20261109\\test-temp -DiagnosticsRoot .tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\compile-after-test-contract\\diagnostics",
+  "startedUtc": "2026-11-09T02:32:19.5277915Z",
+  "endedUtc": "2026-11-09T02:32:35.0091807Z",
+  "processId": 48272,
+  "mainWindowHandle": 0,
+  "exitCode": 0,
+  "monitorMetadata": "monitorStartedUtc=2026-11-09T02:32:19.4074705Z\nstation=WinSta0\ndesktop=Default\ninputDesktop=Default\nattachedToInput=True\nattachError=0\nbuildPid=60012\nhookReadyUtc=2026-11-09T02:32:19.4380678Z\nendedUtc=2026-11-09T02:32:35.1411124Z\nshow=0\nhide=0\nresult=completed",
+  "windowEvents": null,
+  "spaceBefore": {
+    "C": 7046533120,
+    "D": 10157887488
+  },
+  "spaceAfter": {
+    "C": 7046008832,
+    "D": 10157621248
+  },
+  "stdout": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\compile-after-test-contract\\stdout.log",
+  "stderr": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\compile-after-test-contract\\stderr.log"
+}

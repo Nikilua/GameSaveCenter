@@ -1,0 +1,13 @@
+{
+  "sourceSha": "17dc5fd0dbaffd8fe2f2c5398aa0a37b5f77f498",
+  "startedUtc": "2026-11-09T02:35:59.2486476Z",
+  "endedUtc": "2026-11-09T02:36:15.7842090Z",
+  "processId": 59344,
+  "mainWindowHandle": 0,
+  "exitCode": 0,
+  "monitorMetadata": "monitorStartedUtc=2026-11-09T02:35:59.1774203Z\nstation=WinSta0\ndesktop=Default\ninputDesktop=Default\nattachedToInput=True\nattachError=0\nbuildPid=58332\nhookReadyUtc=2026-11-09T02:35:59.2044149Z\nendedUtc=2026-11-09T02:36:15.8297952Z\nshow=0\nhide=0\nresult=completed",
+  "windowEvents": null,
+  "stdout": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\resource-static-final.stdout.log",
+  "stderr": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\resource-static-final.stderr.log",
+  "testRoot": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\resource-dictionary-static-final"
+}

@@ -1,0 +1,99 @@
+{
+  "sourceBaseCommit": "17dc5fd0dbaffd8fe2f2c5398aa0a37b5f77f498",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "compile": {
+    "command": "scripts/build.cmd -SkipTests -Configuration Release -OutputRoot .tmp/round5-u09-05-final-20261109/build-output -TestTempRoot .tmp/round5-u09-05-final-20261109/test-temp",
+    "exitCode": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "behaviorTests": [
+    {
+      "class": "Round5OverviewSaveContextTests",
+      "total": 6,
+      "executed": 6,
+      "passed": 6,
+      "failed": 0,
+      "notExecuted": 0
+    },
+    {
+      "class": "R06SaveHistorySelectionFrameBehaviorTests",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0
+    },
+    {
+      "class": "R06TaskGridSelectionFrameBehaviorTests",
+      "total": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "notExecuted": 0
+    },
+    {
+      "class": "R06SelectionStateBehaviorTests",
+      "total": 3,
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "notExecuted": 0
+    }
+  ],
+  "behaviorTotal": {
+    "failed": 0.0,
+    "passed": 11.0,
+    "skipped": 0.0
+  },
+  "resourceDictionary": {
+    "class": "WpfUiResourceDictionaryTests",
+    "total": 179,
+    "passed": 140,
+    "failed": 0,
+    "skipped": 39,
+    "skipReason": "既有 LegacyProductionUiBaselineFact：已撤销的“今日工作台”架构断言"
+  },
+  "renderQa": {
+    "pngCount": 394,
+    "problemLines": 0,
+    "exitCode": 0,
+    "reportSha256": "235202255F569BFF6AE40C37CF64B83C07A6F8495C64BCC307E57ECB9C684F91"
+  },
+  "sourceAndWpfStatic": {
+    "sourceValidationExitCode": 0,
+    "wpfStaticExitCode": 0,
+    "scannedXaml": 398,
+    "errors": 0,
+    "warnings": 218,
+    "info": 1440,
+    "knownTargetWarnings": [
+      "OverviewView: existing large ScrollViewer inside StackPanel hints at finite-size review, lines 516 and 824"
+    ]
+  },
+  "inputDesktop": {
+    "name": "Default",
+    "compileShow": 0,
+    "compileHide": 0,
+    "behaviorShow": 0,
+    "behaviorHide": 0,
+    "resourceStaticShow": 0,
+    "resourceStaticHide": 0,
+    "renderShow": 0,
+    "renderHide": 0,
+    "allUiRunnersHidden": true
+  },
+  "staleAssertionFailure": {
+    "test": "R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome",
+    "reason": "test expected legacy trailing Margin=4; production selection frame was intentionally changed to Margin=0",
+    "fixed": "updated the existing margin assertion; rerun four behavior classes passed"
+  },
+  "finalDocumentationCheck": {
+    "sourceValidationExitCode": 0,
+    "localMarkdownLinkCheckFiles": 5,
+    "missingLinks": 0,
+    "defaultDesktopShow": 0,
+    "defaultDesktopHide": 0
+  }
+}

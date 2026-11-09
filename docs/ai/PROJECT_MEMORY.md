@@ -1,3 +1,11 @@
+## 2026-11-09 Round5 U09-05 右侧选框边界修正
+
+用户明确指出 Overview 时间、Save History 与 Task Grid 的文字/徽标在选中框右侧外露。本地候选改掉 Overview 内容区独立窄宽绑定；共享 DataGrid 选框右缘扩至视口内1 DIP，键盘焦点留2 DIP；内容8 DIP裁切及水平滚动照旧。边界行为在双主题、窄尺寸、多横向偏移的隔离WPF测试覆盖，11/11通过；共享资源断言通过。局部编译、Source Validation、WPF静态审查和394图Render QA通过。证据见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/README.md`。
+
+构建/测试/静态检查如果在用户机器执行，一律从进程创建时隐藏并重定向日志；WPF探针和RenderHarness放 WinSta0 私有非输入桌面，另对 Default input desktop做完整WinEvent SHOW/HIDE监听。此次本地命令监测到0个目标事件，只覆盖本次时段，不能归因用户旧截图或承诺所有入口绝无闪。最后只读核验Playnite PID24248与Worker PID42704仍运行、无MainWindowHandle；不强杀。完整中文入口会停宿主，必须等用户正常退出后再执行。当前候选新SHA双SDKCI与最终根入口链未验，U09-05/08仍进行；U09-06 required-checks API此前403，不重复探测。
+
+资源字典静态类中的39项 `[SKIP]` 来自既有 `LegacyProductionUiBaselineFact`，仅针对已撤销的“今日工作台”断言；不算通过且不应在此轮取消标记。一次选框状态回归的硬编码旧Margin失败已保留诊断；更新到新边距后四类行为11/11通过。未修改卷/盘符/映射，未执行真实恢复、媒体删除或云写入。
+
 ## 2026-11-09 Round5 U09-05 选框与长文像素复核
 
 基于 `3dc59152fee9e2e7e18872c13cadaee2e1c28dc8`，在三类选框回归中加入长列表/窄视口夹具与环境变量开启的像素捕获；任务详情用例同步生成窄栏长文截图。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0；8个适用WPF断言通过、0失败、0 skip，四个独立WinSta0私有桌面上的 input desktop 均保持Default。7张离屏图显示当前控件树中日期、状态/设备文字在框内，详情文字换行；这没有复现用户越界图。本批未改生产XAML/资源，不能替代Playnite宿主页。

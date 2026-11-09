@@ -87,7 +87,7 @@ public sealed class R06SelectionStateBehaviorTests
                 Assert.Equal(BrushColor(resources["GscSelectionInactiveBrush"]), BrushColor(failedBackground.Background));
                 Assert.NotEqual(BrushColor(resources["GscErrorTintBrush"]), BrushColor(failedBackground.Background));
                 Assert.NotEqual(BrushColor(resources["GscErrorBrush"]), BrushColor(failedChrome.BorderBrush));
-                Assert.Equal(new Thickness(4, 2, 4, 2), failedBackground.Margin);
+                Assert.Equal(new Thickness(4, 2, 0, 2), failedBackground.Margin);
                 AssertGeometryUnchanged(failedNormalGeometry, failedSelectedGeometry, "inactive selection");
 
                 grid.SelectedItem = items[1];
@@ -100,8 +100,8 @@ public sealed class R06SelectionStateBehaviorTests
                 Assert.True(succeededRow.IsKeyboardFocusWithin);
                 Assert.Equal(2, activeChrome.BorderThickness.Left);
                 Assert.Equal(BrushColor(resources["GscAccentTintBrush"]), BrushColor(activeBackground.Background));
-                Assert.Equal(new Thickness(3, 1, 4, 1), activeChrome.Margin);
-                Assert.Equal(new Thickness(3, 1, 4, 1), activeBackground.Margin);
+                Assert.Equal(new Thickness(3, 1, 0, 1), activeChrome.Margin);
+                Assert.Equal(new Thickness(3, 1, 0, 1), activeBackground.Margin);
                 AssertGeometryUnchanged(succeededNormalGeometry, succeededFocusedGeometry, "keyboard-focused selection");
 
                 Keyboard.Focus(external);

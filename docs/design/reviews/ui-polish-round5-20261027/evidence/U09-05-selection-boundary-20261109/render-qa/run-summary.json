@@ -1,0 +1,22 @@
+{
+  "sourceSha": "17dc5fd0dbaffd8fe2f2c5398aa0a37b5f77f498",
+  "entry": "scripts/render-qa.ps1",
+  "output": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\render-qa",
+  "startedUtc": "2026-11-09T02:17:57.9205243Z",
+  "endedUtc": "2026-11-09T02:22:06.3184096Z",
+  "processId": 57508,
+  "mainWindowHandle": 0,
+  "exitCode": 0,
+  "monitorMetadata": "monitorStartedUtc=2026-11-09T02:17:57.8174286Z\nstation=WinSta0\ndesktop=Default\ninputDesktop=Default\nattachedToInput=True\nattachError=0\nbuildPid=54008\nhookReadyUtc=2026-11-09T02:17:57.8344240Z\nendedUtc=2026-11-09T02:22:06.4033198Z\nshow=0\nhide=0\nresult=completed",
+  "windowEvents": null,
+  "diskBeforeBytes": {
+    "C": 7110213632,
+    "D": 10196385792
+  },
+  "diskAfterBytes": {
+    "C": 7103692800,
+    "D": 10143313920
+  },
+  "stdout": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\render-qa.stdout.log",
+  "stderr": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u09-05-final-20261109\\selection-frame-fix-20261109\\render-qa.stderr.log"
+}

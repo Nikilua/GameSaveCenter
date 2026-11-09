@@ -1,0 +1,22 @@
+[repo]\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.54]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.93]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.99]   Starting:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Light, width: 1040, height: 700) [3 s]
+  已通过 GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Dark, width: 1040, height: 700) [368 ms]
+  已通过 GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Dark, width: 992, height: 400) [388 ms]
+  已通过 GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SelectedRecentTaskKeepsTimestampAndStatusInsideItsFrame(theme: Light, width: 992, height: 400) [246 ms]
+  已通过 GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.OverviewHeroKeepsNeutralStatusAndNextStepInStandardWindow [231 ms]
+[xUnit.net 00:00:08.15]   Finished:    GameSaveCenter.Playnite.Tests
+  已通过 GameSaveCenter.Playnite.Tests.Round5OverviewSaveContextTests.SaveHistoryShowsAndUpdatesSelectedGameIdentityInStandardWindow [542 ms]
+
+测试运行成功。
+测试总数: 6
+     通过数: 6
+总时间: 9.8823 秒
+结果文件: [repo]\.tmp\round5-u09-05-final-20261109\selection-frame-fix-20261109\frame-recheck-after-contract\Round5OverviewSaveContextTests\trx\Round5OverviewSaveContextTests.trx

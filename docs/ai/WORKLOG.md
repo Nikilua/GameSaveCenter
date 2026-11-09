@@ -1,3 +1,11 @@
+## 2026-11-09 U09-05：右侧时间/状态文字越框修正
+
+用户指出概览最近任务时间与存档/任务列表文字在选框外。修正 Overview 行内容宽度与选中框的分离绑定，并把共享 DataGrid 选中、非活动和键盘焦点框扩到可视区域右缘；保持 `RowContent` 原8 DIP裁切和水平滚动系统。新增/调整选框几何断言，没有删断言、扩大skip或改业务/UIA/键盘命令。
+
+SDK8.0.423 / Release 隐藏运行 `scripts/build.cmd -SkipTests` exit0、0 warning/0 error；四个隔离WPF类11/11通过，0失败/0 skip；WPF资源静态类140通过，39项按既有“今日工作台”历史断言原因跳过且未计通过。源码校验、WPF静态审查exit0；Render QA 394 PNG/0问题。编译、行为、资源静态、源码与Render QA各自全程监听 `WinSta0\Default`，目标窗口SHOW/HIDE均为0。代表图、TRX、源码blob和报告见[本批证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/README.md)。一次旧Margin断言失败经日志确认是过期测试预期，已修正并保留失败TRX。
+
+本批只验了合成WPF视图，没有验真实Playnite页面/实体输入/物理DPI。Playnite 24248与Worker 42704仍活动、无主窗句柄；未关未杀，中文最终入口待正常退出后再跑。双SDK CI待候选push；用户所见历史黑窗仍未归因，不把本批0事件说成普遍无闪。U09-05、U09-08继续进行；required-checks此前403，保持远端待验。未动盘符、映射或用户数据。
+
 ## 2026-11-09 U09-05：选框离屏像素复核
 
 沿用户指出的右缘问题扩展三类既有选框WPF回归至长列表与约493–500 DIP窄视口，并在任务详情长文用例加入环境变量启用的离屏截图。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0、0警告/错误；定向四用例8/8通过，覆盖双主题/多尺寸的 Overview、Task Grid、Save History 与 Task Detail。七张 `RenderTargetBitmap` 图显示当前控件树中时间、状态、设备文字在选框内，详情文字换行；未复现框外文字。本批没有改生产XAML/共享资源/业务命令。

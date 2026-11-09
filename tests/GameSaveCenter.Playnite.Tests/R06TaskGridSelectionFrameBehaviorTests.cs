@@ -87,44 +87,51 @@ public sealed class R06TaskGridSelectionFrameBehaviorTests
                         throw new InvalidOperationException($"Task row was not realized for {scenario.Item1} {scenario.Width} DIP; items={taskGrid.Items.Count}, source={taskGrid.ItemsSource?.GetType().Name ?? "null"}, grid={taskGrid.ActualWidth:0.##}x{taskGrid.ActualHeight:0.##}, visible={taskGrid.Visibility}, loaded={taskGrid.IsLoaded}, viewLoaded={view.IsLoaded}.");
                     var chrome = ChromeFor(row);
                     var scroll = FindVisualChildren<ScrollViewer>(taskGrid).SingleOrDefault();
-                    if (scenario.GridWidth > 0 && scroll != null && scroll.ScrollableWidth > 0)
-                    {
-                        scroll.ScrollToHorizontalOffset(Math.Min(88, scroll.ScrollableWidth));
-                        PumpLayout(window);
-                    }
                     if (scenario.GridWidth > 0)
                     {
                         Assert.NotNull(scroll);
                         Assert.True(scroll!.ScrollableHeight > 0,
                             $"The narrow split-pane scenario must include the task list's vertical scroll range; viewport={scroll.ViewportHeight:0.##}, extent={scroll.ExtentHeight:0.##}.");
                     }
-                    var chromeBounds = VisibleBoundsRelativeTo(chrome, taskGrid);
-                    var visibleContent = FindVisualChildren<DataGridCell>(row)
-                        .Where(cell => cell.Visibility == Visibility.Visible && cell.ActualWidth > 0 && cell.ActualHeight > 0)
-                        .SelectMany(cell => FindVisualChildren<FrameworkElement>(cell)
-                            .Where(element => element is TextBlock or ProgressBar
-                                || element is Border border && !string.Equals(border.Name, "CellChrome", StringComparison.Ordinal))
-                            .Select(element => new
-                            {
-                                cell.Column.DisplayIndex,
-                                Element = element,
-                                Bounds = VisibleBoundsRelativeTo(element, taskGrid),
-                                Value = element is TextBlock text ? text.Text : element.Name
-                            }))
-                        .Where(item => !item.Bounds.IsEmpty && item.Bounds.Width > 0 && item.Bounds.Height > 0)
-                        .ToArray();
-                    var rightmost = visibleContent.OrderByDescending(item => item.Bounds.Right).FirstOrDefault()
-                        ?? throw new InvalidOperationException($"{scenario.Item1} {scenario.Width} DIP: no visible task cell content was measured.");
-                    var dpi = VisualTreeHelper.GetDpi(window);
-                    var diagnostic = $"{scenario.Item1} window={scenario.Width}x{scenario.Height} DIP gridTarget={scenario.GridWidth:0.##} DPI={dpi.DpiScaleX:0.##}x{dpi.DpiScaleY:0.##}: grid={taskGrid.ActualWidth:0.##}, row={row.ActualWidth:0.##}, scroll={scroll?.HorizontalOffset:0.##}/{scroll?.ScrollableWidth:0.##}, chromeActual={chrome.ActualWidth:0.##}, chromeBinding={System.Windows.Data.BindingOperations.GetBindingExpression(chrome, FrameworkElement.WidthProperty)?.Status}, visibleChrome={chromeBounds}, ancestors={DescribeVisualAncestors(chrome, taskGrid)}, rightmostCell[{rightmost.DisplayIndex}]={rightmost.Bounds}, element={rightmost.Element.GetType().Name}/{rightmost.Element.Name} '{rightmost.Value}'";
-                    output.WriteLine(diagnostic);
-                    if (scenario.GridWidth > 0)
-                        CaptureVisualIfRequested(taskGrid, $"task-grid-{scenario.Item1}-{scenario.GridWidth:0}.png");
+                    var horizontalOffsets = scenario.GridWidth > 0 && scroll != null && scroll.ScrollableWidth > 0
+                        ? new[] { 0d, Math.Min(88, scroll.ScrollableWidth), scroll.ScrollableWidth }.Distinct().ToArray()
+                        : new[] { scroll?.HorizontalOffset ?? 0d };
+                    foreach (var requestedOffset in horizontalOffsets)
+                    {
+                        if (scroll != null)
+                        {
+                            scroll.ScrollToHorizontalOffset(requestedOffset);
+                            PumpLayout(window);
+                        }
 
-                    Assert.True(chromeBounds.Width > 0 && chromeBounds.Height > 0, $"Selected frame is not visible: {diagnostic}");
-                    Assert.All(visibleContent, item => Assert.True(
-                        item.Bounds.Right <= chromeBounds.Right - 1d,
-                        $"Visible task content escaped the selected frame: {diagnostic}; offendingCell[{item.DisplayIndex}]={item.Bounds} element={item.Element.GetType().Name}/{item.Element.Name} '{item.Value}'."));
+                        var chromeBounds = VisibleBoundsRelativeTo(chrome, taskGrid);
+                        var visibleContent = FindVisualChildren<DataGridCell>(row)
+                            .Where(cell => cell.Visibility == Visibility.Visible && cell.ActualWidth > 0 && cell.ActualHeight > 0)
+                            .SelectMany(cell => FindVisualChildren<FrameworkElement>(cell)
+                                .Where(element => element is TextBlock or ProgressBar
+                                    || element is Border border && !string.Equals(border.Name, "CellChrome", StringComparison.Ordinal))
+                                .Select(element => new
+                                {
+                                    cell.Column.DisplayIndex,
+                                    Element = element,
+                                    Bounds = VisibleBoundsRelativeTo(element, taskGrid),
+                                    Value = element is TextBlock text ? text.Text : element.Name
+                                }))
+                            .Where(item => !item.Bounds.IsEmpty && item.Bounds.Width > 0 && item.Bounds.Height > 0)
+                            .ToArray();
+                        var rightmost = visibleContent.OrderByDescending(item => item.Bounds.Right).FirstOrDefault()
+                            ?? throw new InvalidOperationException($"{scenario.Item1} {scenario.Width} DIP offset {requestedOffset:0.##}: no visible task cell content was measured.");
+                        var dpi = VisualTreeHelper.GetDpi(window);
+                        var diagnostic = $"{scenario.Item1} window={scenario.Width}x{scenario.Height} DIP gridTarget={scenario.GridWidth:0.##} offset={requestedOffset:0.##} DPI={dpi.DpiScaleX:0.##}x{dpi.DpiScaleY:0.##}: grid={taskGrid.ActualWidth:0.##}, row={row.ActualWidth:0.##}, scroll={scroll?.HorizontalOffset:0.##}/{scroll?.ScrollableWidth:0.##}, chromeActual={chrome.ActualWidth:0.##}, chromeBinding={System.Windows.Data.BindingOperations.GetBindingExpression(chrome, FrameworkElement.WidthProperty)?.Status}, visibleChrome={chromeBounds}, ancestors={DescribeVisualAncestors(chrome, taskGrid)}, rightmostCell[{rightmost.DisplayIndex}]={rightmost.Bounds}, element={rightmost.Element.GetType().Name}/{rightmost.Element.Name} '{rightmost.Value}'";
+                        output.WriteLine(diagnostic);
+                        if (scenario.GridWidth > 0)
+                            CaptureVisualIfRequested(taskGrid, $"task-grid-{scenario.Item1}-{scenario.GridWidth:0}-offset-{requestedOffset:0}.png");
+
+                        Assert.True(chromeBounds.Width > 0 && chromeBounds.Height > 0, $"Selected frame is not visible: {diagnostic}");
+                        Assert.All(visibleContent, item => Assert.True(
+                            item.Bounds.Right <= chromeBounds.Right - 1d,
+                            $"Visible task content escaped the selected frame: {diagnostic}; offendingCell[{item.DisplayIndex}]={item.Bounds} element={item.Element.GetType().Name}/{item.Element.Name} '{item.Value}'."));
+                    }
                 }
             }
             finally

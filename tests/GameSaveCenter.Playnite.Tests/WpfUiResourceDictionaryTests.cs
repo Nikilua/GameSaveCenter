@@ -3854,13 +3854,13 @@ public sealed class WpfUiResourceDictionaryTests
             && element.Attribute("Property")?.Value == "Margin"
             && element.Descendants().Any(binding => binding.Name.LocalName == "MultiBinding"
                 && binding.Attribute("Converter")?.Value == "{StaticResource GscViewportSelectionFrameMarginConverter}"
-                && binding.Attribute("ConverterParameter")?.Value == "4,2,4,2"));
+                && binding.Attribute("ConverterParameter")?.Value == "4,2,0,2"));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "Width"
             && (element.Attribute("Value")?.Value ?? "").Contains("ScrollViewer")
             && (element.Attribute("Value")?.Value ?? "").Contains("ViewportWidth")
-            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=8"));
+            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=5"));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "HorizontalAlignment"
@@ -3870,7 +3870,11 @@ public sealed class WpfUiResourceDictionaryTests
             && element.Attribute("Property")?.Value == "Margin"
             && element.Descendants().Any(binding => binding.Name.LocalName == "MultiBinding"
                 && binding.Attribute("Converter")?.Value == "{StaticResource GscViewportSelectionFrameMarginConverter}"
-                && binding.Attribute("ConverterParameter")?.Value == "4,2,4,2"));
+                && binding.Attribute("ConverterParameter")?.Value == "4,2,0,2"));
+        Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
+            && element.Attribute("TargetName")?.Value == "RowBackground"
+            && element.Attribute("Property")?.Value == "Width"
+            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=5"));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowContent"
             && element.Attribute("Property")?.Value == "Clip"
@@ -3935,7 +3939,11 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(selectedTask.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "TaskItemChrome"
             && element.Attribute("Property")?.Value == "Margin"
-            && element.Attribute("Value")?.Value == "0,0,4,0");
+            && element.Attribute("Value")?.Value == "0");
+        var itemTemplate = overviewRowStyle.Descendants().Single(element => element.Name.LocalName == "ControlTemplate");
+        var itemContent = itemTemplate.Descendants().Single(element => element.Name.LocalName == "ContentPresenter"
+            && element.Attribute(xamlName)?.Value == "TaskItemContent");
+        Assert.Null(itemContent.Attribute("Width"));
         var overviewTime = grid.Descendants().Single(element => element.Attribute(xamlName)?.Value == "OverviewTaskTimeText");
         Assert.Equal("Right", overviewTime.Attribute("HorizontalAlignment")?.Value);
         Assert.Equal("0,0,4,0", grid.Attribute("Margin")?.Value);

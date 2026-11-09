@@ -77,12 +77,12 @@ public sealed class R06SaveHistorySelectionFrameBehaviorTests
                         $"{theme}: fixture must retain the horizontal-scroll viewport shown in the user screenshot; extent={scroll.ExtentWidth:0.##}, viewport={scroll.ViewportWidth:0.##}.");
                     Assert.True(scroll.ScrollableHeight > 0,
                         $"{theme} {gridWidth:0.##} DIP: fixture must retain the version-history vertical scroll range; extent={scroll.ExtentHeight:0.##}, viewport={scroll.ViewportHeight:0.##}.");
-                    if (gridWidth < 500)
-                        CaptureVisualIfRequested(grid, $"save-history-{theme}-{gridWidth:0}.png");
                     foreach (var requestedOffset in new[] { 0d, Math.Min(88, scroll.ScrollableWidth), scroll.ScrollableWidth }.Distinct())
                     {
                         scroll.ScrollToHorizontalOffset(requestedOffset);
                         PumpLayout(window);
+                        if (gridWidth < 500)
+                            CaptureVisualIfRequested(grid, $"save-history-{theme}-{gridWidth:0}-offset-{requestedOffset:0}.png");
 
                         var frame = VisibleBoundsRelativeTo(ChromeFor(row), grid);
                         var visibleContent = FindVisualChildren<DataGridCell>(row)

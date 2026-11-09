@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4a44e867-c17f-4974-9ed9-dd67fa8bcd25" name="lopmatu@SULT 2026-11-09 10:34:37" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-09T10:34:37.2019560+08:00" queuing="2026-11-09T10:34:37.2019566+08:00" start="2026-11-09T10:34:30.9460420+08:00" finish="2026-11-09T10:34:40.0346290+08:00" />
+  <TestSettings name="default" id="948a4b93-beaa-44b6-a9b5-007cb5b0a6f8">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-09_10_34_37" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="90e0cbbb-4ef1-432b-853a-c93301ff2dc2" testId="0f44c58a-838f-b4bd-c3c8-8a768e5cc3f2" testName="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowOverlayContractKeepsContentAsSibling" computerName="SULT" duration="00:00:00.0190000" startTime="2026-11-09T10:34:35.7953173+08:00" endTime="2026-11-09T10:34:35.7953173+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="90e0cbbb-4ef1-432b-853a-c93301ff2dc2" />
+    <UnitTestResult executionId="89ef4728-bc0a-4d7a-bd86-02cc4938587d" testId="00806e1a-a787-8811-9e5e-07e4d2c91c6a" testName="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.SharedStateContractLeavesCellContentSurfaceForStatusBadges" computerName="SULT" duration="00:00:00.1420000" startTime="2026-11-09T10:34:35.6534256+08:00" endTime="2026-11-09T10:34:35.7757357+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89ef4728-bc0a-4d7a-bd86-02cc4938587d" />
+    <UnitTestResult executionId="460602f1-0be5-4c29-bcd4-78bc8161abde" testId="2221419a-cc52-56e4-177c-85ae5608fef1" testName="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome" computerName="SULT" duration="00:00:04.0380000" startTime="2026-11-09T10:34:35.7963255+08:00" endTime="2026-11-09T10:34:39.8336821+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="460602f1-0be5-4c29-bcd4-78bc8161abde" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.SharedStateContractLeavesCellContentSurfaceForStatusBadges" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="00806e1a-a787-8811-9e5e-07e4d2c91c6a">
+      <Execution id="89ef4728-bc0a-4d7a-bd86-02cc4938587d" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests" name="SharedStateContractLeavesCellContentSurfaceForStatusBadges" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2221419a-cc52-56e4-177c-85ae5608fef1">
+      <Execution id="460602f1-0be5-4c29-bcd4-78bc8161abde" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests" name="ProductionRowsKeepFailureInItsStatusCellWithoutReplacingSelectionChrome" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests.DashboardCompatibilityRowOverlayContractKeepsContentAsSibling" storage="d:\workplace\github\gamesavecenter\.tmp\round5-u09-05-final-20261109\build-output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0f44c58a-838f-b4bd-c3c8-8a768e5cc3f2">
+      <Execution id="90e0cbbb-4ef1-432b-853a-c93301ff2dc2" />
+      <TestMethod codeBase="D:\workplace\github\GameSaveCenter\.tmp\round5-u09-05-final-20261109\build-output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests" name="DashboardCompatibilityRowOverlayContractKeepsContentAsSibling" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="0f44c58a-838f-b4bd-c3c8-8a768e5cc3f2" executionId="90e0cbbb-4ef1-432b-853a-c93301ff2dc2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="00806e1a-a787-8811-9e5e-07e4d2c91c6a" executionId="89ef4728-bc0a-4d7a-bd86-02cc4938587d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2221419a-cc52-56e4-177c-85ae5608fef1" executionId="460602f1-0be5-4c29-bcd4-78bc8161abde" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.55]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.16]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:03.21]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:07.48]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,37 @@
+[
+  {
+    "path": "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+    "gitBlob": "753525a82b4ac6d89bb928753b36f1881f939468",
+    "sha256": "72C28535DAF17A8FBB330E9A1A8E251ECD5AF3DE81CDE6D97B4074A70F9DC1FC"
+  },
+  {
+    "path": "src/GameSaveCenter.Playnite/Views/OverviewView.xaml",
+    "gitBlob": "26660323a112b15ddc5568aadfede4219b71a5cc",
+    "sha256": "F623EF75A73A894E78A04B38F4DE1C83CB6584E5957FFA568EAE575CF3456771"
+  },
+  {
+    "path": "tests/GameSaveCenter.Playnite.Tests/R06SaveHistorySelectionFrameBehaviorTests.cs",
+    "gitBlob": "edaee4376ce2f5fb6b270538fd6a923d68dbdcc5",
+    "sha256": "3046910F7C91E353014F4402DE9F45BC328A6E174EF675E5E3CB004CE06C3C21"
+  },
+  {
+    "path": "tests/GameSaveCenter.Playnite.Tests/R06TaskGridSelectionFrameBehaviorTests.cs",
+    "gitBlob": "60403952339957327f89b25c3dd4c929d2b00f00",
+    "sha256": "281151F958F6F5F99A7CE7FA315D326BA168D7F931E7636E330A863E14621291"
+  },
+  {
+    "path": "tests/GameSaveCenter.Playnite.Tests/Round5OverviewSaveContextTests.cs",
+    "gitBlob": "6d0a6e91a84d6e38c3bd6140a631b1fab9bde9fb",
+    "sha256": "13C06AE6F129672DA1F0DB297B2FEA1D8DBF83AA3429F50CD2451874F449A9B2"
+  },
+  {
+    "path": "tests/GameSaveCenter.Playnite.Tests/R06SelectionStateBehaviorTests.cs",
+    "gitBlob": "a6af74ef72830ef69135295a8286622a407c6c02",
+    "sha256": "7E166AC29FDF39A0B7511ED7BD86DBAD6EC6B945B7650D829DD37A5F6C07948E"
+  },
+  {
+    "path": "tests/GameSaveCenter.Playnite.Tests/WpfUiResourceDictionaryTests.cs",
+    "gitBlob": "addcfe24440fd71f8d7caa799e58499d329baf3c",
+    "sha256": "BA10D670574F78D2A6942F0A2FA7CDECEFF0228203CD46CC0E75EF3889A5A981"
+  }
+]

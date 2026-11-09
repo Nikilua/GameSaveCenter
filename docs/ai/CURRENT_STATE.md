@@ -1,3 +1,9 @@
+## 2026-11-09 U09-05 选框右缘修复；完整宿主验收待做
+
+用户截图中的 Overview 最近任务时间、Save History/Task Grid 行内容未完全落在选中框内。当前未提交候选已移除 Overview 内容独立视口宽度，并将共享 DataGrid 选中/非活动/焦点框右缘扩至视口内1/2 DIP；保持行内容8 DIP裁切及原滚动系统。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0；适用WPF行为11/11、共享资源类140 pass/39旧架构skip、Source Validation/WPF静态审查exit0、Render QA 394 PNG/0问题。命令启动时隐藏、输出重定向，并对Default输入桌面做全程事件监听，SHOW/HIDE均0。证据见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/README.md`。真实宿主、物理输入/DPI未验；用户黑窗没有HWND/PID归因。
+
+Playnite PID24248与Worker PID42704仍运行且无主窗口；没有关闭或强杀，最终中文完整安装入口尚不能运行。推送新候选后的双SDKCI、完整独立构建和根入口/安装身份仍待验。80项计数/边界以Round5 `PROGRESS.md` 为准，U09-05和U09-08继续，U09-06 required checks仍“远端待验”。未动驱动器或用户存档/媒体/云数据。
+
 ## 2026-11-09 U09-05 选框像素复核；闪屏继续未归因
 
 基于已推送 `3dc59152fee9e2e7e18872c13cadaee2e1c28dc8`，扩大 Overview/Task Grid/Save History 长列表窄视口回归，并为任务详情长文增加可选离屏截图。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0、0 warning/error；四个私有WPF测试类8/8通过、0失败、0 skip；Source Validation通过，WPF静态26 XAML/0 errors/26 warnings/164 info。7张RenderTargetBitmap显示选框内时间、任务状态/进度、存档设备字样都在框内，长详情会换行；本批未改生产XAML或资源。详细日志、TRX、桌面身份、图片哈希见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-frame-pixel-check-20261109/README.md`。
