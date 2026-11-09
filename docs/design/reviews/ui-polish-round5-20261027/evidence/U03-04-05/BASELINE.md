@@ -34,6 +34,6 @@
 
 ## 远端与未验边界
 
-GitHub workflow `.github/workflows/windows-build.yml` 的 d1fc run `40566121765` 仍在运行：baseline job `122407721274` 与 SDK10.0.401 job `122407720730` 都处于编译/测试；没有可用artifact，不能记为CI通过。上一代码提交run `40561836233` 的 SDK10 job `122392618705` 成功、artifact `12762447495`（SHA-256 `073c554698dfc3b3741de806cd42679a2f6caab188253db3bc27ac35706603b6`），baseline job `122392618285` 仍在生成扩展包。适用job/artifact全量快照见 [`CI 清单`](../U02-05-06/ci-runs.json)；required-checks 接口此前返回 HTTP 403，因此标记“远端待验”，不推断分支保护状态。
+GitHub workflow `.github/workflows/windows-build.yml` 对精确提交 `d1fc1308317fb805d61d67a7dda77d71e0afff18` 的 run `40566121765`（#1327）已完成：baseline job `122407721274` 的15个步骤和 SDK10.0.401 job `122407720730` 的8个步骤全部成功，包括编译测试、离屏渲染QA、WPF静态审查与打包。扩展包 artifact `12766582766`（90,778,364 bytes，SHA-256 `4acb67990818e5ef0954e19c109f6716e80c30d7ea17631659acdac10ca4c249`）；baseline诊断 `12767536172`（1,971,299 bytes，SHA-256 `298c3d1fc561300a11bba67193566d0fcb903846cc6a6e61501e1faef4b75c19`）；SDK10诊断 `12765271805`（941,795 bytes，SHA-256 `ec728e240dab67faaec654c41514c3ed7b1704c91dcc2125443d20db5ee2ee35`）。完整身份见 [`ci-run-40566121765.json`](ci-run-40566121765.json) 与 [`CI 清单`](../U02-05-06/ci-runs.json)。required-checks接口先前返回HTTP 403，保护规则状态仍“远端待验”；这不影响两个适用workflow job的成功结论。
 
-Render QA 是离屏WPF证据，不代表真实Playnite渲染、Narrator/实际UIA客户端、物理鼠标或实体DPI。未执行真实存档恢复、媒体删除或云端写入。临时渲染副本清理命令被执行策略拦截，未换Shell或其他路径重试；精简输出及磁盘记录见 [`cleanup.json`](checks/cleanup.json)。
+Render QA 是离屏WPF证据，不代表真实Playnite渲染、Narrator/实际UIA客户端、物理鼠标或实体DPI。未执行真实存档恢复、媒体删除或云端写入。历史清理命令曾被执行策略拦截；2026-11-09只读复查时，该临时目录已不存在，本次未运行删除命令且不推断其消失原因或回收空间。复查记录见 [`cleanup.json`](checks/cleanup.json)。

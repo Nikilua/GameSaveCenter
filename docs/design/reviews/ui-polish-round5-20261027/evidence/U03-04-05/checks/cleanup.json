@@ -17,5 +17,34 @@
     "reparsePoint": false,
     "activeRendererProcess": false,
     "sourceOrEvidenceReferencesOutsideArchivedRunLog": false
+  },
+  "postTaskRecheck": {
+    "capturedAt": "2026-11-09T20:05:06+08:00",
+    "targetExists": false,
+    "deleteCommandRun": false,
+    "bytesRecoveredByRecheck": 0,
+    "diskFreeCBytes": 3207856128,
+    "diskFreeDBytes": 20199251968,
+    "note": "The historical Remove-Item attempt was rejected before starting. The named temporary directory was absent at this read-only recheck; this record does not infer who removed it or claim recovered space."
+  },
+  "documentationValidationTempCleanup": {
+    "path": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-u03-04-05-doc-check-20261109",
+    "fileCount": 3,
+    "bytes": 362,
+    "canonicalPathInsideRepositoryTmp": true,
+    "reparsePoint": false,
+    "activePythonProcess": false,
+    "referencedOutsideTemporaryDirectory": false,
+    "deleteCommand": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+    "deleted": true,
+    "diskFreeBeforeBytes": {
+      "C": 3205689344,
+      "D": 20198727680
+    },
+    "diskFreeAfterBytes": {
+      "C": 3205689344,
+      "D": 20198731776
+    },
+    "note": "The 362-byte validation logs were inspected and removed. C did not change; D increased by one allocation unit. This is not a meaningful C-space recovery."
   }
 }

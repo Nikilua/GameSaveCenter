@@ -12929,15 +12929,15 @@ CI快照run 40554157661：baseline job 122365585853已过Render QA和WPF静态�
 
 ## 2026-10-28 Round5 U03-01/02/03 按钮状态与图标目标
 
-去重检查生产 GscWpfUiButton 共享模板：五态图层、忙碌延迟覆盖与重复执行门禁、命令恢复/焦点保持、34/36 DIP图标目标和窄工具栏WrapPanel已有实现。没有发现生产资源缺口；本批仅新增 AccessibilitySourceTests.ProductionIconOnlyActionsExposeAutomationNamesAndSharedKeyboardFocus，约束生产图标动作的UIA名称、Command/Click和共享键盘焦点。提交 8c927a93cff92b923a8efbedbdf28aadbc10d00b 已推送，SDK8.0.423精确SHA Release定向13/13、0 skip；证据含浅深主题五态10图、TRX SHA及测试范围/身份失败诊断，见Round5 evidence/U03-01-03/。GitHub run 40561836233 baseline job 122392618285、SDK10.0.401 job 122392618705截至18:43 UTC均在编译/测试；run 1321/1322/1323的SDK10 job完成成功、artifact ID见CI清单，但基线job仍在生成包；run1324仍编译测试。CI未结。真实Playnite、实体UIA/鼠标/DPI待验；接续U03-04/05。
+去重检查生产 GscWpfUiButton 共享模板：五态图层、忙碌延迟覆盖与重复执行门禁、命令恢复/焦点保持、34/36 DIP图标目标和窄工具栏WrapPanel已有实现。没有发现生产资源缺口；本批仅新增 AccessibilitySourceTests.ProductionIconOnlyActionsExposeAutomationNamesAndSharedKeyboardFocus，约束生产图标动作的UIA名称、Command/Click和共享键盘焦点。提交 8c927a93cff92b923a8efbedbdf28aadbc10d00b 已推送，SDK8.0.423精确SHA Release定向13/13、0 skip；证据含浅深主题五态10图、TRX SHA及测试范围/身份失败诊断，见Round5 evidence/U03-01-03/。GitHub run 40561836233 baseline job 122392618285 与SDK10.0.401 job 122392618705现均success，基线15步、SDK10 8步全成功，artifact身份见CI清单及U03-01-03专属JSON。真实Playnite、实体UIA/鼠标/DPI待验；接续U03-04/05。
 
 ## 2026-10-28 Round5 U03-04/05 输入状态、搜索和清除
 
-在生产 `WpfUiProduction.xaml` 中移除TextBox禁用时整控件0.45透明，改为语义化禁用文字/填色/描边；验证错误保持最高边框优先级，并将错误文本绑定至Automation HelpText。搜索、清除按钮、结果计数独立布局和IME/Escape契约只补生产源码回归约束，不改变业务命令或安全语义。`d1fc1308317fb805d61d67a7dda77d71e0afff18` 已push；SDK8.0.423精确提交隔离行为32/32、0 skip，Source Validation、XAML26/26、WPF静态37/0 errors、RenderHarness 0/0以及双主题394 PNG Render QA exit0/0 PROBLEM通过。失败TRX保留，混合WPF进程的两项焦点失败之后独立隔离通过；复核跳过项是已撤销的“今日工作台”旧断言，不计pass。报告、代表截图、TRX与SHA见 `evidence/U03-04-05/BASELINE.md`。GitHub run `40566121765` baseline `122407721274`、SDK10 `122407720730`仍在编译测试，不能记CI通过。render-qa临时输出约53,147,489字节的删除请求遭执行策略拒绝；证据已精简归档，没有换Shell或绕过，见`checks/cleanup.json`。真实Playnite/实际UIA/实体DPI待验。
+在生产 `WpfUiProduction.xaml` 中移除TextBox禁用时整控件0.45透明，改为语义化禁用文字/填色/描边；验证错误保持最高边框优先级，并将错误文本绑定至Automation HelpText。搜索、清除按钮、结果计数独立布局和IME/Escape契约只补生产源码回归约束，不改变业务命令或安全语义。`d1fc1308317fb805d61d67a7dda77d71e0afff18` 已push；SDK8.0.423精确提交隔离行为32/32、0 skip，Source Validation、XAML26/26、WPF静态37/0 errors、RenderHarness 0/0以及双主题394 PNG Render QA exit0/0 PROBLEM通过。失败TRX保留，混合WPF进程的两项焦点失败之后独立隔离通过；复核跳过项是已撤销的“今日工作台”旧断言，不计pass。报告、代表截图、TRX与SHA见 `evidence/U03-04-05/BASELINE.md`。GitHub run `40566121765` baseline `122407721274`与SDK10 `122407720730`现均success，step/artifact身份见`evidence/U03-04-05/ci-run-40566121765.json`。旧Render QA临时副本在2026-11-09只读复查时已不存在；没有执行删除或认领释放空间，见`checks/cleanup.json`。真实Playnite/实际UIA/实体DPI待验。
 
 ## 2026-10-28 Round5 U03-06/07 下拉与勾选去重
 
-既有共享ComboBox已分离20 DIP箭头列与选中值，长选中项有省略和提示，Popup限高/边缘翻转/竖向滚动/方向键导航有行为覆盖。`GscCheckBox`已有不确定标记、长标签换行和同一命中面；Q10已验证Light/Dark命中、Space、禁用行为。本批只增加长选中项/箭头列源码守护测试，不改生产XAML、游戏选框、DropDownClosed语义或保存时机。提交`5300a2b5c70f7736f1f46617667de73749b8d883`已push；SDK8.0.423精确提交13/13、0 skip，Source Validation、XAML26/26、WPF静态37/0 errors通过。CI run `40567683673` baseline `122413211080`与SDK10 `122413210438`均在编译测试。所有记录见`evidence/U03-06-07/BASELINE.md`；真实Playnite/UIA/物理输入/DPI仍待验。
+既有共享ComboBox已分离20 DIP箭头列与选中值，长选中项有省略和提示，Popup限高/边缘翻转/竖向滚动/方向键导航有行为覆盖。`GscCheckBox`已有不确定标记、长标签换行和同一命中面；Q10已验证Light/Dark命中、Space、禁用行为。本批只增加长选中项/箭头列源码守护测试，不改生产XAML、游戏选框、DropDownClosed语义或保存时机。提交`5300a2b5c70f7736f1f46617667de73749b8d883`已push；SDK8.0.423精确提交13/13、0 skip，Source Validation、XAML26/26、WPF静态37/0 errors通过。CI run `40567683673` baseline `122413211080` 15步、SDK10 `122413210438` 8步均success，package/diagnostic artifact见`evidence/U02-05-06/ci-runs.json`。所有记录见`evidence/U03-06-07/BASELINE.md`；真实Playnite/UIA/物理输入/DPI仍待验。
 
 ## 2026-10-28 Round5 U03-08/U04-01/02
 
@@ -13317,3 +13317,11 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 盘点四项依赖已满足的排版/图标任务；未重造格式、路径控件、禁用态Brush或图标槽。U01-03/04与U01-05/06两个TRX清单合计6份文件的存在、长度、SHA-256逐一匹配；原测试结论保留。
 - U01-03/04/06继续保持已满足。U01-05仍代码完成待验收；原实现SHA 813adb09 的历史Actions查询记录不再是当前门禁，因后续完整产品SHA e570f7b7 的 #1500 / 42579208247 基线job 129033708852 与SDK10 job 129033708730 全部成功，artifact身份见 docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-full-build-e570f7b7-20261109/ci-run-1500.json。真实宿主/UIA/物理DPI仍待验。
 - U01-05-06归档PNG报告仍可读；生成目录当前不存在，本批未删除或认领释放量。C盘 3216539648 bytes，距4 GiB差1078427648；D盘20205613056 bytes。文档校验后不重跑本地完整链。
+
+## 2026-11-09 Round5 U03-04/05 CI 与清理状态复核
+
+- 复核共享 TextBox 禁用/验证优先级、Automation HelpText、搜索/清除独立布局及 IME/Escape 契约；没有发现新的产品差异，本批不改 XAML、命令或 Binding，也不重跑已有WPF构建/行为/render证据。`tests-manifest.json`所列20份TRX均存在且SHA匹配；通过与失败记录原样保留，既有 skip 不计通过。
+- GitHub run `40566121765` / #1327 精确提交 `d1fc1308317fb805d61d67a7dda77d71e0afff18` 的基线15步与SDK10.0.401的8步均成功；包与两份诊断artifact的ID、大小、SHA已写入 `evidence/U03-04-05/ci-run-40566121765.json`。中央CI清单中的1324–1328也均核对为双job成功。required-checks/ruleset仍因先前403标“远端待验”，没有重试。
+- Source Validation显示通过，脚本成功分支返回0；PROGRESS两条新链接与U03-04/05 BASELINE七条链接均可解析，三个JSON可读，`git diff --check`通过。仅改文档和证据，不开WPF窗口、不运行本地完整链。
+- 历史53,147,489字节U03临时Render QA目录在只读复查时已不存在，不推断其来源或释放空间。只清理本阶段创建的 `.tmp/round5-u03-04-05-doc-check-20261109`（3文件/362字节），用PowerShell精确LiteralPath命令删除；C盘该次前后均为3,205,689,344 bytes，D盘20,198,727,680→20,198,731,776 bytes。稍后只读C盘观测为3,204,767,744 bytes，变化不归因于本批；仍低于完整根入口4 GiB要求，不触碰系统缓存、用户/其他任务TRX、TestResults、存档或盘符。
+- U03-04/05仍“代码完成待验收”，只缺真实Playnite、外部UIA客户端、物理输入与实体DPI验收。整轮计数保持6项已满足、70项代码完成待验收、3项进行中、1项远端待验。

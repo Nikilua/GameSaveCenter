@@ -1,0 +1,58 @@
+{
+  "run": {
+    "id": 40566121765,
+    "number": 1327,
+    "workflow": ".github/workflows/windows-build.yml",
+    "event": "push",
+    "headBranch": "main",
+    "headSha": "d1fc1308317fb805d61d67a7dda77d71e0afff18",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40566121765",
+    "updatedAt": "2026-10-27T20:02:59Z"
+  },
+  "jobs": [
+    {
+      "id": 122407721274,
+      "name": "编译、测试与打包",
+      "sdk": "repository SDK baseline",
+      "status": "completed",
+      "conclusion": "success",
+      "stepCount": 15,
+      "allStepsSucceeded": true
+    },
+    {
+      "id": 122407720730,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "success",
+      "stepCount": 8,
+      "allStepsSucceeded": true
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12766582766,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90778364,
+      "sha256": "4acb67990818e5ef0954e19c109f6716e80c30d7ea17631659acdac10ca4c249",
+      "expired": false
+    },
+    {
+      "id": 12767536172,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 1971299,
+      "sha256": "298c3d1fc561300a11bba67193566d0fcb903846cc6a6e61501e1faef4b75c19",
+      "expired": false
+    },
+    {
+      "id": 12765271805,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 941795,
+      "sha256": "ec728e240dab67faaec654c41514c3ed7b1704c91dcc2125443d20db5ee2ee35",
+      "expired": false
+    }
+  ],
+  "note": "The d1fc1308 workflow completed both applicable SDK jobs successfully, including baseline render QA, WPF static review, package and diagnostic upload. Offline WPF evidence does not verify a real Playnite host, external UI Automation client, physical pointer or physical DPI. The branch required-check/ruleset API previously returned HTTP 403; protection status remains remote-pending."
+}

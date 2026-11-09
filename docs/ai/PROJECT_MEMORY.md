@@ -1815,9 +1815,9 @@ U01-07去重后沿用生产按钮完整换行/无省略模板与现有长路径�
 
 当前main已推送 `d1fc1308317fb805d61d67a7dda77d71e0afff18`（TextBox禁用与验证语义、搜索布局回归）和 `5300a2b5c70f7736f1f46617667de73749b8d883`（ComboBox长选中项源码守护）。U03-04/05精确SHA SDK8.0.423隔离行为32/32；source validation、XAML26/26、WPF静态37文件/0 error、RenderHarness编译0/0、Render QA双主题394 PNG/0 PROBLEM。U03-06/07精确SHA测试13/13；复用已有下拉边缘/scroll行为及CheckBox双主题命中、Space、禁用回归，未变更生产资源/游戏选择框。详细TRX和SHA、失败诊断、截图与限制见Round5 `evidence/U03-04-05/`、`evidence/U03-06-07/`。
 
-截至2026-10-27 19:21 UTC，GitHub runs 1321–1323双SDK成功；1324–1326的SDK10 job成功但baseline在生成PEXT；1327（d1fc）和1328（5300）双job正在编译测试，不能当作通过。状态/artifact id在 `evidence/U02-05-06/ci-runs.json`。required-checks API此前403；不推断branch protection。等待job完成时可按用户要求继续独立小批，不反复试S/T权限问题。U03-06/07只改C#测试，因此不单独生成重复UI快照；对应生产资源render-qa使用d1fc精确源码。
+GitHub runs 1321–1328 对各自精确提交的baseline与SDK10.0.401适用job现均completed/success。1324–1328的job、步骤及package/diagnostic artifact身份已回填 `evidence/U02-05-06/ci-runs.json`；U03-04/05 run 1327另有 `evidence/U03-04-05/ci-run-40566121765.json`。required-checks API此前403；不推断branch protection，状态仍远端待验。等待其它门禁时继续独立小批，不反复试S/T权限问题。U03-06/07只改C#测试，因此不重复生成视觉快照；对应生产资源render-qa使用d1fc精确源码。
 
-U03-04/05 Render QA全量临时目录仍在`.tmp/round5-u03-04-05-render-d1fc1308`，395文件/53,147,489字节；报告和浅深主题任务页已复制到Round5证据，PowerShell Remove-Item调用因执行策略拒绝未执行。不要换Shell、脚本或其它删除路径；按cleanup.json记录处理，保留这个输出直到命令授权发生变化。其它用户/其他任务TRX与共享TestResults均未删除。
+U03-04/05 Render QA临时目录在2026-11-09只读复查时已不存在；不推断由谁移除，也不声称本次释放了空间。历史执行策略拦截仍保存在 `evidence/U03-04-05/checks/cleanup.json`。本轮没有删除用户/其他任务TRX、共享TestResults或未知文件。
 
 ## Round5 U05-01/02恢复点（2026-10-28）
 

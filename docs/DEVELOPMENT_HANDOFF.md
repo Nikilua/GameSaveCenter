@@ -1470,7 +1470,7 @@ Actions run 40561836233（baseline job 122392618285、SDK10 job 122392618705）�
 
 当前main已push `d1fc1308317fb805d61d67a7dda77d71e0afff18` 与 `5300a2b5c70f7736f1f46617667de73749b8d883`。U03-04/05已完成输入禁用/错误可达语义和搜索/清除布局回归，SDK8.0.423精确SHA 32/32、Render QA双主题394 PNG、0 PROBLEM；U03-06/07复用现有下拉/勾选控件，只加ComboBox长选中项源码守护，SDK8精确SHA 13/13。证据与边界见`docs/design/reviews/ui-polish-round5-20261027/evidence/U03-04-05/BASELINE.md`和`U03-06-07/BASELINE.md`。
 
-CI：run `40566121765`（1327，d1fc）与 `40567683673`（1328，5300）两套SDK job仍运行；1325/1326 baseline job仍在包阶段而SDK10成功。准确job/artifact id见`evidence/U02-05-06/ci-runs.json`。required-checks接口403，不能声称保护状态。先继续U03-08/U04独立小批；不重试旧S/T权限拒绝、不动游戏选框、滚动条或安全语义。最终整轮候选仍必须运行中文根入口完整构建/测试/发布/打包/安装身份/启动、单独验证`scripts/build.cmd`并查询该源码SHA的双SDK所有适用CI job。U03-04/05临时Render QA副本因执行策略拒绝清理，未换Shell，见`evidence/U03-04-05/checks/cleanup.json`；保留其它任务TRX与共享TestResults。
+CI：runs `40560233057`（1324）至`40567683673`（1328）均已完成；每个精确提交的baseline与SDK10.0.401 job都成功，完整job/artifact身份见`evidence/U02-05-06/ci-runs.json`。U03-04/05另有`evidence/U03-04-05/ci-run-40566121765.json`。required-checks接口此前403，保护状态仍远端待验。继续独立控件小批；不重试旧S/T权限拒绝、不动游戏选框、滚动条或安全语义。最终整轮候选仍必须运行中文根入口完整构建/测试/发布/打包/安装身份/启动、单独验证`scripts/build.cmd`并查询该源码SHA的双SDK所有适用CI job。U03-04/05清理清单列出的Render QA副本在2026-11-09只读复查时已不存在；没有执行删除或认领空间回收，见`evidence/U03-04-05/checks/cleanup.json`；保留其它任务TRX与共享TestResults。
 
 ## 2026-10-28 Round5 U03-08/U04-01/02恢复点
 
