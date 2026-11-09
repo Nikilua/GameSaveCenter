@@ -1,0 +1,1 @@
+Render QA wrapper exit 1; full failure is in renderqa-failure-report.txt.

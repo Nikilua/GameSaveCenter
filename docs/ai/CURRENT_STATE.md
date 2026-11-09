@@ -1,3 +1,14 @@
+## 2026-11-09 U09-05 选框修正及Render QA全量复验通过
+
+a74287e7暴露共享DataGrid选框离视口仅1 DIP。当前源修正普通/非活动框为视口减8 DIP、左边距4；2 DIP键盘框为视口减7 DIP、左边距3，内容8 DIP裁切/水平滚动不变。SDK8.0.423 Release隔离重编0 warning/error，五类定向几何/状态/资源测试157通过、0失败；39个既有“今日工作台”历史结构断言NotExecuted不计通过。Source Validation exit0，WPF静态398 XAML/0 errors。Render QA首轮在289图OOM后，通过仅测试Harness的WPF/WIC每8图回收修正完成全量重跑：SDK8.0.423，exit0，394 PNG/0 PROBLEM；Harness在WinSta0私有desktop，输入Default保持不变。源码SHA/报告SHA在 Round5 `right-inset-regression-20261109/`。下一步先提交并push候选，独立跑精确SHA `scripts/build.cmd` 和新SHA workflow全部适用job，冻结后通过中文包装器/英文根入口验收完整安装启动和身份。用户确认闪窗在编译/检查时发生；本批工具进程创建时隐藏并重定向，不代表已确认黑窗原因。未操作盘符、卷、映射、存档、媒体或云写入；required checks仍因先前403远端待验，不重试。
+## 2026-11-09 U09-05 Render QA OOM，资源释放候选待复验
+
+当前共享选框源代码定向测试已验证：SDK8.0.423 Release隔离Rebuild exit0/0 warnings/0 errors，5个适用WPF类157通过、0失败；39个旧“今日工作台”断言NotExecuted不计通过。Source Validation exit0，WPF静态398 XAML、0 errors/218 warnings/1440 info。Render QA Harness编译成功后，在WinSta0私有桌面生成289图，于 `RenderTargetBitmap.Render` OOM并exit1；不是通过，未到完整394图。Default输入桌面保持Default。已给Harness加仅测试端每8图回收候选；不改生产UI或覆盖点，需全量复验。证据/失败摘要/清理记录在 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/right-inset-regression-20261109/`。用户已确认黑窗出现在编译/检查期间，本批外层进程从启动隐藏并重定向；无用户窗口身份，保持未归因。冻结SHA后的 `scripts/build.cmd`、Render QA、中文入口完整安装启动/身份和双SDK CI仍待。
+## 2026-11-09 U09-05 选框留白已修正，冻结候选门禁待跑
+
+基线 `a74287e7ecd240a0fbd4fa394a9befb8fd796748` 的共享选框在Task/Light非活动状态下仅距视口1 DIP，本机独立 `scripts/build.cmd` 与 GitHub #1499 的基线及SDK10.0.401 job均复现R23失败。未删断言或放宽skip。工作树修正共享普通/非活动框为视口宽减8 DIP、左边距4；2 DIP键盘框为视口宽减7、左边距3，并同步资源测试。SDK8.0.423 Release隔离Rebuild exit0、0警告/错误；5类定向行为/资源测试157通过、0失败、39个旧架构断言NotExecuted（不计通过）。证据清单20项SHA-256核对通过，见Round5 `right-inset-regression-20261109/`。
+
+用户确认闪窗出现在编译/检查时。本轮至今启动的构建检查均从隐藏进程启动并重定向；WPF测试使用WinSta0私有非输入桌面。现有桌面监听仅覆盖上一失败构建的中后段，不能证明完整无闪或归因用户窗口；最终记录保持未归因。下一步提交并推送修正候选，独立执行完整 `scripts/build.cmd`，核对新SHA工作流所有适用job；门禁完成后冻结跟踪文件，再由中文包装器转交英文根入口做完整构建/测试/发布/打包/安装身份和启动验收。入口前重查Playnite/Worker并按正常关闭流程处理；不强杀任意进程。required checks/ruleset先前403，U09-06继续远端待验，不重复探测。未操作卷、盘符、映射或用户数据。
 ## 2026-11-09 U09-05：R10 旧边距预期已修正；新候选门禁待跑
 
 `3527fb1d9c2c701539ca727a05b2ab6157cd94c3` 的本机完整构建（SDK 8.0.423）与 GitHub workflow #1498 / run `42553664674` 双 SDK job均失败在同一个旧测试预期：Overview selected `TaskItemChrome`仍期待旧 4-DIP 右边距。工作树已只将 Overview 选框预期改为 0；内容不位移断言及共享ListBox 4-DIP断言保留。重新编译并运行R10整类，SDK8.0.423、WinSta0私有非输入桌面，3/3通过、0失败/skip、子进程exit0，input desktop前后Default。证据见`../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/focused-r10-fix/README.md`及`diagnostics/sdk8-r10-stale-margin/`。

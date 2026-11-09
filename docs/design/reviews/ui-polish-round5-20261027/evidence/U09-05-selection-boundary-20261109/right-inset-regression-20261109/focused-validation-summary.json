@@ -1,0 +1,135 @@
+{
+    "schemaVersion":  1,
+    "baseCommit":  "a74287e7ecd240a0fbd4fa394a9befb8fd796748",
+    "sourceFiles":  [
+                        {
+                            "path":  "src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml",
+                            "gitBlob":  "22e8f84f465b8d498d8701f0ddfeee419aafd9c5",
+                            "sha256":  "4C4CDE4B87FD36750F969D364BCACF87A53E84A2AD73AA235C2664F9D6DA579A"
+                        },
+                        {
+                            "path":  "tests/GameSaveCenter.Playnite.Tests/WpfUiResourceDictionaryTests.cs",
+                            "gitBlob":  "920e864c3c78ab6db6c7da7270a192b7f056adaf",
+                            "sha256":  "B2D88DECDBC494CD26AF748801D32B835BE8FDA204878EFEA1FAF18E668E4FFF"
+                        }
+                    ],
+    "sdk":  "8.0.423",
+    "requiredSdkBaseline":  "8.0.423",
+    "compile":  {
+                    "command":  "dotnet build tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj -t:Rebuild -c Release --no-restore -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false -p:GscBuildOutputRoot=\u003cisolated-output\u003e",
+                    "exitCode":  0,
+                    "warnings":  0,
+                    "errors":  0,
+                    "sourceIdentity":  "GSC_BUILD_COMMIT=baseCommit; GSC_SOURCE_ROOT=repository root"
+                },
+    "tests":  [
+                  {
+                      "class":  "R23ProductionResourceStateBehaviorTests",
+                      "filter":  "FullyQualifiedName~GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests",
+                      "processExitCode":  0,
+                      "desktopIdentityMatched":  true,
+                      "windowStation":  "WinSta0",
+                      "desktop":  "GscWpfTest_eb1fb0967c4b4ea1ba40533d0ad3d000",
+                      "inputDesktopBefore":  "Default",
+                      "inputDesktopAfter":  "Default",
+                      "trx":  "focused-tests/R23ProductionResourceStateBehaviorTests.trx",
+                      "counts":  {
+                                     "total":  12,
+                                     "passed":  12,
+                                     "failed":  0,
+                                     "notExecuted":  0,
+                                     "skipReasons":  [
+
+                                                     ]
+                                 }
+                  },
+                  {
+                      "class":  "R06TaskGridSelectionFrameBehaviorTests",
+                      "filter":  "FullyQualifiedName~GameSaveCenter.Playnite.Tests.R06TaskGridSelectionFrameBehaviorTests",
+                      "processExitCode":  0,
+                      "desktopIdentityMatched":  true,
+                      "windowStation":  "WinSta0",
+                      "desktop":  "GscWpfTest_9cc97bbc515042a7b7619cf5f08722bc",
+                      "inputDesktopBefore":  "Default",
+                      "inputDesktopAfter":  "Default",
+                      "trx":  "focused-tests/R06TaskGridSelectionFrameBehaviorTests.trx",
+                      "counts":  {
+                                     "total":  1,
+                                     "passed":  1,
+                                     "failed":  0,
+                                     "notExecuted":  0,
+                                     "skipReasons":  [
+
+                                                     ]
+                                 }
+                  },
+                  {
+                      "class":  "R06SaveHistorySelectionFrameBehaviorTests",
+                      "filter":  "FullyQualifiedName~GameSaveCenter.Playnite.Tests.R06SaveHistorySelectionFrameBehaviorTests",
+                      "processExitCode":  0,
+                      "desktopIdentityMatched":  true,
+                      "windowStation":  "WinSta0",
+                      "desktop":  "GscWpfTest_d727d6b083c14dc3872983508da372b3",
+                      "inputDesktopBefore":  "Default",
+                      "inputDesktopAfter":  "Default",
+                      "trx":  "focused-tests/R06SaveHistorySelectionFrameBehaviorTests.trx",
+                      "counts":  {
+                                     "total":  1,
+                                     "passed":  1,
+                                     "failed":  0,
+                                     "notExecuted":  0,
+                                     "skipReasons":  [
+
+                                                     ]
+                                 }
+                  },
+                  {
+                      "class":  "R06SelectionStateBehaviorTests",
+                      "filter":  "FullyQualifiedName~GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests",
+                      "processExitCode":  0,
+                      "desktopIdentityMatched":  true,
+                      "windowStation":  "WinSta0",
+                      "desktop":  "GscWpfTest_f3e3d5feb39e4275b863dbba22bdb6c5",
+                      "inputDesktopBefore":  "Default",
+                      "inputDesktopAfter":  "Default",
+                      "trx":  "focused-tests/R06SelectionStateBehaviorTests.trx",
+                      "counts":  {
+                                     "total":  3,
+                                     "passed":  3,
+                                     "failed":  0,
+                                     "notExecuted":  0,
+                                     "skipReasons":  [
+
+                                                     ]
+                                 }
+                  },
+                  {
+                      "class":  "WpfUiResourceDictionaryTests",
+                      "filter":  "FullyQualifiedName~GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests",
+                      "processExitCode":  0,
+                      "desktopIdentityMatched":  true,
+                      "windowStation":  "WinSta0",
+                      "desktop":  "GscWpfTest_c685ab46103b4c60b3678ddfbed45cfa",
+                      "inputDesktopBefore":  "Default",
+                      "inputDesktopAfter":  "Default",
+                      "trx":  "focused-tests/WpfUiResourceDictionaryTests.trx",
+                      "counts":  {
+                                     "total":  179,
+                                     "passed":  140,
+                                     "failed":  0,
+                                     "notExecuted":  39,
+                                     "skipReasons":  [
+                                                         "该"
+                                                     ]
+                                 }
+                  }
+              ],
+    "totals":  {
+                   "passed":  157,
+                   "failed":  0,
+                   "skippedNotExecuted":  39
+               },
+    "skipPolicy":  "NotExecuted items are not counted as passes. The resource dictionary class has pre-existing LegacyProductionUiBaselineFact skips for the reverted 今日工作台 architecture; each individual skip reason remains in its TRX.",
+    "desktopPolicy":  "Each WPF class ran on a unique WinSta0 private desktop. Input desktop was Default before and after every class; the Default desktop was never switched.",
+    "outcome":  "focused-compile-and-behavior-passes; full-build-and-ci-for-this-resource-fix-pending"
+}

@@ -1,3 +1,12 @@
+## 2026-11-09 U09-05 Render QA OOM修正复验通过
+
+当前候选选框改为约4 DIP右余量，资源断言同步；SDK8.0.423下共享资源/几何等定向WPF测试157 pass、0失败，39个旧架构NotExecuted未计通过。Source Validation exit0，WPF静态398 XAML/0 errors/218 warnings/1440 info。Render QA首轮因4K位图压力在289图OOM、exit1；没有删案例或缩尺寸。仅RenderHarness修改SavePng后每8图强制GC并等待最终化，Harness重新编译0警告/错误，完整Render QA exit0、394 PNG、0 PROBLEM。WinSta0私有桌面运行，Default input desktop未变。完整报告与sha在Round5 evidence `right-inset-regression-20261109/`。当前生产源/测试/Harness/UI和追踪文档仍需中文提交/push；精确SHA独立完整build、双SDK CI和最终中文根入口安装身份未验。用户说闪窗出现在编译/检查期间；我们保持所有操作进程启动即隐藏和输出重定向，仍无窗口身份证据。未动盘符、映射或用户数据。
+## 2026-11-09 U09-05 Render QA OOM诊断与候选资源修复
+
+对当前选框源运行UI_CHANGE_GATE：Source Validation exit0；WPF技能静态审查扫描398 XAML，0 errors/218 warnings/1440 info。Render Harness SDK8.0.423 Release编译0警告/错误，但在私有WinSta0桌面渲染至289张时于 `RenderTargetBitmap.Render` OOM、exit1，input desktop保持Default。这个资源耗尽结果不计通过，完整394图门禁仍待。将测试工具 `SavePng` 的帧保存分层，并每8次强制回收、等待WPF/WIC渲染资源最终化；不更改生产窗口、测试尺寸/案例或断言。首轮部分报告和清理记录见Round5 `right-inset-regression-20261109/`。候选修复需先编译并完整重跑Render QA，再做本轮冻结候选全量门禁；不关闭用户IDE/浏览器、不操作盘符或用户数据。
+## 2026-11-09 U09-05 R23失败修正候选
+
+修正a742候选发现的共享选框右侧仅1 DIP问题：正常和非活动框宽度恢复为视口减8 DIP、左留4 DIP；2 DIP键盘焦点框使用视口减7 DIP、左留3 DIP。同步资源测试预期，保留几何、内容包含、滚动和安全行为断言。SDK8.0.423 Release隔离Rebuild exit0、0 warning/error；R23 12/12、Task Grid 1/1、Save History 1/1、选框状态3/3、资源字典140 passed；39个旧 `LegacyProductionUiBaselineFact` 为NotExecuted，不计通过。五类在WinSta0私有桌面运行，Default输入桌面前后不变。a742本机build及CI #1499基线/SDK10均因该1-DIP断言失败，诊断已留存并校验manifest。本修正仍待独立完整 `scripts/build.cmd`、Source Validation/WPF静态/Render QA、推送后双SDK CI与最终中文完整入口/安装身份。用户确认黑窗发生于编译/检查时；工具进程启动即隐藏并重定向，黑窗身份未归因。详细记录见Round5进度和 `right-inset-regression-20261109/README.md`。
 ## 2026-11-09 U09-05：右侧时间/状态文字越框修正
 
 用户指出概览最近任务时间与存档/任务列表文字在选框外。修正 Overview 行内容宽度与选中框的分离绑定，并把共享 DataGrid 选中、非活动和键盘焦点框扩到可视区域右缘；保持 `RowContent` 原8 DIP裁切和水平滚动系统。新增/调整选框几何断言，没有删断言、扩大skip或改业务/UIA/键盘命令。

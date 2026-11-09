@@ -1,0 +1,46 @@
+[repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)鐨勬祴璇曡繍琛?
+VSTest 鐗堟湰 17.11.1 (x64)
+
+姝ｅ湪鍚姩娴嬭瘯鎵ц锛岃绋嶅€?..
+鎬诲叡 1 涓祴璇曟枃浠朵笌鎸囧畾妯″紡鐩稿尮閰嶃€?
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.51]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.89]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.93]   Starting:    GameSaveCenter.Playnite.Tests
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes [4 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.TaskSelectionKeepsFailureBadgeAndCancelActionUsableAcrossThemes [2 s]
+[xUnit.net 00:00:10.83]       Xunit.Sdk.TrueException: Task/Light inactive selection leaves 2 DIP between the selection frame and visible viewport; expected a DPI-rounded four-DIP gap.
+[xUnit.net 00:00:10.83]          鍦?Xunit.Assert.True(Nullable`1 condition, String userMessage) 浣嶇疆 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:琛屽彿 142
+[xUnit.net 00:00:10.83]          鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AssertSelectionChromeUsesVisibleViewport(DataGridRow row, DataGrid grid, Border chrome, String page, GameSaveCenterThemeMode theme, String state) 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1605
+[xUnit.net 00:00:10.83]          鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes>b__11_0() 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1221
+[xUnit.net 00:00:10.83]          鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c__DisplayClass36_0.<RunSta>b__0() 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1690
+[xUnit.net 00:00:10.83]       Stack Trace:
+[xUnit.net 00:00:10.83]            鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1702
+  澶辫触 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes [707 ms]
+  閿欒娑堟伅:
+   Xunit.Sdk.TrueException: Task/Light inactive selection leaves 2 DIP between the selection frame and visible viewport; expected a DPI-rounded four-DIP gap.
+   鍦?Xunit.Assert.True(Nullable`1 condition, String userMessage) 浣嶇疆 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:琛屽彿 142
+   鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AssertSelectionChromeUsesVisibleViewport(DataGridRow row, DataGrid grid, Border chrome, String page, GameSaveCenterThemeMode theme, String state) 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1605
+   鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes>b__11_0() 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1221
+   鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c__DisplayClass36_0.<RunSta>b__0() 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1690
+  鍫嗘爤璺熻釜:
+     鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1702
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabContentsStretchAcrossNarrowViewportRegardlessOfHeaderWidthInBothThemes [304 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes [310 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes [1 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles [1 m 9 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.SettingsSectionTabsUseTheirGeneratedStyleForSelectionFocusAndDisabledNegativeInBothThemes [280 ms]
+[xUnit.net 00:01:25.53]   Finished:    GameSaveCenter.Playnite.Tests
+鏁版嵁鏀堕泦鍣ㄢ€淏lame鈥濇秷鎭? 鎵€鏈夋祴璇曢兘宸茶繍琛屽畬姣曪紝灏嗕笉鐢熸垚搴忓垪鏂囦欢銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorUsesProductionTimelinesAndHonorsReducedMotionInBothThemes [1 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationExposesFocusAndDisabledStatesAfterSelectionClearsInBothThemes [275 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationKeepsKeyboardFocusOutlineVisibleWhileSelectedInBothThemes [271 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabIndicatorsKeepCompactPaddingAndDisabledDimmingInBothThemes [282 ms]
+
+娴嬭瘯鎬绘暟: 12
+     閫氳繃鏁? 11
+     澶辫触鏁? 1
+鎬绘椂闂? 1.4567 鍒嗛挓
+缁撴灉鏂囦欢: [repo]\artifacts\build-diagnostics\round5-a74287e7\20261109T051845863Z-0d329416\tests\wpf.R23ProductionResourceStateBehaviorTests\wpf.R23ProductionResourceStateBehaviorTests.trx
+[xUnit.net 00:00:10.83]     GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes [FAIL]
+娴嬭瘯杩愯澶辫触銆?

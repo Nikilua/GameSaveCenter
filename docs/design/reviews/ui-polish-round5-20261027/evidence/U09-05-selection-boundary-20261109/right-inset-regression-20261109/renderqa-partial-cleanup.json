@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-09",
+  "target": "artifacts/ui-qa/round5-u09-05-right-inset-candidate",
+  "normalizedBoundary": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\ui-qa\\",
+  "removedFileCount": 290,
+  "removedBytes": 38447150.0,
+  "drive": "D:",
+  "freeBeforeBytes": 223887360,
+  "freeAfterBytes": 263065600,
+  "freedBytes": 39178240,
+  "reason": "Incomplete 289-PNG OOM run copied to sanitized evidence first.",
+  "retainedEvidence": [
+    "renderqa-failure-report.txt",
+    "renderqa-failure-launch.stdout.txt",
+    "renderqa-failure-launch.stderr.txt",
+    "renderqa-failure.json"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "sourceBaseCommit": "a74287e7ecd240a0fbd4fa394a9befb8fd796748",
+  "sourceXamlSha256": "4C4CDE4B87FD36750F969D364BCACF87A53E84A2AD73AA235C2664F9D6DA579A",
+  "resourceTestSha256": "B2D88DECDBC494CD26AF748801D32B835BE8FDA204878EFEA1FAF18E668E4FFF",
+  "sdk": "8.0.423",
+  "renderHarnessBuildExitCode": 0,
+  "renderHarnessWarnings": 0,
+  "renderHarnessErrors": 0,
+  "renderRunExitCode": 1,
+  "windowStation": "WinSta0",
+  "desktop": "GscRenderQA_89e3c0f96de3470b8117662015f5d083",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "completedImages": 289,
+  "partialFileCount": 290,
+  "partialOutputBytes": 38447150.0,
+  "failure": "System.OutOfMemoryException in RenderTargetBitmap.Render",
+  "availableMemoryAtTriageMB": 1536,
+  "result": "Infrastructure resource exhaustion; no visual acceptance; not counted as passing",
+  "stdout": "renderqa-failure-launch.stdout.txt",
+  "stderr": "renderqa-failure-launch.stderr.txt",
+  "report": "renderqa-failure-report.txt"
+}

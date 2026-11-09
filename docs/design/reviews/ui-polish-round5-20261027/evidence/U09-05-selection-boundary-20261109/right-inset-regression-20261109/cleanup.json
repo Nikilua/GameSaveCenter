@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-09",
+  "target": "artifacts/gsc-b/a74287e7",
+  "boundary": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\",
+  "files": 737,
+  "bytes": 169283831.0,
+  "drive": "D:",
+  "freeBeforeBytes": 251924480,
+  "freeAfterBytes": 280342528,
+  "freedBytes": 28418048,
+  "reason": "Obsolete failed candidate output; sanitized logs/TRX are retained in this evidence directory.",
+  "checks": [
+    "normalized target under repo artifacts/gsc-b",
+    "no reparse points",
+    "no active build/test process",
+    "diagnostics already archived"
+  ]
+}

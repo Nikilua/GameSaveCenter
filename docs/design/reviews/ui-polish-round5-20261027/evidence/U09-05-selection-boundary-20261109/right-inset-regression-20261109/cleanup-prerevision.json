@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-09",
+  "drive": "D:",
+  "freeBeforeBytes": 257736704,
+  "freeAfterBytes": 273989632,
+  "freedBytes": 16252928,
+  "removed": [
+    {
+      "path": ".tmp/round5-u09-05-final-20261109/build-output",
+      "files": 717,
+      "bytes": 162834559.0
+    },
+    {
+      "path": ".tmp/round5-u09-05-final-20261109/selection-frame-fix-20261109",
+      "files": 660,
+      "bytes": 59965713.0
+    }
+  ],
+  "referenceCheck": "Archived build logs, render report and summaries verified; only historical command output roots named; no linked file under task temp.",
+  "reason": "Superseded pre-revision build and Render QA output; current candidate will use fresh output roots."
+}

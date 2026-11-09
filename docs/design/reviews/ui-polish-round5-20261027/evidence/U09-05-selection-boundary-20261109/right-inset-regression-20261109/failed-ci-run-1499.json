@@ -1,0 +1,59 @@
+{
+    "run":  {
+                "number":  1499,
+                "id":  42566153792,
+                "url":  "https://github.com/Nikilua/GameSaveCenter/actions/runs/42566153792",
+                "commit":  "a74287e7ecd240a0fbd4fa394a9befb8fd796748",
+                "event":  "push",
+                "conclusion":  "failure"
+            },
+    "jobs":  [
+                 {
+                     "id":  128992991053,
+                     "name":  ".NET SDK 10.0.401 编译与测试复核",
+                     "sdk":  "10.0.401",
+                     "conclusion":  "failure",
+                     "completedTestSummary":  "1664 total; 1644 passed; 1 failed; 19 skipped; 0 errors/timeouts/aborts; 127 WPF isolated class runs",
+                     "failingTest":  "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes",
+                     "message":  "Task/Light inactive selection leaves 1 DIP between the selection frame and visible viewport; expected a DPI-rounded four-DIP gap.",
+                     "diagnosticArtifact":  {
+                                                "id":  13652351219,
+                                                "name":  "GameSaveCenter-sdk10-build-diagnostics",
+                                                "bytes":  1061681,
+                                                "sha256":  "81308198ceff1d6f90a270d67d5b4a4f7e0c89fa6b9ab2bed4490e5ceb2feb5a",
+                                                "expires":  "2026-11-23T05:36:51Z"
+                                            },
+                     "logsUrl":  "https://github.com/Nikilua/GameSaveCenter/actions/runs/42566153792/job/128992991053"
+                 },
+                 {
+                     "id":  128992991261,
+                     "name":  "编译、测试与打包",
+                     "sdk":  "8.0.423",
+                     "conclusion":  "failure",
+                     "completedTestSummary":  "1664 total; 1644 passed; 1 failed; 19 skipped; 0 errors/timeouts/aborts; 127 WPF isolated class runs",
+                     "failingTest":  "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes",
+                     "message":  "Task/Light inactive selection leaves 1 DIP between the selection frame and visible viewport; expected a DPI-rounded four-DIP gap.",
+                     "completedBeforeFailure":  [
+                                                    "source structure check",
+                                                    "diagnostic self-test",
+                                                    "SDK baseline and missing-SDK negative case",
+                                                    "Release build and test execution"
+                                                ],
+                     "skippedAfterFailure":  [
+                                                 "offscreen render QA",
+                                                 "WPF static review",
+                                                 "extension package",
+                                                 "artifact upload"
+                                             ],
+                     "diagnosticArtifact":  {
+                                                "id":  13652064362,
+                                                "name":  "GameSaveCenter-build-diagnostics",
+                                                "bytes":  1106003,
+                                                "sha256":  "c9d3ada69c6922245907d059430c6a5e2082cf6ca7dd8e4cded8a33951e834ba",
+                                                "expires":  "2026-11-23T05:44:19Z"
+                                            },
+                     "logsUrl":  "https://github.com/Nikilua/GameSaveCenter/actions/runs/42566153792/job/128992991261"
+                 }
+             ],
+    "repair":  "Restored shared DataGrid width insets to 8 DIP for normal/inactive selection and 7 DIP for 2-DIP keyboard focus while retaining the 0-DIP right margin; synchronized the resource dictionary assertion. Geometry and content-in-frame assertions remain enabled."
+}

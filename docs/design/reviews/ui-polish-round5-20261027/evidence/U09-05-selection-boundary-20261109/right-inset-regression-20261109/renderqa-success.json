@@ -1,0 +1,22 @@
+{
+  "sourceBaseCommit": "a74287e7ecd240a0fbd4fa394a9befb8fd796748",
+  "sourceXamlSha256": "4C4CDE4B87FD36750F969D364BCACF87A53E84A2AD73AA235C2664F9D6DA579A",
+  "resourceTestSha256": "B2D88DECDBC494CD26AF748801D32B835BE8FDA204878EFEA1FAF18E668E4FFF",
+  "renderHarnessSourceSha256": "5FBD88E7B6FF5147224F8B95EB037D7B454A96006287CFF3C83F3FB56B88FAF4",
+  "sdk": "8.0.423",
+  "entry": "scripts/render-qa.ps1",
+  "configuration": "Release",
+  "exitCode": 0,
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "pngCount": 394,
+  "problemLines": 0,
+  "reportSha256": "61036C465F8A8ACD5E1142DB555D827E148309E0D7D4598DAB3D7FCCD06ADD1A",
+  "windowStation": "WinSta0",
+  "privateDesktop": "GscRenderQA_277e84051dfd40c6ad850f34d6178665",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "sampleDataUtc": "2026-11-09T07:06:05Z",
+  "output": "[repo]/artifacts/ui-qa/round5-u09-05-right-inset-complete-20261109",
+  "limitations": "Render Harness only; not a Playnite host or physical DPI validation."
+}

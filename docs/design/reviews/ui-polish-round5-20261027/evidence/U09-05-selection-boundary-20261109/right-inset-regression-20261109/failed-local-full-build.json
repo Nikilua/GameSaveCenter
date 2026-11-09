@@ -1,0 +1,29 @@
+{
+    "commit":  "a74287e7ecd240a0fbd4fa394a9befb8fd796748",
+    "command":  "scripts/build.cmd -Configuration Release -OutputRoot artifacts/gsc-b/a74287e7 -TestTempRoot artifacts/gsc-b/a74287e7/test-temp -DiagnosticsRoot artifacts/build-diagnostics/round5-a74287e7",
+    "sdk":  "8.0.423",
+    "exitCode":  1,
+    "runRoot":  "artifacts/build-diagnostics/round5-a74287e7/20261109T051845863Z-0d329416",
+    "summary":  {
+                    "total":  1664,
+                    "passed":  1634,
+                    "failed":  1,
+                    "skipped":  29,
+                    "wpfClassesCompleted":  127
+                },
+    "failingTest":  "GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes",
+    "message":  "Task/Light inactive selection leaves 1 DIP between the selection frame and visible viewport; expected a DPI-rounded four-DIP gap.",
+    "trx":  "failed-local-R23.trx",
+    "console":  "failed-local-R23-console.txt",
+    "outputLog":  "failed-local-full-build.stdout.txt",
+    "monitor":  {
+                    "windowStation":  "WinSta0",
+                    "desktop":  "Default",
+                    "inputDesktopBefore":  "Default",
+                    "inputDesktopAfter":  "Default",
+                    "monitorStart":  "2026-11-09T13:27:14.5667771+08:00",
+                    "monitorEnd":  "2026-11-09T13:50:25.3098529+08:00",
+                    "relevantShowHideEvents":  0,
+                    "scope":  "monitor started after full build began; covers from WPF class 30/157 through exit"
+                }
+}

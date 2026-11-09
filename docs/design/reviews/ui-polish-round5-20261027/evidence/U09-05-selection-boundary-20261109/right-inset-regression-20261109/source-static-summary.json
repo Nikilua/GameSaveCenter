@@ -1,0 +1,16 @@
+{
+  "sourceBaseCommit": "a74287e7ecd240a0fbd4fa394a9befb8fd796748",
+  "sourceXamlSha256": "4C4CDE4B87FD36750F969D364BCACF87A53E84A2AD73AA235C2664F9D6DA579A",
+  "renderHarnessSourceSha256": "5FBD88E7B6FF5147224F8B95EB037D7B454A96006287CFF3C83F3FB56B88FAF4",
+  "sourceValidationExitCode": 0,
+  "wpfStaticExitCode": 0,
+  "scannedXaml": 398,
+  "errors": 0,
+  "warnings": 218,
+  "info": 1440,
+  "newRenderHarnessChange": "QA-only bounded WPF/WIC collection every eight images; full 394-image Render QA passed.",
+  "scope": "WPF static values are repository baseline; changed production XAML has no findings.",
+  "markdownLocalLinksChecked": 344,
+  "missingMarkdownLinks": 0,
+  "sourceValidationRerunExitCode": 0
+}

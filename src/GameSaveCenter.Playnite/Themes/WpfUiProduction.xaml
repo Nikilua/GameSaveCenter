@@ -712,7 +712,7 @@
                     </Setter.Value>
                 </Setter>
                 <Setter TargetName="RowBackground" Property="Width"
-                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=5}"/>
+                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
                 <Setter TargetName="RowBackground" Property="HorizontalAlignment" Value="Left"/>
                 <Setter TargetName="RowContent" Property="Clip">
                     <Setter.Value>
@@ -735,7 +735,7 @@
                     </Setter.Value>
                 </Setter>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=5}"/>
+                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscSelectionTextBrush}"/>
@@ -754,7 +754,7 @@
                     </Setter.Value>
                 </Setter>
                 <Setter TargetName="RowBackground" Property="Width"
-                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=5}"/>
+                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
                 <Setter TargetName="RowBackground" Property="HorizontalAlignment" Value="Left"/>
                 <Setter TargetName="RowContent" Property="Clip">
                     <Setter.Value>
@@ -776,7 +776,7 @@
                     </Setter.Value>
                 </Setter>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=5}"/>
+                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=8}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
                 <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
@@ -801,7 +801,7 @@
                     </Setter.Value>
                 </Setter>
                 <Setter TargetName="RowChrome" Property="Width"
-                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=5}"/>
+                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=7}"/>
                 <Setter TargetName="RowChrome" Property="HorizontalAlignment" Value="Left"/>
                 <Setter TargetName="RowBackground" Property="Margin">
                     <Setter.Value>
@@ -811,7 +811,7 @@
                     </Setter.Value>
                 </Setter>
                 <Setter TargetName="RowBackground" Property="Width"
-                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=5}"/>
+                        Value="{Binding ViewportWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Converter={StaticResource GscViewportInsetWidthConverter}, ConverterParameter=7}"/>
                 <Setter TargetName="RowBackground" Property="HorizontalAlignment" Value="Left"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">

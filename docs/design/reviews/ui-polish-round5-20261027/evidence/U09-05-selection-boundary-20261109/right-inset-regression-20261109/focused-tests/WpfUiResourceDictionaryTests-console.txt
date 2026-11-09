@@ -1,0 +1,275 @@
+[repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)鐨勬祴璇曡繍琛?
+VSTest 鐗堟湰 17.11.1 (x64)
+
+姝ｅ湪鍚姩娴嬭瘯鎵ц锛岃绋嶅€?..
+鎬诲叡 1 涓祴璇曟枃浠朵笌鎸囧畾妯″紡鐩稿尮閰嶃€?
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.47]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.84]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.90]   Starting:    GameSaveCenter.Playnite.Tests
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProcessMappingEditorUsesDemoWidthAndStacksAtNarrowWidth [1 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditUsesDemoInspectorAndInternalAuditViewport [149 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxInspectorKeepsActionsOutsideTheGridScrollSurface [19 ms]
+[xUnit.net 00:00:05.38]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected [SKIP]
+[xUnit.net 00:00:05.38]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SidebarStatusUsesRealBooleanStatesInsteadOfRawBooleanText [10 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(mode: Light) [857 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ContextActionsKeepReadableSemanticDisabledChromeAcrossDerivedStyles(mode: Dark) [47 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceAuditTableSpansFullWidthUntilAFindingIsSelected [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspaceViewsConstructInsideSta [454 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxUsesStableLargeDataVirtualizationAndMaintenanceHeadersOwnTheirTheme [46 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDoesNotRenderASecondLegacyOverviewMetricStrip [8 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryMaintenanceDataGridHasAnEmptyStateOverlay [22 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsUsesSharedResponsiveFieldGroupsWithoutShrinkingNumericInputs [20 ms]
+[xUnit.net 00:00:06.26]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:06.26]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:06.27]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn [SKIP]
+[xUnit.net 00:00:06.27]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignKeepsNavigationAndStatusCardsInsideCompactSidebarBounds [13 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewActivityRowsAndCloudQueueCardKeepVisualContentAndOneClickNavigation [4 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupDefersWorkerUntilExplicitUserIntent [4 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCardsUseReadableAutoStartStatusInsteadOfRawBoolean [5 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.UiFilterSelectionRestoresOnlyEmptySelections [12 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LocalAccentTokensFollowTheHostPaletteWithoutStaticThemeCapture [128 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionAdaptersResolveGameSaveCenterTokensFromTheUserControlScope [171 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReleasesEmptyRightColumn [1 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DiagnosticInspectorKeepsLongContentScrollableAndOwnsNoDeadRightColumn [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridReservesFourRowsAndCompactInspectorKeepsBottomInset [125 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionAdaptersOwnRoundedInputTemplatesAndPopupItems [14 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSummaryStripFollowsTheDemoMetricRhythm [40 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignUsesExplicitHeaderRowsAndSharedGameContextAtEveryBreakpoint [27 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeGameLibrariesUseOneVirtualizedSearchableSelectorSurface [70 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SemanticStatusColorsAreLocalDynamicResourcesInHighContrast [45 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskSearchTextKeepsVisibleViewportAtExistingFieldHeight [10 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveShellReclaimsCompactPaddingForWorkspaceScrollRows [9 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TableDensitySettingUsesSharedTokensWithoutChangingBodyTypography [9 ms]
+[xUnit.net 00:00:06.62]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterProvidesDemoComparisonAndRetentionInspector [SKIP]
+[xUnit.net 00:00:06.62]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:06.63]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:06.63]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:06.67]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap [SKIP]
+[xUnit.net 00:00:06.67]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:06.68]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorReleasesEmptyRightColumn [SKIP]
+[xUnit.net 00:00:06.68]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FixedAmbientMaterialLayersUseTheOpaqueAccessibilityFallback [6 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterProvidesDemoComparisonAndRetentionInspector [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCardAliasesKeepReadingSurfacesFlatAndConsistent [9 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorReleasesEmptyRightColumn [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInboxSupportsNonIntrusiveBatchClassificationActions [45 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceKeepsRecoveryActionsReachableWhenDetailsWrap [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsOnlyTheWorkerOwnedByThisPluginInstance [3 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorReleasesEmptyRightColumn [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardLargeScrollableControlsStayInsideFiniteGridLayouts [3 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedMotionPrimitivesCloneFrozenTransformsBeforeTheyAreAnimated [5 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryReadinessProbeNeverEagerlyStartsWorkerAfterASettledPartialSnapshot [5 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoVisualVocabularyAndWorkspaceStretchContractRemainAvailable [38 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionXamlUsesOnlyRealDockEnumValues [449 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStopsHiddenNotificationPollingWhenDetached [5 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridUsesDemoBodyAndCaptionFontTokens [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoCorePaletteWinsOverHostNeutralBrushesOutsideHighContrast [11 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AsyncUiEventBoundariesDoNotLeakFailuresIntoThePlayniteDispatcher [88 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSliderDeclaresReadableTrackAndExpandedInputTarget [7 ms]
+[xUnit.net 00:00:07.32]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor [SKIP]
+[xUnit.net 00:00:07.32]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:07.39]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorRestoresAfterCompactResize [SKIP]
+[xUnit.net 00:00:07.39]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:07.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceCompactInspectorTogglesToUsableHeight [SKIP]
+[xUnit.net 00:00:07.41]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:07.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard [SKIP]
+[xUnit.net 00:00:07.41]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterKeepsTableRowsVisibleWhenMetadataActionsWrap [19 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FinalRedesignResourceDictionaryParsesInsideThePluginScope [11 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceWorkspaceReflowsHealthCardsAndMappingEditor [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactModeKeepsRestoreAvailabilityAccessibleWithoutTakingTableRows [63 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskInspectorRestoresAfterCompactResize [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSearchRowStacksButtonsBelowTheSearchBoxSoNarrowWindowsDoNotClip [4 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskSummaryMatchesDemoStateBreakdownWithRealCounts [17 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceCompactInspectorTogglesToUsableHeight [1 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EveryDashboardViewModelCommandRemainsReachableFromTheRedesignedDashboard [1 ms]
+[xUnit.net 00:00:07.41]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors [SKIP]
+[xUnit.net 00:00:07.41]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:07.42]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints [SKIP]
+[xUnit.net 00:00:07.42]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:07.51]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorRestoresAfterCompactResize [SKIP]
+[xUnit.net 00:00:07.51]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DemoPhaseTwoLayoutKeepsNaturalFormsAndDesktopInspectors [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardToastTimersAreReleasedOnUnloadAndCapacityEviction [14 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesRetainTheLessObviousOperationalEntrypoints [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryPrewarmsWorkerWithoutBlockingDashboardOnLudusaviVersion [4 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCurrentActionsReserveACompactDetailsLane [84 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorRestoresAfterCompactResize [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.BackgroundWorkerCollectionUpdatesRespectThePlayniteDispatcherLifecycle [22 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedGlassButtonAliasesKeepThemeStatesAndPressFeedback [10 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProtectionPromptUsesThreeExplicitChoices [8 ms]
+[xUnit.net 00:00:07.75]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable [SKIP]
+[xUnit.net 00:00:07.75]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DenseGridLongTextUsesTheSharedEllipsisAndTooltipStyle [17 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceActionsUseSingleFiniteScrollChannel [27 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionAdaptersResolveWpfUiButtonDefaultsInsideTheirOwnParseScope [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorReturnsWhenWideLayoutIsRestoredAfterCompactResize [64 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.UiFilterSelectionRepairsAValidButStaleSelection [2 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceRetentionPreviewReflowsDetailsAtNarrowWidth [75 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterPathWorkspaceShowsRealRuleAndValidationEntryPoints [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDataGridsDeclareExplicitFirstAndLastHeaderStyles [4 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerWorkspaceStacksVirtualizedPanesBeforeTheirControlsBecomeUnreadable [1 ms]
+[xUnit.net 00:00:07.81]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary [SKIP]
+[xUnit.net 00:00:07.81]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:07.85]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterReleasesEmptyHistoryAndCandidateInspectors [SKIP]
+[xUnit.net 00:00:07.85]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryTaskNotificationsDoNotOpenAWorkerLongPollBeforeTheDashboardIsOpened [5 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeferredDashboardCallbacksAreProtectedDuringPlayniteUnload [23 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsSectionRhythmUsesTitlePlusCaptionRowsForToggles [14 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsStoragePolicyFieldsUseASafeCompactSingleColumnLayout [8 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewPrioritizesPendingAndRecentTasksBeforeSecondaryContent [8 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatCardsShowRealRatioBarsThatCollapseOnEmptyLibrary [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PluginNotificationAndConfirmationDispatchRespectPlayniteShutdown [10 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourcesKeepPathEditingAndSafetyCommandsReachableInCompactLayouts [22 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterReleasesEmptyHistoryAndCandidateInspectors [1 ms]
+[xUnit.net 00:00:07.93]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterInspectorsRestoreAfterCompactResize [SKIP]
+[xUnit.net 00:00:07.93]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardUsesSidebarAsTheOnlyWorkspaceSwitcher [18 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerInspectorFillsTheWorkspaceAndOnlyCapsWhenStacked [5 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedListBoxItemsStayRoundedAndKeyboardFocusable [17 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGridUsesTheSharedViewportWithoutFixedBottomCompensation [33 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerHandshakeRejectsHealthyStaleVersionBeforeLargeLibraryReuse [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsTheDemoShellAtItsCommonMinimumWidth [2 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterInspectorsRestoreAfterCompactResize [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactToolbarPreservesEveryActionThroughAnAccessibleIconOnlyMode [74 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskAndMaintenanceTablesUseReadableSemanticStatusTemplates [14 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmbeddedPlayniteViewsDoNotRegisterWindowScopedContentDialogHosts [975 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceReleasesEmptyInspectorColumns [72 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedActionAndFilterStylesKeepButtonAlignmentAndVisibleAllDefault [105 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewMetricSeparatorsOccupyGapsBetweenSixCards [4 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsPathFieldsAreFullWidthReadableRowsPreservingEveryBinding [10 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardDataGridHeaderKeepsSortGlyphAndResizePartsVisible [3 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.HeaderActionsKeepAnInternalHorizontalScrollChannelAtNarrowWidths [5 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedPageScrollViewerStretchesContentAndLeavesBottomBreathingRoom [2 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskWorkspaceIsPhysicallyExtractedAsAGlobalVirtualizedSurface [31 ms]
+[xUnit.net 00:00:09.29]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator [SKIP]
+[xUnit.net 00:00:09.29]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveAndTrainerStackedInspectorsReserveAReadableListViewport [17 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryDashboardStartsDescriptorSynchronizationWithoutBlockingTheFirstPaint [33 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SafeFallbackUsesSystemThemeResourcesInsteadOfHardCodedDarkColors [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionFindingRowsUseDemoIconTileRhythmWithSuggestedActionText [6 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAndSidebarUseTheSharedPageScrollChannel [7 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewWorkspaceIsPhysicallyExtractedWithoutBreakingResponsiveCoordinator [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceShowsSafeModeBannerBoundToSnapshot [20 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ResponsiveLayoutsCoalesceResizeStormsWithoutUpdatingUnloadedViews [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibraryKeepsBusyWorkerInsteadOfKillingItAfterPingTimeout [10 ms]
+[xUnit.net 00:00:09.34]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:09.34]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.35]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot [SKIP]
+[xUnit.net 00:00:09.35]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.42]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands [SKIP]
+[xUnit.net 00:00:09.42]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FollowPlayniteUsesTheActiveThemeModeWhenBothThemeBrushSetsArePublished [3 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.InitialSynchronizationCancellationToleratesCompletionRace [19 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewShowsTheSameAttentionAndRuntimeCountersReturnedByTheSnapshot [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.VeryLargeLibrariesSyncDescriptorsAndKeepMatchingInTheWorkerQueue [36 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCenterKeepsProjectImportConfirmationTab [3 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedButtonsAndTogglesKeepDemoStateLayersWithoutChangingTheirCommands [30 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsActionsUseDemoCardWithoutDroppingCommands [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ProductionNavigationCentersEachIconAndLabelOnTheSameRow [5 ms]
+[xUnit.net 00:00:09.60]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces [SKIP]
+[xUnit.net 00:00:09.60]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.60]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactLayoutsKeepSummaryInformationAndUseThePageScroller [SKIP]
+[xUnit.net 00:00:09.60]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProvidesReadOnlyRetentionPreviewTab [43 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerCatalogSelectionLoadsReleasesInTheExtractedWorkspace [2 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseTheSharedDemoLayoutWithoutReplacingTheirRealContent [46 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceCompactInspectorsDefaultClosedAndToggleOpen [66 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FloatingThemeResourcesStayLocalToDashboardAndSettingsOwners [14 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridChromeCoversHeadersCellsAndRowsAcrossExtractedWorkspaces [1 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CompactLayoutsKeepSummaryInformationAndUseThePageScroller [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TrainerDownloadFeedbackKeepsStableRequestContextAndOffersSafeCancellation [39 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardKeepsDemoFooterHierarchyWithoutReintroducingStatusBarLayout [11 ms]
+[xUnit.net 00:00:09.65]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover [SKIP]
+[xUnit.net 00:00:09.65]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.69]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [SKIP]
+[xUnit.net 00:00:09.69]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.69]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:09.69]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedSectionCardMatchesDemoReadingSurfaceGeometry [1 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewStatStripKeepsSixRealSnapshotMetricsWithMotionGatedHover [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ThemeAwareIconPackUsesSharedGeometryAndInheritableForeground [4 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkspaceTableHeadersShareTheReadingSurfaceWithoutDividerBands [17 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibraryStartupRendersCacheWithoutKillingBusyWorker [12 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.GameContextButtonKeepsCompositeGridContentThroughItsRuntimeTemplate [9 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskStackedInspectorReservesTheDemoQueueViewport [1 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsRedesignMovesCategoriesWithoutRemovingExistingFieldsOrSaveSemantics [56 ms]
+[xUnit.net 00:00:09.75]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorStacksBeforeItsEditingControlsAreCompressed [SKIP]
+[xUnit.net 00:00:09.75]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.75]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionActionsExposeAnAccessibleExplanationPath [SKIP]
+[xUnit.net 00:00:09.75]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.75]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.RecentProtectionCardSupportsSelectionAndRecommendedBatchAction [SKIP]
+[xUnit.net 00:00:09.75]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.81]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:09.81]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaInspectorStacksBeforeItsEditingControlsAreCompressed [1 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AttentionActionsExposeAnAccessibleExplanationPath [1 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.RecentProtectionCardSupportsSelectionAndRecommendedBatchAction [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.GlobalWorkspaceViewsHaveOneVisibleMigrationEntryAndKeepVirtualization [51 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PlayniteShutdownStopsQueuedCallbacksBeforeTheyTouchWorkerOrUi [8 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaCompactInspectorDefaultsToDetailsButtonAndToggleOpen [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FollowPlaynitePrefersTheDisplayingWindowOverAChildFallbackResource [31 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.LargeLibrarySynchronizationWaitsForAnInteractiveSurface [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryUsesReadableStatusLabelsAndRoundedStatusTemplates [3 ms]
+[xUnit.net 00:00:09.86]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial [SKIP]
+[xUnit.net 00:00:09.86]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.89]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen [SKIP]
+[xUnit.net 00:00:09.89]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.92]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGameFilterMovesIntoMoreFiltersOnCompactPanes [SKIP]
+[xUnit.net 00:00:09.92]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDisclosureChevronUsesDemoRotationTiming [7 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewHeroMatchesDemoHeadlineScaleWithWideAmbientMaterial [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveHistoryInspectorDoesNotShowDisabledControlsOrUnlabelledPillsWithoutASelection [12 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExistingButtonsUseGlassSurfaceAndSidebarIconUsesPlayniteGlyphBrush [9 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveWorkspaceKeepsAllPrimaryCommandsReachableAtHighDpi [15 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SaveCenterCompactInspectorsDefaultToDetailsButtonAndToggleOpen [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceProcessTableSpansFullWidthUntilAMappingIsSelected [27 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.TaskGameFilterMovesIntoMoreFiltersOnCompactPanes [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CustomToolSettingsExposeConservativeProcessAndRiskPolicies [14 ms]
+[xUnit.net 00:00:09.95]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected [SKIP]
+[xUnit.net 00:00:09.95]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:09.96]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable [SKIP]
+[xUnit.net 00:00:09.96]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:10.05]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers [SKIP]
+[xUnit.net 00:00:10.05]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OptionalWpfUiProbeKeepsItsChecklistInsideAFixedGridRow [10 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ExtractedWorkspacesUseGridRootsAndInternalTableScrolling [13 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDiagnosticsTableSpansFullWidthUntilAFindingIsSelected [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedDataGridSelectionUsesTrainerRoundedCardChrome [7 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.CommonWindowSizesKeepPrimaryOverviewAndTableContentReachable [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NativeConfirmationFallbackAlsoRunsInsideTheUiBoundary [5 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MediaSourceRulesUseAVisibleWideFormAndResponsiveStackedList [28 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.EmptyDataSurfacesExplainNextStepsWithoutBreakingLocalScrolling [55 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.OverviewRecentActivityUsesDemoIconTileRhythmWithSemanticTriggers [1 ms]
+[xUnit.net 00:00:10.06]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling [SKIP]
+[xUnit.net 00:00:10.06]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DeviceDecisionsPreserveProtectedRecoveryAndReadableCompactFields [14 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.MaintenanceDeviceStateUsesAStarTableRowAndInternalScrolling [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardWorkspacePresentationKeepsHeaderContextInSync [4 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.PreDashboardCatalogGuardCoversPartialLargeLibrariesAndDatabaseShutdowns [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SettingsAsyncFeedbackDoesNotTargetAnUnloadedPlaynitePage [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerLaunchLogRecordsExpectedVersionForStaleInstallationDiagnostics [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DataGridsUseItemScrollUnitAndStableRowWithoutDiagnosticClip [15 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.ToastElevationFallsBackToAnOpaqueAccessibleSurface [7 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.SharedTextInputsAndComboItemsKeepDemoFocusAndSelectionLanguage [7 ms]
+[xUnit.net 00:00:10.14]     GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles [SKIP]
+[xUnit.net 00:00:10.14]       璇ユ柇瑷€灞炰簬宸叉挙閿€鐨勪粖鏃ュ伐浣滃彴 UI 鏋舵瀯锛屽綋鍓嶇敓浜ч〉闈㈡仮澶?AcrylicFork 鍩虹嚎鍚庝笉鍐嶉€傜敤銆?
+[xUnit.net 00:00:10.21]   Finished:    GameSaveCenter.Playnite.Tests
+鏁版嵁鏀堕泦鍣ㄢ€淏lame鈥濇秷鎭? 鎵€鏈夋祴璇曢兘宸茶繍琛屽畬姣曪紝灏嗕笉鐢熸垚搴忓垪鏂囦欢銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.DashboardViewModelEventsFollowTheLoadedViewLifecycle [30 ms]
+  宸茶烦杩?GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.NestedWorkspaceScrollChannelsUseSharedPageOrInspectorStyles [1 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.AccentBrandMarksUseTheComputedOnAccentForegroundInEveryTheme [9 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.WorkerDuplicateNormalExitReusesHealthyExistingInstance [2 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.WpfUiResourceDictionaryTests.FiniteWidthComboBoxesUseTheSharedLongTextTemplate [55 ms]
+
+娴嬭瘯杩愯鎴愬姛銆?
+娴嬭瘯鎬绘暟: 179
+     閫氳繃鏁? 140
+    璺宠繃鏁? 39
+鎬绘椂闂? 11.9472 绉?
+缁撴灉鏂囦欢: [repo]\.tmp\round5-u09-05-final-20261109\focused-test-diagnostics\WpfUiResourceDictionaryTests\trx\WpfUiResourceDictionaryTests.trx

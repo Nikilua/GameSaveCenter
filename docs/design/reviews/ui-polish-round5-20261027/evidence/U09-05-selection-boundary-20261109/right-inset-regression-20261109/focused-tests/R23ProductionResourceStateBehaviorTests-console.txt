@@ -1,0 +1,30 @@
+[repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)鐨勬祴璇曡繍琛?
+VSTest 鐗堟湰 17.11.1 (x64)
+
+姝ｅ湪鍚姩娴嬭瘯鎵ц锛岃绋嶅€?..
+鎬诲叡 1 涓祴璇曟枃浠朵笌鎸囧畾妯″紡鐩稿尮閰嶃€?
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.45]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.85]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.90]   Starting:    GameSaveCenter.Playnite.Tests
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes [4 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.TaskSelectionKeepsFailureBadgeAndCancelActionUsableAcrossThemes [2 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes [6 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabContentsStretchAcrossNarrowViewportRegardlessOfHeaderWidthInBothThemes [498 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes [504 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes [1 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles [1 m 11 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.SettingsSectionTabsUseTheirGeneratedStyleForSelectionFocusAndDisabledNegativeInBothThemes [447 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorUsesProductionTimelinesAndHonorsReducedMotionInBothThemes [1 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationExposesFocusAndDisabledStatesAfterSelectionClearsInBothThemes [468 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationKeepsKeyboardFocusOutlineVisibleWhileSelectedInBothThemes [454 ms]
+[xUnit.net 00:01:33.70]   Finished:    GameSaveCenter.Playnite.Tests
+鏁版嵁鏀堕泦鍣ㄢ€淏lame鈥濇秷鎭? 鎵€鏈夋祴璇曢兘宸茶繍琛屽畬姣曪紝灏嗕笉鐢熸垚搴忓垪鏂囦欢銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabIndicatorsKeepCompactPaddingAndDisabledDimmingInBothThemes [498 ms]
+
+娴嬭瘯杩愯鎴愬姛銆?
+娴嬭瘯鎬绘暟: 12
+     閫氳繃鏁? 12
+鎬绘椂闂? 1.5925 鍒嗛挓
+璀﹀憡: 姝ｅ湪瑕嗙洊缁撴灉鏂囦欢: [repo]\.tmp\round5-u09-05-final-20261109\focused-test-diagnostics\R23ProductionResourceStateBehaviorTests\trx\R23ProductionResourceStateBehaviorTests.trx
+缁撴灉鏂囦欢: [repo]\.tmp\round5-u09-05-final-20261109\focused-test-diagnostics\R23ProductionResourceStateBehaviorTests\trx\R23ProductionResourceStateBehaviorTests.trx

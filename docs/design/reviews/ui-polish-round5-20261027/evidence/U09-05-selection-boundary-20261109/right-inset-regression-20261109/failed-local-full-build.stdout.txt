@@ -1,0 +1,1117 @@
+Space preflight D:\: available 7036588032 bytes, configured headroom 3221225472 bytes
+Space preflight C:\: available 7045427200 bytes, configured headroom 1073741824 bytes
+Budget basis: Conservative configurable headroom, not measured peak usage. SDK downloads, NuGet cache growth and host data are additional unknowns.
+.NET SDK 8.0.423 已从当前用户缓存选择：[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423
+当前可用 SDK：
+  8.0.423 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk]
+隔离构建输出：[repo]\artifacts\gsc-b\a74287e7
+测试临时目录：[repo]\artifacts\gsc-b\a74287e7\test-temp
+
+==> 检查 XAML 结构
+XAML structural validation passed for 26 file(s).
+
+==> 显示当前 SDK 信息
+.NET SDK:
+ Version:           8.0.423
+ Commit:            62e3aa2c1f
+ Workload version:  8.0.400-manifests.a04bdf47
+ MSBuild version:   17.11.48+02bf66295
+
+杩愯鏃剁幆澧?
+ OS Name:     Windows
+ OS Version:  10.0.22000
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   [user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk\8.0.423\
+
+宸插畨瑁?.NET 宸ヤ綔璐熻浇:
+閰嶇疆涓哄湪瀹夎鏂版竻鍗曟椂浣跨敤 loose manifests銆?
+娌℃湁瑕佹樉绀虹殑宸插畨瑁呭伐浣滆礋杞姐€?
+
+Host:
+  Version:      8.0.29
+  Architecture: x64
+  Commit:       18fd75c847
+
+.NET SDKs installed:
+  8.0.423 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 8.0.29 [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  DOTNET_ROOT       [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423]
+  DOTNET_ROOT_X64   [[user-profile]\AppData\Local\GameSaveCenter\dotnet-sdk-8.0.423]
+
+global.json file:
+  [repo]\global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+
+==> 还原 NuGet 依赖
+  姝ｅ湪纭畾瑕佽繕鍘熺殑椤圭洰鈥?
+  宸茶繕鍘?[repo]\tests\GameSaveCenter.Playnite.HostAuditSeeder\GameSaveCenter.Playnite.HostAuditSeeder.csproj (鐢ㄦ椂 188 姣)銆?
+  宸茶繕鍘?[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj (鐢ㄦ椂 211 姣)銆?
+  宸茶繕鍘?[repo]\src\GameSaveCenter.Playnite\GameSaveCenter.Playnite.csproj (鐢ㄦ椂 188 姣)銆?
+  宸茶繕鍘?[repo]\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (鐢ㄦ椂 188 姣)銆?
+  宸茶繕鍘?[repo]\tests\GameSaveCenter.Core.Tests\GameSaveCenter.Core.Tests.csproj (鐢ㄦ椂 211 姣)銆?
+  宸茶繕鍘?[repo]\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (鐢ㄦ椂 188 姣)銆?
+  宸茶繕鍘?[repo]\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj (鐢ㄦ椂 328 姣)銆?
+  宸茶繕鍘?[repo]\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (鐢ㄦ椂 332 姣)銆?
+
+==> 编译解决方案（Release）
+  GameSaveCenter.Contracts -> [repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> [repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> [repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> [repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Playnite.HostAuditSeeder\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+  GameSaveCenter.Playnite.Tests -> [repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll
+
+宸叉垚鍔熺敓鎴愩€?
+    0 涓鍛?
+    0 涓敊璇?
+
+宸茬敤鏃堕棿 00:01:51.20
+
+==> 运行核心单元测试
+[repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll (.NETCoreApp,Version=v8.0)鐨勬祴璇曡繍琛?
+VSTest 鐗堟湰 17.11.1 (x64)
+
+姝ｅ湪鍚姩娴嬭瘯鎵ц锛岃绋嶅€?..
+鎬诲叡 1 涓祴璇曟枃浠朵笌鎸囧畾妯″紡鐩稿尮閰嶃€?
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 8.0.29)
+[xUnit.net 00:00:00.08]   Discovering: GameSaveCenter.Core.Tests
+[xUnit.net 00:00:00.14]   Discovered:  GameSaveCenter.Core.Tests
+[xUnit.net 00:00:00.18]   Starting:    GameSaveCenter.Core.Tests
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.SameDayQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 16, minute: 59, expected: True) [8 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.DeviceConflictDetectorTests.MissingLocalSummaryIsNotAutoResolved [6 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.SignedDeltaKeepsZeroAndSmallChangesUnambiguous(bytes: 1, expected: "+1 B") [6 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.TrainerReleaseKeepsUnknownSizeDistinctFromMeasuredSize(sizeBytes: 0, expected: "鏈煡澶у皬") [6 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupValidationTests.FileRemovalSpikeIsDetectedFromVersionManifest [9 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.SaveCandidateScorerTests.ConfigAndDatabaseFilesRemainValidCandidates [9 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.MediaDisplayTests.MediaCloudStateUsesUserFacingText(state: "Failed", expected: "澶辫触") [6 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ArchivePathGuardTests.ResolveEntryPath_RejectsTraversal(entry: "../escape.exe") [6 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ProtocolCompatibilityTests.WorkerCapabilitiesExposeHardeningFeatures [9 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameMatcherTests.PlatformIdWinsOverTitleNoise [6 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.TrainerReleaseKeepsUnknownSizeDistinctFromMeasuredSize(sizeBytes: -1, expected: "鏈煡澶у皬") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.SignedDeltaKeepsZeroAndSmallChangesUnambiguous(bytes: -1, expected: "-1 B") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.DeviceConflictDetectorTests.AChildOfTheKnownOtherVersionIsLinearNotConflict [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.SignedDeltaKeepsZeroAndSmallChangesUnambiguous(bytes: 0, expected: "0 B") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.SameDayQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 8, minute: 59, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ArchivePathGuardTests.ResolveEntryPath_RejectsTraversal(entry: "../../Windows/escape.exe") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.TrainerReleaseKeepsUnknownSizeDistinctFromMeasuredSize(sizeBytes: 1024, expected: "1 KiB") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupValidationTests.LargeSizeDropIsDetected [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.SameDayQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 17, minute: 0, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.SameDayQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 9, minute: 0, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.CanonicalFormatterKeepsSmallValuesAndUsesBinaryUnits(bytes: 1536, expected: "1.5 KiB") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ProtocolCompatibilityTests.MismatchedOrBelowMinimumIsRejected [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ProtocolCompatibilityTests.MatchingProtocolWithinMinimumIsCompatible [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.MediaDisplayTests.MediaCloudStateUsesUserFacingText(state: "Pending", expected: "寰呬笂浼?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.CrossMidnightQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 6, minute: 59, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.MediaDisplayTests.MediaCloudStateUsesUserFacingText(state: "NotApplicable", expected: "涓嶉€傜敤") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ArchivePathGuardTests.ResolveEntryPath_AllowsNestedFile [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.MediaDisplayTests.MediaCloudStateUsesUserFacingText(state: "Synced", expected: "宸插悓姝?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupValidationTests.EmptyBackupIsCritical [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.MediaDisplayTests.MediaCloudStateUsesUserFacingText(state: "RetryScheduled", expected: "绛夊緟閲嶈瘯") [< 1 ms]
+  宸查€氳繃 PolicyTemplateBatchPreviewTests.BatchPreviewUsesOnlyExplicitStableIdsAndKeepsExcludedTargets [11 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudTransferExposesTheActualQueuePhase(state: "RetryScheduled", errorCode: "RCLONE_NETWORK_FAILED", expected: "绛夊緟缃戠粶") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.MediaDisplayTests.GameCloudRetryStateUsesUserFacingText [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.DeviceConflictDetectorTests.BranchesFromTheSameBaseAreMarkedConflictWithoutChoosingWinner [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.CanonicalFormatterKeepsSmallValuesAndUsesBinaryUnits(bytes: 0, expected: "0 B") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.CanonicalFormatterKeepsSmallValuesAndUsesBinaryUnits(bytes: 1073741824, expected: "1 GiB") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameMatcherTests.EditionWordsDoNotBreakMatching [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudTransferExposesTheActualQueuePhase(state: "Uploaded", errorCode: "", expected: "绛夊緟楠岃瘉") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.CrossMidnightQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 0, minute: 0, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.CanonicalFormatterKeepsSmallValuesAndUsesBinaryUnits(bytes: 1, expected: "1 B") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.SaveCandidateScorerTests.XboxWgsAndRepeatedChangesScoreHighly [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudTransferExposesTheActualQueuePhase(state: "Verifying", errorCode: "", expected: "楠岃瘉涓?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.CanonicalFormatterKeepsSmallValuesAndUsesBinaryUnits(bytes: 1048576, expected: "1 MiB") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.CrossMidnightQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 23, minute: 59, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudTransferExposesTheActualQueuePhase(state: "RemoteVerified", errorCode: "", expected: "宸查獙璇?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.CanonicalFormatterKeepsSmallValuesAndUsesBinaryUnits(bytes: 1024, expected: "1 KiB") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.CrossMidnightQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 7, minute: 0, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudTransferExposesTheActualQueuePhase(state: "RetryScheduled", errorCode: "RCLONE_AUTH_FAILED", expected: "绛夊緟閲嶈瘯") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.CanonicalFormatterKeepsSmallValuesAndUsesBinaryUnits(bytes: 1023, expected: "1023 B") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudTransferExposesTheActualQueuePhase(state: "Transferring", errorCode: "", expected: "涓婁紶涓?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.CrossMidnightQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 12, minute: 0, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudTransferExposesTheActualQueuePhase(state: "Pending", errorCode: "", expected: "绛夊緟闃熷垪") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.DeviceConflictDetectorTests.TimestampOnlyConflictNeverSuggestsAWinner [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.CrossMidnightQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 21, minute: 59, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.CrossMidnightQuietHoursUseAnInclusiveStartAndExclusiveEnd(hour: 22, minute: 0, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.DeviceConflictDetectorTests.EqualSummariesWithoutStrongContentEvidenceRemainConflict [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupValidationTests.ProtectionLevelControlsComparativeAnomalySensitivity [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.MediaClassificationHistoryUsesStableChineseState(state: "FutureBatchState", expected: "鏈煡鐘舵€?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.MediaClassificationHistoryUsesStableChineseState(state: "Applied", expected: "宸插簲鐢?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.MediaClassificationHistoryUsesStableChineseState(state: "", expected: "鏈煡鐘舵€?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.MixedPathAndProductTermsKeepOriginalPathAndSemanticSeparator [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.BackupOverviewListDetailAndMediaSummaryShareTheSameCapacityPolicy [1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.ComparisonSummaryKeepsItsExistingPositiveZeroMarker [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.BackupDiffShowsSignedSizeDelta(delta: -2400000, expected: "-2.29 MiB") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.BackupDiffShowsSignedSizeDelta(delta: 2400000, expected: "+2.29 MiB") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.BackupDiffShowsSignedSizeDelta(delta: 0, expected: "0 B") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudFailureExplanationOffersOnlyRecognizedNextSteps(errorCode: "RCLONE_REMOTE_NOT_FOUND", category: "杩滅涓嶅瓨鍦?, nextStep: "妫€鏌ヨ繙绔悕绉?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudFailureExplanationOffersOnlyRecognizedNextSteps(errorCode: "RCLONE_CHECK_FAILED", category: "鏍￠獙宸紓", nextStep: "鏌ョ湅鏈湴涓庤繙绔唴瀹瑰樊寮?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudFailureExplanationOffersOnlyRecognizedNextSteps(errorCode: "RCLONE_AUTH_FAILED", category: "璁よ瘉澶辫触", nextStep: "妫€鏌ヤ簯绔嚟鎹?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.FileManifestDiffTests.HashCompleteManifestsAreMarkedExactAndTrackSizeDelta [13 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudFailureExplanationOffersOnlyRecognizedNextSteps(errorCode: "RCLONE_RATE_LIMITED", category: "杩滅闄愭祦", nextStep: "绛夊緟闄愭祦绐楀彛") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudFailureExplanationOffersOnlyRecognizedNextSteps(errorCode: "RCLONE_NO_SPACE", category: "绌洪棿涓嶈冻", nextStep: "閲婃斁鏈湴鎴栬繙绔┖闂?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.DeviceConflictDetectorTests.MatchingStrongContentFingerprintIsEquivalent [2 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.DeviceConflictDetectorTests.DivergentDevicesAreNotAutoResolved [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.FileManifestDiffTests.FindsAddedRemovedAndModifiedFiles [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.UnspecifiedMuteTimestampIsTreatedAsUtcAndFormattingIsStable [3 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.WarningAndErrorPopupsRemainVisibleDuringMuteAndQuietHours(severity: Error) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.FileManifestDiffTests.DuplicateNormalizedPathsReturnInvalidResultInsteadOfThrowing [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.WarningAndErrorPopupsRemainVisibleDuringMuteAndQuietHours(severity: Warning) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.InvalidOrEmptySchedulesDoNotSilenceTheWholeDay(startMinute: 1320, endMinute: 1440) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.InvalidOrEmptySchedulesDoNotSilenceTheWholeDay(startMinute: 1320, endMinute: 1320) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.InvalidOrEmptySchedulesDoNotSilenceTheWholeDay(startMinute: -1, endMinute: 420) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.TemporaryMuteHidesRoutinePopupsUntilTheUtcExpiry(severity: Success) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ExplicitParentAndFingerprintEvidenceSurviveDeviceClockSkew [15 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.TemporaryMuteHidesRoutinePopupsUntilTheUtcExpiry(severity: Information) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.TemporaryMuteHidesRoutinePopupsUntilTheUtcExpiry(severity: 99) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ActivityTimelineMapperTests.ConflictAndRepositoryRepairMapToCuratedKinds [2 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationLevelPolicyTests.ImportantOnly_SuppressesSuccessfulTasksButKeepsFailuresAndCancels [1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsMissingParentsAndUnspecifiedRoots [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationLevelPolicyTests.Verbose_EmitsSubEventsAndFinalSummary [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.UnknownSeverityDoesNotBypassQuietHours [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationLevelPolicyTests.ImportantOnly_SuppressesSuccessfulSessionSummary [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationPopupPolicyTests.RechecksUseCurrentLocalTimeAfterAClockOrTimezoneChange [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationLevelPolicyTests.UnknownLevelFallsBackToSummaryBehavior [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.NotificationLevelPolicyTests.ImportantOnly_StillEmitsWarningAndFailureSummaries [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupPolicyTemplateCatalogTests.CloneCopiesPolicyWithoutSharingMutableState [3 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.UsesExplicitParentIdsAndContentFingerprintsAcrossDevices [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.RejectsUnboundedOrEmptyLimits(limit: 0) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.RejectsUnboundedOrEmptyLimits(limit: 501) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.TimestampsDoNotInventLinearRelationships [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupContentFingerprintTests.CompleteHashedManifestProducesOrderIndependentFingerprint [3 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupContentFingerprintTests.InvalidManifestDoesNotCreateStrongEvidence [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupContentFingerprintTests.MissingHashDoesNotCreateStrongEvidence [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameHealthAssessmentTests.InactiveGameWithoutBackup_IsUnknown [4 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameHealthAssessmentTests.UnmatchedGame_IsUnknownRegardlessOfActivity [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameHealthAssessmentTests.RecentlyPlayedWithoutBackup_IsRisk [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameHealthAssessmentTests.RepeatedFailuresOrCorruptedReadiness_IsRisk [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameHealthAssessmentTests.CloudFailureOnlyMattersWhenCloudIsEnabled [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsVersionsWithoutAnIdentity [2 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RetentionPlannerTests.UnlockingAnOldVersionMakesItCandidateAgainWhileOtherProtectionStaysOut [20 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameHealthAssessmentTests.MissingReadiness_IsAttentionAndExplained [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameHealthAssessmentTests.RecentReadyBackup_IsHealthy [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.DuplicateIdsAreReportedAndDoNotResolveAnAmbiguousParent [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameHealthAssessmentTests.OpenBackupAnomalyOverridesOtherwiseHealthyState [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RetentionPlannerTests.LockedAndPreRestoreVersionsAreAlwaysKept [1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.ReportsParentCycles [1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RetentionPlannerTests.HealthyRestorePointRemainsProtectedFromRetentionCandidates [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupLineageBuilderTests.StopsAfterTheLimitAndOneLookaheadItem [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupPolicyTemplateCatalogTests.ProvidesFiveStableBuiltInsWithSafeRestoreBoundary [6 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupPolicyTemplateCatalogTests.PolicyDiffSeparatesSavedBaselineAndExplicitValues [< 1 ms]
+  宸查€氳繃 PolicyTemplateBatchPreviewTests.BatchPreviewCapsConfirmationWithoutSilentlyTruncatingSelection [13 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupPolicyTemplateCatalogTests.PolicyChangesRaiseFieldNotificationsForThePreviewBinding [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.R22CapacityUnitBehaviorTests.PreviewDiagnosticsAndTrainerSurfacesUseTheSameCapacityPolicy [12 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.BackupPolicyTemplateCatalogTests.CopyPolicyToRestoresDraftWithoutChangingTheSource [< 1 ms]
+  宸查€氳繃 PolicyTemplateBatchPreviewTests.BatchPreviewReportsChangeCountAndRefusesEmptySelectionInsteadOfSelectingAll [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.MixedLanguageDisplaySurfacesKeepSemanticSpacingAndProductTerms [12 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudSummarySeparatesCheckAndUploadFailures(checkFailed: 1, failed: 0, expected: "鏍￠獙澶辫触") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudSummarySeparatesCheckAndUploadFailures(checkFailed: 0, failed: 1, expected: "涓婁紶澶辫触") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudSummarySeparatesCheckAndUploadFailures(checkFailed: 2, failed: 3, expected: "鏍￠獙/涓婁紶澶辫触") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ActivityTimelineMapperTests.BackupAuditMapsToSucceededBackupActivityWithGameName [10 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ActivityTimelineMapperTests.CloudFailureMapsToFailedCloudActivity [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.ActivityTimelineMapperTests.LongMessagesAreTrimmedForTimeline [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.RestoreReadinessDisplaySeparatesPartialHashesAndOldResults [2 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameSessionSummaryBuilderTests.CloudFailureStillReportsLocalBackupAndRetryAction [14 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.GameSessionSummaryBuilderTests.SessionSummaryUsesTerminalTaskStatesAndOneMessage [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.BatchProtectionPreviewListsOnlySelectedGamesAndPreservesOtherSettings [18 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.CorruptedReadiness_IsLatestRestorePointIssue [3 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.RecentGames_AreCountedAndOlderGamesAreExcluded [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.UnmatchedRecentGame_IsUnrecognizedSave [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.ExistingBackupWithDisabledPolicy_IsAutomaticProtectionDisabled [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.BackupCreatedBeforeLatestPlay_IsOutdated [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.CloudFailureRequiresUploadPolicy [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.MatchedRecentGameWithoutBackup_IsNeverBackedUp [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.RecentProtectionAssessmentTests.InvalidWindowFallsBackToThirtyDays [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudRemoteDisplayCombinesRelativePathWithoutExposingQueryCredentials [32 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.BackupZeroAndReadinessZeroRemainVisibleAsRealValues [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.ClassificationPreviewSelectionKeepsStableIdsAndHighConfidenceGate [1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudSummaryKeepsUploadedAndRemoteVerifiedCountersSeparate [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudRecoveryExplainsBackoffAndOnlineBatchTransition [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudSummarySeparatesWaitingWindowFromRunningQueue [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudRetryTimingKeepsNoRetryDistinctFromAnExpiredRetry [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.ClassificationEvidenceNamesItsSignalAndKeepsNoEvidencePending [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.BackupVersionDoesNotInventOriginOrReadinessFacts [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudRemoteEvidenceKeepsUnknownFieldsUnknownAndRedactsCredentials [< 1 ms]
+[xUnit.net 00:00:00.29]   Finished:    GameSaveCenter.Core.Tests
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.UnknownCloudStateDoesNotLeakInternalValue [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.UnknownCloudFailureKeepsRawCodeWithoutInventingNextStep [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Core.Tests.UiDisplayMappingTests.CloudRetryTimingClampsExpiredAndKeepsAbsoluteTime [< 1 ms]
+
+娴嬭瘯杩愯鎴愬姛銆?
+娴嬭瘯鎬绘暟: 157
+     閫氳繃鏁? 157
+鎬绘椂闂? 0.9172 绉?
+缁撴灉鏂囦欢: [repo]\artifacts\build-diagnostics\round5-a74287e7\20261109T051845863Z-0d329416\tests\core\core.trx
+
+==> 运行 Worker 集成测试
+[repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll (.NETCoreApp,Version=v8.0)鐨勬祴璇曡繍琛?
+VSTest 鐗堟湰 17.11.1 (x64)
+
+姝ｅ湪鍚姩娴嬭瘯鎵ц锛岃绋嶅€?..
+鎬诲叡 1 涓祴璇曟枃浠朵笌鎸囧畾妯″紡鐩稿尮閰嶃€?
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 8.0.29)
+[xUnit.net 00:00:00.11]   Discovering: GameSaveCenter.Worker.Tests
+[xUnit.net 00:00:00.19]   Discovered:  GameSaveCenter.Worker.Tests
+[xUnit.net 00:00:00.25]   Starting:    GameSaveCenter.Worker.Tests
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.RelocateAsync_PreservesExplicitCustomWorkingDirectory [643 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.RelocateAsync_FollowsNewDirectoryWhenWorkingDirectoryWasAutoDerived [311 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.CustomShortcut_StoresResolvedTargetAndAllowsTracking [436 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.ImportMissingFile_ThrowsFileNotFoundException [289 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.InspectImport_ZipKeepsTrainerExecutableWithVersionUpdateInItsName [297 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.StartAutomaticAsync_SafeModeDoesNotLaunchTool [305 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.CustomExecutable_KeepsExternalPathReferenceWithoutCopying [305 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.CustomScript_KeepsExternalPathReference(fileName: "launch.ps1") [304 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.CustomScript_KeepsExternalPathReference(fileName: "fix.bat") [288 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.RelocateAsync_UpdatesExternalExecutablePath [311 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolServiceImportTests.InspectImport_IncludesExplicitTrainerExecutableWhoseNameContainsUpdate [297 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcRequestLedgerTests.SameRequestIdIsClaimedOnceAndCompletedResponseCanBeReplayed [391 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcRequestLedgerTests.WorkerRestartMarksInFlightWriteAsInterruptedInsteadOfReplayingIt [298 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcRequestLedgerTests.TaskQueryCanFindTheTaskSubmittedByAnIpcRequest [306 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcRequestLedgerTests.SameRequestIdWithDifferentTypePayloadOrProtocolIsRejectedAsConflict [294 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcRequestLedgerTests.LedgerMaintenanceExpiresCompletedRowsBeforeInterruptedEvidence [306 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcRequestLedgerTests.LegacyLedgerEntryWithoutPayloadFingerprintCannotBeReplayed [291 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceConflictReadinessSummaryTests.DeviceSummaryContainsExactVersionReadinessTimeWithoutManifestPaths [339 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceConflictReadinessSummaryTests.NewSidecarSchemaDefaultsToFourAndOlderEvidenceIsOptional [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.TrainerDownloadProgressIsAwaitableAndThrottled [91 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.Download_UsesTrainerPageSessionAndReferer [337 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.TrainerDetailsPage_ResolvesRelativeDownload_AndKeepsQueryWithoutFragment [13 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.TrainerDetailsPage_ParsesDownloadLinks_WithFallbackNameAndDedup [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.SessionSavePathCaptureFollowsWorkerShutdown [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.OnlineCatalog_NormalizesRelativeLinks_AndStripsTrackingQuery [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.ArchiveDirectoryListing_ProducesSearchableZipEntry [5 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.ArchiveDirectoryListing_ProducesSearchableRarEntry [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.OnlineCatalog_BeatsProductionGuardThreshold_AndDeduplicates [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.ArchiveDirectoryListing_ExposesNestedDirectoriesAndKeepsExternalLinksOut [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.OnlineCatalog_GuardThresholdFails_WhenMarkupChanges [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FlingTrainerCatalogSourceTests.ArchiveDirectoryListing_ResolvesFilesRelativeToNestedDirectory [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskEventBroadcasterTests.TerminalOutcomeSurvivesLaterProgressPressure [7 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskEventBroadcasterTests.Publish_FansOutIndependentTaskSnapshots [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskEventBroadcasterTests.SlowSubscriberSeesOnlyBoundedDropOldestWindow [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskEventBroadcasterTests.Dispose_CompletesOnlyThatSubscriber [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskEventBroadcasterTests.RepeatedSubscribeDisposeLeavesNoSubscriberResidue [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.PathRemapServiceTests.PreviewKeepsFullPathsAndDoesNotMatchSimilarRootsAcrossDrives [544 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.PathRemapServiceTests.RemapUpdatesDatabaseRowsAndPersistedSettings [370 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.PathRemapServiceTests.UnconfirmedRemapIsRejected [296 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.PathRemapServiceTests.PreviewFlagsMissingTargetsAndDefaultPolicySkips [335 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.LocalMirrorServiceTests.MissingMirrorIsOfflineStatusNotSystemError [6 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.LocalMirrorServiceTests.StatusSummaryUsesRelativeSyncTimeAndKeepsFullEvidenceSeparate [10 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.LocalMirrorServiceTests.SyncReplacesSameSizeCorruptMirrorWithHashMismatch [14 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.LocalMirrorServiceTests.DisabledMirrorReportsUnavailableAndSyncRequiresConfiguration [3 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.LocalMirrorServiceTests.SyncHonorsCancellation [6 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.LocalMirrorServiceTests.SyncCopiesVerifiesAndNeverDeletesMirrorOnlyFiles [14 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupResultLayerTests.LocalSuccessAndCloudStateRemainSeparatelyActionable(cloudState: "Failed", expectedPartialSuccess: True, expectedRetry: True, expectedVerify: False, expectedDisplay: "浜戠闀滃儚澶辫触") [2 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupResultLayerTests.LocalSuccessAndCloudStateRemainSeparatelyActionable(cloudState: "RemoteVerified", expectedPartialSuccess: False, expectedRetry: False, expectedVerify: False, expectedDisplay: "杩滅宸叉牎楠?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupResultLayerTests.LocalSuccessAndCloudStateRemainSeparatelyActionable(cloudState: "AuthenticationRequired", expectedPartialSuccess: True, expectedRetry: True, expectedVerify: False, expectedDisplay: "浜戠璁よ瘉闇€澶勭悊") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupResultLayerTests.LocalSuccessAndCloudStateRemainSeparatelyActionable(cloudState: "RetryScheduled", expectedPartialSuccess: True, expectedRetry: True, expectedVerify: False, expectedDisplay: "浜戠涓婁紶鎺掗槦") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupResultLayerTests.LocalSuccessAndCloudStateRemainSeparatelyActionable(cloudState: "Transferring", expectedPartialSuccess: True, expectedRetry: False, expectedVerify: False, expectedDisplay: "浜戠浼犺緭涓?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupResultLayerTests.LocalSuccessAndCloudStateRemainSeparatelyActionable(cloudState: "Disabled", expectedPartialSuccess: False, expectedRetry: False, expectedVerify: False, expectedDisplay: "鏈湴澶囦唤宸叉垚鍔?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupResultLayerTests.LocalSuccessAndCloudStateRemainSeparatelyActionable(cloudState: "Uploaded", expectedPartialSuccess: False, expectedRetry: False, expectedVerify: True, expectedDisplay: "寰呰繙绔牎楠?) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupResultLayerTests.FailedLocalBackupDoesNotExposeCloudRemediationAsSuccess [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreMappingPreviewBuilderTests.PreviewSummaryContainsCountsButNeverRawPathsOrWarnings [11 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreMappingPreviewBuilderTests.MissingFileSizesRemainUnknownAndAreExcludedFromKnownSubtotal [5 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreMappingPreviewBuilderTests.PathFreeFingerprintIsStableForSameMappingAndDistinguishesSameVersionMappings [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreMappingPreviewBuilderTests.InvalidPreviewProducesGenericFailureWithoutLeakingErrorText [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPolicyTests.RcloneFailuresBecomeActionableBoundedCodes(text: "permission denied", expected: Permission, code: "RCLONE_PERMISSION_DENIED") [2 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPolicyTests.RcloneFailuresBecomeActionableBoundedCodes(text: "partial transfer; incomplete", expected: Incomplete, code: "RCLONE_TRANSFER_INCOMPLETE") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPolicyTests.RcloneFailuresBecomeActionableBoundedCodes(text: "remote not found", expected: RemoteNotFound, code: "RCLONE_REMOTE_NOT_FOUND") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPolicyTests.RcloneFailuresBecomeActionableBoundedCodes(text: "quota exceeded: no space left", expected: NoSpace, code: "RCLONE_NO_SPACE") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPolicyTests.RcloneFailuresBecomeActionableBoundedCodes(text: "network timeout", expected: Network, code: "RCLONE_NETWORK_FAILED") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPolicyTests.RcloneFailuresBecomeActionableBoundedCodes(text: "429 too many requests", expected: RateLimited, code: "RCLONE_RATE_LIMITED") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPolicyTests.RcloneFailuresBecomeActionableBoundedCodes(text: "authentication failed", expected: Authentication, code: "RCLONE_AUTH_FAILED") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPolicyTests.RetryPolicy_UsesBoundedDeterministicBackoff [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.CancellationRecordsIncompleteRoundWithoutClaimingArchiveWasChecked [344 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.CandidateIdentityIsPersistedBeforeArchiveValidation [336 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.ExecutionStateWriteDoesNotOverwriteAConcurrentPlanChange [297 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.PersistedInFlightCursorWinsOverNewerUnvalidatedCandidate [331 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.CorruptArchive_CreatesAttentionFinding [331 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.DeferredGameDoesNotStarveAnotherCheckableGame [366 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.ValidArchive_IsCheckedInIsolation_AndPersistsSuccess [358 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.CandidateStateWriteFailureDoesNotCreateArchiveFailure [382 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.ScheduledLoopBacksOffWhileManualInspectionOwnsRunGate [1 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.RunningGame_DefersWithoutReadingArchive [484 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.StatePersistsInFlightCursorAcrossRestart [314 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.HealthInspectionServiceTests.FreshBackupSetReturnsUpToDateWithoutReadingArchiveAgain [338 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DownloadChecksum_ChecksEveryRemoteFileAgainstLocalVault [6 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_RejectsTraversalAndSeparators(value: "device/Saves") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_RejectsTraversalAndSeparators(value: "") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_RejectsTraversalAndSeparators(value: "../other") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_RejectsTraversalAndSeparators(value: "..") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_RejectsTraversalAndSeparators(value: "device:") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_RejectsTraversalAndSeparators(value: ".") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_RejectsTraversalAndSeparators(value: "device\\Saves") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "move", expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "cat", expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "sync", expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "version", expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "lsf", expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "copy", expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "check", expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "purge", expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.RcloneSafetyAllowlistRejectsDestructiveCommands(command: "delete", expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.StagingCleanup_RemovesOnlyTheIsolatedDirectory [2 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.StagingId_OnlyAcceptsOpaqueLowercaseHex [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_AcceptsSingleSafeSegment(value: "DESKTOP-ABC") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_AcceptsSingleSafeSegment(value: "SteamDeck") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.DeviceName_AcceptsSingleSafeSegment(value: "瀹㈠巺鐢佃剳") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RemoteBackupStagingSafetyTests.StagingCleanupFailureLeavesLockedResidualForMaintenanceReview [3 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupHistoryPagingTests.PagesUseStableTimeAndIdCursorAndReturnContentFingerprintWithoutManifestPaths [313 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MaintenanceReportServiceTests.ReportRedactorRemovesUrlParametersAndWindowsUserNames [307 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MaintenanceReportServiceTests.ReportContainsUserReadableHealthSections [377 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MaintenanceReportServiceTests.ReportUsesCanonicalUnitForSmallMirrorFile [310 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskProgressMetricsTests.WorkSamplerNeedsAdvancingSamplesAndClearsAtUnknownStage [317 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RepositoryRebuildServiceTests.RebuildDoesNotGuessParentAndPreservesLockedMissingVersions [323 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RepositoryRebuildServiceTests.PreviewScansArchivesWithoutWriting [309 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RepositoryRebuildServiceTests.RebuildReusesExistingMatchWhenAvailable [312 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RepositoryRebuildServiceTests.RebuildSkipsCorruptArchivesWithoutCrashing [324 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RepositoryRebuildServiceTests.RebuildRequiresConfirmation [307 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RepositoryRebuildServiceTests.RebuildRecoversHistoryFromFreshDatabaseAndRepositoryArtifacts [316 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.StorageAnalysisServiceTests.AnalyzeReportsVolumeIndexedBytesAndTopGames [292 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.StorageAnalysisServiceTests.AnalyzeWarnsWhenConfiguredBudgetScopesContainTheSameFiles [286 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.StorageAnalysisServiceTests.AnalyzeBreaksDownArchiveMirrorStagingAndMediaWithoutSummingCopies [627 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.StorageAnalysisServiceTests.AnalyzeUnavailableDirectoryIsNotAnError [310 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.StorageAnalysisServiceTests.AnalyzeDistinguishesEmptyDirectoryFromMissingOrDisabledScopes [301 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.StorageAnalysisServiceTests.AnalyzeReportsObservedGrowthRangeWithoutClaimingConfidenceOrExpiry [307 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.StorageAnalysisServiceTests.AnalyzeDoesNotProduceExpiryFromInsufficientHistory [316 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.StorageAnalysisServiceTests.AnalyzeHonorsCancellation [304 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SoakDataScaleTests.DataScaleSoakRemainsBounded [3 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SavePathDetectionServiceTests.MissingAdditionalRootFailsInsteadOfReturningAnEmptyCandidateList [565 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceIdentityTests.HealthInspectionSettingsAreClampedAndRoundTrip [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceIdentityTests.CloudQueuePauseAndWindowSurviveWorkerRestartAndResume [36 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceIdentityTests.InvalidIncomingIdentityCannotReplaceCurrentInstallationId(invalid: "machine-name") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceIdentityTests.InvalidIncomingIdentityCannotReplaceCurrentInstallationId(invalid: "") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceIdentityTests.InvalidIncomingIdentityCannotReplaceCurrentInstallationId(invalid: "../../escape") [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceIdentityTests.CloudQueueWindowSettingsAreClampedAndRoundTrip [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceIdentityTests.WorkerUsesStableOpaqueIdentityFromPersistedSettings [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DeviceIdentityTests.SafeModeEnabledSurvivesWorkerSettingsRoundTrip [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaSignatureTests.MediaCloudRetryCandidatesIncludePendingAndFailedAssignedMedia [335 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaSignatureTests.SignatureRoundTripsAndMatchesUnchangedFileTimes [318 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaSignatureTests.SignatureMissReturnsNullForUnknownPath [330 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaSignatureTests.ChangedFileProducesUpdatedSignatureOnConflict [328 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaSignatureTests.PruneRemovesOldRowsAndCapsTheRemainingCache [331 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SoakStabilityTests.AcceleratedSoakCyclesLeaveNoResidueOrErrors [1 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.UnreadableStagingRoot_IsFailedWithoutTouchingLivePath [6 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.SameSizeArchiveMutation_IsRejectedWhenReadinessIsRevalidated [9 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.UnsafeEntry_IsRejectedAndDoesNotEscapeStaging [2 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.LockedArchive_IsFailedWithBackupIdentityAndCleanedStaging [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.ValidZip_WithoutManifestHashes_IsWarning_AndDoesNotClaimHashSuccess [6 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.PartialManifestHashes_AreWarning_AndReportCoverage [5 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.SimpleOrMissingArchivePath_IsUnsupported [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.MissingArchive_IsReportedAsCorrupted [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.InvalidManifest_IsFailed_AndDoesNotExtract [2 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.Cancellation_IsObserved_AndIsolationIsCleaned [3 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.MissingManifestEntry_IsCorrupted_EvenWhenCountsMatch [5 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.IndexMismatch_IsWarning_AndZeroLengthEntryIsVisible [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.Readiness_IsPersistedAcrossStoreRecreation [393 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.CorruptZip_IsReportedWithoutTouchingARealSavePath [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreReadinessTests.HashMismatch_IsCorrupted [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPersistenceTests.WorkerRestartTurnsInterruptedTransferIntoVisibleRetryableFailure [308 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPersistenceTests.Queue_OnlyReturnsDueEntries_AndDeferredEntryDoesNotSpin [328 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPersistenceTests.QueueSchema_IsAddedWithoutReplacingAnExistingDatabase [966 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudRetryPersistenceTests.Queue_SurvivesStoreRecreation_AndCanBeCompleted [313 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RcloneClientSourceTests.SafeRunnerDoesNotExposeAWorkingDirectoryThatIsPassedAsStandardInput [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.ExternalProcessRunnerTests.Utf8OutputIsDecodedAsUtf8 [1 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.ExternalProcessRunnerTests.OutputIsBoundedPerStreamAndReturnsStableErrorCode [1 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.ExternalProcessRunnerTests.CancellationStopsLongRunningExternalTransferPromptly [352 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.ExternalProcessRunnerTests.FailedProcessPreservesExitCodeAndOutput [821 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.ExternalProcessRunnerTests.TimeoutReturnsStableCodeAndKeepsTimeoutMessage [334 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.FaultInjectionTests.InjectedFaultsRecoverWithoutResidueOrUnexpectedErrors [1 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskReconcileServiceTests.ReconcileMarksInterruptedTasksAndIsIdempotent [341 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DashboardHealthPersistenceTests.DashboardAggregateLoadsLatestBackupTaskReadinessAndFindings [344 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DashboardHealthPersistenceTests.DashboardAggregateCombinesSaveAndAssignedMediaCloudState [345 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PipeEndpointsUseTheSharedBoundedReaderAndFiniteClientSlots [9 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 1000, expected: 1000) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 0, expected: 1) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: 5000, expected: 1000) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.CurrentGameMediaRequestsAreClampedBeforeStoreAccess(requested: -10, expected: 1) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PendingReadCancellationUsesAReleasableRegistration [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.OversizedLineIsDiscardedBeforeTheNextMessageIsRead [212 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.MediaInboxRequestsKeepCompatibilityAndAddCursorPages [18 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.PendingReadCanBeCancelledBeforeThePipeProducesData [6 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IpcMessageBoundaryTests.MaximumAllowedLineIsReturnedWithoutTruncation [128 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MetadataBackupServiceTests.MetadataBackupRejectsInvalidPluginSettings [348 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MetadataBackupServiceTests.MetadataRollbackAfterSuccessfulRestoreReturnsOriginalDatabaseAndWorkerSettings [422 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MetadataBackupServiceTests.MetadataRestoreRequiresConfirmation [365 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MetadataBackupServiceTests.MetadataRollbackRequiresConfirmationAndRejectsOutsidePath [328 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MetadataBackupServiceTests.MetadataRestoreRejectsHashMismatchAndTraversal [337 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MetadataBackupServiceTests.MetadataBackupContainsConsistentDatabaseSettingsAndManifest [362 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MetadataBackupServiceTests.MetadataRestoreReplacesDatabaseAndKeepsPreRestore [442 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.RestoreIsRejectedWithoutClientWritesWhenSameGameLockIsHeld [10 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.RestoreA_FromCurrentB_CompletesAtoBackupBtoRestoreASequence [384 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.RestoreRevalidatesTargetWithPreviewImmediatelyBeforeWrite [640 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.PostRestoreValidationFailure_RollsBackFiles [349 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.RollbackFailure_IsMarkedForManualIntervention [353 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.SuccessfulRestoreThenUndo_RestoresThePreRestoreState [411 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.PreRestoreFailure_BlocksDangerousRestore_AndRetryUsesFreshCurrentState [417 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.PartialWriteFailure_RollsBackFilesToPreRestoreState [360 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.PermissionDeniedAndReadOnlyFailures_RollBackWithoutLosingCurrentState [387 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.MissingLiveSaveDirectory_IsCreatedByRestoreAndRemainsUndoable [412 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.FailedReadinessCheck_BlocksRealRestoreBeforeAnyClientCall [303 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.MappingDraftPreviewIsReadOnlyAndReturnsNoFilePaths [315 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.RestoreFailure_RollsBackToPreRestore_AndLeavesNoLiveSaveAccess [353 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.WriteExceptionAfterPartialMutation_RollsBackFiles [353 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RestoreOrchestratorTests.RestoreIsRejectedWhileSessionIsActive [319 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.EnvironmentCheckServiceTests.MissingOptionalRcloneIsSkippedAndDatabaseProbeIsWritable [306 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SafeModeStartupTests.ThreeStartupFailuresRequestSafeModeAndPersistFlag [9 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SafeModeStartupTests.SuccessfulStartupClearsFailureCountButKeepsPendingRequest [7 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SafeModeStartupTests.AppliedSettingsCanClearSafeModeRequest [2 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyHonorsCancellation [318 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyRejectsChangedRetentionPolicyEvenWhenCandidateSetIsUnchanged [504 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioComparisonReturnsExpiredWhenEffectivePolicyChangesDuringCalculation [319 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioComparisonHandlesLargeIndexedLibraryWithinConfiguredBound [4 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioComparisonReturnsExpiredWithoutDetailsWhenVersionChangesDuringCalculation [491 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.IndexDeletionFailureRestoresArchiveAndDoesNotCountFreedBytes [376 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyDeletesOnlyUnprotectedZipCandidatesBelowBackupRoot [364 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioGrowthAssumptionsDoNotAffectRetentionCounts(growthMinimum: 1000000, growthMaximum: 1000000) [317 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioGrowthAssumptionsDoNotAffectRetentionCounts(growthMinimum: 0, growthMaximum: 0) [311 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.PreviewCountsCandidatesAndProtectedVersions [310 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyRejectsChangedArchiveAtTheSamePath [309 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyRequiresSecondConfirmation [312 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioComparisonStopsAtConfiguredVersionLimit [318 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyRejectsPreviewWhenIndexedStateChanged [307 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioComparisonRejectsInvalidWorkerSideInputs [308 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyRejectsExpiredPreview [313 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioComparisonUsesOnePlannerCutoffAndDoesNotCreateCleanupPreview [346 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyRejectsReplacementCandidateWithSameCountAndBytes [303 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ScenarioComparisonHonorsCancellationDuringSnapshotRead [293 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplyConsumesPreviewAndRejectsDuplicateSubmission [311 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionSimulationServiceTests.ApplySkipsGameWhenSharedOperationLockIsHeld [337 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.MediaSourceRule_CanBePausedAndDeletedWithoutTouchingArchivedMedia [466 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.DeviceConflictDecision_IsPersistedWithoutFileOperations [290 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.EveryExplicitConflictChoicePersistsWithoutTouchingEitherBranch(choice: "PreferLocal") [286 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.EveryExplicitConflictChoicePersistsWithoutTouchingEitherBranch(choice: "PreferRemote") [288 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.EveryExplicitConflictChoicePersistsWithoutTouchingEitherBranch(choice: "KeepBoth") [290 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.InboxMediaCanBeReadInBoundedPagesWithoutRepeatingRows [284 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.IgnoredMediaCanBeListedAndRestoredToInbox [292 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.UpsertedGameKeepsMatchAttemptUnsetUntilMatchingCompletes [275 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteMediaMetadataTests.BatchMetadataUpdate_IsAtomicAndPreservesUnchangedFields [292 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ClearReadDeletesOnlyReadNotificationsAndPreservesTasksAuditAndRestoreEvidence [309 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.NotificationReadMutationsRequireReplayProtection(messageType: "notifications.records.mark-read") [303 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.NotificationReadMutationsRequireReplayProtection(messageType: "notifications.records.clear-read") [301 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.MarkReadChangesOnlyRequestedUnreadIdsAndPersistsAcrossRestart [326 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.DifferentIssueRootsRemainSeparateEvenForSameGameAndError [312 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ExplicitRetryLineageAggregatesDistinctAttemptsAndClosesOnRecovery [317 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ExistingNotificationTableWithoutSourceColumnMigratesWithUnknownSource [334 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ExistingStandaloneTaskFailureIsMigratedIntoItsRetryIssue [548 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ReplayUsesStableDeduplicationKeyAndRecordSurvivesWorkerRestart [299 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.RetryIssueIdentitySurvivesTaskStoreRestart [319 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.RetentionAndQuantityCapsAreAppliedAndExpiredRecordsAreRejected [2 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.ExplicitRetryLineageKeepsEarliestOccurrenceWhenEventsArriveOutOfOrder [315 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.NotificationRecordPersistenceTests.RecordNormalizationBoundsTextAndDoesNotEscalateUnknownSeverity [300 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.R17FindingPersistenceTests.ResolvedHealthFindingLeavesTheOpenQueue [311 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.R17FindingPersistenceTests.OpenFindingCarriesRecordedEvidenceTime [294 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IntegrityCheckServiceTests.MissingTableProducesCriticalFinding [306 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IntegrityCheckServiceTests.OrphanArchiveProducesWarning [307 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IntegrityCheckServiceTests.InvalidManifestProducesWarning [305 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IntegrityCheckServiceTests.HealthyDatabaseAndDirectoriesReportHealthy [292 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IntegrityCheckServiceTests.OptionalDependencyNotConfiguredReportsSkipped [750 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.IntegrityCheckServiceTests.MissingBackupArchiveProducesWarning [293 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.R22TaskDurationBehaviorTests.MonotonicClockUsesCounterDeltaInsteadOfWallTime [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.R22TaskDurationBehaviorTests.TaskCoordinatorPublishesMonotonicDurationForTerminalTask [127 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.RestoreReportRoundTripsThroughRecentAndPagedTaskQueries [300 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.ExactTaskIdLookupDoesNotMatchNamesMessagesOrSimilarIds [284 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SummaryCountsWaitingCloudTasksAsPending [273 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SummaryAndPageApplyIndependentFiltersAndDateHalfOpenRange [296 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.SearchFindsMatchingTaskOutsideTheDefaultRecentWindow [921 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.ActiveTaskQueryIsIndependentOfRecentHistoryWindow [1 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.MonotonicTaskDurationRoundTripsAndIsCapturedDuringRestartRecovery [336 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.ReliableProgressMetricsRoundTripAndUnknownWorkDoesNotExposeEta [306 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.FinishedTaskCountUsesTheFinishedStateIndex [3 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskQueryPersistenceTests.PageUsesStableCursorWhenTasksShareCreationTime [303 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.SameGameIsSerializedButDifferentGamesRunInParallel [114 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: RestoreReadiness, right: Backup, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: Metadata, right: Backup, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: Retention, right: Backup, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: Restore, right: Restore, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: Backup, right: Backup, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: Restore, right: Retention, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: Backup, right: Media, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: CloudUpload, right: Media, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.OperationCompatibilityMatrixIsExplicit(left: Restore, right: Backup, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.RepeatedDistinctGameAcquisitionsStayBounded [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameOperationLockTests.TypedAcquireStillSerializesSameGame [61 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudUploadWindowPolicyTests.CrossMidnightWindowAllowsBothSidesAndFindsNextStart [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudUploadWindowPolicyTests.FullDayWindowKeepsExistingBehavior [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupPreviewBehaviorTests.PreviewFailureSignalStaysDistinctFromAnEmptyScan [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.BackupPreviewBehaviorTests.PreviewJsonIsConvertedToBoundedPathSummaryWithoutCreatingBackupMetadata [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.ManualCloudRetryUsesExistingBackupTests.RetryUploadsExistingLocalBackupWithoutRequiringAnotherLudusaviBackup [412 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.SearchFindsMatchingMediaOutsideTheFirstPage [931 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.PageUsesStableCursorWhenMediaShareCaptureTime [307 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.PageAppliesSearchKindFavoriteAndInboxStateTotals [551 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaQueryPersistenceTests.MediaPageQueriesUseStableCaptureIndexes [3 s]
+[xUnit.net 00:01:31.77]     GameSaveCenter.Worker.Tests.WorkerProcessRestartTests.HardRestartReconcilesDurableIncompleteTask [SKIP]
+[xUnit.net 00:01:31.77]       褰撳墠鎵ц鐜绂佹鍒涘缓鏈湴 Named Pipe锛涘湪瀹屾暣 Windows 鐜鎵ц鐙珛 Worker 杩涚▼楠屾敹銆?
+  宸查€氳繃 GameSaveCenter.Worker.Tests.PolicyTemplatePersistenceTests.BuiltInsCannotBeRemovedByStorageOperationAndCustomCanBeRemoved [300 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.PolicyTemplatePersistenceTests.InitializationSeedsBuiltInsAndCustomTemplateSurvivesRestart [315 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.AtomicFileWriterTests.FailedCopyCleansTemporaryPartial [5 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.AtomicFileWriterTests.FailedReplacePreservesExistingDestination [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.AtomicFileWriterTests.CopyAtomicallyWritesCompleteDestinationAndNoPartial [5 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.AtomicFileWriterTests.WriteAllTextUsesTemporaryFileAndLeavesNoPartial [3 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.AtomicFileWriterTests.CanceledWriteLeavesExistingFileIntact [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.AtomicFileWriterTests.OverwriteReplacesExistingFileAtomically [5 ms]
+  宸茶烦杩?GameSaveCenter.Worker.Tests.WorkerProcessRestartTests.HardRestartReconcilesDurableIncompleteTask [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionQuarantineRecoveryTests.QuarantinePageKeepsTheLedgerBoundedAndReportsTheDurableTotal [2 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionQuarantineRecoveryTests.PreviewReportsDurableQuarantineOccupancy [311 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionQuarantineRecoveryTests.StartupRecoveryDeletesOnlyAnIndexRemovedKnownEntry [317 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionQuarantineRecoveryTests.TargetedRecoveryOnlyProcessesTheSelectedLedgerEntry [315 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.RetentionQuarantineRecoveryTests.StartupRecoveryRestoresAnInterruptedMoveAndDoesNotDeleteIt [303 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameCatalogPersistenceTests.DiscoveryDiagnosticReportsBackupAndMatchAttemptWithoutPrivatePaths [313 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameCatalogPersistenceTests.InstallStateChangePersistsWithoutInvalidatingExistingMatch [304 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameCatalogPersistenceTests.LargeRefreshPersistsEveryDescriptorBeforeAnyBackgroundMatch [334 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameCatalogPersistenceTests.FullRefreshSkipsUnchangedRowsAndOnlyPersistsChangedDescriptors [392 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameCatalogPersistenceTests.DescriptorOnlySyncUpdatesFreshnessWithoutMatchingOtherGames [318 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolPolicyPersistenceTests.GameToolPoliciesSurviveStoreRoundTrip [314 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLifecycleSourceTests.DelayedAutomaticLaunchAuditsUseTheLaunchCancellationToken [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.ProtectionPromptPersistenceTests.DeferredDecisionKeepsObservationAndPromptTimestamp [321 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.ProtectionPromptPersistenceTests.NewGameStartsAtNeverShownWithoutObservation [297 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameSessionCoordinatorSourceTests.DetachedSessionOperationsFollowWorkerShutdown [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.R17DiagnosticsPackagePreviewTests.PreviewIsReadOnlyAndStatesIncludedAndExcludedBoundaries [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DatabaseMigrationHarnessTests.LegacyFixture_UpgradesInPlaceAndPreservesData [939 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DatabaseMigrationHarnessTests.FreshDatabase_InitializesWithoutLegacyFixture [301 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DatabaseMigrationHarnessTests.OlderFixture_WithoutNewerColumns_StillUpgradesAndPreservesData [503 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DatabaseMigrationHarnessTests.InvalidLegacySchema_ReportsFailureClearly [284 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationApplyLeavesChangedItemAndArchiveUntouched [348 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.MissingConfiguredMediaSourceFailsTaskInsteadOfLookingLikeAnEmptyScan [333 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationApplyAndUndoMovesOnlyArchiveCopyAndRestoresInboxState [422 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.MediaSourcePreviewIsBoundedReadOnlyAndExplainsMatchesAndExclusions [306 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationAuditFailureDoesNotRollbackCommittedBusinessState [349 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationHistoryIsDurablePagedAndKeepsConflictCounts [323 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationApplyUsesSelectedStableIdsAndValidatedTargetOverride [432 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationHistoryRejectsStaleConsistencyTokenAfterNewBatch [313 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationCommitFailureLeavesRecoveryLedgerAndStartupRestoresArchiveCopy [339 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.RestoreIgnoredBatchMovesArchiveCopyBackToPendingWithoutDeletingOriginal [335 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationPreviewUsesSourceRuleAndLeavesOverlappingSessionsAmbiguous [534 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.DuplicateInspectionSeparatesMetadataSuspectsFromHashEvidence [338 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.UserMediaRetryReportsPolicyPauseWithoutStartingMediaSync [314 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationHistoryRejectsStaleConsistencyTokenAfterBatchStateChanges [294 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.LockedMediaFileFailsWithoutDeletingTheSource [710 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.UserMediaRetryReportsUnavailableCloudWithoutSubmittingTask [288 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationPreviewRevalidatesHandedOffIdsAgainstCurrentInboxState [302 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationCancellationRestoresArchiveCopyWithIndependentRecoveryToken [314 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.InboxBatchKeepsPerItemFailureAndDoesNotRepeatSuccessfulItem [303 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.ClassificationUndoLeavesLaterManualDecisionAndArchiveUntouched [326 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.MediaSyncServiceTests.UnicodeAndLongMediaFileNameIsArchivedWithoutTreatingItAsMissing [703 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.DiagnosticsPackageServiceTests.PackageIsBoundedAndExcludesSensitiveOrLargeData [405 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolSessionTrackerTests.CloseOnExit_IsRecordedPerProcess [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolSessionTrackerTests.ProcessIdentityGuard_RejectsPidReuseWithLaterStartTime [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolSessionTrackerTests.CloseSessionAsync_RemovesOnlyThatSessionAndToleratesMissingProcesses [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolSessionTrackerTests.CloseSessionAsync_ClosesOnlyTheMatchingLiveProcess [1 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolSessionTrackerTests.TrackedProcesses_AreIsolatedBySession [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.FromPath_ClassifiesExtensionAndTracking(path: "C:\\Tools\\app.exe", expectedKind: Executable, expectedTrackable: True) [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.FromPath_ClassifiesExtensionAndTracking(path: "C:\\Tools\\notes.txt", expectedKind: ShellDocument, expectedTrackable: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.FromPath_ClassifiesExtensionAndTracking(path: "C:\\Tools\\launch.ps1", expectedKind: PowerShellScript, expectedTrackable: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.FromPath_ClassifiesExtensionAndTracking(path: "", expectedKind: ShellDocument, expectedTrackable: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.FromPath_ClassifiesExtensionAndTracking(path: "C:\\Tools\\fix.cmd", expectedKind: BatchScript, expectedTrackable: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.FromPath_ClassifiesExtensionAndTracking(path: "C:\\Tools\\app.lnk", expectedKind: Shortcut, expectedTrackable: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.FromPath_ClassifiesExtensionAndTracking(path: "C:\\Tools\\fix.bat", expectedKind: BatchScript, expectedTrackable: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: CustomExecutable, risk: GameModification, antiCheat: True, approved: False, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: CustomExecutable, risk: GeneralUtility, antiCheat: True, approved: False, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: CustomExecutable, risk: GameModification, antiCheat: False, approved: False, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: CustomExecutable, risk: Unknown, antiCheat: False, approved: False, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: Trainer, risk: Unknown, antiCheat: True, approved: False, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: CheatTable, risk: Unknown, antiCheat: True, approved: False, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: CustomExecutable, risk: GeneralUtility, antiCheat: False, approved: False, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: CustomExecutable, risk: Unknown, antiCheat: True, approved: True, expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.AntiCheatAutoStartUsesRiskCategoryAndExplicitUnknownApproval(type: CustomExecutable, risk: Unknown, antiCheat: True, approved: False, expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.ExistingProcessPolicyIsExplicitAndConservative(policy: Skip, matches: 1, unreadable: False, expected: Skip) [4 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.ExistingProcessPolicyIsExplicitAndConservative(policy: Restart, matches: 1, unreadable: False, expected: Restart) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.ExistingProcessPolicyIsExplicitAndConservative(policy: Restart, matches: 0, unreadable: True, expected: BlockUnreadable) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.ExistingProcessPolicyIsExplicitAndConservative(policy: AllowAnotherInstance, matches: 1, unreadable: True, expected: Start) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.ExistingProcessPolicyIsExplicitAndConservative(policy: Skip, matches: 0, unreadable: False, expected: Start) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.RestartExactOnlyStopsTheTestOwnedExecutablePath [332 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.ProcessGuardComparesExecutablePathRatherThanProcessName(left: "C:\\Tools\\same.exe", right: "c:\\tools\\same.exe", expected: True) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.ProcessGuardComparesExecutablePathRatherThanProcessName(left: "C:\\Tools\\same.exe", right: "C:\\Other\\same.exe", expected: False) [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLaunchKindsTests.NewToolDefaultsToConservativePolicies [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskCoordinatorFailureTests.TerminalFailureKeepsTheLastReportedStageSeparateFromErrorMessage [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskCoordinatorFailureTests.TerminalPersistenceFailureAfterSuccessDoesNotStrandGameLockOrPublishSuccess [2 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskCoordinatorFailureTests.CompletedTaskRejectsLateCancellationWithoutLeavingPendingState [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskCoordinatorFailureTests.CloudFailureKeepsLocalBackupResultOnTheFailedTask [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskCoordinatorFailureTests.TerminalPersistenceFailureAfterBusinessFailureDoesNotStrandGameLock [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskCoordinatorFailureTests.CancellationIsIdempotentAndPublishesSafeFinalizationBeforeCancelled [3 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.TaskCoordinatorFailureTests.TerminalPersistenceFailureAfterCancellationDoesNotStrandGameLock [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.WorklistReferenceResolutionTests.LookupUsesExactStableKeysAndReportsResolvedFindingsSeparately [303 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.WorklistReferenceResolutionTests.LookupRejectsMoreThanTheBoundedNumberOfReferences [287 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.WorklistReferenceResolutionTests.CurrentSummariesFollowRenamesAndOwnershipWithoutReturningMediaPaths [308 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLauncherTests.Shortcut_ToShellDocumentIsNotTrackable [2 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLauncherTests.CustomExe_BuildsTrackableStartInfoWithArgumentsWorkingDirectoryAndAdmin [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLauncherTests.PowerShellScript_UsesPowerShellAndIsNotTrackable [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLauncherTests.ShellDocument_UsesDefaultProgramAndIsNotTrackable [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLauncherTests.MissingFile_ThrowsFileNotFoundException [< 1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLauncherTests.Shortcut_ResolvesToExeAndTracksResolvedTarget [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLauncherTests.BatchScript_UsesCmdAndIsNotTrackable(fileName: "fix.bat") [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.GameToolLauncherTests.BatchScript_UsesCmdAndIsNotTrackable(fileName: "fix.cmd") [1 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.RestartedVerificationRestoresPriorStateWithoutQueueingUpload [290 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.CloudStatusProjectsRemoteEvidenceAndKeepsHistoricalVerificationUnknown [310 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.CloudStatusFiltersGameDeviceAndTimeWhileKeepingGlobalCount [330 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.AuthenticationFailureIsVisibleButNeverDueForAutomaticRetry [335 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.BackupAndMediaForTheSameGameRemainSeparateAndDeduplicated [325 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.CloudPagingRejectsStaleConsistencyTokenAfterQueueChanges [317 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.QueueStateSurvivesStoreRecreation [319 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.LateVerificationCannotOverwriteNewerUploadGeneration [349 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.VerificationExceptionRestoresPreviousRemoteGuarantee [318 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.UploadMustReachRemoteVerificationBeforeQueueReportsVerified [307 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.CloudStatusSummaryUsesFullDatasetAndDetailsStayPaged [3 s]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.CancelledVerificationRestoresPreviousUploadedGuarantee [314 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.CloudPagingRejectsStaleConsistencyTokenAfterTransferStateChanges [304 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.CloudTransferStateTests.VerificationFailureIsRecordedWithoutClaimingRemoteSuccess [318 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.R11VersionMetadataPersistenceTests.CommentAndLockStateRemainReadableAfterStoreRestartWithoutChangingBackupIdOrArchivePath [303 ms]
+[xUnit.net 00:02:00.11]   Finished:    GameSaveCenter.Worker.Tests
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteBackupAllJobTests.CompletedBackupAllJobIsNotConsideredActive [296 ms]
+  宸查€氳繃 GameSaveCenter.Worker.Tests.SqliteBackupAllJobTests.BackupAllJobRoundTripsQueuedAndUpdatedState [315 ms]
+
+娴嬭瘯杩愯鎴愬姛銆?
+娴嬭瘯鎬绘暟: 401
+     閫氳繃鏁? 400
+    璺宠繃鏁? 1
+鎬绘椂闂? 2.0103 鍒嗛挓
+缁撴灉鏂囦欢: [repo]\artifacts\build-diagnostics\round5-a74287e7\20261109T051845863Z-0d329416\tests\worker\worker.trx
+
+==> 运行 Playnite 测试（WPF 类隔离）
+Playnite test isolation: source classes 130, WPF classes 157
+    source test group
+    cleaned 5 isolated test temp entries
+  WPF isolated process [1/157] GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests
+    class GameSaveCenter.Playnite.Tests.AsyncThumbnailImageTests
+    cleaned 2 isolated test temp entries
+  WPF isolated process [2/157] GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests
+    class GameSaveCenter.Playnite.Tests.AsyncThumbnailLoaderTests
+    cleaned 2 isolated test temp entries
+  WPF isolated process [3/157] GameSaveCenter.Playnite.Tests.CloudTransferSummaryProductionBehaviorTests
+    class GameSaveCenter.Playnite.Tests.CloudTransferSummaryProductionBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [4/157] GameSaveCenter.Playnite.Tests.CommandDirectoryBehaviorTests
+    class GameSaveCenter.Playnite.Tests.CommandDirectoryBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [5/157] GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests
+    class GameSaveCenter.Playnite.Tests.CommandDirectoryKeyboardBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [6/157] GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests
+    class GameSaveCenter.Playnite.Tests.CommandDirectoryRegisteredRouteTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [7/157] GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests
+    class GameSaveCenter.Playnite.Tests.CommandDirectoryResultLayoutBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [8/157] GameSaveCenter.Playnite.Tests.CommandDirectoryReviewBehaviorTests
+    class GameSaveCenter.Playnite.Tests.CommandDirectoryReviewBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [9/157] GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests
+    class GameSaveCenter.Playnite.Tests.CompactWorkspaceTableViewportBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [10/157] GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests
+    class GameSaveCenter.Playnite.Tests.DataGridColumnVisibilityBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [11/157] GameSaveCenter.Playnite.Tests.DataGridHorizontalWheelBehaviorTests
+    class GameSaveCenter.Playnite.Tests.DataGridHorizontalWheelBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [12/157] GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests
+    class GameSaveCenter.Playnite.Tests.DataGridViewConfigurationBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [13/157] GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests
+    class GameSaveCenter.Playnite.Tests.GamePickerFilterBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [14/157] GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests
+    class GameSaveCenter.Playnite.Tests.GamePickerKeyboardBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [15/157] GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests
+    class GameSaveCenter.Playnite.Tests.KeyboardFocusSourceTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [16/157] GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests
+    class GameSaveCenter.Playnite.Tests.MediaComparisonSelectionTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [17/157] GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests
+    class GameSaveCenter.Playnite.Tests.MediaComparisonViewportBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [18/157] GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests
+    class GameSaveCenter.Playnite.Tests.MediaInboxGeometryTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [19/157] GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests
+    class GameSaveCenter.Playnite.Tests.MediaInboxScrollBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [20/157] GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests
+    class GameSaveCenter.Playnite.Tests.MediaThumbnailConverterTests
+    cleaned 2 isolated test temp entries
+  WPF isolated process [21/157] GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests
+    class GameSaveCenter.Playnite.Tests.MediaWindowAnchorContractTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [22/157] GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests
+    class GameSaveCenter.Playnite.Tests.NotificationInboxViewBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [23/157] GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests
+    class GameSaveCenter.Playnite.Tests.NumericCellReadabilityTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [24/157] GameSaveCenter.Playnite.Tests.NumericInputTests
+    class GameSaveCenter.Playnite.Tests.NumericInputTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [25/157] GameSaveCenter.Playnite.Tests.OverviewInteractionTests
+    class GameSaveCenter.Playnite.Tests.OverviewInteractionTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [26/157] GameSaveCenter.Playnite.Tests.PasteNormalizationTests
+    class GameSaveCenter.Playnite.Tests.PasteNormalizationTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [27/157] GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests
+    class GameSaveCenter.Playnite.Tests.PlayniteGameIconProviderTests
+    cleaned 2 isolated test temp entries
+  WPF isolated process [28/157] GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests
+    class GameSaveCenter.Playnite.Tests.ProcessMappingInlineActionBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [29/157] GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests
+    class GameSaveCenter.Playnite.Tests.ProductionShellChromeSourceTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [30/157] GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q06ButtonStateSequenceBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [31/157] GameSaveCenter.Playnite.Tests.Q06ContinuousButtonBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q06ContinuousButtonBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [32/157] GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q10CheckBoxHitBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [33/157] GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q10ToggleSwitchStateBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [34/157] GameSaveCenter.Playnite.Tests.Q13ColumnResizeBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q13ColumnResizeBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [35/157] GameSaveCenter.Playnite.Tests.Q13ScrollBarThumbBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q13ScrollBarThumbBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [36/157] GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q14FilterLabelBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [37/157] GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q14ToolbarAlignmentBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [38/157] GameSaveCenter.Playnite.Tests.Q23SettingsActionConfirmationBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q23SettingsActionConfirmationBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [39/157] GameSaveCenter.Playnite.Tests.Q24FractionalDpiTypographyBehaviorTests
+    class GameSaveCenter.Playnite.Tests.Q24FractionalDpiTypographyBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [40/157] GameSaveCenter.Playnite.Tests.R02ActionAvailabilityHintTests
+    class GameSaveCenter.Playnite.Tests.R02ActionAvailabilityHintTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [41/157] GameSaveCenter.Playnite.Tests.R02ActionPriorityTests
+    class GameSaveCenter.Playnite.Tests.R02ActionPriorityTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [42/157] GameSaveCenter.Playnite.Tests.R02BusyStateTests
+    class GameSaveCenter.Playnite.Tests.R02BusyStateTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [43/157] GameSaveCenter.Playnite.Tests.R02HitAreaSpacingTests
+    class GameSaveCenter.Playnite.Tests.R02HitAreaSpacingTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [44/157] GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests
+    class GameSaveCenter.Playnite.Tests.R02OpticalAlignmentTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [45/157] GameSaveCenter.Playnite.Tests.R03BilingualLengthTests
+    class GameSaveCenter.Playnite.Tests.R03BilingualLengthTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [46/157] GameSaveCenter.Playnite.Tests.R03CopySafePunctuationTests
+    class GameSaveCenter.Playnite.Tests.R03CopySafePunctuationTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [47/157] GameSaveCenter.Playnite.Tests.R03LongPathTests
+    class GameSaveCenter.Playnite.Tests.R03LongPathTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [48/157] GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests
+    class GameSaveCenter.Playnite.Tests.R03NumericAlignmentTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [49/157] GameSaveCenter.Playnite.Tests.R03TextScaleTests
+    class GameSaveCenter.Playnite.Tests.R03TextScaleTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [50/157] GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R05FocusBoundaryBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [51/157] GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R05MultiSelectionSummaryBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [52/157] GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R05OptionVirtualizationBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [53/157] GameSaveCenter.Playnite.Tests.R05PopupBoundaryBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R05PopupBoundaryBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [54/157] GameSaveCenter.Playnite.Tests.R05PopupLifecycleBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R05PopupLifecycleBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [55/157] GameSaveCenter.Playnite.Tests.R05TogglePersistenceBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R05TogglePersistenceBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [56/157] GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R05TooltipTimingBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [57/157] GameSaveCenter.Playnite.Tests.R06ClipboardBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06ClipboardBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [58/157] GameSaveCenter.Playnite.Tests.R06ColumnHeaderHelpTests
+    class GameSaveCenter.Playnite.Tests.R06ColumnHeaderHelpTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [59/157] GameSaveCenter.Playnite.Tests.R06ColumnWidthPersistenceBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06ColumnWidthPersistenceBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [60/157] GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06DetailsBudgetBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [61/157] GameSaveCenter.Playnite.Tests.R06EmptyStateBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06EmptyStateBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [62/157] GameSaveCenter.Playnite.Tests.R06ResponsiveColumnWidthBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06ResponsiveColumnWidthBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [63/157] GameSaveCenter.Playnite.Tests.R06SaveHistorySelectionFrameBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06SaveHistorySelectionFrameBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [64/157] GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06SelectionStateBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [65/157] GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06SortingBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [66/157] GameSaveCenter.Playnite.Tests.R06TaskGridSelectionFrameBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06TaskGridSelectionFrameBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [67/157] GameSaveCenter.Playnite.Tests.R06TaskProgressBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R06TaskProgressBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [68/157] GameSaveCenter.Playnite.Tests.R07DetailsBreakpointBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R07DetailsBreakpointBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [69/157] GameSaveCenter.Playnite.Tests.R07FineScrollBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R07FineScrollBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [70/157] GameSaveCenter.Playnite.Tests.R07ResizeStressBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R07ResizeStressBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [71/157] GameSaveCenter.Playnite.Tests.R07ScrollOwnershipBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R07ScrollOwnershipBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [72/157] GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R07SelectionAnchorBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [73/157] GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R07StatusBannerBudgetBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [74/157] GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R08BusinessFeedbackBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [75/157] GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R08DialogOverlayBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [76/157] GameSaveCenter.Playnite.Tests.R08MotionHotChangeBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R08MotionHotChangeBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [77/157] GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [78/157] GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R08NumericChangeBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [79/157] GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R08OffscreenMotionBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [80/157] GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [81/157] GameSaveCenter.Playnite.Tests.R08SystemMotionHotChangeBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R08SystemMotionHotChangeBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [82/157] GameSaveCenter.Playnite.Tests.R09BackgroundPressureBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R09BackgroundPressureBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [83/157] GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R09FocusOutlineBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [84/157] GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R09HighContrastBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [85/157] GameSaveCenter.Playnite.Tests.R09IconSemanticBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R09IconSemanticBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [86/157] GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R09PixelStrokeBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [87/157] GameSaveCenter.Playnite.Tests.R09ShadowBudgetBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R09ShadowBudgetBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [88/157] GameSaveCenter.Playnite.Tests.R09ThemeSwitchBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R09ThemeSwitchBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [89/157] GameSaveCenter.Playnite.Tests.R09ThumbnailPlaceholderBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R09ThumbnailPlaceholderBehaviorTests
+    cleaned 2 isolated test temp entries
+  WPF isolated process [90/157] GameSaveCenter.Playnite.Tests.R10FilterPresetBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R10FilterPresetBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [91/157] GameSaveCenter.Playnite.Tests.R10FilterSourceBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R10FilterSourceBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [92/157] GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R10KeyboardShortcutHelpBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [93/157] GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [94/157] GameSaveCenter.Playnite.Tests.R10SearchShortcutBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R10SearchShortcutBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [95/157] GameSaveCenter.Playnite.Tests.R10SearchShortcutFocusBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R10SearchShortcutFocusBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [96/157] GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R11BackupPreviewBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [97/157] GameSaveCenter.Playnite.Tests.R11DiffListSearchBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R11DiffListSearchBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [98/157] GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R11HistoryTimeNavigationBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [99/157] GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R11ProtectionBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [100/157] GameSaveCenter.Playnite.Tests.R11VersionComparisonBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R11VersionComparisonBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [101/157] GameSaveCenter.Playnite.Tests.R11VersionNoteBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R11VersionNoteBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [102/157] GameSaveCenter.Playnite.Tests.R11VersionSummaryBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R11VersionSummaryBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [103/157] GameSaveCenter.Playnite.Tests.R12PathRemapBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R12PathRemapBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [104/157] GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R12RemoteStageProgressBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [105/157] GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R12RestorePlanDraftBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [106/157] GameSaveCenter.Playnite.Tests.R12RestoreReadinessViewBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R12RestoreReadinessViewBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [107/157] GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R12RestoreWorkflowBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [108/157] GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R13CloudTransferStageBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [109/157] GameSaveCenter.Playnite.Tests.R15TaskFailureCopyTests
+    class GameSaveCenter.Playnite.Tests.R15TaskFailureCopyTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [110/157] GameSaveCenter.Playnite.Tests.R16NotificationScheduleBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R16NotificationScheduleBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [111/157] GameSaveCenter.Playnite.Tests.R16SettingsSearchBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R16SettingsSearchBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [112/157] GameSaveCenter.Playnite.Tests.R18DispatcherVisibilityBenchmarkTests
+    class GameSaveCenter.Playnite.Tests.R18DispatcherVisibilityBenchmarkTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [113/157] GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests
+    class GameSaveCenter.Playnite.Tests.R18TableContainerBudgetTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [114/157] GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests
+    class GameSaveCenter.Playnite.Tests.R18ThumbnailBudgetTests
+    cleaned 2 isolated test temp entries
+  WPF isolated process [115/157] GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R21AsyncCompletionAnnouncementBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [116/157] GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R21AutomationValueBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [117/157] GameSaveCenter.Playnite.Tests.R21DisabledHiddenBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R21DisabledHiddenBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [118/157] GameSaveCenter.Playnite.Tests.R21FocusVisualRegressionBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R21FocusVisualRegressionBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [119/157] GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests
+    class GameSaveCenter.Playnite.Tests.R21KeyboardNavigationTraceTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [120/157] GameSaveCenter.Playnite.Tests.R21SelectableTechnicalTextBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R21SelectableTechnicalTextBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [121/157] GameSaveCenter.Playnite.Tests.R22BatchCountBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R22BatchCountBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [122/157] GameSaveCenter.Playnite.Tests.R22ConfirmationStructureBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R22ConfirmationStructureBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [123/157] GameSaveCenter.Playnite.Tests.R22CopyFeedbackBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R22CopyFeedbackBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [124/157] GameSaveCenter.Playnite.Tests.R22LongTaskLeavePageBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R22LongTaskLeavePageBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [125/157] GameSaveCenter.Playnite.Tests.R22MaintenanceActionTimeBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R22MaintenanceActionTimeBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [126/157] GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R22RemoteStageTimeBehaviorTests
+    cleaned 1 isolated test temp entry
+  WPF isolated process [127/157] GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests
+    class GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests
+[repo]\artifacts\gsc-b\a74287e7\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll (.NETFramework,Version=v4.7.2)鐨勬祴璇曡繍琛?
+VSTest 鐗堟湰 17.11.1 (x64)
+
+姝ｅ湪鍚姩娴嬭瘯鎵ц锛岃绋嶅€?..
+鎬诲叡 1 涓祴璇曟枃浠朵笌鎸囧畾妯″紡鐩稿尮閰嶃€?
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)
+[xUnit.net 00:00:00.51]   Discovering: GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.89]   Discovered:  GameSaveCenter.Playnite.Tests
+[xUnit.net 00:00:02.93]   Starting:    GameSaveCenter.Playnite.Tests
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabOverflowKeepsProductionHeadersMouseAndKeyboardReachableInBothThemes [4 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.TaskSelectionKeepsFailureBadgeAndCancelActionUsableAcrossThemes [2 s]
+[xUnit.net 00:00:10.83]       Xunit.Sdk.TrueException: Task/Light inactive selection leaves 2 DIP between the selection frame and visible viewport; expected a DPI-rounded four-DIP gap.
+[xUnit.net 00:00:10.83]          鍦?Xunit.Assert.True(Nullable`1 condition, String userMessage) 浣嶇疆 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:琛屽彿 142
+[xUnit.net 00:00:10.83]          鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AssertSelectionChromeUsesVisibleViewport(DataGridRow row, DataGrid grid, Border chrome, String page, GameSaveCenterThemeMode theme, String state) 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1605
+[xUnit.net 00:00:10.83]          鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes>b__11_0() 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1221
+[xUnit.net 00:00:10.83]          鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c__DisplayClass36_0.<RunSta>b__0() 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1690
+[xUnit.net 00:00:10.83]       Stack Trace:
+[xUnit.net 00:00:10.83]            鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1702
+  澶辫触 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes [707 ms]
+  閿欒娑堟伅:
+   Xunit.Sdk.TrueException: Task/Light inactive selection leaves 2 DIP between the selection frame and visible viewport; expected a DPI-rounded four-DIP gap.
+   鍦?Xunit.Assert.True(Nullable`1 condition, String userMessage) 浣嶇疆 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:琛屽彿 142
+   鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AssertSelectionChromeUsesVisibleViewport(DataGridRow row, DataGrid grid, Border chrome, String page, GameSaveCenterThemeMode theme, String state) 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1605
+   鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c.<EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes>b__11_0() 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1221
+   鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.<>c__DisplayClass36_0.<RunSta>b__0() 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1690
+  鍫嗘爤璺熻釜:
+     鍦?GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.RunSta(Action action) 浣嶇疆 [repo]\tests\GameSaveCenter.Playnite.Tests\R23ProductionResourceStateBehaviorTests.cs:琛屽彿 1702
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabContentsStretchAcrossNarrowViewportRegardlessOfHeaderWidthInBothThemes [304 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabHeadersKeepPaddingAndRoundedEdgesWithChineseEnglishAndCountContentInBothThemes [310 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronStopsAtCurrentExpandedStateWhenDisabledMidTransitionInBothThemes [1 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.DisclosureChevronKeepsOneTransformAcrossOneHundredOpenCloseCycles [1 m 9 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.SettingsSectionTabsUseTheirGeneratedStyleForSelectionFocusAndDisabledNegativeInBothThemes [280 ms]
+[xUnit.net 00:01:25.53]   Finished:    GameSaveCenter.Playnite.Tests
+鏁版嵁鏀堕泦鍣ㄢ€淏lame鈥濇秷鎭? 鎵€鏈夋祴璇曢兘宸茶繍琛屽畬姣曪紝灏嗕笉鐢熸垚搴忓垪鏂囦欢銆?
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabSelectionIndicatorUsesProductionTimelinesAndHonorsReducedMotionInBothThemes [1 s]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationExposesFocusAndDisabledStatesAfterSelectionClearsInBothThemes [275 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.AcrylicNavigationKeepsKeyboardFocusOutlineVisibleWhileSelectedInBothThemes [271 ms]
+  宸查€氳繃 GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.WorkspaceTabIndicatorsKeepCompactPaddingAndDisabledDimmingInBothThemes [282 ms]
+
+娴嬭瘯鎬绘暟: 12
+     閫氳繃鏁? 11
+     澶辫触鏁? 1
+鎬绘椂闂? 1.4567 鍒嗛挓
+缁撴灉鏂囦欢: [repo]\artifacts\build-diagnostics\round5-a74287e7\20261109T051845863Z-0d329416\tests\wpf.R23ProductionResourceStateBehaviorTests\wpf.R23ProductionResourceStateBehaviorTests.trx
+[xUnit.net 00:00:10.83]     GameSaveCenter.Playnite.Tests.R23ProductionResourceStateBehaviorTests.EachProductionPageGridKeepsSelectedFocusAndDisabledRowStatesAcrossThemes [FAIL]
+娴嬭瘯杩愯澶辫触銆?
+
+TRX test cases: 1664 total; 1634 passed; 1 failed outcomes; 29 skipped; 0 errors/timeouts/aborts; 127 WPF isolated class runs.
+诊断目录：[repo]\artifacts\build-diagnostics\round5-a74287e7\20261109T051845863Z-0d329416

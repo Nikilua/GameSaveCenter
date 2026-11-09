@@ -1,3 +1,12 @@
+## 2026-11-09 U09-05 Render QA 资源释放候选已全量通过
+
+旧选框基线的 Render QA 在289张图片后因 WPF/WIC 4K RenderTargetBitmap 内存压力失败。当前只在 RenderHarness 的 SavePng 中清空编码器帧并每8张图回收一次；没有改生产UI、Render QA页面/尺寸或覆盖点。改后 SDK8.0.423 Release Harness build 0 warning/error；全量394 PNG、0 PROBLEM、exit0；WinSta0私有RenderQA desktop，Default input desktop前后Default。报告SHA和源文件SHA见 Round5 evidence `right-inset-regression-20261109/renderqa-success.json`。失败报告保留。后续必须提交/push后验精确SHA双SDK CI、独立完整 scripts/build.cmd、冻结候选中文完整安装启动链；用户黑窗仍未知身份且发生于编译/检查时，本批隐藏启动不等于证明用户桌面无闪。U09-06 required-checks此前403不重试，保持远端待验。
+## 2026-11-09 U09-05 Render QA 内存失败待复验
+
+选框候选a742的私有桌面Render QA在第289张图执行 `RenderTargetBitmap.Render` 时触发 `OutOfMemoryException`，进程exit 1；不是布局断言通过或UI变更失败，不能记为门禁通过。SDK8.0.423 Render Harness 编译0 warning/error；输入桌面Default未变。环境事后可用内存约1536 MB。为保持全部394图/全部尺寸/页面不变，RenderHarness仅QA工具中加入每8图强制回收WPF/WIC位图引用；这是待验证候选，完整重跑必须确认。失败报告和部分输出摘要已脱敏归档；不在用户桌面运行WPF窗口。当前生产XAML选框4 DIP修正与157条定向通过仍有效。用户确认黑窗发生于编译/检查；每条本地工具进程启动时隐藏并重定向，但未取得黑窗HWND/PID，仍不宣称解决。完整独立build、Render QA重跑、中文根入口和CI全部待验。
+## 2026-11-09 U09-05 选框右余量回归结论
+
+a74287e7 的 DataGrid 选框在非活动 Task/Light 状态只留1 DIP，R23 与本机独立 build、GitHub #1499 双 SDK 均复现。当前工作树将正常/非活动框改回视口宽减8 DIP、左边距4 DIP；2 DIP键盘框改为宽减7、左边距3。SDK8.0.423 隔离重编0 warning/error，相关五类157通过、0失败；39个已有架构基线NotExecuted不算通过。证据在 Round5 `evidence/U09-05-selection-boundary-20261109/right-inset-regression-20261109/`，manifest已核实。当前修正尚未提交，必须先独立跑完整 `scripts/build.cmd` 和精确 SHA CI，再冻结后运行中文包装器到英文根入口的完整安装启动链。用户确认闪窗出现在编译/检查时；所有工具进程从创建时隐藏并重定向日志，WPF类用私有非输入桌面。现有监控未覆盖整次完整构建且没有用户窗口身份，不宣称黑窗已解决。U09-06 required checks API此前403，保持远端待验，不重试；不动盘符/卷/映射或真实存档、媒体、云数据。
 ## 2026-11-09 U09-05：选框实现CI暴露旧断言，已修正测试预期
 
 精确选框实现提交 `3527fb1d9c2c701539ca727a05b2ab6157cd94c3` 的独立完整 `scripts/build.cmd` 与 GitHub run #1498 都失败在 `R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition`：Overview专用Margin已设计为0，测试还期待4。不要回退选框宽度、删内容位置断言或放宽skip；已只改Overview专用Margin预期，保留共享ListBox的4-DIP期望。修正源码blob `77520274af3ca108c54386f5e65b06815cc80bb4`，SDK8.0.423重新编译R10整类3/3通过、0 skip，WinSta0私有非输入desktop及Default前后身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/focused-r10-fix/`。本机完整旧失败与精确SHA CI #1498诊断在同证据根的`diagnostics/sdk8-r10-stale-margin/`。

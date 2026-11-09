@@ -42,6 +42,7 @@ public static class Program
     private static readonly string RepositoryRoot = ResolveRepositoryRoot();
 
     private static readonly List<string> s_problems = new List<string>();
+    private static int s_savedPngCount;
 
     private static readonly (int Width, int Height)[] WindowSizes =
     {
@@ -10235,6 +10236,22 @@ public static class Program
 
     private static void SavePng(Visual visual, string path)
     {
+        SavePngCore(visual, path);
+
+        // The complete render suite creates hundreds of snapshots, including 4K
+        // RenderTargetBitmaps whose WPF/WIC backing surfaces are finalized later.
+        // Collect them in bounded batches so the QA process does not retain native
+        // render surfaces until the end of the run.
+        if (Interlocked.Increment(ref s_savedPngCount) % 8 == 0)
+        {
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            GC.WaitForPendingFinalizers();
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+        }
+    }
+
+    private static void SavePngCore(Visual visual, string path)
+    {
         var actual = visual as FrameworkElement;
         var width = actual?.ActualWidth ?? 0;
         var height = actual?.ActualHeight ?? 0;
@@ -10247,6 +10264,7 @@ public static class Program
         encoder.Frames.Add(BitmapFrame.Create(bitmap));
         using var stream = File.Create(path);
         encoder.Save(stream);
+        encoder.Frames.Clear();
     }
 
     private static IEnumerable<T> FindVisualChildren<T>(DependencyObject root) where T : DependencyObject

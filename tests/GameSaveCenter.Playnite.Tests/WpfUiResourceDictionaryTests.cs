@@ -3860,7 +3860,7 @@ public sealed class WpfUiResourceDictionaryTests
             && element.Attribute("Property")?.Value == "Width"
             && (element.Attribute("Value")?.Value ?? "").Contains("ScrollViewer")
             && (element.Attribute("Value")?.Value ?? "").Contains("ViewportWidth")
-            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=5"));
+            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=8"));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowChrome"
             && element.Attribute("Property")?.Value == "HorizontalAlignment"
@@ -3874,7 +3874,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowBackground"
             && element.Attribute("Property")?.Value == "Width"
-            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=5"));
+            && (element.Attribute("Value")?.Value ?? "").Contains("ConverterParameter=8"));
         Assert.Contains(selected.Descendants(), element => element.Name.LocalName == "Setter"
             && element.Attribute("TargetName")?.Value == "RowContent"
             && element.Attribute("Property")?.Value == "Clip"
