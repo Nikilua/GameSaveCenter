@@ -756,3 +756,7 @@ SDK8.0.423 Release 的 CI #1488 紧凑任务详情动画等待测试改用有界
 ## 2026-11-09 Round5 U05-07/08复核
 
 页面离开收尾与31次导航/主题/Popup/详情压力行为保持不变；6份TRX哈希已核对，最终7/7、0 skip，三份旧失败诊断保留。精确代码/测试共同SHA e570f7b7的run #1500双SDK成功，且当前src/tests/scripts无差异；真实Playnite、外部UIA/键盘/IME/物理DPI及长期Worker仍未验。旧Render QA报告生成于969bfc20、WorkingTreeClean=False；历史 `.tmp` 截图目录现已不存在，没有本批删除。当前HEAD 819f99fc的#1514两job在编译/测试，#1513基线job打包、SDK10成功；required checks仍远端待验。R:当前无映射/挂载，未触及C/D或盘符。下一批U06-01/02专门复核时间与末列文字完整处于选框内，不能恢复旧“今日工作台”架构。复核时C空闲3,105,464,320 bytes（差4GiB约1,189,502,976），D 20,183,764,992 bytes；根入口未满足空间与SDK门槛。
+
+## 2026-11-09 Round5 U06-01/02复核
+
+共享样式和S01密度满足U06-01，无重复密度控件。U06-02当前U09-05 Light/Dark截图中，Overview时间戳、Save History末列和Task Grid详情均位于选框内；行为11/11、R10追补3/3，资源字典140通过、39条撤销架构断言NotExecuted不计通过，Render QA 394图/0 PROBLEM。精确共同源码e570f7b7的GitHub #1500两SDK job成功，当前代码无变化；合成离屏不等于真实Playnite、实体输入/IME/UIA/物理DPI验收。隐藏Source Validation exit 0，2份变更Markdown 1,013本地链接无缺失/越界，diff-check exit 0；本批创建的2个校验日志361 bytes已精确清理。C盘实测3,082,756,096 bytes（距4GiB差1,212,211,200），D盘20,182,212,608；最终中文入口仍受空间、准确SDK8.0.423和用户正常关闭Playnite门槛约束。CI快照#1513双job成功、#1514基线打包/SDK10成功、#1515双job测试中；下一批U06-03/04。

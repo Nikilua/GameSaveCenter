@@ -13,3 +13,17 @@ Source validation通过，XAML26/26；WPF静态37 XAML、0 errors、26既有warn
 悬停由受控MouseDevice状态驱动，键盘焦点为实际STA窗口控件焦点；未验证物理指针、系统键盘/IME、UIA客户端、真实Playnite或实体DPI。两项保持代码完成待验收；提交后查询精确SHA的所有适用双SDK CI。最终中文根入口完整构建/测试/发布/打包/安装身份/启动与独立scripts/build.cmd仍待整轮最终候选。
 
 disk-before/after记录空间；本批仅本阶段TRX和脱敏证据，无新包/截图/脚手架。保留当前成功和用于定位夹具问题的失败诊断，无已确认可删的本批旧目录，删除清单为空；用户及其他阶段TRX/TestResults、存档和配置未动。
+
+## 2026-11-09 选框右缘与当前资源复核
+
+随后共享选框右缘问题由 `3527fb1d` 与 `e570f7b7` 修正：概览行不再让内容容器比虚拟化列表行更窄；共享 DataGrid 普通/非活动选中框内缩1 DIP，键盘焦点框保留2 DIP余量，内容仍在视口内8 DIP裁切并维持水平滚动锚点。当前 `src/tests/scripts` 相对共同源码SHA `e570f7b7e0d5019b7f57c411237de3abb55a6e89` 无差异。
+
+U09-05 的当前生产资源证据显示 Overview 时间戳、Save History末列及Task Grid状态/详情都完整位于圆角选框内；Light/Dark、长文本、横向滚动位置的截图和逐图验证见[选框边界修正报告](../U09-05-selection-boundary-20261109/README.md)及[captures](../U09-05-selection-boundary-20261109/captures/)。定向行为11/11与额外R10 3/3通过；资源字典140通过、39条针对已撤销“今日工作台”架构的既有断言为NotExecuted，不计通过。Render QA 394图/0 PROBLEM。共同源码SHA的#1500 run双SDK job全步骤成功，身份见[CI记录](../U09-05-full-build-e570f7b7-20261109/ci-run-1500.json)。这些是合成WPF与离屏截图，不是Playnite宿主、实体键鼠/IME、外部UIA或物理DPI验收。
+
+U06R5-2911目录保留早期用户反馈、截图和292f候选证据；其中Overview画面采用现已撤销的“今日工作台”组合，本节不将它作为当前布局/视觉通过依据，也不恢复该架构。后续引用当前资源时只用U09-05选框截图和生产控件，不改页面信息架构。
+
+旧 `.tmp` 渲染输出不作为当前证据；本次只做文档/链接与CI身份复核，没有新建或删除构建、测试或截图输出。真实Playnite与用户输入边界仍待验；整轮中文根入口和独立 `scripts/build.cmd` 硬门禁仍待最终候选。
+
+## 2026-11-09 文档与清理复核
+
+本次只做文档/链接与CI身份复核，没有新建或删除构建、测试或截图输出。隐藏Source Validation exit 0；本批改动的6份变更Markdown中1,013条本地链接全部存在且无仓库外路径，git diff --check exit 0。为校验创建的2个临时日志共361 bytes，路径边界、无重解析点、无文档引用后已精确删除；清理前后C均3,082,756,096 bytes、D均20,182,212,608 bytes。旧探针源码仍由归档复现清单引用，最新构建/打包目录及U09当前审计均保留；未动其他任务TRX/TestResults、存档、配置或盘符。真实Playnite与用户输入边界仍待验；整轮中文根入口和独立scripts/build.cmd硬门禁仍待最终候选。
