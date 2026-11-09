@@ -1625,3 +1625,4 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 - 当前C盘空闲3,083,395,072 bytes，低于4GiB门槛1,211,572,224 bytes；只看到SDK9.0.302。没有安全且足够的C盘项目临时输出可清理。达到空间门槛并备好SDK8.0.423后再由中文入口执行唯一一次完整安装启动链；用户正常退出Playnite/Worker后先重查进程，不强杀。
 - cmd入口将PowerShell隐藏运行；安装完成后会启动Playnite。用户黑窗没有HWND/PID，不能确认是否由启动入口引起；不要宣称已解决，也不要为观测而反复重启宿主。接着完成文档校验、中文提交/push，并核对该SHA全部workflow jobs/artifacts。
 - 本次状态证据：design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/progress-count.json。
+- SDK与空间复核：系统级SDK列表仅有9.0.302，但仓库引导缓存`%LOCALAPPDATA%/GameSaveCenter/dotnet-sdk-8.0.423`存在且选择准确；不能据此把独立验证标为SDK阻塞。C盘当前2,908,860,416 bytes，离完整入口4GiB尚差1,386,106,880 bytes；只找到747-byte项目临时基准文件，SDK/安装/引用诊断均保留。源码`e570f7b7`尚未安装，最后安装身份仍是`e42da2a5`。证据：`design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/sdk-cache-recheck.json`。

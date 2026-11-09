@@ -976,3 +976,11 @@ CI快照：最近U08-03/04文档提交`882a80bc75116a636aafbd8b5e102c05e51459d8`
 CI快照：最近U08-05/06文档提交`ef51e774b3fbdff3b2c6d566ce0e53f086452a24`的#1526 run `42660126863`，baseline job `129309141433`与SDK10 job `129309140871`均在编译测试；#1525、#1524、#1523、#1522、#1521、#1520仍有运行中job；#1519/#1518基线运行、SDK10成功，#1515已双job成功。没有失败结论或重试；required-checks此前403仍“远端待验”。下一小批进入U09-01/剩余对照盘点。
 
 本批文档门禁：Source Validation exit0，6份Markdown 1,038条本地链接缺失/越界均0，git diff --check exit0。只生成并精确删除仓库.tmp/r5-u08-07-08-doc-check-20261110内3个本批日志共1,281 bytes，已核对仓库.tmp边界且无重解析点。C/D校验前3,092,963,328 / 20,166,152,192 bytes，校验后3,092,529,152 / 20,166,152,192 bytes，不把变化归因于临时目录删除。
+
+## 2026-11-10 SDK缓存与U09-04动效源码复核
+
+更正上一段“本机仅见SDK9.0.302”的范围：系统级`dotnet --list-sdks`确实只列出9.0.302，但仓库`scripts/sdk-baseline.ps1`另会检查`%LOCALAPPDATA%/GameSaveCenter/dotnet-sdk-8.0.423`；该用户缓存当前存在，直接从仓库运行其dotnet返回8.0.423。SDK不再是独立编译/行为检查的阻塞项，也没有下载或安装SDK。精确路径和版本输出见[sdk-cache-recheck.json](evidence/U09-08-audit-20261110/sdk-cache-recheck.json)。
+
+当前C盘可用2,908,860,416 bytes，距中文根入口4GiB预检差1,386,106,880 bytes；D盘可用20,331,986,944 bytes。C盘项目Temp仍只有747-byte基准文本；其余候选为SDK缓存、安装内容或被审计文档引用的构建/诊断，均保留。最后安装记录仍是`e42da2a5`，当前已验证选框源码是`e570f7b7`，未运行完整安装入口。
+
+U09-04动效基线`0258ab35`至当前生产UI源码`e570f7b7`之间，`TaskCenterView.xaml`、其代码后置、`GscMotion.cs`和`MotionTokens.xaml`无差异；已有双主题探针仍覆盖当前任务动效实现。该探针没有物理输入、Playnite宿主或DWM呈现帧数据，因此U09-04继续进行中；本批不重复运行同一离屏代理，也不凭它调动画时长。

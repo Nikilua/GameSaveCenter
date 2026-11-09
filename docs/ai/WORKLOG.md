@@ -13510,3 +13510,11 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 控制台辅助代码检查：所有cmd入口使用隐藏PowerShell/控制台隐藏器；安装脚本在安装完成后才启动Playnite。用户黑窗截图没有HWND/PID，归因未完成，不宣称“无闪屏”。本批不启动编译、测试、Render QA、安装或Playnite，避免再次造成窗口切换。
 - 文档验证完成：Source Validation exit 0；5份Markdown共1,034条本地链接，缺失/越界0；git diff --check exit 0。未跑完整build/test/render。证据：docs/design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/progress-count.json。
 - 本批临时校验日志已按仓库.tmp边界、重解析点、引用、占用与锁检查后精确清理：3个文件共433 bytes。C盘前后均3,093,544,960 bytes；D盘20,334,428,160→20,334,432,256 bytes，空间变化不归因于清理。清单和实测值已写入progress-count.json。
+
+
+## 2026-11-10 Round5 U09-08 SDK缓存复核与U09-04基线核对
+
+- 更正前一条“本机仅见SDK9.0.302”的范围：机器级`dotnet --list-sdks`列出9.0.302，但仓库`scripts/sdk-baseline.ps1`默认用户缓存`%LOCALAPPDATA%/GameSaveCenter/dotnet-sdk-8.0.423`存在；该可执行文件列出SDK8.0.423，并在仓库目录选择8.0.423。没有下载或安装SDK。完整证据见[SDK缓存复核](../design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/sdk-cache-recheck.json)。
+- C盘当前可用2,908,860,416 bytes，距中文根入口4GiB预检差1,386,106,880 bytes；D盘20,331,986,944 bytes。仓库C盘Temp只找到747-byte审计基准，其余用户缓存、安装内容和被引用构建/失败诊断保留；本批未清理文件。
+- `0258ab35..e570f7b7`的`TaskCenterView.xaml`/代码后置、`GscMotion.cs`、`MotionTokens.xaml`无差异，故11月9日双主题动效探针仍覆盖当前任务动效源码；它不测真实Playnite、物理输入或DWM帧，不重复同代理运行、不调动画时长，U09-04继续待宿主验收。安装记录仍为`e42da2a5`，选框候选`e570f7b7`未安装。
+- 本批仅校正文档和现状证据；未改源码、未运行编译/测试/Render QA或Playnite。独立检查可使用现有8.0.423缓存；中文完整安装启动仍待C盘空间门槛。

@@ -2089,3 +2089,7 @@ e570f7b7共同源码：编辑器Tooltip默认下锚、调用方显式位置优�
 按PROGRESS的80条任务记录逐行重数，唯一ID为80、重复0，状态为6已满足/70代码完成待验收/3进行中/1远端待验；修正U09-08旧的5/71汇总。U00-01和U09-01均已满足。三个真实构建入口存在，src/tests/scripts与生产SHA e570f7b7一致。
 
 95b2b4cf的run #1528整体仍运行：baseline job 129330520820进行Render QA；SDK10 job 129330521427已success，artifact 13698653069 / SHA-256 5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0。required-check权限仍因此前403待验，不重试同一权限。当前系统只见SDK9.0.302，C盘离4GiB门槛仍缺1,211,572,224 bytes；确认项目C盘临时内容仅747 bytes并保留，不清系统/SDK/NuGet缓存或未知数据。启动脚本/黑窗仍未由用户窗口PID归因。详细快照：Round5 evidence/U09-08-audit-20261110/progress-count.json。
+
+### SDK8 用户缓存复核（2026-11-10）
+
+仓库`global.json`要求8.0.423；机器级`dotnet --list-sdks`可能只显示系统SDK9.0.302，因为`scripts/sdk-baseline.ps1`还会从`%LOCALAPPDATA%/GameSaveCenter/dotnet-sdk-8.0.423`选择用户级SDK。当前该缓存存在且准确返回8.0.423；不要仅凭系统列表写成SDK缺失，也不要为释放空间删除它。完整安装启动链仍有独立的C盘4GiB门槛。

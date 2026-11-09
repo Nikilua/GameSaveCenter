@@ -1,0 +1,32 @@
+{
+  "capturedLocalDate": "2026-11-10",
+  "repositoryCommit": "50b1062f9aeaaaf40a85dc9e156eb69f191fe836",
+  "globalJsonSdk": "8.0.423",
+  "machineGlobalDotnet": {
+    "path": "C:/Program Files/dotnet/dotnet.exe",
+    "listSdks": [
+      "9.0.302 [C:/Program Files/dotnet/sdk]"
+    ]
+  },
+  "repositoryBootstrap": {
+    "script": "scripts/sdk-baseline.ps1",
+    "cachePathPattern": "%LOCALAPPDATA%/GameSaveCenter/dotnet-sdk-8.0.423",
+    "resolvedCachePath": "C:/Users/lopmatu/AppData/Local/GameSaveCenter/dotnet-sdk-8.0.423",
+    "dotnetExePresent": true,
+    "listSdks": [
+      "8.0.423 [C:/Users/lopmatu/AppData/Local/GameSaveCenter/dotnet-sdk-8.0.423/sdk]"
+    ],
+    "repositoryDotnetVersion": "8.0.423"
+  },
+  "driveSnapshotBytes": {
+    "CFree": 2908860416,
+    "CRequiredForFinalEntry": 4294967296,
+    "CShortfall": 1386106880,
+    "DFree": 20331986944
+  },
+  "processes": {
+    "playnitePid24248Present": false,
+    "workerPid42704Present": false
+  },
+  "result": "SDK 8.0.423 is available through the repository bootstrap cache. The final install/start chain remains below its C: free-space preflight. No SDK was downloaded, no source was built, and no project files were deleted in this read-only recheck."
+}

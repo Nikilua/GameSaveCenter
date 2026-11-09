@@ -846,3 +846,7 @@ TaskCenter状态替换期间行高稳定、阶段/进度和长名UIA有15/15行�
 95b2b4cf的GitHub run #1528（42666242561）仍在运行：baseline job 129330520820位于离屏渲染QA；SDK10 job 129330521427已success并上传artifact 13698653069（1,280,732 bytes，SHA-256 5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0）。只记录已完成部分，不宣称整轮CI通过。当前只发现SDK9.0.302；C盘空闲3,083,395,072 bytes，距4GiB还差1,211,572,224 bytes；D盘充足。C盘项目Temp只见747-byte历史benchmark文本，不足以释放空间且保留。未删除任何用户或其他任务数据。
 
 源码检查确认三个cmd入口隐藏PowerShell/控制台辅助进程；安装脚本仅在构建安装结束后启动Playnite。截图没有HWND/PID，仍不能将黑窗归因于控制台、Playnite或具体WPF窗口，也不声称已经消除。尚未重新运行安装启动入口。精确状态和CI身份见Round5 U09-08 progress-count.json。
+
+### Round5 SDK缓存复核（2026-11-10）
+
+系统级`dotnet --list-sdks`只列9.0.302；仓库`global.json`要求的8.0.423仍在`scripts/sdk-baseline.ps1`默认用户缓存`%LOCALAPPDATA%/GameSaveCenter/dotnet-sdk-8.0.423`，当前可直接选择。后续不能仅凭机器级SDK列表判断8.0.423缺失。C盘可用2,908,860,416 bytes，中文完整入口要求4GiB，仍差1,386,106,880 bytes；D盘可用20,331,986,944 bytes。没有可安全清除且能补足差额的本项目C盘临时输出。最后安装身份`e42da2a5`落后于当前UI源码候选`e570f7b7`，因此候选仍待完整安装启动链与真实宿主验收；具体SDK/cache证据见`design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/sdk-cache-recheck.json`。
