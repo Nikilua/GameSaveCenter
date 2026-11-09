@@ -748,3 +748,7 @@ SDK8.0.423 Release 的 CI #1488 紧凑任务详情动画等待测试改用有界
 ## 2026-11-09 Round5 U05-03/04 CI终态修正
 
 18d73836/#1341、498dd3a4/#1342、bca60704/#1343及5ee7be00/#1345的基线与SDK10适用job均success，早先“运行中/待查”仅是旧快照。artifact/job身份见Round5 `evidence/U05-03-04/ci-run-40638353451-final.json`、`evidence/U05-04-help/ci-runs-final-20261109.json`。后续整合SHA `25bcbf79`/#1423也通过双SDK。U05-03/04仍代码完成待验收，宿主与外部UIA/IME/DPI未验；required-checks API既有403，继续远端待验。当前继续按PROGRESS推进U05-05/06。最终本地根链仍要求SDK8.0.423与C/D空间门槛。
+
+## 2026-11-09 Round5 U05-05/06复核
+
+两项生产实现来自969bfc20，加载/进度源文件之后在当前分支未变化。SDK8.0.423定向13/13、0 skip、双主题Render QA394图，以及共同源码提交e570f7b7的#1500双SDK成功已核对；当前与该共同源码的src/tests/scripts差异为0。任务仍代码完成待验收，真实Playnite和物理输入/DPI未核。旧.tmp/round5-u05-05-06已不存在；复核没有删除数据。检查时C 3,102,400,512 bytes，距4GiB约1,192,566,784 bytes；D 20,184,997,888 bytes。继续U05-07/08，最终根入口门槛未达时不运行。

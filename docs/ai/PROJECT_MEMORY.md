@@ -1995,3 +1995,7 @@ SDK10 隔离 WPF 桌面没有在 250ms 内稳定产生 Storyboard 进入/退出�
 ### 2026-11-09 Round5 U05-03/04 终态更新
 
 run #1341（18d73836）、#1342（498dd3a4）、#1343（bca60704）和#1345（5ee7be00）的基线SDK与SDK10 job均已核实终态success，job/artifact身份见 `evidence/U05-03-04/ci-run-40638353451-final.json` 与 `evidence/U05-04-help/ci-runs-final-20261109.json`。早期运行中快照只代表查询当时状态。U05-04补齐帮助弹层开闭、Escape和焦点回归证据；两项仍待真实Playnite/UIA/IME/物理DPI验收。更晚整合提交`25bcbf79`的#1423成功。`dccdaea`没有独立Actions run；后续run覆盖其父树。required-checks既有403不重试，远端待验。此文档复核未运行本机编译或删除阶段外文件。
+
+### 2026-11-09 Round5 U05-05/06
+
+Loading feedback与任务进度生产实现来自969bfc20。隐藏的180ms Loading卡保留测量槽位，只延迟呈现；错误和状态不延迟。TaskCenter未知进度显示破折号，固定进度列/百分比列跨未知、确定、取消和成功保持几何与真实数据；取消状态区别于成功。SDK8.0.423专项13/13、0 skip及394图双主题Render QA在Round5证据中。e570f7b7的run #1500基线/SDK10 job成功，当前HEAD与该SHA的src/tests/scripts差异为0；不得把此CI称为最新HEAD安装启动门禁。真实Playnite/系统输入/UIA/IME/物理DPI仍待验。

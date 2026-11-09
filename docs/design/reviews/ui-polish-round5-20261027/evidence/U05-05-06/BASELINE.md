@@ -12,9 +12,9 @@ Source validation通过；XAML26/26；WPF静态37 XAML、0错误、26既有warni
 
 前后对照：加载卡由立即Visible变为180ms内Hidden，保留同尺寸；到期恢复Visible；短响应Empty及Error不被旧计时器覆盖。状态文字、标题、命令、滚动条、选框、列表虚拟化与进度数值契约保留。
 
-状态为代码完成待验收，真实Playnite/系统输入/IME/UIA客户端/物理DPI未验。提交后查询精确SHA双SDK CI；不由本地或父提交结果推断远端绿色。整轮最终候选仍需中文根入口完整构建/测试/发布/打包/安装身份/启动与独立scripts/build.cmd。真实存档恢复、媒体删除、云端写入未执行。
+状态为代码完成待验收，真实Playnite/系统输入/IME/UIA客户端/物理DPI未验。源实现提交969bfc203dc66ec21fe1718b9eae5a7cdfd1fb7c；后续当前分支共同源码提交e570f7b7e0d5019b7f57c411237de3abb55a6e89的run #1500基线job 129033708852与SDK10 job 129033708730均终态success，见Round5 [CI身份记录](../U09-05-full-build-e570f7b7-20261109/ci-run-1500.json)。从该源码提交到当前分支HEAD，src/tests/scripts无差异；因此该CI覆盖本批代码/测试/Render QA，但不代替当前最新HEAD的最终中文入口安装身份/启动硬门禁。required-checks仍为远端待验。真实存档恢复、媒体删除、云端写入未执行。
 
-disk-before/after记录空间。本阶段当前截图、命令输出、失败诊断与最终TRX仍在使用；报告和hash已归档。用户和其他任务TestResults/TRX、存档和配置均未动。没有创建包副本或一次性脚手架；清理结果见cleanup.json。
+disk-before/after记录该阶段生成时空间。本阶段生成时的全量Render QA截图和定向命令输出曾位于 `.tmp/round5-u05-05-06`；2026-11-09复查该目录及render/tests子目录均不存在，无法归因其移除，也不声称回收空间。持久归档包括Render QA报告、逐图hash、历史配对精选截图、失败/最终TRX及哈希；历史清理记录见cleanup.json。用户和其他任务TestResults/TRX、存档和配置均未动。本次无该阶段可清理输出。检查时C盘空闲3,102,400,512字节（低于完整根入口4GiB门槛1,192,566,784字节），D盘20,184,997,888字节；没有清理C盘外部缓存、用户文件或改动卷/盘符。
 
 ## 2026-10-30 历史 RenderHarness 前后配对
 

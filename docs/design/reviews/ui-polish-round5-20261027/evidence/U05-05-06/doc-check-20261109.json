@@ -1,0 +1,58 @@
+{
+  "stage": "Round5 U05-05/06 documentation recheck",
+  "inspectedHead": "0711e6291d8bf93490194e7de7f6c53f8dff9fcb",
+  "finalAfterWorklogValidation": {
+    "sourceValidationExit": 0,
+    "markdownFiles": 6,
+    "localLinks": 1010,
+    "missingLinks": 0,
+    "linkedJsonFiles": 99,
+    "jsonErrors": 0,
+    "gitDiffCheckExit": 0,
+    "note": "All final Markdown edits were checked. The successful validation output was 361 bytes and is summarized here."
+  },
+  "cleanup": {
+    "root": ".tmp",
+    "exactPath": ".tmp/round5-u05-05-06-doc-check-20261109",
+    "firstCleanup": {
+      "files": 2,
+      "bytes": 361,
+      "freeBefore": {
+        "C": 3100123136,
+        "D": 20185276416
+      },
+      "freeAfter": {
+        "C": 3100123136,
+        "D": 20185276416
+      },
+      "filesDetail": [
+        {
+          "name": "source-validation.stderr.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "source-validation.txt",
+          "bytes": 361,
+          "sha256": "30760e7082311ac27aa2d981c07638fc2a4b11d039c265afb40365b1f98fbca6"
+        }
+      ]
+    },
+    "finalRepeatCleanup": {
+      "files": 2,
+      "bytes": 361,
+      "removal": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+      "boundaryReparseMarkdownReferenceAndExclusiveLockChecks": "passed",
+      "spaceSnapshot": "not captured: the validation cleanup completed, then result serialization stopped on an empty stderr value; no space delta is claimed"
+    },
+    "noUserOrOtherTaskOutputsTouched": true
+  },
+  "manifestCorrection": {
+    "oversizedIntermediateBytes": 22113973,
+    "correctedEvidenceBytes": 2065,
+    "dFreeBefore": 20163162112,
+    "dFreeAfter": 20185272320,
+    "deltaAttribution": "observed only",
+    "explanation": "Replaced the same stage-owned evidence JSON after a draft serialized a PowerShell diagnostic object."
+  }
+}

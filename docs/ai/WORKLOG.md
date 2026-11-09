@@ -13368,3 +13368,11 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 修正PROGRESS及证据中的过期“CI运行中/待查询”；U05-04原先缺的键盘帮助弹层开闭、Escape和回焦覆盖见追补证据。两项仍是代码完成待验收，真实Playnite/UIA/IME/实体DPI未验；required-checks既有403仍记远端待验。
 - 文档Source Validation exit 0；7个变更Markdown文件共1012条本地链接、缺失0；`git diff --check`通过。只删除本阶段自建 `.tmp/round5-u05-03-04-doc-check-20261109` 4文件/864字节的校验输出，前后C无变化、D观测+4096字节，不归因于清理；具体哈希/快照见 `evidence/U05-03-04/doc-check-20261109.json`。其余本阶段临时目录原本已不存在，没有动用户/其他任务TRX/TestResults。
 - 当前提交前只做文档/链接/JSON检查，不开WPF窗口、不启动构建。整轮根入口仍需准确SDK8、C≥4GiB/D≥3GiB并完成安装身份/启动硬门禁。
+
+## 2026-11-09 Round5 U05-05/06 生产加载反馈与进度复核
+
+- 按U05-05/06两项审计真实生产WorkspaceStatePresenter与TaskCenter进度单元格。源码在969bfc20已引入180ms一次性视觉延迟，状态/错误即时更新且Hidden保留测量槽；真实任务使用固定列，未知/排队显示破折号，数值只绑定真实百分比，取消/成功状态分开。SDK8.0.423 Release既有专项13/13、0 skip；双主题394图Render QA与历史前后样本已归档。本次未重复WPF构建/渲染，也未改生产源码。
+- 当前HEAD与共同源码提交e570f7b7之间src/tests/scripts无差异。该精确共同源码SHA的#1500基线与SDK10 job终态success；本地scripts/build.cmd SDK8.0.423 Release 2032项、1964通过、0失败、68个有原因skip/exit0已有证据。CI artifact身份见U09-05 ci-run-1500.json；它不替代当前HEAD最终中文安装启动链。
+- 临时目录.round5-u05-05-06复查不存在，未删除文件或认领回收量。C盘检查时3,102,400,512 bytes，仍比4GiB少1,192,566,784 bytes；D盘20,184,997,888 bytes。未动C盘外部缓存、其他任务TRX/TestResults、存档、配置或卷盘符。
+- U05-05/06继续“代码完成待验收”，仅剩真实Playnite及外部UIA/键盘/IME/实体DPI边界和整轮最新HEAD根入口；按PROGRESS继续U05-07/08，不因宿主边界停下。
+- 本批中文文档校验：Source Validation exit 0；6个变更Markdown文件1010条本地链接、缺失0；引用JSON解析99个、错误0；`git diff --check`通过。校验次数、临时日志清单与前后空间见Round5 `evidence/U05-05-06/doc-check-20261109.json`。第一轮只删除精确的本批`.tmp`校验日志2份/361 bytes，清理前后C均3,100,123,136、D均20,185,276,416 bytes。检查时发现清单草稿误序列化了PowerShell诊断对象，已将同一自有清单从22,113,973 bytes改为2,065 bytes；D空闲观察到增长约22.1MB，不把差值全归因于改写。其后C空闲观察3,102,826,496 bytes，距4GiB差1,192,140,800 bytes，D空闲20,185,272,320 bytes；没有清理C盘用户文件/共享缓存，也没有操作卷或盘符。
