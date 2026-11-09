@@ -13495,3 +13495,9 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - CI #1526 baseline/SDK10编译测试中，#1521-1525仍有运行中job；#1518/#1519 baseline运行、SDK10成功；#1515双job成功。无失败，不重试；required-checks仍远端待验。下一批U09剩余配对。
 
 本批文档门禁：Source Validation exit0，6份Markdown 1,038条本地链接缺失/越界均0，git diff --check exit0。只生成并精确删除仓库.tmp/r5-u08-07-08-doc-check-20261110内3个本批日志共1,281 bytes，已核对仓库.tmp边界且无重解析点。C/D校验前3,092,963,328 / 20,166,152,192 bytes，校验后3,092,529,152 / 20,166,152,192 bytes，不把变化归因于临时目录删除。
+
+## 2026-11-10 Round5 U09-07 旧构建输出清理
+
+- 用户要求主动释放项目无用文件。T01只读预览评估 `artifacts/gsc-b/e570f7b7`，再人工核对其位于仓库 `artifacts/`、726文件无重解析点/文件锁、相关进程为0、Markdown/JSON路径引用为0，且当前`src/tests/scripts`相对该SHA无变化。
+- 清理的是由同源码提交生成、早于并被 `artifacts/gsc-b/e570f7b7-detached-full-20261109` 替代的旧输出。通过 PowerShell `Remove-Item -LiteralPath -Recurse -Force` 精确删除726文件、169,276,352 bytes；D盘实测净增171,237,376 bytes，C盘保持3,091,755,008 bytes。新构建、build diagnostics、包、已有失败证据、用户/其他任务TRX/TestResults未动。
+- 本批只改文档；Source Validation退出0，5份Markdown检查1,035条本地链接，缺失/越界0，git diff --check无错误。仅生成后清理`.tmp/r5-u09-07-doc-check-20261110`两份日志、1,208 bytes；期间C盘从3,086,422,016降至3,085,778,944 bytes，变化不归因于D盘临时日志。完整链因C盘距4GiB仍差1,209,188,352 bytes未运行。证据见 [U09-07 cleanup](../design/reviews/ui-polish-round5-20261027/evidence/U09-07-cleanup-20261110/cleanup.json)。

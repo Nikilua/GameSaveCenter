@@ -1,0 +1,82 @@
+{
+  "stage": "U09-07 project artifact cleanup review",
+  "recordUpdatedAtUtc": "2026-11-09T17:34:40Z",
+  "sourceCommit": "e570f7b7e0d5019b7f57c411237de3abb55a6e89",
+  "sourceDeltaSinceSourceCommit": {
+    "paths": ["src", "tests", "scripts"],
+    "changedFiles": 0
+  },
+  "preview": {
+    "tool": "scripts/artifact-preview.ps1 via scripts/artifact-preview.ps1::Get-GscArtifactPreview",
+    "candidate": "artifacts/gsc-b/e570f7b7",
+    "readOnlyResult": {
+      "ownerState": "unknown",
+      "canDelete": false,
+      "meaning": "The preview did not authorize deletion. Ownership, references, active processes and file occupancy were reviewed independently."
+    }
+  },
+  "removed": [
+    {
+      "path": "artifacts/gsc-b/e570f7b7",
+      "withinArtifacts": true,
+      "stageOwned": true,
+      "reason": "Superseded build output for the same source commit. The later detached full build is retained; this older output has no Markdown/JSON path references.",
+      "files": 726,
+      "logicalBytes": 169276352,
+      "reparsePoints": 0,
+      "lockedFiles": 0,
+      "relevantProcessesAtRemoval": 0,
+      "documentationPathReferences": 0,
+      "sourceTestsAndScriptsUnchanged": true,
+      "retainedReplacement": {
+        "path": "artifacts/gsc-b/e570f7b7-detached-full-20261109",
+        "files": 726,
+        "logicalBytes": 169282412,
+        "sourceCommit": "e570f7b7e0d5019b7f57c411237de3abb55a6e89"
+      },
+      "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force"
+    }
+  ],
+  "driveSpaceBytes": {
+    "before": {"C": 3091755008, "D": 20164583424},
+    "after": {"C": 3091755008, "D": 20335820800},
+    "observedNetChange": {"C": 0, "D": 171237376}
+  },
+  "retained": [
+    "artifacts/gsc-b/e570f7b7-detached-full-20261109",
+    "artifacts/build-diagnostics/round5-u09-05-detached-e570f7b7/20261109T085813954Z-7831612a",
+    "artifacts/build-diagnostics/round5-e570f7b7",
+    "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "artifacts/GameSaveCenter-0.6.73.pext",
+    "all historical failed diagnostics and referenced evidence",
+    "user and other-task TRX/TestResults, saves, configuration and unknown files"
+  ],
+  "driveLettersOrMappingsChanged": false,
+  "documentationValidation": {
+    "sourceValidationExit": 0,
+    "markdownFilesChecked": 5,
+    "localLinksChecked": 1035,
+    "missing": 0,
+    "outsideRepository": 0,
+    "gitDiffCheck": "exit 0"
+  },
+  "validationTempCleanup": {
+    "path": ".tmp/r5-u09-07-doc-check-20261110",
+    "files": 2,
+    "logicalBytes": 1208,
+    "reparsePoints": 0,
+    "removed": true,
+    "driveSpaceBytes": {
+      "before": {"C": 3086422016, "D": 20335882240},
+      "after": {"C": 3085778944, "D": 20335882240},
+      "observedNetChange": {"C": -643072, "D": 0}
+    },
+    "attribution": "The 643072-byte C: decrease occurred during the check/cleanup interval and is not attributed to the 1208-byte D: temporary directory."
+  },
+  "cDrivePreflight": {
+    "requiredFreeBytes": 4294967296,
+    "observedFreeBytes": 3085778944,
+    "remainingDeficitBytes": 1209188352,
+    "fullInstallationStartupChainRun": false
+  }
+}
