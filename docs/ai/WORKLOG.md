@@ -13376,3 +13376,12 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 临时目录.round5-u05-05-06复查不存在，未删除文件或认领回收量。C盘检查时3,102,400,512 bytes，仍比4GiB少1,192,566,784 bytes；D盘20,184,997,888 bytes。未动C盘外部缓存、其他任务TRX/TestResults、存档、配置或卷盘符。
 - U05-05/06继续“代码完成待验收”，仅剩真实Playnite及外部UIA/键盘/IME/实体DPI边界和整轮最新HEAD根入口；按PROGRESS继续U05-07/08，不因宿主边界停下。
 - 本批中文文档校验：Source Validation exit 0；6个变更Markdown文件1010条本地链接、缺失0；引用JSON解析99个、错误0；`git diff --check`通过。校验次数、临时日志清单与前后空间见Round5 `evidence/U05-05-06/doc-check-20261109.json`。第一轮只删除精确的本批`.tmp`校验日志2份/361 bytes，清理前后C均3,100,123,136、D均20,185,276,416 bytes。检查时发现清单草稿误序列化了PowerShell诊断对象，已将同一自有清单从22,113,973 bytes改为2,065 bytes；D空闲观察到增长约22.1MB，不把差值全归因于改写。其后C空闲观察3,102,826,496 bytes，距4GiB差1,192,140,800 bytes，D空闲20,185,272,320 bytes；没有清理C盘用户文件/共享缓存，也没有操作卷或盘符。
+
+## 2026-11-09 Round5 U05-07/08 页面离开与压力复核
+
+- 复核真实ProductionShell和TaskCenter卸载收尾：换页/卸载关闭帮助Popup、归一化PageHost动效；详情退出代次与命中锁随页面卸载安全收尾，不调用任务取消或改变订阅契约。31次真实导航路径的合成WPF复现保留选中、焦点、缓存和滚动断言；离屏进度暂停时继续保留真实busy语义。
+- `tests/hashes.json`的6份TRX SHA-256全部匹配。最终通过为缓存导航3/3、生命周期压力3/3、离屏进度1/1，总计7/7且0 skip；两份绕过同页RadioButton和未加载页命中时序的失败诊断、另一份早期压力失败仍保留，不计通过。Render QA历史报告是969bfc20、WorkingTreeClean=False；报告与逐图hash归档，但 `.tmp/round5-u05-07-08/render` 复查时已不存在，本次未删除文件，也不推断截图或空间回收。
+- 代码/测试/脚本共同SHA `e570f7b7` 的GitHub run #1500 / `42579208247`基线job `129033708852`和SDK10 job `129033708730`全步骤success，包含当前相同的src/tests/scripts与Render QA；从该SHA到当前HEAD这些目录差异为0。真实Playnite、系统键盘/IME、外部UIA、物理DPI及Worker长期任务仍未验；两项保持“代码完成待验收”。
+- 文档提交CI快照：#1513 / `42633400619` SDK10 job `129215176904` success，基线job `129215176957`仍在生成包；当前HEAD `819f99fc`的#1514 / `42639371286`基线job `129236035459`与SDK10 job `129236035905`仍在编译/测试。未重跑或取消；required-checks因既有403继续远端待验。
+- `.tmp/round5-u05-07-08`路径不存在；没有本批新建输出或清理。复核时C空闲观察`3,105,464,320` bytes（比完整根入口4GiB少`1,189,502,976`），D为`20,183,764,992` bytes；SDK仍需恢复global.json指定的8.0.423才能跑根链。只读映射检查中`subst`无映射，`mountvol R:\ /L`报告不存在R卷；未改C/D或任何盘符。下一小批推进U06-01/02，并只用当前架构验证选框右缘完整包裹时间和末列文字。
+- 本批文档门禁：隐藏Source Validation exit 0；6份Markdown共1008条本地链接/缺失0；99个关联JSON解析成功；`git diff --check` exit 0。仅清理自建`.tmp/r5-u05-07-doc-verify-20261109`校验输出`source.txt`（361 bytes）及空stderr（0 bytes），路径边界、无reparse、Markdown引用和独占占用检查通过，使用PowerShell精确`Remove-Item -LiteralPath -Recurse -Force`。清理前后C均3,102,564,352、D均20,183,756,800 bytes；没有清理阶段历史/用户输出。
