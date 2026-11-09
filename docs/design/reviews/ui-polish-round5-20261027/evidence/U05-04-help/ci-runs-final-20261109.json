@@ -1,0 +1,66 @@
+{
+  "checked_at_utc": "2026-11-09T14:05:00Z",
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "runs": [
+    {
+      "run_id": 40638558097,
+      "run_number": 1342,
+      "head_sha": "498dd3a401d87d8d334629305e04a0b57faf04cc",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        { "id": 122651104730, "name": "编译、测试与打包", "sdk": "8.0.423", "conclusion": "success" },
+        { "id": 122651105103, "name": ".NET SDK 10.0.401 编译与测试复核", "sdk": "10.0.401", "conclusion": "success" }
+      ],
+      "artifacts": [
+        { "id": 12797031024, "name": "GameSaveCenter-build-diagnostics", "size_bytes": 1973205, "digest": "sha256:789dd092e494ee851076f1221a33fd15ce53bd0b575e5f166527d9edd251d10c", "head_sha": "498dd3a401d87d8d334629305e04a0b57faf04cc" },
+        { "id": 12796522358, "name": "GameSaveCenter-windows-preview", "size_bytes": 90781644, "digest": "sha256:858639899ebd4fe6cede0b64cfb0988a4dcf8f10d5163192395a151e5dff808b", "head_sha": "498dd3a401d87d8d334629305e04a0b57faf04cc" },
+        { "id": 12795501425, "name": "GameSaveCenter-sdk10-build-diagnostics", "size_bytes": 944553, "digest": "sha256:45b2e2ce70a2fe7223c4161d3b36c736a6f90f41d2c4111bc6f95803a100a96b", "head_sha": "498dd3a401d87d8d334629305e04a0b57faf04cc" }
+      ]
+    },
+    {
+      "run_id": 40639378202,
+      "run_number": 1343,
+      "head_sha": "bca60704cc9eaffdc78b1154e4dfe5873cef10b8",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        { "id": 122653683590, "name": "编译、测试与打包", "sdk": "8.0.423", "conclusion": "success" },
+        { "id": 122653683330, "name": ".NET SDK 10.0.401 编译与测试复核", "sdk": "10.0.401", "conclusion": "success" }
+      ],
+      "artifacts": [
+        { "id": 12796163280, "name": "GameSaveCenter-build-diagnostics", "size_bytes": 1967543, "digest": "sha256:dd380325dcd7a95e2e29b163fafc98da8f134429cc56b557afd7355b3781d47a", "head_sha": "bca60704cc9eaffdc78b1154e4dfe5873cef10b8" },
+        { "id": 12796591392, "name": "GameSaveCenter-windows-preview", "size_bytes": 90781864, "digest": "sha256:e02c816333c7cf166b550b48f195b619d487ee8a82a746da28ce06a7cbf55128", "head_sha": "bca60704cc9eaffdc78b1154e4dfe5873cef10b8" },
+        { "id": 12796032299, "name": "GameSaveCenter-sdk10-build-diagnostics", "size_bytes": 945747, "digest": "sha256:97b10681f811d9103e90422c38bbeb34c3f35261bbf275d26b8bb7d0a6e3a3ab", "head_sha": "bca60704cc9eaffdc78b1154e4dfe5873cef10b8" }
+      ]
+    },
+    {
+      "run_id": 40642040454,
+      "run_number": 1345,
+      "head_sha": "5ee7be005452fdcfd08e103959f499a2d3d57190",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        { "id": 122662156928, "name": "编译、测试与打包", "sdk": "8.0.423", "conclusion": "success" },
+        { "id": 122662156809, "name": ".NET SDK 10.0.401 编译与测试复核", "sdk": "10.0.401", "conclusion": "success" }
+      ],
+      "artifacts": [
+        { "id": 12797709064, "name": "GameSaveCenter-build-diagnostics", "size_bytes": 1978519, "digest": "sha256:1fdb9914e79748310b67c62f949b151ea22675ac61f13dc280b68ce9231acde3", "head_sha": "5ee7be005452fdcfd08e103959f499a2d3d57190" },
+        { "id": 12798377442, "name": "GameSaveCenter-windows-preview", "size_bytes": 90782790, "digest": "sha256:5e3ec1a770f9b21be98d256a00908bbab59d94ca55bb140b6ace23c323f3071e", "head_sha": "5ee7be005452fdcfd08e103959f499a2d3d57190" },
+        { "id": 12796708587, "name": "GameSaveCenter-sdk10-build-diagnostics", "size_bytes": 948842, "digest": "sha256:c4b397236be2563663d69aca2693a0a83f4cb76a33011ed4e1abd850a4f69699", "head_sha": "5ee7be005452fdcfd08e103959f499a2d3d57190" }
+      ]
+    }
+  ],
+  "no_run_commit": {
+    "sha": "dccdaea75edd41340b64bab7e40eec4be4f49368",
+    "workflow_runs": 0,
+    "note": "该测试辅助提交没有独立 workflow run；后续 18d73836 精确提交及更晚的整合提交覆盖其父树。"
+  },
+  "later_integrated_source": {
+    "sha": "25bcbf7934575e6aa933373e1f508a1234b28b97",
+    "run_id": 41379419270,
+    "run_number": 1423,
+    "note": "包含上述弹层与页面退出实现；双 SDK job 终态 success，完整 artifact 证据见 ../U05-01-U06-07-U09-04-active-layout-20261102/ci-25bcbf79-final.json。"
+  }
+}

@@ -744,3 +744,7 @@ SDK8.0.423 Release 的 CI #1488 紧凑任务详情动画等待测试改用有界
 2026-11-09 Round5 U04-06/08：冻结候选`5c0c57b0…`的#1398双SDK完整链通过；原源码run #1335双SDKQ14 fixture失败已记录终态，失败诊断未删。四个明确属于本批的嵌套build `.tmp`目录已按PowerShell精确路径安全检查后清理，移除318文件/28,672,650 bytes；删除后C 3,217,698,816 bytes、D 20,221,902,848 bytes。隐藏文档校验日志清理前后未增加空间；最新C 3,211,915,264 bytes、D 20,221,698,048 bytes。完整中文安装启动链C盘4 GiB门槛仍差1,083,052,032 bytes；不通过清理未知数据或改卷达到门槛。真实Playnite/取消/窗口失活待验。
 
 2026-11-09 Round5 U05-01/02：任务状态仍代码完成待验收；动态静态画面和行为证据已归档。活动页重排精确SHA `25bcbf79…` 的#1423两SDK job终态success，详情见Round5 `ci-25bcbf79-final.json`。真实Playnite仍待验。当前本地SDK盘点发现`global.json`固定8.0.423，`dotnet --list-sdks`仅列9.0.302，已知临时SDK路径不存在；最终本地链需恢复基线工具，不能降基线。
+
+## 2026-11-09 Round5 U05-03/04 CI终态修正
+
+18d73836/#1341、498dd3a4/#1342、bca60704/#1343及5ee7be00/#1345的基线与SDK10适用job均success，早先“运行中/待查”仅是旧快照。artifact/job身份见Round5 `evidence/U05-03-04/ci-run-40638353451-final.json`、`evidence/U05-04-help/ci-runs-final-20261109.json`。后续整合SHA `25bcbf79`/#1423也通过双SDK。U05-03/04仍代码完成待验收，宿主与外部UIA/IME/DPI未验；required-checks API既有403，继续远端待验。当前继续按PROGRESS推进U05-05/06。最终本地根链仍要求SDK8.0.423与C/D空间门槛。

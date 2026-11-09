@@ -1991,3 +1991,7 @@ SDK10 隔离 WPF 桌面没有在 250ms 内稳定产生 Storyboard 进入/退出�
 2026-11-09 Round5 U04-06/08：Q14夹具失败run #1335现已终态核实，原始双SDK诊断保留；后续修复进入冻结SHA `5c0c57b0…`，run #1398双job通过。共享DisclosureCard中途禁用收尾/100次对象生命周期的宿主/真实取消边界仍未验。清理仅限该批四个stage-owned嵌套build `.tmp`，合计28,672,650 bytes；C盘门槛仍差约1.08GB，不能启动完整包装器链。详细证明在Round5 `evidence/U04-06-08/BASELINE.md`和`cleanup.json`。
 
 2026-11-09 Round5 U05-01/02：`PageHost`切换与紧凑任务详情过渡的双主题测试/Render QA已归档，页面激活后重排提交`25bcbf79`的#1423双SDK所有步骤success，产物身份见`evidence/U05-01-U06-07-U09-04-active-layout-20261102/ci-25bcbf79-final.json`。真实Playnite仍未验。已知SDK8工具目录不存在，系统列表仅9.0.302而global.json要求8.0.423；最终构建前恢复精确SDK，不能用9替代或改global.json。
+
+### 2026-11-09 Round5 U05-03/04 终态更新
+
+run #1341（18d73836）、#1342（498dd3a4）、#1343（bca60704）和#1345（5ee7be00）的基线SDK与SDK10 job均已核实终态success，job/artifact身份见 `evidence/U05-03-04/ci-run-40638353451-final.json` 与 `evidence/U05-04-help/ci-runs-final-20261109.json`。早期运行中快照只代表查询当时状态。U05-04补齐帮助弹层开闭、Escape和焦点回归证据；两项仍待真实Playnite/UIA/IME/物理DPI验收。更晚整合提交`25bcbf79`的#1423成功。`dccdaea`没有独立Actions run；后续run覆盖其父树。required-checks既有403不重试，远端待验。此文档复核未运行本机编译或删除阶段外文件。

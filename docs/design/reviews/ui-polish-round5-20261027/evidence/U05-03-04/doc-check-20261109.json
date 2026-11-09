@@ -1,0 +1,38 @@
+{
+  "checked_at_utc": "2026-11-09T14:15:20Z",
+  "scope": "纯文档与证据同步；未运行编译、行为测试或Render QA",
+  "source_validation": {
+    "command": "python scripts/validate-source.py",
+    "visibility": "Start-Process -WindowStyle Hidden -Wait",
+    "exit_code": 0
+  },
+  "markdown_links": {
+    "changed_markdown_files": 7,
+    "local_links_checked": 1012,
+    "missing_links": 0
+  },
+  "git_diff_check": "passed",
+  "temporary_output": {
+    "path": ".tmp/round5-u05-03-04-doc-check-20261109",
+    "removed": true,
+    "remove_command": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+    "file_count": 4,
+    "total_bytes": 864,
+    "reparse_points": 0,
+    "active_stage_processes": 0,
+    "document_references_before_cleanup": 0,
+    "files": [
+      { "name": "source-validation.stderr.txt", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+      { "name": "source-validation.stdout.txt", "bytes": 361, "sha256": "30760e7082311ac27aa2d981c07638fc2a4b11d039c265afb40365b1f98fbca6" },
+      { "name": "source-validation.txt", "bytes": 404, "sha256": "995c08a1547a52fb0d45c89f45344cebdd6b43dc1845369eed36f62308c57455" },
+      { "name": "summary.txt", "bytes": 99, "sha256": "fc955f6ca6dfea1dc1bd8b3ab2139a01b10f6c57cf6458e267fa342dcbec3ad9" }
+    ]
+  },
+  "disk_space_bytes": {
+    "before_validation": { "C": 3195961344, "D": 20186632192 },
+    "before_cleanup": { "C": 3194306560, "D": 20186562560 },
+    "after_cleanup": { "C": 3194306560, "D": 20186566656 },
+    "interpretation": "清理窗口内C未变化、D观测增加4096；不把期间波动归因于删除864字节验证日志。"
+  },
+  "unrelated_data": "未改动其他任务TRX/TestResults、存档、缓存、配置或卷/盘符。"
+}

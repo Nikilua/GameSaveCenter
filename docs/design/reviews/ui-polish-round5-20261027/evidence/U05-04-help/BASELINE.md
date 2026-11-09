@@ -8,6 +8,6 @@ SDK8.0.423 Release：首次帮助专项7/7，最终组合16/16、0失败、0跳�
 
 Source validation通过；XAML26/26；WPF静态37 XAML、0错误、26既有warnings/179 info。RenderHarness Release 0 warning/0 error，scripts/render-qa.ps1实际退出0，双主题394 PNG、0 PROBLEM、render-qa OK。报告见render-qa-report.txt，逐图身份见render-hashes.json。渲染编译发生在498dd3a4加本批工作树改动；其后只补说明卡UIA名称（无视觉差异），最终组合测试重新编译了此属性。未把候选渲染说成精确新提交身份。
 
-本批当前审计完整截图保留在 `.tmp/round5-u05-help/render`，原始TRX和命令日志保留在同阶段目录。持久证据保存报告、逐图hash和脱敏TRX，不复制全量截图。disk-before/after记录空间；本批输出仍在使用，无已确认无用的自有旧包或目录，删除清单为空；未清理用户及其他阶段的TRX/TestResults。后续只按路径边界/引用/占用检查安全清理。
+生成时的完整截图位于 `.tmp/round5-u05-help/render`；2026-11-09复查该路径及父目录均不存在，无法归因其移除，也不认领空间回收。持久证据保存报告、逐图hash和脱敏TRX，不复制全量截图。disk-before/after保留生成时空间快照；未清理用户及其他阶段的TRX/TestResults。
 
-U05-04状态为代码完成待验收。提交后查询该SHA双SDK所有适用CI job，尚不能称远端通过。整轮最终中文根入口完整构建/测试/发布/打包/安装身份/启动、独立scripts/build.cmd、真实Playnite/UIA客户端/物理IME及DPI仍未验；真实恢复、媒体删除与云端写入未执行。
+U05-04状态为代码完成待验收。提交498dd3a4、后续焦点/关闭修正bca60704及页面离开收尾5ee7be00的run #1342、#1343、#1345均为双SDK终态success；job、artifact ID/大小/digest见[CI终态汇总](ci-runs-final-20261109.json)。更晚整合源码 `25bcbf79` 的run #1423也双SDK成功，详见汇总引用。整轮最终中文根入口完整构建/测试/发布/打包/安装身份/启动、独立scripts/build.cmd、真实Playnite/UIA客户端/物理IME及DPI仍未验；真实恢复、媒体删除与云端写入未执行。

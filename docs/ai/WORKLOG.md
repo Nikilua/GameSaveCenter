@@ -13361,3 +13361,10 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 当前未在Playnite宿主观察真实动画/输入；#1423是CI全链，不等于整轮最新提交已完成中文包装器安装启动硬门禁。早期`.tmp/round5-u05-237e993f`和`round5-u05-batch`已不存在，本次没删文件，截图/测试日志与TRX继续保留。已知两个本地SDK8路径也不存在，`dotnet --list-sdks`仅见`9.0.302`，而`global.json`固定`8.0.423`；最终本地构建必须先恢复精确SDK，不改基线、不用SDK9替代。
 - 本次只同步文档及终态CI证据；后续运行source/link与JSON检查；required-check接口此前403，不重复探测。下一组继续U05-03/04，不等待真实宿主边界。
 - 隐藏Source Validation exit 0，Markdown链接1028条/缺失0，3个JSON有效，`git diff --check`通过；本次临时日志2份/361 bytes从精确`.tmp/round5-u05-doc-check-20261109`清理，清理前后C盘均3,210,297,344 bytes、D盘均20,188,397,568 bytes。C盘仍距4 GiB差1,084,669,952 bytes，未跑最终入口。
+
+## 2026-11-09 Round5 U05-03/04 终态CI与进度更正
+
+- U05-03/04既有实现与测试复核后没有新的生产源码改动。18d73836的run #1341、498dd3a4/#1342、bca60704/#1343、5ee7be00/#1345的基线SDK与SDK10 job现均已终态success；run/job/artifact ID、大小和digest写入对应 evidence JSON。`dccdaea`没有独立Actions run，后续精确提交和整合run #1423覆盖其父树。
+- 修正PROGRESS及证据中的过期“CI运行中/待查询”；U05-04原先缺的键盘帮助弹层开闭、Escape和回焦覆盖见追补证据。两项仍是代码完成待验收，真实Playnite/UIA/IME/实体DPI未验；required-checks既有403仍记远端待验。
+- 文档Source Validation exit 0；7个变更Markdown文件共1012条本地链接、缺失0；`git diff --check`通过。只删除本阶段自建 `.tmp/round5-u05-03-04-doc-check-20261109` 4文件/864字节的校验输出，前后C无变化、D观测+4096字节，不归因于清理；具体哈希/快照见 `evidence/U05-03-04/doc-check-20261109.json`。其余本阶段临时目录原本已不存在，没有动用户/其他任务TRX/TestResults。
+- 当前提交前只做文档/链接/JSON检查，不开WPF窗口、不启动构建。整轮根入口仍需准确SDK8、C≥4GiB/D≥3GiB并完成安装身份/启动硬门禁。
