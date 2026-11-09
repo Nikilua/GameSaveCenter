@@ -20,11 +20,11 @@
 
 ## GitHub CI 与边界
 
-- 精确修复提交 `4225eb17139a844ede87219f02a9ad97e88a12de` 已推送；run `40578426793`（#1334）baseline job `122451017347`、SDK10.0.401 job `122451017062`在运行。纯文档提交 `06d4e854` 的 run `40575315327`（#1333）baseline `122440055009`、SDK10 `122440055220`也在运行。run/job/artifact快照见同目录上层 `../U03-08-U04-01-02/ci-runs.json`。
+- 精确修复提交 `4225eb17139a844ede87219f02a9ad97e88a12de` 的 run `40578426793`（#1334）与纯文档提交 `06d4e854` 的 run `40575315327`（#1333）均已终态 failure；双 SDK job 的具体失败和原始 artifact 留在同目录上层 `../U03-08-U04-01-02/ci-runs.json`，不再写作“运行中”。后续完整冻结候选 `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7` 已包含本批与 U04-04 修正；其 push run `40900374673`（#1398）baseline job `123540700192` 和 SDK10 job `123540699717` 全部 success，完整链与 artifact 身份见[冻结门禁证据](../U09-final-5c0c57b0/BASELINE.md)及`github-ci.json`。这不替代真实宿主/实体输入验收。
 - 旧失败 run `40571484630` 与 `40572542627` 的两套 SDK 原始 job 日志已读取：唯一失败是 `SharedDisclosureChevronUsesDemoRotationTiming` 仍要求 `To="-90" Duration="0:0:0.15"`；对应 CI artifact ID、尺寸、SHA-256 在 `ci-runs.json`。较早 run `40570767550` 的 R08 跨 STA `Application.set_ShutdownMode` 故障也按测试宿主问题修正；这些旧失败保留为历史，不重跑。
 - required-checks API 曾返回 403 `Resource not accessible by integration`，因此仍不能确认 branch protection 要求。真实 Playnite 主机、实际 UIA 客户端、Narrator、物理鼠标/IME、实体 DPI 和外部显示器均未验；只做离屏与合成输入。真实存档恢复、媒体删除和云写入没有执行。最终候选根入口全链及独立 `scripts/build.cmd` 尚未开始。
 
 ## 输出与清理
 
-- Render QA 当前输出：395 文件/53,246,317 bytes；隔离测试 build 输出：330 文件/28,891,017 bytes。两者均为本批自有 `.tmp` 目录，保留当前审计与可复现输出；没有重复保存 PNG。
+- 当时生成的 Render QA 输出为395文件/53,246,317 bytes；隔离测试 build 输出为330文件/28,891,017 bytes。2026-11-09边界复核时两个精确 `.tmp` 目录均已不存在；本次未执行删除、未发现可归因的回收，也不声称这些本机报告/图像仍可读取。最终冻结候选的渲染与完整链证据见上方链接。
 - 运行前空闲：C `1,478,320,128` bytes、D `6,165,086,208` bytes；完成后 C `1,473,875,968`、D `4,474,048,512`。本批可计量输出约 82,137,334 bytes；D 盘另有约 1.61 GB 空间变化无法归因到本批，未据此清理其他目录。已记录的旧 `.tmp` 删除尝试曾被执行策略拒绝，本轮没有更换删除方式，也未删除任何其他任务的 TRX、TestResults、存档、配置或未知文件。

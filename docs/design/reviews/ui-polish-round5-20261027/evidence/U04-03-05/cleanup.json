@@ -37,5 +37,21 @@
     "unattributedDDeltaBytes": -1608900362,
     "note": "Only current batch-owned .tmp paths are counted; remaining observed D free-space change is unattributed and was not used to target cleanup."
   },
-  "priorCleanupConstraint": "A prior Remove-Item attempt on another Round5 .tmp directory was rejected; this batch did not retry through another shell or delete route."
+  "priorCleanupConstraint": "A prior Remove-Item attempt on another Round5 .tmp directory was rejected; this batch did not retry through another shell or delete route.",
+  "latestRecheck": {
+    "timestampLocal": "2026-11-09",
+    "targets": [
+      ".tmp/round5-u04-03-05-build-06d4e854",
+      ".tmp/round5-u04-03-05-render-06d4e854",
+      ".tmp/round5-u04-03-05-render-4225eb17",
+      ".tmp/round5-u04-04-indicator-388c46ea"
+    ],
+    "allAbsent": true,
+    "deleted": [],
+    "freeBytesAtRecheck": {
+      "C": 3194474496,
+      "D": 20194291712
+    },
+    "spaceRecoveryAttributed": 0
+  }
 }

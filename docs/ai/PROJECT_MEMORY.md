@@ -1985,3 +1985,5 @@ SDK10 隔离 WPF 桌面没有在 250ms 内稳定产生 Storyboard 进入/退出�
 `scripts/build.cmd` 不启动 Playnite；中文完整Run入口会在安装插件前关闭 Playnite，安装完成后再普通启动。反复跑完整链会反复切换宿主进程/窗口，所以它是构建时可见窗口变化的潜在来源；用户截图没有 HWND/PID，不能声称已确认。以后小批只用 build.cmd；完整根链按最终候选一次执行，需先确定安全的宿主启动路径。现存无主窗 Playnite/Worker 未动，盘符/挂载也不动。
 
 2026-11-09 Round5 U03-08/U04-01/02复核：早期 CI #1330–#1334失败已结束且历史保留，冻结整合提交`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`的run #1398 / `40900374673`双SDK job成功；真实Playnite、外部UIA、物理鼠标/IME/DPI仍待验。对应PROGRESS与门禁链接已同步。该批旧Render QA `.tmp`目录只读复核时已不存在，不能归因释放空间。
+
+2026-11-09 Round5 U04-03/04/05/07：U04-04标题避让修正`388c46ea`包含在冻结整合SHA `5c0c57b0…`；旧#1333/#1334失败已结束并保留，#1398双SDK完整链成功。页签/输入/动效任务仍待真实Playnite、外部UIA、IME、物理输入和DPI验收。记录见Round5 `evidence/U04-03-05/BASELINE.md`、`evidence/U04-indicator-gap-20261029/BASELINE.md`及 `evidence/U09-final-5c0c57b0/BASELINE.md`。历史本机`.tmp`目录复核时均不存在，未进行删除或声称释放空间。

@@ -13341,3 +13341,10 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 冻结整合提交 `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7` 的 GitHub run `40900374673` / #1398 两个适用 job 全部 success，包含全链 build/test/render/static review/package。artifact SHA 与 job ID 已在Round5 `evidence/U09-final-5c0c57b0/github-ci.json`核对；该整合门禁覆盖本批资源。U03-08/U04-01/02仍因真实Playnite、UIA客户端、物理输入和实体DPI未验而保持“代码完成待验收”。
 - `.tmp/round5-u03-08-u04-01-02-render-95b5dbf9`复核时已不存在；未执行删除，也不把不可归因的空间变化计入回收。文档检查日志2份/361 bytes随后从精确阶段`.tmp/round5-u03-08-doc-check-20261109/`删除；清理前后C盘均3,193,511,936 bytes、D盘均20,195,618,816 bytes，未增加空间。C仍低于完整根入口4 GiB；未触碰系统缓存、卷/盘符、用户/其他任务TRX或TestResults。
 - 隐藏Source Validation exit 0，Markdown链接1007条/缺失0，3个JSON有效，`git diff --check`通过；不重跑本地完整链。分支保护required-check API既有403，仍“远端待验”，不重试同一权限拒绝。
+
+## 2026-11-09 Round5 U04-03/04/05/07 状态与输出复核
+
+- 复核按压释放/命令安全、页签选择提示、输入即时反馈和减少动效覆盖；没改生产资源或行为。U04-04 的原始 e6 快照只作失败/修复对照，实际修正 `388c46ea` 已纳入冻结整合 SHA `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`。
+- 早期 run #1333 / `40575315327` 与 #1334 / `40578426793` 已终态 failure，原始诊断仍在 Round5 `U03-08-U04-01-02/ci-runs.json`；不再标“运行中”。冻结整合 run #1398 / `40900374673` 两个 job success，含全链、打包与双 SDK 复核；完整 artifact/安装身份见 `evidence/U09-final-5c0c57b0/BASELINE.md`。真实宿主/UIA/IME/物理输入/DPI仍未验。
+- `.tmp/round5-u04-03-05-build-06d4e854`、`round5-u04-03-05-render-06d4e854`及复核候选的两个已知临时目录均不存在；没有删除，也不归因释放空间。检查时C/D分别3,194,474,496 / 20,194,291,712 bytes。历史报告中的旧输出尺寸保留为生成时记录，不再说“当前存在”。
+- 本批隐藏Source Validation exit 0，Markdown链接1006条/缺失0，3个JSON有效，`git diff --check`通过；仅文档证据变更，不重跑本地完整链。验证日志2份/361 bytes从精确阶段`.tmp/round5-u04-doc-check-20261109/`删除；删除前后C盘均3,203,391,488 bytes、D盘均20,194,029,568 bytes，没有可归因回收。required-check接口此前403，继续远端待验。

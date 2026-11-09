@@ -738,3 +738,5 @@ SDK8.0.423 Release 的 CI #1488 紧凑任务详情动画等待测试改用有界
 生产 `GscWpfUiComboBoxTemplate` 和 `GscCheckBox` 覆盖长值显示、独立箭头列、Popup限高/滚动/方向键、混合态、长标签、整体命中区、Space及禁用状态。U03-06/07仅新增ComboBox源码守护测试；8份归档TRX哈希全部匹配，postcommit专项13/13、0失败/skip。GitHub run #1328两套SDK job成功，artifact见Round5 `evidence/U03-06-07/ci-run-40567683673.json`。仍待真实Playnite、Narrator/外部UIA、物理输入与实体DPI验收；不改游戏选框、DropDownClosed契约、滚动条或虚拟化。
 
 2026-11-09 Round5 U03-08/U04-01/02：共享数值/路径控件、双主题动效和扫过行为已有精确测试/渲染证据。早期双SDK失败均已结束并保留；冻结整合SHA `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7` 的GitHub run `40900374673`/#1398双job success，artifact身份见Round5 `evidence/U09-final-5c0c57b0/github-ci.json`。三个任务仍待真实宿主/输入验收。检查/清理时C盘3,193,511,936 bytes、D盘20,195,618,816 bytes，清理前后未增加；完整根入口要求C≥4 GiB、D≥3 GiB，C不足时不运行完整安装启动链。旧U03渲染`.tmp`路径只读确认已不存在。
+
+2026-11-09 Round5 U04-03/04/05/07：共享页签提示条修正 `388c46ea` 已包含于冻结整合候选 `5c0c57b0…`；#1333/#1334历史失败终态已核，run #1398 双 SDK 完整链成功。四项仍待真实宿主/UIA/IME/实体输入与DPI验收。历史U04测试及Render QA `.tmp`目录已不存在；最新复核未删除文件，也不认领回收空间。当前完整链预检测得C盘3,203,391,488 bytes（距4 GiB差1,091,575,808 bytes）、D盘20,194,029,568 bytes；C不足时继续独立任务，不运行安装启动链。

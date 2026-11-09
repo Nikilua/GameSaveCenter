@@ -9,3 +9,7 @@
 before是原样e6生产快照，after是同一快照只覆盖当前Redesign.xaml，控件数据完全相同，8+8图及真实时间CSV已保留；after实际源文件哈希见candidate.json，首版pair-preparation.json只作基线/仪器身份记录，不能替代最终候选哈希。浅深色样图已查看，提示条已离开文字区。仪器不测实际宿主或物理帧率，不执行真实恢复/媒体删除/云写入。
 
 当前检查发生在e6基础脏候选，尚未提交冻结；新候选必须独立完成中文根入口全链、scripts/build.cmd和双SDK CI。先前e6门禁虽然全部成功，只证明e6，见../U09-final-e6e7f3b9/BASELINE.md；不会冒充本候选通过。真实宿主、实体输入/DPI及required-check403边界保留。
+
+## 后续冻结候选复核（2026-11-09）
+
+本页的 e6e7f3b9 几何红绿快照保留为历史对照，之后的生产修正提交 `388c46ea` 已纳入冻结整合候选 `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`。该精确 SHA 的中文入口完整链与独立 `scripts/build.cmd` 均已 exit 0；GitHub run `40900374673`（#1398）的基线和 SDK10 job全部 success，完整身份、产物与安装核验见[冻结门禁](../U09-final-5c0c57b0/BASELINE.md)。所以 e6 的早期门禁不作为 388c 修正的通过证明；后续冻结候选才是最终集成验证。真实 Playnite 呈现、UIA/实体输入、DPI和 required-check名单仍待验。
