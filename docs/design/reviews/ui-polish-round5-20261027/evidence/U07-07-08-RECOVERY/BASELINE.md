@@ -7,3 +7,12 @@ SDK 8.0.423 Release下，未提交候选和精确提交 `0aff7f32aab4fb31940fd79
 实现源码现已提交并推送为 `0aff7f32aab4fb31940fd791c1486c67d36ebdbd`；逐文件SHA见 `evidence.json`。固定UTC Render QA在提交前候选运行，报告内保留当时基线身份 `17d883abd084e3a2a646c1879f45ecbacd6d9dee` 和 dirty 状态；其源码文件SHA与该提交一致，394张图的SHA见 `screenshots.json`。GitHub当前提交run会再次执行精确SHA渲染，尚待终态。测试/报告脱敏副本均记录原始和脱敏SHA，临时测试TRX清理及空间记录见 `cleanup.json`；Render QA目录保留供复核。
 
 U07-07 的设置提示早已在生产页存在，本批以守护断言确认其紧邻开关和被禁用的间隔字段；旧局部证据见 [U07-07-08](../U07-07-08/BASELINE.md)。当前提交 run `40749256118` 的 baseline job `123031214603` 与 SDK10 job `123031215214` 尚在运行，无artifact；之前 required-checks 查询权限为403，状态保持“远端待验”。真实Playnite宿主、实体键盘/IME/外部UIA、物理DPI仍待验。本批未运行存档恢复、媒体删除或云端写入。
+
+
+## 2026-11-10 当前共同源码复核
+
+当前恢复分类、任务重试范围和设置依赖守护在共同源码e570f7b7中保持原行为；`src/tests/scripts`与精确SHA无差异。GitHub [共同源码run #1500身份](../U09-05-full-build-e570f7b7-20261109/ci-run-1500.json)的baseline与SDK10 workflow均全步骤success，覆盖当前Release测试、WPF静态审查及双主题394图Render QA。现有精确实现提交`0aff7f32`恢复分组10/10、0 skip。旧测试辅助器第一次找不到可见文本节点的失败仍保留；修正测试按XAML名称取元素后10/10通过，原生产命令/Worker/云端写入流程未改。
+
+浅/深主题设置和任务错误详情截图为2026-10-30、1040×700 DIP离屏对照：依赖说明靠近自动恢复开关/禁用间隔；错误卡呈现权限失败细节和“检查目标权限、核对上次远端结果后再决定是否重试”。这不能替代真实Playnite或外部UIA。未知远端结果仍先核对是否收到提交；本轮没有恢复存档、删除媒体或写云端。U07-07/08继续代码完成待验收，真实宿主/键鼠/IME/DPI待验。
+
+本批文档门禁：Source Validation exit0，6份Markdown共1,019条本地链接缺失/越界均0，git diff --check exit0；仅生成后精确删除仓库.tmp/r5-u07-07-08-doc-check-20261110内3个日志共1,287 bytes，先核对仓库边界和无重解析点。C/D校验前3,107,606,528 / 20,172,136,448 bytes，校验后3,107,074,048 / 20,172,136,448 bytes，不将空间变化归因于小日志清理。最新已查询的#1522 baseline/SDK10 job仍运行，远端未通过也未失败。
