@@ -32,8 +32,10 @@ R08 页面切换行为组新增回归：Task 页面以 1366 宽度激活时更�
 
 ## 宿主与门禁边界
 
-GitHub `windows-build.yml` 的 f1a614a8 精确 run 41371608155 (#1421) 两个适用 job 均已 completed/success，job IDs 为 125043065473 和 125043065257；baseline、SDK10 和 preview artifact 的 IDs/digest 见 [终态快照](ci-f1a614a8-final.json)。de9fe37d 文档提交 run 41376045182 (#1422) 的 job 125056390199 与 125056389840 及所有步骤亦均 success，artifact 见 [终态快照](ci-de9fe37d-final.json)。本提交 25bcbf79 的 run 41379419270 (#1423) 在最近快照中 baseline job 125066713824 仍处于“编译与测试”，SDK10 job 125066714190 已成功；见 [查询快照](ci-25bcbf79-query.json)。运行中不计通过，终态与产物尚待复查。
+GitHub `windows-build.yml` 的 f1a614a8 精确 run 41371608155 (#1421) 两个适用 job 均已 completed/success，job IDs 为 125043065473 和 125043065257；baseline、SDK10 和 preview artifact 的 IDs/digest 见 [终态快照](ci-f1a614a8-final.json)。de9fe37d 文档提交 run 41376045182 (#1422) 的 job 125056390199 与 125056389840 及所有步骤亦均 success，artifact 见 [终态快照](ci-de9fe37d-final.json)。本提交 25bcbf79 的 run 41379419270 (#1423) 后续已完成：baseline job 125066713824 的15步与SDK10 job 125066714190的8步全部success。三个产物的 ID、digest、head SHA和有效期见[终态快照](ci-25bcbf79-final.json)；原[运行中快照](ci-25bcbf79-query.json)保留为查询时历史。
 
 本批自有输出的路径归属、重解析点/运行占用/引用核对、清理命令和前后磁盘空间见 [清理记录](cleanup.json)；归档文件 SHA 清单见 [files.json](files.json)。
 
 没有在真实 Playnite/FusionX 宿主中运行本批页面，也没有验证外部 UIA 客户端、实体键鼠/IME、物理 DPI、多屏或真实呈现帧。required checks API 曾返回 403，保留“远端待验”并按已有流程交由有权限维护者读取，不重复探测。最终中文根入口完整构建/测试/发布/打包/安装身份/启动，以及独立 `scripts/build.cmd`，仍要在冻结最终候选上执行。
+
+本页复核于2026-11-09：本批自有 `.tmp/round5-u05-237e993f`、`.tmp/round5-u05-batch` 均不在仓库中，未执行删除或声称回收空间；截图、测试日志/TRX、QA报告仍归档在本目录。独立活动页面重排提交 `25bcbf79` 的双SDK CI已终态通过，但本机 `global.json` 要求SDK 8.0.423，当前 `dotnet --list-sdks` 只有 9.0.302，已知本地临时SDK路径亦不存在；不得用SDK9替代，冻结最终候选前须恢复准确的8.0.423工具链。当前分支尚未完成最终中文根入口安装/启动链。

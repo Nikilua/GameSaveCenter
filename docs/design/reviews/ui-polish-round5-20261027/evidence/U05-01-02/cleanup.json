@@ -42,5 +42,32 @@
     "currentRetainedOutputsReparsePoints": 0,
     "oldQ14OutputStillExists": false,
     "artifactsRootUntouched": true
+  },
+  "latestRecheck": {
+    "timestampLocal": "2026-11-09",
+    "alreadyAbsent": [
+      ".tmp/round5-u05-237e993f",
+      ".tmp/round5-u05-batch",
+      ".tmp/round5-u02-sdk8.0.423",
+      ".tmp/round5-u09-01-03/dotnet-sdk8"
+    ],
+    "deleted": [],
+    "spaceRecoveryAttributed": 0,
+    "freeBytesAtRecheck": {
+      "C": 3207536640,
+      "D": 20220162048
+    },
+    "archivedEvidenceStillPresent": [
+      "render/render-qa-report.txt",
+      "render/before and render/after comparison screenshots",
+      "tests/u05-focused-sdk8.log",
+      "tests/u05-focused-sdk8.trx"
+    ],
+    "sdkState": {
+      "globalJsonRequired": "8.0.423",
+      "dotnetListSdks": ["9.0.302"],
+      "knownLocalSdkPathsFound": false,
+      "action": "Do not use SDK 9.0.302 as a substitute; restore the exact repository baseline SDK before the final root build."
+    }
   }
 }

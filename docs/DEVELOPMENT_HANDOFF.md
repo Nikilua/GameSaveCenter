@@ -1550,3 +1550,5 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 2026-11-09 Round5第二批接续：U04-03/04/05/07历史状态已核正，旧 #1333/#1334 双SDK失败终态保留；冻结候选 #1398 双job全绿，身份见对应证据文档。U04-04的 `388c46ea` 修正已纳入冻结候选，e6只作历史配对。随后可按PROGRESS推进U04-06/08；这批本地临时输出路径均已不存在。纯文档检查不重复build。最近C盘实测3,203,391,488 bytes（距4 GiB差1,091,575,808 bytes），D盘20,194,029,568 bytes；不能因用户先前报告释放就跳过硬门槛。最终入口前给用户PowerShell正常关闭Playnite主窗的命令，由Playnite自行退出Worker；不强杀进程、不做卷/盘符操作。
 
 2026-11-09 Round5第三批接续：U04-06/08历史终态与cleanup已核实。#1335原始源码两job failure是Q14夹具初始化，后续冻结候选#1398全链/双SDK success；真实Playnite/取消/窗口失活仍待验。四个stage-owned构建`.tmp`输出已安全删除，精确清单见Round5 `evidence/U04-06-08/cleanup.json`。最近检查C盘3,211,915,264 bytes，距4 GiB差1,083,052,032 bytes；D盘20,221,698,048 bytes。下一小批按PROGRESS推进U05-01/02，不因该空间门槛停止独立视觉任务；完整中文入口前仍须满足门槛并让用户按PowerShell命令正常关闭Playnite，不强杀Worker。
+
+2026-11-09 Round5第四批接续：U05-01/02两SDK任务CI状态已核实，活动页重排SHA `25bcbf79…` 的#1423双job success；真实宿主仍待验。相关`.tmp`输出均不存在，归档截图/TRX/log保留。最终本地硬门禁当前缺C盘约1.08GB并且准确SDK8.0.423未安装（只有SDK9.0.302）；恢复8.0.423后继续，不改`global.json`、不替换SDK。下一批按进度推进U05-03/04。

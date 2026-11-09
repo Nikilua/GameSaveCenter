@@ -13354,3 +13354,10 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - U04-06中途禁用和U04-08对象生命周期既有精确SDK8套件13/13、0 skip，测试/源码静态证据保留。源码run #1335 / `40583173450`两适用job均已终态failure，原因是Q14夹具对默认ComboBox.Text的错误预期；原artifact `12770991617`/`12770842930`及其诊断历史保留。修复后的冻结整合SHA `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`之#1398双job success，完整链、Render QA、打包和安装身份见Round5 `evidence/U04-06-08/BASELINE.md`与`evidence/U09-final-5c0c57b0/BASELINE.md`。真实取消命令/窗口失活和Playnite宿主仍待验，未调用真实恢复、媒体删除或云写入。
 - 对比后确认旧render与测试根`.tmp`已不存在；只删除四个经规范化、仓库边界/无重解析点/无运行进程/无文档引用检查的本阶段嵌套build `.tmp`，共318文件/28,672,650 bytes。D空闲观察+29,483,008 bytes、C+65,536 bytes；不把全部差值归因删除，不触碰用户/其他任务TestResults。命令、路径和前后快照见`evidence/U04-06-08/cleanup.json`。
 - 文档Source Validation exit 0，Markdown链接1006条/缺失0，3个JSON有效，`git diff --check`通过；本次临时验证日志2份/361 bytes经边界检查后精确清理，清理前后C/D均无变化。最新C盘观测3,211,915,264 bytes，距离完整入口4 GiB仍差1,083,052,032 bytes；D盘20,221,698,048 bytes已满足3 GiB。未启动完整安装/启动链。进度仍“代码完成待验收”，下一组按PROGRESS推进U05-01/02。
+
+## 2026-11-09 Round5 U05-01/02 状态复核
+
+- 两项页面/详情轻量过渡保持“代码完成待验收”。本地已有SDK8.0.423行为5/5、0 skip，Render QA 394图/0 PROBLEM，截图/报告与focused TRX/log均归档；活动工作区重排后续提交 `25bcbf79` 的run #1423 / `41379419270`现为终态success，baseline job `125066713824` 15步和SDK10 job `125066714190` 8步全部成功，三个artifact的ID/digest/head SHA见 `evidence/U05-01-U06-07-U09-04-active-layout-20261102/ci-25bcbf79-final.json`。
+- 当前未在Playnite宿主观察真实动画/输入；#1423是CI全链，不等于整轮最新提交已完成中文包装器安装启动硬门禁。早期`.tmp/round5-u05-237e993f`和`round5-u05-batch`已不存在，本次没删文件，截图/测试日志与TRX继续保留。已知两个本地SDK8路径也不存在，`dotnet --list-sdks`仅见`9.0.302`，而`global.json`固定`8.0.423`；最终本地构建必须先恢复精确SDK，不改基线、不用SDK9替代。
+- 本次只同步文档及终态CI证据；后续运行source/link与JSON检查；required-check接口此前403，不重复探测。下一组继续U05-03/04，不等待真实宿主边界。
+- 隐藏Source Validation exit 0，Markdown链接1028条/缺失0，3个JSON有效，`git diff --check`通过；本次临时日志2份/361 bytes从精确`.tmp/round5-u05-doc-check-20261109`清理，清理前后C盘均3,210,297,344 bytes、D盘均20,188,397,568 bytes。C盘仍距4 GiB差1,084,669,952 bytes，未跑最终入口。
