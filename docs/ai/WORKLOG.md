@@ -13325,3 +13325,12 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - Source Validation显示通过，脚本成功分支返回0；PROGRESS两条新链接与U03-04/05 BASELINE七条链接均可解析，三个JSON可读，`git diff --check`通过。仅改文档和证据，不开WPF窗口、不运行本地完整链。
 - 历史53,147,489字节U03临时Render QA目录在只读复查时已不存在，不推断其来源或释放空间。只清理本阶段创建的 `.tmp/round5-u03-04-05-doc-check-20261109`（3文件/362字节），用PowerShell精确LiteralPath命令删除；C盘该次前后均为3,205,689,344 bytes，D盘20,198,727,680→20,198,731,776 bytes。稍后只读C盘观测为3,204,767,744 bytes，变化不归因于本批；仍低于完整根入口4 GiB要求，不触碰系统缓存、用户/其他任务TRX、TestResults、存档或盘符。
 - U03-04/05仍“代码完成待验收”，只缺真实Playnite、外部UIA客户端、物理输入与实体DPI验收。整轮计数保持6项已满足、70项代码完成待验收、3项进行中、1项远端待验。
+
+## 2026-11-09 Round5 U03-06/07 下拉与勾选去重复核
+
+- 复核生产 `GscWpfUiComboBoxTemplate`：选中内容与20-DIP箭头列分开，长显示文本省略并可查看全值；Popup沿用高度上限、滚动与方向键导航。生产 `GscCheckBox`保留已选/不确定/禁用标记，长标签换行、焦点与框体/标签/空隙共享激活面。没有发现需要新造生产资源的缺口，也未改变当前游戏选框、DropDownClosed提交契约或保存时机。
+- `tests-manifest.json`中8份TRX均存在且SHA-256匹配；提交`5300a2b5c70f7736f1f46617667de73749b8d883`的postcommit专项集13/13、0失败/skip。该提交只改源码守护测试，故不重复生成生产控件图或跑Render QA。
+- GitHub run `40567683673` / #1328 对该精确SHA的baseline job `122413211080` 15/15步与SDK10.0.401 job `122413210438` 8/8步均success；扩展包与两份诊断artifact的ID/大小/SHA见`evidence/U03-06-07/ci-run-40567683673.json`。required-checks仍因既往403标“远端待验”。
+- 本批未运行本地WPF窗口、编译、行为测试或Render QA。隐藏Source Validation产生日志2份/361 bytes，放在精确阶段`.tmp/round5-u03-06-07-doc-check-20261109/`，确认无引用、重解析点或占用后使用PowerShell `Remove-Item -LiteralPath -Recurse -Force`清除；该次C盘前后均3,197,964,288 bytes、D盘前后均20,197,036,032 bytes，没有释放有效空间。只读阶段观察C盘3,200,520,192→3,197,964,288 bytes、D盘20,197,179,392→20,197,036,032 bytes；波动不归因本批。没有操作用户及其他任务TRX、共享TestResults、存档或盘符。
+- 本批Source Validation exit 0，PROGRESS 2条链接和U03-06/07 BASELINE 4条链接均可解析；3个相关JSON有效，8份TRX SHA-256匹配，`git diff --check`通过。纯文档与证据更新不重复本地WPF/完整链。
+- U03-06/07继续“代码完成待验收”，真实Playnite、Narrator/实际UIA客户端、物理鼠标与实体DPI未验。整轮任务计数未变。

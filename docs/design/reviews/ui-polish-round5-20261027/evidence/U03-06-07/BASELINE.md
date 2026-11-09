@@ -24,6 +24,10 @@ TRX及SHA-256见 [`tests-manifest.json`](tests-manifest.json)。源码检查通�
 
 ## 远端与未验边界
 
-GitHub run `40567683673`（提交 `5300a2b5`）的baseline job `122413211080` 与SDK10.0.401 job `122413210438` 当前均在编译/测试，尚无artifact，不能记为通过。上一源码 run `40566121765` 的两个job也仍运行。CI完整快照见 [`CI 清单`](../U02-05-06/ci-runs.json)；required-checks接口此前 HTTP 403，故远端待验。
+GitHub workflow `.github/workflows/windows-build.yml` 对精确提交 `5300a2b5c70f7736f1f46617667de73749b8d883` 的 run `40567683673`（#1328）已完成：baseline job `122413211080` 的15步与SDK10.0.401 job `122413210438` 的8步全部成功。扩展包 artifact `12768025071`（90,778,190 bytes，SHA-256 `2c5705e41535b272f01f11e42722c1d93fe9097ade808a31fb7be3731481bb8f`）；baseline诊断 `12767114031`（1,970,030 bytes，SHA-256 `7abaa0e3f460db384e6061e324a9107a5582f3e6a9e058cb5ac5b467c8b617f9`）；SDK10诊断 `12764309162`（943,542 bytes，SHA-256 `02cc2417f1a6d58d0a1f2542bbdc2aae20df750d121b7991ea6de1088a95a0f6`）。完整job/artifact身份见 [`ci-run-40567683673.json`](ci-run-40567683673.json) 与 [`CI清单`](../U02-05-06/ci-runs.json)。required-checks接口此前HTTP 403，分支保护状态仍“远端待验”。
 
 行为测试通过不等同于真实Playnite宿主、物理输入、Narrator/真实UIA客户端或实体DPI验收。没有触发保存命令、真实存档恢复、媒体删除或云端写入。
+
+## 本轮复核输出与磁盘快照
+
+2026-11-09 20:32 +08:00 只读观测：C盘空闲 `3,200,520,192` bytes，D盘空闲 `20,197,179,392` bytes。本轮没有本地build、行为测试或Render QA；Source Validation的隐藏进程日志只创建于仓库 `.tmp/round5-u03-06-07-doc-check-20261109/`（2文件/361 bytes），已核对边界、无重解析点/引用/进程占用后用PowerShell `Remove-Item -LiteralPath -Recurse -Force`删除。清理时C盘前后 `3,197,964,288` bytes、D盘前后 `20,197,036,032` bytes，未释放有效空间。真实宿主/UIA/鼠标/DPI边界保持未验。

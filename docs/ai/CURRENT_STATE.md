@@ -732,3 +732,7 @@ SDK8.0.423 Release 的 CI #1488 紧凑任务详情动画等待测试改用有界
 ### 用户再次报告闪屏：区分build与完整运行入口
 
 只读核对当前脚本：`scripts/build.cmd` 最终只运行 `build.ps1`，不启动 Playnite；完整中文包装器转交 `GameSaveCenter-Run.cmd`，其 `dev-install-run.ps1` 在打包后关闭 Playnite/自有 Worker、安装插件，再普通启动 Playnite。重复完整链会重复重启宿主，属于潜在可见闪窗路径；但截图无 HWND/PID，不能将具体黑窗归因于它。小批只用 build.cmd；冻结候选完整安装启动另择不打扰交互桌面的验收方式。旧 Playnite PID 23488、Worker PID 30516 未操作。
+
+## 2026-11-09 Round5 U03-06/07 下拉与勾选复核
+
+生产 `GscWpfUiComboBoxTemplate` 和 `GscCheckBox` 覆盖长值显示、独立箭头列、Popup限高/滚动/方向键、混合态、长标签、整体命中区、Space及禁用状态。U03-06/07仅新增ComboBox源码守护测试；8份归档TRX哈希全部匹配，postcommit专项13/13、0失败/skip。GitHub run #1328两套SDK job成功，artifact见Round5 `evidence/U03-06-07/ci-run-40567683673.json`。仍待真实Playnite、Narrator/外部UIA、物理输入与实体DPI验收；不改游戏选框、DropDownClosed契约、滚动条或虚拟化。

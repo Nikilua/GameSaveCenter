@@ -1,0 +1,57 @@
+{
+  "run": {
+    "id": 40567683673,
+    "number": 1328,
+    "workflow": ".github/workflows/windows-build.yml",
+    "event": "push",
+    "headBranch": "main",
+    "headSha": "5300a2b5c70f7736f1f46617667de73749b8d883",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40567683673"
+  },
+  "jobs": [
+    {
+      "id": 122413211080,
+      "name": "编译、测试与打包",
+      "sdk": "repository SDK baseline",
+      "status": "completed",
+      "conclusion": "success",
+      "stepCount": 15,
+      "allStepsSucceeded": true
+    },
+    {
+      "id": 122413210438,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "success",
+      "stepCount": 8,
+      "allStepsSucceeded": true
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12768025071,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90778190,
+      "sha256": "2c5705e41535b272f01f11e42722c1d93fe9097ade808a31fb7be3731481bb8f",
+      "expired": false
+    },
+    {
+      "id": 12767114031,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 1970030,
+      "sha256": "7abaa0e3f460db384e6061e324a9107a5582f3e6a9e058cb5ac5b467c8b617f9",
+      "expired": false
+    },
+    {
+      "id": 12764309162,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 943542,
+      "sha256": "02cc2417f1a6d58d0a1f2542bbdc2aae20df750d121b7991ea6de1088a95a0f6",
+      "expired": false
+    }
+  ],
+  "note": "This commit changes only a source regression guard and does not alter production WPF resources. The focused SDK 8.0.423 set is 13/13; physical Playnite host, Narrator/external UI Automation client, physical pointer and physical DPI remain unverified. Required-check/ruleset access previously returned HTTP 403, so branch-protection status stays remote-pending."
+}
