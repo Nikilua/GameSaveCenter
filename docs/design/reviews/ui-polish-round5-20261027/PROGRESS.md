@@ -769,8 +769,8 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 | U06-02 | 悬停选中焦点叠加 | 代码完成待验收 | 共享裁切/选框几何修正：Overview时间、Save末列和Task状态/详情落在框内；保留内容锚点、蓝色选择/悬停/焦点与滚动条 | [当前边界修复与验证](evidence/U09-05-selection-boundary-20261109/README.md)；[Light/Dark当前资源截图](evidence/U09-05-selection-boundary-20261109/captures/overview-light-992.png)；[旧U06R5历史](evidence/U06R5-2911/BASELINE.md) | e570f7b7共同源码下行为11/11与R10追补3/3；资源字典140 pass、39条撤销架构断言NotExecuted不计通过；双主题Render QA394图/0 PROBLEM，#1500双SDK成功；旧U06R5“今日工作台”图不作当前布局验收，真实Playnite/UIA/键鼠IME/物理DPI待验 |
 | U06-03 | 行内操作显隐 | 代码完成待验收 | 复用常显文字动作与稳定对象参数；双主题焦点/受控悬停、列宽与UIA Invoke目标检查 | [证据](evidence/U06-03-04/BASELINE.md)；[修正候选CI身份](evidence/U06-03-04/ci-run-40647037308.json) | 原39c6ad80/e4285c05失败保留历史；修正提交3ecacdc0的run40647037308中SDK8基线job122678147577与SDK10 job122678147262全步骤success，3个artifact均绑定同SHA；共同源码e570f7b7的#1500基线job129033708852与SDK10 job129033708730全流程成功；真实宿主/UIA/实体键鼠与物理DPI待验 |
 | U06-04 | 工具栏拥挤分级 | 代码完成待验收 | 已核对存档/媒体/维护/概览工具栏既有换行和保留数量；任务详情入口并回主操作行、任务列设置/重置收进既有视图配置展开区；媒体模式、当前游戏目标、批量归类和详情入口保持可见，低频清空/重置收进页脚 | [既有跨页行为](evidence/U06-03-04/BASELINE.md)；[任务页前后证据](evidence/U00-07-U06-04-task-toolbar-20261030/BASELINE.md)；[媒体页前后证据](evidence/U00-07-U06-04-media-inbox-20261030/BASELINE.md) | SDK8定向相关类218通过、0失败、39既有架构skip（不计通过）；post-commit Render QA双主题394图、0 PROBLEM；GitHub run 41041454086 两job均成功，ID与artifact digest见媒体批次 ci.json。共同源码e570f7b7的#1500双SDK全流程成功；旧工具栏前后图不作当前整页架构验收，真实宿主/UIA/实体输入与物理DPI待验|
-| U06-05 | 多选条布局稳定 | 代码完成待验收 | 存档历史非零滚动起点进入/清除40项多选保持锚点，Escape保留选择；双主题断点往返保留焦点和选择 | [证据](evidence/U06-05-06/BASELINE.md) | SDK8.0.423组合17/17、0 skip；生产视觉未改；本批CI和真实宿主待验 |
-| U06-06 | 空表与无结果 | 代码完成待验收 | 真实任务页空数据/筛选无结果/错误分别显示；合成清筛选不触发刷新，错误重试调用刷新 | [证据](evidence/U06-05-06/BASELINE.md) | SDK8.0.423组合17/17、0 skip；继承同生产源码Render QA；本批CI及真实宿主待验 |
+| U06-05 | 多选条布局稳定 | 代码完成待验收 | 存档历史非零滚动起点进入/清除40项多选保持锚点，Escape保留选择；双主题断点往返保留焦点和选择 | [证据](evidence/U06-05-06/BASELINE.md) | SDK8.0.423组合17/17、0 skip；生产视觉未改；共同源码e570f7b7的#1500双SDK全流程成功；真实宿主/UIA/实体输入与物理DPI待验 |
+| U06-06 | 空表与无结果 | 代码完成待验收 | 真实任务页空数据/筛选无结果/错误分别显示；合成清筛选不触发刷新，错误重试调用刷新 | [证据](evidence/U06-05-06/BASELINE.md) | SDK8.0.423组合17/17、0 skip；继承同生产源码Render QA；共同源码e570f7b7的#1500双SDK全流程成功；真实宿主/UIA/输入与物理DPI待验 |
 | U06-07 | 高窗与窄窗比例 | 代码完成待验收 | 候选表移除560 DIP上限并沿用有限剩余高度预算；3840×2160逻辑DIP增长至1665，900×600回缩；缓存页只在进入PageHost时按当前尺寸重排 | [前后与验证](evidence/U06-07-08/BASELINE.md)；[活动页面重排复测](evidence/U05-01-U06-07-U09-04-active-layout-20261102/BASELINE.md) | SDK8.0.423组合4/4及本批R08 5/5、均0 skip；Render QA双主题394图/0 PROBLEM；真实4K与Playnite宿主待验 |
 | U06-08 | 大列表视觉成本 | 代码完成待验收 | 任务与媒体2千/1万/2万夹具复核有限实现行、Recycling/Standard例外和行/变换时钟；共享行模板无逐行Storyboard。R18受控STA Window下20k Task实现10行/视口8，Media后端20k受业务上限显示2k项并实现7行/视口7；20点detached scaleprobe媒体容器峰值44，改窗后6，两种夹具不可等同 | [本轮夹具与差异](evidence/U06-08-U09-04-scroll-followup-20261102/BASELINE.md)；[既有测量](evidence/U06-07-08/BASELINE.md) | R18 1/1通过、0 skip，scaleprobe退出0；保留Media Inbox Standard行模式与关闭列虚拟化安全例外。真实Playnite容器/帧率仍待验 |
 | U07-01 | 对话框信息层级 | 代码完成待验收 | 保留标题、真实对象/影响文本及独立正文滚动；动作区采用可换行布局 | [实现与行为证据](evidence/U07-01-02/BASELINE.md)；[双主题双尺寸历史配对](evidence/U09-01-U07-01-04-pair-20261030/BASELINE.md) | SDK8.0.423对话框10/10、0 skip；历史图确认长确认按钮换行且正文滚动保持；长正文真实宿主待验 |
@@ -850,3 +850,15 @@ U06-04的任务页把详情入口留在主操作行，将列配置/布局重置�
 CI快照：#1513 run 42633400619双job成功；#1514 run 42639371286的SDK10 job 129236035905成功、基线job 129236035459仍在打包；#1515 run 42642843301的SDK10 job 129248161077成功、基线job 129248160902仍在编译/测试；本批前一文档提交#1516 run 42646860688的基线job 129262328765和SDK10 job 129262328094都在编译/测试。本批文档提交workflow后续查询；required-checks既有403仍远端待验。当前C盘3,091,267,584 bytes，距4GiB差1,203,699,712 bytes；D盘20,181,245,952 bytes。无本批源码/资源输出需清理，最新build/package与当前审计保留；最终中文入口仍需空间、准确SDK8.0.423和用户正常退出Playnite。
 
 文档门禁与本阶段清理：隐藏Source Validation exit 0；6份变更Markdown的1,012条本地链接全部存在、缺失/越界均0；git diff --check exit 0。仅精确清理本批自建校验日志2份/361 bytes，删除前路径在仓库.tmp内、无重解析点且无文档引用；C/D前后均为3,092,672,512 / 20,181,188,608 bytes，无可归因空间回收。未动最新build/package、当前审计、其他任务TRX/TestResults、存档或配置。
+
+## 2026-11-09 U06-05/06：多选锚点与空状态语义复核
+
+U06-05覆盖存档历史非零滚动起点进入/退出40项多选时锚点不变、Escape保留选择，以及双主题断点往返时焦点/选择稳定；媒体摘要保留当前窗口与隐藏选择计数，清除行为依模式执行。最终TRX 17/17、0失败、0 skip；有限视口单独复测3/3，哈希与清单一致。早期u06-selection-empty-final为15通过/2失败，属于独立夹具缺少生产有限视口与滚动调度的失败诊断，继续保留且不计通过。
+
+U06-06的生产TaskCenter三态区分真实空列表、筛选无结果和读取失败。合成行为验证FilterEmpty只执行ClearTaskFiltersCommand、不触发RefreshCommand；Error重试执行RefreshCommand，错误说明明确旧数据保留。没有用清筛选误刷新业务，也没有删除状态语义。
+
+当前共同源码e570f7b7的src/tests/scripts相对本分支无差异；#1500基线SDK与SDK10全流程成功，覆盖当前完整测试、WPF静态审查和双主题Render QA 394图/0 PROBLEM。源改动、行为TRX和报告均有历史身份，不以旧失败或继承截图冒充本批新运行。两项继续“代码完成待验收”：真实Playnite、外部UIA、实体键盘/IME与物理DPI未验；最终中文根入口和独立scripts/build.cmd留整轮候选。
+
+CI查询快照：#1513 run 42633400619两job success；#1514 run 42639371286基线job 129236035459仍生成包、SDK10 job 129236035905 success；#1515 run 42642843301基线job 129248160902仍生成包、SDK10 job 129248161077 success；#1516 run 42646860688基线job 129262328765与SDK10 job 129262328094运行测试；#1517 run 42648688598基线job 129268816813与SDK10 job 129268816258运行测试。新文档提交CI待查询，required-checks既有403仍远端待验。当前C盘3,087,306,752 bytes、距4GiB差1,207,660,544；D盘20,179,832,832 bytes。准确SDK8.0.423、C盘空间和用户正常退出Playnite未满足最终根入口门禁。
+
+文档门禁与本阶段清理：隐藏Source Validation exit 0；6份变更Markdown 1,010条本地链接全部存在、缺失/越界均0；git diff --check exit 0。仅精确清理本批校验日志2份/361 bytes，确认路径在仓库.tmp内、无重解析点、无文档引用；C/D前后均为3,085,688,832 / 20,179,759,104 bytes，空间无变化。最新build/package和当前审计、其他任务TRX/TestResults、存档及配置均保留。

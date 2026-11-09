@@ -13402,3 +13402,12 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - CI快照：#1513双job success；#1514 SDK10 success、基线打包中；#1515 SDK10 success、基线测试中；#1516双job测试中。本批提交CI待查，required-checks仍因403记远端待验。下一批U06-05/06。
 
 - 文档Source Validation exit 0、6份Markdown 1,012本地链接无缺失/越界、git diff --check exit 0。按仓库边界精确删除本批自建的2份临时日志/361 bytes；清理前后C 3,092,672,512、D 20,181,188,608 bytes，未释放可见空间，没有清理其他产物。
+
+## 2026-11-09 Round5 U06-05/06 多选锚点与空状态复核
+
+- U06-05最终 TRX 17/17、0 skip，有限视口追加3/3；hash匹配。覆盖存档历史非零起点进入/清除40项多选、Escape保留选择、双主题断点来回保留焦点/选择及锚点；媒体摘要保留当前窗口和隐藏选择数量。早期15/17失败TRX保留作夹具诊断，不计通过。
+- U06-06当前TaskCenter分别显示Empty、FilterEmpty、Error。筛选无结果时只执行ClearTaskFiltersCommand且不刷新；读取失败重试才执行RefreshCommand，说明强调旧数据保留。没有删除错误/取消/恢复语义或触发真实数据写入。
+- 当前src/tests/scripts相对e570f7b7无差异；共同源码#1500双SDK全workflow、WPF静态审查与Render QA 394图/0 PROBLEM通过。本批仅文档对齐，未运行本地build/test/render。真实Playnite/UIA/物理输入/DPI未验，状态仍代码完成待验收。
+- CI快照：#1513两job成功；#1514基线打包/SDK10成功；#1515基线打包/SDK10成功；#1516双job测试中；#1517双job测试中。当前提交CI待查，required-checks仍因403标远端待验。C盘3,087,306,752 bytes，离4GiB差1,207,660,544；D盘20,179,832,832。最终中文入口仍等准确SDK8.0.423、空间与用户正常退出Playnite。下一批U06-07/08。
+
+- 文档Source Validation exit 0、6份Markdown 1,010本地链接无缺失/越界、git diff --check exit 0。精确清理自建临时日志2份/361 bytes；C/D前后3,085,688,832 / 20,179,759,104 bytes，无可归因空间回收，其他阶段输出未清。
