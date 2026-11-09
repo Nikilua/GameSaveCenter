@@ -1987,3 +1987,5 @@ SDK10 隔离 WPF 桌面没有在 250ms 内稳定产生 Storyboard 进入/退出�
 2026-11-09 Round5 U03-08/U04-01/02复核：早期 CI #1330–#1334失败已结束且历史保留，冻结整合提交`5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`的run #1398 / `40900374673`双SDK job成功；真实Playnite、外部UIA、物理鼠标/IME/DPI仍待验。对应PROGRESS与门禁链接已同步。该批旧Render QA `.tmp`目录只读复核时已不存在，不能归因释放空间。
 
 2026-11-09 Round5 U04-03/04/05/07：U04-04标题避让修正`388c46ea`包含在冻结整合SHA `5c0c57b0…`；旧#1333/#1334失败已结束并保留，#1398双SDK完整链成功。页签/输入/动效任务仍待真实Playnite、外部UIA、IME、物理输入和DPI验收。记录见Round5 `evidence/U04-03-05/BASELINE.md`、`evidence/U04-indicator-gap-20261029/BASELINE.md`及 `evidence/U09-final-5c0c57b0/BASELINE.md`。历史本机`.tmp`目录复核时均不存在，未进行删除或声称释放空间。
+
+2026-11-09 Round5 U04-06/08：Q14夹具失败run #1335现已终态核实，原始双SDK诊断保留；后续修复进入冻结SHA `5c0c57b0…`，run #1398双job通过。共享DisclosureCard中途禁用收尾/100次对象生命周期的宿主/真实取消边界仍未验。清理仅限该批四个stage-owned嵌套build `.tmp`，合计28,672,650 bytes；C盘门槛仍差约1.08GB，不能启动完整包装器链。详细证明在Round5 `evidence/U04-06-08/BASELINE.md`和`cleanup.json`。

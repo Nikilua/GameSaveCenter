@@ -55,5 +55,58 @@
     "userAndOtherTaskTestResultsUntouched": true,
     "artifactsRootUntouched": true
   },
-  "notes": "Exact stage-start disk space was not recorded. The previous-stage values are historical context. The only cleanup command was rejected by policy; no alternative command was used. Free-space values changed between snapshots for an unattributed reason and are not presented as cleanup gains. Other task TestResults and unknown files were untouched."
+  "notes": "Exact stage-start disk space was not recorded. The previous-stage values are historical context. The original cleanup command was rejected by policy; this is retained as history. On 2026-11-09, after the user-authorized cleanup request, only the exact listed stage-owned .tmp outputs were rechecked and removed. Other task TestResults and unknown files were untouched.",
+  "latestRecheck": {
+    "timestampLocal": "2026-11-09",
+    "absentBeforeCleanup": [
+      ".tmp/round5-u04-06-08-render-4225",
+      ".tmp/round5-u04-06-08-sdk8423-c5c86558-exact",
+      ".tmp/round5-u04-06-08-sdk8423-c5c86558"
+    ],
+    "removed": [
+      {
+        "path": "src/GameSaveCenter.Contracts/.tmp/round5-u04-06-08-build-4225",
+        "files": 22,
+        "bytes": 1029527
+      },
+      {
+        "path": "src/GameSaveCenter.Core/.tmp/round5-u04-06-08-build-4225",
+        "files": 26,
+        "bytes": 795377
+      },
+      {
+        "path": "src/GameSaveCenter.Playnite/.tmp/round5-u04-06-08-build-4225",
+        "files": 194,
+        "bytes": 11996844
+      },
+      {
+        "path": "tests/GameSaveCenter.Playnite.Tests/.tmp/round5-u04-06-08-build-4225",
+        "files": 76,
+        "bytes": 14850902
+      }
+    ],
+    "removedFileBytes": 28672650,
+    "preconditions": {
+      "insideRepository": true,
+      "normalizedPathsMatched": true,
+      "zeroReparsePoints": true,
+      "noRelatedBuildOrTestProcess": true,
+      "noExternalDocumentationReferences": true
+    },
+    "command": "PowerShell Remove-Item -LiteralPath -Recurse -Force",
+    "freeBytesBefore": {
+      "C": 3217633280,
+      "D": 20192419840
+    },
+    "freeBytesAfter": {
+      "C": 3217698816,
+      "D": 20221902848
+    },
+    "observedFreeSpaceDelta": {
+      "C": 65536,
+      "D": 29483008
+    },
+    "deletedUnknownFiles": false,
+    "userAndOtherTaskTestResultsTouched": false
+  }
 }

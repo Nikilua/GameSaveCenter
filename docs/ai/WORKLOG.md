@@ -13348,3 +13348,9 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 早期 run #1333 / `40575315327` 与 #1334 / `40578426793` 已终态 failure，原始诊断仍在 Round5 `U03-08-U04-01-02/ci-runs.json`；不再标“运行中”。冻结整合 run #1398 / `40900374673` 两个 job success，含全链、打包与双 SDK 复核；完整 artifact/安装身份见 `evidence/U09-final-5c0c57b0/BASELINE.md`。真实宿主/UIA/IME/物理输入/DPI仍未验。
 - `.tmp/round5-u04-03-05-build-06d4e854`、`round5-u04-03-05-render-06d4e854`及复核候选的两个已知临时目录均不存在；没有删除，也不归因释放空间。检查时C/D分别3,194,474,496 / 20,194,291,712 bytes。历史报告中的旧输出尺寸保留为生成时记录，不再说“当前存在”。
 - 本批隐藏Source Validation exit 0，Markdown链接1006条/缺失0，3个JSON有效，`git diff --check`通过；仅文档证据变更，不重跑本地完整链。验证日志2份/361 bytes从精确阶段`.tmp/round5-u04-doc-check-20261109/`删除；删除前后C盘均3,203,391,488 bytes、D盘均20,194,029,568 bytes，没有可归因回收。required-check接口此前403，继续远端待验。
+
+## 2026-11-09 Round5 U04-06/08 状态复核与阶段清理
+
+- U04-06中途禁用和U04-08对象生命周期既有精确SDK8套件13/13、0 skip，测试/源码静态证据保留。源码run #1335 / `40583173450`两适用job均已终态failure，原因是Q14夹具对默认ComboBox.Text的错误预期；原artifact `12770991617`/`12770842930`及其诊断历史保留。修复后的冻结整合SHA `5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7`之#1398双job success，完整链、Render QA、打包和安装身份见Round5 `evidence/U04-06-08/BASELINE.md`与`evidence/U09-final-5c0c57b0/BASELINE.md`。真实取消命令/窗口失活和Playnite宿主仍待验，未调用真实恢复、媒体删除或云写入。
+- 对比后确认旧render与测试根`.tmp`已不存在；只删除四个经规范化、仓库边界/无重解析点/无运行进程/无文档引用检查的本阶段嵌套build `.tmp`，共318文件/28,672,650 bytes。D空闲观察+29,483,008 bytes、C+65,536 bytes；不把全部差值归因删除，不触碰用户/其他任务TestResults。命令、路径和前后快照见`evidence/U04-06-08/cleanup.json`。
+- 文档Source Validation exit 0，Markdown链接1006条/缺失0，3个JSON有效，`git diff --check`通过；本次临时验证日志2份/361 bytes经边界检查后精确清理，清理前后C/D均无变化。最新C盘观测3,211,915,264 bytes，距离完整入口4 GiB仍差1,083,052,032 bytes；D盘20,221,698,048 bytes已满足3 GiB。未启动完整安装/启动链。进度仍“代码完成待验收”，下一组按PROGRESS推进U05-01/02。
