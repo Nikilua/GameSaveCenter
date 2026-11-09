@@ -19,3 +19,13 @@ Source validation通过、XAML26/26、WPF静态37 XAML/0 errors/26既有warnings
 ## 2026-11-02 修正候选远端验证
 
 修正后的夹具提交`3ecacdc0dc5376e45a6460b2af2668a1df57f328`在GitHub run [40647037308](https://github.com/Nikilua/GameSaveCenter/actions/runs/40647037308)（#1349）上已completed/success。基线SDK job `122678147577`与SDK10.0.401 job `122678147262`的所有适用步骤均完成并成功，三份artifact的head SHA、ID、尺寸和digest见[`ci-run-40647037308.json`](ci-run-40647037308.json)。这验证了同步布局夹具修正，旧失败run仍保留历史；不把离屏/STA合成鼠标状态说成物理鼠标或Playnite宿主验收。当前`ProcessMappingInlineActionBehaviorTests.cs`此后未再修改。
+
+## 2026-11-09 当前共同源码复核
+
+当前main的src/tests/scripts相对完整验证共同SHA e570f7b7无差异。U06-03的ci-hover-synchronous、u06-actions-final和u06-summary-breakpoints三份TRX哈希全部匹配清单，计数分别为1/1、7/7、9/9，均0失败、0 skip。测试确认危险操作有明确文字，键盘可达；受控悬停不改变列宽，UIA Invoke与行对象绑定，不会误取另一选择行，无参数时不执行命令。这里没有调用真实删除命令。
+
+U06-04任务页选定类合计101通过、0失败、11条既有skip；媒体页选择类合计218通过、0失败、39条既有skip。skip均针对已撤销“今日工作台”架构，不计通过。媒体前后图以及任务工具栏前后图是2026-10-30相应小批的局部对照，不能代表当前整页构图或作为恢复旧架构的依据。当前共同源码e570f7b7的GitHub #1500基线SDK和SDK10 job全部步骤成功，含完整Release测试、394图Render QA/0 PROBLEM及WPF静态审查；这仅覆盖代码与合成离屏检查。真实Playnite宿主、外部UIA、实体键盘/IME及物理DPI仍待验。
+
+没有更改产品代码，也未重跑本地编译/行为测试；本批做证据去重与当前SHA覆盖核对。U06-03/04继续代码完成待验收。整轮最终中文入口和独立scripts/build.cmd仍待冻结候选；当前C盘3,091,267,584 bytes、距4GiB门槛差1,203,699,712，D盘20,181,245,952 bytes，准确SDK8.0.423尚未就绪，不以其他SDK或旧构建替代。
+
+文档检查：隐藏Source Validation exit 0；6份变更Markdown 1,012条本地链接全部存在、缺失/越界0；git diff --check exit 0。只删除本批校验日志2份、共361 bytes；仓库边界、无重解析点、无文档引用通过，C/D清理前后均3,092,672,512 / 20,181,188,608 bytes。
