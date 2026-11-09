@@ -1,0 +1,48 @@
+{
+  "commit": "3527fb1d9c2c701539ca727a05b2ab6157cd94c3",
+  "runId": "20261109T030521588Z-ba510a4f",
+  "sdk": "8.0.423",
+  "startedUtc": "2026-11-09T03:05:23.4621579Z",
+  "completedUtc": "2026-11-09T03:27:05.641169Z",
+  "outcome": "failed",
+  "failedStageId": "wpf.R10RecentAccessBehaviorTests",
+  "failureMessage": "System.Management.Automation.RuntimeException: class GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests failed; dotnet exit code: 1",
+  "testCounts": {
+    "total": 1518,
+    "passed": 1488,
+    "failed": 1,
+    "skipped": 29,
+    "wpfClassesRun": 93
+  },
+  "r10ClassExitCode": 1,
+  "sourceFile": "tests/GameSaveCenter.Playnite.Tests/R10RecentAccessBehaviorTests.cs",
+  "sourceGitBlob": "bbb1f0399deb0b4f530afea716d6cbedf704e3c3",
+  "sourceSha256": "8EF9542B3D508F61B4CC3A41C95EAA45F9E55CABE0F075F56E071A04543E61F3",
+  "trxSha256": "D8490FAA53F218C9C36CA8B077236070D266DCE5ED1950C8E3AD4063C49959D2",
+  "driveSpaceBefore": [
+    {
+      "Name": "C",
+      "Free": 7033593856,
+      "Used": 207715815424
+    },
+    {
+      "Name": "D",
+      "Free": 7424225280,
+      "Used": 287548588032
+    }
+  ],
+  "driveSpaceAfter": [
+    {
+      "Name": "C",
+      "Free": 7053656064,
+      "Used": 207695753216
+    },
+    {
+      "Name": "D",
+      "Free": 6153043968,
+      "Used": 288819769344
+    }
+  ],
+  "monitorFile": "window-monitor-summary.txt",
+  "monitorCoverage": "WinSta0\\Default hook ready at 2026-11-09T03:08:32.9831378Z; build command exited at 2026-11-09T03:27:05Z; no SHOW/HIDE during this monitored interval"
+}

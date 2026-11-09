@@ -1,0 +1,14 @@
+{
+    "sdk":  "8.0.423",
+    "sdkInstallDirectory":  "C:\\Users\\lopmatu\\AppData\\Local\\GameSaveCenter\\dotnet-sdk-8.0.423",
+    "parentWindowStation":  "WinSta0",
+    "inputDesktopBefore":  "Default",
+    "inputDesktopAfter":  "Default",
+    "helperExited":  true,
+    "helperExitCode":  0,
+    "childExitCode":  0,
+    "childDesktop":  "GscWpfTest_a654a84222c344cfa986bab5ea8280d8",
+    "testProcessId":  45880,
+    "testProcessExited":  true,
+    "completedUtc":  "2026-11-09T03:40:33.0199869Z"
+}

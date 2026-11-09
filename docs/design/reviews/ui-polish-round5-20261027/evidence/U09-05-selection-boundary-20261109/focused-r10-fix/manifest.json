@@ -1,0 +1,37 @@
+[
+  {
+    "path": "console.txt",
+    "length": 2084,
+    "sha256": "C1E59E666FE720C7D1337728F7A17BEC37EFC8603BB8E30297D1BB8FC634DD42"
+  },
+  {
+    "path": "desktop-result.json",
+    "length": 584,
+    "sha256": "AFEE9BDBDFC19065C61173BBF9E64D3EC5E6D8654A4898E9358010B53861CCCD"
+  },
+  {
+    "path": "parent-result.json",
+    "length": 514,
+    "sha256": "41223F11DB09AE49BEBAD99FA3F717E2A516E80560C68EED446B7A1B44C24557"
+  },
+  {
+    "path": "README.md",
+    "length": 2297,
+    "sha256": "0EBAE24B99FB56F7FF5FE830160B57CFD0A17F69AAE0C1E19193531751D2E005"
+  },
+  {
+    "path": "run-summary.json",
+    "length": 952,
+    "sha256": "0BB5D122EE69FEF3BAD1F1F06DD5B468DFB89582E8217125718DAD4FBA6C63BF"
+  },
+  {
+    "path": "specification.json",
+    "length": 1920,
+    "sha256": "5B347D102B6EBCB690D177C576616ACBF48CD9D05067700EE121A8CAAC28FB9A"
+  },
+  {
+    "path": "tests/R10RecentAccessBehaviorTests.trx",
+    "length": 6247,
+    "sha256": "BE33AE2D2C3D943318E5A9AB0F15F5ACFC249D49FBB24897FCAEB857DA639D47"
+  }
+]

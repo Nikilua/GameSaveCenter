@@ -1,3 +1,9 @@
+## 2026-11-09 U09-05：R10 旧边距预期已修正；新候选门禁待跑
+
+`3527fb1d9c2c701539ca727a05b2ab6157cd94c3` 的本机完整构建（SDK 8.0.423）与 GitHub workflow #1498 / run `42553664674` 双 SDK job均失败在同一个旧测试预期：Overview selected `TaskItemChrome`仍期待旧 4-DIP 右边距。工作树已只将 Overview 选框预期改为 0；内容不位移断言及共享ListBox 4-DIP断言保留。重新编译并运行R10整类，SDK8.0.423、WinSta0私有非输入桌面，3/3通过、0失败/skip、子进程exit0，input desktop前后Default。证据见`../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/focused-r10-fix/README.md`及`diagnostics/sdk8-r10-stale-margin/`。
+
+完整构建的旧失败摘要是1518项/1488通过/1失败/29既有skip，执行到第93个WPF类；尚未对新修正SHA做全量构建。#1498两个job IDs及失败artifact哈希见`../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/diagnostics/sdk8-r10-stale-margin/ci-run-1498.json`；修正SHA的双SDK CI仍需push后查询。当前旧Playnite PID24248与Worker PID42704在11-09 03:40 UTC后的进程快照中均不再存在；未结束进程。执行中文完整入口前重新查宿主状态。用户闪屏仍无同一时段HWND/PID/desktop归因；本地验证全从隐藏启动，WPF测试使用私有desktop。未修改驱动器、盘符、卷映射，未操作用户存档、媒体或云端数据。U09-05/U09-08仍进行中，U09-06 required-checks继续“远端待验”。
+
 ## 2026-11-09 U09-05 选框右缘修复；完整宿主验收待做
 
 用户截图中的 Overview 最近任务时间、Save History/Task Grid 行内容未完全落在选中框内。当前未提交候选已移除 Overview 内容独立视口宽度，并将共享 DataGrid 选中/非活动/焦点框右缘扩至视口内1/2 DIP；保持行内容8 DIP裁切及原滚动系统。SDK8.0.423 Release `scripts/build.cmd -SkipTests` exit0；适用WPF行为11/11、共享资源类140 pass/39旧架构skip、Source Validation/WPF静态审查exit0、Render QA 394 PNG/0问题。命令启动时隐藏、输出重定向，并对Default输入桌面做全程事件监听，SHOW/HIDE均0。证据见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/README.md`。真实宿主、物理输入/DPI未验；用户黑窗没有HWND/PID归因。

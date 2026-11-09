@@ -1,0 +1,31 @@
+{
+    "FilePath":  "dotnet",
+    "Arguments":  [
+                      "test",
+                      "D:\\workplace\\github\\GameSaveCenter\\tests\\GameSaveCenter.Playnite.Tests\\GameSaveCenter.Playnite.Tests.csproj",
+                      "-c",
+                      "Release",
+                      "--no-restore",
+                      "--filter",
+                      "FullyQualifiedName~GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests",
+                      "--logger",
+                      "console;verbosity=normal",
+                      "--logger",
+                      "trx;LogFileName=R10RecentAccessBehaviorTests.trx",
+                      "--results-directory",
+                      "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-selection-boundary-20261109\\focused-r10-fix\\tests",
+                      "-m:1",
+                      "-nodeReuse:false",
+                      "-p:NuGetAudit=false",
+                      "-p:MSBuildEnableWorkloadResolver=false",
+                      "-p:GscBuildOutputRoot=D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\3527fb1d",
+                      "--",
+                      "RunConfiguration.DisableAppDomain=true"
+                  ],
+    "WorkingDirectory":  "D:\\workplace\\github\\GameSaveCenter",
+    "RepositoryRoot":  "D:\\workplace\\github\\GameSaveCenter",
+    "ConsolePath":  "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-selection-boundary-20261109\\focused-r10-fix\\console.txt",
+    "ResultPath":  "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\reviews\\ui-polish-round5-20261027\\evidence\\U09-05-selection-boundary-20261109\\focused-r10-fix\\desktop-result.json",
+    "ExpectedDesktop":  "GscWpfTest_a654a84222c344cfa986bab5ea8280d8",
+    "TimeoutSeconds":  360
+}

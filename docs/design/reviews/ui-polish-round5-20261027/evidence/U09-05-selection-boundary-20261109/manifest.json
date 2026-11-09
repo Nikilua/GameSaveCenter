@@ -1,20 +1,5 @@
 [
   {
-    "path": "gates.json",
-    "length": 2826,
-    "sha256": "DBD4E8661AE387934291FE807EDDC28F44F88CF9A1871CC1676A8F65AC1BE796"
-  },
-  {
-    "path": "README.md",
-    "length": 4926,
-    "sha256": "AB4037C498C58F66AA001EB66018BFF25DFFE4A0591FE559ECE5FA87D0ADAB9C"
-  },
-  {
-    "path": "tested-source-files.json",
-    "length": 1663,
-    "sha256": "CDF72CA0A7DCD1E7D36E276A60FFAD6C3281F7C28FABECA0B45A9DF753A32E8D"
-  },
-  {
     "path": "build/compile-launch-summary.json",
     "length": 1372,
     "sha256": "9E48F4A80D1C7C3FF1A9F1D1DE0F67B47D362195D4C81B315753D02666D7DDF5"
@@ -100,6 +85,41 @@
     "sha256": "08B02272BC3326E8A9F7C55CD7D2775984FF299997B9E21BDE0C28AD13DBE1B2"
   },
   {
+    "path": "diagnostics/sdk8-r10-stale-margin/ci-run-1498.json",
+    "length": 1388,
+    "sha256": "C97158BBA31D1963D24785242C80A7300A61E3EEE33378C13F0C6C8448692B6B"
+  },
+  {
+    "path": "diagnostics/sdk8-r10-stale-margin/console.txt",
+    "length": 3622,
+    "sha256": "1C1CDA9D2D40FBD5BC0DB8C0356BDF5EE80DD73CB8494F33CF8AB5CE71493370"
+  },
+  {
+    "path": "diagnostics/sdk8-r10-stale-margin/desktop-result.json",
+    "length": 584,
+    "sha256": "7595E07E472069BD646B466D1B41869256532114E4B6DC7B0302244E75E3CAA4"
+  },
+  {
+    "path": "diagnostics/sdk8-r10-stale-margin/README.md",
+    "length": 1189,
+    "sha256": "D4A8B3178484E871444DE1C8B5710B85CD40795DE73FDCE4422179BE39B282C5"
+  },
+  {
+    "path": "diagnostics/sdk8-r10-stale-margin/run-summary.json",
+    "length": 1591,
+    "sha256": "765A3FBFE75F35384BE54F1D95605F1F47A28CAED49D8588B596E9B7A8C4B2AB"
+  },
+  {
+    "path": "diagnostics/sdk8-r10-stale-margin/sdk8-r10.trx",
+    "length": 8849,
+    "sha256": "D8490FAA53F218C9C36CA8B077236070D266DCE5ED1950C8E3AD4063C49959D2"
+  },
+  {
+    "path": "diagnostics/sdk8-r10-stale-margin/window-monitor-summary.txt",
+    "length": 260,
+    "sha256": "5B8CE81C0314553B6A45B896109B42A6E1B0DAD07BED06D83779EE03C364E7D5"
+  },
+  {
     "path": "diagnostics/stale-margin-expectation/console.txt",
     "length": 3641,
     "sha256": "47A8EC59F30825602F6B400B502DCBE0EF204785DBC16EC9263AE9EAF619F2A4"
@@ -113,6 +133,51 @@
     "path": "diagnostics/stale-margin-expectation/R06SelectionStateBehaviorTests-stale-margin.trx",
     "length": 9212,
     "sha256": "C05AB07B11C0F9DFA63F88C2F436CDD0681AB8459C5E5F16516A05708F78B70E"
+  },
+  {
+    "path": "focused-r10-fix/console.txt",
+    "length": 2084,
+    "sha256": "C1E59E666FE720C7D1337728F7A17BEC37EFC8603BB8E30297D1BB8FC634DD42"
+  },
+  {
+    "path": "focused-r10-fix/desktop-result.json",
+    "length": 584,
+    "sha256": "AFEE9BDBDFC19065C61173BBF9E64D3EC5E6D8654A4898E9358010B53861CCCD"
+  },
+  {
+    "path": "focused-r10-fix/parent-result.json",
+    "length": 514,
+    "sha256": "41223F11DB09AE49BEBAD99FA3F717E2A516E80560C68EED446B7A1B44C24557"
+  },
+  {
+    "path": "focused-r10-fix/README.md",
+    "length": 2297,
+    "sha256": "0EBAE24B99FB56F7FF5FE830160B57CFD0A17F69AAE0C1E19193531751D2E005"
+  },
+  {
+    "path": "focused-r10-fix/run-summary.json",
+    "length": 952,
+    "sha256": "0BB5D122EE69FEF3BAD1F1F06DD5B468DFB89582E8217125718DAD4FBA6C63BF"
+  },
+  {
+    "path": "focused-r10-fix/specification.json",
+    "length": 1920,
+    "sha256": "5B347D102B6EBCB690D177C576616ACBF48CD9D05067700EE121A8CAAC28FB9A"
+  },
+  {
+    "path": "focused-r10-fix/tests/R10RecentAccessBehaviorTests.trx",
+    "length": 6247,
+    "sha256": "BE33AE2D2C3D943318E5A9AB0F15F5ACFC249D49FBB24897FCAEB857DA639D47"
+  },
+  {
+    "path": "gates.json",
+    "length": 2826,
+    "sha256": "DBD4E8661AE387934291FE807EDDC28F44F88CF9A1871CC1676A8F65AC1BE796"
+  },
+  {
+    "path": "README.md",
+    "length": 5939,
+    "sha256": "1C6D746E4543B7EBFB547A1081759BFD357F28F0604284CDAE8F0A3931F59ADE"
   },
   {
     "path": "render-qa/render-qa-report.txt",
@@ -148,6 +213,26 @@
     "path": "source-checks/source-checks.stderr.log",
     "length": 0,
     "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "path": "source-checks/test-fix-source-validation.log",
+    "length": 361,
+    "sha256": "30760E7082311AC27AA2D981C07638FC2A4B11D039C265AFB40365B1F98FBCA6"
+  },
+  {
+    "path": "source-checks/test-fix-validation-record.json",
+    "length": 334,
+    "sha256": "A3790A7DC8867602FD88CD6AF777130667B208162DB7AD01CA3D72953F94C9B1"
+  },
+  {
+    "path": "source-checks/test-fix-validation-summary.json",
+    "length": 184,
+    "sha256": "13294B420D8A92E37F7342C24D4800D8700A44A49B31E9CBF8EB8C80958AA719"
+  },
+  {
+    "path": "tested-source-files.json",
+    "length": 1663,
+    "sha256": "CDF72CA0A7DCD1E7D36E276A60FFAD6C3281F7C28FABECA0B45A9DF753A32E8D"
   },
   {
     "path": "tests/behavior-run-summary.json",

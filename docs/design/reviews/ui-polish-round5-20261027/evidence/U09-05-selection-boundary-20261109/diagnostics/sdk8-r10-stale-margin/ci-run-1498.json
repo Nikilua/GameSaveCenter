@@ -1,0 +1,37 @@
+{
+  "runId": "42553664674",
+  "runNumber": 1498,
+  "workflow": ".github/workflows/windows-build.yml",
+  "headSha": "3527fb1d9c2c701539ca727a05b2ab6157cd94c3",
+  "status": "completed",
+  "conclusion": "failure",
+  "failure": "R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition expected the former 4-DIP Overview margin; both geometry and content-position checks remained active.",
+  "jobs": [
+    {
+      "jobId": "128954520959",
+      "name": "编译、测试与打包",
+      "sdk": "global.json baseline 8.0.423",
+      "status": "completed",
+      "conclusion": "failure",
+      "diagnosticArtifact": {
+        "id": "13646883956",
+        "sizeBytes": 943265,
+        "sha256": "82442e9b6f70d72eb87a015e2587fd73951751f8837b7bfa4c38101ac782523e"
+      }
+    },
+    {
+      "jobId": "128954521177",
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "sdk": "10.0.401",
+      "status": "completed",
+      "conclusion": "failure",
+      "diagnosticArtifact": {
+        "id": "13647087889",
+        "sizeBytes": 885829,
+        "sha256": "6dd924cb83e25d8c9ca37a15d40a7f57322b48bb72d4e367e59118c28317b8c1"
+      }
+    }
+  ],
+  "previewPackageArtifact": null,
+  "note": "Both jobs failed at the same test before Render QA/package steps. This is retained as a failed historical run; the correction must be verified on a new commit and run."
+}

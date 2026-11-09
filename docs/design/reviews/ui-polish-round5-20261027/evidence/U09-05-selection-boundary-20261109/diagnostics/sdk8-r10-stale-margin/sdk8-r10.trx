@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="db0a2d8e-04b0-4e4a-abae-ca51bfdc9d59" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-09T11:27:04.2175651+08:00" queuing="2026-11-09T11:27:04.2175655+08:00" start="2026-11-09T11:26:57.6095942+08:00" finish="2026-11-09T11:27:04.6014533+08:00" />
+  <TestSettings name="default" id="7a3a0a90-8aab-4a93-b15f-176e0681d6c9">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="19da9b61-6649-4c43-867e-24f541e84c50" testId="7aa1dec7-ea6b-ef72-4724-15ff9a636b6e" testName="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.RecentAccessSwitchIsKeyboardReachableAndKeepsTaskHistorySeparate" computerName="redacted-host" duration="00:00:00.2350000" startTime="2026-11-09T11:27:04.2060744+08:00" endTime="2026-11-09T11:27:04.4092076+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="19da9b61-6649-4c43-867e-24f541e84c50" />
+    <UnitTestResult executionId="d5abf491-a830-4d7f-a237-a386e3e3ae15" testId="7fca2483-c0c6-6c5e-b00f-22069d60c395" testName="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition" computerName="redacted-host" duration="00:00:02.1880000" startTime="2026-11-09T11:27:01.9968956+08:00" endTime="2026-11-09T11:27:04.1420716+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d5abf491-a830-4d7f-a237-a386e3e3ae15">
+      <Output>
+        <ErrorInfo>
+          <Message>Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ&#xD;
+Expected: 0,0,4,0&#xD;
+Actual:   0,0,0,0&#xD;
+   在 Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/EqualityAsserts.cs:行号 154&#xD;
+   在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;SelectedOverviewAndSharedListItemsKeepTheirContentPosition&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 223</Message>
+          <StackTrace>   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+   在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 252</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="73ca9340-6f3c-4d62-b23f-bb45c3404762" testId="a67284c4-14ca-29b1-1b9a-ff4c939253fa" testName="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.RecentAccessRecordsAreBoundedStableIdOnlyAndPruneRemovedGames" computerName="redacted-host" duration="00:00:00.0320000" startTime="2026-11-09T11:27:04.2020731+08:00" endTime="2026-11-09T11:27:04.2030729+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="73ca9340-6f3c-4d62-b23f-bb45c3404762" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition" storage="[repo]\artifacts\gsc-b\3527fb1d\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7fca2483-c0c6-6c5e-b00f-22069d60c395">
+      <Execution id="d5abf491-a830-4d7f-a237-a386e3e3ae15" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\3527fb1d\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests" name="SelectedOverviewAndSharedListItemsKeepTheirContentPosition" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.RecentAccessRecordsAreBoundedStableIdOnlyAndPruneRemovedGames" storage="[repo]\artifacts\gsc-b\3527fb1d\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="a67284c4-14ca-29b1-1b9a-ff4c939253fa">
+      <Execution id="73ca9340-6f3c-4d62-b23f-bb45c3404762" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\3527fb1d\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests" name="RecentAccessRecordsAreBoundedStableIdOnlyAndPruneRemovedGames" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.RecentAccessSwitchIsKeyboardReachableAndKeepsTaskHistorySeparate" storage="[repo]\artifacts\gsc-b\3527fb1d\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7aa1dec7-ea6b-ef72-4724-15ff9a636b6e">
+      <Execution id="19da9b61-6649-4c43-867e-24f541e84c50" />
+      <TestMethod codeBase="[repo]\artifacts\gsc-b\3527fb1d\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests" name="RecentAccessSwitchIsKeyboardReachableAndKeepsTaskHistorySeparate" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7aa1dec7-ea6b-ef72-4724-15ff9a636b6e" executionId="19da9b61-6649-4c43-867e-24f541e84c50" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7fca2483-c0c6-6c5e-b00f-22069d60c395" executionId="d5abf491-a830-4d7f-a237-a386e3e3ae15" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a67284c4-14ca-29b1-1b9a-ff4c939253fa" executionId="73ca9340-6f3c-4d62-b23f-bb45c3404762" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="3" executed="3" passed="2" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.46]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.80]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.84]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:05.10]       Xunit.Sdk.EqualException: Assert.Equal() Failure: Values differ&#xD;
+[xUnit.net 00:00:05.10]       Expected: 0,0,4,0&#xD;
+[xUnit.net 00:00:05.10]       Actual:   0,0,0,0&#xD;
+[xUnit.net 00:00:05.10]          在 Xunit.Assert.Equal[T](T expected, T actual, IEqualityComparer`1 comparer) 位置 /_/src/xunit.assert/Asserts/EqualityAsserts.cs:行号 154&#xD;
+[xUnit.net 00:00:05.10]          在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.&lt;&gt;c__DisplayClass2_0.&lt;SelectedOverviewAndSharedListItemsKeepTheirContentPosition&gt;b__0() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 223&#xD;
+[xUnit.net 00:00:05.10]       Stack Trace:&#xD;
+[xUnit.net 00:00:05.10]            在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142&#xD;
+[xUnit.net 00:00:05.10]            在 GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition() 位置 [repo]\tests\GameSaveCenter.Playnite.Tests\R10RecentAccessBehaviorTests.cs:行号 252&#xD;
+[xUnit.net 00:00:05.35]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Error" timestamp="2026-11-09T11:27:04.1609344+08:00">
+        <Text>[xUnit.net 00:00:05.10]     GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-09T11:27:04.5678822+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

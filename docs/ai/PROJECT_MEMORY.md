@@ -1,3 +1,9 @@
+## 2026-11-09 U09-05：选框实现CI暴露旧断言，已修正测试预期
+
+精确选框实现提交 `3527fb1d9c2c701539ca727a05b2ab6157cd94c3` 的独立完整 `scripts/build.cmd` 与 GitHub run #1498 都失败在 `R10RecentAccessBehaviorTests.SelectedOverviewAndSharedListItemsKeepTheirContentPosition`：Overview专用Margin已设计为0，测试还期待4。不要回退选框宽度、删内容位置断言或放宽skip；已只改Overview专用Margin预期，保留共享ListBox的4-DIP期望。修正源码blob `77520274af3ca108c54386f5e65b06815cc80bb4`，SDK8.0.423重新编译R10整类3/3通过、0 skip，WinSta0私有非输入desktop及Default前后身份见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/focused-r10-fix/`。本机完整旧失败与精确SHA CI #1498诊断在同证据根的`diagnostics/sdk8-r10-stale-margin/`。
+
+目前test-source补丁及证据/进度文档尚待中文commit/push。之后必须对新SHA重跑完整 `scripts/build.cmd`，推送并核对 `.github/workflows/windows-build.yml` 的基线与SDK10 job；候选完全冻结后再经中文真实根入口做完整安装启动和身份核验。最后进程快照显示旧Playnite/Worker PID24248/42704已不存在，但根入口前要重查。required-checks/ruleset曾403，不重试，U09-06仍远端待验。独立测试助手如果自行启动，需先调用 `Initialize-GscSdkBaseline`：SDK8.0.423存在于当前用户GameSaveCenter缓存；直接从独立子进程调用机器dotnet只会看到9.0.302并报global.json不匹配，不得切换global.json或降级门禁。构建/检查从进程创建时隐藏并重定向；不操作盘符、卷映射、存档、媒体或云数据。
+
 ## 2026-11-09 Round5 U09-05 右侧选框边界修正
 
 用户明确指出 Overview 时间、Save History 与 Task Grid 的文字/徽标在选中框右侧外露。本地候选改掉 Overview 内容区独立窄宽绑定；共享 DataGrid 选框右缘扩至视口内1 DIP，键盘焦点留2 DIP；内容8 DIP裁切及水平滚动照旧。边界行为在双主题、窄尺寸、多横向偏移的隔离WPF测试覆盖，11/11通过；共享资源断言通过。局部编译、Source Validation、WPF静态审查和394图Render QA通过。证据见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/README.md`。

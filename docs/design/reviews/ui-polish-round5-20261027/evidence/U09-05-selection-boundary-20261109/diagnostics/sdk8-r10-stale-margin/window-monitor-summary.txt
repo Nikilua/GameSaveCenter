@@ -1,0 +1,12 @@
+monitorStartedUtc=2026-11-09T03:08:32.9391343Z
+station=WinSta0
+desktop=Default
+inputDesktop=Default
+attachedToInput=True
+attachError=0
+buildPid=62836
+hookReadyUtc=2026-11-09T03:08:32.9831378Z
+endedUtc=2026-11-09T03:27:05.8651104Z
+show=0
+hide=0
+result=completed

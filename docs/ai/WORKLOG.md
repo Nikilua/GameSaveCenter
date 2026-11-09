@@ -13255,3 +13255,11 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 精确旧基线0258的GitHub workflow #1494 / run `42513349534`现已completed/success：baseline job `128830946846`、SDK10.0.401 job `128830946943`均completed/success。artifact IDs 13633085156 / 13632631485 / 13631431008及SHA-256存于 `evidence/U09-05-renderqa-private-20261109/ci-run-1494.json`。required-checks/ruleset先前403不重试，U09-06继续“远端待验”；该CI不覆盖当前未提交Harness改动。
 - 磁盘快照：Render QA之前C可用7,125,041,152 bytes、D 9,752,682,496 bytes；之后C 7,123,173,376、D 9,698,320,384 bytes。变化来自构建/394张Render QA输出及系统并发I/O；没有更改卷、映射或盘符。当前stage `.tmp/round5-u09-04-taskmotion-20261109/` 归档/清理清单另附，完整双源快照和重复Render QA输出不长期保留。
 - 清理核对：边界内本阶段目录18,054文件/1,092,348,656 bytes；删除前后D盘空闲9,696,845,824→10,832,625,664 bytes，C盘7,123,787,776→7,123,333,120 bytes（期间C盘有其他I/O变化，不据此推算清理体积）。路径、占用/重解析核查、留存及删除分类见本批 `cleanup.json`。另在2026-11-09 05:51 +08:00做一次只读窗口快照，过滤目标无可见匹配窗口；Playnite/Worker当前进程无主窗口句柄。快照不是瞬态监测，且不归因用户附件；JSON见 `current-window-snapshot.json`。
+
+## 2026-11-09 U09-05 选框CI失败修复与局部复验
+
+- 推送的选框实现提交 `3527fb1d9c2c701539ca727a05b2ab6157cd94c3` 在GitHub run #1498 / `42553664674` 的两个适用job都失败于R10选中框测试的旧Margin预期：基线job `128954520959`、SDK10.0.401 job `128954521177`。失败发生在后续Render QA/打包前；原始诊断artifact ID、size和SHA-256见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/diagnostics/sdk8-r10-stale-margin/ci-run-1498.json`。没有改workflow、跳过测试或放宽门禁。
+- 同一精确源码在SDK8.0.423完整独立 `scripts/build.cmd` 中执行到第93/157个WPF测试类后也命中相同旧预期；摘要1518项、1488通过、1失败、29既有skip。失败TRX、测试类日志、摘要和磁盘快照已归档，原失败保留为历史，不计作当前通过。
+- 仅将 `R10RecentAccessBehaviorTests` 中Overview专用Margin期待改为0；内容不位移检查、共享ListBox的4-DIP断言及其他行为断言原样保留。SDK8.0.423重新编译并在WinSta0私有桌面重跑整个R10类，3/3通过、0失败/skip，子进程和桌面helper exit 0；Default input desktop前后不变。TRX SHA-256 `BE33AE2D2C3D943318E5A9AB0F15F5ACFC249D49FBB24897FCAEB857DA639D47`；修正测试源Git blob `77520274af3ca108c54386f5e65b06815cc80bb4`，文件SHA-256 `C91DB32736D2BBE7250C23D322E79753695A2870BC3216B6334B3D8F7A290068`。完整上下文见证据 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-selection-boundary-20261109/focused-r10-fix/README.md`。
+- 验证从隐藏PowerShell启动、输出写入阶段私有日志；私有WPF desktop没有改变Default input desktop。上轮Playnite PID24248和Worker PID42704在03:40 UTC后进程快照已不存在，本轮没有结束任何宿主进程；最终中文入口前仍要重新核验。未操作盘符、卷、映射、用户存档、媒体或云端数据。
+- 当前修正测试及进度文档待本批commit/push；精确新SHA双SDK CI、修正后全量独立build、中文完整安装启动链与安装身份尚待做。U09-05/U09-08保持进行中，U09-06 required-checks因既往403继续“远端待验”。

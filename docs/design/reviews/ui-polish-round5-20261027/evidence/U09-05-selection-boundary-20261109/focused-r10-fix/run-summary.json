@@ -1,0 +1,26 @@
+{
+  "headCommit": "3527fb1d9c2c701539ca727a05b2ab6157cd94c3",
+  "sourceGitBlob": "77520274af3ca108c54386f5e65b06815cc80bb4",
+  "sourceSha256": "C91DB32736D2BBE7250C23D322E79753695A2870BC3216B6334B3D8F7A290068",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "command": "dotnet test tests/GameSaveCenter.Playnite.Tests/GameSaveCenter.Playnite.Tests.csproj --filter FullyQualifiedName~GameSaveCenter.Playnite.Tests.R10RecentAccessBehaviorTests --no-restore",
+  "exitCode": 0,
+  "startedUtc": "2026-11-09T03:39:27.8700999Z",
+  "completedUtc": "2026-11-09T03:40:32.9469819Z",
+  "counters": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "process": {
+    "windowStation": "WinSta0",
+    "desktop": "GscWpfTest_a654a84222c344cfa986bab5ea8280d8",
+    "inputDesktopBefore": "Default",
+    "inputDesktopAfter": "Default",
+    "processId": 45880,
+    "exited": true,
+    "desktopHelperExitCode": 0
+  }
+}
