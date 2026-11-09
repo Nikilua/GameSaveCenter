@@ -1,3 +1,9 @@
+## 2026-11-09 Round5 U01-01/02 已复核；根链继续等C盘门槛
+
+U01-01/02复用既有生产样式与基线：13张截图、4份报告哈希/长度全匹配，引用的两个TRX为37/37、1/1通过且0跳过。当前产品SHA `e570f7b7` 的独立完整build、双SDKCI和394图Render QA均有精确证据；两项仍“代码完成待验收”，可选字体未安装与真实Playnite/UIA/键盘IME/物理DPI未验。旧U01 cleanup中的四个`.tmp`目标本次只读查看均已不存在，无删除或空间回收归因。详细账本见 Round5 `PROGRESS.md` 和 `evidence/U01-01-02/cleanup.json`。
+
+当前C盘约3.01 GiB空闲，完整中文→英文根入口预检需4 GiB；本批未找到足够且可安全删除的项目输出。不要删除NuGet/系统缓存或用户及其他任务TestResults，不改驱动器号、卷或映射；独立UI任务继续。构建/检查由启动时隐藏的进程调用并重定向日志；用户仍报告黑窗，但附件无HWND/PID/desktop，不能宣称已归因。完整安装启动链仅在C盘达标、源与CI冻结后执行一次。用户此前请求的Playnite PID 24248 / Worker PID 42704 关闭命令：先核对PID；若Playnite存在，可用 `$p = Get-Process -Id 24248 -ErrorAction SilentlyContinue; if ($p) { [void]$p.CloseMainWindow() }` 请求正常退出；不对Worker使用`Stop-Process -Force`。最近只读进程快照中两者均不存在。
+
 ## 2026-11-09 Round5 接续：闪屏未归因，U09-04探针已补充
 
 用户再次报告仍闪屏。附件二进制与11月6日相同（SHA `67C3EBB...`，原始时间11月6日），无HWND/PID/desktop；只读Computer Use本次初始化失败，无法看当前窗口。不要用私有桌面探针的Default前后稳定替代用户桌面事件证据。小批没有运行完整安装入口或重启Playnite。

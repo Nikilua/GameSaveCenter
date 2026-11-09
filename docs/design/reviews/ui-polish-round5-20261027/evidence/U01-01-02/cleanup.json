@@ -21,5 +21,20 @@
   },
   "cleanupAttempt": "PowerShell Remove-Item -LiteralPath <four exact stage-owned paths> -Recurse -Force",
   "result": "rejected-before-execution-by-command-policy",
-  "followUp": "Per the no-retry rule, the same deletion was not retried and no alternate shell was used. The four stage-owned directories remain intact; unrelated artifacts, .tmp outputs, TestResults and user TRXs were not touched."
+  "followUp": "At the end of the 2026-10-27 attempt, the four stage-owned directories remained. No retry was made during that attempt; see subsequentReadOnlyReview20261109 for a later state check.",
+  "subsequentReadOnlyReview20261109": {
+    "timeLocal": "2026-11-09T19:30:57+08:00",
+    "targetsChecked": [
+      ".tmp/round5-u01-01-02-render-qa",
+      ".tmp/round5-u01-finesse-light",
+      ".tmp/round5-u01-finesse-dark",
+      ".tmp/round5-u01-motionreentry"
+    ],
+    "allTargetsAbsent": true,
+    "filesRemoved": [],
+    "claimedRecoveredBytes": 0,
+    "cFreeBytesObservedStartEnd": [3234779136, 3231997952],
+    "dFreeBytesObservedStartEnd": [20204027904, 20203831296],
+    "notes": "Read-only state check only; observed drive changes are not attributed to this review. Evidence under docs/design/reviews remains intact."
+  }
 }
