@@ -838,3 +838,11 @@ TaskCenter状态替换期间行高稳定、阶段/进度和长名UIA有15/15行�
 ## 2026-11-10 Round5 U09-07 清理复核
 
 用户指出应主动释放项目无用输出后，按T01只读预览复核并单独检查所有权、路径边界、重解析点、文档引用、文件占用与相关进程。仅删除已被同一源码SHA较新完整构建替代且无文档路径引用的 `artifacts/gsc-b/e570f7b7`：726文件、169,276,352 bytes；D盘实测增加171,237,376 bytes，C盘未变。最新 `e570f7b7-detached-full-20261109`、构建诊断、安装包、引用历史构建及所有用户/其他任务TRX/TestResults保留。文档门禁后测得C盘3,085,778,944 bytes，距4GiB预检还差1,209,188,352 bytes；同一校验/清理区间C盘下降643,072 bytes，未归因于位于D盘的1,208-byte校验目录。完整安装启动链仍未运行。详细记录：[U09-07 cleanup](../design/reviews/ui-polish-round5-20261027/evidence/U09-07-cleanup-20261110/cleanup.json)。
+
+## 2026-11-10 Round5 U09-08：80项计数与闪屏入口复核
+
+重数PROGRESS任务行：80行、80个唯一ID、0重复，当前分布6已满足、70代码完成待验收、3进行中、1远端待验；U00-01盘点去重与U09-01证据覆盖已满足。此前U09-08的5/71汇总已校正。src/tests/scripts相对生产源码e570f7b7无差异，三个实际构建入口均存在。
+
+95b2b4cf的GitHub run #1528（42666242561）仍在运行：baseline job 129330520820位于离屏渲染QA；SDK10 job 129330521427已success并上传artifact 13698653069（1,280,732 bytes，SHA-256 5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0）。只记录已完成部分，不宣称整轮CI通过。当前只发现SDK9.0.302；C盘空闲3,083,395,072 bytes，距4GiB还差1,211,572,224 bytes；D盘充足。C盘项目Temp只见747-byte历史benchmark文本，不足以释放空间且保留。未删除任何用户或其他任务数据。
+
+源码检查确认三个cmd入口隐藏PowerShell/控制台辅助进程；安装脚本仅在构建安装结束后启动Playnite。截图没有HWND/PID，仍不能将黑窗归因于控制台、Playnite或具体WPF窗口，也不声称已经消除。尚未重新运行安装启动入口。精确状态和CI身份见Round5 U09-08 progress-count.json。

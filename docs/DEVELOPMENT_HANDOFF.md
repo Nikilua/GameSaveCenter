@@ -1617,3 +1617,11 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 - 最新文档门禁后C盘空闲3,085,778,944 bytes，距离安装启动预检4GiB尚差1,209,188,352 bytes；D盘空闲20,335,882,240 bytes。仅在C预检满足且SDK8.0.423可用后，才继续中文完整入口；禁止清理全局SDK/NuGet缓存或其他项目文件来强行达标。
 - 当前生产源码仍为 `e570f7b7e0d5019b7f57c411237de3abb55a6e89`；最近文档提交 `32be0baf` 的GitHub run #1527 两个适用job仍运行中。required-checks读取此前403，保持“远端待验”；不要把在途job写成通过。
 - U09-04的离屏动效回调不代表真实呈现帧；U09-05安装身份/启动与用户黑窗归因、Playnite/物理输入/UIA/IME/DPI仍待真实环境。用户可先正常退出Playnite/Worker；不得强杀。
+
+## Round5当前交接（2026-11-10，U09-08复算）
+
+- 80项共80个唯一ID、0重复；状态6已满足、70代码完成待验收、3进行中、1远端待验。U00-01、U09-01已满足，纠正U09-08旧统计。当前源码/测试/脚本相对e570f7b7无变化；真实入口均核实存在。
+- 95b2b4cf的run #1528整体仍运行：baseline job 129330520820进行Render QA；SDK10 job 129330521427已success并有artifact 13698653069。required-checks/ruleset仍受此前403限制；不得将单个job通过等同整轮通过。
+- 当前C盘空闲3,083,395,072 bytes，低于4GiB门槛1,211,572,224 bytes；只看到SDK9.0.302。没有安全且足够的C盘项目临时输出可清理。达到空间门槛并备好SDK8.0.423后再由中文入口执行唯一一次完整安装启动链；用户正常退出Playnite/Worker后先重查进程，不强杀。
+- cmd入口将PowerShell隐藏运行；安装完成后会启动Playnite。用户黑窗没有HWND/PID，不能确认是否由启动入口引起；不要宣称已解决，也不要为观测而反复重启宿主。接着完成文档校验、中文提交/push，并核对该SHA全部workflow jobs/artifacts。
+- 本次状态证据：design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/progress-count.json。

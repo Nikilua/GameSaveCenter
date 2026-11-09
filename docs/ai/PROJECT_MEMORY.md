@@ -2083,3 +2083,9 @@ e570f7b7共同源码：编辑器Tooltip默认下锚、调用方显式位置优�
 ## Round5 当前清理与交付状态（2026-11-10）
 
 复用T01只读artifact预览后，手工核对所有权、仓库/artifacts边界、重解析点、占用进程、文件锁和有效文档路径。只移除`artifacts/gsc-b/e570f7b7`这一同源码SHA的较旧构建缓存；保留更新的detached完整构建、当前/失败诊断、包、已引用历史输出与用户/其他任务测试数据。删除726文件、169,276,352逻辑字节，D盘实际增加171,237,376 bytes，C盘没有变化。当前C盘仍低于4GiB完整链门槛；不要为腾空间清理全局NuGet/SDK缓存、用户数据、未归属的TRX或已引用证据。清理凭据：[U09-07 cleanup evidence](../design/reviews/ui-polish-round5-20261027/evidence/U09-07-cleanup-20261110/cleanup.json)。
+
+### 2026-11-10 Round5 U09-08 80项计数复核
+
+按PROGRESS的80条任务记录逐行重数，唯一ID为80、重复0，状态为6已满足/70代码完成待验收/3进行中/1远端待验；修正U09-08旧的5/71汇总。U00-01和U09-01均已满足。三个真实构建入口存在，src/tests/scripts与生产SHA e570f7b7一致。
+
+95b2b4cf的run #1528整体仍运行：baseline job 129330520820进行Render QA；SDK10 job 129330521427已success，artifact 13698653069 / SHA-256 5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0。required-check权限仍因此前403待验，不重试同一权限。当前系统只见SDK9.0.302，C盘离4GiB门槛仍缺1,211,572,224 bytes；确认项目C盘临时内容仅747 bytes并保留，不清系统/SDK/NuGet缓存或未知数据。启动脚本/黑窗仍未由用户窗口PID归因。详细快照：Round5 evidence/U09-08-audit-20261110/progress-count.json。

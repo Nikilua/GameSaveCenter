@@ -1,0 +1,133 @@
+{
+  "auditDateLocal": "2026-11-10",
+  "reviewedCommit": "95b2b4cf374835d9dfdd2df09c928744ae1938af",
+  "scope": "The exact 80-task Round5 backlog and current PROGRESS status table.",
+  "backlog": {
+    "taskRows": 80,
+    "uniqueIds": 80,
+    "duplicateIds": [],
+    "statusCounts": {
+      "已满足": 6,
+      "代码完成待验收": 70,
+      "进行中": 3,
+      "远端待验": 1
+    },
+    "inProgressIds": [
+      "U09-04",
+      "U09-05",
+      "U09-08"
+    ],
+    "remotePendingIds": [
+      "U09-06"
+    ],
+    "summaryCorrection": "The prior U09-08 row said 5/71/3/1; the table rows recount to 6/70/3/1."
+  },
+  "entryPoints": {
+    "GameSaveCenter-Run.cmd": true,
+    "GameSaveCenter-一键构建安装运行.cmd": true,
+    "scripts/build.cmd": true
+  },
+  "sourceIdentity": {
+    "productionSourceBaseline": "e570f7b7e0d5019b7f57c411237de3abb55a6e89",
+    "srcTestsScriptsDifferFromBaseline": false
+  },
+  "localBuildReadiness": {
+    "sdkVersionsVisible": [
+      "9.0.302"
+    ],
+    "requiredBaselineSdk": "8.0.423",
+    "cFreeBytes": 3093544960,
+    "cRequiredFreeBytes": 4294967296,
+    "cDeficitBytes": 1201422336,
+    "dFreeBytes": 20334432256,
+    "safeProjectOwnedCOutputFound": false,
+    "knownTempFileBytesRetained": 747
+  },
+  "github": {
+    "workflow": ".github/workflows/windows-build.yml",
+    "runNumber": 1528,
+    "runId": 42666242561,
+    "headSha": "95b2b4cf374835d9dfdd2df09c928744ae1938af",
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 129330520820,
+        "name": "编译、测试与打包",
+        "status": "in_progress",
+        "conclusion": null,
+        "currentStep": "生成 Playnite 扩展包"
+      },
+      {
+        "id": 129330521427,
+        "name": ".NET SDK 10.0.401 编译与测试复核",
+        "status": "completed",
+        "conclusion": "success",
+        "artifactId": 13698653069,
+        "artifactName": "GameSaveCenter-sdk10-build-diagnostics",
+        "artifactSizeBytes": 1280732,
+        "artifactDigest": "sha256:5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0"
+      }
+    ],
+    "artifactsAtAudit": [
+      {
+        "id": 13698653069,
+        "name": "GameSaveCenter-sdk10-build-diagnostics",
+        "sizeInBytes": 1280732,
+        "digest": "sha256:5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0",
+        "createdAtUtc": "2026-11-09T18:10:18Z",
+        "expired": false
+      }
+    ],
+    "requiredChecksAccess": "Previously returned 403; not retried. The current job list does not prove required-check completeness.",
+    "baselineCurrentStep": "离屏渲染 QA",
+    "runStatus": "in_progress",
+    "runConclusion": null
+  },
+  "flashAudit": {
+    "cmdEntrypointsUseHiddenPowerShellAndConsoleHideHelper": true,
+    "rootInstallerStartsPlayniteAfterInstallUnlessNoStart": true,
+    "userBlackWindowAttributedToProcessOrHwnd": false,
+    "claimOfNoFlash": false
+  },
+  "validationScope": "Documentation-only update; Source Validation exit 0, local Markdown link validation and git diff --check. No full build, tests, render QA, installation, host restart, or destructive user-data operation was run for this audit.",
+  "documentationValidation": {
+    "sourceValidation": "passed",
+    "sourceValidationExitCode": 0,
+    "markdownFiles": 5,
+    "localLinks": 1034,
+    "nonLocalOrAnchorLinks": 61,
+    "missingOrOutsideLinks": 0,
+    "gitDiffCheckExitCode": 0,
+    "fullBuildOrTestsRun": false
+  },
+  "cleanup": {
+    "temporaryRelativePath": ".tmp/r5-u09-08-doc-check-20261110",
+    "deletedFiles": [
+      {
+        "name": "source-validation.stdout.txt",
+        "bytes": 361
+      },
+      {
+        "name": "source-validation.stderr.txt",
+        "bytes": 0
+      },
+      {
+        "name": "markdown-link-check.txt",
+        "bytes": 72
+      }
+    ],
+    "totalBytes": 433,
+    "reparsePoints": 0,
+    "fileLocks": 0,
+    "documentReferences": 0,
+    "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force after root-boundary and occupancy checks",
+    "spaceBytes": {
+      "cBefore": 3093544960,
+      "cAfter": 3093544960,
+      "dBefore": 20334428160,
+      "dAfter": 20334432256,
+      "interpretation": "C unchanged; observed D increase of 4096 bytes is not attributed to the 433-byte deletion."
+    }
+  }
+}

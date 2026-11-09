@@ -13501,3 +13501,12 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 用户要求主动释放项目无用文件。T01只读预览评估 `artifacts/gsc-b/e570f7b7`，再人工核对其位于仓库 `artifacts/`、726文件无重解析点/文件锁、相关进程为0、Markdown/JSON路径引用为0，且当前`src/tests/scripts`相对该SHA无变化。
 - 清理的是由同源码提交生成、早于并被 `artifacts/gsc-b/e570f7b7-detached-full-20261109` 替代的旧输出。通过 PowerShell `Remove-Item -LiteralPath -Recurse -Force` 精确删除726文件、169,276,352 bytes；D盘实测净增171,237,376 bytes，C盘保持3,091,755,008 bytes。新构建、build diagnostics、包、已有失败证据、用户/其他任务TRX/TestResults未动。
 - 本批只改文档；Source Validation退出0，5份Markdown检查1,035条本地链接，缺失/越界0，git diff --check无错误。仅生成后清理`.tmp/r5-u09-07-doc-check-20261110`两份日志、1,208 bytes；期间C盘从3,086,422,016降至3,085,778,944 bytes，变化不归因于D盘临时日志。完整链因C盘距4GiB仍差1,209,188,352 bytes未运行。证据见 [U09-07 cleanup](../design/reviews/ui-polish-round5-20261027/evidence/U09-07-cleanup-20261110/cleanup.json)。
+
+## 2026-11-10 Round5 U09-08：80项计数、入口和空间快照
+
+- 按PROGRESS逐行复算80项：80个唯一ID、重复0；6项已满足、70项代码完成待验收、3项进行中、1项远端待验。纠正U09-08旧5/71汇总；U00-01去重和U09-01证据覆盖已满足。
+- 三个实际入口GameSaveCenter-Run.cmd、GameSaveCenter-一键构建安装运行.cmd、scripts/build.cmd均存在；当前src/tests/scripts相对e570f7b7无变化。95b2b4cf的run #1528 / 42666242561整体仍运行：baseline job 129330520820处于离屏渲染QA，SDK10 job 129330521427已success，artifact 13698653069（1,280,732 bytes，SHA-256 5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0）。
+- 本机仅见SDK9.0.302；C盘3,083,395,072 bytes，距4GiB门槛差1,211,572,224 bytes；D盘20,334,583,808 bytes。C盘项目Temp唯一文件为747-byte benchmark文本并保留；未发现可安全清理、能实质补足门槛的自有输出。未清缓存、用户数据、其它项目/任务TRX，不改盘符/卷。
+- 控制台辅助代码检查：所有cmd入口使用隐藏PowerShell/控制台隐藏器；安装脚本在安装完成后才启动Playnite。用户黑窗截图没有HWND/PID，归因未完成，不宣称“无闪屏”。本批不启动编译、测试、Render QA、安装或Playnite，避免再次造成窗口切换。
+- 文档验证完成：Source Validation exit 0；5份Markdown共1,034条本地链接，缺失/越界0；git diff --check exit 0。未跑完整build/test/render。证据：docs/design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/progress-count.json。
+- 本批临时校验日志已按仓库.tmp边界、重解析点、引用、占用与锁检查后精确清理：3个文件共433 bytes。C盘前后均3,093,544,960 bytes；D盘20,334,428,160→20,334,432,256 bytes，空间变化不归因于清理。清单和实测值已写入progress-count.json。
