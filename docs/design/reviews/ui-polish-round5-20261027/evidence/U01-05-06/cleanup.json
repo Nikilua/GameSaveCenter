@@ -21,5 +21,18 @@
     "dBeforeRender": "not recorded",
     "dAfterRenderAndCleanupAttempt": 6.7
   },
-  "preserve": "用户Round3 TRX与共享 tests/GameSaveCenter.Playnite.Tests/TestResults 均未访问或修改。"
+  "preserve": "用户Round3 TRX与共享 tests/GameSaveCenter.Playnite.Tests/TestResults 均未访问或修改。",
+  "followUpReadOnlyCheck": {
+    "checkedAtUtc": "2026-11-09 11:07 UTC",
+    "targetWithinRepositoryArtifacts": true,
+    "targetExists": false,
+    "deletionPerformedByThisCheck": false,
+    "bytesReleasedByThisCheck": 0,
+    "archivedRenderReportStillExists": true,
+    "cFreeBytes": 3216539648,
+    "cRequiredFreeBytes": 4294967296,
+    "cDeficitBytes": 1078427648,
+    "dFreeBytes": 20205613056,
+    "note": "旧stage输出路径当前不存在。保留原先清理被拒历史，不推断谁删除或释放了多少空间。"
+  }
 }
