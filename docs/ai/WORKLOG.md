@@ -13289,6 +13289,14 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 文档检查后按纯文档规则不重跑本地完整构建。当前提交的GitHub run #1501仍需等基线打包与artifact上传结束；SDK10 job已成功。
 
 
+## 2026-11-09 Round5 U03-01/02/03 按钮状态与图标命中区复核
+
+- 复核按钮五态/尺寸稳定、真实忙碌期间防重入与恢复、34/36 DIP图标按钮命中区三项。生产资源已复用共享按钮模板和焦点层；17个生产图标操作均有AutomationProperties.Name与Command/Click。本批无生产XAML/资源改动。
+- 定向TRX SHA/长度验证为13/13通过、0失败、0跳过；浅/深Normal/Hover/Pressed/Focus/Disabled十张图及probe report大小/SHA均匹配。悬停是IsMouseOver状态探针、按压合成Space，不代表真实鼠标。真实Playnite/UIA客户端、屏幕阅读器、实体点击和物理DPI仍待验。
+- GitHub run #1325 / `40561836233` 对提交`8c927a93cff92b923a8efbedbdf28aadbc10d00b`完成success；基线job `122392618285` 15步、SDK10 job `122392618705` 8步全部成功。package和diagnostic artifact IDs/大小/SHA见Round5 evidence `U03-01-03/ci-run-40561836233.json`。当前产品SHA `e570f7b7`独立完整build及双SDK workflow成功，见U09-05证据。
+- 本批只读查询与哈希审计，无源码构建、WPF窗口或文件删除。阶段起始C盘3,223,830,528 bytes，D盘20,201,070,592 bytes；清理目标、结束空间快照见 `evidence/U03-01-03/cleanup.json`。不触碰用户/他任务测试结果、缓存、存档或盘符。
+- 提交前只运行文档/源码校验，不重复当前代码已有的Render QA与行为测试；纯文档提交自身的workflow继续跟踪但不追加仅记录通过结果的提交。
+
 ## 2026-11-09 Round5 U02-01/02/03/04 主题与语义色去重复核
 
 - 按2–4项小批复核页面/卡片/控件Light-Dark层次、强调色配额及成功/警告/错误/运行/排队/取消状态色。共享Palette、Demo核心资源顺序、高对比系统色、状态图标+文字已有实现和测试覆盖；没有发现需要新增生产XAML/资源改动的证据，不重跑渲染/测试。

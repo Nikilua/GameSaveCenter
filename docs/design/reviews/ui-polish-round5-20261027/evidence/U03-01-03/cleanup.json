@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-09",
+  "stage": "U03-01/02/03 read-only evidence audit",
+  "workspace": "D:/workplace/github/GameSaveCenter",
+  "diskSnapshots": [
+    {
+      "timeLocal": "2026-11-09T19:48:28+08:00",
+      "cFreeBytes": 3223830528,
+      "dFreeBytes": 20201070592
+    },
+    {
+      "timeLocal": "2026-11-09T19:54:14+08:00",
+      "cFreeBytes": 3220856832,
+      "dFreeBytes": 20200861696
+    }
+  ],
+  "ownedOutputRootsChecked": [
+    ".tmp",
+    "artifacts"
+  ],
+  "u03SpecificOutputDirectoriesFound": [],
+  "filesRemoved": [],
+  "claimedRecoveredBytes": 0,
+  "notes": "只读复核；C/D可用空间变化不归因于本批。13项TRX、10张截图、探针报告与CI身份属于当前审核证据，均保留。未触碰共享TestResults、缓存、配置、存档或其他任务文件。"
+}

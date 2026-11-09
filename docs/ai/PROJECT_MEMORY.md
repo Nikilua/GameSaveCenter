@@ -1,3 +1,7 @@
+## 2026-11-09 U03-01/02/03 按钮和图标任务复核
+
+共享按钮Normal/Hover/Pressed/Disabled/Focus、延迟忙碌、CanExecute恢复及17个图标操作无障碍名称/命令/焦点已有生产实现和行为保护。13项TRX全通过、0 skip；十张浅深状态图/报告校验通过。run #1325 `40561836233`在准确SHA `8c927a93`上双SDK job及全部步骤成功，package/diagnostic artifact记录在`evidence/U03-01-03/ci-run-40561836233.json`；当前源码`e570f7b7`也有独立完整build及双SDKCI成功证据。状态仍代码完成待验收，真实鼠标、Playnite UIA/屏幕阅读器和物理DPI未测。本次不重跑渲染/Build。
+
 ## 2026-11-09 U02 主题与语义状态去重复核
 
 U02-01/02的Light/Dark页面与控件层次、U02-03强调色使用、U02-04六类状态色已由共享资源/行为/Render QA覆盖，本次没有源代码缺口。`f59fe4c8` 双SDK Actions run #1322成功，run/job/artifact身份在 Round5 `evidence/U02-01-04/ci-run-40555566776.json`；当前产品 `e570f7b7` full build和双SDK CI也成功。U02继续代码完成待验收，真实Playnite高对比/UIA/键盘IME/物理DPI待验；required-check API先前403，不重试。

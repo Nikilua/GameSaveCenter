@@ -18,6 +18,10 @@ Q06 探针的悬停由测试设置 WPF IsMouseOver 只读依赖属性，不是�
 
 ## GitHub 与验收边界
 
-提交 `8c927a93` 的 `.github/workflows/windows-build.yml` run `40561836233`（baseline job `122392618285`、SDK10.0.401 job `122392618705`）截至 2026-10-27 18:43 UTC 仍在各自编译/测试阶段。更早 U02 源码与文档提交的 run、job 与 SDK10 artifact 身份见 [ci-runs.json](../U02-05-06/ci-runs.json)；required-checks 接口此前403，仍记“远端待验”。CI 结果不能用预提交本地通过替代。
+提交 `8c927a93` 的 `.github/workflows/windows-build.yml` run `40561836233` / workflow #1325 已完成成功：baseline job `122392618285` 的15个步骤、SDK10.0.401 job `122392618705` 的8个步骤全部成功；package/build-diagnostics/SDK10-diagnostics artifact ID、大小与SHA-256见 [精确CI记录](ci-run-40561836233.json)。本轮又核对当前产品SHA `e570f7b7e0d5019b7f57c411237de3abb55a6e89` 的本机完整build、Render QA和双SDKCI通过，见 Round5 `evidence/U09-05-full-build-e570f7b7-20261109/ci-run-1500.json`。required-checks接口此前403，不重复请求；远端required-check清单仍待有权限维护者核对。
 
 当前状态为“代码完成待验收”：真实 Playnite 宿主、实际 UIA 树/屏幕阅读器、实体鼠标、物理 DPI 未验证。没有触碰存档恢复、媒体删除或云端写入；保持真实命令、Binding、错误/取消行为、滚动条和游戏选框不变。
+
+## 2026-11-09 只读复核
+
+按钮五态10张截图和报告SHA/大小匹配，定向TRX为13/13、0失败/0跳过。原GitHub pending快照现已结案为双SDK全部success；完整run/job/artifact记录见 `ci-run-40561836233.json`。本次未重复启动WPF RenderHarness或生成新截图，三项任务继续保留真实宿主/UIA/鼠标/DPI验收边界；本批专属输出与磁盘前后状态见 [cleanup记录](cleanup.json)。

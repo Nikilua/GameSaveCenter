@@ -1,3 +1,9 @@
+## 2026-11-09 U03-01/02/03 按钮与图标任务去重复核
+
+生产共享按钮五态、延迟忙碌层和17个图标操作的UIA Name/Command/Click/键盘焦点已有覆盖，没有新增源码缺口。定向TRX 13/13、0失败/skip，10张双主题状态图和报告的SHA/大小全匹配；`8c927a93` 的 GitHub #1325 / run `40561836233` 基线与SDK10 jobs及所有步骤success，artifact身份在 `../design/reviews/ui-polish-round5-20261027/evidence/U03-01-03/ci-run-40561836233.json`。当前产品SHA `e570f7b7`完整本地build/Render QA/双SDKCI另见U09-05证据。三项保持代码完成待验收：真实鼠标、Playnite、UIA客户端/屏幕阅读器及物理DPI未验。
+
+本批无生产源码或渲染输出，未删除文件。起始C盘空闲3,223,830,528 bytes、D盘20,201,070,592 bytes；完整根入口仍未达C盘4GiB要求。只保留对应审计证据，不碰未知Temp/缓存、用户TestResults、存档或任何盘符/卷映射。
+
 ## 2026-11-09 U02-01/02/03/04 主题层次与状态语义复核
 
 共享主题分层、强调色配额和六态语义图标/文字/底色与高对比回退无新增源码缺口；本批不重复改色或跑渲染。历史修复候选 `f59fe4c8` 的 workflow #1322 / run `40555566776` 基线job `122370590922` 和SDK10 job `122370591760` 均completed/success，包及诊断artifact摘要见 `../design/reviews/ui-polish-round5-20261027/evidence/U02-01-04/ci-run-40555566776.json`。此前 `bf7540e2` run `40545849867` 双job失败诊断也已补齐artifact身份；当前产品SHA `e570f7b7` 独立完整build、双SDKCI与Render QA成功，见U09-05证据。U02四项保持代码完成待验收，真实Playnite高对比、UIA/键盘/IME、物理DPI仍待；required-checks保持远端待验（既有403，不重复尝试）。
