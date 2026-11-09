@@ -1,3 +1,7 @@
+## 2026-11-09 U00-01 盘点与去重复核
+
+现有 U00-01 基线已完成四页各五条观察和旧任务去重映射；16张配套PNG哈希逐一复核全部匹配。PROGRESS 将该项由代码完成待验收更正为已满足，整轮计数6/70/3/1。旧U00临时目录目前不存在，但本次没有删除它也不归因释放量。C盘本次实测 3222917120 bytes，根入口4 GiB门槛尚差 1072050176 bytes；D盘 20212924416 bytes。项目专属C盘剩余内容仅当前审计文件747 bytes和空临时目录，不足以安全补齐；不清理用户/未知数据。纯文档校验完成后提交，完整构建仍由冻结候选最终链负责。
+
 ## 2026-11-09 U09-05 精确SHA完整build与CI通过；中文根链待C盘空间
 
 当前冻结源码为 `e570f7b7e0d5019b7f57c411237de3abb55a6e89`。独立 `scripts/build.cmd -Configuration Release` 使用 SDK 8.0.423 完整 exit 0：160份TRX、2032项、1964通过、0失败，157个WPF隔离类；68个既有skip按撤销架构、Named Pipe环境和默认交互指针原因记录，不计通过。完整日志/TRX在本机 `artifacts/build-diagnostics/round5-u09-05-detached-e570f7b7/20261109T085813954Z-7831612a/`，摘要见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-full-build-e570f7b7-20261109/`。

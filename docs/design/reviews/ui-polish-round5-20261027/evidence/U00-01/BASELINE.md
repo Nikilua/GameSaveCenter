@@ -83,3 +83,8 @@ Render QA 临时输出共 395 个文件（394 PNG + 1,141,754 字节报告），
 清理前已核对本阶段 `.tmp` 输出的规范化路径、reparse point、活动 RenderHarness 进程、文件占用和已归档截图 SHA-256。随后执行 `Remove-Item -LiteralPath ... -Recurse -Force` 被执行策略拒绝；目录仍保留，未尝试其他删除方式。清理状态记为待执行，不把未发生的空间回收写成完成。其他 `.tmp`、artifacts、bin/obj、Round 3 用户 TRX/TestResults 全部保留。清单、拒绝结果和前后空间观察见 [cleanup.json](cleanup.json)。
 
 U00-01 的离屏视觉基线和历史任务去重已完成；临时输出清理待执行，真实 Playnite、有效默认设置截图、物理 DPI、UIA/IME 和所呈现动画帧不在本证据范围。远端 CI 终态核对后再更新账本状态。
+
+
+## 2026-11-09 复核
+
+逐一核验 screenshots.json 所列16张PNG，全部存在且SHA-256匹配。历史 .tmp/ui-polish-round5-u00-01 路径当前不存在；本次复核没有删除文件，也不将空间变化归因于本批。详见同目录 cleanup.json 的只读后续检查。U00-01的页面观察、旧任务去重与Demo缺源边界继续适用。

@@ -1,3 +1,10 @@
+## 2026-11-09 U00-01：视觉基线与去重账本复核
+
+启动盘点确认 U00-01 的既有基线已覆盖存档、任务、媒体和设置页，各记录五条有截图或明确边界的观察，包含旧 S01/S02/S04、共享主题/令牌及 Demo 缺源去重映射。没有重跑或复制历史截图；逐一核对 `evidence/U00-01/screenshots.json` 的 16 张 PNG，文件均存在且 SHA-256 全部匹配。该项按原验收范围更新为“已满足”；真实 Playnite、有效默认设置样本、实体 DPI/UIA/IME不属于基线盘点的完成条件。
+
+旧 .tmp/ui-polish-round5-u00-01 路径在本次复核时已不存在。本次未删除该目录，不将其消失或任何磁盘空间变化归因于本批；历史清理拒绝记录保留，并在 `evidence/U00-01/cleanup.json` 增加只读复查。当前实测 C 盘 3222917120 bytes（距根入口4 GiB预检差 1072050176 bytes），D盘 20212924416 bytes。C盘其余只发现747字节的当前大列表审计证据及空的项目测试临时目录，没有可安全清除的项目文件补足门槛；不触碰其他用户文件或盘符。
+
+U00-01 更新后，整轮状态为6项已满足、70项代码完成待验收、3项进行中、1项远端待验。Source Validation exit 0、git diff --check通过，U00-01三个本地证据链接可解析；纯文档批不重复本地完整链。
 ## 2026-11-09 U09-05：e570f7b7 精确SHA完整build与CI完成，安装链等空间门禁
 
 选框右缘修正的冻结提交 `e570f7b7e0d5019b7f57c411237de3abb55a6e89` 已由 SDK 8.0.423 执行独立 `scripts/build.cmd -Configuration Release`，完整 exit 0。160 份 TRX 汇总 2,032 项、1,964 通过、0失败，157个WPF隔离类全部完成。68项skip均按既有原因记录且不计通过：57项已撤销“今日工作台”架构、9项Named Pipe客户端和1项服务端受执行环境限制、1项系统指针交互测试默认不运行。精确日志、TRX路径和摘要见[完整build记录](evidence/U09-05-full-build-e570f7b7-20261109/README.md)。
@@ -16,7 +23,7 @@
 
 SDK8.0.423 Release 隔离重编exit0、0 warning/0 error；R23 12/12、Task Grid 1/1、Save History 1/1、选框状态3/3、资源字典140通过，0失败。资源字典另有39条既有 `LegacyProductionUiBaselineFact` 的 `NotExecuted`，原因均是已撤销的“今日工作台”结构断言，不计为通过。五类分别运行在WinSta0私有桌面，Default输入桌面前后均为Default。修正证据JSON的BOM后Source Validation exit0；WPF静态审查398个XAML、0 errors/218 warnings/1440 info。Render QA首轮因4K位图资源耗尽在289图exit1；仅QA Harness加入每8张图回收后完整重跑exit0，394 PNG/0 `PROBLEM`。用户确认黑窗发生在编译/检查时；本批命令从创建时隐藏并重定向，但截图仍无HWND/PID/desktop归因，不宣称已解决。独立完整 `scripts/build.cmd`、中文入口安装启动和新SHA CI尚待。
 
-U09-05/U09-08继续进行；整轮计数仍为5项已满足、71项代码完成待验收、3项进行中、1项远端待验。U09-06 required-checks/ruleset此前403，保持“远端待验”，不重试同一拒绝。未操作卷、盘符、映射或用户数据。
+U09-05/U09-08继续进行；整轮计数更新为6项已满足、70项代码完成待验收、3项进行中、1项远端待验。U09-06 required-checks/ruleset此前403，保持“远端待验”，不重试同一拒绝。未操作卷、盘符、映射或用户数据。
 
 ## 2026-11-09 U09-05 补验：修正旧选框边距断言，完整门禁继续
 
@@ -681,7 +688,7 @@ Tooltip 主显示器工作区底边实际 Popup 翻转与 Toast 五条堆叠/退
 
 | ID | 任务 | 状态 | 旧能力/本轮增量 | 实现提交与视觉/行为证据 | 构建/CI/清理及下一步 |
 | --- | --- | --- | --- | --- | --- |
-| U00-01 | 视觉基线盘点 | 代码完成待验收 | 继承现有生产主题、RenderHarness 与历史证据；本项新增存档/任务/媒体/设置 Light/Dark、1040/1366 DIP 同条件基线、逐页候选差异及旧任务去重 | [基线与逐页观察](evidence/U00-01/BASELINE.md)，16张截图SHA-256在同目录`screenshots.json`；提交`ac18a918`，产品代码身份`90bf0405` | SDK8.0.423；RenderHarness Release 0/0，render-qa exit 0 / 0 PROBLEM；WPF静态审查31 XAML / 0 error / 26 warning / 179 info。run `40453690050`与SDK修正提交run `40456945529`仍为失败历史；后者确认SDK8.0.423已装，两job重复失败于媒体比较测试的控件宽度假设。候选用固定640/500 DIP修正夹具并本机1/1通过，等新提交CI；原始job/artifact身份见两个CI JSON。清理命令遭执行策略拒绝，395个本阶段输出/53,094,868字节仍在`.tmp`；见`cleanup.json`。当前示范批U00-02/U00-03同步进行；真实宿主/有效默认设置截图仍待验。 |
+| U00-01 | 视觉基线盘点 | 已满足 | 继承 `Views/`、Themes 与 RenderHarness；存档/任务/媒体/设置各五条观察，设置错误样本与缺 Demo 的边界及旧任务映射均已记录。 | [基线与逐页观察](evidence/U00-01/BASELINE.md)，[16张截图SHA-256](evidence/U00-01/screenshots.json)；原产品基线 `90bf0405`。 | 原 SDK8.0.423 基线 Render QA exit 0 / 0 PROBLEM；本次只读复核16/16 PNG存在且哈希一致。临时目录当前缺席、未归因删除；Playnite/物理 DPI/UIA/IME边界在基线中明确。 |
 | U00-02 | 控件资源归属 | 代码完成待验收 | SaveCenterView原先重复合并WpfUiProduction（Redesign已合并）；页面TabControl别名样式重复实例已声明的Stretch属性。移除重复项，直接应用共享模板，不动宿主资源 | [资源来源、变更与验证](evidence/U00-02-03/BASELINE.md)；双主题/双尺寸截图及SHA见[evidence](evidence/U00-02-03/screenshots.json)；源码提交58872f2c | source validation通过；SDK8.0.423 RenderHarness Release 0/0、exit0、0 PROBLEM；WPF静态审查31 XAML / 0 error / 26 warning / 179 info。20be8073 run 40462741496两job败于媒体收件箱测试夹具（runner实际1014 DIP而断言按请求1360）；修正为夹具布局1360 DIP后SDK8定向类6/6。a83c008a run 40480521410两SDK发现R23隔离测试缺少Playnite宿主BaseTextBlockStyle，已拆出独立Application生命周期类，本机SDK8新类1/1、原R23类8/8。5d0a2448 run 40486014630的SDK8 job 122127864273与SDK10 job 122127864513又败于保存页宽屏测试夹具；已固定页面逻辑宽并保留单行/间距断言，本机SDK8整类54/54、0 skip，待新提交双SDK复核。原job/artifact和修复TRX见[CI记录](evidence/U00-02-03/ci-run-40486014630.json)。真实宿主/UIA/物理DPI仍待验。
 | U00-03 | 信息主次示范 | 代码完成待验收 | 重复标题改为“存档清单”；主要扫描/预览/校验/详情操作前置，保留筛选、配置、表格、详情、命令与安全语义 | [信息层级和前后证据](evidence/U00-02-03/BASELINE.md)；1040/1366 DIP Light/Dark截图见[evidence](evidence/U00-02-03/screenshots.json)；源码提交`58872f2c` | SDK8.0.423定向测试3 passed / 4既有skip；媒体比较受控宽度1/1 passed；标题层级回归修正后测试1/1 passed。run `40461606378`的标题断言旧失败已修，`20be8073` run `40462741496`两job通过Core 157/157、Worker 400/400，但各在Playnite 1233项中1项失败、18既有skip；失败为无关的媒体收件箱宽屏夹具，现受控1360 DIP并本机SDK8类6/6通过，修复提交待CI。真实宿主、UIA/IME、物理DPI和完整根链待验。
 | U00-04 | 间距节奏示范 | 代码完成待验收 | 存档摘要横向节奏保留；CI 暴露纵向留白使表格少14 DIP 后，恢复紧凑值（Padding 12,4；卡片底距2；动作顶距10），命令、内容和顺序不变 | [前后观察与验证](evidence/U00-04-05/BASELINE.md)；双主题/尺寸截图及SHA见[evidence](evidence/U00-04-05/screenshots.json)；回归修正见[evidence/U01-01-02/BASELINE.md)；生产XAML提交`7e61bba3`，紧凑断言修复`bb984a07` | SDK8 RenderHarness Release 0 warning/0 error；宽屏夹具整类54/54；R07紧凑布局4/4、0 skip；render-qa exit0/0 PROBLEM。run `40505231943`旧间距断言失败后，`bb984a07`把断言更新为当前值并本机1/1通过；新提交run `40510427122` SDK8/SDK10双job、render-qa、静态审查、打包均通过。最终本地根链和真实宿主仍待验。

@@ -19,5 +19,18 @@
     "dBeforeAttempt": 7376445440
   },
   "preserve": "All other .tmp/artifacts/bin/obj outputs and user Round3 TRX/TestResults remain untouched",
-  "followUp": "Run the repository-approved cleanup in an execution context that permits the explicitly scoped PowerShell Remove-Item command; verify path and ownership again first."
+  "followUp": "The target was absent on the 2026-11-09 read-only recheck; do not rerun deletion unless it reappears and ownership/boundary are verified again.",
+  "followUpReadOnlyCheck": {
+    "checkedAtUtc": "2026-11-09 10:47 UTC",
+    "targetExists": false,
+    "deletionPerformedByThisCheck": false,
+    "directoryBytesReleasedByThisCheck": 0,
+    "screenshotFilesVerified": 16,
+    "screenshotHashesMatched": 16,
+    "cFreeBytes": 3222917120,
+    "cRequiredFreeBytes": 4294967296,
+    "cDeficitBytes": 1072050176,
+    "dFreeBytes": 20212924416,
+    "note": "历史目标路径当前不存在。原先被拒绝的删除尝试仍保留为历史事实；本次不推断其删除者或释放量。"
+  }
 }

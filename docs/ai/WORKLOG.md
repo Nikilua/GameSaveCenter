@@ -13280,3 +13280,10 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - 完整隐藏构建期间 `WinSta0\Default` 与input desktop相同，WinEvent show/hide均0；不据此认定用户闪屏已解决。Source Validation/WPF静态/Render QA的选框源代码批次证据仍见`U09-05-selection-boundary-20261109/`。
 - 根入口C盘门槛4GiB，实测空闲3,238,178,816 bytes，差1,056,788,480 bytes；D盘空闲19,902,840,832 bytes。项目专属临时测试目录为空，当前本阶段build/diagnostics仍保留为最新交付证据；不清理未知文件或改盘符。Playnite/Worker均未运行。
 - 由于空间预检未满足，没有执行中文包装器转交英文根入口的最终安装、身份核验和启动；U09-05/U09-08继续。精确数据与本机TRX路径见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-full-build-e570f7b7-20261109/`。
+
+
+## 2026-11-09 Round5 U00-01 基线去重复核
+
+- 启动审查核实 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-01/BASELINE.md` 已完成存档/任务/媒体/设置各五条截图观察、旧任务映射及Demo缺源边界；没有重复跑Render QA。逐一检查 `docs/design/reviews/ui-polish-round5-20261027/evidence/U00-01/screenshots.json` 中的16张PNG，存在且哈希匹配；新段落中引用的三个本地证据链接均已解析。进度将U00-01从代码完成待验收更正为已满足，总状态6项已满足、70项代码完成待验收、3项进行中、1项远端待验。
+- .tmp/ui-polish-round5-u00-01 当前不存在；本批未删除，历史删除拒绝仍作为历史保留，cleanup manifest补记只读复查且不认领释放量。C盘 3222917120 bytes，距4GiB差 1072050176 bytes；D盘 20212924416 bytes。余下可识别的专属C内容为747字节当前审计与空测试目录，未触碰未知文件或盘符。
+- 文档检查后按纯文档规则不重跑本地完整构建。当前提交的GitHub run #1501仍需等基线打包与artifact上传结束；SDK10 job已成功。
