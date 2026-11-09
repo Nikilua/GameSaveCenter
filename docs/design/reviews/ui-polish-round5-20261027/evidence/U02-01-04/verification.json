@@ -89,20 +89,39 @@
         "runNumber": 1319,
         "headSha": "bf7540e29a1852552784f4d2ad62c5dcd707cc60",
         "event": "push",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "failure",
         "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40545849867",
         "jobs": [
-          {"id": 122336135430, "name": "编译、测试与打包", "sdk": "repository SDK baseline", "status": "in_progress", "activeStep": "编译与测试"},
-          {"id": 122336135080, "name": ".NET SDK 10.0.401 编译与测试复核", "sdk": "10.0.401", "status": "in_progress", "activeStep": "隔离工作树并运行 Release 编译与测试"}
+          {"id": 122336135430, "name": "编译、测试与打包", "sdk": "repository SDK baseline", "status": "completed", "conclusion": "failure", "failedStep": "编译与测试"},
+          {"id": 122336135080, "name": ".NET SDK 10.0.401 编译与测试复核", "sdk": "10.0.401", "status": "completed", "conclusion": "failure", "failedStep": "隔离工作树并运行 Release 编译与测试"}
         ],
-        "artifacts": [],
+        "artifacts": [
+          {"id": 12753089475, "name": "GameSaveCenter-build-diagnostics", "sizeBytes": 1029266, "sha256": "79fedc8466aeefa0a04786ef8d4c678fd83341f3755f0a04eb62539762a869d4"},
+          {"id": 12753228652, "name": "GameSaveCenter-sdk10-build-diagnostics", "sizeBytes": 937965, "sha256": "dcd46bfd096d3c80df8938ad76afe7f73f27ccf5e3a8fe53e0cce7db7bf2cf0b"}
+        ],
         "requiredChecks": {
           "status": "unreadable",
           "httpStatus": 403,
           "message": "Resource not accessible by integration"
         },
-        "conclusionNote": "修复SHA双SDK CI仍在运行，远端待验；无权限读取required checks。用有权限的GitHub Actions API/页面核对所有适用job、artifact与required checks。"
+        "conclusionNote": "两个SDK job后续均在编译/测试阶段失败；原始诊断artifact和SHA-256已归档。下一候选f59fe4c8的双SDK run 40555566776已成功；required-checks仍因403远端待验。"
+      },
+      {
+        "runId": 40555566776,
+        "runNumber": 1322,
+        "headSha": "f59fe4c86c78cb2fc11414a431aceb49821910ee",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40555566776",
+        "jobs": [
+          {"id": 122370590922, "name": "编译、测试与打包", "sdk": "repository SDK baseline", "status": "completed", "conclusion": "success", "allStepsSucceeded": true},
+          {"id": 122370591760, "name": ".NET SDK 10.0.401 编译与测试复核", "sdk": "10.0.401", "status": "completed", "conclusion": "success", "allStepsSucceeded": true}
+        ],
+        "artifacts": [12761808081, 12761317922, 12760160901],
+        "artifactRecord": "ci-run-40555566776.json",
+        "conclusionNote": "精确f59fe4c8候选的基线SDK与SDK10 jobs及所有步骤成功；当前产品SHA e570f7b7的独立build/Render QA/双SDK CI另见U09-05证据。required-checks/ruleset仍因既有403无法读取，不据此声称required checks已全绿。"
       }
     ]
   },

@@ -1,3 +1,9 @@
+## 2026-11-09 U02 主题与语义状态去重复核
+
+U02-01/02的Light/Dark页面与控件层次、U02-03强调色使用、U02-04六类状态色已由共享资源/行为/Render QA覆盖，本次没有源代码缺口。`f59fe4c8` 双SDK Actions run #1322成功，run/job/artifact身份在 Round5 `evidence/U02-01-04/ci-run-40555566776.json`；当前产品 `e570f7b7` full build和双SDK CI也成功。U02继续代码完成待验收，真实Playnite高对比/UIA/键盘IME/物理DPI待验；required-check API先前403，不重试。
+
+历史 `bf7540e2`失败run #1319 `40545849867`现可查询为双job compile/test failure；诊断artifact IDs与SHA已写回证据，之后的`f59fe4c8`修正候选全绿。当前阶段引用的`artifacts`/`.tmp`目标都不存在，未删除文件；C盘仍低于4GiB完整入口门槛。只清理当前阶段明确归属且无用的输出，不碰系统缓存、用户/他任务TestResults或磁盘挂载。
+
 ## 2026-11-09 U01-01/02 混排/标题去重复核
 
 13张截图、4份报告SHA/大小全部匹配；U01-01/02引用的37项和1项TRX均通过且0跳过。实现提交7e61bba3及断言修正bb984a07已在当前分支历史，当前产品SHA e570f7b7的独立完整build、双SDK CI和Render QA全过。两项状态保持代码完成待验收，因为可选字体未安装、Playnite/UIA/键盘IME/物理DPI仍待真实验收。

@@ -5,8 +5,8 @@
     "workflow": ".github/workflows/windows-build.yml",
     "event": "push",
     "headSha": "bf7540e29a1852552784f4d2ad62c5dcd707cc60",
-    "status": "in_progress",
-    "conclusion": null,
+    "status": "completed",
+    "conclusion": "failure",
     "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/40545849867"
   },
   "jobs": [
@@ -14,22 +14,32 @@
       "id": 122336135430,
       "name": "编译、测试与打包",
       "sdk": "repository SDK baseline",
-      "status": "in_progress",
-      "activeStep": "编译与测试"
+      "status": "completed",
+      "conclusion": "failure",
+      "failedStep": "编译与测试",
+      "artifactId": 12753089475,
+      "artifactName": "GameSaveCenter-build-diagnostics",
+      "artifactBytes": 1029266,
+      "artifactSha256": "79fedc8466aeefa0a04786ef8d4c678fd83341f3755f0a04eb62539762a869d4"
     },
     {
       "id": 122336135080,
       "name": ".NET SDK 10.0.401 编译与测试复核",
       "sdk": "10.0.401",
-      "status": "in_progress",
-      "activeStep": "隔离工作树并运行 Release 编译与测试"
+      "status": "completed",
+      "conclusion": "failure",
+      "failedStep": "隔离工作树并运行 Release 编译与测试",
+      "artifactId": 12753228652,
+      "artifactName": "GameSaveCenter-sdk10-build-diagnostics",
+      "artifactBytes": 937965,
+      "artifactSha256": "dcd46bfd096d3c80df8938ad76afe7f73f27ccf5e3a8fe53e0cce7db7bf2cf0b"
     }
   ],
-  "artifacts": [],
+  "artifacts": [12753089475, 12753228652],
   "requiredChecks": {
     "status": "unreadable",
     "httpStatus": 403,
     "message": "Resource not accessible by integration"
   },
-  "note": "Run is for exact source/test repair commit bf7540e29a1852552784f4d2ad62c5dcd707cc60. The committed SDK 8.0.423 focused group passed 16/16 with zero skips. Await both jobs and artifacts; required checks must be queried through a connection with appropriate permissions."
+  "note": "Run is for exact source/test repair commit bf7540e29a1852552784f4d2ad62c5dcd707cc60. Both jobs completed failure during compile/test; build-diagnostics artifacts are retained above. The committed SDK 8.0.423 focused group passed 16/16 with zero skips. Later candidate f59fe4c86c78cb2fc11414a431aceb49821910ee passed both SDK jobs in run 40555566776. Required checks remain unreadable with HTTP 403; see verification.json."
 }

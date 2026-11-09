@@ -1,3 +1,9 @@
+## 2026-11-09 Round5 U02 主题/状态任务已核对，宿主仍待验
+
+U02-01/02/03/04的共享主题层次、强调色配额、六类语义状态和系统高对比回退无新源码缺口。修复候选`f59fe4c8`的双SDK run #1322 (`40555566776`)两job/全部步骤成功，package和diagnostics artifact身份见 `evidence/U02-01-04/ci-run-40555566776.json`；当前产品SHA `e570f7b7`的完整独立build/双SDKCI/Render QA均已验。先前失败的`bf7540e2` run #1319 (`40545849867`)双job已完成failure，artifact ID/SHA和记录不删除。U02状态不升级：真实Playnite高对比、UIA/键盘/IME和物理DPI尚未实测；required-checks/ruleset读取仍远端待验（此前403，不重复试探）。
+
+本轮可识别的U02 `.tmp`、`artifacts`输出路径均不存在；没有执行删除或空间归因。C盘约3.01GiB，根入口预检要求4GiB；项目 Temp/阶段目录未找到足以安全补齐缺口的自有文件。不删除NuGet/系统缓存、用户/他任务TestResults、未知文件，不改变盘符/卷/映射。黑窗仍未由HWND/PID定位；本批没有启动构建或WPF窗口。继续其他依赖满足的Round5 UI项，完整安装启动链待空间达标后的冻结候选门禁。
+
 ## 2026-11-09 Round5 U01-01/02 已复核；根链继续等C盘门槛
 
 U01-01/02复用既有生产样式与基线：13张截图、4份报告哈希/长度全匹配，引用的两个TRX为37/37、1/1通过且0跳过。当前产品SHA `e570f7b7` 的独立完整build、双SDKCI和394图Render QA均有精确证据；两项仍“代码完成待验收”，可选字体未安装与真实Playnite/UIA/键盘IME/物理DPI未验。旧U01 cleanup中的四个`.tmp`目标本次只读查看均已不存在，无删除或空间回收归因。详细账本见 Round5 `PROGRESS.md` 和 `evidence/U01-01-02/cleanup.json`。

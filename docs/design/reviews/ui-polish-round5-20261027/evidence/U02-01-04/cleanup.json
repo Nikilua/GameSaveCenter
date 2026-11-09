@@ -14,5 +14,20 @@
   "outputBytes": 53143705,
   "deleted": [],
   "retainedReason": "这是 Round5 当前最近一批的 Render QA 审计输出，报告和截图仍在被引用；本批无可删除的自有旧包或截图副本。只将一张代表截图归档到证据目录。",
-  "olderOutput": "artifacts/ui-qa/round5-20261028-u01-05-06 仍在；此前按要求执行 Remove-Item 时被 PowerShell 执行策略拒绝，未改用其他 shell。"
+  "olderOutput": "在原记录时 artifacts/ui-qa/round5-20261028-u01-05-06 仍在；2026-11-09只读检查时此目录已不存在。历史执行策略拒绝没有在当时重试。",
+  "subsequentReadOnlyReview20261109": {
+    "timeLocal": "2026-11-09T19:43:10+08:00",
+    "pathsChecked": [
+      "artifacts/ui-qa/round5-20261028-u02-01-04",
+      "artifacts/ui-qa/round5-20261028-u01-05-06",
+      ".tmp/round5-u02-sdk8.0.423",
+      "artifacts/build-diagnostics/round5-u02-01-04"
+    ],
+    "allPathsAbsent": true,
+    "filesRemoved": [],
+    "claimedRecoveredBytes": 0,
+    "cFreeBytesObservedStartEnd": [3231997952, 3228778496],
+    "dFreeBytesObservedStartEnd": [20203831296, 20202524672],
+    "notes": "只读复查；无文件删除，观测到的磁盘变化不归因于本批。U02文档引用的截图、报告、测试与CI证据保留。"
+  }
 }
