@@ -1626,3 +1626,14 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 - cmd入口将PowerShell隐藏运行；安装完成后会启动Playnite。用户黑窗没有HWND/PID，不能确认是否由启动入口引起；不要宣称已解决，也不要为观测而反复重启宿主。接着完成文档校验、中文提交/push，并核对该SHA全部workflow jobs/artifacts。
 - 本次状态证据：design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/progress-count.json。
 - SDK与空间复核：系统级SDK列表仅有9.0.302，但仓库引导缓存`%LOCALAPPDATA%/GameSaveCenter/dotnet-sdk-8.0.423`存在且选择准确；不能据此把独立验证标为SDK阻塞。C盘当前2,908,860,416 bytes，离完整入口4GiB尚差1,386,106,880 bytes；只找到747-byte项目临时基准文件，SDK/安装/引用诊断均保留。源码`e570f7b7`尚未安装，最后安装身份仍是`e42da2a5`。证据：`design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/sdk-cache-recheck.json`。
+
+## Round5 最新交接（2026-11-10，空间释放后的完整链）
+
+本节取代本文件较早的“等待空间/SDK后再跑入口”描述；此前记录保留作历史。
+
+- 用户确认释放至少1.1GB后，提交`1f97beafda1895ae1b84bc453828607157e1a29b`在中文包装器→`GameSaveCenter-Run.cmd`→`scripts/dev-install-run.ps1`链退出0。SDK8.0.423；C/D空间预检满足。发布zip与PEXT同为45,738,964 bytes、SHA-256 `018F813E8C373CCC1D3EC30E44BF7CEFF98519C12D34AC9378BCE099C773DB8C`；安装版本`0.6.73+1f97beaf`，程序集哈希见`evidence/U09-05-root-1f97beaf-20261110/root-chain-summary.json`。
+- 独立`scripts/build.cmd`短输出路径完整运行exit0；与根链的测试/TRX分布、超长路径失败及清理证据见`evidence/U09-05-root-1f97beaf-20261110/README.md`和同目录JSON。绝不可把独立build、历史提交通过或skip当根链通过。
+- Round5最新80项计数7已满足/71代码完成待验收/1进行中/1远端待验。U09-04继续；U09-05完整链完成，但真实Playnite画面和用户闪屏窗口仍待验；U09-06远端待验；U09-08审计已满足。
+- #1528 / runId 42666242561（head `95b2b4cf`）两个适用job全部成功，job/artifact身份见`evidence/U09-08-audit-20261110/ci-run-1528.json`。本批文档检查已通过（Source Validation、6份Markdown/1,037条本地链接、JSON解析、git diff --check）；中文提交/push后，查询精确推送SHA的`windows-build.yml`适用job并读取步骤/artifact；工具按commit的查询空列表不等于无push run。required-checks/ruleset此前403，不重复同权限端点，也不宣称门禁完整。
+- Playnite与Worker进程仍运行且主窗口句柄为0；不要强杀或为了观察而反复重启。Win32错误5的子进程desktop身份拒绝，无法据此证明用户桌面零闪。用户截图未带HWND/PID；U09-05保持代码完成待验收。
+- 只清理本阶段超长路径失败build output，727文件/169,290,041 bytes；保留所有诊断、当前输出与包、用户及其他任务TestResults/存档/配置。未修改盘符/卷/映射。清理前后空间和路径检查见同目录`cleanup.json`。

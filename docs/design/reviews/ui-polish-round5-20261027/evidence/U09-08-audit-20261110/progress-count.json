@@ -1,26 +1,24 @@
 {
   "auditDateLocal": "2026-11-10",
-  "reviewedCommit": "95b2b4cf374835d9dfdd2df09c928744ae1938af",
+  "reviewedCommit": "1f97beafda1895ae1b84bc453828607157e1a29b",
   "scope": "The exact 80-task Round5 backlog and current PROGRESS status table.",
   "backlog": {
     "taskRows": 80,
     "uniqueIds": 80,
     "duplicateIds": [],
     "statusCounts": {
-      "已满足": 6,
-      "代码完成待验收": 70,
-      "进行中": 3,
-      "远端待验": 1
+      "远端待验": 1,
+      "进行中": 1,
+      "已满足": 7,
+      "代码完成待验收": 71
     },
     "inProgressIds": [
-      "U09-04",
-      "U09-05",
-      "U09-08"
+      "U09-04"
     ],
     "remotePendingIds": [
       "U09-06"
     ],
-    "summaryCorrection": "The prior U09-08 row said 5/71/3/1; the table rows recount to 6/70/3/1."
+    "summaryCorrection": "本轮根入口与独立build.cmd验收完成后，U09-05转代码完成待验收、U09-08审查项满足；未关闭宿主闪屏与远端门禁。"
   },
   "entryPoints": {
     "GameSaveCenter-Run.cmd": true,
@@ -29,66 +27,129 @@
   },
   "sourceIdentity": {
     "productionSourceBaseline": "e570f7b7e0d5019b7f57c411237de3abb55a6e89",
-    "srcTestsScriptsDifferFromBaseline": false
+    "srcTestsScriptsDifferFromBaseline": false,
+    "acceptedFullChainCommit": "1f97beafda1895ae1b84bc453828607157e1a29b",
+    "trackedSourceTestScriptDiff": false
   },
   "localBuildReadiness": {
     "sdkVersionsVisible": [
       "9.0.302"
     ],
     "requiredBaselineSdk": "8.0.423",
-    "cFreeBytes": 3093544960,
+    "cFreeBytes": 4472397824,
     "cRequiredFreeBytes": 4294967296,
-    "cDeficitBytes": 1201422336,
-    "dFreeBytes": 20334432256,
+    "cDeficitBytes": 0,
+    "dFreeBytes": 19440066560,
     "safeProjectOwnedCOutputFound": false,
-    "knownTempFileBytesRetained": 747
+    "knownTempFileBytesRetained": 747,
+    "resolvedRepositorySdk": "8.0.423",
+    "rootEntryExitCode": 0,
+    "standaloneBuildCmdExitCode": 0,
+    "rootTestTotals": {
+      "total": 2032,
+      "passed": 1974,
+      "failed": 0,
+      "skipped": 58,
+      "trxFiles": 160,
+      "wpfIsolatedClasses": 157
+    },
+    "standaloneBuildCmdTestTotals": {
+      "total": 2032,
+      "passed": 1964,
+      "failed": 0,
+      "skipped": 68,
+      "trxFiles": 160,
+      "wpfIsolatedClasses": 157
+    },
+    "finalSpaceSnapshotBytes": {
+      "cFree": 4472397824,
+      "dFree": 19440066560,
+      "cRequired": 4294967296,
+      "dRequired": 3221225472
+    }
   },
   "github": {
     "workflow": ".github/workflows/windows-build.yml",
-    "runNumber": 1528,
-    "runId": 42666242561,
-    "headSha": "95b2b4cf374835d9dfdd2df09c928744ae1938af",
-    "status": "in_progress",
-    "conclusion": null,
-    "jobs": [
-      {
-        "id": 129330520820,
-        "name": "编译、测试与打包",
-        "status": "in_progress",
-        "conclusion": null,
-        "currentStep": "生成 Playnite 扩展包"
-      },
-      {
-        "id": 129330521427,
-        "name": ".NET SDK 10.0.401 编译与测试复核",
-        "status": "completed",
-        "conclusion": "success",
-        "artifactId": 13698653069,
-        "artifactName": "GameSaveCenter-sdk10-build-diagnostics",
-        "artifactSizeBytes": 1280732,
-        "artifactDigest": "sha256:5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0"
-      }
-    ],
-    "artifactsAtAudit": [
-      {
-        "id": 13698653069,
-        "name": "GameSaveCenter-sdk10-build-diagnostics",
-        "sizeInBytes": 1280732,
-        "digest": "sha256:5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0",
-        "createdAtUtc": "2026-11-09T18:10:18Z",
-        "expired": false
-      }
-    ],
-    "requiredChecksAccess": "Previously returned 403; not retried. The current job list does not prove required-check completeness.",
-    "baselineCurrentStep": "离屏渲染 QA",
-    "runStatus": "in_progress",
-    "runConclusion": null
+    "latestCompletedKnownRun": {
+      "runNumber": 1528,
+      "runId": 42666242561,
+      "headSha": "95b2b4cf374835d9dfdd2df09c928744ae1938af",
+      "conclusion": "success",
+      "jobs": [
+        129330520820,
+        129330521427
+      ],
+      "artifactIds": [
+        13701600359,
+        13699579982,
+        13698653069
+      ]
+    },
+    "previousAuditSnapshot": {
+      "workflow": ".github/workflows/windows-build.yml",
+      "runNumber": 1528,
+      "runId": 42666242561,
+      "headSha": "95b2b4cf374835d9dfdd2df09c928744ae1938af",
+      "status": "in_progress",
+      "conclusion": null,
+      "jobs": [
+        {
+          "id": 129330520820,
+          "name": "编译、测试与打包",
+          "status": "in_progress",
+          "conclusion": null,
+          "currentStep": "生成 Playnite 扩展包"
+        },
+        {
+          "id": 129330521427,
+          "name": ".NET SDK 10.0.401 编译与测试复核",
+          "status": "completed",
+          "conclusion": "success",
+          "artifactId": 13698653069,
+          "artifactName": "GameSaveCenter-sdk10-build-diagnostics",
+          "artifactSizeBytes": 1280732,
+          "artifactDigest": "sha256:5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0"
+        }
+      ],
+      "artifactsAtAudit": [
+        {
+          "id": 13698653069,
+          "name": "GameSaveCenter-sdk10-build-diagnostics",
+          "sizeInBytes": 1280732,
+          "digest": "sha256:5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0",
+          "createdAtUtc": "2026-11-09T18:10:18Z",
+          "expired": false
+        }
+      ],
+      "requiredChecksAccess": "Previously returned 403; not retried. The current job list does not prove required-check completeness.",
+      "baselineCurrentStep": "离屏渲染 QA",
+      "runStatus": "in_progress",
+      "runConclusion": null
+    },
+    "candidateCommit": "1f97beafda1895ae1b84bc453828607157e1a29b",
+    "candidateCommitRunsAndStatusesFromConnectedTools": {
+      "statuses": [],
+      "workflowRuns": [],
+      "note": "当前连接器commit-run包装器只返回PR触发run；空结果不证明push workflow不存在。推送本批后需再查询该精确SHA。"
+    },
+    "requiredChecks": "远端待验：此前读取403，不重试同一权限端点。"
   },
   "flashAudit": {
     "cmdEntrypointsUseHiddenPowerShellAndConsoleHideHelper": true,
     "rootInstallerStartsPlayniteAfterInstallUnlessNoStart": true,
     "userBlackWindowAttributedToProcessOrHwnd": false,
-    "claimOfNoFlash": false
+    "claimOfNoFlash": false,
+    "latestRootChain": {
+      "sourceCommit": "1f97beafda1895ae1b84bc453828607157e1a29b",
+      "rootEntryExitCode": 0,
+      "windowStation": "WinSta0",
+      "privateDesktopUsed": true,
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "childDesktopProbe": "Access denied (Win32 5)",
+      "visiblePlayniteVerified": false,
+      "userFlashAttribution": "unresolved"
+    }
   },
   "validationScope": "Documentation-only update; Source Validation exit 0, local Markdown link validation and git diff --check. No full build, tests, render QA, installation, host restart, or destructive user-data operation was run for this audit.",
   "documentationValidation": {
@@ -99,7 +160,18 @@
     "nonLocalOrAnchorLinks": 61,
     "missingOrOutsideLinks": 0,
     "gitDiffCheckExitCode": 0,
-    "fullBuildOrTestsRun": false
+    "fullBuildOrTestsRun": false,
+    "currentBatch": {
+      "sourceValidation": "passed",
+      "markdownFiles": 6,
+      "localLinks": 1037,
+      "missingLinks": 0,
+      "escapedLinks": 0,
+      "jsonFilesParsed": 6,
+      "gitDiffCheck": "passed",
+      "localFullChainRerun": false,
+      "uiRenderRerun": false
+    }
   },
   "cleanup": {
     "temporaryRelativePath": ".tmp/r5-u09-08-doc-check-20261110",
@@ -128,6 +200,7 @@
       "dBefore": 20334428160,
       "dAfter": 20334432256,
       "interpretation": "C unchanged; observed D increase of 4096 bytes is not attributed to the 433-byte deletion."
-    }
+    },
+    "latestAcceptanceCleanup": "仅删除 artifacts/gsc-b/round5-buildcmd-20261110-07c443176a6a47a0a7c63d5860ab5a59（727文件/169290041 bytes）；前后空间与保留边界见 evidence/U09-05-root-1f97beaf-20261110/cleanup.json。"
   }
 }

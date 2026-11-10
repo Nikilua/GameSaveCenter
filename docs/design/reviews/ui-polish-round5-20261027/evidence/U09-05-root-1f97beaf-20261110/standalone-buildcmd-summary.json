@@ -1,0 +1,53 @@
+{
+  "sourceCommit": "1f97beafda1895ae1b84bc453828607157e1a29b",
+  "sdk": "8.0.423",
+  "entry": "scripts/build.cmd",
+  "arguments": [
+    "-OutputRoot",
+    "D:\\workplace\\github\\GameSaveCenter\\artifacts\\gsc-b\\r5b1102",
+    "-DiagnosticsRoot",
+    "D:\\workplace\\github\\GameSaveCenter\\artifacts\\build-diagnostics\\r5b-buildcmd-20261110"
+  ],
+  "success": {
+    "exitCode": 0,
+    "startedUtc": "2026-11-10T02:25:32.3997207Z",
+    "desktop": "GscRound5BuildCmdRetry_71f69771a6c146348e91efafd0bfab38",
+    "windowStation": "WinSta0",
+    "inputDesktopBefore": "Default",
+    "inputDesktopAfter": "Default",
+    "backupPathLengthProbe": 215,
+    "outputRoot": "artifacts/gsc-b/r5b1102",
+    "diagnosticsRoot": "artifacts/build-diagnostics/r5b-buildcmd-20261110",
+    "testTotals": {
+      "total": 2032,
+      "passed": 1964,
+      "failed": 0,
+      "skipped": 68,
+      "trxFiles": 160,
+      "wpfIsolatedClasses": 157
+    },
+    "skipNotes": [
+      "57 项为已撤销的旧“今日工作台”架构断言",
+      "9 项Named Pipe本机客户端与1项Worker进程用例受当前运行环境限制",
+      "1 项系统指针交互 opt-in 用例"
+    ],
+    "diagnostics": "artifacts/build-diagnostics/r5b-buildcmd-20261110/20261110T022534919Z-3b7c675f/summary.json"
+  },
+  "priorLongPathAttempt": {
+    "exitCode": 1,
+    "backupPathLength": 265,
+    "testTotals": {
+      "total": 1133,
+      "passed": 1102,
+      "failed": 3,
+      "skipped": 28
+    },
+    "failedTests": [
+      "GameSaveCenter.Playnite.Tests.WorklistCrossSessionPersistenceBehaviorTests.MalformedWorklistSettingsFallBackWithoutChangingOrLosingTheOriginalConfig",
+      "GameSaveCenter.Playnite.Tests.PluginSettingsLoadRecoveryTests.MalformedSettingsJsonFallsBackAndKeepsRecoverableBackup",
+      "GameSaveCenter.Playnite.Tests.PluginSettingsLoadRecoveryTests.CorruptViewPreferencesAreDiscardedWhileOtherSettingsAndOriginalFileArePreserved"
+    ],
+    "diagnostics": "artifacts/build-diagnostics/round5-buildcmd-20261110-07c443176a6a47a0a7c63d5860ab5a59/20261110T021830623Z-e2bea4e7/summary.json",
+    "reason": "三个配置恢复测试在超长备份目标路径下无法复制文件；保留失败TRX，不删断言、不增加skip。"
+  }
+}

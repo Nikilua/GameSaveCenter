@@ -13518,3 +13518,11 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 - C盘当前可用2,908,860,416 bytes，距中文根入口4GiB预检差1,386,106,880 bytes；D盘20,331,986,944 bytes。仓库C盘Temp只找到747-byte审计基准，其余用户缓存、安装内容和被引用构建/失败诊断保留；本批未清理文件。
 - `0258ab35..e570f7b7`的`TaskCenterView.xaml`/代码后置、`GscMotion.cs`、`MotionTokens.xaml`无差异，故11月9日双主题动效探针仍覆盖当前任务动效源码；它不测真实Playnite、物理输入或DWM帧，不重复同代理运行、不调动画时长，U09-04继续待宿主验收。安装记录仍为`e42da2a5`，选框候选`e570f7b7`未安装。
 - 本批仅校正文档和现状证据；未改源码、未运行编译/测试/Render QA或Playnite。独立检查可使用现有8.0.423缓存；中文完整安装启动仍待C盘空间门槛。
+
+## 2026-11-10 Round5 U09-05 完整入口、独立 build.cmd 与 U09-08 收口
+
+用户确认释放空间后，在提交 `1f97beafda1895ae1b84bc453828607157e1a29b` 上执行 `GameSaveCenter-一键构建安装运行.cmd → GameSaveCenter-Run.cmd` 完整链。沙箱首次在AppData安装复制被拒，exit1及原日志留存；授权重试SDK8.0.423完成build/test/release/package/install/start，exit0，2032项/1974通过/0失败/58既有skip，160 TRX、157 WPF隔离类。安装版本、六程序集哈希、zip/pext大小和SHA已复核。另独立执行 `scripts/build.cmd`：长输出路径首跑的3条恢复测试失败原诊断保留；短路径重跑exit0，2032项/1964通过/0失败/68 skip，无 `-SkipTests`。10条环境限制skip不算通过。
+
+Root入口/WPF测试运行在WinSta0独立非输入桌面，输入桌面前后Default；子进程桌面探针Win32拒绝访问5，真实Playnite页面与用户闪屏HWND/PID仍未验收，不声称已消除。进程未强杀。只删除本阶段超长路径失败build output（727文件/169,290,041 bytes），用户与其他任务TestResults、存档、配置未动；空间及清单见`evidence/U09-05-root-1f97beaf-20261110/cleanup.json`。
+
+Round5任务表复算80唯一项、7已满足/71代码完成待验收/1进行中/1远端待验；U09-04继续、U09-05代码完成待验收、U09-06远端待验、U09-08审查已满足。GitHub run #1528 / 42666242561的两个适用job及全部步骤后续查询均成功，artifact身份见`evidence/U09-08-audit-20261110/ci-run-1528.json`。本批Source Validation、6份Markdown/1,037条本地链接检查、6份JSON解析与git diff --check均exit0；文档提交推送后仍须查精确SHA workflow。

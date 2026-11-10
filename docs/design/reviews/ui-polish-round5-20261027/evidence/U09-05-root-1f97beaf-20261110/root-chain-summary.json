@@ -1,0 +1,103 @@
+{
+  "sourceCommit": "1f97beafda1895ae1b84bc453828607157e1a29b",
+  "sdk": "8.0.423",
+  "entrypoints": [
+    "GameSaveCenter-一键构建安装运行.cmd",
+    "GameSaveCenter-Run.cmd",
+    "scripts/dev-install-run.ps1"
+  ],
+  "attempt1": {
+    "exitCode": 1,
+    "completedUtc": "2026-11-10T01:47:10.700476Z",
+    "desktop": "GscRound5Root_57629c6159d0444882c8edc5a17ff50c",
+    "inputDesktopBefore": "Default",
+    "inputDesktopAfter": "Default",
+    "stopReason": "安装复制到 Playnite AppData 被沙箱拒绝；构建/测试阶段已完成",
+    "testTotals": {
+      "total": 2032,
+      "passed": 1964,
+      "failed": 0,
+      "skipped": 68
+    },
+    "diagnostics": "artifacts/build-diagnostics/20261110T011234803Z-4f469f4e/summary.json"
+  },
+  "attempt2": {
+    "exitCode": 0,
+    "processId": 8976,
+    "startedUtc": "2026-11-10T01:51:32.5569295Z",
+    "completedUtc": "2026-11-10T02:16:25.6014319Z",
+    "desktop": "GscRound5RootRetry_3acd03a552c040348ab2bb3e46314bf8",
+    "windowStation": "WinSta0",
+    "inputDesktopBefore": "Default",
+    "inputDesktopAfter": "Default",
+    "cFreeBefore": 4607627264,
+    "cFreeAfter": 4616626176,
+    "dFreeBefore": 19923603456,
+    "dFreeAfter": 19627941888,
+    "diagnostics": "artifacts/build-diagnostics/20261110T015136805Z-18ad1a94/summary.json"
+  },
+  "tests": {
+    "total": 2032,
+    "passed": 1974,
+    "failed": 0,
+    "skipped": 58,
+    "trxFiles": 160,
+    "wpfIsolatedClasses": 157,
+    "skipNotes": [
+      "57 项属于已撤销的“今日工作台”旧架构断言",
+      "1 项系统指针交互为默认关闭的 opt-in 用例"
+    ],
+    "allBuildTestStepsExitZero": true
+  },
+  "installedProduct": {
+    "version": "0.6.73+1f97beafda1895ae1b84bc453828607157e1a29b",
+    "directory": "%APPDATA%/Playnite/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+    "dlls": [
+      {
+        "name": "GameSaveCenter.Playnite.dll",
+        "sha256": "C3F5EB62BAC36CDE13CA9990F4D15DDBBF4CDB85D8408F4FF90A138F93D9E780"
+      },
+      {
+        "name": "GameSaveCenter.Core.dll",
+        "sha256": "E0E9699F2529CAA3EF1EA8219C72E5D836B945165FFC14503FA8F0719ECFC726"
+      },
+      {
+        "name": "GameSaveCenter.Contracts.dll",
+        "sha256": "1E4F702517105EC2757E5990D297F802B92D97DD5EFE6E03B72C53C30AF00D6D"
+      },
+      {
+        "name": "Worker/GameSaveCenter.Worker.dll",
+        "sha256": "3D567FB4FB7853DC8D756B843CC047BA231219F513552BCB0048A144F773D1E5"
+      },
+      {
+        "name": "Worker/GameSaveCenter.Core.dll",
+        "sha256": "8A75F9FC9C8416398085AA523A27B69E4CAA882FDB0C5C60FFDA288F68C41C6E"
+      },
+      {
+        "name": "Worker/GameSaveCenter.Contracts.dll",
+        "sha256": "046F365FF06F1D5F9D36CE4835912CD8CF8AA1F5451B1329B58BF4E391B30B23"
+      }
+    ]
+  },
+  "package": {
+    "zip": {
+      "path": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "bytes": 45738964,
+      "sha256": "018F813E8C373CCC1D3EC30E44BF7CEFF98519C12D34AC9378BCE099C773DB8C"
+    },
+    "pext": {
+      "path": "artifacts/GameSaveCenter-0.6.73.pext",
+      "bytes": 45738964,
+      "sha256": "018F813E8C373CCC1D3EC30E44BF7CEFF98519C12D34AC9378BCE099C773DB8C"
+    },
+    "sameIdentity": true
+  },
+  "visualBoundary": {
+    "privateDesktopUsed": true,
+    "defaultInputDesktopPreserved": true,
+    "childDesktopProbeAccessDeniedWin32": 5,
+    "playniteVisualVerified": false,
+    "noFlashClaimed": false,
+    "note": "Private desktop/输入桌面身份不能替代Playnite实际画面或用户黑窗HWND归因。"
+  }
+}

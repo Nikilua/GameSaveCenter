@@ -1,0 +1,144 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "runNumber": 1528,
+  "runId": 42666242561,
+  "headBranch": "main",
+  "headSha": "95b2b4cf374835d9dfdd2df09c928744ae1938af",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42666242561",
+  "jobs": [
+    {
+      "id": 129330520820,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "检出代码",
+          "conclusion": "success"
+        },
+        {
+          "name": "安装 .NET SDK",
+          "conclusion": "success"
+        },
+        {
+          "name": "源码结构检查",
+          "conclusion": "success"
+        },
+        {
+          "name": "诊断采集自测",
+          "conclusion": "success"
+        },
+        {
+          "name": "SDK 基线与缺失负例",
+          "conclusion": "success"
+        },
+        {
+          "name": "编译与测试",
+          "conclusion": "success"
+        },
+        {
+          "name": "离屏渲染 QA",
+          "conclusion": "success"
+        },
+        {
+          "name": "WPF UI 静态审查",
+          "conclusion": "success"
+        },
+        {
+          "name": "生成 Playnite 扩展包",
+          "conclusion": "success"
+        },
+        {
+          "name": "上传构建产物",
+          "conclusion": "success"
+        },
+        {
+          "name": "保留构建与测试诊断（包括失败）",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post 安装 .NET SDK",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post 检出代码",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 129330521427,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "检出代码",
+          "conclusion": "success"
+        },
+        {
+          "name": "安装 .NET SDK 10.0.401",
+          "conclusion": "success"
+        },
+        {
+          "name": "隔离工作树并运行 Release 编译与测试",
+          "conclusion": "success"
+        },
+        {
+          "name": "保留 SDK 10.0.401 构建诊断（包括失败）",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post 安装 .NET SDK 10.0.401",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post 检出代码",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13701600359,
+      "name": "GameSaveCenter-build-diagnostics",
+      "bytes": 2529538,
+      "sha256": "b8c33ad119623e6f066c3818c6847026551d5d9d27fd3cfe3c3ce2d60eb30d84",
+      "expiresUtc": "2026-11-23T18:49:18Z"
+    },
+    {
+      "id": 13699579982,
+      "name": "GameSaveCenter-windows-preview",
+      "bytes": 90793528,
+      "sha256": "c5a1e3890a49a2cf4dc6345a5b0c74107d9cb01f21a5029eed6d150bfe600222",
+      "expiresUtc": "2027-02-07T17:36:17Z"
+    },
+    {
+      "id": 13698653069,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "bytes": 1280732,
+      "sha256": "5ad273bceca589e4e4f9a7dd78586c64b3b4fc9518669b89e1c1d3cc5d4fccd0",
+      "expiresUtc": "2026-11-23T18:10:17Z"
+    }
+  ],
+  "requiredChecks": "读取接口此前403；未将jobs成功当作required-check完整性证明。"
+}

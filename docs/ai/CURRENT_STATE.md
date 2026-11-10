@@ -850,3 +850,11 @@ TaskCenter状态替换期间行高稳定、阶段/进度和长名UIA有15/15行�
 ### Round5 SDK缓存复核（2026-11-10）
 
 系统级`dotnet --list-sdks`只列9.0.302；仓库`global.json`要求的8.0.423仍在`scripts/sdk-baseline.ps1`默认用户缓存`%LOCALAPPDATA%/GameSaveCenter/dotnet-sdk-8.0.423`，当前可直接选择。后续不能仅凭机器级SDK列表判断8.0.423缺失。C盘可用2,908,860,416 bytes，中文完整入口要求4GiB，仍差1,386,106,880 bytes；D盘可用20,331,986,944 bytes。没有可安全清除且能补足差额的本项目C盘临时输出。最后安装身份`e42da2a5`落后于当前UI源码候选`e570f7b7`，因此候选仍待完整安装启动链与真实宿主验收；具体SDK/cache证据见`design/reviews/ui-polish-round5-20261027/evidence/U09-08-audit-20261110/sdk-cache-recheck.json`。
+
+## 2026-11-10 Round5 最新状态：完整链已跑，宿主闪屏仍待验
+
+用户确认释放空间后，提交`1f97beafda1895ae1b84bc453828607157e1a29b`的中文完整入口通过SDK8.0.423 build/test/package/install/start，根进程exit0；独立`scripts/build.cmd`短路径完整构建测试也exit0。根链2032项/1974 pass/0 fail/58既有skip；独立buildcmd 2032项/1964 pass/0 fail/68 skip。安装版本及zip/pext/程序集身份已核，证据在Round5 `evidence/U09-05-root-1f97beaf-20261110/`。早期沙箱安装拒绝和超长路径三测试失败均保留为失败诊断，不拿成功覆盖历史。
+
+当前PROGRESS的80项分布为7已满足、71代码完成待验收、1进行中、1远端待验。U09-04继续分析动效性能；U09-05根链完成但真实Playnite画面、用户闪屏窗口归因、真实输入/UIA/DPI未验；U09-06远端待验；U09-08审计项满足。用户释放后根入口C/D预检已满足；机器SDK列表虽只显示9.0.302，仓库SDK bootstrap实际解析8.0.423。
+
+95b2b4cf的run #1528 / 42666242561现已completed/success：基线job129330520820和SDK10 job129330521427所有步骤成功；artifact IDs 13701600359、13699579982、13698653069。required-checks接口此前403，仍不代表完整性。push workflow需在本批提交后按精确SHA查询。编译/检查没有关闭或强杀Playnite/Worker；桌面探针访问被拒，不宣称闪屏已经解决。

@@ -1,0 +1,29 @@
+{
+  "capturedLocalDate": "2026-11-10",
+  "stage": "U09-05 root/buildcmd acceptance",
+  "deleted": [
+    {
+      "path": "artifacts/gsc-b/round5-buildcmd-20261110-07c443176a6a47a0a7c63d5860ab5a59",
+      "files": 727,
+      "directories": 250,
+      "bytes": 169290041,
+      "reason": "本阶段超长路径失败的build output，成功短路径重跑已覆盖；引用、边界、重解析点、文件占用与构建进程已核对",
+      "method": "PowerShell Remove-Item -LiteralPath -Recurse -Force"
+    }
+  ],
+  "spaceBytes": {
+    "cBefore": 4472344576,
+    "cAfter": 4476735488,
+    "dBefore": 19274997760,
+    "dAfter": 19446251520,
+    "note": "仅记录删除前后观察；空间变化不全部归因于删除。"
+  },
+  "retained": [
+    "两次成功验收的最新build输出与完整TRX诊断",
+    "超长路径三项失败的原始诊断与TRX",
+    "失败安装复制的原始日志与沙箱拒绝诊断",
+    "最终zip/pext包与安装身份记录",
+    "用户及其它任务的TestResults/存档/配置"
+  ],
+  "drivesOrVolumesChanged": false
+}
