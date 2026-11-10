@@ -1,3 +1,9 @@
+## 2026-11-10 Round5 U09-05 隐藏启动修复精确SHA CI通过
+
+已推送提交 `28b42cf612af9667732a5e9483f11cba9643d221` 的 GitHub Actions run #1533 / `42783454951`（`windows-build.yml`，push）completed/success。基线 job `129718789544` 15/15步成功，SDK10.0.401 job `129718789885` 8/8步成功，包含源码结构检查、编译测试、离屏渲染、WPF静态审查、Playnite打包、预览包上传和两套诊断归档。工件ID/大小/digest见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-console-hide-20261110/ci-run-42783454951.json`。required-checks/ruleset读取仍是既有403，未重复探测；combined status没有返回独立status checks，因此U09-06继续远端待验。
+
+CI结果绑定源提交 `28b42cf612af9667732a5e9483f11cba9643d221`，不代表用户真实交互桌面的黑窗已验收。完整中文安装启动链入口门槛C盘4GiB；CI结束后本机复测C盘4,125,560,832 bytes、D盘19,415,154,688 bytes，C盘仍少169,406,464 bytes，暂不启动安装链。
+
 ## 2026-11-10 Round5 U09-04 任务详情动效/滚动源码归因
 
 对 U00 `5d0a2448` 与当前产品 `e570f7b7` 做只读源码比对：`OnTaskGridScrollChanged` 方法块SHA相同，`DataGridScrollDiagnostics.cs` 与 `MotionTokens.xaml` blob相同；新增路径是任务详情面板使用既有120ms Fast令牌进入/退出。离屏面板关闭P95约250ms，但Rendering回调P95已达125–149ms，无法拆成宿主响应与私有桌面调度；关闭后立即滚动样本仍混合布局阶段。没有归因证据支持改动生产代码，U09-04继续等真实Playnite呈现帧、实体输入和面板分配测量。证据见 Round5 `evidence/U09-04-source-attribution-20261110.md`。当前 C/D 空间达到完整链预检；产品源码自 `e570f7b7` 未变，已有中文根入口和独立build.cmd对同一源通过，本批不重复启动Playnite或运行完整链，也未操作盘符/卷/映射。

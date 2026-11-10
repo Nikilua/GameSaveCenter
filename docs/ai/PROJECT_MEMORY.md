@@ -4,6 +4,8 @@
 
 进程 `MainWindowHandle=0`与隐藏启动证明本批检查未显示主窗口，不证明整个用户桌面绝无瞬时闪屏，黑窗仍待HWND/PID/真实桌面观察。未运行Playnite安装启动链，未运行Render QA（本批无WPF源码变化）。U09-05代码完成待验收；完整中文入口冻结候选还需C盘4GiB，最新复测4,145,061,888 bytes，差149,905,408 bytes。每阶段只删除本批已归档的精确`.tmp`输出，不动缓存、用户/他任务数据、盘符/卷/映射。
 
+本提交精确SHA `28b42cf612af9667732a5e9483f11cba9643d221` 的 run #1533 / `42783454951` 已通过 `.github/workflows/windows-build.yml` 两个适用 job：基线 `129718789544` 15/15步，SDK10.0.401 `129718789885` 8/8步；包和两份诊断artifact的run、job、大小与digest详见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-05-console-hide-20261110/ci-run-42783454951.json`。CI通过不代替用户真实桌面验收。完整中文链C盘门槛4GiB，本次复测4,125,560,832 bytes，仍差169,406,464 bytes；不触碰非项目缓存/其他任务输出，也不更改盘符、卷或映射。required-checks/ruleset权限仍远端待验。
+
 ## 2026-11-10 Round5 U09-04 源码归因与继续条件
 
 U00/current对比确认 `OnTaskGridScrollChanged` 方法块SHA相同，`DataGridScrollDiagnostics.cs` 和 `MotionTokens.xaml` blob也相同；Task详情进入/退出动效是新增路径，采用既有120ms Fast令牌。私有桌面探针关闭P95约250ms、Rendering回调P95 125–149ms，输入为路由点击，不能代表宿主输入或DWM帧；收起后立即滚动样本也没有隔离布局稳定阶段。没有据此修改生产源码或动画时长。U09-04保持进行中，真实Playnite呈现时序、物理输入和详情动效分配仍待测，见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-source-attribution-20261110.md`。产品源相对 `e570f7b7` 未变，完整根入口与独立 `scripts/build.cmd` 已有同源通过记录；当前C/D空间达标。本次不重复启动宿主、不改盘符/卷/映射。

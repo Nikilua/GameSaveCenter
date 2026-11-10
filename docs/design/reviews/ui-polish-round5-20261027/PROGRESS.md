@@ -6,7 +6,11 @@
 
 运行中查询到本批 cmd/PowerShell/dotnet 的 `MainWindowHandle` 均为0，构建由隐藏进程启动并重定向输出。该进程证据不等于整个交互桌面零闪，也没有取得用户截图窗口的HWND/PID；不宣称真实用户闪屏已验收。此批只改脚本，无WPF/XAML/资源改动，不运行Render QA。U09-05保持“代码完成待验收”，U09-04继续进行中，U09-06仍远端待验；80项计数不变（7已满足、71代码完成待验收、1进行中、1远端待验）。
 
+提交 `28b42cf612af9667732a5e9483f11cba9643d221` 的 `.github/workflows/windows-build.yml` run #1533 / `42783454951`（push）已 completed/success。基线 job `129718789544` 的15步全部成功，包含编译测试、离屏 Render QA、WPF 静态审查、Playnite 打包、构建包上传及诊断归档；SDK 10.0.401 job `129718789885` 的8步全部成功。三个工件均绑定本 run：预览包 `13752625976` 90,793,808 bytes / `56cf03c11f485f01caec59f973650a23d4edca08c21dc8d9856ed8d4330514ac`；基线诊断 `13752446043` 2,529,877 bytes / `0d6fd5204a439631c25cce35fbafedd51888007f686b484930d50ed852203ad2`；SDK10诊断 `13749544222` 1,281,705 bytes / `e005b7b1349496449e10a19d9988ef9a08c863252f0a98fd12cd4ad68d5ec916`。完整身份见 [CI 记录](evidence/U09-05-console-hide-20261110/ci-run-42783454951.json)。workflow 两个适用 job 均已核；combined status 未返回独立 status checks，required-checks/ruleset 读取权限仍按既有403记为 U09-06 远端待验。
+
 清理本阶段8个自有 `.tmp` 输出路径、347,013,645 bytes，测试TRX、原始失败诊断、成功摘要和哈希清单已归档；用户/其他任务TRX、TestResults、存档、配置与未知文件未动。清理前后磁盘快照见[cleanup记录](evidence/U09-05-console-hide-20261110/cleanup.json)。最新磁盘复测C盘4,145,061,888 bytes、D盘19,418,931,200 bytes；距中文根入口4GiB仍差149,905,408 bytes；最终冻结候选安装启动链继续等预检达标。
+
+CI归档后的本次复测C盘4,125,560,832 bytes、D盘19,415,154,688 bytes；C盘比4GiB预检门槛少169,406,464 bytes。保留本轮已归档构建/测试诊断，不清理其他任务数据或来源不明文件；最终中文安装启动链暂不运行。
 
 ## 2026-11-10 U09-04：任务详情动效与滚动路径源码归因
 

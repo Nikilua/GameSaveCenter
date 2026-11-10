@@ -1,0 +1,57 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "run_number": 1533,
+  "run_id": 42783454951,
+  "event": "push",
+  "status": "completed",
+  "conclusion": "success",
+  "head_sha": "28b42cf612af9667732a5e9483f11cba9643d221",
+  "created_at": "2026-11-10T08:32:36Z",
+  "updated_at": "2026-11-10T09:41:18Z",
+  "jobs": [
+    {
+      "id": 129718789544,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "completed_steps": 15
+    },
+    {
+      "id": 129718789885,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "completed_steps": 8
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13752625976,
+      "name": "GameSaveCenter-windows-preview",
+      "size_in_bytes": 90793808,
+      "digest": "sha256:56cf03c11f485f01caec59f973650a23d4edca08c21dc8d9856ed8d4330514ac",
+      "expired": false,
+      "workflow_run_id": 42783454951
+    },
+    {
+      "id": 13752446043,
+      "name": "GameSaveCenter-build-diagnostics",
+      "size_in_bytes": 2529877,
+      "digest": "sha256:0d6fd5204a439631c25cce35fbafedd51888007f686b484930d50ed852203ad2",
+      "expired": false,
+      "workflow_run_id": 42783454951
+    },
+    {
+      "id": 13749544222,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "size_in_bytes": 1281705,
+      "digest": "sha256:e005b7b1349496449e10a19d9988ef9a08c863252f0a98fd12cd4ad68d5ec916",
+      "expired": false,
+      "workflow_run_id": 42783454951
+    }
+  ],
+  "required_checks": {
+    "combined_statuses": [],
+    "branch_protection_and_rulesets": "not_readable_under_existing_403; remains remote pending"
+  }
+}
