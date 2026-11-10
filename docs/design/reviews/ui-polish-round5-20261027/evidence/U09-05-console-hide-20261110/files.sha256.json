@@ -1,0 +1,142 @@
+[
+  {
+    "Path": "cleanup.json",
+    "Bytes": 2923,
+    "Sha256": "36791FE8C19BBF03A9658B0DE71C56C7B1F3433DF71516C2BE6D9DFBF2F34C44"
+  },
+  {
+    "Path": "failure-long-path/build.stdout.txt",
+    "Bytes": 173854,
+    "Sha256": "EB51EBE07A5C52C688D3955294BDD9D4936F6858A9E43902F7345B3F823296DE"
+  },
+  {
+    "Path": "failure-long-path/diagnostics-index.json",
+    "Bytes": 2790,
+    "Sha256": "F0F13A9110C6917AA49B44889D5450A96292ECFE4CE106ABE79340EAAA6693FD"
+  },
+  {
+    "Path": "failure-long-path/diagnostics.zip",
+    "Bytes": 417913,
+    "Sha256": "49C2801F525FBA6E78A23DFFB15EB27B4B70ECD6C7433DE4BC3703A7BF71CACC"
+  },
+  {
+    "Path": "failure-long-path/launcher-result.json",
+    "Bytes": 1210,
+    "Sha256": "8A17D55918FE32B0BEAB99E008FFEA13F14087E7CF401F8EF39D3EF3246987C8"
+  },
+  {
+    "Path": "failure-long-path/stderr-capture.json",
+    "Bytes": 774,
+    "Sha256": "51238FC2C3F0950259C6AF06D9AC7B4B25EA844F0243C1C35BF7A0AE03664198"
+  },
+  {
+    "Path": "failure-long-path/summary.json",
+    "Bytes": 270939,
+    "Sha256": "8F35D7262575A0FD47622C070C50F96B87EA37F3F52626AECA7FB5DF4DCF0D5D"
+  },
+  {
+    "Path": "launcher-fixture/GameSaveCenter-一键构建安装运行.cmd-0.log",
+    "Bytes": 278,
+    "Sha256": "62DFE9837FB8C6EBBD4FA0F3E141D83F18CE03C0C32CF7BBCC6375931F8FCA4C"
+  },
+  {
+    "Path": "launcher-fixture/GameSaveCenter-一键构建安装运行.cmd-23.log",
+    "Bytes": 255,
+    "Sha256": "CA081F1EA3C0C2DC3E6CD5AF90E40F3755905A0AFDA13FBC1C2F1F80977AC06D"
+  },
+  {
+    "Path": "launcher-fixture/GameSaveCenter-一键构建安装运行.cmd-7.log",
+    "Bytes": 254,
+    "Sha256": "0F76DB25E2DAB96E81FB5C1B4EACE8C11906FCB4DA30C496952FC32F371BCBE1"
+  },
+  {
+    "Path": "launcher-fixture/GameSaveCenter-Run.cmd-0.log",
+    "Bytes": 278,
+    "Sha256": "62DFE9837FB8C6EBBD4FA0F3E141D83F18CE03C0C32CF7BBCC6375931F8FCA4C"
+  },
+  {
+    "Path": "launcher-fixture/GameSaveCenter-Run.cmd-23.log",
+    "Bytes": 255,
+    "Sha256": "CA081F1EA3C0C2DC3E6CD5AF90E40F3755905A0AFDA13FBC1C2F1F80977AC06D"
+  },
+  {
+    "Path": "launcher-fixture/GameSaveCenter-Run.cmd-7.log",
+    "Bytes": 254,
+    "Sha256": "0F76DB25E2DAB96E81FB5C1B4EACE8C11906FCB4DA30C496952FC32F371BCBE1"
+  },
+  {
+    "Path": "launcher-fixture/results.json",
+    "Bytes": 1695,
+    "Sha256": "3FB41D80DE84FCD0A3CDEDAAF95960252BE866CC716500D957942993722B7E90"
+  },
+  {
+    "Path": "launcher-fixture/runner.stderr.txt",
+    "Bytes": 0,
+    "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "launcher-fixture/runner.stdout.txt",
+    "Bytes": 1324,
+    "Sha256": "F855572978F8C5CD3CC0C8DF11758585F182AC65F1B35E364CF77D892F1A41A7"
+  },
+  {
+    "Path": "launcher-fixture/scripts-build.cmd-0.log",
+    "Bytes": 17,
+    "Sha256": "FBFEAD5159E37C5352B7AC35A283FCA75285317A39F6B245BA59D7D4FD39A29B"
+  },
+  {
+    "Path": "launcher-fixture/scripts-build.cmd-23.log",
+    "Bytes": 17,
+    "Sha256": "FBFEAD5159E37C5352B7AC35A283FCA75285317A39F6B245BA59D7D4FD39A29B"
+  },
+  {
+    "Path": "launcher-fixture/scripts-build.cmd-7.log",
+    "Bytes": 17,
+    "Sha256": "FBFEAD5159E37C5352B7AC35A283FCA75285317A39F6B245BA59D7D4FD39A29B"
+  },
+  {
+    "Path": "README.md",
+    "Bytes": 2657,
+    "Sha256": "06D1A342CB722340A8F3FC2B9E236EF4602B5A1B39015CD1D38CEA4EA8022F4C"
+  },
+  {
+    "Path": "source-diff.json",
+    "Bytes": 11251,
+    "Sha256": "ED03D91C8AFD4C3BE0BCC95C3BBB20FD9ACBB6EAEBBF2580C0D7BBFAC10DBC3C"
+  },
+  {
+    "Path": "source-files.json",
+    "Bytes": 329,
+    "Sha256": "01FEB670E8110B6EA2D5097D84226148A1105B3BFFBAF2A16DEC367E29F1CA29"
+  },
+  {
+    "Path": "success-short-path/diagnostics-index.json",
+    "Bytes": 169137,
+    "Sha256": "170C66B0D32A92637F83E1F90217A9B5946FE9C8BD7A4130A6A0E27122551C4B"
+  },
+  {
+    "Path": "success-short-path/diagnostics.zip",
+    "Bytes": 1137813,
+    "Sha256": "16404666AB14FC9912D866A334CED8CFAE25F940794B03F2521A1CB390759CA5"
+  },
+  {
+    "Path": "success-short-path/err.txt",
+    "Bytes": 0,
+    "Sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  {
+    "Path": "success-short-path/launcher.json",
+    "Bytes": 783,
+    "Sha256": "58B8CAE4E5B3D1F263D6B3D59E1883FDD750600AEE15E3578328ECA6E4D2362E"
+  },
+  {
+    "Path": "success-short-path/out.txt",
+    "Bytes": 116458,
+    "Sha256": "E096C349E6F4E8C4374DE76331BDD59D78AE12F4DECA70D8F55E91F729FFFED9"
+  },
+  {
+    "Path": "success-short-path/summary.json",
+    "Bytes": 987238,
+    "Sha256": "2F6973D91E3526C11253C54F3C4F77B1BFDD68E5CE972D68D07432E31E073B7E"
+  }
+]

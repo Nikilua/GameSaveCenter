@@ -1,3 +1,11 @@
+## 2026-11-10 Round5 U09-05 黑窗跟进交接
+
+用户说黑窗出现在编译/检查时。已更新控制台隐藏策略并补充真实入口策略测试：退出码fixture 9/9、console policy 5/5。隐藏启动的独立 `scripts/build.cmd` 在SDK8.0.423/Release/短隔离路径完整exit0，2032项、1964通过、0失败、68既有skip，157个WPF类逐类运行在私有桌面；桌面身份157/157通过。长路径先跑有3个恢复测试失败，TRX保留；缩短路径重跑全部通过，未改断言或skip。Source Validation和git diff --check均exit0。见 `design/reviews/ui-polish-round5-20261027/evidence/U09-05-console-hide-20261110/README.md`。
+
+隐藏启动期间查询到本批进程主窗口句柄0，但这不是全交互桌面零闪的证明；附件黑窗仍无HWND/PID，不能说已由宿主验收。此批无WPF/XAML改动、不跑Render QA；没有执行真实Playnite安装启动链。U09-05保持代码完成待验收，U09-04继续进行中，U09-06因既有403保持远端待验且不重复探测。80项仍7已满足/71代码完成待验收/1进行中/1远端待验。
+
+最新磁盘复测C盘4,145,061,888 bytes、D盘19,418,931,200 bytes；中文根入口4GiB仍差149,905,408 bytes。不要运行最终入口直到预检达标和冻结候选成立；继续独立UI任务。清理记录只列本阶段归属的`.tmp`输出，用户/他任务TRX、存档、配置与未知文件保留；未操作任何盘符、卷、SUBST或映射。随源提交推送后，查询 `windows-build.yml` 对精确SHA的基线与SDK10 job和artifact；required-check权限先前403，不重复访问同一端点。
+
 ## 2026-11-10 Round5 U09-04 性能归因接续
 
 源码比对排除了滚动偏移保存器、滚动诊断实现和共享120ms动效令牌的版本差异。任务详情新加入的动效可能增加收起完成时间，但当前离屏探针约250ms关闭P95伴随125–149ms Rendering回调P95，无法分辨呈现调度和输入响应；收起后立即滚动样本也未隔离稳定布局。本批没有证据支持调节生产代码/时长，U09-04继续进行中。要结案需在真实Playnite测呈现帧、物理输入响应和该面板分配量。具体源码blob、方法SHA和读数见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-source-attribution-20261110.md`。

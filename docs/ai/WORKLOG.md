@@ -13530,3 +13530,11 @@ U09-05继续进行中；完整中文安装运行入口的安装身份/启动未�
 Root入口/WPF测试运行在WinSta0独立非输入桌面，输入桌面前后Default；子进程桌面探针Win32拒绝访问5，真实Playnite页面与用户闪屏HWND/PID仍未验收，不声称已消除。进程未强杀。只删除本阶段超长路径失败build output（727文件/169,290,041 bytes），用户与其他任务TestResults、存档、配置未动；空间及清单见`evidence/U09-05-root-1f97beaf-20261110/cleanup.json`。
 
 Round5任务表复算80唯一项、7已满足/71代码完成待验收/1进行中/1远端待验；U09-04继续、U09-05代码完成待验收、U09-06远端待验、U09-08审查已满足。GitHub run #1528 / 42666242561的两个适用job及全部步骤后续查询均成功，artifact身份见`evidence/U09-08-audit-20261110/ci-run-1528.json`。本批Source Validation、6份Markdown/1,037条本地链接检查、6份JSON解析与git diff --check均exit0；文档提交推送后仍须查精确SHA workflow。
+## 2026-11-10 Round5 U09-05 编译/检查隐藏启动跟进
+
+- 用户指出编译/检查会闪黑窗。本批修正 `scripts/hide-console.ps1` 的父链策略：Explorer新开的cmd与不共享当前console的PowerShell/Codex调用隐藏新控制台；共享交互终端的PowerShell保留。策略5/5，真实入口fixture三入口×退出码0/7/23为9/9。
+- SDK 8.0.423 / Release 独立 `scripts/build.cmd` 长隔离路径首跑exit1：三个配置/工作清单恢复断言失败，TRX显示Expected True/Actual False；1,102通过、3失败、28 skip，源测试失败后WPF组未运行。将输出/TEMP路径缩短后完整运行exit0：2,032项/1,964通过/0失败/68既有skip，157个WPF类逐类私有桌面运行。Summary中157/157桌面和进程检查通过，input desktop前后均Default；未删除断言或扩大skip。前失败与后成功日志、TRX、summary、launcher身份见[本批证据](../design/reviews/ui-polish-round5-20261027/evidence/U09-05-console-hide-20261110/README.md)。
+- 当前HEAD基线e400e42；构建源包含 `scripts/hide-console.ps1` 与 `scripts/tests/Test-LauncherExitCodes.ps1` 本批改动，源文件SHA和diff快照已归档。Source Validation exit0、git diff --check exit0。本批仅脚本，无WPF/XAML/资源改动，不跑Render QA，也不启动Playnite/安装链。进程主窗口句柄0不能证明整个用户桌面绝无瞬时窗口；反馈黑窗无HWND/PID，U09-05仍代码完成待验收。
+- 本阶段生成并归档完整成功/失败TRX与诊断后，仅清理8个本批 `.tmp` 路径，合计347,013,645 bytes；无重解析点/锁/运行中本阶段进程，Markdown无临时路径引用。删除路径、大小与实测空间见 `evidence/U09-05-console-hide-20261110/cleanup.json`。C/D清理前4,173,307,904 / 19,061,547,008 bytes，后4,172,320,768 / 19,414,482,944 bytes；不把全盘波动归因于删除。清理没有触碰其他任务TestResults、用户文件、缓存、存档或映射。
+- 本地 `scripts/build.cmd` 是独立构建门禁，不替代冻结候选的中文→英文根入口完整构建/打包/安装身份/启动验收。C盘仍低于4GiB预检122,646,528 bytes；暂不启动最终入口。80项计数不变：7已满足/71代码完成待验收/1进行中/1远端待验；U09-04继续，U09-06远端待验。
+归档压缩整理：Windows Git 对逐类WPF诊断长路径拒绝索引；将成功/失败诊断逐文件压缩为短路径ZIP，并用 `diagnostics-index.json` 保留每项原路径、大小与SHA-256；ZIP内654项完整解压校验通过。额外临时打包目录654文件、8,125,699 bytes已安全清理。该清理前后C/D为4,144,910,336 / 19,409,600,512 → 4,145,061,888 / 19,418,931,200 bytes；不把全盘变化归因于临时目录删除。归档目录28文件，共3,301,856 bytes。

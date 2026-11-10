@@ -12,8 +12,21 @@ New-Item -ItemType Directory -Path (Join-Path $output 'scripts') -Force | Out-Nu
 Copy-Item -LiteralPath (Join-Path $repo 'GameSaveCenter-Run.cmd'), (Join-Path $repo 'GameSaveCenter-一键构建安装运行.cmd') -Destination $output
 Copy-Item -LiteralPath (Join-Path $repo 'scripts/build.cmd') -Destination (Join-Path $output 'scripts')
 Copy-Item -LiteralPath (Join-Path $repo 'scripts/hide-console.ps1') -Destination (Join-Path $output 'scripts')
+. (Join-Path $repo 'scripts/hide-console.ps1')
 Set-Content -LiteralPath (Join-Path $output 'scripts/dev-install-run.ps1') -Value '# DEV-INSTALL-010 isolated fixture'
 Set-Content -LiteralPath (Join-Path $output 'scripts/build.ps1') -Value '# isolated fixture'
+
+$consoleCases = @(
+    @{ Name = 'Explorer double-click hides its new console'; CommandParent = 'cmd.exe'; Launcher = 'explorer.exe'; SharesConsole = $false; Expected = $true },
+    @{ Name = 'Codex PowerShell without a shared console hides its child console'; CommandParent = 'cmd.exe'; Launcher = 'pwsh.exe'; SharesConsole = $false; Expected = $true },
+    @{ Name = 'Interactive PowerShell keeps its existing console'; CommandParent = 'cmd.exe'; Launcher = 'powershell.exe'; SharesConsole = $true; Expected = $false },
+    @{ Name = 'Other callers keep their existing console'; CommandParent = 'cmd.exe'; Launcher = 'WindowsTerminal.exe'; SharesConsole = $false; Expected = $false },
+    @{ Name = 'Non-cmd callers are unchanged'; CommandParent = 'powershell.exe'; Launcher = 'codex.exe'; SharesConsole = $false; Expected = $false }
+)
+foreach ($case in $consoleCases) {
+    $actual = [GameSaveCenterConsoleWindow]::ShouldHideForLaunchContext($case.CommandParent, $case.Launcher, $case.SharesConsole)
+    if ($actual -ne $case.Expected) { throw "Console policy failed for '$($case.Name)': expected $($case.Expected), actual $actual" }
+}
 $installSource = Get-Content -LiteralPath (Join-Path $repo 'scripts/dev-install-run.ps1') -Raw
 $startupIndex = $installSource.LastIndexOf('if (-not $NoStart)', [StringComparison]::Ordinal)
 if ($startupIndex -lt 0) { throw 'Playnite startup block is missing.' }
@@ -49,6 +62,7 @@ foreach ($entry in @('GameSaveCenter-Run.cmd', 'GameSaveCenter-一键构建安�
 }
 [IO.File]::WriteAllText((Join-Path $output 'results.json'), ($results | ConvertTo-Json), [Text.UTF8Encoding]::new($false))
 $results | Format-Table | Out-Host
+Write-Output ("Console policy: {0}/{1} passed" -f $consoleCases.Count, $consoleCases.Count)
 Write-Host "Evidence: $output"
 if (@($results | Where-Object { -not $_.Passed }).Count) { throw 'Launcher exit-code propagation failed; evidence retained.' }
 exit 0

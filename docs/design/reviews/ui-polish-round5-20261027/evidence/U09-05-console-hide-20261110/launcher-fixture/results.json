@@ -1,0 +1,74 @@
+[
+  {
+    "Entry": "GameSaveCenter-Run.cmd",
+    "Injected": 0,
+    "Actual": 0,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-Run.cmd",
+    "Injected": 7,
+    "Actual": 7,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-Run.cmd",
+    "Injected": 23,
+    "Actual": 23,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-一键构建安装运行.cmd",
+    "Injected": 0,
+    "Actual": 0,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-一键构建安装运行.cmd",
+    "Injected": 7,
+    "Actual": 7,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  },
+  {
+    "Entry": "GameSaveCenter-一键构建安装运行.cmd",
+    "Injected": 23,
+    "Actual": 23,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  },
+  {
+    "Entry": "scripts/build.cmd",
+    "Injected": 0,
+    "Actual": 0,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  },
+  {
+    "Entry": "scripts/build.cmd",
+    "Injected": 7,
+    "Actual": 7,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  },
+  {
+    "Entry": "scripts/build.cmd",
+    "Injected": 23,
+    "Actual": 23,
+    "ModuleProbePassed": true,
+    "ParentEnvironmentUnchanged": true,
+    "Passed": true
+  }
+]

@@ -1,3 +1,9 @@
+## 2026-11-10 U09-05 编译/检查隐藏启动跟进
+
+为 Codex 的编译/检查调用补强 `scripts/hide-console.ps1`：新开的控制台只在 Explorer 或不共享控制台的 PowerShell/Codex 父链隐藏；与交互终端共享控制台的 PowerShell保持可见。新增5项策略测试；三入口退出码夹具9/9、策略5/5。SDK8.0.423 Release `scripts/build.cmd` 短路径完整运行exit0：2032项/1964通过/0失败/68既有skip，157个WPF类私有桌面隔离；157/157桌面身份合格且Default输入桌面未变。长路径首跑的3个恢复断言失败诊断保留，缩短路径后通过；没有跳过或删除断言。Source Validation与git diff --check exit0。记录见 `../design/reviews/ui-polish-round5-20261027/evidence/U09-05-console-hide-20261110/README.md`。
+
+本批cmd、PowerShell、dotnet进程观察到主窗口句柄0，启动时隐藏并重定向日志；这不能证明用户交互桌面无瞬时窗口，也未取得反馈黑窗的HWND/PID。无XAML/资源改动，不跑Render QA；未启动安装/真实Playnite。U09-05仍代码完成待验收。最新C盘4,145,061,888 bytes、D盘19,418,931,200 bytes，完整入口仍差149,905,408 bytes。清理清单/空间快照见证据 `cleanup.json`，没有清理缓存、用户或他任务TestResults，也未触碰盘符/卷/映射/存档。整轮计数7/71/1/1；U09-04仍进行中，U09-06远端待验。
+
 ## 2026-11-10 Round5 U09-04 源码归因复核
 
 U09-04仍进行中。U00与当前产品的任务表滚动保存方法、滚动诊断实现和120ms共享动效令牌未变；当前任务详情新增动效，但离屏关闭P95约250ms、Rendering回调P95为125–149ms，不能据此断定真实Playnite输入/呈现回退。关闭后立即滚动的组合样本仍未锁定源代码原因；不盲目改动生产代码或时长。下一步需真实Playnite呈现帧、物理输入响应和该面板分配量数据。源码证据：[U09-04归因记录](../design/reviews/ui-polish-round5-20261027/evidence/U09-04-source-attribution-20261110.md)。本批产品源未变，根入口/独立build已对相同源通过；C/D分别有4,454,600,704 / 19,438,219,264 bytes空闲，没有清理或盘符操作。

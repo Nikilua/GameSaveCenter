@@ -1,0 +1,85 @@
+{
+  "SchemaVersion": 1,
+  "Bundle": "failure-long-path/diagnostics.zip",
+  "FileCount": 13,
+  "Files": [
+    {
+      "ArchiveEntry": "0001.txt",
+      "OriginalPath": "build-console.txt",
+      "Bytes": 1793,
+      "Sha256": "285DD874DC38374B854283668C45AC0BB76ACABFFF1854FAC0A0E32DA4BA230A"
+    },
+    {
+      "ArchiveEntry": "0002.txt",
+      "OriginalPath": "core-console.txt",
+      "Bytes": 23794,
+      "Sha256": "BE4B23F42509A0F769064D356066022C3BC0846691C371D15BC009A01CC64DD5"
+    },
+    {
+      "ArchiveEntry": "0003.txt",
+      "OriginalPath": "playnite-discovery-console.txt",
+      "Bytes": 191375,
+      "Sha256": "BED194B033D328D6508A920D2F0D627404B0B4CD7384D9A7DB21BD0EEDE494A3"
+    },
+    {
+      "ArchiveEntry": "0004.txt",
+      "OriginalPath": "playnite-source-console.txt",
+      "Bytes": 92230,
+      "Sha256": "F67A22FE2353DAA237F21A32FC0C71C94E98E585D2EB4163E0EFAD3A68120C43"
+    },
+    {
+      "ArchiveEntry": "0005.txt",
+      "OriginalPath": "restore-console.txt",
+      "Bytes": 1003,
+      "Sha256": "52CC2202CE5451C8587E14DAAB2587E94ABC90F9A3CE53CB1F7330E2AE4780B4"
+    },
+    {
+      "ArchiveEntry": "0006.txt",
+      "OriginalPath": "sdk-info-console.txt",
+      "Bytes": 1662,
+      "Sha256": "9C1BB68E5C7EC6D2FAAB3E0A338EA164020807A025887591DDBE7E912BFDCFB5"
+    },
+    {
+      "ArchiveEntry": "0007.txt",
+      "OriginalPath": "sdk-list-console.txt",
+      "Bytes": 78,
+      "Sha256": "3959CD1EDD590DDB1913A8568F7945A2AAEC221C52DD031A4CBD211B167BCAE6"
+    },
+    {
+      "ArchiveEntry": "0008.txt",
+      "OriginalPath": "sdk-version-console.txt",
+      "Bytes": 9,
+      "Sha256": "70EC4CC548877BF3C7F1258C67D15D57E69E464F013BFA39B457BA0B566E6D08"
+    },
+    {
+      "ArchiveEntry": "0009.json",
+      "OriginalPath": "summary.json",
+      "Bytes": 270939,
+      "Sha256": "8F35D7262575A0FD47622C070C50F96B87EA37F3F52626AECA7FB5DF4DCF0D5D"
+    },
+    {
+      "ArchiveEntry": "0010.trx",
+      "OriginalPath": "tests/core/core.trx",
+      "Bytes": 247737,
+      "Sha256": "2796E333BBE281D6A1EB2FF44A95567C27B7D4A7D460BC4E3678ED4AD68E1656"
+    },
+    {
+      "ArchiveEntry": "0011.trx",
+      "OriginalPath": "tests/playnite-source/playnite-source.trx",
+      "Bytes": 947245,
+      "Sha256": "C878597EF8E1A2DF502C6CD98D4BFC732F0514A404EAB3835AF136B3560D5603"
+    },
+    {
+      "ArchiveEntry": "0012.trx",
+      "OriginalPath": "tests/worker/worker.trx",
+      "Bytes": 653757,
+      "Sha256": "9EDAA16682EB59049FE302EC6A80AE0A025E48F195EFB0D00CA0942F835EA04A"
+    },
+    {
+      "ArchiveEntry": "0013.txt",
+      "OriginalPath": "worker-console.txt",
+      "Bytes": 60245,
+      "Sha256": "DDE426D6DA672AF498B4166C987FA702A6DA700E8B2B0465D9F6B368293E00F5"
+    }
+  ]
+}

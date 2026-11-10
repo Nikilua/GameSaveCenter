@@ -1,0 +1,11 @@
+{
+  "Entry": "D:\\workplace\\github\\GameSaveCenter\\scripts\\build.cmd",
+  "Arguments": "/d /c \"\"D:\\workplace\\github\\GameSaveCenter\\scripts\\build.cmd\" -OutputRoot \"D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-console-hide-build-20261110-151949-d6c1335eb8124450945654c1976c0d6d\\output\" -TestTempRoot \"D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-console-hide-build-20261110-151949-d6c1335eb8124450945654c1976c0d6d\\output\\test-temp\" -DiagnosticsRoot \"D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-console-hide-build-20261110-151949-d6c1335eb8124450945654c1976c0d6d\\diagnostics\"\"",
+  "ProcessId": 30736,
+  "ExitCode": 1,
+  "StartedUtc": "2026-11-10T07:19:49.3384655Z",
+  "CompletedUtc": "2026-11-10T07:24:09.8781816Z",
+  "RunRoot": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-console-hide-build-20261110-151949-d6c1335eb8124450945654c1976c0d6d",
+  "Stdout": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-console-hide-build-20261110-151949-d6c1335eb8124450945654c1976c0d6d\\build.stdout.txt",
+  "Stderr": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round5-console-hide-build-20261110-151949-d6c1335eb8124450945654c1976c0d6d\\build.stderr.txt"
+}

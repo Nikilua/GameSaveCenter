@@ -32,6 +32,9 @@ public static class GameSaveCenterConsoleWindow
     private static extern uint GetCurrentProcessId();
 
     [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern uint GetConsoleProcessList([Out] uint[] processList, uint processCount);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
     private static extern IntPtr CreateToolhelp32Snapshot(uint flags, uint processId);
 
     [DllImport("kernel32.dll", EntryPoint = "Process32FirstW", CharSet = CharSet.Unicode, SetLastError = true, ExactSpelling = true)]
@@ -57,7 +60,7 @@ public static class GameSaveCenterConsoleWindow
             return true;
         }
 
-        if (!WasLaunchedFromExplorer())
+        if (!ShouldHideForCurrentCaller())
         {
             return true;
         }
@@ -66,13 +69,97 @@ public static class GameSaveCenterConsoleWindow
         return !IsWindowVisible(window);
     }
 
-    private static bool WasLaunchedFromExplorer()
+    public static bool ShouldHideForLaunchContext(string commandParent, string launcher, bool launcherSharesCurrentConsole)
+    {
+        if (!string.Equals(commandParent, "cmd.exe", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (string.Equals(launcher, "explorer.exe", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        var isPowerShell = string.Equals(launcher, "powershell.exe", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(launcher, "pwsh.exe", StringComparison.OrdinalIgnoreCase);
+        return isPowerShell && !launcherSharesCurrentConsole;
+    }
+
+    private static bool ShouldHideForCurrentCaller()
+    {
+        var entries = ReadProcessEntries();
+        if (entries == null)
+        {
+            return false;
+        }
+
+        ProcessEntry current;
+        ProcessEntry parent;
+        ProcessEntry launcher;
+        if (!entries.TryGetValue(GetCurrentProcessId(), out current)
+            || !entries.TryGetValue(current.ParentProcessId, out parent)
+            || !entries.TryGetValue(parent.ParentProcessId, out launcher))
+        {
+            return false;
+        }
+
+        bool launcherSharesCurrentConsole = false;
+        var isPowerShell = string.Equals(launcher.ExecutableName, "powershell.exe", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(launcher.ExecutableName, "pwsh.exe", StringComparison.OrdinalIgnoreCase);
+        if (isPowerShell && !TryIsProcessAttachedToCurrentConsole(launcher.ProcessId, out launcherSharesCurrentConsole))
+        {
+            // Preserve a caller's console when ownership cannot be determined.
+            return false;
+        }
+
+        return ShouldHideForLaunchContext(parent.ExecutableName, launcher.ExecutableName, launcherSharesCurrentConsole);
+    }
+
+    private static bool TryIsProcessAttachedToCurrentConsole(uint processId, out bool attached)
+    {
+        attached = false;
+        if (GetConsoleWindow() == IntPtr.Zero)
+        {
+            return false;
+        }
+
+        var processIds = new uint[32];
+        var count = GetConsoleProcessList(processIds, (uint)processIds.Length);
+        if (count == 0)
+        {
+            return false;
+        }
+
+        if (count > processIds.Length)
+        {
+            processIds = new uint[(int)count];
+            count = GetConsoleProcessList(processIds, (uint)processIds.Length);
+            if (count == 0 || count > processIds.Length)
+            {
+                return false;
+            }
+        }
+
+        for (var index = 0; index < count; index++)
+        {
+            if (processIds[index] == processId)
+            {
+                attached = true;
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    private static Dictionary<uint, ProcessEntry> ReadProcessEntries()
     {
         var entries = new Dictionary<uint, ProcessEntry>();
         var snapshot = CreateToolhelp32Snapshot(SnapshotProcesses, 0);
         if (snapshot == new IntPtr(-1))
         {
-            return false;
+            return null;
         }
 
         try
@@ -80,7 +167,7 @@ public static class GameSaveCenterConsoleWindow
             var entry = new ProcessEntry { Size = (uint)Marshal.SizeOf(typeof(ProcessEntry)) };
             if (!Process32First(snapshot, ref entry))
             {
-                return false;
+                return null;
             }
 
             do
@@ -95,14 +182,7 @@ public static class GameSaveCenterConsoleWindow
             CloseHandle(snapshot);
         }
 
-        ProcessEntry current;
-        ProcessEntry parent;
-        ProcessEntry launcher;
-        return entries.TryGetValue(GetCurrentProcessId(), out current)
-            && entries.TryGetValue(current.ParentProcessId, out parent)
-            && string.Equals(parent.ExecutableName, "cmd.exe", StringComparison.OrdinalIgnoreCase)
-            && entries.TryGetValue(parent.ParentProcessId, out launcher)
-            && string.Equals(launcher.ExecutableName, "explorer.exe", StringComparison.OrdinalIgnoreCase);
+        return entries;
     }
 }
 '@

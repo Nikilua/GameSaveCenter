@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "scripts/hide-console.ps1",
+    "Bytes": 6096,
+    "Sha256": "5DE943D8835F25703CEAC7E04FAEC3A0B6AB19F3E1A2669D0FB29BBD61E5A527"
+  },
+  {
+    "Path": "scripts/tests/Test-LauncherExitCodes.ps1",
+    "Bytes": 5150,
+    "Sha256": "11A9C1A0113FA4F8778D6893DD06A46FB3EFB35F6E112FCECA933578D56F7D43"
+  }
+]

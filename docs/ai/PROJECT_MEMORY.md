@@ -1,3 +1,9 @@
+## 2026-11-10 Round5 U09-05 编译时黑窗跟进
+
+`hide-console.ps1`现区分新控制台与共享交互控制台：Explorer新开的cmd和不共享当前console的PowerShell/Codex父链隐藏，新建策略5/5；真实三入口退出码转发仍9/9。SDK8.0.423 Release `scripts/build.cmd`在短路径完整exit0，2,032项/1,964通过/0失败/68既有skip，157个WPF类隔离在私有桌面。长路径的三个恢复测试失败保留原诊断；缩短路径全套通过，未改断言/skip。每个测试桌面的身份检查157/157通过，输入桌面Default不变。完整证据在Round5 `evidence/U09-05-console-hide-20261110/`。
+
+进程 `MainWindowHandle=0`与隐藏启动证明本批检查未显示主窗口，不证明整个用户桌面绝无瞬时闪屏，黑窗仍待HWND/PID/真实桌面观察。未运行Playnite安装启动链，未运行Render QA（本批无WPF源码变化）。U09-05代码完成待验收；完整中文入口冻结候选还需C盘4GiB，最新复测4,145,061,888 bytes，差149,905,408 bytes。每阶段只删除本批已归档的精确`.tmp`输出，不动缓存、用户/他任务数据、盘符/卷/映射。
+
 ## 2026-11-10 Round5 U09-04 源码归因与继续条件
 
 U00/current对比确认 `OnTaskGridScrollChanged` 方法块SHA相同，`DataGridScrollDiagnostics.cs` 和 `MotionTokens.xaml` blob也相同；Task详情进入/退出动效是新增路径，采用既有120ms Fast令牌。私有桌面探针关闭P95约250ms、Rendering回调P95 125–149ms，输入为路由点击，不能代表宿主输入或DWM帧；收起后立即滚动样本也没有隔离布局稳定阶段。没有据此修改生产源码或动画时长。U09-04保持进行中，真实Playnite呈现时序、物理输入和详情动效分配仍待测，见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-source-attribution-20261110.md`。产品源相对 `e570f7b7` 未变，完整根入口与独立 `scripts/build.cmd` 已有同源通过记录；当前C/D空间达标。本次不重复启动宿主、不改盘符/卷/映射。

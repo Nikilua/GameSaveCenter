@@ -1,0 +1,120 @@
+{
+  "Date": "2026-11-10",
+  "Reason": "本阶段隐藏启动与独立build检查已完成，诊断与TRX已归档；仅清理本批唯一输出",
+  "BeforeSpace": [
+    {
+      "Name": "C",
+      "Free": 4173307904
+    },
+    {
+      "Name": "D",
+      "Free": 19061547008
+    }
+  ],
+  "Deleted": [
+    {
+      "Path": "round5-console-hide-20261110",
+      "Kind": "Directory",
+      "Files": 16,
+      "Bytes": 12251
+    },
+    {
+      "Path": "round5-console-hide-20261110.stdout.txt",
+      "Kind": "File",
+      "Files": 1,
+      "Bytes": 1291
+    },
+    {
+      "Path": "round5-console-hide-20261110.stderr.txt",
+      "Kind": "File",
+      "Files": 1,
+      "Bytes": 0
+    },
+    {
+      "Path": "round5-console-hide-20261110-8a0d2c92fb164f128a6bdbb060474b98",
+      "Kind": "Directory",
+      "Files": 16,
+      "Bytes": 12251
+    },
+    {
+      "Path": "round5-console-hide-20261110-8a0d2c92fb164f128a6bdbb060474b98.stdout.txt",
+      "Kind": "File",
+      "Files": 1,
+      "Bytes": 1324
+    },
+    {
+      "Path": "round5-console-hide-20261110-8a0d2c92fb164f128a6bdbb060474b98.stderr.txt",
+      "Kind": "File",
+      "Files": 1,
+      "Bytes": 0
+    },
+    {
+      "Path": "round5-console-hide-build-20261110-151949-d6c1335eb8124450945654c1976c0d6d",
+      "Kind": "Directory",
+      "Files": 743,
+      "Bytes": 171960777
+    },
+    {
+      "Path": "hc-46403366",
+      "Kind": "Directory",
+      "Files": 1370,
+      "Bytes": 175025751
+    }
+  ],
+  "DeletedBytes": 347013645,
+  "AfterSpace": [
+    {
+      "Name": "C",
+      "Free": 4172320768
+    },
+    {
+      "Name": "D",
+      "Free": 19414482944
+    }
+  ],
+  "Attribution": "记录净可用空间实测值，不把全盘变化归因于本批删除",
+  "Safety": {
+    "NormalizedUnderRepositoryTmp": true,
+    "ReparsePoints": 0,
+    "LockedFiles": 0,
+    "StageProcessesStillRunning": 0,
+    "MarkdownPathReferences": 0,
+    "UnrelatedTestResultsPreserved": true,
+    "OtherArtifactsUntouched": true
+  },
+  "DuplicateCheck": {
+    "InitialFixtureResultsSha256": "3FB41D80DE84FCD0A3CDEDAAF95960252BE866CC716500D957942993722B7E90",
+    "MatchesCorrectedFixture": true,
+    "InitialHarnessPreflightTypo": true
+  },
+  "DiagnosticArchiveStagingCleanup": {
+    "Path": ".tmp/zba98a",
+    "Files": 654,
+    "Bytes": 8125699,
+    "ReparsePoints": 0,
+    "LockedFiles": 0,
+    "StageProcessesStillRunning": 0,
+    "MarkdownReferences": 0,
+    "BeforeSpace": [
+      {
+        "Name": "C",
+        "Free": 4145061888
+      },
+      {
+        "Name": "D",
+        "Free": 19409534976
+      }
+    ],
+    "AfterSpace": [
+      {
+        "Name": "C",
+        "Free": 4145061888
+      },
+      {
+        "Name": "D",
+        "Free": 19418931200
+      }
+    ],
+    "Attribution": "记录盘符实测变化，不把变化归因于本次删除"
+  }
+}

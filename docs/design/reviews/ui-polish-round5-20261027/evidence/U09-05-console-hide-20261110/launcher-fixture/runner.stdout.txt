@@ -1,0 +1,15 @@
+
+Entry                               Injected Actual ModuleProbePassed ParentEnvironmentUnchanged Passed
+-----                               -------- ------ ----------------- -------------------------- ------
+GameSaveCenter-Run.cmd                     0      0              True                       True   True
+GameSaveCenter-Run.cmd                     7      7              True                       True   True
+GameSaveCenter-Run.cmd                    23     23              True                       True   True
+GameSaveCenter-一键构建安装运行.cmd        0      0              True                       True   True
+GameSaveCenter-一键构建安装运行.cmd        7      7              True                       True   True
+GameSaveCenter-一键构建安装运行.cmd       23     23              True                       True   True
+scripts/build.cmd                          0      0              True                       True   True
+scripts/build.cmd                          7      7              True                       True   True
+scripts/build.cmd                         23     23              True                       True   True
+
+Console policy: 5/5 passed
+Evidence: D:\workplace\github\GameSaveCenter\.tmp\round5-console-hide-20261110-8a0d2c92fb164f128a6bdbb060474b98

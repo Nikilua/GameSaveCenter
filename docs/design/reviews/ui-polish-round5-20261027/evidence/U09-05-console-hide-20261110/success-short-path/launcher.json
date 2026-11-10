@@ -1,0 +1,11 @@
+{
+  "Entry": "D:\\workplace\\github\\GameSaveCenter\\scripts\\build.cmd",
+  "Arguments": "/d /c \"\"D:\\workplace\\github\\GameSaveCenter\\scripts\\build.cmd\" -OutputRoot \"D:\\workplace\\github\\GameSaveCenter\\.tmp\\hc-46403366\\o\" -TestTempRoot \"D:\\workplace\\github\\GameSaveCenter\\.tmp\\hc-46403366\\t\" -DiagnosticsRoot \"D:\\workplace\\github\\GameSaveCenter\\.tmp\\hc-46403366\\d\"\"",
+  "ProcessId": 16376,
+  "ExitCode": 0,
+  "StartedUtc": "2026-11-10T07:26:23.2059701Z",
+  "CompletedUtc": "2026-11-10T07:59:48.2678086Z",
+  "RunRoot": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\hc-46403366",
+  "Stdout": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\hc-46403366\\out.txt",
+  "Stderr": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\hc-46403366\\err.txt"
+}
