@@ -1,3 +1,7 @@
+## 2026-11-10 Round5 U09-04 源码归因复核
+
+U09-04仍进行中。U00与当前产品的任务表滚动保存方法、滚动诊断实现和120ms共享动效令牌未变；当前任务详情新增动效，但离屏关闭P95约250ms、Rendering回调P95为125–149ms，不能据此断定真实Playnite输入/呈现回退。关闭后立即滚动的组合样本仍未锁定源代码原因；不盲目改动生产代码或时长。下一步需真实Playnite呈现帧、物理输入响应和该面板分配量数据。源码证据：[U09-04归因记录](../design/reviews/ui-polish-round5-20261027/evidence/U09-04-source-attribution-20261110.md)。本批产品源未变，根入口/独立build已对相同源通过；C/D分别有4,454,600,704 / 19,438,219,264 bytes空闲，没有清理或盘符操作。
+
 ## 2026-11-09 U03-01/02/03 按钮与图标任务去重复核
 
 生产共享按钮五态、延迟忙碌层和17个图标操作的UIA Name/Command/Click/键盘焦点已有覆盖，没有新增源码缺口。定向TRX 13/13、0失败/skip，10张双主题状态图和报告的SHA/大小全匹配；`8c927a93` 的 GitHub #1325 / run `40561836233` 基线与SDK10 jobs及所有步骤success，artifact身份在 `../design/reviews/ui-polish-round5-20261027/evidence/U03-01-03/ci-run-40561836233.json`。当前产品SHA `e570f7b7`完整本地build/Render QA/双SDKCI另见U09-05证据。三项保持代码完成待验收：真实鼠标、Playnite、UIA客户端/屏幕阅读器及物理DPI未验。

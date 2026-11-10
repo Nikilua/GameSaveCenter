@@ -1,3 +1,7 @@
+## 2026-11-10 Round5 U09-04 源码归因与继续条件
+
+U00/current对比确认 `OnTaskGridScrollChanged` 方法块SHA相同，`DataGridScrollDiagnostics.cs` 和 `MotionTokens.xaml` blob也相同；Task详情进入/退出动效是新增路径，采用既有120ms Fast令牌。私有桌面探针关闭P95约250ms、Rendering回调P95 125–149ms，输入为路由点击，不能代表宿主输入或DWM帧；收起后立即滚动样本也没有隔离布局稳定阶段。没有据此修改生产源码或动画时长。U09-04保持进行中，真实Playnite呈现时序、物理输入和详情动效分配仍待测，见 `docs/design/reviews/ui-polish-round5-20261027/evidence/U09-04-source-attribution-20261110.md`。产品源相对 `e570f7b7` 未变，完整根入口与独立 `scripts/build.cmd` 已有同源通过记录；当前C/D空间达标。本次不重复启动宿主、不改盘符/卷/映射。
+
 ## 2026-11-09 U03-01/02/03 按钮和图标任务复核
 
 共享按钮Normal/Hover/Pressed/Disabled/Focus、延迟忙碌、CanExecute恢复及17个图标操作无障碍名称/命令/焦点已有生产实现和行为保护。13项TRX全通过、0 skip；十张浅深状态图/报告校验通过。run #1325 `40561836233`在准确SHA `8c927a93`上双SDK job及全部步骤成功，package/diagnostic artifact记录在`evidence/U03-01-03/ci-run-40561836233.json`；当前源码`e570f7b7`也有独立完整build及双SDKCI成功证据。状态仍代码完成待验收，真实鼠标、Playnite UIA/屏幕阅读器和物理DPI未测。本次不重跑渲染/Build。

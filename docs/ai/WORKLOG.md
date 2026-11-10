@@ -1,3 +1,7 @@
+## 2026-11-10 Round5 U09-04 任务详情动效/滚动源码归因
+
+对 U00 `5d0a2448` 与当前产品 `e570f7b7` 做只读源码比对：`OnTaskGridScrollChanged` 方法块SHA相同，`DataGridScrollDiagnostics.cs` 与 `MotionTokens.xaml` blob相同；新增路径是任务详情面板使用既有120ms Fast令牌进入/退出。离屏面板关闭P95约250ms，但Rendering回调P95已达125–149ms，无法拆成宿主响应与私有桌面调度；关闭后立即滚动样本仍混合布局阶段。没有归因证据支持改动生产代码，U09-04继续等真实Playnite呈现帧、实体输入和面板分配测量。证据见 Round5 `evidence/U09-04-source-attribution-20261110.md`。当前 C/D 空间达到完整链预检；产品源码自 `e570f7b7` 未变，已有中文根入口和独立build.cmd对同一源通过，本批不重复启动Playnite或运行完整链，也未操作盘符/卷/映射。
+
 ## 2026-11-09 U09-05 Render QA OOM修正复验通过
 
 当前候选选框改为约4 DIP右余量，资源断言同步；SDK8.0.423下共享资源/几何等定向WPF测试157 pass、0失败，39个旧架构NotExecuted未计通过。Source Validation exit0，WPF静态398 XAML/0 errors/218 warnings/1440 info。Render QA首轮因4K位图压力在289图OOM、exit1；没有删案例或缩尺寸。仅RenderHarness修改SavePng后每8图强制GC并等待最终化，Harness重新编译0警告/错误，完整Render QA exit0、394 PNG、0 PROBLEM。WinSta0私有桌面运行，Default input desktop未变。完整报告与sha在Round5 evidence `right-inset-regression-20261109/`。当前生产源/测试/Harness/UI和追踪文档仍需中文提交/push；精确SHA独立完整build、双SDK CI和最终中文根入口安装身份未验。用户说闪窗出现在编译/检查期间；我们保持所有操作进程启动即隐藏和输出重定向，仍无窗口身份证据。未动盘符、映射或用户数据。
