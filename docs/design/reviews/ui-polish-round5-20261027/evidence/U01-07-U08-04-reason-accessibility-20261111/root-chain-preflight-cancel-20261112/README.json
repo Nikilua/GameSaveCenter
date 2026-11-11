@@ -1,0 +1,16 @@
+{
+  "SourceCommit": "d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef",
+  "Entry": "GameSaveCenter-一键构建安装运行.cmd -> GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1 -Configuration Release",
+  "Outcome": "Stopped by this task after 88/157 WPF isolated classes, before installation, because prior exact same sandbox boundary is already documented; this exit is not a test failure and does not count as pass.",
+  "Stop": "Owned cmd.exe process 5208 and its child tree; taskkill exit 0",
+  "Log": "one-click-install-partial.log",
+  "LogBytes": 104165,
+  "LogSha256": "35CD41C2CF12CCA56D1CEAD01F9713EC2B79E567B124D64D03169568941ED91C",
+  "EntryMetadataSha256": "110E43E27DEC2BE0B09D0267F68A5C3DA594BFC996559D9191A7979B4495355E",
+  "PreservedDiagnosticRoot": "Original artifacts path removed after archive verification",
+  "TestsNotCountedAsComplete": true,
+  "DiagnosticArchive": "diagnostics.zip",
+  "DiagnosticArchiveSha256": "69741f6ba0902dd7d0d59043de2925ffb0fa80129170c7ee8353d9648bbfd293",
+  "ArchivedFileCount": 362,
+  "ArchivedUncompressedBytes": 3637075
+}

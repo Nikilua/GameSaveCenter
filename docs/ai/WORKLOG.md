@@ -13559,3 +13559,11 @@ Round5任务表复算80唯一项、7已满足/71代码完成待验收/1进行中
 - 本阶段生成并归档完整成功/失败TRX与诊断后，仅清理8个本批 `.tmp` 路径，合计347,013,645 bytes；无重解析点/锁/运行中本阶段进程，Markdown无临时路径引用。删除路径、大小与实测空间见 `evidence/U09-05-console-hide-20261110/cleanup.json`。C/D清理前4,173,307,904 / 19,061,547,008 bytes，后4,172,320,768 / 19,414,482,944 bytes；不把全盘波动归因于删除。清理没有触碰其他任务TestResults、用户文件、缓存、存档或映射。
 - 本地 `scripts/build.cmd` 是独立构建门禁，不替代冻结候选的中文→英文根入口完整构建/打包/安装身份/启动验收。C盘仍低于4GiB预检122,646,528 bytes；暂不启动最终入口。80项计数不变：7已满足/71代码完成待验收/1进行中/1远端待验；U09-04继续，U09-06远端待验。
 归档压缩整理：Windows Git 对逐类WPF诊断长路径拒绝索引；将成功/失败诊断逐文件压缩为短路径ZIP，并用 `diagnostics-index.json` 保留每项原路径、大小与SHA-256；ZIP内654项完整解压校验通过。额外临时打包目录654文件、8,125,699 bytes已安全清理。该清理前后C/D为4,144,910,336 / 19,409,600,512 → 4,145,061,888 / 19,418,931,200 bytes；不把全盘变化归因于临时目录删除。归档目录28文件，共3,301,856 bytes。
+
+## 2026-11-12 Round5 U01-07/U08-04 完整验收
+
+媒体收件箱原因长文本已在共享 `MediaLongText` 绑定UIA HelpText；实现提交`90b084cf084ec8a3eb4c9ec314ae582933da1949`已推送。冻结文档提交`d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef`上的中文根入口完整 build/test/publish/package/install/start 实际cmd退出码0，SDK8.0.423 / Release；160份TRX共2,036项，1,978通过、58既有skip、0失败，157个WPF隔离类。安装 zip/pext哈希一致，0.6.73程序集身份对应冻结SHA；诊断、TRX、安装报告和入口日志已脱敏归档。独立`scripts/build.cmd`另以相同SHA退出码0：编译0 warning/0 error，2,036项中1,968通过、68既有skip、0失败，157个WPF类。
+
+GitHub `windows-build.yml` run #1540 / `43053619363` 对精确SHA completed/success；基线 job `130637118482`（15步）与SDK10.0.401 job `130637118291`（8步）全部success，三个artifact的ID/大小/digest见Round5证据 `ci-run-43053619363.json`。combined status没有独立项目；required-check/ruleset仍沿用U09-06先前HTTP403的“远端待验”，不重复探测。首次非提升根链预检人工停止且不计通过，其部分诊断已校验归档；仅移除本批临时输出，释放D盘约178,802,688 bytes，用户/其他任务TRX和TestResults未触碰。
+
+安装启动确认程序集和进程，但Playnite主窗口句柄为0；Computer Use/Node运行时均因初始化路径缺失无法捕获真实宿主。U01-07/U08-04继续“代码完成待验收”，不把离屏渲染等同真实宿主；未执行存档恢复、媒体删除或云端写入。80项仍为7已满足、71代码完成待验收、1进行中、1远端待验。完整记录见`docs/design/reviews/ui-polish-round5-20261027/PROGRESS.md`。

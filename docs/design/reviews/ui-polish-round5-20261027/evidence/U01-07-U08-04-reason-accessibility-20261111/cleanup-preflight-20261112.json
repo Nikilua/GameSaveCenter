@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-12",
+  "reason": "Archived the preflight diagnostic and verified its entries before removing the partial diagnostic/build output; current successful build uses separate paths.",
+  "targets": [
+    {
+      "path": "artifacts/build-diagnostics/20261111T160015312Z-7ff943df",
+      "files": 362,
+      "bytes": 3637075.0,
+      "reparsePoints": 0,
+      "archive": "root-chain-preflight-cancel-20261112/diagnostics.zip"
+    },
+    {
+      "path": "artifacts/gsc-b/bd6429b5",
+      "files": 726,
+      "bytes": 169297732.0,
+      "reparsePoints": 0,
+      "archive": "none; disposable intermediate build output"
+    }
+  ],
+  "processCheck": "No process from the preflight interval remained; current scripts/build uses a separate output root.",
+  "documentationReferenceCheck": "No Markdown or JSON points to either physical artifacts path after archive references were updated.",
+  "spaceBefore": [
+    {
+      "drive": "C:",
+      "freeBytes": 5242630144
+    },
+    {
+      "drive": "D:",
+      "freeBytes": 16901574656
+    }
+  ],
+  "spaceAfter": [
+    {
+      "drive": "C:",
+      "freeBytes": 5242630144
+    },
+    {
+      "drive": "D:",
+      "freeBytes": 17080377344
+    }
+  ],
+  "retained": [
+    "latest successful root-chain build output artifacts/gsc-b/2f881004 and package",
+    "active scripts/build output artifacts/gsc-b/scripts-build-20261112",
+    "archived partial preflight diagnostics and TRX",
+    "all user/other-task TRX and TestResults"
+  ]
+}

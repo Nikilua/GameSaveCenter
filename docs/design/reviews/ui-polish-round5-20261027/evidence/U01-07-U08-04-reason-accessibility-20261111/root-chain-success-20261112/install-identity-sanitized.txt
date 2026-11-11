@@ -1,0 +1,30 @@
+OriginalInstallReportSha256: 9F69D36E1A51E28460EEE52CAE02F8B8AB20C7D1687D74873D498190C6F0C0B7
+OriginalBytes: 2304
+Source: artifacts/last-dev-install.txt
+
+时间：2026-11-12 00:50:04
+安装运行 ID：20261111T162256130Z-460c003d
+源码版本：0.6.73
+隔离构建目录：[repo]\artifacts\gsc-b\2f881004
+安装目录：[Playnite-Extensions]\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef
+  文件路径：[Playnite-Extensions]\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：C16B6D6E14FA25F4317F6E36FF9FF027029C7FBC0A62E85C4C9A9AFEB0CD0DEA
+  GameSaveCenter.Core.dll：0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef
+  文件路径：[Playnite-Extensions]\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：5E60023C729240E8C95C353B918F5934BC993E4624E2444B8786049AC64B253E
+  GameSaveCenter.Contracts.dll：0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef
+  文件路径：[Playnite-Extensions]\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：B54B8E21EB9ECDF202B9FAE07998C81B3B815720CD05B2C851CCB776916DCE08
+  Worker/GameSaveCenter.Worker.dll：0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef
+  文件路径：[Playnite-Extensions]\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：68BA4A9AB59485A20B21AC146462E0CBBCAD8015BBC7A99EAA8067790BBCDD67
+  Worker/GameSaveCenter.Core.dll：0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef
+  文件路径：[Playnite-Extensions]\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：88C7BC7EA7696D8201F7BF2348183A1DA5F7D05330A9ADEFEAC117EBFA8DBA79
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef
+  文件路径：[Playnite-Extensions]\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：954CF694B40121748200E05E66B352072293D1789CDBBCF06A33BC656A7952D1

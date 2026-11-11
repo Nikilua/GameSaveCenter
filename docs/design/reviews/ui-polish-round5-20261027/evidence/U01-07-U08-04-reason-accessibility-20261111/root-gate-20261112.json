@@ -1,0 +1,127 @@
+{
+  "SourceCommit": "d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef",
+  "TrackedFilesFrozen": true,
+  "Sdk": "8.0.423",
+  "RootEntry": "GameSaveCenter-一键构建安装运行.cmd",
+  "DelegatesTo": "GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1 -Configuration Release",
+  "RootCommandProcess": {
+    "Pid": 7208,
+    "ProcessName": "cmd.exe",
+    "StartedLocal": "2026-11-12T00:22:53+08:00",
+    "ExitCode": 0,
+    "ExitCodeObservation": "OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION) + GetExitCodeProcess after process had exited",
+    "NativeApiError": 0
+  },
+  "RunId": "20261111T162256130Z-460c003d",
+  "StartedUtc": "2026-11-11T16:22:59.113464Z",
+  "CompletedUtc": "2026-11-11T16:49:51.489567Z",
+  "BuildOutcome": "passed",
+  "TestSummary": {
+    "TrxFileCount": 160,
+    "TestCaseCount": 2036,
+    "Passed": 1978,
+    "Skipped": 58,
+    "Failed": 0,
+    "Error": 0,
+    "Timeout": 0,
+    "Aborted": 0,
+    "CounterMismatchCount": 0,
+    "WpfIsolatedClassRunCount": 157,
+    "SkipReasons": [
+      "57 tests: assertions for the withdrawn Today Workbench UI architecture; skipped with original reasons intact.",
+      "1 test: system pointer movement test, opt-in; skipped by default."
+    ]
+  },
+  "DiagnosticSummaryPath": "artifacts/build-diagnostics/20261111T162258041Z-29a71d8c/summary.json",
+  "DiagnosticSummarySha256": "1860B361FB0C2BFB876DECEDE9B8B56DC9F22601BD57630C8094E5FE44D13E85",
+  "DiagnosticOutcome": "passed",
+  "InstallReportPath": "artifacts/last-dev-install.txt",
+  "InstallReportSha256": "9F69D36E1A51E28460EEE52CAE02F8B8AB20C7D1687D74873D498190C6F0C0B7",
+  "InstallReportBytes": 2304,
+  "RunLogPath": "artifacts/one-click-install.log",
+  "RunLogSha256": "81EB691886D14102EBCAD26FCCCDE9B82DEBFE9558C358C9F763DB14B1F8C8AE",
+  "RunLogBytes": 121699,
+  "Package": {
+    "ZipPath": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+    "PextPath": "artifacts/GameSaveCenter-0.6.73.pext",
+    "Bytes": 45738863,
+    "ZipSha256": "4431C10F0918D63F29D655B3DC079178EE9E6F6B127B4D467B95BBD4866697F2",
+    "PextSha256": "4431C10F0918D63F29D655B3DC079178EE9E6F6B127B4D467B95BBD4866697F2",
+    "SameBytes": true
+  },
+  "FreeSpaceBefore": [
+    {
+      "Root": "D:\\",
+      "AvailableBytes": 17494695936,
+      "BudgetBytes": 3221225472,
+      "Sufficient": true,
+      "Requirements": [
+        {
+          "Stage": "build-output",
+          "Path": "[repo]\\artifacts\\gsc-b\\2f881004",
+          "Basis": "Conservative configurable headroom, not measured peak usage. SDK downloads, NuGet cache growth and host data are additional unknowns.",
+          "BudgetBytes": 2147483648
+        },
+        {
+          "Stage": "test-temp",
+          "Path": "[repo]\\artifacts\\gsc-b\\2f881004\\test-temp",
+          "Basis": "Conservative configurable headroom, not measured peak usage. SDK downloads, NuGet cache growth and host data are additional unknowns.",
+          "BudgetBytes": 1073741824
+        }
+      ],
+      "Unknown": "SDK downloads, NuGet cache growth and host data are not included"
+    },
+    {
+      "Root": "C:\\",
+      "AvailableBytes": 5289443328,
+      "BudgetBytes": 1073741824,
+      "Sufficient": true,
+      "Requirements": [
+        {
+          "Stage": "system-temp",
+          "Path": "[user-profile]\\AppData\\Local\\Temp\\",
+          "Basis": "Conservative configurable headroom, not measured peak usage. SDK downloads, NuGet cache growth and host data are additional unknowns.",
+          "BudgetBytes": 1073741824
+        }
+      ],
+      "Unknown": "SDK downloads, NuGet cache growth and host data are not included"
+    }
+  ],
+  "FreeSpaceAfter": [
+    {
+      "Drive": "C:",
+      "FreeBytes": 5241659392,
+      "TotalBytes": 214749409280
+    },
+    {
+      "Drive": "D:",
+      "FreeBytes": 17078243328,
+      "TotalBytes": 294972813312
+    }
+  ],
+  "InstalledVersion": "0.6.73",
+  "InstalledFileVersion": "0.6.73.0",
+  "InstalledBuildIdentity": "0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef",
+  "PlayniteProcesses": [
+    {
+      "Id": 17968,
+      "ProcessName": "GameSaveCenter.Worker",
+      "MainWindowHandle": {
+        "value": 0
+      },
+      "Path": "[Playnite-Extensions]\\GameSaveCenter_{extension-id}\\Worker\\GameSaveCenter.Worker.exe"
+    },
+    {
+      "Id": 22400,
+      "ProcessName": "Playnite.DesktopApp",
+      "MainWindowHandle": {
+        "value": 0
+      },
+      "Path": "[Playnite-installation]\\Playnite.DesktopApp.exe"
+    }
+  ],
+  "HostVisualValidation": "Pending: Playnite Desktop MainWindowHandle was 0; no actual host pixels/UIA were observed.",
+  "RootDiagnosticsArchive": "root-chain-success-20261112/diagnostics.zip",
+  "RootDiagnosticsArchiveSha256": "6fab085818be1837871a9c7597dfc9e707334b11f78f0d966b32f3d9b37ba7de",
+  "Sanitization": "User-profile path removed from committed evidence; original log and install report SHA-256 retained."
+}

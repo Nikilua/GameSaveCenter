@@ -1,3 +1,15 @@
+## 2026-11-12 U01-07 / U08-04：冻结候选完整构建与CI复核
+
+本批媒体收件箱 `MediaLongText` 已绑定完整 UIA HelpText；源实现提交 `90b084cf084ec8a3eb4c9ec314ae582933da1949` 已推送。冻结候选文档提交 `d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef` 的中文根入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1 -Configuration Release` 最终实际 `cmd.exe` 退出码 0，SDK 8.0.423 / Release；构建、测试、发布、打包、安装身份核验及启动调用全部完成。
+
+根链共160份TRX、2,036项：1,978通过、58 skip、0失败/错误/超时/中止、计数一致；157个WPF隔离类完成。58个skip保持原状且不计通过：57项是已撤销“今日工作台”架构断言，1项为默认关闭的系统指针测试。安装包 zip/pext 均45,738,863 bytes，SHA-256相同为 `4431C10F0918D63F29D655B3DC079178EE9E6F6B127B4D467B95BBD4866697F2`；清单版本0.6.73、DLL版本0.6.73.0、程序集身份 `0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef`。完整诊断/TRX、入口日志、逐DLL哈希、脱敏安装报告见[根入口证据](evidence/U01-07-U08-04-reason-accessibility-20261111/root-chain-success-20261112/README.md)和[根入口清单](evidence/U01-07-U08-04-reason-accessibility-20261111/root-gate-20261112.json)。首次非提升预检由本任务在安装前停止，不计通过；部分诊断已归档，临时输出精确清理及磁盘前后快照见[清理记录](evidence/U01-07-U08-04-reason-accessibility-20261111/cleanup-preflight-20261112.json)。
+
+独立 `scripts/build.cmd` 也在同一冻结SHA上按其构建职责完成，实际退出码0；SDK 8.0.423 / Release，编译0 warning / 0 error，166个诊断步骤成功，160份TRX共2,036项：1,968通过、68 skip、0失败/错误/超时/中止，157个WPF隔离类完成。68项保留既有skip：57项已撤销架构断言、9项Named Pipe客户端环境限制、1项独立Worker进程环境限制、1项默认关闭的系统指针测试。该脚本只验证编译和测试；完整日志、TRX、计数和哈希见[独立构建证据](evidence/U01-07-U08-04-reason-accessibility-20261111/scripts-build-round5-20261112/README.md)。
+
+冻结候选SHA的GitHub `windows-build.yml` run #1540 / `43053619363` completed/success：基线 job `130637118482` 15/15步、SDK 10.0.401 job `130637118291` 8/8步均成功，含源码检查、Release编译测试、Render QA、WPF静态审查、扩展包上传及诊断归档。预览包artifact `13873944921`（90,793,126 bytes，digest `sha256:e7d6ad000206856b5be43de2f34f041e408e3b7b8a2e91af7083a27e72c1823c`）；基线诊断artifact `13874584534`（2,531,093 bytes，digest `sha256:ed27719a9042dac4e43944237e7e0353330070fd20a14a1a95655eabca042a59`）；SDK10诊断artifact `13872661630`（1,283,075 bytes，digest `sha256:76084d8e43ed5ec84d4d6d42e3da9389c208881df86331f91616ca3880cfb12b`）。完整 run/job/step/artifact 身份见[CI清单](evidence/U01-07-U08-04-reason-accessibility-20261111/ci-run-43053619363.json)。combined commit status为`pending`且无独立status项；required-check/ruleset读取沿用U09-06既有HTTP 403，仍“远端待验”，未重复探测；取得读取权限后需核对 required checks 与本workflow job。
+
+根链启动后Playnite与Worker进程存在，但采样到 `MainWindowHandle=0`。Computer Use helper 初始化时因运行目录路径不存在失败，备用Node runtime遇到相同错误；没有真实宿主像素、UIA/Narrator、实体键盘/IME或物理DPI证据，因此U01-07/U08-04继续“代码完成待验收”。本轮没有执行真实存档恢复、媒体删除或云端写入；80项计数不变（7项已满足、71项代码完成待验收、1项进行中、1项远端待验）。
+
 ## 2026-11-11 U01-07 / U08-04：媒体收件箱长文本 UIA 可访问性
 
 U00-01盘点在1040 DIP收件箱确认“原因”单元格会截断长说明；复核后更正观察：现有`MediaLongText`已提供全文Tooltip，选中媒体Inspector可换行显示全文，紧凑布局“查看详情”入口已有键盘焦点覆盖。剩余缺口是未暴露完整UIA HelpText。本批在MediaCenterView内共享的`MediaLongText`样式绑定`AutomationProperties.HelpText`到TextBlock当前Text，覆盖类型/来源/原因三列；没有重复Tooltip，也不改行高、业务命令、复制、选框、滚动、虚拟化或归类安全门禁。

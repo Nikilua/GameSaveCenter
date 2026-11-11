@@ -1,0 +1,26 @@
+{
+  "SourceCommit": "d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef",
+  "Entry": "D:\\workplace\\github\\GameSaveCenter\\GameSaveCenter-一键构建安装运行.cmd",
+  "DelegatesTo": "GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1 -Configuration Release",
+  "StartedUtc": "2026-11-11T16:00:11.3031902Z",
+  "FinishedUtc": "2026-11-11T16:21:30.9181930Z",
+  "ProcessId": 5208,
+  "ExitCode": 1,
+  "DrivesBefore": [
+    {
+      "Drive": "C:",
+      "FreeBytes": 5376303104,
+      "TotalBytes": 214749409280
+    },
+    {
+      "Drive": "D:",
+      "FreeBytes": 17558700032,
+      "TotalBytes": 294972813312
+    }
+  ],
+  "ReportPath": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\last-dev-install.txt",
+  "ReportExists": true,
+  "RunLogPath": "D:\\workplace\\github\\GameSaveCenter\\artifacts\\one-click-install.log",
+  "RunLogExists": true,
+  "PlayniteProcesses": []
+}

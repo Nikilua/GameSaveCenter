@@ -2121,3 +2121,9 @@ Round5当前80项状态由U09-08复核：7已满足、71代码完成待验收、
 第一次根入口运行被沙箱拒绝写入Playnite AppData，原始失败日志、摘要、TRX均已归档；同一入口受控提升权限完整重跑成功。Playnite PID2092和Worker PID40784仍responding；但MainWindowHandle为0且没有枚举到Playnite顶层窗口，故仅确认安装/进程启动，真实宿主像素、UIA/Narrator、实体键盘/IME、物理DPI及用户桌面黑窗归因仍待验，U08-01/02/03和U09-05保持代码完成待验收。未执行真实存档恢复、媒体删除或云端写入。
 
 本机C盘剩余约6.05GB、D盘约17.68GB；先前用户询问的`%USERPROFILE%\.codex`盘点约7.7GB，主要为工作树、线程历史、可视化和运行时。本轮没有修改/删除该目录、用户数据、盘符或映射；构建输出留在仓库`artifacts/`。required-checks/ruleset既有HTTP403未重复探测，U09-06仍远端待验。新证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/`。
+
+### Round5 2026-11-12 U01-07/U08-04 冻结候选验收
+
+媒体收件箱 `MediaLongText` 的类型/来源/原因长文本现在把当前完整文本暴露为UIA HelpText；实现提交`90b084cf084ec8a3eb4c9ec314ae582933da1949`。冻结候选`d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef`的中文根入口与独立`scripts/build.cmd`都按各自职责完成SDK8.0.423 / Release全测试，157个WPF隔离类完成；skip保留原理由，不计通过。根入口验证0.6.73安装程序集身份与包hash。证据见Round5 `evidence/U01-07-U08-04-reason-accessibility-20261111/`。
+
+该SHA的GitHub run #1540 双job成功；workflow身份已保存，但combined status无单独项目，required-check/ruleset因U09-06既有403仍远端待验，不重试同一权限请求。启动后Playnite进程存在而主窗口句柄为0，桌面自动化runtime无法初始化，因此代码仍待真实宿主、UIA/Narrator、实体键盘/IME和物理DPI验收。不要把离屏Render QA说成宿主通过，也不要触碰真实存档恢复、媒体删除或云端写入验证。
