@@ -2,7 +2,7 @@
 
 按用户指出的选中行时间/详情文字超出圆角边界继续修整概览、存档和任务页。概览移除重复的“今日工作台”可见标题和加载行，保留三个绑定命令及状态/下一步卡片；存档Inspector长恢复说明换行；任务Inspector长标题/错误码收缩换行，取消/重试/恢复安全语义保留。旧选框修正没有被替换。
 
-SDK8.0.423 Release `scripts/build.cmd` 首轮因新增测试夹具参数类型错误失败，修正后完整build/test exit0：2035项、1967 pass、0 fail、68 skip（57旧“今日工作台”架构、9 Named Pipe客户端环境限制、1 Named Pipe Worker隔离限制、1默认关闭的系统指针测试）；157个WPF隔离类执行。新详情边界17/17、概览动作双主题56/56。Source Validation、WPF静态审查（32 XAML，0 error/26 warning/179 info）、Render QA（334 PNG/0 PROBLEM）和本地链接/哈希核对通过。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/README.md`。真实Playnite及用户桌面边界仍待验，远端精确SHA CI待推送核查；未执行真实恢复、媒体删除或云端写入。
+SDK8.0.423 Release `scripts/build.cmd` 首轮因新增测试夹具参数类型错误失败，修正后完整build/test exit0：2035项、1967 pass、0 fail、68 skip（57旧“今日工作台”架构、9 Named Pipe客户端环境限制、1 Named Pipe Worker隔离限制、1默认关闭的系统指针测试）；157个WPF隔离类执行。新详情边界17/17、概览动作双主题56/56。Source Validation、WPF静态审查（32 XAML，0 error/26 warning/179 info）、Render QA（334 PNG/0 PROBLEM）和本地链接/哈希核对通过。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/README.md`。源码提交`18158cf2c159648b56099144fb9a3fb78c08280e`已推送；精确SHA #1535 / `42959852286`基线15/15、SDK10 8/8 steps成功，artifact身份见同目录`ci-run-42959852286.json`。真实Playnite及用户桌面边界仍待验，当前仅剩窗口PID35608；未执行真实恢复、媒体删除或云端写入。required-checks/ruleset仍因既有403远端待验。
 
 ## 2026-11-10 Round5 U09-05 隐藏启动修复精确SHA CI通过
 

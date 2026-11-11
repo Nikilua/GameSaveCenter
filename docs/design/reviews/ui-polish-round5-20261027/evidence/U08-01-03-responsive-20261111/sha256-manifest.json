@@ -1,5 +1,10 @@
 [
   {
+    "path": "ci-run-42959852286.json",
+    "bytes": 1873,
+    "sha256": "aa5f4a7e76c88006f0ad6effeb3172ec5ef84fa8584fdce0d28c7ea89f5c0f45"
+  },
+  {
     "path": "diagnostics/build-summary.json",
     "bytes": 995165,
     "sha256": "e8db09095405ac3d8ec5a2a275a3b15e28c6f185bb57e7afe4c62a72405c70d4"

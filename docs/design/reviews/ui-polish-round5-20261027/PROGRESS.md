@@ -6,6 +6,8 @@
 
 本批只证明合成布局和隔离行为，不代表新源码已在真实Playnite宿主显示；U08-01/02/03保持“代码完成待验收”。真实宿主、外部UIA/Narrator、实体键盘/IME和物理DPI仍待验；没有执行真实存档恢复、媒体删除或云端写入。80项状态计数不变（7项已满足、71项代码完成待验收、1项进行中、1项远端待验）。
 
+实现提交 `18158cf2c159648b56099144fb9a3fb78c08280e` 已推送 `main`。GitHub `windows-build.yml` run #1535 / `42959852286` 对该精确SHA completed/success；基线 job `130323538135` 的15步与SDK10.0.401 job `130323537854` 的8步全部成功，含Release编译测试、Render QA、WPF静态审查、扩展包和诊断归档。预览包及双SDK诊断artifact的ID、大小、SHA-256见[精确CI记录](evidence/U08-01-03-responsive-20261111/ci-run-42959852286.json)。本地安装启动验收尚未运行：进程复核只剩Playnite窗口PID 35608，待正常退出后执行。combined status未提供独立状态项，required-checks/ruleset保留U09-06原403“远端待验”，未重复请求。
+
 ## 2026-11-10 U09-05：编译/检查隐藏启动复核
 
 为回应用户“编译/检查时黑窗闪现”，修正 `scripts/hide-console.ps1` 的启动上下文判断：Explorer 新开 `cmd.exe` 和不共享当前控制台的 PowerShell/Codex 父进程会隐藏新控制台；仍与交互终端共享控制台的 PowerShell 不隐藏。`Test-LauncherExitCodes.ps1` 新增5个策略用例，保留三入口各注入0/7/23的退出码断言。隐藏 fixture 9/9、策略5/5；Source Validation 与 `git diff --check` exit 0。

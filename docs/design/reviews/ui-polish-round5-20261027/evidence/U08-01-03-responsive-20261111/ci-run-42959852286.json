@@ -1,0 +1,53 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "runId": 42959852286,
+  "runNumber": 1535,
+  "event": "push",
+  "headSha": "18158cf2c159648b56099144fb9a3fb78c08280e",
+  "conclusion": "success",
+  "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42959852286",
+  "jobs": [
+    {
+      "id": 130323538135,
+      "name": "编译、测试与打包",
+      "conclusion": "success",
+      "steps": 15,
+      "checks": ["源码结构", "诊断采集", "SDK基线", "Release编译与测试", "离屏Render QA", "WPF静态审查", "Playnite扩展包", "上传构建产物", "诊断归档"]
+    },
+    {
+      "id": 130323537854,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "success",
+      "steps": 8,
+      "sdk": "10.0.401"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13831127446,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90793192,
+      "sha256": "0a506ef852af813306f96d2d90cbefc3c28d4b64efb69cba80541072d845228e",
+      "headSha": "18158cf2c159648b56099144fb9a3fb78c08280e"
+    },
+    {
+      "id": 13830932948,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2527176,
+      "sha256": "81d4e7958b9586084adb367b109c7880856e4d0f4af696f9d45991fc94de5e90",
+      "headSha": "18158cf2c159648b56099144fb9a3fb78c08280e"
+    },
+    {
+      "id": 13829694325,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 1282073,
+      "sha256": "3f3ac1edad693bb03b4f9469bce991ed0a1292680b5e769539160a2b75f19102",
+      "headSha": "18158cf2c159648b56099144fb9a3fb78c08280e"
+    }
+  ],
+  "combinedStatus": {
+    "statuses": [],
+    "note": "No standalone commit status entries were returned. Required checks/ruleset remain remote-pending because the existing read returned HTTP 403; that denied endpoint was not retried."
+  }
+}

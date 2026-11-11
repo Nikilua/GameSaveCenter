@@ -2116,4 +2116,4 @@ Round5当前80项状态由U09-08复核：7已满足、71代码完成待验收、
 
 ### Round5 2026-11-11 U08-01/02/03文字边界批次
 
-概览不恢复“今日工作台”架构；重复标题和加载提示已从生产视图隐藏，真实刷新/备份/媒体命令与状态卡保留。Save History与Task Inspector通过`MinWidth=0`、拉伸和长文本换行约束到详情框内，纵向可达性和横向表格滚动不变。当前离屏行为/Render QA覆盖源码，但未安装到Playnite，不得称真实宿主验收通过。新证据目录为`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/`；本地SDK8完整build/test通过，精确新提交CI与真实宿主验收仍待。
+概览不恢复“今日工作台”架构；重复标题和加载提示已从生产视图隐藏，真实刷新/备份/媒体命令与状态卡保留。Save History与Task Inspector通过`MinWidth=0`、拉伸和长文本换行约束到详情框内，纵向可达性和横向表格滚动不变。实现提交`18158cf2c159648b56099144fb9a3fb78c08280e`已推送，GitHub #1535 / `42959852286`精确SHA双SDK jobs均通过。当前只完成离屏行为/Render QA覆盖，未安装到Playnite，不得称真实宿主验收通过；仅剩窗口PID35608仍在运行，待正常退出后执行中文根入口。新证据目录为`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/`；CI artifact身份在`ci-run-42959852286.json`。required-checks/ruleset读取此前403，U09-06仍远端待验。
