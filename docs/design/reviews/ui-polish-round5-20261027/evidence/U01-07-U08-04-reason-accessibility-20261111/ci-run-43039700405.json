@@ -1,0 +1,78 @@
+{
+  "workflow": ".github/workflows/windows-build.yml",
+  "run": {
+    "id": 43039700405,
+    "number": 1539,
+    "name": "Windows 构建验证",
+    "event": "push",
+    "branch": "main",
+    "head_sha": "90b084cf084ec8a3eb4c9ec314ae582933da1949",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/43039700405",
+    "check_suite_id": 116552826265
+  },
+  "jobs": [
+    {
+      "id": 130587956023,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK",
+        "源码结构检查",
+        "诊断采集自测",
+        "SDK 基线与缺失负例",
+        "编译与测试",
+        "离屏渲染 QA",
+        "WPF UI 静态审查",
+        "生成 Playnite 扩展包",
+        "上传构建产物",
+        "保留构建与测试诊断（包括失败）",
+        "Post 安装 .NET SDK",
+        "Post 检出代码",
+        "Complete job"
+      ]
+    },
+    {
+      "id": 130587956706,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK 10.0.401",
+        "隔离工作树并运行 Release 编译与测试",
+        "保留 SDK 10.0.401 构建诊断（包括失败）",
+        "Post 安装 .NET SDK 10.0.401",
+        "Post 检出代码",
+        "Complete job"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13868474971,
+      "name": "GameSaveCenter-windows-preview",
+      "size_in_bytes": 90793232,
+      "digest": "sha256:927e325d16adabac724381290de6b15acbead8263a45461a472a1b1c4287357c"
+    },
+    {
+      "id": 13870405441,
+      "name": "GameSaveCenter-build-diagnostics",
+      "size_in_bytes": 2530377,
+      "digest": "sha256:f1a6aa246ed7a8b9853d03741230e76b0d48638a991388959f7c1238de09b52e"
+    },
+    {
+      "id": 13865962592,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "size_in_bytes": 1279288,
+      "digest": "sha256:69a99da767b22358e386eead4b473f5f8b09d2842577f2c17b82f6972f7bae04"
+    }
+  ],
+  "combined_statuses": [],
+  "required_checks": "No independent commit statuses were returned. The previously recorded U09-06 required-check/ruleset read was HTTP 403; it remains remote-pending and was not retried."
+}
