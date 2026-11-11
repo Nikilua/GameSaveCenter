@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -22,6 +23,68 @@ public sealed class MediaInboxScrollBehaviorTests
     private readonly ITestOutputHelper output;
 
     public MediaInboxScrollBehaviorTests(ITestOutputHelper output) => this.output = output;
+
+    [Fact]
+    public void InboxLongReasonExposesFullTextToTooltipAndAutomation()
+    {
+        RunSta(() =>
+        {
+            var fullReason = "文件名与截图规则匹配；检测到多个候选游戏，建议先检查来源、路径与游戏标识，再决定是否应用归类。";
+            var item = new MediaItemDto
+            {
+                MediaId = "uia-media-reason",
+                OriginalPath = @"C:\SyntheticMedia\long-reason.png",
+                ArchivePath = @"C:\SyntheticMedia\archive.zip",
+                CapturedUtc = DateTime.UtcNow,
+                Kind = MediaKind.Screenshot,
+                Source = MediaSourceKind.WindowsScreenshot,
+                ClassificationState = "Inbox",
+                ClassificationReason = fullReason
+            };
+            var view = new MediaCenterView();
+            var viewType = typeof(MediaCenterView);
+            var tabs = (TabControl)viewType
+                .GetField("MediaTabControl", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+                .GetValue(view)!;
+            System.Windows.Data.BindingOperations.ClearBinding(tabs, TabControl.SelectedIndexProperty);
+            tabs.SelectedIndex = 0;
+            var grid = (DataGrid)viewType
+                .GetField("MediaInboxGrid", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+                .GetValue(view)!;
+            grid.ItemsSource = new[] { item };
+            var reasonColumn = Assert.IsType<DataGridTextColumn>(grid.Columns.Single(column => Equals(column.Header, "原因")));
+            var window = new Window
+            {
+                Content = view,
+                Width = 900,
+                Height = 700,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                WindowStyle = WindowStyle.None,
+                Opacity = 0.01
+            };
+            try
+            {
+                view.ApplyResponsiveLayout(window.Width, window.Height);
+                window.Show();
+                DrainDispatcher(window);
+                grid.ScrollIntoView(item, reasonColumn);
+                DrainDispatcher(window);
+
+                var reasonText = Assert.IsType<TextBlock>(reasonColumn.GetCellContent(item));
+                Assert.Equal(fullReason, reasonText.Text);
+                Assert.Equal(fullReason, reasonText.ToolTip);
+                Assert.Equal(fullReason, AutomationProperties.GetHelpText(reasonText));
+                var peer = FrameworkElementAutomationPeer.CreatePeerForElement(reasonText);
+                Assert.NotNull(peer);
+                Assert.Equal(fullReason, peer!.GetHelpText());
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
 
     [Fact]
     public void TextEditorDispatcherIsShutDownBeforeStaFixtureReturns()
