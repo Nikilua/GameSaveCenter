@@ -3,6 +3,15 @@
 按用户指出的选中行时间/详情文字超出圆角边界继续修整概览、存档和任务页。概览移除重复的“今日工作台”可见标题和加载行，保留三个绑定命令及状态/下一步卡片；存档Inspector长恢复说明换行；任务Inspector长标题/错误码收缩换行，取消/重试/恢复安全语义保留。旧选框修正没有被替换。
 
 SDK8.0.423 Release `scripts/build.cmd` 首轮因新增测试夹具参数类型错误失败，修正后完整build/test exit0：2035项、1967 pass、0 fail、68 skip（57旧“今日工作台”架构、9 Named Pipe客户端环境限制、1 Named Pipe Worker隔离限制、1默认关闭的系统指针测试）；157个WPF隔离类执行。新详情边界17/17、概览动作双主题56/56。Source Validation、WPF静态审查（32 XAML，0 error/26 warning/179 info）、Render QA（334 PNG/0 PROBLEM）和本地链接/哈希核对通过。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/README.md`。源码提交`18158cf2c159648b56099144fb9a3fb78c08280e`已推送；精确SHA #1535 / `42959852286`基线15/15、SDK10 8/8 steps成功，artifact身份见同目录`ci-run-42959852286.json`。真实Playnite及用户桌面边界仍待验，当前仅剩窗口PID35608；未执行真实恢复、媒体删除或云端写入。required-checks/ruleset仍因既有403远端待验。
+SDK8.0.423 Release `scripts/build.cmd` 首轮因新增测试夹具参数类型错误失败，修正后完整build/test exit0：2035项、1967 pass、0 fail、68 skip（57旧“今日工作台”架构、9 Named Pipe客户端环境限制、1 Named Pipe Worker隔离限制、1默认关闭的系统指针测试）；157个WPF隔离类执行。新详情边界17/17、概览动作双主题56/56。Source Validation、WPF静态审查（32 XAML，0 error/26 warning/179 info）、Render QA（334 PNG/0 PROBLEM）和本地链接/哈希核对通过。证据：`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/README.md`。源码提交`18158cf2c159648b56099144fb9a3fb78c08280e`已推送；精确SHA #1535 / `42959852286`基线15/15、SDK10 8/8 steps成功，artifact身份见同目录`ci-run-42959852286.json`。
+
+## 2026-11-11 Round5 U09-05 冻结提交完整根链
+
+冻结跟踪文件提交 `266bae3396b9b4d08cdc1978bfc82c7e7cd776c5` 后，以SDK 8.0.423 / Release从中文入口 `GameSaveCenter-一键构建安装运行.cmd` 经 `GameSaveCenter-Run.cmd` 完整运行，最终exit 0。独立 `scripts/build.cmd` 另按其构建职责验证通过。全链2,035项、1,977 pass、58个skip、0失败/错误/超时/中止；160份TRX汇总计数一致，157个WPF隔离类完成。58个skip保持原状且不计通过，57项为已撤销“今日工作台”架构断言、1项为默认关闭的系统指针测试。程序包zip/pext SHA-256相同（`10843A97673D4FBE440A738FD86F660DD069A3F588D0222018B8AEDF19EAC137`），Playnite安装目录清单0.6.73、DLL身份`0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5`，逐DLL哈希见Round5 root evidence。
+
+第一次未提升权限全链仅在写入`%APPDATA%/Playnite/Extensions`时被沙箱拒绝（exit1），其构建、测试、发布和打包均成功；归档了原始失败日志、摘要与160份TRX。随后使用受控提升权限重跑相同官方入口，不跳过任何步骤，完整exit0。Playnite PID2092和Worker PID40784存在且responding，但Playnite `MainWindowHandle=0`，未枚举到顶层窗口；仅记安装与进程启动成功，不表示真实宿主视觉/用户桌面闪烁验收完成。未执行真实存档恢复、媒体删除或云端写入。
+
+文档跟进提交`266bae3396b9b4d08cdc1978bfc82c7e7cd776c5`的GitHub run #1536 / `42967026905`双SDK workflow均completed/success；基线job `130346492614` 15/15、SDK10.0.401 job `130346492362` 8/8步成功，artifact ID/digest见`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/ci-run-42967026905.json`。combined status未返回独立项，required-checks/ruleset既有HTTP403不重复请求，U09-06仍远端待验。详见Round5 PROGRESS的最新根链条目。
 
 ## 2026-11-10 Round5 U09-05 隐藏启动修复精确SHA CI通过
 

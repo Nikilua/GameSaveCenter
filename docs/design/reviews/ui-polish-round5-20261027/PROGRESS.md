@@ -4,9 +4,15 @@
 
 修正后的 SDK 8.0.423 / Release `scripts/build.cmd` 独立完整编译测试 exit 0，0 warning/0 error；160份TRX共2,035项，1,967通过、0失败、68 skip、计数无误，157个WPF隔离类执行完成。skip原因为57条已撤销“今日工作台”架构断言、9条本环境禁止Named Pipe客户端、1条本环境禁止Named Pipe/Worker隔离进程、1条默认关闭的系统鼠标指针测试，均不计通过。新边界回归17/17、概览动作与高度双主题行为56/56。首轮曾因新增测试夹具传错ResourceDictionary参数，在测试程序集编译时失败；保留诊断、修正夹具后重新完整运行，未删断言或扩大skip。Source Validation、最新源码 `git diff --check`、全仓WPF静态审查均exit 0；静态审查32个XAML为0 error、26 warning、179 info，两条Overview滚动布局警告位于本批未改的第501/809行。Render QA在 `WinSta0\GscRenderQA_*` 生成334 PNG、0 `PROBLEM`，输入桌面保持Default；四张代表图、完整QA报告、目标TRX、构建摘要、失败诊断与哈希见[本批证据](evidence/U08-01-03-responsive-20261111/README.md)。
 
-本批只证明合成布局和隔离行为，不代表新源码已在真实Playnite宿主显示；U08-01/02/03保持“代码完成待验收”。真实宿主、外部UIA/Narrator、实体键盘/IME和物理DPI仍待验；没有执行真实存档恢复、媒体删除或云端写入。80项状态计数不变（7项已满足、71项代码完成待验收、1项进行中、1项远端待验）。
+离屏布局、行为及Render QA已验证，但没有可见真实宿主窗口可供检查；U08-01/02/03仍为“代码完成待验收”。未执行真实存档恢复、媒体删除或云端写入。80项状态计数不变（7项已满足、71项代码完成待验收、1项进行中、1项远端待验）。
 
-实现提交 `18158cf2c159648b56099144fb9a3fb78c08280e` 已推送 `main`。GitHub `windows-build.yml` run #1535 / `42959852286` 对该精确SHA completed/success；基线 job `130323538135` 的15步与SDK10.0.401 job `130323537854` 的8步全部成功，含Release编译测试、Render QA、WPF静态审查、扩展包和诊断归档。预览包及双SDK诊断artifact的ID、大小、SHA-256见[精确CI记录](evidence/U08-01-03-responsive-20261111/ci-run-42959852286.json)。本地安装启动验收尚未运行：进程复核只剩Playnite窗口PID 35608，待正常退出后执行。combined status未提供独立状态项，required-checks/ruleset保留U09-06原403“远端待验”，未重复请求。
+实现提交 `18158cf2c159648b56099144fb9a3fb78c08280e` 已推送 `main`。GitHub `windows-build.yml` run #1535 / `42959852286` 对该精确SHA completed/success；基线 job `130323538135` 的15步与SDK10.0.401 job `130323537854` 的8步全部成功，含Release编译测试、Render QA、WPF静态审查、扩展包和诊断归档。其预览包及诊断artifact身份见[精确CI记录](evidence/U08-01-03-responsive-20261111/ci-run-42959852286.json)。
+
+冻结候选 `266bae3396b9b4d08cdc1978bfc82c7e7cd776c5` 的中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 完整链最终 exit 0（SDK 8.0.423 / Release），`scripts/build.cmd` 已另行按构建职责通过。第一次未提升权限运行在复制 `%APPDATA%/Playnite/Extensions` 时被沙箱拒绝，构建、测试、发布和打包均已成功；原始失败日志、摘要及160份TRX完整归档。随后用受控权限重跑同一入口和冻结源码，完整链通过：2,035项中1,977通过、58 skip、0失败/错误/超时/中止，160份TRX计数一致，157个WPF隔离类完成。skip保持原状且不计通过，57条为已撤销“今日工作台”架构断言，1条为默认关闭的系统指针测试。zip/pext SHA-256均为 `10843A97673D4FBE440A738FD86F660DD069A3F588D0222018B8AEDF19EAC137`；Playnite安装目录程序集身份为 `0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5`，逐DLL哈希、构建摘要、安装报告和原始入口日志见[根入口成功证据](evidence/r5-root-ok-20261111/README.md)，失败尝试见[evidence/r5-root-fail-20261111](evidence/r5-root-fail-20261111)。
+
+安装报告确认 Playnite Desktop PID 2092 与 Worker PID 40784 正在运行且 responding；但 Playnite `MainWindowHandle=0`，按PID枚举也没有顶层窗口。因此只确认根入口已安装并启动进程，不宣称真实宿主像素、用户桌面闪屏或截图裁切问题已验收。U09-05仍“代码完成待验收”，真实窗口/UIA/Narrator/键盘IME/物理DPI边界保持待验；U09-04继续进行中。没有执行真实存档恢复、媒体删除或云端写入。
+
+跟进文档提交 `266bae3396b9b4d08cdc1978bfc82c7e7cd776c5` 的 GitHub run #1536 / `42967026905`（push）completed/success；基线 job `130346492614` 的15步、SDK 10.0.401 job `130346492362` 的8步全部成功，包含编译测试、Render QA、WPF静态审查、打包上传和诊断归档。三个artifact的ID、大小、digest见[精确CI记录](evidence/U08-01-03-responsive-20261111/ci-run-42967026905.json)。combined status没有独立状态项；required-checks/ruleset仍因既有HTTP 403记为U09-06“远端待验”，未重复请求。仅记录既有用户/其他任务TRX，没有暂存或删除。
 
 ## 2026-11-10 U09-05：编译/检查隐藏启动复核
 

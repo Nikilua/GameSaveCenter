@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "266bae3396b9b4d08cdc1978bfc82c7e7cd776c5",
+  "rootEntry": "GameSaveCenter-一键构建安装运行.cmd",
+  "forwardedEntry": "GameSaveCenter-Run.cmd",
+  "installer": "scripts/dev-install-run.ps1",
+  "rootRunId": "20261111T062417758Z-ab7d0e45",
+  "rootExitCode": 0,
+  "sdk": "8.0.423",
+  "buildConfiguration": "Release",
+  "testTotal": 2035,
+  "testPassed": 1977,
+  "testFailed": 0,
+  "testSkipped": 58,
+  "testErrorsTimeoutsAborts": 0,
+  "wpfIsolatedClasses": 157,
+  "trxCount": 160,
+  "trxBytes": 3589178.0,
+  "packageZip": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+  "packagePext": "artifacts/GameSaveCenter-0.6.73.pext",
+  "packageSha256": "10843A97673D4FBE440A738FD86F660DD069A3F588D0222018B8AEDF19EAC137",
+  "packageBytes": 45738877,
+  "packageAndPextSameHash": true,
+  "installDirectory": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+  "manifestVersion": "0.6.73",
+  "dllVersion": "0.6.73.0",
+  "installedAssemblyInformationalVersion": "0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5",
+  "installedDllSha256": {
+    "GameSaveCenter.Playnite.dll": "1FD5BEA256A3F6F6372CC260A6AB5E384A518CBA718412976175BF340CB48D52",
+    "GameSaveCenter.Core.dll": "EA5AFF831783CCF4BB4D79C52B4CAEE0A1B6B423DEA1E0EB2763285CC239ED87",
+    "GameSaveCenter.Contracts.dll": "D6E04B067BDBA01698640F35084FDEC85B0F0AA769C314A63D5C9541820C1513",
+    "Worker/GameSaveCenter.Worker.dll": "7189D8A9C4EDA7D3D30E64387A5F1E5273797B79C620B33D6A9B667088CC882F",
+    "Worker/GameSaveCenter.Core.dll": "149E909FC944D066E2FFA1A780787ECE9DA0AF030EE80A43C1C2F5E6A5323405",
+    "Worker/GameSaveCenter.Contracts.dll": "159FD1AFC0C76B4EC951AE696D8535B7EB3018A90286925E175265205E601362"
+  },
+  "launchProcess": {
+    "name": "Playnite.DesktopApp",
+    "pid": 2092,
+    "path": "D:\\software\\Playnite\\Playnite.DesktopApp.exe",
+    "startUtc": "2026-11-11T06:51:49.6108732Z",
+    "responding": true,
+    "mainWindowHandle": 0,
+    "visibleMainWindowConfirmed": false
+  },
+  "workerProcess": {
+    "name": "GameSaveCenter.Worker",
+    "pid": 40784,
+    "path": "C:\\Users\\lopmatu\\AppData\\Roaming\\Playnite\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\\Worker\\GameSaveCenter.Worker.exe",
+    "responding": true
+  },
+  "visualHostRenderingVerified": false,
+  "boundary": "安装与启动进程已验证；MainWindowHandle为0，没有可见窗口/像素证据，Playnite真实宿主视觉验收仍待确认。",
+  "ciRun": "42967026905",
+  "ciHeadSha": "266bae3396b9b4d08cdc1978bfc82c7e7cd776c5",
+  "skipReasons": [
+    {
+      "count": 57,
+      "reason": "已撤销“今日工作台”UI架构断言，不计通过"
+    },
+    {
+      "count": 1,
+      "reason": "系统鼠标指针交互测试默认关闭，不计通过"
+    }
+  ],
+  "diagnosticsPath": "diagnostics.zip",
+  "diagnosticsArchiveRoot": "diagnostics/",
+  "diagnosticsFileManifest": "diagnostics-sha256.json",
+  "diagnosticsZipSha256": "638526279AB356A14BCBA5B6D7C6366A72D0485797CDE8E483EDAA71B5E50AD9"
+}

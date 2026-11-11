@@ -2114,6 +2114,10 @@ C/D空间达到本机脚本预检后，最终中文入口在精确提交上完�
 
 Round5当前80项状态由U09-08复核：7已满足、71代码完成待验收、U09-04进行中、U09-06远端待验。U09-05即使本地根链退出0，仍因真实宿主画面与闪屏归因标“代码完成待验收”；继续独立任务，不据此结整轮目标。
 
-### Round5 2026-11-11 U08-01/02/03文字边界批次
+### Round5 2026-11-11 U08-01/02/03与U09-05续验
 
-概览不恢复“今日工作台”架构；重复标题和加载提示已从生产视图隐藏，真实刷新/备份/媒体命令与状态卡保留。Save History与Task Inspector通过`MinWidth=0`、拉伸和长文本换行约束到详情框内，纵向可达性和横向表格滚动不变。实现提交`18158cf2c159648b56099144fb9a3fb78c08280e`已推送，GitHub #1535 / `42959852286`精确SHA双SDK jobs均通过。当前只完成离屏行为/Render QA覆盖，未安装到Playnite，不得称真实宿主验收通过；仅剩窗口PID35608仍在运行，待正常退出后执行中文根入口。新证据目录为`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/`；CI artifact身份在`ci-run-42959852286.json`。required-checks/ruleset读取此前403，U09-06仍远端待验。
+概览不恢复“今日工作台”架构；重复标题和加载提示已从生产视图隐藏，真实刷新/备份/媒体命令与状态卡保留。Save History与Task Inspector通过`MinWidth=0`、拉伸和长文本换行约束到详情框内，纵向可达性和横向表格滚动不变。源码提交`18158cf2c159648b56099144fb9a3fb78c08280e`已推送，CI #1535双SDK通过。冻结文档提交`266bae3396b9b4d08cdc1978bfc82c7e7cd776c5`上的中文根入口经受控权限完整运行exit0：SDK8.0.423，2035测试、1977通过、58 skip，160 TRX，157 WPF隔离类；安装包zip/pext hash相同，AppData程序集身份正确。GitHub #1536该SHA双SDK全部success，artifact身份见 Round5 evidence `ci-run-42967026905.json`。
+
+第一次根入口运行被沙箱拒绝写入Playnite AppData，原始失败日志、摘要、TRX均已归档；同一入口受控提升权限完整重跑成功。Playnite PID2092和Worker PID40784仍responding；但MainWindowHandle为0且没有枚举到Playnite顶层窗口，故仅确认安装/进程启动，真实宿主像素、UIA/Narrator、实体键盘/IME、物理DPI及用户桌面黑窗归因仍待验，U08-01/02/03和U09-05保持代码完成待验收。未执行真实存档恢复、媒体删除或云端写入。
+
+本机C盘剩余约6.05GB、D盘约17.68GB；先前用户询问的`%USERPROFILE%\.codex`盘点约7.7GB，主要为工作树、线程历史、可视化和运行时。本轮没有修改/删除该目录、用户数据、盘符或映射；构建输出留在仓库`artifacts/`。required-checks/ruleset既有HTTP403未重复探测，U09-06仍远端待验。新证据位于`docs/design/reviews/ui-polish-round5-20261027/evidence/U08-01-03-responsive-20261111/`。

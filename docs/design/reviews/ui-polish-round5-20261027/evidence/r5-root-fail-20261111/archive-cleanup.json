@@ -1,0 +1,21 @@
+{
+  "completedUtc": "2026-11-11T07:19:33.6345933Z",
+  "verifiedArchive": true,
+  "zip": "r5-root-fail-20261111/diagnostics.zip",
+  "zipBytes": 1281243,
+  "zipSha256": "70A52FF5D3D2DF1444DFA523A9B67A06181641F96B732C05D8BB74479A7CA390",
+  "fileManifest": "r5-root-fail-20261111/diagnostics-sha256.json",
+  "fileManifestSha256": "E73BD38A5731B70CD24BE60BDB405654D5A543D0416450A697FA4F74A3B546FF",
+  "archivedFiles": 641,
+  "archivedSourceBytes": 5176183.0,
+  "removedExpandedDuplicate": "r5-root-fail-20261111/diagnostics",
+  "removedFiles": 641,
+  "removedBytes": 5176183.0,
+  "reason": "逐条验证ZIP内容与本阶段自有展开副本一致，清除展开重复副本；档案、逐文件SHA清单、原始根入口日志/报告均保留。",
+  "freeBytes": {
+    "CBefore": 5831831552,
+    "CAfter": 5831831552,
+    "DBefore": 14954758144,
+    "DAfter": 14970118144
+  }
+}

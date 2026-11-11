@@ -1,0 +1,37 @@
+[
+  {
+    "path": "archive-cleanup.json",
+    "bytes": 891,
+    "sha256": "8A4BB14A657A75BDDAD1EB494B6B7A79EB441E5DB25DFEFD8173725B0B9B603A"
+  },
+  {
+    "path": "diagnostics-sha256.json",
+    "bytes": 142426,
+    "sha256": "F48BAE870DB1732DF526ADB202B2DCABF78D99E3103B9C0D75388D6DA6FE862B"
+  },
+  {
+    "path": "diagnostics.zip",
+    "bytes": 1281143,
+    "sha256": "638526279AB356A14BCBA5B6D7C6366A72D0485797CDE8E483EDAA71B5E50AD9"
+  },
+  {
+    "path": "last-dev-install.txt",
+    "bytes": 2304,
+    "sha256": "2472104E9F7379799371B2157C85B41F3DE07433467728C8E6B2E76225EBFAC7"
+  },
+  {
+    "path": "one-click-install.log",
+    "bytes": 122359,
+    "sha256": "FF4CF71B31254696E66F2B246190AB770990CC53966E2BBB763FFFD1B884830A"
+  },
+  {
+    "path": "README.md",
+    "bytes": 2232,
+    "sha256": "705BFD90E6DD91B68437660DFC01E9FE53626D82E120CB6EDD1FFB34F9518A02"
+  },
+  {
+    "path": "root-chain-success.json",
+    "bytes": 3143,
+    "sha256": "233B033D85554203AC5066F5B0E7F4067B27B3EABB298D5E5B7EEB3C550F525F"
+  }
+]

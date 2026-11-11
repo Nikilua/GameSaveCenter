@@ -1,0 +1,21 @@
+{
+  "completedUtc": "2026-11-11T07:19:33.6756646Z",
+  "verifiedArchive": true,
+  "zip": "r5-root-ok-20261111/diagnostics.zip",
+  "zipBytes": 1281143,
+  "zipSha256": "638526279AB356A14BCBA5B6D7C6366A72D0485797CDE8E483EDAA71B5E50AD9",
+  "fileManifest": "r5-root-ok-20261111/diagnostics-sha256.json",
+  "fileManifestSha256": "F48BAE870DB1732DF526ADB202B2DCABF78D99E3103B9C0D75388D6DA6FE862B",
+  "archivedFiles": 641,
+  "archivedSourceBytes": 5164649.0,
+  "removedExpandedDuplicate": "r5-root-ok-20261111/diagnostics",
+  "removedFiles": 641,
+  "removedBytes": 5164649.0,
+  "reason": "逐条验证ZIP内容与本阶段自有展开副本一致，清除展开重复副本；档案、逐文件SHA清单、原始根入口日志/报告均保留。",
+  "freeBytes": {
+    "CBefore": 5831831552,
+    "CAfter": 5831831552,
+    "DBefore": 14954758144,
+    "DAfter": 14970118144
+  }
+}

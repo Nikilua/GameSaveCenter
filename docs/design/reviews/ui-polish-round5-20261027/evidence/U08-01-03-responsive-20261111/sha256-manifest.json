@@ -2,66 +2,71 @@
   {
     "path": "ci-run-42959852286.json",
     "bytes": 1873,
-    "sha256": "aa5f4a7e76c88006f0ad6effeb3172ec5ef84fa8584fdce0d28c7ea89f5c0f45"
+    "sha256": "AA5F4A7E76C88006F0AD6EFFEB3172EC5EF84FA8584FDCE0D28C7EA89F5C0F45"
   },
   {
     "path": "diagnostics/build-summary.json",
     "bytes": 995165,
-    "sha256": "e8db09095405ac3d8ec5a2a275a3b15e28c6f185bb57e7afe4c62a72405c70d4"
+    "sha256": "E8DB09095405AC3D8EC5A2A275A3B15E28C6F185BB57E7AFE4C62A72405C70D4"
   },
   {
     "path": "diagnostics/initial-fixture-compile-failure-build-console.txt",
     "bytes": 1838,
-    "sha256": "f8f4df370566a167ac68bad5b46a45be5a2e06231addc25b8ea30a6176d185f8"
+    "sha256": "F8F4DF370566A167AC68BAD5B46A45BE5A2E06231ADDC25B8EA30A6176D185F8"
   },
   {
     "path": "diagnostics/initial-fixture-compile-failure-summary.json",
     "bytes": 238657,
-    "sha256": "3b763636e8af7dd51d55f7f012655581f551d4ec38cb15606ba1d35837a4ca87"
+    "sha256": "3B763636E8AF7DD51D55F7F012655581F551D4EC38CB15606BA1D35837A4CA87"
   },
   {
     "path": "diagnostics/render-qa-report.txt",
     "bytes": 1140807,
-    "sha256": "574adfc394c3313119be875102b64a155ed16d33f3a32da2e2faf723225b3f95"
+    "sha256": "574ADFC394C3313119BE875102B64A155ED16D33F3A32DA2E2FAF723225B3F95"
   },
   {
     "path": "diagnostics/wpf-static-review.txt",
     "bytes": 29646,
-    "sha256": "bf7f6ac91280142f7c309ffb060cd176b57f3df60f11a80bf2fc6e618939305f"
+    "sha256": "BF7F6AC91280142F7C309FFB060CD176B57F3DF60F11A80BF2FC6E618939305F"
   },
   {
     "path": "README.md",
-    "bytes": 3758,
-    "sha256": "241193bad9a0062e6cf35957509698f718b597a95b16f59b1d5abb01f933285a"
+    "bytes": 4422,
+    "sha256": "57B348F872DE836015870B881BCFB615F9498A097B0791FFBE2FCC03DA35E485"
   },
   {
     "path": "screenshots/Overview-1040x700.png",
     "bytes": 58717,
-    "sha256": "3c34028a0a8595c28f76af05cd0d94a3f816c28743a07f6b059d8f824340da95"
+    "sha256": "3C34028A0A8595C28F76AF05CD0D94A3F816C28743A07F6B059D8F824340DA95"
   },
   {
     "path": "screenshots/Overview-1366x768.png",
     "bytes": 73991,
-    "sha256": "8f27c837bce45697c574369cdabe94f1356c02fc9fb8ecf84680d5cac18332b7"
+    "sha256": "8F27C837BCE45697C574369CDABE94F1356C02FC9FB8ECF84680D5CAC18332B7"
   },
   {
     "path": "screenshots/Save-1366x768-tab0.png",
     "bytes": 108590,
-    "sha256": "3ed6b7fe40a758632ef828555d361e539d0cc773ceb36d301b7b611d7e1ac73b"
+    "sha256": "3ED6B7FE40A758632EF828555D361E539D0CC773CEB36D301B7B611D7E1AC73B"
   },
   {
     "path": "screenshots/Task-1536x864.png",
     "bytes": 105626,
-    "sha256": "0bb0973deca30a6f9e1c2950034e5c5240393a68136d8109d983f1f02bdb4d28"
+    "sha256": "0BB0973DECA30A6F9E1C2950034E5C5240393A68136D8109D983F1F02BDB4D28"
   },
   {
     "path": "tests/CompactWorkspaceTableViewportBehaviorTests.trx",
     "bytes": 28407,
-    "sha256": "6fd045705dd3e32ec54aac4108cd440b5e9df665a2b2ec0cb8bd64401e296d4d"
+    "sha256": "6FD045705DD3E32EC54AAC4108CD440B5E9DF665A2B2EC0CB8BD64401E296D4D"
   },
   {
     "path": "tests/ReportedWorkspaceLayoutBehaviorTests.trx",
     "bytes": 116510,
-    "sha256": "65b02dd96c1f56b2d3a40c90e13a4328ab19b75206ee9cedf343def672f97b52"
+    "sha256": "65B02DD96C1F56B2D3A40C90E13A4328AB19B75206EE9CEDF343DEF672F97B52"
+  },
+  {
+    "path": "ci-run-42967026905.json",
+    "bytes": 2593,
+    "sha256": "6EE2B4077E400D88A6A0C19303DD1519CA6EE510F6BE879255F9C03490D3E694"
   }
 ]

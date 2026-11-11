@@ -1,0 +1,82 @@
+{
+  "repository": "Nikilua/GameSaveCenter",
+  "workflow": ".github/workflows/windows-build.yml",
+  "runNumber": 1536,
+  "runId": 42967026905,
+  "event": "push",
+  "headBranch": "main",
+  "headSha": "266bae3396b9b4d08cdc1978bfc82c7e7cd776c5",
+  "conclusion": "success",
+  "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/42967026905",
+  "jobs": [
+    {
+      "id": 130346492614,
+      "name": "编译、测试与打包",
+      "conclusion": "success",
+      "successfulSteps": 15,
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK",
+        "源码结构检查",
+        "诊断采集自测",
+        "SDK 基线与缺失负例",
+        "编译与测试",
+        "离屏渲染 QA",
+        "WPF UI 静态审查",
+        "生成 Playnite 扩展包",
+        "上传构建产物",
+        "保留构建与测试诊断（包括失败）",
+        "Post 安装 .NET SDK",
+        "Post 检出代码",
+        "Complete job"
+      ]
+    },
+    {
+      "id": 130346492362,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "success",
+      "successfulSteps": 8,
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK 10.0.401",
+        "隔离工作树并运行 Release 编译与测试",
+        "保留 SDK 10.0.401 构建诊断（包括失败）",
+        "Post 安装 .NET SDK 10.0.401",
+        "Post 检出代码",
+        "Complete job"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13834273738,
+      "name": "GameSaveCenter-windows-preview",
+      "bytes": 90793956,
+      "sha256": "c1dc762dd7c3d3dc10150b709ae04b9f9d6a50d908938b47ff8ae10ee4327b71",
+      "headSha": "266bae3396b9b4d08cdc1978bfc82c7e7cd776c5",
+      "expiresAtUtc": "2027-02-09T05:37:57Z"
+    },
+    {
+      "id": 13834837153,
+      "name": "GameSaveCenter-build-diagnostics",
+      "bytes": 2528230,
+      "sha256": "b557bcd863a3805c1f267942e00fa5e0ffd0235a49afdfbf25be09bc6527af7d",
+      "headSha": "266bae3396b9b4d08cdc1978bfc82c7e7cd776c5",
+      "expiresAtUtc": "2026-11-25T06:42:19Z"
+    },
+    {
+      "id": 13832743571,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "bytes": 1282291,
+      "sha256": "adea8fa10f7d23127eae06bc30cf900c2c8b7feccc55be8b5ec3b69332299027",
+      "headSha": "266bae3396b9b4d08cdc1978bfc82c7e7cd776c5",
+      "expiresAtUtc": "2026-11-25T06:10:51Z"
+    }
+  ],
+  "requiredChecks": {
+    "combinedStatus": "no separate status entries returned",
+    "branchProtectionAndRulesets": "remote pending; previous read returned HTTP 403, not repeated"
+  }
+}

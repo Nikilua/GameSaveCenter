@@ -1,0 +1,26 @@
+时间：2026-11-11 14:51:49
+安装运行 ID：20261111T062417758Z-ab7d0e45
+源码版本：0.6.73
+隔离构建目录：D:\workplace\github\GameSaveCenter\artifacts\gsc-b\b526fd23
+安装目录：C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5
+  文件路径：C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：1FD5BEA256A3F6F6372CC260A6AB5E384A518CBA718412976175BF340CB48D52
+  GameSaveCenter.Core.dll：0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5
+  文件路径：C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：EA5AFF831783CCF4BB4D79C52B4CAEE0A1B6B423DEA1E0EB2763285CC239ED87
+  GameSaveCenter.Contracts.dll：0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5
+  文件路径：C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：D6E04B067BDBA01698640F35084FDEC85B0F0AA769C314A63D5C9541820C1513
+  Worker/GameSaveCenter.Worker.dll：0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5
+  文件路径：C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：7189D8A9C4EDA7D3D30E64387A5F1E5273797B79C620B33D6A9B667088CC882F
+  Worker/GameSaveCenter.Core.dll：0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5
+  文件路径：C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：149E909FC944D066E2FFA1A780787ECE9DA0AF030EE80A43C1C2F5E6A5323405
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+266bae3396b9b4d08cdc1978bfc82c7e7cd776c5
+  文件路径：C:\Users\lopmatu\AppData\Roaming\Playnite\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：159FD1AFC0C76B4EC951AE696D8535B7EB3018A90286925E175265205E601362

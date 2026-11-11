@@ -16,8 +16,10 @@
 - Render QA exit 0：334 PNG、0 `PROBLEM`，固定输入时间 `2026-11-11T00:00:00Z`；合成窗口覆盖双主题和 1040–3840 DIP 范围。Harness 使用 `WinSta0\GscRenderQA_*`，输入桌面仍为 `Default`。四张代表图保存在 `screenshots/`，完整报告保存在 `diagnostics/render-qa-report.txt`。
 - 首次完整 build 在测试程序集编译时发现新夹具误把 `SaveCenterView` 传给主题资源方法，编译器报错；已修正为传 `view.Resources`，未删断言或扩大 skip，并在修正后重跑完整 build/test。首次失败摘要和编译输出保留在 `diagnostics/initial-fixture-compile-failure-*`。
 
-## 验收边界
+## 冻结提交安装与CI续验
 
-离屏 Render QA 与私有桌面行为测试不等于真实 Playnite 宿主画面、用户桌面的字体裁切、外部 UIA/Narrator、真实键盘/IME 或物理 DPI 验收。本批尚未将这份新源码安装到 Playnite，因此对应项目仍为“代码完成待验收”；最终安装启动验收以冻结提交运行中文根入口为准。没有执行存档恢复、媒体删除或云端写入。
+U08源码提交 `18158cf2c159648b56099144fb9a3fb78c08280e` 已通过精确SHA的GitHub run #1535。冻结跟踪文件提交 `266bae3396b9b4d08cdc1978bfc82c7e7cd776c5` 后运行中文→英文正式根入口完整链，第一次因当前沙箱拒绝写入Playnite AppData而exit 1；该尝试的日志和完整TRX已保存于 [拒绝诊断](../r5-root-fail-20261111/root-chain-failure.json)。受控权限重跑后最终exit 0，安装身份、包哈希、SDK、160份TRX和启动进程见[根入口成功复核](../r5-root-ok-20261111/README.md)。CI run #1536对文档提交精确SHA的双SDK作业均成功，见[CI身份记录](ci-run-42967026905.json)。
+
+根入口确认安装并启动Playnite进程，但取样时 `MainWindowHandle=0`，没有检测到该PID的顶层窗口。因此离屏 Render QA 与隔离行为测试不等于真实Playnite宿主像素、用户桌面字体裁切、外部UIA/Narrator、实体键盘/IME或物理DPI验收；U08-01/02/03仍为“代码完成待验收”。没有执行存档恢复、媒体删除或云端写入。
 
 证据文件 SHA-256 清单见 `sha256-manifest.json`。

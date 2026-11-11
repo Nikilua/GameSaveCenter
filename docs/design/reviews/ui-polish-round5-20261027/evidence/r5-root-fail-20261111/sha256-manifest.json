@@ -1,0 +1,32 @@
+[
+  {
+    "path": "archive-cleanup.json",
+    "bytes": 897,
+    "sha256": "7E36A8166A3085FA3D7FAD6E6311CA1FB1933C36F8BEE5F21F4EEC99BA0CD84F"
+  },
+  {
+    "path": "diagnostics-sha256.json",
+    "bytes": 142426,
+    "sha256": "E73BD38A5731B70CD24BE60BDB405654D5A543D0416450A697FA4F74A3B546FF"
+  },
+  {
+    "path": "diagnostics.zip",
+    "bytes": 1281243,
+    "sha256": "70A52FF5D3D2DF1444DFA523A9B67A06181641F96B732C05D8BB74479A7CA390"
+  },
+  {
+    "path": "one-click-install.log",
+    "bytes": 121018,
+    "sha256": "D471F673A6AB35E9788398AD223434671C4BC1D30D7A850B2D57DC8749114FBA"
+  },
+  {
+    "path": "README.md",
+    "bytes": 994,
+    "sha256": "D691F2629D8998068BE043734A1839D87C30773BE7ED0F78FB60505CBDAB22BE"
+  },
+  {
+    "path": "root-chain-failure.json",
+    "bytes": 1017,
+    "sha256": "B03E33FE3D3C41FA256564D9B2396AC998AFB9E0F20EF80030078C3F2E1AC900"
+  }
+]
