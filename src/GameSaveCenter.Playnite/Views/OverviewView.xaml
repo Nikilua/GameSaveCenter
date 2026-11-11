@@ -307,7 +307,7 @@
 
         <Grid x:Name="OverviewPrimaryPanel" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" MinWidth="0">
             <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-            <!-- Keep the complete home workbench in one page-level scroll channel. The
+            <!-- Keep the complete overview flow in one page-level scroll channel. The
                  task list still owns its finite local viewport and Recycling virtualization. -->
             <Grid x:Name="OverviewPrimaryScrollSurface"
                   Grid.Row="0"
@@ -320,30 +320,15 @@
                 <ColumnDefinition x:Name="OverviewFlowGutterColumn" Width="14"/>
                 <ColumnDefinition x:Name="OverviewFlowSecondaryColumn" Width="410"/>
             </Grid.ColumnDefinitions>
-            <!-- Keep global commands available; the home then prioritizes pending work
-                 and the recent-task list rather than repeating dashboard counters. -->
-            <Border x:Name="OverviewHomeToolbar" Grid.Row="0" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" Padding="14,10" Margin="0,0,0,12">
+            <!-- Keep global commands available without a duplicate home title card.
+                 The status card below owns the page's state and next action. -->
+            <Border x:Name="OverviewHomeToolbar" Grid.Row="0" Grid.ColumnSpan="3" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,8">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition x:Name="OverviewHomeToolbarActionsRow" Height="0"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                    <StackPanel MinWidth="0" VerticalAlignment="Center">
-                        <TextBlock Style="{DynamicResource GscRedesignSectionTitle}" Text="今日工作台"/>
-                        <TextBlock x:Name="OverviewHomeEmptyHint" Text="概览尚未加载；点击“刷新”获取当前状态。" Margin="0,4,0,0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource GscRedesignSectionSubtitle}">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDashboardSnapshotLoaded}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </StackPanel>
                     <WrapPanel x:Name="OverviewHomeToolbarActions" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12,0,0,0">
                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding RefreshCommand}" Content="刷新" MinWidth="72" AutomationProperties.Name="刷新概览"/>
                         <ui:Button Style="{DynamicResource GscWpfUiPrimaryActionButton}" Command="{Binding BackupAllCommand}" Content="全部备份" Margin="8,0,0,0" MinWidth="92" AutomationProperties.Name="备份全部游戏"/>

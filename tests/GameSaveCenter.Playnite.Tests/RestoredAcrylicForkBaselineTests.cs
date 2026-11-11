@@ -11,7 +11,7 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class RestoredAcrylicForkBaselineTests
 {
     [Fact]
-    public void OverviewPrioritizesPendingWorkAndRecentTasksWithoutDuplicateHomePanels()
+    public void OverviewShowsCurrentStatusWithoutTheRetiredWorkbenchTitle()
     {
         var overview = ReadSource("Views", "OverviewView.xaml");
 
@@ -21,7 +21,7 @@ public sealed class RestoredAcrylicForkBaselineTests
         Assert.Contains("OverviewActivityList", overview);
         Assert.Contains("x:Name=\"OverviewActivityColumn\"", overview);
         Assert.Contains("Grid.RowSpan=\"2\"", overview);
-        Assert.Contains("今日工作台", overview);
+        Assert.DoesNotContain("今日工作台", overview);
         Assert.Contains("Command=\"{Binding RefreshCommand}\"", overview);
         Assert.Contains("Command=\"{Binding BackupAllCommand}\"", overview);
         Assert.Contains("Command=\"{Binding SyncMediaCommand}\"", overview);

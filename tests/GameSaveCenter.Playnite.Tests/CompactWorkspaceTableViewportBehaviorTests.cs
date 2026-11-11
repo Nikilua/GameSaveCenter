@@ -765,6 +765,116 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
         });
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void WideHistoryInspectorWrapsLongChineseDetailsInsideItsRoundedFrame(bool dark)
+    {
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var longSummary = string.Concat(Enumerable.Repeat(
+                    "归档可读取性由隔离校验表示，不代表路径映射已经完成，也不代表真实恢复已经演练。",
+                    12));
+                var row = new HistoryScrollDetail
+                {
+                    BackupId = "wide-inspector-long-copy",
+                    RestoreReadinessSummaryDisplay = longSummary,
+                    RestoreReadinessHashCoverageDisplay = longSummary
+                };
+                var view = new SaveCenterView
+                {
+                    DataContext = new HistoryScrollFixture { SelectedBackup = row }
+                };
+                var type = typeof(SaveCenterView);
+                var theme = dark ? GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Dark : GameSaveCenter.Playnite.Settings.GameSaveCenterThemeMode.Light;
+                AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(
+                    view.Resources,
+                    AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(view, true, 78, theme, false),
+                    true,
+                    true);
+                var grid = GetField<DataGrid>(type, view, "SaveHistoryGrid");
+                grid.ItemsSource = new[] { row };
+                grid.SelectedItem = row;
+                type.GetField("historyInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(view, true);
+                var host = MeasureInHost(view, 1040, 700);
+                window = new Window { Content = host, Width = 1040, Height = 700, WindowStyle = WindowStyle.None, ShowActivated = false, ShowInTaskbar = false, Opacity = 0.01 };
+                window.Show();
+                view.ApplyResponsiveLayout(1040, 700);
+                host.UpdateLayout();
+
+                var layout = GetField<Grid>(type, view, "SaveHistoryLayout");
+                var frame = GetField<Border>(type, view, "SaveHistoryInspectorFrame");
+                var details = GetField<ScrollViewer>(type, view, "SaveHistoryActionsScrollViewer");
+                var summary = GetField<TextBlock>(type, view, "SaveHistoryRestoreReadinessSummaryText");
+                Assert.True(layout.ColumnDefinitions[2].ActualWidth > 0,
+                    "The standard 1040-DIP window must keep the selected-version inspector beside the history table.");
+                Assert.Equal(Visibility.Visible, frame.Visibility);
+                Assert.Equal(TextWrapping.Wrap, summary.TextWrapping);
+                Assert.True(summary.ActualHeight > summary.FontSize * 1.5,
+                    $"Long Chinese safety copy must wrap instead of running past its frame: width={summary.ActualWidth:0.0}, height={summary.ActualHeight:0.0}, viewport={details.ViewportWidth:0.0}.");
+                var summaryBounds = summary.TransformToAncestor(details)
+                    .TransformBounds(new Rect(0, 0, summary.ActualWidth, summary.ActualHeight));
+                Assert.True(summaryBounds.Left >= -1 && summaryBounds.Right <= details.ViewportWidth + 1,
+                    $"Safety copy escaped the inspector viewport: bounds={summaryBounds}, viewport={details.ViewportWidth:0.0}.");
+                Assert.Equal(ScrollBarVisibility.Disabled, details.HorizontalScrollBarVisibility);
+                Assert.True(details.ScrollableHeight > 0,
+                    "Long safety details must remain reachable through the inspector's vertical scroll channel.");
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void FailedTaskErrorCodeWrapsInsideItsRoundedInspectorAtStandardWidth()
+    {
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var task = new TaskInspectorDetail
+                {
+                    ErrorCode = string.Concat(Enumerable.Repeat("WORKER_RESTARTED_RETRYABLE_", 10))
+                };
+                var view = new TaskCenterView
+                {
+                    DataContext = new TaskInspectorFixture { SelectedTask = task }
+                };
+                var type = typeof(TaskCenterView);
+                var grid = GetField<DataGrid>(type, view, "TaskGrid");
+                grid.ItemsSource = new[] { task };
+                grid.SelectedItem = task;
+                var host = MeasureInHost(view, 1040, 700);
+                window = new Window { Content = host, Width = 1040, Height = 700, WindowStyle = WindowStyle.None, ShowActivated = false, ShowInTaskbar = false, Opacity = 0.01 };
+                window.Show();
+                view.ApplyResponsiveLayout(1040, 700);
+                host.UpdateLayout();
+
+                var frame = GetField<Border>(type, view, "TaskDetailInspectorFrame");
+                var details = view.TaskDetailScrollViewerElement;
+                var errorCode = GetField<TextBlock>(type, view, "TaskInspectorErrorCodeText");
+                Assert.Equal(Visibility.Visible, frame.Visibility);
+                Assert.Equal(TextWrapping.Wrap, errorCode.TextWrapping);
+                Assert.True(errorCode.ActualHeight > errorCode.FontSize * 1.5,
+                    $"Long error codes must wrap inside the card: width={errorCode.ActualWidth:0.0}, height={errorCode.ActualHeight:0.0}, viewport={details.ViewportWidth:0.0}.");
+                var errorBounds = errorCode.TransformToAncestor(details)
+                    .TransformBounds(new Rect(0, 0, errorCode.ActualWidth, errorCode.ActualHeight));
+                Assert.True(errorBounds.Left >= -1 && errorBounds.Right <= details.ViewportWidth + 1,
+                    $"Task error code escaped the inspector viewport: bounds={errorBounds}, viewport={details.ViewportWidth:0.0}.");
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+    }
+
     public sealed class HistoryScrollFixture
     {
         public int SaveTabIndex { get; set; }
@@ -848,7 +958,34 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
     public sealed class HistoryScrollDetail
     {
         public string BackupId { get; set; } = "";
+        public string RestoreReadinessSummaryDisplay { get; set; } = "";
         public string RestoreReadinessHashCoverageDisplay { get; set; } = "";
+    }
+
+    public sealed class TaskInspectorFixture
+    {
+        public TaskInspectorDetail? SelectedTask { get; set; }
+        public string SelectedTaskRetryGuidance { get; set; } = "先确认失败原因与上次结果，再安全重试。";
+        public bool IsCancellingTask { get; set; }
+        public bool IsWorklistBrowserOpen { get; set; }
+    }
+
+    public sealed class TaskInspectorDetail
+    {
+        public string GameName { get; set; } = "示例游戏";
+        public string TaskTypeDisplay { get; set; } = "媒体归类";
+        public string State { get; set; } = "Failed";
+        public string StateDisplay { get; set; } = "失败";
+        public string StartedRelativeDisplay { get; set; } = "刚刚";
+        public string StartedFullDisplay { get; set; } = "2026-11-11 10:00:00";
+        public string DurationDisplay { get; set; } = "8.8 小时";
+        public string TaskId { get; set; } = "7d7e178eb27b4302bceed298a41a9fc8";
+        public string ProgressDisplay { get; set; } = "17%";
+        public double ProgressValue { get; set; } = 17;
+        public string FailureSummary { get; set; } = "Worker 意外退出，任务中断；请确认目标文件状态后重新执行。";
+        public string ErrorCode { get; set; } = "WORKER_RESTARTED_RETRYABLE";
+        public string SafeDetailMessage { get; set; } = "隔离测试详细说明。";
+        public bool HasRestoreReport { get; set; }
     }
 
     private static object[] CreateRows()

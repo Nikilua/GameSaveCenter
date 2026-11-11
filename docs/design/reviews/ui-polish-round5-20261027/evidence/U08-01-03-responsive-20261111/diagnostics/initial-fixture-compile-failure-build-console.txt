@@ -1,0 +1,16 @@
+  GameSaveCenter.Contracts -> [repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> [repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> [repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Playnite -> [repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite\Release\net462\GameSaveCenter.Playnite.dll
+  GameSaveCenter.Core.Tests -> [repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Core.Tests\Release\net8.0\GameSaveCenter.Core.Tests.dll
+  GameSaveCenter.Worker.Tests -> [repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+  GameSaveCenter.Playnite.HostAuditSeeder -> [repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.HostAuditSeeder\Release\net462\GameSaveCenter.Playnite.HostAuditSeeder.dll
+[repo]\tests\GameSaveCenter.Playnite.Tests\CompactWorkspaceTableViewportBehaviorTests.cs(794,21): error CS1503: 参数 1: 无法从“GameSaveCenter.Playnite.Views.SaveCenterView”转换为“System.Windows.ResourceDictionary” [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+
+生成失败。
+
+[repo]\tests\GameSaveCenter.Playnite.Tests\CompactWorkspaceTableViewportBehaviorTests.cs(794,21): error CS1503: 参数 1: 无法从“GameSaveCenter.Playnite.Views.SaveCenterView”转换为“System.Windows.ResourceDictionary” [[repo]\tests\GameSaveCenter.Playnite.Tests\GameSaveCenter.Playnite.Tests.csproj]
+    0 个警告
+    1 个错误
+
+已用时间 00:01:25.52

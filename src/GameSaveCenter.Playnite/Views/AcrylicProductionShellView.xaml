@@ -226,7 +226,7 @@
                                 HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="0">
                         <TextBlock x:Name="PageTitleText" Text="首页"
                                    Style="{DynamicResource GscPageTitleStyle}"/>
-                        <TextBlock x:Name="PageSubtitleText" Text="今日工作台 · 正在读取概览状态"
+                        <TextBlock x:Name="PageSubtitleText" Text="状态与最近任务"
                                    FontFamily="{StaticResource UiFont}"
                                    FontSize="12" Foreground="{DynamicResource GscSecondaryTextBrush}"
                                    Margin="0,2,0,0" TextTrimming="CharacterEllipsis"

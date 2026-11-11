@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="db414833-b31f-42f3-b156-51995d3edf7d" name="redacted-test-run" runUser="redacted-user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-11T12:03:54.0448293+08:00" queuing="2026-11-11T12:03:54.0448297+08:00" start="2026-11-11T12:03:46.6783042+08:00" finish="2026-11-11T12:05:08.9006083+08:00" />
+  <TestSettings name="default" id="c0ad988c-e741-4e99-8c9c-8aee35e40cb0">
+    <Deployment runDeploymentRoot="redacted-deployment" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="50619f3d-9558-4c68-8cc6-0e638f69f6aa" testId="70d874b5-f972-0e02-fff1-39166f431326" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions(theme: Dark)" computerName="redacted-host" duration="00:00:00.3540000" startTime="2026-11-11T12:04:17.4478435+08:00" endTime="2026-11-11T12:04:17.8009163+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="50619f3d-9558-4c68-8cc6-0e638f69f6aa">
+      <Output>
+        <StdOut>Dark trainer import empty hint Visible -&gt; Collapsed; selector=Visible; confirm=Visible; cancel=Visible; selectionPreserved=True; actionsBound=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="198dd9f9-cb05-4c92-a022-b1c9311f58e2" testId="60f0fc75-445b-a4e8-9d32-6fa47390302c" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths(theme: Light)" computerName="redacted-host" duration="00:00:00.8800000" startTime="2026-11-11T12:04:46.6287656+08:00" endTime="2026-11-11T12:04:47.5080289+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="198dd9f9-cb05-4c92-a022-b1c9311f58e2">
+      <Output>
+        <StdOut>Light trainer import actions compact=2 rows, gap=20 DIP, margins=[20,20,20,20]; 1400 DIP=2 rows, gap=20 DIP, margins=[20,20,20,20]; 2200 DIP=2 rows, gap=20 DIP, margins=[20,20,20,20]; restored=2 rows, gap=20 DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ae69ad46-22ad-4c7e-8e97-8ffd9b12b6ab" testId="5b92d484-f6f0-286a-f232-9ef2ecc57b98" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Dark)" computerName="redacted-host" duration="00:00:00.8770000" startTime="2026-11-11T12:04:14.2407651+08:00" endTime="2026-11-11T12:04:15.1162173+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ae69ad46-22ad-4c7e-8e97-8ffd9b12b6ab">
+      <Output>
+        <StdOut>Dark Settings: icon/title topΔ=11.33 DIP, horizontal gap=12 DIP, search/title leftΔ=0 DIP, centered-negative Δ=294 DIP, wide logical host/shell/search=1880/1360/0 DIP, logical 1254×800 host icon/title topΔ=11.33 DIP, search/title leftΔ=0 DIP, search/icon top gap=72.67 DIP, reset center/height spread=0/0 DIP, search size=520×36 DIP, reset/title leftΔ=0 DIP, reset/search gap=14 DIP, reset controls center/height spread=0/0 DIP (Button=90.67×36 DIP @ 106, Button=102.67×36 DIP @ 106, ComboBox=260×36 DIP @ 106), compact search width/overflow/leftΔ=405.33/0/0 DIP, save-hint row=1-&gt;0, hint/title topΔ=19.33 DIP, path control center spread=0 DIP, height spread=0 DIP (Button/浏览: 36, Button/校验: 36, Button/打开: 36, Button/复制: 36, ComboBox/combo: 36)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0646e1d1-67c6-4710-ada2-853be6864ede" testId="93f7e58a-2375-c441-c387-589b501979c9" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions(theme: Light)" computerName="redacted-host" duration="00:00:00.3560000" startTime="2026-11-11T12:04:17.8029205+08:00" endTime="2026-11-11T12:04:18.1578211+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0646e1d1-67c6-4710-ada2-853be6864ede">
+      <Output>
+        <StdOut>Light trainer import empty hint Visible -&gt; Collapsed; selector=Visible; confirm=Visible; cancel=Visible; selectionPreserved=True; actionsBound=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="00a7837b-16d9-4db0-8afa-9a861877fa03" testId="4f9b2c01-b742-a98d-c1c0-7c521f1e3511" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands(theme: Light)" computerName="redacted-host" duration="00:00:00.5280000" startTime="2026-11-11T12:04:49.9063006+08:00" endTime="2026-11-11T12:04:50.4305802+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="00a7837b-16d9-4db0-8afa-9a861877fa03">
+      <Output>
+        <StdOut>Light production backup action icons=#FF000000/#FF000000 labels=#FF000000/#FF000000 minimum contrast=5.09/5.09:1 commands bound/executed=True/True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cb7d8b44-c028-42ba-ba59-84e6197ad245" testId="28757b0b-c447-27df-e517-76de03b08c47" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: Light)" computerName="redacted-host" duration="00:00:01.4780000" startTime="2026-11-11T12:04:40.4822487+08:00" endTime="2026-11-11T12:04:41.9591351+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cb7d8b44-c028-42ba-ba59-84e6197ad245">
+      <Output>
+        <StdOut>Light 1280x840:sourceRows=1,safeMode=774x34.67&#xD;
+Light 920x700:sourceRows=2,safeMode=554.67x34.67&#xD;
+Light 560x640:sourceRows=2,safeMode=419.33x50.67</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="74ff46c5-0049-40ce-b7b2-f5090585b4c0" testId="4e2f0960-36f6-0e6c-25a4-1463754f9e82" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths(theme: Light)" computerName="redacted-host" duration="00:00:04.2850000" startTime="2026-11-11T12:04:22.4478508+08:00" endTime="2026-11-11T12:04:26.7314233+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="74ff46c5-0049-40ce-b7b2-f5090585b4c0">
+      <Output>
+        <StdOut>Light Save current-rule actions: 520 DIP: 1 rows, gap=∞ DIP, panel=472 DIP; 560 DIP: 1 rows, gap=∞ DIP, panel=512 DIP; 600 DIP: 1 rows, gap=∞ DIP, panel=552 DIP; 640 DIP: 1 rows, gap=∞ DIP, panel=592 DIP; 680 DIP: 1 rows, gap=∞ DIP, panel=632 DIP; 699 DIP: 1 rows, gap=∞ DIP, panel=651.33 DIP; 700 DIP: 1 rows, gap=∞ DIP, panel=245.33 DIP; 760 DIP: 1 rows, gap=∞ DIP, panel=245.33 DIP; 900 DIP: 1 rows, gap=∞ DIP, panel=245.33 DIP&#xD;
+Light Overview home toolbar actions: 520 DIP: 1 rows, gap=∞ DIP, panel=502.67 DIP; 560 DIP: 1 rows, gap=∞ DIP, panel=542.67 DIP; 600 DIP: 1 rows, gap=∞ DIP, panel=582.67 DIP; 640 DIP: 1 rows, gap=∞ DIP, panel=622.67 DIP; 680 DIP: 1 rows, gap=∞ DIP, panel=662.67 DIP; 699 DIP: 1 rows, gap=∞ DIP, panel=682 DIP; 700 DIP: 1 rows, gap=∞ DIP, panel=682.67 DIP; 720 DIP: 1 rows, gap=∞ DIP, panel=702.67 DIP; 760 DIP: 1 rows, gap=∞ DIP, panel=272 DIP; 900 DIP: 1 rows, gap=∞ DIP, panel=272 DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9d1644af-10fc-4023-88e8-23f1701196d6" testId="09e4d02e-746b-9d65-7541-f7e5d2e531f6" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(theme: Dark)" computerName="redacted-host" duration="00:00:00.5950000" startTime="2026-11-11T12:04:48.6831712+08:00" endTime="2026-11-11T12:04:49.2776893+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d1644af-10fc-4023-88e8-23f1701196d6">
+      <Output>
+        <StdOut>Dark common shell media inbox: visibleRows=5, batchRows=1, modeVisible=True; grid=663.33x267.33, pageViewport=416.67, pageExtent=576, batchWidth=663.33, selection=已选 1 项 · 可批量处理, actions=[MediaInboxBatchIntroduction=128@0,0; MediaInboxModeCombo=88@132,2; MediaInboxTargetActions=276.67@224,0; MediaInboxCompactDetailsButton=86@502.67,2]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="72c011a6-f3ff-46db-b863-75ce492378ca" testId="fbe44cf9-75c2-f417-0c33-fc05b6e170df" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Dark)" computerName="redacted-host" duration="00:00:00.5400000" startTime="2026-11-11T12:04:35.8147208+08:00" endTime="2026-11-11T12:04:36.3544315+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72c011a6-f3ff-46db-b863-75ce492378ca">
+      <Output>
+        <StdOut>Dark Task grid: initial/recycled rows=15/13, far row reached=True, failed rows checked=7, error-presentation mismatches=0, row chrome position error=0 DIP, row-height spread=0 DIP, theme=Dark, grid=1689.33×574.67, assigned=NaN/∞, visible=True, loaded=True, visibility=Visible, items=2400, virtualized=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="877a19db-2a67-49ad-b47e-d7f57a590f4d" testId="9aedc851-91bf-258e-82ff-0752cc488637" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize(theme: Dark)" computerName="redacted-host" duration="00:00:00.9380000" startTime="2026-11-11T12:03:54.6252191+08:00" endTime="2026-11-11T12:03:55.5606705+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="877a19db-2a67-49ad-b47e-d7f57a590f4d">
+      <Output>
+        <StdOut>Dark maintenance actions compact=2 rows, gap=20 DIP, panel=564x112, visible=True, children=[Visible:78.67x36;Visible:90.67x36;Visible:102.67x36;Visible:102.67x36;Visible:90.67x36;Visible:102.67x36], margins=[20,20,20,20,20,20]; wide=1 rows, margins=[8,8,8,8,8,8]; restored=2 rows, gap=20 DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3fc226df-e2c4-4b19-8676-f3fa95869df0" testId="af7adb69-de9b-12aa-e9e4-ac986a3a8436" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer(theme: Light)" computerName="redacted-host" duration="00:00:00.6010000" startTime="2026-11-11T12:04:48.0877401+08:00" endTime="2026-11-11T12:04:48.6821702+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fc226df-e2c4-4b19-8676-f3fa95869df0">
+      <Output>
+        <StdOut>Light installed-tool action rows desktop=2, gap=20 DIP; compact drawer=1, gap=∞ DIP, bottom margins=[8,8,8,0,8]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f023fbd4-3559-4413-a50d-ae8b3abdb9e7" testId="6876fe59-3cfa-ef61-b4cb-a976c574e832" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins(theme: Light)" computerName="redacted-host" duration="00:00:08.8870000" startTime="2026-11-11T12:04:59.7776788+08:00" endTime="2026-11-11T12:05:08.6627604+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f023fbd4-3559-4413-a50d-ae8b3abdb9e7">
+      <Output>
+        <StdOut>Light Save rows=3, gap=20 DIP, wide rows=1, page=1800 DIP, actions=1754.67 DIP, restored bottom=0; Inbox rows=2, gap=20 DIP, wide rows=1, restored bottom=4&#xD;
+Light Media preset 520 DIP: 2 rows, gap=20 DIP, panel=444 DIP, content=686.67 DIP&#xD;
+Light Media preset 620 DIP: 2 rows, gap=20 DIP, panel=544 DIP, content=686.67 DIP&#xD;
+Light Media preset 700 DIP: 2 rows, gap=20 DIP, panel=624 DIP, content=686.67 DIP&#xD;
+Light Media preset 720 DIP: 1 rows, gap=∞ DIP, panel=644 DIP, content=686.67 DIP&#xD;
+Light Media preset 800 DIP: 1 rows, gap=∞ DIP, panel=724 DIP, content=686.67 DIP&#xD;
+Light Media preset 900 DIP: 1 rows, gap=∞ DIP, panel=824 DIP, content=686.67 DIP&#xD;
+Light Media preset 1040 DIP: 1 rows, gap=∞ DIP, panel=964 DIP, content=686.67 DIP&#xD;
+Light Media secondary actions 520 DIP: 2 rows, gap=20 DIP, panel=444 DIP, margins=[20;20;20;20;20]&#xD;
+Light Media secondary actions 540 DIP: 2 rows, gap=20 DIP, panel=464 DIP, margins=[20;20;20;20;20]&#xD;
+Light Media secondary actions 560 DIP: 2 rows, gap=20 DIP, panel=484 DIP, margins=[20;20;20;20;20]&#xD;
+Light Media secondary actions 570 DIP: 2 rows, gap=20 DIP, panel=494 DIP, margins=[20;20;20;20;20]&#xD;
+Light Media secondary actions 575 DIP: 2 rows, gap=20 DIP, panel=499.33 DIP, margins=[20;20;20;20;20]&#xD;
+Light Media secondary actions 576 DIP: 2 rows, gap=20 DIP, panel=500 DIP, margins=[20;20;20;20;20]&#xD;
+Light Media secondary actions 577 DIP: 1 rows, gap=∞ DIP, panel=501.33 DIP, margins=[4;4;4;4;4]&#xD;
+Light Media secondary actions 578 DIP: 1 rows, gap=∞ DIP, panel=502 DIP, margins=[4;4;4;4;4]&#xD;
+Light Media secondary actions 579 DIP: 1 rows, gap=∞ DIP, panel=503.33 DIP, margins=[4;4;4;4;4]&#xD;
+Light Media secondary actions 580 DIP: 1 rows, gap=∞ DIP, panel=504 DIP, margins=[4;4;4;4;4]&#xD;
+Light Media secondary actions 620 DIP: 1 rows, gap=∞ DIP, panel=544 DIP, margins=[4;4;4;4;4]&#xD;
+Light Media secondary actions 700 DIP: 1 rows, gap=∞ DIP, panel=624 DIP, margins=[4;4;4;4;4]&#xD;
+Light Media secondary actions 720 DIP: 1 rows, gap=∞ DIP, panel=644 DIP, margins=[4;4;4;4;4]&#xD;
+Light Media secondary actions 800 DIP: 1 rows, gap=∞ DIP, panel=724 DIP, margins=[4;4;4;4;4]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="07e4f3a9-2006-45dd-8b8b-f5f21284f1d2" testId="7e5b4b54-087f-6184-7ef2-3ca8ff09f389" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: FollowPlaynite)" computerName="redacted-host" duration="00:00:02.3620000" startTime="2026-11-11T12:04:11.8791491+08:00" endTime="2026-11-11T12:04:14.2387653+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="07e4f3a9-2006-45dd-8b8b-f5f21284f1d2">
+      <Output>
+        <StdOut>FollowPlaynite:dpi=1.5,slider=316x32,thumb=32x32,track=0/284,value=20%,compact=0,0,316,32/326,8,80,16</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a52f1007-28d8-4584-8990-a08882189708" testId="b970fa7c-cc91-63ce-f221-d38d48f90506" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt(theme: Dark)" computerName="redacted-host" duration="00:00:00.4770000" startTime="2026-11-11T12:04:34.9335606+08:00" endTime="2026-11-11T12:04:35.4101285+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a52f1007-28d8-4584-8990-a08882189708">
+      <Output>
+        <StdOut>Dark Task queue metadata=18 DIP below primary row=36 DIP; expanded primary row=36; retry=30-&gt;30; view configuration=36-&gt;36; reset=36-&gt;36, centerΔ=0.33/0.33; configParent=True, disclosureExpanded=True; hint/summary/muted/info=#FFB9C0CC/#FFA8B0BE/#FFA8B0BE/#FF5CAAF0; filter summary duplicated=False</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="690a292b-6217-474c-be73-84f466cc0849" testId="92dca8d8-017c-0ca1-5bd7-bf82b0104435" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Light)" computerName="redacted-host" duration="00:00:00.5130000" startTime="2026-11-11T12:04:36.3554394+08:00" endTime="2026-11-11T12:04:36.8673032+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="690a292b-6217-474c-be73-84f466cc0849">
+      <Output>
+        <StdOut>Light Task grid: initial/recycled rows=15/13, far row reached=True, failed rows checked=7, error-presentation mismatches=0, row chrome position error=0 DIP, row-height spread=0 DIP, theme=Light, grid=1689.33×574.67, assigned=NaN/∞, visible=True, loaded=True, visibility=Visible, items=2400, virtualized=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da5bb5c3-5703-4e0e-829c-3ffecd1481c2" testId="78c304f3-9db9-5e69-1d60-1850339eac09" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText(theme: Light)" computerName="redacted-host" duration="00:00:00.4520000" startTime="2026-11-11T12:04:29.2660450+08:00" endTime="2026-11-11T12:04:29.7168101+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da5bb5c3-5703-4e0e-829c-3ffecd1481c2">
+      <Output>
+        <StdOut>Light Cloud transfer title/count center delta=0.67 DIP; title/pill row center delta=0.33/0; pill text center delta=0.33 DIP; pill=24.67, text=18.67</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e6806a94-5bd0-48c1-944c-4c5298eb25fb" testId="11f37952-933d-9e02-ec72-f8b0f6992eb3" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(theme: Light)" computerName="redacted-host" duration="00:00:00.6240000" startTime="2026-11-11T12:04:49.2786893+08:00" endTime="2026-11-11T12:04:49.9023012+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e6806a94-5bd0-48c1-944c-4c5298eb25fb">
+      <Output>
+        <StdOut>Light common shell media inbox: visibleRows=5, batchRows=1, modeVisible=True; grid=663.33x267.33, pageViewport=416.67, pageExtent=576, batchWidth=663.33, selection=已选 1 项 · 可批量处理, actions=[MediaInboxBatchIntroduction=128@0,0; MediaInboxModeCombo=88@132,2; MediaInboxTargetActions=276.67@224,0; MediaInboxCompactDetailsButton=86@502.67,2]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="de7c18d5-23b6-4b59-bd1f-ed72b8d5c2a3" testId="a855630f-dc67-6159-88f6-da6738efc77a" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths(theme: Dark)" computerName="redacted-host" duration="00:00:00.9250000" startTime="2026-11-11T12:04:45.7037230+08:00" endTime="2026-11-11T12:04:46.6277658+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="de7c18d5-23b6-4b59-bd1f-ed72b8d5c2a3">
+      <Output>
+        <StdOut>Dark trainer import actions compact=2 rows, gap=20 DIP, margins=[20,20,20,20]; 1400 DIP=2 rows, gap=20 DIP, margins=[20,20,20,20]; 2200 DIP=2 rows, gap=20 DIP, margins=[20,20,20,20]; restored=2 rows, gap=20 DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8cc904cd-bf68-4834-9d3e-114c5df26447" testId="b24b361e-28b8-4e57-3b9e-89e1b2cd2ddd" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer(theme: Dark)" computerName="redacted-host" duration="00:00:00.5730000" startTime="2026-11-11T12:04:47.5090295+08:00" endTime="2026-11-11T12:04:48.0817396+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8cc904cd-bf68-4834-9d3e-114c5df26447">
+      <Output>
+        <StdOut>Dark installed-tool action rows desktop=2, gap=20 DIP; compact drawer=1, gap=∞ DIP, bottom margins=[8,8,8,0,8]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5919060c-ef74-45db-a9c6-dd4bbef979a3" testId="2f7935f1-c702-6d10-2a78-da5efffae682" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: Light)" computerName="redacted-host" duration="00:00:02.2350000" startTime="2026-11-11T12:04:09.6431998+08:00" endTime="2026-11-11T12:04:11.8771462+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5919060c-ef74-45db-a9c6-dd4bbef979a3">
+      <Output>
+        <StdOut>Light:dpi=1.5,slider=316x32,thumb=32x32,track=0/284,value=20%,compact=0,0,316,32/326,8,80,16</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d34a2575-1f52-45e2-a2d0-4f8502ad7aba" testId="173f2a21-7e05-9824-5b3c-9c9b97a322d4" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Dark)" computerName="redacted-host" duration="00:00:02.9390000" startTime="2026-11-11T12:03:51.0897194+08:00" endTime="2026-11-11T12:03:53.9854647+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d34a2575-1f52-45e2-a2d0-4f8502ad7aba">
+      <Output>
+        <StdOut>Dark Media Inbox: clear/reset/assign=36/36/36 DIP, mode=36 DIP, target=36 DIP, centersΔ=0 DIP; rowWidth=1217.33; children=MediaInboxBatchIntroduction:132,MediaInboxModeCombo:92,MediaInboxTargetActions:276.67,MediaInboxCompactDetailsButton:88, max button=36 DIP, spread=0 DIP, target=36 DIP, max centerΔ=0 DIP, clear visible=True, global target binding=switch=Synthetic Second Target/Synthetic Second Target; identity=Playnite ID · synthetic-second-id/Playnite ID · synthetic-second-id; cleared=未选择游戏/未选择游戏; empty=True; restored=Synthetic Bongo Cat Game/Synthetic Bongo Cat Game, grid=360 DIP, grid/footer overlap=0 DIP, internal scrollbar contained=True (bar=108.67..426.67, grid=66.67..426.67, footerTop=436.67, internalOffset=74/74), offset=62, extent=628.67, viewport=566.67, clear=465.33..501.33, reset=465.33..501.33, footer=374.67..553.33; loaded=True, visible=True, enabled=True, mode=Auto/Visible, contentScroll=False, bar=74/74, afterScroll=62/62, barAfter=74</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="528b82cd-aafb-483a-993c-711fa6d1051c" testId="216ef32e-bd18-b3b5-1758-aa2cf71cbdd4" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle(theme: Dark)" computerName="redacted-host" duration="00:00:00.9260000" startTime="2026-11-11T12:04:31.1166437+08:00" endTime="2026-11-11T12:04:32.0417146+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="528b82cd-aafb-483a-993c-711fa6d1051c">
+      <Output>
+        <StdOut>Dark Compact header title=存档中心, subtitle=Collapsed, actionsRow=1, title/action spans=2/2, actionsColumn=0 DIP, title/action gap=8 DIP, actionRows=1; 1199 DIP subtitle/row/titleSpan=Collapsed/1/2; 1280 DIP subtitle=Visible; compact round-trip row/span=1/2</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f939a5a9-0d99-4c85-9745-4022b5ac902c" testId="ce572307-e4f5-0552-4839-f0d72f2492bb" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize(theme: Light)" computerName="redacted-host" duration="00:00:00.8780000" startTime="2026-11-11T12:03:55.5616709+08:00" endTime="2026-11-11T12:03:56.4390092+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f939a5a9-0d99-4c85-9745-4022b5ac902c">
+      <Output>
+        <StdOut>Light maintenance actions compact=2 rows, gap=20 DIP, panel=564x112, visible=True, children=[Visible:78.67x36;Visible:90.67x36;Visible:102.67x36;Visible:102.67x36;Visible:90.67x36;Visible:102.67x36], margins=[20,20,20,20,20,20]; wide=1 rows, margins=[8,8,8,8,8,8]; restored=2 rows, gap=20 DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e2f8b6ce-cb8a-43be-8c55-3d62008446b4" testId="2e21b4ed-25ac-a540-9a30-41e0292f550d" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands(theme: Dark)" computerName="redacted-host" duration="00:00:00.5080000" startTime="2026-11-11T12:04:50.4315792+08:00" endTime="2026-11-11T12:04:50.9386023+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e2f8b6ce-cb8a-43be-8c55-3d62008446b4">
+      <Output>
+        <StdOut>Dark production backup action icons=#FF000000/#FF000000 labels=#FF000000/#FF000000 minimum contrast=6.96/6.96:1 commands bound/executed=True/True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="72512189-4ddd-4c1d-93f5-c932c87ee9a1" testId="3e867d51-35ab-df84-be15-7cde1b106a2b" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Light)" computerName="redacted-host" duration="00:00:00.6860000" startTime="2026-11-11T12:04:15.1172213+08:00" endTime="2026-11-11T12:04:15.8019353+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="72512189-4ddd-4c1d-93f5-c932c87ee9a1">
+      <Output>
+        <StdOut>Light Settings: icon/title topΔ=11.33 DIP, horizontal gap=12 DIP, search/title leftΔ=0 DIP, centered-negative Δ=294 DIP, wide logical host/shell/search=1880/1360/0 DIP, logical 1254×800 host icon/title topΔ=11.33 DIP, search/title leftΔ=0 DIP, search/icon top gap=72.67 DIP, reset center/height spread=0/0 DIP, search size=520×36 DIP, reset/title leftΔ=0 DIP, reset/search gap=14 DIP, reset controls center/height spread=0/0 DIP (Button=90.67×36 DIP @ 106, Button=102.67×36 DIP @ 106, ComboBox=260×36 DIP @ 106), compact search width/overflow/leftΔ=405.33/0/0 DIP, save-hint row=1-&gt;0, hint/title topΔ=19.33 DIP, path control center spread=0 DIP, height spread=0 DIP (Button/浏览: 36, Button/校验: 36, Button/打开: 36, Button/复制: 36, ComboBox/combo: 36)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2ecaebfd-48e9-4686-8890-83ca79076fb2" testId="35b55fdb-0e04-f5d7-b39f-00f07b634cc9" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.OverviewActionsStayStableWithoutDuplicateLoadingCopy(theme: Light)" computerName="redacted-host" duration="00:00:00.5710000" startTime="2026-11-11T12:04:01.9090501+08:00" endTime="2026-11-11T12:04:02.4786940+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2ecaebfd-48e9-4686-8890-83ca79076fb2">
+      <Output>
+        <StdOut>Light overview action row remains title-free; height 48 -&gt; 48 DIP; cloud queue=4 metric accent=##FF5B74E6, attention title warning, failed status error (info token ##FF1F5EA0), command retained, contrast=4.13/4.13/6.87:1</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9ba5f874-20e5-40da-b045-0e2f1eb2141a" testId="91780e58-0952-61f5-086f-48a70ebd97ed" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions(theme: Dark)" computerName="redacted-host" duration="00:00:01.1180000" startTime="2026-11-11T12:04:33.8151281+08:00" endTime="2026-11-11T12:04:34.9325612+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9ba5f874-20e5-40da-b045-0e2f1eb2141a">
+      <Output>
+        <StdOut>Settings headers Dark: backup=#FF6673CB/#1C6173D6, automation=#FF6673CB/#1C6173D6, reset=恢复备份与恢复安全设置默认值; 恢复自动化与媒体安全设置默认值, enabled=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ce731b81-b28e-47b2-b338-0a26b9d9c83c" testId="7a53019d-44c3-da5c-a0a5-ee6441345eeb" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode(theme: Light)" computerName="redacted-host" duration="00:00:01.2650000" startTime="2026-11-11T12:04:26.7354276+08:00" endTime="2026-11-11T12:04:27.9953612+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ce731b81-b28e-47b2-b338-0a26b9d9c83c">
+      <Output>
+        <StdOut>Light Media Inbox policy copy: helper=Collapsed/0 DIP -&gt; Visible/18 DIP -&gt; Collapsed/0 DIP; info band=67.33-&gt;68-&gt;67.33 DIP; ignored=Collapsed; text=归属不明的媒体会留在待归类中，不会自动猜测。; title=待归类媒体; UIA=只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。; tooltip=只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="13cc5b74-c1c9-47ad-84a9-5c68bac94873" testId="d821df88-ce8e-d5d0-b8b6-799f60f488f2" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceActionCategoryUsesSecondaryThemeColor(theme: Light)" computerName="redacted-host" duration="00:00:00.4500000" startTime="2026-11-11T12:04:44.4559440+08:00" endTime="2026-11-11T12:04:44.9052534+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="13cc5b74-c1c9-47ad-84a9-5c68bac94873">
+      <Output>
+        <StdOut>Light maintenance action category ##F24E5666; secondary ##F24E5666; semantic info ##FF1F5EA0; minimum contrast=6.43:1</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="eecd1eeb-51d5-4649-85b7-1f50553fb420" testId="387436c2-c9c8-7552-3e21-7c12d44f5d97" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode(theme: Dark)" computerName="redacted-host" duration="00:00:01.2690000" startTime="2026-11-11T12:04:27.9963617+08:00" endTime="2026-11-11T12:04:29.2650431+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eecd1eeb-51d5-4649-85b7-1f50553fb420">
+      <Output>
+        <StdOut>Dark Media Inbox policy copy: helper=Collapsed/0 DIP -&gt; Visible/18 DIP -&gt; Collapsed/0 DIP; info band=67.33-&gt;68-&gt;67.33 DIP; ignored=Collapsed; text=归属不明的媒体会留在待归类中，不会自动猜测。; title=待归类媒体; UIA=只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。; tooltip=只保留无法唯一判断所属游戏的公共截图和录像，不会静默猜测。</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3107436c-3cad-420c-a53d-e3f6c9927fa5" testId="69c12a75-aa55-cdf7-6c80-d2f368cc8ee8" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors(theme: Dark)" computerName="redacted-host" duration="00:00:01.0660000" startTime="2026-11-11T12:04:37.9532408+08:00" endTime="2026-11-11T12:04:39.0134768+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3107436c-3cad-420c-a53d-e3f6c9927fa5">
+      <Output>
+        <StdOut>Dark environment summary colors=#FFB9C0CC/#FF4CDB8E/#FFF0B24E/#FFF37988; check state colors=#FF5CAAF0/#FF4CDB8E/#FFF0B24E/#FFF37988/#FFB9C0CC; backup comparison text/surface colors=#FFB9C0CC/#FFB9C0CC/#FFF0B24E/#FFF37988/#66131620/#66131620/#33F0B24E/#33F37988</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4ccdbd67-4246-4b9a-a7bf-37db722e7961" testId="c6fb767e-a5fb-322b-1f2a-c237c1bb332b" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt(theme: Light)" computerName="redacted-host" duration="00:00:00.4040000" startTime="2026-11-11T12:04:35.4151285+08:00" endTime="2026-11-11T12:04:35.8137222+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4ccdbd67-4246-4b9a-a7bf-37db722e7961">
+      <Output>
+        <StdOut>Light Task queue metadata=18 DIP below primary row=36 DIP; expanded primary row=36; retry=30-&gt;30; view configuration=36-&gt;36; reset=36-&gt;36, centerΔ=0.33/0.33; configParent=True, disclosureExpanded=True; hint/summary/muted/info=#F24E5666/#FF657086/#FF657086/#FF1F5EA0; filter summary duplicated=False</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d559ece7-e576-4d56-97b3-dd973f785f4f" testId="9e3c6f8b-30ab-fe18-71eb-8de17a35559e" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Light)" computerName="redacted-host" duration="00:00:00.6360000" startTime="2026-11-11T12:03:54.0260673+08:00" endTime="2026-11-11T12:03:54.6222227+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d559ece7-e576-4d56-97b3-dd973f785f4f">
+      <Output>
+        <StdOut>Light Media Inbox: clear/reset/assign=36/36/36 DIP, mode=36 DIP, target=36 DIP, centersΔ=0 DIP; rowWidth=1217.33; children=MediaInboxBatchIntroduction:132,MediaInboxModeCombo:92,MediaInboxTargetActions:276.67,MediaInboxCompactDetailsButton:88, max button=36 DIP, spread=0 DIP, target=36 DIP, max centerΔ=0 DIP, clear visible=True, global target binding=switch=Synthetic Second Target/Synthetic Second Target; identity=Playnite ID · synthetic-second-id/Playnite ID · synthetic-second-id; cleared=未选择游戏/未选择游戏; empty=True; restored=Synthetic Bongo Cat Game/Synthetic Bongo Cat Game, grid=360 DIP, grid/footer overlap=0 DIP, internal scrollbar contained=True (bar=108.67..426.67, grid=66.67..426.67, footerTop=436.67, internalOffset=74/74), offset=62, extent=628.67, viewport=566.67, clear=465.33..501.33, reset=465.33..501.33, footer=374.67..553.33; loaded=True, visible=True, enabled=True, mode=Auto/Visible, contentScroll=False, bar=74/74, afterScroll=62/62, barAfter=74</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d328c6df-0190-4ee2-b020-42811ba5a27c" testId="a506d032-d5a3-14bd-35c7-8e0b10da156d" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional(theme: Light)" computerName="redacted-host" duration="00:00:00.4050000" startTime="2026-11-11T12:04:32.3996352+08:00" endTime="2026-11-11T12:04:32.8038864+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d328c6df-0190-4ee2-b020-42811ba5a27c">
+      <Output>
+        <StdOut>Light trainer releases header='可下载版本', count=0 个版本-&gt;1 个版本, emptyHint=True-&gt;Collapsed, helperVisible=False, automationHelp='选择在线目录结果后，此列表会显示对应版本。'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3f22727a-cb78-431e-98ee-48d6c41358c2" testId="749a2271-3f29-e6b4-165a-e92f3fa222ca" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CurrentGameMediaBatchActionRowReportsWrappedGeometry(theme: Light)" computerName="redacted-host" duration="00:00:02.0960000" startTime="2026-11-11T12:04:02.9857180+08:00" endTime="2026-11-11T12:04:05.0802201+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3f22727a-cb78-431e-98ee-48d6c41358c2">
+      <Output>
+        <StdOut>Light current-game media action rows: host 620, panel 556, rows 2, gap 20 DIP; host 640, panel 576, rows 2, gap 20 DIP; host 660, panel 596, rows 2, gap 20 DIP; host 680, panel 616, rows 2, gap 20 DIP; host 700, panel 636, rows 1, gap ∞ DIP; host 800, panel 736, rows 1, gap ∞ DIP; host 900, panel 836, rows 1, gap ∞ DIP; host 1040, panel 626.67, rows 1, gap ∞ DIP; host 1280, panel 626.67, rows 1, gap ∞ DIP; host 1600, panel 626.67, rows 1, gap ∞ DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5f53ebbb-9b40-436f-b26b-4fa402e6f2e6" testId="2114340d-4232-3fed-a711-5d0584ff788e" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData(theme: Light)" computerName="redacted-host" duration="00:00:00.4800000" startTime="2026-11-11T12:04:43.9763593+08:00" endTime="2026-11-11T12:04:44.4549427+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5f53ebbb-9b40-436f-b26b-4fa402e6f2e6">
+      <Output>
+        <StdOut>Light maintenance diagnostics empty hints main=Visible-&gt;Collapsed-&gt;Visible, audit=Visible-&gt;Collapsed-&gt;Visible; copy="暂无待处理诊断项。"</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="73bf4756-832a-4622-82fb-52718da79e4a" testId="6f8f4e4d-c77d-f109-924b-d3ba6d350753" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: FollowPlaynite)" computerName="redacted-host" duration="00:00:01.5340000" startTime="2026-11-11T12:04:41.9601348+08:00" endTime="2026-11-11T12:04:43.4937073+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="73bf4756-832a-4622-82fb-52718da79e4a">
+      <Output>
+        <StdOut>FollowPlaynite 1280x840:sourceRows=1,safeMode=774x34.67&#xD;
+FollowPlaynite 920x700:sourceRows=2,safeMode=554.67x34.67&#xD;
+FollowPlaynite 560x640:sourceRows=2,safeMode=419.33x50.67</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="dfba530d-1b17-41a3-99cf-e9026218019d" testId="1a268dfe-d275-bfe0-ec72-96639401aa67" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ShortSettingsPageKeepsCategoryAndBodyViewports(width: 760)" computerName="redacted-host" duration="00:00:00.2230000" startTime="2026-11-11T12:04:45.3575394+08:00" endTime="2026-11-11T12:04:45.5801464+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfba530d-1b17-41a3-99cf-e9026218019d">
+      <Output>
+        <StdOut>Settings 760x560: shell=681.33x481.33, header=282, headerRows=[37.33,0,46,95.33,68.67], workspace=681.33x187.33, rail=190x187.33, tabs=171.33x168.67, categoryViewportDip=168.67, logicalViewport=3, canContentScroll=True, lastTab=39.33/126, bodyViewport=181.33, resetCollapsed=True; reset transition: expandedActionsAvailable=True, restoredExpandedAtTallHeight=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c6d06914-bdcf-4f01-9f72-7691b427d854" testId="b9a3294f-ec77-85a0-be3a-efbb364428fb" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions(theme: Light)" computerName="redacted-host" duration="00:00:01.0110000" startTime="2026-11-11T12:04:32.8048880+08:00" endTime="2026-11-11T12:04:33.8141249+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c6d06914-bdcf-4f01-9f72-7691b427d854">
+      <Output>
+        <StdOut>Settings headers Light: backup=#FF5B74E6/#1C5B74E6, automation=#FF5B74E6/#1C5B74E6, reset=恢复备份与恢复安全设置默认值; 恢复自动化与媒体安全设置默认值, enabled=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0dc887f9-a50d-49ae-9679-a158686cd828" testId="cee12a37-c24a-ec1e-d1e0-d20766be1c58" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors(theme: Light)" computerName="redacted-host" duration="00:00:01.0800000" startTime="2026-11-11T12:04:36.8683058+08:00" endTime="2026-11-11T12:04:37.9482405+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0dc887f9-a50d-49ae-9679-a158686cd828">
+      <Output>
+        <StdOut>Light environment summary colors=#F24E5666/#FF0F6C3B/#FF795310/#FF9B333F; check state colors=#FF1F5EA0/#FF0F6C3B/#FF795310/#FF9B333F/#FF4E5666; backup comparison text/surface colors=#F24E5666/#F24E5666/#FF795310/#FF9B333F/#80FFFFFF/#80FFFFFF/#1F795310/#1F9B333F</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3cf32362-a508-456a-abbe-35c7d550c184" testId="de4ad536-aca6-6c0e-3cba-f6135959e378" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle(theme: Light)" computerName="redacted-host" duration="00:00:00.9400000" startTime="2026-11-11T12:04:30.1762362+08:00" endTime="2026-11-11T12:04:31.1156377+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3cf32362-a508-456a-abbe-35c7d550c184">
+      <Output>
+        <StdOut>Light Compact header title=存档中心, subtitle=Collapsed, actionsRow=1, title/action spans=2/2, actionsColumn=0 DIP, title/action gap=8 DIP, actionRows=1; 1199 DIP subtitle/row/titleSpan=Collapsed/1/2; 1280 DIP subtitle=Visible; compact round-trip row/span=1/2</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ec27975a-b36f-4007-971c-bf44510f8e11" testId="36a64976-14ad-bde7-c3f7-22a7a08ed136" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint(theme: Light)" computerName="redacted-host" duration="00:00:00.9340000" startTime="2026-11-11T12:04:15.8039366+08:00" endTime="2026-11-11T12:04:16.7369156+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ec27975a-b36f-4007-971c-bf44510f8e11">
+      <Output>
+        <StdOut>Light task preset compact rows=2, gap=20 DIP, margins=[20,20,20,20,20,20,20]; wide rows=1, margins=[0,0,0,0,0,0,0]; restored rows=2, margins=[20,20,20,20,20,20,20]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="71283b4a-49ad-428e-b8e1-aa59c131d66a" testId="63f8e971-9558-dd20-af5e-923dca42fec7" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CurrentGameMediaBatchActionRowReportsWrappedGeometry(theme: Dark)" computerName="redacted-host" duration="00:00:02.0450000" startTime="2026-11-11T12:04:05.0822212+08:00" endTime="2026-11-11T12:04:07.1253553+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="71283b4a-49ad-428e-b8e1-aa59c131d66a">
+      <Output>
+        <StdOut>Dark current-game media action rows: host 620, panel 556, rows 2, gap 20 DIP; host 640, panel 576, rows 2, gap 20 DIP; host 660, panel 596, rows 2, gap 20 DIP; host 680, panel 616, rows 2, gap 20 DIP; host 700, panel 636, rows 1, gap ∞ DIP; host 800, panel 736, rows 1, gap ∞ DIP; host 900, panel 836, rows 1, gap ∞ DIP; host 1040, panel 626.67, rows 1, gap ∞ DIP; host 1280, panel 626.67, rows 1, gap ∞ DIP; host 1600, panel 626.67, rows 1, gap ∞ DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="82c946e2-6bd4-4566-92a6-62f0b7fc71ce" testId="c28061ed-445e-2352-f98e-be347f81dd0c" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins(theme: Dark)" computerName="redacted-host" duration="00:00:08.8370000" startTime="2026-11-11T12:04:50.9396044+08:00" endTime="2026-11-11T12:04:59.7756754+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82c946e2-6bd4-4566-92a6-62f0b7fc71ce">
+      <Output>
+        <StdOut>Dark Save rows=3, gap=20 DIP, wide rows=1, page=1800 DIP, actions=1754.67 DIP, restored bottom=0; Inbox rows=2, gap=20 DIP, wide rows=1, restored bottom=4&#xD;
+Dark Media preset 520 DIP: 2 rows, gap=20 DIP, panel=444 DIP, content=686.67 DIP&#xD;
+Dark Media preset 620 DIP: 2 rows, gap=20 DIP, panel=544 DIP, content=686.67 DIP&#xD;
+Dark Media preset 700 DIP: 2 rows, gap=20 DIP, panel=624 DIP, content=686.67 DIP&#xD;
+Dark Media preset 720 DIP: 1 rows, gap=∞ DIP, panel=644 DIP, content=686.67 DIP&#xD;
+Dark Media preset 800 DIP: 1 rows, gap=∞ DIP, panel=724 DIP, content=686.67 DIP&#xD;
+Dark Media preset 900 DIP: 1 rows, gap=∞ DIP, panel=824 DIP, content=686.67 DIP&#xD;
+Dark Media preset 1040 DIP: 1 rows, gap=∞ DIP, panel=964 DIP, content=686.67 DIP&#xD;
+Dark Media secondary actions 520 DIP: 2 rows, gap=20 DIP, panel=444 DIP, margins=[20;20;20;20;20]&#xD;
+Dark Media secondary actions 540 DIP: 2 rows, gap=20 DIP, panel=464 DIP, margins=[20;20;20;20;20]&#xD;
+Dark Media secondary actions 560 DIP: 2 rows, gap=20 DIP, panel=484 DIP, margins=[20;20;20;20;20]&#xD;
+Dark Media secondary actions 570 DIP: 2 rows, gap=20 DIP, panel=494 DIP, margins=[20;20;20;20;20]&#xD;
+Dark Media secondary actions 575 DIP: 2 rows, gap=20 DIP, panel=499.33 DIP, margins=[20;20;20;20;20]&#xD;
+Dark Media secondary actions 576 DIP: 2 rows, gap=20 DIP, panel=500 DIP, margins=[20;20;20;20;20]&#xD;
+Dark Media secondary actions 577 DIP: 1 rows, gap=∞ DIP, panel=501.33 DIP, margins=[4;4;4;4;4]&#xD;
+Dark Media secondary actions 578 DIP: 1 rows, gap=∞ DIP, panel=502 DIP, margins=[4;4;4;4;4]&#xD;
+Dark Media secondary actions 579 DIP: 1 rows, gap=∞ DIP, panel=503.33 DIP, margins=[4;4;4;4;4]&#xD;
+Dark Media secondary actions 580 DIP: 1 rows, gap=∞ DIP, panel=504 DIP, margins=[4;4;4;4;4]&#xD;
+Dark Media secondary actions 620 DIP: 1 rows, gap=∞ DIP, panel=544 DIP, margins=[4;4;4;4;4]&#xD;
+Dark Media secondary actions 700 DIP: 1 rows, gap=∞ DIP, panel=624 DIP, margins=[4;4;4;4;4]&#xD;
+Dark Media secondary actions 720 DIP: 1 rows, gap=∞ DIP, panel=644 DIP, margins=[4;4;4;4;4]&#xD;
+Dark Media secondary actions 800 DIP: 1 rows, gap=∞ DIP, panel=724 DIP, margins=[4;4;4;4;4]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="21fbcf31-1138-4b5b-aea8-a4a0f56ef49c" testId="3b537689-368f-bc3b-b51e-40ec93f5660e" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional(theme: Dark)" computerName="redacted-host" duration="00:00:00.3560000" startTime="2026-11-11T12:04:32.0427120+08:00" endTime="2026-11-11T12:04:32.3986356+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="21fbcf31-1138-4b5b-aea8-a4a0f56ef49c">
+      <Output>
+        <StdOut>Dark trainer releases header='可下载版本', count=0 个版本-&gt;1 个版本, emptyHint=True-&gt;Collapsed, helperVisible=False, automationHelp='选择在线目录结果后，此列表会显示对应版本。'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="324cc314-e51f-4ba1-b1cb-c963123a6731" testId="0a80c56e-9105-7b9b-7fda-39aa293c2c51" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: Dark)" computerName="redacted-host" duration="00:00:01.4670000" startTime="2026-11-11T12:04:39.0144736+08:00" endTime="2026-11-11T12:04:40.4812471+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="324cc314-e51f-4ba1-b1cb-c963123a6731">
+      <Output>
+        <StdOut>Dark 1280x840:sourceRows=1,safeMode=774x34.67&#xD;
+Dark 920x700:sourceRows=2,safeMode=554.67x34.67&#xD;
+Dark 560x640:sourceRows=2,safeMode=419.33x50.67</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4226328c-8ed3-457f-b1c8-117c8cca2160" testId="ab46effc-c89d-3bef-466e-40c0dfa3ad59" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths(theme: Dark)" computerName="redacted-host" duration="00:00:04.2880000" startTime="2026-11-11T12:04:18.1588265+08:00" endTime="2026-11-11T12:04:22.4458506+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4226328c-8ed3-457f-b1c8-117c8cca2160">
+      <Output>
+        <StdOut>Dark Save current-rule actions: 520 DIP: 1 rows, gap=∞ DIP, panel=472 DIP; 560 DIP: 1 rows, gap=∞ DIP, panel=512 DIP; 600 DIP: 1 rows, gap=∞ DIP, panel=552 DIP; 640 DIP: 1 rows, gap=∞ DIP, panel=592 DIP; 680 DIP: 1 rows, gap=∞ DIP, panel=632 DIP; 699 DIP: 1 rows, gap=∞ DIP, panel=651.33 DIP; 700 DIP: 1 rows, gap=∞ DIP, panel=245.33 DIP; 760 DIP: 1 rows, gap=∞ DIP, panel=245.33 DIP; 900 DIP: 1 rows, gap=∞ DIP, panel=245.33 DIP&#xD;
+Dark Overview home toolbar actions: 520 DIP: 1 rows, gap=∞ DIP, panel=502.67 DIP; 560 DIP: 1 rows, gap=∞ DIP, panel=542.67 DIP; 600 DIP: 1 rows, gap=∞ DIP, panel=582.67 DIP; 640 DIP: 1 rows, gap=∞ DIP, panel=622.67 DIP; 680 DIP: 1 rows, gap=∞ DIP, panel=662.67 DIP; 699 DIP: 1 rows, gap=∞ DIP, panel=682 DIP; 700 DIP: 1 rows, gap=∞ DIP, panel=682.67 DIP; 720 DIP: 1 rows, gap=∞ DIP, panel=702.67 DIP; 760 DIP: 1 rows, gap=∞ DIP, panel=272 DIP; 900 DIP: 1 rows, gap=∞ DIP, panel=272 DIP</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="4af126f9-9b72-427d-aac7-f391c86fc65b" testId="37d98978-2d1f-4620-68da-7ba638cd19c4" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint(theme: Dark)" computerName="redacted-host" duration="00:00:00.7100000" startTime="2026-11-11T12:04:16.7379192+08:00" endTime="2026-11-11T12:04:17.4468446+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4af126f9-9b72-427d-aac7-f391c86fc65b">
+      <Output>
+        <StdOut>Dark task preset compact rows=2, gap=20 DIP, margins=[20,20,20,20,20,20,20]; wide rows=1, margins=[0,0,0,0,0,0,0]; restored rows=2, margins=[20,20,20,20,20,20,20]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7abeb06d-4bb3-45d9-b5c0-06462d92e7b6" testId="800fa046-fcf5-67dd-fcb9-7bcd944c36e4" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceActionCategoryUsesSecondaryThemeColor(theme: Dark)" computerName="redacted-host" duration="00:00:00.4520000" startTime="2026-11-11T12:04:44.9062607+08:00" endTime="2026-11-11T12:04:45.3565382+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7abeb06d-4bb3-45d9-b5c0-06462d92e7b6">
+      <Output>
+        <StdOut>Dark maintenance action category ##FFB9C0CC; secondary ##FFB9C0CC; semantic info ##FF5CAAF0; minimum contrast=7.86:1</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d650641d-e07e-4823-8baf-cdc0497e6d9f" testId="711c40b4-e9c9-ee96-6708-fe1f4a00cad9" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText(theme: Dark)" computerName="redacted-host" duration="00:00:00.4580000" startTime="2026-11-11T12:04:29.7238099+08:00" endTime="2026-11-11T12:04:30.1752360+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d650641d-e07e-4823-8baf-cdc0497e6d9f">
+      <Output>
+        <StdOut>Dark Cloud transfer title/count center delta=0.67 DIP; title/pill row center delta=0.33/0; pill text center delta=0.33 DIP; pill=24.67, text=18.67</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0fde1b01-7ae9-47ef-9a05-c5ffd1b6d145" testId="f14d8609-0abd-c6e4-e4de-0cbe507aab27" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Light)" computerName="redacted-host" duration="00:00:02.7310000" startTime="2026-11-11T12:03:59.1802938+08:00" endTime="2026-11-11T12:04:01.9080481+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0fde1b01-7ae9-47ef-9a05-c5ffd1b6d145">
+      <Output>
+        <StdOut>Light Save history: summary=676×535.33, content=649.33×402.67, actions=649.33×112@row1, selected=True, inspector=Visible/647.33×825.33; wideRow=1, windowedAgainRow=1, action/content gap=10 DIP, trailing whitespace=5.33 DIP&#xD;
+2100: card=838×535.33, content=811.33×402.67, actions=811.33×112; 1280: card=616×585.33, content=589.33×402.67, actions=589.33×162; 1100: card=526×603.33, content=499.33×420.67, actions=499.33×162; 1052: card=502×621.33, content=475.33×438.67, actions=475.33×162; 1040: card=496×639.33, content=469.33×456.67, actions=469.33×162; 1000: card=476×689.33, content=449.33×456.67, actions=449.33×212; 960: card=928×541.33, content=901.33×408.67, actions=901.33×112; 920: card=888×541.33, content=861.33×408.67, actions=861.33×112; 900: card=868×541.33, content=841.33×408.67, actions=841.33×112; 880: card=848×541.33, content=821.33×408.67, actions=821.33×112; 860: card=828×541.33, content=801.33×408.67, actions=801.33×112; 2100: card=838×535.33, content=811.33×402.67, actions=811.33×112</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="02df80e8-da79-4a22-b264-58bb723e4839" testId="518e3f14-882c-6541-6ec8-46c20a796276" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Dark)" computerName="redacted-host" duration="00:00:02.7380000" startTime="2026-11-11T12:03:56.4400148+08:00" endTime="2026-11-11T12:03:59.1769876+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="02df80e8-da79-4a22-b264-58bb723e4839">
+      <Output>
+        <StdOut>Dark Save history: summary=676×535.33, content=649.33×402.67, actions=649.33×112@row1, selected=True, inspector=Visible/647.33×825.33; wideRow=1, windowedAgainRow=1, action/content gap=10 DIP, trailing whitespace=5.33 DIP&#xD;
+2100: card=838×535.33, content=811.33×402.67, actions=811.33×112; 1280: card=616×585.33, content=589.33×402.67, actions=589.33×162; 1100: card=526×603.33, content=499.33×420.67, actions=499.33×162; 1052: card=502×621.33, content=475.33×438.67, actions=475.33×162; 1040: card=496×639.33, content=469.33×456.67, actions=469.33×162; 1000: card=476×689.33, content=449.33×456.67, actions=449.33×212; 960: card=928×541.33, content=901.33×408.67, actions=901.33×112; 920: card=888×541.33, content=861.33×408.67, actions=861.33×112; 900: card=868×541.33, content=841.33×408.67, actions=841.33×112; 880: card=848×541.33, content=821.33×408.67, actions=821.33×112; 860: card=828×541.33, content=801.33×408.67, actions=801.33×112; 2100: card=838×535.33, content=811.33×402.67, actions=811.33×112</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="37c9f724-3c24-4851-82bc-b29bfde5703b" testId="9a5b89e1-7477-eb9b-6d2c-e6d26fd725d2" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ShortSettingsPageKeepsCategoryAndBodyViewports(width: 920)" computerName="redacted-host" duration="00:00:00.1220000" startTime="2026-11-11T12:04:45.5811469+08:00" endTime="2026-11-11T12:04:45.7017131+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="37c9f724-3c24-4851-82bc-b29bfde5703b">
+      <Output>
+        <StdOut>Settings 920x560: shell=841.33x481.33, header=282, headerRows=[37.33,0,46,95.33,68.67], workspace=841.33x187.33, rail=190x187.33, tabs=171.33x168.67, categoryViewportDip=168.67, logicalViewport=3, canContentScroll=True, lastTab=39.33/126, bodyViewport=181.33, resetCollapsed=True; reset transition: expandedActionsAvailable=True, restoredExpandedAtTallHeight=True</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0c7a4b4d-8fa7-4685-b250-08760b71264e" testId="7e987c7b-866f-164d-681c-c7d0596fcf9f" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: Dark)" computerName="redacted-host" duration="00:00:02.5150000" startTime="2026-11-11T12:04:07.1283538+08:00" endTime="2026-11-11T12:04:09.6411994+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c7a4b4d-8fa7-4685-b250-08760b71264e">
+      <Output>
+        <StdOut>Dark:dpi=1.5,slider=316x32,thumb=32x32,track=0/284,value=20%,compact=0,0,316,32/326,8,80,16</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3fe67320-7f79-412b-bdc0-24f1ca9b45ff" testId="5cdea410-adec-b670-9506-60b0ed5876b5" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.OverviewActionsStayStableWithoutDuplicateLoadingCopy(theme: Dark)" computerName="redacted-host" duration="00:00:00.5060000" startTime="2026-11-11T12:04:02.4796927+08:00" endTime="2026-11-11T12:04:02.9847170+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fe67320-7f79-412b-bdc0-24f1ca9b45ff">
+      <Output>
+        <StdOut>Dark overview action row remains title-free; height 48 -&gt; 48 DIP; cloud queue=4 metric accent=##FF7C8CF8, attention title warning, failed status error (info token ##FF5CAAF0), command retained, contrast=4.77/4.77/7.66:1</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5a64739e-f201-43be-ab6e-a11b35120861" testId="17f21b50-1c2c-918c-e9d8-f2d94e981fef" testName="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData(theme: Dark)" computerName="redacted-host" duration="00:00:00.4820000" startTime="2026-11-11T12:04:43.4947089+08:00" endTime="2026-11-11T12:04:43.9753582+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a64739e-f201-43be-ab6e-a11b35120861">
+      <Output>
+        <StdOut>Dark maintenance diagnostics empty hints main=Visible-&gt;Collapsed-&gt;Visible, audit=Visible-&gt;Collapsed-&gt;Visible; copy="暂无待处理诊断项。"</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CurrentGameMediaBatchActionRowReportsWrappedGeometry(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="749a2271-3f29-e6b4-165a-e92f3fa222ca">
+      <Execution id="3f22727a-cb78-431e-98ee-48d6c41358c2" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CurrentGameMediaBatchActionRowReportsWrappedGeometry" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6876fe59-3cfa-ef61-b4cb-a976c574e832">
+      <Execution id="f023fbd4-3559-4413-a50d-ae8b3abdb9e7" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4f9b2c01-b742-a98d-c1c0-7c521f1e3511">
+      <Execution id="00a7837b-16d9-4db0-8afa-9a861877fa03" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceActionCategoryUsesSecondaryThemeColor(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="800fa046-fcf5-67dd-fcb9-7bcd944c36e4">
+      <Execution id="7abeb06d-4bb3-45d9-b5c0-06462d92e7b6" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="MaintenanceActionCategoryUsesSecondaryThemeColor" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ce572307-e4f5-0552-4839-f0d72f2492bb">
+      <Execution id="f939a5a9-0d99-4c85-9745-4022b5ac902c" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7e987c7b-866f-164d-681c-c7d0596fcf9f">
+      <Execution id="0c7a4b4d-8fa7-4685-b250-08760b71264e" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5b92d484-f6f0-286a-f232-9ef2ecc57b98">
+      <Execution id="ae69ad46-22ad-4c7e-8e97-8ffd9b12b6ab" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="f14d8609-0abd-c6e4-e4de-0cbe507aab27">
+      <Execution id="0fde1b01-7ae9-47ef-9a05-c5ffd1b6d145" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="69c12a75-aa55-cdf7-6c80-d2f368cc8ee8">
+      <Execution id="3107436c-3cad-420c-a53d-e3f6c9927fa5" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c28061ed-445e-2352-f98e-be347f81dd0c">
+      <Execution id="82c946e2-6bd4-4566-92a6-62f0b7fc71ce" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactSaveAndInboxActionWrapsKeepATwentyDipRowGapAndRestoreWideMargins" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="a506d032-d5a3-14bd-35c7-8e0b10da156d">
+      <Execution id="d328c6df-0190-4ee2-b020-42811ba5a27c" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="78c304f3-9db9-5e69-1d60-1850339eac09">
+      <Execution id="da5bb5c3-5703-4e0e-829c-3ffecd1481c2" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceActionCategoryUsesSecondaryThemeColor(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="d821df88-ce8e-d5d0-b8b6-799f60f488f2">
+      <Execution id="13cc5b74-c1c9-47ad-84a9-5c68bac94873" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="MaintenanceActionCategoryUsesSecondaryThemeColor" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="a855630f-dc67-6159-88f6-da6738efc77a">
+      <Execution id="de7c18d5-23b6-4b59-bd1f-ed72b8d5c2a3" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9e3c6f8b-30ab-fe18-71eb-8de17a35559e">
+      <Execution id="d559ece7-e576-4d56-97b3-dd973f785f4f" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="216ef32e-bd18-b3b5-1758-aa2cf71cbdd4">
+      <Execution id="528b82cd-aafb-483a-993c-711fa6d1051c" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="de4ad536-aca6-6c0e-3cba-f6135959e378">
+      <Execution id="3cf32362-a508-456a-abbe-35c7d550c184" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactShellStacksPageTitleAboveActionsAndHidesSecondarySubtitle" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b9a3294f-ec77-85a0-be3a-efbb364428fb">
+      <Execution id="c6d06914-bdcf-4f01-9f72-7691b427d854" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="711c40b4-e9c9-ee96-6708-fe1f4a00cad9">
+      <Execution id="d650641d-e07e-4823-8baf-cdc0497e6d9f" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CloudTransferLoadedCountSharesTheTableTitleBaselineAndCentersItsText" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: FollowPlaynite)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="6f8f4e4d-c77d-f109-924b-d3ba6d350753">
+      <Execution id="73bf4756-832a-4622-82fb-52718da79e4a" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.OverviewActionsStayStableWithoutDuplicateLoadingCopy(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="5cdea410-adec-b670-9506-60b0ed5876b5">
+      <Execution id="3fe67320-7f79-412b-bdc0-24f1ca9b45ff" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="OverviewActionsStayStableWithoutDuplicateLoadingCopy" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="af7adb69-de9b-12aa-e9e4-ac986a3a8436">
+      <Execution id="3fc226df-e2c4-4b19-8676-f3fa95869df0" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.OverviewActionsStayStableWithoutDuplicateLoadingCopy(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="35b55fdb-0e04-f5d7-b39f-00f07b634cc9">
+      <Execution id="2ecaebfd-48e9-4686-8890-83ca79076fb2" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="OverviewActionsStayStableWithoutDuplicateLoadingCopy" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3b537689-368f-bc3b-b51e-40ec93f5660e">
+      <Execution id="21fbcf31-1138-4b5b-aea8-a4a0f56ef49c" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TrainerReleaseHeaderKeepsLoadedStateConciseAndEmptyHintConditional" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7a53019d-44c3-da5c-a0a5-ee6441345eeb">
+      <Execution id="ce731b81-b28e-47b2-b338-0a26b9d9c83c" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2114340d-4232-3fed-a711-5d0584ff788e">
+      <Execution id="5f53ebbb-9b40-436f-b26b-4fa402e6f2e6" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2e21b4ed-25ac-a540-9a30-41e0292f550d">
+      <Execution id="e2f8b6ce-cb8a-43be-8c55-3d62008446b4" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="ProductionPrimaryBackupIconsMatchButtonTextAndKeepContrastAndCommands" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="0a80c56e-9105-7b9b-7fda-39aa293c2c51">
+      <Execution id="324cc314-e51f-4ba1-b1cb-c963123a6731" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b970fa7c-cc91-63ce-f221-d38d48f90506">
+      <Execution id="a52f1007-28d8-4584-8990-a08882189708" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3e867d51-35ab-df84-be15-7cde1b106a2b">
+      <Execution id="72512189-4ddd-4c1d-93f5-c932c87ee9a1" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsHeaderAndPathActionsStayAnchoredToTheirLabelsAndEachOther" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="28757b0b-c447-27df-e517-76de03b08c47">
+      <Execution id="cb7d8b44-c028-42ba-ba59-84e6197ad245" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsDenseOptionsKeepEachHelpTextWithItsOwnToggleAtNarrowSizes" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="11f37952-933d-9e02-ec72-f8b0f6992eb3">
+      <Execution id="e6806a94-5bd0-48c1-944c-4c5298eb25fb" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="fbe44cf9-75c2-f417-0c33-fc05b6e170df">
+      <Execution id="72c011a6-f3ff-46db-b863-75ce492378ca" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="09e4d02e-746b-9d65-7541-f7e5d2e531f6">
+      <Execution id="9d1644af-10fc-4023-88e8-23f1701196d6" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="Common1040ShellMediaInboxKeepsFourRowsVisibleWithOneBatchActionRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="17f21b50-1c2c-918c-e9d8-f2d94e981fef">
+      <Execution id="5a64739e-f201-43be-ab6e-a11b35120861" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="MaintenanceDiagnosticEmptyCopyIsAccurateAndCollapsesWithData" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="70d874b5-f972-0e02-fff1-39166f431326">
+      <Execution id="50619f3d-9558-4c68-8cc6-0e638f69f6aa" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="ab46effc-c89d-3bef-466e-40c0dfa3ad59">
+      <Execution id="4226328c-8ed3-457f-b1c8-117c8cca2160" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9aedc851-91bf-258e-82ff-0752cc488637">
+      <Execution id="877a19db-2a67-49ad-b47e-d7f57a590f4d" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactMaintenanceActionRowsKeepBreathingRoomAndRestoreOnResize" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: FollowPlaynite)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="7e5b4b54-087f-6184-7ef2-3ca8ff09f389">
+      <Execution id="07e4f3a9-2006-45dd-8b8b-f5f21284f1d2" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ShortSettingsPageKeepsCategoryAndBodyViewports(width: 760)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="1a268dfe-d275-bfe0-ec72-96639401aa67">
+      <Execution id="dfba530d-1b17-41a3-99cf-e9026218019d" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="ShortSettingsPageKeepsCategoryAndBodyViewports" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="93f7e58a-2375-c441-c387-589b501979c9">
+      <Execution id="0646e1d1-67c6-4710-ada2-853be6864ede" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TrainerImportEmptyHintHidesWhenConfirmationIsPendingWithoutHidingActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.ShortSettingsPageKeepsCategoryAndBodyViewports(width: 920)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="9a5b89e1-7477-eb9b-6d2c-e6d26fd725d2">
+      <Execution id="37c9f724-3c24-4851-82bc-b29bfde5703b" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="ShortSettingsPageKeepsCategoryAndBodyViewports" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="60f0fc75-445b-a4e8-9d32-6fa47390302c">
+      <Execution id="198dd9f9-cb05-4c92-a022-b1c9311f58e2" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TrainerImportActionsKeepBreathingRoomAcrossWorkspaceWidths" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="36a64976-14ad-bde7-c3f7-22a7a08ed136">
+      <Execution id="ec27975a-b36f-4007-971c-bf44510f8e11" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="387436c2-c9c8-7552-3e21-7c12d44f5d97">
+      <Execution id="eecd1eeb-51d5-4649-85b7-1f50553fb420" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="MediaInboxPolicyHintCollapsesWhenItemsArePresentAndStaysOutOfIgnoredMode" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="173f2a21-7e05-9824-5b3c-9c9b97a322d4">
+      <Execution id="d34a2575-1f52-45e2-a2d0-4f8502ad7aba" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactInboxKeepsBatchButtonsCompactAndTheGridInsideItsFrameRow" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="37d98978-2d1f-4620-68da-7ba638cd19c4">
+      <Execution id="4af126f9-9b72-427d-aac7-f391c86fc65b" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CompactTaskPresetWrapUsesTwentyDipGapAndRestoresAtBreakpoint" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="2f7935f1-c702-6d10-2a78-da5efffae682">
+      <Execution id="5919060c-ef74-45db-a9c6-dd4bbef979a3" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsGlassStrengthSliderKeepsTrackHitAreaReadableValueAndKeyboardSteps" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="b24b361e-28b8-4e57-3b9e-89e1b2cd2ddd">
+      <Execution id="8cc904cd-bf68-4834-9d3e-114c5df26447" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TrainerInstalledToolActionsSeparateWrappedRowsAndRestoreInCompactDrawer" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="91780e58-0952-61f5-086f-48a70ebd97ed">
+      <Execution id="9ba5f874-20e5-40da-b045-0e2f1eb2141a" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="SettingsSectionHeadersUseThemeAccentWithoutChangingTheirActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="518e3f14-882c-6541-6ec8-46c20a796276">
+      <Execution id="02df80e8-da79-4a22-b264-58bb723e4839" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="WindowedSaveHistoryDoesNotExpandTheSummaryCardAroundItsActions" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="92dca8d8-017c-0ca1-5bd7-bf82b0104435">
+      <Execution id="690a292b-6217-474c-be73-84f466cc0849" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="FailedTaskStatusStaysInItsCellAcrossRecyclingWithoutAFullRowFrame" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.CurrentGameMediaBatchActionRowReportsWrappedGeometry(theme: Dark)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="63f8e971-9558-dd20-af5e-923dca42fec7">
+      <Execution id="71283b4a-49ad-428e-b8e1-aa59c131d66a" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="CurrentGameMediaBatchActionRowReportsWrappedGeometry" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="4e2f0960-36f6-0e6c-25a4-1463754f9e82">
+      <Execution id="74ff46c5-0049-40ce-b7b2-f5090585b4c0" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="RemainingVisibleSaveAndOverviewActionGroupsAreMeasuredAcrossCompactWidths" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="cee12a37-c24a-ec1e-d1e0-d20766be1c58">
+      <Execution id="0dc887f9-a50d-49ae-9679-a158686cd828" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="EnvironmentAndBackupQualityFeedbackUseSemanticThemeColors" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests.TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt(theme: Light)" storage="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="c6fb767e-a5fb-322b-1f2a-c237c1bb332b">
+      <Execution id="4ccdbd67-4246-4b9a-a7bf-37db722e7961" />
+      <TestMethod codeBase="[repo]\.tmp\round5-u08-01-03-20261111\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.ReportedWorkspaceLayoutBehaviorTests" name="TaskQueueActionRowStaysFixedWhenSummaryTextGrowsBelowIt" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="70d874b5-f972-0e02-fff1-39166f431326" executionId="50619f3d-9558-4c68-8cc6-0e638f69f6aa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="60f0fc75-445b-a4e8-9d32-6fa47390302c" executionId="198dd9f9-cb05-4c92-a022-b1c9311f58e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5b92d484-f6f0-286a-f232-9ef2ecc57b98" executionId="ae69ad46-22ad-4c7e-8e97-8ffd9b12b6ab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="93f7e58a-2375-c441-c387-589b501979c9" executionId="0646e1d1-67c6-4710-ada2-853be6864ede" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4f9b2c01-b742-a98d-c1c0-7c521f1e3511" executionId="00a7837b-16d9-4db0-8afa-9a861877fa03" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="28757b0b-c447-27df-e517-76de03b08c47" executionId="cb7d8b44-c028-42ba-ba59-84e6197ad245" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e2f0960-36f6-0e6c-25a4-1463754f9e82" executionId="74ff46c5-0049-40ce-b7b2-f5090585b4c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="09e4d02e-746b-9d65-7541-f7e5d2e531f6" executionId="9d1644af-10fc-4023-88e8-23f1701196d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fbe44cf9-75c2-f417-0c33-fc05b6e170df" executionId="72c011a6-f3ff-46db-b863-75ce492378ca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9aedc851-91bf-258e-82ff-0752cc488637" executionId="877a19db-2a67-49ad-b47e-d7f57a590f4d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="af7adb69-de9b-12aa-e9e4-ac986a3a8436" executionId="3fc226df-e2c4-4b19-8676-f3fa95869df0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6876fe59-3cfa-ef61-b4cb-a976c574e832" executionId="f023fbd4-3559-4413-a50d-ae8b3abdb9e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7e5b4b54-087f-6184-7ef2-3ca8ff09f389" executionId="07e4f3a9-2006-45dd-8b8b-f5f21284f1d2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b970fa7c-cc91-63ce-f221-d38d48f90506" executionId="a52f1007-28d8-4584-8990-a08882189708" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="92dca8d8-017c-0ca1-5bd7-bf82b0104435" executionId="690a292b-6217-474c-be73-84f466cc0849" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="78c304f3-9db9-5e69-1d60-1850339eac09" executionId="da5bb5c3-5703-4e0e-829c-3ffecd1481c2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="11f37952-933d-9e02-ec72-f8b0f6992eb3" executionId="e6806a94-5bd0-48c1-944c-4c5298eb25fb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a855630f-dc67-6159-88f6-da6738efc77a" executionId="de7c18d5-23b6-4b59-bd1f-ed72b8d5c2a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b24b361e-28b8-4e57-3b9e-89e1b2cd2ddd" executionId="8cc904cd-bf68-4834-9d3e-114c5df26447" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2f7935f1-c702-6d10-2a78-da5efffae682" executionId="5919060c-ef74-45db-a9c6-dd4bbef979a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="173f2a21-7e05-9824-5b3c-9c9b97a322d4" executionId="d34a2575-1f52-45e2-a2d0-4f8502ad7aba" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="216ef32e-bd18-b3b5-1758-aa2cf71cbdd4" executionId="528b82cd-aafb-483a-993c-711fa6d1051c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ce572307-e4f5-0552-4839-f0d72f2492bb" executionId="f939a5a9-0d99-4c85-9745-4022b5ac902c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e21b4ed-25ac-a540-9a30-41e0292f550d" executionId="e2f8b6ce-cb8a-43be-8c55-3d62008446b4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e867d51-35ab-df84-be15-7cde1b106a2b" executionId="72512189-4ddd-4c1d-93f5-c932c87ee9a1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="35b55fdb-0e04-f5d7-b39f-00f07b634cc9" executionId="2ecaebfd-48e9-4686-8890-83ca79076fb2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="91780e58-0952-61f5-086f-48a70ebd97ed" executionId="9ba5f874-20e5-40da-b045-0e2f1eb2141a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7a53019d-44c3-da5c-a0a5-ee6441345eeb" executionId="ce731b81-b28e-47b2-b338-0a26b9d9c83c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d821df88-ce8e-d5d0-b8b6-799f60f488f2" executionId="13cc5b74-c1c9-47ad-84a9-5c68bac94873" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="387436c2-c9c8-7552-3e21-7c12d44f5d97" executionId="eecd1eeb-51d5-4649-85b7-1f50553fb420" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="69c12a75-aa55-cdf7-6c80-d2f368cc8ee8" executionId="3107436c-3cad-420c-a53d-e3f6c9927fa5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6fb767e-a5fb-322b-1f2a-c237c1bb332b" executionId="4ccdbd67-4246-4b9a-a7bf-37db722e7961" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9e3c6f8b-30ab-fe18-71eb-8de17a35559e" executionId="d559ece7-e576-4d56-97b3-dd973f785f4f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a506d032-d5a3-14bd-35c7-8e0b10da156d" executionId="d328c6df-0190-4ee2-b020-42811ba5a27c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="749a2271-3f29-e6b4-165a-e92f3fa222ca" executionId="3f22727a-cb78-431e-98ee-48d6c41358c2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2114340d-4232-3fed-a711-5d0584ff788e" executionId="5f53ebbb-9b40-436f-b26b-4fa402e6f2e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6f8f4e4d-c77d-f109-924b-d3ba6d350753" executionId="73bf4756-832a-4622-82fb-52718da79e4a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1a268dfe-d275-bfe0-ec72-96639401aa67" executionId="dfba530d-1b17-41a3-99cf-e9026218019d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b9a3294f-ec77-85a0-be3a-efbb364428fb" executionId="c6d06914-bdcf-4f01-9f72-7691b427d854" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cee12a37-c24a-ec1e-d1e0-d20766be1c58" executionId="0dc887f9-a50d-49ae-9679-a158686cd828" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="de4ad536-aca6-6c0e-3cba-f6135959e378" executionId="3cf32362-a508-456a-abbe-35c7d550c184" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="36a64976-14ad-bde7-c3f7-22a7a08ed136" executionId="ec27975a-b36f-4007-971c-bf44510f8e11" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="63f8e971-9558-dd20-af5e-923dca42fec7" executionId="71283b4a-49ad-428e-b8e1-aa59c131d66a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c28061ed-445e-2352-f98e-be347f81dd0c" executionId="82c946e2-6bd4-4566-92a6-62f0b7fc71ce" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3b537689-368f-bc3b-b51e-40ec93f5660e" executionId="21fbcf31-1138-4b5b-aea8-a4a0f56ef49c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0a80c56e-9105-7b9b-7fda-39aa293c2c51" executionId="324cc314-e51f-4ba1-b1cb-c963123a6731" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ab46effc-c89d-3bef-466e-40c0dfa3ad59" executionId="4226328c-8ed3-457f-b1c8-117c8cca2160" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="37d98978-2d1f-4620-68da-7ba638cd19c4" executionId="4af126f9-9b72-427d-aac7-f391c86fc65b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="800fa046-fcf5-67dd-fcb9-7bcd944c36e4" executionId="7abeb06d-4bb3-45d9-b5c0-06462d92e7b6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="711c40b4-e9c9-ee96-6708-fe1f4a00cad9" executionId="d650641d-e07e-4823-8baf-cdc0497e6d9f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f14d8609-0abd-c6e4-e4de-0cbe507aab27" executionId="0fde1b01-7ae9-47ef-9a05-c5ffd1b6d145" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="518e3f14-882c-6541-6ec8-46c20a796276" executionId="02df80e8-da79-4a22-b264-58bb723e4839" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9a5b89e1-7477-eb9b-6d2c-e6d26fd725d2" executionId="37c9f724-3c24-4851-82bc-b29bfde5703b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7e987c7b-866f-164d-681c-c7d0596fcf9f" executionId="0c7a4b4d-8fa7-4685-b250-08760b71264e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5cdea410-adec-b670-9506-60b0ed5876b5" executionId="3fe67320-7f79-412b-bdc0-24f1ca9b45ff" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="17f21b50-1c2c-918c-e9d8-f2d94e981fef" executionId="5a64739e-f201-43be-ab6e-a11b35120861" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="56" executed="56" passed="56" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.44]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.77]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:02.86]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:01:20.60]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="redacted-host" outcome="Warning" timestamp="2026-11-11T12:05:08.8682949+08:00">
+        <Text>数据收集器“Blame”消息: 所有测试都已运行完毕，将不生成序列文件。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

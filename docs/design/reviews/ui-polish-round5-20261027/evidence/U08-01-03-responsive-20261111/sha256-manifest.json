@@ -1,0 +1,62 @@
+[
+  {
+    "path": "diagnostics/build-summary.json",
+    "bytes": 995165,
+    "sha256": "e8db09095405ac3d8ec5a2a275a3b15e28c6f185bb57e7afe4c62a72405c70d4"
+  },
+  {
+    "path": "diagnostics/initial-fixture-compile-failure-build-console.txt",
+    "bytes": 1838,
+    "sha256": "f8f4df370566a167ac68bad5b46a45be5a2e06231addc25b8ea30a6176d185f8"
+  },
+  {
+    "path": "diagnostics/initial-fixture-compile-failure-summary.json",
+    "bytes": 238657,
+    "sha256": "3b763636e8af7dd51d55f7f012655581f551d4ec38cb15606ba1d35837a4ca87"
+  },
+  {
+    "path": "diagnostics/render-qa-report.txt",
+    "bytes": 1140807,
+    "sha256": "574adfc394c3313119be875102b64a155ed16d33f3a32da2e2faf723225b3f95"
+  },
+  {
+    "path": "diagnostics/wpf-static-review.txt",
+    "bytes": 29646,
+    "sha256": "bf7f6ac91280142f7c309ffb060cd176b57f3df60f11a80bf2fc6e618939305f"
+  },
+  {
+    "path": "README.md",
+    "bytes": 3758,
+    "sha256": "241193bad9a0062e6cf35957509698f718b597a95b16f59b1d5abb01f933285a"
+  },
+  {
+    "path": "screenshots/Overview-1040x700.png",
+    "bytes": 58717,
+    "sha256": "3c34028a0a8595c28f76af05cd0d94a3f816c28743a07f6b059d8f824340da95"
+  },
+  {
+    "path": "screenshots/Overview-1366x768.png",
+    "bytes": 73991,
+    "sha256": "8f27c837bce45697c574369cdabe94f1356c02fc9fb8ecf84680d5cac18332b7"
+  },
+  {
+    "path": "screenshots/Save-1366x768-tab0.png",
+    "bytes": 108590,
+    "sha256": "3ed6b7fe40a758632ef828555d361e539d0cc773ceb36d301b7b611d7e1ac73b"
+  },
+  {
+    "path": "screenshots/Task-1536x864.png",
+    "bytes": 105626,
+    "sha256": "0bb0973deca30a6f9e1c2950034e5c5240393a68136d8109d983f1f02bdb4d28"
+  },
+  {
+    "path": "tests/CompactWorkspaceTableViewportBehaviorTests.trx",
+    "bytes": 28407,
+    "sha256": "6fd045705dd3e32ec54aac4108cd440b5e9df665a2b2ec0cb8bd64401e296d4d"
+  },
+  {
+    "path": "tests/ReportedWorkspaceLayoutBehaviorTests.trx",
+    "bytes": 116510,
+    "sha256": "65b02dd96c1f56b2d3a40c90e13a4328ab19b75206ee9cedf343def672f97b52"
+  }
+]

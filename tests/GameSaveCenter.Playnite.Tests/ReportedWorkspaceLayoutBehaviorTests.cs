@@ -691,12 +691,9 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]
-    public void OverviewHeaderCopyHidesAfterDataLoadsAndMetricUsesThemeAccent(GameSaveCenterThemeMode theme)
+    public void OverviewActionsStayStableWithoutDuplicateLoadingCopy(GameSaveCenterThemeMode theme)
     {
         Exception? exception = null;
-        var initialHintVisibility = Visibility.Collapsed;
-        var loadedHintVisibility = Visibility.Visible;
-        var restoredHintVisibility = Visibility.Collapsed;
         var initialHeaderHeight = 0d;
         var loadedHeaderHeight = 0d;
         var metricAccentColor = Colors.Transparent;
@@ -715,7 +712,6 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var view = new OverviewView { DataContext = probe };
                 ApplyTheme(view, theme);
                 var viewType = typeof(OverviewView);
-                var hint = (TextBlock)viewType.GetField("OverviewHomeEmptyHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var toolbar = (Border)viewType.GetField("OverviewHomeToolbar", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var metric = (TextBlock)viewType.GetField("OverviewManagedGamesValue", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var cloudQueueMetric = (TextBlock)viewType.GetField("OverviewCloudQueueValue", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
@@ -732,13 +728,14 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 Assert.Same(probe.RefreshCommand, actionButtons[0].Command);
                 Assert.Same(probe.BackupAllCommand, actionButtons[1].Command);
                 Assert.Same(probe.SyncMediaCommand, actionButtons[2].Command);
-                initialHintVisibility = hint.Visibility;
                 initialHeaderHeight = toolbar.ActualHeight;
-                Assert.Contains("刷新", hint.Text, StringComparison.Ordinal);
+                Assert.Equal(0, toolbar.BorderThickness.Left);
+                Assert.Equal(0, toolbar.BorderThickness.Top);
+                Assert.Equal(0, toolbar.Padding.Left);
+                Assert.Null(view.FindName("OverviewHomeEmptyHint"));
 
                 probe.IsDashboardSnapshotLoaded = true;
                 FlushLayout(window);
-                loadedHintVisibility = hint.Visibility;
                 loadedHeaderHeight = toolbar.ActualHeight;
                 var accent = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscAccentBrush"));
                 var info = Assert.IsType<SolidColorBrush>(view.TryFindResource("GscInfoBrush"));
@@ -790,10 +787,6 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 Assert.Equal(warning.Color, priorityForeground.Color);
                 Assert.Equal(error.Color, cloudStatusForeground.Color);
                 Assert.Same(probe.OpenCloudQueueCommand, cloudQueueAction.Command);
-
-                probe.IsDashboardSnapshotLoaded = false;
-                FlushLayout(window);
-                restoredHintVisibility = hint.Visibility;
             }
             catch (Exception caught)
             {
@@ -805,13 +798,9 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
             }
         });
 
-        output.WriteLine($"{theme} overview hint {initialHintVisibility} -> {loadedHintVisibility} -> {restoredHintVisibility}; toolbar {initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP; cloud queue=4 metric accent=#{themeAccentColor}, attention title warning, failed status error (info token #{metricInfoColor}), command retained, contrast={metricMinContrast:0.##}/{cloudQueueMetricMinContrast:0.##}/{cloudAttentionTitleMinContrast:0.##}:1");
+        output.WriteLine($"{theme} overview action row remains title-free; height {initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP; cloud queue=4 metric accent=#{themeAccentColor}, attention title warning, failed status error (info token #{metricInfoColor}), command retained, contrast={metricMinContrast:0.##}/{cloudQueueMetricMinContrast:0.##}/{cloudAttentionTitleMinContrast:0.##}:1");
         Assert.Null(exception);
-        Assert.Equal(Visibility.Visible, initialHintVisibility);
-        Assert.Equal(Visibility.Collapsed, loadedHintVisibility);
-        Assert.Equal(Visibility.Visible, restoredHintVisibility);
-        Assert.True(loadedHeaderHeight < initialHeaderHeight - 4,
-            $"Loaded overview data should reclaim the generic helper line ({initialHeaderHeight:0.##} -> {loadedHeaderHeight:0.##} DIP).");
+        Assert.Equal(initialHeaderHeight, loadedHeaderHeight, 1);
         Assert.Equal(themeAccentColor, metricAccentColor);
         Assert.NotEqual(metricInfoColor, metricAccentColor);
         Assert.True(metricMinContrast >= 3.0,

@@ -93,8 +93,8 @@ public sealed class OverviewPriorityResolverTests
     }
 
     [Theory]
-    [InlineData(WorkspaceKind.Overview, null, null, "今日工作台 · 正在读取概览状态")]
-    [InlineData(WorkspaceKind.Overview, null, "后台服务需要处理", "今日工作台 · 后台服务需要处理")]
+    [InlineData(WorkspaceKind.Overview, null, null, "状态与最近任务")]
+    [InlineData(WorkspaceKind.Overview, null, "后台服务需要处理", "状态与最近任务")]
     [InlineData(WorkspaceKind.Saves, "合成游戏", "不应显示", "合成游戏 · 路径与恢复点状态")]
     public void ShellSubtitleFollowsTheCurrentStateInsteadOfClaimingEverythingIsHealthy(
         WorkspaceKind workspace,

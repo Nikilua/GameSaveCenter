@@ -1146,9 +1146,7 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Tasks => "备份 · 云端 · 媒体任务队列",
                 WorkspaceKind.Notifications => "全局提醒 · 未读状态 · 时间与级别筛选",
                 WorkspaceKind.Maintenance => "诊断 · 设备 · 保留策略 · 审计",
-                _ => string.IsNullOrWhiteSpace(overviewPriorityTitle)
-                    ? "今日工作台 · 正在读取概览状态"
-                    : $"今日工作台 · {overviewPriorityTitle}",
+                _ => "状态与最近任务",
             };
         }
 
