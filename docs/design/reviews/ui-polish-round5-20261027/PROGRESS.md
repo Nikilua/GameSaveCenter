@@ -1,3 +1,9 @@
+## 2026-11-12 用户手工走查验收
+
+用户反馈已在当前版本手工走查，整体没有明显问题，并明确同意将此前“代码完成待验收”的71项标记为验收通过。依此更新整轮状态：78项验收完成（原7项已满足，加本次用户走查接受的71项）；U09-04动画性能量化复测继续进行中；U09-06 required-checks/ruleset读取继续“远端待验”。本次记录是用户对当前产品体验的验收，不声称这次走查逐项执行了Narrator、IME、物理DPI或动画性能计量；真实存档恢复、媒体删除、云端写入仍不在本轮验证范围。
+
+U09-04仍按原验收条件比较同环境p95、长帧、输入响应和分配量；用户的“无明显问题”反馈可作为主观体验接受，不能替代尚缺的量化数据。U09-06对应的`windows-build.yml` run #1541已对文档提交`46e0f7092b0f7c153f10f07e35b296b60ab77dea`完成双job成功，但combined status没有独立项，required-check/ruleset读取的既有HTTP 403仍未解除。取得所需只读权限后，按run #1541提交SHA查询required checks并核对与两个workflow job的完整性。
+
 ## 2026-11-12 U01-07 / U08-04：冻结候选完整构建与CI复核
 
 本批媒体收件箱 `MediaLongText` 已绑定完整 UIA HelpText；源实现提交 `90b084cf084ec8a3eb4c9ec314ae582933da1949` 已推送。冻结候选文档提交 `d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef` 的中文根入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1 -Configuration Release` 最终实际 `cmd.exe` 退出码 0，SDK 8.0.423 / Release；构建、测试、发布、打包、安装身份核验及启动调用全部完成。

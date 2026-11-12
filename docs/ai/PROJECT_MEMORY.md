@@ -2127,3 +2127,7 @@ Round5当前80项状态由U09-08复核：7已满足、71代码完成待验收、
 媒体收件箱 `MediaLongText` 的类型/来源/原因长文本现在把当前完整文本暴露为UIA HelpText；实现提交`90b084cf084ec8a3eb4c9ec314ae582933da1949`。冻结候选`d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef`的中文根入口与独立`scripts/build.cmd`都按各自职责完成SDK8.0.423 / Release全测试，157个WPF隔离类完成；skip保留原理由，不计通过。根入口验证0.6.73安装程序集身份与包hash。证据见Round5 `evidence/U01-07-U08-04-reason-accessibility-20261111/`。
 
 该SHA的GitHub run #1540 双job成功；workflow身份已保存，但combined status无单独项目，required-check/ruleset因U09-06既有403仍远端待验，不重试同一权限请求。启动后Playnite进程存在而主窗口句柄为0，桌面自动化runtime无法初始化，因此代码仍待真实宿主、UIA/Narrator、实体键盘/IME和物理DPI验收。不要把离屏Render QA说成宿主通过，也不要触碰真实存档恢复、媒体删除或云端写入验证。
+
+### Round5 2026-11-12 用户手工走查验收
+
+用户在当前版本手工走查后反馈整体没有明显问题，并授权将此前71项“代码完成待验收”按用户体验验收通过。当前80项状态为78项验收完成、U09-04量化动画性能复测进行中、U09-06 required-checks/ruleset远端待验。用户走查不作为Narrator、IME、物理DPI或p95/长帧/输入响应/分配量的独立测试证据；真实存档恢复、媒体删除、云端写入仍排除在本轮验收范围外。U09-06待获得只读权限后核对 required checks。
