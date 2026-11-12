@@ -1,0 +1,34 @@
+  正在确定要还原的项目…
+  已还原 D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Contracts\GameSaveCenter.Contracts.csproj (用时 201 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Core\GameSaveCenter.Core.csproj (用时 201 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Worker\GameSaveCenter.Worker.csproj (用时 354 毫秒)。
+  已还原 D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\GameSaveCenter.Worker.Tests.csproj (用时 355 毫秒)。
+  GameSaveCenter.Contracts -> D:\workplace\github\GameSaveCenter\.tmp\assessment-a05-a06-targeted\output\bin\GameSaveCenter.Contracts\Release\netstandard2.0\GameSaveCenter.Contracts.dll
+  GameSaveCenter.Core -> D:\workplace\github\GameSaveCenter\.tmp\assessment-a05-a06-targeted\output\bin\GameSaveCenter.Core\Release\netstandard2.0\GameSaveCenter.Core.dll
+  GameSaveCenter.Worker -> D:\workplace\github\GameSaveCenter\.tmp\assessment-a05-a06-targeted\output\bin\GameSaveCenter.Worker\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.dll
+  GameSaveCenter.Worker.Tests -> D:\workplace\github\GameSaveCenter\.tmp\assessment-a05-a06-targeted\output\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll
+D:\workplace\github\GameSaveCenter\.tmp\assessment-a05-a06-targeted\output\bin\GameSaveCenter.Worker.Tests\Release\net8.0-windows10.0.19041.0\GameSaveCenter.Worker.Tests.dll (.NETCoreApp,Version=v8.0)的测试运行
+VSTest 版本 17.11.1 (x64)
+
+正在启动测试执行，请稍候...
+总共 1 个测试文件与指定模式相匹配。
+[xUnit.net 00:00:00.28]     GameSaveCenter.Worker.Tests.AtomicFileWriterTests.CancellationAfterTemporaryFileCreationPreservesExistingFileAndCleansTemporary [FAIL]
+[xUnit.net 00:00:00.34]     GameSaveCenter.Worker.Tests.AtomicFileWriterTests.ConcurrentWritesLeaveOneCompletePayloadAndNoTemporaryFiles [FAIL]
+  失败 GameSaveCenter.Worker.Tests.AtomicFileWriterTests.CancellationAfterTemporaryFileCreationPreservesExistingFileAndCleansTemporary [52 ms]
+  错误消息:
+   Assert.ThrowsAny() Failure: No exception was thrown
+Expected: typeof(System.OperationCanceledException)
+  堆栈跟踪:
+     at GameSaveCenter.Worker.Tests.AtomicFileWriterTests.CancellationAfterTemporaryFileCreationPreservesExistingFileAndCleansTemporary() in D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\AtomicFileWriterTests.cs:line 167
+--- End of stack trace from previous location ---
+  失败 GameSaveCenter.Worker.Tests.AtomicFileWriterTests.ConcurrentWritesLeaveOneCompletePayloadAndNoTemporaryFiles [19 ms]
+  错误消息:
+   System.UnauthorizedAccessException : Access to the path is denied.
+  堆栈跟踪:
+     at System.IO.FileSystem.MoveFile(String sourceFullPath, String destFullPath, Boolean overwrite)
+   at GameSaveCenter.Worker.Infrastructure.AtomicFileWriter.WriteAllTextAsync(String path, String content, CancellationToken token) in D:\workplace\github\GameSaveCenter\src\GameSaveCenter.Worker\Infrastructure\AtomicFileWriter.cs:line 20
+   at GameSaveCenter.Worker.Tests.AtomicFileWriterTests.ConcurrentWritesLeaveOneCompletePayloadAndNoTemporaryFiles() in D:\workplace\github\GameSaveCenter\tests\GameSaveCenter.Worker.Tests\AtomicFileWriterTests.cs:line 130
+--- End of stack trace from previous location ---
+结果文件: D:\workplace\github\GameSaveCenter\.tmp\assessment-a05-a06-targeted\results\a05-a06-worker.trx
+
+失败!  - 失败:     2，通过:    10，已跳过:     0，总计:    12，持续时间: 1 s - GameSaveCenter.Worker.Tests.dll (net8.0)

@@ -785,7 +785,16 @@ WHERE playnite_id<>$game
         await connection.OpenAsync(token).ConfigureAwait(false);
         var command = connection.CreateCommand();
         command.CommandText = @"UPDATE tasks
-SET state=$failed, progress=CASE WHEN progress>99 THEN 99 ELSE progress END, message=$message,
+SET state=$failed,
+    restore_report_json=CASE
+        WHEN task_type='Restore' AND COALESCE(restore_report_json,'')<>''
+        THEN json_set(restore_report_json,
+                      '$.outcomeKind','ManualIntervention',
+                      '$.failureCode','MANUAL_INTERVENTION_REQUIRED',
+                      '$.requiresManualIntervention',json('true'))
+        ELSE restore_report_json
+    END,
+    progress=CASE WHEN progress>99 THEN 99 ELSE progress END, message=$message,
     cancellation_state=CASE WHEN cancellation_state IN ('Requested','Finalizing') THEN 'NotInterruptible' ELSE cancellation_state END,
     elapsed_seconds=CASE WHEN monotonic_started_timestamp IS NOT NULL AND monotonic_started_timestamp>0
                               AND monotonic_frequency IS NOT NULL AND monotonic_frequency>0

@@ -1,3 +1,9 @@
+## 2026-11-12 A05/A06实施与Worker验证
+
+首轮定向12项出现两项真实边界失败：同目标并发 `File.Move` 冲突可抛 `UnauthorizedAccessException`，临时文件创建后取消未必阻止提交目标。保留首轮TRX/日志。当前候选已为同规范化目标的Write/Copy/Replace增加引用计数异步互斥，原子替换前显式检查取消。Worker意外重启后，SQLite行原已保存详细 `RestoreReport`，但顶层任务变为人工介入时报告仍显示Running；当前修正同时更新结果/失败码/需人工标记，保留阶段和PreRestore身份。
+
+修正后SDK8.0.423 Release定向12/12通过；Worker全套405通过、1项Named Pipe环境skip、0失败，skip不计通过。源验证和diff检查通过。首轮失败、定向成功、全Worker TRX/日志及源码blob身份见 `docs/design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md`。本机工作树测试不是精确提交完整门禁；计划其余P1完成后需冻结候选跑用户指定完整入口和独立build职责，再核精确SHA双SDK CI。
+
 ## 2026-11-12 综合评估计划去重
 
 当前入口身份为 `9b26680040ce174f986d34037a83c697175f7554`，精确SHA GitHub run #1542 / `43132918400` 的基线与SDK10.0.401两个job均通过（分别15/15、8/8步骤）。required-checks/ruleset权限仍受既有HTTP403限制，不能以workflow成功替代。

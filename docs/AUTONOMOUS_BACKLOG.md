@@ -6,6 +6,8 @@
 
 按启动协议核对后，A01已由后续冻结候选完整链与双SDK CI满足，A02已由用户对Round5 71项的体验验收覆盖；Round5当前78项体验验收完成，U09-04性能量化进行中，U09-06权限待验。Round4 S与可靠性T仍各自保留原状态，映射和16项逐项下一步见[计划执行账本](PROJECT_ASSESSMENT_2026-11-06.md)。首个源码批次是A05/A06的隔离测试；不把计划候选当成已确认缺陷，不清理未跟踪TRX/TestResults或历史证据。
 
+A05/A06已补同目标原子写入并发/取消边界，以及模拟Worker重启后的恢复报告和PreRestore保护状态；SDK8.0.423下定向12/12、Worker全套405通过/1 Named Pipe环境skip/0失败。首轮失败原始TRX/日志与修正后结果已归档；最终精确SHA CI和冻结候选全链仍待其余P1结束后执行。详见执行账本与[A05/A06证据](design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md)。
+
 ## 2026-10-30 U09-05冻结门禁通过
 
 5c0c57b06aed27dc46c41ef3d655ec20dafa5ec7 SDK8.0.423；中文包装器完整链exit0、独立scripts/build.cmd exit0。两入口各158 TRX/2020项：1962通过、0失败、58既有skip，skip不计通过；PEXT 45,737,311 bytes，SHA256 `bce032ef9d6c95aa145d0c99a69ee3be16ef7d8dda59e8964db10bc2eb076ee6`，六个包内/安装DLL逐字节相同。Playnite启动PID30324并响应，实际页面未观察。精确SHA的GitHub run40900374673，两项适用job均success，三artifact的head SHA/ID/digest已核。required-check API既有403未重探，仍待有权限维护者查询。soak一次File.Move访问拒绝完整诊断已归档；新门禁通过但旧失败未查明唯一原因。证据：[冻结本地与CI身份](design/reviews/ui-polish-round5-20261027/evidence/U09-final-5c0c57b0/BASELINE.md)。

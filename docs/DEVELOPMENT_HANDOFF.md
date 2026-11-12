@@ -1,3 +1,9 @@
+## 2026-11-12 A05/A06 Worker可靠性批次
+
+`AtomicFileWriter`同目标写入、复制、替换现已串行化；写临时文件后到原子移动前重新检查取消。Worker异常重启会同步把持久化恢复报告更新为人工介入，保留原阶段和PreRestore ID。首轮12项定向10通过/2失败/0跳过的原始日志/TRX与修正后成功记录见[本批证据](design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md)。
+
+SDK8.0.423 Release修正后定向12/12通过；完整Worker 406项405通过/0失败/1 Named Pipe环境skip（skip不计通过）；源码校验和`git diff --check`通过。本地测试源树含未提交候选，不代表精确提交CI或最终中文完整入口；后续剩余P1做完后冻结并按计划跑最终门禁。只涉及合成测试目录，未触碰真实存档、用户配置、云写入或宿主进程。
+
 ## 2026-11-12 综合评估计划接续
 
 按启动协议完成最新事实与Git复核。当前HEAD/`origin/main`为 `9b26680040ce174f986d34037a83c697175f7554`，精确SHA的GitHub #1542 双SDK jobs及各自步骤通过；required-check/ruleset名单仍受既有403限制，不重复探测。Round5为78项用户体验验收完成、U09-04量化进行中、U09-06远端待验。用户走查不代表逐项Narrator/IME/物理DPI/性能测量，也不授权真实存档恢复、删除或云写入。

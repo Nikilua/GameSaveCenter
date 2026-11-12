@@ -53,8 +53,8 @@
 | A02 | 已满足为体验验收收口；没有声称每个宿主场景单独测过 | 无新增实现提交 | 71项由用户明确接受，Round5总计78项完成；证据：[Round5进度](design/reviews/ui-polish-round5-20261027/PROGRESS.md) | 不再建立重复71项矩阵；Narrator、IME、物理DPI等专项若另有需求仍须各自取证。 |
 | A03 | 进行中；与Round5 U09-04合并，不是新缺陷结论 | 无本计划实现提交 | 当前源码归因、离屏输入/Rendering边界：[U09-04归因](design/reviews/ui-polish-round5-20261027/evidence/U09-04-source-attribution-20261110.md) | 只有拿到真实宿主呈现、物理输入和分配数据后再决定是否改代码。 |
 | A04 | 外部条件待满足 | 无 | U09-04记录了真实Playnite帧、输入及分配测量缺口；用户本轮明确本计划不解除宿主阻塞 | 不重启宿主或重复受阻探测；保持未验。 |
-| A05 | 待实施；首个源码批次 | 无 | 原始soak访问拒绝和后续诊断：[U09 soak基线](design/reviews/ui-polish-round5-20261027/evidence/U09-soak-diagnostic-20261029/BASELINE.md)。现有诊断补有路径、轮次、写入序号、属性和HRESULT，但单次复现通过未锁定根因 | 给 `AtomicFileWriter` 补占用、只读、并发、中断的隔离负例；验证旧目标与临时文件结果，不声称生产缺陷已确认。 |
-| A06 | 待实施；首个源码批次 | 无 | 现有 `RestoreOrchestratorTests` 覆盖普通失败回滚；`TaskReconcileServiceTests` 覆盖恢复任务中断后转人工介入，但没有验证模拟进程重启后报告、锁定PreRestore元数据及hash保留 | 在临时测试目录补模拟崩溃恢复检查；仅改测试，除非测试暴露具体产品缺陷。 |
+| A05 | 已实现；本机Worker范围验证通过，最终候选门禁待做 | 本批源码提交；精确SHA待后续账本回填 | 原始soak访问拒绝和诊断：[U09 soak基线](design/reviews/ui-polish-round5-20261027/evidence/U09-soak-diagnostic-20261029/BASELINE.md)；占用、只读、并发、中断负例与首轮失败/修正后TRX：[A05/A06证据](design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md)。Worker全套405通过、1项既有Named Pipe环境skip、0失败 | 本批提交后核验精确SHA CI；最终冻结候选再跑指定完整链。 |
+| A06 | 已实现；模拟重启测试通过，最终候选门禁待做 | 本批源码提交；精确SHA待后续账本回填 | 隔离SQLite重开后保留写入目标阶段、PreRestore ID、索引锁定/hash，并把恢复报告终态同步为人工介入；部分写入的仅是合成测试文件。详见[A05/A06证据](design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md) | 本批提交后核验精确SHA CI；最终冻结候选再跑指定完整链。 |
 | A07 | 待去重 | 无 | 原计划指出已存在RequestId/ledger与协调器；尚未逐项映射当前断连、取消、重试覆盖到Round5/S/T | 后续批次检查现有入口与状态恢复测试，只有缺口成立才补测试/源码。 |
 | A08 | 待去重，部分覆盖已存在 | 空间预检实现已有提交，计划项未单独改动 | T01-03已验收：预检与标准链覆盖；账本明确没有在预检通过后耗尽真实磁盘。证据：[T01-03账本](design/reviews/build-ui-reliability-20261022/PROGRESS.md) | 评估低空间受控故障夹具是否能安全模拟；不填充真实卷，不把预检通过等同耗尽路径通过。 |
 | A09 | 暂缓至本地P1收口后 | 无 | 现有首次使用与恢复入口尚未以隔离配置完成端到端可用性走查 | 先记录具体术语/步骤阻碍，再决定最小改动；不重写已有引导。 |

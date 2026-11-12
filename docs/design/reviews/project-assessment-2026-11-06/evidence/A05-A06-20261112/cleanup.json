@@ -1,0 +1,42 @@
+{
+  "CleanupUtc": "2026-11-12T03:39:17.2737129Z",
+  "Stage": "A05-A06 Worker targeted/full test outputs",
+  "RepoRoot": "D:\\workplace\\github\\GameSaveCenter",
+  "Targets": [
+    {
+      "RelativePath": ".tmp/assessment-a05-a06-targeted",
+      "NormalizedPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\assessment-a05-a06-targeted",
+      "CreatedUtc": "2026-11-12T03:24:51.5816619Z",
+      "FileCount": 646,
+      "Bytes": 258104875,
+      "ReparsePoints": 0
+    },
+    {
+      "RelativePath": ".tmp/assessment-a05-a06-worker-full",
+      "NormalizedPath": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\assessment-a05-a06-worker-full",
+      "CreatedUtc": "2026-11-12T03:27:59.1598008Z",
+      "FileCount": 338,
+      "Bytes": 136133569,
+      "ReparsePoints": 0
+    }
+  ],
+  "ActiveBuildOrTestProcessesBefore": 0,
+  "MarkdownPathReferencesBefore": 0,
+  "RetainedEvidencePath": "docs/design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112",
+  "SpaceBytesBefore": {
+    "C": 6285860864,
+    "D": 16651268096
+  },
+  "SpaceBytesAfter": {
+    "C": 6285860864,
+    "D": 17048047616
+  },
+  "SpaceBytesChange": {
+    "C": 0,
+    "D": 396779520
+  },
+  "OtherPathsRemoved": false,
+  "UserTestResultsOrHistoryEvidenceTouched": false,
+  "TotalFileCountBefore": 984.0,
+  "TotalBytesBefore": 394238444.0
+}

@@ -1,3 +1,9 @@
+## 2026-11-12 A05/A06 Worker可靠性批次
+
+首轮12项定向测试exit1，10通过/2失败/0跳过；原子写入同路径并发出现 `UnauthorizedAccessException`，临时文件创建后取消仍可能提交。首轮TRX/日志保留。按目标路径做引用计数异步锁，并在原子移动前检查取消；另发现任务中心直接显示嵌套 `RestoreReport`，而重启协调只修改顶层任务状态，因此同步报告为人工介入并保留原阶段/PreRestore ID。
+
+修正后SDK8.0.423 Release定向12/12通过、0失败/0跳过；整个Worker项目406项中405通过、0失败、1 Named Pipe环境skip（不计通过）。`python scripts/validate-source.py`与`git diff --check`均exit0。原始失败和成功日志/TRX已归档到[证据目录](../design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md)，哈希身份与测试范围在内。没有执行真实存档、全链或宿主操作；最终完整候选仍待后续P1批次完成后验证。
+
 ## 2026-11-12 16项计划与Round5/S/T去重
 
 按启动协议复核当前HEAD、工作树、Round5、Round4 S与可靠性T账本。Round5为78项用户体验验收完成、U09-04量化进行中、U09-06远端权限待验；S计数40/2/21/1，T计数24/3/2/3。A01引用4719a59c后续冻结SHA `d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef`全链/双SDK通过，不重复跑；A02由11-12用户体验接受覆盖但不声称逐项Narrator/IME/DPI测试。A03并入U09-04，A04保持宿主边界。
