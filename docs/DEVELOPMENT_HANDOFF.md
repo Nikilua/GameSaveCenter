@@ -1,3 +1,11 @@
+## 2026-11-12 综合评估计划接续
+
+按启动协议完成最新事实与Git复核。当前HEAD/`origin/main`为 `9b26680040ce174f986d34037a83c697175f7554`，精确SHA的GitHub #1542 双SDK jobs及各自步骤通过；required-check/ruleset名单仍受既有403限制，不重复探测。Round5为78项用户体验验收完成、U09-04量化进行中、U09-06远端待验。用户走查不代表逐项Narrator/IME/物理DPI/性能测量，也不授权真实存档恢复、删除或云写入。
+
+[2026-11-06综合评估](PROJECT_ASSESSMENT_2026-11-06.md)已追加逐项执行账本，A01/A02去重完成，A03并入U09-04，A04维持外部边界。首个源码批次A05/A06只增加隔离失败/模拟崩溃测试；随后A07/A08/A11先核对现有RequestId、空间预检和失败证据路径覆盖。不得把16项当作已确认缺陷；P1完成前不实现A14-A16，且已记录它们的当前入口、待核缺口及收益。
+
+当前未跟踪TRX、用户TestResults和旧阶段证据保留。文档阶段只做链接/源码检查；代码候选按影响范围验证，提交后冻结并执行用户指定完整链、`scripts/build.cmd`和精确SHA双SDK CI。
+
 ## 2026-11-10 Round5 U09-05 黑窗跟进交接
 
 用户说黑窗出现在编译/检查时。已更新控制台隐藏策略并补充真实入口策略测试：退出码fixture 9/9、console policy 5/5。隐藏启动的独立 `scripts/build.cmd` 在SDK8.0.423/Release/短隔离路径完整exit0，2032项、1964通过、0失败、68既有skip，157个WPF类逐类运行在私有桌面；桌面身份157/157通过。长路径先跑有3个恢复测试失败，TRX保留；缩短路径重跑全部通过，未改断言或skip。Source Validation和git diff --check均exit0。见 `design/reviews/ui-polish-round5-20261027/evidence/U09-05-console-hide-20261110/README.md`。
