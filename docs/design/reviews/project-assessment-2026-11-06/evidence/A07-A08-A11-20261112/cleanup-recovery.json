@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "task": "A07-A08-A11 temporary output cleanup",
+  "a11FixtureRecovery": [
+    {
+      "attempt": "preflight-tests-attempt-01",
+      "fixtureRoot": "[repo]/.tmp/assessment-evidence-path-preflight-2ec08d87d061498bbb513ce10ff1d793",
+      "initialCleanupFailure": "CIM process enumeration returned access denied; test cases themselves were 4/4 passed.",
+      "filesRemoved": 34,
+      "contentBytesRemoved": 2136178,
+      "manualFreeBytesBefore": 17043623936,
+      "manualFreeBytesAfter": 17045798912,
+      "removed": true,
+      "reparseEntries": 0,
+      "indexLockPresent": false,
+      "exclusiveFileOpenCheck": true
+    },
+    {
+      "attempt": "preflight-tests-attempt-02",
+      "fixtureRoot": "[repo]/.tmp/assessment-evidence-path-preflight-824a6284665047acabe922ba1c99c56f",
+      "initialCleanupFailure": "Broad Git process enumeration treated unrelated PIDs as fixture references; those PIDs had exited before manual verification.",
+      "filesRemoved": 34,
+      "contentBytesRemoved": 2136178,
+      "manualFreeBytesBefore": 17043615744,
+      "manualFreeBytesAfter": 17045790720,
+      "removed": true,
+      "reparseEntries": 0,
+      "indexLockPresent": false,
+      "exclusiveFileOpenCheck": true
+    },
+    {
+      "attempt": "preflight-tests-attempt-03",
+      "fixtureRoot": "[repo]/.tmp/assessment-evidence-path-preflight-95055dc1a25149f0bfa266b735b9690d",
+      "initialCleanupFailure": "Broad Git process enumeration treated unrelated PIDs as fixture references; those PIDs had exited before manual verification.",
+      "filesRemoved": 34,
+      "contentBytesRemoved": 2136178,
+      "manualFreeBytesBefore": 17043611648,
+      "manualFreeBytesAfter": 17045786624,
+      "removed": true,
+      "reparseEntries": 0,
+      "indexLockPresent": false,
+      "exclusiveFileOpenCheck": true
+    }
+  ],
+  "emptySdkInstallAttempt": {
+    "path": "[repo]/.tmp/assessment-sdk-8.0.423-20261112",
+    "entriesBeforeRemoval": 0,
+    "removed": true
+  },
+  "a11SuccessfulFixture": {
+    "report": "preflight-tests-attempt-04.json",
+    "fixtureRoot": "[repo]/.tmp/assessment-evidence-path-preflight-8ff67592520543538ceccad207cf820c",
+    "filesRemoved": 34,
+    "contentBytesRemoved": 2136178,
+    "freeBytesBefore": 17046048768,
+    "freeBytesAfter": 17046048768,
+    "reparseEntries": 0,
+    "indexLockAbsent": true,
+    "exclusiveFileReadsPassed": true,
+    "removed": true
+  },
+  "a11FinalBomFixture": {
+    "report": "preflight-tests-attempt-05.json",
+    "fixtureRoot": "[repo]/.tmp/assessment-evidence-path-preflight-8aa0bd290c60472cbe2ea416f22fad08",
+    "filesRemoved": 34,
+    "contentBytesRemoved": 2136178,
+    "freeBytesBefore": 16915054592,
+    "freeBytesAfter": 16915054592,
+    "reparseEntries": 0,
+    "indexLockAbsent": true,
+    "exclusiveFileReadsPassed": true,
+    "removed": true
+  },
+  "a08BuildOutput": {
+    "path": "[repo]/.tmp/assessment-a08-offline-20261112",
+    "entries": 454,
+    "files": 321,
+    "bytes": 129027335,
+    "removed": true,
+    "reparseEntries": 0,
+    "activeBuildProcesses": [],
+    "allFilesExclusiveRead": true,
+    "markdownReferences": 0,
+    "freeBytesBefore": 16914984960,
+    "freeBytesAfter": 17044815872,
+    "freeBytesRecovered": 129830912
+  }
+}

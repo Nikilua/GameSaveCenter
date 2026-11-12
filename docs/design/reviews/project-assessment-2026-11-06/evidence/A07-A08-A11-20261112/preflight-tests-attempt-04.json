@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "task": "A11 evidence path preflight",
+  "runId": "8ff67592520543538ceccad207cf820c",
+  "powershellVersion": "7.6.2",
+  "startedUtc": "2026-11-12T04:17:55.5491155+00:00",
+  "completedUtc": "2026-11-12T04:17:59.4044732+00:00",
+  "checkerSha256": "0382042A918D8467B4A32AB58B693AA9326A49567F791785C5D7F90E13A2B048",
+  "testScriptSha256": "CED3065116A66376A28D294A9ACE287A50AB17FB0C7333FDAFEB78C226B1887B",
+  "cases": [
+    {
+      "name": "short staged evidence is accepted",
+      "expected": "pass",
+      "actual": "pass",
+      "passed": true,
+      "exitCode": 0
+    },
+    {
+      "name": "overlong staged evidence is rejected",
+      "expected": "exceeds the 240 character limit",
+      "actual": "Projected checkout path length 305 exceeds the 240 character limit: docs/design/reviews/path-preflight/evidence/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp.json",
+      "passed": true,
+      "exitCode": 1
+    },
+    {
+      "name": "duplicate large evidence blob is rejected",
+      "expected": "duplicates an indexed evidence blob",
+      "actual": "Large staged evidence (1048577 bytes) duplicates an indexed evidence blob at: docs/design/reviews/path-preflight/evidence/original-large.bin ; new path: docs/design/reviews/path-preflight/evidence/duplicate-large.bin",
+      "passed": true,
+      "exitCode": 1
+    },
+    {
+      "name": "unique large evidence is accepted",
+      "expected": "pass",
+      "actual": "pass",
+      "passed": true,
+      "exitCode": 0
+    }
+  ],
+  "totals": {
+    "planned": 4,
+    "passed": 4,
+    "failed": 0
+  },
+  "cleanup": {
+    "fixtureRoot": "[repo]/.tmp/assessment-evidence-path-preflight-8ff67592520543538ceccad207cf820c",
+    "removed": true,
+    "filesRemoved": 34,
+    "bytesRemoved": 2136178,
+    "reparseEntries": [],
+    "baselineGitProcessIds": [],
+    "gitProcessesObserved": [
+      14812,
+      27408,
+      29032,
+      36144
+    ],
+    "indexLockAbsent": true,
+    "exclusiveFileReadsPassed": true,
+    "processCheck": "Fixture Git commands returned synchronously; no fixture index.lock remained; every fixture file opened with FileShare.None before removal.",
+    "driveRoot": "D:\\",
+    "freeBytesBefore": 17046048768,
+    "freeBytesAfter": 17046048768,
+    "failure": null
+  },
+  "failure": null
+}

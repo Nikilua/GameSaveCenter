@@ -1,3 +1,9 @@
+## 2026-11-12 A07/A08/A11 P1第二批
+
+A07已按现有测试映射去重：Worker request ledger、同RequestId响应重放、取消时歧义、Worker重启中断恢复、任务协调和阶段显示均有隔离覆盖；无新增产品代码，真实宿主恢复仍待验。A08新增合成磁盘满部分写入回滚测试，SDK8.0.423 Release定向1/1、0失败/0skip，保留PreRestore锁定备份和原状态。A11新增提交前证据路径/重复大blob脚本，夹具4/4。测试、脚本和失败/成功诊断见 `design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md`。
+
+本批待提交候选需提交后冻结，查询精确SHA基线SDK/SDK10 job，再执行完整中文安装启动入口链和独立`build.cmd`。A03/U09-04与A04的宿主条件不因本计划改变；P2/P3本批未开始。用户历史TRX、`TestResults/`、配置、真实存档及云端写入边界保持不变。
+
 ## 2026-11-12 A05/A06 Worker可靠性批次
 
 `AtomicFileWriter`同目标写入、复制、替换现已串行化；写临时文件后到原子移动前重新检查取消。Worker异常重启会同步把持久化恢复报告更新为人工介入，保留原阶段和PreRestore ID。首轮12项定向10通过/2失败/0跳过的原始日志/TRX与修正后成功记录见[本批证据](design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md)。

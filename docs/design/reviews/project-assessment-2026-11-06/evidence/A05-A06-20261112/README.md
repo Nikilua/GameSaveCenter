@@ -1,6 +1,6 @@
 # A05/A06 隔离验证
 
-本证据对应综合评估计划首个源码批次。所有文件路径均由测试夹具在系统临时目录内创建；没有读取或写入真实存档、用户配置或云端数据。最终源码提交SHA及该提交CI身份在下一次账本更新回填。
+本证据对应综合评估计划首个源码批次。所有文件路径均由测试夹具在系统临时目录内创建；没有读取或写入真实存档、用户配置或云端数据。精确源码提交及后续双SDK CI身份见本报告末尾。
 
 ## 改动
 
@@ -33,4 +33,10 @@ TRX原件校验值：首轮失败 23,634 bytes / SHA-256 `DF2199FF31847DD6ED828C
 | `tests/GameSaveCenter.Worker.Tests/AtomicFileWriterTests.cs` | `bd793f293564d11ae6454689bc5e4f3a859fd532` |
 | `tests/GameSaveCenter.Worker.Tests/TaskReconcileServiceTests.cs` | `81392f151fa17e9a727cbfd1021dd2ff8e9d7be3` |
 
-运行时工作树基于上述父提交且包含本批改动；精确提交身份和双SDK CI job 后续记录，不把本机工作树测试冒充提交级完整门禁。
+运行时工作树基于上述父提交且包含本批改动。本机范围验证不冒充提交级完整门禁。
+
+## 精确提交 CI
+
+本批源代码提交为 `06b88bf95e7d3646ad905a4333938369891fca1b`。GitHub `windows-build.yml` run #1544（`43150017597`）已终态成功：基线job `130956727575` 15/15步、SDK 10.0.401 job `130956727381` 8/8步成功。CI artifact ID、大小、digest和原始链接见 [run 43150017597 记录](ci-run-43150017597.json)。required-checks/ruleset读取仍受既有HTTP403限制；不能据已运行job声称保护规则清单已确认。
+
+这组CI绑定 `06b88bf...`，不替代后续冻结候选的完整本地入口链与独立 `scripts/build.cmd` 验证。

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "06b88bf95e7d3646ad905a4333938369891fca1b",
+  "workflow": "windows-build.yml",
+  "run": {
+    "number": 1544,
+    "id": 43150017597,
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/43150017597",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "jobs": [
+    {
+      "id": 130956727575,
+      "name": "编译、测试与打包",
+      "conclusion": "success",
+      "stepsCompletedSuccessfully": 15,
+      "stepsFailed": 0
+    },
+    {
+      "id": 130956727381,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "success",
+      "stepsCompletedSuccessfully": 8,
+      "stepsFailed": 0
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13915988793,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2532838,
+      "digest": "sha256:d1d990d44706773d90ef30f681f150e9c264e8f3fc52eaeaa1788da93a212b5b",
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/13915988793"
+    },
+    {
+      "id": 13915933913,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90795990,
+      "digest": "sha256:8bce5d3cdbe8e3c8716cafa38b66ca5ae76d5519a6d7426a413321838da17b39",
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/13915933913"
+    },
+    {
+      "id": 13914588138,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 1282535,
+      "digest": "sha256:3d8c8f3fff9aa755ed518a75f1dec28cecaf7ab22ec89e9b84b3fd097a6e12ae",
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/13914588138"
+    }
+  ],
+  "requiredChecksAndRuleset": {
+    "verified": false,
+    "lastReadResult": "HTTP 403",
+    "note": "Successful workflow jobs do not prove the repository protection or required-check list. Permission was unchanged, so the endpoint was not retried."
+  }
+}

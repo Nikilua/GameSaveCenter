@@ -1,3 +1,13 @@
+## 2026-11-12 A07/A08/A11 P1第二批
+
+A07映射到既有IPC request ledger重放/冲突、Worker重启中断协调、丢失写响应按原RequestId恢复、取消的“可能已接受”语义及任务阶段呈现测试；没有确认需要新增产品实现的缺口。真实Playnite断连恢复仍未验。
+
+A08只增加合成磁盘满故障：目标已有部分写入后抛出Win32磁盘满HResult `0x80070070`，恢复流程自动回滚到B并保留PreRestore快照与锁。SDK8.0.423 Release离线串行还原后定向用例 `1 passed / 0 failed / 0 skipped`，exit0；最终TRX为3,238 bytes、SHA-256 `A67D37813BD2DEC73A8B3586CCDEEB8BFCCC6BD8F09123370121F084FF866A65`。首次普通还原等待无输出以及离线并行MSBuild失败均保留；未把无测试结果的尝试计为通过。测试源blob SHA-1 `829eab0a806d5444690b243a823a9bd16a7d5be7`，测试程序集SHA-256 `6569A28956B76477840115C73BB26B2ABF421FD7D9FEE709E88865835ABE3EE8`。
+
+A11新增提交前证据路径检查：新暂存证据投影路径≤240字符，≥1MiB且与索引内其他证据具有同一Git blob时拒绝；未改workflow或回溯阻断既有文件。PowerShell隔离Git夹具4/4，报告、失败尝试日志和清理复核见[批次证据](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md)。为清理隔离夹具检查了根内归属、链接、Git锁、独占文件和空间；三次早期清理误判分别保留并人工安全清理，用户TestResults/历史TRX未动。
+
+本批代码尚待提交冻结、精确SHA双SDK CI以及最终中文完整链和独立 `scripts/build.cmd` 验证。A03/U09-04、A04仍等待真实宿主条件，不尝试解除；P2/P3尚未启动。
+
 ## 2026-11-12 A05/A06 Worker可靠性批次
 
 首轮12项定向测试exit1，10通过/2失败/0跳过；原子写入同路径并发出现 `UnauthorizedAccessException`，临时文件创建后取消仍可能提交。首轮TRX/日志保留。按目标路径做引用计数异步锁，并在原子移动前检查取消；另发现任务中心直接显示嵌套 `RestoreReport`，而重启协调只修改顶层任务状态，因此同步报告为人工介入并保留原阶段/PreRestore ID。

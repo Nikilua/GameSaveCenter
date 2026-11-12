@@ -180,6 +180,26 @@ public sealed class RestoreOrchestratorTests : IDisposable
     }
 
     [Fact]
+    public async Task DiskFullAfterPartialWrite_RollsBackFilesAndPreservesPreRestoreSnapshot()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("A", "A");
+        client.ThrowDiskFullAfterWriteFor.Add("A");
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("A"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("RESTORE_FAILED_ROLLED_BACK", result.ErrorCode);
+        Assert.Equal("B", client.CurrentSave);
+        Assert.Equal("B", await File.ReadAllTextAsync(client.LiveSavePath));
+        var preRestore = Assert.Single(client.Backups, x => x.Key.StartsWith("pre-", StringComparison.OrdinalIgnoreCase));
+        Assert.Equal("B", preRestore.Value);
+        Assert.Contains(client.EditedBackups, x => x.BackupId == preRestore.Key && x.Locked == true);
+        Assert.Contains(RestoreState.RolledBack, await ReadRestoreStatesAsync());
+    }
+
+    [Fact]
     public async Task PostRestoreValidationFailure_RollsBackFiles()
     {
         await SeedGameAsync();
@@ -392,6 +412,7 @@ public sealed class RestoreOrchestratorTests : IDisposable
         public HashSet<string> FailRestoreFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> PartialFailRestoreFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> ThrowAfterWriteFor { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> ThrowDiskFullAfterWriteFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> ThrowUnauthorizedFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> ThrowReadOnlyFor { get; } = new(StringComparer.OrdinalIgnoreCase);
         public HashSet<string> FailPostValidationFor { get; } = new(StringComparer.OrdinalIgnoreCase);
@@ -463,6 +484,11 @@ public sealed class RestoreOrchestratorTests : IDisposable
             {
                 SetCurrentSave("PARTIAL:" + value);
                 throw new IOException("write failed after partial mutation");
+            }
+            if (ThrowDiskFullAfterWriteFor.Contains(backupId))
+            {
+                SetCurrentSave("PARTIAL:" + value);
+                throw new IOException("There is not enough space on the disk.", unchecked((int)0x80070070));
             }
             if (FailRestoreFor.Contains(backupId)) return Task.FromResult(Failure("restore failed"));
             SetCurrentSave(value);

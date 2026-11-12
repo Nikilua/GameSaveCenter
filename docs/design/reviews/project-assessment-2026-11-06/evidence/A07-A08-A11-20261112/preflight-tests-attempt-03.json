@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "task": "A11 evidence path preflight",
+  "runId": "95055dc1a25149f0bfa266b735b9690d",
+  "powershellVersion": "7.6.2",
+  "startedUtc": "2026-11-12T04:15:55.3077339+00:00",
+  "completedUtc": "2026-11-12T04:15:58.3977387+00:00",
+  "checkerSha256": "0382042A918D8467B4A32AB58B693AA9326A49567F791785C5D7F90E13A2B048",
+  "testScriptSha256": "68F2D87247DB423A35A4614789DFC1D833246753DBF62534B8A3BCC068A2B519",
+  "cases": [
+    {
+      "name": "short staged evidence is accepted",
+      "expected": "pass",
+      "actual": "pass",
+      "passed": true,
+      "exitCode": 0
+    },
+    {
+      "name": "overlong staged evidence is rejected",
+      "expected": "exceeds the 240 character limit",
+      "actual": "Projected checkout path length 305 exceeds the 240 character limit: docs/design/reviews/path-preflight/evidence/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd/pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp.json",
+      "passed": true,
+      "exitCode": 1
+    },
+    {
+      "name": "duplicate large evidence blob is rejected",
+      "expected": "duplicates an indexed evidence blob",
+      "actual": "Large staged evidence (1048577 bytes) duplicates an indexed evidence blob at: docs/design/reviews/path-preflight/evidence/original-large.bin ; new path: docs/design/reviews/path-preflight/evidence/duplicate-large.bin",
+      "passed": true,
+      "exitCode": 1
+    },
+    {
+      "name": "unique large evidence is accepted",
+      "expected": "pass",
+      "actual": "pass",
+      "passed": true,
+      "exitCode": 0
+    }
+  ],
+  "totals": {
+    "planned": 4,
+    "passed": 4,
+    "failed": 0
+  },
+  "cleanup": {
+    "fixtureRoot": "[repo]/.tmp/assessment-evidence-path-preflight-95055dc1a25149f0bfa266b735b9690d",
+    "removed": false,
+    "filesRemoved": 34,
+    "bytesRemoved": 2136178,
+    "reparseEntries": [],
+    "baselineGitProcessIds": [],
+    "processReferences": [
+      3840,
+      17124
+    ],
+    "driveRoot": "D:\\",
+    "freeBytesBefore": 17045790720,
+    "freeBytesAfter": 17043615744,
+    "failure": "Processes still reference fixture: 3840, 17124"
+  },
+  "failure": null
+}
