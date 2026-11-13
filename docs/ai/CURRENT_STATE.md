@@ -1,6 +1,6 @@
 ## 2026-11-12 冻结候选门禁结果（最新）
 
-当前 `main` 与 `origin/main` 均为冻结候选 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`。GitHub run #1545（`43161957758`）的基线 job `130995009638` 和 SDK 10.0.401 job `130995009279` 均成功；job/artifact身份见[精确CI记录](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json)。required-check/ruleset名单此前HTTP 403，仍未验证，也未重复请求。
+当前 `main`/`origin/main` HEAD 为文档提交 `42eb3a79a706bbbd1ac7b5c5ea3595a65f69091f`；产品源码仍冻结在候选 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`。GitHub run #1545（`43161957758`）验证的是后者：基线 job `130995009638` 和 SDK 10.0.401 job `130995009279` 均成功；job/artifact身份见[精确CI记录](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json)。required-check/ruleset名单此前HTTP 403，仍未验证，也未重复请求。
 
 本机 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 使用SDK8.0.423完成编译、测试、Worker发布、身份校验和打包，160份TRX共2,042项：1,974通过、0失败、68跳过。扩展目录安装写入被拒，根入口exit 1；候选没有安装或启动。Playnite与Worker在脚本后均未运行，旧安装未重启。独立 `scripts/build.cmd` 使用同一SDK，测试记录1,829项：1,800通过、0失败、29跳过，但输入桌面检查在WPF类`UiDiagnosticsExporterTests`失败，只有148/157个WPF类完成，命令exit 1。详情与摘要hash：[根入口结果](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/root-entry-result.json)、[独立构建结果](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/scripts-build-cmd-result.json)。
 
