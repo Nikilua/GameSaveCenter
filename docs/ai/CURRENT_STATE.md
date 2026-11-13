@@ -906,3 +906,13 @@ TaskCenter状态替换期间行高稳定、阶段/进度和长名UIA有15/15行�
 当前PROGRESS的80项分布为7已满足、71代码完成待验收、1进行中、1远端待验。U09-04继续分析动效性能；U09-05根链完成但真实Playnite画面、用户闪屏窗口归因、真实输入/UIA/DPI未验；U09-06远端待验；U09-08审计项满足。用户释放后根入口C/D预检已满足；机器SDK列表虽只显示9.0.302，仓库SDK bootstrap实际解析8.0.423。
 
 95b2b4cf的run #1528 / 42666242561现已completed/success：基线job129330520820和SDK10 job129330521427所有步骤成功；artifact IDs 13701600359、13699579982、13698653069。required-checks接口此前403，仍不代表完整性。push workflow需在本批提交后按精确SHA查询。编译/检查没有关闭或强杀Playnite/Worker；桌面探针访问被拒，不宣称闪屏已经解决。
+
+## 2026-11-13 共享工具栏按钮忙碌提示修正
+
+用户启动截图中的按钮下沿蓝色忙碌提示对应共享样式误把父级 ViewModel 的 IsBusy 状态套给所有按钮；截图对应的运行二进制身份未单独核验。提交 b667e22445fbf57aa591f39f3d968f5c166c7cb6 移除共享隐式忙碌绑定，保留 BusyIndicator 模板和 Dashboard/Trainer 显式动作级绑定；命令 CanExecute、按钮状态、游戏选框、滚动、Binding 与恢复安全语义未改。这是独立用户反馈，不计入抽查报告16项或Round5/S/T缺陷。
+
+同一SHA SDK8.0.423 / Release 中文一键链成功走过构建、测试、发布、打包、隔离安装及Playnite启动分支；TRX 160份、2,043项、1,985通过、0失败、58既有skip，157/157个WPF隔离类。命令日志打印完成成功分支；宿主等待包装器未返回数值，因此不把包装器状态冒充为独立捕获的cmd退出码。独立 scripts/build.cmd 实际exit 0，160份TRX同为2,043项、1,985通过、0失败、58 skip。R02BusyStateTests 两次均6/6。来源/静态检查通过；真实Playnite视觉渲染未复验。
+
+精确SHA GitHub run 43375661710：基线job 131721452745 与 SDK10.0.401 job 131721453027 全部步骤success。required-check/ruleset名单仍为既有HTTP403，权限未变，不重试。诊断与原始证据留在本地 artifacts/build-diagnostics/20261113T060254846Z-d6b80c0d/ 和 artifacts/busy-b667e224/；CEF Chrome注册表告警保留在 console.err.log，不影响完成分支。
+
+临时测试目录 .tmp/busy-b667e224-tests（32文件，12,278,656 bytes）与 .tmp/busy-b667e224-scripttests（15文件，6,451,200 bytes）经路径、归属、重解析点、进程和文档引用检查后，Remove-Item -LiteralPath -Recurse -Force 被执行策略以 blocked by policy 拒绝；两目录仍在，未绕过。清理前C/D空闲为5,167,312,896 / 7,047,708,672 bytes；拒绝后复测值随期间环境变化，不能归因于清理。构建输出、隔离profile、安装包和成功诊断保留；用户TRX/TestResults、配置及真实存档未触碰。

@@ -13628,3 +13628,21 @@ A05/A06及A07/A08/A11继续按Round5、S/T账本去重，抽查报告的16项仍
 清理：c2包与旧52a57包分目录保留，旧canonical包和安装报告已恢复；定向日志与先前小型测试尝试从`.tmp/`移动到`artifacts/p1-candidate-c2fcc804-20261113/`并核验当前日志hash。构建/测试临时目录所有权、根内路径、链接、锁、进程和文档引用已检查；自动审批策略拒绝指定`Remove-Item -LiteralPath -Recurse -Force`（提示`blocked by policy`），因此本轮未删除这些`.tmp`输出。空间与具体清理清单见[cleanup.json](../design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/cleanup.json)。用户TRX、`TestResults/`、配置、真实存档与未知文件未触碰。
 
 下一步：仅在Windows输入桌面可读取后复验独立`scripts/build.cmd`；如需插件运行态验收，另行完成这个空白profile首次设置且不添加游戏库/账号。真实profile、恢复、删除和云写仍排除。P2/P3未开始。
+
+## 2026-11-13 用户反馈：工具栏按钮出现蓝色忙碌条
+
+状态：已实现、已本机验证并推送；真实宿主视觉复验未做。该项来自用户截图，不是抽查报告的确认缺陷，不修改16项计数，也不与Round5/S/T账本重复。截图运行二进制身份没有独立采集。
+
+入口/缺口/收益：复现入口是Playnite存档列表页工具栏；未绑定忙碌状态的多个按钮在父级DataContext.IsBusy为true时仍显示蓝色忙碌线，容易被理解为加载进度。去掉共享隐式状态后，只有明确绑定自身动作忙碌状态的按钮显示BusyIndicator，减少错误状态提示。
+
+实现提交：`b667e22445fbf57aa591f39f3d968f5c166c7cb6`，中文提交`修正共享按钮的忙碌提示范围`，已推送origin/main。更改位于 `src/GameSaveCenter.Playnite/Themes/WpfUiProduction.xaml` 和 `tests/GameSaveCenter.Playnite.Tests/R02BusyStateTests.cs`。移除共享 `IsBusy` Setter；保留忙碌模板、Dashboard/Trainer显式绑定、命令CanExecute与禁用门禁。新增父级忙碌不应点亮未绑定按钮的负向测试。游戏选框、滚动条、Binding、虚拟化、键盘/UIA及恢复安全语义未变。
+
+验证范围与证据：SDK8.0.423 / Release。`scripts/validate-source.py` exit 0；WPF静态审查扫描32个XAML、0错误（26 warning、179 info）。中文 `GameSaveCenter-一键构建安装运行.cmd` 进入 `GameSaveCenter-Run.cmd` 完整build/test/publish/package/install/start成功分支；记录工具没有收到外层等待包装器的数值退出码，成功标记和cmd成功分支逻辑对应exit 0。隔离Playnite进程PID34680与Worker PID12536启动后已关闭；包0.6.73，6个程序集版本身份含完整SHA。160 TRX / 2,043 cases：1,985 passed、0 failed、58 NotExecuted，157/157 WPF隔离类；R02BusyStateTests 6/6。独立 `scripts/build.cmd` exit 0，同样160 TRX / 2,043 cases / 1,985 passed / 0 failed / 58 skipped / 157类；R02BusyStateTests 6/6。skip未算通过。
+
+根链summary/TRX：`artifacts/build-diagnostics/20261113T060254846Z-d6b80c0d/summary.json` 与 `tests/wpf.R02BusyStateTests/wpf.R02BusyStateTests.trx`；根入口控制台与安装报告在 `artifacts/busy-b667e224/console.out.log`、`console.err.log`、`install-report.txt`。独立build summary/TRX/console位于 `artifacts/busy-b667e224/scripts-build/20261113T063842849Z-ba2d067c/`、`artifacts/busy-b667e224/scripts-build-console.log`。console.err保留Playnite CEF Chrome扩展注册表警告；根链仍到成功分支。
+
+GitHub精确SHA run `43375661710`：job `131721452745`（编译、测试与打包）和 `131721453027`（.NET SDK 10.0.401编译与测试复核）所有步骤均success。required-checks/ruleset名单接口既有403仍未知；权限未变，不重复请求。第一次直接dotnet测试因全局SDK列表没有8.0.423而在测试前失败；仓库SDK bootstrap随后安装并选择8.0.423完成上述验证。旧提交 `c2fcc804` 的独立build输入桌面失败证据继续保留；本次精确SHA独立build成功，不覆盖历史记录。
+
+清理清单与限制：仅拟删本批scratch目录 `.tmp/busy-b667e224-tests`（32文件、12,278,656 bytes）和 `.tmp/busy-b667e224-scripttests`（15文件、6,451,200 bytes）；已确认归属、规范化根内路径、0重解析点、无外部进程占用/文档引用。自动执行策略对 `Remove-Item -LiteralPath -Recurse -Force` 返回 `blocked by policy`，所以两目录未删除，未使用替代绕过。删前空间观测C/D为5,167,312,896 / 7,047,708,672 bytes；策略拒绝后再次测得值有变化，因目标实际未删，不把前后全盘变化归因于清理。build输出、隔离profile、包、当前原始诊断保留；用户TRX、TestResults、配置、真实存档和未知文件未触碰。
+
+纯文档阶段下一步：仅跑链接/源码检查，提交中文文档commit并push；不再执行完整构建、测试或为文档CI通过追加记录。若后续执行策略仍拒绝递归清理，保留scratch并明确报告，不改用绕过删除工具。真实Playnite渲染及截图对应运行时身份仍待用户环境可用时核对。

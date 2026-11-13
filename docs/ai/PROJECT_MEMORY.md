@@ -2170,3 +2170,9 @@ Round5当前80项状态由U09-08复核：7已满足、71代码完成待验收、
 上述隔离条件已由实现候选`c2fcc80477b936bafbaf46e983c266365480fb5c`落实；根入口SDK8.0.423 / Release成功安装到新`.tmp` profile，安装程序集身份对应精确SHA，Playnite进程参数确认使用隔离profile。58个`NotExecuted`不计通过。Playnite打开首次配置并记录应用启动，但没有观察到Worker进程；插件运行态仍待验。云上传在子进程中强制关闭，真实配置、存档与云队列未读取，未执行恢复/删除/云写。
 
 同一SHA的独立`scripts/build.cmd`编译成功，但WPF测试在41/157类后因无法检查Windows输入桌面而exit 1；不跳过探针、不重跑追绿。精确本机TRX/身份/CI/下一步见[本轮P1验收账本](../design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/README.md)。required-checks/ruleset名单的既有HTTP403与run #1551两个job通过分别记录，不重复请求权限端点。
+
+### 2026-11-13 用户截图：共享按钮误显忙碌状态
+
+单独用户反馈不并入抽查报告的16项或Round5/S/T账本。根因在 Playnite `GscWpfUiButton` 共享样式：父级 DataContext.IsBusy 会令未声明动作忙碌状态的按钮也显示蓝色忙碌条。实现提交 `b667e22445fbf57aa591f39f3d968f5c166c7cb6` 移除该隐式绑定，并保留明确 opt-in 的忙碌绑定、模板、命令 CanExecute 与行为。R02BusyStateTests 两次6/6；来源检查、WPF静态审查、根入口与 scripts/build.cmd 验证通过。准确SHA GitHub run `43375661710` 两个适用job均成功。注意截图对应二进制身份及真实Playnite修复后渲染未独立核验。
+
+本次根入口和独立构建原始TRX/summary/日志留在仓库本地 artifacts；SDK为8.0.423，skip单独记录、不算通过。测试scratch目录均在仓库 `.tmp/`、无链接/占用/文档引用，但PowerShell递归清理命令被执行策略拒绝，保留待后续策略允许时清理；禁止把拒绝描述为已清理。用户TRX/TestResults与真实配置、存档未操作。
