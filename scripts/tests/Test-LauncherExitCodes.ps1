@@ -13,7 +13,7 @@ Copy-Item -LiteralPath (Join-Path $repo 'GameSaveCenter-Run.cmd'), (Join-Path $r
 Copy-Item -LiteralPath (Join-Path $repo 'scripts/build.cmd') -Destination (Join-Path $output 'scripts')
 Copy-Item -LiteralPath (Join-Path $repo 'scripts/hide-console.ps1') -Destination (Join-Path $output 'scripts')
 . (Join-Path $repo 'scripts/hide-console.ps1')
-Set-Content -LiteralPath (Join-Path $output 'scripts/dev-install-run.ps1') -Value '# DEV-INSTALL-010 isolated fixture'
+Set-Content -LiteralPath (Join-Path $output 'scripts/dev-install-run.ps1') -Value '# DEV-INSTALL-011 isolated fixture'
 Set-Content -LiteralPath (Join-Path $output 'scripts/build.ps1') -Value '# isolated fixture'
 
 $consoleCases = @(
@@ -49,7 +49,7 @@ foreach ($entry in @('GameSaveCenter-Run.cmd', 'GameSaveCenter-一键构建安�
         $moduleProbe = if ($entry -eq 'scripts/build.cmd') {
             '$ErrorActionPreference = ''Stop''; $hash = Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256; if ($hash.Hash.Length -ne 64) { throw ''Hash probe failed'' }; Write-Output ''DESKTOP_HASH_OK'''
         } else { '' }
-        Set-Content -LiteralPath (Join-Path $output ('scripts/' + $scriptName)) -Value "# DEV-INSTALL-010 isolated fixture`n$moduleProbe`nexit $code"
+        Set-Content -LiteralPath (Join-Path $output ('scripts/' + $scriptName)) -Value "# DEV-INSTALL-011 isolated fixture`n$moduleProbe`nexit $code"
         $log = Join-Path $output (($entry -replace '[/\\]', '-') + "-$code.log")
         & cmd.exe /d /c ('"' + (Join-Path $output $entry) + '" < nul > "' + $log + '" 2>&1')
         $actual = $LASTEXITCODE

@@ -18,7 +18,7 @@ if not exist "%~dp0scripts\dev-install-run.ps1" (
     exit /b 2
 )
 
-findstr /c:"DEV-INSTALL-010" "%~dp0scripts\dev-install-run.ps1" >nul 2>nul
+findstr /c:"DEV-INSTALL-011" "%~dp0scripts\dev-install-run.ps1" >nul 2>nul
 if errorlevel 1 (
     echo [FAILED] The installer script is stale or this is not the source checkout.
     echo Expected: %~dp0scripts\dev-install-run.ps1
@@ -37,11 +37,19 @@ set "EXIT_CODE=%ERRORLEVEL%"
 echo.
 if not "%EXIT_CODE%"=="0" (
     echo [FAILED] Build or installation did not complete. Exit code: %EXIT_CODE%
-    echo See artifacts\one-click-install.log for details.
+    if defined GSC_INSTALL_RUN_LOG_PATH (
+        echo See the configured run log under artifacts.
+    ) else (
+        echo See artifacts\one-click-install.log for details.
+    )
     exit /b %EXIT_CODE%
 )
 
 echo [OK] Build, verification, installation and Playnite startup completed.
-echo See artifacts\last-dev-install.txt for the installed version.
+if defined GSC_INSTALL_REPORT_PATH (
+    echo See the configured install report under artifacts.
+) else (
+    echo See artifacts\last-dev-install.txt for the installed version.
+)
 echo.
 exit /b 0

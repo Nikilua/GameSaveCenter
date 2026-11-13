@@ -194,7 +194,8 @@ function Initialize-GscIsolatedPlayniteProfile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)][string]$RepositoryRoot,
-        [Parameter(Mandatory = $true)][string]$UserDataDir
+        [Parameter(Mandatory = $true)][string]$UserDataDir,
+        [string]$CreatedBy = 'scripts/real-host-audit.ps1'
     )
 
     $repositoryPath = [System.IO.Path]::GetFullPath($RepositoryRoot)
@@ -254,7 +255,7 @@ function Initialize-GscIsolatedPlayniteProfile {
         ProfileId = $profileId
         RepositoryRoot = $repositoryPath
         ProfilePath = $profilePath
-        CreatedBy = 'scripts/real-host-audit.ps1'
+        CreatedBy = $CreatedBy
         CreatedUtc = [DateTime]::UtcNow.ToString('O')
     }
     $encoding = New-Object System.Text.UTF8Encoding($false)
@@ -363,4 +364,39 @@ function Get-GscPlayniteProcessStartEvidence {
     } while ([DateTime]::UtcNow -lt $deadline)
 
     throw "Unable to observe the isolated Playnite process command line within three seconds. PID=$($StartedProcess.Id)"
+}
+
+function Configure-GscIsolatedPlayniteProcessEnvironment {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)][System.Diagnostics.ProcessStartInfo]$ProcessStartInfo,
+        [Parameter(Mandatory = $true)][string]$WorkerDataDirectory,
+        [Parameter(Mandatory = $true)][string]$PipeName,
+        [Parameter(Mandatory = $true)][string]$EventPipeName
+    )
+
+    if ($ProcessStartInfo.UseShellExecute) {
+        throw 'Isolated Playnite launch must use an explicit child-process environment with UseShellExecute disabled.'
+    }
+    $workerDataPath = [System.IO.Path]::GetFullPath($WorkerDataDirectory)
+    if (-not (Test-Path -LiteralPath $workerDataPath -PathType Container)) {
+        throw "Isolated Worker data directory must exist before launch: $workerDataPath"
+    }
+    if ([string]::IsNullOrWhiteSpace($PipeName) -or [string]::IsNullOrWhiteSpace($EventPipeName)) {
+        throw 'Isolated Worker pipe names must be non-empty.'
+    }
+    Assert-GscNoReparsePointsUnderPath -Path $workerDataPath
+
+    $environment = $ProcessStartInfo.EnvironmentVariables
+    foreach ($name in @($environment.Keys)) {
+        $variableName = [string]$name
+        if ($variableName -match '^(GameSaveCenter__|RCLONE_|GSC_UI_AUDIT_|GSC_REAL_HOST_AUDIT$)') {
+            $environment.Remove($variableName)
+        }
+    }
+
+    $environment['GameSaveCenter__DataDirectory'] = $workerDataPath
+    $environment['GameSaveCenter__PipeName'] = $PipeName
+    $environment['GameSaveCenter__EventPipeName'] = $EventPipeName
+    $environment['GameSaveCenter__EnableCloudUpload'] = 'false'
 }

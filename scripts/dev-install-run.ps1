@@ -7,6 +7,7 @@ param(
     [string]$BuildOutputRoot = '',
     [string]$RunLogPath = '',
     [string]$InstallReportPath = '',
+    [string]$IsolatedPlayniteUserDataDir = '',
     [switch]$SkipTests,
     [switch]$NoStart,
     [switch]$SkipPlayniteShutdownForIsolatedTarget,
@@ -15,7 +16,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$installerRevision = 'DEV-INSTALL-010'
+$installerRevision = 'DEV-INSTALL-011'
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 try {
@@ -31,27 +32,30 @@ $root = Split-Path -Parent $PSScriptRoot
 . (Join-Path $PSScriptRoot 'checkout-lock.ps1')
 $checkoutLock = Enter-GscCheckoutLock $root
 try {
+if ([string]::IsNullOrWhiteSpace($TestTempRoot)) { $TestTempRoot = [Environment]::GetEnvironmentVariable('GSC_INSTALL_TEST_TEMP_ROOT', 'Process') }
+if ([string]::IsNullOrWhiteSpace($BuildOutputRoot)) { $BuildOutputRoot = [Environment]::GetEnvironmentVariable('GSC_INSTALL_BUILD_OUTPUT_ROOT', 'Process') }
+if ([string]::IsNullOrWhiteSpace($RunLogPath)) { $RunLogPath = [Environment]::GetEnvironmentVariable('GSC_INSTALL_RUN_LOG_PATH', 'Process') }
+if ([string]::IsNullOrWhiteSpace($InstallReportPath)) { $InstallReportPath = [Environment]::GetEnvironmentVariable('GSC_INSTALL_REPORT_PATH', 'Process') }
+if ([string]::IsNullOrWhiteSpace($IsolatedPlayniteUserDataDir)) { $IsolatedPlayniteUserDataDir = [Environment]::GetEnvironmentVariable('GSC_ISOLATED_PLAYNITE_USER_DATA_DIR', 'Process') }
+if ([string]::IsNullOrWhiteSpace($PlayniteExecutable) -and -not [string]::IsNullOrWhiteSpace($IsolatedPlayniteUserDataDir)) {
+    $PlayniteExecutable = [Environment]::GetEnvironmentVariable('GSC_ISOLATED_PLAYNITE_EXECUTABLE', 'Process')
+}
 . (Join-Path $PSScriptRoot 'space-budget.ps1')
 $spaceBudget = Invoke-GscSpacePreflight $root $BuildOutputRoot $TestTempRoot -IncludePackage
 . (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
 $hostIsolationHelpers = Join-Path $PSScriptRoot 'PlayniteHostIsolation.ps1'
 . $hostIsolationHelpers
-if ($SkipPlayniteShutdownForIsolatedTarget) {
-    if (-not $NoStart) {
-        throw 'SkipPlayniteShutdownForIsolatedTarget requires -NoStart.'
-    }
-    if ([string]::IsNullOrWhiteSpace($PlayniteExtensionsPath)) {
-        throw 'SkipPlayniteShutdownForIsolatedTarget requires an explicit isolated PlayniteExtensionsPath under repository .tmp.'
-    }
-
-    $PlayniteExtensionsPath = Resolve-GscRepositoryScopedPath `
+if (-not [string]::IsNullOrWhiteSpace($IsolatedPlayniteUserDataDir)) {
+    if ($NoStart) { throw 'Isolated Playnite profile mode requires the requested host startup.' }
+    if ($SkipPlayniteShutdownForIsolatedTarget) { throw 'Isolated Playnite profile mode cannot be combined with SkipPlayniteShutdownForIsolatedTarget.' }
+    $IsolatedPlayniteUserDataDir = Resolve-GscRepositoryScopedPath `
         -RepositoryRoot $root `
-        -Path $PlayniteExtensionsPath `
+        -Path $IsolatedPlayniteUserDataDir `
         -ScopeRootName '.tmp'
     $isolationConflicts = @(Get-GscPlayniteConflictingProcesses)
     Assert-GscNoActivePlayniteProcesses -Processes $isolationConflicts
+    Assert-GscProcessCommandLineInspectionAvailable
 }
-
 $artifactsPath = Join-Path $root 'artifacts'
 New-Item $artifactsPath -ItemType Directory -Force | Out-Null
 # Keep the isolated root short enough for the .NET Framework test adapter.
@@ -87,6 +91,21 @@ if (-not [string]::IsNullOrWhiteSpace($InstallReportPath)) {
         throw "InstallReportPath must be inside repository artifacts: $resolvedInstallReportPath"
     }
     $reportPath = $resolvedInstallReportPath
+}
+if ($SkipPlayniteShutdownForIsolatedTarget) {
+    if (-not $NoStart) {
+        throw 'SkipPlayniteShutdownForIsolatedTarget requires -NoStart.'
+    }
+    if ([string]::IsNullOrWhiteSpace($PlayniteExtensionsPath)) {
+        throw 'SkipPlayniteShutdownForIsolatedTarget requires an explicit isolated PlayniteExtensionsPath under repository .tmp.'
+    }
+
+    $PlayniteExtensionsPath = Resolve-GscRepositoryScopedPath `
+        -RepositoryRoot $root `
+        -Path $PlayniteExtensionsPath `
+        -ScopeRootName '.tmp'
+    $isolationConflicts = @(Get-GscPlayniteConflictingProcesses)
+    Assert-GscNoActivePlayniteProcesses -Processes $isolationConflicts
 }
 $transcriptStarted = $false
 try {
@@ -562,6 +581,38 @@ try {
     }
 
     $playniteExecutables = @(Get-PlayniteExecutableCandidates -PreferredPath $PlayniteExecutable -RunningPaths $runningPlaynitePaths)
+$isolatedProfile = $null
+$isolatedWorkerDataDirectory = ''
+$isolatedPipeName = ''
+$isolatedEventPipeName = ''
+if (-not [string]::IsNullOrWhiteSpace($IsolatedPlayniteUserDataDir)) {
+    if ($playniteExecutables.Count -eq 0) {
+        throw 'Isolated Playnite profile mode requires a discovered Playnite.DesktopApp.exe; refusing an install without host startup verification.'
+    }
+    if (Test-Path -LiteralPath $IsolatedPlayniteUserDataDir) {
+        throw "Isolated Playnite profile mode requires a new .tmp directory and will not reuse prior profile data: $IsolatedPlayniteUserDataDir"
+    }
+
+    $isolatedPlayniteExecutable = Assert-GscPlayniteExecutable -PlayniteExecutable ($playniteExecutables | Select-Object -First 1)
+    $playniteExecutables = @($isolatedPlayniteExecutable)
+    $isolatedProfile = Initialize-GscIsolatedPlayniteProfile `
+        -RepositoryRoot $root `
+        -UserDataDir $IsolatedPlayniteUserDataDir `
+        -CreatedBy 'scripts/dev-install-run.ps1'
+    if (-not $isolatedProfile.Created) {
+        throw 'Isolated Playnite profile must be newly created for each one-click verification.'
+    }
+    $IsolatedPlayniteUserDataDir = $isolatedProfile.Path
+    $PlayniteExtensionsPath = Join-Path $IsolatedPlayniteUserDataDir 'Extensions'
+    $isolatedWorkerDataDirectory = Join-Path $IsolatedPlayniteUserDataDir 'GameSaveCenter'
+    New-Item -ItemType Directory -Path $PlayniteExtensionsPath -Force | Out-Null
+    New-Item -ItemType Directory -Path $isolatedWorkerDataDirectory -Force | Out-Null
+    Assert-GscNoReparsePointsUnderPath -Path $IsolatedPlayniteUserDataDir
+    $isolatedPipeName = 'GameSaveCenter.Worker.Isolated.' + [Guid]::NewGuid().ToString('N')
+    $isolatedEventPipeName = $isolatedPipeName + '.Events'
+    Write-Host "隔离Playnite数据：$IsolatedPlayniteUserDataDir" -ForegroundColor DarkCyan
+    Write-Host "隔离Worker数据：$isolatedWorkerDataDirectory" -ForegroundColor DarkCyan
+}
     if ($playniteExecutables.Count -eq 0) {
         Write-Warning '未自动发现 Playnite.DesktopApp.exe。将继续构建和安装；安装完成后无法自动启动 Playnite。若 Playnite 使用便携版或自定义目录，请使用 -PlayniteExecutable 指定其路径。'
     }
@@ -569,6 +620,10 @@ try {
         Write-Host "发现 Playnite：$($playniteExecutables -join ', ')" -ForegroundColor DarkCyan
     }
     $extensionRoots = @(Get-ExtensionRoots -ExplicitPath $PlayniteExtensionsPath -PlayniteExecutables $playniteExecutables)
+if ($isolatedProfile -and ($extensionRoots.Count -ne 1 -or
+    -not [string]::Equals([System.IO.Path]::GetFullPath($extensionRoots[0]), [System.IO.Path]::GetFullPath($PlayniteExtensionsPath), [System.StringComparison]::OrdinalIgnoreCase))) {
+    throw 'Isolated Playnite profile mode resolved an extension target outside the marked user-data profile.'
+}
 
     $stopArguments = @{ ExtensionRoots = $extensionRoots }
     if ($playniteExecutables.Count -gt 0) {
@@ -609,7 +664,12 @@ try {
 
     # Build, tests, package identity and the stage manifest must all be valid
     # before stopping the host. Failed restores/tests must leave Playnite running.
-    if ($SkipPlayniteShutdownForIsolatedTarget) {
+    if ($isolatedProfile) {
+        $launchConflicts = @(Get-GscPlayniteConflictingProcesses)
+        Assert-GscNoActivePlayniteProcesses -Processes $launchConflicts
+        Write-Host '隔离Playnite profile：不会停止或复用真实用户Playnite/Worker。' -ForegroundColor DarkCyan
+    }
+    elseif ($SkipPlayniteShutdownForIsolatedTarget) {
         Write-Host '隔离扩展目标：跳过停止 Playnite/Worker；若发现既有进程则已在入口处拒绝。' -ForegroundColor DarkCyan
     }
     else {
@@ -655,13 +715,40 @@ try {
             $playniteStartInfo = [System.Diagnostics.ProcessStartInfo]::new()
             $playniteStartInfo.FileName = $playniteExe
             $playniteStartInfo.WorkingDirectory = Split-Path -Parent $playniteExe
+            if ($isolatedProfile) {
+                $playniteStartInfo.Arguments = New-GscPlayniteUserDataArguments -UserDataDir $IsolatedPlayniteUserDataDir
+            }
             # Do not route through ShellExecute/Explorer: the installer may be
             # running on an isolated desktop for acceptance, and the shell can
             # otherwise surface Playnite on the user's active desktop.
             $playniteStartInfo.UseShellExecute = $false
+            if ($isolatedProfile) {
+                Configure-GscIsolatedPlayniteProcessEnvironment `
+                    -ProcessStartInfo $playniteStartInfo `
+                    -WorkerDataDirectory $isolatedWorkerDataDirectory `
+                    -PipeName $isolatedPipeName `
+                    -EventPipeName $isolatedEventPipeName
+            }
             $playniteProcess = [System.Diagnostics.Process]::Start($playniteStartInfo)
             if ($null -eq $playniteProcess) {
                 throw "无法启动 Playnite：$playniteExe"
+            }
+            if ($isolatedProfile) {
+                $playniteLaunchEvidence = Get-GscPlayniteProcessStartEvidence `
+                    -StartedProcess $playniteProcess `
+                    -ExpectedExecutable $playniteExe `
+                    -ExpectedUserDataDir $IsolatedPlayniteUserDataDir
+            }
+            else {
+                $playniteLaunchEvidence = $null
+            }
+            if ($isolatedProfile) {
+                $report.Add("Playnite启动状态：$($playniteLaunchEvidence.Status)")
+                $report.Add("Playnite进程ID：$($playniteLaunchEvidence.ProcessId)")
+                $report.Add("Playnite用户数据目录：$($playniteLaunchEvidence.ObservedUserDataDir)")
+                $report.Add("Worker数据目录：$isolatedWorkerDataDirectory")
+                $report.Add("Worker IPC：$isolatedPipeName")
+                $report | Set-Content $reportPath -Encoding UTF8
             }
             $playniteProcess.Dispose()
         }

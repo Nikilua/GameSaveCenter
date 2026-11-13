@@ -38,6 +38,66 @@ try {
     $reopened = Initialize-GscIsolatedPlayniteProfile -RepositoryRoot $repoRoot -UserDataDir $profilePath
     Assert-True (-not $reopened.Created) 'A marked profile should be recognized rather than reinitialized.'
     Assert-True ($reopened.ProfileId -eq $profile.ProfileId) 'A marked profile should retain its stable profile ID.'
+    $profileMarker = Get-Content -LiteralPath $profile.MarkerPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    Assert-True ($profileMarker.CreatedBy -eq 'scripts/real-host-audit.ps1') 'The existing real-host profile marker should keep its creator identity.'
+
+    $installProfilePath = Join-Path $testRoot 'install-profile'
+    $installProfile = Initialize-GscIsolatedPlayniteProfile `
+        -RepositoryRoot $repoRoot `
+        -UserDataDir $installProfilePath `
+        -CreatedBy 'scripts/dev-install-run.ps1'
+    $installProfileMarker = Get-Content -LiteralPath $installProfile.MarkerPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    Assert-True ($installProfileMarker.CreatedBy -eq 'scripts/dev-install-run.ps1') 'The one-click isolated profile marker should identify its creator.'
+
+    $isolatedWorkerDirectory = Join-Path $installProfilePath 'GameSaveCenter'
+    New-Item -ItemType Directory -Path $isolatedWorkerDirectory -Force | Out-Null
+    $environmentNames = @(
+        'GameSaveCenter__DataDirectory', 'GameSaveCenter__PipeName', 'GameSaveCenter__EventPipeName',
+        'GameSaveCenter__EnableCloudUpload', 'GameSaveCenter__RcloneDestination', 'RCLONE_CONFIG',
+        'GSC_REAL_HOST_AUDIT', 'GSC_UI_AUDIT_PIPE_NAME')
+    $originalEnvironment = @{}
+    foreach ($name in $environmentNames) {
+        $originalEnvironment[$name] = [Environment]::GetEnvironmentVariable($name, [EnvironmentVariableTarget]::Process)
+    }
+    $playniteStartInfo = [System.Diagnostics.ProcessStartInfo]::new()
+    $playniteStartInfo.FileName = $env:ComSpec
+    $playniteStartInfo.Arguments = '/d /c if /i not "%GameSaveCenter__EnableCloudUpload%"=="false" (exit /b 40) else if defined GameSaveCenter__RcloneDestination (exit /b 41) else if defined RCLONE_CONFIG (exit /b 42) else if defined GSC_REAL_HOST_AUDIT (exit /b 43) else if defined GSC_UI_AUDIT_PIPE_NAME (exit /b 44) else exit /b 0'
+    $playniteStartInfo.UseShellExecute = $false
+    $childEnvironment = $playniteStartInfo.EnvironmentVariables
+    foreach ($name in $environmentNames) {
+        $childEnvironment[$name] = "sentinel-$name"
+    }
+    Configure-GscIsolatedPlayniteProcessEnvironment `
+        -ProcessStartInfo $playniteStartInfo `
+        -WorkerDataDirectory $isolatedWorkerDirectory `
+        -PipeName 'GameSaveCenter.Worker.Isolated.fixture' `
+        -EventPipeName 'GameSaveCenter.Worker.Isolated.fixture.Events'
+    Assert-True ($childEnvironment['GameSaveCenter__DataDirectory'] -eq $isolatedWorkerDirectory) 'The isolated Worker should receive only its private data directory.'
+    Assert-True ($childEnvironment['GameSaveCenter__PipeName'] -eq 'GameSaveCenter.Worker.Isolated.fixture') 'The isolated Worker should receive its private IPC pipe.'
+    Assert-True ($childEnvironment['GameSaveCenter__EventPipeName'] -eq 'GameSaveCenter.Worker.Isolated.fixture.Events') 'The isolated Worker should receive its private event pipe.'
+    Assert-True ($childEnvironment['GameSaveCenter__EnableCloudUpload'] -eq 'false') 'Cloud upload must be explicitly disabled for an isolated Playnite launch.'
+    foreach ($name in @('GameSaveCenter__RcloneDestination', 'RCLONE_CONFIG', 'GSC_REAL_HOST_AUDIT', 'GSC_UI_AUDIT_PIPE_NAME')) {
+        Assert-True (-not $childEnvironment.ContainsKey($name)) "Isolated Playnite child must not inherit $name."
+    }
+    $playniteProcess = [System.Diagnostics.Process]::Start($playniteStartInfo)
+    if ($null -eq $playniteProcess) {
+        throw 'Could not start the isolated environment probe process.'
+    }
+    try {
+        if (-not $playniteProcess.WaitForExit(5000)) {
+            $playniteProcess.Kill()
+            throw 'The isolated environment probe process did not exit within five seconds.'
+        }
+        Assert-True ($playniteProcess.ExitCode -eq 0) 'Sensitive upload or audit environment variables reached the isolated child process.'
+    }
+    finally {
+        $playniteProcess.Dispose()
+    }
+    foreach ($name in $environmentNames) {
+        if ([Environment]::GetEnvironmentVariable($name, [EnvironmentVariableTarget]::Process) -ne $originalEnvironment[$name]) {
+            throw "Isolated launch changed the caller's process environment variable: $name"
+        }
+    }
 
     $copiedMarkerProfilePath = Join-Path $testRoot 'copied-marker-profile'
     New-Item -ItemType Directory -Path $copiedMarkerProfilePath | Out-Null
