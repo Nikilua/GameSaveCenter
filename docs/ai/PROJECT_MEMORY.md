@@ -1,12 +1,12 @@
-## 2026-11-14 Round6 V01–V08 进度
+## 2026-11-14 Round6 V01–V12 进度
 
 V01–V04已完成，见[存档页基线复核](../design/reviews/ui-redesign-round6-20261113/README.md)和[计划状态](../design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)。新增受控生产XAML基线入口，固定同一合成数据时间，在1040×700与1600×900 DIP、双主题分别捕获常规/详情打开共8图；已基于图像列出7项差距，完成存档页WPF可实现规格及空/加载/错误/过期/离线/长中英文名/长路径/多选样本。当前仓库没有Demo源目录，按计划记录缺失并以生产资源建立基准。
 
-V01–V04基线规格已完成；V05–V08已在生产SaveCenterView重排标题/上下文、主次动作、已载入记录搜索、工具栏、表格与详情。搜索不访问存档或Worker；恢复命令、安全提示、选择器/滚动系统、虚拟化和键盘/UIA保留。针对同数据/同尺寸/同主题完成受控WPF采样与内部目视复核，V12会登记正式对比资产。
+V01–V04基线规格已完成；V05–V08生产SaveCenterView首屏、主次动作、已载入记录搜索、工具栏、表格与详情调整已完成。V12已经归档同数据/尺寸/主题的8张前后并排图及16张原图，并完成人工视觉复核。搜索不访问存档或Worker；恢复命令、安全提示、选择器/滚动系统、虚拟化和键盘/UIA保留。窄窗详情按生产页面纵向滚动访问，评审中明确记录这一空间边界。证据与哈希见[存档页评审](../design/reviews/ui-redesign-round6-20261113/README.md#v05-v08-存档页首屏与详情示范)。
 
-当前候选 SDK8.0.423 / Release 全构建0 warning/0 error；Core 157/157、Worker 407/407、Playnite 2,044项中1,986通过、0失败、58个既有Skip，WPF 157/157类隔离运行。全量Render QA 408 PNG/0 PROBLEM；Source Validation/diff-check通过；WPF生产项目静态26 XAML/0 error/26 warnings/164 info。旧V01基线目录和本轮代码均来自生产XAML，不以RenderHarness概念样图代替页面。截图与QA是WinSta0私有桌面、1.0离屏DIP；真实Playnite宿主、物理DPI、实体输入和呈现帧率仍未验。
+SDK8.0.423 / Release：0 warning/0 error；Core 157/157、Worker 407/407、Playnite 2,044项中1,986通过、0失败、58个既有skip，WPF 157/157类隔离运行。精确源码提交6a7b01b3的Render QA为408 PNG/0 PROBLEM/exit0；Source Validation/diff-check通过；WPF生产项目静态26 XAML/0 error/26 warnings/164 info。旧V01基线和候选均使用生产XAML，不以概念样图代替页面；截图与QA是WinSta0私有桌面、1.0离屏DIP；真实Playnite宿主、物理DPI、实体输入和呈现帧率仍未验。GitHub run #1570两个适用job目前尚在运行，需最终查询。
 
-V09–V12完成共享字体/图标、按钮/输入、表面/浮层，以及存档页前后比较与内部评审后，才能推广其余页面。执行策略拒绝清理自有 `.tmp/round6-v05-before-worktree`；删除前确认仓库临时路径内、无重解析点与占用进程，未改用其他删除工具。Demo源目录仍不存在，视觉方向遵循Demo-first之外沿用生产资源；旧宿主与权限待验边界不影响本轮独立实现。
+存档页示范内部验收已收口。下一阶段从V09–V11共享原件开始，然后按计划校准和录制动效（V13–V20），再推广其余页面。执行策略拒绝清理自有 `.tmp/round6-v05-before-worktree` 及8张完全重复的中间并排图；未改用其他删除工具。Demo源目录仍不存在，视觉方向遵循Demo-first之外沿用生产资源；旧宿主与权限待验边界不影响本轮独立实现。
 
 ## 2026-11-13 新授权起点（历史记录）
 

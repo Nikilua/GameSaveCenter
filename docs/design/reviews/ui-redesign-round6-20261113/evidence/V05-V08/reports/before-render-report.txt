@@ -1,0 +1,44 @@
+GameSaveCenter Round 6 save-page baseline
+GeneratedLocal: 2026-11-14 01:18:03
+Source SHA: recorded by runner-metadata.json
+Source: production SaveCenterView.xaml hosted by the isolated WPF render harness
+Data: FakeDashboardData(8, Ready); no Playnite profile, game library, save, or cloud data
+WindowDip: 1040x700 and 1600x900; content viewport derived from the production shell layout
+States: selected history row, details closed/open
+Themes: Light and Dark; DpiScale: 1.0 offscreen DIP
+
+save-history-light-1040x700-details-closed.png: window=1040x700 DIP; content=744x460 DIP; theme=light; rows=8; selected=1; inspector=Collapsed; pageScroll=0/112; size=744x460 DIP
+save-history-light-1040x700-details-open.png: window=1040x700 DIP; content=744x460 DIP; theme=light; rows=8; selected=1; inspector=Visible; pageScroll=274/274; size=744x460 DIP
+save-history-light-1600x900-details-closed.png: window=1600x900 DIP; content=1276x660 DIP; theme=light; rows=8; selected=0; inspector=Collapsed; pageScroll=0/1; size=1276x660 DIP
+save-history-light-1600x900-details-open.png: window=1600x900 DIP; content=1276x660 DIP; theme=light; rows=8; selected=1; inspector=Visible; pageScroll=0/1; size=1276x660 DIP
+save-history-dark-1040x700-details-closed.png: window=1040x700 DIP; content=744x460 DIP; theme=dark; rows=8; selected=1; inspector=Collapsed; pageScroll=0/112; size=744x460 DIP
+save-history-dark-1040x700-details-open.png: window=1040x700 DIP; content=744x460 DIP; theme=dark; rows=8; selected=1; inspector=Visible; pageScroll=274/274; size=744x460 DIP
+save-history-dark-1600x900-details-closed.png: window=1600x900 DIP; content=1276x660 DIP; theme=dark; rows=8; selected=0; inspector=Collapsed; pageScroll=0/1; size=1276x660 DIP
+save-history-dark-1600x900-details-open.png: window=1600x900 DIP; content=1276x660 DIP; theme=dark; rows=8; selected=1; inspector=Visible; pageScroll=0/1; size=1276x660 DIP
+FontChain: Inter -> Segoe UI Variable Text -> Segoe UI -> Noto Sans SC -> Noto Sans CJK SC -> Microsoft YaHei UI -> Microsoft YaHei
+FontCandidate CJK=U+05B58 candidate=Noto Sans SC requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence CJK=U+05B58 level=GlyphRunCaptured candidate=Noto Sans SC final=Noto Sans SC runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Latin=U+00053 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Latin=U+00053 level=GlyphRunCaptured candidate=Segoe UI Variable Text final=Segoe UI Variable Text runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Digit=U+00039 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Digit=U+00039 level=GlyphRunCaptured candidate=Segoe UI Variable Text final=Segoe UI Variable Text runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Arrow=U+02192 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Arrow=U+02192 level=GlyphRunCaptured candidate=Segoe UI Variable Text final=Segoe UI Variable Text runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate RareCJK=U+20BB7 candidate=unresolved requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence RareCJK=U+20BB7 level=GlyphRunCaptured candidate=unresolved final=MingLiU-ExtB runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Combining=U+00301 candidate=Segoe UI Variable Text requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Combining=U+00301 level=GlyphRunCaptured candidate=Segoe UI Variable Text final=Segoe UI Variable Text runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontCandidate Emoji=U+1F9ED candidate=unresolved requestedWeight=Normal actualWeight=Normal
+GlyphRunEvidence Emoji=U+1F9ED level=GlyphRunCaptured candidate=unresolved final=Segoe UI Emoji runs=1 glyphs=1 finalTypefaceHasCodePoint=True notdef=False
+FontWeightCandidate Chinese requested=Normal family=Noto Sans SC actual=Normal
+FontWeightCandidate Chinese requested=Medium family=Noto Sans SC actual=Medium
+FontWeightCandidate Chinese requested=SemiBold family=Noto Sans SC actual=Bold
+UnicodeMetric text=Café utf16Length=5 width=27.49 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=Ångström utf16Length=8 width=61.01 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=が utf16Length=2 width=11.7 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=🧭 🎮 utf16Length=5 width=42.28 height=16.8 baseline=12.6 unpairedSurrogate=False
+UnicodeMetric text=𠮷 utf16Length=2 width=14 height=16.8 baseline=12.6 unpairedSurrogate=False
+FontActualGlyphRun: captured per sample with WPF TextFormatter.GetIndexedGlyphRuns
+FontEvidence: FontCandidate is candidate coverage; GlyphRunEvidence is captured WPF layout output; unresolved or .notdef remains non-hit
+
+round6-baseline OK

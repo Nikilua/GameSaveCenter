@@ -64,3 +64,29 @@
 - 完整 Render QA：408 张 PNG、`render-qa OK`、0 个 `PROBLEM`。WPF 静态审查扫描 32 个 XAML：0 error、26 warnings、179 info；本阶段未改生产 XAML，因此保留原有 warning 作为后续有目标处理的信号，没有通过关闭检查消去。
 - `python scripts/validate-source.py` 与 `git diff --check` 均通过。首轮采样遇到 Harness 编译符号、初始化时机和宽屏默认详情状态问题，已按生产视图实际行为修正；静态校验发现的 PowerShell UTF-8 BOM 也已补齐。尝试与修正摘要记在 [采样诊断](evidence/V01/attempts.md)。
 - 质量复核确认：主表与四行可读底线在本阶段都没有回退；后续可改动页面层级、留白、按钮和详情排版。受控离屏截图不证明 Playnite 前台帧率、物理输入、宿主主题/DPI 或 UI Automation 客户端体验。
+
+## V05-V08: 存档页首屏与详情示范
+
+生产实现提交为 `6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e`（基线 `c543790fcb6277f994f86bc58d0acd40631f9ed6`）。下列截图使用相同的 RenderHarness 与 8 条 `FakeDashboardData(Ready)` 记录，固定采样时间 `2026-11-13T00:00:00Z`、双主题、1.0 离屏 DIP 缩放和相同的客户区（窄窗 744×460 DIP、宽窗 1276×660 DIP）。`before`/`after` 原图保留在证据目录；并排图在上方标出对应提交短 SHA。详细运行身份、尺寸、样本和退出码见 [渲染记录](evidence/V05-V08/reports/before-render-report.txt)、[基线运行元数据](evidence/V05-V08/reports/before-runner-metadata.json) 与 [候选运行元数据](evidence/V05-V08/reports/after-runner-metadata.json)。两次采样都在 WinSta0 隔离桌面运行、脚本退出码 0，且输入桌面前后均为 `Default`。
+
+| 状态 | 浅色对比 | 深色对比 |
+| --- | --- | --- |
+| 1040×700，常规 | [查看并排图](evidence/V05-V08/comparison/save-history-light-1040x700-details-closed-before-after.png) | [查看并排图](evidence/V05-V08/comparison/save-history-dark-1040x700-details-closed-before-after.png) |
+| 1040×700，详情打开 | [查看并排图](evidence/V05-V08/comparison/save-history-light-1040x700-details-open-before-after.png) | [查看并排图](evidence/V05-V08/comparison/save-history-dark-1040x700-details-open-before-after.png) |
+| 1600×900，常规 | [查看并排图](evidence/V05-V08/comparison/save-history-light-1600x900-details-closed-before-after.png) | [查看并排图](evidence/V05-V08/comparison/save-history-dark-1600x900-details-closed-before-after.png) |
+| 1600×900，详情打开 | [查看并排图](evidence/V05-V08/comparison/save-history-light-1600x900-details-open-before-after.png) | [查看并排图](evidence/V05-V08/comparison/save-history-dark-1600x900-details-open-before-after.png) |
+
+原始图：[基线 before](evidence/V05-V08/before/)、[生产候选 after](evidence/V05-V08/after/)。这些是生产 WPF 视图在受控 Harness 中的采样，并排图没有缩放两侧的内容区域；不是 Playnite 前台截屏，也没有将离屏缩放解释成物理 DPI 验证。
+
+### 可见变化与复核结论
+
+- 游戏名成为页面首屏锚点，匹配/保护状态与版本数紧邻呈现；扫描/备份形成主操作组，校验/刷新退为次级操作。
+- 搜索、历史范围和版本导航、列与保存视图按关系归组，窄宽下工具栏有稳定的第二行；搜索只过滤已载入元数据。
+- 宽窗把历史记录和详情安排成清楚的 2:1 两栏；详情先给创建时间、触发方式、文件数、容量等摘要，再列来源关系、恢复可用性与技术字段。
+- 表格行的信息基线与状态标签更清楚，详情里的来源/安全说明继续保留完整语义。快速阅读时主要动作和当前对象更容易区分。
+- 1040×700 紧凑布局仍沿用生产页面的滚动职责：详情在表格之后访问，受限视口不会同时显示完整详情。历史表格的长文本横向访问方式也仍由现有滚动系统提供。此点在截图中可见，未将窄窗描述成无滚动抽屉。
+- 当前游戏选框、业务命令/Binding、版本选择、虚拟化、键盘路径、恢复安全说明和生产滚动条系统均保留。客户端搜索没有读取归档或调用 Worker。
+
+内部评审复看了双主题宽屏详情和紧凑详情状态。层级与工具栏分组有可见改善，表格/详情分界明确；紧凑详情需要页面纵向滚动是已知边界。没有发现本批引入的选框越界或状态语义丢失。变化足以满足 V05–V08 与 V12 的页面示范验收，继续 V09–V11 共享原件与后续动效。
+
+SDK 8.0.423 / Release 的本地完整阶段回归：构建 0 warning / 0 error；Core 157/157、Worker 407/407、Playnite 2,044 项中 1,986 通过、0 失败、58 个既有 skip，157/157 个 WPF 隔离类。`python scripts/validate-source.py` 和 `git diff --check` 通过。生产 WPF 静态审查为 26 个 XAML、0 errors / 26 warnings / 164 info；本批没有关闭审查规则。精确候选全量 Render QA 与本地验证记录位于 `evidence/V05-V08/reports/`，并列入 [SHA-256 清单](evidence/sha256-manifest.json)。GitHub run [#1570](https://github.com/Nikilua/GameSaveCenter/actions/runs/43478597342) 正在精确提交 `6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e` 上运行；基线和 SDK 10.0.401 两个适用 job 当前均为 in progress，V27 仍会对最终候选重新核验。真实 Playnite 前台呈现、宿主缩放与 UIA 客户端体验仍按旧边界待验。

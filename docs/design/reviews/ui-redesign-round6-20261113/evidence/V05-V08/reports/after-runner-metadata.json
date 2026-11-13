@@ -1,0 +1,12 @@
+{
+  "scenario": "Baseline",
+  "harnessMode": "round6baseline",
+  "sourceSha": "6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e",
+  "sampleUtc": "2026-11-13T00:00:00.0000000+00:00",
+  "windowStation": "WinSta0",
+  "desktop": "GscRound6_6ef9cfa620934f018ce5af911a8d9dcb",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "exitCode": 0,
+  "output": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round6-v05-after-commit"
+}

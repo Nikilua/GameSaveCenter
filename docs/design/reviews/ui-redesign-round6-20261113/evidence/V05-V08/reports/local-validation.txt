@@ -1,0 +1,12 @@
+Round 6 V05–V08 local validation
+
+Candidate: 6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e
+Local command: ./scripts/build.ps1 -Configuration Release -OutputRoot .tmp/round6-v05-build-accepted -TestTempRoot .tmp/round6-v05-build-accepted/test-temp -DiagnosticsRoot .tmp/round6-v05-accepted-diagnostics
+SDK: 8.0.423; configuration: Release; outcome: passed; build warnings/errors: 0/0.
+The run summary's HEAD is parent 1dfbb65c with a dirty source/test candidate. Before recording this report, `git diff --exit-code 6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e -- src tests` succeeded, proving the validated source/test tree is byte-for-byte the committed candidate. The summary records 160 TRX, 2,044 tests, 1,986 passed, 0 failed, 58 skipped (pre-existing), and 157/157 isolated WPF test classes. Skips are not counted as passes.
+
+Render QA: `./scripts/render-qa.ps1 -Configuration Release -Output .tmp/round6-v05-render-qa-exact -SampleUtc '2026-11-13T00:00:00Z'`; exact source SHA 6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e; exit 0; 408 PNG, 0 PROBLEM; final marker `render-qa OK`. Harness ran on private WinSta0 desktop and left input desktop at Default. Full report is adjacent as render-qa-report.txt.
+
+Source validation: `python scripts/validate-source.py` passed. `git diff --check` passed. WPF static review: 26 XAML files; 0 errors, 26 warnings, 164 info. Existing warnings were retained; no checks or skips were removed or broadened.
+
+Evidence scope: isolated WPF production-view rendering and test results. No Playnite foreground session, user profile, game library, save, restore, delete, or cloud-write action was used.
