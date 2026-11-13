@@ -2194,3 +2194,9 @@ A01、A05、A06的当前验证身份更新为`b667e22445fbf57aa591f39f3d968f5c16
 A09不是“缺少首次使用UI”：维护中心已有环境检查、跳过/完成和复用生产备份管线的测试备份，存档页已有匹配、校验、readiness与恢复工作流。真实缺口是没有一次性配置把这些入口串成同一用户会话；分段测试不能冒充宿主可用性。A10不是“没有规模测试”：当前SHA已覆盖reduced soak、2,000游戏、分页、任务集合上限、缩略图预算和选项虚拟化；缺口是当前SHA未运行Worker full档，真实宿主库规模也很小。
 
 先补验收证据再判断实现。A09需设计虚拟游戏/存档且只写临时目录的夹具；A10可低优先级隐藏运行full档，不重跑整套构建。不要用历史full档替代当前SHA，不用自动测试声称真实Playnite滚动帧率。精确计数与TRX hash见[A09/A10审查](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/README.md)。
+
+### 2026-11-13 A10 full档结果
+
+产品源码仍为`b667e224`，运行HEAD`2b084c6a`只增加文档。SDK8.0.423 / Release定向Worker full档以隐藏BelowNormal进程exit0、1/1通过、0 skip；规模2,000游戏/20,000备份/10,000任务/5,000媒体/500工具，managed/handle/thread增长0，订阅与临时残留0。A10后台规模范围可收口，但这不是Playnite呈现帧、物理输入或真实大库宿主证据。
+
+原始结果保留在本地`artifacts/a10-full-2b084c6a/`；结构化记录见[A10 full结果](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/a10-full-result.json)。`.tmp`测试目录的精确PowerShell删除被执行策略拒绝，未绕过且未触碰用户数据。

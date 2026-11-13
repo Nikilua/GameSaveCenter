@@ -56,10 +56,11 @@
 
 ### 缺口与收益
 
-- 缺口：当前精确SHA完整链没有设置`GSC_SOAK_DATA_SCALE=1`，因此Worker full档尚未绑定到当前源码身份。历史full通过只证明旧源码，不能替代本轮。
+- 当前补验：文档HEAD `2b084c6a2b48fc2234c0a71e3e828fcd916b1715`仅在产品源码`b667e22445fbf57aa591f39f3d968f5c166c7cb6`之后增加文档。该HEAD使用SDK8.0.423 / Release、`GSC_SOAK_DATA_SCALE=1`定向运行full档，exit 0、1/1通过、0失败、0 skip。
+- full结果：2,000游戏、20,000备份、10,000任务、5,000媒体、500工具；造数138,568ms，模拟472ms；首次/热游戏查询20/13ms，任务页100/3/4ms，任务搜索5ms，媒体页3/0/0ms；`managedGrowth=0 MiB, handles+0, threads+0`，订阅与临时残留均0。
 - 缺口：现有本机真实Playnite库只有少量游戏；自动测试的集合/STA窗口结果不能证明真实宿主在代表规模下的滚动、搜索、取消和缩略图体验。
-- 收益：先补当前SHA的full档可确认SQLite查询、分页、增长与临时输出仍有界；宿主矩阵另列，可以避免把后台规模通过误写成UI帧率通过。
-- 下一步：在低优先级、隐藏进程和仓库专用临时目录中定向运行当前SHA full档，保留原始TRX/输出；不重跑整套构建。真实宿主规模仍保持条件待验。
+- 收益：当前源码的SQLite查询、分页、增长与临时输出有界性已有full档证据；宿主矩阵另列，避免把后台规模通过误写成UI帧率通过。
+- 下一步：A10后台范围收口，真实宿主代表规模仍保持条件待验；不因本结果生成平行列表实现或重跑整套构建。
 
 ## 原始证据身份
 
@@ -74,3 +75,5 @@
 | `artifacts/build-diagnostics/20261113T060254846Z-d6b80c0d/tests/wpf.R05OptionVirtualizationBehaviorTests/wpf.R05OptionVirtualizationBehaviorTests.trx` | `C90395223A54A71DCB16910E1B25B5FB55B36788395E17EA5CC2648DC60E691D` |
 
 相关测试源在精确SHA的Git blob：`SettingsAndAutoSelectSourceTests` `efca3a64`、`EnvironmentCheckServiceTests` `9d7b3a70`、`GameMatcherTests` `8cf14fcf`、`BackupPreviewBehaviorTests` `9dbd8d97`、`RestoreReadinessTests` `4604efc5`、`RestoreOrchestratorTests` `829eab0a`、`R11BackupPreviewBehaviorTests` `95ddd4f9`、`R12RestoreWorkflowBehaviorTests` `f2eb7473`、`SoakDataScaleTests` `d66076fb`、`LargeLibraryPerformanceTests` `62cb0363`、`R18ThumbnailBudgetTests` `f68f0275`、`BackupHistoryPagingTests` `714776f8`、`TaskIndexedCollectionTests` `17fbda20`、`R05OptionVirtualizationBehaviorTests` `3a0856af`。
+
+full档的结构化结果、TRX/日志hash与清理记录见[`a10-full-result.json`](a10-full-result.json)。原始本地证据保留在`artifacts/a10-full-2b084c6a/`。测试临时目录`.tmp/a10-full-2b084c6a`共17文件、5,827,456 bytes，路径、归属、重解析点、进程和文档引用检查通过；指定`Remove-Item -LiteralPath -Recurse -Force`被执行策略以`blocked by policy`拒绝，目录未删除，未绕过。

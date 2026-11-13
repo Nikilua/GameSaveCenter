@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "runCommit": "2b084c6a2b48fc2234c0a71e3e828fcd916b1715",
+  "productSourceCommit": "b667e22445fbf57aa591f39f3d968f5c166c7cb6",
+  "productSourceRelationship": "runCommit only adds documentation after productSourceCommit",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "commandScope": "GameSaveCenter.Worker.Tests / SoakDataScaleTests.DataScaleSoakRemainsBounded",
+  "environment": {
+    "GSC_SOAK_DATA_SCALE": "1",
+    "processWindow": "hidden",
+    "processPriority": "BelowNormal",
+    "tempRoot": ".tmp/a10-full-2b084c6a",
+    "artifactRoot": "artifacts/a10-full-2b084c6a"
+  },
+  "startedUtc": "2026-11-13T07:50:43.3057337Z",
+  "trxStarted": "2026-11-13T15:50:51.9851914+08:00",
+  "trxFinished": "2026-11-13T15:53:12.6222661+08:00",
+  "exitCode": 0,
+  "tests": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0
+  },
+  "scale": {
+    "profile": "full",
+    "games": 2000,
+    "backups": 20000,
+    "tasks": 10000,
+    "media": 5000,
+    "tools": 500,
+    "seedDurationMilliseconds": 138568,
+    "simulationDurationMilliseconds": 472,
+    "firstGamesQueryMilliseconds": 20,
+    "warmGamesQueryMilliseconds": 13,
+    "firstTaskPageQueryMilliseconds": 100,
+    "warmTaskPageQueryMilliseconds": 3,
+    "nextTaskPageQueryMilliseconds": 4,
+    "taskSearchQueryMilliseconds": 5,
+    "firstMediaPageQueryMilliseconds": 3,
+    "warmMediaPageQueryMilliseconds": 0,
+    "nextMediaPageQueryMilliseconds": 0,
+    "mediaSearchQueryMilliseconds": 0,
+    "taskPageItemCount": 200,
+    "mediaPageItemCount": 200,
+    "queryAllocatedBytes": 6969776,
+    "simulationAllocatedBytes": 63795224,
+    "boundedGrowth": true,
+    "subscriberResidue": 0,
+    "tempResidue": 0,
+    "growthSummary": "managedGrowth=0 MiB, handles+0, threads+0",
+    "errors": []
+  },
+  "localEvidence": [
+    {
+      "path": "artifacts/a10-full-2b084c6a/a10-full-2b084c6a.trx",
+      "bytes": 3415,
+      "sha256": "97AD32391BEAF250F21EBFBA9F64E9DF58EDA5701A8754501BFD695D9CCC6284"
+    },
+    {
+      "path": "artifacts/a10-full-2b084c6a/console.out.log",
+      "bytes": 1172,
+      "sha256": "FD2B4A9C47A04F0A300CAF094A34D6665024AA83596861928CF1699574416AAC"
+    },
+    {
+      "path": "artifacts/a10-full-2b084c6a/worker-scale.json",
+      "bytes": 954,
+      "sha256": "FF75D112778635FFDB680907B30711BB4FE8B0752A4BC4A5A156124E6A2D5D7A"
+    }
+  ],
+  "cleanup": {
+    "target": ".tmp/a10-full-2b084c6a",
+    "files": 17,
+    "bytes": 5827456,
+    "normalizedUnderRepoTmp": true,
+    "reparsePoints": 0,
+    "processReferences": 0,
+    "trackedDocumentReferencesBeforeRecord": 0,
+    "owner": "Sult\\lopmatu",
+    "command": "Remove-Item -LiteralPath <exact target> -Recurse -Force",
+    "result": "blocked by policy",
+    "directoryStillExists": true,
+    "freeBytesAtRunStart": {
+      "C": 5160570880,
+      "D": 14767280128
+    },
+    "freeBytesImmediatelyBeforeCleanupAttempt": {
+      "C": 5164834816,
+      "D": 14760775680
+    },
+    "freeBytesAfterRejectedCleanup": {
+      "C": 5172764672,
+      "D": 14760775680
+    },
+    "spaceChangeAttribution": "target was not removed; volume changes are not attributed to cleanup"
+  },
+  "limitations": [
+    "This is a Worker/SQLite scale test, not a Playnite host frame-rate or physical-input test.",
+    "No real profile, save, restore, delete, or cloud write was used."
+  ]
+}

@@ -13670,3 +13670,11 @@ A09当前入口已核：维护中心`RunEnvironmentCheckCommand`运行真实`Che
 A10当前精确SHA证据为reduced soak 1/1（40游戏、120备份、200任务、600媒体、20工具，managed/handle/thread增长0）、2,000游戏5/5、任务索引4/4、历史分页1/1、缩略图预算3/3、选项虚拟化5/5。当前full档定义为2,000游戏、20,000备份、10,000任务、5,000媒体、500工具，但完整链未设置`GSC_SOAK_DATA_SCALE=1`；历史旧SHA full结果不替代当前源码。真实Playnite少量游戏也不能证明代表规模UI体验。
 
 本批仅审查源码、现有TRX和入口，不修改源码/测试/资源/脚本，不启动Playnite，不运行构建。A09下一步先设计只写临时目录的虚拟游戏/存档夹具；A10下一步低优先级隐藏运行当前SHA full档并保留TRX。入口、缺口、收益、源blob与TRX hash见[A09/A10审查](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/README.md)。
+
+## 2026-11-13 A10 Worker full档补验
+
+产品源码`b667e22445fbf57aa591f39f3d968f5c166c7cb6`后仅新增文档；运行HEAD为`2b084c6a2b48fc2234c0a71e3e828fcd916b1715`。使用仓库缓存SDK8.0.423 / Release，设置`GSC_SOAK_DATA_SCALE=1`，以隐藏BelowNormal进程定向运行`SoakDataScaleTests.DataScaleSoakRemainsBounded`。实际exit0、1/1通过、0失败、0 skip，TRX时间15:50:51–15:53:12 +08:00。
+
+full档为2,000游戏、20,000备份、10,000任务、5,000媒体、500工具；造数138,568ms、模拟472ms；首次/热游戏查询20/13ms，任务页100/3/4ms、搜索5ms，媒体页3/0/0ms；查询分配6,969,776 bytes、模拟分配63,795,224 bytes，`managedGrowth=0 MiB, handles+0, threads+0`，订阅和临时残留0。TRX 3,415 bytes / SHA-256 `97AD32391BEAF250F21EBFBA9F64E9DF58EDA5701A8754501BFD695D9CCC6284`；原始输出和报告hash见[A10 full结果](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/a10-full-result.json)。A10后台代表规模收口，真实Playnite大库滚动、搜索、取消和缩略图体验仍待宿主条件。
+
+清理：`.tmp/a10-full-2b084c6a`规范化位于仓库`.tmp`，当前用户所有，17文件、5,827,456 bytes、0重解析点、0进程占用、记录前0跟踪文档引用。指定`Remove-Item -LiteralPath -Recurse -Force`被执行策略以`blocked by policy`拒绝，目录仍在，未换工具绕过。运行开始C/D空闲5,160,570,880 / 14,767,280,128 bytes；删除尝试前5,164,834,816 / 14,760,775,680，拒绝后5,172,764,672 / 14,760,775,680；目录未删，变化不归因于清理。用户TRX/TestResults、配置、真实存档和未知文件未触碰。

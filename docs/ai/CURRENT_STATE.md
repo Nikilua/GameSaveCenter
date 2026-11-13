@@ -934,3 +934,9 @@ A07复用RequestId ledger、重启中断、响应丢失重放和取消歧义覆�
 A09现有入口由维护中心环境检查/测试备份和存档页匹配、校验、readiness、恢复工作流组成；当前精确SHA的分段测试均通过，但onboarding源测试含2个既有NotExecuted且没有一次性配置下的同会话完整闭环。A10当前精确SHA已有reduced soak、2,000游戏集合、任务索引上限、历史分页、缩略图预算和选项虚拟化证据；Worker full档未在当前SHA启用，历史full不替代当前源码。
 
 本批没有修改产品或测试，也没有启动Playnite。A09下一步先设计仅写临时目录的虚拟游戏/存档夹具；A10下一步以低优先级隐藏进程定向运行当前SHA full档，不重跑整套构建。真实宿主首次使用与代表规模仍单列待验。详见[A09/A10审查](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/README.md)。
+
+### A10 full档补验
+
+文档HEAD`2b084c6a2b48fc2234c0a71e3e828fcd916b1715`相对产品源码`b667e224`只增加文档。SDK8.0.423 / Release、隐藏BelowNormal进程定向`SoakDataScaleTests` full档exit0、1/1通过、0 skip：2,000游戏、20,000备份、10,000任务、5,000媒体、500工具；造数138,568ms、模拟472ms，增长摘要`managedGrowth=0 MiB, handles+0, threads+0`，订阅与临时残留均0。A10后台规模范围收口，真实Playnite代表规模仍待条件。
+
+原始TRX、控制台与结构化报告在本地`artifacts/a10-full-2b084c6a/`，hash见[结构化记录](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/a10-full-result.json)。`.tmp/a10-full-2b084c6a`的17文件/5,827,456 bytes经边界、归属、链接、占用和引用检查后，指定PowerShell删除被策略拒绝；目录仍在，未绕过，空间变化不归因于清理。
