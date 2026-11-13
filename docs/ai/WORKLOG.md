@@ -13662,3 +13662,11 @@ A07继续复用RequestId ledger重放/冲突、Worker重启中断、写响应丢
 精确SHA `b667e22445fbf57aa591f39f3d968f5c166c7cb6`的本地中文完整入口、独立`scripts/build.cmd`以及GitHub run `43375661710`基线/SDK10.0.401 job均成功；58个skip不计通过。required-checks/ruleset名单仍受既有403限制，未重试。A01、A02、A05、A06、A07、A08、A11的本地或既有证据范围至此收口；A03继续并入U09-04，A04继续等待真实可见宿主、物理输入和呈现数据。
 
 本阶段只更新A07/A08/A11和P1边界，不把16项候选改成确认缺陷，不执行真实恢复、删除、云写或真实profile访问。下一批可进入P2 A09/A10去重与受控验收；仍按2～3项推进。本阶段纯文档，只做链接、源码、diff和证据路径检查。
+
+## 2026-11-13 P2第一批：A09/A10入口与证据去重
+
+A09当前入口已核：维护中心`RunEnvironmentCheckCommand`运行真实`CheckEnvironment`，`OnboardingTestBackupCommand`复用`BackupSelectedAsync`/`BackupGame`；存档页另有匹配、`ValidateGame`、`ValidateRestoreReadiness`和完整恢复工作流。精确`b667e224`根链TRX中环境1/1、匹配2/2、Worker备份预览2/2、WPF备份预览4/4、readiness15/15、恢复16/16、WPF恢复流程8/8；`SettingsAndAutoSelectSourceTests`为4通过/2个既有NotExecuted，skip不计通过。缺口是这些分段入口没有在一次性配置下串成同一用户会话，因此不改UI、不宣称首次使用闭环完成。
+
+A10当前精确SHA证据为reduced soak 1/1（40游戏、120备份、200任务、600媒体、20工具，managed/handle/thread增长0）、2,000游戏5/5、任务索引4/4、历史分页1/1、缩略图预算3/3、选项虚拟化5/5。当前full档定义为2,000游戏、20,000备份、10,000任务、5,000媒体、500工具，但完整链未设置`GSC_SOAK_DATA_SCALE=1`；历史旧SHA full结果不替代当前源码。真实Playnite少量游戏也不能证明代表规模UI体验。
+
+本批仅审查源码、现有TRX和入口，不修改源码/测试/资源/脚本，不启动Playnite，不运行构建。A09下一步先设计只写临时目录的虚拟游戏/存档夹具；A10下一步低优先级隐藏运行当前SHA full档并保留TRX。入口、缺口、收益、源blob与TRX hash见[A09/A10审查](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/README.md)。
