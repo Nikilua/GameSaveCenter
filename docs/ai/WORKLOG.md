@@ -13678,3 +13678,9 @@ A10当前精确SHA证据为reduced soak 1/1（40游戏、120备份、200任务�
 full档为2,000游戏、20,000备份、10,000任务、5,000媒体、500工具；造数138,568ms、模拟472ms；首次/热游戏查询20/13ms，任务页100/3/4ms、搜索5ms，媒体页3/0/0ms；查询分配6,969,776 bytes、模拟分配63,795,224 bytes，`managedGrowth=0 MiB, handles+0, threads+0`，订阅和临时残留0。TRX 3,415 bytes / SHA-256 `97AD32391BEAF250F21EBFBA9F64E9DF58EDA5701A8754501BFD695D9CCC6284`；原始输出和报告hash见[A10 full结果](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/a10-full-result.json)。A10后台代表规模收口，真实Playnite大库滚动、搜索、取消和缩略图体验仍待宿主条件。
 
 清理：`.tmp/a10-full-2b084c6a`规范化位于仓库`.tmp`，当前用户所有，17文件、5,827,456 bytes、0重解析点、0进程占用、记录前0跟踪文档引用。指定`Remove-Item -LiteralPath -Recurse -Force`被执行策略以`blocked by policy`拒绝，目录仍在，未换工具绕过。运行开始C/D空闲5,160,570,880 / 14,767,280,128 bytes；删除尝试前5,164,834,816 / 14,760,775,680，拒绝后5,172,764,672 / 14,760,775,680；目录未删，变化不归因于清理。用户TRX/TestResults、配置、真实存档和未知文件未触碰。
+
+## 2026-11-13 A09安全夹具设计复核
+
+轻量源码核对确认：恢复侧`RestoreOrchestrator`已有`IRestoreCatalog`/`IRestoreClient`替身与唯一临时根，可安全覆盖隔离恢复；备份侧`BackupOrchestrator`直接依赖具体`LudusaviClient`，现有测试没有可替换备份客户端，`DashboardViewModel`也由真实插件会话构造。若仅为串接“首次检查→匹配→备份→校验→恢复预览→隔离恢复”而新增接口，会变成生产依赖注入重构，超出本批收益。
+
+本阶段因此不改源码/测试/资源/脚本，不运行构建，不启动Playnite或真实Ludusavi，不接触profile、真实存档或云端。A09记录为分段安全覆盖已核、同会话宿主闭环待条件，未确认产品缺陷；后续只在业务自然形成测试缝或具备不占用户桌面的虚拟宿主条件时继续。

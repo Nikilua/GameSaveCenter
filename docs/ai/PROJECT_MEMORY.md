@@ -2200,3 +2200,7 @@ A09不是“缺少首次使用UI”：维护中心已有环境检查、跳过/�
 产品源码仍为`b667e224`，运行HEAD`2b084c6a`只增加文档。SDK8.0.423 / Release定向Worker full档以隐藏BelowNormal进程exit0、1/1通过、0 skip；规模2,000游戏/20,000备份/10,000任务/5,000媒体/500工具，managed/handle/thread增长0，订阅与临时残留0。A10后台规模范围可收口，但这不是Playnite呈现帧、物理输入或真实大库宿主证据。
 
 原始结果保留在本地`artifacts/a10-full-2b084c6a/`；结构化记录见[A10 full结果](../design/reviews/project-assessment-2026-11-06/evidence/A09-A10-audit-20261113/a10-full-result.json)。`.tmp`测试目录的精确PowerShell删除被执行策略拒绝，未绕过且未触碰用户数据。
+
+### 2026-11-13 A09安全夹具边界
+
+恢复编排已有`IRestoreCatalog`/`IRestoreClient`测试缝和唯一临时根；备份编排仍直接依赖具体`LudusaviClient`，Playnite VM绑定真实插件会话。不得为拼一个同会话测试而单独重构生产依赖注入，也不得用真实Ludusavi、profile或存档补证。A09保留为分段安全覆盖已核、真实宿主闭环待条件；后续仅在业务自然引入可替换备份客户端或具备不占用户桌面的虚拟宿主条件时继续。
