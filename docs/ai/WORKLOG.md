@@ -13645,4 +13645,4 @@ GitHub精确SHA run `43375661710`：job `131721452745`（编译、测试与打�
 
 清理清单与限制：仅拟删本批scratch目录 `.tmp/busy-b667e224-tests`（32文件、12,278,656 bytes）和 `.tmp/busy-b667e224-scripttests`（15文件、6,451,200 bytes）；已确认归属、规范化根内路径、0重解析点、无外部进程占用/文档引用。自动执行策略对 `Remove-Item -LiteralPath -Recurse -Force` 返回 `blocked by policy`，所以两目录未删除，未使用替代绕过。删前空间观测C/D为5,167,312,896 / 7,047,708,672 bytes；策略拒绝后再次测得值有变化，因目标实际未删，不把前后全盘变化归因于清理。build输出、隔离profile、包、当前原始诊断保留；用户TRX、TestResults、配置、真实存档和未知文件未触碰。
 
-纯文档阶段下一步：仅跑链接/源码检查，提交中文文档commit并push；不再执行完整构建、测试或为文档CI通过追加记录。若后续执行策略仍拒绝递归清理，保留scratch并明确报告，不改用绕过删除工具。真实Playnite渲染及截图对应运行时身份仍待用户环境可用时核对。
+纯文档阶段已完成：Source Validation exit 0、3份Markdown 571条本地链接0缺失/越界、git diff --check exit 0；文档提交1248e743已push。未因文档提交运行完整构建/测试或追加CI通过记录。scratch清理若仍被执行策略拒绝则保留并如实报告；真实Playnite渲染及截图对应运行时身份仍待用户环境可用时核对。
