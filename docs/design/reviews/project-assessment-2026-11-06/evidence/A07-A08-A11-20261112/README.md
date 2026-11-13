@@ -40,3 +40,11 @@
 因此，P1本地可处理的代码/测试收口与精确SHA CI已完成，完整宿主验收仍未完成：没有验证候选安装身份或候选Playnite启动；运行后Playnite与Worker均未启动，也没有重启旧安装以免启动非候选版本。A03/U09-04与A04仍等待真实宿主条件；P2/P3保持未开始。
 
 旧 `artifacts/gsc-b` 输出被诊断日志或既有证据路径引用，当前候选构建、TRX/失败诊断、安装尝试记录和安装包均需保留；详细清理预检和前后空间快照见[清理复核](cleanup-review-20261112.json)。既有用户TRX、`TestResults/`、配置、存档以及外部Playnite安装目录没有清理。
+
+## 2026-11-13 启动宿主安全边界复核
+
+Codex文件系统权限在前次安装写入失败后变为完全访问，但没有据此重跑真实入口。只读源码复核确认 `GameSaveCenterPlugin.OnApplicationStarted` 可启动Worker；`WorkerInitializationService.StartAsync` 会恢复待处理隔离项、清理过期检测快照并续跑未完成的整库备份；`CloudRetryService` 每30秒检查一次队列，用户设置允许且队列有任务时可能执行云端上传。相关入口见 [`GameSaveCenterPlugin.cs`](../../../../../../src/GameSaveCenter.Playnite/GameSaveCenterPlugin.cs)、[`WorkerInitializationService.cs`](../../../../../../src/GameSaveCenter.Worker/Services/WorkerInitializationService.cs)、[`CloudRetryService.cs`](../../../../../../src/GameSaveCenter.Worker/Services/CloudRetryService.cs)、[`RetentionSimulationService.cs`](../../../../../../src/GameSaveCenter.Worker/Services/RetentionSimulationService.cs)。
+
+当前真实Playnite配置与Worker待处理状态未知。重跑 `GameSaveCenter-一键构建安装运行.cmd` 会启动现有用户配置，可能触发恢复/删除或云端写入；本轮明确排除这些真实副作用，因此没有再次启动宿主，也没有读取或改动配置、数据库、存档、安装目录。此复核未产生新的根链退出码、TRX或安装身份；此前失败和对应原始证据继续有效，不得写成已安装/已启动。
+
+下一步：在默认Playnite profile与Worker数据均为一次性测试状态、且没有真实存档和云端写权限的Windows验收环境执行完整入口；独立 `scripts/build.cmd` 仍需可访问的输入桌面。现有CI只代表冻结源码SHA `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`，文档提交SHA不改变该产品源码身份。没有清理 `artifacts/`、`.tmp/` 或用户数据。

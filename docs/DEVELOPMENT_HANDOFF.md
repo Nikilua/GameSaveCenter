@@ -1679,3 +1679,10 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 - #1528 / runId 42666242561（head `95b2b4cf`）两个适用job全部成功，job/artifact身份见`evidence/U09-08-audit-20261110/ci-run-1528.json`。本批文档检查已通过（Source Validation、6份Markdown/1,037条本地链接、JSON解析、git diff --check）；中文提交/push后，查询精确推送SHA的`windows-build.yml`适用job并读取步骤/artifact；工具按commit的查询空列表不等于无push run。required-checks/ruleset此前403，不重复同权限端点，也不宣称门禁完整。
 - Playnite与Worker进程仍运行且主窗口句柄为0；不要强杀或为了观察而反复重启。Win32错误5的子进程desktop身份拒绝，无法据此证明用户桌面零闪。用户截图未带HWND/PID；U09-05保持代码完成待验收。
 - 只清理本阶段超长路径失败build output，727文件/169,290,041 bytes；保留所有诊断、当前输出与包、用户及其他任务TestResults/存档/配置。未修改盘符/卷/映射。清理前后空间和路径检查见同目录`cleanup.json`。
+
+## 2026-11-13 P1冻结候选宿主门禁
+
+- 冻结产品源码候选仍是`52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`；已记录的GitHub run #1545基线和SDK10 job均成功。之后状态文档提交不改变产品源码身份。
+- 本地中文根入口在SDK8.0.423下完成构建、测试、发布、身份校验和打包，安装阶段因扩展目录写入拒绝exit 1；候选未安装/启动。独立`scripts/build.cmd`因WPF输入桌面检查exit 1。原始失败和TRX索引保留在项目评估证据目录。
+- 文件系统访问权限后来改变，但没有重跑真实用户profile。Worker启动会执行待处理隔离项恢复、过期检测快照清理及未完成整库备份续跑；云端重试服务也可能根据现有配置和队列上传。真实配置/队列状态未检查，遵守本轮不进行真实恢复、删除或云端写入的限制。
+- 下一步需一次性Playnite profile与Worker数据、无真实存档和云端写权限的Windows验收环境；桌面可访问后再单独运行`scripts/build.cmd`。本轮未清理`artifacts/`、`.tmp/`、配置、TestResults或存档。见[完整宿主边界记录](design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md#2026-11-13-启动宿主安全边界复核)。
