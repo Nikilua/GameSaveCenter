@@ -2214,3 +2214,17 @@ A09不是“缺少首次使用UI”：维护中心已有环境检查、跳过/�
 A14不得把游戏级云状态拼成单版本可信度或统一安全分数；现有版本详情已覆盖多数可证明字段，等待版本级远端/隔离恢复证据契约。A15诊断包和健康报告已满足身份、失败/健康摘要、生成前脱敏预览与不自动上传要求。A16已有元数据manifest/schema/SHA/entries、恢复前副本及路径迁移目标冲突预览，没有具体跨设备失败时不另造迁移向导。三项均未修改产品。
 
 最终证据审计补充：b667根链成功分支与安装身份可信，三份原始日志/报告/summary hash复核匹配；外层cmd数值退出码仍缺失。后续完整链必须直接采集进程退出码，不能从日志推断为已捕获；独立build的exit0不能替代根入口。
+
+## 2026-11-13 最终冻结候选门禁结果（008b3d5d）
+
+冻结候选 `008b3d5dde4440534fe35a563422c60817681058` 与产品实现提交 `b667e22445fbf57aa591f39f3d968f5c166c7cb6` 之间只有文档差异。使用 SDK `8.0.423` / Release，中文完整入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 的实际 cmd 进程 PID 36560 直接退出码为0；build/test/publish/package/一次性profile安装及Playnite/Worker启动成功。160份TRX共2,043项：1,985通过、0失败、58跳过，157/157个WPF隔离类；skip不计通过。
+
+同一 SHA 的独立 `scripts/build.cmd` 直接退出码0，摘要及控制台均证明实际使用SDK8.0.423；外层 helper `exit.json` 中9.0.302是系统PATH SDK的读取结果，不作为实际构建SDK。该链也为2,043项/1,985通过/0失败/58跳过及157/157 WPF类，`R02BusyStateTests` 6/6。根链安装六个程序集身份完整绑定SHA；当前必要包、安装报告、根退出记录、原始summary/TRX均按hash索引保留。
+
+GitHub run #1564 / `43391873169` 精确验证008 SHA：基线job `131773490954` 与SDK10.0.401 job `131773490438` 所有步骤success。artifact ID/digest：preview `14024746736` / `481bfc1d97991f5a4cac6f575ae53c665bcc282b2f77104799acc9c7ee9591c7`，baseline diagnostics `14024666949` / `9c3e0fc66b7c0f2d9fba822327b3c9f97b103daccdea85fd12a54cda22556d0a`，SDK10 diagnostics `14022865985` / `ea5e51001bc6170ddca7bc07ca52478c539bcb4a5a3913f06c40b80dfe0d0fa2`。required-checks/ruleset名单仍沿用既有HTTP403，不重试。
+
+截图里的按钮下沿线是共享按钮模板的无百分比忙碌提示；错误的父级 `IsBusy` 默认绑定已由b667移除，只有显式绑定忙碌状态的操作按钮才会显示。截图运行程序集身份未知，未宣称真实宿主的该画面已复验；用户原有电脑/Playnite profile、配置、游戏库与存档未触碰。
+
+P1本地可执行范围已收口；A03/A04保持真实宿主输入/呈现条件待验，A09同会话宿主闭环待条件，A10真实宿主代表规模待条件。16项计划仍是候选工作而非16个确认缺陷。精确状态、原始证据和下一步见[P1收口证据](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)及[计划账本](../PROJECT_ASSESSMENT_2026-11-06.md)。
+
+本阶段清理预检发现5个自有 `.tmp` 构建/脚手架目标，共746个文件、175,192,373 bytes；目标均在仓库内、0重解析点、无跟踪文档引用，运行进程已退出。PowerShell `Remove-Item -LiteralPath -Recurse -Force` 被工具自动审查以 `blocked by policy` 拒绝，命令未执行，没有换方式绕过。目录/脚手架仍保留。尝试前C/D空闲5,118,636,032 / 15,957,209,088 bytes，拒绝后5,117,407,232 / 15,957,209,088 bytes；未归因空间变化为清理结果。隔离profile、其配置、包、审计及所有TRX均保留，用户/其他任务数据未触碰。

@@ -1,12 +1,12 @@
 ## 唯一当前事实入口（2026-11-13）
 
-当前产品源码候选为 `b667e22445fbf57aa591f39f3d968f5c166c7cb6`；其后至本段只含计划、证据索引与项目记忆文档。该源码的中文根入口使用SDK8.0.423 / Release完成build/test/publish/package/隔离安装并进入启动成功分支；独立`scripts/build.cmd`实际exit 0。两入口各160份TRX、2,043项、1,985通过、0失败、58既有skip，157/157个WPF隔离类；skip不计通过。安装六个程序集身份均含完整源码SHA。精确本地身份与原始文件hash见[P1本地收口](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)。
+当前冻结候选与实际门禁身份为 `008b3d5dde4440534fe35a563422c60817681058`；它相对产品实现提交 `b667e22445fbf57aa591f39f3d968f5c166c7cb6` 只增加文档，`src/`、`tests/`、`scripts/` 与资源无差异。中文根入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 使用SDK `8.0.423` / Release / `SkipTests=false` 完成build/test/publish/package/隔离安装及启动；直接捕获 cmd PID `36560` 的退出码为 `0`。160份TRX共2,043项：1,985通过、0失败、58跳过（不计通过），157/157个WPF隔离类。独立`scripts/build.cmd`同一 SHA、实际SDK `8.0.423` / Release、直接退出码 `0`，计数相同。它的辅助退出记录里 `sdkVersion=9.0.302` 是外层环境的系统PATH SDK；本次实际选择的SDK以构建日志与诊断摘要为准，均为8.0.423。
 
-GitHub run `43375661710`精确验证该SHA：基线job `131721452745`的15步与SDK10.0.401 job `131721453027`的8步均success。required-checks/ruleset名单仍是既有HTTP403，权限未变未重试；job成功与保护规则名单已验证是两个事实。A01/A02/A05/A06/A07/A08/A11本地或既有证据范围已收口；A03并入Round5 U09-04，A04仍等真实可见宿主、物理输入与呈现帧。A09分段安全覆盖已核但同会话宿主闭环待条件；A10后台full规模已核，真实宿主代表规模待条件。计划状态以[16项执行账本](../PROJECT_ASSESSMENT_2026-11-06.md)为准。
+GitHub run #1564 / `43391873169` 精确验证该 SHA：基线 job `131773490954` 与 SDK 10.0.401 job `131773490438` 的全部步骤均 completed/success。build preview artifact `14024746736` / digest `481bfc1d97991f5a4cac6f575ae53c665bcc282b2f77104799acc9c7ee9591c7`；基线诊断 artifact `14024666949` / digest `9c3e0fc66b7c0f2d9fba822327b3c9f97b103daccdea85fd12a54cda22556d0a`；SDK10诊断 artifact `14022865985` / digest `ea5e51001bc6170ddca7bc07ca52478c539bcb4a5a3913f06c40b80dfe0d0fa2`。required-checks/ruleset名单仍是既有HTTP403，权限未变未重试；两job成功不代表保护规则名单已验证。
 
-本段是启动协议唯一“当前”入口；下方同名或带日期的候选、门禁和失败记录均为历史证据，不得覆盖本段。当前HEAD仍须以`git log`核实，纯文档提交不产生新的产品安装身份。
+A01/A02/A05/A06/A07/A08/A11本地或既有证据范围已收口；A03并入Round5 U09-04，A04仍等真实可见宿主、物理输入与呈现帧。A09分段安全覆盖已核但同会话宿主闭环待条件；A10后台full规模已核，真实宿主代表规模待条件。按钮下沿忙碌提示的共享绑定修复在提交 `b667e224`；本次用户截图的运行程序集身份未知，不宣称已由真实宿主确认修复。以上阶段未访问真实Playnite profile/配置/游戏库/存档，未执行恢复、删除或云端写入。计划状态以[16项执行账本](../PROJECT_ASSESSMENT_2026-11-06.md)和[P1本地证据](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)为准。
 
-最终交付仍缺中文根入口最外层cmd的直接数值退出码；成功分支日志不替代该记录。A03/A04、A09和A10的真实宿主范围及required-checks名单权限边界继续保留。详见[P1证据复核](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)。
+本段是启动协议唯一“当前”入口；下方同名或带日期的候选、门禁和失败记录均为历史证据。纯文档提交不产生新的产品安装身份，当前 HEAD 仍须以 `git log` 核实。
 
 ## 历史：2026-11-13 P1隔离宿主验收状态（c2fcc804）
 

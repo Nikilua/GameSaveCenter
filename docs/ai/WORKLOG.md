@@ -13700,3 +13700,17 @@ A13没有可直接复用的五链统一索引，因此新增`CAPABILITY_ACCEPTAN
 ## 2026-11-13 最终交付证据复核
 
 HEAD `80b5fe6c`相对产品验证SHA b667只有10个文档/证据索引变更。重算根链summary、完整入口控制台与安装报告hash均匹配原始索引，安装报告六项程序集版本绑定完整b667 SHA。最外层cmd直接数值退出码仍缺，不能以成功分支或独立build exit0替代；已补到唯一当前入口和P1证据下一步。A03/A04、A09、A10宿主范围以及required-checks名单仍未验证，整体目标不标完成。本阶段纯文档，不构建、不启动宿主、不清理文件。
+
+## 2026-11-13 008b3d5d最终门禁补记
+
+实现提交仍为 `b667e22445fbf57aa591f39f3d968f5c166c7cb6`；冻结候选 `008b3d5dde4440534fe35a563422c60817681058` 对前者仅有文档差异。通过私有 WinSta0 桌面辅助进程直接捕获中文根入口 cmd PID 36560，exit0；SDK8.0.423 / Release / SkipTests=false。160份TRX共2,043项，1,985通过、0失败、58跳过，157/157 WPF隔离类。安装身份、包、退出码和原始TRX哈希见 [P1收口证据](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)。
+
+同一SHA独立 `scripts/build.cmd` exit0；`summary.json.sdk` 与控制台SDK选择/Base Path为8.0.423。helper退出记录里9.0.302是外层系统PATH探测值，不代表构建使用的SDK。计数仍为2,043/1,985/0/58，157/157个WPF类；`R02BusyStateTests` 6/6。
+
+GitHub run #1564（`43391873169`）head SHA准确为008；基线job `131773490954`、SDK10.0.401 job `131773490438`全部步骤success。artifact IDs/digests与required-checks HTTP403权限边界见证据README。无需重跑或为纯文档通过追加CI记录。
+
+用户再次指出按钮底部忙碌线观感不佳。它对应共享WPF按钮模板的忙碌指示器，原先因隐式绑定扩散到无关操作；修复已在 `b667e224` 移除隐式父级绑定，`R02BusyStateTests`验证默认隐藏与显式动作绑定。当前截图的运行DLL身份未核实，因此不将其登记为新缺陷，也不宣称真实宿主视觉已复验。此轮未使用前台电脑控制、未触碰用户profile/配置/游戏数据/存档。
+
+P1本地门禁收口；A03/A04真实输入与帧、A09同会话宿主、A10代表规模宿主仍待条件，required-checks名单仍因既有403未验证。16项仍为去重后的候选计划，不是确认缺陷列表。
+
+本阶段拟清理 `.tmp/scripts-build-008b-build`（711文件 / 162,910,383 bytes）、`.tmp/scripts-build-008b-tests`（32 / 12,278,656 bytes）及3个自有PowerShell辅助脚本（3 / 3,334 bytes）。五个目标规范化均在仓库 `.tmp`、当前用户所有、0重解析点、无跟踪文档路径引用，构建/Playnite进程均已退出。精确 `Remove-Item -LiteralPath -Recurse -Force` 调用被自动审查以 `blocked by policy` 拒绝，执行前中止；目标仍存在，不绕过。C/D空闲尝试前为5,118,636,032 / 15,957,209,088 bytes，拒绝后为5,117,407,232 / 15,957,209,088 bytes；没有文件被删除，空间变动不归因于清理。保留 `.tmp/e008-profile` 配置、`.tmp/e008-build`（安装报告记录）、当前包/审计/TRX；用户或其他任务的TestResults、TRX、配置、存档及未知数据未触碰。
