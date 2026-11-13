@@ -1,4 +1,14 @@
-## 2026-11-12 冻结候选门禁接续
+## 当前交接（2026-11-13，最终冻结候选 008b3d5d）
+
+当前工作树 `main` 与 `origin/main` 为文档提交 `53e38ab8e0e8df1825173421e477d5409b772f2b`；产品实现提交为 `b667e22445fbf57aa591f39f3d968f5c166c7cb6`，最终冻结门禁候选 `008b3d5dde4440534fe35a563422c60817681058` 相对它只有文档差异。启动时以 [唯一当前事实入口](ai/CURRENT_STATE.md) 和[16项执行账本](PROJECT_ASSESSMENT_2026-11-06.md)为准；下方旧候选交接均为历史。
+
+008 的中文根入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 与独立 `scripts/build.cmd` 均以 SDK 8.0.423 / Release 直接退出码 0 完成。各入口160份TRX共2,043项：1,985通过、0失败、58跳过（跳过不计通过），WPF隔离类157/157。GitHub run #1564（`43391873169`）精确验证008：基线和SDK 10.0.401 jobs全部步骤成功。退出码、SDK、安装身份、TRX及artifact原始身份见[P1最终门禁证据](design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)。required-checks/ruleset名单仍受既有HTTP403限制，运行job通过不等于名单已验证，不重复请求。
+
+本计划不是16个确认缺陷。P1本地范围已收口；A03/A04仍需真实可见宿主、物理输入与呈现证据，A09同会话宿主闭环和A10真实宿主规模仍待条件。A15现有能力满足，A14/A16无具体数据契约或跨设备失败时暂不实现。按钮底部短线的共享忙碌状态误绑定已在 `b667e224` 修复；截图运行程序集身份未知，未声称真实宿主画面已复验。不得据隔离启动声称真实profile、存档恢复或云写验收完成。
+
+最近 `.tmp` 清理的预检清单与空间记录已留在工作日志及证据中；PowerShell `Remove-Item -LiteralPath -Recurse -Force` 请求被自动审查以 `blocked by policy` 拒绝，命令没有执行，也未改用其他方式绕过。相关目录仍在。用户和其他任务的 TRX、`TestResults/`、配置、真实存档及未知文件不触碰。当前没有需要重跑的完整链；后续等待宿主、权限或清理策略条件改变后，再按账本对应范围推进。
+
+## 历史交接：2026-11-12 冻结候选门禁（52a57db9）
 
 当前已验证的产品源码候选为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`；此后只提交了状态/证据文档，产品源文件未变，分支HEAD以Git log为准。该源码SHA的GitHub run #1545（`43161957758`）基线与SDK10.0.401 jobs均成功；required-checks/ruleset仍因既有HTTP403无法核验，不重复请求。精确artifact身份：[CI记录](design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json)。
 
@@ -1687,7 +1697,7 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 - 文件系统访问权限后来改变，但没有重跑真实用户profile。Worker启动会执行待处理隔离项恢复、过期检测快照清理及未完成整库备份续跑；云端重试服务也可能根据现有配置和队列上传。真实配置/队列状态未检查，遵守本轮不进行真实恢复、删除或云端写入的限制。
 - 下一步需一次性Playnite profile与Worker数据、无真实存档和云端写权限的Windows验收环境；桌面可访问后再单独运行`scripts/build.cmd`。本轮未清理`artifacts/`、`.tmp/`、配置、TestResults或存档。见[完整宿主边界记录](design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md#2026-11-13-启动宿主安全边界复核)。
 
-## 2026-11-13 P1隔离候选验收续接
+## 历史交接：2026-11-13 P1隔离候选验收（c2fcc804）
 
 最新产品源码候选为`c2fcc80477b936bafbaf46e983c266365480fb5c`；入口/缺口/收益先由文档提交`56d3f30e17d8d5924710ed8fc62c7c31fd3c4cfd`记录。中文根入口SDK8.0.423 / Release在新`.tmp`profile完整安装并启动成功，160份TRX 2,042项：1,984通过、58未执行、0失败；包与安装程序集身份对应该SHA。Playnite进入首次配置且进程使用隔离profile；没有观察到Worker进程，插件运行态仍未验。
 
