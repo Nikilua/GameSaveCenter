@@ -13644,5 +13644,6 @@ A05/A06及A07/A08/A11继续按Round5、S/T账本去重，抽查报告的16项仍
 GitHub精确SHA run `43375661710`：job `131721452745`（编译、测试与打包）和 `131721453027`（.NET SDK 10.0.401编译与测试复核）所有步骤均success。required-checks/ruleset名单接口既有403仍未知；权限未变，不重复请求。第一次直接dotnet测试因全局SDK列表没有8.0.423而在测试前失败；仓库SDK bootstrap随后安装并选择8.0.423完成上述验证。旧提交 `c2fcc804` 的独立build输入桌面失败证据继续保留；本次精确SHA独立build成功，不覆盖历史记录。
 
 清理清单与限制：仅拟删本批scratch目录 `.tmp/busy-b667e224-tests`（32文件、12,278,656 bytes）和 `.tmp/busy-b667e224-scripttests`（15文件、6,451,200 bytes）；已确认归属、规范化根内路径、0重解析点、无外部进程占用/文档引用。自动执行策略对 `Remove-Item -LiteralPath -Recurse -Force` 返回 `blocked by policy`，所以两目录未删除，未使用替代绕过。删前空间观测C/D为5,167,312,896 / 7,047,708,672 bytes；策略拒绝后再次测得值有变化，因目标实际未删，不把前后全盘变化归因于清理。build输出、隔离profile、包、当前原始诊断保留；用户TRX、TestResults、配置、真实存档和未知文件未触碰。
+ 清理清单与限制：仅拟删本批scratch目录 `.tmp/busy-b667e224-tests`（32文件、12,278,656 bytes）和 `.tmp/busy-b667e224-scripttests`（15文件、6,451,200 bytes）；已确认归属、规范化根内路径、0重解析点、无外部进程占用/文档引用。自动执行策略对 `Remove-Item -LiteralPath -Recurse -Force` 返回 `blocked by policy`，所以两目录未删除，未使用替代绕过。清理尝试前C/D空闲为5,159,657,472 / 7,047,708,672 bytes，拒绝后复测为5,170,311,168 / 13,758,140,416 bytes；目录未删，期间系统空间变化不归因于清理。build输出、隔离profile、包、当前原始诊断保留；用户TRX、TestResults、配置、真实存档和未知文件未触碰。
 
 纯文档阶段已完成：Source Validation exit 0、3份Markdown 571条本地链接0缺失/越界、git diff --check exit 0；文档提交1248e743已push。未因文档提交运行完整构建/测试或追加CI通过记录。scratch清理若仍被执行策略拒绝则保留并如实报告；真实Playnite渲染及截图对应运行时身份仍待用户环境可用时核对。
