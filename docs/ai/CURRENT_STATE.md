@@ -952,3 +952,7 @@ A09现有入口由维护中心环境检查/测试备份和存档页匹配、校�
 ### A09安全夹具设计结论
 
 恢复侧已有`IRestoreCatalog`/`IRestoreClient`与唯一临时根，分段隔离验证可继续复用；备份侧`BackupOrchestrator`直接依赖具体`LudusaviClient`，`DashboardViewModel`又由真实插件会话构造，现有代码没有无需生产重构即可完成全链的同会话测试缝。本阶段不为测试拼接改生产DI，也不运行真实Ludusavi、profile或存档。A09保持分段覆盖已核、宿主闭环待条件；本结论不确认产品缺陷。
+
+## 2026-11-13 A14–A16功能候选去重
+
+A14版本详情已覆盖时间、来源、文件/大小、保护、readiness、哈希与检查时间；单版本远端/隔离恢复证明没有可靠契约，因此不拼游戏级云状态或安全分数。A15的诊断包与健康报告已覆盖生成前脱敏预览、软件/构建身份、失败/健康分段和安全导出，现有能力满足。A16的元数据包manifest/schema/SHA/entries、恢复前副本和路径迁移冲突预览已存在；没有具体跨设备失败，不新增平行向导。三项入口/缺口/收益见[A14–A16审查](../design/reviews/project-assessment-2026-11-06/evidence/A14-A16-audit-20261113/README.md)。
