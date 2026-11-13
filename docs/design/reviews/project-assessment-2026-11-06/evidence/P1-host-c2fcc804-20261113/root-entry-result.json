@@ -1,0 +1,72 @@
+{
+  "sourceSha": "c2fcc80477b936bafbaf46e983c266365480fb5c",
+  "implementationCommit": "c2fcc80477b936bafbaf46e983c266365480fb5c",
+  "entry": "GameSaveCenter-一键构建安装运行.cmd -> GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "outcome": "passed",
+  "launcherExitCode": 0,
+  "exitEvidence": "Launcher console emitted the success branch [OK] Build, verification, installation and Playnite startup completed.; GameSaveCenter-Run.cmd ends with exit /b 0.",
+  "captureHarness": {
+    "exitJsonWritten": false,
+    "note": "The outer PowerShell capture remained open after Playnite inherited the launcher output handles. The installer transcript ended and the cmd success branch was emitted; no claim is made about the still-running outer capture process."
+  },
+  "run": {
+    "id": "20261113T031637648Z-d15be0a8",
+    "startedUtc": "2026-11-13T03:16:40.9604611Z",
+    "completedUtc": "2026-11-13T03:42:44.0342783Z",
+    "diagnosticsSummary": "artifacts/build-diagnostics/20261113T031639919Z-ad059a2a/summary.json",
+    "trxFiles": 160,
+    "testCases": 2042,
+    "passed": 1984,
+    "notExecuted": 58,
+    "failed": 0,
+    "wpfIsolatedClasses": "157/157"
+  },
+  "testGroups": {
+    "core": { "total": 157, "passed": 157, "notExecuted": 0, "failed": 0 },
+    "worker": { "total": 407, "passed": 407, "notExecuted": 0, "failed": 0 },
+    "playniteSource": { "total": 575, "passed": 557, "notExecuted": 18, "failed": 0 },
+    "playniteWpfIsolated": { "total": 903, "passed": 863, "notExecuted": 40, "failed": 0, "classesRun": 157 }
+  },
+  "package": {
+    "version": "0.6.73",
+    "zip": "artifacts/p1-candidate-c2fcc804-20261113/GameSaveCenter-0.6.73-playnite.zip",
+    "pext": "artifacts/p1-candidate-c2fcc804-20261113/GameSaveCenter-0.6.73.pext",
+    "bytesEach": 45740284,
+    "sha256Both": "CDB9FC558EFB1E673AB497D46C39DBC8B181E2752017B6685BA5DF1AF4AAF4A2"
+  },
+  "installedAssemblies": [
+    { "file": "GameSaveCenter.Playnite.dll", "identity": "0.6.73+c2fcc80477b936bafbaf46e983c266365480fb5c", "sha256": "BFC7FC3D1F8D7AB79BB2566874B9BCA8BBD934B406B31BAC387714C9F06ABC98" },
+    { "file": "GameSaveCenter.Core.dll", "identity": "0.6.73+c2fcc80477b936bafbaf46e983c266365480fb5c", "sha256": "E55A057777E9F0204CAE088E84B94F9A6B507CB4176B11E28376995055113AEA" },
+    { "file": "GameSaveCenter.Contracts.dll", "identity": "0.6.73+c2fcc80477b936bafbaf46e983c266365480fb5c", "sha256": "8FA060B971A7EBC130BD33DA04A35FC8CD2C0CD5827C707C22AE479BB2FB5352" },
+    { "file": "Worker/GameSaveCenter.Worker.dll", "identity": "0.6.73+c2fcc80477b936bafbaf46e983c266365480fb5c", "sha256": "700B4B875FFD30E0FCFC38A0F0DE68DAE6E876EBC80ABDFDF74C586774CD6BE9" },
+    { "file": "Worker/GameSaveCenter.Core.dll", "identity": "0.6.73+c2fcc80477b936bafbaf46e983c266365480fb5c", "sha256": "7C28276ADDE63807ED701A836B2F7C6B2B932815458B1491479A3109E695F58D" },
+    { "file": "Worker/GameSaveCenter.Contracts.dll", "identity": "0.6.73+c2fcc80477b936bafbaf46e983c266365480fb5c", "sha256": "419A79F80239A01A3DA3F3B7FECF3ED3690D16B747BADCE7A05D73DD10B8E403" }
+  ],
+  "playnite": {
+    "executable": "D:/software/Playnite/Playnite.DesktopApp.exe",
+    "processId": 33116,
+    "profile": ".tmp/p1-host-playnite-c2fcc804",
+    "startupStatus": "verified-isolated-process",
+    "firstRunWizardObserved": true,
+    "addonRuntimeVerified": false,
+    "workerProcessObserved": false,
+    "workerData": ".tmp/p1-host-playnite-c2fcc804/GameSaveCenter",
+    "privateIpc": "GameSaveCenter.Worker.Isolated.0c2333f6fa6f46b09c45707092905040",
+    "cloudUploadForcedFalse": true
+  },
+  "scope": {
+    "realProfileRead": false,
+    "realSaveAccess": false,
+    "restoreDeleteOrCloudWrite": false,
+    "notes": "The profile was newly marked and isolated under .tmp. Playnite opened its first-time configuration window, then logged that the application started. No GameSaveCenter Worker process was observed; plugin runtime and business commands remain unverified."
+  },
+  "localEvidence": {
+    "installReport": "artifacts/p1-host-root-c2fcc804.txt",
+    "transcript": "artifacts/one-click-install.log",
+    "launcherConsole": "artifacts/p1-host-root-c2fcc804-launcher-console.log",
+    "diagnostics": "artifacts/build-diagnostics/20261113T031639919Z-ad059a2a/",
+    "targetedTestLogs": "artifacts/p1-candidate-c2fcc804-20261113/targeted-tests/"
+  }
+}

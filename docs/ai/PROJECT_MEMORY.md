@@ -2164,3 +2164,9 @@ Round5当前80项状态由U09-08复核：7已满足、71代码完成待验收、
 ### 2026-11-13 冻结候选宿主启动的安全条件
 
 最终候选`52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`的本地根入口编译/测试/发布/打包已完成，安装写入失败；文件系统权限后来变化，但不能据此直接重启真实用户profile。Playnite启动可启动Worker；Worker初始化包含待处理隔离项恢复、过期检测快照清理和整库备份续跑，云端重试可能根据现有配置/队列写云。用户明确排除真实恢复、删除及云写入，因此在默认profile和Worker数据状态未知时停止宿主启动。完整根链下一步应在一次性Windows Playnite profile/Worker数据且不能访问真实存档和云端写入的验收环境完成。`scripts/build.cmd`的输入桌面失败也需具备桌面条件再跑。只更新文档时做链接/源码校验，不重复构建、测试或CI记录。
+
+### 2026-11-13 P1验收进展
+
+上述隔离条件已由实现候选`c2fcc80477b936bafbaf46e983c266365480fb5c`落实；根入口SDK8.0.423 / Release成功安装到新`.tmp` profile，安装程序集身份对应精确SHA，Playnite进程参数确认使用隔离profile。58个`NotExecuted`不计通过。Playnite打开首次配置并记录应用启动，但没有观察到Worker进程；插件运行态仍待验。云上传在子进程中强制关闭，真实配置、存档与云队列未读取，未执行恢复/删除/云写。
+
+同一SHA的独立`scripts/build.cmd`编译成功，但WPF测试在41/157类后因无法检查Windows输入桌面而exit 1；不跳过探针、不重跑追绿。精确本机TRX/身份/CI/下一步见[本轮P1验收账本](../design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/README.md)。required-checks/ruleset名单的既有HTTP403与run #1551两个job通过分别记录，不重复请求权限端点。

@@ -1686,3 +1686,11 @@ CI 两 job 均通过，但连接器先前读取 `main` required checks/branch pr
 - 本地中文根入口在SDK8.0.423下完成构建、测试、发布、身份校验和打包，安装阶段因扩展目录写入拒绝exit 1；候选未安装/启动。独立`scripts/build.cmd`因WPF输入桌面检查exit 1。原始失败和TRX索引保留在项目评估证据目录。
 - 文件系统访问权限后来改变，但没有重跑真实用户profile。Worker启动会执行待处理隔离项恢复、过期检测快照清理及未完成整库备份续跑；云端重试服务也可能根据现有配置和队列上传。真实配置/队列状态未检查，遵守本轮不进行真实恢复、删除或云端写入的限制。
 - 下一步需一次性Playnite profile与Worker数据、无真实存档和云端写权限的Windows验收环境；桌面可访问后再单独运行`scripts/build.cmd`。本轮未清理`artifacts/`、`.tmp/`、配置、TestResults或存档。见[完整宿主边界记录](design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md#2026-11-13-启动宿主安全边界复核)。
+
+## 2026-11-13 P1隔离候选验收续接
+
+最新产品源码候选为`c2fcc80477b936bafbaf46e983c266365480fb5c`；入口/缺口/收益先由文档提交`56d3f30e17d8d5924710ed8fc62c7c31fd3c4cfd`记录。中文根入口SDK8.0.423 / Release在新`.tmp`profile完整安装并启动成功，160份TRX 2,042项：1,984通过、58未执行、0失败；包与安装程序集身份对应该SHA。Playnite进入首次配置且进程使用隔离profile；没有观察到Worker进程，插件运行态仍未验。
+
+独立`scripts/build.cmd`同一SHA编译成功但exit 1：WPF隔离41/157类后，输入桌面探针拒绝检查桌面；1,351项中1,333通过、18未执行、0测试失败。不要跳过探针或计未运行类为通过。精确原始证据和包/CI身份见`docs/design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/README.md`。GitHub run #1551基线和SDK10 jobs均通过；required-checks/ruleset名单仍HTTP403未验证。
+
+本轮没有读取真实配置/数据库/存档，也没有恢复、删除或云端写入。临时profile保留；本轮构建/测试输出的递归`Remove-Item`清理请求被执行策略拒绝且未执行，详情见同目录`cleanup.json`。下一步只在输入桌面可读取时复验`scripts/build.cmd`；如需运行插件，再完成空白profile首次配置但不接入游戏库/账号。不要重启真实profile。

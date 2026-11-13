@@ -57,3 +57,11 @@ Codex文件系统权限在前次安装写入失败后变为完全访问，但没
 - 预期收益：让完整入口可在仓库 `.tmp/` 的新标记 profile、独立 Worker 数据目录和私有 IPC 上运行，从而检查准确候选的安装身份与启动状态，避开真实 Playnite 配置、数据库、存档以及云端操作。
 - 实现范围：仅为启动验收增加可选隔离 profile 路径，校验 profile 是新建且位于仓库 `.tmp/`，将扩展目录/Worker 数据/IPC 限定在该 profile，并从 Playnite 子进程环境移除继承的 GameSaveCenter、Rclone 和审计变量。默认入口行为保持兼容。此候选不授权访问真实存档、恢复/删除或云端写入。
 - 验收：脚本/测试改动提交并冻结后，先跑隔离与安装事务定向测试；随后在无真实游戏数据的临时 profile 执行中文根入口完整链，并单独验证 `scripts/build.cmd`。记录准确源码 SHA、SDK、所有退出码、TRX 和安装身份；失败不计通过。
+
+### 2026-11-13 验收结果
+
+候选实现提交`c2fcc80477b936bafbaf46e983c266365480fb5c`已推送。SDK8.0.423 / Release中文根链在标记的`.tmp` Playnite profile上成功build/test/publish/package/install/start，160份TRX共2,042项中1,984通过、58 `NotExecuted`、0失败；58项不计通过。安装程序集身份与源码SHA一致，启动进程参数指向隔离profile，子进程云上传开关强制false。首次配置向导之后日志记录应用启动；没有观察到Worker进程，因此插件运行态仍未验。完整身份、包hash、进程与安全边界见[精确本机验收账本](../P1-host-c2fcc804-20261113/README.md)。
+
+独立`scripts/build.cmd`在相同SHA与SDK上编译0 warning/0 error；Core 157/157、Worker 407/407、Playnite source 557通过/18未执行、WPF 41/157类后因`InputDesktop()`抛`Could not inspect the input desktop.`退出1。累计1,351项中1,333通过、18未执行、0失败；剩余WPF类不计通过。原始TRX、完整脚本输出和诊断汇总保留在工作区`artifacts/build-diagnostics/p1-scripts-build-c2fcc804/`。不绕过探针、不无限重跑。
+
+精确源码run #1551（`43356307416`）的基线15/15与SDK10.0.401 8/8 jobs均success，artifact身份见[CI结果](../P1-host-c2fcc804-20261113/ci-run-43356307416.json)。此前候选记录提交run #1550（`43355362103`）两job也均success，身份见[CI记录](../P1-host-c2fcc804-20261113/ci-run-43355362103.json)。required-checks/ruleset名单的HTTP403仍是未验证，不等同于已运行job的成功。没有访问真实配置/数据库/存档，也没有执行恢复、删除或云端写入。

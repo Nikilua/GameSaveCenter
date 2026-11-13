@@ -1,0 +1,29 @@
+{
+  "sourceSha": "c2fcc80477b936bafbaf46e983c266365480fb5c",
+  "entry": "scripts/build.cmd",
+  "arguments": "-Configuration Release -OutputRoot <repo>/.tmp/p1-scripts-build-c2fcc804-output -TestTempRoot <repo>/.tmp/p1-scripts-build-c2fcc804-tests -DiagnosticsRoot <repo>/artifacts/build-diagnostics/p1-scripts-build-c2fcc804",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "skipTests": false,
+  "exitCode": 1,
+  "compile": { "warnings": 0, "errors": 0 },
+  "testCasesBeforeHostBlock": { "total": 1351, "passed": 1333, "notExecuted": 18, "failed": 0, "trxFiles": 44 },
+  "testGroups": {
+    "core": { "total": 157, "passed": 157, "failed": 0 },
+    "worker": { "total": 407, "passed": 407, "failed": 0 },
+    "playniteSource": { "total": 575, "passed": 557, "notExecuted": 18, "failed": 0 },
+    "playniteWpfIsolated": { "total": 212, "passed": 212, "failed": 0, "classesRun": "41/157" }
+  },
+  "failedStageId": "orchestration",
+  "failure": {
+    "type": "Windows input desktop inspection unavailable",
+    "message": "Exception calling InputDesktop with 0 argument(s): Could not inspect the input desktop.",
+    "source": "scripts/run-playnite-tests-isolated.ps1:282"
+  },
+  "rawEvidence": {
+    "console": "artifacts/p1-scripts-build-c2fcc804-console.log",
+    "exitRecord": "artifacts/p1-scripts-build-c2fcc804-exit.json",
+    "diagnostics": "artifacts/build-diagnostics/p1-scripts-build-c2fcc804/20261113T045021023Z-7e121647/"
+  },
+  "nextStep": "After the Windows host can inspect its input desktop, rerun this script once. Do not bypass the probe or count unrun WPF classes as passing."
+}

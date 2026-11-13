@@ -1,0 +1,17 @@
+{
+  "runId": 43356307416,
+  "runNumber": 1551,
+  "headSha": "c2fcc80477b936bafbaf46e983c266365480fb5c",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    { "id": 131659060201, "name": "编译、测试与打包", "steps": 15, "conclusion": "success" },
+    { "id": 131659060720, "name": ".NET SDK 10.0.401 编译与测试复核", "steps": 8, "conclusion": "success" }
+  ],
+  "artifacts": [
+    { "id": 14009740665, "name": "GameSaveCenter-windows-preview", "bytes": 90796124, "sha256": "2c17dd510da2a11d147563993535d61135823ba8e23ec262fa59cd595e8ec85c", "expiresAt": "2027-02-11T03:03:05Z" },
+    { "id": 14008834523, "name": "GameSaveCenter-build-diagnostics", "bytes": 2533025, "sha256": "bf8302d2712b425a5f67f9b2c052c70033afa0bb744aa83185e077f75c017a09", "expiresAt": "2026-11-27T04:08:18Z" },
+    { "id": 14008250376, "name": "GameSaveCenter-sdk10-build-diagnostics", "bytes": 1283952, "sha256": "a0939db6698af2e949043c35b7d2a54c3e9fccc5c2ea1a374b42fc44a584c4b1", "expiresAt": "2026-11-27T03:36:41Z" }
+  ],
+  "requiredChecks": { "status": "unverified", "reason": "Existing HTTP 403 prevents reading the required-checks/ruleset list; permissions were unchanged, so it was not requested again." }
+}

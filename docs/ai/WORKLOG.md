@@ -13614,3 +13614,17 @@ GitHub `windows-build.yml` run #1540 / `43053619363` 对精确SHA completed/succ
 候选记录见[入口、缺口、收益与边界](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md#候选一键入口的一次性-playnite-profile-验收)。当前入口是中文一键cmd → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1`，默认发现并使用现有Playnite扩展目录与profile。缺口是无法安全地把完整构建/安装/启动链定向到一次性profile，且启动子进程没有明确的隔离环境块；未知的真实Worker队列使普通profile启动不符合本轮安全边界。候选收益是验证精确提交的安装身份与启动，同时将Playnite、Worker数据和IPC限制在仓库`.tmp/`的新标记目录。此项是验收工具候选，不是已确认产品缺陷或16项报告的确认项；没有真实恢复/删除/云写授权。
 
 当前状态：候选已记录，脚本实现和定向测试处理中；下一步完成环境块与新profile边界测试，提交并冻结代码候选，再按计划运行完整链和独立`scripts/build.cmd`。此文档提交只做链接/源码校验，不运行完整构建/测试或另记CI通过。
+
+## 2026-11-13 P1隔离宿主验收结果
+
+A05/A06及A07/A08/A11继续按Round5、S/T账本去重，抽查报告的16项仍不视为已确认缺陷。候选入口是中文一键cmd → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1`；缺口为真实Playnite/Worker状态未知时默认profile不安全，收益是把精确候选的安装与启动限定到新profile、独立Worker目录和私有IPC。该候选在实现前由`56d3f30e17d8d5924710ed8fc62c7c31fd3c4cfd`记录，源代码实现由`c2fcc80477b936bafbaf46e983c266365480fb5c`提交并冻结。
+
+根入口在SDK8.0.423 / Release成功完成build/test/publish/package/install/start，成功分支exit 0。160份TRX共2,042项，1,984通过、58 `NotExecuted`、0失败；157/157个WPF隔离类。包版本0.6.73，zip/pext同为45,740,284 bytes、SHA-256 `CDB9FC558EFB1E673AB497D46C39DBC8B181E2752017B6685BA5DF1AF4AAF4A2`；6个安装程序集身份对应完整源码SHA。Playnite进程PID33116以`.tmp/p1-host-playnite-c2fcc804`启动；首次配置向导后日志有应用启动记录，但未观察到Worker进程，故不宣称插件运行态验收。子进程云上传强制false；无真实配置/存档访问和恢复、删除、云写。
+
+同一SHA独立`scripts/build.cmd`：SDK8.0.423 / Release，编译0 warning/0 error，exit 1；44份TRX共1,351项，1,333通过、18 `NotExecuted`、0测试失败；WPF41/157类后`InputDesktop()`因`Could not inspect the input desktop.`失败。剩余类别未运行，不绕过探针、不重跑。根链/独立build/TRX/包身份见[P1本机验收账本](../design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/README.md)。
+
+精确源SHA GitHub run #1551（`43356307416`）基线job `131659060201` 15/15、SDK10.0.401 job `131659060720` 8/8均success；候选记录SHA `56d3f30` 的run #1550两个job也success。artifact身份见证据目录的两个CI JSON。required-checks/ruleset名单HTTP403仍未验证，权限未变未重试。
+
+清理：c2包与旧52a57包分目录保留，旧canonical包和安装报告已恢复；定向日志与先前小型测试尝试从`.tmp/`移动到`artifacts/p1-candidate-c2fcc804-20261113/`并核验当前日志hash。构建/测试临时目录所有权、根内路径、链接、锁、进程和文档引用已检查；自动审批策略拒绝指定`Remove-Item -LiteralPath -Recurse -Force`（提示`blocked by policy`），因此本轮未删除这些`.tmp`输出。空间与具体清理清单见[cleanup.json](../design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/cleanup.json)。用户TRX、`TestResults/`、配置、真实存档与未知文件未触碰。
+
+下一步：仅在Windows输入桌面可读取后复验独立`scripts/build.cmd`；如需插件运行态验收，另行完成这个空白profile首次设置且不添加游戏库/账号。真实profile、恢复、删除和云写仍排除。P2/P3未开始。

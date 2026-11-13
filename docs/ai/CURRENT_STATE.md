@@ -1,10 +1,12 @@
-## 2026-11-13 P1宿主启动边界复核
+## 2026-11-13 P1隔离宿主验收最新状态
 
-冻结产品源码仍为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`；后续仅文档提交。之前完整入口SDK8.0.423已构建、测试、发布和打包，但安装写入失败（exit 1），没有验证候选安装身份或启动。文件系统权限后来变为完全访问，但未重跑：真实Playnite启动会调用Worker初始化，其中含待处理隔离项恢复、过期快照清理和未完成整库备份续跑；云端重试服务在用户设置开启且存在待办时会上传。真实配置/待办状态未检查，本轮禁止触发真实恢复、删除或云端写入。源码依据和后续条件见[宿主安全边界记录](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md#2026-11-13-启动宿主安全边界复核)。
+冻结源码候选为 `c2fcc80477b936bafbaf46e983c266365480fb5c`（实现提交：`隔离一键安装启动验收环境`）。候选入口、缺口和收益在实现前记录于`56d3f30e17d8d5924710ed8fc62c7c31fd3c4cfd`。中文根入口SDK8.0.423 / Release在新标记的`.tmp` Playnite profile完成build/test/publish/package/install/start，成功分支退出码0；160份TRX共2,042项，1,984通过、58 `NotExecuted`、0失败，157/157个WPF隔离类。程序集身份与源码SHA一致，包hash和进程参数见[本机验收记录](../design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/README.md)。
 
-`scripts/build.cmd`此前SDK8.0.423全套验证在WPF输入桌面检查失败（exit 1，148/157类完成）；当前未获得输入桌面变化证据，未重跑。A05/A06/A07/A08/A11本地代码与测试已收口；P1宿主门禁仍未完成。不得把CI双job成功、既有skip或早期SDK构建当作完整安装/启动通过。下一步需使用一次性Playnite profile/Worker数据且无真实存档和云端写能力的Windows宿主验收环境。
+Playnite进入首次配置后日志记录应用启动；没有观察到GameSaveCenter Worker进程，因此未验插件运行态、真实库数据或UI Automation。云上传开关在子进程中强制为false；没有读取真实配置/数据库/存档，没有恢复、删除或云端写入。独立`scripts/build.cmd`同一SHA退出1：编译0 warning/0 error，完成44份TRX共1,351项（1,333通过、18未执行、0测试失败），WPF 41/157类；输入桌面探针在`run-playnite-tests-isolated.ps1:282`失败，不能把剩余类别计为通过。[原始结果和下一步](../design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/scripts-build-cmd-result.json)。
 
-## 2026-11-12 冻结候选门禁结果（最新）
+GitHub run #1551 / `43356307416` 精确验证源码SHA：基线15/15、SDK10.0.401 8/8均成功；required-checks/ruleset名单仍因既有HTTP403未验证，权限未变未重试。输入桌面可被读取后仅复验独立`scripts/build.cmd`；不重启真实profile、不执行真实恢复/删除/云写。P1隔离入口候选结果不是16项报告的确认缺陷，也不表示全部宿主UI验收完成。
+
+## 2026-11-12 冻结候选门禁结果（历史）
 
 本条门禁记录的冻结产品源码候选为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`；之后提交的状态文档未修改产品源文件。GitHub run #1545（`43161957758`）验证的是该源码候选：基线 job `130995009638` 和 SDK 10.0.401 job `130995009279` 均成功；job/artifact身份见[精确CI记录](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json)。required-check/ruleset名单此前HTTP 403，仍未验证，也未重复请求。当前分支HEAD以Git log为准。
 

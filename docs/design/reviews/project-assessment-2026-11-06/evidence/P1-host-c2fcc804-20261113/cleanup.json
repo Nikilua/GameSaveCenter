@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-13",
+  "owner": "Sult\\lopmatu",
+  "preflight": {
+    "normalizedUnderRepositoryTmp": true,
+    "ownerVerifiedForEveryEntry": true,
+    "reparsePoints": 0,
+    "openFileLocks": 0,
+    "activeProcessCommandLineReferences": 0,
+    "documentReferencesReviewed": true
+  },
+  "movedEvidence": [
+    {
+      "from": ".tmp/p1-targeted-c2fcc804",
+      "to": "artifacts/p1-candidate-c2fcc804-20261113/targeted-tests",
+      "files": 23,
+      "bytes": 19767,
+      "verified": true
+    },
+    {
+      "from": ".tmp/p1-isolated-host-20261113",
+      "to": "artifacts/p1-candidate-c2fcc804-20261113/prior-attempts/p1-isolated-host-20261113",
+      "files": 23,
+      "bytes": 19616,
+      "verified": true
+    },
+    {
+      "from": ".tmp/p1-isolated-host-20261113-final",
+      "to": "artifacts/p1-candidate-c2fcc804-20261113/prior-attempts/p1-isolated-host-20261113-final",
+      "files": 1,
+      "bytes": 59,
+      "verified": true
+    },
+    {
+      "from": ".tmp/p1-isolated-launch-20261113",
+      "to": "artifacts/p1-candidate-c2fcc804-20261113/prior-attempts/p1-isolated-launch-20261113",
+      "files": 20,
+      "bytes": 18191,
+      "verified": true
+    }
+  ],
+  "removeRequests": [
+    { "path": ".tmp/p1-host-build-c2fcc804", "files": 1000, "bytes": 275624587 },
+    { "path": ".tmp/p1-host-tests-c2fcc804", "files": 32, "bytes": 12278656 },
+    { "path": ".tmp/p1-scripts-build-c2fcc804-output", "files": 711, "bytes": 162911060 },
+    { "path": ".tmp/p1-scripts-build-c2fcc804-tests", "files": 15, "bytes": 6451200 },
+    { "path": ".tmp/p1-isolation-env-debug", "files": 0, "bytes": 0 }
+  ],
+  "removeOutcome": {
+    "status": "blocked-before-execution",
+    "toolMessage": "PowerShell Remove-Item -LiteralPath -Recurse -Force was rejected by the execution policy as blocked by policy.",
+    "deletedPaths": [],
+    "alternateDeletionMethodUsed": false
+  },
+  "retained": [
+    {
+      "path": ".tmp/p1-host-playnite-c2fcc804",
+      "files": 430,
+      "bytes": 119249999,
+      "reason": "Current isolated startup profile contains the generated Playnite configuration and installed candidate; it remains the host audit evidence and configuration was not cleaned."
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261113T031639919Z-ad059a2a",
+      "reason": "Current successful root-chain TRX and diagnostics."
+    },
+    {
+      "path": "artifacts/build-diagnostics/p1-scripts-build-c2fcc804",
+      "reason": "Current scripts/build.cmd input-desktop failure TRX and diagnostics."
+    },
+    {
+      "path": "artifacts/p1-candidate-c2fcc804-20261113",
+      "reason": "Current package pair and targeted/prior-attempt test evidence."
+    }
+  ],
+  "spaceBytes": {
+    "beforeRemoveAttempt": { "C": 3032379392, "D": 9794195456 },
+    "afterRemoveAttempt": { "C": 3027800064, "D": 9794125824 },
+    "note": "No removal occurred; the small free-space changes are not attributed to this cleanup attempt."
+  },
+  "userDataUntouched": ["user TRX", "TestResults", "configuration", "real saves", "unknown files"]
+}
