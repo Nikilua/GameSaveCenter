@@ -1,16 +1,24 @@
+## 2026-11-12 冻结候选门禁记录
+
+当前源身份为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`，该候选已提交并冻结。GitHub run #1545（`43161957758`）的基线job与SDK10.0.401 job均成功；这不验证required-check/ruleset名单，既有HTTP403权限未变时不要重复请求。原始job/artifact身份在 `docs/design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json`。
+
+本机 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` SDK8.0.423构建、测试、Worker发布和打包成功；TRX 2042项/1974通过/0失败/68跳过。Playnite扩展目录写入被拒，exit1，候选未安装/启动；不要在权限未变化时提升/重试。独立 `scripts/build.cmd` Release SDK8.0.423的TRX记录1829项/1800通过/0失败/29跳过，但输入桌面不可检查导致exit1，9个WPF类未运行。以 `root-entry-result.json`、`scripts-build-cmd-result.json`中的原始摘要和hash为准。
+
+因此只关闭本地可处理的P1代码/测试范围；不把候选宿主验收记为通过。A03/U09-04与A04继续待宿主条件，P2/P3未启动。不要触碰用户TRX/TestResults、配置、真实存档、外部Playnite目录或云端数据。清理复核见同目录 `cleanup-review-20261112.json`。
+
 ## 2026-11-12 A07/A08/A11 P1第二批
 
 启动时分支精确SHA `06b88bf95e7d3646ad905a4333938369891fca1b`；该SHA的GitHub run #1544（`43150017597`）基线job `130956727575` 15/15、SDK10.0.401 job `130956727381` 8/8步骤均成功，artifact身份见 `docs/design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/ci-run-43150017597.json`。required-checks/ruleset仍是先前HTTP403，不再探测。
 
 A07逐项映射后复用既有RequestId ledger、重启协调、取消歧义、丢失写响应重放与任务阶段测试；没有新增产品缺陷证据，不改代码。真实Playnite中的页面恢复仍待宿主验收。A08在 `RestoreOrchestratorTests` 合成客户端加入磁盘满HResult `0x80070070` 的部分写入故障；PreRestore回滚恢复合成B状态并保留锁定快照。SDK8.0.423 Release定向1/1、0 skip/0 fail，TRX SHA-256 `A67D37813BD2DEC73A8B3586CCDEEB8BFCCC6BD8F09123370121F084FF866A65`，测试源blob SHA-1 `829eab0a806d5444690b243a823a9bd16a7d5be7`。
 
-A11新增 `scripts/check-evidence-paths.ps1` 和 `scripts/tests/Test-EvidencePathPreflight.ps1`。检查暂存证据投影路径≤240字符，并拒绝与索引内其他证据完全相同且≥1MiB的Git blob；历史未改动路径不阻断。夹具4/4通过，实际提交前执行 `pwsh -NoProfile -File scripts/check-evidence-paths.ps1`。不改workflow或required checks。失败尝试、成功TRX、清理清单和源码身份见 `docs/design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md`。本批代码提交后须查精确SHA双SDK CI；再跑指定完整中文根链和独立 `scripts/build.cmd`。A03/A04仍由真实宿主条件阻塞，本轮不解除；P2/P3未启动。
+A11新增 `scripts/check-evidence-paths.ps1` 和 `scripts/tests/Test-EvidencePathPreflight.ps1`。检查暂存证据投影路径≤240字符，并拒绝与索引内其他证据完全相同且≥1MiB的Git blob；历史未改动路径不阻断。夹具4/4通过，实际提交前执行 `pwsh -NoProfile -File scripts/check-evidence-paths.ps1`。不改workflow或required checks。失败尝试、成功TRX、清理清单和源码身份见 `docs/design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md`。本批已冻结为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`，精确SHA双SDK CI通过；根入口止于扩展安装写入权限，独立 `scripts/build.cmd` 因输入桌面检查未完成。A03/A04仍由真实宿主条件阻塞，本轮不解除；P2/P3未启动。
 
 ## 2026-11-12 A05/A06实施与Worker验证
 
 首轮定向12项出现两项真实边界失败：同目标并发 `File.Move` 冲突可抛 `UnauthorizedAccessException`，临时文件创建后取消未必阻止提交目标。保留首轮TRX/日志。当前候选已为同规范化目标的Write/Copy/Replace增加引用计数异步互斥，原子替换前显式检查取消。Worker意外重启后，SQLite行原已保存详细 `RestoreReport`，但顶层任务变为人工介入时报告仍显示Running；当前修正同时更新结果/失败码/需人工标记，保留阶段和PreRestore身份。
 
-修正后SDK8.0.423 Release定向12/12通过；Worker全套405通过、1项Named Pipe环境skip、0失败，skip不计通过。源验证和diff检查通过。首轮失败、定向成功、全Worker TRX/日志及源码blob身份见 `docs/design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md`。精确提交 `06b88bf95e7d3646ad905a4333938369891fca1b` 的run #1544基线15/15、SDK10 8/8步成功。最终冻结候选仍须跑用户指定完整入口和独立build职责。
+修正后SDK8.0.423 Release定向12/12通过；Worker全套405通过、1项Named Pipe环境skip、0失败，skip不计通过。源验证和diff检查通过。首轮失败、定向成功、全Worker TRX/日志及源码blob身份见 `docs/design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md`。精确提交 `06b88bf95e7d3646ad905a4333938369891fca1b` 的run #1544基线15/15、SDK10 8/8步成功。冻结候选 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0` 的完整入口和独立 `scripts/build.cmd` 已运行；由于安装写入和输入桌面检查阻断，本机宿主候选门禁仍未通过，详细结果见最新门禁记录。
 
 ## 2026-11-12 综合评估计划去重
 

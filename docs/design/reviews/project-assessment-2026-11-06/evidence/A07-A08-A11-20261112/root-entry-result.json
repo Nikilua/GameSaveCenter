@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0",
+  "sourceState": {
+    "committedAndFrozen": true,
+    "trackedSourceChanges": 0,
+    "workingTreeHadUntrackedEvidence": true,
+    "note": "Existing untracked historical TRX, TestResults and evidence were left untouched."
+  },
+  "entry": "GameSaveCenter-一键构建安装运行.cmd",
+  "delegatesTo": "GameSaveCenter-Run.cmd -> scripts/dev-install-run.ps1 -Configuration Release",
+  "startedUtc": "2026-11-12T05:34:21.7695556Z",
+  "finishedUtc": "2026-11-12T06:11:07.1777661Z",
+  "exitCode": 1,
+  "sdk": "8.0.423",
+  "buildAndTest": {
+    "diagnosticsOutcome": "passed",
+    "buildExitCode": 0,
+    "testExitCode": 0,
+    "trxFileCount": 160,
+    "testCases": 2042,
+    "passed": 1974,
+    "failed": 0,
+    "skipped": 68,
+    "skipsCountAsPassed": false,
+    "wpfIsolatedClassesCompleted": 157
+  },
+  "publishIdentityAndPackage": {
+    "completed": true,
+    "candidateAssemblyIdentity": "0.6.73+52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0",
+    "zip": {
+      "path": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "sizeBytes": 45740287,
+      "sha256": "F0C8157CEF44048AD06B71369E9DBB0427E3C830EA191484D3AD79C0C474BBAF"
+    },
+    "pext": {
+      "path": "artifacts/GameSaveCenter-0.6.73.pext",
+      "sizeBytes": 45740287,
+      "sha256": "F0C8157CEF44048AD06B71369E9DBB0427E3C830EA191484D3AD79C0C474BBAF"
+    }
+  },
+  "install": {
+    "outcome": "failed",
+    "stage": "install-transaction",
+    "exitCode": 1,
+    "failure": "Access denied while writing the temporary Playnite extension directory.",
+    "candidateInstalled": false,
+    "candidateStartupReached": false,
+    "existingInstalledIdentity": "0.6.73+d1cc9dc5fc0d8fef32f0e89e91e3bc87924ad2ef",
+    "existingInstalledDllSha256": "C16B6D6E14FA25F4317F6E36FF9FF027029C7FBC0A62E85C4C9A9AFEB0CD0DEA",
+    "playniteAndWorkerProcessesAfterAttempt": "not running; candidate was not installed, so the old installed application was not restarted"
+  },
+  "evidence": {
+    "trxIndex": {
+      "path": "docs/design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/candidate-trx-index-52a57db9.json",
+      "trxFiles": 160,
+      "note": "Each original TRX has a relative path, byte size, and SHA-256 entry. Originals remain under the local build-diagnostics directory."
+    },
+    "runLog": {
+      "path": "artifacts/one-click-install.log",
+      "sizeBytes": 122053,
+      "sha256": "3DABA5FA8332AE2C9A8D57EA8F8ED34FFB953B154275A41A1CBE4ECC76651C1E"
+    },
+    "diagnosticsSummary": {
+      "path": "artifacts/build-diagnostics/20261112T053426322Z-bc53edf2/summary.json",
+      "sizeBytes": 568344,
+      "sha256": "FAB377A241F2ECC26104827AF812A72738732D01B221816006BFD1B5F54A4FAB"
+    },
+    "installAttempt": {
+      "path": "artifacts/install-attempts/fb9c8b031e51476abaf19f631e08621b.json",
+      "sizeBytes": 1535,
+      "sha256": "5EBE5766FEECAB4D8C8C868B1B5592469DDACC6E6F7954FFE907636134F3262A"
+    },
+    "previousInstalledIdentityRecord": {
+      "path": "artifacts/last-dev-install.txt",
+      "sizeBytes": 2304,
+      "sha256": "9F69D36E1A51E28460EEE52CAE02F8B8AB20C7D1687D74873D498190C6F0C0B7"
+    },
+    "currentBuildOutput": "artifacts/gsc-b/fb889574"
+  },
+  "authorizationBoundary": "No permission escalation or retry; no real restore, delete, cloud write, or external extension-path cleanup was performed."
+}

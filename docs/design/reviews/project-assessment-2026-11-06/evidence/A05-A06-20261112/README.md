@@ -40,3 +40,7 @@ TRX原件校验值：首轮失败 23,634 bytes / SHA-256 `DF2199FF31847DD6ED828C
 本批源代码提交为 `06b88bf95e7d3646ad905a4333938369891fca1b`。GitHub `windows-build.yml` run #1544（`43150017597`）已终态成功：基线job `130956727575` 15/15步、SDK 10.0.401 job `130956727381` 8/8步成功。CI artifact ID、大小、digest和原始链接见 [run 43150017597 记录](ci-run-43150017597.json)。required-checks/ruleset读取仍受既有HTTP403限制；不能据已运行job声称保护规则清单已确认。
 
 这组CI绑定 `06b88bf...`，不替代后续冻结候选的完整本地入口链与独立 `scripts/build.cmd` 验证。
+
+## 冻结候选 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0` 后续门禁
+
+A05/A06变更包含在后续候选 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0` 中。该SHA的GitHub run #1545（`43161957758`）基线和SDK10.0.401 jobs均成功，详情见[A07/A08/A11精确CI记录](../A07-A08-A11-20261112/ci-run-43161957758.json)。完整中文根入口在该SHA上完成构建、测试、发布和打包，但扩展目录写入被拒，未安装或启动候选；独立 `scripts/build.cmd` 则在输入桌面检查失败，WPF只完成148/157类。具体退出码、TRX计数和原始证据指针见[冻结候选门禁记录](../A07-A08-A11-20261112/README.md)。因此该候选的宿主安装/启动仍未验，不能把CI成功或旧安装身份作为替代。

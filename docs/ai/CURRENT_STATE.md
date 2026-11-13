@@ -1,22 +1,30 @@
+## 2026-11-12 冻结候选门禁结果（最新）
+
+当前 `main` 与 `origin/main` 均为冻结候选 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`。GitHub run #1545（`43161957758`）的基线 job `130995009638` 和 SDK 10.0.401 job `130995009279` 均成功；job/artifact身份见[精确CI记录](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json)。required-check/ruleset名单此前HTTP 403，仍未验证，也未重复请求。
+
+本机 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 使用SDK8.0.423完成编译、测试、Worker发布、身份校验和打包，160份TRX共2,042项：1,974通过、0失败、68跳过。扩展目录安装写入被拒，根入口exit 1；候选没有安装或启动。Playnite与Worker在脚本后均未运行，旧安装未重启。独立 `scripts/build.cmd` 使用同一SDK，测试记录1,829项：1,800通过、0失败、29跳过，但输入桌面检查在WPF类`UiDiagnosticsExporterTests`失败，只有148/157个WPF类完成，命令exit 1。详情与摘要hash：[根入口结果](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/root-entry-result.json)、[独立构建结果](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/scripts-build-cmd-result.json)。
+
+A05/A06/A07/A08/A11的本地可处理代码与测试范围已收口，不能据此声称宿主安装/启动已验；A03/U09-04和A04保持宿主待验，P2/P3未开始。没有提升权限、操作真实存档、删除用户数据或写入云端。当前必要包、诊断和失败日志保留；清理预检说明见[清理复核](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/cleanup-review-20261112.json)。
+
 ## 2026-11-12 当前入口事实与计划接续
 
 启动时本地 `main`/`origin/main` 为 `9b26680040ce174f986d34037a83c697175f7554`，对应GitHub run #1542（`43132918400`）双job成功。后续A05/A06提交 `06b88bf95e7d3646ad905a4333938369891fca1b` 的run #1544（`43150017597`）也已终态成功：基线job `130956727575` 15/15、SDK 10.0.401 job `130956727381` 8/8。artifact ID与digest见[精确CI记录](../design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/ci-run-43150017597.json)。required-checks/ruleset读取此前HTTP 403；运行job成功不代表保护规则已验证，不重复请求。
 
 Round5用户手工走查接受此前71项待验体验项，当前78项验收完成；U09-04动画性能量化仍进行中，U09-06权限核验仍远端待验。用户反馈不代表逐项执行Narrator、IME、物理DPI、性能计量，也不授权真实存档恢复、媒体删除或云端写入。Round4 S账本为40已验收/2已满足/21代码完成待验/1外部阻塞；T账本32项为24已验收/3已满足/2代码完成待验/3实施中。
 
-16项计划已经与Round5、S/T去重。A01引用同源全链和双SDK CI，A02由用户体验验收覆盖，A03并入U09-04，A04保持宿主边界。首批A05/A06已完成本机Worker验证且精确SHA CI双job通过；第二批A07/A08/A11已完成入口/测试映射及本机验证，本批提交CI和最终候选完整链待做。A07复用既有隔离覆盖；A08补受控磁盘满回滚用例；A11补暂存证据路径/重复blob检查。计划本身不证明16个缺陷；A03/A04仍等待宿主条件，P2/P3未启动。详见[计划执行账本](../PROJECT_ASSESSMENT_2026-11-06.md)。
+16项计划已经与Round5、S/T去重。A01引用同源全链和双SDK CI，A02由用户体验验收覆盖，A03并入U09-04，A04保持宿主边界。A05/A06与A07/A08/A11的本地可处理代码/测试范围已收口；冻结候选 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0` 的CI双job成功。中文根入口在安装写入处退出1，独立 `scripts/build.cmd` 在输入桌面检查处退出1，详见上方门禁记录。计划本身不证明16个缺陷；A03/A04仍等待宿主条件，P2/P3未启动。详见[计划执行账本](../PROJECT_ASSESSMENT_2026-11-06.md)。
 
 当前分支在第二批开始时为 `06b88bf95e7d3646ad905a4333938369891fca1b`；A07/A08/A11待提交候选仅含本批源码测试、脚本和文档，精确SHA需提交后回填。未跟踪历史TRX、`TestResults/`和Round5证据目录继续保留。
 
 ## 2026-11-12 A05/A06 Worker收口
 
-补齐 `AtomicFileWriter` 同目标并发写和临时文件创建后取消边界，并在Worker恢复任务时同步持久化 `RestoreReport` 的人工介入终态，保留失败阶段和PreRestore身份。首轮12项定向测试10过/2失败/0跳过；首轮日志/TRX保留在[证据目录](../design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md)。修正后定向12/12通过；Worker全套406项中405通过、0失败、1项既有Named Pipe环境skip（不计通过）。SDK8.0.423，`validate-source.py`与`git diff --check`通过。精确提交`06b88bf95e7d3646ad905a4333938369891fca1b`的run #1544基线15/15、SDK10 8/8步成功。最终冻结候选完整链尚待执行。
+补齐 `AtomicFileWriter` 同目标并发写和临时文件创建后取消边界，并在Worker恢复任务时同步持久化 `RestoreReport` 的人工介入终态，保留失败阶段和PreRestore身份。首轮12项定向测试10过/2失败/0跳过；首轮日志/TRX保留在[证据目录](../design/reviews/project-assessment-2026-11-06/evidence/A05-A06-20261112/README.md)。修正后定向12/12通过；Worker全套406项中405通过、0失败、1项既有Named Pipe环境skip（不计通过）。SDK8.0.423，`validate-source.py`与`git diff --check`通过。精确提交`06b88bf95e7d3646ad905a4333938369891fca1b`的run #1544基线15/15、SDK10 8/8步成功。后续冻结候选门禁已运行：根入口构建/测试/打包成功但安装写入被拒；独立 `scripts/build.cmd` 因输入桌面检查未完成全部WPF类。见上方最新记录。
 
 ## 2026-11-12 A07/A08/A11 第二批
 
 A07去重为已有RequestId/ledger、取消歧义、重启协调与任务阶段覆盖充分；真实宿主UI恢复仍未验。A08仅新增合成客户端磁盘满HResult在部分写入后的回滚用例，Release定向测试SDK8.0.423 `1/1 pass, 0 fail, 0 skip`，TRX及源码/程序集SHA见[A07/A08/A11证据](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md)。A11增加提交前暂存证据路径和重复大blob检查，PowerShell夹具4/4；历史长路径保留且不追溯阻断。
 
-该批代码和证据清理状态待提交后冻结；下一步查本批精确SHA基线/SDK10 CI，再按指定顺序执行完整中文入口链与独立`build.cmd`。未运行真实存档恢复、删除、云写入或宿主权限操作；A03/U09-04与A04继续等待真实宿主条件。
+该批提交已冻结为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`，run #1545基线与SDK10 jobs均成功。完整根入口在安装权限处exit 1，独立 `scripts/build.cmd` 在输入桌面检查处exit 1；TRX、跳过数及原始诊断见[A07/A08/A11门禁记录](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md)。没有权限提升或重试，也未运行真实存档恢复、删除、云写入或宿主权限操作；A03/U09-04与A04继续等待真实宿主条件。
 
 ## 2026-11-10 U09-05 编译/检查隐藏启动跟进
 

@@ -17,7 +17,7 @@
 - 实现：只给 `RestoreOrchestratorTests` 的合成 `FakeRestoreClient` 增加磁盘满注入。它先写入合成 `PARTIAL` 内容，再抛出带磁盘满 HResult 的 `IOException`；断言任务失败且已回滚为 B、PreRestore 快照仍保存 B 且锁定、审计状态为 `RolledBack`。没有填充真实卷或操作用户存档。
 - 验证：SDK `8.0.423`，Release，离线使用已缓存 NuGet 包，`-m:1 -nodeReuse:false`；精确用例 `1 passed / 0 failed / 0 skipped`，退出码 0。TRX 大小 3,238 bytes，SHA-256 `A67D37813BD2DEC73A8B3586CCDEEB8BFCCC6BD8F09123370121F084FF866A65`：[TRX](trx/A08-disk-full-rollback-after-analyzer-fix.trx)，[最终测试日志](A08-offline-targeted-test-attempt-03.log)。测试源 blob SHA-1 `829eab0a806d5444690b243a823a9bd16a7d5be7`；生成测试程序集 SHA-256 `6569A28956B76477840115C73BB26B2ABF421FD7D9FEE709E88865835ABE3EE8`。隔离 SDK 输出已验证后清理，详见[清理记录](cleanup-recovery.json)。
 - 首轮普通还原因本机并行子进程/网络等待没有形成测试结果；详细诊断、SDK 选择修正、离线串行还原日志均保留在本目录。未把这些失败尝试算作测试通过。
-- 收益：证明预检之后发生真实写入空间错误时，现有恢复安全链仍会保留原状态。
+- 收益：以合成的部分写入和磁盘满错误验证恢复安全链仍能回滚并保留原状态；不把该测试说成真实卷耗尽验收。
 
 ## A11：提交前证据路径检查
 
@@ -27,8 +27,16 @@
 - 验证：[`Test-EvidencePathPreflight.ps1`](../../../../../../scripts/tests/Test-EvidencePathPreflight.ps1) 4/4：短路径通过、305 字符投影路径拒绝、重复 1,048,577-byte blob 拒绝、不同内容的大文件通过。UTF-8 BOM 修正后的最终报告含脚本 SHA、清理清单与 D 盘空间前后值：[测试报告](preflight-tests-attempt-05.json)。前三次报告和日志保留，记录进程查询权限/过宽快照导致的清理误判；attempt-04 是加 BOM 前的相同夹具复跑。所有 `.tmp` 夹具均经路径、链接、索引锁和独占文件检查后清理。[清理复核](cleanup-recovery.json)。
 - 收益：在提交前挡住会让 Windows runner 无法 checkout 的新证据路径和重复大证据，同时保留有诊断价值的历史记录。
 
-## 相关精确提交 CI
+## 冻结候选验证：`52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`
 
-A05/A06 当前源提交 `06b88bf95e7d3646ad905a4333938369891fca1b` 的 GitHub run #1544（`43150017597`）已终态成功：基线 job `130956727575` 15/15 步成功，SDK 10.0.401 job `130956727381` 8/8 步成功。run artifacts 的 ID、SHA-256 digest、大小和链接见 [CI 记录](../A05-A06-20261112/ci-run-43150017597.json)。这是该 SHA 的已运行 job 事实；required-checks/ruleset 名单此前 HTTP 403，仍未确认。
+本批代码在 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0` 已提交并冻结。GitHub run #1545（`43161957758`）的基线 job `130995009638`（15/15步）与 SDK 10.0.401 job `130995009279`（8/8步）均成功；job、artifact ID/digest 与 required-checks 403 状态见[精确CI记录](ci-run-43161957758.json)。两个已运行 job 成功不等于 required-check/ruleset 名单已经验证。
 
-本批代码当前针对 `06b88bf95e7d3646ad905a4333938369891fca1b` 的本地工作树验证。冻结后的本批提交仍须查询基线 SDK 与 SDK10 精确 SHA jobs；P1 本地范围收口后，按用户指定顺序执行完整中文入口链，再单独验证 `scripts/build.cmd`。A03/U09-04 与 A04 仍等待真实宿主测量，不因本批关闭。
+本机 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 使用 SDK `8.0.423`，构建、测试、Worker发布、身份校验和打包阶段成功；160份TRX共2,042项，1,974通过、0失败、68跳过（跳过不计通过）。zip/pext identity为 `0.6.73+52a57db9…`，二者均45,740,287 bytes、SHA-256 `F0C8157CEF44048AD06B71369E9DBB0427E3C830EA191484D3AD79C0C474BBAF`。安装阶段向Playnite扩展目录写入被拒，根入口exit 1；候选未安装，候选Playnite启动未到达。安装失败阶段、旧安装DLL身份和原始日志/摘要SHA见[root入口记录](root-entry-result.json)。没有权限提升或重试。
+
+随后单独运行 `scripts/build.cmd`（Release，默认测试开启），同样使用SDK `8.0.423`，exit 1。151份TRX共1,829项，1,800通过、0失败、29跳过；WPF隔离类只完成148/157。`UiDiagnosticsExporterTests` 因“Could not inspect the input desktop”使编排停止，剩余9类不计通过。摘要与原始console诊断见[独立构建记录](scripts-build-cmd-result.json)。没有桌面绕过或重试。
+
+完整入口的160份TRX和独立build的151份TRX均有逐文件相对路径、字节数与SHA-256索引：[TRX清单](candidate-trx-index-52a57db9.json)。原始TRX仍留在本机两份build-diagnostics目录，没有复制进Git。
+
+因此，P1本地可处理的代码/测试收口与精确SHA CI已完成，完整宿主验收仍未完成：没有验证候选安装身份或候选Playnite启动；运行后Playnite与Worker均未启动，也没有重启旧安装以免启动非候选版本。A03/U09-04与A04仍等待真实宿主条件；P2/P3保持未开始。
+
+旧 `artifacts/gsc-b` 输出被诊断日志或既有证据路径引用，当前候选构建、TRX/失败诊断、安装尝试记录和安装包均需保留；详细清理预检和前后空间快照见[清理复核](cleanup-review-20261112.json)。既有用户TRX、`TestResults/`、配置、存档以及外部Playnite安装目录没有清理。

@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "scope": "A05/A06/A07/A08/A11 frozen-candidate validation and its artifacts/.tmp cleanup review",
+  "repositoryRoot": "D:/workplace/github/GameSaveCenter",
+  "sourceCommit": "52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0",
+  "cleanupPerformed": false,
+  "removedPaths": [],
+  "spaceSnapshots": {
+    "beforeReviewUtc": "2026-11-13T01:15:03.2441584Z",
+    "beforeReview": {
+      "C": { "freeBytes": 5235752960, "usedBytes": 209513656320 },
+      "D": { "freeBytes": 16813383680, "usedBytes": 278159429632 }
+    },
+    "afterReviewUtc": "2026-11-13T01:23:34.9656691Z",
+    "afterReview": {
+      "C": { "freeBytes": 5279240192, "usedBytes": 209470169088 },
+      "D": { "freeBytes": 16826761216, "usedBytes": 278146052096 }
+    },
+    "note": "No files were removed. The before/after snapshots are retained to show the observed space change, which is not attributable to cleanup."
+  },
+  "processCheck": {
+    "checkedNames": ["dotnet", "msbuild", "testhost", "Playnite", "GameSaveCenter.Worker"],
+    "runningProcesses": []
+  },
+  "retainedCurrentCandidate": [
+    {
+      "path": "artifacts/gsc-b/fb889574",
+      "sourceIdentity": "0.6.73+52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0",
+      "files": 1015,
+      "sizeBytes": 282078166,
+      "reason": "Current frozen-candidate build output referenced by the root entry diagnostics."
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261112T053426322Z-bc53edf2",
+      "directorySizeBytes": 5188072,
+      "summarySizeBytes": 568344,
+      "summarySha256": "FAB377A241F2ECC26104827AF812A72738732D01B221816006BFD1B5F54A4FAB",
+      "reason": "Current root build/test TRX, install boundary and source identity evidence."
+    },
+    {
+      "path": "artifacts/build-diagnostics/20261112T061245548Z-4e7cab85",
+      "directorySizeBytes": 5089626,
+      "summarySizeBytes": 931712,
+      "summarySha256": "FAFFD107B9A97E9E73055A667EA5AFA89179C417A95A36F5F2CA48ED466330FD",
+      "reason": "Current scripts/build.cmd output, TRX and original desktop-inspection failure."
+    },
+    {
+      "path": "docs/design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/candidate-trx-index-52a57db9.json",
+      "sizeBytes": 152085,
+      "reason": "Compact per-TRX path/size/SHA index; raw TRX files were not duplicated."
+    },
+    {
+      "path": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "sizeBytes": 45740287,
+      "sha256": "F0C8157CEF44048AD06B71369E9DBB0427E3C830EA191484D3AD79C0C474BBAF",
+      "reason": "Current candidate ZIP; no duplicate package was created."
+    },
+    {
+      "path": "artifacts/GameSaveCenter-0.6.73.pext",
+      "sizeBytes": 45740287,
+      "sha256": "F0C8157CEF44048AD06B71369E9DBB0427E3C830EA191484D3AD79C0C474BBAF",
+      "reason": "Current candidate PEXT; no duplicate package was created."
+    },
+    {
+      "path": "artifacts/one-click-install.log",
+      "sizeBytes": 122053,
+      "sha256": "3DABA5FA8332AE2C9A8D57EA8F8ED34FFB953B154275A41A1CBE4ECC76651C1E",
+      "reason": "Original install-permission failure log."
+    },
+    {
+      "path": "artifacts/install-attempts/fb9c8b031e51476abaf19f631e08621b.json",
+      "sha256": "5EBE5766FEECAB4D8C8C868B1B5592469DDACC6E6F7954FFE907636134F3262A",
+      "reason": "Original install transaction result; external extension paths are explicitly excluded from cleanup."
+    }
+  ],
+  "reviewedButRetained": [
+    {
+      "path": "artifacts/gsc-b",
+      "resolvedInsideRepository": true,
+      "rootIsReparsePoint": false,
+      "directoryCount": 15,
+      "fileCount": 13175,
+      "sizeBytes": 3537814272,
+      "decision": "Retain. Historical output paths are referenced by retained build-diagnostics logs and prior evidence records; the current candidate output is in use."
+    },
+    {
+      "path": "artifacts/round5-root-chain-1f97beaf-20261110",
+      "resolvedInsideArtifacts": true,
+      "rootIsReparsePoint": false,
+      "fileCount": 5,
+      "sizeBytes": 126620,
+      "decision": "Retain because an existing Round5 README references this chain evidence."
+    },
+    {
+      "path": "artifacts/round5-root-chain-c2b59dd1-20261111",
+      "resolvedInsideArtifacts": true,
+      "rootIsReparsePoint": false,
+      "fileCount": 18,
+      "sizeBytes": 92207328,
+      "decision": "Retain its unique prior root-chain success and original attempts; its source SHA differs from the current candidate."
+    },
+    {
+      "path": ".tmp/round5-u08-01-03-20261111",
+      "resolvedInsideRepository": true,
+      "rootIsReparsePoint": false,
+      "nestedReparsePoints": 0,
+      "fileCount": 1769,
+      "trxFiles": 160,
+      "lockedFiles": 0,
+      "sizeBytes": 228714683,
+      "documentReferences": 5,
+      "decision": "Retain because it contains TRX evidence and referenced prior-phase files."
+    },
+    {
+      "path": ".tmp/round5-u09-05-final-20261109",
+      "resolvedInsideRepository": true,
+      "rootIsReparsePoint": false,
+      "nestedReparsePoints": 0,
+      "fileCount": 847,
+      "trxFiles": 169,
+      "testResultsDirectoryCount": 0,
+      "lockedFiles": 0,
+      "sizeBytes": 15587066,
+      "documentReferences": 27,
+      "decision": "Retain because it contains TRX and other prior-phase evidence referenced by documentation."
+    },
+    {
+      "path": ".tmp",
+      "resolvedInsideRepository": true,
+      "rootIsReparsePoint": false,
+      "topLevelItemCount": 27,
+      "sizeBytes": 244421916,
+      "decision": "No current-phase temporary output was found. Remaining phase scripts/probes are historical scratch files with no deletion performed because their current owner and need were not established."
+    }
+  ],
+  "protectedPaths": [
+    "tests/GameSaveCenter.Playnite.Tests/TestResults",
+    "untracked user TRX files",
+    "user configuration and save data",
+    "C:/Users/lopmatu/AppData/Roaming/Playnite/Extensions",
+    "cloud data"
+  ],
+  "observedSpaceChange": {
+    "CFreeBytesDelta": 43487232,
+    "DFreeBytesDelta": 13377536,
+    "attributedToThisReview": false
+  }
+}

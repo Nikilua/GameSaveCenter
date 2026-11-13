@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0",
+  "sourceState": {
+    "committedAndFrozen": true,
+    "trackedSourceChanges": 0,
+    "workingTreeHadUntrackedEvidence": true,
+    "note": "Existing untracked historical TRX, TestResults and evidence were left untouched."
+  },
+  "entry": "scripts/build.cmd",
+  "delegatesTo": "scripts/build.ps1 (Release; tests enabled by default)",
+  "startedUtc": "2026-11-12T06:12:42.9048624Z",
+  "finishedUtc": "2026-11-12T06:48:43.3868951Z",
+  "exitCode": 1,
+  "sdk": "8.0.423",
+  "buildCompleted": true,
+  "testsRequested": true,
+  "testSummary": {
+    "trxFileCount": 151,
+    "testCasesInTrx": 1829,
+    "passed": 1800,
+    "failed": 0,
+    "skipped": 29,
+    "skipsCountAsPassed": false,
+    "wpfIsolatedClassesCompleted": 148,
+    "wpfIsolatedClassesExpected": 157,
+    "wpfClassesNotRun": 9
+  },
+  "wpfGroup": {
+    "reportedTestCases": 690,
+    "passed": 689,
+    "failed": 0,
+    "skipped": 1,
+    "trxFiles": 148
+  },
+  "failure": {
+    "stage": "orchestration",
+    "class": "UiDiagnosticsExporterTests",
+    "message": "Could not inspect the input desktop.",
+    "result": "The 148 generated WPF class TRXs are retained; the attempted class produced no TRX and the remaining 9 of 157 classes were not run."
+  },
+  "evidence": {
+    "trxIndex": {
+      "path": "docs/design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/candidate-trx-index-52a57db9.json",
+      "trxFiles": 151,
+      "note": "Each original TRX has a relative path, byte size, and SHA-256 entry. Originals remain under the local build-diagnostics directory."
+    },
+    "diagnosticsDirectory": "artifacts/build-diagnostics/20261112T061245548Z-4e7cab85",
+    "summary": {
+      "path": "artifacts/build-diagnostics/20261112T061245548Z-4e7cab85/summary.json",
+      "sizeBytes": 931712,
+      "sha256": "FAFFD107B9A97E9E73055A667EA5AFA89179C417A95A36F5F2CA48ED466330FD"
+    },
+    "wpfFailureConsole": {
+      "path": "artifacts/build-diagnostics/20261112T061245548Z-4e7cab85/wpf.UiDiagnosticsExporterTests-console.txt",
+      "sizeBytes": 838,
+      "sha256": "D828A7B71D58232F3AF4AB2C6B20D1274DE7755685F037B9F0F78C06F49E9D06"
+    }
+  },
+  "authorizationBoundary": "No desktop workaround or retry was attempted."
+}

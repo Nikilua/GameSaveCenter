@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0",
+  "workflow": "windows-build.yml",
+  "run": {
+    "number": 1545,
+    "id": 43161957758,
+    "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/43161957758",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "jobs": [
+    {
+      "id": 130995009638,
+      "name": "编译、测试与打包",
+      "conclusion": "success",
+      "startedAt": "2026-11-12T05:32:13Z",
+      "completedAt": "2026-11-12T06:33:53Z",
+      "stepsCompletedSuccessfully": 15,
+      "stepsFailed": 0
+    },
+    {
+      "id": 130995009279,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "success",
+      "startedAt": "2026-11-12T05:31:43Z",
+      "completedAt": "2026-11-12T06:02:38Z",
+      "stepsCompletedSuccessfully": 8,
+      "stepsFailed": 0
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13920848807,
+      "name": "GameSaveCenter-build-diagnostics",
+      "sizeBytes": 2532678,
+      "digest": "sha256:b589f3515db1b791c4bf229ec6ac470d087a7f0de968009450872a178aef3869",
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/13920848807"
+    },
+    {
+      "id": 13921406755,
+      "name": "GameSaveCenter-windows-preview",
+      "sizeBytes": 90795858,
+      "digest": "sha256:b3bc4fcf1ef28a65cf2201987637571d503ea5dc7aee37ccfcd1e4099ffd2ab4",
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/13921406755"
+    },
+    {
+      "id": 13918909817,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "sizeBytes": 1283671,
+      "digest": "sha256:855f3b22f2d03170369c69611b12462507d22a99ff90ce88a484a15ae7505e50",
+      "url": "https://api.github.com/repos/Nikilua/GameSaveCenter/actions/artifacts/13918909817"
+    }
+  ],
+  "commitStatuses": {
+    "combinedStatusCount": 0,
+    "contexts": []
+  },
+  "checkRuns": [
+    {
+      "name": "编译、测试与打包",
+      "conclusion": "success"
+    },
+    {
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "conclusion": "success"
+    }
+  ],
+  "requiredChecksAndRuleset": {
+    "verified": false,
+    "lastReadResult": "HTTP 403",
+    "note": "These two completed workflow jobs are verified facts. The required-check/ruleset list remains unverified; permissions did not change, so it was not requested again."
+  }
+}

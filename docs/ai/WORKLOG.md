@@ -1,3 +1,11 @@
+## 2026-11-12 冻结候选门禁与P1收口
+
+最终候选在提交并冻结的 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0` 上验证。GitHub run #1545（`43161957758`）基线job与SDK10.0.401 job均成功，详细artifact身份见 `docs/design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json`。required-check/ruleset仍是HTTP403未验证，权限未变化，不重复请求。
+
+指定中文完整入口链使用SDK8.0.423，构建、2,042项TRX（1,974通过/0失败/68跳过）、Worker发布、身份核验和打包均成功；扩展目录写入被拒，根入口exit1，候选未安装/启动。当前安装DLL仍是 `0.6.73+d1cc9dc5…`。单独 `scripts/build.cmd` Release默认测试也使用SDK8.0.423，1829项TRX中1800通过、0失败、29跳过；输入桌面不可检查令编排exit1，148/157 WPF类执行，剩余9类未运行。原始日志、TRX和摘要引用见对应 `root-entry-result.json` 与 `scripts-build-cmd-result.json`。没有将skip或未运行类计为通过，也没有提升权限重试。
+
+A05/A06/A07/A08/A11本地可处理范围收口；安装身份和候选宿主启动仍待权限/宿主条件，A03/U09-04与A04不因本计划关闭阻塞，P2/P3未开始。清理复核未删除任何目录：当前包、失败诊断需保留；历史 `gsc-b` 输出被诊断日志/证据引用，`.tmp` 中旧脚本与探针非本阶段产物；用户TRX/TestResults、配置、存档及外部安装目录均未碰。清单和盘符空间快照见 `cleanup-review-20261112.json`。
+
 ## 2026-11-12 A07/A08/A11 P1第二批
 
 A07映射到既有IPC request ledger重放/冲突、Worker重启中断协调、丢失写响应按原RequestId恢复、取消的“可能已接受”语义及任务阶段呈现测试；没有确认需要新增产品实现的缺口。真实Playnite断连恢复仍未验。
@@ -6,7 +14,7 @@ A08只增加合成磁盘满故障：目标已有部分写入后抛出Win32磁盘
 
 A11新增提交前证据路径检查：新暂存证据投影路径≤240字符，≥1MiB且与索引内其他证据具有同一Git blob时拒绝；未改workflow或回溯阻断既有文件。PowerShell隔离Git夹具4/4，报告、失败尝试日志和清理复核见[批次证据](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md)。为清理隔离夹具检查了根内归属、链接、Git锁、独占文件和空间；三次早期清理误判分别保留并人工安全清理，用户TestResults/历史TRX未动。
 
-本批代码尚待提交冻结、精确SHA双SDK CI以及最终中文完整链和独立 `scripts/build.cmd` 验证。A03/U09-04、A04仍等待真实宿主条件，不尝试解除；P2/P3尚未启动。
+本批随后提交并冻结为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`；精确SHA的基线SDK与SDK10 jobs均成功。中文完整根入口运行至安装阶段后因扩展目录写入拒绝而exit 1；独立 `scripts/build.cmd` 因输入桌面检查而exit 1，完整结果见本文更前的“冻结候选门禁与P1收口”。A03/U09-04与A04仍等待真实宿主条件，不尝试解除；P2/P3尚未启动。
 
 ## 2026-11-12 A05/A06 Worker可靠性批次
 
