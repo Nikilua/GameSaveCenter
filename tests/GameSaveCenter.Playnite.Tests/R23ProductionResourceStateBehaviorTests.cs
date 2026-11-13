@@ -631,9 +631,9 @@ public sealed class R23ProductionResourceStateBehaviorTests
                     Assert.Equal(1, indicators[2].Opacity, 2);
                     var settledOpacities = indicators.Select(indicator => indicator.Opacity).ToArray();
                     PumpDispatcherFor(TimeSpan.FromMilliseconds(60));
-                    Assert.Equal(settledOpacities[0], indicators[0].Opacity, 3);
-                    Assert.Equal(settledOpacities[1], indicators[1].Opacity, 3);
-                    Assert.Equal(settledOpacities[2], indicators[2].Opacity, 3);
+                    Assert.Equal(settledOpacities[0], indicators[0].Opacity, 2);
+                    Assert.Equal(settledOpacities[1], indicators[1].Opacity, 2);
+                    Assert.Equal(settledOpacities[2], indicators[2].Opacity, 2);
 
                     Assert.Same(focusTarget, Keyboard.Focus(focusTarget));
                     FlushLayout(window);

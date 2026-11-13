@@ -96,7 +96,10 @@ public sealed class RestoredAcrylicForkBaselineTests
 
         Assert.Contains("x:Name=\"SaveHistorySummaryCard\"", save);
         Assert.Contains("Header=\"历史版本\"", save);
-        Assert.Contains("Text=\"存档清单\"", save);
+        Assert.Contains("Text=\"当前游戏\"", save);
+        Assert.Contains("Style=\"{StaticResource SaveHistoryGameTitle}\"", save);
+        Assert.Contains("x:Name=\"SaveHistoryToolbarSurface\"", save);
+        Assert.Contains("BackupHistorySearchText", save);
         Assert.Contains("Text=\"{Binding Backups.Count, Mode=OneWay, StringFormat={}{0} 个版本}\"", save);
         Assert.Contains("Command=\"{Binding DetectPathsCommand}\"", save);
         Assert.Contains("Command=\"{Binding ValidateCommand}\"", save);

@@ -1,10 +1,10 @@
-## 当前事实入口（Round6 V01–V04，2026-11-13）
+## 当前事实入口（Round6 V01–V08，2026-11-14）
 
-Round6已从基线进入存档页实施。V01–V04状态与具体证据在[实施计划](../design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)和[存档页基线复核](../design/reviews/ui-redesign-round6-20261113/README.md)：1040×700/1600×900 DIP、浅/深主题、常规/详情打开共8张生产`SaveCenterView`合成数据图；V02有7条逐图差距；V03规格明确现有信息与操作映射；V04覆盖长中英文名、路径、Ready/Empty/Loading/Error/Stale/Offline和多选。Demo-first引用目录在当前分支不存在，已记录并沿用生产资源。
+Round6 V01–V04基线和设计规格已完成；V05–V08已完成存档页生产实现与本地全矩阵回归，状态及后续共享资源/对比门禁见[实施计划](../design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)。存档页现在将当前游戏名、匹配/保护状态与版本数组织成首屏对象区；扫描/备份主动作与校验/刷新分层；新增只作用于已载入历史元数据的搜索；范围、版本跳转、列与保存视图归入次级工具栏；宽屏表格/详情按2:1分配，详情摘要、来源和恢复可用性分组。功能命令、恢复安全提示、选择和滚动模型均保留。正式同数据前后图及V12评审记录待在源码提交后补齐。
 
-基线产品源来自提交`c543790fcb6277f994f86bc58d0acd40631f9ed6`；本阶段只改RenderHarness、假数据、隔离截图脚本和计划/证据文档，未改生产`src/`。固定样本时间`2026-11-13T00:00:00Z`，SDK8.0.423/Release RenderHarness构建0 warning/0 error；状态夹具与全量Render QA均运行于WinSta0私有桌面，Default输入桌面未变。全量QA 408 PNG、0 PROBLEM、`render-qa OK`；Source Validation、git diff --check通过；WPF静态审查32 XAML、0 errors/26 warnings/179 info。本地证据路径与SHA清单见Round6 review README。
+SDK8.0.423 / Release 全构建0 warning/0 error；Core 157/157、Worker 407/407、Playnite 2,044项中1,986通过/0失败/58个既有跳过，157/157个WPF隔离类。全量 Render QA 408 PNG、0 PROBLEM、`render-qa OK`；来源/差异检查通过；WPF生产项目静态审查26个XAML、0 errors/26 warnings/164 info。受控存档页截图覆盖1040×700与1600×900 DIP、双主题、常规/详情状态；页面在 WinSta0 私有桌面采样且输入桌面保持Default。Runbook/截图/哈希清单将在V12交付项中登记。
 
-下一批按V05–V08重排存档页首屏、工具栏、表格与详情，再完成共享控件及同条件前后内部复核。保留当前游戏选框、生产滚动条、真实命令与安全语义、虚拟化和键盘/UIA。当前证据是受控WPF离屏，不等于Playnite真实宿主、物理DPI、实体输入或呈现帧验收。此阶段未读取真实游戏库/存档/配置，未执行恢复、删除或云写。
+下一批完成V09–V12字体/图标、共享按钮/输入/表面浮层与存档示范页前后对比复核，再推广任务、媒体、概览和设置。现有图像及Render QA只证明受控WPF离屏效果，不证明真实Playnite前台、物理DPI、实体输入或帧率。旧宿主/权限边界继续保留；本阶段未读取真实游戏库/存档/配置，未执行恢复、删除或云写。当前 `.tmp` 清理请求被执行策略拒绝，路径与拒绝事实会在阶段证据中记录。
 
 ## Round5 / P1 历史交接基线（2026-11-13）
 

@@ -17,6 +17,7 @@ namespace GameSaveCenter.Playnite.ViewModels
     {
         private const int BackupHistoryPageSize = 100;
         private string backupHistoryRange = BackupHistoryDateRange.All;
+        private string backupHistorySearchText = string.Empty;
         private int backupHistoryTotalCount;
         private bool backupHistoryHasMore;
         private bool isLoadingMoreBackupHistory;
@@ -33,6 +34,26 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool IsLoadingMoreBackupHistory => isLoadingMoreBackupHistory;
         public string SelectedBackupLineageSummary => selectedBackupLineage?.Summary ?? string.Empty;
         public IReadOnlyList<string> SelectedBackupLineageItems => selectedBackupLineage?.Items ?? Array.Empty<string>();
+
+        /// <summary>
+        /// Filters only metadata already present in Backups. This never requests a new
+        /// page or reads archive contents, so typing remains a view-only operation.
+        /// </summary>
+        public string BackupHistorySearchText
+        {
+            get => backupHistorySearchText;
+            set
+            {
+                var normalized = value ?? string.Empty;
+                if (string.Equals(backupHistorySearchText, normalized, StringComparison.Ordinal)) return;
+
+                backupHistorySearchText = normalized;
+                OnPropertyChanged(nameof(BackupHistorySearchText));
+                RefreshBackupHistoryView();
+                OnPropertyChanged(nameof(BackupHistoryRangeSummary));
+                RaiseCommandStates();
+            }
+        }
 
         public string BackupHistoryRange
         {
@@ -66,11 +87,15 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ? loaded
                     : BackupHistoryView.Cast<BackupVersionDto>().Count();
                 var range = BackupHistoryDateRange.Describe(BackupHistoryRange, DateTime.Now);
+                var search = BackupHistorySearchText.Trim();
+                var searchSummary = string.IsNullOrWhiteSpace(search)
+                    ? string.Empty
+                    : $" · 搜索“{TruncateSearchSummary(search)}”";
                 return string.Equals(range, BackupHistoryDateRange.All, StringComparison.Ordinal)
                     ? loaded == total
-                        ? $"{range} · 共 {total} 个版本"
-                        : $"{range} · 已载入 {loaded}/{total} 个版本"
-                    : $"{range} · 显示 {visible}/{loaded} 个已载入版本 · 已载入 {loaded}/{total}";
+                        ? $"{range}{searchSummary} · 显示 {visible}/{loaded} · 共 {total} 个版本"
+                        : $"{range}{searchSummary} · 显示 {visible}/{loaded} · 已载入 {loaded}/{total} 个版本"
+                    : $"{range}{searchSummary} · 显示 {visible}/{loaded} · 已载入 {loaded}/{total}";
             }
         }
 
@@ -100,8 +125,30 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         private bool FilterBackupHistory(object item)
-            => item is BackupVersionDto backup
-               && BackupHistoryDateRange.Matches(backup, BackupHistoryRange, DateTime.Now);
+        {
+            if (!(item is BackupVersionDto backup)
+                || !BackupHistoryDateRange.Matches(backup, BackupHistoryRange, DateTime.Now))
+                return false;
+
+            var search = BackupHistorySearchText.Trim();
+            if (search.Length == 0) return true;
+
+            return ContainsBackupHistoryText(backup.BackupId, search)
+                || ContainsBackupHistoryText(backup.LudusaviName, search)
+                || ContainsBackupHistoryText(backup.Comment, search)
+                || ContainsBackupHistoryText(backup.SourceDevice, search)
+                || ContainsBackupHistoryText(backup.OperatingSystem, search)
+                || ContainsBackupHistoryText(backup.BackupTypeDisplay, search)
+                || ContainsBackupHistoryText(backup.RetentionProtectionDisplay, search)
+                || ContainsBackupHistoryText(backup.RestoreReadinessStatusDisplay, search);
+        }
+
+        private static bool ContainsBackupHistoryText(string? value, string search)
+            => value != null
+               && value.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0;
+
+        private static string TruncateSearchSummary(string value)
+            => value.Length <= 28 ? value : value.Substring(0, 27) + "…";
 
         private void OnBackupHistoryCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {

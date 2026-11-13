@@ -96,7 +96,11 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var saveHost = MeasureInHost(saveView, width, height);
             saveView.ApplyResponsiveLayout(width, height);
             saveHost.UpdateLayout();
-            AssertEqualWorkspaceColumns(GetField<Grid>(saveType, saveView, "SaveHistoryLayout"), "存档历史");
+            AssertWorkspaceColumnRatio(
+                GetField<Grid>(saveType, saveView, "SaveHistoryLayout"),
+                expectedTableToInspectorRatio: 2.0,
+                workspace: "存档历史",
+                minimumInspectorWidth: 400);
             AssertTableScrollsInsideFrame(historyGrid, GetField<Border>(saveType, saveView, "SaveHistoryTableFrame"));
 
             var tabs = FindVisualDescendant<TabControl>(saveView);
@@ -1115,12 +1119,16 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             $"{workspace} wide layout should give the inspector the same width as the table; table={tableWidth:0.##} DIP, inspector={inspectorWidth:0.##} DIP.");
     }
 
-    private static void AssertWorkspaceColumnRatio(Grid layout, double expectedTableToInspectorRatio, string workspace)
+    private static void AssertWorkspaceColumnRatio(
+        Grid layout,
+        double expectedTableToInspectorRatio,
+        string workspace,
+        double minimumInspectorWidth = 480)
     {
         var tableWidth = layout.ColumnDefinitions[0].ActualWidth;
         var inspectorWidth = layout.ColumnDefinitions[2].ActualWidth;
-        Assert.True(tableWidth > 0 && inspectorWidth >= 480,
-            $"{workspace} should keep a useful table and an inspector at least 480 DIP wide; table={tableWidth:0.##} DIP, inspector={inspectorWidth:0.##} DIP.");
+        Assert.True(tableWidth > 0 && inspectorWidth >= minimumInspectorWidth,
+            $"{workspace} should keep a useful table and an inspector at least {minimumInspectorWidth:0.##} DIP wide; table={tableWidth:0.##} DIP, inspector={inspectorWidth:0.##} DIP.");
         var actualRatio = tableWidth / inspectorWidth;
         Assert.InRange(actualRatio, expectedTableToInspectorRatio - 0.02, expectedTableToInspectorRatio + 0.02);
     }

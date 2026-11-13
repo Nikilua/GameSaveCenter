@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
@@ -127,11 +128,102 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         Assert.Contains("BackupHistoryRangeSummary", save);
         Assert.Contains("JumpToRecentBackupCommand", save);
         Assert.Contains("JumpToEarlierBackupCommand", save);
+        Assert.Contains("BackupHistorySearchText", save);
         Assert.Contains("StatusMessageFullDisplay, Mode=OneWay", System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml")));
         Assert.Contains("SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty", saveCode);
         Assert.Contains("nameof(DashboardViewModel.BackupHistoryView)", saveCode);
         Assert.Contains("BackupHistoryDateRange.Matches", history);
+        Assert.Contains("ContainsBackupHistoryText", history);
         Assert.Contains("ThenBy(item => item.BackupId", range);
+    }
+
+    [Fact]
+    public void ProductionSaveHistorySearchFiltersLoadedMetadataAndKeepsMatchingSelection()
+    {
+        RunSta(() =>
+        {
+            var selected = Backup("archive-id-Alpha", DateTime.Now.Date.AddHours(10).ToUniversalTime());
+            selected.Comment = "manual-checkpoint-alpha";
+            selected.SourceDevice = "PLAYER-DESKTOP-01";
+            selected.OperatingSystem = "Windows 11";
+            var other = Backup("archive-id-Beta", DateTime.Now.Date.AddDays(-1).AddHours(10).ToUniversalTime());
+            other.Comment = "weekly snapshot";
+            other.SourceDevice = "LAPTOP-02";
+            var viewModel = CreateBareDashboardViewModel(selected, other);
+            SetField(viewModel, "selectedBackup", selected);
+
+            var view = new SaveCenterView
+            {
+                DataContext = viewModel,
+                Width = 1040,
+                Height = 700,
+                PreferencePersistenceOverrideForBehaviorTest = () => { }
+            };
+            var window = new Window
+            {
+                Width = 1040,
+                Height = 700,
+                Content = view,
+                ShowInTaskbar = false,
+                WindowStyle = WindowStyle.None
+            };
+
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+
+                var search = FindVisualChildren<TextBox>(view)
+                    .Single(control => AutomationProperties.GetName(control) == "搜索已载入的存档历史");
+                var history = (DataGrid)view.GetType()
+                    .GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetValue(view)!;
+                var clear = FindVisualChildren<ButtonBase>(view)
+                    .Single(control => AutomationProperties.GetName(control) == "清除存档历史搜索");
+
+                Assert.Equal(2, viewModel.Backups.Count);
+                Assert.Equal(2, history.Items.Count);
+                Assert.Same(selected, history.SelectedItem);
+
+                search.Text = "player-desktop";
+                PumpLayout(window);
+                Assert.Equal("player-desktop", viewModel.BackupHistorySearchText);
+                Assert.Single(viewModel.BackupHistoryView.Cast<BackupVersionDto>());
+                Assert.Same(selected, history.SelectedItem);
+                Assert.Same(selected, viewModel.SelectedBackup);
+                Assert.Equal(2, viewModel.Backups.Count);
+
+                search.Text = "not-a-match";
+                PumpLayout(window);
+                Assert.Empty(viewModel.BackupHistoryView.Cast<BackupVersionDto>());
+                Assert.Null(history.SelectedItem);
+                Assert.Null(viewModel.SelectedBackup);
+
+                var source = PresentationSource.FromVisual(search);
+                Assert.NotNull(source);
+                var escape = new KeyEventArgs(Keyboard.PrimaryDevice, source!, Environment.TickCount, Key.Escape)
+                {
+                    RoutedEvent = Keyboard.PreviewKeyDownEvent
+                };
+                search.RaiseEvent(escape);
+                PumpLayout(window);
+                Assert.True(escape.Handled);
+                Assert.Equal(string.Empty, viewModel.BackupHistorySearchText);
+                Assert.Equal(2, history.Items.Count);
+
+                search.Text = "archive-id-alpha";
+                PumpLayout(window);
+                Assert.Single(history.Items.Cast<BackupVersionDto>());
+                InvokeClick(clear);
+                PumpLayout(window);
+                Assert.Equal(string.Empty, viewModel.BackupHistorySearchText);
+                Assert.Equal(2, history.Items.Count);
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
     }
 
     [Fact]
@@ -241,6 +333,7 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         SetField(viewModel, "plugin", plugin);
         SetField(viewModel, "commandRefreshScheduled", true);
         SetField(viewModel, "backupHistoryRange", BackupHistoryDateRange.All);
+        SetField(viewModel, "backupHistorySearchText", string.Empty);
         SetField(viewModel, "restoreWorkflowSteps", new ObservableCollection<RestoreWorkflowStepState>());
         SetField(viewModel, "restoreWorkflowSummary", "选择一个版本后，按顺序完成四个阶段。");
         SetField(viewModel, "diffPathSearchText", string.Empty);

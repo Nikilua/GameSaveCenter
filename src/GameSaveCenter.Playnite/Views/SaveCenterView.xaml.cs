@@ -27,6 +27,7 @@ namespace GameSaveCenter.Playnite.Views
         private DataGridViewConfigurationController? historyViewConfiguration;
         private DataGridViewConfigurationController? candidateViewConfiguration;
         private readonly WrapPanelRowGapController historyActionRowGap;
+        private readonly WrapPanelRowGapController historyToolbarRowGap;
 
         internal Action? PreferencePersistenceOverrideForBehaviorTest { get; set; }
 
@@ -36,6 +37,8 @@ namespace GameSaveCenter.Playnite.Views
             SaveHistoryStateColumn.DisplayIndex = 2;
             historyActionRowGap = new WrapPanelRowGapController(SaveHistorySummaryActions);
             historyActionRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap);
+            historyToolbarRowGap = new WrapPanelRowGapController(SaveHistoryToolbarActions);
+            historyToolbarRowGap.SetRowGap(ResponsiveLayoutCoordinator.CompactActionRowGap);
             SaveHistoryActionsScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveCandidateInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveHistoryPageScrollViewer.ScrollChanged += PageScrollViewerChanged;
@@ -466,6 +469,26 @@ namespace GameSaveCenter.Playnite.Views
             historyInspectorOpen = false;
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
+        }
+
+        private void OnClearSaveHistorySearchClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement source && source.Tag is TextBox textBox)
+            {
+                textBox.Clear();
+                textBox.Focus();
+                Keyboard.Focus(textBox);
+            }
+            e.Handled = true;
+        }
+
+        private void OnSaveHistorySearchPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Escape || !(sender is TextBox textBox) || textBox.Text.Length == 0)
+                return;
+
+            textBox.Clear();
+            e.Handled = true;
         }
 
         private void OnSaveCandidateSelectionChanged(object sender, SelectionChangedEventArgs e)

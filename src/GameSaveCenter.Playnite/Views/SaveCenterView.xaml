@@ -20,6 +20,30 @@
             <Style x:Key="SaveHistoryTimeText" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyTimeCell}"><Setter Property="ToolTip" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/><Setter Property="AutomationProperties.HelpText" Value="{Binding CreatedFullDisplay, Mode=OneWay}"/></Style>
             <Style x:Key="SaveCountValue" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumericCell}"/>
             <Style x:Key="SaveSizeValue" TargetType="TextBlock" BasedOn="{StaticResource GscTypographyNumericCell}"><Setter Property="TextTrimming" Value="None"/><Setter Property="Tag" Value="SaveHistorySize"/></Style>
+            <Style x:Key="SaveHistoryHeaderSurface" TargetType="Border" BasedOn="{StaticResource GscReadingCardStyle}">
+                <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="16,12"/>
+            </Style>
+            <Style x:Key="SaveHistoryGameTitle" TargetType="TextBlock" BasedOn="{StaticResource GscRedesignHeroTitle}">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Margin" Value="0,2,0,0"/>
+                <Setter Property="MaxHeight" Value="28"/>
+            </Style>
+            <Style x:Key="SaveHistoryDetailLabel" TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                <Setter Property="Foreground" Value="{DynamicResource GscMutedTextBrush}"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            </Style>
+            <Style x:Key="SaveHistoryDetailValue" TargetType="TextBlock" BasedOn="{StaticResource GscBodyStyle}">
+                <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            </Style>
+            <Style x:Key="SaveHistoryDetailSectionTitle" TargetType="TextBlock" BasedOn="{StaticResource GscSectionTitleStyle}">
+                <Setter Property="FontSize" Value="15"/>
+            </Style>
             <Style x:Key="SaveHealthStateBadge" TargetType="Border" BasedOn="{StaticResource GscRedesignContextPill}">
                 <Setter Property="Padding" Value="10,5"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -90,18 +114,18 @@
             <TabItem Header="历史版本">
                 <ScrollViewer x:Name="SaveHistoryPageScrollViewer" Style="{DynamicResource GscPageScrollViewer}" HorizontalContentAlignment="Stretch" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" CanContentScroll="False">
                 <Grid x:Name="SaveHistoryLayout" Margin="0,4,0,0">
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscWorkspaceInspectorWidth}"/></Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="2*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="{StaticResource GscWorkspaceInspectorWidth}"/></Grid.ColumnDefinitions>
                     <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="0"/></Grid.RowDefinitions>
                     <Border x:Name="SaveHistoryTableFrame" Grid.Column="0" Grid.Row="0" Style="{StaticResource SaveTableFrame}">
                         <Grid x:Name="SaveHistoryTableLayout">
                             <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-                            <Border x:Name="SaveHistorySummaryCard" Grid.Row="0" Style="{DynamicResource GscReadingCardStyle}" Padding="12,4" Margin="0,0,0,2">
+                            <Border x:Name="SaveHistorySummaryCard" Grid.Row="0" Style="{StaticResource SaveHistoryHeaderSurface}" Margin="0,0,0,8">
                                 <Grid x:Name="SaveHistorySummaryGrid">
                                     <!-- Keep both groups finite-width so commands cannot squeeze the summary into a zero-width column. -->
-                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                                     <StackPanel x:Name="SaveHistorySummaryContentStack" Grid.Row="0" MinWidth="0" VerticalAlignment="Top">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="存档清单" Style="{DynamicResource GscSectionTitleStyle}" VerticalAlignment="Center"/>
+                                            <TextBlock Text="当前游戏" Style="{DynamicResource GscRedesignHeroEyebrow}" VerticalAlignment="Center"/>
                                             <Border Style="{DynamicResource GscRedesignContextPill}" Padding="8,4" Margin="12,0,0,0" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Backups.Count, Mode=OneWay, StringFormat={}{0} 个版本}" Foreground="{DynamicResource GscAccentBrush}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold"/>
                                             </Border>
@@ -116,8 +140,13 @@
                                                        AutomationProperties.Name="查看或收起所选版本详情"
                                                        AutomationProperties.HelpText="{Binding RestoreAvailabilityHint, Mode=OneWay}"/>
                                         </StackPanel>
-                                        <TextBlock x:Name="SaveHistoryTargetGame" Text="{Binding SelectedGame.Name, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" AutomationProperties.Name="存档历史当前游戏" AutomationProperties.HelpText="{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}"/>
-                                        <TextBlock Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}"><Run Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=当前规则未匹配}"/><Run Text=" · "/><Run Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}"/></TextBlock>
+                                        <TextBlock x:Name="SaveHistoryTargetGame" Text="{Binding SelectedGame.Name, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" Style="{StaticResource SaveHistoryGameTitle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}" AutomationProperties.Name="存档历史当前游戏" AutomationProperties.HelpText="{Binding SelectedGame.IdentityDisplay, Mode=OneWay, TargetNullValue=未选择游戏, FallbackValue=未选择游戏}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                            <Border Style="{StaticResource SaveHealthStateBadge}" Padding="8,3" Margin="0,0,8,0" ToolTip="{Binding SelectedGame.HealthReasonDisplay, Mode=OneWay}">
+                                                <TextBlock Text="{Binding SelectedGame.HealthStateDisplay, Mode=OneWay, TargetNullValue=尚未校验}" Style="{StaticResource SaveHealthStateText}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=当前规则未匹配}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" ToolTip="{Binding SelectedGame.IdentityDisplay, Mode=OneWay}"/>
+                                        </StackPanel>
                                         <TextBlock Text="{Binding BackupHistoryRangeSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap" AutomationProperties.HelpText="历史版本日期范围和可见数量"/>
                                         <Border x:Name="SaveDetailsStaleBanner" Padding="8" Margin="0,8,0,0">
                                             <Border.Style>
@@ -180,7 +209,7 @@
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
-                                    <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,10,0,0">
+                                    <WrapPanel x:Name="SaveHistorySummaryActions" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,12,0,0">
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Appearance="Primary" Command="{Binding DetectPathsCommand}" MinWidth="100" Margin="0,0,8,0" AutomationProperties.Name="立即扫描存档路径">
                                             <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionBrowseFolder}"/><TextBlock Text="立即扫描" VerticalAlignment="Center"/></StackPanel>
                                         </ui:Button>
@@ -193,17 +222,43 @@
                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadDetailsCommand}" MinWidth="100" AutomationProperties.Name="重新加载存档详情" Margin="0,0,8,0">
                                             <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRefresh}"/><TextBlock Text="重新加载详情" VerticalAlignment="Center"/></StackPanel>
                                         </ui:Button>
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
-                                            <TextBlock Text="历史范围" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                            <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupHistoryRangeOptions}" SelectedItem="{Binding BackupHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="108" ToolTip="按本地日历日期筛选历史版本；今天/昨天不按固定 24 小时计算。" AutomationProperties.Name="历史版本日期范围"/>
-                                        </StackPanel>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="清空范围" Command="{Binding ClearBackupHistoryRangeCommand}" Margin="0,0,8,0" ToolTip="恢复显示全部历史版本" AutomationProperties.Name="清空历史版本日期范围"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="最近版本" Command="{Binding JumpToRecentBackupCommand}" Margin="0,0,8,0" ToolTip="选择当前日期范围内最新的版本" AutomationProperties.Name="跳到最近历史版本"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="较早版本" Command="{Binding JumpToEarlierBackupCommand}" Margin="0,0,8,0" ToolTip="选择当前已载入日期范围内最早的版本" AutomationProperties.Name="跳到较早历史版本"/>
-                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更早版本" Command="{Binding LoadMoreBackupHistoryCommand}" Margin="0,0,8,0" ToolTip="按创建时间继续载入下一段历史；已选版本会保持不变。" AutomationProperties.Name="加载更早的备份历史" AutomationProperties.HelpText="{Binding BackupHistoryRangeSummary, Mode=OneWay}"/>
-                                        <ui:Button x:Name="SaveHistoryColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择存档历史表格显示的列；时间、类型和状态始终显示。" AutomationProperties.Name="设置存档历史表格显示列"/>
-                                        <ComboBox x:Name="SaveHistoryViewConfigurationComboBox" Width="132" Style="{DynamicResource GscWpfUiFilterComboBox}" ToolTip="选择默认或已保存的存档历史表格布局" AutomationProperties.Name="存档历史表格视图"/>
-                                        <Expander x:Name="SaveHistoryViewConfigurationExpander" Style="{StaticResource GscDisclosureCard}" Header="管理视图" IsExpanded="False" MaxWidth="{Binding ActualWidth, ElementName=SaveHistoryTableFrame}" AutomationProperties.Name="存档历史视图管理" AutomationProperties.HelpText="展开后可保存、复制、重命名或删除表格视图；不更改存档数据。">
+                                    </WrapPanel>
+                                    <Border x:Name="SaveHistoryToolbarSurface" Grid.Row="2" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="{StaticResource GscHairlineThickness}" CornerRadius="10" Padding="8" Margin="0,8,0,0">
+                                        <WrapPanel x:Name="SaveHistoryToolbarActions" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                                            <Grid x:Name="SaveHistorySearchBoxHost" Width="196" MinWidth="150" Margin="0,0,8,6">
+                                                <TextBox x:Name="SaveHistorySearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupHistorySearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="120" Padding="30,4,34,4" ToolTip="只搜索已载入版本的名称、备注、设备、系统或版本 ID；不会读取存档文件。" AutomationProperties.Name="搜索已载入的存档历史" PreviewKeyDown="OnSaveHistorySearchPreviewKeyDown"/>
+                                                <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSearch}" Width="16" Height="16" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False"/>
+                                                <TextBlock Text="搜索备注、设备或 ID" VerticalAlignment="Center" Margin="30,0,10,0" IsHitTestVisible="False">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Style.Triggers><DataTrigger Binding="{Binding Text, ElementName=SaveHistorySearchTextBox}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,7,0" Tag="{Binding ElementName=SaveHistorySearchTextBox}" ToolTip="清除存档历史搜索" AutomationProperties.Name="清除存档历史搜索" Click="OnClearSaveHistorySearchClick">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button" BasedOn="{StaticResource GscSearchClearButton}">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Text, ElementName=SaveHistorySearchTextBox}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                                <DataTrigger Binding="{Binding Text, ElementName=SaveHistorySearchTextBox}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </Grid>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,6">
+                                                <TextBlock Text="范围" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                                <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupHistoryRangeOptions}" SelectedItem="{Binding BackupHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="108" ToolTip="按本地日历日期筛选历史版本；今天/昨天不按固定 24 小时计算。" AutomationProperties.Name="历史版本日期范围"/>
+                                            </StackPanel>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="清空范围" Command="{Binding ClearBackupHistoryRangeCommand}" Margin="0,0,8,6" ToolTip="恢复显示全部历史版本" AutomationProperties.Name="清空历史版本日期范围"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="最近版本" Command="{Binding JumpToRecentBackupCommand}" Margin="0,0,8,6" ToolTip="选择当前日期范围内最新的版本" AutomationProperties.Name="跳到最近历史版本"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="较早版本" Command="{Binding JumpToEarlierBackupCommand}" Margin="0,0,8,6" ToolTip="选择当前已载入日期范围内最早的版本" AutomationProperties.Name="跳到较早历史版本"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更早版本" Command="{Binding LoadMoreBackupHistoryCommand}" Margin="0,0,8,6" ToolTip="按创建时间继续载入下一段历史；已选版本会保持不变。" AutomationProperties.Name="加载更早的备份历史" AutomationProperties.HelpText="{Binding BackupHistoryRangeSummary, Mode=OneWay}"/>
+                                            <ui:Button x:Name="SaveHistoryColumnVisibilityButton" Style="{DynamicResource GscWpfUiCompactButton}" Content="显示列" ToolTip="选择存档历史表格显示的列；时间、类型和状态始终显示。" AutomationProperties.Name="设置存档历史表格显示列" Margin="0,0,8,6"/>
+                                            <ComboBox x:Name="SaveHistoryViewConfigurationComboBox" Width="132" Style="{DynamicResource GscWpfUiFilterComboBox}" ToolTip="选择默认或已保存的存档历史表格布局" AutomationProperties.Name="存档历史表格视图" Margin="0,0,8,6"/>
+                                            <Expander x:Name="SaveHistoryViewConfigurationExpander" Style="{StaticResource GscDisclosureCard}" Header="管理视图" IsExpanded="False" MaxWidth="{Binding ActualWidth, ElementName=SaveHistoryTableFrame}" AutomationProperties.Name="存档历史视图管理" AutomationProperties.HelpText="展开后可保存、复制、重命名或删除表格视图；不更改存档数据。" Margin="0,0,0,6">
                                             <WrapPanel Margin="0,4,0,0" VerticalAlignment="Center">
                                                 <TextBox x:Name="SaveHistoryViewConfigurationNameBox" Width="110" MaxLength="48" Style="{DynamicResource GscWpfUiTextBox}" ToolTip="输入视图名称，最多 48 个字符" AutomationProperties.Name="存档历史视图名称" Margin="0,0,8,4"/>
                                                 <ui:Button x:Name="SaveHistoryViewConfigurationSaveButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="保存当前" AutomationProperties.Name="保存当前存档历史视图" Margin="0,0,8,4"/>
@@ -215,7 +270,8 @@
                                                 <ui:Button x:Name="SaveHistoryViewConfigurationResetButton" Style="{DynamicResource GscWpfUiSecondaryButton}" Content="重置…" ToolTip="先预览范围，再选择只重置存档历史或全部工作视图" AutomationProperties.Name="预览存档历史布局重置范围" Margin="0,0,8,4"/>
                                             </WrapPanel>
                                         </Expander>
-                                    </WrapPanel>
+                                        </WrapPanel>
+                                    </Border>
                                 </Grid>
                             </Border>
                             <DataGrid x:Name="SaveHistoryGrid" AutomationProperties.Name="存档历史" Grid.Row="1" Style="{StaticResource SaveDataGrid}" RowStyle="{StaticResource GscStableDataGridRow}" ItemsSource="{Binding Backups}" SelectedItem="{Binding SelectedBackup}" SelectionMode="Extended" SelectionChanged="OnSaveHistorySelectionChanged" infra:DataGridClipboardBehavior.Enabled="True" infra:DataGridClipboardBehavior.Profile="SaveHistory" ToolTip="Ctrl+C 复制所选行；Ctrl+Shift+C 复制当前单元格" AutomationProperties.HelpText="Ctrl+C 复制所选存档行；Ctrl+Shift+C 复制当前单元格">
@@ -334,8 +390,8 @@
                             </Style>
                         </ScrollViewer.Style>
                             <StackPanel MinWidth="0" HorizontalAlignment="Stretch">
-                                <TextBlock Text="版本详情" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="{Binding SelectedBackup.BackupId, TargetNullValue=选择一个存档版本查看详情}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedBackup.BackupId}"/>
+                                <TextBlock Text="版本详情" Style="{StaticResource SaveHistoryDetailSectionTitle}"/>
+                                <TextBlock Text="{Binding SelectedBackup.BackupId, TargetNullValue=选择一个存档版本查看详情}" Style="{StaticResource GscPathText}" Margin="0,4,0,0" ToolTip="{Binding SelectedBackup.BackupId}" AutomationProperties.Name="所选版本编号"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding AddSelectedBackupToWorklistCommand}" Content="加入待办" ToolTip="预览该版本并确认加入当前待办；不会执行恢复或改变版本状态。" AutomationProperties.Name="将所选存档版本加入待办" AutomationProperties.HelpText="仅保存 Playnite ID 和备份版本 ID。" Margin="0,8,0,0"/>
                                 <Border x:Name="SaveHistoryInspectorAvailabilityHint" Style="{DynamicResource GscActionAvailabilityHintBubble}" Padding="8,6" Margin="0,10,0,0" Visibility="Collapsed">
                                     <TextBlock Text="{Binding RestoreAvailabilityHint, Mode=OneWay}"
@@ -344,21 +400,44 @@
                                                AutomationProperties.Name="{Binding RestoreAvailabilityHint, Mode=OneWay}"
                                                AutomationProperties.HelpText="{Binding RestoreAvailabilityHint, Mode=OneWay}"/>
                                 </Border>
-                                <Separator Margin="0,14,0,12"/>
-                                <Grid>
-                                    <Grid.ColumnDefinitions><ColumnDefinition Width="82"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
-                                    <TextBlock Text="创建时间" Style="{DynamicResource GscCaptionStyle}"/><TextBlock Grid.Column="1" Text="{Binding SelectedBackup.CreatedRelativeDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis" ToolTip="{Binding SelectedBackup.CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedBackup.CreatedFullDisplay, Mode=OneWay}"/>
-                                    <TextBlock Grid.Row="1" Text="触发方式" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedBackup.BackupTypeDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
-                                    <TextBlock Grid.Row="2" Text="文件数量" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedBackup.FileCount, Mode=OneWay}" Margin="0,9,0,0"/>
-                                    <TextBlock Grid.Row="3" Text="大小" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedBackup.SizeDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
-                                    <TextBlock Grid.Row="4" Text="设备" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedBackup.SourceDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis" Margin="0,9,0,0" ToolTip="{Binding SelectedBackup.SourceDisplay}"/>
-                                    <TextBlock Grid.Row="5" Text="系统" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedBackup.OperatingSystemDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis" Margin="0,9,0,0" ToolTip="{Binding SelectedBackup.OperatingSystemDisplay}"/>
-                                    <TextBlock Grid.Row="6" Text="锁定" Style="{DynamicResource GscCaptionStyle}" Margin="0,9,0,0"/><TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding SelectedBackup.LockStateDisplay, Mode=OneWay}" Margin="0,9,0,0"/>
-                                </Grid>
                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
                                     <StackPanel>
-                                        <TextBlock Text="来源关系" FontWeight="SemiBold"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,10">
+                                                <TextBlock Text="创建时间" Style="{StaticResource SaveHistoryDetailLabel}"/>
+                                                <TextBlock Text="{Binding SelectedBackup.CreatedRelativeDisplay, Mode=OneWay}" Style="{StaticResource SaveHistoryDetailValue}" ToolTip="{Binding SelectedBackup.CreatedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedBackup.CreatedFullDisplay, Mode=OneWay}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,10">
+                                                <TextBlock Text="触发方式" Style="{StaticResource SaveHistoryDetailLabel}"/>
+                                                <TextBlock Text="{Binding SelectedBackup.BackupTypeDisplay, Mode=OneWay}" Style="{StaticResource SaveHistoryDetailValue}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
+                                                <TextBlock Text="文件数量" Style="{StaticResource SaveHistoryDetailLabel}"/>
+                                                <TextBlock Text="{Binding SelectedBackup.FileCount, Mode=OneWay}" Style="{StaticResource SaveHistoryDetailValue}"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,0">
+                                                <TextBlock Text="归档大小" Style="{StaticResource SaveHistoryDetailLabel}"/>
+                                                <TextBlock Text="{Binding SelectedBackup.SizeDisplay, Mode=OneWay}" Style="{StaticResource SaveHistoryDetailValue}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Separator Margin="0,10,0,8"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions><ColumnDefinition Width="56"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                            <TextBlock Text="设备" Style="{StaticResource SaveHistoryDetailLabel}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding SelectedBackup.SourceDisplay, Mode=OneWay}" Style="{StaticResource SaveHistoryDetailValue}" ToolTip="{Binding SelectedBackup.SourceDisplay}"/>
+                                            <TextBlock Grid.Row="1" Text="系统" Style="{StaticResource SaveHistoryDetailLabel}" Margin="0,6,0,0"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedBackup.OperatingSystemDisplay, Mode=OneWay}" Style="{StaticResource SaveHistoryDetailValue}" Margin="0,6,0,0" ToolTip="{Binding SelectedBackup.OperatingSystemDisplay}"/>
+                                            <TextBlock Grid.Row="2" Text="保护" Style="{StaticResource SaveHistoryDetailLabel}" Margin="0,6,0,0"/>
+                                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedBackup.LockStateDisplay, Mode=OneWay}" Style="{StaticResource SaveHistoryDetailValue}" Margin="0,6,0,0"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="来源关系" Style="{StaticResource SaveHistoryDetailSectionTitle}"/>
                                         <TextBlock Text="{Binding SelectedBackupLineageSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="{Binding SelectedBackupLineageSummary, Mode=OneWay}"/>
                                         <ItemsControl ItemsSource="{Binding SelectedBackupLineageItems, Mode=OneWay}" Margin="0,5,0,0" AutomationProperties.Name="备份来源关系文字列表" AutomationProperties.HelpText="{Binding SelectedBackupLineageSummary, Mode=OneWay}">
                                             <ItemsControl.ItemTemplate>
@@ -370,7 +449,7 @@
                                     </StackPanel>
                                 </Border>
                                 <Separator Margin="0,16,0,12"/>
-                                <TextBlock Text="恢复可用性" FontWeight="SemiBold"/>
+                                <TextBlock Text="恢复可用性" Style="{StaticResource SaveHistoryDetailSectionTitle}"/>
                                 <TextBlock Text="归档可读取性由隔离校验表示；不代表路径映射已完成，也不代表真实恢复已演练。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="恢复可用性巡检只读取隔离目录，不会执行真实恢复。"/>
                                 <TextBlock Text="{Binding SelectedBackup.RestoreReadinessStatusDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" Margin="0,5,0,0"/>
                                 <TextBlock x:Name="SaveHistoryRestoreReadinessSummaryText" Text="{Binding SelectedBackup.RestoreReadinessSummaryDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" MinWidth="0" HorizontalAlignment="Stretch" Margin="0,3,0,0"/>
@@ -382,7 +461,7 @@
                                     <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionVerify}"/><TextBlock Text="验证可恢复性" VerticalAlignment="Center"/></StackPanel>
                                 </ui:Button>
                                 <Separator Margin="0,16,0,12"/>
-                                <TextBlock Text="恢复方案草稿" FontWeight="SemiBold" AutomationProperties.Name="恢复方案草稿"/>
+                                <TextBlock Text="恢复方案草稿" Style="{StaticResource SaveHistoryDetailSectionTitle}" AutomationProperties.Name="恢复方案草稿"/>
                                 <TextBlock Text="只读保存目标版本、映射摘要、基线和可恢复性检查引用。草稿没有执行授权，不会修改当前存档。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="只读方案草稿不会执行恢复，也不会写入当前存档。"/>
                                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                     <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding PreviewRestorePlanMappingCommand}" Content="预览映射" AutomationProperties.Name="只读预览恢复映射"/>
@@ -490,7 +569,7 @@
                                     </StackPanel>
                                 </Border>
                                 <Separator Margin="0,16,0,12"/>
-                                <TextBlock Text="恢复流程" FontWeight="SemiBold"/>
+                                <TextBlock Text="恢复流程" Style="{StaticResource SaveHistoryDetailSectionTitle}"/>
                                 <TextBlock Text="{Binding RestoreWorkflowSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.Name="恢复流程摘要"/>
                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,8,0,0">
                                     <ItemsControl ItemsSource="{Binding RestoreWorkflowSteps}" AutomationProperties.Name="恢复四步流程">
@@ -514,7 +593,7 @@
                                 </Border>
                                 <TextBlock Text="执行结果会先显示保护备份阶段；只有 PreRestore 创建并锁定后才会写入当前存档目录。保护备份失败会中止危险恢复，失败时当前步骤和任务详情会保留。" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="恢复执行会先建立并锁定 PreRestore 保护；保护备份失败会中止危险恢复并保留当前阶段与任务详情。"/>
                                 <Separator Margin="0,16,0,12"/>
-                                <TextBlock Text="版本备注" Style="{DynamicResource GscCaptionStyle}" Margin="0,0,0,6"/>
+                                <TextBlock Text="版本备注" Style="{StaticResource SaveHistoryDetailSectionTitle}" Margin="0,0,0,6"/>
                                 <TextBox Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupComment, UpdateSourceTrigger=PropertyChanged}" MinHeight="64" AcceptsReturn="True" TextWrapping="Wrap" AutomationProperties.Name="版本备注"/>
                                 <Grid Margin="0,14,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="锁定版本" FontWeight="SemiBold"/><TextBlock Text="{Binding BackupProtectionExplanationDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/></StackPanel><CheckBox Grid.Column="1" Style="{DynamicResource GscCheckBox}" Content="锁定" IsChecked="{Binding LockSelectedBackup}" VerticalAlignment="Center" ToolTip="锁定并保存后，保留预览会跳过此版本；取消锁定并保存后才会重新按策略评估。" AutomationProperties.Name="锁定所选版本"/></Grid>
                                 <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
@@ -523,7 +602,7 @@
                                 </StackPanel>
                                 <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CompareBackupCommand}" Content="比较 A/B 版本" ToolTip="使用比较与保留页选择的 A/B 版本；默认是上一版本与当前版本" AutomationProperties.Name="在历史详情中比较 A 与 B 版本" Margin="0,8,0,0"/>
                                 <Separator Margin="0,16,0,12"/>
-                                <TextBlock Text="恢复操作" FontWeight="SemiBold"/>
+                                <TextBlock Text="恢复操作" Style="{StaticResource SaveHistoryDetailSectionTitle}"/>
                                 <TextBlock Text="恢复前会创建并锁定当前快照，完成后可校验并撤销。" Style="{DynamicResource GscCaptionStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
                                 <ui:Button Style="{DynamicResource GscWpfUiDangerActionButton}" Command="{Binding RestoreCommand}" ToolTip="恢复前先创建并锁定当前快照；完成后可撤销" AutomationProperties.Name="安全恢复所选版本" Margin="0,12,0,0">
                                     <StackPanel Orientation="Horizontal"><ui:ThemeAwareIcon Style="{StaticResource GscActionIcon}" IconData="{StaticResource GscIconActionRestore}"/><TextBlock Text="安全恢复" VerticalAlignment="Center"/></StackPanel>

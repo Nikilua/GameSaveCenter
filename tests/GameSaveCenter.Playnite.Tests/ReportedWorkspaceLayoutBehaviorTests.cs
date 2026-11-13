@@ -540,9 +540,11 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var viewType = typeof(SaveCenterView);
                 var summary = (Border)viewType.GetField("SaveHistorySummaryCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var actions = (WrapPanel)viewType.GetField("SaveHistorySummaryActions", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var toolbar = (FrameworkElement)viewType.GetField("SaveHistoryToolbarSurface", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var contentStack = (FrameworkElement)viewType.GetField("SaveHistorySummaryContentStack", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var grid = (DataGrid)viewType.GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var inspector = (ScrollViewer)viewType.GetField("SaveHistoryActionsScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var summarySpacingBudget = summary.Padding.Top + summary.Padding.Bottom + actions.Margin.Top + toolbar.Margin.Top;
 
                 window = CreateWindow(view, 1400, 900);
                 view.ApplyResponsiveLayout(1400, 900);
@@ -553,14 +555,15 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
 
                 var summaryBounds = BoundsIn(summary, view);
                 var actionsBounds = BoundsIn(actions, summary);
+                var toolbarBounds = BoundsIn(toolbar, summary);
                 var contentBounds = BoundsIn(contentStack, summary);
                 var gridBounds = BoundsIn(grid, view);
                 summaryToGridGap = gridBounds.Top - summaryBounds.Bottom;
                 summaryActionsRow = Grid.GetRow(actions);
                 summaryActionsContentGap = actionsBounds.Top - contentBounds.Bottom;
-                summaryTrailingWhitespace = summary.ActualHeight - actionsBounds.Bottom;
+                summaryTrailingWhitespace = summary.ActualHeight - toolbarBounds.Bottom;
                 detailsInspectorVisible = inspector.Visibility == Visibility.Visible && inspector.ActualWidth > 0 && inspector.ActualHeight > 0;
-                summaryGeometryDetails = $"summary={summary.ActualWidth:0.##}×{summary.ActualHeight:0.##}, content={contentStack.ActualWidth:0.##}×{contentStack.ActualHeight:0.##}, actions={actions.ActualWidth:0.##}×{actions.ActualHeight:0.##}@row{summaryActionsRow}, selected={grid.SelectedItem != null}, inspector={inspector.Visibility}/{inspector.ActualWidth:0.##}×{inspector.ActualHeight:0.##}";
+                summaryGeometryDetails = $"summary={summary.ActualWidth:0.##}×{summary.ActualHeight:0.##}, content={contentStack.ActualWidth:0.##}×{contentStack.ActualHeight:0.##}, actions={actions.ActualWidth:0.##}×{actions.ActualHeight:0.##}@row{summaryActionsRow}, toolbar={toolbar.ActualWidth:0.##}×{toolbar.ActualHeight:0.##}@row{Grid.GetRow(toolbar)}, selected={grid.SelectedItem != null}, inspector={inspector.Visibility}/{inspector.ActualWidth:0.##}×{inspector.ActualHeight:0.##}";
 
                 // Include both sides of the former inline-action threshold and
                 // return across the inspector breakpoint. A correct row number
@@ -571,12 +574,16 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                     view.ApplyResponsiveLayout(width, 900);
                     FlushLayout(window);
                     var actionBounds = BoundsIn(actions, summary);
+                    var secondaryToolbarBounds = BoundsIn(toolbar, summary);
                     var content = BoundsIn(contentStack, summary);
-                    resizeSamples.Add($"{width:0}: card={summary.ActualWidth:0.##}×{summary.ActualHeight:0.##}, content={content.Width:0.##}×{content.Height:0.##}, actions={actionBounds.Width:0.##}×{actionBounds.Height:0.##}");
+                    resizeSamples.Add($"{width:0}: card={summary.ActualWidth:0.##}×{summary.ActualHeight:0.##}, content={content.Width:0.##}×{content.Height:0.##}, actions={actionBounds.Width:0.##}×{actionBounds.Height:0.##}, toolbar={secondaryToolbarBounds.Width:0.##}×{secondaryToolbarBounds.Height:0.##}");
                     Assert.InRange(summary.ActualWidth - content.Width, 0, 35);
-                    Assert.InRange(summary.ActualHeight - content.Height - actionBounds.Height, 0, 40);
+                    Assert.InRange(
+                        summary.ActualHeight - content.Height - actionBounds.Height - secondaryToolbarBounds.Height,
+                        summarySpacingBudget - 1,
+                        summarySpacingBudget + 1);
                     Assert.InRange(actionBounds.Top - content.Bottom, 8, 14);
-                    Assert.InRange(summary.ActualHeight - actionBounds.Bottom, 0, 18);
+                    Assert.InRange(summary.ActualHeight - secondaryToolbarBounds.Bottom, 0, 18);
                     foreach (var action in actions.Children.OfType<FrameworkElement>().Where(child => child.Visibility == Visibility.Visible))
                     {
                         var bounds = BoundsIn(action, actions);
@@ -1196,7 +1203,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var saveView = new SaveCenterView { DataContext = new SavePageContext() };
                 ApplyTheme(saveView, theme);
                 var saveActions = (WrapPanel)typeof(SaveCenterView)
-                    .GetField("SaveHistorySummaryActions", BindingFlags.Instance | BindingFlags.NonPublic)!
+                    .GetField("SaveHistoryToolbarActions", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(saveView)!;
                 saveWindow = CreateWindow(saveView, 1100, 720);
                 saveWindow.Show();
@@ -1354,7 +1361,7 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
         Assert.True(saveCompactRows >= 2, "the compact synthetic save history toolbar must exercise a wrapped row");
         Assert.True(saveCompactGap >= 19.5, $"Save Center action rows need clear separation ({saveCompactGap:0.##} DIP)");
         Assert.Equal(1, saveWideRows);
-        Assert.InRange(saveWideBottomMargin, 0, 0.5);
+        Assert.Equal(6d, saveWideBottomMargin);
         Assert.True(inboxCompactRows >= 2, "the compact synthetic inbox toolbar must exercise a wrapped row");
         Assert.True(inboxCompactGap >= 19.5, $"Media Inbox action rows need clear separation ({inboxCompactGap:0.##} DIP)");
         Assert.Equal(1, inboxWideRows);
