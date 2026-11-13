@@ -1,6 +1,6 @@
 ## 2026-11-12 冻结候选门禁接续
 
-当前 `main`/`origin/main` HEAD 为文档提交 `42eb3a79a706bbbd1ac7b5c5ea3595a65f69091f`；本机验证的产品源码候选为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`。该源码SHA的GitHub run #1545（`43161957758`）基线与SDK10.0.401 jobs均成功；required-checks/ruleset仍因既有HTTP403无法核验，不重复请求。精确artifact身份：[CI记录](design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json)。
+当前已验证的产品源码候选为 `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`；此后只提交了状态/证据文档，产品源文件未变，分支HEAD以Git log为准。该源码SHA的GitHub run #1545（`43161957758`）基线与SDK10.0.401 jobs均成功；required-checks/ruleset仍因既有HTTP403无法核验，不重复请求。精确artifact身份：[CI记录](design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/ci-run-43161957758.json)。
 
 中文完整入口链使用SDK8.0.423，构建、测试（2042项：1974通过/0失败/68跳过）、Worker发布、身份检查和包生成通过，但安装Playnite扩展写入被拒，根入口exit1；候选未安装或启动。随后独立 `scripts/build.cmd` Release默认测试记录1829项（1800通过/0失败/29跳过），在 `UiDiagnosticsExporterTests` 无法检查输入桌面后exit1，完成148/157个WPF隔离类，9类未运行。失败/成功证据与hash：[根入口](design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/root-entry-result.json)、[独立构建](design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/scripts-build-cmd-result.json)。Playnite和Worker保持未运行；没有重启旧安装。权限/桌面条件未变化时不提升或无限重试。
 
