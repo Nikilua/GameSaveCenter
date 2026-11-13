@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -173,6 +174,7 @@ public sealed class R02BusyStateTests
                     Content = "全部备份",
                     Style = (Style)resourceHost.Resources["GscWpfUiPrimaryButton"]
                 };
+                button.SetBinding(ProductionButton.IsBusyProperty, new Binding(nameof(BusyState.IsBusy)));
                 root.Content = button;
                 window = CreateWindow(root);
                 window.Show();
@@ -254,6 +256,7 @@ public sealed class R02BusyStateTests
                     Content = "快速任务",
                     Style = (Style)resourceHost.Resources["GscWpfUiPrimaryButton"]
                 };
+                button.SetBinding(ProductionButton.IsBusyProperty, new Binding(nameof(BusyState.IsBusy)));
                 root.Content = button;
                 window = CreateWindow(root);
                 window.Show();
@@ -286,16 +289,69 @@ public sealed class R02BusyStateTests
     }
 
     [Fact]
-    public void CurrentProductionShellActionsUseTheSharedBusyPrimitive()
+    public void SharedProductionButtonIgnoresUnrelatedViewBusyState()
+    {
+        Exception? exception = null;
+        var indicatorVisibility = Visibility.Visible;
+        var visualState = true;
+
+        RunSta(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var resourceHost = new UiFrameworkProbeView();
+                var state = new BusyState();
+                var root = new UserControl { DataContext = state };
+                root.Resources.MergedDictionaries.Add(resourceHost.Resources);
+                var button = new ProductionButton
+                {
+                    Width = 180,
+                    Height = 44,
+                    Content = "无关操作",
+                    Style = (Style)resourceHost.Resources["GscWpfUiPrimaryButton"]
+                };
+                root.Content = button;
+                window = CreateWindow(root);
+                window.Show();
+                window.UpdateLayout();
+                button.ApplyTemplate();
+                var busyHost = (Border)button.Template!.FindName("BusyIndicatorHost", button)!;
+
+                state.IsBusy = true;
+                PumpDispatcher(TimeSpan.FromMilliseconds(150));
+                root.UpdateLayout();
+
+                indicatorVisibility = busyHost.Visibility;
+                visualState = button.IsBusyIndicatorVisible;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+
+        Assert.Null(exception);
+        Assert.Equal(Visibility.Collapsed, indicatorVisibility);
+        Assert.False(visualState);
+    }
+
+    [Fact]
+    public void SharedBusyIndicatorRequiresAnExplicitActionBinding()
     {
         var production = Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
-        var shell = Read("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml");
+        var dashboard = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml");
+        var trainer = Read("src", "GameSaveCenter.Playnite", "Views", "TrainerCenterView.xaml");
 
-        Assert.Contains("<Setter Property=\"IsBusy\"", production);
-        Assert.Contains("DataContext.IsBusy", production);
-        Assert.Contains("Style=\"{DynamicResource GscIconOnlyToolbarButton}\"", shell);
-        Assert.Contains("Style=\"{DynamicResource GscRedesignHeaderButton}\"", shell);
-        Assert.Equal(2, shell.Split(new[] { "Style=\"{DynamicResource GscRedesignPrimaryHeaderButton}\"" }, StringSplitOptions.None).Length - 1);
+        Assert.DoesNotContain("<Setter Property=\"IsBusy\"", production);
+        Assert.DoesNotContain("DataContext.IsBusy", production);
+        Assert.Contains("x:Name=\"BusyIndicatorHost\"", production);
+        Assert.Equal(3, dashboard.Split(new[] { "IsBusy=\"{Binding IsBusy}\"" }, StringSplitOptions.None).Length - 1);
+        Assert.Contains("IsBusy=\"{Binding IsLaunchingGameTool}\"", trainer);
     }
 
     private static Window CreateWindow(UIElement content)
