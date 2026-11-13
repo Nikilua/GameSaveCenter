@@ -1,6 +1,10 @@
-## 2026-11-13 新授权：第六轮可见视觉升级
+## 2026-11-13 Round6 V01–V04接续
 
-用户明确要求可直观看到的UI、外观与细腻动画改造。新增[28项示范页先行计划](design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)，V01 READY，其余依赖推进。先存档整页示范与同条件前后对比，再共享控件、连续动效及跨页推广；不将旧任务重开，不以测试/记录代替可见改变。完整cmd、精确CI、安全清理及真实数据边界见计划。本次仅规划，未修改产品或重跑构建。
+V01–V04已完成：生产`SaveCenterView`受控基线8张（1040/1600、Light/Dark、常规/详情），7项截图观察、WPF页面规格及28张状态/长文本代表图，证据在`design/reviews/ui-redesign-round6-20261113/`。SDK8.0.423 RenderHarness 0 warning/error；全量Render QA 408 PNG/0 PROBLEM；输入桌面保持Default；Source Validation/diff check通过。当前没有仓库Demo源目录，已记录并采用生产资源。下一批V05–V08直接重构存档页，不能以计划/证据收集替代可见实现。
+
+## 2026-11-13 新授权起点（历史记录）
+
+当时新增[28项示范页先行计划](design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)，初始V01 READY、尚未开始产品改造。当前V01–V04状态见本文件顶部，后续按存档示范、动效、跨页推广继续执行。
 
 ## 2026-11-06 综合评估与后续16项计划
 

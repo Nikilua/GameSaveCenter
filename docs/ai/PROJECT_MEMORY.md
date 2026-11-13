@@ -1,6 +1,12 @@
-## 2026-11-13 新授权：第六轮可见视觉升级
+## 2026-11-13 Round6 V01–V04 基线与设计复核
 
-用户明确要求可直观看到的UI、外观与细腻动画改造。新增[28项示范页先行计划](../design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)，V01 READY，其余依赖推进。先存档整页示范与同条件前后对比，再共享控件、连续动效及跨页推广；不将旧任务重开，不以测试/记录代替可见改变。完整cmd、精确CI、安全清理及真实数据边界见计划。本次仅规划，未修改产品或重跑构建。
+V01–V04已完成，见[存档页基线复核](../design/reviews/ui-redesign-round6-20261113/README.md)和[计划状态](../design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)。新增受控生产XAML基线入口，固定同一合成数据时间，在1040×700与1600×900 DIP、双主题分别捕获常规/详情打开共8图；已基于图像列出7项差距，完成存档页WPF可实现规格及空/加载/错误/过期/离线/长中英文名/长路径/多选样本。当前仓库没有Demo源目录，按计划记录缺失并以生产资源建立基准。
+
+SDK8.0.423 RenderHarness Release build 0 warning/0 error；StateFixtures 0 exit、全状态矩阵通过；完整Render QA 408 PNG/0 PROBLEM。所有渲染在WinSta0私有桌面，Default输入桌面保持；截图为1.0离屏DIP，不是Playnite真实前台或物理DPI。Source Validation与diff check通过，WPF静态32 XAML/0 error/26 warnings/179 info。本批修改仅Harness、合成假数据、截图脚本与文档；生产XAML/业务实现未改。V05–V08接着实施存档页，不等待用户批准；质量复核和后续宿主边界见README。
+
+## 2026-11-13 新授权起点（历史记录）
+
+用户明确要求可直观看到的UI、外观与细腻动画改造。本记录是新增[28项示范页先行计划](../design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)时的初始状态：当时V01 READY、产品未开始修改。当前V01–V04状态和首批复核见本文件顶部；示范页实施与前后对比继续推进，不将旧任务重开，也不以测试/记录代替可见改变。
 
 ## 2026-11-13 独立完成质量复核
 

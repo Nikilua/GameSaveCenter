@@ -1,0 +1,260 @@
+{
+  "capturedUtc": "2026-11-13T14:43:51.5292410Z",
+  "sourceCommit": "c543790fcb6277f994f86bc58d0acd40631f9ed6",
+  "sampleDataUtc": "2026-11-13T00:00:00Z",
+  "dpiScale": 1.0,
+  "runnerScriptSha256AtCapture": "F9C9864C65EBB8374E08451D00397BEAC85A2FA4C3B4B903AAE0E8112A7ABC64",
+  "currentRunnerScriptSha256": "B39662CFF0D4EB7967BABEE5B7D8FBF6D9B4725D62954E663F430CA80CAAF075",
+  "renderQa": {
+    "pngCount": 408,
+    "problems": 0,
+    "status": "render-qa OK"
+  },
+  "stateFixtures": {
+    "pngCount": 270,
+    "status": "statefixtures OK",
+    "selectedEvidencePngCount": 28
+  },
+  "sourceFiles": [
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/Program.cs",
+      "sha256": "0CFC8FDCEC8B767A844876DDD8A06BA279698E449A0D8E82945A34541C8EDB62"
+    },
+    {
+      "path": "tests/GameSaveCenter.RenderHarness/FakeDashboardData.cs",
+      "sha256": "FA6483FB94DF0F39E595324CF344E955B917681EB5180957A115CE16B133B88A"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml",
+      "sha256": "DDE572A1FC0FEDAAFD5EDE5D689BB51DB13510FA684F52AF76548F878AD5E789"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Views/SaveCenterView.xaml.cs",
+      "sha256": "4CB7CDB7880872CECB10C0B4DEFBD0826D0E97D1A2DD485F109E4CA75AFC0F8D"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/DesignTokens.xaml",
+      "sha256": "1021FB73F13CDD2047F031A587B941B86A712EC4A7BEBEA3FBF5BC345EA9C242"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/Redesign.xaml",
+      "sha256": "9EE6CBE5A0D2E0BEBC1AE3E531770BC09DDA9F91AA1BD2D785BA252F4D1814E4"
+    },
+    {
+      "path": "src/GameSaveCenter.Playnite/Themes/MotionTokens.xaml",
+      "sha256": "A4FE70BB7B9F3EB43B6B550892D3633C0F9D7267037A0B007F80908FE7B52D98"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/attempts.md",
+      "bytes": 1510,
+      "sha256": "DE9C9E56D8C40FB06CF982D4EF4B183884AFF026777E24FFC260F88BF857324D"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/full-render-qa-report.txt",
+      "bytes": 1142401,
+      "sha256": "09FAC23B59246484E3981630F16C14500336EC924E7C4C62F5ED32B854F9872E"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/round6-baseline-report.txt",
+      "bytes": 4937,
+      "sha256": "2A1789C3D3CAD025F7F568080EBF766406FF927820BE7A8889A1072C19D44BB1"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/runner-metadata.json",
+      "bytes": 448,
+      "sha256": "CED9DDE07B0E549E8CDA9F2C9F37A3B798C066A29D6AB80616ABB04133C76A3A"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/baseline/save-history-dark-1040x700-details-closed.png",
+      "bytes": 77089,
+      "sha256": "5D34590F557BD41EF2E6A331F2C100149C251A51695A57761CEBE18F2DC3958A"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/baseline/save-history-dark-1040x700-details-open.png",
+      "bytes": 65010,
+      "sha256": "A943269BF3B8884D5950EB7B189A09D5C56F05FD1F80B6263C5E89BA7E7FB351"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/baseline/save-history-dark-1600x900-details-closed.png",
+      "bytes": 117014,
+      "sha256": "5FBEDCDEA194943D64D6C7CD63CC7A4580AD203B23C5279C8B6C8F5277ADAB95"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/baseline/save-history-dark-1600x900-details-open.png",
+      "bytes": 160709,
+      "sha256": "E1FF0679B5A6B44FE4FEF17A2929EFD1ED13E197387047B3E41A305B3AFCEF66"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/baseline/save-history-light-1040x700-details-closed.png",
+      "bytes": 72259,
+      "sha256": "7112E633D0E5228211ECB46E6F05E8B553A99017408F31B9B705CB171FE2A4DD"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/baseline/save-history-light-1040x700-details-open.png",
+      "bytes": 61399,
+      "sha256": "CFC8EBF71BE906AB05D323B592A6EF521A55941E903B5BD6CFEE825898BB7264"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/baseline/save-history-light-1600x900-details-closed.png",
+      "bytes": 109829,
+      "sha256": "C4468F9F4DDE7368E17FE93189430AE07F2FF57E9EEE040C94A5AABF0DD69D9C"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V01/baseline/save-history-light-1600x900-details-open.png",
+      "bytes": 150262,
+      "sha256": "A9804217CFE2987FD7F8812DCB999F2B21C43C458BDB406F10503ED8A3C790E2"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/runner-metadata.json",
+      "bytes": 451,
+      "sha256": "4D7D5B95FE3EADE2E252D1BF6485643A5D4178EA1A26F45DBBDD8F22888DA6A5"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/statefixtures-report.txt",
+      "bytes": 79310,
+      "sha256": "5D73BCB538F354EF001AD671F88D1BDB9E882468AF9A9F04C116458357C3CE84"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1040x700-Empty.png",
+      "bytes": 48893,
+      "sha256": "F08970075BDCE33F25C9200E5475A9CF3500EA53E40F5099FA1C90E49449C018"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1040x700-Error.png",
+      "bytes": 64752,
+      "sha256": "547471DB81AC92DCD2C773E7B5BF02B0DEE99F0D4EBC4AEECE9FD7403559D99D"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1040x700-Loading.png",
+      "bytes": 42420,
+      "sha256": "5816918B9CB7349B667694CF5F201B67877F36B79EE59F0E26F4E91F05B5EA9C"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1040x700-multiselect-long-text.png",
+      "bytes": 89371,
+      "sha256": "B096BFA92F814E01567D8CA6F9BC8AF8BA0C83C6FBEA9E69A4CEA844CB8D5EAC"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1040x700-Offline.png",
+      "bytes": 61487,
+      "sha256": "9FE8D8D08471623FA0014A531E4E74C441D5FB292549ACE2FE720EE64E6469C4"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1040x700-Ready.png",
+      "bytes": 82384,
+      "sha256": "8D3E71895AB0506150CD2C453291228202E20F76FD09D415C38F3F3703A59321"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1040x700-Stale.png",
+      "bytes": 92730,
+      "sha256": "F9A763D361032026A544DBD085B8AA4102200D4F5B38F2153E8615BE793E4B07"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1600x900-Empty.png",
+      "bytes": 58182,
+      "sha256": "E4C57753513BF36F7178EFCCE74E7F74ED2C7FE70D015B1A2A789C4EBA0935B5"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1600x900-Error.png",
+      "bytes": 75606,
+      "sha256": "52A140FDE47A5B099178E6DA5CF7BC981F7D307C5C78B6560D8072B515518F71"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1600x900-Loading.png",
+      "bytes": 51198,
+      "sha256": "B263FCC996159E207487C06BE1536645B15962562BE326D32C57B87741D2CCFF"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1600x900-multiselect-long-text.png",
+      "bytes": 92048,
+      "sha256": "7B34DA359BB7A06905CB56FBAB2C1A0832EF22D753F81A286FB702AF5F5F2F16"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1600x900-Offline.png",
+      "bytes": 71946,
+      "sha256": "35D74E8B37B5962450FBD46924B3DBA3B445C48F12F8E2D38755C1127D7D9258"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1600x900-Ready.png",
+      "bytes": 94005,
+      "sha256": "D13356D656A358DFA3E7B13EB303C85C4E4414A2343CD318A5E6BD4944C38046"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-dark-1600x900-Stale.png",
+      "bytes": 104466,
+      "sha256": "1B768AA0900E8DF23BE1B0DEA5D7FC29AF66BB33EF9DE68E77749CD0C3669470"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1040x700-Empty.png",
+      "bytes": 45329,
+      "sha256": "3F36A9420621D4E0DF7DABEE5F6CBD4C9E192410239E9CE81A2B41DA600CEF1D"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1040x700-Error.png",
+      "bytes": 60138,
+      "sha256": "F3E8E70703A54AA959DA057CB4AFD449F1F3BCA91AAB41718BF5419D40D79A51"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1040x700-Loading.png",
+      "bytes": 39137,
+      "sha256": "BC5440C8C4536FA05FB764C254289ADD620F17576DA0AB69082025CBF691F91D"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1040x700-multiselect-long-text.png",
+      "bytes": 83952,
+      "sha256": "963D1A1CF9E68B9521E23BAB047A18EDAA8B820FF5F9310D176D4E41015A6E61"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1040x700-Offline.png",
+      "bytes": 57059,
+      "sha256": "DC0BD1014B5F8000CD38307186220370953887D48F3CCB1AE8841FB85AE8D330"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1040x700-Ready.png",
+      "bytes": 77508,
+      "sha256": "37346F3BAD0A2CC20F5F29A961A32AED0C723CD39CE2874B82187189F283C603"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1040x700-Stale.png",
+      "bytes": 86859,
+      "sha256": "3E1419BBA448AD164BAA6480411ECD96F00544EABF3C9EB89A5627F244F6089C"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1600x900-Empty.png",
+      "bytes": 54514,
+      "sha256": "BF9E8300A5C0AB39536271525ECD28A713BC067313D395F97B8E86E8CBAA676B"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1600x900-Error.png",
+      "bytes": 70529,
+      "sha256": "DCBD2DDD34C0A0698DAC5F2BBA98AF215ED5B4C8B72A00BFC24F717C7E223FE2"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1600x900-Loading.png",
+      "bytes": 47842,
+      "sha256": "801E08C567DDF51F5A731B0A8292392DA6EDF46501018CB5CFB7FBFFFED5FC74"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1600x900-multiselect-long-text.png",
+      "bytes": 87393,
+      "sha256": "339861DBB444E4B251D9F03126350564A4E1994A7D9721B93A865EB015B3089F"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1600x900-Offline.png",
+      "bytes": 67172,
+      "sha256": "820940D43C0898B503AF80F335D2B30A2BD08B4B2ED23608B227682FD3723FB5"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1600x900-Ready.png",
+      "bytes": 89703,
+      "sha256": "2FF5BE047D832CBB9F1B814C13D9FCB480CA664500321060B6CBEAA794F95D9F"
+    },
+    {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V04/state-fixtures/save-history-light-1600x900-Stale.png",
+      "bytes": 99003,
+      "sha256": "76359088F60B98635FF063B3AF86C6D35A930C9FC0152A3A1ABB8DC2AC5BF5ED"
+    }
+  ]
+}

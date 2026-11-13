@@ -64,6 +64,7 @@ public static class Program
         (1040, 700),
         (1100, 720),
         (1366, 768),
+        (1600, 900),
         (2560, 1440)
     };
 
@@ -310,6 +311,19 @@ public static class Program
             stateFixtureThread.Start();
             stateFixtureThread.Join();
             return stateFixtureExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("round6baseline", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "round6-baseline");
+            var baselineExitCode = 0;
+            var baselineThread = new Thread(() => { baselineExitCode = RunRound6BaselineEvidence(outputRoot); });
+            baselineThread.SetApartmentState(ApartmentState.STA);
+            baselineThread.Start();
+            baselineThread.Join();
+            return baselineExitCode;
         }
 
         if (args.Length > 0 && args[0].Equals("mediageometryprobe", StringComparison.OrdinalIgnoreCase))
@@ -1648,6 +1662,115 @@ public static class Program
         }
     }
 
+    private static int RunRound6BaselineEvidence(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        var problems = new List<string>();
+        report.AppendLine("GameSaveCenter Round 6 save-page baseline");
+        report.AppendLine($"GeneratedLocal: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+        report.AppendLine("Source SHA: recorded by runner-metadata.json");
+        report.AppendLine("Source: production SaveCenterView.xaml hosted by the isolated WPF render harness");
+        report.AppendLine("Data: FakeDashboardData(8, Ready); no Playnite profile, game library, save, or cloud data");
+        report.AppendLine("WindowDip: 1040x700 and 1600x900; content viewport derived from the production shell layout");
+        report.AppendLine("States: selected history row, details closed/open");
+        report.AppendLine("Themes: Light and Dark; DpiScale: 1.0 offscreen DIP");
+        report.AppendLine();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var sizes = new[] { (Width: 1040, Height: 700), (Width: 1600, Height: 900) };
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                foreach (var (windowW, windowH) in sizes)
+                {
+                    foreach (var detailsOpen in new[] { false, true })
+                    {
+                        var sampleData = new FakeDashboardData(8, WorkspaceFixtureState.Ready);
+                        // Wide production layouts show the inspector whenever a row is
+                        // selected. Use the valid no-selection state as the closed-detail
+                        // baseline instead of forcing a state the real page cannot display.
+                        if (!detailsOpen && windowW >= 1280)
+                            sampleData.SelectedBackup = null!;
+                        var view = new SaveCenterView { DataContext = sampleData };
+                        ApplyThemePalette(view, themeMode);
+                        var (contentW, contentH) = ContentSize(windowW, windowH);
+                        view.Width = contentW;
+                        view.Height = contentH;
+                        ApplyThemeResponsive(view, contentW, contentH);
+                        var host = new Grid
+                        {
+                            Width = contentW,
+                            Height = contentH,
+                            Background = CreateHarnessBackground(view),
+                            ClipToBounds = true
+                        };
+                        host.Children.Add(view);
+                        host.Measure(new Size(contentW, contentH));
+                        host.Arrange(new Rect(0, 0, contentW, contentH));
+                        host.UpdateLayout();
+                        SelectTab(view, 0);
+                        ApplyThemeResponsive(view, contentW, contentH);
+                        host.UpdateLayout();
+
+                        var grid = FindVisualChildren<DataGrid>(view)
+                            .Single(candidate => candidate.Name == "SaveHistoryGrid");
+                        var pageScroll = FindVisualChildren<ScrollViewer>(view)
+                            .Single(candidate => candidate.Name == "SaveHistoryPageScrollViewer");
+                        if (detailsOpen)
+                        {
+                            var detailsButton = FindVisualChildren<ButtonBase>(view)
+                                .Single(candidate => candidate.Name == "SaveHistoryCompactDetailsButton");
+                            detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                            ApplyThemeResponsive(view, contentW, contentH);
+                            host.UpdateLayout();
+                            if (windowW < 1280)
+                            {
+                                pageScroll.ScrollToEnd();
+                                host.UpdateLayout();
+                            }
+                        }
+
+                        var inspector = FindVisualChildren<FrameworkElement>(view)
+                            .Single(candidate => candidate.Name == "SaveHistoryInspectorFrame");
+                        var stateName = detailsOpen ? "details-open" : "details-closed";
+                        var path = Path.Combine(outputRoot, $"save-history-{themeName}-{windowW}x{windowH}-{stateName}.png");
+                        report.AppendLine(
+                            $"{Path.GetFileName(path)}: window={windowW}x{windowH} DIP; content={contentW:0}x{contentH:0} DIP; "
+                            + $"theme={themeName}; rows={grid.Items.Count}; selected={grid.SelectedItems.Count}; "
+                            + $"inspector={inspector.Visibility}; pageScroll={pageScroll.VerticalOffset:0}/{pageScroll.ScrollableHeight:0}; "
+                            + $"size={view.ActualWidth:0}x{view.ActualHeight:0} DIP");
+                        var expectSelection = detailsOpen || windowW < 1280;
+                        if (grid.Items.Count == 0 || expectSelection != (grid.SelectedItem != null))
+                            problems.Add($"{themeName} {windowW}x{windowH} did not realize a selected synthetic history row");
+                        if (detailsOpen != (inspector.Visibility == Visibility.Visible))
+                            problems.Add($"{themeName} {windowW}x{windowH} details state did not match the captured inspector");
+                        SavePng(host, path);
+                    }
+                }
+            }
+
+            AppendFontResolutionEvidence(report);
+            report.AppendLine();
+            report.AppendLine(problems.Count == 0 ? "round6-baseline OK" : "round6-baseline FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "round6-baseline-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("round6-baseline FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "round6-baseline-report.txt"), report.ToString());
+            Console.Error.WriteLine(report.ToString());
+            return 1;
+        }
+    }
+
     private static int RunWorkspaceStateFixtures(string outputRoot)
     {
         Directory.CreateDirectory(outputRoot);
@@ -1752,7 +1875,11 @@ public static class Program
                     // Use only this in-memory fake view model; selection changes are
                     // visual input to the fixture and invoke no save/restore command.
                     var longTextData = new FakeDashboardData(12, WorkspaceFixtureState.Ready);
-                    longTextData.Backups[0].Comment = "自动保存前手动创建的版本；这是隔离的长文本样张，包含 English build 1.2.3 和路径 D:\\Games\\Example\\Saved\\Profile\\VeryLongFolderName\\slot-01.sav。";
+                    longTextData.SelectedGame.Name = "星海远征·终焉回响典藏版 — Starfall Exodus Complete Collection Edition";
+                    if (longTextData.Games.Count > 0)
+                        longTextData.Games[0].Name = longTextData.SelectedGame.Name;
+                    longTextData.Backups[0].LudusaviName = longTextData.SelectedGame.Name;
+                    longTextData.Backups[0].Comment = "自动保存前手动创建的版本；English build 1.2.3 — local snapshot retained. 路径：D:\\Games\\Starfall Exodus Complete Collection\\Saved\\Profiles\\VeryLongFolderName\\Manual-Checkpoint\\slot-01.sav。";
                     longTextData.Backups[0].SourceDevice = "PLAYER-DESKTOP-VERY-LONG-HOST-NAME-01";
                     CaptureWorkspaceStateFixture(
                         new SaveCenterView { DataContext = longTextData },
@@ -1771,7 +1898,7 @@ public static class Program
                             grid.SelectedItems.Clear();
                             grid.SelectedItems.Add(longTextData.Backups[0]);
                             grid.SelectedItems.Add(longTextData.Backups[1]);
-                            report.AppendLine($"  SaveHistoryMultiSelectLongText theme={themeMode} size={width}x{height}: selected={grid.SelectedItems.Count}, longNote={longTextData.Backups[0].Comment.Length} chars, sourceDevice={longTextData.Backups[0].SourceDevice}");
+                            report.AppendLine($"  SaveHistoryMultiSelectLongText theme={themeMode} size={width}x{height}: selected={grid.SelectedItems.Count}, gameName={longTextData.SelectedGame.Name}, longNote={longTextData.Backups[0].Comment.Length} chars, sourceDevice={longTextData.Backups[0].SourceDevice}");
                             if (grid.SelectedItems.Count != 2)
                                 problems.Add($"SaveHistory multi-select fixture selected {grid.SelectedItems.Count} rows at {themeMode} {width}x{height}");
                         },

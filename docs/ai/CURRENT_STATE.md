@@ -1,4 +1,12 @@
-## 唯一当前事实入口（2026-11-13）
+## 当前事实入口（Round6 V01–V04，2026-11-13）
+
+Round6已从基线进入存档页实施。V01–V04状态与具体证据在[实施计划](../design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)和[存档页基线复核](../design/reviews/ui-redesign-round6-20261113/README.md)：1040×700/1600×900 DIP、浅/深主题、常规/详情打开共8张生产`SaveCenterView`合成数据图；V02有7条逐图差距；V03规格明确现有信息与操作映射；V04覆盖长中英文名、路径、Ready/Empty/Loading/Error/Stale/Offline和多选。Demo-first引用目录在当前分支不存在，已记录并沿用生产资源。
+
+基线产品源来自提交`c543790fcb6277f994f86bc58d0acd40631f9ed6`；本阶段只改RenderHarness、假数据、隔离截图脚本和计划/证据文档，未改生产`src/`。固定样本时间`2026-11-13T00:00:00Z`，SDK8.0.423/Release RenderHarness构建0 warning/0 error；状态夹具与全量Render QA均运行于WinSta0私有桌面，Default输入桌面未变。全量QA 408 PNG、0 PROBLEM、`render-qa OK`；Source Validation、git diff --check通过；WPF静态审查32 XAML、0 errors/26 warnings/179 info。本地证据路径与SHA清单见Round6 review README。
+
+下一批按V05–V08重排存档页首屏、工具栏、表格与详情，再完成共享控件及同条件前后内部复核。保留当前游戏选框、生产滚动条、真实命令与安全语义、虚拟化和键盘/UIA。当前证据是受控WPF离屏，不等于Playnite真实宿主、物理DPI、实体输入或呈现帧验收。此阶段未读取真实游戏库/存档/配置，未执行恢复、删除或云写。
+
+## Round5 / P1 历史交接基线（2026-11-13）
 
 当前冻结候选与实际门禁身份为 `008b3d5dde4440534fe35a563422c60817681058`；它相对产品实现提交 `b667e22445fbf57aa591f39f3d968f5c166c7cb6` 只增加文档，`src/`、`tests/`、`scripts/` 与资源无差异。中文根入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 使用SDK `8.0.423` / Release / `SkipTests=false` 完成build/test/publish/package/隔离安装及启动；直接捕获 cmd PID `36560` 的退出码为 `0`。160份TRX共2,043项：1,985通过、0失败、58跳过（不计通过），157/157个WPF隔离类。独立`scripts/build.cmd`同一 SHA、实际SDK `8.0.423` / Release、直接退出码 `0`，计数相同。它的辅助退出记录里 `sdkVersion=9.0.302` 是外层环境的系统PATH SDK；本次实际选择的SDK以构建日志与诊断摘要为准，均为8.0.423。
 
@@ -6,7 +14,7 @@ GitHub run #1564 / `43391873169` 精确验证该 SHA：基线 job `131773490954`
 
 A01/A02/A05/A06/A07/A08/A11本地或既有证据范围已收口；A03并入Round5 U09-04，A04仍等真实可见宿主、物理输入与呈现帧。A09分段安全覆盖已核但同会话宿主闭环待条件；A10后台full规模已核，真实宿主代表规模待条件。按钮下沿忙碌提示的共享绑定修复在提交 `b667e224`；本次用户截图的运行程序集身份未知，不宣称已由真实宿主确认修复。以上阶段未访问真实Playnite profile/配置/游戏库/存档，未执行恢复、删除或云端写入。计划状态以[16项执行账本](../PROJECT_ASSESSMENT_2026-11-06.md)和[P1本地证据](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)为准。
 
-本段是启动协议唯一“当前”入口；下方同名或带日期的候选、门禁和失败记录均为历史证据。纯文档提交不产生新的产品安装身份，当前 HEAD 仍须以 `git log` 核实。
+此处记录 Round5/P1最终候选的历史门禁事实；此后Round6阶段状态以本文件顶部交接和当前Git HEAD为准。纯文档提交不产生新的产品安装身份。
 
 ## 历史：2026-11-13 P1隔离宿主验收状态（c2fcc804）
 

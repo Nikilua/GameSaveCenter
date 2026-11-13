@@ -1,4 +1,10 @@
-## 当前交接（2026-11-13，最终冻结候选 008b3d5d）
+## 当前交接（Round6 V01–V04，2026-11-13）
+
+Round6已完成V01–V04，当前按V05–V08实施存档示范页。唯一证据入口为[Round6存档页基线与复核](design/reviews/ui-redesign-round6-20261113/README.md)，执行状态在[Round6计划](design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)。生产`SaveCenterView`相同合成数据、固定采样时间，1040×700/1600×900 DIP、双主题、常规/详情共8基线图；V04状态矩阵已通过。Demo-first指定目录当前不存在，因此不伪造参考图。
+
+本批不改产品`src/`；Harness/假数据/隔离渲染脚本 Release SDK8.0.423 build 0 warning/0 error。全矩阵408 PNG/0 PROBLEM；StateFixtures、Source Validation、git diff check通过。WPF静态扫描0 error/26 warnings/179 info。渲染只来自私有WinSta0离屏桌面，Default输入桌面不变，不代表真实Playnite、物理输入/DPI或呈现帧。未接触真实存档、配置或云端数据。继续存档页实现，不停留在计划。
+
+## Round5 / P1历史交接（2026-11-13，最终冻结候选008b3d5d）
 
 当前工作树 `main` 与 `origin/main` 为文档提交 `53e38ab8e0e8df1825173421e477d5409b772f2b`；产品实现提交为 `b667e22445fbf57aa591f39f3d968f5c166c7cb6`，最终冻结门禁候选 `008b3d5dde4440534fe35a563422c60817681058` 相对它只有文档差异。启动时以 [唯一当前事实入口](ai/CURRENT_STATE.md) 和[16项执行账本](PROJECT_ASSESSMENT_2026-11-06.md)为准；下方旧候选交接均为历史。
 
