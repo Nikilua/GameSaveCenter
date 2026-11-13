@@ -13643,7 +13643,14 @@ A05/A06及A07/A08/A11继续按Round5、S/T账本去重，抽查报告的16项仍
 
 GitHub精确SHA run `43375661710`：job `131721452745`（编译、测试与打包）和 `131721453027`（.NET SDK 10.0.401编译与测试复核）所有步骤均success。required-checks/ruleset名单接口既有403仍未知；权限未变，不重复请求。第一次直接dotnet测试因全局SDK列表没有8.0.423而在测试前失败；仓库SDK bootstrap随后安装并选择8.0.423完成上述验证。旧提交 `c2fcc804` 的独立build输入桌面失败证据继续保留；本次精确SHA独立build成功，不覆盖历史记录。
 
-清理清单与限制：仅拟删本批scratch目录 `.tmp/busy-b667e224-tests`（32文件、12,278,656 bytes）和 `.tmp/busy-b667e224-scripttests`（15文件、6,451,200 bytes）；已确认归属、规范化根内路径、0重解析点、无外部进程占用/文档引用。自动执行策略对 `Remove-Item -LiteralPath -Recurse -Force` 返回 `blocked by policy`，所以两目录未删除，未使用替代绕过。删前空间观测C/D为5,167,312,896 / 7,047,708,672 bytes；策略拒绝后再次测得值有变化，因目标实际未删，不把前后全盘变化归因于清理。build输出、隔离profile、包、当前原始诊断保留；用户TRX、TestResults、配置、真实存档和未知文件未触碰。
- 清理清单与限制：仅拟删本批scratch目录 `.tmp/busy-b667e224-tests`（32文件、12,278,656 bytes）和 `.tmp/busy-b667e224-scripttests`（15文件、6,451,200 bytes）；已确认归属、规范化根内路径、0重解析点、无外部进程占用/文档引用。自动执行策略对 `Remove-Item -LiteralPath -Recurse -Force` 返回 `blocked by policy`，所以两目录未删除，未使用替代绕过。清理尝试前C/D空闲为5,159,657,472 / 7,047,708,672 bytes，拒绝后复测为5,170,311,168 / 13,758,140,416 bytes；目录未删，期间系统空间变化不归因于清理。build输出、隔离profile、包、当前原始诊断保留；用户TRX、TestResults、配置、真实存档和未知文件未触碰。
+清理清单与限制：仅拟删本批scratch目录 `.tmp/busy-b667e224-tests`（32文件、12,278,656 bytes）和 `.tmp/busy-b667e224-scripttests`（15文件、6,451,200 bytes）；已确认归属、规范化根内路径、0重解析点、无外部进程占用/文档引用。自动执行策略对 `Remove-Item -LiteralPath -Recurse -Force` 返回 `blocked by policy`，所以两目录未删除，未使用替代绕过。清理尝试前C/D空闲为5,159,657,472 / 7,047,708,672 bytes，拒绝后复测为5,170,311,168 / 13,758,140,416 bytes；目录未删，期间系统空间变化不归因于清理。build输出、隔离profile、包、当前原始诊断保留；用户TRX、TestResults、配置、真实存档和未知文件未触碰。
 
 纯文档阶段已完成：Source Validation exit 0、3份Markdown 571条本地链接0缺失/越界、git diff --check exit 0；文档提交1248e743已push。未因文档提交运行完整构建/测试或追加CI通过记录。scratch清理若仍被执行策略拒绝则保留并如实报告；真实Playnite渲染及截图对应运行时身份仍待用户环境可用时核对。
+
+## 2026-11-13 P1收口第一批：A01/A05/A06
+
+按当前Git、Round5和S/T账本重新去重。A01不再沿用旧SHA：当前`b667e22445fbf57aa591f39f3d968f5c166c7cb6`的中文完整入口已完成build/test/publish/package/隔离安装与启动成功分支，SDK8.0.423 / Release，160份TRX、2,043项、1,985通过、0失败、58 skip、157/157 WPF隔离类；六个安装程序集身份对应完整SHA。外层等待包装器未返回数值，未冒充直接捕获的cmd退出码。独立`scripts/build.cmd`同SHA实际exit0，计数一致。精确GitHub run `43375661710`的基线job `131721452745`和SDK10.0.401 job `131721453027`全部步骤success；required-checks名单仍为既有403且未重试。
+
+A05继续保留原始soak和首轮两项定向失败，修正后的同目标互斥、提交点前取消与12/12结果不变；A06继续复用SQLite重开、PreRestore身份/锁定/hash及人工介入终态同步证据。旧`c2fcc804`独立build在41/157类后的输入桌面失败是历史证据；当前完整独立build成功更新了门禁状态，没有删除旧日志/TRX。没有运行真实恢复、删除或云写。
+
+本批只更新A01/A05/A06，未一次改完整P1表。A03仍与Round5 U09-04合并，A04仍受真实可见宿主条件约束；不重跑旧离屏代理。原始本地文件大小、SHA-256、CI身份和清理限制见[P1本地收口](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)。本阶段纯文档，只运行链接/源码检查，不重跑完整链。

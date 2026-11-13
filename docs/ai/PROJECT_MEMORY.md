@@ -2176,3 +2176,9 @@ Round5当前80项状态由U09-08复核：7已满足、71代码完成待验收、
 单独用户反馈不并入抽查报告的16项或Round5/S/T账本。根因在 Playnite `GscWpfUiButton` 共享样式：父级 DataContext.IsBusy 会令未声明动作忙碌状态的按钮也显示蓝色忙碌条。实现提交 `b667e22445fbf57aa591f39f3d968f5c166c7cb6` 移除该隐式绑定，并保留明确 opt-in 的忙碌绑定、模板、命令 CanExecute 与行为。R02BusyStateTests 两次6/6；来源检查、WPF静态审查、根入口与 scripts/build.cmd 验证通过。准确SHA GitHub run `43375661710` 两个适用job均成功。注意截图对应二进制身份及真实Playnite修复后渲染未独立核验。
 
 本次根入口和独立构建原始TRX/summary/日志留在仓库本地 artifacts；SDK为8.0.423，skip单独记录、不算通过。测试scratch目录均在仓库 `.tmp/`、无链接/占用/文档引用，但PowerShell递归清理命令被执行策略拒绝，保留待后续策略允许时清理；禁止把拒绝描述为已清理。用户TRX/TestResults与真实配置、存档未操作。
+
+### 2026-11-13 P1收口第一批
+
+A01、A05、A06的当前验证身份更新为`b667e22445fbf57aa591f39f3d968f5c166c7cb6`。同一SHA的中文完整入口和独立`scripts/build.cmd`均完成SDK8.0.423 / Release全测试，160份TRX共2,043项、1,985通过、0失败、58 skip，157/157 WPF隔离类。安装身份与隔离Playnite/Worker进程均已核；进程核验后关闭。旧`c2fcc804`的输入桌面失败仍保留为历史诊断，不能继续写成当前门禁阻塞。
+
+本次只收口本地可执行证据。A03继续并入Round5 U09-04，A04继续等待真实可见宿主、物理输入和呈现数据；不以离屏代理关闭。真实profile、配置、存档、恢复、删除和云写仍排除。证据索引：[P1本地收口](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)。

@@ -915,5 +915,10 @@ TaskCenter状态替换期间行高稳定、阶段/进度和长名UIA有15/15行�
 
 精确SHA GitHub run 43375661710：基线job 131721452745 与 SDK10.0.401 job 131721453027 全部步骤success。required-check/ruleset名单仍为既有HTTP403，权限未变，不重试。诊断与原始证据留在本地 artifacts/build-diagnostics/20261113T060254846Z-d6b80c0d/ 和 artifacts/busy-b667e224/；CEF Chrome注册表告警保留在 console.err.log，不影响完成分支。
 
-临时测试目录 .tmp/busy-b667e224-tests（32文件，12,278,656 bytes）与 .tmp/busy-b667e224-scripttests（15文件，6,451,200 bytes）经路径、归属、重解析点、进程和文档引用检查后，Remove-Item -LiteralPath -Recurse -Force 被执行策略以 blocked by policy 拒绝；两目录仍在，未绕过。清理前C/D空闲为5,167,312,896 / 7,047,708,672 bytes；拒绝后复测值随期间环境变化，不能归因于清理。构建输出、隔离profile、安装包和成功诊断保留；用户TRX/TestResults、配置及真实存档未触碰。
- 临时测试目录 .tmp/busy-b667e224-tests（32文件，12,278,656 bytes）与 .tmp/busy-b667e224-scripttests（15文件，6,451,200 bytes）经路径、归属、重解析点、进程和文档引用检查后，Remove-Item -LiteralPath -Recurse -Force 被执行策略以 blocked by policy 拒绝；两目录仍在，未绕过。清理尝试前C/D空闲为5,159,657,472 / 7,047,708,672 bytes；拒绝后复测为5,170,311,168 / 13,758,140,416 bytes。目录未删，期间空间变化不能归因于清理。构建输出、隔离profile、安装包和成功诊断保留；用户TRX/TestResults、配置及真实存档未触碰。
+临时测试目录 `.tmp/busy-b667e224-tests`（32文件，12,278,656 bytes）与 `.tmp/busy-b667e224-scripttests`（15文件，6,451,200 bytes）经路径、归属、重解析点、进程和文档引用检查后，`Remove-Item -LiteralPath -Recurse -Force` 被执行策略以 `blocked by policy` 拒绝；两目录仍在，未绕过。清理尝试前C/D空闲为5,159,657,472 / 7,047,708,672 bytes，拒绝后复测为5,170,311,168 / 13,758,140,416 bytes。目录未删，期间空间变化不能归因于清理。构建输出、隔离profile、安装包和成功诊断保留；用户TRX/TestResults、配置及真实存档未触碰。
+
+## 2026-11-13 P1收口第一批：A01/A05/A06
+
+按Round5与S/T账本去重后，A01、A05、A06的本地可执行范围由`b667e22445fbf57aa591f39f3d968f5c166c7cb6`当前证据更新。中文完整入口与独立`scripts/build.cmd`均使用SDK8.0.423 / Release完成160份TRX、2,043项、1,985通过、0失败、58 skip及157/157个WPF隔离类；skip不计通过。安装六个程序集身份对应完整SHA，Playnite与Worker仅在一次性profile启动并已关闭。旧`c2fcc804`独立build输入桌面失败继续作为历史原始失败保留，但不再代表当前门禁状态。
+
+A05的原始soak/定向失败与A06的合成重启、PreRestore身份、锁定/hash和终态同步测试继续有效；没有执行真实恢复、删除或云写。A03仍并入U09-04，A04仍需真实可见宿主、物理输入和呈现数据；本批不解除两项宿主阻塞。精确路径与哈希见[P1本地收口](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)。
