@@ -6,6 +6,8 @@ GitHub run `43375661710`精确验证该SHA：基线job `131721452745`的15步与
 
 本段是启动协议唯一“当前”入口；下方同名或带日期的候选、门禁和失败记录均为历史证据，不得覆盖本段。当前HEAD仍须以`git log`核实，纯文档提交不产生新的产品安装身份。
 
+最终交付仍缺中文根入口最外层cmd的直接数值退出码；成功分支日志不替代该记录。A03/A04、A09和A10的真实宿主范围及required-checks名单权限边界继续保留。详见[P1证据复核](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)。
+
 ## 历史：2026-11-13 P1隔离宿主验收状态（c2fcc804）
 
 冻结源码候选为 `c2fcc80477b936bafbaf46e983c266365480fb5c`（实现提交：`隔离一键安装启动验收环境`）。候选入口、缺口和收益在实现前记录于`56d3f30e17d8d5924710ed8fc62c7c31fd3c4cfd`。中文根入口SDK8.0.423 / Release在新标记的`.tmp` Playnite profile完成build/test/publish/package/install/start，成功分支退出码0；160份TRX共2,042项，1,984通过、58 `NotExecuted`、0失败，157/157个WPF隔离类。程序集身份与源码SHA一致，包hash和进程参数见[本机验收记录](../design/reviews/project-assessment-2026-11-06/evidence/P1-host-c2fcc804-20261113/README.md)。
