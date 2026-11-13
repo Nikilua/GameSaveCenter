@@ -48,3 +48,12 @@ Codex文件系统权限在前次安装写入失败后变为完全访问，但没
 当前真实Playnite配置与Worker待处理状态未知。重跑 `GameSaveCenter-一键构建安装运行.cmd` 会启动现有用户配置，可能触发恢复/删除或云端写入；本轮明确排除这些真实副作用，因此没有再次启动宿主，也没有读取或改动配置、数据库、存档、安装目录。此复核未产生新的根链退出码、TRX或安装身份；此前失败和对应原始证据继续有效，不得写成已安装/已启动。
 
 下一步：在默认Playnite profile与Worker数据均为一次性测试状态、且没有真实存档和云端写权限的Windows验收环境执行完整入口；独立 `scripts/build.cmd` 仍需可访问的输入桌面。现有CI只代表冻结源码SHA `52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`，文档提交SHA不改变该产品源码身份。没有清理 `artifacts/`、`.tmp/` 或用户数据。
+
+## 候选：一键入口的一次性 Playnite profile 验收
+
+- 状态：记录为验证基础设施候选；不属于抽查报告的16项确认缺陷，也不改变产品功能结论。
+- 当前入口：`GameSaveCenter-一键构建安装运行.cmd` 调用 `GameSaveCenter-Run.cmd`，后者执行 `scripts/dev-install-run.ps1`。默认扩展安装目标和启动 profile 来自当前机器发现的 Playnite 安装/用户目录。
+- 缺口：当真实 Playnite/Worker 配置未知时，完整入口会启动现有 profile；Worker 启动可能处理待恢复隔离项、过期检测快照、未完成整库任务或到期云队列。现有入口没有显式的一次性 profile 参数，也没有保证 Playnite 子进程仅接收隔离的 Worker 路径和 IPC 名称。52a57db 冻结候选在安装阶段写入被拒，安装身份/启动仍未验证。
+- 预期收益：让完整入口可在仓库 `.tmp/` 的新标记 profile、独立 Worker 数据目录和私有 IPC 上运行，从而检查准确候选的安装身份与启动状态，避开真实 Playnite 配置、数据库、存档以及云端操作。
+- 实现范围：仅为启动验收增加可选隔离 profile 路径，校验 profile 是新建且位于仓库 `.tmp/`，将扩展目录/Worker 数据/IPC 限定在该 profile，并从 Playnite 子进程环境移除继承的 GameSaveCenter、Rclone 和审计变量。默认入口行为保持兼容。此候选不授权访问真实存档、恢复/删除或云端写入。
+- 验收：脚本/测试改动提交并冻结后，先跑隔离与安装事务定向测试；随后在无真实游戏数据的临时 profile 执行中文根入口完整链，并单独验证 `scripts/build.cmd`。记录准确源码 SHA、SDK、所有退出码、TRX 和安装身份；失败不计通过。

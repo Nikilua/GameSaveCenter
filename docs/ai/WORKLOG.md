@@ -13608,3 +13608,9 @@ GitHub `windows-build.yml` run #1540 / `43053619363` 对精确SHA completed/succ
 冻结候选源码仍为`52a57db9a4c8dacb1678fbf6fca4cac9b00e87e0`。前次安装目录拒写之后，Codex文件系统权限转为完全访问；本轮先检查Git身份、差异、进程、磁盘余量和启动/Worker代码，没有重跑真实入口。源码显示Worker启动可恢复待处理隔离项、清理过期检测快照、续跑未完成整库备份；云端重试服务在配置允许并有待办时会执行上传。配置与Worker待办状态未读取，避免触发用户明确排除的真实恢复、删除、云写入。原失败证据保持有效，候选安装/启动仍未验。
 
 `scripts/build.cmd`先前在输入桌面检查失败；未观察到桌面状态改变，本轮未重跑。没有清理`artifacts/`、`.tmp/`或用户数据。下一步需要一次性Playnite profile与Worker数据、无真实存档和云端写能力的Windows验收环境。文档链接/源码检查和提交身份见本次文档提交；无需运行构建、测试或补记CI通过。
+
+## 2026-11-13 一键入口隔离验收候选
+
+候选记录见[入口、缺口、收益与边界](../design/reviews/project-assessment-2026-11-06/evidence/A07-A08-A11-20261112/README.md#候选一键入口的一次性-playnite-profile-验收)。当前入口是中文一键cmd → `GameSaveCenter-Run.cmd` → `scripts/dev-install-run.ps1`，默认发现并使用现有Playnite扩展目录与profile。缺口是无法安全地把完整构建/安装/启动链定向到一次性profile，且启动子进程没有明确的隔离环境块；未知的真实Worker队列使普通profile启动不符合本轮安全边界。候选收益是验证精确提交的安装身份与启动，同时将Playnite、Worker数据和IPC限制在仓库`.tmp/`的新标记目录。此项是验收工具候选，不是已确认产品缺陷或16项报告的确认项；没有真实恢复/删除/云写授权。
+
+当前状态：候选已记录，脚本实现和定向测试处理中；下一步完成环境块与新profile边界测试，提交并冻结代码候选，再按计划运行完整链和独立`scripts/build.cmd`。此文档提交只做链接/源码校验，不运行完整构建/测试或另记CI通过。
