@@ -685,9 +685,21 @@ public sealed class R08PageSwitchBehaviorTests
                 FlushLayout(window);
                 PumpDispatcherFor(TimeSpan.FromMilliseconds(260));
                 FlushLayout(window);
+                var entranceDeadline = DateTime.UtcNow.AddSeconds(2);
+                while (DependencyPropertyHelper.GetValueSource(pageHost, UIElement.OpacityProperty).IsAnimated &&
+                       DateTime.UtcNow < entranceDeadline)
+                {
+                    // A hidden desktop may deliver the final composition tick later
+                    // than the nominal duration. Keep pumping until the real clock
+                    // completes, with a bounded failure if it never settles.
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(16));
+                    FlushLayout(window);
+                }
                 Assert.Same(shell.GetWorkspaceView(WorkspaceKind.Tasks), pageHost.Content);
                 Assert.Equal("任务中心", title.Text);
                 Assert.Same(tasksNavigation, Keyboard.FocusedElement);
+                Assert.False(DependencyPropertyHelper.GetValueSource(pageHost, UIElement.OpacityProperty).IsAnimated,
+                    "Rapid navigation should settle its latest page entrance within the bounded wait.");
                 Assert.Equal(1, pageHost.Opacity);
                 Assert.Null(pageHost.Effect);
                 var pageTranslation = Assert.IsType<TranslateTransform>(pageHost.RenderTransform);

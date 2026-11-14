@@ -16,6 +16,7 @@ public sealed class R16SettingsDefaultsSourceTests
 
         Assert.Contains("SettingsResetFieldComboBox", view);
         Assert.Contains("x:Name=\"SettingsResetDefaultsExpander\"", view);
+        Assert.Contains("Header=\"恢复默认\" IsExpanded=\"False\"", view);
         Assert.Contains("AutomationProperties.Name=\"恢复默认设置\"", view);
         Assert.Contains("AutomationProperties.HelpText=\"展开后可恢复", view);
         Assert.Contains("OnResetSingleFieldClick", view);
@@ -27,7 +28,7 @@ public sealed class R16SettingsDefaultsSourceTests
         Assert.Contains("SettingsResetCatalog.ResetField", code);
         Assert.Contains("SettingsResetCatalog.ResetCategory", code);
         Assert.Contains("SettingsResetCatalog.ResetAll", code);
-        Assert.Contains("SettingsResetDefaultsExpander.IsExpanded = !shortHeight;", code);
+        Assert.Contains("SettingsResetDefaultsExpander.IsExpanded = false;", code);
         Assert.Contains("DataContext = null", code);
         Assert.Contains("不会被清空", catalog);
 

@@ -123,7 +123,10 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var taskHost = MeasureInHost(taskView, width, height);
             taskView.ApplyResponsiveLayout(width, height);
             taskHost.UpdateLayout();
-            AssertEqualWorkspaceColumns(GetField<Grid>(taskType, taskView, "TaskWorkspaceLayout"), "任务队列");
+            AssertFixedWorkspaceInspector(
+                GetField<Grid>(taskType, taskView, "TaskWorkspaceLayout"),
+                expectedInspectorWidth: 400,
+                workspace: "任务队列");
             var taskFrame = GetField<Border>(taskType, taskView, "TaskTableFrame");
             AssertTableScrollsInsideFrame(taskGrid, taskFrame);
             var taskBounds = taskGrid.TransformToAncestor(taskFrame)
@@ -144,7 +147,10 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var mediaHost = MeasureInHost(mediaView, width, height);
             mediaView.ApplyResponsiveLayout(width, height);
             mediaHost.UpdateLayout();
-            AssertWorkspaceColumnRatio(GetField<Grid>(mediaType, mediaView, "MediaCurrentLayout"), 1.0 / 0.75, "当前游戏媒体");
+            AssertFixedWorkspaceInspector(
+                GetField<Grid>(mediaType, mediaView, "MediaCurrentLayout"),
+                expectedInspectorWidth: 400,
+                workspace: "当前游戏媒体");
             AssertPageFitsViewport(mediaPage);
             AssertWithin(mediaGrid, GetField<Border>(mediaType, mediaView, "MediaCurrentTableFrame"));
             AssertInnerScrolls(mediaGrid);
@@ -154,7 +160,7 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             var inboxLayout = GetField<Grid>(mediaType, mediaView, "MediaInboxLayout");
             mediaView.ApplyResponsiveLayout(width, height);
             mediaHost.UpdateLayout();
-            AssertEqualWorkspaceColumns(inboxLayout, "待归类媒体");
+            AssertFixedWorkspaceInspector(inboxLayout, expectedInspectorWidth: 420, workspace: "待归类媒体");
         });
     }
 
@@ -1117,6 +1123,15 @@ public sealed class CompactWorkspaceTableViewportBehaviorTests
             $"{workspace} should allocate space to both the table ({tableWidth:0.##} DIP) and inspector ({inspectorWidth:0.##} DIP).");
         Assert.True(Math.Abs(tableWidth - inspectorWidth) <= 2,
             $"{workspace} wide layout should give the inspector the same width as the table; table={tableWidth:0.##} DIP, inspector={inspectorWidth:0.##} DIP.");
+    }
+
+    private static void AssertFixedWorkspaceInspector(Grid layout, double expectedInspectorWidth, string workspace)
+    {
+        var tableWidth = layout.ColumnDefinitions[0].ActualWidth;
+        var inspectorWidth = layout.ColumnDefinitions[2].ActualWidth;
+        Assert.True(tableWidth > inspectorWidth,
+            $"{workspace} should give the primary table more room than the fixed inspector; table={tableWidth:0.##} DIP, inspector={inspectorWidth:0.##} DIP.");
+        Assert.InRange(inspectorWidth, expectedInspectorWidth - 2, expectedInspectorWidth + 2);
     }
 
     private static void AssertWorkspaceColumnRatio(

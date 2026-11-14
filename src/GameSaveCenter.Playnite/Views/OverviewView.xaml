@@ -339,21 +339,23 @@
              <Grid x:Name="OverviewHeroAndGameRow" Grid.Row="1" Grid.ColumnSpan="3" Margin="0,0,0,14">
                 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition x:Name="OverviewHeroGameCompactRow" Height="0"/></Grid.RowDefinitions>
                 <Grid.ColumnDefinitions><ColumnDefinition x:Name="OverviewHeroColumn" Width="1*"/><ColumnDefinition x:Name="OverviewHeroGameGutterColumn" Width="14"/><ColumnDefinition x:Name="OverviewCurrentGameColumn" Width="1*"/></Grid.ColumnDefinitions>
-                <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="132">
+                <Border x:Name="OverviewTodayHeroCard" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Style="{DynamicResource GscRedesignSectionCard}" MinHeight="112">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <!-- The card itself is the shared reading/glass surface. Do not nest a
                              second full-size wash here: it creates a square inner background and
                              makes the rounded card look like a panel inside another panel. -->
-                        <StackPanel Grid.Row="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,0,14">
+                        <StackPanel Grid.Row="0" Grid.Column="0" MinWidth="0" VerticalAlignment="Center" Margin="0,0,12,0">
                             <TextBlock x:Name="OverviewTodayHeroEyebrow" Style="{DynamicResource GscRedesignHeroEyebrow}" Text="当前状态"/>
-                            <TextBlock x:Name="OverviewPriorityTitleText" AutomationProperties.Name="{Binding OverviewPriorityTitle}" FontSize="30" FontWeight="SemiBold" Margin="0,8,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewPriorityTitle}">
+                            <TextBlock x:Name="OverviewPriorityTitleText" AutomationProperties.Name="{Binding OverviewPriorityTitle}" FontSize="28" FontWeight="SemiBold" Margin="0,5,0,0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" ToolTip="{Binding OverviewPriorityTitle}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Text" Value="{Binding OverviewPriorityTitle}"/><Setter Property="Foreground" Value="{DynamicResource GscWarningBrush}"/>
@@ -364,10 +366,10 @@
                                     </Style>
                                 </TextBlock.Style>
                             </TextBlock>
-                            <TextBlock x:Name="OverviewTodayHeroDescription" Text="{Binding OverviewPriorityDescription}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,8,0,0"/>
-                            <ui:Button Style="{DynamicResource GscWpfUiPrimaryButton}" Command="{Binding OverviewPriorityActionCommand}" Content="{Binding OverviewPriorityActionText}" ToolTip="{Binding OverviewPriorityActionToolTip}" AutomationProperties.Name="{Binding OverviewPriorityActionText}" Margin="0,10,0,0" HorizontalAlignment="Left" MinWidth="116"/>
+                            <TextBlock x:Name="OverviewTodayHeroDescription" Text="{Binding OverviewPriorityDescription}" Foreground="{DynamicResource GscSecondaryTextBrush}" TextWrapping="Wrap" FontSize="12" Margin="0,5,0,0"/>
                         </StackPanel>
-                        <WrapPanel x:Name="OverviewHeroStatusPills" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" Visibility="Collapsed">
+                        <ui:Button x:Name="OverviewPriorityActionButton" Grid.Row="0" Grid.Column="1" Style="{DynamicResource GscWpfUiPrimaryButton}" Command="{Binding OverviewPriorityActionCommand}" Content="{Binding OverviewPriorityActionText}" ToolTip="{Binding OverviewPriorityActionToolTip}" AutomationProperties.Name="{Binding OverviewPriorityActionText}" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="132" Margin="16,0,0,0"/>
+                        <WrapPanel x:Name="OverviewHeroStatusPills" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,12,0,0" Visibility="Collapsed">
                             <WrapPanel.Style>
                                 <Style TargetType="WrapPanel">
                                     <Setter Property="Visibility" Value="Collapsed"/>

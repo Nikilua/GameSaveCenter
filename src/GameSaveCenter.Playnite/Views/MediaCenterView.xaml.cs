@@ -958,7 +958,7 @@ namespace GameSaveCenter.Playnite.Views
                 // its target summary and action buttons must not split into misaligned
                 // rows while the inspector occupies the matching half of the workspace.
                 const double inboxTableMinimumWidth = 800;
-                const double inboxInspectorMinimumWidth = 520;
+                const double inboxInspectorMinimumWidth = 420;
                 var inboxStack = inboxAvailableWidth < inboxTableMinimumWidth + inboxInspectorMinimumWidth + 14;
                 var hasInboxSelection = MediaInboxGrid.SelectedItem != null;
                 var showInboxInspector = inboxStack

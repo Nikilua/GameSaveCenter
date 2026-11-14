@@ -2491,10 +2491,12 @@ public sealed class ReportedWorkspaceLayoutBehaviorTests
                 var title = (FrameworkElement)viewType.GetField("SettingsHeaderTitle", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var search = (FrameworkElement)viewType.GetField("SettingsSearchTextBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var resetCard = (FrameworkElement)viewType.GetField("SettingsResetDefaultsCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                var resetExpander = (Expander)viewType.GetField("SettingsResetDefaultsExpander", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var resetFieldCombo = (FrameworkElement)viewType.GetField("SettingsResetFieldComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var saveHint = (FrameworkElement)viewType.GetField("SettingsSaveHint", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var pathCombo = (FrameworkElement)viewType.GetField("SettingsPathEditorComboBox", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
                 var pathCard = (FrameworkElement)viewType.GetField("SettingsPathEditorCard", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!;
+                resetExpander.IsExpanded = true;
 
                 // Drive the page's logical viewport directly. Window dimensions can
                 // be clipped to the CI desktop work area, which would turn this wide

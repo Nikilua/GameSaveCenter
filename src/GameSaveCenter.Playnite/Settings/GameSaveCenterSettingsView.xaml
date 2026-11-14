@@ -81,7 +81,7 @@
                         </Expander>
                     </StackPanel>
                     <Border x:Name="SettingsResetDefaultsCard" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,10,0,0">
-                        <Expander x:Name="SettingsResetDefaultsExpander" Style="{StaticResource GscExpander}" Header="恢复默认" IsExpanded="True"
+                        <Expander x:Name="SettingsResetDefaultsExpander" Style="{StaticResource GscExpander}" Header="恢复默认" IsExpanded="False"
                                   Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
                                   AutomationProperties.Name="恢复默认设置"
                                   AutomationProperties.HelpText="展开后可恢复单个字段或全部安全设置默认值。路径、云端目标和设备身份始终保留；操作只修改当前草稿，可用 Playnite 的取消按钮放弃。">

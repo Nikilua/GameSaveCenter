@@ -162,9 +162,18 @@ namespace GameSaveCenter.Playnite.Views
                 var heroWidth = OverviewTodayHeroCard.ActualWidth > 0
                     ? OverviewTodayHeroCard.ActualWidth
                     : Math.Max(320d, primaryWidth);
+                var compactHero = heroWidth < 720d;
                 OverviewTodayHeroCard.Padding = heroWidth < 560
-                    ? new Thickness(16, 16, 16, 14)
-                    : new Thickness(22, 18, 22, 16);
+                    ? new Thickness(16, 12, 16, 12)
+                    : new Thickness(18, 14, 18, 12);
+                OverviewPriorityActionButton.MinWidth = heroWidth < 560 ? 112 : 132;
+                Grid.SetRow(OverviewPriorityActionButton, compactHero ? 1 : 0);
+                Grid.SetColumn(OverviewPriorityActionButton, 0);
+                Grid.SetColumnSpan(OverviewPriorityActionButton, compactHero ? 2 : 1);
+                OverviewPriorityActionButton.Margin = compactHero
+                    ? new Thickness(0, 10, 0, 0)
+                    : new Thickness(16, 0, 0, 0);
+                Grid.SetRow(OverviewHeroStatusPills, compactHero ? 2 : 1);
             }
         }
 
@@ -179,9 +188,9 @@ namespace GameSaveCenter.Playnite.Views
             // Keep the compact priority summary actionable while leaving first-screen
             // space for recent tasks and pending work instead of duplicate counters.
             var compactFirstViewport = height > 0 && height < 560;
-            OverviewTodayHeroCard.MinHeight = compactFirstViewport ? 112 : 132;
+            OverviewTodayHeroCard.MinHeight = compactFirstViewport ? 104 : 112;
             OverviewTodayHeroCard.Padding = compactFirstViewport
-                ? new Thickness(16, 10, 16, 10)
+                ? new Thickness(16, 9, 16, 9)
                 : OverviewTodayHeroCard.Padding;
             OverviewTodayHeroEyebrow.Visibility = compactFirstViewport ? Visibility.Collapsed : Visibility.Visible;
             OverviewTodayHeroDescription.Visibility = compactFirstViewport ? Visibility.Collapsed : Visibility.Visible;

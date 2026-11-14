@@ -1622,7 +1622,8 @@ namespace GameSaveCenter.Playnite.Settings
             var shortHeight = height > 0 && height < 760;
             if (shortHeight != isShortHeightSettingsLayout)
             {
-                SettingsResetDefaultsExpander.IsExpanded = !shortHeight;
+                if (shortHeight)
+                    SettingsResetDefaultsExpander.IsExpanded = false;
                 isShortHeightSettingsLayout = shortHeight;
             }
             var horizontalMargin = narrow ? 10 : 18;
