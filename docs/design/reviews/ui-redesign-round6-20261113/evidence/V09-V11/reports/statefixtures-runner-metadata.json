@@ -1,0 +1,12 @@
+{
+  "scenario": "StateFixtures",
+  "harnessMode": "statefixtures",
+  "sourceSha": "f1190f752525df8aff708bbea547b88823af5145",
+  "sampleUtc": "2026-11-13T00:00:00.0000000+00:00",
+  "windowStation": "WinSta0",
+  "desktop": "GscRound6_dac55c5f78b449a5b56fa9d37ad523da",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "exitCode": 0,
+  "output": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round6-v09-v11-states-f1190f75"
+}

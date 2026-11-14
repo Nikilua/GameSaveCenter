@@ -90,3 +90,7 @@
 内部评审复看了双主题宽屏详情和紧凑详情状态。层级与工具栏分组有可见改善，表格/详情分界明确；紧凑详情需要页面纵向滚动是已知边界。没有发现本批引入的选框越界或状态语义丢失。变化足以满足 V05–V08 与 V12 的页面示范验收，继续 V09–V11 共享原件与后续动效。
 
 SDK 8.0.423 / Release 的本地完整阶段回归：构建 0 warning / 0 error；Core 157/157、Worker 407/407、Playnite 2,044 项中 1,986 通过、0 失败、58 个既有 skip，157/157 个 WPF 隔离类。`python scripts/validate-source.py` 和 `git diff --check` 通过。生产 WPF 静态审查为 26 个 XAML、0 errors / 26 warnings / 164 info；本批没有关闭审查规则。精确候选全量 Render QA 与本地验证记录位于 `evidence/V05-V08/reports/`，并列入 [SHA-256 清单](evidence/sha256-manifest.json)。GitHub run [#1570](https://github.com/Nikilua/GameSaveCenter/actions/runs/43478597342) 正在精确提交 `6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e` 上运行；基线和 SDK 10.0.401 两个适用 job 当前均为 in progress，V27 仍会对最终候选重新核验。真实 Playnite 前台呈现、宿主缩放与 UIA 客户端体验仍按旧边界待验。
+
+## V09–V11 · 字体、图标与共享控件
+
+存档页及共享原件的可见差异、8 组同主题/同尺寸/同数据对照、运行身份、静态复核和限制见 [V09–V11 证据包](evidence/V09-V11/README.md)。最终候选为 `f1190f752525df8aff708bbea547b88823af5145`；动画、切页与详情反向中断继续由 V13–V20 实际运行采样。
