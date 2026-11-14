@@ -1,4 +1,4 @@
-## 当前事实入口（Round6 V01–V12，2026-11-14）
+## 当前事实入口（Round6 V01–V15，2026-11-14）
 
 V01–V04基线和设计规格、V05–V08存档页重构及V12前后评审已完成；V09–V11共享字阶/图标、按钮和浮层样式已实现并通过本地全门禁。Demo-first依据是同级目录的 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/`：生产字体现在优先采用 Demo 的 Segoe UI Variable Text/Display，保留 Windows 与可选中文回退；共享 action icon 18px、图文间距4px，按钮控制角10px；ComboBox/Tooltip浮层统一走共享主题资源。页面命令、Binding、忙碌占位、键盘/UIA、虚拟化、当前游戏选框、滚动条及恢复安全语义均保留。
 
@@ -6,7 +6,9 @@ V09–V11截图以相同合成数据、UTC时间、主题、窗口和DIP缩放�
 
 SDK8.0.423 / Release：全构建0 warning/0 error、exit0；Core 157/157，Worker 407/407，Playnite 2,044项中1,986通过、0失败、58个既有skip，157/157个WPF隔离类。`python scripts/validate-source.py`通过；WPF静态审查27个生产XAML、0 error/26 warning/164 info；全量Render QA 334 PNG、0 `PROBLEM`、`render-qa OK`。本阶段未运行真实Playnite宿主；用户数据、配置、存档和云端均未访问/写入。
 
-下一批推进V13–V20微交互、切页、详情开合、浮层/加载交接和实际动态证据；之后V21–V24推广任务、媒体、概览和设置。最终V25–V28仍须冻结候选，运行中文根入口完整安装链及独立`scripts/build.cmd`，复核精确提交的GitHub适用CI job。清理限制和未触碰的其他任务TRX/用户文件沿用下方历史记录。
+V13–V15已实现微交互令牌、PageHost中断续接和紧凑存档详情淡入/淡出；本地反向行为测试与Render QA通过。预提交渲染报告的SHA仍指向父提交，不能作为候选SHA证据；本批提交后的精确Render QA和GitHub CI仍待验。详情帧测试验证选中版本保持与中间值连续，不代表非激活测试窗口验证了真实键盘焦点，也没有覆盖真实Playnite。
+
+下一批推进V16–V20详情对象切换、浮层/通知、加载交接、动效中断/降级和带时间戳动态证据；之后V21–V24推广任务、媒体、概览和设置。最终V25–V28仍须冻结候选，运行中文根入口完整安装链及独立`scripts/build.cmd`，复核精确提交的GitHub适用CI job。清理限制和未触碰的其他任务TRX/用户文件沿用下方历史记录。
 
 ## Round5 / P1 历史交接基线（2026-11-13）
 

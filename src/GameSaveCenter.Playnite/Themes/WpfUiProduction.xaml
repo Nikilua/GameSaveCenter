@@ -1113,8 +1113,14 @@
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="ButtonChrome" Property="BorderBrush" Value="{DynamicResource GscAccentTintStrongBrush}"/>
-                            <Setter TargetName="HoverOverlay" Property="Opacity" Value="{DynamicResource GscButtonHoverOverlayOpacity}"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                                <Condition Property="infra:AdaptiveThemePaletteFactory.MotionEnabledActive" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="HoverOverlay" Property="Opacity" Value="{DynamicResource GscButtonHoverOverlayOpacity}"/>
+                        </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
@@ -1124,7 +1130,7 @@
                                 <RemoveStoryboard BeginStoryboardName="GscButtonHoverOutStoryboard"/>
                                 <BeginStoryboard x:Name="GscButtonHoverInStoryboard">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="1" Duration="{StaticResource GscMotionHover}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </MultiTrigger.EnterActions>
@@ -1141,7 +1147,7 @@
                                 <RemoveStoryboard BeginStoryboardName="GscButtonHoverInStoryboard"/>
                                 <BeginStoryboard x:Name="GscButtonHoverOutStoryboard">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="{StaticResource GscMotionFast}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
+                                        <DoubleAnimation Storyboard.TargetName="HoverOverlay" Storyboard.TargetProperty="Opacity" To="0" Duration="{StaticResource GscMotionHover}" EasingFunction="{StaticResource GscMotionEaseOut}"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </MultiTrigger.EnterActions>

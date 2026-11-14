@@ -724,7 +724,7 @@ public sealed class R08PageSwitchBehaviorTests
         Assert.Contains("var contentChanged = !ReferenceEquals(PageHost.Content, page);", source);
         Assert.Contains("if (contentChanged)", source);
         Assert.Contains("PageHost.Content = page;", source);
-        Assert.Contains("GscMotion.AnimateEntrance(PageHost, 6, GscMotion.Fast, GscMotion.Fast);", source);
+        Assert.Contains("GscMotion.AnimateEntrance(PageHost, 4, 0, GscMotion.Transition, GscMotion.Transition);", source);
         Assert.Contains("GscMotion.Normalize(PageHost);", source);
         Assert.DoesNotContain("BlurEffect", markup);
         Assert.DoesNotContain("PageHost.Effect", source);

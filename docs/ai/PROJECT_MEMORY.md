@@ -1,10 +1,12 @@
-## 2026-11-14 Round6 V01–V12 进度
+## 2026-11-14 Round6 V01–V15 进度
 
 V01–V04基线和设计规格、V05–V08生产SaveCenterView重构及V12前后评审已完成；V09–V11共享控件批次也已完成。已从同级 `GameSaveCenter.AcrylicFork` 读取Demo：生产字体改为Demo的Segoe UI Variable Text/Display优先，保留Windows/中文fallback；共享action icon 18px、inline gap4px；按钮角10px；ComboBox与Tooltip使用共享浮层样式。构建/Binding/真实命令、焦点/UIA、虚拟化、当前游戏选框、滚动系统和恢复安全语义继续保留。
 
 V09–V11同数据/主题/窗口的8组截图对照与哈希、状态夹具和实际渲染身份见[V09–V11复核](../design/reviews/ui-redesign-round6-20261113/evidence/V09-V11/README.md)。本阶段SDK8.0.423 Release：全构建0 warning/0 error exit0；Core 157/157、Worker 407/407、Playnite 2,044项/1,986通过/0失败/58既有skip、157个WPF类全通过；Source Validation通过；生产WPF审查27 XAML/0 error；全量Render QA 334 PNG/0 PROBLEM。受控WinSta0采样不代表真实Playnite前台、物理DPI或呈现帧率。
 
-下一阶段按V13–V20继续打磨并实际采样动画，再按V21–V24推广任务、媒体、概览和设置。最终候选仍须运行中文根入口安装链与独立`scripts/build.cmd`，复核精确SHA上的所有适用CI job。清理`.tmp`受既有自动审查拒绝限制，未尝试绕过；其他任务的测试结果、用户配置和存档未触碰。
+V13–V15已完成本地代码阶段：MotionTokens中hover120ms/press90ms/selection160ms/transition180ms；PageHost替换内容时保留当前有效过渡值，以4 DIP轻位移续接；紧凑存档详情使用Opacity/Translate渐入渐出并立即完成语义与命中测试切换。R08动效反向/页面切换行为测试11/11，详情帧采样追加定向1/1；Source Validation、27文件XAML结构校验、WPF审查（0 error/26 warnings/164 info）通过。预提交Render QA为335 PNG/0 PROBLEM，但报告SHA解析到父提交6703857且工作树不干净，不能代替本批提交SHA的Render QA；最终精确门禁及CI待查询。V13–V15实现与测试概览见[阶段记录](../design/reviews/ui-redesign-round6-20261113/evidence/V13-V15/README.md)。
+
+下一阶段按V16–V20继续打磨详情对象切换、浮层/通知、加载交接、动画降级和实际动态采样，再按V21–V24推广任务、媒体、概览和设置。最终候选仍须运行中文根入口安装链与独立`scripts/build.cmd`，复核精确SHA上的所有适用CI job。清理`.tmp`受既有自动审查拒绝限制，未尝试绕过；其他任务的测试结果、用户配置和存档未触碰。
 
 ## 2026-11-13 新授权起点（历史记录）
 

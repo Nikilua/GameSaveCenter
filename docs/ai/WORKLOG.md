@@ -1,3 +1,11 @@
+## 2026-11-14 Round6 V13–V15 动效节奏、切页与详情开合
+
+实现共享动效节奏令牌：hover 120ms、press 90ms、selection 160ms、页面 transition 180ms。共享按钮在动效启用时不再由 hover 基础触发器瞬间覆盖透明度；禁用动效仍直接到位。PageHost 内容切换保留在途渲染值，新页面用4 DIP位移和轻淡入从当前状态续接；Dashboard 内零散秒数统一到令牌。紧凑存档详情开合使用Opacity/Translate，不逐帧改宽高/边距；关闭时立即停止详情命中测试并转移焦点目标，完成后折叠；快速重开会取当前有效动画值，无排队或闪回。选择契约夹具验证所选版本跨开合仍保持。
+
+本地候选上的 `R08MotionReverseBehaviorTests` 与 `R08PageSwitchBehaviorTests` 合计11/11；其后调整的详情采样测试定向1/1。`python scripts/validate-source.py`、`scripts/check-xaml.ps1`（27/27）和WPF静态审查通过（27 XAML、0 errors/26既有 warnings/164 info），`git diff --check`通过。预提交Render QA生成335张PNG、0 PROBLEM、`render-qa OK`，在`WinSta0`私有桌面运行且Default输入桌面前后不变；报告内构建身份仍为父提交`6703857a`且`WorkingTreeClean:false`，因此只记为候选预检，精确本批提交仍需重新运行Render QA并查询GitHub CI。完整记录见[Round6 V13–V15](../design/reviews/ui-redesign-round6-20261113/evidence/V13-V15/README.md)。
+
+没有启动真实Playnite；实际宿主切页呈现、用户桌面前台、Narrator/实体键盘焦点与物理DPI均未验证。没有执行恢复、删除或云端写入；未在仓库`artifacts/`或`.tmp/`留下本阶段产物。下一批继续V16–V20详情对象切换、浮层/加载交接、中断降级及动态样片。
+
 ## 2026-11-14 Round6 V05–V08 存档页生产实现
 
 完成存档页第一轮整页层级调整：标题区突出当前游戏与匹配/保护状态，扫描与备份作为主要动作，校验/刷新独立分层；新增已载入元数据的客户端搜索；日期范围、版本导航、列与保存视图收敛到次级工具栏；宽屏列表/详情调整为2:1，详情改为统计摘要、技术字段、来源关系与恢复可用性分组。恢复授权、安全提示、业务命令、选框、生产滚动条、表格虚拟化、键盘与UIA语义保留。V05–V08/V12已在同一8条Ready合成数据、固定时刻、双主题、两种窗口尺寸和详情开合状态下归档before/after原图及并排图，完成人工视觉复核；紧凑详情需要滚到表格下方是明确保留并写入说明的边界。提交`6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e`为源码候选，证据索引见[Round 6评审](../design/reviews/ui-redesign-round6-20261113/README.md#v05-v08-存档页首屏与详情示范)。

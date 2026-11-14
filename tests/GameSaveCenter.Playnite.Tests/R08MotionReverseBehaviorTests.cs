@@ -272,6 +272,158 @@ public sealed class R08MotionReverseBehaviorTests
     }
 
     [Fact]
+    public void SharedInteractionDurationsStayWithinTheirMotionBudgets()
+    {
+        Exception? exception = null;
+        var hover = 0d;
+        var press = 0d;
+        var selection = 0d;
+        var transition = 0d;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                hover = GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Hover).TotalMilliseconds;
+                press = GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Press).TotalMilliseconds;
+                selection = GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Selection).TotalMilliseconds;
+                transition = GscMotion.GetDuration(null, GscMotion.MotionDurationKind.Transition).TotalMilliseconds;
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.Null(exception);
+        Assert.InRange(hover, 100, 140);
+        Assert.InRange(press, 80, 100);
+        Assert.InRange(selection, 120, 180);
+        Assert.InRange(transition, 100, 220);
+    }
+
+    [Fact]
+    public void SaveInspectorRapidCloseOpenContinuesFromTheCurrentVisualValue()
+    {
+        Exception? exception = null;
+        var closeOpacity = 0d;
+        var closeOffset = 0d;
+        var reopenOpacity = 0d;
+        var reopenOffset = 0d;
+        var openingSampled = false;
+        var reopened = false;
+        var closeSettled = false;
+        var selectionPreserved = false;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            try
+            {
+                var selected = new object();
+                var selectionContext = new SaveHistoryInspectorSelectionFixture(selected);
+                var view = new SaveCenterView
+                {
+                    DataContext = selectionContext,
+                    SystemMotionEnabledProviderForBehaviorTest = () => true
+                };
+                AdaptiveThemePaletteFactory.SetMotionEnabledActive(view, true);
+                view.Resources["GscMotionSelection"] = new Duration(TimeSpan.FromSeconds(1));
+                var grid = Assert.IsType<DataGrid>(view.FindName("SaveHistoryGrid"));
+                var frame = Assert.IsType<Border>(view.FindName("SaveHistoryInspectorFrame"));
+                var detailsButton = Assert.IsAssignableFrom<ButtonBase>(view.FindName("SaveHistoryCompactDetailsButton"));
+                window = CreateWindow(view, 900, 640);
+                window.Show();
+                window.UpdateLayout();
+                view.UpdateLayout();
+                view.ApplyResponsiveLayout(744, 460);
+                view.UpdateLayout();
+                var warmupFrames = 0;
+                var rendererWarmed = ObserveRenderFrameUntil(
+                    null,
+                    () => warmupFrames >= 1,
+                    TimeSpan.FromSeconds(2),
+                    () => warmupFrames++);
+                Assert.True(rendererWarmed, "the WPF host did not render its initial frame before the interaction sample");
+                frame.Resources["GscMotionSelection"] = new Duration(TimeSpan.FromSeconds(1));
+
+                var translate = GscMotion.GetMutableTranslateTransform(frame);
+                openingSampled = ObserveRenderFrameUntil(
+                    () => detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)),
+                    () => frame.Opacity > 0.05 && frame.Opacity < 0.95 && translate.Y > 0.1,
+                    TimeSpan.FromSeconds(2));
+                Assert.True(openingSampled, "the compact save inspector entrance did not expose an intermediate opacity/offset");
+                selectionPreserved = ReferenceEquals(selected, grid.SelectedItem);
+
+                detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                closeOpacity = frame.Opacity;
+                closeOffset = translate.Y;
+                Assert.False(frame.IsHitTestVisible, "a closing inspector should stop accepting pointer input while focus returns to its toggle");
+                detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                reopenOpacity = frame.Opacity;
+                reopenOffset = translate.Y;
+                reopened = (bool)typeof(SaveCenterView).GetField("historyInspectorOpen", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!
+                    && !(bool)typeof(SaveCenterView).GetField("historyInspectorClosing", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(view)!
+                    && frame.IsHitTestVisible;
+                Assert.InRange(Math.Abs(reopenOpacity - closeOpacity), 0, 0.05);
+                Assert.InRange(Math.Abs(reopenOffset - closeOffset), 0, 0.5);
+
+                var reversalCompleted = ObserveRenderFrameUntil(
+                    () =>
+                    {
+                        window.UpdateLayout();
+                        return !DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated
+                            && !DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated
+                            && Math.Abs(frame.Opacity - 1) < 0.001
+                            && Math.Abs(translate.Y) < 0.001;
+                    },
+                    TimeSpan.FromSeconds(2));
+                Assert.True(reversalCompleted, "the reversed inspector opening did not settle on its latest open target");
+                detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                closeSettled = ObserveRenderFrameUntil(
+                    () =>
+                    {
+                        window.UpdateLayout();
+                        return frame.Visibility == Visibility.Collapsed;
+                    },
+                    TimeSpan.FromSeconds(2));
+                Assert.True(closeSettled, "the inspector did not collapse after its exit animation completed");
+                selectionPreserved &= ReferenceEquals(selected, grid.SelectedItem);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+            finally
+            {
+                window?.Close();
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        output.WriteLine($"save inspector opening={openingSampled}; close=({closeOpacity:0.###},{closeOffset:0.###}); reopened=({reopenOpacity:0.###},{reopenOffset:0.###}); reverse={reopened}; selectionPreserved={selectionPreserved}; closeSettled={closeSettled}");
+        Assert.Null(exception);
+        Assert.True(reopened);
+        Assert.True(closeSettled);
+        Assert.True(selectionPreserved, "opening or closing the inspector must keep the selected history record anchored");
+    }
+
+    private sealed class SaveHistoryInspectorSelectionFixture
+    {
+        public SaveHistoryInspectorSelectionFixture(object selectedBackup)
+        {
+            Backups = new[] { selectedBackup };
+            SelectedBackup = selectedBackup;
+        }
+
+        public object[] Backups { get; }
+        public object? SelectedBackup { get; set; }
+    }
+
+    [Fact]
     public void ProductionButtonHoverAndPressReverseFromTheirRenderedValues()
     {
         Exception? exception = null;
@@ -874,5 +1026,46 @@ public sealed class R08MotionReverseBehaviorTests
         }
 
         return condition();
+    }
+
+    private static bool ObserveRenderFrameUntil(Func<bool> condition, TimeSpan timeout)
+        => ObserveRenderFrameUntil(null, condition, timeout);
+
+    private static bool ObserveRenderFrameUntil(Action? begin, Func<bool> condition, TimeSpan timeout)
+        => ObserveRenderFrameUntil(begin, condition, timeout, null);
+
+    private static bool ObserveRenderFrameUntil(Action? begin, Func<bool> condition, TimeSpan timeout, Action? onRender)
+    {
+        var frame = new DispatcherFrame();
+        var sampled = false;
+        var timer = new DispatcherTimer(DispatcherPriority.Send) { Interval = timeout };
+        EventHandler rendering = (_, _) =>
+        {
+            onRender?.Invoke();
+            if (!condition())
+                return;
+
+            sampled = true;
+            frame.Continue = false;
+        };
+        EventHandler deadline = (_, _) => frame.Continue = false;
+        CompositionTarget.Rendering += rendering;
+        timer.Tick += deadline;
+        try
+        {
+            begin?.Invoke();
+            if (condition())
+                return true;
+
+            timer.Start();
+            Dispatcher.PushFrame(frame);
+            return sampled;
+        }
+        finally
+        {
+            timer.Stop();
+            timer.Tick -= deadline;
+            CompositionTarget.Rendering -= rendering;
+        }
     }
 }

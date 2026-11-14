@@ -599,7 +599,6 @@ namespace GameSaveCenter.Playnite.Views
             {
                 KeyboardShortcutHelpPopup.IsOpen = false;
                 CloseCommandDirectory(restoreFocus: false);
-                GscMotion.Normalize(PageHost);
                 PageHost.Content = page;
             }
             UpdatePageHeader(workspace);
@@ -634,7 +633,7 @@ namespace GameSaveCenter.Playnite.Views
             if (contentChanged)
             {
                 if (IsSidebarMotionEnabled)
-                    GscMotion.AnimateEntrance(PageHost, 6, GscMotion.Fast, GscMotion.Fast);
+                    GscMotion.AnimateEntrance(PageHost, 4, 0, GscMotion.Transition, GscMotion.Transition);
                 else
                     GscMotion.Normalize(PageHost);
             }

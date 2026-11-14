@@ -17,6 +17,10 @@ namespace GameSaveCenter.Playnite.Views
         private readonly ResponsiveDetailBreakpointLatch detailBreakpoint = new ResponsiveDetailBreakpointLatch();
         private bool historyInspectorOpen;
         private bool candidateInspectorOpen;
+        private bool historyInspectorClosing;
+        private bool candidateInspectorClosing;
+        private int historyInspectorTransitionGeneration;
+        private int candidateInspectorTransitionGeneration;
         private bool? candidateViewControlsCompact;
         private DataGridColumnLayoutController? historyColumnLayout;
         private DataGridColumnLayoutController? candidateColumnLayout;
@@ -30,6 +34,7 @@ namespace GameSaveCenter.Playnite.Views
         private readonly WrapPanelRowGapController historyToolbarRowGap;
 
         internal Action? PreferencePersistenceOverrideForBehaviorTest { get; set; }
+        internal Func<bool>? SystemMotionEnabledProviderForBehaviorTest { get; set; }
 
         public SaveCenterView()
         {
@@ -48,9 +53,23 @@ namespace GameSaveCenter.Playnite.Views
             DataContextChanged += OnDataContextChanged;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e) => AttachColumnLayouts();
+        private bool IsInspectorMotionEnabled
+            => AdaptiveThemePaletteFactory.GetMotionEnabledActive(this)
+               && (SystemMotionEnabledProviderForBehaviorTest?.Invoke() ?? GscMotion.IsEnabled(true));
 
-        private void OnUnloaded(object sender, RoutedEventArgs e) => DetachColumnLayouts();
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            GscMotion.Normalize(SaveHistoryInspectorFrame);
+            GscMotion.Normalize(SaveCandidateInspectorFrame);
+            AttachColumnLayouts();
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            CancelHistoryInspectorTransition();
+            CancelCandidateInspectorTransition();
+            DetachColumnLayouts();
+        }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -222,8 +241,20 @@ namespace GameSaveCenter.Playnite.Views
                 // 1040x700 breakpoint.  The previous 1200 DIP cutoff pushed the
                 // Playnite host into the drawer layout even when there was enough
                 // room, which made the production page structurally different.
-                var wasWideDetailLayout = detailBreakpoint.IsInitialized && !detailBreakpoint.IsCompact;
+                var hadDetailBreakpoint = detailBreakpoint.IsInitialized;
+                var wasCompactDetailLayout = hadDetailBreakpoint && detailBreakpoint.IsCompact;
+                var wasWideDetailLayout = hadDetailBreakpoint && !wasCompactDetailLayout;
                 var compact = detailBreakpoint.Evaluate(width);
+                if (hadDetailBreakpoint && wasCompactDetailLayout != compact)
+                {
+                    CancelHistoryInspectorTransition();
+                    CancelCandidateInspectorTransition();
+                    if (!compact)
+                    {
+                        historyInspectorOpen = false;
+                        candidateInspectorOpen = false;
+                    }
+                }
                 if (!candidateViewControlsCompact.HasValue || candidateViewControlsCompact.Value != compact)
                 {
                     candidateViewControlsCompact = compact;
@@ -289,7 +320,7 @@ namespace GameSaveCenter.Playnite.Views
                     var hasHistorySelection = SaveHistoryGrid.SelectedItem != null;
                     if (hasHistorySelection)
                     {
-                        SaveHistoryActionsScrollViewer.Visibility = historyInspectorOpen
+                        SaveHistoryActionsScrollViewer.Visibility = historyInspectorOpen || historyInspectorClosing
                             ? Visibility.Visible
                             : Visibility.Collapsed;
                         SaveHistoryCompactDetailsButton.Content = historyInspectorOpen
@@ -306,7 +337,7 @@ namespace GameSaveCenter.Playnite.Views
                     var hasCandidateSelection = SaveCandidateGrid.SelectedItem != null;
                     if (hasCandidateSelection)
                     {
-                        SaveCandidateInspectorScrollViewer.Visibility = candidateInspectorOpen
+                        SaveCandidateInspectorScrollViewer.Visibility = candidateInspectorOpen || candidateInspectorClosing
                             ? Visibility.Visible
                             : Visibility.Collapsed;
                         SaveCandidateCompactDetailsButton.Content = candidateInspectorOpen
@@ -467,6 +498,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnSaveHistorySelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             historyInspectorOpen = false;
+            CancelHistoryInspectorTransition();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
         }
@@ -494,6 +526,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnSaveCandidateSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             candidateInspectorOpen = false;
+            CancelCandidateInspectorTransition();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
         }
@@ -501,9 +534,19 @@ namespace GameSaveCenter.Playnite.Views
         private void OnSaveHistoryCompactDetailsClick(object sender, RoutedEventArgs e)
         {
             if (SaveHistoryGrid.SelectedItem == null) return;
-            historyInspectorOpen = !historyInspectorOpen;
+            if (historyInspectorOpen)
+            {
+                BeginHistoryInspectorClose();
+                return;
+            }
+
+            historyInspectorTransitionGeneration++;
+            historyInspectorClosing = false;
+            historyInspectorOpen = true;
+            SaveHistoryInspectorFrame.IsHitTestVisible = true;
             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(historyInspectorOpen ? SaveHistoryActionsScrollViewer : SaveHistoryCompactDetailsButton);
+            AnimateInspectorEntrance(SaveHistoryInspectorFrame);
+            FocusElement(SaveHistoryActionsScrollViewer);
         }
 
         private void OnSaveCandidateCompactDetailsClick(object sender, RoutedEventArgs e)
@@ -512,9 +555,19 @@ namespace GameSaveCenter.Playnite.Views
             // This button lives in the view-controls disclosure header. Keep its
             // action separate from expanding or collapsing the disclosure itself.
             e.Handled = true;
-            candidateInspectorOpen = !candidateInspectorOpen;
+            if (candidateInspectorOpen)
+            {
+                BeginCandidateInspectorClose();
+                return;
+            }
+
+            candidateInspectorTransitionGeneration++;
+            candidateInspectorClosing = false;
+            candidateInspectorOpen = true;
+            SaveCandidateInspectorFrame.IsHitTestVisible = true;
             ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(candidateInspectorOpen ? SaveCandidateInspectorScrollViewer : SaveCandidateCompactDetailsButton);
+            AnimateInspectorEntrance(SaveCandidateInspectorFrame);
+            FocusElement(SaveCandidateInspectorScrollViewer);
         }
 
         private void OnSaveInspectorPreviewKeyDown(object sender, KeyEventArgs e)
@@ -523,17 +576,125 @@ namespace GameSaveCenter.Playnite.Views
                 return;
 
             if (ReferenceEquals(sender, SaveHistoryActionsScrollViewer) && historyInspectorOpen)
-                historyInspectorOpen = false;
+            {
+                BeginHistoryInspectorClose();
+                e.Handled = true;
+                return;
+            }
             else if (ReferenceEquals(sender, SaveCandidateInspectorScrollViewer) && candidateInspectorOpen)
-                candidateInspectorOpen = false;
+            {
+                BeginCandidateInspectorClose();
+                e.Handled = true;
+                return;
+            }
             else
                 return;
+        }
 
-            ApplyResponsiveLayout(responsiveWidth > 0 ? responsiveWidth : ActualWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight > 0 ? responsiveHeight : ActualHeight);
-            FocusElement(ReferenceEquals(sender, SaveHistoryActionsScrollViewer)
-                ? SaveHistoryCompactDetailsButton
-                : SaveCandidateCompactDetailsButton);
-            e.Handled = true;
+        internal void NormalizeInspectorMotionIfDisabled()
+        {
+            if (IsInspectorMotionEnabled)
+                return;
+
+            var layoutChanged = historyInspectorClosing || candidateInspectorClosing;
+            CancelHistoryInspectorTransition();
+            CancelCandidateInspectorTransition();
+            if (layoutChanged && IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
+        }
+
+        private void AnimateInspectorEntrance(Border frame)
+        {
+            if (!IsInspectorMotionEnabled)
+            {
+                GscMotion.Normalize(frame);
+                return;
+            }
+
+            var duration = GscMotion.GetDuration(frame, GscMotion.MotionDurationKind.Selection);
+            GscMotion.AnimateEntrance(frame, 0, 8, duration, duration);
+        }
+
+        private void BeginHistoryInspectorClose()
+        {
+            if (!historyInspectorOpen || !detailBreakpoint.IsCompact)
+                return;
+
+            historyInspectorOpen = false;
+            historyInspectorClosing = true;
+            var generation = ++historyInspectorTransitionGeneration;
+            SaveHistoryInspectorFrame.IsHitTestVisible = false;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
+            FocusElement(SaveHistoryCompactDetailsButton);
+            if (!IsInspectorMotionEnabled)
+            {
+                CompleteHistoryInspectorClose(generation);
+                return;
+            }
+
+            var duration = GscMotion.GetDuration(SaveHistoryInspectorFrame, GscMotion.MotionDurationKind.Selection);
+            GscMotion.AnimateExit(SaveHistoryInspectorFrame, -6, duration, () => CompleteHistoryInspectorClose(generation));
+        }
+
+        private void CompleteHistoryInspectorClose(int generation)
+        {
+            if (generation != historyInspectorTransitionGeneration || !historyInspectorClosing)
+                return;
+
+            historyInspectorClosing = false;
+            SaveHistoryInspectorFrame.IsHitTestVisible = true;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
+        }
+
+        private void BeginCandidateInspectorClose()
+        {
+            if (!candidateInspectorOpen || !detailBreakpoint.IsCompact)
+                return;
+
+            candidateInspectorOpen = false;
+            candidateInspectorClosing = true;
+            var generation = ++candidateInspectorTransitionGeneration;
+            SaveCandidateInspectorFrame.IsHitTestVisible = false;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
+            FocusElement(SaveCandidateCompactDetailsButton);
+            if (!IsInspectorMotionEnabled)
+            {
+                CompleteCandidateInspectorClose(generation);
+                return;
+            }
+
+            var duration = GscMotion.GetDuration(SaveCandidateInspectorFrame, GscMotion.MotionDurationKind.Selection);
+            GscMotion.AnimateExit(SaveCandidateInspectorFrame, -6, duration, () => CompleteCandidateInspectorClose(generation));
+        }
+
+        private void CompleteCandidateInspectorClose(int generation)
+        {
+            if (generation != candidateInspectorTransitionGeneration || !candidateInspectorClosing)
+                return;
+
+            candidateInspectorClosing = false;
+            SaveCandidateInspectorFrame.IsHitTestVisible = true;
+            if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
+                ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
+        }
+
+        private void CancelHistoryInspectorTransition()
+        {
+            historyInspectorTransitionGeneration++;
+            historyInspectorClosing = false;
+            SaveHistoryInspectorFrame.IsHitTestVisible = true;
+            GscMotion.Normalize(SaveHistoryInspectorFrame);
+        }
+
+        private void CancelCandidateInspectorTransition()
+        {
+            candidateInspectorTransitionGeneration++;
+            candidateInspectorClosing = false;
+            SaveCandidateInspectorFrame.IsHitTestVisible = true;
+            GscMotion.Normalize(SaveCandidateInspectorFrame);
         }
 
         private static void FocusElement(UIElement element)

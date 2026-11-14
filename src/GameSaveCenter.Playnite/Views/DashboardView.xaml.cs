@@ -354,7 +354,7 @@ namespace GameSaveCenter.Playnite.Views
                 if (maintenance == null) return;
                 maintenance.FindingsGridElement.ScrollIntoView(viewModel.SelectedFinding);
                 maintenance.FindingsGridElement.Focus();
-                AnimateElement(ProductionShellView.PageHostForAudit, 10, 0, 0.2);
+                AnimateElement(ProductionShellView.PageHostForAudit, 10, 0);
             }, DispatcherPriority.Background);
         }
 
@@ -365,7 +365,7 @@ namespace GameSaveCenter.Playnite.Views
                 if (!IsLoaded) return;
                 ProductionShellView.NavigateTo(WorkspaceKind.Overview);
                 ProductionShellView.OpenGamePicker();
-                AnimateElement(ProductionShellView.PageHostForAudit, 10, 0, 0.2);
+                AnimateElement(ProductionShellView.PageHostForAudit, 10, 0);
             }, DispatcherPriority.Background);
         }
 
@@ -768,7 +768,7 @@ namespace GameSaveCenter.Playnite.Views
             timer.Stop();
             Logger.Debug($"[PERF] WorkspaceSwitch workspace={workspace} layout={timer.ElapsedMilliseconds}ms");
             viewModel.RequestWorkspaceLoad();
-            AnimateElement(ProductionShellView.PageHostForAudit, 10, 0, 0.2);
+            AnimateElement(ProductionShellView.PageHostForAudit, 10, 0);
         }
 
         private void UpdateWorkspaceHeader(WorkspaceKind workspace)
@@ -950,7 +950,7 @@ namespace GameSaveCenter.Playnite.Views
             UpdateGameBrowserTooltip();
             ApplyResponsiveLayout(ActualWidth, ActualHeight);
             if (MotionEnabled)
-                AnimateElement(GameBrowserPanel, 10, 0, 0.18);
+                AnimateElement(GameBrowserPanel, 10, 0);
             if (GameSearchTextBox != null)
                 BeginUiSafely(() => GameSearchTextBox.Focus(), DispatcherPriority.Background);
         }
@@ -1012,7 +1012,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnDetailsTabSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!ReferenceEquals(e.Source, DetailsTabControl)) return;
-            AnimateElement(DetailsTabControl, 10, 0, 0.2);
+            AnimateElement(DetailsTabControl, 10, 0, GscMotion.MotionDurationKind.Selection);
         }
 
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -1032,13 +1032,13 @@ namespace GameSaveCenter.Playnite.Views
             }
             else if (e.PropertyName == nameof(DashboardViewModel.SelectedGame) && !viewModel.IsBackgroundRefreshing)
             {
-                BeginUiSafely(() => AnimateElement(ProductionShellView.PageHostForAudit, 13, 0, 0.23), DispatcherPriority.Background);
+                BeginUiSafely(() => AnimateElement(ProductionShellView.PageHostForAudit, 13, 0), DispatcherPriority.Background);
             }
             else if (e.PropertyName == nameof(DashboardViewModel.SelectedTask) && !viewModel.IsBackgroundRefreshing)
             {
                 var task = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
                 if (task != null)
-                    BeginUiSafely(() => AnimateElement(task.TaskDetailCardElement, 8, 0, 0.2), DispatcherPriority.Background);
+                    BeginUiSafely(() => AnimateElement(task.TaskDetailCardElement, 8, 0), DispatcherPriority.Background);
             }
             else if (e.PropertyName == nameof(DashboardViewModel.StatusMessage))
             {
@@ -1113,49 +1113,21 @@ namespace GameSaveCenter.Playnite.Views
             GscMotion.AnimateEntrance(MainShell, 12);
         }
 
-        private void AnimateElement(FrameworkElement element, double offsetX, double offsetY, double seconds)
+        private void AnimateElement(
+            FrameworkElement element,
+            double offsetX,
+            double offsetY,
+            GscMotion.MotionDurationKind kind = GscMotion.MotionDurationKind.Transition)
         {
             if (element == null) return;
             if (!MotionEnabled)
             {
-                element.Opacity = 1;
+                GscMotion.Normalize(element);
                 return;
             }
 
-            var translate = GscMotion.GetMutableTranslateTransform(element);
-
-            translate.X = offsetX;
-            translate.Y = offsetY;
-            element.Opacity = 0.72;
-            var duration = TimeSpan.FromSeconds(seconds);
-            var easing = GscMotion.CreateEaseOut();
-            var fade = new DoubleAnimation(0.72, 1, duration)
-            {
-                EasingFunction = easing,
-                FillBehavior = FillBehavior.HoldEnd
-            };
-            var slideX = new DoubleAnimation(offsetX, 0, duration)
-            {
-                EasingFunction = easing,
-                FillBehavior = FillBehavior.HoldEnd
-            };
-            var slideY = new DoubleAnimation(offsetY, 0, duration)
-            {
-                EasingFunction = easing,
-                FillBehavior = FillBehavior.HoldEnd
-            };
-            slideY.Completed += (_, __) =>
-            {
-                element.BeginAnimation(UIElement.OpacityProperty, null);
-                translate.BeginAnimation(TranslateTransform.XProperty, null);
-                translate.BeginAnimation(TranslateTransform.YProperty, null);
-                element.Opacity = 1;
-                translate.X = 0;
-                translate.Y = 0;
-            };
-            element.BeginAnimation(UIElement.OpacityProperty, fade);
-            translate.BeginAnimation(TranslateTransform.XProperty, slideX);
-            translate.BeginAnimation(TranslateTransform.YProperty, slideY);
+            var duration = GscMotion.GetDuration(element, kind);
+            GscMotion.AnimateEntrance(element, offsetX, offsetY, duration, duration);
         }
 
         private void AnimateStatusPill()
@@ -1818,6 +1790,9 @@ namespace GameSaveCenter.Playnite.Views
                 taskCenter.NormalizeInspectorMotionIfDisabled();
                 NormalizeAnimatedElement(taskCenter.TaskDetailCardElement);
             }
+
+            ProductionShellView.GetWorkspaceView<SaveCenterView>(WorkspaceKind.Saves)
+                ?.NormalizeInspectorMotionIfDisabled();
         }
 
         private static void NormalizeAnimatedElement(FrameworkElement element)

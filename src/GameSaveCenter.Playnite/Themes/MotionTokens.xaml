@@ -4,9 +4,12 @@
     <!-- Shared timing vocabulary. Templates create their own target transforms; these tokens
          are immutable timing/easing metadata and are never animated themselves. -->
     <Duration x:Key="GscMotionFast">0:0:0.12</Duration>
+    <Duration x:Key="GscMotionHover">0:0:0.12</Duration>
     <sys:Boolean x:Key="GscToggleMotionEnabled">True</sys:Boolean>
     <Duration x:Key="GscToggleMotionFast">0:0:0.12</Duration>
-    <Duration x:Key="GscMotionPress">0:0:0.10</Duration>
+    <Duration x:Key="GscMotionPress">0:0:0.09</Duration>
+    <Duration x:Key="GscMotionSelection">0:0:0.16</Duration>
+    <Duration x:Key="GscMotionTransition">0:0:0.18</Duration>
     <Duration x:Key="GscMotionNormal">0:0:0.22</Duration>
     <Duration x:Key="GscMotionSlow">0:0:0.30</Duration>
     <sys:Double x:Key="GscButtonHoverOverlayOpacity">1</sys:Double>

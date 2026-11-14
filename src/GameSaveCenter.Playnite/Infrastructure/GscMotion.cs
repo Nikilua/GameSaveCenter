@@ -46,14 +46,20 @@ namespace GameSaveCenter.Playnite.Infrastructure
         // load a pack URI (for example an isolated unit test or an early shutdown path); they
         // intentionally match the same semantic values instead of introducing a second table.
         internal static TimeSpan Fast => GetDuration(null, MotionDurationKind.Fast);
+        internal static TimeSpan Hover => GetDuration(null, MotionDurationKind.Hover);
         internal static TimeSpan Press => GetDuration(null, MotionDurationKind.Press);
+        internal static TimeSpan Selection => GetDuration(null, MotionDurationKind.Selection);
+        internal static TimeSpan Transition => GetDuration(null, MotionDurationKind.Transition);
         internal static TimeSpan Normal => GetDuration(null, MotionDurationKind.Normal);
         internal static TimeSpan Slow => GetDuration(null, MotionDurationKind.Slow);
 
         internal enum MotionDurationKind
         {
             Fast,
+            Hover,
             Press,
+            Selection,
+            Transition,
             Normal,
             Slow
         }
@@ -63,7 +69,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var key = kind switch
             {
                 MotionDurationKind.Fast => "GscMotionFast",
+                MotionDurationKind.Hover => "GscMotionHover",
                 MotionDurationKind.Press => "GscMotionPress",
+                MotionDurationKind.Selection => "GscMotionSelection",
+                MotionDurationKind.Transition => "GscMotionTransition",
                 MotionDurationKind.Normal => "GscMotionNormal",
                 MotionDurationKind.Slow => "GscMotionSlow",
                 _ => "GscMotionNormal"
@@ -71,7 +80,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
             var fallback = kind switch
             {
                 MotionDurationKind.Fast => TimeSpan.FromMilliseconds(120),
-                MotionDurationKind.Press => TimeSpan.FromMilliseconds(100),
+                MotionDurationKind.Hover => TimeSpan.FromMilliseconds(120),
+                MotionDurationKind.Press => TimeSpan.FromMilliseconds(90),
+                MotionDurationKind.Selection => TimeSpan.FromMilliseconds(160),
+                MotionDurationKind.Transition => TimeSpan.FromMilliseconds(180),
                 MotionDurationKind.Normal => TimeSpan.FromMilliseconds(220),
                 MotionDurationKind.Slow => TimeSpan.FromMilliseconds(300),
                 _ => TimeSpan.FromMilliseconds(220)
@@ -462,15 +474,25 @@ namespace GameSaveCenter.Playnite.Infrastructure
             double offsetY,
             TimeSpan opacityDuration,
             TimeSpan translationDuration)
+            => AnimateEntrance(element, 0, offsetY, opacityDuration, translationDuration);
+
+        internal static void AnimateEntrance(
+            FrameworkElement element,
+            double offsetX,
+            double offsetY,
+            TimeSpan opacityDuration,
+            TimeSpan translationDuration)
         {
             Track(element);
             var motionState = MotionStates.GetOrCreateValue(element);
             var generation = ++motionState.EntranceGeneration;
             var translate = GetMutableTranslateTransform(element);
             motionState.MotionTranslate = translate;
+            var translateXSource = DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.XProperty);
             var translateSource = DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty);
             var opacitySource = DependencyPropertyHelper.GetValueSource(element, UIElement.OpacityProperty);
-            var hasActiveAnimation = translateSource.IsAnimated || opacitySource.IsAnimated;
+            var hasActiveAnimation = translateXSource.IsAnimated || translateSource.IsAnimated || opacitySource.IsAnimated;
+            var currentX = translate.X;
             var currentY = translate.Y;
             var currentOpacity = element.Opacity;
 
@@ -478,15 +500,19 @@ namespace GameSaveCenter.Playnite.Infrastructure
             {
                 // Capture the effective values before removing the old clocks. This prevents
                 // a rapid re-entry from flashing back to the original entrance offset.
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
                 translate.BeginAnimation(TranslateTransform.YProperty, null);
                 element.BeginAnimation(UIElement.OpacityProperty, null);
+                translate.X = currentX;
                 translate.Y = currentY;
                 element.Opacity = currentOpacity;
             }
             else
             {
+                currentX = offsetX;
                 currentY = offsetY;
                 currentOpacity = 0;
+                translate.X = currentX;
                 translate.Y = currentY;
                 element.Opacity = currentOpacity;
             }
@@ -502,17 +528,29 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 EasingFunction = easing,
                 FillBehavior = FillBehavior.HoldEnd
             };
-            translateAnimation.Completed += (_, __) =>
+            var translateXAnimation = new DoubleAnimation(currentX, 0, translationDuration)
+            {
+                EasingFunction = easing,
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            EventHandler completed = (_, __) =>
             {
                 if (generation != motionState.EntranceGeneration)
                     return;
 
                 element.BeginAnimation(UIElement.OpacityProperty, null);
+                translate.BeginAnimation(TranslateTransform.XProperty, null);
                 translate.BeginAnimation(TranslateTransform.YProperty, null);
                 element.Opacity = 1;
+                translate.X = 0;
                 translate.Y = 0;
             };
+            if (opacityDuration >= translationDuration)
+                opacityAnimation.Completed += completed;
+            else
+                translateAnimation.Completed += completed;
             element.BeginAnimation(UIElement.OpacityProperty, opacityAnimation);
+            translate.BeginAnimation(TranslateTransform.XProperty, translateXAnimation);
             translate.BeginAnimation(TranslateTransform.YProperty, translateAnimation);
         }
 
