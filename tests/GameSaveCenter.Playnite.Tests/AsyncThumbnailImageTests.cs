@@ -64,6 +64,82 @@ namespace GameSaveCenter.Playnite.Tests
         }
 
         [Fact]
+        public void LoadingFeedbackWaitsForSustainedWorkAndClearsWhenContentArrives()
+        {
+            var path = Path.Combine(root, "loading-feedback.png");
+            WritePng(path, 96, 96, 117);
+            AsyncThumbnailLoader.ClearCache();
+
+            Exception? exception = null;
+            using var decodeReady = new ManualResetEventSlim();
+            using var allowPublish = new ManualResetEventSlim();
+            var thread = new Thread(() =>
+            {
+                Window? window = null;
+                try
+                {
+                    var delayedImage = new AsyncThumbnailImage
+                    {
+                        PreviewWidth = 96,
+                        LoadingFeedbackDelayForTest = TimeSpan.FromMilliseconds(80)
+                    };
+                    delayedImage.BeforePublishForTest = () =>
+                    {
+                        decodeReady.Set();
+                        allowPublish.Wait(TimeSpan.FromSeconds(5));
+                    };
+                    window = CreateWindow(delayedImage);
+                    window.Show();
+                    window.UpdateLayout();
+                    delayedImage.SourcePath = path;
+
+                    Assert.True(decodeReady.Wait(TimeSpan.FromSeconds(5)), "The thumbnail did not reach the UI publication boundary.");
+                    Assert.Equal("Loading", delayedImage.PreviewState);
+                    Assert.False(delayedImage.IsLoadingFeedbackReady);
+                    PumpUntil(window.Dispatcher, () => delayedImage.IsLoadingFeedbackReady, TimeSpan.FromSeconds(2));
+                    Assert.True(delayedImage.IsLoadingFeedbackReady);
+
+                    allowPublish.Set();
+                    PumpUntil(window.Dispatcher, () => delayedImage.Source != null, TimeSpan.FromSeconds(3));
+                    Assert.Equal("Ready", delayedImage.PreviewState);
+                    Assert.False(delayedImage.IsLoadingFeedbackReady);
+
+                    window.Close();
+                    window = null;
+
+                    // The now-cached bitmap is a quick response. Its longer grace interval
+                    // makes the absence of a transient loading cue deterministic.
+                    var quickImage = new AsyncThumbnailImage
+                    {
+                        PreviewWidth = 96,
+                        LoadingFeedbackDelayForTest = TimeSpan.FromSeconds(2)
+                    };
+                    window = CreateWindow(quickImage);
+                    window.Show();
+                    window.UpdateLayout();
+                    quickImage.SourcePath = path;
+                    PumpUntil(window.Dispatcher, () => quickImage.Source != null, TimeSpan.FromSeconds(3));
+                    Assert.Equal("Ready", quickImage.PreviewState);
+                    Assert.False(quickImage.IsLoadingFeedbackReady);
+                }
+                catch (Exception caught)
+                {
+                    exception = caught;
+                }
+                finally
+                {
+                    allowPublish.Set();
+                    window?.Close();
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            Assert.True(thread.Join(TimeSpan.FromSeconds(15)));
+
+            Assert.Null(exception);
+        }
+
+        [Fact]
         public void ReplacingPathNeverLeavesTheOldImageVisible()
         {
             var oldPath = Path.Combine(root, "old.png");

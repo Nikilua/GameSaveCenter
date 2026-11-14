@@ -27,8 +27,10 @@ namespace GameSaveCenter.Playnite.Views
         private readonly DispatcherTimer refreshTimer;
         private readonly Func<bool>? motionEnabledOverrideForBehaviorTest;
         private readonly Dictionary<Border, DispatcherTimer> toastTimers = new Dictionary<Border, DispatcherTimer>();
+        private readonly Dictionary<Border, int> toastReflowGenerations = new Dictionary<Border, int>();
         private DashboardViewModel viewModel;
         private bool hasPlayedEntrance;
+        private bool taskDetailTransitionQueued;
         private bool viewModelSubscribed;
         private bool visualSettingsSubscribed;
         private bool systemParametersSubscribed;
@@ -1036,14 +1038,34 @@ namespace GameSaveCenter.Playnite.Views
             }
             else if (e.PropertyName == nameof(DashboardViewModel.SelectedTask) && !viewModel.IsBackgroundRefreshing)
             {
-                var task = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
-                if (task != null)
-                    BeginUiSafely(() => AnimateElement(task.TaskDetailCardElement, 8, 0), DispatcherPriority.Background);
+                QueueTaskDetailTransition();
             }
             else if (e.PropertyName == nameof(DashboardViewModel.StatusMessage))
             {
                 BeginUiSafely(AnimateStatusPill, DispatcherPriority.Background);
             }
+        }
+
+        private void QueueTaskDetailTransition()
+        {
+            if (taskDetailTransitionQueued)
+                return;
+
+            taskDetailTransitionQueued = true;
+            Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() =>
+            {
+                taskDetailTransitionQueued = false;
+                if (!IsLoaded || viewModel?.SelectedTask == null)
+                    return;
+
+                var task = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
+                if (task == null || task.TaskDetailCardElement.Visibility != Visibility.Visible)
+                    return;
+
+                // Resolve the selection at render priority so a burst of row changes paints
+                // only the latest bound object; the command bindings update with it in place.
+                AnimateElement(task.TaskDetailCardElement, 5, 0, GscMotion.MotionDurationKind.Selection);
+            }));
         }
 
         private void OnNavigationMouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -1535,7 +1557,7 @@ namespace GameSaveCenter.Playnite.Views
                 var copyCards = ToastHost.Children.OfType<Border>()
                     .Where(card => card.Tag is bool isCopy && isCopy)
                     .ToArray();
-                foreach (var copyCard in copyCards) RemoveToast(copyCard);
+                foreach (var copyCard in copyCards) RemoveToast(copyCard, animateStackReflow: true);
             }
 
             var accentKey = kind == UiNotificationKind.Error ? "GscErrorBrush"
@@ -1597,7 +1619,16 @@ namespace GameSaveCenter.Playnite.Views
                 if (card.IsKeyboardFocusWithin) timer.Stop();
                 else if (toastTimers.ContainsKey(card) && !card.IsMouseOver) timer.Start();
             };
+            var existingCards = ToastHost.Children.OfType<Border>().ToArray();
+            var availableWidth = ToastHost.ActualWidth > 0 ? ToastHost.ActualWidth : ToastHost.Width;
+            card.Measure(new Size(availableWidth, double.PositiveInfinity));
+            var insertedHeight = card.DesiredSize.Height + card.Margin.Top + card.Margin.Bottom;
             ToastHost.Children.Insert(0, card);
+            if (MotionEnabled && insertedHeight > 0)
+            {
+                foreach (var existingCard in existingCards)
+                    AnimateToastReflow(existingCard, -insertedHeight);
+            }
             while (ToastHost.Children.Count > 4 && ToastHost.Children[ToastHost.Children.Count - 1] is Border expired)
             {
                 RemoveToast(expired);
@@ -1650,12 +1681,12 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
-            var duration = TimeSpan.FromMilliseconds(180);
+            var duration = GscMotion.GetDuration(ToastHost, GscMotion.MotionDurationKind.Transition);
             var fade = new DoubleAnimation(card.Opacity, 0, duration)
             {
                 FillBehavior = FillBehavior.HoldEnd
             };
-            fade.Completed += (_, __) => RemoveToast(card);
+            fade.Completed += (_, __) => RemoveToast(card, animateStackReflow: true);
             card.BeginAnimation(OpacityProperty, fade);
             var translate = card.RenderTransform as TranslateTransform ?? new TranslateTransform();
             card.RenderTransform = translate;
@@ -1693,15 +1724,66 @@ namespace GameSaveCenter.Playnite.Views
             toastTimers.Remove(card);
         }
 
-        private void RemoveToast(Border card)
+        private void RemoveToast(Border card, bool animateStackReflow = false)
         {
+            var cardIndex = ToastHost.Children.IndexOf(card);
+            var cardsBelowRemovedCard = cardIndex >= 0
+                ? ToastHost.Children.OfType<Border>().Skip(cardIndex + 1).ToArray()
+                : Array.Empty<Border>();
+            var reflowDistance = animateStackReflow
+                ? card.ActualHeight + card.Margin.Top + card.Margin.Bottom
+                : 0;
             StopToastTimer(card);
             card.BeginAnimation(OpacityProperty, null);
             if (card.RenderTransform is TranslateTransform translate)
             {
                 translate.BeginAnimation(TranslateTransform.XProperty, null);
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                translate.X = 0;
+                translate.Y = 0;
             }
             ToastHost.Children.Remove(card);
+            toastReflowGenerations.Remove(card);
+
+            if (!animateStackReflow || !MotionEnabled || reflowDistance <= 0)
+                return;
+
+            foreach (var remainingCard in cardsBelowRemovedCard)
+                AnimateToastReflow(remainingCard, reflowDistance);
+        }
+
+        private void AnimateToastReflow(Border card, double offsetY)
+        {
+            if (offsetY == 0 || !MotionEnabled)
+                return;
+
+            var translate = GscMotion.GetMutableTranslateTransform(card);
+            var currentY = translate.Y;
+            var startY = currentY + offsetY;
+            translate.BeginAnimation(TranslateTransform.YProperty, null);
+            translate.Y = startY;
+
+            var generation = toastReflowGenerations.TryGetValue(card, out var previousGeneration)
+                ? previousGeneration + 1
+                : 1;
+            toastReflowGenerations[card] = generation;
+            var animation = new DoubleAnimation(startY, 0,
+                GscMotion.GetDuration(ToastHost, GscMotion.MotionDurationKind.Transition))
+            {
+                EasingFunction = GscMotion.CreateEaseOut(),
+                FillBehavior = FillBehavior.HoldEnd
+            };
+            animation.Completed += (_, __) =>
+            {
+                if (!toastReflowGenerations.TryGetValue(card, out var currentGeneration)
+                    || currentGeneration != generation)
+                    return;
+
+                translate.BeginAnimation(TranslateTransform.YProperty, null);
+                translate.Y = 0;
+                toastReflowGenerations.Remove(card);
+            };
+            translate.BeginAnimation(TranslateTransform.YProperty, animation);
         }
 
         private void ApplyAdaptiveTheme()
@@ -1749,6 +1831,9 @@ namespace GameSaveCenter.Playnite.Views
             var productionTaskCenter = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
             if (productionTaskCenter != null)
                 productionTaskCenter.UiAnimationsEnabled = MotionEnabled;
+            var productionMediaCenter = ProductionShellView.GetWorkspaceView<MediaCenterView>(WorkspaceKind.Media);
+            if (productionMediaCenter != null)
+                productionMediaCenter.UiAnimationsEnabled = MotionEnabled;
             ProductionShellView.NormalizeMotionIfDisabled();
             NormalizeDashboardMotionIfDisabled();
 
@@ -1783,6 +1868,18 @@ namespace GameSaveCenter.Playnite.Views
             NormalizeAnimatedElement(DetailsTabControl);
             NormalizeAnimatedElement(StatusPill);
             NormalizeAnimatedElement(DialogCard);
+
+            if (ToastHost != null)
+            {
+                foreach (var toast in ToastHost.Children.OfType<Border>().ToArray())
+                {
+                    var wasExiting = !toastTimers.ContainsKey(toast);
+                    NormalizeAnimatedElement(toast);
+                    if (wasExiting)
+                        RemoveToast(toast);
+                }
+                toastReflowGenerations.Clear();
+            }
 
             var taskCenter = ProductionShellView.GetWorkspaceView<TaskCenterView>(WorkspaceKind.Tasks);
             if (taskCenter != null)

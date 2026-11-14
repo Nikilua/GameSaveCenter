@@ -29,6 +29,8 @@ namespace GameSaveCenter.Playnite.Views
         private bool mediaComparisonWorkspaceUserOverride;
         private bool mediaComparisonWipeMode;
         private bool mediaComparisonWipeDragging;
+        private bool mediaSelectionTransitionQueued;
+        private bool uiAnimationsEnabled;
         private double mediaComparisonWipePosition = 0.5d;
         private readonly MediaComparisonViewportState mediaComparisonViewportState = new MediaComparisonViewportState();
         private bool suppressMediaComparisonScrollSync;
@@ -79,6 +81,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             AttachViewModel(DataContext as DashboardViewModel);
+            MediaSelectedPreviewImage.UiAnimationsEnabled = uiAnimationsEnabled;
             AttachColumnLayout();
             UpdateMediaSelectionSummary();
         }
@@ -173,6 +176,7 @@ namespace GameSaveCenter.Playnite.Views
             {
                 ResetSelectedVideoPreview();
                 QueueSelectedMediaIntoView();
+                QueueMediaSelectionTransition();
             }
 
             if (string.Equals(e.PropertyName, nameof(DashboardViewModel.MediaSearchText), StringComparison.Ordinal)
@@ -384,6 +388,19 @@ namespace GameSaveCenter.Playnite.Views
         public StackPanel MediaMetadataPanelElement => MediaMetadataPanel;
         public ScrollViewer MediaInspectorScrollViewerElement => MediaInspectorScrollViewer;
         public Border MediaInspectorFrameElement => MediaInspectorFrame;
+
+        public bool UiAnimationsEnabled
+        {
+            get => uiAnimationsEnabled;
+            set
+            {
+                uiAnimationsEnabled = value;
+                if (MediaSelectedPreviewImage != null)
+                    MediaSelectedPreviewImage.UiAnimationsEnabled = value;
+                if (!value && MediaInspectorFrame != null)
+                    GscMotion.Normalize(MediaInspectorFrame);
+            }
+        }
 
         private void OnMediaComparisonWorkspaceSizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -1228,6 +1245,35 @@ namespace GameSaveCenter.Playnite.Views
             QueueSelectedMediaIntoView();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)
                 ApplyResponsiveLayout(responsiveWidth, responsiveHeight);
+            QueueMediaSelectionTransition();
+        }
+
+        private void QueueMediaSelectionTransition()
+        {
+            if (mediaSelectionTransitionQueued || !IsLoaded)
+                return;
+
+            mediaSelectionTransitionQueued = true;
+            Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() =>
+            {
+                mediaSelectionTransitionQueued = false;
+                if (!IsLoaded || attachedViewModel?.SelectedMedia == null
+                    || MediaInspectorFrame.Visibility != Visibility.Visible)
+                    return;
+
+                if (!GscMotion.IsEnabled(UiAnimationsEnabled))
+                {
+                    GscMotion.Normalize(MediaInspectorFrame);
+                    return;
+                }
+
+                GscMotion.AnimateEntrance(
+                    MediaInspectorFrame,
+                    5,
+                    0,
+                    GscMotion.Selection,
+                    GscMotion.Selection);
+            }));
         }
 
         private void UpdateMediaSelectionSummary()

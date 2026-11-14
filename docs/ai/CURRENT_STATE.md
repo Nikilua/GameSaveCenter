@@ -1,4 +1,5 @@
-## 当前事实入口（Round6 V01–V15，2026-11-14）
+## 当前事实入口（Round6 V01–V18，2026-11-14）
+V16–V18已完成源码改造：任务/媒体详情切换只处理最新绑定对象；Toast仅重排受影响卡片且不调用同步UpdateLayout；缩略图真实Loading持续180ms才呈现反馈，快响应不闪，业务时序不延迟。Toast/缩略图定向7/7通过；SDK8 Release全量在最后两处Toast优化之前为0 warning/0 error，Core157/157、Worker407/407、Playnite2048项中1990通过、0失败、58既有skip、157个WPF类完成；最终改动随后重新编译并定向通过。run #1574在399f SHA上暴露三处过期动效断言，当前候选已同步修正；新候选精确Render QA/CI仍待核。详见V16–V18证据索引。
 
 V01–V04基线和设计规格、V05–V08存档页重构及V12前后评审已完成；V09–V11共享字阶/图标、按钮和浮层样式已实现并通过本地全门禁。Demo-first依据是同级目录的 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/`：生产字体现在优先采用 Demo 的 Segoe UI Variable Text/Display，保留 Windows 与可选中文回退；共享 action icon 18px、图文间距4px，按钮控制角10px；ComboBox/Tooltip浮层统一走共享主题资源。页面命令、Binding、忙碌占位、键盘/UIA、虚拟化、当前游戏选框、滚动条及恢复安全语义均保留。
 
@@ -8,7 +9,7 @@ SDK8.0.423 / Release：全构建0 warning/0 error、exit0；Core 157/157，Worke
 
 V13–V15已实现微交互令牌、PageHost中断续接和紧凑存档详情淡入/淡出；本地反向行为测试与Render QA通过。预提交渲染报告的SHA仍指向父提交，不能作为候选SHA证据；本批提交后的精确Render QA和GitHub CI仍待验。详情帧测试验证选中版本保持与中间值连续，不代表非激活测试窗口验证了真实键盘焦点，也没有覆盖真实Playnite。
 
-下一批推进V16–V20详情对象切换、浮层/通知、加载交接、动效中断/降级和带时间戳动态证据；之后V21–V24推广任务、媒体、概览和设置。最终V25–V28仍须冻结候选，运行中文根入口完整安装链及独立`scripts/build.cmd`，复核精确提交的GitHub适用CI job。清理限制和未触碰的其他任务TRX/用户文件沿用下方历史记录。
+下一批推进V19–V20动画中断/降级、连续切换及有时间戳动态采样，再按V21–V24推广任务、媒体、概览和设置。最终V25–V28仍须冻结候选，运行中文根入口安装链与独立scripts/build.cmd，复核精确提交上的所有适用GitHub CI job。清理限制和未触碰的其他任务TRX/用户文件沿用下方历史记录。
 
 ## Round5 / P1 历史交接基线（2026-11-13）
 

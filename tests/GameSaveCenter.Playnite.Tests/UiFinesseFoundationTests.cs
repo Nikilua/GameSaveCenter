@@ -44,11 +44,11 @@ public sealed class UiFinesseFoundationTests
         Assert.Null(exception);
         var tokens = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "src", "GameSaveCenter.Playnite", "Themes", "MotionTokens.xaml"));
         Assert.Contains("<Duration x:Key=\"GscMotionFast\">0:0:0.12</Duration>", tokens);
-        Assert.Contains("<Duration x:Key=\"GscMotionPress\">0:0:0.10</Duration>", tokens);
+        Assert.Contains("<Duration x:Key=\"GscMotionPress\">0:0:0.09</Duration>", tokens);
         Assert.Contains("<Duration x:Key=\"GscMotionNormal\">0:0:0.22</Duration>", tokens);
         Assert.Contains("<Duration x:Key=\"GscMotionSlow\">0:0:0.30</Duration>", tokens);
         Assert.Equal(TimeSpan.FromMilliseconds(120), fast);
-        Assert.Equal(TimeSpan.FromMilliseconds(100), press);
+        Assert.Equal(TimeSpan.FromMilliseconds(90), press);
         Assert.Equal(TimeSpan.FromMilliseconds(220), normal);
         Assert.Equal(TimeSpan.FromMilliseconds(300), slow);
     }

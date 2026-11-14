@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite.Converters;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.Controls
 {
@@ -18,6 +19,9 @@ namespace GameSaveCenter.Playnite.Controls
         public static readonly DependencyProperty PreviewStateProperty = DependencyProperty.Register(
             nameof(PreviewState), typeof(string), typeof(AsyncThumbnailImage),
             new PropertyMetadata("Idle", OnPreviewStateChanged));
+        private static readonly DependencyPropertyKey IsLoadingFeedbackReadyPropertyKey = DependencyProperty.RegisterReadOnly(
+            nameof(IsLoadingFeedbackReady), typeof(bool), typeof(AsyncThumbnailImage), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsLoadingFeedbackReadyProperty = IsLoadingFeedbackReadyPropertyKey.DependencyProperty;
         public static readonly DependencyProperty SourcePathProperty = DependencyProperty.Register(
             nameof(SourcePath), typeof(string), typeof(AsyncThumbnailImage),
             new PropertyMetadata(null, OnSourcePathChanged));
@@ -39,6 +43,10 @@ namespace GameSaveCenter.Playnite.Controls
 
         private int generation;
         private CancellationTokenSource? pending;
+        private DispatcherTimer? loadingFeedbackTimer;
+        private bool uiAnimationsEnabled;
+
+        private static readonly TimeSpan LoadingFeedbackDelay = TimeSpan.FromMilliseconds(180);
 
         public AsyncThumbnailImage()
         {
@@ -86,12 +94,40 @@ namespace GameSaveCenter.Playnite.Controls
             private set => SetValue(PreviewStateProperty, value);
         }
 
+        /// <summary>
+        /// Controls only the ready-image entrance. Preview state, decode timing and source
+        /// publication remain immediate and independent of this visual preference.
+        /// </summary>
+        public bool UiAnimationsEnabled
+        {
+            get => uiAnimationsEnabled;
+            set
+            {
+                uiAnimationsEnabled = value;
+                if (!GscMotion.IsEnabled(value))
+                    GscMotion.Normalize(this);
+            }
+        }
+
+        public bool IsLoadingFeedbackReady => (bool)GetValue(IsLoadingFeedbackReadyProperty);
+
         public event EventHandler? PreviewStateChanged;
 
         internal Action? BeforePublishForTest { get; set; }
+        internal TimeSpan? LoadingFeedbackDelayForTest { get; set; }
 
         private static void OnPreviewStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-            => ((AsyncThumbnailImage)d).PreviewStateChanged?.Invoke(d, EventArgs.Empty);
+        {
+            var image = (AsyncThumbnailImage)d;
+            if (!string.Equals(e.NewValue as string, "Loading", StringComparison.Ordinal))
+            {
+                image.StopLoadingFeedback();
+                if (string.Equals(e.NewValue as string, "Ready", StringComparison.Ordinal))
+                    image.AnimateReadyImage();
+            }
+
+            image.PreviewStateChanged?.Invoke(d, EventArgs.Empty);
+        }
 
         private static void OnSourcePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((AsyncThumbnailImage)d).StartLoad();
@@ -150,6 +186,7 @@ namespace GameSaveCenter.Playnite.Controls
             PreviewDimensions = string.Empty;
             SourceDimensions = string.Empty;
             PreviewState = "Loading";
+            StartLoadingFeedback();
             var width = Math.Max(48, Math.Min(PreviewWidth, AsyncThumbnailLoader.MaximumDecodeDimension));
             var preserveSourceSize = PreserveSourceSize;
             var cancellation = new CancellationTokenSource();
@@ -160,6 +197,7 @@ namespace GameSaveCenter.Playnite.Controls
         private void CancelPendingLoad(bool clearSource)
         {
             Interlocked.Increment(ref generation);
+            StopLoadingFeedback();
             var previous = Interlocked.Exchange(ref pending, null);
             if (previous != null)
             {
@@ -172,7 +210,55 @@ namespace GameSaveCenter.Playnite.Controls
                 Source = null;
                 PreviewDimensions = string.Empty;
                 SourceDimensions = string.Empty;
+                GscMotion.Normalize(this);
             }
+        }
+
+        private void StartLoadingFeedback()
+        {
+            StopLoadingFeedback();
+            if (!IsLoaded || !IsVisible || !string.Equals(PreviewState, "Loading", StringComparison.Ordinal))
+                return;
+
+            loadingFeedbackTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher)
+            {
+                Interval = LoadingFeedbackDelayForTest ?? LoadingFeedbackDelay
+            };
+            loadingFeedbackTimer.Tick += OnLoadingFeedbackReady;
+            loadingFeedbackTimer.Start();
+        }
+
+        private void OnLoadingFeedbackReady(object? sender, EventArgs e)
+        {
+            StopLoadingFeedback();
+            if (IsLoaded && IsVisible && string.Equals(PreviewState, "Loading", StringComparison.Ordinal))
+                SetValue(IsLoadingFeedbackReadyPropertyKey, true);
+        }
+
+        private void StopLoadingFeedback()
+        {
+            if (loadingFeedbackTimer != null)
+            {
+                loadingFeedbackTimer.Stop();
+                loadingFeedbackTimer.Tick -= OnLoadingFeedbackReady;
+                loadingFeedbackTimer = null;
+            }
+
+            SetValue(IsLoadingFeedbackReadyPropertyKey, false);
+        }
+
+        private void AnimateReadyImage()
+        {
+            if (Source == null)
+                return;
+
+            if (!GscMotion.IsEnabled(UiAnimationsEnabled))
+            {
+                GscMotion.Normalize(this);
+                return;
+            }
+
+            GscMotion.AnimateEntrance(this, 0, 0, GscMotion.Transition, GscMotion.Transition);
         }
 
         private async Task LoadAsync(string path, int width, bool preserveSourceSize, int expected, CancellationToken token)

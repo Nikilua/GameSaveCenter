@@ -189,12 +189,13 @@ public sealed class UiFinesseRound2ControlSourceTests
         var production = Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
 
         Assert.Contains("<Duration x:Key=\"GscMotionFast\">0:0:0.12</Duration>", motion);
-        Assert.Contains("<Duration x:Key=\"GscMotionPress\">0:0:0.10</Duration>", motion);
+        Assert.Contains("<Duration x:Key=\"GscMotionHover\">0:0:0.12</Duration>", motion);
+        Assert.Contains("<Duration x:Key=\"GscMotionPress\">0:0:0.09</Duration>", motion);
         Assert.Contains("Themes/MotionTokens.xaml", acrylic.Replace('\\', '/'));
         Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", acrylic);
         Assert.Contains("Duration=\"{StaticResource GscMotionPress}\"", acrylic);
         Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", tokens);
-        Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", production);
+        Assert.Contains("Duration=\"{StaticResource GscMotionHover}\"", production);
         Assert.Contains("Duration=\"{StaticResource GscMotionPress}\"", production);
 
         foreach (var activeDictionary in new[] { tokens, acrylic, production })

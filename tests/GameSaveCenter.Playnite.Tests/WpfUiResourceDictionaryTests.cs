@@ -689,7 +689,7 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.Contains("Margin=\"{TemplateBinding Padding}\"", production);
         Assert.Contains("Property=\"IsKeyboardFocusWithin\" Value=\"True\"", production);
         Assert.Contains("Themes/MotionTokens.xaml", production);
-        Assert.Contains("Duration=\"{StaticResource GscMotionFast}\"", production);
+        Assert.Contains("Duration=\"{StaticResource GscMotionHover}\"", production);
         Assert.Contains("Duration=\"{StaticResource GscMotionPress}\"", production);
         Assert.Contains("<Setter Property=\"MotionEnabled\" Value=\"{DynamicResource GscToggleMotionEnabled}\"/>", production);
         Assert.Contains("GscOnAccentHoverOverlayBrush", production);

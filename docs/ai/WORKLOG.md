@@ -1,3 +1,11 @@
+## 2026-11-14 Round6 V16–V18 详情切换、Toast与加载交接
+
+任务详情与媒体预览选择变化合并到Render优先级，只处理最新对象，真实DataContext/Binding/命令保持一致。Toast新增/移除按实际受影响卡片平滑重排，移除同步`UpdateLayout`并修正中间卡片删除时顶部无关项位移；保留最多4条、通知计时和焦点。缩略图使用真实Loading状态；持续180ms才显示反馈，快响应不闪，解码和业务完成不延时。
+
+修正三处旧共享动效断言，跟进首次精确CI `399f048b` / run #1574（`43579451033`）记录的token契约漂移；没有删测试/扩大skip。SDK8.0.423 Release全量结果在Toast两处布局优化之前：0 warning/0 error、Core157/157、Worker407/407、Playnite2048项/1990通过/0失败/58既有skip、157个隔离WPF类完成。Toast与缩略图最终源码/测试重新编译后定向7/7通过。Source Validation、27份XAML结构检查及WPF静态审计通过。
+
+实现索引：[V16–V18复核](../design/reviews/ui-redesign-round6-20261113/evidence/V16-V18/README.md)。候选提交后的CI、精确Render QA仍待最终验证；没有运行真实Playnite或操作用户数据。V19–V20继续核验动画中断/降级并采集有时间戳的WPF动态样片。工作目录中其它Round4/Round5 TRX、TestResults和图像证据为原有未跟踪用户文件，本批未暂存或修改；生成输出置于仓库外D盘。
+
 ## 2026-11-14 Round6 V13–V15 动效节奏、切页与详情开合
 
 实现共享动效节奏令牌：hover 120ms、press 90ms、selection 160ms、页面 transition 180ms。共享按钮在动效启用时不再由 hover 基础触发器瞬间覆盖透明度；禁用动效仍直接到位。PageHost 内容切换保留在途渲染值，新页面用4 DIP位移和轻淡入从当前状态续接；Dashboard 内零散秒数统一到令牌。紧凑存档详情开合使用Opacity/Translate，不逐帧改宽高/边距；关闭时立即停止详情命中测试并转移焦点目标，完成后折叠；快速重开会取当前有效动画值，无排队或闪回。选择契约夹具验证所选版本跨开合仍保持。

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Playnite;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -19,6 +20,83 @@ namespace GameSaveCenter.Playnite.Tests;
 [Collection("NotificationInboxWpf")]
 public sealed class Round5ToastBehaviorTests
 {
+    [Fact]
+    public void ToastBurstReflowsTheVisibleStackWithoutTakingKeyboardFocus()
+    {
+        Exception? failure = null;
+        var thread = new Thread(() =>
+        {
+            Window? window = null;
+            DashboardView? dashboard = null;
+            var samples = new List<double>();
+            try
+            {
+                var plugin = (GameSaveCenterPlugin)FormatterServices.GetUninitializedObject(typeof(GameSaveCenterPlugin));
+                dashboard = new DashboardView(plugin, () => true, useMinimalDialogBehaviorFixture: true);
+                var root = (Grid)dashboard.Content;
+                var toastHost = new StackPanel { Width = 360, MaxWidth = 360, HorizontalAlignment = HorizontalAlignment.Right };
+                root.Children.Insert(0, toastHost);
+                typeof(DashboardView).GetField("ToastHost", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(dashboard, toastHost);
+                var production = new NotificationInboxView();
+                foreach (var key in new[] { "GscRedesignFeedbackToastCard", "GscRedesignFeedbackToastTitle", "GscRedesignFeedbackToastMessage", "GscButtonBase" })
+                    dashboard.Resources[key] = production.FindResource(key);
+
+                var focusProbe = new Button { Content = "保留焦点" };
+                root.Children.Add(focusProbe);
+                window = new Window { Content = dashboard, Width = 800, Height = 600, ShowInTaskbar = false, WindowStyle = WindowStyle.None, Opacity = 0.01 };
+                window.Show();
+
+                var showToast = typeof(DashboardView).GetMethod("ShowToast", BindingFlags.Instance | BindingFlags.NonPublic)!;
+                showToast.Invoke(dashboard, new object[] { "旧通知", "内容", UiNotificationKind.Information, "详情", false });
+                PumpDispatcherFor(TimeSpan.FromMilliseconds(300));
+                window.UpdateLayout();
+                Assert.True(focusProbe.Focus());
+                Assert.Same(focusProbe, Keyboard.FocusedElement);
+
+                var oldCard = Assert.IsAssignableFrom<Border>(Assert.Single(toastHost.Children.OfType<Border>()));
+                EventHandler onRendering = (_, _) =>
+                {
+                    if (oldCard.RenderTransform is TranslateTransform translate)
+                        samples.Add(translate.Y);
+                };
+                CompositionTarget.Rendering += onRendering;
+                try
+                {
+                    showToast.Invoke(dashboard, new object[] { "新通知", "内容", UiNotificationKind.Information, "详情", false });
+                    Assert.Same(focusProbe, Keyboard.FocusedElement);
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(300));
+                }
+                finally
+                {
+                    CompositionTarget.Rendering -= onRendering;
+                }
+
+                window.UpdateLayout();
+                Assert.Equal(new[] { "新通知", "旧通知" }, toastHost.Children.OfType<Border>().Select(GetToastTitle));
+                Assert.NotEmpty(samples);
+                Assert.Contains(samples, y => y < -2);
+                var finalTransform = Assert.IsType<TranslateTransform>(oldCard.RenderTransform);
+                Assert.InRange(finalTransform.Y, -0.5, 0.5);
+                Assert.Same(focusProbe, Keyboard.FocusedElement);
+            }
+            catch (Exception ex)
+            {
+                failure = ex;
+            }
+            finally
+            {
+                if (dashboard != null)
+                    typeof(DashboardView).GetMethod("ClearToasts", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(dashboard, null);
+                window?.Close();
+                Dispatcher.CurrentDispatcher.InvokeShutdown();
+            }
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
+        Assert.True(thread.Join(TimeSpan.FromSeconds(20)));
+        if (failure != null) throw new Xunit.Sdk.XunitException(failure.ToString());
+    }
+
     [Fact]
     public void ToastStackKeepsNewestFirstAndRetainsOrderWhileOneToastExits()
     {
@@ -62,16 +140,33 @@ public sealed class Round5ToastBehaviorTests
                 Assert.DoesNotContain(cards, card => !timers.ContainsKey(card));
 
                 var exiting = cards[1];
+                var unaffectedTopSamples = new List<double>();
+                var shiftedBelowSamples = new List<double>();
+                EventHandler onRendering = (_, _) =>
+                {
+                    unaffectedTopSamples.Add((cards[0].RenderTransform as TranslateTransform)?.Y ?? 0);
+                    shiftedBelowSamples.Add((cards[2].RenderTransform as TranslateTransform)?.Y ?? 0);
+                };
+                CompositionTarget.Rendering += onRendering;
                 var close = Assert.Single(((Grid)exiting.Child).Children.OfType<Button>());
-                close.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, close));
+                try
+                {
+                    close.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, close));
 
-                Assert.Equal(cards, toastHost.Children.OfType<Border>());
-                Assert.False(timers.ContainsKey(exiting));
-                PumpDispatcherFor(TimeSpan.FromMilliseconds(450));
+                    Assert.Equal(cards, toastHost.Children.OfType<Border>());
+                    Assert.False(timers.ContainsKey(exiting));
+                    PumpDispatcherFor(TimeSpan.FromMilliseconds(450));
+                }
+                finally
+                {
+                    CompositionTarget.Rendering -= onRendering;
+                }
 
                 var remaining = toastHost.Children.OfType<Border>().ToArray();
                 Assert.Equal(new[] { "通知 5", "通知 3", "通知 2" }, remaining.Select(GetToastTitle));
                 Assert.Equal(3, timers.Count);
+                Assert.Contains(shiftedBelowSamples, y => y > 2);
+                Assert.All(unaffectedTopSamples, y => Assert.InRange(y, -0.5, 0.5));
             }
             catch (Exception ex)
             {
