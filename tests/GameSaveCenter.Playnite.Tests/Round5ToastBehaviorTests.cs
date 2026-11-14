@@ -28,6 +28,7 @@ public sealed class Round5ToastBehaviorTests
         {
             Window? window = null;
             DashboardView? dashboard = null;
+            RuntimeMotionEvidence? motionEvidence = null;
             var samples = new List<double>();
             try
             {
@@ -54,6 +55,8 @@ public sealed class Round5ToastBehaviorTests
                 Assert.Same(focusProbe, Keyboard.FocusedElement);
 
                 var oldCard = Assert.IsAssignableFrom<Border>(Assert.Single(toastHost.Children.OfType<Border>()));
+                motionEvidence = new RuntimeMotionEvidence("toast-stack");
+                motionEvidence.Track("insert-reflow", oldCard);
                 EventHandler onRendering = (_, _) =>
                 {
                     if (oldCard.RenderTransform is TranslateTransform translate)
@@ -71,6 +74,8 @@ public sealed class Round5ToastBehaviorTests
                     CompositionTarget.Rendering -= onRendering;
                 }
 
+                motionEvidence.Track("settled", oldCard);
+                PumpDispatcherFor(TimeSpan.FromMilliseconds(40));
                 window.UpdateLayout();
                 Assert.Equal(new[] { "新通知", "旧通知" }, toastHost.Children.OfType<Border>().Select(GetToastTitle));
                 Assert.NotEmpty(samples);
@@ -85,6 +90,7 @@ public sealed class Round5ToastBehaviorTests
             }
             finally
             {
+                motionEvidence?.Dispose();
                 if (dashboard != null)
                     typeof(DashboardView).GetMethod("ClearToasts", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(dashboard, null);
                 window?.Close();

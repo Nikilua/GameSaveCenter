@@ -316,6 +316,7 @@ public sealed class R08MotionReverseBehaviorTests
         var reopened = false;
         var closeSettled = false;
         var selectionPreserved = false;
+        RuntimeMotionEvidence? motionEvidence = null;
         var thread = new Thread(() =>
         {
             Window? window = null;
@@ -349,6 +350,8 @@ public sealed class R08MotionReverseBehaviorTests
                 frame.Resources["GscMotionSelection"] = new Duration(TimeSpan.FromSeconds(1));
 
                 var translate = GscMotion.GetMutableTranslateTransform(frame);
+                motionEvidence = new RuntimeMotionEvidence("save-details");
+                motionEvidence.Track("details-open", frame);
                 openingSampled = ObserveRenderFrameUntil(
                     () => detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent)),
                     () => frame.Opacity > 0.05 && frame.Opacity < 0.95 && translate.Y > 0.1,
@@ -356,6 +359,9 @@ public sealed class R08MotionReverseBehaviorTests
                 Assert.True(openingSampled, "the compact save inspector entrance did not expose an intermediate opacity/offset");
                 selectionPreserved = ReferenceEquals(selected, grid.SelectedItem);
 
+                if (motionEvidence.Enabled)
+                    PumpDispatcher(TimeSpan.FromMilliseconds(120));
+                motionEvidence.Track("mid-flight-close-then-open", frame);
                 detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 closeOpacity = frame.Opacity;
                 closeOffset = translate.Y;
@@ -369,6 +375,7 @@ public sealed class R08MotionReverseBehaviorTests
                 Assert.InRange(Math.Abs(reopenOpacity - closeOpacity), 0, 0.05);
                 Assert.InRange(Math.Abs(reopenOffset - closeOffset), 0, 0.5);
 
+                motionEvidence.Track("reverse-open-settle", frame);
                 var reversalCompleted = ObserveRenderFrameUntil(
                     () =>
                     {
@@ -380,6 +387,7 @@ public sealed class R08MotionReverseBehaviorTests
                     },
                     TimeSpan.FromSeconds(2));
                 Assert.True(reversalCompleted, "the reversed inspector opening did not settle on its latest open target");
+                motionEvidence.Track("details-close", frame);
                 detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                 closeSettled = ObserveRenderFrameUntil(
                     () =>
@@ -390,6 +398,26 @@ public sealed class R08MotionReverseBehaviorTests
                     TimeSpan.FromSeconds(2));
                 Assert.True(closeSettled, "the inspector did not collapse after its exit animation completed");
                 selectionPreserved &= ReferenceEquals(selected, grid.SelectedItem);
+
+                // Simulate the native reduced-motion preference changing mid-flight.
+                // The production coordinator calls this normalization path on change.
+                detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                if (motionEvidence.Enabled)
+                    PumpDispatcher(TimeSpan.FromMilliseconds(80));
+                view.SystemMotionEnabledProviderForBehaviorTest = () => false;
+                view.NormalizeInspectorMotionIfDisabled();
+                motionEvidence.Track("reduced-motion-cancels-open-clock", frame);
+                Assert.Equal(Visibility.Visible, frame.Visibility);
+                Assert.Equal(1, frame.Opacity, 3);
+                Assert.Equal(0, translate.Y, 3);
+                Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
+                Assert.False(DependencyPropertyHelper.GetValueSource(translate, TranslateTransform.YProperty).IsAnimated);
+
+                detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                motionEvidence.Track("reduced-motion-close-is-immediate", frame);
+                Assert.Equal(Visibility.Collapsed, frame.Visibility);
+                Assert.True(frame.IsHitTestVisible);
+                Assert.False(DependencyPropertyHelper.GetValueSource(frame, UIElement.OpacityProperty).IsAnimated);
             }
             catch (Exception caught)
             {
@@ -397,6 +425,7 @@ public sealed class R08MotionReverseBehaviorTests
             }
             finally
             {
+                motionEvidence?.Dispose();
                 window?.Close();
             }
         });

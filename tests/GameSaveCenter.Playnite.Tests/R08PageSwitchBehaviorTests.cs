@@ -515,6 +515,7 @@ public sealed class R08PageSwitchBehaviorTests
     {
         Exception? exception = null;
         var observation = string.Empty;
+        RuntimeMotionEvidence? motionEvidence = null;
 
         var thread = new Thread(() =>
         {
@@ -576,6 +577,7 @@ public sealed class R08PageSwitchBehaviorTests
                     (RadioButton)shell.FindName("NavMaintenance")!
                 };
                 var pageHost = (ContentControl)shell.PageHostForAudit;
+                motionEvidence = new RuntimeMotionEvidence("page-navigation");
                 var title = (TextBlock)shell.FindName("PageTitleText")!;
                 var route = new[]
                 {
@@ -623,6 +625,10 @@ public sealed class R08PageSwitchBehaviorTests
                     // Changing IsChecked raises the real RadioButton Checked route and
                     // reaches production OnNavChecked; only Overview/Tasks are used so
                     // the isolated fixture cannot start game-scoped loads.
+                    if (completedRoutes == 0)
+                        motionEvidence.Track("overview-to-tasks", pageHost);
+                    else if (completedRoutes == 1)
+                        motionEvidence.Track("rapid-reverse-to-overview", pageHost);
                     navigation.IsChecked = true;
 
                     Assert.False(help.IsOpen);
@@ -665,6 +671,14 @@ public sealed class R08PageSwitchBehaviorTests
                         Assert.Equal(true, inspector.ReadLocalValue(UIElement.IsHitTestVisibleProperty));
                         Assert.False((bool)typeof(TaskCenterView).GetField("taskInspectorClosing", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(taskView)!);
                     }
+                    if (motionEvidence.Enabled && completedRoutes == 0)
+                        PumpDispatcherFor(TimeSpan.FromMilliseconds(95));
+                    else if (motionEvidence.Enabled && completedRoutes == 1)
+                    {
+                        PumpDispatcherFor(TimeSpan.FromMilliseconds(240));
+                        motionEvidence.Track("rapid-reverse-settled", pageHost);
+                        motionEvidence.Stop();
+                    }
                     completedRoutes++;
                 }
 
@@ -699,6 +713,7 @@ public sealed class R08PageSwitchBehaviorTests
             }
             finally
             {
+                motionEvidence?.Dispose();
                 window?.Close();
             }
         });
