@@ -23,6 +23,13 @@
     <Thickness x:Key="GscFocusRingThickness">2</Thickness>
     <sys:Double x:Key="GscDividerThickness">1</sys:Double>
 
+    <!-- Shared icon geometry is authored on a 24-unit view box; these values define
+         the rendered sizes and stroke weight used by inline actions and navigation. -->
+    <sys:Double x:Key="GscIconSizeDefault">24</sys:Double>
+    <sys:Double x:Key="GscIconSizeAction">18</sys:Double>
+    <Thickness x:Key="GscIconInlineGapThickness">0,0,4,0</Thickness>
+    <sys:Double x:Key="GscIconStrokeThickness">1.8</sys:Double>
+
     <Style x:Key="GscHorizontalDivider" TargetType="Border">
         <Setter Property="Height" Value="{StaticResource GscDividerThickness}"/>
         <Setter Property="Background" Value="{DynamicResource GscDividerBrush}"/>

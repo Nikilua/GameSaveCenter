@@ -13738,3 +13738,13 @@ GitHub run #1564（`43391873169`）head SHA准确为008；基线job `13177349095
 P1本地门禁收口；A03/A04真实输入与帧、A09同会话宿主、A10代表规模宿主仍待条件，required-checks名单仍因既有403未验证。16项仍为去重后的候选计划，不是确认缺陷列表。
 
 本阶段拟清理 `.tmp/scripts-build-008b-build`（711文件 / 162,910,383 bytes）、`.tmp/scripts-build-008b-tests`（32 / 12,278,656 bytes）及3个自有PowerShell辅助脚本（3 / 3,334 bytes）。五个目标规范化均在仓库 `.tmp`、当前用户所有、0重解析点、无跟踪文档路径引用，构建/Playnite进程均已退出。精确 `Remove-Item -LiteralPath -Recurse -Force` 调用被自动审查以 `blocked by policy` 拒绝，执行前中止；目标仍存在，不绕过。C/D空闲尝试前为5,118,636,032 / 15,957,209,088 bytes，拒绝后为5,117,407,232 / 15,957,209,088 bytes；没有文件被删除，空间变动不归因于清理。保留 `.tmp/e008-profile` 配置、`.tmp/e008-build`（安装报告记录）、当前包/审计/TRX；用户或其他任务的TestResults、TRX、配置、存档及未知数据未触碰。
+
+## 2026-11-14 Round6 V09–V11共享控件
+
+依仓库Demo-first规则检查同级 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/`。Demo以Segoe UI Variable Text/Display为UI/标题字体；本批将生产字阶改为同一优先级，保留Microsoft YaHei UI及可选Noto CJK回退，不打包字体。共享action icon改为18px/1.8 stroke，图标与文字间距4px且维持原action grouping总宽；WPF-UI按钮角按Demo RadiusM统一为10px并保留既有Focus/Hover/Pressed/Busy overlay；将ComboBox和Tooltip浮层收敛到共享表面资源，降低普通主题按钮边界alpha，高对比和关闭玻璃仍走不透明回退。更新资源测试以验证Demo字阶，不移除行为检查。Worker UTF-8 子进程测试改用临时UTF-8文件经`cmd.exe type`读取，避免PowerShell SDK子进程超时/代码页差异；仍断言实际UTF-8内容。
+
+通过 `scripts/render-round6-evidence.ps1` 对存档生产XAML运行Baseline（8张）及StateFixtures（270张），固定时间`2026-11-13T00:00:00Z`，WinSta0私有桌面采样、输入桌面始终Default。以V05–V08的after图作前态，8组对照保持合成数据、主题、窗口DIP及缩放相同；客户区分别744×460/1276×660像素。正文/详情字形、action icon和按钮轮廓均有可见变化；差异范围与图像复核记录待归档于[V09–V11证据](../design/reviews/ui-redesign-round6-20261113/evidence/V09-V11/README.md)。静态截图只证明WPF受控外观，动画动态证据留在V20，未宣称真实Playnite体验。
+
+本阶段SDK8.0.423 / Release `scripts/build.cmd` exit0：0 warning/0 error；Core157/157、Worker407/407、Playnite2044项/1986通过/0失败/58既有skip、WPF157/157隔离类。`python scripts/validate-source.py`通过；WPF静态审查27个生产XAML/0 error/26 warning/164 info；`scripts/render-qa.ps1` 334 PNG、0 `PROBLEM`、`render-qa OK`、exit0；`git diff --check`通过。build原始诊断位于本机`artifacts/build-diagnostics/20261114T072026043Z-d6e0f13f`，未加入Git。
+
+本阶段不启动Playnite前台，不读取真实库/配置/存档，不运行恢复、删除或云写。清理规则沿用此前精确`Remove-Item -LiteralPath -Recurse -Force`被自动审查拒绝的边界；本批`.tmp/round6-v09-v11-*`渲染输出和`artifacts/build-diagnostics`保留在本机，未使用其他工具绕过，也不会提交。未暂存其他任务留下的TRX、TestResults及Round5证据目录。

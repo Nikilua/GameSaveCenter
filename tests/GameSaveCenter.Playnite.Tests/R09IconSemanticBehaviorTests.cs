@@ -34,8 +34,9 @@ public sealed class R09IconSemanticBehaviorTests
         {
             var resources = LoadIconPack();
             var style = Assert.IsType<Style>(resources["GscActionIcon"]);
-            Assert.Equal(16d, SetterValue<double>(style, FrameworkElement.WidthProperty));
-            Assert.Equal(16d, SetterValue<double>(style, FrameworkElement.HeightProperty));
+            Assert.Equal(18d, SetterValue<double>(style, FrameworkElement.WidthProperty));
+            Assert.Equal(18d, SetterValue<double>(style, FrameworkElement.HeightProperty));
+            Assert.Equal(new Thickness(0, 0, 4, 0), SetterValue<Thickness>(style, FrameworkElement.MarginProperty));
 
             foreach (var pair in SemanticIcons)
             {
@@ -103,8 +104,8 @@ public sealed class R09IconSemanticBehaviorTests
                     window.UpdateLayout();
                     Assert.Same(geometry, icon.IconData);
                     Assert.Equal(Visibility.Visible, icon.Visibility);
-                    Assert.Equal(16d, icon.ActualWidth, 0.1d);
-                    Assert.Equal(16d, icon.ActualHeight, 0.1d);
+                    Assert.Equal(18d, icon.ActualWidth, 0.1d);
+                    Assert.Equal(18d, icon.ActualHeight, 0.1d);
                 }
                 finally
                 {

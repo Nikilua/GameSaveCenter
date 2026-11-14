@@ -1,10 +1,12 @@
 ## 当前事实入口（Round6 V01–V12，2026-11-14）
 
-Round6 V01–V04基线和设计规格、V05–V08存档页实现与V12正式对比评审均已完成；下一阶段按计划改共享字体/图标、按钮/输入和表面/浮层。当前存档页以当前游戏名、匹配/保护状态与版本数为首屏对象区；扫描/备份主动作与校验/刷新分层；搜索仅作用于已载入历史元数据；宽屏表格/详情按2:1分配，详情将摘要、来源和恢复可用性分组。功能命令、恢复安全提示、选择和滚动模型均保留。八种双主题/尺寸/开合组合的同数据前后原图及并排图、运行身份、Render QA与SHA已归档于[Round 6 评审](../design/reviews/ui-redesign-round6-20261113/README.md#v05-v08-存档页首屏与详情示范)。
+V01–V04基线和设计规格、V05–V08存档页重构及V12前后评审已完成；V09–V11共享字阶/图标、按钮和浮层样式已实现并通过本地全门禁。Demo-first依据是同级目录的 `GameSaveCenter.AcrylicFork/src/GameSaveCenter.Playnite/Design/`：生产字体现在优先采用 Demo 的 Segoe UI Variable Text/Display，保留 Windows 与可选中文回退；共享 action icon 18px、图文间距4px，按钮控制角10px；ComboBox/Tooltip浮层统一走共享主题资源。页面命令、Binding、忙碌占位、键盘/UIA、虚拟化、当前游戏选框、滚动条及恢复安全语义均保留。
 
-SDK8.0.423 / Release 全构建0 warning/0 error；Core 157/157、Worker 407/407、Playnite 2,044项中1,986通过/0失败/58个既有跳过，157/157个WPF隔离类。全量 Render QA 精确复跑候选6a7b01b3：408 PNG、0 PROBLEM、`render-qa OK`；来源/差异检查通过；WPF生产项目静态审查26个XAML、0 errors/26 warnings/164 info。受控存档页截图覆盖1040×700与1600×900 DIP、双主题、常规/详情状态；页面在 WinSta0 私有桌面采样且输入桌面保持Default。GitHub run #1570（`43478597342`）当前对精确源码提交6a7b01b3运行中，两个适用job尚未结束；最终候选仍须完成指定根入口与独立build门禁并复核精确CI。
+V09–V11截图以相同合成数据、UTC时间、主题、窗口和DIP缩放对比V05–V08后的生产XAML。8组覆盖浅深主题、1040×700与1600×900、常规和详情打开；受控运行在WinSta0私有桌面，输入桌面保持Default。客户区像素为744×460与1276×660；图像差异和逐项评审见[V09–V11证据](../design/reviews/ui-redesign-round6-20261113/evidence/V09-V11/README.md)。这些截图只说明受控WPF渲染，不表示真实Playnite前台、物理DPI、实体输入或帧率。
 
-下一批V09–V11改共享字体/图标、按钮/输入、表面/浮层，然后推进V13–V20动效与动态证据，再按V21–V24推广任务、媒体、概览和设置。现有图像及Render QA只证明受控WPF离屏效果，不证明真实Playnite前台、物理DPI、实体输入或帧率。旧宿主/权限边界继续保留；本阶段未读取真实游戏库/存档/配置，未执行恢复、删除或云写。PowerShell清理 `.tmp/round6-v05-before-worktree` 及8张重复并排中间图均被执行策略拒绝，没有使用其他工具绕过；本地保留路径与未删除文件事实见工作日志。
+SDK8.0.423 / Release：全构建0 warning/0 error、exit0；Core 157/157，Worker 407/407，Playnite 2,044项中1,986通过、0失败、58个既有skip，157/157个WPF隔离类。`python scripts/validate-source.py`通过；WPF静态审查27个生产XAML、0 error/26 warning/164 info；全量Render QA 334 PNG、0 `PROBLEM`、`render-qa OK`。本阶段未运行真实Playnite宿主；用户数据、配置、存档和云端均未访问/写入。
+
+下一批推进V13–V20微交互、切页、详情开合、浮层/加载交接和实际动态证据；之后V21–V24推广任务、媒体、概览和设置。最终V25–V28仍须冻结候选，运行中文根入口完整安装链及独立`scripts/build.cmd`，复核精确提交的GitHub适用CI job。清理限制和未触碰的其他任务TRX/用户文件沿用下方历史记录。
 
 ## Round5 / P1 历史交接基线（2026-11-13）
 

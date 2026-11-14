@@ -157,6 +157,7 @@ public sealed class UiFinesseRound2ControlSourceTests
     {
         var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");
         var production = Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
+        var floating = Read("src", "GameSaveCenter.Playnite", "Themes", "FloatingSurfaceStyles.xaml");
 
         foreach (var template in new[] { tokens, production })
         {
@@ -165,10 +166,12 @@ public sealed class UiFinesseRound2ControlSourceTests
             Assert.Contains("StaysOpen=\"False\"", template);
             Assert.Contains("AllowsTransparency=\"{DynamicResource GscPopupAllowsTransparency}\"", template);
             Assert.Contains("PopupAnimation=\"{DynamicResource GscPopupAnimation}\"", template);
-            Assert.Contains("Background=\"{DynamicResource GscPopupBrush}\"", template);
-            Assert.Contains("Effect=\"{DynamicResource GscPopupEffect}\"", template);
         }
 
+        Assert.Contains("Background=\"{DynamicResource GscPopupBrush}\"", tokens);
+        Assert.Contains("Style=\"{StaticResource GscWpfUiFloatingSurface}\"", production);
+        Assert.Contains("Background\" Value=\"{DynamicResource GscPopupBrush}\"", floating);
+        Assert.Contains("Effect\" Value=\"{DynamicResource GscPopupEffect}\"", floating);
         Assert.Contains("MaxHeight=\"320\"", tokens);
         Assert.Contains("MaxHeight=\"{TemplateBinding MaxDropDownHeight}\"", production);
         Assert.Contains("VerticalScrollBarVisibility=\"Auto\"", tokens);
@@ -223,13 +226,23 @@ public sealed class UiFinesseRound2ControlSourceTests
     {
         var tokens = Read("src", "GameSaveCenter.Playnite", "Themes", "DesignTokens.xaml");
         var production = Read("src", "GameSaveCenter.Playnite", "Themes", "WpfUiProduction.xaml");
+        var geometry = Read("src", "GameSaveCenter.Playnite", "Themes", "GeometryTokens.xaml");
+        var icons = Read("src", "GameSaveCenter.Playnite", "Themes", "GscIconPack.xaml");
+        var floating = Read("src", "GameSaveCenter.Playnite", "Themes", "FloatingSurfaceStyles.xaml");
+        var acrylic = Read("src", "GameSaveCenter.Playnite", "Themes", "AcrylicReferenceControls.xaml");
         var redesign = Read("src", "GameSaveCenter.Playnite", "Themes", "Redesign.xaml");
         var dashboard = Read("src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml.cs");
 
         Assert.Contains("AllowsTransparency=\"{DynamicResource GscPopupAllowsTransparency}\"", production);
         Assert.Contains("PopupAnimation=\"{DynamicResource GscPopupAnimation}\"", production);
-        Assert.Contains("Background=\"{DynamicResource GscPopupBrush}\"", production);
-        Assert.Contains("Effect=\"{DynamicResource GscPopupEffect}\"", production);
+        Assert.Contains("Style=\"{StaticResource GscWpfUiFloatingSurface}\"", production);
+        Assert.Contains("Effect=\"{DynamicResource GscPopupEffect}\"", acrylic);
+        Assert.Contains("Background\" Value=\"{DynamicResource GscPopupBrush}\"", floating);
+        Assert.Contains("Effect\" Value=\"{DynamicResource GscPopupEffect}\"", floating);
+        Assert.Contains("HasDropShadow\" Value=\"False\"", acrylic);
+        Assert.Contains("CornerRadius=\"{TemplateBinding ui:Button.CornerRadius}\"", production);
+        Assert.Contains("GscIconSizeAction\">18</sys:Double>", geometry);
+        Assert.Contains("GscIconInlineGapThickness", icons);
         Assert.Contains("<Style TargetType=\"ToolTip\">", tokens);
         Assert.Contains("Background\" Value=\"{DynamicResource GscPopupBrush}\"", tokens);
         Assert.Contains("Effect\" Value=\"{DynamicResource GscDialogEffect}\"", redesign);

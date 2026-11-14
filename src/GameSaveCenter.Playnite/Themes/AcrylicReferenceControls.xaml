@@ -6,14 +6,13 @@
          必须在自身字典作用域内可解析，不能依赖宿主/页面合并的 Resources。 -->
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GeometryTokens.xaml"/>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/FloatingSurfaceStyles.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/MotionTokens.xaml"/>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceTokens.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
-    <!-- 公用阴影效果（供下方模板 StaticResource 引用，需词法先行） -->
-    <DropShadowEffect x:Key="PopupShadow" Color="{DynamicResource ShadowColor}" BlurRadius="24" ShadowDepth="6" Direction="270" Opacity="1"/>
     <DropShadowEffect x:Key="WindowShadow" Color="{DynamicResource WindowShadowColor}" BlurRadius="34" ShadowDepth="0" Direction="270" Opacity="1"/>
 
     <!-- ══════════════════════════ 文字 ══════════════════════════ -->
@@ -93,19 +92,15 @@
     </Style>
 
     <Style x:Key="LabFloating" TargetType="Border">
-        <Setter Property="Background" Value="{DynamicResource FloatingFillBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource FloatingStrokeBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
-        <Setter Property="CornerRadius" Value="{StaticResource RadiusXL}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource GscGeometryCornerTable}"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="TextElement.FontFamily" Value="{StaticResource UiFont}"/>
-        <Setter Property="TextElement.Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect Color="{DynamicResource ShadowColor}" BlurRadius="28" ShadowDepth="8" Direction="270" Opacity="1"/>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="Effect" Value="{DynamicResource GscPopupEffect}"/>
     </Style>
 
     <Style x:Key="LabDividerH" TargetType="Rectangle">
@@ -134,7 +129,7 @@
         <Setter Property="Padding" Value="16,0"/>
         <Setter Property="MinWidth" Value="72"/>
         <Setter Property="Background" Value="{DynamicResource BtnFillBrush}"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
         <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
         <Setter Property="FontSize" Value="{StaticResource SizeBody}"/>
         <Setter Property="FontWeight" Value="Medium"/>
@@ -621,12 +616,10 @@
                                    Foreground="{DynamicResource TextTertiaryBrush}"
                                    VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,12,0"/>
                         <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom"
-                               AllowsTransparency="True" PopupAnimation="Fade" Margin="0,6,0,0" StaysOpen="False">
-                            <Border Background="{DynamicResource FloatingFillBrush}"
-                                    BorderBrush="{DynamicResource FloatingStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}"
-                                    CornerRadius="{StaticResource RadiusL}" Padding="4"
-                                    MinWidth="{TemplateBinding ActualWidth}" MaxHeight="320"
-                                    Effect="{StaticResource PopupShadow}">
+                               AllowsTransparency="{DynamicResource GscPopupAllowsTransparency}"
+                               PopupAnimation="{DynamicResource GscPopupAnimation}" Margin="0,6,0,0" StaysOpen="False">
+                            <Border Style="{StaticResource GscWpfUiFloatingSurface}"
+                                    Padding="4" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="320">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                                     <ItemsPresenter/>
                                 </ScrollViewer>
@@ -1087,18 +1080,18 @@
 
     <Style TargetType="ToolTip">
         <Setter Property="Focusable" Value="False"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
-        <Setter Property="FontFamily" Value="{StaticResource UiFont}"/>
-        <Setter Property="FontSize" Value="{StaticResource SizeCaption}"/>
-        <Setter Property="Background" Value="{DynamicResource FloatingFillBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource FloatingStrokeBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource GscUiFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource GscCaptionFontSize}"/>
+        <Setter Property="Background" Value="{DynamicResource GscPopupBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GscGlassStrokeBrush}"/>
         <Setter Property="BorderThickness" Value="{StaticResource GscHairlineThickness}"/>
         <Setter Property="Padding" Value="10,7"/>
         <Setter Property="Placement" Value="Mouse"/>
         <Setter Property="HorizontalOffset" Value="0"/>
         <Setter Property="VerticalOffset" Value="4"/>
         <Setter Property="MaxWidth" Value="420"/>
-        <Setter Property="HasDropShadow" Value="True"/>
+        <Setter Property="HasDropShadow" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToolTip">
@@ -1107,11 +1100,12 @@
                             <TextBlock Text="{Binding}" TextWrapping="Wrap" TextTrimming="None"/>
                         </DataTemplate>
                     </ControlTemplate.Resources>
-                    <Border CornerRadius="8" Padding="{TemplateBinding Padding}"
+                    <Border CornerRadius="{DynamicResource GscGeometryCornerSmall}"
+                            Padding="{TemplateBinding Padding}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                             MaxWidth="{TemplateBinding MaxWidth}"
-                            Effect="{StaticResource PopupShadow}">
+                            Effect="{DynamicResource GscPopupEffect}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>

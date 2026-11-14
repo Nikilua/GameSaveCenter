@@ -75,6 +75,7 @@ public sealed class ProductionShellChromeSourceTests
         var shellCode = ReadSource("src", "GameSaveCenter.Playnite", "Views", "AcrylicProductionShellView.xaml.cs");
         var settingsCode = ReadSource("src", "GameSaveCenter.Playnite", "Settings", "GameSaveCenterSettings.cs");
         var resources = ReadSource("src", "GameSaveCenter.Playnite", "Themes", "AcrylicProductionResources.xaml");
+        var geometry = ReadSource("src", "GameSaveCenter.Playnite", "Themes", "GeometryTokens.xaml");
 
         Assert.Contains("x:Name=\"SidebarColumn\" Width=\"270\"", shell);
         Assert.Contains("CacheMode=\"BitmapCache\"", shell);
@@ -89,7 +90,9 @@ public sealed class ProductionShellChromeSourceTests
         Assert.DoesNotContain("Text=\"收起侧栏\"", shell);
         Assert.Contains("Property=\"Width\" Value=\"32\"", resources);
         Assert.Contains("Property=\"Height\" Value=\"32\"", resources);
-        Assert.Contains("CornerRadius=\"16\"", resources);
+        Assert.Contains("ui:Button.CornerRadius\" Value=\"{StaticResource GscGeometryCornerCard}\"", resources);
+        Assert.Contains("CornerRadius=\"{TemplateBinding ui:Button.CornerRadius}\"", resources);
+        Assert.Contains("<CornerRadius x:Key=\"GscGeometryCornerCard\">16</CornerRadius>", geometry);
         Assert.Contains("Background\" Value=\"Transparent\"", resources);
         Assert.Contains("Click=\"OnSidebarCollapseClick\"", shell);
         Assert.Contains("AutomationProperties.Name=\"收起导航栏\"", shell);

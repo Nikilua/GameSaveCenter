@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <!-- Inter supplies the compact Latin/numeric rhythm; Noto Sans SC is preferred when
-         installed for Chinese glyphs, with Windows UI fonts as dependable Playnite fallbacks. -->
-    <FontFamily x:Key="GscUiFontFamily">Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei</FontFamily>
-    <FontFamily x:Key="GscDisplayFontFamily">Inter, Segoe UI Variable Display, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei</FontFamily>
-    <FontFamily x:Key="GscNumericFontFamily">Inter, Segoe UI Variable Text, Segoe UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei</FontFamily>
-    <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei UI, Microsoft YaHei</FontFamily>
+    <!-- Follow the approved Demo's Windows UI typeface rhythm. Optional CJK families stay
+         as fallbacks, with installed Windows fonts available on every Playnite host. -->
+    <FontFamily x:Key="GscUiFontFamily">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei</FontFamily>
+    <FontFamily x:Key="GscDisplayFontFamily">Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei</FontFamily>
+    <FontFamily x:Key="GscNumericFontFamily">Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei</FontFamily>
+    <FontFamily x:Key="GscCodeFontFamily">Cascadia Mono, Consolas, Microsoft YaHei UI, Noto Sans SC, Noto Sans CJK SC, Microsoft YaHei</FontFamily>
 
     <sys:Double x:Key="GscPageTitleFontSize">22</sys:Double>
     <sys:Double x:Key="GscDisplayTitleFontSize">28</sys:Double>

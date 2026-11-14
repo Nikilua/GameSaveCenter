@@ -55,7 +55,7 @@ public sealed class R09FocusOutlineBehaviorTests
                 var focusOverlay = Assert.IsType<Border>(button.Template.FindName("FocusOverlay", button));
                 Assert.True(button.IsKeyboardFocusWithin);
                 Assert.Equal(1d, focusOverlay.Opacity);
-                Assert.Equal(new CornerRadius(14), focusOverlay.CornerRadius);
+                Assert.Equal(new CornerRadius(10), focusOverlay.CornerRadius);
                 Assert.Equal(chrome.CornerRadius, focusOverlay.CornerRadius);
                 Assert.True(chrome.ClipToBounds);
                 Assert.False(focusOverlay.IsHitTestVisible);

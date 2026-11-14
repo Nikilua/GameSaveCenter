@@ -359,7 +359,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             resources["GscButtonGlassBorderBrush"] = Brush(
                 palette.IsHighContrast || !palette.GlassEnabled
                     ? Opaque(palette.ControlStroke)
-                    : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.22 : 0.16));
+                    : WithAlpha(Opaque(palette.PrimaryText), palette.IsDark ? 0.16 : 0.12));
             // A primary CTA is text-bearing chrome, not ambient material. Keeping both
             // gradient stops opaque prevents a bright/dark artwork or glass backdrop from
             // changing the effective OnAccent contrast at the stop or midpoint of the button.

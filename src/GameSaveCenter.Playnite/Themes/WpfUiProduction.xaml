@@ -6,6 +6,7 @@
                     xmlns:contracts="clr-namespace:GameSaveCenter.Contracts;assembly=GameSaveCenter.Contracts">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/GeometryTokens.xaml"/>
+        <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/FloatingSurfaceStyles.xaml"/>
         <!-- StaticResource resolution happens while this dictionary is parsed. Keep WPF-UI's
              type-keyed defaults in the same resource scope as the production adapters; a
              sibling merge at the UserControl level is too late in Playnite's XAML loader. -->
@@ -16,6 +17,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <converters:ViewportInsetWidthConverter x:Key="GscViewportInsetWidthConverter"/>
+
     <converters:ViewportInsetClipGeometryConverter x:Key="GscViewportInsetClipGeometryConverter"/>
     <converters:ViewportSelectionFrameMarginConverter x:Key="GscViewportSelectionFrameMarginConverter"/>
 
@@ -69,7 +71,7 @@
     <ControlTemplate x:Key="GscWpfUiTextBoxTemplate" TargetType="TextBox">
         <Grid x:Name="InputChromeRoot">
             <Border x:Name="Chrome"
-                    CornerRadius="10"
+                    CornerRadius="{StaticResource GscGeometryCornerControl}"
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
@@ -94,7 +96,7 @@
             <!-- Keep the two-DIP validation stroke out of content measurement.
                  Opacity changes rendering only; padding and the native host stay fixed. -->
             <Border x:Name="ValidationStroke"
-                    CornerRadius="10"
+                    CornerRadius="{StaticResource GscGeometryCornerControl}"
                     BorderBrush="{DynamicResource GscErrorBrush}"
                     BorderThickness="2"
                     Opacity="0"
@@ -138,7 +140,7 @@
                 <ToggleButton.Template>
                     <ControlTemplate TargetType="ToggleButton">
                         <Border x:Name="Chrome"
-                                CornerRadius="10"
+                                CornerRadius="{StaticResource GscGeometryCornerControl}"
                                 Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                 BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                 BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource AncestorType=ComboBox}}">
@@ -222,15 +224,11 @@
                    Focusable="False"
                    StaysOpen="False"
                    PopupAnimation="{DynamicResource GscPopupAnimation}">
-                <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                <Border Style="{StaticResource GscWpfUiFloatingSurface}"
+                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                         MaxHeight="{TemplateBinding MaxDropDownHeight}"
                         Margin="0,6,0,8"
-                        Padding="5"
-                        Background="{DynamicResource GscPopupBrush}"
-                        BorderBrush="{DynamicResource GscGlassStrokeBrush}"
-                        BorderThickness="{StaticResource GscHairlineThickness}"
-                        CornerRadius="11"
-                        Effect="{DynamicResource GscPopupEffect}">
+                        Padding="5">
                     <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
                         <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
                     </ScrollViewer>
@@ -1006,7 +1004,7 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="ContentTemplate" Value="{x:Null}"/>
         <Setter Property="ContentTemplateSelector" Value="{StaticResource GscWpfUiButtonContentTemplateSelector}"/>
-        <Setter Property="ui:Button.CornerRadius" Value="14"/>
+        <Setter Property="ui:Button.CornerRadius" Value="{StaticResource GscGeometryCornerControl}"/>
         <!-- Use the shared button glass surface for every existing ui:Button style. Pages already
              inherit this primitive, so the visual refresh is applied consistently without
              renaming hundreds of command bindings or changing their layout contracts. -->
@@ -1031,7 +1029,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="0"
-                            CornerRadius="14"
+                            CornerRadius="{TemplateBinding ui:Button.CornerRadius}"
                             ClipToBounds="True"
                             SnapsToDevicePixels="True">
                         <Grid ClipToBounds="True">
@@ -1039,19 +1037,19 @@
                                  adorner remains active as the high-contrast keyboard ring. -->
                             <Border x:Name="FocusOverlay"
                                     Background="{DynamicResource GscAccentTintBrush}"
-                                    CornerRadius="14"
+                                    CornerRadius="{TemplateBinding ui:Button.CornerRadius}"
                                     Opacity="0"
                                     IsHitTestVisible="False"/>
                             <!-- Demo LabBtn state layers animate only overlay opacity, never
                                  layout dimensions, and now cover the entire rounded chrome. -->
                             <Border x:Name="HoverOverlay"
                                     Background="{DynamicResource GscAccentTintBrush}"
-                                    CornerRadius="14"
+                                    CornerRadius="{TemplateBinding ui:Button.CornerRadius}"
                                     Opacity="0"
                                     IsHitTestVisible="False"/>
                             <Border x:Name="PressedOverlay"
                                     Background="{DynamicResource GscAccentTintStrongBrush}"
-                                    CornerRadius="14"
+                                    CornerRadius="{TemplateBinding ui:Button.CornerRadius}"
                                     Opacity="0"
                                     IsHitTestVisible="False"/>
                             <!-- Busy is an overlay rather than a content swap: the command's
@@ -1518,7 +1516,7 @@
          its focus, hover, pressed and disabled behavior while hiding only the text chrome. -->
     <Style x:Key="GscIconOnlyButtonBase" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscWpfUiButton}">
         <Setter Property="Width" Value="34"/><Setter Property="Height" Value="34"/><Setter Property="MinWidth" Value="34"/><Setter Property="MinHeight" Value="34"/><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,6,0"/>
-        <Setter Property="ContentTemplate" Value="{x:Null}"/><Setter Property="ui:Button.CornerRadius" Value="12"/><Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
+        <Setter Property="ContentTemplate" Value="{x:Null}"/><Setter Property="ui:Button.CornerRadius" Value="{StaticResource GscGeometryCornerControl}"/><Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
         <Setter Property="Background" Value="{DynamicResource GscControlFillBrush}"/><Setter Property="BorderBrush" Value="{DynamicResource GscControlStrokeBrush}"/>
     </Style>
     <Style x:Key="GscIconOnlyToolbarButton" TargetType="{x:Type ui:Button}" BasedOn="{StaticResource GscIconOnlyButtonBase}"><Setter Property="Width" Value="36"/><Setter Property="Height" Value="36"/></Style>

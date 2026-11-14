@@ -25,23 +25,33 @@ public sealed class ExternalProcessRunnerTests
     [Fact]
     public async Task Utf8OutputIsDecodedAsUtf8()
     {
-        var powershell = GetPowerShellPath();
-        if (!File.Exists(powershell)) return;
+        var commandProcessor = Path.Combine(Environment.SystemDirectory, "cmd.exe");
+        if (!File.Exists(commandProcessor)) return;
         var runner = new ExternalProcessRunner(NullLogger<ExternalProcessRunner>.Instance);
+        var outputFile = Path.Combine(AppContext.BaseDirectory, $"gsc-utf8-{Guid.NewGuid():N}.txt");
+        await File.WriteAllTextAsync(outputFile, "中文错误", new System.Text.UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
 
-        var result = await runner.RunAsync(
-            powershell,
-            new[]
-            {
-                "-NoProfile",
-                "-Command",
-                "[Console]::OutputEncoding=[Text.Encoding]::UTF8; Write-Output '中文错误'"
-            },
-            null,
-            TimeSpan.FromSeconds(30),
-            CancellationToken.None);
+        try
+        {
+            var result = await runner.RunAsync(
+                commandProcessor,
+                new[]
+                {
+                    "/d",
+                    "/c",
+                    $"type {outputFile}"
+                },
+                null,
+                TimeSpan.FromSeconds(30),
+                CancellationToken.None);
 
-        Assert.Contains("中文错误", result.StandardOutput);
+            Assert.True(result.Success, result.StandardError);
+            Assert.Contains("中文错误", result.StandardOutput);
+        }
+        finally
+        {
+            File.Delete(outputFile);
+        }
     }
 
     [Fact]

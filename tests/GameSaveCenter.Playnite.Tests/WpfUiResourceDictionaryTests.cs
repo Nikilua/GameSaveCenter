@@ -383,6 +383,8 @@ public sealed class WpfUiResourceDictionaryTests
                 factoryType.GetMethod("ApplyWpfUiResources", BindingFlags.Public | BindingFlags.Static)!.Invoke(
                     null,
                     new object[] { localResources, palette });
+                var buttonGlassBorder = Assert.IsType<SolidColorBrush>(localResources["GscButtonGlassBorderBrush"]);
+                Assert.Equal((byte)31, buttonGlassBorder.Color.A);
                 var wpfUiAccent = Assert.IsType<SolidColorBrush>(localResources["AccentFillColorDefaultBrush"]);
                 var wpfUiText = Assert.IsType<SolidColorBrush>(localResources["TextOnAccentFillColorPrimaryBrush"]);
                 Assert.Equal(hostAccent, wpfUiAccent.Color);
@@ -660,9 +662,12 @@ public sealed class WpfUiResourceDictionaryTests
         Assert.IsType<ControlTemplate>(resources!["GscWpfUiTextBoxTemplate"]);
         Assert.IsType<ControlTemplate>(resources["GscWpfUiComboBoxTemplate"]);
         Assert.True(resources.Contains(typeof(ComboBoxItem)), "The local ComboBoxItem style must win over a bright host popup style.");
+        Assert.IsType<Style>(resources["GscWpfUiFloatingSurface"]);
 
         var buttonStyle = Assert.IsType<Style>(resources["GscWpfUiButton"]);
-        Assert.Contains(buttonStyle.Setters.OfType<Setter>(), setter => setter.Property.Name == "CornerRadius");
+        Assert.Contains(buttonStyle.Setters.OfType<Setter>(), setter =>
+            setter.Property.Name == "CornerRadius" &&
+            setter.Value is CornerRadius radius && radius == new CornerRadius(10));
         var comboStyle = Assert.IsType<Style>(resources["GscWpfUiComboBox"]);
         Assert.Contains(comboStyle.Setters.OfType<Setter>(), setter => setter.Property.Name == "Template");
     }
@@ -5755,7 +5760,8 @@ public sealed class WpfUiResourceDictionaryTests
 
         Assert.Contains("Themes/Typography.xaml", tokens);
         Assert.Contains("Noto Sans SC", typography);
-        Assert.Contains("Inter, Segoe UI Variable Text", typography);
+        Assert.Contains("Segoe UI Variable Text, Segoe UI, Microsoft YaHei UI", typography);
+        Assert.Contains("Segoe UI Variable Display, Segoe UI, Microsoft YaHei UI", typography);
         Assert.Contains("x:Key=\"GscPageTitleFontSize\">22", typography);
         Assert.Contains("x:Key=\"GscDisplayTitleFontSize\">28", typography);
         Assert.Contains("x:Key=\"GscSectionFontSize\">16", typography);
