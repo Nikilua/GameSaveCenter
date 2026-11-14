@@ -1,3 +1,11 @@
+# 最新接续：Round 6 V01–V28（2026-11-14）
+
+当前候选 9880c81be09365d02b9335a633be95506095c8d9 已完成页面推广和最终候选门禁。继续审查前先读 [Round6实施账本](design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md) 与 [V21–V28交付证据](design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/README.md)。直接可见的同尺寸对照和动态播放器均从该证据索引打开。
+
+两个本地入口 SDK8.0.423/Release 退出码均为0，2,051项测试、1,993通过、58 skip、0失败；GitHub run #1579 的基线与SDK10.0.401 job全成功。隔离Playnite启动停在首次配置向导，插件UI、真实库、物理DPI和真实桌面输入未验。动态播放器回放真实WPF采样，不是录屏；详情轨迹有效可见性为false。CUA内核初始化失败，未使用替代自动化路线。清理 .tmp/round6-v27-rootbuild 被策略拒绝并保留，没有绕过。
+
+旧真实宿主/权限待验边界继续有效，不阻止后续独立页面改造。不要把受控RenderHarness截图/属性采样写成真实Playnite前台或物理帧证据；不要清理用户或其他任务TRX/TestResults、配置、存档、云端或未知文件。纯文档后按规则只做必要静态/链接/diff检查，不为文档CI通过循环提交记录。
+
 ## 当前交接（Round6 V01–V04，2026-11-13）
 
 Round6已完成V01–V04，当前按V05–V08实施存档示范页。唯一证据入口为[Round6存档页基线与复核](design/reviews/ui-redesign-round6-20261113/README.md)，执行状态在[Round6计划](design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)。生产`SaveCenterView`相同合成数据、固定采样时间，1040×700/1600×900 DIP、双主题、常规/详情共8基线图；V04状态矩阵已通过。Demo-first指定目录当前不存在，因此不伪造参考图。

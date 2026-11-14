@@ -1,3 +1,9 @@
+## 当前交付事实入口（Round 6 V01–V28，2026-11-14）
+
+页面重构由存档示范推进到任务、媒体、概览、设置。V21–V24前后图固定同一合成数据、主题、窗口 DIP 和逻辑缩放；完整可视索引在 [V21–V28证据包](evidence/V21-V24/README.md)。代表图包括任务表格扩宽、媒体预览与详情、概览主操作位置和设置重置区；第一示范页的双主题与详情开合对照见 [V05–V08](evidence/V05-V08/comparison/)。
+
+最终源码候选 9880c81be09365d02b9335a633be95506095c8d9 已完成中文根入口与独立 scripts/build.cmd，两者 SDK8.0.423/Release 均 exit0，2,051项测试中1,993通过、0失败、58既有skip。GitHub run #1579 的基线与 SDK10.0.401 两个 job 全步骤成功。真实隔离 Playnite 进程启动后显示首次配置向导；插件页面前台未验。交互动态样片是实际 WPF 属性采样回放，不是录屏或真实 Playnite 帧。执行策略拒绝了 .tmp 根scratch删除，未用其他方式绕过。详细身份、报告与边界见交付证据包。
+
 # Round 6 · V01–V04 存档页基线与设计复核
 
 本阶段先固定真实生产视图的基线，再确定页面改造范围和后续复用的合成数据。仓库当前分支没有计划所列的 `GameSaveCenter.AcrylicFork/.../Design/` Demo 源文件；因此按 Round 6 计划的缺省规则，以当前生产 WPF 资源为事实基线，没有伪造 Demo 参考。
@@ -89,7 +95,7 @@
 
 内部评审复看了双主题宽屏详情和紧凑详情状态。层级与工具栏分组有可见改善，表格/详情分界明确；紧凑详情需要页面纵向滚动是已知边界。没有发现本批引入的选框越界或状态语义丢失。变化足以满足 V05–V08 与 V12 的页面示范验收，继续 V09–V11 共享原件与后续动效。
 
-SDK 8.0.423 / Release 的本地完整阶段回归：构建 0 warning / 0 error；Core 157/157、Worker 407/407、Playnite 2,044 项中 1,986 通过、0 失败、58 个既有 skip，157/157 个 WPF 隔离类。`python scripts/validate-source.py` 和 `git diff --check` 通过。生产 WPF 静态审查为 26 个 XAML、0 errors / 26 warnings / 164 info；本批没有关闭审查规则。精确候选全量 Render QA 与本地验证记录位于 `evidence/V05-V08/reports/`，并列入 [SHA-256 清单](evidence/sha256-manifest.json)。GitHub run [#1570](https://github.com/Nikilua/GameSaveCenter/actions/runs/43478597342) 正在精确提交 `6a7b01b3e7fa5862b49cfcb1ff87f701be9b308e` 上运行；基线和 SDK 10.0.401 两个适用 job 当前均为 in progress，V27 仍会对最终候选重新核验。真实 Playnite 前台呈现、宿主缩放与 UIA 客户端体验仍按旧边界待验。
+SDK 8.0.423 / Release 的本地完整阶段回归：构建 0 warning / 0 error；Core 157/157、Worker 407/407、Playnite 2,044 项中 1,986 通过、0 失败、58 个既有 skip，157/157 个 WPF 隔离类。`python scripts/validate-source.py` 和 `git diff --check` 通过。生产 WPF 静态审查为 26 个 XAML、0 errors / 26 warnings / 164 info；本批没有关闭审查规则。精确候选全量 Render QA 与本地验证记录位于 `evidence/V05-V08/reports/`，并列入 [SHA-256 清单](evidence/sha256-manifest.json)。该段保留 V05–V08 阶段提交与当时 CI 查询的历史快照；最终候选 9880c81 的 CI 结论见本文顶部 V21–V28 事实入口和最终交付证据。真实 Playnite 前台呈现、宿主缩放与 UIA 客户端体验仍按旧边界待验。
 
 ## V09–V11 · 字体、图标与共享控件
 

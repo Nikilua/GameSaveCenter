@@ -1,4 +1,15 @@
-## 当前事实入口（Round6 V01–V20，2026-11-14）
+## 当前事实入口（Round6 V01–V28，2026-11-14）
+
+最终产品候选为 9880c81be09365d02b9335a633be95506095c8d9；推广页面提交 ec7a02bea93d27ca054fe66f90574ea733710ebb 与 9880c81。V21–V24已完成任务、媒体、概览、设置页面及同数据前后评审；V25–V28已完成受控视觉/行为验收、两个本地构建入口、CI核验和交付归档。当前唯一证据索引为[Round6交付证据](../design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/README.md)。
+
+中文入口 GameSaveCenter-一键构建安装运行.cmd → GameSaveCenter-Run.cmd 和独立 scripts/build.cmd 均在 SDK8.0.423/Release 对精确候选直接 exit0；各160份TRX、2,051项，1,993通过、0失败、58 skip，157/157个WPF隔离类。隔离安装的六个程序集版本对应完整候选SHA。Playnite隔离进程启动后显示首次配置向导，没有检查插件页面、真实库或用户profile。GitHub run #1579 / 43600878377 的基线与SDK10.0.401 job及所有步骤均 success；job/artifact身份见交付证据。
+
+Render QA为334张、双主题、0 PROBLEM；生产XAML静态审查27项、0 error、26 warnings（与基线相同）。语义状态文本双主题测试覆盖至少4.5:1，大号概览数字/禁用上下文标签覆盖3:1；并非全页像素对比清点。动态样片是9097e6c8源码上采集的147条实际WPF属性轨迹，播放器不插帧；不是录屏，详情采样窗IsVisible=false，未证明真实屏幕帧或60fps。RenderQA侧栏单次/快速切换比较已记录；页面操作managed-allocation未单独测量。1.00逻辑DIP结果不能代表物理DPI。CUA初始化失败，无法自动观察Playnite界面。
+
+根入口scratch .tmp/round6-v27-rootbuild 的递归清理被执行策略拒绝；保留未绕过。当前包和诊断保留。未触碰真实存档、真实用户配置/Playnite profile、云端写入或其他任务测试输出。Round5/P1记录继续作为历史事实，不因Round6更新而改写。
+
+
+## 历史入口（Round6截至V20，2026-11-14；状态以本节上方更新为准）
 V19中断/Reduced Motion行为及V20实际WPF属性采样已提交在 `9097e6c86a8d5a8808eaab03b8b92c1a318b6ece`。SDK8.0.423 Release定向3/3、0失败、0跳过；147条采样含136次CompositionTarget.Rendering回调和11次状态快照，带UTC采集ID、elapsed时间与有效可见性。可交互播放器、CSV和TRX见[V19–V20证据](../design/reviews/ui-redesign-round6-20261113/evidence/V19-V20/README.md)。这是受控属性轨迹，不是录屏；详情轨迹的IsVisible=false，真实Playnite前台/物理显示仍待验。该SHA GitHub run #1576（43588654627）和前一候选run #1575（43587564816）仍在进行，需核对所有适用双SDK jobs。
 
 V16–V18源码改造：任务/媒体详情切换只处理最新绑定对象；Toast仅重排受影响卡片且不调用同步UpdateLayout；缩略图真实Loading持续180ms才呈现提示，快响应不闪且业务时序不延迟。定向行为7/7通过；SDK8 Release全量在最后两处Toast优化之前为0 warning/0 error，Core157/157、Worker407/407、Playnite2048项中1990通过、0失败、58既有skip、157个WPF类完成；最终改动随后重新编译并定向通过。CI #1574曾在旧SHA暴露三处过期动效断言，已同步修正。详见V16–V18证据索引。

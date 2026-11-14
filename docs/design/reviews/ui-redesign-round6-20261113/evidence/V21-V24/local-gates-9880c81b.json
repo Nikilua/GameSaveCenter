@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "candidateSha": "9880c81be09365d02b9335a633be95506095c8d9",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "sourceBuildCommits": [
+    "ec7a02bea93d27ca054fe66f90574ea733710ebb",
+    "9880c81be09365d02b9335a633be95506095c8d9"
+  ],
+  "rootEntry": {
+    "command": "GameSaveCenter-一键构建安装运行.cmd -> GameSaveCenter-Run.cmd",
+    "outerExitCode": 0,
+    "runId": "20261114T135841256Z-7c6d5a77",
+    "summary": "artifacts/build-diagnostics/20261114T135841256Z-7c6d5a77/summary.json",
+    "summarySha256": "99C2AEFD18A121E5EAF659CA065B655EB088AF24E15F5EABA91EA33E03711F1C",
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "trxFiles": 160,
+    "tests": {
+      "total": 2051,
+      "passed": 1993,
+      "failed": 0,
+      "skipped": 58,
+      "errors": 0,
+      "timeouts": 0,
+      "aborted": 0
+    },
+    "groups": {
+      "core": "157/157 passed",
+      "worker": "407/407 passed",
+      "playniteSource": "557 passed, 18 skipped",
+      "playniteWpfIsolated": "872 passed, 40 skipped",
+      "wpfIsolatedClasses": "157/157"
+    },
+    "package": {
+      "version": "0.6.73",
+      "zip": "artifacts/GameSaveCenter-0.6.73-playnite.zip",
+      "pext": "artifacts/GameSaveCenter-0.6.73.pext",
+      "bytesEach": 45744232,
+      "sha256": "D7D35D49FDAA68AAE7BF35C028B1E87712172158782AC9B584C4921BD1EAE8BE"
+    },
+    "installReport": {
+      "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/oneclick-install-report-9880c81b.txt",
+      "sha256": "1C4712720A1E771A99BB9348A8063494E8313A89E1DB6C4662A8BB0EFAB75556",
+      "installedAssemblyInformationalVersion": "0.6.73+9880c81be09365d02b9335a633be95506095c8d9",
+      "isolatedProfile": ".tmp/round6-v27-isolated-profile",
+      "launch": "isolated Playnite process verified; displayed first-run setup wizard; plugin UI not visually inspected"
+    }
+  },
+  "independentBuild": {
+    "command": "scripts/build.cmd -Configuration Release",
+    "outerExitCode": 0,
+    "runId": "20261114T143202212Z-b9612974",
+    "summary": "artifacts/build-diagnostics/20261114T143202212Z-b9612974/summary.json",
+    "summarySha256": "B5C2376224BDE44A96ECF2CF6AA1E4A257E3BB8E41B79D8C80D299E56D3B0BF8",
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "trxFiles": 160,
+    "tests": {
+      "total": 2051,
+      "passed": 1993,
+      "failed": 0,
+      "skipped": 58,
+      "errors": 0,
+      "timeouts": 0,
+      "aborted": 0
+    },
+    "wpfIsolatedClasses": "157/157"
+  },
+  "sourceValidation": "python scripts/validate-source.py passed",
+  "wpfStaticReview": {
+    "scope": "src/GameSaveCenter.Playnite",
+    "xamlFiles": 27,
+    "errors": 0,
+    "warnings": 26,
+    "info": 164,
+    "result": "exit 0; warning count matches historical baseline"
+  },
+  "renderQa": {
+    "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/render-qa-9880c81b.txt",
+    "sha256": "F926381D3FD1041EC6958A62F6AB46556E6BB1AACB1C0808C10CCDB8E4CD323B",
+    "pngCount": 334,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "result": "render-qa OK; 0 PROBLEM",
+    "scale": "1.00 logical DIP; not physical DPI verification"
+  },
+  "animation": {
+    "evidence": "../V19-V20/README.md",
+    "sourceSha": "9097e6c86a8d5a8808eaab03b8b92c1a318b6ece",
+    "events": 147,
+    "renderingCallbacks": 136,
+    "stateSnapshots": 11,
+    "interpolation": "none",
+    "classification": "controlled WPF property samples; not screen recording or real Playnite foreground frames"
+  },
+  "cleanup": {
+    "attempted": ".tmp/round6-v27-rootbuild",
+    "result": "PowerShell Remove-Item -LiteralPath -Recurse -Force was blocked by policy; retained without bypass",
+    "packageAndDiagnostics": "retained as current evidence"
+  },
+  "computerUse": {
+    "result": "visual inspection unavailable",
+    "reason": "computer-use kernel initialization failed: failed to write kernel assets: 系统找不到指定的路径. (os error 3)"
+  },
+  "contrastChecks": {
+    "semanticStatusTextMinimum": "4.5:1 in light/dark theme tests",
+    "largeOverviewMetricsMinimum": "3:1",
+    "disabledContextLabelMinimum": "3:1",
+    "scope": "targeted automated color checks; not a full rendered-page contrast census"
+  },
+  "renderQaBaseline": {
+    "path": "docs/design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/render-qa-before-8678e163.txt",
+    "sha256": "d730446b165733b901561f71a9346022ff4f3413a65c1f0d4760278420075a32"
+  },
+  "performanceProbeComparison": {
+    "source": "render-qa-report single-toggle and rapid-toggle probe lines",
+    "baselineCommit": "8678e163a92278a74645559f95789c1348941398",
+    "candidateCommit": "9880c81be09365d02b9335a633be95506095c8d9",
+    "singleToggle": {
+      "p95FrameGapMs": {
+        "before": 180.2,
+        "after": 83.6
+      },
+      "maxFrameGapMs": {
+        "before": 180.2,
+        "after": 83.6
+      },
+      "settledBoth": true
+    },
+    "rapidToggle": {
+      "p95FrameGapMs": {
+        "before": 42.1,
+        "after": 44.4
+      },
+      "maxFrameGapMs": {
+        "before": 66.8,
+        "after": 71.7
+      },
+      "settledBoth": true
+    },
+    "scope": "controlled offscreen probe; not physical input latency or desktop compositor frame delivery"
+  },
+  "allocationProfiling": "not run for these page interactions; reported as an outstanding scope boundary"
+}

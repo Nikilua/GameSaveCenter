@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "8678e163a92278a74645559f95789c1348941398",
+  "candidateCommit": "9880c81be09365d02b9335a633be95506095c8d9",
+  "sampleTimeUtc": "2026-11-13T00:00:00Z",
+  "dpiScale": 1.0,
+  "comparisons": [
+    {
+      "file": "media-current-dark-1040x700-before-after.png",
+      "width": 1536,
+      "height": 534,
+      "bytes": 69580,
+      "sha256": "AED31BD83C683B28ED10D0294655C3BCC1913463980F6438360A51BFCC35BD9C"
+    },
+    {
+      "file": "media-current-dark-1600x900-before-after.png",
+      "width": 2600,
+      "height": 734,
+      "bytes": 178497,
+      "sha256": "26CC8040164023DF77717443DFDF183B25D6E08BD2D16F459779FF3024B359FC"
+    },
+    {
+      "file": "media-dark-1040x700-before-after.png",
+      "width": 1536,
+      "height": 534,
+      "bytes": 72122,
+      "sha256": "244C66F222404878B7A27B6F0C1E70ACD539E7B16B87C417D810209D44F948F2"
+    },
+    {
+      "file": "media-dark-1600x900-before-after.png",
+      "width": 2600,
+      "height": 734,
+      "bytes": 137331,
+      "sha256": "A8F0E3BCFE5F6D360205E9B013394962FFCF3B3F7CA24DDE09FF5F06AC828060"
+    },
+    {
+      "file": "overview-dark-1040x700-before-after.png",
+      "width": 1536,
+      "height": 534,
+      "bytes": 85214,
+      "sha256": "360FF3799DD94021BC4A06EABF6183A67ECAAD25461BE8B078987741BDF898E3"
+    },
+    {
+      "file": "overview-dark-1600x900-before-after.png",
+      "width": 2600,
+      "height": 734,
+      "bytes": 181544,
+      "sha256": "3C7D3324C11D14A5EEC33F0F3B04B3304B74C1D4CE52A834DB7099F35141D3AC"
+    },
+    {
+      "file": "settings-dark-1040x700-before-after.png",
+      "width": 1536,
+      "height": 534,
+      "bytes": 123659,
+      "sha256": "A2F7131987C385430582E60954CD72DF238E9E6AFCF593D346349B637E150713"
+    },
+    {
+      "file": "settings-dark-1600x900-before-after.png",
+      "width": 2600,
+      "height": 734,
+      "bytes": 242538,
+      "sha256": "C74589D961FE3DB1576B3BDEA1C6D68247FE636824AFD8432BD7FB230BB45CBA"
+    },
+    {
+      "file": "settings-dark-2560x1440-before-after.png",
+      "width": 2284,
+      "height": 674,
+      "bytes": 295480,
+      "sha256": "19EFD3A21BB1A3A0126CD63EA45501B6453E36199450DE2F83CF06BEB3DD09F5"
+    },
+    {
+      "file": "task-dark-1040x700-before-after.png",
+      "width": 1536,
+      "height": 534,
+      "bytes": 62670,
+      "sha256": "02D2F88CFF8FDC8862B410938A121EDB03984EC978E697B7EC779B8E9A580F70"
+    },
+    {
+      "file": "task-dark-1600x900-before-after.png",
+      "width": 2600,
+      "height": 734,
+      "bytes": 141689,
+      "sha256": "11627CF24E64DF7BE5E60A936A62DCABC1ABB83823864E94BA66805F833FAFD1"
+    }
+  ],
+  "renderQaReport": {
+    "file": "render-qa-9880c81b.txt",
+    "sha256": "F926381D3FD1041EC6958A62F6AB46556E6BB1AACB1C0808C10CCDB8E4CD323B",
+    "pngCount": 334,
+    "result": "render-qa OK"
+  },
+  "comparisonTheme": "dark",
+  "qaThemes": [
+    "light",
+    "dark"
+  ],
+  "baselineRenderQa": {
+    "file": "render-qa-before-8678e163.txt",
+    "sha256": "d730446b165733b901561f71a9346022ff4f3413a65c1f0d4760278420075a32",
+    "commit": "8678e163a92278a74645559f95789c1348941398",
+    "dpiScale": 1.0,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "sampleTimeUtc": "2026-11-13T00:00:00Z"
+  },
+  "performanceProbeComparison": {
+    "source": "render-qa-report single-toggle and rapid-toggle probe lines",
+    "baselineCommit": "8678e163a92278a74645559f95789c1348941398",
+    "candidateCommit": "9880c81be09365d02b9335a633be95506095c8d9",
+    "singleToggle": {
+      "p95FrameGapMs": {
+        "before": 180.2,
+        "after": 83.6
+      },
+      "maxFrameGapMs": {
+        "before": 180.2,
+        "after": 83.6
+      },
+      "settledBoth": true
+    },
+    "rapidToggle": {
+      "p95FrameGapMs": {
+        "before": 42.1,
+        "after": 44.4
+      },
+      "maxFrameGapMs": {
+        "before": 66.8,
+        "after": 71.7
+      },
+      "settledBoth": true
+    },
+    "scope": "controlled offscreen probe; not physical input latency or desktop compositor frame delivery"
+  }
+}

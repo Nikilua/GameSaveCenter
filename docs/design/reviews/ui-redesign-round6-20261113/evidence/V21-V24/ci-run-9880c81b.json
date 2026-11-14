@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "repository": "Nikilua/GameSaveCenter",
+  "headSha": "9880c81be09365d02b9335a633be95506095c8d9",
+  "runNumber": 1579,
+  "runId": 43600878377,
+  "runUrl": "https://github.com/Nikilua/GameSaveCenter/actions/runs/43600878377",
+  "jobs": [
+    {
+      "id": 132465154332,
+      "name": "编译、测试与打包",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK",
+        "源码结构检查",
+        "诊断采集自测",
+        "SDK 基线与缺失负例",
+        "编译与测试",
+        "离屏渲染 QA",
+        "WPF UI 静态审查",
+        "生成 Playnite 扩展包",
+        "上传构建产物",
+        "保留构建与测试诊断（包括失败）",
+        "Post 安装 .NET SDK",
+        "Post 检出代码",
+        "Complete job"
+      ],
+      "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/43600878377/job/132465154332"
+    },
+    {
+      "id": 132465154141,
+      "name": ".NET SDK 10.0.401 编译与测试复核",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        "Set up job",
+        "检出代码",
+        "安装 .NET SDK 10.0.401",
+        "隔离工作树并运行 Release 编译与测试",
+        "保留 SDK 10.0.401 构建诊断（包括失败）",
+        "Post 安装 .NET SDK 10.0.401",
+        "Post 检出代码",
+        "Complete job"
+      ],
+      "url": "https://github.com/Nikilua/GameSaveCenter/actions/runs/43600878377/job/132465154141"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14117933683,
+      "name": "GameSaveCenter-build-diagnostics",
+      "bytes": 2534593,
+      "sha256": "58731605b8b2b74cdd3774f2ab5f670822093ce16bc2e3f39479b06efa1775cb"
+    },
+    {
+      "id": 14117903979,
+      "name": "GameSaveCenter-windows-preview",
+      "bytes": 90803808,
+      "sha256": "466fe64b524d9c9d6ab710f976fca77ce0bb6317bdca3786312c15239cfc8936"
+    },
+    {
+      "id": 14117865074,
+      "name": "GameSaveCenter-sdk10-build-diagnostics",
+      "bytes": 1284661,
+      "sha256": "91148f07c6d622e2ff37442f8c17c7abb8336c5559aeddc2c540c95d8f17d841"
+    }
+  ]
+}

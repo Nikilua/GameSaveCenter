@@ -2249,3 +2249,11 @@ GitHub run #1564 / `43391873169` 精确验证008 SHA：基线job `131773490954` 
 P1本地可执行范围已收口；A03/A04保持真实宿主输入/呈现条件待验，A09同会话宿主闭环待条件，A10真实宿主代表规模待条件。16项计划仍是候选工作而非16个确认缺陷。精确状态、原始证据和下一步见[P1收口证据](../design/reviews/project-assessment-2026-11-06/evidence/P1-close-b667e224-20261113/README.md)及[计划账本](../PROJECT_ASSESSMENT_2026-11-06.md)。
 
 本阶段清理预检发现5个自有 `.tmp` 构建/脚手架目标，共746个文件、175,192,373 bytes；目标均在仓库内、0重解析点、无跟踪文档引用，运行进程已退出。PowerShell `Remove-Item -LiteralPath -Recurse -Force` 被工具自动审查以 `blocked by policy` 拒绝，命令未执行，没有换方式绕过。目录/脚手架仍保留。尝试前C/D空闲5,118,636,032 / 15,957,209,088 bytes，拒绝后5,117,407,232 / 15,957,209,088 bytes；未归因空间变化为清理结果。隔离profile、其配置、包、审计及所有TRX均保留，用户/其他任务数据未触碰。
+
+## 2026-11-14 Round6 V21–V28最终交接
+
+当前Round6候选为 9880c81be09365d02b9335a633be95506095c8d9；任务/媒体/概览/设置推广实现分别在 ec7a02be 与 9880c81，状态账本见 docs/design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md。V21–V24对照用相同合成数据、采样时间、深色主题、窗口DIP和1.00逻辑DIP；代表图、局限和内部复核见 docs/design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/README.md。V19–V20播放器回放真实CompositionTarget.Rendering属性样本，不插帧、不等于录屏；详情有效可见性为false，真实Playnite前台像素与物理帧率仍未验。
+
+精确候选SDK8.0.423/Release中文完整入口和独立scripts/build.cmd均exit0：2,051项、1,993通过、0失败、58既有skip，157/157个WPF隔离类。最终候选GitHub run #1579 / 43600878377的基线job132465154332和SDK10.0.401 job132465154141全部步骤success；CI/local artifact身份在V21-V24的ci-run与local-gates JSON。隔离profile安装版本对应完整候选SHA，Playnite停留于首次配置向导，插件视觉没有真实宿主验收。CUA初始化失败，不重试或切换其他UI自动化途径。
+
+Render QA 334 PNG、双主题、0 PROBLEM；WPF生产XAML 27个、0 error、26 warnings，和历史基线一致。语义状态字色在双主题测试达到4.5:1，大号概览数字和禁用上下文标签测试达到3:1；不是全页像素对比扫描。单次侧栏切换P95帧间隔180.2→83.6ms，快速反向42.1→44.4ms（最大66.8→71.7ms），两版均稳定终止；这是受控offscreen探针。页面操作managed-allocation未测。清理 .tmp/round6-v27-rootbuild 的准确 Remove-Item 调用被策略阻止，未绕过；保留当前包、原始诊断及该scratch，并在交付证据中明记。纯文档提交只做源码/链接/diff校验，不追加其CI成功记录。后续修改先读本条和Round6总览当前事实，再遵守存档页先行、每批2–4项与宿主权限边界。

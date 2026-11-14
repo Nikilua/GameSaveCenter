@@ -13772,3 +13772,20 @@ P1本地门禁收口；A03/A04真实输入与帧、A09同会话宿主、A10代�
 同目录HTML播放器按实测elapsed时间回放opacity/Y DIP并允许播放、暂停、滑杆和速度控制；Edge无头交互检查3个场景、Toast时间与滑杆推进、详情不可见提示、0页面错误。HTML预览图只用于检查播放器布局。详情测试对象`Visibility=Visible`但`IsVisible=false`，所以详情只证明动画属性在实际测试回调中的变化；这是受控WPF窗口证据，不是屏幕录制或真实Playnite体验。真实宿主、物理DPI、用户系统Reduced Motion和屏幕像素仍待验。README、CSV/HTML/TRX/PNG hash与精确采集ID见[动态证据](../design/reviews/ui-redesign-round6-20261113/evidence/V19-V20/README.md)。
 
 精确SHA GitHub run #1576（43588654627；基线job132428489294、SDK10 job132428489499）及前候选#1575（43587564816；基线132425231171、SDK10 132425231017）查询时仍运行，下一步收齐完成结论/诊断。样片采样来自#1576源码SHA；该轮CI失败时保留原始run/job/artifact并修复代码，不扩大skip。阶段交接：接下来按2–4项推进V21–V24任务、媒体、概览和设置页。此处为文档/证据阶段，不重复全构建；精确源码已做定向运行。未触碰Playnite用户profile、真实存档/云数据或其他任务TRX/TestResults，没有清理未知输出。
+
+## 2026-11-14 Round6 V21–V28 页面推广与最终交付
+
+V21–V24按2～4项一批完成任务、媒体、概览和设置页推广。提交 ec7a02bea93d27ca054fe66f90574ea733710ebb 扩展页面布局，9880c81be09365d02b9335a633be95506095c8d9 修正概览CTA窄宽重叠并补680/744/1280 DIP回归。内部按RenderHarness截图复看前后；固定合成数据、2026-11-13T00:00:00Z、深色主题、相同窗口DIP与1.00逻辑缩放。任务宽窗详情约369 DIP，队列区在1366 DIP复核窗由约517增至634；媒体收件箱/当前游戏详情约420/400 DIP并增强预览占位层次；概览Hero缩短、CTA同行；设置恢复默认区默认收起且手动状态仍保留。V21–V24 11张并排图及图片hash在Round6证据包manifest和README。V05–V12存档首个示范仍可从同一总览链接查看。
+
+最终SHA 9880c81 的Render QA报告为334 PNG、light/dark、0 PROBLEM；生产XAML静态检查27项、0 error/26 warnings/164 info，与历史warning数一致。python scripts/validate-source.py通过。受控逻辑DIP/静态渲染不代表物理DPI或真实宿主像素。
+
+精确候选SDK8.0.423/Release执行 GameSaveCenter-一键构建安装运行.cmd → GameSaveCenter-Run.cmd，直接外层exit0；独立 scripts/build.cmd 也exit0。两次均160 TRX/2,051项、1,993通过、0失败、58既有skip、157/157 WPF隔离类，0 warning/0 error。包ZIP与PEXT各45,744,232 bytes，SHA-256 D7D35D49FDAA68AAE7BF35C028B1E87712172158782AC9B584C4921BD1EAE8BE；安装的六个Playnite/Worker/Core/Contracts程序集InformationalVersion绑定完整SHA。Playnite在新隔离profile以进程启动成功后停在首次配置向导，未检查插件页面、真实库或用户profile。
+
+GitHub run #1579 / 43600878377 精确head SHA为9880c81；基线 job132465154332 与SDK10.0.401 job132465154141的所有步骤 completed/success。build diagnostics artifact14117933683（2,534,593 bytes，digest 58731605b8b2b74cdd3774f2ab5f670822093ce16bc2e3f39479b06efa1775cb）、preview artifact14117903979（90,803,808 bytes，digest 466fe64b524d9c9d6ab710f976fca77ce0bb6317bdca3786312c15239cfc8936）、SDK10诊断artifact14117865074（1,284,661 bytes，digest 91148f07c6d622e2ff37442f8c17c7abb8336c5559aeddc2c540c95d8f17d841）。详情见Round6交付包ci-run JSON。
+
+V19–V20样片链接到交互播放器和CSV：9097e6c8精确源码上记录147条，其中136实际CompositionTarget.Rendering回调、11状态快照，按真实elapsed回放、不插帧。页面/详情/Toast最大相邻回调间隔167.7/280.1/38.1ms；详情IsVisible=false。因此这是受控属性采样，不是录屏、真实Playnite/DWM帧或60fps证明。尝试通过CUA观察隔离Playnite时内核因“系统找不到指定的路径(os error 3)”初始化失败；不使用其他自动化途径替代。
+
+清理已核实 .tmp/round6-v27-rootbuild 属本轮输出且无进程占用，按要求的 PowerShell Remove-Item -LiteralPath -Recurse -Force 调用被自动策略 blocked by policy 拒绝。未绕过，约276MB目录保留。当前包、证据和原始构建诊断保留；不清其他任务TRX/TestResults和用户文件。精确身份与hash见 docs/design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/README.md、local-gates JSON及ci-run JSON。
+
+
+验收边界补记：同提交 Render QA 已归档 8678e163 基线报告（SHA-256 d730446b165733b901561f71a9346022ff4f3413a65c1f0d4760278420075a32），以相同 pinned 时间、主题、逻辑DIP和 scroll fixtures 对照 9880c81。侧栏单次展开 P95 gap 180.2→83.6ms；快速反向 42.1→44.4ms，最大 66.8→71.7ms，两版均收敛到正确终态。结论只描述受控探针，不外推物理输入/DWM。现有颜色测试对语义状态文本覆盖4.5:1、部分大字/禁用文字覆盖3:1；没有对所有页面像素做全局对比测量。页面操作managed-allocation没有单独profile，已作为待验边界记入V25/V26。

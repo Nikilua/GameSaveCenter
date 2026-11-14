@@ -1,0 +1,31 @@
+时间：2026-11-14 22:28:03
+安装运行 ID：20261114T135838897Z-535a9969
+源码版本：0.6.73
+隔离构建目录：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-rootbuild
+安装目录：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec
+清单版本：0.6.73
+DLL 版本：0.6.73.0
+程序集身份（磁盘读取；不代表运行中已加载）：
+  GameSaveCenter.Playnite.dll：0.6.73+9880c81be09365d02b9335a633be95506095c8d9
+  文件路径：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Playnite.dll
+  SHA-256：921BB8A283D2A35A203499BC8D968291C188CB9BE77D6B812281A885F1BFB77E
+  GameSaveCenter.Core.dll：0.6.73+9880c81be09365d02b9335a633be95506095c8d9
+  文件路径：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Core.dll
+  SHA-256：F80FD334FDE9BAEBCC7BEBB054523D9BDD6EE9BE4B3713DA7E7FB7436C8D7932
+  GameSaveCenter.Contracts.dll：0.6.73+9880c81be09365d02b9335a633be95506095c8d9
+  文件路径：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\GameSaveCenter.Contracts.dll
+  SHA-256：39EF485C01AEF688631B7DC7B5DA2C43D486365862E37BEB7694DCF1911469E2
+  Worker/GameSaveCenter.Worker.dll：0.6.73+9880c81be09365d02b9335a633be95506095c8d9
+  文件路径：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Worker.dll
+  SHA-256：75ECFA31BFA9F34C473BF7E7294B89F49A4326BD74DDC032B250B7282230D76B
+  Worker/GameSaveCenter.Core.dll：0.6.73+9880c81be09365d02b9335a633be95506095c8d9
+  文件路径：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Core.dll
+  SHA-256：E65F696D8EE2C8D03C6C074438E4415F3219E8DFC6B4726E0537F3AD5C29B060
+  Worker/GameSaveCenter.Contracts.dll：0.6.73+9880c81be09365d02b9335a633be95506095c8d9
+  文件路径：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile\Extensions\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec\Worker\GameSaveCenter.Contracts.dll
+  SHA-256：A9FFB8A81E67D0E08D0CAF589659BED537C2712B10086B30BEAB3CDF00B993F6
+Playnite启动状态：verified-isolated-process
+Playnite进程ID：34656
+Playnite用户数据目录：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile
+Worker数据目录：D:\workplace\github\GameSaveCenter\.tmp\round6-v27-isolated-profile\GameSaveCenter
+Worker IPC：GameSaveCenter.Worker.Isolated.ddc0cf9afae54a0fab2bf3e15bd40e85
