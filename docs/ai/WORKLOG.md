@@ -13764,3 +13764,11 @@ P1本地门禁收口；A03/A04真实输入与帧、A09同会话宿主、A10代�
 本阶段SDK8.0.423 / Release `scripts/build.cmd` exit0：0 warning/0 error；Core157/157、Worker407/407、Playnite2044项/1986通过/0失败/58既有skip、WPF157/157隔离类。`python scripts/validate-source.py`通过；WPF静态审查27个生产XAML/0 error/26 warning/164 info；`scripts/render-qa.ps1` 334 PNG、0 `PROBLEM`、`render-qa OK`、exit0；`git diff --check`通过。build原始诊断位于本机`artifacts/build-diagnostics/20261114T072026043Z-d6e0f13f`，未加入Git。
 
 本阶段不启动Playnite前台，不读取真实库/配置/存档，不运行恢复、删除或云写。清理规则沿用此前精确`Remove-Item -LiteralPath -Recurse -Force`被自动审查拒绝的边界；本批`.tmp/round6-v09-v11-*`渲染输出和`artifacts/build-diagnostics`保留在本机，未使用其他工具绕过，也不会提交。未暂存其他任务留下的TRX、TestResults及Round5证据目录。
+
+## 2026-11-14 Round6 V19–V20中断降级与动态采样
+
+源码提交`9097e6c86a8d5a8808eaab03b8b92c1a318b6ece`增加可选`CompositionTarget.Rendering`运行采样，并扩展存档详情Reduced Motion中途切换、立即归一化及页面切换快速反向行为覆盖。SDK8.0.423 Release定向3/3通过、0失败/0跳过；TRX归档在V19–V20目录。CSV147条由136次实际Rendering回调与11次状态快照组成，按UTC采集ID区分切页、详情开合/反向和Toast堆叠；保留最长帧间隔167.7/280.1/38.1ms，没有插帧，也不声称60fps。
+
+同目录HTML播放器按实测elapsed时间回放opacity/Y DIP并允许播放、暂停、滑杆和速度控制；Edge无头交互检查3个场景、Toast时间与滑杆推进、详情不可见提示、0页面错误。HTML预览图只用于检查播放器布局。详情测试对象`Visibility=Visible`但`IsVisible=false`，所以详情只证明动画属性在实际测试回调中的变化；这是受控WPF窗口证据，不是屏幕录制或真实Playnite体验。真实宿主、物理DPI、用户系统Reduced Motion和屏幕像素仍待验。README、CSV/HTML/TRX/PNG hash与精确采集ID见[动态证据](../design/reviews/ui-redesign-round6-20261113/evidence/V19-V20/README.md)。
+
+精确SHA GitHub run #1576（43588654627；基线job132428489294、SDK10 job132428489499）及前候选#1575（43587564816；基线132425231171、SDK10 132425231017）查询时仍运行，下一步收齐完成结论/诊断。样片采样来自#1576源码SHA；该轮CI失败时保留原始run/job/artifact并修复代码，不扩大skip。阶段交接：接下来按2–4项推进V21–V24任务、媒体、概览和设置页。此处为文档/证据阶段，不重复全构建；精确源码已做定向运行。未触碰Playnite用户profile、真实存档/云数据或其他任务TRX/TestResults，没有清理未知输出。

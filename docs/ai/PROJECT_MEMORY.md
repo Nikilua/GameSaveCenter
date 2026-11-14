@@ -1,4 +1,4 @@
-## 2026-11-14 Round6 V01–V18 进度
+## 2026-11-14 Round6 V01–V20 进度
 
 V01–V04基线和设计规格、V05–V08生产SaveCenterView重构及V12前后评审已完成；V09–V11共享控件批次也已完成。已从同级 `GameSaveCenter.AcrylicFork` 读取Demo：生产字体改为Demo的Segoe UI Variable Text/Display优先，保留Windows/中文fallback；共享action icon 18px、inline gap4px；按钮角10px；ComboBox与Tooltip使用共享浮层样式。构建/Binding/真实命令、焦点/UIA、虚拟化、当前游戏选框、滚动系统和恢复安全语义继续保留。
 
@@ -6,9 +6,11 @@ V09–V11同数据/主题/窗口的8组截图对照与哈希、状态夹具和�
 
 V13–V15已完成本地代码阶段：MotionTokens中hover120ms/press90ms/selection160ms/transition180ms；PageHost替换内容时保留当前有效过渡值，以4 DIP轻位移续接；紧凑存档详情使用Opacity/Translate渐入渐出并立即完成语义与命中测试切换。R08动效反向/页面切换行为测试11/11，详情帧采样追加定向1/1；Source Validation、27文件XAML结构校验、WPF审查（0 error/26 warnings/164 info）通过。预提交Render QA为335 PNG/0 PROBLEM，但报告SHA解析到父提交6703857且工作树不干净，不能代替本批提交SHA的Render QA；最终精确门禁及CI待查询。V13–V15实现与测试概览见[阶段记录](../design/reviews/ui-redesign-round6-20261113/evidence/V13-V15/README.md)。
 
-下一阶段按V16–V20继续打磨详情对象切换、浮层/通知、加载交接、动画降级和实际动态采样，再按V21–V24推广任务、媒体、概览和设置。最终候选仍须运行中文根入口安装链与独立`scripts/build.cmd`，复核精确SHA上的所有适用CI job。清理`.tmp`受既有自动审查拒绝限制，未尝试绕过；其他任务的测试结果、用户配置和存档未触碰。
+V16–V20的详情对象切换、浮层/通知、加载交接、动画降级与受控动态采样已完成本地实现。下一批按V21–V24推广任务、媒体、概览和设置。最终候选仍须运行中文根入口安装链与独立`scripts/build.cmd`，复核精确SHA上的所有适用CI job。清理`.tmp`受既有自动审查拒绝限制，未尝试绕过；其他任务的测试结果、用户配置和存档未触碰。
 
 V16–V18已完成源码改造：任务/媒体详情切换只处理最新绑定对象；Toast仅重排受影响卡片且不调用同步UpdateLayout；缩略图真实Loading持续180ms才呈现反馈，快响应不闪，业务时序不延迟。Toast/缩略图定向7/7通过；SDK8 Release全量在最后两处Toast优化之前为0 warning/0 error，Core157/157、Worker407/407、Playnite2048项中1990通过、0失败、58既有skip、157个WPF类完成；最终改动随后重新编译并定向通过。run #1574在399f SHA上暴露三处过期动效断言，当前候选已同步修正；新候选精确Render QA/CI仍待核。详见V16–V18证据索引。
+
+V19–V20已在精确源码SHA `9097e6c86a8d5a8808eaab03b8b92c1a318b6ece`完成本地行为和动态采样：SDK8.0.423 Release定向3/3，0失败/0跳过；147条记录含136个WPF Rendering回调与11个状态快照，提供CSV和按真实elapsed时间回放的HTML。详情测试对象`IsVisible=false`，不把属性时钟冒充可见像素或真实Playnite录屏；页面、Toast受控轨迹可见。证据及hash/帧间隔见`evidence/V19-V20/README.md`。精确SHA GitHub run #1576和前候选#1575当时仍在运行。下一批推进V21–V24页面推广，最终仍跑指定两条本地入口并核CI。
 ## 2026-11-13 新授权起点（历史记录）
 
 用户明确要求可直观看到的UI、外观与细腻动画改造。本记录是新增[28项示范页先行计划](../design/VISIBLE_UI_REDESIGN_ROUND6_2026-11-13.md)时的初始状态：当时V01 READY、产品未开始修改。当前V01–V04状态和首批复核见本文件顶部；示范页实施与前后对比继续推进，不将旧任务重开，也不以测试/记录代替可见改变。

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1d599068-db32-4868-9f42-87893de81c92" name="lopmatu@SULT 2026-11-14 19:09:41" runUser="Sult\lopmatu" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-14T19:09:41.7016276+08:00" queuing="2026-11-14T19:09:41.7016281+08:00" start="2026-11-14T19:09:33.9628211+08:00" finish="2026-11-14T19:09:51.3254114+08:00" />
+  <TestSettings name="default" id="46b06743-9ca1-48b6-9802-9f2ccd8daea2">
+    <Deployment runDeploymentRoot="lopmatu_SULT_2026-11-14_19_09_41" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="6294470c-c785-4cb8-a9be-397b24ce64d8" testId="095ea878-c6a9-f6c6-aad3-3c54a0b9631b" testName="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" computerName="SULT" duration="00:00:08.3010000" startTime="2026-11-14T19:09:42.8379397+08:00" endTime="2026-11-14T19:09:51.1385682+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6294470c-c785-4cb8-a9be-397b24ce64d8">
+      <Output>
+        <StdOut>routes=31; final=Tasks; title=任务中心; focus=NavTasks; pageEffects=none</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a9a32a73-bb13-46ca-a176-b062a62e1907" testId="27512948-03b1-baa9-8eae-53920381dee4" testName="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests.ToastBurstReflowsTheVisibleStackWithoutTakingKeyboardFocus" computerName="SULT" duration="00:00:01.1750000" startTime="2026-11-14T19:09:41.6833007+08:00" endTime="2026-11-14T19:09:42.8379397+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9a32a73-bb13-46ca-a176-b062a62e1907" />
+    <UnitTestResult executionId="eb2ba55f-2f28-4343-bb29-4776a6549cb7" testId="3325466a-6ad7-2de5-0435-eb7750ed3998" testName="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SaveInspectorRapidCloseOpenContinuesFromTheCurrentVisualValue" computerName="SULT" duration="00:00:05.2850000" startTime="2026-11-14T19:09:36.3570095+08:00" endTime="2026-11-14T19:09:41.6562976+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eb2ba55f-2f28-4343-bb29-4776a6549cb7">
+      <Output>
+        <StdOut>save inspector opening=True; close=(0.758,1.933); reopened=(0.758,1.933); reverse=True; selectionPreserved=True; closeSettled=True</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests.SaveInspectorRapidCloseOpenContinuesFromTheCurrentVisualValue" storage="d:\gscround6-v16-v18\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="3325466a-6ad7-2de5-0435-eb7750ed3998">
+      <Execution id="eb2ba55f-2f28-4343-bb29-4776a6549cb7" />
+      <TestMethod codeBase="D:\GscRound6-V16-V18\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08MotionReverseBehaviorTests" name="SaveInspectorRapidCloseOpenContinuesFromTheCurrentVisualValue" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests.RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" storage="d:\gscround6-v16-v18\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="095ea878-c6a9-f6c6-aad3-3c54a0b9631b">
+      <Execution id="6294470c-c785-4cb8-a9be-397b24ce64d8" />
+      <TestMethod codeBase="D:\GscRound6-V16-V18\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.R08PageSwitchBehaviorTests" name="RapidNavigationUpdatesPageTitleSelectionAndKeepsFocusOnTheChosenNavigationItem" />
+    </UnitTest>
+    <UnitTest name="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests.ToastBurstReflowsTheVisibleStackWithoutTakingKeyboardFocus" storage="d:\gscround6-v16-v18\output\bin\gamesavecenter.playnite.tests\release\net472\gamesavecenter.playnite.tests.dll" id="27512948-03b1-baa9-8eae-53920381dee4">
+      <Execution id="a9a32a73-bb13-46ca-a176-b062a62e1907" />
+      <TestMethod codeBase="D:\GscRound6-V16-V18\output\bin\GameSaveCenter.Playnite.Tests\Release\net472\GameSaveCenter.Playnite.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netfx/" className="GameSaveCenter.Playnite.Tests.Round5ToastBehaviorTests" name="ToastBurstReflowsTheVisibleStackWithoutTakingKeyboardFocus" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="095ea878-c6a9-f6c6-aad3-3c54a0b9631b" executionId="6294470c-c785-4cb8-a9be-397b24ce64d8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="27512948-03b1-baa9-8eae-53920381dee4" executionId="a9a32a73-bb13-46ca-a176-b062a62e1907" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3325466a-6ad7-2de5-0435-eb7750ed3998" executionId="eb2ba55f-2f28-4343-bb29-4776a6549cb7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="列表中未列出的结果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="所有已加载的结果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET Framework 4.8.9181.0)&#xD;
+[xUnit.net 00:00:00.51]   Discovering: GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:00.95]   Discovered:  GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:01.00]   Starting:    GameSaveCenter.Playnite.Tests&#xD;
+[xUnit.net 00:00:15.83]   Finished:    GameSaveCenter.Playnite.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
