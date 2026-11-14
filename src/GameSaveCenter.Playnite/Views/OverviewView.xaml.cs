@@ -168,7 +168,7 @@ namespace GameSaveCenter.Playnite.Views
                     : new Thickness(18, 14, 18, 12);
                 OverviewPriorityActionButton.MinWidth = heroWidth < 560 ? 112 : 132;
                 Grid.SetRow(OverviewPriorityActionButton, compactHero ? 1 : 0);
-                Grid.SetColumn(OverviewPriorityActionButton, 0);
+                Grid.SetColumn(OverviewPriorityActionButton, compactHero ? 0 : 1);
                 Grid.SetColumnSpan(OverviewPriorityActionButton, compactHero ? 2 : 1);
                 OverviewPriorityActionButton.Margin = compactHero
                     ? new Thickness(0, 10, 0, 0)

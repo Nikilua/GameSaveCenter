@@ -106,6 +106,59 @@ public sealed class OverviewInteractionTests
         Assert.Null(exception);
     }
 
+    [Theory]
+    [InlineData(680d, 0, 1, 2)]
+    [InlineData(744d, 1, 0, 1)]
+    [InlineData(1280d, 1, 0, 1)]
+    public void PriorityHeroKeepsItsPrimaryActionOutOfTheTitleColumn(
+        double width,
+        int expectedActionColumn,
+        int expectedActionRow,
+        int expectedActionColumnSpan)
+    {
+        Exception? exception = null;
+        var thread = new System.Threading.Thread(() =>
+        {
+            try
+            {
+                var overview = new OverviewView
+                {
+                    DataContext = new OverviewTimeData(),
+                    Width = width,
+                    Height = 820
+                };
+                var host = new Grid { Width = width, Height = 820 };
+                host.Children.Add(overview);
+                host.Measure(new Size(width, 820));
+                host.Arrange(new Rect(0, 0, width, 820));
+                overview.UpdateLayout();
+                overview.ApplyResponsiveWidth(width);
+                overview.UpdateLayout();
+
+                var action = Assert.IsType<PlayniteButton>(overview.FindName("OverviewPriorityActionButton"));
+                var title = Assert.IsType<TextBlock>(overview.FindName("OverviewPriorityTitleText"));
+                var titlePanel = Assert.IsType<StackPanel>(VisualTreeHelper.GetParent(title));
+
+                Assert.Equal(0, Grid.GetColumn(titlePanel));
+                Assert.Equal(0, Grid.GetRow(titlePanel));
+                Assert.Equal(expectedActionColumn, Grid.GetColumn(action));
+                Assert.Equal(expectedActionRow, Grid.GetRow(action));
+                Assert.Equal(expectedActionColumnSpan, Grid.GetColumnSpan(action));
+                Assert.True(action.ActualWidth >= action.MinWidth);
+            }
+            catch (Exception caught)
+            {
+                exception = caught;
+            }
+        });
+
+        thread.SetApartmentState(System.Threading.ApartmentState.STA);
+        thread.Start();
+        thread.Join();
+
+        Assert.True(exception is null, exception?.ToString());
+    }
+
     [Fact]
     public void OverviewKeepsLegacyActivityHiddenAndMetricCommandWiredBehindCollapsedStrip()
     {
