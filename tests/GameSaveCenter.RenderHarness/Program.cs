@@ -339,6 +339,19 @@ public static class Program
             return taskEvidenceExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("taskallocationevidence", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "task-allocation-evidence");
+            var allocationExitCode = 0;
+            var allocationThread = new Thread(() => { allocationExitCode = RunTaskAllocationEvidence(outputRoot); });
+            allocationThread.SetApartmentState(ApartmentState.STA);
+            allocationThread.Start();
+            allocationThread.Join();
+            return allocationExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("mediageometryprobe", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5203,6 +5216,294 @@ public static class Program
             Console.Error.WriteLine(report.ToString());
             return 1;
         }
+    }
+
+    private static int RunTaskAllocationEvidence(string outputRoot)
+    {
+        const int windowWidth = 960;
+        const int windowHeight = 640;
+        const int warmupPairs = 10;
+        const int measuredPairs = 24;
+        Directory.CreateDirectory(outputRoot);
+
+        var report = new StringBuilder();
+        var reportPath = Path.Combine(outputRoot, "task-allocation-report.txt");
+        var samplesPath = Path.Combine(outputRoot, "task-allocation-samples.tsv");
+        Window? window = null;
+        s_problems.Clear();
+        report.AppendLine("GameSaveCenter Round 6 task inspector managed allocation evidence");
+        report.AppendLine("Measurement: GC.GetAllocatedBytesForCurrentThread on the WPF STA thread; no retained-heap or Rendering proxy");
+        report.AppendLine("Cold boundary: process launch excluded; first Application, deterministic fixture, TaskCenterView, first Window.Show/UpdateLayout included");
+        report.AppendLine("Steady boundary: direct allocation deltas around routed Button.Click plus Window.UpdateLayout; event args are included");
+        report.AppendLine("Input boundary: programmatic routed events in a controlled WPF Window; no physical mouse/keyboard, Playnite host, real profile, saves, or cloud data");
+        report.AppendLine($"Workload: {windowWidth}x{windowHeight} DIP; dark theme; 8 deterministic task rows; {warmupPairs} warmup pairs; {measuredPairs} measured pairs (forward/reverse order)");
+        AppendRunMetadata(
+            report,
+            "taskallocationevidence",
+            "ControlledWpfWindow",
+            "dark",
+            $"compact task inspector; {windowWidth}x{windowHeight} DIP; {warmupPairs} prewarm pairs; {measuredPairs} measured pairs; no forced GC");
+
+        long firstPageBytes = 0;
+        var openSamples = new List<long>(measuredPairs);
+        var closeSamples = new List<long>(measuredPairs);
+        var pairSamples = new List<long>(measuredPairs);
+        var rows = new List<string>(measuredPairs + 1)
+        {
+            "sample\torder\tprecondition\topen_bytes\tclose_bytes\tpair_bytes"
+        };
+
+        try
+        {
+            var allocatedBytesForCurrentThread = CreateCurrentThreadAllocationCounter();
+            var counterWarmup = allocatedBytesForCurrentThread();
+            var counterProbe = new byte[1024];
+            var counterAfterProbe = allocatedBytesForCurrentThread();
+            GC.KeepAlive(counterProbe);
+            if (counterAfterProbe - counterWarmup < counterProbe.Length)
+                throw new InvalidOperationException("The runtime current-thread allocation counter did not observe its calibration allocation.");
+
+            var firstPageStartBytes = allocatedBytesForCurrentThread();
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var fixture = FakeDashboardData.CreateTaskComparisonFixture();
+            var view = new TaskCenterView { DataContext = fixture };
+            var motionDescription = DisableTaskInspectorMotionForAllocationProbe(view);
+            ApplyThemePalette(view, GameSaveCenterThemeMode.Dark, glassEnabled: false, motionEnabled: false);
+
+            window = new Window
+            {
+                Width = windowWidth,
+                Height = windowHeight,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+                Content = view
+            };
+            view.ApplyResponsiveLayout(windowWidth, windowHeight);
+            window.Show();
+            window.UpdateLayout();
+            view.ApplyResponsiveLayout(window.ActualWidth, window.ActualHeight);
+            window.UpdateLayout();
+            firstPageBytes = allocatedBytesForCurrentThread() - firstPageStartBytes;
+
+            var grid = FindVisualChildren<DataGrid>(view)
+                .FirstOrDefault(candidate => candidate.Name == "TaskGrid")
+                ?? throw new InvalidOperationException("Task allocation probe could not find TaskGrid after first realization.");
+            if (grid.Items.Count != fixture.Tasks.Count || fixture.Tasks.Count != 8)
+                throw new InvalidOperationException($"Task allocation fixture expected 8 rows, found fixture={fixture.Tasks.Count}, grid={grid.Items.Count}.");
+            grid.SelectedItem = fixture.SelectedTask;
+            grid.ScrollIntoView(fixture.SelectedTask);
+            window.UpdateLayout();
+
+            var frame = FindVisualChildren<FrameworkElement>(view)
+                .FirstOrDefault(candidate => candidate.Name == "TaskDetailInspectorFrame")
+                ?? throw new InvalidOperationException("Task allocation probe could not find TaskDetailInspectorFrame.");
+            var openButton = FindVisualChildren<Button>(view)
+                .FirstOrDefault(candidate => candidate.Name == "TaskCompactDetailsButton")
+                ?? throw new InvalidOperationException("Task allocation probe could not find TaskCompactDetailsButton.");
+            if (openButton.Visibility != Visibility.Visible || frame.Visibility != Visibility.Collapsed)
+                throw new InvalidOperationException("Task allocation probe did not start with the compact inspector closed and open action visible.");
+            if (window.ActualWidth > 980)
+                throw new InvalidOperationException($"Task allocation probe expected compact layout at 960 DIP, got {window.ActualWidth:0.##} DIP.");
+
+            var beforeCollections = ReadGcCollectionCounts();
+            InvokeTaskInspectorAllocationAction(window, openButton);
+            var closeButton = FindVisualChildren<Button>(view)
+                .FirstOrDefault(candidate => candidate.Name == "TaskCompactCloseDetailsButton")
+                ?? throw new InvalidOperationException("Task allocation probe could not find TaskCompactCloseDetailsButton after opening the inspector.");
+            AssertTaskInspectorState(frame, isOpen: true, "initial warmup open");
+            InvokeTaskInspectorAllocationAction(window, closeButton);
+            AssertTaskInspectorState(frame, isOpen: false, "initial warmup close");
+
+            var selectedAnchor = grid.SelectedItem;
+            for (var index = 1; index < warmupPairs; index++)
+            {
+                var reverse = index % 2 == 1;
+                EnsureTaskInspectorState(window, frame, openButton, closeButton, reverse);
+                if (reverse)
+                {
+                    InvokeTaskInspectorAllocationAction(window, closeButton);
+                    InvokeTaskInspectorAllocationAction(window, openButton);
+                }
+                else
+                {
+                    InvokeTaskInspectorAllocationAction(window, openButton);
+                    InvokeTaskInspectorAllocationAction(window, closeButton);
+                }
+            }
+
+            var measuredCollectionsBefore = ReadGcCollectionCounts();
+            for (var index = 0; index < measuredPairs; index++)
+            {
+                var reverse = index % 2 == 0;
+                var precondition = EnsureTaskInspectorState(window, frame, openButton, closeButton, reverse);
+                long openBytes;
+                long closeBytes;
+                if (reverse)
+                {
+                    closeBytes = MeasureTaskInspectorAllocationAction(window, closeButton, allocatedBytesForCurrentThread);
+                    AssertTaskInspectorState(frame, isOpen: false, $"reverse close sample {index + 1}");
+                    openBytes = MeasureTaskInspectorAllocationAction(window, openButton, allocatedBytesForCurrentThread);
+                    AssertTaskInspectorState(frame, isOpen: true, $"reverse open sample {index + 1}");
+                }
+                else
+                {
+                    openBytes = MeasureTaskInspectorAllocationAction(window, openButton, allocatedBytesForCurrentThread);
+                    AssertTaskInspectorState(frame, isOpen: true, $"forward open sample {index + 1}");
+                    closeBytes = MeasureTaskInspectorAllocationAction(window, closeButton, allocatedBytesForCurrentThread);
+                    AssertTaskInspectorState(frame, isOpen: false, $"forward close sample {index + 1}");
+                }
+
+                if (grid.SelectedItem != selectedAnchor)
+                    throw new InvalidOperationException($"Task selection moved during allocation sample {index + 1}.");
+                openSamples.Add(openBytes);
+                closeSamples.Add(closeBytes);
+                pairSamples.Add(openBytes + closeBytes);
+                rows.Add(string.Join("\t", new[]
+                {
+                    (index + 1).ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    reverse ? "close-open" : "open-close",
+                    precondition,
+                    openBytes.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    closeBytes.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    (openBytes + closeBytes).ToString(System.Globalization.CultureInfo.InvariantCulture)
+                }));
+            }
+            var measuredCollectionsAfter = ReadGcCollectionCounts();
+
+            if (firstPageBytes <= 0 || openSamples.Count != measuredPairs || closeSamples.Count != measuredPairs)
+                throw new InvalidOperationException("Task allocation probe did not produce the fixed non-empty sample set.");
+            if (frame.Visibility != Visibility.Collapsed || grid.SelectedItem != selectedAnchor)
+                throw new InvalidOperationException("Task allocation probe did not finish closed with the original selected task.");
+
+            File.WriteAllLines(samplesPath, rows, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            report.AppendLine($"FirstPageRealizationAllocatedBytes: {firstPageBytes}");
+            report.AppendLine("AllocationCounter: runtime GC.GetAllocatedBytesForCurrentThread discovered once by reflection and called through a cached Func<long> delegate; the compile-time net472 reference set omits the method");
+            report.AppendLine($"MotionPolicy: {motionDescription}; no production setting or user configuration was changed");
+            report.AppendLine($"SelectedTask: {fixture.SelectedTask.TaskId}; state={fixture.SelectedTask.State}; rows={grid.Items.Count}");
+            report.AppendLine($"Warmup: {warmupPairs} pairs; both open-close and close-open action order warmed; excluded from allocation samples");
+            report.AppendLine($"MeasuredSamples: {measuredPairs} pairs; openActions={openSamples.Count}; closeActions={closeSamples.Count}; order=alternating close-open/open-close");
+            report.AppendLine("Sample boundary: each delta includes a fresh RoutedEventArgs, routed Button.Click handling, and synchronous Window.UpdateLayout; excludes state preconditioning and report writing");
+            report.AppendLine($"PreconditionActionsExcluded: {rows.Skip(1).Count(row => row.Split('\t')[2] != "none")}");
+            report.AppendLine($"GCCollectionsDuringWarmup: gen0={measuredCollectionsBefore[0] - beforeCollections[0]}; gen1={measuredCollectionsBefore[1] - beforeCollections[1]}; gen2={measuredCollectionsBefore[2] - beforeCollections[2]}");
+            report.AppendLine($"GCCollectionsDuringMeasuredSamples: gen0={measuredCollectionsAfter[0] - measuredCollectionsBefore[0]}; gen1={measuredCollectionsAfter[1] - measuredCollectionsBefore[1]}; gen2={measuredCollectionsAfter[2] - measuredCollectionsBefore[2]}");
+            report.AppendLine($"SamplesTsv: {Path.GetFileName(samplesPath)}");
+            AppendAllocationStatistics(report, "inspector_open", openSamples);
+            AppendAllocationStatistics(report, "inspector_close", closeSamples);
+            AppendAllocationStatistics(report, "open_close_pair", pairSamples);
+            report.AppendLine("TaskAllocationEvidenceBoundary: controlled private-desktop WPF only; allocation bytes are direct current-thread counters, not retained heap, real Playnite, physical input, or frame-time evidence.");
+            report.AppendLine("TaskAllocationEvidence OK");
+            File.WriteAllText(reportPath, report.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
+            Console.WriteLine(report.ToString());
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("TaskAllocationEvidence FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(reportPath, report.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
+            Console.Error.WriteLine(report.ToString());
+            return 1;
+        }
+        finally
+        {
+            window?.Close();
+        }
+    }
+
+    private static string DisableTaskInspectorMotionForAllocationProbe(TaskCenterView view)
+    {
+        const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+        var descriptions = new List<string>();
+        var animationProperty = view.GetType().GetProperty("UiAnimationsEnabled", flags);
+        if (animationProperty?.CanWrite == true)
+        {
+            animationProperty.SetValue(view, false, null);
+            descriptions.Add("UiAnimationsEnabled=false on the harness view");
+        }
+
+        var systemMotionProperty = view.GetType().GetProperty("SystemMotionEnabledProviderForAudit", flags);
+        if (systemMotionProperty?.CanWrite == true)
+        {
+            systemMotionProperty.SetValue(view, new Func<bool>(() => false), null);
+            descriptions.Add("audit system-motion provider pinned false");
+        }
+
+        return descriptions.Count == 0 ? "this source has no task inspector motion toggles" : string.Join("; ", descriptions);
+    }
+
+    private static int[] ReadGcCollectionCounts()
+        => new[] { GC.CollectionCount(0), GC.CollectionCount(1), GC.CollectionCount(2) };
+
+    private static Func<long> CreateCurrentThreadAllocationCounter()
+    {
+        var method = typeof(GC).GetMethod(
+            "GetAllocatedBytesForCurrentThread",
+            BindingFlags.Public | BindingFlags.Static,
+            binder: null,
+            types: Type.EmptyTypes,
+            modifiers: null);
+        if (method == null || method.ReturnType != typeof(long))
+            throw new PlatformNotSupportedException("This CLR does not expose GC.GetAllocatedBytesForCurrentThread().");
+
+        return (Func<long>)method.CreateDelegate(typeof(Func<long>));
+    }
+
+    private static string EnsureTaskInspectorState(
+        Window window,
+        FrameworkElement frame,
+        Button openButton,
+        Button closeButton,
+        bool shouldStartOpen)
+    {
+        if (shouldStartOpen && frame.Visibility == Visibility.Visible)
+            return "none";
+        if (!shouldStartOpen && frame.Visibility == Visibility.Collapsed)
+            return "none";
+
+        var button = shouldStartOpen ? openButton : closeButton;
+        InvokeTaskInspectorAllocationAction(window, button);
+        AssertTaskInspectorState(frame, shouldStartOpen, "sample preconditioning");
+        return shouldStartOpen ? "open" : "close";
+    }
+
+    private static long MeasureTaskInspectorAllocationAction(Window window, Button button, Func<long> allocatedBytesForCurrentThread)
+    {
+        var before = allocatedBytesForCurrentThread();
+        InvokeTaskInspectorAllocationAction(window, button);
+        return allocatedBytesForCurrentThread() - before;
+    }
+
+    private static void InvokeTaskInspectorAllocationAction(Window window, Button button)
+    {
+        button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        window.UpdateLayout();
+    }
+
+    private static void AssertTaskInspectorState(FrameworkElement frame, bool isOpen, string boundary)
+    {
+        var expected = isOpen ? Visibility.Visible : Visibility.Collapsed;
+        if (frame.Visibility != expected)
+            throw new InvalidOperationException($"Task inspector was {frame.Visibility} at {boundary}; expected {expected}.");
+    }
+
+    private static void AppendAllocationStatistics(StringBuilder report, string name, IReadOnlyList<long> values)
+    {
+        var ordered = values.OrderBy(value => value).ToArray();
+        if (ordered.Length == 0)
+            throw new InvalidOperationException($"Allocation summary {name} has no samples.");
+
+        var median = ordered.Length % 2 == 0
+            ? (ordered[ordered.Length / 2 - 1] + ordered[ordered.Length / 2]) / 2d
+            : ordered[ordered.Length / 2];
+        var mean = ordered.Average(value => (double)value);
+        var variance = ordered.Average(value => Math.Pow(value - mean, 2));
+        var p95Index = Math.Max(0, (int)Math.Ceiling(ordered.Length * 0.95) - 1);
+        report.AppendLine(
+            $"SUMMARY {name} samples={ordered.Length} total_bytes={ordered.Sum()} mean_bytes={mean:0.##} median_bytes={median:0.##} "
+            + $"p95_bytes={ordered[p95Index]} min_bytes={ordered[0]} max_bytes={ordered[ordered.Length - 1]} sd_bytes={Math.Sqrt(variance):0.##}");
     }
 
     private static void VerifyTaskComparisonFixture(

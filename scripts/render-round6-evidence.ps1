@@ -1,6 +1,6 @@
 ﻿[CmdletBinding()]
 param(
-    [ValidateSet('Baseline', 'StateFixtures', 'TaskEvidence')]
+    [ValidateSet('Baseline', 'StateFixtures', 'TaskEvidence', 'TaskAllocation')]
     [string]$Scenario = 'Baseline',
     [string]$Output = '',
     [string]$SampleUtc = '2026-11-13T00:00:00Z'
@@ -13,6 +13,7 @@ $scenarioName = switch ($Scenario) {
     'Baseline' { 'round6baseline' }
     'StateFixtures' { 'statefixtures' }
     'TaskEvidence' { 'taskevidence' }
+    'TaskAllocation' { 'taskallocationevidence' }
 }
 if ([string]::IsNullOrWhiteSpace($Output)) {
     $Output = Join-Path $root ".tmp\round6-$($Scenario.ToLowerInvariant())"
