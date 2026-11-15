@@ -1,6 +1,6 @@
 ﻿[CmdletBinding()]
 param(
-    [ValidateSet('Baseline', 'StateFixtures', 'TaskEvidence', 'TaskAllocation')]
+    [ValidateSet('Baseline', 'StateFixtures', 'TaskEvidence', 'TaskAllocation', 'DpiEvidence')]
     [string]$Scenario = 'Baseline',
     [string]$Output = '',
     [string]$SampleUtc = '2026-11-13T00:00:00Z'
@@ -14,6 +14,7 @@ $scenarioName = switch ($Scenario) {
     'StateFixtures' { 'statefixtures' }
     'TaskEvidence' { 'taskevidence' }
     'TaskAllocation' { 'taskallocationevidence' }
+    'DpiEvidence' { 'dpievidence' }
 }
 if ([string]::IsNullOrWhiteSpace($Output)) {
     $Output = Join-Path $root ".tmp\round6-$($Scenario.ToLowerInvariant())"
@@ -24,6 +25,8 @@ $previousSampleUtc = [Environment]::GetEnvironmentVariable('GSC_RENDER_SAMPLE_UT
 try {
     . (Join-Path $PSScriptRoot 'sdk-baseline.ps1')
     Initialize-GscSdkBaseline -ProjectRoot $root | Out-Null
+    $sdkVersion = (& dotnet --version).Trim()
+    if ($LASTEXITCODE -ne 0) { throw "dotnet --version failed: $LASTEXITCODE" }
 
     Write-Host "==> Building render harness (Release)" -ForegroundColor Cyan
     & dotnet build $project -c Release -m:1 -nodeReuse:false -p:NuGetAudit=false -p:MSBuildEnableWorkloadResolver=false
@@ -87,6 +90,7 @@ try {
     $metadata = [ordered]@{
         scenario = $Scenario
         harnessMode = $scenarioName
+        sdkVersion = $sdkVersion
         sourceSha = (& git rev-parse HEAD).Trim()
         sampleUtc = $env:GSC_RENDER_SAMPLE_UTC
         windowStation = if ($desktopResult) { $desktopResult.WindowStation } else { $windowStation }

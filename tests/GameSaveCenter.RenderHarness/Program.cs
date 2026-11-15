@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Markup;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
@@ -37,9 +39,65 @@ namespace GameSaveCenter.RenderHarness;
 /// logical content sizes produced by the Dashboard shell for common 1080p/2K/4K windows
 /// and writes PNGs plus a measurable scroll/viewport report for later comparison.
 /// </summary>
-public static class Program
+public static partial class Program
 {
     private static readonly string RepositoryRoot = ResolveRepositoryRoot();
+
+    private static readonly IntPtr PerMonitorAwareV2Context = new IntPtr(-4);
+    private const uint MonitorDefaultToNearest = 2;
+    private const int MonitorEffectiveDpi = 0;
+    private const int SystemMetricMonitorCount = 80;
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool SetProcessDpiAwarenessContext(IntPtr dpiContext);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern IntPtr SetThreadDpiAwarenessContext(IntPtr dpiContext);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetThreadDpiAwarenessContext();
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool AreDpiAwarenessContextsEqual(IntPtr first, IntPtr second);
+
+    [DllImport("user32.dll")]
+    private static extern uint GetDpiForWindow(IntPtr window);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern IntPtr MonitorFromWindow(IntPtr window, uint flags);
+
+    [DllImport("user32.dll", EntryPoint = "GetMonitorInfoW", CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern bool GetMonitorInfo(IntPtr monitor, ref MonitorInfoEx monitorInfo);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool GetWindowRect(IntPtr window, out Win32Rect rectangle);
+
+    [DllImport("user32.dll")]
+    private static extern int GetSystemMetrics(int index);
+
+    [DllImport("shcore.dll", PreserveSig = true)]
+    private static extern int GetDpiForMonitor(IntPtr monitor, int dpiType, out uint dpiX, out uint dpiY);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct Win32Rect
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct MonitorInfoEx
+    {
+        public int Size;
+        public Win32Rect Monitor;
+        public Win32Rect Work;
+        public uint Flags;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string Device;
+    }
 
     private static readonly List<string> s_problems = new List<string>();
     private static int s_savedPngCount;
@@ -337,6 +395,25 @@ public static class Program
             taskEvidenceThread.Start();
             taskEvidenceThread.Join();
             return taskEvidenceExitCode;
+        }
+
+        if (args.Length > 0 && args[0].Equals("dpievidence", StringComparison.OrdinalIgnoreCase))
+        {
+            var requested = SetProcessDpiAwarenessContext(PerMonitorAwareV2Context);
+            var setError = requested ? 0 : Marshal.GetLastWin32Error();
+            var mainThreadPmv2 = AreDpiAwarenessContextsEqual(GetThreadDpiAwarenessContext(), PerMonitorAwareV2Context);
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "dpi-evidence");
+            var dpiEvidenceExitCode = 0;
+            var dpiEvidenceThread = new Thread(() =>
+            {
+                dpiEvidenceExitCode = RunDpiEvidence(outputRoot, requested, setError, mainThreadPmv2);
+            });
+            dpiEvidenceThread.SetApartmentState(ApartmentState.STA);
+            dpiEvidenceThread.Start();
+            dpiEvidenceThread.Join();
+            return dpiEvidenceExitCode;
         }
 
         if (args.Length > 0 && args[0].Equals("taskallocationevidence", StringComparison.OrdinalIgnoreCase))

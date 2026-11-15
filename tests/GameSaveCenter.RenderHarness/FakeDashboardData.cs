@@ -76,6 +76,7 @@ public sealed class FakeDashboardData
     public ICommand UndoMediaClassificationCommand { get; } = new NoopCommand();
     public ICommand LoadMoreTasksCommand { get; } = new NoopCommand();
     public ICommand LoadDetailsCommand { get; } = new NoopCommand();
+    public ICommand ApplyPolicyTemplateBatchCommand { get; } = new NoopCommand();
     public ICommand PreviewRestorePlanMappingCommand { get; } = new NoopCommand();
     public ICommand SaveRestorePlanDraftCommand { get; } = new NoopCommand();
     public ICommand DeleteRestorePlanDraftCommand { get; } = new NoopCommand();
@@ -405,6 +406,11 @@ public sealed class FakeDashboardData
                 HealthState = i % 5 == 0 ? "Warning" : "Ready"
             });
         }
+
+        foreach (var target in PolicyTemplateBatchPreview.Build(
+            Games,
+            new BackupPolicyDto { Enabled = true, BackupOnGameStop = true, BackupDuringPlay = false }))
+            PolicyTemplateBatchTargetsView.Add(target);
 
         RecentProtection = new RecentProtectionAssessmentService().Assess(Games, 30, fixtureNowUtc);
 
@@ -1314,6 +1320,17 @@ public sealed class FakeDashboardData
     public int MediaTabIndex { get; set; }
     public int MaintenanceTabIndex { get; set; }
     public ObservableCollection<string> TaskStatusFilterOptions { get; } = new ObservableCollection<string> { "全部", "运行中", "等待中", "失败", "已完成" };
+    public ObservableCollection<PolicyTemplateBatchTarget> PolicyTemplateBatchTargetsView { get; } = new ObservableCollection<PolicyTemplateBatchTarget>();
+    public int PolicyTemplateBatchVisibleCount => PolicyTemplateBatchTargetsView.Count;
+    public int PolicyTemplateBatchSelectedCount => PolicyTemplateBatchTargetsView.Count(target => target.IsSelected);
+    public int PolicyTemplateBatchHiddenSelectedCount => 0;
+    public int PolicyTemplateBatchExcludedCount => Math.Max(0, PolicyTemplateBatchTargetsView.Count - PolicyTemplateBatchSelectedCount);
+    public int PolicyTemplateBatchChangeCount => PolicyTemplateBatchTargetsView.Where(target => target.IsSelected).Sum(target => target.ChangeCount);
+    public string PolicyTemplateBatchSummary => PolicyTemplateBatchSelectedCount == 0
+        ? "布局样例：没有自动选择游戏；只有明确勾选的目标才会进入预览。"
+        : $"布局样例：明确选择 {PolicyTemplateBatchSelectedCount} 个目标；未勾选游戏保持排除。";
+    public string PolicyTemplateBatchSearchText { get; set; } = string.Empty;
+    public bool HasPolicyTemplateBatchResults => false;
     public ObservableCollection<string> TaskGameFilterOptions { get; } = new ObservableCollection<string> { "全部" };
     public ObservableCollection<string> TaskTypeFilterOptions { get; } = new ObservableCollection<string> { "全部", "存档备份", "媒体同步", "云端上传" };
     public ObservableCollection<string> TaskHistoryScopeOptions { get; } = new ObservableCollection<string> { "最近任务", "全部历史" };
