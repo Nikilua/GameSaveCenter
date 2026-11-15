@@ -64,6 +64,7 @@ public static partial class Program
         report.AppendLine($"LayoutViewport: shell {shellWidth}x{shellHeight} DIP; page content size derived by the existing RenderHarness ContentSize policy.");
         report.AppendLine("DpiMatrixBoundary: window WPF geometry is measured once at the host's effective DPI; 125% and 200% screenshots are RenderTargetBitmap raster-scale simulations. A matrix row is marked current-monitor only when its render scale matches GetDpiForWindow and VisualTreeHelper.GetDpi.");
         report.AppendLine("CaptureStabilization: the harness pumps the WPF dispatcher through loaded/render priorities before capture; task inspector motion is disabled on the harness view only.");
+        report.AppendLine("ControlRasterBoundary: each in-page control raster is cropped from the full page render so ancestor opacity, templates, and visual effects are retained; the native ComboBox Popup is rendered from its separate WPF visual root.");
         report.AppendLine("Controls: task inspector, overview priority CTA, policy-template game checkbox row, task-status ComboBox popup.");
 
         try
@@ -287,7 +288,7 @@ public static partial class Program
                 var scaleMode = scaleMatchesCurrentWindow ? "current-monitor-WPF" : "logical-raster-simulation";
                 var safeAutomationName = string.IsNullOrWhiteSpace(automationName) ? "unnamed" : SanitizeFileName(automationName);
                 var fileName = $"{caseName}-{themeName}-{(int)Math.Round(scale * 100)}pct-{scaleMode}-{safeAutomationName}.png";
-                SaveDpiPng(target, Path.Combine(outputRoot, fileName), dpi);
+                SaveDpiCrop(host, targetBounds, Path.Combine(outputRoot, fileName), dpi);
                 var widthPixels = (int)Math.Ceiling(target.ActualWidth * scale);
                 var heightPixels = (int)Math.Ceiling(target.ActualHeight * scale);
                 geometry.Add(string.Join("\t", new[]
@@ -537,6 +538,36 @@ public static partial class Program
         bitmap.Render(visual);
         var encoder = new PngBitmapEncoder();
         encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        using (var stream = File.Create(path))
+            encoder.Save(stream);
+        encoder.Frames.Clear();
+    }
+
+    private static void SaveDpiCrop(FrameworkElement pageRoot, Rect bounds, string path, double dpi)
+    {
+        var width = pageRoot.ActualWidth;
+        var height = pageRoot.ActualHeight;
+        if (width <= 0 || height <= 0 || bounds.IsEmpty)
+            throw new InvalidOperationException($"Cannot crop {path}: page={width}x{height} DIP, bounds={bounds}.");
+
+        var scale = dpi / 96d;
+        var bitmapWidth = (int)Math.Ceiling(width * scale);
+        var bitmapHeight = (int)Math.Ceiling(height * scale);
+        var bitmap = new RenderTargetBitmap(bitmapWidth, bitmapHeight, dpi, dpi, PixelFormats.Pbgra32);
+        bitmap.Render(pageRoot);
+
+        var left = Math.Max(0, (int)Math.Floor(bounds.Left * scale));
+        var top = Math.Max(0, (int)Math.Floor(bounds.Top * scale));
+        var right = Math.Min(bitmap.PixelWidth, (int)Math.Ceiling(bounds.Right * scale));
+        var bottom = Math.Min(bitmap.PixelHeight, (int)Math.Ceiling(bounds.Bottom * scale));
+        var cropWidth = right - left;
+        var cropHeight = bottom - top;
+        if (cropWidth <= 0 || cropHeight <= 0)
+            throw new InvalidOperationException($"Cannot crop {path}: pixel bounds={left},{top},{right},{bottom}.");
+
+        var cropped = new CroppedBitmap(bitmap, new Int32Rect(left, top, cropWidth, cropHeight));
+        var encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(cropped));
         using (var stream = File.Create(path))
             encoder.Save(stream);
         encoder.Frames.Clear();
