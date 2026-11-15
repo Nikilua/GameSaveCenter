@@ -14,9 +14,9 @@ V20交付的是带时间戳的WPF属性采样及播放器，符合计划允许�
 
 | ID | 对应旧项 | 任务与完成标准 | 初始状态 |
 | --- | --- | --- | --- |
-| C01 | V04/V12/V21 | 修正任务页对比的时间一致性：定位Elapsed展示的数据源，固定所有动态时间和进度，重拍同主题/同尺寸前后图；每次两版的样本字段快照应相同。保留旧图作为已知限制，不改生产计时只为让截图一致。顺便检查“执行中/阶段已完成/任务已完成”的合成样本组合是否有业务解释，无解释时改合成数据。 | 受控证据已完成；`aa590a1b` 精确CI待终态核验 |
-| C02 | V26 | 在现有受控Harness补页面操作managed-allocation配对：同机、同数据、同操作数、预热后正反序，记录总分配/操作、样本与噪声；区分冷启动和稳定交互。若重复显示回退，定位后再修；不把GC保留内存或Rendering间隔冒充分配量/真实帧。复用已有探针，禁止无限跑数。 | 受控分配量配对已完成；精确CI待终态 |
-| C03 | V25 | 补受影响控件的125/150/200%缩放可读性与几何矩阵，优先任务详情/概览CTA/存档选框/弹层；使用真正对应的WPF DPI环境，若仅逻辑模拟必须标注。能做的受控检查先做，真实跨屏仍独立待验，不因物理条件缺失将已做证据抹掉。 | 待开始，环境能力需先确认 |
+| C01 | V04/V12/V21 | 修正任务页对比的时间一致性：定位Elapsed展示的数据源，固定所有动态时间和进度，重拍同主题/同尺寸前后图；每次两版的样本字段快照应相同。保留旧图作为已知限制，不改生产计时只为让截图一致。顺便检查“执行中/阶段已完成/任务已完成”的合成样本组合是否有业务解释，无解释时改合成数据。 | 受控证据与`aa590a1b`精确SHA双job CI均完成；身份见[最终门禁记录](ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md) |
+| C02 | V26 | 在现有受控Harness补页面操作managed-allocation配对：同机、同数据、同操作数、预热后正反序，记录总分配/操作、样本与噪声；区分冷启动和稳定交互。若重复显示回退，定位后再修；不把GC保留内存或Rendering间隔冒充分配量/真实帧。复用已有探针，禁止无限跑数。 | 受控分配量配对与`e5bf3fce`精确SHA双job CI均完成；身份见[最终门禁记录](ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md) |
+| C03 | V25 | 补受影响控件的125/150/200%缩放可读性与几何矩阵，优先任务详情/概览CTA/存档选框/弹层；使用真正对应的WPF DPI环境，若仅逻辑模拟必须标注。能做的受控检查先做，真实跨屏仍独立待验，不因物理条件缺失将已做证据抹掉。 | 受控WPF矩阵和三个精确SHA双job CI均完成；真实跨屏/Playnite现场与物理输入仍待验，见[C03证据索引](ui-redesign-round6-20261113/evidence/C03-dpi-matrix-20261115/README.md) |
 | C04 | V20/V28 | 最终体验交付：在可安全使用的可见隔离WPF或Playnite窗口中录制切页/详情反转/Toast短片；明确运行身份、数据、输入方式。无可见环境则保留受控采样和待验原因，不用HTML轨迹回放冒充录屏。同步清理受阻路径清单与真实状态，不绕过既有策略；用户可直接打开效果索引看到差异。 | 条件性待验 |
 
 ## C01执行记录（2026-11-15）
@@ -25,7 +25,7 @@ V20交付的是带时间戳的WPF属性采样及播放器，符合计划允许�
 
 同机、同SDK 8.0.423/Release、同样本时刻`2026-10-15T12:00:00Z`、深色主题、1040×700及1600×900 DIP，对比`8678e163a92278a74645559f95789c1348941398`基线与`54d7a6efa1d7438575ca5ca0ff29d098654e6754`候选。两个RenderHarness Release构建均0 warning/0 error，两次渲染直接exit 0；均运行在各自`WinSta0`私有桌面，前后输入桌面保持`Default`。任务字段快照SHA-256均为`979BD8EA59BB948F039059D8F4E920DDB289AA355A8A45741BB0A8A7392D5BBE`，两图都显示选中任务T-0001耗时36小时、48%进度、校验中。报告/原图/并排图和manifest在[C01证据索引](ui-redesign-round6-20261113/evidence/C01-task-time-20261115/README.md)。该证据只代表受控WPF离屏布局，不是真实Playnite、物理DPI或实体输入验收。
 
-源码提交`54d7a6efa1d7438575ca5ca0ff29d098654e6754`已推送；其Actions run #1582（`43706944794`）主job在源码结构检查发现新PowerShell脚本缺UTF-8 BOM后失败，后续测试/打包步骤按依赖正常跳过，未扩大skip。缺陷已在`aa590a1b8c710e0788098b27b128719001aeead3`修复，Source Validation本机通过；该精确SHA Actions run #1583（`43707721313`）和所有适用job正在核验。待该run终态后回填其job与artifact身份。
+源码提交`54d7a6efa1d7438575ca5ca0ff29d098654e6754`已推送；其Actions run #1582（`43706944794`）因新PowerShell脚本缺UTF-8 BOM在源码结构检查失败，依赖步骤按workflow正常跳过，未扩大skip。缺陷已在`aa590a1b8c710e0788098b27b128719001aeead3`修复。精确SHA Actions run #1583（`43707721313`）主job `132792318458`和SDK10 job `132792318643`均已`completed/success`、全部步骤完成；artifact身份与digest见[CI与最终候选门禁记录](ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md)。
 
 清理复核只针对本阶段独有的基线工作树、候选渲染目录及成功烟测目录（分别10,332文件/552,230,312 bytes、5文件/164,264 bytes、5文件/164,261 bytes）；三者均规范化在仓库`.tmp`内，无重解析点、Git跟踪引用或占用进程。准确的PowerShell `Remove-Item -LiteralPath -Recurse -Force` 调用被执行策略拒绝，未换其他删除方式；目录保留。首次滚动控件选择错误的失败烟测诊断保留在`.tmp/round6-c01-smoke-20261115`。用户TRX/TestResults、当前包、历史证据未触碰。
 
@@ -37,9 +37,19 @@ V20交付的是带时间戳的WPF属性采样及播放器，符合计划允许�
 
 详情、逐样本TSV、每次运行身份与SHA在[C02证据索引](ui-redesign-round6-20261113/evidence/C02-task-allocation-20261115/README.md)。受控按钮事件不等于实体输入；1.00 logical DIP、离开屏幕的隔离桌面不证明真实Playnite呈现帧、DWM、物理DPI或键盘/UIA体验。真实profile、游戏配置/存档和云端均未访问。首次net472编译问题、按钮视觉树初始化和正反序列终态的早期失败诊断均保留；均已修正，未跳过测试或扩大skip。
 
-GitHub run #1585（`43711239891`，精确SHA `e5bf3fce3e0e410f97fde251647189aa71dc23c6`）核对时，基线job `132803031587`在编译/测试，SDK 10.0.401 job `132803031328`也在隔离编译/测试；尚无终态结论。C01修正run #1583（`43707721313`）的主job `132792318458`已完成编译/测试、Render QA与WPF静态检查，正在打包；SDK 10 job `132792318643`已success。两run终态和artifact身份后续按精确提交回填；未探测旧required-check 403。
+GitHub run #1585（`43711239891`，精确SHA `e5bf3fce3e0e410f97fde251647189aa71dc23c6`）的主job `132803031587`和SDK 10.0.401 job `132803031328`均已`completed/success`、全部步骤成功。C01/C02/C03五个源码SHA及artifact身份汇总在[CI与最终候选门禁记录](ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md)。未探测旧required-check 403。
 
-四项都沿用旧计划，不另造平行功能。C01是本次明确发现的证据质量问题；C02/C03补原验收缺口；C04是交付和环境条件，不承诺由纯代码消除。是否进一步改外观应以用户看过这些实际效果后的具体反馈决定，避免反复改已接受的视觉。
+## C03执行记录（2026-11-15）
+
+C03在最终RenderHarness源码`15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3`上完成任务详情、概览优先CTA、存档策略游戏选框、任务状态ComboBox/Popup的双主题采样。修正提交依次为`5a6a7c192ea102338b3f339d0b3a8cbba3b86eaa`（DPI矩阵）、`159ea800becb985e9c8a8d2a3bb8dae3b112cd48`（页面捕获稳定）、`15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3`（控件裁切）；均只改Harness/证据脚本，没有改生产`src/`。权威目录含38张PNG、几何TSV、报告、runner身份和hash manifest；首次裁切诊断及中间修正目录保留。细节、图片链接和hash见[C03证据索引](ui-redesign-round6-20261113/evidence/C03-dpi-matrix-20261115/README.md)。
+
+SDK8.0.423 Release下，进程和UI线程均为PMv2；当前`DISPLAY10`实际144 DPI/150% WPF窗口样本与125/200%栅格模拟分开标注。125/200不是对应的系统/WPF DPI上下文。数据为8个合成任务/游戏，输入程序化设置、测试运行于私有WinSta0桌面，前后桌面为Default。该矩阵不代表真实Playnite视觉、跨屏、物理输入或UIA客户端验收。
+
+## 最终候选入口门禁（2026-11-15）
+
+在SDK8.0.423/Release、源码SHA`15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3`上，中文一键入口`GameSaveCenter-一键构建安装运行.cmd`转`GameSaveCenter-Run.cmd`完整链直接退出码0；独立`scripts/build.cmd`直接退出码0。两次均160份TRX、2,051项、1,993通过、0失败、58跳过、0其他，157/157个WPF隔离类完成。根链安装六个程序集与包hash一致；Playnite只在新隔离profile启动，没有打开插件页作视觉验收，随后通过Playnite `--shutdown`正常退出。安装身份、ZIP/PEXT和六个程序集hash、原始summary SHA及第一次辅助包装器失败记录见[最终候选门禁记录](ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md)。没有关闭/扩大skip，没有访问真实profile、配置、存档或云端。
+
+四项都沿用旧计划，不另造平行功能。C01是本次明确发现的证据质量问题；C02/C03补原验收缺口；C04是交付和环境条件，不承诺由纯代码消除。C01–C03受控证据及CI门禁已收口；C04要求的可见隔离宿主短片和Playnite现场/物理输入复核仍未完成。本次整理既有运行结果，没有重跑完整链或执行现场视觉验收。
 
 ## 执行要求
 
@@ -47,4 +57,4 @@ GitHub run #1585（`43711239891`，精确SHA `e5bf3fce3e0e410f97fde251647189aa71
 
 源码/测试/脚本/资源改动按影响范围验证，最终候选实际中文一键入口转GameSaveCenter-Run.cmd完整链及独立scripts/build.cmd成功，记录直接退出码、SDK、源码和安装身份；核验精确提交GitHub所有适用job。不得跳过测试、扩大skip、关闭检查求绿，旧required-check403不重复探测。纯文档只做静态/链接检查，不循环追加CI成功记录。
 
-每阶段在归属、规范化根内路径、链接、引用及占用核实后，用PowerShell literal路径清理artifacts/.tmp自有无用输出；保留当前必要包、失败诊断和引用证据，不清用户TRX/TestResults及未知内容，策略拒绝不得绕过。中文commit并push。本次已完成C01受控样本与证据更新；未操作真实配置/存档/云端，未重新执行完整链或现场视觉验收。
+每阶段在归属、规范化根内路径、链接、引用及占用核实后，用PowerShell literal路径清理artifacts/.tmp自有无用输出；保留当前必要包、失败诊断和引用证据，不清用户TRX/TestResults及未知内容，策略拒绝不得绕过。中文commit并push。此次只做复核、证据索引和文档计划收口；没有操作真实配置/存档/云端，没有重跑完整链或执行现场视觉验收。

@@ -1,0 +1,13 @@
+{
+  "scenario": "DpiEvidence",
+  "harnessMode": "dpievidence",
+  "sdkVersion": "8.0.423",
+  "sourceSha": "159ea800becb985e9c8a8d2a3bb8dae3b112cd48",
+  "sampleUtc": "2026-11-13T00:00:00.0000000+00:00",
+  "windowStation": "WinSta0",
+  "desktop": "GscRound6_93f7b4eafcad4fc49a61360efe8ef5a5",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "exitCode": 0,
+  "output": "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\ui-redesign-round6-20261113\\evidence\\C03-dpi-matrix-20261115-final"
+}

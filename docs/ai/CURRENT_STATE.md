@@ -1,16 +1,18 @@
-## 当前事实入口（Round6 V01–V28与C01–C02，2026-11-15）
+## 当前事实入口（Round6 V01–V28与C01–C03，2026-11-15）
 
 最终产品候选仍为 `9880c81be09365d02b9335a633be95506095c8d9`；推广页面提交 `ec7a02bea93d27ca054fe66f90574ea733710ebb` 与 `9880c81`。V21–V24完成任务、媒体、概览、设置页面及同数据前后评审；V25–V28记录了受控视觉/行为验收和交付边界，详细索引见[Round6交付证据](../design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/README.md)。
 
-C01已补齐任务页时间对比：在RenderHarness固定8条合成任务的全部时间、进度与状态语义，用同一份字段快照重拍8678基线与54d7候选。两版均显示36小时，快照SHA-256相同；只改测试夹具与证据脚本，没有改生产计时。当前C01证据索引为[任务页时间一致性](../design/ui-redesign-round6-20261113/evidence/C01-task-time-20261115/README.md)。54d7的初始GitHub run因composer脚本缺少UTF-8 BOM在源码结构检查失败；已由`aa590a1b`修复。run #1583（`43707721313`）主job `132792318458`已完成编译/测试、Render QA和WPF静态检查，正在打包；SDK10 job `132792318643`已success。
+C01已补齐任务页时间对比：RenderHarness固定8条合成任务的时间、进度与状态语义，两版字段快照SHA-256相同；生产计时未改。修复提交`aa590a1b8c710e0788098b27b128719001aeead3`的精确run #1583（`43707721313`）两个适用job均`completed/success`。初始`54d7a6e` run #1582因脚本BOM失败的诊断保留，修正后的artifact身份见[最终门禁记录](../design/ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md)。受控图像和样本字段见[C01证据](../design/ui-redesign-round6-20261113/evidence/C01-task-time-20261115/README.md)。
 
-C02受控任务详情分配量配对已完成；只改Harness/脚本，生产源码未改。SDK8.0.423/Release在同机按8678基线、9880产品候选、候选、基线（B-C-C-B）运行；每次24组预热后开合，合并48组的候选配对均值少127,575 bytes（1.88%），未发现回退。完整方法、原始报告/TSV与SHA见[C02分配量证据](../design/ui-redesign-round6-20261113/evidence/C02-task-allocation-20261115/README.md)。run #1585（`43711239891`）主job `132803031587`与SDK10 job `132803031328`核对时仍在编译/测试；等待精确job终态。
+C02受控任务详情分配量配对已完成；只改Harness/脚本，生产源码未改。SDK8.0.423/Release按8678基线、9880产品候选、候选、基线（B-C-C-B）运行；候选开合配对均值少127,575 bytes（1.88%）。精确run #1585（`43711239891`）主job `132803031587`和SDK10 job `132803031328`均success；完整方法与原始TSV见[C02证据](../design/ui-redesign-round6-20261113/evidence/C02-task-allocation-20261115/README.md)。
 
-中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 和独立 `scripts/build.cmd` 已在SDK8.0.423/Release对9880候选直接exit0；各160份TRX，2,051项、1,993通过、0失败、58个既有skip，157/157个WPF隔离类。隔离安装的六个程序集版本对应完整候选SHA。Playnite隔离进程显示首次配置向导，没有检查插件页面、真实库或用户profile。GitHub run #1579 / 43600878377 的适用jobs与步骤均success；job/artifact身份见V21–V24交付证据。C01修正尚未替代最终候选门禁，后续完整链与独立build仍按计划运行。
+C03受控矩阵已完成：四类控件、双主题，共38张最终PNG。当前显示器真实WPF窗口为144 DPI/150%，进程和UI线程PMv2；125%/200%明确为栅格比例模拟。输入为代码设置的合成数据、测试桌面隔离，未操作实体输入或Playnite现场。[C03矩阵与直接图像链接](../design/ui-redesign-round6-20261113/evidence/C03-dpi-matrix-20261115/README.md)含首次裁切诊断、最终核验目录和哈希。源码只改Harness/脚本；`5a6a7c1`、`159ea800`、`15f82b6`三个精确SHA的两类CI job均通过。
+
+最终门禁源码SHA为`15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3`（相对产品候选`9880c81`的`src/`无差异）。此前已实际执行中文入口`GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd`完整链和独立`scripts/build.cmd`，两者SDK8.0.423/Release直接退出码均为0；各160份TRX、2,051项、1,993通过、0失败、58跳过、157/157个WPF隔离类。根链安装六个程序集与包hash一致；Playnite只在新隔离profile启动，未打开插件页面或检查真实库，之后正常关闭。原始摘要、ZIP/PEXT和程序集身份见[最终候选门禁记录](../design/ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md)。本次文档复核没有重新执行完整链。
 
 Render QA为334张、双主题、0 PROBLEM；生产XAML静态审查27项、0 error、26 warnings（与基线相同）。语义状态文本双主题测试覆盖至少4.5:1，大号概览数字/禁用上下文标签覆盖3:1；并非全页像素对比清点。动态样片是9097e6c8源码上采集的147条实际WPF属性轨迹，播放器不插帧；不是录屏，详情采样窗IsVisible=false，未证明真实屏幕帧或60fps。RenderQA侧栏单次/快速切换和C02任务详情分配量比较已记录；1.00逻辑DIP结果不能代表物理DPI。CUA初始化失败，无法自动观察Playnite界面。
 
-根入口scratch `.tmp/round6-v27-rootbuild` 的递归清理被执行策略拒绝；保留未绕过。C01/C02均使用隔离合成数据；没有触碰真实存档、真实用户配置/Playnite profile、云端写入，也没有清理其他任务TRX/TestResults。C03真实WPF DPI矩阵和最终完整构建入口仍待推进；C04仍受可见隔离宿主条件约束。Round5/P1记录继续作为历史事实，不因Round6更新而改写。
+六个程序集和包的具体hash、两种入口的直接exit码、TRX总数及summary SHA见上方门禁索引。独立build的157份WPF测试桌面结果全部exit 0、未超时、桌面匹配，测试期间输入桌面前后保持`Default`。旧清理路径`.tmp/round6-v27-rootbuild`此前被策略拒绝，事实保留且未绕过；本轮清理仍只针对新建且自有的临时输出按规则逐项预检。C01–C03使用受控合成数据；没有触碰真实存档、真实用户配置、云端写入或其他任务TRX/TestResults。C04可见宿主短片、真实Playnite视觉和物理输入仍待条件。Round5/P1历史不因Round6更新而改写。
 
 
 ## 历史入口（Round6截至V20，2026-11-14；状态以本节上方更新为准）

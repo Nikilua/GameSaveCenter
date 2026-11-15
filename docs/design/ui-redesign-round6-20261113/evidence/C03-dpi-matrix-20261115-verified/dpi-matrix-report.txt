@@ -1,0 +1,116 @@
+﻿GameSaveCenter Round 6 C03 controlled WPF DPI matrix
+GeneratedUtc: 2026-11-15T12:51:15.0614262Z
+ProcessDpiAwarenessRequestSucceeded: True
+ProcessDpiAwarenessRequestWin32Error: 0
+MainThreadWasPmv2BeforeUiThread: True
+UiThreadSetPmv2Succeeded: True
+UiThreadSetPmv2Win32Error: 0
+UiThreadIsPmv2: True
+ProcessId: 35092
+RuntimeVersion: 4.0.30319.42000
+MeasurementBoundary: real WPF Window and Popup HWNDs on the current desktop monitor; all page data are synthetic; no Playnite host, physical input, real profile, save, or cloud access.
+LayoutViewport: shell 1600x900 DIP; page content size derived by the existing RenderHarness ContentSize policy.
+DpiMatrixBoundary: window WPF geometry is measured once at the host's effective DPI; 125% and 200% screenshots are RenderTargetBitmap raster-scale simulations. A matrix row is marked current-monitor only when its render scale matches GetDpiForWindow and VisualTreeHelper.GetDpi.
+CaptureStabilization: the harness pumps the WPF dispatcher through loaded/render priorities before capture; task inspector motion is disabled on the harness view only.
+ControlRasterBoundary: each in-page control raster is cropped from the full page render so ancestor opacity, templates, and visual effects are retained; the native ComboBox Popup is rendered from its separate WPF visual root.
+Controls: task inspector, overview priority CTA, policy-template game checkbox row, task-status ComboBox popup.
+ContentViewport: 1276x660 DIP
+SystemMetricMonitorCount: 1
+Case: task-details/light
+  WindowDpi: GetDpiForWindow=144; WPF=144x144; scale=1.5x1.5
+  Monitor: \\.\DISPLAY10; effectiveDpi=144x144; bounds=0,0,3840,2160; windowPhysicalRect=24,24,1938,1014
+  SyntheticFixture: tasks=8; games=8; selectedTask=T-0001; input=programmatic setup only
+  Target: name=TaskDetailInspectorFrame; automationName=; bindingPath=SelectedTask.* (inspector card); bounds=872,100,400,554; visible=True; hostClipped=False
+  State: selectedTask=T-0001; detailFrame=Visible
+  PageContext: task-details-light-150pct-current-monitor-pagecontext.png; 1276x660 DIP at 144 DPI
+  Raster: task-details-light-125pct-logical-raster-simulation-unnamed.png; dpi=120; size=500x693px; mode=logical-raster-simulation
+  Raster: task-details-light-150pct-current-monitor-WPF-unnamed.png; dpi=144; size=600x831px; mode=current-monitor-WPF
+  Raster: task-details-light-200pct-logical-raster-simulation-unnamed.png; dpi=192; size=800x1108px; mode=logical-raster-simulation
+
+Case: overview-cta/light
+  WindowDpi: GetDpiForWindow=144; WPF=144x144; scale=1.5x1.5
+  Monitor: \\.\DISPLAY10; effectiveDpi=144x144; bounds=0,0,3840,2160; windowPhysicalRect=24,24,1938,1014
+  SyntheticFixture: tasks=8; games=8; selectedTask=T-0001; input=programmatic setup only
+  Target: name=OverviewPriorityActionButton; automationName=查看云端队列; bindingPath=OverviewPriorityActionCommand; bounds=1108.66666666667,84.6666666666667,132,36; visible=True; hostClipped=False
+  State: enabled=True; commandBound=OverviewPriorityActionCommand
+  PageContext: overview-cta-light-150pct-current-monitor-pagecontext.png; 1276x660 DIP at 144 DPI
+  Raster: overview-cta-light-125pct-logical-raster-simulation-查看云端队列.png; dpi=120; size=165x45px; mode=logical-raster-simulation
+  Raster: overview-cta-light-150pct-current-monitor-WPF-查看云端队列.png; dpi=144; size=198x54px; mode=current-monitor-WPF
+  Raster: overview-cta-light-200pct-logical-raster-simulation-查看云端队列.png; dpi=192; size=264x72px; mode=logical-raster-simulation
+
+Case: save-policy-checkbox/light
+  WindowDpi: GetDpiForWindow=144; WPF=144x144; scale=1.5x1.5
+  Monitor: \\.\DISPLAY10; effectiveDpi=144x144; bounds=0,0,3840,2160; windowPhysicalRect=24,24,1938,1014
+  SyntheticFixture: tasks=8; games=8; selectedTask=T-0001; input=programmatic setup only
+  Target: name=; automationName=; bindingPath=IsSelected; bounds=892,549.333333333333,333.333333333333,37.3333333333333; visible=True; hostClipped=False
+  State: automationName=Baldur's Gate 3; isChecked=False; binding=IsSelected; selectedCount=0
+  PageContext: save-policy-checkbox-light-150pct-current-monitor-pagecontext.png; 1276x660 DIP at 144 DPI
+  Raster: save-policy-checkbox-light-125pct-logical-raster-simulation-unnamed.png; dpi=120; size=417x47px; mode=logical-raster-simulation
+  Raster: save-policy-checkbox-light-150pct-current-monitor-WPF-unnamed.png; dpi=144; size=500x56px; mode=current-monitor-WPF
+  Raster: save-policy-checkbox-light-200pct-logical-raster-simulation-unnamed.png; dpi=192; size=667x75px; mode=logical-raster-simulation
+
+Case: task-status-popup/light
+  WindowDpi: GetDpiForWindow=144; WPF=144x144; scale=1.5x1.5
+  Monitor: \\.\DISPLAY10; effectiveDpi=144x144; bounds=0,0,3840,2160; windowPhysicalRect=24,24,1938,1014
+  SyntheticFixture: tasks=8; games=8; selectedTask=T-0001; input=programmatic setup only
+  Target: name=TaskStatusFilterComboBox; automationName=任务状态筛选; bindingPath=TaskStatusFilter; bounds=1098.66666666667,7.33333333333333,112,36; visible=True; hostClipped=False
+  State: selected=全部; isDropDownOpen=True; command=none
+  PageContext: task-status-popup-light-150pct-current-monitor-pagecontext.png; 1276x660 DIP at 144 DPI
+  Raster: task-status-popup-light-125pct-logical-raster-simulation-任务状态筛选.png; dpi=120; size=140x45px; mode=logical-raster-simulation
+  Raster: task-status-popup-light-150pct-current-monitor-WPF-任务状态筛选.png; dpi=144; size=168x54px; mode=current-monitor-WPF
+  Raster: task-status-popup-light-200pct-logical-raster-simulation-任务状态筛选.png; dpi=192; size=224x72px; mode=logical-raster-simulation
+  PopupHwnd: dpi=144; physicalRect=1672,80,1840,390; child=112x192.67 DIP
+  PopupRaster: task-status-popup-light-125pct-logical-raster-simulation-popup.png; dpi=120; size=140x241px; mode=logical-raster-simulation
+  PopupRaster: task-status-popup-light-150pct-current-monitor-WPF-popup.png; dpi=144; size=168x289px; mode=current-monitor-WPF
+  PopupRaster: task-status-popup-light-200pct-logical-raster-simulation-popup.png; dpi=192; size=224x386px; mode=logical-raster-simulation
+
+Case: task-details/dark
+  WindowDpi: GetDpiForWindow=144; WPF=144x144; scale=1.5x1.5
+  Monitor: \\.\DISPLAY10; effectiveDpi=144x144; bounds=0,0,3840,2160; windowPhysicalRect=24,24,1938,1014
+  SyntheticFixture: tasks=8; games=8; selectedTask=T-0001; input=programmatic setup only
+  Target: name=TaskDetailInspectorFrame; automationName=; bindingPath=SelectedTask.* (inspector card); bounds=872,100,400,554; visible=True; hostClipped=False
+  State: selectedTask=T-0001; detailFrame=Visible
+  PageContext: task-details-dark-150pct-current-monitor-pagecontext.png; 1276x660 DIP at 144 DPI
+  Raster: task-details-dark-125pct-logical-raster-simulation-unnamed.png; dpi=120; size=500x693px; mode=logical-raster-simulation
+  Raster: task-details-dark-150pct-current-monitor-WPF-unnamed.png; dpi=144; size=600x831px; mode=current-monitor-WPF
+  Raster: task-details-dark-200pct-logical-raster-simulation-unnamed.png; dpi=192; size=800x1108px; mode=logical-raster-simulation
+
+Case: overview-cta/dark
+  WindowDpi: GetDpiForWindow=144; WPF=144x144; scale=1.5x1.5
+  Monitor: \\.\DISPLAY10; effectiveDpi=144x144; bounds=0,0,3840,2160; windowPhysicalRect=24,24,1938,1014
+  SyntheticFixture: tasks=8; games=8; selectedTask=T-0001; input=programmatic setup only
+  Target: name=OverviewPriorityActionButton; automationName=查看云端队列; bindingPath=OverviewPriorityActionCommand; bounds=1108.66666666667,84.6666666666667,132,36; visible=True; hostClipped=False
+  State: enabled=True; commandBound=OverviewPriorityActionCommand
+  PageContext: overview-cta-dark-150pct-current-monitor-pagecontext.png; 1276x660 DIP at 144 DPI
+  Raster: overview-cta-dark-125pct-logical-raster-simulation-查看云端队列.png; dpi=120; size=165x45px; mode=logical-raster-simulation
+  Raster: overview-cta-dark-150pct-current-monitor-WPF-查看云端队列.png; dpi=144; size=198x54px; mode=current-monitor-WPF
+  Raster: overview-cta-dark-200pct-logical-raster-simulation-查看云端队列.png; dpi=192; size=264x72px; mode=logical-raster-simulation
+
+Case: save-policy-checkbox/dark
+  WindowDpi: GetDpiForWindow=144; WPF=144x144; scale=1.5x1.5
+  Monitor: \\.\DISPLAY10; effectiveDpi=144x144; bounds=0,0,3840,2160; windowPhysicalRect=24,24,1938,1014
+  SyntheticFixture: tasks=8; games=8; selectedTask=T-0001; input=programmatic setup only
+  Target: name=; automationName=; bindingPath=IsSelected; bounds=892,549.333333333333,333.333333333333,37.3333333333333; visible=True; hostClipped=False
+  State: automationName=Baldur's Gate 3; isChecked=False; binding=IsSelected; selectedCount=0
+  PageContext: save-policy-checkbox-dark-150pct-current-monitor-pagecontext.png; 1276x660 DIP at 144 DPI
+  Raster: save-policy-checkbox-dark-125pct-logical-raster-simulation-unnamed.png; dpi=120; size=417x47px; mode=logical-raster-simulation
+  Raster: save-policy-checkbox-dark-150pct-current-monitor-WPF-unnamed.png; dpi=144; size=500x56px; mode=current-monitor-WPF
+  Raster: save-policy-checkbox-dark-200pct-logical-raster-simulation-unnamed.png; dpi=192; size=667x75px; mode=logical-raster-simulation
+
+Case: task-status-popup/dark
+  WindowDpi: GetDpiForWindow=144; WPF=144x144; scale=1.5x1.5
+  Monitor: \\.\DISPLAY10; effectiveDpi=144x144; bounds=0,0,3840,2160; windowPhysicalRect=24,24,1938,1014
+  SyntheticFixture: tasks=8; games=8; selectedTask=T-0001; input=programmatic setup only
+  Target: name=TaskStatusFilterComboBox; automationName=任务状态筛选; bindingPath=TaskStatusFilter; bounds=1098.66666666667,7.33333333333333,112,36; visible=True; hostClipped=False
+  State: selected=全部; isDropDownOpen=True; command=none
+  PageContext: task-status-popup-dark-150pct-current-monitor-pagecontext.png; 1276x660 DIP at 144 DPI
+  Raster: task-status-popup-dark-125pct-logical-raster-simulation-任务状态筛选.png; dpi=120; size=140x45px; mode=logical-raster-simulation
+  Raster: task-status-popup-dark-150pct-current-monitor-WPF-任务状态筛选.png; dpi=144; size=168x54px; mode=current-monitor-WPF
+  Raster: task-status-popup-dark-200pct-logical-raster-simulation-任务状态筛选.png; dpi=192; size=224x72px; mode=logical-raster-simulation
+  PopupHwnd: dpi=144; physicalRect=1672,80,1840,390; child=112x192.67 DIP
+  PopupRaster: task-status-popup-dark-125pct-logical-raster-simulation-popup.png; dpi=120; size=140x241px; mode=logical-raster-simulation
+  PopupRaster: task-status-popup-dark-150pct-current-monitor-WPF-popup.png; dpi=144; size=168x289px; mode=current-monitor-WPF
+  PopupRaster: task-status-popup-dark-200pct-logical-raster-simulation-popup.png; dpi=192; size=224x386px; mode=logical-raster-simulation
+
+DpiEvidence OK
+GeometryTsv: dpi-geometry.tsv

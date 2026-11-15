@@ -13807,3 +13807,15 @@ C02源代码提交`e5bf3fce3e0e410f97fde251647189aa71dc23c6`仅改RenderHarness�
 同一Windows 11主机、SDK8.0.423/Release、960×640 DIP、深色主题、固定`2026-11-13T00:00:00Z`、8条任务、选中T-0001，顺序B-C-C-B。每进程10对预热、24对采样、开与合各24次；每步直接读取`GC.GetAllocatedBytesForCurrentThread()`缓存委托计数，围绕路由Button.Click和同步`Window.UpdateLayout()`。基线/候选均构建0 warning/0 error、每次探针exit0，输入桌面前后Default。合并48样本后候选平均开合配对6,658,913 bytes，基线6,786,488 bytes，减少127,575 bytes（1.88%）；标准差880/1,303 bytes，候选p95 6,660,184 bytes。首屏创建减少77,960 bytes（0.22%）。未发现回退，不需生产修复。Clr自发GC计数记录，无手动GC。
 
 受控窗口/逻辑按钮事件不是Playnite前台、实体输入、UIA客户端或DWM帧验证；物理DPI仍待C03。未触碰真实用户配置、游戏存档或云端。初次编译API签名、详情收起按钮实例化和正反样本终态的失败诊断均已保存；修正后源码/夹具/脚本静态校验与受控运行通过，无测试skip变更。C02 GitHub run #1585 / `43711239891`（SHA e5bf）查询时基线job `132803031587`、SDK10 job `132803031328`仍运行；C01 run #1583 / `43707721313`主job正在打包、SDK10 job `132792318643` success。精确终态待后续回填，不查旧required-check 403。
+
+## 2026-11-15 Round6 C03与最终候选门禁收口
+
+C03 受控矩阵最终提交 `15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3`；四种控件、双主题共38张最终图，当前显示器144 DPI/150%为真正WPF上下文，125/200%为栅格模拟。PMv2、SDK8.0.423/Release、私有WinSta0桌面和合成数据。首轮裁切诊断、修正输出和verified目录全部保留；图片入口、几何表与SHA见[C03索引](../design/ui-redesign-round6-20261113/evidence/C03-dpi-matrix-20261115/README.md)。
+
+C01修正 `aa590a1b8c710e0788098b27b128719001aeead3`、C02 `e5bf3fce3e0e410f97fde251647189aa71dc23c6`、C03三个依次修正SHA上的所有适用Actions job均完成并success。run、job、artifact ID/digest逐项绑定见[最终候选门禁证据](../design/ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md)。旧required-check 403未重复探测。
+
+源码 `15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3` / SDK8.0.423 / Release下，中文入口完整转发链及独立 `scripts/build.cmd` 先前均实际直接exit0。两次160份TRX、2,051项、1,993通过、0失败、58跳过、157/157 WPF隔离类；每组157份私有桌面结果均exit0、无超时，输入桌面前后Default。根链RunId `20261115T133647720Z-6786949d`，ZIP/PEXT SHA-256相同为`076C3728C7A8733BE9237A0128AC334A0A2428424C8A1FCD9A9904D6BC53D337`，六个安装程序集身份与hash记录于门禁索引。错误跳过计数已按原始 `testSummary.totals` 改为58；独立build首次辅助包装器exit1未产生诊断，记录保留，直接启动cmd后脚本本身成功。原始summary、stdout/stderr、安装报告及失败诊断仅保留在本机 `artifacts/`，未提交。
+
+Playnite仅在新建隔离profile启动并随后正常关闭；未打开插件页、未做现场视觉验收。未接触真实用户profile、配置、库、存档、云端或其他任务TRX/TestResults；没有物理键鼠或UIA操作。此文档阶段只更新交接与证据索引，没有重新执行完整链。
+
+清理预检确认旧包备份 `.tmp/round6-final-prerun-package-20261115` 在仓库`.tmp/`内，ACL owner为当前用户；242个文件/203,299,385 bytes、0重解析点、0 Git跟踪项、无文档/脚本引用、无进程引用、0独占锁。精确PowerShell `Remove-Item -LiteralPath -Recurse -Force` 调用被执行策略拒绝，备份保留，未绕过。当前ZIP/PEXT、隔离安装profile、根链与独立build输出、诊断及失败记录保留；未清用户TRX/TestResults或未知目录。
