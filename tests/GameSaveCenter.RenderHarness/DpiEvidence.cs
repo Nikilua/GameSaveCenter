@@ -63,6 +63,7 @@ public static partial class Program
         report.AppendLine("MeasurementBoundary: real WPF Window and Popup HWNDs on the current desktop monitor; all page data are synthetic; no Playnite host, physical input, real profile, save, or cloud access.");
         report.AppendLine($"LayoutViewport: shell {shellWidth}x{shellHeight} DIP; page content size derived by the existing RenderHarness ContentSize policy.");
         report.AppendLine("DpiMatrixBoundary: window WPF geometry is measured once at the host's effective DPI; 125% and 200% screenshots are RenderTargetBitmap raster-scale simulations. A matrix row is marked current-monitor only when its render scale matches GetDpiForWindow and VisualTreeHelper.GetDpi.");
+        report.AppendLine("CaptureStabilization: the harness pumps the WPF dispatcher through loaded/render priorities before capture; task inspector motion is disabled on the harness view only.");
         report.AppendLine("Controls: task inspector, overview priority CTA, policy-template game checkbox row, task-status ComboBox popup.");
 
         try
@@ -211,7 +212,7 @@ public static partial class Program
             window.UpdateLayout();
             prepare?.Invoke(window, view, data);
             window.UpdateLayout();
-            window.Dispatcher.Invoke(new Action(window.UpdateLayout));
+            PumpWpfVisualState(window);
 
             var target = selectTarget(view);
             target.BringIntoView();
@@ -274,6 +275,10 @@ public static partial class Program
             var bindingPath = GetRelevantBindingPath(caseName, target);
             report.AppendLine($"  Target: name={target.Name}; automationName={automationName}; bindingPath={bindingPath}; bounds={targetBounds}; visible={target.IsVisible}; hostClipped={clippedByHostBounds}");
             report.AppendLine($"  State: {GetTargetState(caseName, target, data)}");
+
+            var pageContextName = $"{caseName}-{themeName}-{(int)Math.Round(actualScale * 100)}pct-current-monitor-pagecontext.png";
+            SaveDpiPng(host, Path.Combine(outputRoot, pageContextName), wpfDpi.PixelsPerInchX);
+            report.AppendLine($"  PageContext: {pageContextName}; {host.ActualWidth:0.##}x{host.ActualHeight:0.##} DIP at {wpfDpi.PixelsPerInchX:0} DPI");
 
             foreach (var scale in renderScales)
             {
@@ -365,6 +370,7 @@ public static partial class Program
 
     private static void PrepareTaskDetails(Window window, TaskCenterView view, FakeDashboardData data, double width, double height)
     {
+        DisableTaskInspectorMotionForAllocationProbe(view);
         var grid = FindNamedElement<DataGrid>(view, "TaskGrid");
         if (grid.Items.Count != data.Tasks.Count || data.SelectedTask == null)
             throw new InvalidOperationException("Task DPI fixture has no selected synthetic task rows.");
@@ -487,6 +493,23 @@ public static partial class Program
 
     private static bool uiThreadIsPmv2ForCurrentThread()
         => AreDpiAwarenessContextsEqual(GetThreadDpiAwarenessContext(), PerMonitorAwareV2Context);
+
+    private static void PumpWpfVisualState(Window window)
+    {
+        var frame = new DispatcherFrame();
+        var timer = new DispatcherTimer(DispatcherPriority.Background, window.Dispatcher)
+        {
+            Interval = TimeSpan.FromMilliseconds(650)
+        };
+        timer.Tick += (_, _) =>
+        {
+            timer.Stop();
+            frame.Continue = false;
+        };
+        timer.Start();
+        Dispatcher.PushFrame(frame);
+        window.UpdateLayout();
+    }
 
     private static string FormatRect(Win32Rect rect)
         => string.Join(",", rect.Left.ToString(CultureInfo.InvariantCulture), rect.Top.ToString(CultureInfo.InvariantCulture), rect.Right.ToString(CultureInfo.InvariantCulture), rect.Bottom.ToString(CultureInfo.InvariantCulture));
