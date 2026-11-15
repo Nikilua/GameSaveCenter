@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)][string]$BaselineRoot,
     [Parameter(Mandatory = $true)][string]$CandidateRoot,
@@ -122,7 +122,7 @@ foreach ($name in $names) {
     $labelFont = $null
     try {
         if ($baselineImage.Width -ne $candidateImage.Width -or $baselineImage.Height -ne $candidateImage.Height) {
-            throw "Before/after dimensions differ for $name: $($baselineImage.Width)x$($baselineImage.Height) vs $($candidateImage.Width)x$($candidateImage.Height)."
+            throw "Before/after dimensions differ for ${name}: $($baselineImage.Width)x$($baselineImage.Height) vs $($candidateImage.Width)x$($candidateImage.Height)."
         }
 
         $canvasWidth = ($margin * 2) + $baselineImage.Width + $gutter + $candidateImage.Width
