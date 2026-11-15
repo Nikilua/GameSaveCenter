@@ -1,0 +1,12 @@
+{
+  "scenario": "TaskAllocation",
+  "harnessMode": "taskallocationevidence",
+  "sourceSha": "b076e1eb27d0d10fa5367a668119283dcbc456f5",
+  "sampleUtc": "2026-11-13T00:00:00.0000000+00:00",
+  "windowStation": "WinSta0",
+  "desktop": "GscRound6_c89e66d8837f4f78a9230035d08199d4",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "exitCode": 1,
+  "output": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round6-c02-probe-smoke-20261115"
+}

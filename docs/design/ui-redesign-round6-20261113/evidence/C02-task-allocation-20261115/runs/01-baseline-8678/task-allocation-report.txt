@@ -1,0 +1,32 @@
+﻿GameSaveCenter Round 6 task inspector managed allocation evidence
+Measurement: GC.GetAllocatedBytesForCurrentThread on the WPF STA thread; no retained-heap or Rendering proxy
+Cold boundary: process launch excluded; first Application, deterministic fixture, TaskCenterView, first Window.Show/UpdateLayout included
+Steady boundary: direct allocation deltas around routed Button.Click plus Window.UpdateLayout; event args are included
+Input boundary: programmatic routed events in a controlled WPF Window; no physical mouse/keyboard, Playnite host, real profile, saves, or cloud data
+Workload: 960x640 DIP; dark theme; 8 deterministic task rows; 10 warmup pairs; 24 measured pairs (forward/reverse order)
+Scenario: taskallocationevidence
+EvidenceSource: ControlledWpfWindow
+Commit: 8678e163a92278a74645559f95789c1348941398
+WorkingTreeClean: false
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: dark
+DataVolumes: compact task inspector; 960x640 DIP; 10 prewarm pairs; 24 measured pairs; no forced GC
+SampleTimeUtc: 2026-11-13T00:00:00.0000000+00:00 (pinned=True)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+FirstPageRealizationAllocatedBytes: 35679704
+AllocationCounter: runtime GC.GetAllocatedBytesForCurrentThread discovered once by reflection and called through a cached Func<long> delegate; the compile-time net472 reference set omits the method
+MotionPolicy: UiAnimationsEnabled=false on the harness view; audit system-motion provider pinned false; no production setting or user configuration was changed
+SelectedTask: T-0001; state=Running; rows=8
+Warmup: 10 pairs; both open-close and close-open action order warmed; excluded from allocation samples
+MeasuredSamples: 24 pairs; openActions=24; closeActions=24; order=alternating close-open/open-close
+Sample boundary: each delta includes a fresh RoutedEventArgs, routed Button.Click handling, and synchronous Window.UpdateLayout; excludes state preconditioning and report writing
+PreconditionActionsExcluded: 23
+GCCollectionsDuringWarmup: gen0=16; gen1=1; gen2=0
+GCCollectionsDuringMeasuredSamples: gen0=40; gen1=2; gen2=1
+SamplesTsv: task-allocation-samples.tsv
+SUMMARY inspector_open samples=24 total_bytes=80279376 mean_bytes=3344974 median_bytes=3345392 p95_bytes=3345536 min_bytes=3343864 max_bytes=3345608 sd_bytes=667.29
+SUMMARY inspector_close samples=24 total_bytes=82596056 mean_bytes=3441502.33 median_bytes=3442024 p95_bytes=3442168 min_bytes=3440424 max_bytes=3444096 sd_bytes=929.73
+SUMMARY open_close_pair samples=24 total_bytes=162875432 mean_bytes=6786476.33 median_bytes=6786032 p95_bytes=6787560 min_bytes=6785960 max_bytes=6789488 sd_bytes=834.76
+TaskAllocationEvidenceBoundary: controlled private-desktop WPF only; allocation bytes are direct current-thread counters, not retained heap, real Playnite, physical input, or frame-time evidence.
+TaskAllocationEvidence OK

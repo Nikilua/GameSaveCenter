@@ -1,0 +1,12 @@
+{
+  "scenario": "TaskAllocation",
+  "harnessMode": "taskallocationevidence",
+  "sourceSha": "e5bf3fce3e0e410f97fde251647189aa71dc23c6",
+  "sampleUtc": "2026-11-13T00:00:00.0000000+00:00",
+  "windowStation": "WinSta0",
+  "desktop": "GscRound6_7d611ef895b546aca30422919ae568cb",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "exitCode": 0,
+  "output": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round6-c02-BCCB-20261115\\02-candidate"
+}

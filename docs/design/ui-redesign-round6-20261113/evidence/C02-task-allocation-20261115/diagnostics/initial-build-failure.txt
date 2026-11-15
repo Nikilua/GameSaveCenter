@@ -1,0 +1,7 @@
+Initial C02 RenderHarness build failure (superseded, retained)
+Command: pwsh -NoProfile -File scripts/render-round6-evidence.ps1 -Scenario TaskAllocation -Output .tmp/round6-c02-probe-smoke-20261115
+SDK: 8.0.423; configuration: Release
+Direct result: exit 1; 0 warnings, 4 errors
+Cause: the net472 compile reference did not expose GC.GetAllocatedBytesForCurrentThread, although runtime reflection in Windows PowerShell confirmed the CLR method exists.
+Errors: Program.cs lines 5258, 5281, 5446, 5448, CS0117 GC has no definition for GetAllocatedBytesForCurrentThread.
+Resolution: discover the runtime method once, create and cache Func<long>, calibrate with a 1 KiB allocation, and use the delegate within measured samples. The corrected build and controlled probe passed in round6-c02-probe-smoke3-20261115.

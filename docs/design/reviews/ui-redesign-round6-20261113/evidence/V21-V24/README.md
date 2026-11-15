@@ -49,7 +49,7 @@ V05–V12 已先完成存档页整页重排、共享控件与同数据复核。�
 - 精确候选 Render QA：334 张 PNG、浅/深两主题、0 个 PROBLEM，render-qa OK；源报告为 render-qa-9880c81b.txt，SHA-256 为 F926381D3FD1041EC6958A62F6AB46556E6BB1AACB1C0808C10CCDB8E4CD323B。
 - 生产 XAML 静态检查：27 个 XAML、0 error、26 warnings、164 info；与历史基线 warning 数一致。python scripts/validate-source.py 通过。最终测试中，双主题语义状态文本对比断言为至少 4.5:1；大号概览数字和禁用上下文标签有至少 3:1 覆盖。它们是明确控件/颜色的自动检查，不是对每个页面像素的全局测量。
 - UI 回归包括概览 CTA 防重叠、任务详情布局、媒体与设置页原有状态和命令路径。测试未删减、未扩大 skip，也未关闭检查。
-- 同一 offscreen Render QA 探针中，单次展开 P95 帧间隔从 180.2ms 到 83.6ms；快速反向从 42.1ms 到 44.4ms、最大间隔 66.8ms 到 71.7ms，两个版本都停在正确终态。结果和两份报告哈希见 manifest.json；快速反向样本差异较小且探针会受调度影响，不据此宣称普遍动画更快。当前未单独采集页面操作的 managed-allocation 基线。
+- 同一 offscreen Render QA 探针中，单次展开 P95 帧间隔从 180.2ms 到 83.6ms；快速反向从 42.1ms 到 44.4ms、最大间隔 66.8ms 到 71.7ms，两个版本都停在正确终态。结果和两份报告哈希见 manifest.json；快速反向样本差异较小且探针会受调度影响，不据此宣称普遍动画更快。页面操作的受控 managed-allocation 基线和候选配对已由 [C02补充测量](../../../../ui-redesign-round6-20261113/evidence/C02-task-allocation-20261115/README.md)完成；真实输入与DWM帧仍未测。
 - 比较只在 1.00 logical DIP 下运行；这不等同于 100/125/150/200% 物理 DPI、真实输入延迟或用户桌面呈现验证。
 
 ## 动态证据：带时间戳的实际 WPF 采样

@@ -1,0 +1,187 @@
+{
+  "task": "C02",
+  "date": "2026-11-15",
+  "harnessCommit": "e5bf3fce3e0e410f97fde251647189aa71dc23c6",
+  "baselineProductSource": "8678e163a92278a74645559f95789c1348941398",
+  "candidateProductSource": "9880c81be09365d02b9335a633be95506095c8d9",
+  "candidateHarnessSource": "e5bf3fce3e0e410f97fde251647189aa71dc23c6",
+  "sdk": "8.0.423",
+  "configuration": "Release",
+  "buildExitCode": 0,
+  "buildWarnings": 0,
+  "buildErrors": 0,
+  "machine": "SULT",
+  "os": {
+    "caption": "Microsoft Windows 11 家庭中文版",
+    "version": "10.0.22000",
+    "build": "22000"
+  },
+  "measurement": {
+    "scenario": "TaskAllocation",
+    "sampleUtc": "2026-11-13T00:00:00Z",
+    "theme": "dark",
+    "windowDip": "960x640",
+    "effectiveScale": "1.00 logical DIP",
+    "taskRows": 8,
+    "selectedTask": "T-0001",
+    "warmupPairs": 10,
+    "measuredPairsPerProcess": 24,
+    "buttonActionsPerProcess": 48,
+    "measuredPairsOrder": "alternating close-open/open-close",
+    "counter": "GC.GetAllocatedBytesForCurrentThread via cached Func<long>",
+    "processLaunchIncluded": false,
+    "forcedGc": false,
+    "boundary": "routed Button.Click plus synchronous Window.UpdateLayout"
+  },
+  "outcome": {
+    "firstPageBaselineBytes": 35679704,
+    "firstPageCandidateBytes": 35601744,
+    "firstPageDeltaBytes": -77960,
+    "openBaselineMeanBytes": 3344974,
+    "openCandidateMeanBytes": 3278218,
+    "closeBaselineMeanBytes": 3441514.17,
+    "closeCandidateMeanBytes": 3380695.17,
+    "pairBaselineMeanBytes": 6786488.17,
+    "pairCandidateMeanBytes": 6658913.17,
+    "pairDeltaBytes": -127575,
+    "pairDeltaPercent": -1.879,
+    "pairBaselineMedianBytes": 6786032,
+    "pairCandidateMedianBytes": 6658584,
+    "pairBaselineP95Bytes": 6787560,
+    "pairCandidateP95Bytes": 6660184,
+    "pairBaselineSdBytes": 880.16,
+    "pairCandidateSdBytes": 1303.39
+  },
+  "sharedSourceHashes": {
+    "sharedHarnessProgram": "BCF1F45050A0951700A3A1939C0C13DDB960464EE13F118874666FE0B9109A41",
+    "sharedFakeDashboardData": "5BD4FA1B20A0AE2E3C1A82A41FBC108446F115EFAAA4260D8B58E00F23B7039C",
+    "sharedFakeSampleClock": "992FEEBBCA8C2B59C2519DD915A22ADB5AE94408434F84E3A407661514E08E83",
+    "sharedRenderScenarioScript": "F6E0983B3E8782293B477E3116AF8DDEDC14B2E105A4DE827B19CC87BB088280",
+    "baselineTaskCenterXaml": "8D988BAE3048B19D4A447FE8145292D99DCCF3136539BD9991B4A60BC0BF5004",
+    "candidateTaskCenterXaml": "01C34DB4F184DCA1B0109BF0B3462CA152373AB4E3A796740834C23445FDD6E0",
+    "taskCenterCodeBehindBoth": "04060A4446975525999A35C1EC7B65D8A510880077BF7EB68D016EB48DD44335"
+  },
+  "runs": [
+    {
+      "order": "01-baseline-8678",
+      "productSourceCommit": "8678e163a92278a74645559f95789c1348941398",
+      "harnessSourceCommit": "8678e163a92278a74645559f95789c1348941398",
+      "scenario": "TaskAllocation",
+      "sampleUtc": "2026-11-13T08:00:00+08:00",
+      "windowStation": "WinSta0",
+      "privateDesktop": "GscRound6_d5aa0edca25644788dca957905e5b197",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "scenarioExitCode": 0,
+      "buildExitCode": 0,
+      "buildWarnings": 0,
+      "buildErrors": 0,
+      "files": {
+        "task-allocation-report.txt": {
+          "bytes": 2997,
+          "sha256": "6A8B383E3934BE3B78124044C18E6571ADB0CA5666522DEFE54C9E19347AF6E6"
+        },
+        "runner-metadata.json": {
+          "bytes": 474,
+          "sha256": "B57BF4EA3740D066DC051260E095F8A17BEA8B006BC8CF7CCC1F388196BB8A70"
+        },
+        "task-allocation-samples.tsv": {
+          "bytes": 1120,
+          "sha256": "50B391FA9242991FFEBD7A7EABA3C28718C459A3577A19D20BCEC6420C9133F4"
+        }
+      }
+    },
+    {
+      "order": "02-candidate-9880",
+      "productSourceCommit": "9880c81be09365d02b9335a633be95506095c8d9",
+      "harnessSourceCommit": "e5bf3fce3e0e410f97fde251647189aa71dc23c6",
+      "scenario": "TaskAllocation",
+      "sampleUtc": "2026-11-13T08:00:00+08:00",
+      "windowStation": "WinSta0",
+      "privateDesktop": "GscRound6_7d611ef895b546aca30422919ae568cb",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "scenarioExitCode": 0,
+      "buildExitCode": 0,
+      "buildWarnings": 0,
+      "buildErrors": 0,
+      "files": {
+        "task-allocation-report.txt": {
+          "bytes": 2999,
+          "sha256": "6223A123FC33DE00114CF08AEE605386561731DE6CBD6F89DFA48D0175F3A373"
+        },
+        "runner-metadata.json": {
+          "bytes": 475,
+          "sha256": "E4D4716CBD2A04560DC0F56E8680F8F25D162F816CF3D2F296871D1AE0D8F9AE"
+        },
+        "task-allocation-samples.tsv": {
+          "bytes": 1120,
+          "sha256": "3B5D9473A006342D38F08E18743AA845186A80A09838A86A60464D4E469CB26E"
+        }
+      }
+    },
+    {
+      "order": "03-candidate-9880",
+      "productSourceCommit": "9880c81be09365d02b9335a633be95506095c8d9",
+      "harnessSourceCommit": "e5bf3fce3e0e410f97fde251647189aa71dc23c6",
+      "scenario": "TaskAllocation",
+      "sampleUtc": "2026-11-13T08:00:00+08:00",
+      "windowStation": "WinSta0",
+      "privateDesktop": "GscRound6_66f01b9df39747398ee0e42293fccac8",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "scenarioExitCode": 0,
+      "buildExitCode": 0,
+      "buildWarnings": 0,
+      "buildErrors": 0,
+      "files": {
+        "task-allocation-report.txt": {
+          "bytes": 2992,
+          "sha256": "A0A688A52E6DD208D15DDB1B85702AA0DBC0301930A6E0D1A23A80F924900EC1"
+        },
+        "runner-metadata.json": {
+          "bytes": 475,
+          "sha256": "B060C13C1813BAC9097DDE5BA51276D08284600F782D723AD1CEBDD280E90305"
+        },
+        "task-allocation-samples.tsv": {
+          "bytes": 1120,
+          "sha256": "B97332A1BC71577BF1ADFCFFA39B38A36CD26BD978597D623CFD44054E07887A"
+        }
+      }
+    },
+    {
+      "order": "04-baseline-8678",
+      "productSourceCommit": "8678e163a92278a74645559f95789c1348941398",
+      "harnessSourceCommit": "8678e163a92278a74645559f95789c1348941398",
+      "scenario": "TaskAllocation",
+      "sampleUtc": "2026-11-13T08:00:00+08:00",
+      "windowStation": "WinSta0",
+      "privateDesktop": "GscRound6_30a2800c22c24c8fb7377e552a454eec",
+      "inputDesktopBefore": "Default",
+      "inputDesktopAfter": "Default",
+      "scenarioExitCode": 0,
+      "buildExitCode": 0,
+      "buildWarnings": 0,
+      "buildErrors": 0,
+      "files": {
+        "task-allocation-report.txt": {
+          "bytes": 2992,
+          "sha256": "1B78ACE38E8638D6491B3B2D4C383A1267B0958E7BC2BA940B9F31C524960C9C"
+        },
+        "runner-metadata.json": {
+          "bytes": 474,
+          "sha256": "8D6E60B46BB9C9BF81AF4F68E87B9F80753836C85CE025F2D33E86808E7EDCDC"
+        },
+        "task-allocation-samples.tsv": {
+          "bytes": 1120,
+          "sha256": "BCA7E09DBBA21586AA5DD4A3C28A4AEAC200640C0EC926156D5B906DB76D345D"
+        }
+      }
+    }
+  ],
+  "diagnostics": {
+    "initialBuild": "diagnostics/initial-build-failure.txt",
+    "firstWpfProbe": "diagnostics/first-wpf-probe-failure-report.txt",
+    "finalStateProbe": "diagnostics/final-state-probe-failure-report.txt"
+  }
+}
