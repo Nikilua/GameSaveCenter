@@ -1,6 +1,6 @@
 ﻿[CmdletBinding()]
 param(
-    [ValidateSet('Baseline', 'StateFixtures')]
+    [ValidateSet('Baseline', 'StateFixtures', 'TaskEvidence')]
     [string]$Scenario = 'Baseline',
     [string]$Output = '',
     [string]$SampleUtc = '2026-11-13T00:00:00Z'
@@ -12,6 +12,7 @@ $project = Join-Path $root 'tests\GameSaveCenter.RenderHarness\GameSaveCenter.Re
 $scenarioName = switch ($Scenario) {
     'Baseline' { 'round6baseline' }
     'StateFixtures' { 'statefixtures' }
+    'TaskEvidence' { 'taskevidence' }
 }
 if ([string]::IsNullOrWhiteSpace($Output)) {
     $Output = Join-Path $root ".tmp\round6-$($Scenario.ToLowerInvariant())"

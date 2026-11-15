@@ -150,6 +150,69 @@ public sealed class FakeDashboardData
     public string NotificationInboxErrorMessage => string.Empty;
     public string NotificationInboxLoadStatus => string.Empty;
 
+    public static FakeDashboardData CreateTaskComparisonFixture()
+    {
+        var fixture = new FakeDashboardData(8, WorkspaceFixtureState.Ready);
+        for (var index = 0; index < fixture.Tasks.Count; index++)
+        {
+            var task = fixture.Tasks[index];
+            var sampleNow = FakeSampleClock.UtcNow;
+            var taskNumber = index + 1;
+            var running = task.State == TaskState.Running;
+            var elapsedSeconds = task.State switch
+            {
+                TaskState.Running => TimeSpan.FromHours(36).TotalSeconds,
+                TaskState.Succeeded => TimeSpan.FromMinutes(14).TotalSeconds,
+                TaskState.Failed => TimeSpan.FromMinutes(9).TotalSeconds,
+                TaskState.Cancelled => TimeSpan.FromMinutes(6).TotalSeconds,
+                _ => TimeSpan.FromMinutes(2).TotalSeconds
+            };
+            var startedUtc = running
+                ? sampleNow.AddHours(-36)
+                : sampleNow.AddDays(-12).AddMinutes(-30 * taskNumber).AddMinutes(1);
+
+            task.ProgressPercent = task.State switch
+            {
+                TaskState.Running => 48,
+                TaskState.Succeeded => 100,
+                TaskState.Failed => 74,
+                TaskState.Cancelled => 32,
+                _ => 0
+            };
+            task.StageMessage = task.State switch
+            {
+                TaskState.Running => "正在校验备份内容",
+                TaskState.Succeeded => "任务已完成",
+                TaskState.Failed => "正在复制到云端",
+                TaskState.Cancelled => "正在建立历史版本索引",
+                _ => string.Empty
+            };
+            task.Message = task.State switch
+            {
+                TaskState.Running => $"正在校验任务 {taskNumber} 的备份内容。",
+                TaskState.Succeeded => $"任务 {taskNumber} 已完成并通过校验。",
+                TaskState.Failed => "远端暂时不可用，本地版本已保留。",
+                TaskState.Cancelled => $"任务 {taskNumber} 已取消，本地内容保持不变。",
+                _ => string.Empty
+            };
+            task.ErrorCode = task.State == TaskState.Failed ? "E_CLOUD" : string.Empty;
+            task.ErrorMessage = task.State == TaskState.Failed
+                ? "Rclone remote unavailable; local source retained."
+                : string.Empty;
+            task.CreatedUtc = running
+                ? startedUtc.AddMinutes(-5)
+                : startedUtc.AddMinutes(-1);
+            task.StartedUtc = startedUtc;
+            task.FinishedUtc = running ? null : startedUtc.AddSeconds(elapsedSeconds);
+            task.ElapsedSeconds = elapsedSeconds;
+            task.MonotonicStartedTimestamp = 0;
+            task.MonotonicFrequency = 0;
+        }
+
+        fixture.SelectedTask = fixture.Tasks[0];
+        return fixture;
+    }
+
     public FakeDashboardData(int rowCount = 8)
         : this(rowCount, WorkspaceFixtureState.Ready, OverviewFixtureProfile.Default)
     {

@@ -326,6 +326,19 @@ public static class Program
             return baselineExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("taskevidence", StringComparison.OrdinalIgnoreCase))
+        {
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "task-evidence");
+            var taskEvidenceExitCode = 0;
+            var taskEvidenceThread = new Thread(() => { taskEvidenceExitCode = RunTaskComparisonEvidence(outputRoot); });
+            taskEvidenceThread.SetApartmentState(ApartmentState.STA);
+            taskEvidenceThread.Start();
+            taskEvidenceThread.Join();
+            return taskEvidenceExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("mediageometryprobe", StringComparison.OrdinalIgnoreCase))
         {
             var outputRoot = args.Length > 1
@@ -5071,6 +5084,250 @@ public static class Program
         var view = new TaskCenterView { DataContext = new FakeDashboardData() };
         RenderView(view, outputRoot, "Task", windowW, windowH, contentW, contentH, report, () => view.ApplyResponsiveLayout(contentW, windowH));
     }
+
+    private static int RunTaskComparisonEvidence(string outputRoot)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        var problems = new List<string>();
+        report.AppendLine("GameSaveCenter Round 6 task-page comparison evidence");
+        report.AppendLine("Source: production TaskCenterView hosted by the isolated WPF render harness");
+        report.AppendLine("Data: deterministic FakeDashboardData task-comparison fixture; no Worker, Playnite profile, game library, save, or cloud data");
+        report.AppendLine("Theme: dark; windows: 1040x700 and 1600x900 DIP; rendering: 1.00 logical DIP on a private desktop");
+        report.AppendLine("Boundary: controlled WPF layout evidence; not real Playnite, physical DPI, or physical-input evidence");
+        AppendRunMetadata(report, "task-comparison-evidence", "OffscreenRenderHarness", "dark", "8 deterministic task states; one selected running task");
+        report.AppendLine();
+        s_problems.Clear();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var fixture = FakeDashboardData.CreateTaskComparisonFixture();
+            VerifyTaskComparisonFixture(fixture, problems, report);
+            WriteTaskComparisonSnapshot(fixture, Path.Combine(outputRoot, "task-sample-snapshot.tsv"));
+
+            foreach (var (windowW, windowH) in new[] { (1040, 700), (1600, 900) })
+            {
+                var data = FakeDashboardData.CreateTaskComparisonFixture();
+                var view = new TaskCenterView { DataContext = data };
+                ApplyThemePalette(view, GameSaveCenterThemeMode.Dark);
+                var (contentW, contentH) = ContentSize(windowW, windowH);
+                var host = new Grid
+                {
+                    Width = contentW,
+                    Height = contentH,
+                    Background = CreateHarnessBackground(view),
+                    ClipToBounds = true
+                };
+                host.Children.Add(view);
+                view.ApplyResponsiveLayout(contentW, windowH);
+                host.Measure(new Size(contentW, contentH));
+                host.Arrange(new Rect(0, 0, contentW, contentH));
+                host.UpdateLayout();
+                view.ApplyResponsiveLayout(contentW, windowH);
+                host.UpdateLayout();
+
+                var grid = FindVisualChildren<DataGrid>(view)
+                    .SingleOrDefault(candidate => candidate.Name == "TaskGrid");
+                if (grid == null)
+                    throw new InvalidOperationException($"TaskGrid was not created at {windowW}x{windowH}.");
+                if (!grid.Items.Contains(data.SelectedTask))
+                    throw new InvalidOperationException($"Selected fixture task {data.SelectedTask.TaskId} is absent from TaskGrid at {windowW}x{windowH}.");
+                grid.SelectedItem = data.SelectedTask;
+                view.ApplyResponsiveLayout(contentW, windowH);
+                host.UpdateLayout();
+
+                var pageScroll = FindVisualChildren<ScrollViewer>(view)
+                    .SingleOrDefault(candidate => candidate.Name == "TaskPageScrollViewer");
+                if (contentW < 980)
+                {
+                    var detailsButton = FindVisualChildren<ButtonBase>(view)
+                        .SingleOrDefault(candidate => candidate.Name == "TaskCompactDetailsButton");
+                    if (detailsButton == null || detailsButton.Visibility != Visibility.Visible)
+                        throw new InvalidOperationException("Compact task details action is not visible for the selected task.");
+                    detailsButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                    view.ApplyResponsiveLayout(contentW, windowH);
+                    host.UpdateLayout();
+                    if (pageScroll == null)
+                        throw new InvalidOperationException("TaskPageScrollViewer was not created for the compact task page.");
+                    pageScroll.ScrollToEnd();
+                    host.UpdateLayout();
+                }
+
+                var detailCard = FindVisualChildren<FrameworkElement>(view)
+                    .SingleOrDefault(candidate => candidate.Name == "TaskDetailCard");
+                if (detailCard == null || detailCard.Visibility != Visibility.Visible)
+                    throw new InvalidOperationException($"Selected-task details are not visible at {windowW}x{windowH}.");
+                var durationText = FindVisualChildren<TextBlock>(view)
+                    .FirstOrDefault(candidate =>
+                    {
+                        var expression = BindingOperations.GetBindingExpression(candidate, TextBlock.TextProperty);
+                        return string.Equals(
+                            expression?.ParentBinding.Path?.Path,
+                            "SelectedTask.DurationDisplay",
+                            StringComparison.Ordinal);
+                    });
+                if (durationText == null || !string.Equals(durationText.Text, data.SelectedTask.DurationDisplay, StringComparison.Ordinal))
+                    throw new InvalidOperationException($"Selected task duration binding is absent or differs from the pinned fixture at {windowW}x{windowH}.");
+
+                var imagePath = Path.Combine(outputRoot, $"task-dark-{windowW}x{windowH}.png");
+                SavePng(host, imagePath);
+                report.AppendLine(
+                    $"{Path.GetFileName(imagePath)}: window={windowW}x{windowH} DIP; content={contentW:0}x{contentH:0} DIP; "
+                    + $"selected={data.SelectedTask.TaskId}; state={data.SelectedTask.StateDisplay}; stage={data.SelectedTask.StageDisplay}; "
+                    + $"progress={data.SelectedTask.ProgressDisplay}; duration={durationText.Text}; details={detailCard.Visibility}; "
+                    + $"pageScroll={pageScroll?.VerticalOffset:0}/{pageScroll?.ScrollableHeight:0}; size={new FileInfo(imagePath).Length} bytes");
+            }
+
+            if (problems.Count > 0)
+            {
+                report.AppendLine("task-comparison-evidence FAILED");
+                foreach (var problem in problems)
+                    report.AppendLine("  PROBLEM " + problem);
+                File.WriteAllText(Path.Combine(outputRoot, "task-evidence-report.txt"), report.ToString());
+                Console.WriteLine(report.ToString());
+                return 1;
+            }
+
+            report.AppendLine("task-comparison-evidence OK");
+            File.WriteAllText(Path.Combine(outputRoot, "task-evidence-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("task-comparison-evidence FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "task-evidence-report.txt"), report.ToString());
+            Console.Error.WriteLine(report.ToString());
+            return 1;
+        }
+    }
+
+    private static void VerifyTaskComparisonFixture(
+        FakeDashboardData fixture,
+        List<string> problems,
+        StringBuilder report)
+    {
+        var runningCount = 0;
+        var succeededCount = 0;
+        var failedCount = 0;
+        var cancelledCount = 0;
+        foreach (var task in fixture.Tasks)
+        {
+            if (!task.ElapsedSeconds.HasValue || !task.StartedUtc.HasValue)
+                problems.Add($"{task.TaskId} is missing pinned elapsed or start time.");
+            if (task.MonotonicStartedTimestamp != 0)
+                problems.Add($"{task.TaskId} uses a live monotonic timer in the static evidence fixture.");
+
+            var durationSeconds = task.State == TaskState.Running
+                ? (FakeSampleClock.UtcNow - task.StartedUtc.GetValueOrDefault()).TotalSeconds
+                : (task.FinishedUtc.GetValueOrDefault() - task.StartedUtc.GetValueOrDefault()).TotalSeconds;
+            if (!task.ElapsedSeconds.HasValue || Math.Abs(durationSeconds - task.ElapsedSeconds.GetValueOrDefault()) > 0.001)
+                problems.Add($"{task.TaskId} elapsed seconds do not match the pinned fixture timestamps.");
+
+            if (task.State == TaskState.Running)
+            {
+                runningCount++;
+                if (task.FinishedUtc.HasValue || task.ProgressPercent <= 0 || task.ProgressPercent >= 100
+                    || task.StageKey == TaskStageResolver.Completed
+                    || task.Message.IndexOf("已完成", StringComparison.Ordinal) >= 0)
+                    problems.Add($"{task.TaskId} combines running state with terminal time, progress, stage, or message data.");
+            }
+            else if (task.State == TaskState.Succeeded)
+            {
+                succeededCount++;
+                if (!task.FinishedUtc.HasValue || task.ProgressPercent != 100 || task.StageKey != TaskStageResolver.Completed)
+                    problems.Add($"{task.TaskId} succeeded state does not have a completed stage, finish time, and 100% progress.");
+            }
+            else if (task.State == TaskState.Failed)
+            {
+                failedCount++;
+                if (!task.FinishedUtc.HasValue || task.ProgressPercent >= 100 || string.IsNullOrWhiteSpace(task.ErrorCode))
+                    problems.Add($"{task.TaskId} failed state is missing a terminal time, partial progress, or error code.");
+            }
+            else if (task.State == TaskState.Cancelled)
+            {
+                cancelledCount++;
+                if (!task.FinishedUtc.HasValue || task.ProgressPercent >= 100
+                    || task.Message.IndexOf("已取消", StringComparison.Ordinal) < 0)
+                    problems.Add($"{task.TaskId} cancelled state does not have a terminal time, partial progress, and cancellation message.");
+            }
+        }
+
+        if (runningCount == 0 || succeededCount == 0 || failedCount == 0 || cancelledCount == 0)
+            problems.Add("Task comparison fixture must include running, succeeded, failed, and cancelled tasks.");
+        report.AppendLine($"FixtureStates: running={runningCount}; succeeded={succeededCount}; failed={failedCount}; cancelled={cancelledCount}");
+        report.AppendLine($"SelectedSample: {fixture.SelectedTask.TaskId}; state={fixture.SelectedTask.State}; duration={fixture.SelectedTask.DurationDisplay}; progress={fixture.SelectedTask.ProgressDisplay}; stage={fixture.SelectedTask.StageDisplay}");
+    }
+
+    private static void WriteTaskComparisonSnapshot(FakeDashboardData fixture, string path)
+    {
+        var columns = new[]
+        {
+            "TaskId", "State", "TaskType", "GameId", "GameName", "ProgressPercent", "ProgressDisplay",
+            "StageMessage", "StageKey", "StageDisplay", "Message", "CreatedUtc", "CreatedRelativeDisplay",
+            "CreatedFullDisplay", "StartedUtc", "StartedRelativeDisplay", "StartedFullDisplay", "FinishedUtc",
+            "ElapsedSeconds", "DurationDisplay", "MonotonicStartedTimestamp", "MonotonicFrequency", "ErrorCode",
+            "ErrorMessage", "CancellationState", "ProgressCompletedUnits", "ProgressTotalUnits", "ProgressUnit",
+            "ProgressRatePerSecond", "ProgressEtaSeconds", "ProgressUpdatedUtc", "ProgressRateDisplay", "ProgressEtaDisplay"
+        };
+        var output = new StringBuilder();
+        output.AppendLine(string.Join("\t", columns));
+        foreach (var task in fixture.Tasks.OrderBy(item => item.TaskId, StringComparer.Ordinal))
+        {
+            var values = new[]
+            {
+                task.TaskId,
+                task.State.ToString(),
+                task.TaskType,
+                task.GameId,
+                task.GameName,
+                task.ProgressPercent.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                task.ProgressDisplay,
+                task.StageMessage,
+                task.StageKey,
+                task.StageDisplay,
+                task.Message,
+                FormatSnapshotUtc(task.CreatedUtc),
+                task.CreatedRelativeDisplay,
+                task.CreatedFullDisplay,
+                task.StartedUtc.HasValue ? FormatSnapshotUtc(task.StartedUtc.Value) : string.Empty,
+                task.StartedRelativeDisplay,
+                task.StartedFullDisplay,
+                task.FinishedUtc.HasValue ? FormatSnapshotUtc(task.FinishedUtc.Value) : string.Empty,
+                task.ElapsedSeconds.HasValue ? task.ElapsedSeconds.Value.ToString("R", System.Globalization.CultureInfo.InvariantCulture) : string.Empty,
+                task.DurationDisplay,
+                task.MonotonicStartedTimestamp.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                task.MonotonicFrequency.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                task.ErrorCode,
+                task.ErrorMessage,
+                task.CancellationState,
+                task.ProgressCompletedUnits.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                task.ProgressTotalUnits.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                task.ProgressUnit,
+                task.ProgressRatePerSecond.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                task.ProgressEtaSeconds.HasValue ? task.ProgressEtaSeconds.Value.ToString("R", System.Globalization.CultureInfo.InvariantCulture) : string.Empty,
+                task.ProgressUpdatedUtc.HasValue ? FormatSnapshotUtc(task.ProgressUpdatedUtc.Value) : string.Empty,
+                task.ProgressRateDisplay,
+                task.ProgressEtaDisplay
+            };
+            output.AppendLine(string.Join("\t", values.Select(EscapeTaskSnapshotValue)));
+        }
+
+        File.WriteAllText(path, output.ToString(), new UTF8Encoding(false));
+    }
+
+    private static string FormatSnapshotUtc(DateTime value)
+        => value.ToUniversalTime().ToString("O", System.Globalization.CultureInfo.InvariantCulture);
+
+    private static string EscapeTaskSnapshotValue(string value)
+        => (value ?? string.Empty)
+            .Replace("\\", "\\\\")
+            .Replace("\t", "\\t")
+            .Replace("\r", "\\r")
+            .Replace("\n", "\\n");
 
     private static void RenderNotifications(
         string outputRoot,
