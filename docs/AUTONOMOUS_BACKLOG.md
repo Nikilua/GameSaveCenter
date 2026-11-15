@@ -1,3 +1,7 @@
+## 2026-11-15 第六轮复核与四项收尾
+
+[复核与收尾计划](design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)：确认页面有可见改善，11张对比图及双入口summary哈希匹配；未重新跑全链或查询实时CI。发现任务对比图耗时36小时/38.2小时不一致，C01先修证据时间固定；C02补分配量、C03补缩放矩阵、C04为条件性可见动态交付与清理收口。不重开已完成实现，也不把V20/V25/V26/V28待验条件当全部完成。
+
 ## 2026-11-13 Round6 V01–V04接续
 
 V01–V04已完成：生产`SaveCenterView`受控基线8张（1040/1600、Light/Dark、常规/详情），7项截图观察、WPF页面规格及28张状态/长文本代表图，证据在`design/reviews/ui-redesign-round6-20261113/`。SDK8.0.423 RenderHarness 0 warning/error；全量Render QA 408 PNG/0 PROBLEM；输入桌面保持Default；Source Validation/diff check通过。当前没有仓库Demo源目录，已记录并采用生产资源。下一批V05–V08直接重构存档页，不能以计划/证据收集替代可见实现。

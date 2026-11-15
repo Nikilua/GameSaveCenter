@@ -1,3 +1,7 @@
+## 2026-11-15 第六轮复核与四项收尾
+
+[复核与收尾计划](../design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)：确认页面有可见改善，11张对比图及双入口summary哈希匹配；未重新跑全链或查询实时CI。发现任务对比图耗时36小时/38.2小时不一致，C01先修证据时间固定；C02补分配量、C03补缩放矩阵、C04为条件性可见动态交付与清理收口。不重开已完成实现，也不把V20/V25/V26/V28待验条件当全部完成。
+
 ## 2026-11-14 Round6 V01–V20 进度
 
 V01–V04基线和设计规格、V05–V08生产SaveCenterView重构及V12前后评审已完成；V09–V11共享控件批次也已完成。已从同级 `GameSaveCenter.AcrylicFork` 读取Demo：生产字体改为Demo的Segoe UI Variable Text/Display优先，保留Windows/中文fallback；共享action icon 18px、inline gap4px；按钮角10px；ComboBox与Tooltip使用共享浮层样式。构建/Binding/真实命令、焦点/UIA、虚拟化、当前游戏选框、滚动系统和恢复安全语义继续保留。
