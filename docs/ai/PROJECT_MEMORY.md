@@ -1,6 +1,10 @@
-## 2026-11-15 第六轮复核与四项收尾
+## 2026-11-15 Round6 C01任务页时间对比
 
-[复核与收尾计划](../design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)：确认页面有可见改善，11张对比图及双入口summary哈希匹配；未重新跑全链或查询实时CI。发现任务对比图耗时36小时/38.2小时不一致，C01先修证据时间固定；C02补分配量、C03补缩放矩阵、C04为条件性可见动态交付与清理收口。不重开已完成实现，也不把V20/V25/V26/V28待验条件当全部完成。
+C01根因：合成运行任务漏设`ElapsedSeconds`，生产DTO在其为空时将`DurationDisplay`回退为`FinishedUtc ?? DateTime.UtcNow`。夹具还组合出运行状态配“任务已完成”消息。仅新增专用RenderHarness样本和渲染/快照工具，没有改生产计时或XAML；8个样本按运行、成功、失败、取消各2条，并固定时间戳、耗时、进度与状态字段。
+
+SDK8.0.423/Release下，基线`8678e163a92278a74645559f95789c1348941398`和候选`54d7a6efa1d7438575ca5ca0ff29d098654e6754`均0 warning/0 error、渲染exit0。相同样本UTC `2026-10-15T12:00:00Z`、深色主题和1040×700/1600×900 DIP下，两份全字段TSV的SHA-256均为`979BD8EA59BB948F039059D8F4E920DDB289AA355A8A45741BB0A8A7392D5BBE`。私有WinSta0桌面输入桌面保持Default；结论只覆盖受控离屏WPF，不覆盖Playnite、物理DPI或实体输入。证据索引：[C01](../design/ui-redesign-round6-20261113/evidence/C01-task-time-20261115/README.md)。
+
+提交`54d7a6efa1d7438575ca5ca0ff29d098654e6754`的Actions run #1582（`43706944794`）因Source Validation发现新PowerShell文件缺UTF-8 BOM而失败，后续步骤因依赖失败正常跳过。提交`aa590a1b8c710e0788098b27b128719001aeead3`补齐BOM，本地Source Validation通过；精确SHA run #1583（`43707721313`）所有适用job尚待终态。C02页面操作managed-allocation测量、C03真实WPF DPI缩放矩阵和最终完整构建入口仍待完成；按[四项收尾计划](../design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)继续。C01三个自有`.tmp`目录通过路径、链接、引用和占用预检后，PowerShell literal递归删除被策略拒绝，未用其他工具绕过；失败烟测诊断保留。无真实配置、存档、云端或用户TRX/TestResults变更。
 
 ## 2026-11-14 Round6 V01–V20 进度
 

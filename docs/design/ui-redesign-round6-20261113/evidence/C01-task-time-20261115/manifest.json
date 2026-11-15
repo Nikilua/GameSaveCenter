@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "theme": "dark",
+  "dpiScale": "1.00 logical DIP; offscreen WPF",
+  "baselineLabel": "基线 8678e163",
+  "candidateLabel": "候选 54d7a6ef",
+  "windows": [
+    {
+      "windowDip": "1040x700",
+      "baseline": {
+        "file": "baseline-task-dark-1040x700.png",
+        "sha256": "396E9DB1FFC38A63E7BCBEEC5EE463F0F4E77959E38FAC7531146D22934F2EE1"
+      },
+      "candidate": {
+        "file": "candidate-task-dark-1040x700.png",
+        "sha256": "7A3CEFA44C8A247358E27A31341D17D82208C117B1EA008562FC9805DD05A23D"
+      },
+      "comparison": {
+        "file": "task-dark-1040x700-before-after.png",
+        "width": 1560,
+        "height": 554,
+        "sha256": "A7C6B4036730847C126C39F6B3DD75823B6867C8E216ABE829992D25ACA4EA0B"
+      }
+    },
+    {
+      "windowDip": "1600x900",
+      "baseline": {
+        "file": "baseline-task-dark-1600x900.png",
+        "sha256": "EBCC9D4973CCAE6FE3A507BB6FAD8E8FF70D91AA90D0B879FEF3A663185553AF"
+      },
+      "candidate": {
+        "file": "candidate-task-dark-1600x900.png",
+        "sha256": "6E56C07726146CE8B669FB131FDF936924E857B48E332BDA7740EED498A8DF58"
+      },
+      "comparison": {
+        "file": "task-dark-1600x900-before-after.png",
+        "width": 2624,
+        "height": 754,
+        "sha256": "9DDCC443CD50A3D38849F9B7DFCF6BA5793A907F11EEC89B08E7A2955050B34A"
+      }
+    }
+  ],
+  "baselineSnapshotSha256": "979BD8EA59BB948F039059D8F4E920DDB289AA355A8A45741BB0A8A7392D5BBE",
+  "candidateSnapshotSha256": "979BD8EA59BB948F039059D8F4E920DDB289AA355A8A45741BB0A8A7392D5BBE"
+}

@@ -1,0 +1,21 @@
+GameSaveCenter Round 6 task-page comparison evidence
+Source: production TaskCenterView hosted by the isolated WPF render harness
+Data: deterministic FakeDashboardData task-comparison fixture; no Worker, Playnite profile, game library, save, or cloud data
+Theme: dark; windows: 1040x700 and 1600x900 DIP; rendering: 1.00 logical DIP on a private desktop
+Boundary: controlled WPF layout evidence; not real Playnite, physical DPI, or physical-input evidence
+Scenario: task-comparison-evidence
+EvidenceSource: OffscreenRenderHarness
+Commit: 8678e163a92278a74645559f95789c1348941398
+WorkingTreeClean: false
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: dark
+DataVolumes: 8 deterministic task states; one selected running task
+SampleTimeUtc: 2026-10-15T12:00:00.0000000+00:00 (pinned=True)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+
+FixtureStates: running=2; succeeded=2; failed=2; cancelled=2
+SelectedSample: T-0001; state=Running; duration=36 小时; progress=48%; stage=校验中
+task-dark-1040x700.png: window=1040x700 DIP; content=744x460 DIP; selected=T-0001; state=执行中; stage=校验中; progress=48%; duration=36 小时; details=Visible; pageScroll=168/168; size=42980 bytes
+task-dark-1600x900.png: window=1600x900 DIP; content=1276x660 DIP; selected=T-0001; state=执行中; stage=校验中; progress=48%; duration=36 小时; details=Visible; pageScroll=0/0; size=103671 bytes
+task-comparison-evidence OK

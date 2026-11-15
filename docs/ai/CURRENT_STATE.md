@@ -1,12 +1,14 @@
-## 当前事实入口（Round6 V01–V28，2026-11-14）
+## 当前事实入口（Round6 V01–V28与C01，2026-11-15）
 
-最终产品候选为 9880c81be09365d02b9335a633be95506095c8d9；推广页面提交 ec7a02bea93d27ca054fe66f90574ea733710ebb 与 9880c81。V21–V24已完成任务、媒体、概览、设置页面及同数据前后评审；V25–V28已完成受控视觉/行为验收、两个本地构建入口、CI核验和交付归档。当前唯一证据索引为[Round6交付证据](../design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/README.md)。
+最终产品候选仍为 `9880c81be09365d02b9335a633be95506095c8d9`；推广页面提交 `ec7a02bea93d27ca054fe66f90574ea733710ebb` 与 `9880c81`。V21–V24完成任务、媒体、概览、设置页面及同数据前后评审；V25–V28记录了受控视觉/行为验收和交付边界，详细索引见[Round6交付证据](../design/reviews/ui-redesign-round6-20261113/evidence/V21-V24/README.md)。
 
-中文入口 GameSaveCenter-一键构建安装运行.cmd → GameSaveCenter-Run.cmd 和独立 scripts/build.cmd 均在 SDK8.0.423/Release 对精确候选直接 exit0；各160份TRX、2,051项，1,993通过、0失败、58 skip，157/157个WPF隔离类。隔离安装的六个程序集版本对应完整候选SHA。Playnite隔离进程启动后显示首次配置向导，没有检查插件页面、真实库或用户profile。GitHub run #1579 / 43600878377 的基线与SDK10.0.401 job及所有步骤均 success；job/artifact身份见交付证据。
+C01已补齐任务页时间对比：在RenderHarness固定8条合成任务的全部时间、进度与状态语义，用同一份字段快照重拍8678基线与54d7候选。两版均显示36小时，快照SHA-256相同；只改测试夹具与证据脚本，没有改生产计时。当前C01证据索引为[任务页时间一致性](../design/ui-redesign-round6-20261113/evidence/C01-task-time-20261115/README.md)。54d7的初始GitHub run因composer脚本缺少UTF-8 BOM在源码结构检查失败；已由`aa590a1b`修复，精确新run仍待所有适用job终态核验。C01三个自有`.tmp`清理目标已完成路径、链接、引用与占用预检，但递归删除调用被策略拒绝，输出保留；首次失败烟测诊断也保留。
+
+中文入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 和独立 `scripts/build.cmd` 已在SDK8.0.423/Release对9880候选直接exit0；各160份TRX，2,051项、1,993通过、0失败、58个既有skip，157/157个WPF隔离类。隔离安装的六个程序集版本对应完整候选SHA。Playnite隔离进程显示首次配置向导，没有检查插件页面、真实库或用户profile。GitHub run #1579 / 43600878377 的适用jobs与步骤均success；job/artifact身份见V21–V24交付证据。C01修正尚未替代最终候选门禁，后续完整链与独立build仍按计划运行。
 
 Render QA为334张、双主题、0 PROBLEM；生产XAML静态审查27项、0 error、26 warnings（与基线相同）。语义状态文本双主题测试覆盖至少4.5:1，大号概览数字/禁用上下文标签覆盖3:1；并非全页像素对比清点。动态样片是9097e6c8源码上采集的147条实际WPF属性轨迹，播放器不插帧；不是录屏，详情采样窗IsVisible=false，未证明真实屏幕帧或60fps。RenderQA侧栏单次/快速切换比较已记录；页面操作managed-allocation未单独测量。1.00逻辑DIP结果不能代表物理DPI。CUA初始化失败，无法自动观察Playnite界面。
 
-根入口scratch .tmp/round6-v27-rootbuild 的递归清理被执行策略拒绝；保留未绕过。当前包和诊断保留。未触碰真实存档、真实用户配置/Playnite profile、云端写入或其他任务测试输出。Round5/P1记录继续作为历史事实，不因Round6更新而改写。
+根入口scratch `.tmp/round6-v27-rootbuild` 的递归清理被执行策略拒绝；保留未绕过。C01使用隔离合成数据；没有触碰真实存档、真实用户配置/Playnite profile、云端写入，也没有清理其他任务TRX/TestResults。C02分配量测量与C03真实WPF DPI矩阵仍待推进；C04仍受可见隔离宿主条件约束。Round5/P1记录继续作为历史事实，不因Round6更新而改写。
 
 
 ## 历史入口（Round6截至V20，2026-11-14；状态以本节上方更新为准）

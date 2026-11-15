@@ -1,6 +1,12 @@
-## 2026-11-15 第六轮复核与四项收尾
+## 2026-11-15 Round6 C01任务页时间对比
 
-[复核与收尾计划](../design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)：确认页面有可见改善，11张对比图及双入口summary哈希匹配；未重新跑全链或查询实时CI。发现任务对比图耗时36小时/38.2小时不一致，C01先修证据时间固定；C02补分配量、C03补缩放矩阵、C04为条件性可见动态交付与清理收口。不重开已完成实现，也不把V20/V25/V26/V28待验条件当全部完成。
+复核发现旧任务页并排图36小时/38.2小时不一致。根因定位到合成运行任务没有`ElapsedSeconds`，`TaskStatusDto.DurationDisplay`因此回退读取`DateTime.UtcNow`；运行中的阶段与“已完成”消息也不一致。新增独立8任务比较夹具，运行/成功/失败/取消各2条，固定时间戳、耗时、进度和状态消息；不改生产计时、不改生产XAML，原图仍保留。
+
+基线`8678e163a92278a74645559f95789c1348941398`与候选`54d7a6efa1d7438575ca5ca0ff29d098654e6754`同机SDK8.0.423/Release、同`2026-10-15T12:00:00Z`样本、同深色主题及1040×700/1600×900 DIP，各构建0 warning/0 error、渲染exit0。两版八项任务的完整快照SHA-256均为`979BD8EA59BB948F039059D8F4E920DDB289AA355A8A45741BB0A8A7392D5BBE`。私有WinSta0桌面输入桌面前后均为Default；仅属受控离屏WPF证据。
+
+提交`54d7a6efa1d7438575ca5ca0ff29d098654e6754`的GitHub run #1582（`43706944794`）在Source Validation发现composer脚本缺UTF-8 BOM后失败，依赖步骤被正常跳过。`aa590a1b8c710e0788098b27b128719001aeead3`补齐BOM，本地Source Validation通过；新精确run #1583（`43707721313`）待所有适用job终态。截图、原始报告、快照与manifest见[C01证据索引](../design/ui-redesign-round6-20261113/evidence/C01-task-time-20261115/README.md)。
+
+[复核与收尾计划](../design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)继续执行：C01已完成受控证据并待新CI终态；C02补页面操作managed-allocation测量，C03补受影响控件125/150/200%真正WPF DPI矩阵，C04仍需可见隔离宿主条件。最终候选的一键中文入口完整链、独立`build.cmd`及适用GitHub jobs尚待最终阶段验收。三个自有`.tmp`目标虽通过路径、重解析点、Git引用与进程占用预检，但递归删除被策略拒绝，未用其他方式绕过；首次失败烟测诊断保留。没有触碰真实配置、存档、云端或用户TRX/TestResults。
 
 ## 2026-11-14 Round6 V16–V18 详情切换、Toast与加载交接
 

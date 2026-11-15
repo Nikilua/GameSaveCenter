@@ -1,0 +1,12 @@
+{
+  "scenario": "TaskEvidence",
+  "harnessMode": "taskevidence",
+  "sourceSha": "54d7a6efa1d7438575ca5ca0ff29d098654e6754",
+  "sampleUtc": "2026-10-15T12:00:00.0000000+00:00",
+  "windowStation": "WinSta0",
+  "desktop": "GscRound6_039c6b9d568f4f658c1f15a196a1cc7b",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "exitCode": 0,
+  "output": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\round6-c01-candidate-20261115"
+}
