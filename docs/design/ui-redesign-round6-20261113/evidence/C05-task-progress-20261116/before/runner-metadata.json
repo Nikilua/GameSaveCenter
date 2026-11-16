@@ -1,0 +1,13 @@
+{
+  "scenario": "TaskProgressEvidence",
+  "harnessMode": "taskprogressevidence",
+  "sdkVersion": "8.0.423",
+  "sourceSha": "e3566dbb234388dbb6c413bc1845e1b4490cc0b7",
+  "sampleUtc": "2026-11-13T00:00:00.0000000+00:00",
+  "windowStation": "WinSta0",
+  "desktop": "GscRound6_c0a95dded07e4deaab8552f9d3063797",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "exitCode": 1,
+  "output": "D:\\workplace\\github\\GameSaveCenter\\.tmp\\c05-progress-before-verified"
+}

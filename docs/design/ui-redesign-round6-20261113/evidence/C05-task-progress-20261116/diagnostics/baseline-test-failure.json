@@ -1,0 +1,18 @@
+{
+  "sourceCommit": "e3566dbb234388dbb6c413bc1845e1b4490cc0b7",
+  "sdk": "8.0.423",
+  "runType": "controlled WPF test class on private WinSta0 desktop",
+  "desktop": "GscC05_ccd118065c134ea08afc2034f86239b0",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "directExit": 1,
+  "timedOut": false,
+  "passed": 6,
+  "failed": 1,
+  "notExecuted": 0,
+  "failure": {
+    "testName": "GameSaveCenter.Playnite.Tests.R06TaskProgressBehaviorTests.ProductionProgressPercentTextFitsInsideItsCellAtCommonWindowWidths",
+    "message": "Xunit.Sdk.TrueException: 0% text is outside the padded cell content at 1040 DIP: text=96,18,16,16, content=[12,100], cellWidth=112, columnWidth=112, grid=1018.67x700.67.\r\n   在 Xunit.Assert.True(Nullable`1 condition, String userMessage) 位置 /_/src/xunit.assert/Asserts/BooleanAsserts.cs:行号 142\r\n   在 GameSaveCenter.Playnite.Tests.R06TaskProgressBehaviorTests.<>c.<ProductionProgressPercentTextFitsInsideItsCellAtCommonWindowWidths>b__1_0() 位置 [repo]\\tests\\GameSaveCenter.Playnite.Tests\\R06TaskProgressBehaviorTests.cs:行号 112\r\n   在 GameSaveCenter.Playnite.Tests.R06TaskProgressBehaviorTests.<>c__DisplayClass14_0.<RunSta>b__0() 位置 [repo]\\tests\\GameSaveCenter.Playnite.Tests\\R06TaskProgressBehaviorTests.cs:行号 465",
+    "stackTrace": "   在 GameSaveCenter.Playnite.Tests.R06TaskProgressBehaviorTests.RunSta(Action action) 位置 [repo]\\tests\\GameSaveCenter.Playnite.Tests\\R06TaskProgressBehaviorTests.cs:行号 477"
+  }
+}

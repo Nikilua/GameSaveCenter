@@ -74,6 +74,72 @@ public sealed class R06TaskProgressBehaviorTests
     }
 
     [Fact]
+    public void ProductionProgressPercentTextFitsInsideItsCellAtCommonWindowWidths()
+    {
+        RunSta(() =>
+        {
+            foreach (var width in new[] { 1040d, 1366d, 1600d })
+            {
+                var tasks = new ObservableCollection<TaskStatusDto>
+                {
+                    Task("progress-0", TaskState.Running, 0),
+                    Task("progress-9", TaskState.Running, 9),
+                    Task("progress-48", TaskState.Running, 48),
+                    Task("progress-99", TaskState.Running, 99),
+                    Task("progress-100", TaskState.Succeeded, 100)
+                };
+                var view = new TaskCenterView();
+                var grid = (DataGrid)view.FindName("TaskGrid")!;
+                grid.ItemsSource = tasks;
+                var window = new Window
+                {
+                    Content = view,
+                    Width = width,
+                    Height = 900,
+                    WindowStyle = WindowStyle.None,
+                    ResizeMode = ResizeMode.NoResize,
+                    ShowInTaskbar = false,
+                    ShowActivated = false
+                };
+
+                try
+                {
+                    window.Show();
+                    view.ApplyResponsiveLayout(width, 900);
+                    PumpLayout(window);
+
+                    var progressColumn = grid.Columns.Single(column => Equals(column.Header, "进度"));
+                    foreach (var task in tasks)
+                    {
+                        grid.ScrollIntoView(task);
+                        PumpLayout(window);
+
+                        var content = progressColumn.GetCellContent(task);
+                        Assert.NotNull(content);
+                        var cell = FindAncestor<DataGridCell>(content!);
+                        Assert.NotNull(cell);
+                        var text = FindChildren<TextBlock>(content!).Single();
+                        var bar = FindChildren<ProgressBar>(content!).Single();
+                        var textBounds = text.TransformToAncestor(cell!).TransformBounds(new Rect(new Point(0, 0), text.RenderSize));
+                        var visibleLeft = cell!.Padding.Left;
+                        var visibleRight = cell.ActualWidth - cell.Padding.Right;
+
+                        Assert.Equal(task.ProgressDisplay, text.Text);
+                        Assert.Equal(task.ProgressDisplay, AutomationProperties.GetHelpText(bar));
+                        Assert.True(
+                            textBounds.Left >= visibleLeft - 0.5 && textBounds.Right <= visibleRight + 0.5,
+                            $"{task.ProgressDisplay} text is outside the padded cell content at {width:0} DIP: "
+                            + $"text={textBounds}, content=[{visibleLeft:0.##},{visibleRight:0.##}], "
+                            + $"cellWidth={cell.ActualWidth:0.##}, columnWidth={progressColumn.ActualWidth:0.##}, "
+                            + $"grid={grid.ActualWidth:0.##}x{grid.ActualHeight:0.##}.");
+                    }
+                }
+                finally { window.Close(); }
+            }
+        });
+    }
+
+    [Fact]
     public void ProductionTaskRowKeepsStableHeightAcrossStageProgressAndLongTextUpdates()
     {
         RunSta(() =>
@@ -158,6 +224,17 @@ public sealed class R06TaskProgressBehaviorTests
         if (root is T match) yield return match;
         for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
             foreach (var child in FindChildren<T>(VisualTreeHelper.GetChild(root, index))) yield return child;
+    }
+
+    private static T? FindAncestor<T>(DependencyObject element) where T : DependencyObject
+    {
+        for (var current = VisualTreeHelper.GetParent(element); current != null; current = VisualTreeHelper.GetParent(current))
+        {
+            if (current is T match)
+                return match;
+        }
+
+        return null;
     }
 
     [Fact]

@@ -1,0 +1,57 @@
+[
+  {
+    "path": "before/runner-metadata.json",
+    "sha256": "ADBF2A8C28EFB2B451D80330B259F20B53BC6F2E1FB4B26185A2573A554D6D50",
+    "bytes": 497
+  },
+  {
+    "path": "before/task-progress-dark-1040x700.png",
+    "sha256": "9D8DEBEA9E9C813795D524B9581D7F5D3CEE0E66A8E07B99BC0DDE9A7480E298",
+    "bytes": 50680
+  },
+  {
+    "path": "before/task-progress-dark-1366x768.png",
+    "sha256": "291DE44E2E104BF8FD0111E15370ED278455A65F8C39C47FD4B28007011BAA3E",
+    "bytes": 76954
+  },
+  {
+    "path": "before/task-progress-dark-1600x900.png",
+    "sha256": "9D4A614ABBFDB9489B8D74CDD5F36942B5C16912BA4D7E6FA938820460C94BEE",
+    "bytes": 110888
+  },
+  {
+    "path": "before/task-progress-dark-800x700.png",
+    "sha256": "A64C696161AEE3D9C3483002CCA266A576A84BFD74343C8A69C0CAA22FE99105",
+    "bytes": 41705
+  },
+  {
+    "path": "before/task-progress-evidence-report.txt",
+    "sha256": "F80510EF46D69E1BB4D8FD84C587649ADDE0D6B1802CE11228146617AE7D5C64",
+    "bytes": 17031
+  },
+  {
+    "path": "before/task-progress-fixture.tsv",
+    "sha256": "51B8F8DA60DB737D04560CB69D79D9B2C538E9CEBAA1C67EBBDCF7DE8F413E4A",
+    "bytes": 274
+  },
+  {
+    "path": "before/task-progress-light-1040x700.png",
+    "sha256": "F0DD034554E4CF534E519D9D8D227F806008368E2760B143B868F895A59CDFD0",
+    "bytes": 47587
+  },
+  {
+    "path": "before/task-progress-light-1366x768.png",
+    "sha256": "F9298289A257803B54262C84DB76C31C9A13B9DCE239E08EF6D2C0FECCCDDED6",
+    "bytes": 74886
+  },
+  {
+    "path": "before/task-progress-light-1600x900.png",
+    "sha256": "38EBAB158E2322B91EE37C47D5F2EC7F8772D4C2E31ABCE414015FC4C650C031",
+    "bytes": 108035
+  },
+  {
+    "path": "before/task-progress-light-800x700.png",
+    "sha256": "55DF6E1A14A5B5000F8A109A1B320F8897EF13B0ABA1C31B748B0116631DC4EC",
+    "bytes": 39589
+  }
+]

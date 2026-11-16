@@ -1,0 +1,132 @@
+GameSaveCenter Round 6 task progress percentage evidence
+Source: production TaskCenterView in a controlled WPF Window on a private desktop
+Data: fixed synthetic task rows; no Worker, Playnite profile, game library, save, or cloud data
+Raster: RenderTargetBitmap at 96 DPI from logical DIP; actual WPF Window DPI is reported per case
+Themes: light and dark; window widths: 800, 1040, 1366, and 1600 DIP
+Boundary: controlled WPF layout and element-property evidence; not real Playnite or physical input/UIA-client acceptance
+Scenario: task-progress-evidence
+EvidenceSource: ControlledWpfWindow
+Commit: e3566dbb234388dbb6c413bc1845e1b4490cc0b7
+WorkingTreeClean: false
+DpiScale: 1.00 (offscreen logical DIP; real host DPI is not inferred)
+WindowDip: per-case window_dip/content_dip fields
+Themes: light,dark
+DataVolumes: 8 deterministic task rows; progress includes 0%, 9%, 48%, 99%, and 100%
+SampleTimeUtc: 2026-11-13T00:00:00.0000000+00:00 (pinned=True)
+TimingFields: layout_ms, render_ms; request_ms=not-applicable for offscreen harness
+DpiAwareness: processRequestedPMv2=True; processSetError=0; mainThreadPMv2=True; renderThreadPMv2=True
+
+light/800x700: windowDpi=144x144; scale=1.5x1.5; content=504x460; grid=482.67x282.67; progressColumn=112; minWidth=100; hScroll=0/225.33; virtualized=True/True
+  T-0001/48%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='48%'; fullTextInsideCell=False
+  T-0002/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  T-0003/9%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='9%'; fullTextInsideCell=False
+  T-0004/99%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='99%'; fullTextInsideCell=False
+  T-0005/0%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='0%'; fullTextInsideCell=False
+  screenshot=task-progress-light-800x700.png; bytes=39589; rasterDpi=96
+  horizontalScrollProbe: start=0; scrollableWidth=225.33; end=225.33; reachedEnd=True; selectedStable=True
+light/1040x700: windowDpi=144x144; scale=1.5x1.5; content=744x460; grid=722.67x282.67; progressColumn=112; minWidth=100; hScroll=0/13.33; virtualized=True/True
+  T-0001/48%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='48%'; fullTextInsideCell=False
+  T-0002/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  T-0003/9%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='9%'; fullTextInsideCell=False
+  T-0004/99%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='99%'; fullTextInsideCell=False
+  T-0005/0%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='0%'; fullTextInsideCell=False
+  T-0006/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  screenshot=task-progress-light-1040x700.png; bytes=47587; rasterDpi=96
+light/1366x768: windowDpi=144x144; scale=1.5x1.5; content=1042x528; grid=606.67x328.67; progressColumn=112; minWidth=100; hScroll=0/103.33; virtualized=True/True
+  T-0001/48%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='48%'; fullTextInsideCell=False
+  T-0002/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  T-0003/9%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='9%'; fullTextInsideCell=False
+  T-0004/99%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='99%'; fullTextInsideCell=False
+  T-0005/0%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='0%'; fullTextInsideCell=False
+  T-0006/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  screenshot=task-progress-light-1366x768.png; bytes=74886; rasterDpi=96
+light/1600x900: windowDpi=144x144; scale=1.5x1.5; content=1276x660; grid=840.67x460.67; progressColumn=112; minWidth=100; hScroll=0/0; virtualized=True/True
+  T-0001/48%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='48%'; fullTextInsideCell=False
+  T-0002/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  T-0003/9%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='9%'; fullTextInsideCell=False
+  T-0004/99%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='99%'; fullTextInsideCell=False
+  T-0005/0%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='0%'; fullTextInsideCell=False
+  T-0006/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  screenshot=task-progress-light-1600x900.png; bytes=108035; rasterDpi=96
+dark/800x700: windowDpi=144x144; scale=1.5x1.5; content=504x460; grid=482.67x282.67; progressColumn=112; minWidth=100; hScroll=0/225.33; virtualized=True/True
+  T-0001/48%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='48%'; fullTextInsideCell=False
+  T-0002/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  T-0003/9%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='9%'; fullTextInsideCell=False
+  T-0004/99%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='99%'; fullTextInsideCell=False
+  T-0005/0%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='0%'; fullTextInsideCell=False
+  T-0006/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  screenshot=task-progress-dark-800x700.png; bytes=41705; rasterDpi=96
+  horizontalScrollProbe: start=0; scrollableWidth=225.33; end=225.33; reachedEnd=True; selectedStable=True
+dark/1040x700: windowDpi=144x144; scale=1.5x1.5; content=744x460; grid=722.67x282.67; progressColumn=112; minWidth=100; hScroll=0/13.33; virtualized=True/True
+  T-0001/48%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='48%'; fullTextInsideCell=False
+  T-0002/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  T-0003/9%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='9%'; fullTextInsideCell=False
+  T-0004/99%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='99%'; fullTextInsideCell=False
+  T-0005/0%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='0%'; fullTextInsideCell=False
+  T-0006/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  screenshot=task-progress-dark-1040x700.png; bytes=50680; rasterDpi=96
+dark/1366x768: windowDpi=144x144; scale=1.5x1.5; content=1042x528; grid=606.67x328.67; progressColumn=112; minWidth=100; hScroll=0/103.33; virtualized=True/True
+  T-0001/48%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='48%'; fullTextInsideCell=False
+  T-0002/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  T-0003/9%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='9%'; fullTextInsideCell=False
+  T-0004/99%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='99%'; fullTextInsideCell=False
+  T-0005/0%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='0%'; fullTextInsideCell=False
+  T-0006/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  screenshot=task-progress-dark-1366x768.png; bytes=76954; rasterDpi=96
+dark/1600x900: windowDpi=144x144; scale=1.5x1.5; content=1276x660; grid=840.67x460.67; progressColumn=112; minWidth=100; hScroll=0/0; virtualized=True/True
+  T-0001/48%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='48%'; fullTextInsideCell=False
+  T-0002/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  T-0003/9%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='9%'; fullTextInsideCell=False
+  T-0004/99%: cell=112; textBounds=89.3333333333333,18,22.6666666666667,16; paddedContent=[12,100]; textWidth=22.67; barWidth=52; automationHelpText='99%'; fullTextInsideCell=False
+  T-0005/0%: cell=112; textBounds=96,18,16,16; paddedContent=[12,100]; textWidth=16; barWidth=52; automationHelpText='0%'; fullTextInsideCell=False
+  T-0006/100%: cell=112; textBounds=82.6666666666667,18,29.3333333333333,16; paddedContent=[12,100]; textWidth=29.33; barWidth=52; automationHelpText='100%'; fullTextInsideCell=False
+  screenshot=task-progress-dark-1600x900.png; bytes=110888; rasterDpi=96
+task-progress-evidence FAILED
+  PROBLEM light/800x700 48% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM light/800x700 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM light/800x700 9% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM light/800x700 99% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM light/800x700 0% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM light/800x700 did not realize progress cell for T-0006 (100%).
+  PROBLEM light/1040x700 48% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM light/1040x700 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM light/1040x700 9% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM light/1040x700 99% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM light/1040x700 0% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM light/1040x700 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM light/1366x768 48% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM light/1366x768 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM light/1366x768 9% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM light/1366x768 99% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM light/1366x768 0% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM light/1366x768 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM light/1600x900 48% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM light/1600x900 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM light/1600x900 9% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM light/1600x900 99% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM light/1600x900 0% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM light/1600x900 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM dark/800x700 48% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM dark/800x700 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM dark/800x700 9% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM dark/800x700 99% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM dark/800x700 0% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM dark/800x700 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM dark/1040x700 48% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM dark/1040x700 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM dark/1040x700 9% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM dark/1040x700 99% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM dark/1040x700 0% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM dark/1040x700 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM dark/1366x768 48% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM dark/1366x768 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM dark/1366x768 9% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM dark/1366x768 99% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM dark/1366x768 0% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM dark/1366x768 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM dark/1600x900 48% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM dark/1600x900 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].
+  PROBLEM dark/1600x900 9% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM dark/1600x900 99% extends beyond padded cell content: text=89.3333333333333,18,22.6666666666667,16, content=[12,100].
+  PROBLEM dark/1600x900 0% extends beyond padded cell content: text=96,18,16,16, content=[12,100].
+  PROBLEM dark/1600x900 100% extends beyond padded cell content: text=82.6666666666667,18,29.3333333333333,16, content=[12,100].

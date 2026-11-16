@@ -1,6 +1,6 @@
 ﻿[CmdletBinding()]
 param(
-    [ValidateSet('Baseline', 'StateFixtures', 'TaskEvidence', 'TaskAllocation', 'DpiEvidence')]
+    [ValidateSet('Baseline', 'StateFixtures', 'TaskEvidence', 'TaskProgressEvidence', 'TaskAllocation', 'DpiEvidence')]
     [string]$Scenario = 'Baseline',
     [string]$Output = '',
     [string]$SampleUtc = '2026-11-13T00:00:00Z'
@@ -13,6 +13,7 @@ $scenarioName = switch ($Scenario) {
     'Baseline' { 'round6baseline' }
     'StateFixtures' { 'statefixtures' }
     'TaskEvidence' { 'taskevidence' }
+    'TaskProgressEvidence' { 'taskprogressevidence' }
     'TaskAllocation' { 'taskallocationevidence' }
     'DpiEvidence' { 'dpievidence' }
 }

@@ -1,3 +1,13 @@
+## 2026-11-16 Round6 C05任务进度百分比
+
+C05在实际生产`TaskCenterView`的受控WPF窗口中复现。进度列基线112 DIP，DataGridCell水平Padding 12 DIP/侧、模板Margin 8 DIP/侧，子列至少52+40 DIP；`0%` TextBlock边界`[96,112]`超出内容边界`[12,100]` 12 DIP。原尺寸C01截图中的残缺数字与布局几何一致。
+
+修改`TaskCenterView.xaml`：进度列默认152/最小148 DIP，百分比预留44 DIP，进度条预留64 DIP。新增`ProductionProgressPercentTextFitsInsideItsCellAtCommonWindowWidths`，并新增Round6 `TaskProgressEvidence` RenderHarness场景/脚本入口。受控固定任务快照SHA为`51B8F8DA60DB737D04560CB69D79D9B2C538E9CEBAA1C67EBBDCF7DE8F413E4A`，前后一致。双主题、800/1040/1366/1600 DIP下的实际WPF Window读数均144 DPI/150%；图像使用96 DPI逻辑栅格并明确标注。修复前八张图均报百分比越界；修复后八张图的`0/9/48/99/100%`完整进入单元格填充区，ProgressBar UIA HelpText保留完整绑定。800 DIP横向滚动到末尾成功且所选任务稳定，行/列虚拟化均启用。
+
+SDK8.0.423/Release预提交Harness构建0 warning/0 error，受控矩阵修复前直接exit1、修复后exit0；定向R06类修复前`6 passed / 1 failed / 0 not executed`，失败为新增边界断言，修复后`7 passed / 0 failed / 0 not executed`。Source Validation通过；XAML结构校验27份通过；生产项目WPF静态审查0 error/26 warnings/164 info。私有WinSta0运行的输入桌面前后均为Default；未运行Playnite插件页面，没有操作真实配置、存档或云端。基线图、几何报告、SHA与失败断言见[C05证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。
+
+当前是预提交记录：精确候选完整中文入口链、独立`scripts/build.cmd`、安装身份和GitHub适用jobs尚待提交后执行；不能借用旧`15f82b6`门禁。C04真实宿主短片/Playnite现场/实体物理输入仍条件性待验。
+
 ## 2026-11-16 四项收尾复核
 
 C01实际对比图时间已一致，快照与两入口summary哈希匹配；C02/C03受控完成，C04仍条件性待验。新图进度列疑似百分比裁切，追加唯一C05定点确认/修复任务，见[收尾计划](../design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)。未重跑产品或查询实时CI，不扩大受控结论，不清理未知文件。

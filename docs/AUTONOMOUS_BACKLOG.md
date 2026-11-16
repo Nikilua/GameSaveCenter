@@ -1,6 +1,6 @@
 ## 2026-11-15 第六轮复核与四项收尾
 
-[复核与收尾计划](design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)：C01已完成受控时间样本和任务页基线/候选证据，字段快照SHA一致；精确修复提交`aa590a1b`的Actions run #1583仍待终态。C02补页面操作managed-allocation测量、C03补真正WPF DPI矩阵，C04为条件性可见动态交付与清理收口。保留真实宿主/物理输入边界，不把V20/V25/V26/V28待验条件视为全部完成。
+[复核与收尾计划](design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)：C01–C03受控证据及精确CI已收口，C04仍是条件性可见动态交付与真实宿主/物理输入待验。新追加C05已在生产WPF树确认并修复任务进度百分比裁切，双主题/窗口宽度矩阵与定向回归通过；精确提交的最终两种本地入口、安装身份及GitHub jobs尚待执行，证据见[C05](design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。不将C05或C04借旧SHA门禁扩大验收范围。
 
 ## 2026-11-13 Round6 V01–V04接续
 

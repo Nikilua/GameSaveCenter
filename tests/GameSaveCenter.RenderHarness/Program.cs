@@ -397,6 +397,35 @@ public static partial class Program
             return taskEvidenceExitCode;
         }
 
+        if (args.Length > 0 && args[0].Equals("taskprogressevidence", StringComparison.OrdinalIgnoreCase))
+        {
+            var requested = SetProcessDpiAwarenessContext(PerMonitorAwareV2Context);
+            var setError = requested ? 0 : Marshal.GetLastWin32Error();
+            var mainThreadPmv2 = AreDpiAwarenessContextsEqual(GetThreadDpiAwarenessContext(), PerMonitorAwareV2Context);
+            var outputRoot = args.Length > 1
+                ? Path.GetFullPath(args[1])
+                : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", ".tmp", "task-progress-evidence");
+            var progressEvidenceExitCode = 0;
+            var progressEvidenceThread = new Thread(() =>
+            {
+                var previousContext = SetThreadDpiAwarenessContext(PerMonitorAwareV2Context);
+                try
+                {
+                    var threadPmv2 = AreDpiAwarenessContextsEqual(GetThreadDpiAwarenessContext(), PerMonitorAwareV2Context);
+                    progressEvidenceExitCode = RunTaskProgressEvidence(outputRoot, requested, setError, mainThreadPmv2, threadPmv2);
+                }
+                finally
+                {
+                    if (previousContext != IntPtr.Zero)
+                        SetThreadDpiAwarenessContext(previousContext);
+                }
+            });
+            progressEvidenceThread.SetApartmentState(ApartmentState.STA);
+            progressEvidenceThread.Start();
+            progressEvidenceThread.Join();
+            return progressEvidenceExitCode;
+        }
+
         if (args.Length > 0 && args[0].Equals("dpievidence", StringComparison.OrdinalIgnoreCase))
         {
             var requested = SetProcessDpiAwarenessContext(PerMonitorAwareV2Context);
@@ -5293,6 +5322,186 @@ public static partial class Program
             Console.Error.WriteLine(report.ToString());
             return 1;
         }
+    }
+
+    private static int RunTaskProgressEvidence(
+        string outputRoot,
+        bool processPmv2Requested,
+        int processPmv2Error,
+        bool mainThreadPmv2,
+        bool renderThreadPmv2)
+    {
+        Directory.CreateDirectory(outputRoot);
+        var report = new StringBuilder();
+        var problems = new List<string>();
+        report.AppendLine("GameSaveCenter Round 6 task progress percentage evidence");
+        report.AppendLine("Source: production TaskCenterView in a controlled WPF Window on a private desktop");
+        report.AppendLine("Data: fixed synthetic task rows; no Worker, Playnite profile, game library, save, or cloud data");
+        report.AppendLine("Raster: RenderTargetBitmap at 96 DPI from logical DIP; actual WPF Window DPI is reported per case");
+        report.AppendLine("Themes: light and dark; window widths: 800, 1040, 1366, and 1600 DIP");
+        report.AppendLine("Boundary: controlled WPF layout and element-property evidence; not real Playnite or physical input/UIA-client acceptance");
+        report.AppendLine($"Scenario: task-progress-evidence; sourceKind=ControlledWpfWindow; commit={ResolveBuildCommit()}; workingTreeClean={ResolveWorkingTreeCleanliness()}");
+        report.AppendLine("DpiScale: actual WPF Window DPI is measured with VisualTreeHelper.GetDpi per case; PNG raster is 96 DPI from logical DIP");
+        report.AppendLine("DataVolumes: 8 deterministic task rows; progress includes 0%, 9%, 48%, 99%, and 100%");
+        report.AppendLine($"SampleTimeUtc: {FakeSampleClock.SampleUtc.ToString("O", System.Globalization.CultureInfo.InvariantCulture)} (pinned={FakeSampleClock.IsPinned})");
+        report.AppendLine($"DpiAwareness: processRequestedPMv2={processPmv2Requested}; processSetError={processPmv2Error}; mainThreadPMv2={mainThreadPmv2}; renderThreadPMv2={renderThreadPmv2}");
+        report.AppendLine();
+
+        try
+        {
+            var app = new Application();
+            app.Resources["BaseTextBlockStyle"] = new Style(typeof(TextBlock));
+            var fixtureSnapshot = CreateTaskProgressFixture();
+            WriteTaskProgressSnapshot(fixtureSnapshot, Path.Combine(outputRoot, "task-progress-fixture.tsv"));
+
+            foreach (var (themeName, themeMode) in ThemeModes)
+            {
+                foreach (var (windowW, windowH) in new[] { (800, 700), (1040, 700), (1366, 768), (1600, 900) })
+                {
+                    var data = CreateTaskProgressFixture();
+                    var view = new TaskCenterView { DataContext = data };
+                    ApplyThemePalette(view, themeMode);
+                    var (contentW, contentH) = ContentSize(windowW, windowH);
+                    var host = new Grid
+                    {
+                        Width = contentW,
+                        Height = contentH,
+                        Background = CreateHarnessBackground(view),
+                        ClipToBounds = true
+                    };
+                    host.Children.Add(view);
+                    var window = new Window
+                    {
+                        Width = windowW,
+                        Height = windowH,
+                        WindowStyle = WindowStyle.None,
+                        ResizeMode = ResizeMode.NoResize,
+                        ShowInTaskbar = false,
+                        ShowActivated = false,
+                        Content = host
+                    };
+
+                    try
+                    {
+                        window.Show();
+                        view.ApplyResponsiveLayout(contentW, windowH);
+                        host.Measure(new Size(contentW, contentH));
+                        host.Arrange(new Rect(0, 0, contentW, contentH));
+                        host.UpdateLayout();
+                        view.ApplyResponsiveLayout(contentW, windowH);
+                        host.UpdateLayout();
+
+                        var dpi = VisualTreeHelper.GetDpi(window);
+                        var grid = FindVisualChildren<DataGrid>(view).SingleOrDefault(candidate => candidate.Name == "TaskGrid");
+                        if (grid == null)
+                            throw new InvalidOperationException($"TaskGrid was not created for {themeName} {windowW}x{windowH}.");
+                        grid.SelectedItem = data.SelectedTask;
+                        host.UpdateLayout();
+                        var progressColumn = grid.Columns.Single(column => Equals(column.Header, "进度"));
+                        var gridScroll = FindVisualChildren<ScrollViewer>(grid).FirstOrDefault();
+                        if (gridScroll == null)
+                            throw new InvalidOperationException($"TaskGrid ScrollViewer was not created for {themeName} {windowW}x{windowH}.");
+
+                        report.AppendLine($"{themeName}/{windowW}x{windowH}: windowDpi={dpi.PixelsPerInchX:0.##}x{dpi.PixelsPerInchY:0.##}; scale={dpi.DpiScaleX:0.###}x{dpi.DpiScaleY:0.###}; content={contentW:0.##}x{contentH:0.##}; grid={grid.ActualWidth:0.##}x{grid.ActualHeight:0.##}; progressColumn={progressColumn.ActualWidth:0.##}; minWidth={progressColumn.MinWidth:0.##}; hScroll={gridScroll.HorizontalOffset:0.##}/{gridScroll.ScrollableWidth:0.##}; virtualized={grid.EnableRowVirtualization}/{grid.EnableColumnVirtualization}");
+
+                        foreach (var task in data.Tasks
+                                     .Where(item => new[] { "0%", "9%", "48%", "99%", "100%" }.Contains(item.ProgressDisplay))
+                                     .GroupBy(item => item.ProgressDisplay, StringComparer.Ordinal)
+                                     .Select(group => group.First()))
+                        {
+                            var cellContent = progressColumn.GetCellContent(task);
+                            if (cellContent == null)
+                            {
+                                problems.Add($"{themeName}/{windowW}x{windowH} did not realize progress cell for {task.TaskId} ({task.ProgressDisplay}).");
+                                continue;
+                            }
+
+                            var cell = FindVisualAncestors<DataGridCell>(cellContent).FirstOrDefault();
+                            var text = FindVisualChildren<TextBlock>(cellContent).SingleOrDefault();
+                            var bar = FindVisualChildren<ProgressBar>(cellContent).SingleOrDefault();
+                            if (cell == null || text == null || bar == null)
+                            {
+                                problems.Add($"{themeName}/{windowW}x{windowH} missing cell, percent TextBlock, or ProgressBar for {task.TaskId}.");
+                                continue;
+                            }
+
+                            var textBounds = text.TransformToAncestor(cell).TransformBounds(new Rect(new Point(0, 0), text.RenderSize));
+                            var visibleLeft = cell.Padding.Left;
+                            var visibleRight = cell.ActualWidth - cell.Padding.Right;
+                            var fullyVisible = textBounds.Left >= visibleLeft - 0.5 && textBounds.Right <= visibleRight + 0.5;
+                            var automationHelpText = AutomationProperties.GetHelpText(bar);
+                            report.AppendLine($"  {task.TaskId}/{task.ProgressDisplay}: cell={cell.ActualWidth:0.##}; textBounds={textBounds}; paddedContent=[{visibleLeft:0.##},{visibleRight:0.##}]; textWidth={text.ActualWidth:0.##}; barWidth={bar.ActualWidth:0.##}; automationHelpText='{automationHelpText}'; fullTextInsideCell={fullyVisible}");
+                            if (!string.Equals(text.Text, task.ProgressDisplay, StringComparison.Ordinal))
+                                problems.Add($"{themeName}/{windowW}x{windowH} {task.TaskId} text binding '{text.Text}' differs from {task.ProgressDisplay}.");
+                            if (!string.Equals(automationHelpText, task.ProgressDisplay, StringComparison.Ordinal))
+                                problems.Add($"{themeName}/{windowW}x{windowH} {task.TaskId} AutomationProperties.HelpText '{automationHelpText}' differs from {task.ProgressDisplay}.");
+                            if (!fullyVisible)
+                                problems.Add($"{themeName}/{windowW}x{windowH} {task.ProgressDisplay} extends beyond padded cell content: text={textBounds}, content=[{visibleLeft:0.##},{visibleRight:0.##}].");
+                        }
+
+                        var imagePath = Path.Combine(outputRoot, $"task-progress-{themeName}-{windowW}x{windowH}.png");
+                        SavePng(host, imagePath);
+                        report.AppendLine($"  screenshot={Path.GetFileName(imagePath)}; bytes={new FileInfo(imagePath).Length}; rasterDpi=96");
+
+                        if (windowW == 800)
+                        {
+                            var startOffset = gridScroll.HorizontalOffset;
+                            var scrollableWidth = gridScroll.ScrollableWidth;
+                            gridScroll.ScrollToHorizontalOffset(scrollableWidth);
+                            host.UpdateLayout();
+                            var reachedEnd = scrollableWidth <= 0.5 || gridScroll.HorizontalOffset >= scrollableWidth - 0.5;
+                            report.AppendLine($"  horizontalScrollProbe: start={startOffset:0.##}; scrollableWidth={scrollableWidth:0.##}; end={gridScroll.HorizontalOffset:0.##}; reachedEnd={reachedEnd}; selectedStable={ReferenceEquals(grid.SelectedItem, data.SelectedTask)}");
+                            if (scrollableWidth <= 0.5 || !reachedEnd)
+                                problems.Add($"{themeName}/800x700 did not expose and reach the task grid's horizontal overflow; scrollableWidth={scrollableWidth:0.##}; end={gridScroll.HorizontalOffset:0.##}.");
+                            if (!ReferenceEquals(grid.SelectedItem, data.SelectedTask))
+                                problems.Add($"{themeName}/800x700 horizontal scrolling changed the selected task.");
+                        }
+                    }
+                    finally
+                    {
+                        window.Close();
+                    }
+                }
+            }
+
+            report.AppendLine(problems.Count == 0 ? "task-progress-evidence OK" : "task-progress-evidence FAILED");
+            foreach (var problem in problems)
+                report.AppendLine("  PROBLEM " + problem);
+            File.WriteAllText(Path.Combine(outputRoot, "task-progress-evidence-report.txt"), report.ToString());
+            Console.WriteLine(report.ToString());
+            return problems.Count == 0 ? 0 : 1;
+        }
+        catch (Exception ex)
+        {
+            report.AppendLine("task-progress-evidence FAILED");
+            report.AppendLine(ex.ToString());
+            File.WriteAllText(Path.Combine(outputRoot, "task-progress-evidence-report.txt"), report.ToString());
+            Console.Error.WriteLine(ex);
+            return 1;
+        }
+    }
+
+    private static FakeDashboardData CreateTaskProgressFixture()
+    {
+        var fixture = FakeDashboardData.CreateTaskComparisonFixture();
+        fixture.Tasks[2].ProgressPercent = 9;
+        fixture.Tasks[3].ProgressPercent = 99;
+        fixture.Tasks[4].ProgressPercent = 0;
+        return fixture;
+    }
+
+    private static void WriteTaskProgressSnapshot(FakeDashboardData fixture, string path)
+    {
+        var lines = new List<string> { "taskId\tstate\tprogressPercent\tprogressValue\tprogressDisplay" };
+        lines.AddRange(fixture.Tasks.Select(task => string.Join("\t", new[]
+        {
+            task.TaskId,
+            task.State.ToString(),
+            task.ProgressPercent.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            task.ProgressValue.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture),
+            task.ProgressDisplay
+        })));
+        File.WriteAllLines(path, lines);
     }
 
     private static int RunTaskAllocationEvidence(string outputRoot)
@@ -11038,6 +11247,15 @@ public static partial class Program
                 yield return typed;
             foreach (var nested in FindVisualChildren<T>(child))
                 yield return nested;
+        }
+    }
+
+    private static IEnumerable<T> FindVisualAncestors<T>(DependencyObject element) where T : DependencyObject
+    {
+        for (var current = VisualTreeHelper.GetParent(element); current != null; current = VisualTreeHelper.GetParent(current))
+        {
+            if (current is T typed)
+                yield return typed;
         }
     }
 
