@@ -1,0 +1,237 @@
+{
+  "SchemaVersion": 1,
+  "SourceCommit": "1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+  "LocalGates": {
+    "SDK": "8.0.423",
+    "Configuration": "Release",
+    "Tests": {
+      "TRXFiles": 160,
+      "Total": 2052,
+      "Passed": 1994,
+      "Failed": 0,
+      "Skipped": 58,
+      "WpfIsolatedClasses": 157,
+      "CorePassed": 157,
+      "WorkerPassed": 407
+    },
+    "OneClick": {
+      "Entry": "GameSaveCenter-一键构建安装运行.cmd",
+      "DelegatesTo": "GameSaveCenter-Run.cmd",
+      "DirectExitCode": 0,
+      "InstallerRunId": "20261116T013817227Z-18eb609c",
+      "Diagnostics": "artifacts/build-diagnostics/20261116T013819855Z-097fb72e",
+      "SummarySHA256": "ACB576A495E4E7771F15896559F9DD84398AE2E6AB67835EEFAEC5FE9FFC822F"
+    },
+    "StandaloneBuild": {
+      "Entry": "scripts/build.cmd",
+      "DirectExitCode": 0,
+      "Diagnostics": "artifacts/build-diagnostics/20261116T020628307Z-1c3760ea",
+      "SummarySHA256": "2C517996AA4C7D92913EC64E12F8309136B445D8C3DC068338DD8D9F6A2AFAED"
+    },
+    "Package": {
+      "ManifestVersion": "0.6.73",
+      "PluginFileVersion": "0.6.73.0",
+      "Zip": {
+        "Path": "artifacts\\GameSaveCenter-0.6.73-playnite.zip",
+        "Bytes": 45744277,
+        "SHA256": "1277007394EFA59380ABC9FC7E5F4374D4A3C7CCC2BEC700AA5FB2E6457F9953"
+      },
+      "Pext": {
+        "Path": "artifacts\\GameSaveCenter-0.6.73.pext",
+        "Bytes": 45744277,
+        "SHA256": "1277007394EFA59380ABC9FC7E5F4374D4A3C7CCC2BEC700AA5FB2E6457F9953"
+      },
+      "InstallReport": {
+        "Path": "artifacts\\C05-fullchain-1b462d73\\last-dev-install.txt",
+        "Bytes": 2879,
+        "SHA256": "75E5BA13A5FEB345701F34DAFA0A3BFBBC82D9BE853CB20FE24C726B9A5DC7EF"
+      },
+      "IsolatedExtensionRoot": ".tmp\\c05-fullchain-profile-1b462d73\\Extensions\\GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec",
+      "Assemblies": [
+        {
+          "File": "GameSaveCenter.Playnite.dll",
+          "ProductVersion": "0.6.73+1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+          "InstalledSHA256": "63969D8589DFC35C5CF4FECA593FC4DBA4DDDAC0D40D454E2C4F4A7D83BA5F65",
+          "PackageSHA256": "63969D8589DFC35C5CF4FECA593FC4DBA4DDDAC0D40D454E2C4F4A7D83BA5F65",
+          "MatchesPackage": true
+        },
+        {
+          "File": "GameSaveCenter.Core.dll",
+          "ProductVersion": "0.6.73+1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+          "InstalledSHA256": "8D707E5E6848EE370BD25421B04C05A111FC2C300B93103C65C1D1891E2341FC",
+          "PackageSHA256": "8D707E5E6848EE370BD25421B04C05A111FC2C300B93103C65C1D1891E2341FC",
+          "MatchesPackage": true
+        },
+        {
+          "File": "GameSaveCenter.Contracts.dll",
+          "ProductVersion": "0.6.73+1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+          "InstalledSHA256": "57965050E9C5925A7A1EB545457704CFEAFA289D2CFE2CF542204619A3D1952F",
+          "PackageSHA256": "57965050E9C5925A7A1EB545457704CFEAFA289D2CFE2CF542204619A3D1952F",
+          "MatchesPackage": true
+        },
+        {
+          "File": "Worker\\GameSaveCenter.Worker.dll",
+          "ProductVersion": "0.6.73+1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+          "InstalledSHA256": "954A8D204C17FC0C654996E09BE556BE43917E4761B14F8D305AC640DFD67E5C",
+          "PackageSHA256": "954A8D204C17FC0C654996E09BE556BE43917E4761B14F8D305AC640DFD67E5C",
+          "MatchesPackage": true
+        },
+        {
+          "File": "Worker\\GameSaveCenter.Core.dll",
+          "ProductVersion": "0.6.73+1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+          "InstalledSHA256": "D4B1E6DACF16EC47AE215351D52DAAC1A48379F792A1F2B8686AC74D6F4532E1",
+          "PackageSHA256": "D4B1E6DACF16EC47AE215351D52DAAC1A48379F792A1F2B8686AC74D6F4532E1",
+          "MatchesPackage": true
+        },
+        {
+          "File": "Worker\\GameSaveCenter.Contracts.dll",
+          "ProductVersion": "0.6.73+1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+          "InstalledSHA256": "95CB04381F0C6260C97A15BFA104C309D98E8D416A4D1FE3C6E5925CC9B7C653",
+          "PackageSHA256": "95CB04381F0C6260C97A15BFA104C309D98E8D416A4D1FE3C6E5925CC9B7C653",
+          "MatchesPackage": true
+        }
+      ]
+    },
+    "Host": {
+      "Executable": "D:/software/Playnite/Playnite.DesktopApp.exe",
+      "FileVersion": "1.0.0.0",
+      "Signature": "Valid",
+      "ExecutableSHA256": "A40C037EFADFB50F8787F2659767D60F4E0E49D6ECC7037959127E80AB168B26",
+      "StartupVerification": "verified-isolated-process",
+      "ProcessId": 55272,
+      "UserDataDir": ".tmp/c05-fullchain-profile-1b462d73",
+      "WorkerPath": ".tmp/c05-fullchain-profile-1b462d73/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec/Worker/GameSaveCenter.Worker.exe",
+      "Shutdown": {
+        "CloseMainWindowReturned": false,
+        "ForceStopped": false,
+        "RetainedBecauseIsolatedHostAndWorkerRemainActive": true
+      }
+    },
+    "SourceWorkingTree": {
+      "TrackedFilesCleanAfterCommit": true,
+      "UntrackedPriorTaskFilesPresent": true,
+      "DiagnosticWorkingTreeFlag": false
+    }
+  },
+  "ControlledEvidence": {
+    "Directory": "docs/design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116",
+    "AfterManifest": "after-manifest.json",
+    "CandidateCommit": "1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+    "ControlledWpfOnly": true,
+    "WindowDpi": "144x144 / 150%",
+    "RasterDpi": 96,
+    "Themes": [
+      "Light",
+      "Dark"
+    ],
+    "WindowSizesDip": [
+      "800x700",
+      "1040x700",
+      "1366x768",
+      "1600x900"
+    ],
+    "PercentValues": [
+      "0%",
+      "9%",
+      "48%",
+      "99%",
+      "100%"
+    ],
+    "AllInsidePaddedCellContent": true,
+    "AutomationHelpTextMatchesFullText": true,
+    "HorizontalScrollReachedEndAt800Dip": true,
+    "SelectedTaskStable": true,
+    "RowVirtualization": true,
+    "ColumnVirtualization": true
+  },
+  "GitHub": {
+    "Workflow": "Windows 构建验证",
+    "RunNumber": 1592,
+    "RunId": 43787032807,
+    "HeadSHA": "1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+    "Branch": "main",
+    "Event": "push",
+    "Status": "completed",
+    "Conclusion": "success",
+    "URL": "https://github.com/Nikilua/GameSaveCenter/actions/runs/43787032807",
+    "Jobs": [
+      {
+        "Name": "编译、测试与打包",
+        "Id": 133036868868,
+        "Status": "completed",
+        "Conclusion": "success",
+        "AllStepsCompleted": true
+      },
+      {
+        "Name": ".NET SDK 10.0.401 编译与测试复核",
+        "Id": 133036869124,
+        "Status": "completed",
+        "Conclusion": "success",
+        "AllStepsCompleted": true
+      }
+    ],
+    "Artifacts": [
+      {
+        "Name": "GameSaveCenter-build-diagnostics",
+        "Id": 14193895235,
+        "Bytes": 2537181,
+        "Digest": "sha256:a92cd8cdc9cd9c08da1dc62dc6d88f38575d11082967263fae2d6a36fdb936ae",
+        "ExpiresUtc": "2026-11-30T02:40:02Z"
+      },
+      {
+        "Name": "GameSaveCenter-windows-preview",
+        "Id": 14193361867,
+        "Bytes": 90804042,
+        "Digest": "sha256:14abd67c2acd67e61cef945960ebc11ff628574a3b15253fa722f754d88435b9",
+        "ExpiresUtc": "2027-02-14T01:34:17Z"
+      },
+      {
+        "Name": "GameSaveCenter-sdk10-build-diagnostics",
+        "Id": 14191901923,
+        "Bytes": 1284919,
+        "Digest": "sha256:0937059befdbc751febcdb8d17fc259fa9dcd4b287dd5b6f41baa3007fd40322",
+        "ExpiresUtc": "2026-11-30T02:00:03Z"
+      }
+    ]
+  },
+  "Boundaries": {
+    "NoRealUserProfile": true,
+    "NoRealGameLibrary": true,
+    "NoRealSaveData": true,
+    "NoCloudReadWrite": true,
+    "NoPhysicalInput": true,
+    "NoVisiblePlaynitePageAcceptance": true,
+    "C04RemainsPending": true,
+    "HostAndWorkerRemainInNewIsolatedProfile": true
+  },
+  "Cleanup": {
+    "Preflight": {
+      "RepositoryRoot": "D:/workplace/github/GameSaveCenter",
+      "TemporaryRoot": "D:/workplace/github/GameSaveCenter/.tmp",
+      "TargetsInsideTemporaryRoot": true,
+      "ReparsePoints": 0,
+      "OtherProcessReferences": 0,
+      "RepositoryReferencesOutsideThisRecord": 0
+    },
+    "Command": "Remove-Item -LiteralPath <normalized target> -Recurse -Force",
+    "Status": "blocked-before-shell-start-by-execution-policy",
+    "Deleted": [],
+    "RetainedTargets": [
+      ".tmp/c05-before",
+      ".tmp/c05-focused-after",
+      ".tmp/c05-focused-exact",
+      ".tmp/c05-fullchain-build-1b462d73",
+      ".tmp/c05-fullchain-testtemp-1b462d73",
+      ".tmp/c05-independent-build-1b462d73",
+      ".tmp/c05-independent-testtemp-1b462d73",
+      ".tmp/c05-initial-regression",
+      ".tmp/c05-initial-regression-verified",
+      ".tmp/c05-progress-after",
+      ".tmp/c05-progress-before",
+      ".tmp/c05-progress-before-verified"
+    ],
+    "ActiveProfile": ".tmp/c05-fullchain-profile-1b462d73",
+    "CleanupAlternativeUsed": false,
+    "PackageDiagnosticsAndEvidencePreserved": true
+  }
+}

@@ -1,0 +1,9 @@
+taskId	state	progressPercent	progressValue	progressDisplay
+T-0001	Running	48	48	48%
+T-0002	Succeeded	100	100	100%
+T-0003	Cancelled	9	9	9%
+T-0004	Failed	99	99	99%
+T-0005	Running	0	0	0%
+T-0006	Succeeded	100	100	100%
+T-0007	Cancelled	32	32	32%
+T-0008	Failed	74	74	74%

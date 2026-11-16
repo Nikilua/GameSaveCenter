@@ -1,0 +1,71 @@
+GameSaveCenter Round 6 task progress percentage evidence
+Source: production TaskCenterView in a controlled WPF Window on a private desktop
+Data: fixed synthetic task rows; no Worker, Playnite profile, game library, save, or cloud data
+Raster: RenderTargetBitmap at 96 DPI from logical DIP; actual WPF Window DPI is reported per case
+Themes: light and dark; window widths: 800, 1040, 1366, and 1600 DIP
+Boundary: controlled WPF layout and element-property evidence; not real Playnite or physical input/UIA-client acceptance
+Scenario: task-progress-evidence; sourceKind=ControlledWpfWindow; commit=1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06; workingTreeClean=false
+DpiScale: actual WPF Window DPI is measured with VisualTreeHelper.GetDpi per case; PNG raster is 96 DPI from logical DIP
+DataVolumes: 8 deterministic task rows; progress includes 0%, 9%, 48%, 99%, and 100%
+SampleTimeUtc: 2026-11-13T00:00:00.0000000+00:00 (pinned=True)
+DpiAwareness: processRequestedPMv2=True; processSetError=0; mainThreadPMv2=True; renderThreadPMv2=True
+
+light/800x700: windowDpi=144x144; scale=1.5x1.5; content=504x460; grid=482.67x282.67; progressColumn=152; minWidth=148; hScroll=0/265.33; virtualized=True/True
+  T-0001/48%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='48%'; fullTextInsideCell=True
+  T-0002/100%: cell=152; textBounds=98.6666666666667,18,29.3333333333333,16; paddedContent=[12,140]; textWidth=29.33; barWidth=64; automationHelpText='100%'; fullTextInsideCell=True
+  T-0003/9%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='9%'; fullTextInsideCell=True
+  T-0004/99%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='99%'; fullTextInsideCell=True
+  T-0005/0%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='0%'; fullTextInsideCell=True
+  screenshot=task-progress-light-800x700.png; bytes=39589; rasterDpi=96
+  horizontalScrollProbe: start=0; scrollableWidth=265.33; end=265.33; reachedEnd=True; selectedStable=True
+light/1040x700: windowDpi=144x144; scale=1.5x1.5; content=744x460; grid=722.67x282.67; progressColumn=152; minWidth=148; hScroll=0/33.33; virtualized=True/True
+  T-0001/48%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='48%'; fullTextInsideCell=True
+  T-0002/100%: cell=152; textBounds=98.6666666666667,18,29.3333333333333,16; paddedContent=[12,140]; textWidth=29.33; barWidth=64; automationHelpText='100%'; fullTextInsideCell=True
+  T-0003/9%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='9%'; fullTextInsideCell=True
+  T-0004/99%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='99%'; fullTextInsideCell=True
+  T-0005/0%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='0%'; fullTextInsideCell=True
+  screenshot=task-progress-light-1040x700.png; bytes=47907; rasterDpi=96
+light/1366x768: windowDpi=144x144; scale=1.5x1.5; content=1042x528; grid=606.67x328.67; progressColumn=152; minWidth=148; hScroll=0/143.33; virtualized=True/True
+  T-0001/48%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='48%'; fullTextInsideCell=True
+  T-0002/100%: cell=152; textBounds=98.6666666666667,18,29.3333333333333,16; paddedContent=[12,140]; textWidth=29.33; barWidth=64; automationHelpText='100%'; fullTextInsideCell=True
+  T-0003/9%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='9%'; fullTextInsideCell=True
+  T-0004/99%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='99%'; fullTextInsideCell=True
+  T-0005/0%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='0%'; fullTextInsideCell=True
+  screenshot=task-progress-light-1366x768.png; bytes=76302; rasterDpi=96
+light/1600x900: windowDpi=144x144; scale=1.5x1.5; content=1276x660; grid=840.67x460.67; progressColumn=152; minWidth=148; hScroll=0/0; virtualized=True/True
+  T-0001/48%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='48%'; fullTextInsideCell=True
+  T-0002/100%: cell=152; textBounds=98.6666666666667,18,29.3333333333333,16; paddedContent=[12,140]; textWidth=29.33; barWidth=64; automationHelpText='100%'; fullTextInsideCell=True
+  T-0003/9%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='9%'; fullTextInsideCell=True
+  T-0004/99%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='99%'; fullTextInsideCell=True
+  T-0005/0%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='0%'; fullTextInsideCell=True
+  screenshot=task-progress-light-1600x900.png; bytes=109656; rasterDpi=96
+dark/800x700: windowDpi=144x144; scale=1.5x1.5; content=504x460; grid=482.67x282.67; progressColumn=152; minWidth=148; hScroll=0/265.33; virtualized=True/True
+  T-0001/48%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='48%'; fullTextInsideCell=True
+  T-0002/100%: cell=152; textBounds=98.6666666666667,18,29.3333333333333,16; paddedContent=[12,140]; textWidth=29.33; barWidth=64; automationHelpText='100%'; fullTextInsideCell=True
+  T-0003/9%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='9%'; fullTextInsideCell=True
+  T-0004/99%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='99%'; fullTextInsideCell=True
+  T-0005/0%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='0%'; fullTextInsideCell=True
+  screenshot=task-progress-dark-800x700.png; bytes=41705; rasterDpi=96
+  horizontalScrollProbe: start=0; scrollableWidth=265.33; end=265.33; reachedEnd=True; selectedStable=True
+dark/1040x700: windowDpi=144x144; scale=1.5x1.5; content=744x460; grid=722.67x282.67; progressColumn=152; minWidth=148; hScroll=0/33.33; virtualized=True/True
+  T-0001/48%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='48%'; fullTextInsideCell=True
+  T-0002/100%: cell=152; textBounds=98.6666666666667,18,29.3333333333333,16; paddedContent=[12,140]; textWidth=29.33; barWidth=64; automationHelpText='100%'; fullTextInsideCell=True
+  T-0003/9%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='9%'; fullTextInsideCell=True
+  T-0004/99%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='99%'; fullTextInsideCell=True
+  T-0005/0%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='0%'; fullTextInsideCell=True
+  screenshot=task-progress-dark-1040x700.png; bytes=50934; rasterDpi=96
+dark/1366x768: windowDpi=144x144; scale=1.5x1.5; content=1042x528; grid=606.67x328.67; progressColumn=152; minWidth=148; hScroll=0/143.33; virtualized=True/True
+  T-0001/48%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='48%'; fullTextInsideCell=True
+  T-0002/100%: cell=152; textBounds=98.6666666666667,18,29.3333333333333,16; paddedContent=[12,140]; textWidth=29.33; barWidth=64; automationHelpText='100%'; fullTextInsideCell=True
+  T-0003/9%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='9%'; fullTextInsideCell=True
+  T-0004/99%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='99%'; fullTextInsideCell=True
+  T-0005/0%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='0%'; fullTextInsideCell=True
+  screenshot=task-progress-dark-1366x768.png; bytes=78278; rasterDpi=96
+dark/1600x900: windowDpi=144x144; scale=1.5x1.5; content=1276x660; grid=840.67x460.67; progressColumn=152; minWidth=148; hScroll=0/0; virtualized=True/True
+  T-0001/48%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='48%'; fullTextInsideCell=True
+  T-0002/100%: cell=152; textBounds=98.6666666666667,18,29.3333333333333,16; paddedContent=[12,140]; textWidth=29.33; barWidth=64; automationHelpText='100%'; fullTextInsideCell=True
+  T-0003/9%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='9%'; fullTextInsideCell=True
+  T-0004/99%: cell=152; textBounds=105.333333333333,18,22.6666666666667,16; paddedContent=[12,140]; textWidth=22.67; barWidth=64; automationHelpText='99%'; fullTextInsideCell=True
+  T-0005/0%: cell=152; textBounds=112,18,16,16; paddedContent=[12,140]; textWidth=16; barWidth=64; automationHelpText='0%'; fullTextInsideCell=True
+  screenshot=task-progress-dark-1600x900.png; bytes=112635; rasterDpi=96
+task-progress-evidence OK

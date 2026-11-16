@@ -1,0 +1,13 @@
+{
+  "scenario": "TaskProgressEvidence",
+  "harnessMode": "taskprogressevidence",
+  "sdkVersion": "8.0.423",
+  "sourceSha": "1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+  "sampleUtc": "2026-11-13T00:00:00.0000000+00:00",
+  "windowStation": "WinSta0",
+  "desktop": "GscRound6_b6e96b0d3a72408c9ee91d9afb807f19",
+  "inputDesktopBefore": "Default",
+  "inputDesktopAfter": "Default",
+  "exitCode": 0,
+  "output": "D:\\workplace\\github\\GameSaveCenter\\docs\\design\\ui-redesign-round6-20261113\\evidence\\C05-task-progress-20261116\\after"
+}

@@ -8,13 +8,13 @@ C02受控任务详情分配量配对已完成；只改Harness/脚本，生产源
 
 C03受控矩阵已完成：四类控件、双主题，共38张最终PNG。当前显示器真实WPF窗口为144 DPI/150%，进程和UI线程PMv2；125%/200%明确为栅格比例模拟。输入为代码设置的合成数据、测试桌面隔离，未操作实体输入或Playnite现场。[C03矩阵与直接图像链接](../design/ui-redesign-round6-20261113/evidence/C03-dpi-matrix-20261115/README.md)含首次裁切诊断、最终核验目录和哈希。源码只改Harness/脚本；`5a6a7c1`、`159ea800`、`15f82b6`三个精确SHA的两类CI job均通过。
 
-C05已确认并修复任务表百分比裁切。基线在144 DPI/150%实际WPF Window、双主题和800/1040/1366/1600 DIP矩阵中复现；修复后`0%/9%/48%/99%/100%`均在单元格填充区完整，任务UIA HelpText完整，窄窗横向滚动仍可达且选中项稳定。定向R06为7/7、0跳过；Source Validation、XAML结构校验和WPF静态审查均通过。完整证据见[C05](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。当前改动仍在预提交阶段；精确SHA的两个本地完整入口、安装身份和GitHub适用job尚未完成，C05不能借用旧候选门禁签收。
+C05已在精确提交`1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06`修复任务表百分比裁切。修复后双主题/四窗口受控 WPF 矩阵中`0%/9%/48%/99%/100%`均完整，UIA HelpText完整，800 DIP横向滚动可达且选中稳定；实际 WPF Window为144 DPI/150%，PNG为96 DPI逻辑栅格，本机无真实100%显示器。定向R06为7/7、0失败、0跳过。中文一键入口完整链和独立`scripts/build.cmd`在SDK8.0.423/Release均直接exit 0，各2052项/1994通过/0失败/58跳过/157个WPF隔离类。安装身份已核对。精确 GitHub run #1592（`43787032807`）主job `133036868868`与SDK10 job `133036869124`均completed/success；摘要和artifact身份见[C05门禁证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。受控证据见[C05索引](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。
 
 既有最终门禁源码SHA为`15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3`（相对产品候选`9880c81`的`src/`无差异）。此前已实际执行中文入口`GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd`完整链和独立`scripts/build.cmd`，两者SDK8.0.423/Release直接退出码均为0；各160份TRX、2,051项、1,993通过、0失败、58跳过、157/157个WPF隔离类。根链安装六个程序集与包hash一致；Playnite只在新隔离profile启动，未打开插件页面或检查真实库，之后正常关闭。原始摘要、ZIP/PEXT和程序集身份见[最终候选门禁记录](../design/ui-redesign-round6-20261113/evidence/final-candidate-gates-20261115/README.md)。该SHA是C05之前的候选，不验证C05新增的生产XAML；新候选必须单独完成完整入口和CI门禁。
 
 Render QA为334张、双主题、0 PROBLEM；生产XAML静态审查27项、0 error、26 warnings（与基线相同）。语义状态文本双主题测试覆盖至少4.5:1，大号概览数字/禁用上下文标签覆盖3:1；并非全页像素对比清点。动态样片是9097e6c8源码上采集的147条实际WPF属性轨迹，播放器不插帧；不是录屏，详情采样窗IsVisible=false，未证明真实屏幕帧或60fps。RenderQA侧栏单次/快速切换和C02任务详情分配量比较已记录；1.00逻辑DIP结果不能代表物理DPI。CUA初始化失败，无法自动观察Playnite界面。
 
-六个程序集和包的具体hash、两种入口的直接exit码、TRX总数及summary SHA见上方门禁索引。独立build的157份WPF测试桌面结果全部exit 0、未超时、桌面匹配，测试期间输入桌面前后保持`Default`。旧清理路径`.tmp/round6-v27-rootbuild`此前被策略拒绝，事实保留且未绕过；本轮清理仍只针对新建且自有的临时输出按规则逐项预检。C01–C03使用受控合成数据；没有触碰真实存档、真实用户配置、云端写入或其他任务TRX/TestResults。C04可见宿主短片、真实Playnite视觉和物理输入仍待条件。Round5/P1历史不因Round6更新而改写。
+六个程序集和包的具体hash、两种入口的直接exit码、TRX总数及summary SHA见上方C05门禁证据。独立build的157份WPF隔离类全部exit 0。C01–C03使用受控合成数据；C05的本次Playnite启动只使用新建的仓库`.tmp` profile，没有触碰真实存档、真实用户配置、云端写入或其他任务TRX/TestResults。该隔离Host/Worker尚在运行；关闭主窗请求未被接受，因此保留被占用profile，不强杀。另12个本轮自有临时目录预检无重解析点、外部引用和进程占用，但PowerShell literal-path清理命令被执行策略在shell启动前拒绝，未绕过，路径留存清单见C05门禁证据。C04可见宿主短片、插件页面、真实物理输入仍待条件。Round5/P1历史不因Round6更新而改写。
 
 
 ## 历史入口（Round6截至V20，2026-11-14；状态以本节上方更新为准）

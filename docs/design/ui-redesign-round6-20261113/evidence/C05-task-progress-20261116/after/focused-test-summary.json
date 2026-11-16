@@ -1,0 +1,14 @@
+{
+  "SchemaVersion": 1,
+  "SourceCommit": "1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06",
+  "SDK": "8.0.423",
+  "Configuration": "Release",
+  "TestClass": "R06TaskProgressBehaviorTests",
+  "DirectExitCode": 0,
+  "Total": 7,
+  "Passed": 7,
+  "Failed": 0,
+  "Skipped": 0,
+  "ResultFile": "after/R06TaskProgressBehaviorTests-1b462d73.trx",
+  "ResultSHA256": "99DA60622B07D3A7D79CEF6A7591FBC90D150CFA1610E6DC7FEC351897B7DE10"
+}

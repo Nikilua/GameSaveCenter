@@ -1,8 +1,16 @@
+## 2026-11-16 Round6 C05精确候选收口
+
+实现提交 `1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06` 已推送。中文一键入口→`GameSaveCenter-Run.cmd`完整链与独立`scripts/build.cmd`均SDK8.0.423/Release直接exit 0；每次2052项、1994通过、0失败、58跳过、160份TRX和157个WPF隔离类。根链包/安装版本0.6.73，六个程序集SHA与候选目录匹配。两次摘要SHA和安装报告在[C05门禁证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。
+
+精确 Actions run #1592 / `43787032807` 主Windows job `133036868868`和SDK10.0.401 job `133036869124`均completed/success。受控双主题/四窗口修复后矩阵与R06原始TRX、哈希在[C05证据目录](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。真实100%显示器不可用，96 DPI PNG仅代表逻辑栅格。完整Host启动只用了仓库新建隔离profile；进程仍在且关闭主窗请求失败，不重试历史已知超时的shutdown或强杀，profile保留。另12个无占用的本轮scratch目录通过根路径/重解析点/引用预检，但PowerShell literal-path清理请求在shell启动前被策略拒绝，未绕过；逐项留存状态见同一证据目录的candidate-gates.json。C04可见页面/录屏和物理输入仍待条件；真实配置、存档和云端未操作。
+
+---
+
 ## 2026-11-16 Round6 C05预提交状态
 
 C05已在任务页生产WPF树里确认裁切并完成局部修复：进度列默认152/最小148 DIP，数字槽44 DIP、进度条最小64 DIP。SDK8.0.423/Release受控双主题矩阵覆盖800/1040/1366/1600 DIP；当前显示器WPF Window读数144 DPI/150%，PNG为96 DPI逻辑栅格。修复后`0/9/48/99/100%`全部完整，UIA HelpText不变，800 DIP横向滚动可达且选择稳定。定向R06为7/7、0失败、0跳过；Source Validation、XAML结构校验、WPF静态审查均无error。固定样本前后SHA一致，基线和修复证据见[C05索引](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。
 
-C05的生产源码、回归测试、Harness和脚本已修改，但精确提交、最终中文入口/独立build门禁、安装身份及新SHA GitHub jobs仍待完成；旧`15f82b6`结果不代表此修改。C04真实宿主/物理输入边界仍待条件，不触碰真实配置、存档或云端。
+此处记录的是提交前状态；上方精确候选收口记录已完成当时待执行的本地双入口、安装身份和GitHub验收。旧`15f82b6`结果不代表C05修改。C04真实宿主页面/物理输入边界仍待条件，且本次隔离Host/Worker保留在仓库临时profile。
 
 ## 2026-11-16 四项收尾复核
 

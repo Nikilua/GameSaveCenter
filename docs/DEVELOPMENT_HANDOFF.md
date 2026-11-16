@@ -1,8 +1,8 @@
 # 最新接续：Round 6 C05进度列裁切修复（2026-11-16）
 
-此前产品候选 `9880c81be09365d02b9335a633be95506095c8d9`、最终门禁Harness SHA `15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3` 的结果仍是Round6旧候选记录。新增C05发现任务表进度数字被右侧单元格边界裁切，现已改正生产单元格宽度并增加定向WPF回归与同数据证据；精确提交候选仍待本轮本地完整门禁和GitHub适用job。
+此前产品候选 `9880c81be09365d02b9335a633be95506095c8d9`、最终门禁Harness SHA `15f82b650fde8cbe370a48f8fbd6ba8978bf4dc3` 的结果仍是Round6旧候选记录。新增C05确认任务表进度数字被右侧单元格边界裁切，已修复生产列宽并增加定向WPF回归与同数据证据。修复提交 `1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06` 已通过本地两种完整入口及精确SHA GitHub双SDK jobs；门禁身份见[C05证据](design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。
 
-SDK8.0.423/Release预提交RenderHarness构建0 warning/0 error；修复前双主题和四窗口矩阵报告裁切，修复后exit0、0/9/48/99/100%完整，定向R06类7/7。实际WPF Window读取144 DPI/150%，图像栅格为96 DPI逻辑渲染；横向滚动与选择稳定。WPF静态审查27 XAML/0 error/26 warnings/164 info。详见[C05证据](design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。这些结果还未绑定最终提交；C04真实Playnite/物理输入和已知清理策略边界分别记账。
+SDK8.0.423/Release精确提交上的中文一键链和独立 `scripts/build.cmd` 均直接退出0，各2052项、1994通过、0失败、58跳过；安装身份已核验，Actions run #1592两项适用job均成功。修复后双主题、四窗口矩阵中0/9/48/99/100%完整，定向R06为7/7。实际WPF Window读取144 DPI/150%，截图是96 DPI逻辑栅格；横向滚动与选择稳定。WPF静态审查27 XAML/0 error/26 warnings/164 info。真实100%显示器不可用；隔离Playnite/Worker尚在运行且关闭主窗未接受，profile保留。12个其他C05 scratch目录清理被执行策略拒绝，未绕过，清单见C05证据。C04真实Playnite页面、物理输入和屏幕呈现验收仍待条件。
 
 旧真实宿主/权限待验边界继续有效。不要把受控RenderHarness截图/属性采样写成真实Playnite前台、物理输入或屏幕呈现帧证据；不要清理用户或其他任务TRX/TestResults、配置、存档、云端或未知文件。纯文档后按规则只做必要静态/链接/diff检查，不为文档CI通过循环提交记录。
 

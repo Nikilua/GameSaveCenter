@@ -67,9 +67,9 @@ C02已有受控分配量结果；C03为真实150%与125/200栅格模拟，不能
 
 | ID | 任务 | 依据与验收 | 状态 |
 | --- | --- | --- | --- |
-| C05 | 任务表进度百分比裁切定点复核 | C01的task-dark-1600x900-before-after.png候选侧中，进度条右侧数字呈局部字符（成功行类似只露出10），详情区48%完整。先在原尺寸图和生产WPF视觉树确认是否为百分比裁切、列宽/模板问题或截图因素，不能未经确认声称根因。若可复现，修共享单元格布局：0/9/48/99/100%完整可读，窄列下可明确隐藏数字并保留完整可访问文本，禁止残留半个数字；不改进度值、选框或滚动系统。覆盖双主题、常用宽度及100/150%适用环境，同数据前后图并验证横向滚动。无生产问题则记录排除证据，不制造改动。 | 根因与修复已在受控 WPF 验证；精确提交完整入口、独立构建和 GitHub jobs 待执行 |
+| C05 | 任务表进度百分比裁切定点复核 | C01的task-dark-1600x900-before-after.png候选侧中，进度条右侧数字呈局部字符（成功行类似只露出10），详情区48%完整。先在原尺寸图和生产WPF视觉树确认是否为百分比裁切、列宽/模板问题或截图因素，不能未经确认声称根因。若可复现，修共享单元格布局：0/9/48/99/100%完整可读，窄列下可明确隐藏数字并保留完整可访问文本，禁止残留半个数字；不改进度值、选框或滚动系统。覆盖双主题、常用宽度及100/150%适用环境，同数据前后图并验证横向滚动。无生产问题则记录排除证据，不制造改动。 | 已完成；提交 `1b462d73` 两种本地完整入口和 GitHub 双SDK jobs通过；C04真实宿主与物理验收仍待条件 |
 
-C05沿用上方构建、精确CI、隔离数据和安全清理门禁。C04保持原编号，不重复派发。完成后以实际使用反馈驱动改造，不继续按数量加任务。
+C05沿用上方构建、精确CI、隔离数据和安全清理门禁，现已完成。C04保持原编号，不重复派发；后续以实际使用反馈驱动改造，不继续按数量加任务。
 
 ## 2026-11-16 C05实施预记录
 
@@ -77,4 +77,12 @@ C05沿用上方构建、精确CI、隔离数据和安全清理门禁。C04保持
 
 修复把列默认宽度设为152 DIP、最小宽度148 DIP；数字预留44 DIP，进度条预留64 DIP。新增生产视图回归检查并扩展RenderHarness定点场景。SDK8.0.423/Release预提交下，RenderHarness build 0 warning/0 error；修复前矩阵按预期直接exit1，双主题的800/1040/1366/1600 DIP共16图，并报告12 DIP越界；修复后矩阵exit0，五种百分比全部位于单元格填充边界内，UIA HelpText逐项等于完整显示值。固定样本SHA `51B8F8DA60DB737D04560CB69D79D9B2C538E9CEBAA1C67EBBDCF7DE8F413E4A` 前后相同。150%来自真实当前显示器WPF Window的144 DPI读数；PNG栅格为96 DPI逻辑渲染，未将其说成真实100% DPI。800 DIP下横向滚动到末尾成功，选中任务保持，行/列虚拟化保持启用。
 
-定向 `R06TaskProgressBehaviorTests` 修复前 `6 passed / 1 failed / 0 not executed`，失败正是新边界断言；修复后 `7 passed / 0 failed / 0 not executed`，WinSta0私有桌面，Default输入桌面前后不变。Source Validation通过；XAML结构校验27份通过；WPF静态审查0 error、26 warnings、164 info（与生产项目既有审查基线一致）。脚本和XAML以外的游戏选框、滚动系统、绑定/命令、恢复安全语义均未改。以上为预提交状态；精确提交后的两种本地完整入口、安装身份、Actions run/job和最终证据仍待验，不能以旧SHA `15f82b6`替代。
+定向 `R06TaskProgressBehaviorTests` 修复前 `6 passed / 1 failed / 0 not executed`，失败正是新边界断言；修复后 `7 passed / 0 failed / 0 not executed`，WinSta0私有桌面，Default输入桌面前后不变。Source Validation通过；XAML结构校验27份通过；WPF静态审查0 error、26 warnings、164 info（与生产项目既有审查基线一致）。脚本和XAML以外的游戏选框、滚动系统、绑定/命令、恢复安全语义均未改。以上为预提交实施记录；精确提交后的最终状态见下方。
+
+## 2026-11-16 C05精确提交完成记录
+
+源码提交 `1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06` 已推送。修复后受控矩阵双主题×四窗口通过，五种百分比均处于单元格填充区内，UIA HelpText完整，800 DIP横向滚动、选中稳定及行列虚拟化均保持。定向R06为7/7、0失败、0跳过；实际WPF Window是144 DPI/150%，无真实100%显示器。图像、runner、报告、固定夹具和TRX的hash见[C05证据索引](ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。
+
+精确源码SHA的中文入口→`GameSaveCenter-Run.cmd`完整链与独立`scripts/build.cmd`均使用SDK8.0.423/Release直接exit 0；各2052项、1994通过、0失败、58跳过、160份TRX、157个WPF隔离类。安装版本0.6.73，六个程序集与打包目录SHA相同。GitHub Actions run #1592 (`43787032807`) 主Windows job `133036868868`与SDK10 job `133036869124`均completed/success，详见[candidate-gates.json](ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。没有扩大skip或关闭检查。
+
+完整链只在本仓库新建隔离profile启动Playnite，未打开插件页；Host/Worker仍运行，CloseMainWindow返回false，故保留其profile且不强杀。另有12个本轮自有scratch目录通过路径/重解析点/引用/占用预检，但指定PowerShell `Remove-Item -LiteralPath -Recurse -Force` 在shell启动前被策略拒绝，未绕行，目录保留；清理记录及逐项路径见[candidate-gates.json](ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。未操作真实profile、游戏库、配置、存档、云端、实体输入或真实屏幕呈现。C04继续条件性待验；这一受控结论不代表真实Playnite视觉或物理输入通过。

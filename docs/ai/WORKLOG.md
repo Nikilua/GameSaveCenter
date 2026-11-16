@@ -1,4 +1,4 @@
-## 2026-11-16 Round6 C05任务进度百分比
+## 2026-11-16 Round6 C05精确候选收口
 
 C05在实际生产`TaskCenterView`的受控WPF窗口中复现。进度列基线112 DIP，DataGridCell水平Padding 12 DIP/侧、模板Margin 8 DIP/侧，子列至少52+40 DIP；`0%` TextBlock边界`[96,112]`超出内容边界`[12,100]` 12 DIP。原尺寸C01截图中的残缺数字与布局几何一致。
 
@@ -6,7 +6,11 @@ C05在实际生产`TaskCenterView`的受控WPF窗口中复现。进度列基线1
 
 SDK8.0.423/Release预提交Harness构建0 warning/0 error，受控矩阵修复前直接exit1、修复后exit0；定向R06类修复前`6 passed / 1 failed / 0 not executed`，失败为新增边界断言，修复后`7 passed / 0 failed / 0 not executed`。Source Validation通过；XAML结构校验27份通过；生产项目WPF静态审查0 error/26 warnings/164 info。私有WinSta0运行的输入桌面前后均为Default；未运行Playnite插件页面，没有操作真实配置、存档或云端。基线图、几何报告、SHA与失败断言见[C05证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。
 
-当前是预提交记录：精确候选完整中文入口链、独立`scripts/build.cmd`、安装身份和GitHub适用jobs尚待提交后执行；不能借用旧`15f82b6`门禁。C04真实宿主短片/Playnite现场/实体物理输入仍条件性待验。
+实现提交`1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06`已推送。精确SHA的中文一键入口→`GameSaveCenter-Run.cmd`与独立`scripts/build.cmd`均SDK8.0.423/Release直接exit 0；两次总计数均为2052项/1994通过/0失败/58跳过/160份TRX/157个WPF隔离类。根链包版本0.6.73，六个安装程序集身份和SHA与本次包逐一相同；摘要、包和安装报告hash见[C05候选门禁证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。精确Actions run #1592的主job`133036868868`、SDK10 job`133036869124`均completed/success，artifacts身份同见该JSON。C05受控修复图与原始R06 TRX见[C05证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/README.md)。
+
+Playnite已在仓库新建隔离profile中启动并核验身份，但未开插件页面。进程和Worker仍在运行，CloseMainWindow请求返回false；按现有安全记忆不重试已知超时shutdown、不强杀，profile保留；没有触碰真实用户配置、游戏库、存档或云端。C04可见宿主短片和实体输入仍待条件。
+
+本阶段另外12个自有scratch目录已核实位于仓库`.tmp`内、无重解析点、外部引用或进程占用；直接PowerShell `Remove-Item -LiteralPath -Recurse -Force` 调用在shell启动前被执行策略拒绝。没有使用替代清理方式，12个目录保留；活动profile、当前包、失败诊断和证据原样保留。逐项路径与预检/拒绝状态见[C05候选门禁记录](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。
 
 ## 2026-11-16 四项收尾复核
 
