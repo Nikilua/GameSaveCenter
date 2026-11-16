@@ -232,6 +232,38 @@
     ],
     "ActiveProfile": ".tmp/c05-fullchain-profile-1b462d73",
     "CleanupAlternativeUsed": false,
-    "PackageDiagnosticsAndEvidencePreserved": true
+    "PackageDiagnosticsAndEvidencePreserved": true,
+    "PostUserRequestedCleanup": {
+      "Date": "2026-11-16",
+      "PlayniteHostAlreadyExited": true,
+      "OrphanWorker": {
+        "PID": 57304,
+        "Executable": ".tmp/c05-fullchain-profile-1b462d73/Extensions/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec/Worker/GameSaveCenter.Worker.exe",
+        "ParentAlreadyExited": true,
+        "StoppedAfterUserRequest": true
+      },
+      "DeletionCommand": "Remove-Item -LiteralPath <normalized target> -Recurse -Force",
+      "DeletionStatus": "blocked-by-policy-before-shell-start",
+      "DirectoriesDeleted": [],
+      "DirectoriesStillPresent": [
+        ".tmp/c05-before",
+        ".tmp/c05-focused-after",
+        ".tmp/c05-focused-exact",
+        ".tmp/c05-fullchain-build-1b462d73",
+        ".tmp/c05-fullchain-testtemp-1b462d73",
+        ".tmp/c05-independent-build-1b462d73",
+        ".tmp/c05-independent-testtemp-1b462d73",
+        ".tmp/c05-initial-regression",
+        ".tmp/c05-initial-regression-verified",
+        ".tmp/c05-progress-after",
+        ".tmp/c05-progress-before",
+        ".tmp/c05-progress-before-verified",
+        ".tmp/c05-fullchain-profile-1b462d73"
+      ],
+      "ApproximateRetainedMiB": 686,
+      "CDriveTaskTemporaryPayloadBytes": 0,
+      "ArtifactsAndUserTestResultsPreserved": true,
+      "AlternativeDeletionMethodUsed": false
+    }
   }
 }

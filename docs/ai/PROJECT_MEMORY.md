@@ -1,4 +1,10 @@
-## 2026-11-16 Round6 C05精确候选收口
+## 2026-11-16 用户要求清理C05临时输出
+
+盘点时D盘可用1.41 GiB、C盘4.06 GiB。C05隔离Playnite主进程已经退出，仅剩父进程已退出的Worker PID 57304；确认可执行文件位于仓库新建profile后已停止。用户要求清理后再次调用PowerShell `Remove-Item -LiteralPath -Recurse -Force`，命令在shell启动前被策略拒绝；未用替代删除方式。C05的12个scratch和隔离profile仍在`.tmp`，约686 MiB。C盘相关Playnite临时目录为空。逐项路径和状态见[C05门禁证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。
+
+---
+
+## 2026-11-16 Round6 C05验收时精确候选收口
 
 实现提交 `1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06` 已推送。中文一键入口→`GameSaveCenter-Run.cmd`完整链与独立`scripts/build.cmd`均SDK8.0.423/Release直接exit 0；每次2052项、1994通过、0失败、58跳过、160份TRX和157个WPF隔离类。根链包/安装版本0.6.73，六个程序集SHA与候选目录匹配。两次摘要SHA和安装报告在[C05门禁证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。
 

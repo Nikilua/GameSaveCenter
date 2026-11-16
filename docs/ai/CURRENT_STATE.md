@@ -14,7 +14,7 @@ C05已在精确提交`1b462d7302d90d5bdbd3195fbf64d7a2e2d22c06`修复任务表�
 
 Render QA为334张、双主题、0 PROBLEM；生产XAML静态审查27项、0 error、26 warnings（与基线相同）。语义状态文本双主题测试覆盖至少4.5:1，大号概览数字/禁用上下文标签覆盖3:1；并非全页像素对比清点。动态样片是9097e6c8源码上采集的147条实际WPF属性轨迹，播放器不插帧；不是录屏，详情采样窗IsVisible=false，未证明真实屏幕帧或60fps。RenderQA侧栏单次/快速切换和C02任务详情分配量比较已记录；1.00逻辑DIP结果不能代表物理DPI。CUA初始化失败，无法自动观察Playnite界面。
 
-六个程序集和包的具体hash、两种入口的直接exit码、TRX总数及summary SHA见上方C05门禁证据。独立build的157份WPF隔离类全部exit 0。C01–C03使用受控合成数据；C05的本次Playnite启动只使用新建的仓库`.tmp` profile，没有触碰真实存档、真实用户配置、云端写入或其他任务TRX/TestResults。该隔离Host/Worker尚在运行；关闭主窗请求未被接受，因此保留被占用profile，不强杀。另12个本轮自有临时目录预检无重解析点、外部引用和进程占用，但PowerShell literal-path清理命令被执行策略在shell启动前拒绝，未绕过，路径留存清单见C05门禁证据。C04可见宿主短片、插件页面、真实物理输入仍待条件。Round5/P1历史不因Round6更新而改写。
+六个程序集和包的具体hash、两种入口的直接exit码、TRX总数及summary SHA见上方C05门禁证据。独立build的157份WPF隔离类全部exit 0。C01–C03使用受控合成数据；C05启动只使用新建的仓库`.tmp` profile，没有触碰真实存档、真实用户配置、云端写入或其他任务TRX/TestResults。完整链后Playnite主进程已退出；用户要求清理时只剩父进程已退出的隔离Worker PID 57304，确认二进制位于该profile内后已停止。递归删除命令被执行策略在shell启动前拒绝，隔离profile及12个C05 scratch目录仍留在`.tmp`，约686 MiB；没有替代删除方式。C盘仅发现空的Playnite临时目录，无任务生成数据可回收。保留路径和诊断见C05门禁证据。C04可见宿主短片、插件页面、真实物理输入仍待条件。Round5/P1历史不因Round6更新而改写。
 
 
 ## 历史入口（Round6截至V20，2026-11-14；状态以本节上方更新为准）

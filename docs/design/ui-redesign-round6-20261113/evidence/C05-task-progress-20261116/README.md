@@ -55,9 +55,9 @@
 
 中文一键入口 `GameSaveCenter-一键构建安装运行.cmd` → `GameSaveCenter-Run.cmd` 完整链直接退出码 0；独立 `scripts/build.cmd` 直接退出码 0。两次均使用 SDK 8.0.423/Release，160 份 TRX、2052 项、1994 通过、0 失败、58 跳过、157 个 WPF 隔离类完成。测试跳过数与旧基线相同，没有增加 skip 或关闭检查。
 
-一键链打包并安装清单 0.6.73、插件 DLL 0.6.73.0；ZIP/PEXT 均为 45,744,277 bytes，SHA-256 相同。六个已安装程序集版本身份和 SHA 与本次打包目录逐一匹配。Playnite 启动身份已验证为本次创建的仓库 `.tmp` 隔离 profile；未打开插件页面。启动后进程和隔离 Worker 保持运行，`CloseMainWindow()` 返回 false；遵从仓库既有安全记录，没有重试已知超时的 `--shutdown` 或强杀，故保留该仍占用的 profile。
+一键链打包并安装清单 0.6.73、插件 DLL 0.6.73.0；ZIP/PEXT 均为 45,744,277 bytes，SHA-256 相同。六个已安装程序集版本身份和 SHA 与本次打包目录逐一匹配。Playnite 启动身份已验证为本次创建的仓库 `.tmp` 隔离 profile；未打开插件页面。完整链验收时进程和隔离 Worker 保持运行，`CloseMainWindow()` 返回 false。用户之后要求清理：当时主进程已退出，只剩父进程已退出、路径核验在该 profile 内的 Worker PID 57304；该 Worker 已停止。
 
-对另外12个本轮自有临时目录完成规范化根路径、重解析点、外部引用和进程占用预检；它们均在仓库 `.tmp` 内、无重解析点或其他进程引用。指定 PowerShell `Remove-Item -LiteralPath -Recurse -Force` 命令在 shell 启动前被执行策略拒绝，未删除目录，也未改用其他清理方式。逐项保留路径和拒绝状态见[candidate-gates.json](candidate-gates.json)；当前包、失败诊断和引用证据均保留。
+对本轮12个自有临时目录和隔离 profile 完成规范化根路径、重解析点、外部引用和进程占用预检；均在仓库 `.tmp` 内且没有重解析点。PowerShell `Remove-Item -LiteralPath -Recurse -Force` 命令在 shell 启动前被策略拒绝，0 个目录删除，也未使用替代清理方式；合计约686 MiB仍占用 D 盘。C 盘本轮识别到的 Playnite 临时目录为空，没有可回收的任务生成内容。逐项保留路径和拒绝状态见[candidate-gates.json](candidate-gates.json)；当前包、失败诊断、用户及其他任务 TRX/TestResults 和引用证据均保留。
 
 精确提交 Actions run [#1592](https://github.com/Nikilua/GameSaveCenter/actions/runs/43787032807)（`43787032807`）的主 Windows 构建 job `133036868868` 与 .NET SDK 10.0.401 复核 job `133036869124` 均为 completed/success，全部步骤完成。三份 artifact 的 ID、大小、digest 和有效期见[candidate-gates.json](candidate-gates.json)。旧 required-check 403 没有重试。
 

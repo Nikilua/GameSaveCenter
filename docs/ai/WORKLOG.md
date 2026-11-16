@@ -12,6 +12,10 @@ Playnite已在仓库新建隔离profile中启动并核验身份，但未开插�
 
 本阶段另外12个自有scratch目录已核实位于仓库`.tmp`内、无重解析点、外部引用或进程占用；直接PowerShell `Remove-Item -LiteralPath -Recurse -Force` 调用在shell启动前被执行策略拒绝。没有使用替代清理方式，12个目录保留；活动profile、当前包、失败诊断和证据原样保留。逐项路径与预检/拒绝状态见[C05候选门禁记录](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。
 
+## 2026-11-16 用户要求清理C05临时输出
+
+用户明确要求清理工作区与本轮隔离Playnite。盘点时D盘可用1.41 GiB、C盘4.06 GiB。Playnite主进程已退出，只剩父进程已退出、可执行文件在本轮profile内的Worker PID 57304；已核验身份并停止。删除本轮12个C05 scratch目录及profile（合计约686 MiB）的PowerShell `Remove-Item -LiteralPath -Recurse -Force` 命令再次在shell启动前被策略拒绝，0个目录删除；不使用其他删除途径。C盘对应Playnite临时目录为空，没有可回收内容。当前包、构建诊断、失败诊断和其他任务TRX/TestResults未动；13个保留目录与拒绝状态见[C05门禁证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。
+
 ## 2026-11-16 四项收尾复核
 
 C01实际对比图时间已一致，快照与两入口summary哈希匹配；C02/C03受控完成，C04仍条件性待验。新图进度列疑似百分比裁切，追加唯一C05定点确认/修复任务，见[收尾计划](../design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)。未重跑产品或查询实时CI，不扩大受控结论，不清理未知文件。
