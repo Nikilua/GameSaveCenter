@@ -1,3 +1,7 @@
+## 2026-11-16 四项收尾复核
+
+C01实际对比图时间已一致，快照与两入口summary哈希匹配；C02/C03受控完成，C04仍条件性待验。新图进度列疑似百分比裁切，追加唯一C05定点确认/修复任务，见[收尾计划](../design/ROUND6_REVIEW_FOLLOWUP_2026-11-15.md)。未重跑产品或查询实时CI，不扩大受控结论，不清理未知文件。
+
 ## 2026-11-15 Round6 C03 DPI矩阵与最终门禁
 
 C03权威输出是[受控WPF DPI矩阵](../design/ui-redesign-round6-20261113/evidence/C03-dpi-matrix-20261115/README.md)：四类控件、双主题、38张最终PNG；真实当前显示器WPF窗口为144 DPI/150%，125%与200%是明确标注的栅格模拟。SDK8.0.423 Release、PMv2、WinSta0私有桌面、合成数据；不代表Playnite现场、跨屏或物理输入。
