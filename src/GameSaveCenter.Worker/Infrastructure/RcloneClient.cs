@@ -64,14 +64,20 @@ public sealed class RcloneClient
     }
 
     /// <summary>Lists remote sidecar paths. This is read-only and never modifies the remote.</summary>
-    public async Task<IReadOnlyList<string>> ListDeviceStateFilesAsync(CancellationToken token)
+    internal async Task<(ProcessResult Result, IReadOnlyList<string> Paths)> ListDeviceStateFilesAsync(CancellationToken token)
     {
-        if (!IsConfigured) return Array.Empty<string>();
+        if (!IsConfigured)
+            return (ProcessResult.Failed(-1, string.Empty, "Rclone is not configured."), Array.Empty<string>());
+
         var result = await RunSafeAsync(
             new[] { "lsf", _options.RcloneDestination, "--recursive", "--files-only", "--include", "*/DeviceState/*.json" },
             TimeSpan.FromMinutes(2), token).ConfigureAwait(false);
-        return !result.Success ? Array.Empty<string>() : result.StandardOutput.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(x=>x.Trim()).Where(x=>x.Length>0).Take(64).ToList();
+        if (!result.Success)
+            return (result, Array.Empty<string>());
+
+        var paths = result.StandardOutput.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => x.Trim()).Where(x => x.Length > 0).Take(64).ToArray();
+        return (result, paths);
     }
 
     /// <summary>Performs a bounded read-only remote probe without uploading or changing files.</summary>

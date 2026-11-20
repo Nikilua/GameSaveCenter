@@ -27,23 +27,50 @@ public sealed class DeviceStateComparisonTests : IDisposable
     [InlineData(true)]
     public async Task PublishedSummaryPicksOneBackupPerGameAtTiedTimestamp(bool reverseOrder)
     {
-        var (store, service) = await CreateAsync(Sidecar(1));
+        var (store, service) = await CreateAsync(Sidecar(2));
         await AddBackup(store, "game-0", "older", Timestamp.AddDays(-1));
         await AddBackup(store, "game-0", reverseOrder ? "a" : "b", Timestamp);
         await AddBackup(store, "game-0", reverseOrder ? "b" : "a", Timestamp);
-        await AddBackup(store, "another", "another-1", Timestamp);
+        await AddBackup(store, "game-1", "a", Timestamp.AddMinutes(-1), "other-parent");
 
         var result = await service.SyncAsync(CancellationToken.None);
 
         Assert.True(result.Uploaded);
         Assert.Equal(new[] { "copy", "lsf", "cat" }, calls);
-        Assert.Equal("a", Assert.Single(result.Comparisons).LocalBackupId);
+        Assert.Equal(new[] { ("game-0", "game-0", "a", ""), ("game-1", "game-1", "a", "other-parent") },
+            result.Comparisons.Select(x => (x.PlayniteId, x.GameName, x.LocalBackupId, x.LocalParentBackupId)));
         var sidecarPath = Assert.Single(Directory.GetFiles(Path.Combine(root, "DeviceState"), "*.json"));
         var published = JsonSerializer.Deserialize<DeviceStateSidecarDto>(await File.ReadAllTextAsync(sidecarPath),
             new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
-        Assert.Equal(new[] { "another-1", "a" }, published.Backups.Select(x => x.BackupId));
+        Assert.Equal(new[] { ("game-0", "game-0", "a", Timestamp), ("game-1", "game-1", "a", Timestamp.AddMinutes(-1)) },
+            published.Backups.Select(x => (x.PlayniteId, x.GameName, x.BackupId, x.CreatedUtc)));
         Assert.Equal(new[] { "a", "b", "older" }, (await store.GetBackupVersionPageAsync(
             "game-0", 10, null, null, CancellationToken.None)).Items.Select(x => x.BackupId));
+    }
+
+    [Theory]
+    [InlineData(0, "云端暂未发现其他设备摘要")]
+    [InlineData(1, "读取云端设备摘要列表失败")]
+    public async Task SyncDistinguishesEmptyRemoteListingFromFailedListing(int listingExitCode, string expectedStatus)
+    {
+        var stdout = listingExitCode == 0 ? "" : "partial/DeviceState/partial.json";
+        var stderr = listingExitCode == 0 ? "" : "fixture diagnostic";
+        var (_, service) = await CreateAsync(Array.Empty<DeviceStateSidecarDto>(), null,
+            new ProcessResult(listingExitCode, stdout, stderr));
+
+        var result = await service.SyncAsync(CancellationToken.None);
+
+        Assert.True(result.Uploaded);
+        Assert.Equal(new[] { "copy", "lsf" }, calls);
+        Assert.Equal(0, result.RemoteSidecarsRead);
+        Assert.Empty(result.Coverage);
+        Assert.Empty(result.Comparisons);
+        Assert.Contains(expectedStatus, result.StatusMessage);
+        if (listingExitCode != 0)
+        {
+            Assert.DoesNotContain("暂未发现", result.StatusMessage);
+            Assert.DoesNotContain(stderr, result.StatusMessage);
+        }
     }
 
     [Theory]
@@ -217,7 +244,7 @@ public sealed class DeviceStateComparisonTests : IDisposable
         => await CreateAsync(sidecars, null);
 
     private async Task<(SqliteStateStore Store, DeviceStateService Service)> CreateAsync(
-        DeviceStateSidecarDto[] sidecars, Action? afterRead)
+        DeviceStateSidecarDto[] sidecars, Action? afterRead, ProcessResult? listingResult = null)
     {
         var options = new WorkerOptions
         {
@@ -239,7 +266,7 @@ public sealed class DeviceStateComparisonTests : IDisposable
             var result = command[0] switch
             {
                 "copy" => new ProcessResult(0, "", ""),
-                "lsf" => new ProcessResult(0, string.Join("\n", byPath.Keys), ""),
+                "lsf" => listingResult ?? new ProcessResult(0, string.Join("\n", byPath.Keys), ""),
                 "cat" => new ProcessResult(0, JsonSerializer.Serialize(byPath[command[1]["fixture:".Length..]]), ""),
                 _ => throw new InvalidOperationException($"Unexpected rclone command {command[0]}")
             };

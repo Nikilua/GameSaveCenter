@@ -1203,7 +1203,7 @@ ORDER BY b.created_utc ASC" + (maxVersionCount.HasValue ? "\nLIMIT $scenarioVers
         command.CommandText = @"
 SELECT b.playnite_id,g.name,b.backup_id,b.created_utc,b.total_bytes,b.file_count,b.parent_backup_id,b.manifest_json,b.restore_readiness_json
 FROM games g
-JOIN backup_versions b ON b.backup_id = (
+JOIN backup_versions b ON b.playnite_id = g.playnite_id AND b.backup_id = (
     SELECT backup_id FROM backup_versions
     WHERE playnite_id = g.playnite_id
     ORDER BY created_utc DESC, backup_id ASC LIMIT 1

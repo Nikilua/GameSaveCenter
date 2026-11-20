@@ -47,8 +47,18 @@ public sealed class DeviceStateService
             return result;
         }
         result.Uploaded=true;
+        var (listing, remotePaths) = await _rclone.ListDeviceStateFilesAsync(token).ConfigureAwait(false);
+        token.ThrowIfCancellationRequested();
+        if (!listing.Success)
+        {
+            _logger.LogWarning("Device-state listing failed with exit code {ExitCode} and error code {ErrorCode}.",
+                listing.ExitCode, listing.ErrorCode);
+            result.StatusMessage = "已上传本机摘要。读取云端设备摘要列表失败，请检查云端连接后重试。";
+            return result;
+        }
+
         var localByGame=sidecar.Backups.ToDictionary(x=>x.PlayniteId,StringComparer.OrdinalIgnoreCase);
-        foreach(var remotePath in await _rclone.ListDeviceStateFilesAsync(token).ConfigureAwait(false))
+        foreach(var remotePath in remotePaths)
         {
             token.ThrowIfCancellationRequested();
             var text=await _rclone.ReadRemoteTextAsync(remotePath,token).ConfigureAwait(false);
