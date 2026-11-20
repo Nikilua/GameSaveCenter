@@ -1425,7 +1425,7 @@ Actions #1054/run `38944728502` 已在当前文档 HEAD `79748216` 终态成功�
 6. `docs/AUTONOMOUS_BACKLOG.md` 活动队列和目标任务的证据。
 7. UI 任务另读仓库 `.codex/skills/wpf-apple-desktop-ui/SKILL.md`、相关 references、`docs/design/APPLE_WPF_IMPLEMENTATION_PROMPT.md` 和 `docs/design/UI_CHANGE_GATE.md`。
 
-事实来源为当前代码、证据、Git 和用户指令。默认每阶段构建、测试、同步文档、单独 commit 并 push 当前远端分支（默认 main）；不要被历史“不得 push main”覆盖。禁止提交 artifacts、.tmp、bin/obj、用户配置、凭据和可再生大包。
+事实来源为当前代码、证据、Git 和用户指令。每阶段按变更范围验证，同步文档，检查暂存范围并单独用中文 commit，由 Agent push 当前分支的上游（默认 `origin/main`），再核对远端分支是否包含提交。禁止提交 artifacts、.tmp、bin/obj、用户配置、凭据和可再生大包。
 
 ## 项目与模块
 
@@ -1490,7 +1490,7 @@ Actions #1054/run `38944728502` 已在当前文档 HEAD `79748216` 终态成功�
 
 CURRENT_STATE 保持短摘要，PROJECT_MEMORY 保持稳定规则，HANDOFF 保持下一步；WORKLOG 保留阶段记录。不要向三份入口反复复制完整 TRX 数字与过期下一项。证据全文独立归档，入口链接到同一来源。
 
-历史快照与旧 ledger 状态原文保留；任何状态升级必须有对应证据。临时文件删除前确认绝对路径在仓库 artifacts/.tmp 内，使用 PowerShell `Remove-Item -LiteralPath -Recurse -Force`，只清理已确认不用的本轮产物。
+历史快照与旧 ledger 状态原文保留；任何状态升级必须有对应证据。每个阶段按 [仓库清理规则](../../AGENTS.md#文件清理规则)核对 `artifacts/`、`.tmp/` 中可再生且已停用的产物，按明确路径清理并复核空间。当前安装包、审核输出和引用证据继续按交付用途保留。
 
 ### 2026-10-13 R06-07 当前 main 证据规则
 

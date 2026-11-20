@@ -12,7 +12,7 @@
 
 然后按 `docs/ai/PROJECT_MEMORY.md` 的启动协议继续；每完成一个独立阶段，编译、跑测试、更新 `docs/ai/WORKLOG.md` 与项目记忆，并单独 commit。
 
-所有交付轮次由 Agent 自己完成 commit 并 push 到当前远端分支（默认 `main`），不要等用户每次提醒；commit 前保持工作树可复现、文档同步。
+所有交付轮次由 Agent 自己完成 commit 并 push 到当前分支的上游（默认 `origin/main`），不要等用户每次提醒。提交前同步文档，只暂存本阶段文件，中文提交说明沿用近期 Git 历史风格。推送后核对远端分支是否包含本次提交。
 
 ### CI 结果记录与文档提交
 
@@ -22,7 +22,7 @@ CI 结果绑定其实际验证的提交、SDK、job 和原始诊断产物。只�
 
 1. 每完成一个独立阶段，及时清理本阶段不再需要的中间产物：`artifacts/`、`.tmp/` 下的旧构建目录、旧审计目录、旧 zip、离屏截图和一次性脚手架，避免无用文件堆积占用硬盘。
 2. 只保留当前仍在使用的产物：最新安装包/打包目录、当前真机审计输出、当前文档引用的证据。旧的 phase/audit/dev-build/ui-qa/ui-audit-build 等目录完成后即可删除，Git 已跟踪的源码与文档不受影响。
-3. 删除前先确认路径位于仓库的 `artifacts/` 或 `.tmp/` 内，使用 PowerShell `Remove-Item -LiteralPath -Recurse -Force`，不要跨 shell 拼接删除命令。
+3. 删除前核对具体路径、生成来源、运行占用及文档引用，保留正式诊断和引用证据。确认目标的解析后绝对路径位于仓库的 `artifacts/` 或 `.tmp/` 内，且不含重解析点、Git 跟踪文件或工作树，再使用 PowerShell `Remove-Item -LiteralPath -Recurse -Force`；不要跨 shell 拼接删除命令。删除后检查目标已消失，记录实际回收空间。
 4. 不要在 Git 提交中包含 `artifacts/`、`.tmp/` 生成物；这些目录属于本地可再生的临时输出。
 
 ## WPF / XAML UI changes
