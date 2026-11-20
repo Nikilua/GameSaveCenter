@@ -730,7 +730,20 @@
                             </Border>
                             <StackPanel Grid.Column="1" Margin="12,0,18,0" VerticalAlignment="Center">
                                 <TextBlock Text="多设备云目录" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="设备共享同一个云端仓库 · 内容指纹判定等价 · 分叉只标记不合并" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding DeviceStateMessage}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" TextWrapping="Wrap"
+                                           AutomationProperties.HelpText="{Binding DeviceStateMessage}"/>
+                                <Expander Header="各设备比较范围" Margin="0,6,0,0" AutomationProperties.Name="各设备比较范围">
+                                    <Expander.Style>
+                                        <Style TargetType="Expander" BasedOn="{StaticResource GscDisclosureCard}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DeviceComparisonCoverage}" Value=""><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Expander.Style>
+                                    <TextBox Text="{Binding DeviceComparisonCoverage, Mode=OneWay}" Style="{DynamicResource GscWpfUiTextBox}"
+                                             IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" MaxHeight="100"
+                                             VerticalScrollBarVisibility="Auto" AutomationProperties.Name="按设备列出已比较条目与总数"/>
+                                </Expander>
                             </StackPanel>
                             <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiContextButton}" Command="{Binding SyncDeviceStatesCommand}" Content="刷新设备状态" VerticalAlignment="Center" Margin="0"/>
                         </Grid>
@@ -744,7 +757,7 @@
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0" Margin="12,2,12,8">
                                 <TextBlock Text="设备对比" Style="{DynamicResource GscSectionTitleStyle}"/>
-                                <TextBlock Text="{Binding DeviceComparisons.Count, StringFormat={}{0} 个游戏 · 选择一行查看冲突决策}" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Right"/>
+                                <TextBlock Text="{Binding DeviceComparisons.Count, StringFormat={}{0} 条结果}" Style="{DynamicResource GscCaptionStyle}" HorizontalAlignment="Right"/>
                             </Grid>
                             <DataGrid x:Name="MaintenanceDeviceGrid" AutomationProperties.Name="设备对比结果" Grid.Row="1" Style="{StaticResource MaintenanceDataGrid}" ItemsSource="{Binding DeviceComparisons}" SelectedItem="{Binding SelectedDeviceComparison}" AutomationProperties.HelpText="选择一行查看本地设备与云端设备的差异。">
                                 <DataGrid.Columns>

@@ -167,6 +167,7 @@ namespace GameSaveCenter.Playnite.Infrastructure
             string.Equals(a.PlayniteId, b.PlayniteId, StringComparison.Ordinal)
             && string.Equals(a.GameName, b.GameName, StringComparison.Ordinal)
             && string.Equals(a.RemoteDevice, b.RemoteDevice, StringComparison.Ordinal)
+            && string.Equals(a.RemoteDeviceId, b.RemoteDeviceId, StringComparison.Ordinal)
             && string.Equals(a.LocalBackupId, b.LocalBackupId, StringComparison.Ordinal)
             && string.Equals(a.RemoteBackupId, b.RemoteBackupId, StringComparison.Ordinal)
             && a.HasConflict == b.HasConflict
@@ -177,7 +178,16 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && a.RemoteCreatedUtc == b.RemoteCreatedUtc
             && string.Equals(a.Decision, b.Decision, StringComparison.Ordinal)
             && string.Equals(a.DecisionComment, b.DecisionComment, StringComparison.Ordinal)
-            && a.DecidedUtc == b.DecidedUtc;
+            && a.DecidedUtc == b.DecidedUtc
+            && PreviousDeviceDecisionEquals(a.PreviousDecision, b.PreviousDecision);
+
+        private static bool PreviousDeviceDecisionEquals(DeviceConflictDecisionDto? a, DeviceConflictDecisionDto? b)
+            => ReferenceEquals(a, b) || (a != null && b != null
+                && a.LocalBackupId == b.LocalBackupId
+                && a.RemoteBackupId == b.RemoteBackupId
+                && a.Decision == b.Decision
+                && a.Comment == b.Comment
+                && a.DecidedUtc == b.DecidedUtc);
 
         private static bool PolicyEquals(BackupPolicyDto a, BackupPolicyDto b)
         {

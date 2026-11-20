@@ -9,6 +9,33 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class DeviceConflictComparisonDisplayBehaviorTests
 {
     [Fact]
+    public void HistoricalDecisionShowsOriginalPairAndCommentWithoutPrefillingTheCurrentDecision()
+    {
+        var comparison = new DeviceConflictStatusDto { LocalBackupId = "current-local", RemoteBackupId = "current-remote" };
+        comparison.ApplyRecordedDecision(new DeviceConflictDecisionDto
+        {
+            LocalBackupId = "previous-local",
+            RemoteBackupId = "current-remote",
+            Decision = "PreferLocal",
+            Comment = "曾核对过旧版"
+        });
+
+        var text = string.Join("\n", DeviceConflictComparisonDisplayBuilder.Build(comparison));
+        Assert.Equal("待复核", comparison.DecisionDisplay);
+        Assert.Empty(comparison.DecisionComment);
+        Assert.Contains("记录为优先本机", text);
+        Assert.Contains("本机 previous-local · 远端 current-remote", text);
+        Assert.Contains("曾核对过旧版", text);
+
+        comparison.ApplyRecordedDecision(new DeviceConflictDecisionDto
+        {
+            LocalBackupId = "current-local", RemoteBackupId = "current-remote", Decision = "KeepBoth"
+        });
+        Assert.Equal("保留两者", comparison.DecisionDisplay);
+        Assert.DoesNotContain("曾核对过旧版", string.Join("\n", DeviceConflictComparisonDisplayBuilder.Build(comparison)));
+    }
+
+    [Fact]
     public void SideBySideEvidenceShowsCommonBaseFreshnessAndNoTimestampWinner()
     {
         var now = new DateTime(2026, 10, 19, 8, 0, 0, DateTimeKind.Utc);

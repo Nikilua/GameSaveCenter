@@ -1508,6 +1508,7 @@ public sealed class FakeDashboardData
         }
     };
     public string DeviceStateMessage { get; } = "最近一次设备摘要对比完成：2 个游戏需要人工决定，其余一致。";
+    public string DeviceComparisonCoverage { get; } = "Laptop · 已比较 500/501 条\nDesktop · 已比较 12/12 条";
     public string StagedRemoteBackupStatus { get; } = "尚未下载远端存档。下载只会写入本机隔离区，不会覆盖当前存档。";
 }
 

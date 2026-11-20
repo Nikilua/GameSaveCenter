@@ -12,6 +12,7 @@ namespace GameSaveCenter.Worker.Services;
 /// <summary>Publishes and compares small, content-free device backup summaries. It never restores or overwrites a save.</summary>
 public sealed class DeviceStateService
 {
+    private const int MaxComparisonsPerDevice = 500;
     private readonly WorkerOptions _options;
     private readonly SqliteStateStore _store;
     private readonly RcloneClient _rclone;
@@ -49,22 +50,28 @@ public sealed class DeviceStateService
         var localByGame=sidecar.Backups.ToDictionary(x=>x.PlayniteId,StringComparer.OrdinalIgnoreCase);
         foreach(var remotePath in await _rclone.ListDeviceStateFilesAsync(token).ConfigureAwait(false))
         {
+            token.ThrowIfCancellationRequested();
             var text=await _rclone.ReadRemoteTextAsync(remotePath,token).ConfigureAwait(false);
             if(string.IsNullOrWhiteSpace(text))continue;
             try
             {
                 var remote=JsonSerializer.Deserialize<DeviceStateSidecarDto>(text,JsonOptions);
-                if(remote==null||remote.SchemaVersion is <1 or >4||string.IsNullOrWhiteSpace(remote.DeviceName))continue;
+                if(remote==null||remote.SchemaVersion is <1 or >4||string.IsNullOrWhiteSpace(remote.DeviceName)||remote.Backups==null)continue;
                 var remoteDeviceId=WorkerOptions.IsValidDeviceId(remote.DeviceId)
                     ? remote.DeviceId.ToLowerInvariant()
                     : remote.DeviceName;
                 if(string.Equals(remoteDeviceId,deviceId,StringComparison.OrdinalIgnoreCase))continue;
                 result.RemoteSidecarsRead++;
-                foreach(var item in remote.Backups.Take(500))
+                var coverage=new DeviceComparisonCoverageDto{DeviceName=remote.DeviceName,Total=remote.Backups.Count};
+                result.Coverage.Add(coverage);
+                var compared = new List<DeviceConflictStatusDto>();
+                foreach(var item in remote.Backups.Take(MaxComparisonsPerDevice))
                 {
+                    token.ThrowIfCancellationRequested();
+                    if(item==null||string.IsNullOrWhiteSpace(item.PlayniteId))continue;
                     localByGame.TryGetValue(item.PlayniteId,out var local);
                     var conflict=_detector.Detect(ToSnapshot(local,deviceId),ToSnapshot(item,remoteDeviceId));
-                    result.Comparisons.Add(new DeviceConflictStatusDto
+                    compared.Add(new DeviceConflictStatusDto
                     {
                         PlayniteId=item.PlayniteId,GameName=local?.GameName??item.GameName,RemoteDevice=remote.DeviceName,RemoteDeviceId=remoteDeviceId,
                         LocalDevice=device,LocalBackupId=local?.BackupId??string.Empty,RemoteBackupId=item.BackupId,
@@ -84,23 +91,27 @@ public sealed class DeviceStateService
                         LocalCreatedUtc=local?.CreatedUtc??default,RemoteCreatedUtc=item.CreatedUtc
                     });
                 }
+                coverage.Compared = compared.Count;
+                var decisions = await _store.GetDeviceConflictDecisionsAsync(remoteDeviceId, remote.DeviceName,
+                    compared.Select(x => x.PlayniteId).Distinct(StringComparer.Ordinal).ToArray(), token).ConfigureAwait(false);
+                foreach (var comparison in compared)
+                {
+                    if (decisions.TryGetValue(comparison.PlayniteId, out var decision))
+                        comparison.ApplyRecordedDecision(decision);
+                }
+                result.Comparisons.AddRange(compared);
             }
             catch(JsonException ex){_logger.LogWarning(ex,"Ignoring invalid device-state sidecar {Path}",remotePath);}
         }
+        token.ThrowIfCancellationRequested();
         result.Comparisons=result.Comparisons.OrderByDescending(x=>x.HasConflict).ThenBy(x=>x.GameName,StringComparer.OrdinalIgnoreCase).ToList();
-        foreach(var comparison in result.Comparisons)
-        {
-            var decision=await _store.GetDeviceConflictDecisionAsync(comparison.PlayniteId,comparison.RemoteDeviceId,token).ConfigureAwait(false);
-            // 0.6.x stored decisions by the display machine name. Keep those decisions
-            // visible after migrating sidecars to stable opaque device identities.
-            decision??=await _store.GetDeviceConflictDecisionAsync(comparison.PlayniteId,comparison.RemoteDevice,token).ConfigureAwait(false);
-            if(decision==null)continue;
-            comparison.Decision=decision.Decision;
-            comparison.DecisionComment=decision.Comment;
-            comparison.DecidedUtc=decision.DecidedUtc;
-        }
-        result.StatusMessage=result.RemoteSidecarsRead==0?"已上传本机摘要；云端暂未发现其他设备摘要。":
-            result.Comparisons.Any(x=>x.HasConflict)?"发现需要人工决定的设备分叉；未自动恢复或覆盖任何存档。":"设备摘要已比较，未发现需要人工决定的分叉。";
+        var partial = result.Coverage.Any(x => x.Compared < x.Total);
+        result.StatusMessage = result.RemoteSidecarsRead == 0
+            ? "已上传本机摘要；云端暂未发现其他设备摘要。"
+            : (partial ? "仅完成部分比较。其余条目仍待比较。" : "设备摘要已比较。")
+              + (result.Comparisons.Any(x => x.HasConflict)
+                  ? "在已比较条目中发现需要人工决定的设备分叉。"
+                  : "在已比较条目中未发现需要人工决定的分叉。");
         return result;
     }
 

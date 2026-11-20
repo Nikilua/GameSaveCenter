@@ -28,6 +28,15 @@ public static class DeviceConflictComparisonDisplayBuilder
                 ? "分支冲突需要人工决定；系统不会因为创建时间较新就推荐覆盖另一侧。"
                 : "此检测未发现需要人工决定的分叉；仍请按两侧证据确认后再恢复。"
         };
+        if (comparison.PreviousDecision is { } previous)
+        {
+            var local = string.IsNullOrWhiteSpace(previous.LocalBackupId) ? "未知" : previous.LocalBackupId;
+            var remote = string.IsNullOrWhiteSpace(previous.RemoteBackupId) ? "未知" : previous.RemoteBackupId;
+            lines.Add($"待复核 · 上次决定为「{DeviceConflictStatusDto.DisplayDecision(previous.Decision)}」· {FormatTimestamp(previous.DecidedUtc, referenceUtc)}。");
+            lines.Add($"上次决定对应的版本 · 本机 {local} · 远端 {remote}。");
+            if (!string.IsNullOrWhiteSpace(previous.Comment))
+                lines.Add($"上次备注 · {previous.Comment}");
+        }
         return lines;
     }
 

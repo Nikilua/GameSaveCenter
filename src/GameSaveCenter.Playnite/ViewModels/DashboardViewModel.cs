@@ -2042,6 +2042,12 @@ namespace GameSaveCenter.Playnite.ViewModels
         public ICommand OpenMediaDirectoryCommand { get; }
         public ICommand OpenWorkerLogCommand { get; }
         public string DeviceStateMessage { get => deviceStateMessage; private set => SetValue(ref deviceStateMessage,value); }
+        private string deviceComparisonCoverage = string.Empty;
+        public string DeviceComparisonCoverage
+        {
+            get => deviceComparisonCoverage;
+            private set => SetValue(ref deviceComparisonCoverage, value);
+        }
         public DeviceConflictStatusDto SelectedDeviceComparison
         {
             get=>selectedDeviceComparison;
@@ -3983,6 +3989,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 Replace(DeviceComparisons,result.Comparisons, SnapshotComparers.DeviceComparison);
                 DeviceStateMessage=result.StatusMessage;
+                DeviceComparisonCoverage=string.Join(Environment.NewLine, result.Coverage.Select(x => x.Display));
             });
             StatusMessage=result.StatusMessage;
         }
@@ -3997,7 +4004,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 LocalBackupId=selected.LocalBackupId,RemoteBackupId=selected.RemoteBackupId,
                 Decision=code,Comment=DeviceDecisionComment
             });
-            selected.Decision=saved.Decision;selected.DecisionComment=saved.Comment;selected.DecidedUtc=saved.DecidedUtc;
+            selected.ApplyRecordedDecision(saved);
             var index=DeviceComparisons.IndexOf(selected);
             if(index>=0)DeviceComparisons[index]=selected;
             SelectedDeviceComparison=selected;

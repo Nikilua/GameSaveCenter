@@ -19,6 +19,9 @@ public sealed class DeviceConflictStateSourceTests
         Assert.Contains("AutomationProperties.Name=\"远端备份隔离状态\"", maintenance);
         Assert.Contains("ItemsSource=\"{Binding SelectedDeviceComparisonEvidence}\"", maintenance);
         Assert.Contains("AutomationProperties.Name=\"冲突原因与版本证据\"", maintenance);
+        Assert.Contains("Text=\"{Binding DeviceStateMessage}\"", maintenance);
+        Assert.Contains("Text=\"{Binding DeviceComparisonCoverage, Mode=OneWay}\"", maintenance);
+        Assert.Contains("Binding=\"{Binding DecisionDisplay}\"", maintenance);
 
         Assert.DoesNotContain("SelectedIndex=\"0\" ItemsSource=\"{Binding MediaFilterOptions}", media);
         Assert.Contains("ItemsSource=\"{Binding MediaFilterOptions}\" SelectedItem=\"{Binding MediaFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=全部, FallbackValue=全部}\"", media);

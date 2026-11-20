@@ -63,8 +63,11 @@ namespace GameSaveCenter.Contracts
         public string Decision { get; set; } = string.Empty;
         public string DecisionComment { get; set; } = string.Empty;
         public DateTime? DecidedUtc { get; set; }
+        public DeviceConflictDecisionDto? PreviousDecision { get; set; }
         public string StateDisplay => HasConflict ? "需要人工决定" : "一致或仅单端存在";
-        public string DecisionDisplay => Decision switch
+        public string DecisionDisplay => PreviousDecision != null ? "待复核" : DisplayDecision(Decision);
+
+        public static string DisplayDecision(string decision) => decision switch
         {
             "KeepBoth" => "保留两者",
             "PreferLocal" => "记录为优先本机",
@@ -72,6 +75,18 @@ namespace GameSaveCenter.Contracts
             "Defer" => "稍后处理",
             _ => "尚未记录"
         };
+
+        public void ApplyRecordedDecision(DeviceConflictDecisionDto decision)
+        {
+            var matches = !string.IsNullOrWhiteSpace(decision.LocalBackupId)
+                && !string.IsNullOrWhiteSpace(decision.RemoteBackupId)
+                && string.Equals(decision.LocalBackupId, LocalBackupId, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(decision.RemoteBackupId, RemoteBackupId, StringComparison.OrdinalIgnoreCase);
+            PreviousDecision = matches ? null : decision;
+            Decision = matches ? decision.Decision : string.Empty;
+            DecisionComment = matches ? decision.Comment : string.Empty;
+            DecidedUtc = matches ? decision.DecidedUtc : null;
+        }
         public string ReasonDisplay
         {
             get
@@ -122,7 +137,16 @@ namespace GameSaveCenter.Contracts
         public bool Uploaded { get; set; }
         public int RemoteSidecarsRead { get; set; }
         public string StatusMessage { get; set; } = string.Empty;
+        public List<DeviceComparisonCoverageDto> Coverage { get; set; } = new List<DeviceComparisonCoverageDto>();
         public List<DeviceConflictStatusDto> Comparisons { get; set; } = new List<DeviceConflictStatusDto>();
+    }
+
+    public sealed class DeviceComparisonCoverageDto
+    {
+        public string DeviceName { get; set; } = string.Empty;
+        public int Compared { get; set; }
+        public int Total { get; set; }
+        public string Display => $"{DeviceName} · 已比较 {Compared}/{Total} 条";
     }
 
     /// <summary>Downloads one remote device's complete Ludusavi vault into an isolated local staging directory.</summary>

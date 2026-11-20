@@ -10,12 +10,17 @@ public sealed class RcloneClient
         "copy", "check", "lsf", "cat", "version"
     };
     private readonly WorkerOptions _options;
-    private readonly ExternalProcessRunner _runner;
+    private readonly Func<string, IEnumerable<string>, string?, TimeSpan, CancellationToken, Task<ProcessResult>> _runProcess;
 
     public RcloneClient(WorkerOptions options, ExternalProcessRunner runner)
+        : this(options, runner.RunAsync)
+    {
+    }
+
+    internal RcloneClient(WorkerOptions options, Func<string, IEnumerable<string>, string?, TimeSpan, CancellationToken, Task<ProcessResult>> runProcess)
     {
         _options = options;
-        _runner = runner;
+        _runProcess = runProcess;
     }
 
     public bool IsAvailable => !string.IsNullOrWhiteSpace(_options.RcloneExecutable) && File.Exists(_options.RcloneExecutable);
@@ -110,6 +115,6 @@ public sealed class RcloneClient
     {
         if (!IsAllowedCommand(arguments))
             return Task.FromResult(ProcessResult.Failed(-1, string.Empty, "Rclone command is outside the one-way safety allowlist."));
-        return _runner.RunAsync(_options.RcloneExecutable, arguments, null, timeout, token);
+        return _runProcess(_options.RcloneExecutable, arguments, null, timeout, token);
     }
 }

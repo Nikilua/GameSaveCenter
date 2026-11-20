@@ -1870,7 +1870,10 @@ def check_external_process_guards() -> None:
     ):
         if required not in (limits + "\n" + runner):
             fail(f"External process output guard missing: {required}")
-    if "_runner.RunAsync(_options.RcloneExecutable, arguments, null, timeout, token)" not in rclone:
+    if any(required not in rclone for required in (
+        ": this(options, runner.RunAsync)",
+        "_runProcess(_options.RcloneExecutable, arguments, null, timeout, token)",
+    )):
         fail("Rclone safe runner must keep the existing executable working-directory policy")
 
 

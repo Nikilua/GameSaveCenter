@@ -1202,11 +1202,13 @@ ORDER BY b.created_utc ASC" + (maxVersionCount.HasValue ? "\nLIMIT $scenarioVers
         var command = connection.CreateCommand();
         command.CommandText = @"
 SELECT b.playnite_id,g.name,b.backup_id,b.created_utc,b.total_bytes,b.file_count,b.parent_backup_id,b.manifest_json,b.restore_readiness_json
-FROM backup_versions b
-JOIN games g ON g.playnite_id=b.playnite_id
-JOIN (SELECT playnite_id,MAX(created_utc) AS newest FROM backup_versions GROUP BY playnite_id) latest
-  ON latest.playnite_id=b.playnite_id AND latest.newest=b.created_utc
-ORDER BY g.name COLLATE NOCASE;";
+FROM games g
+JOIN backup_versions b ON b.backup_id = (
+    SELECT backup_id FROM backup_versions
+    WHERE playnite_id = g.playnite_id
+    ORDER BY created_utc DESC, backup_id ASC LIMIT 1
+)
+ORDER BY g.name COLLATE NOCASE, g.playnite_id;";
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         while (await reader.ReadAsync(token).ConfigureAwait(false))
         {
@@ -1451,19 +1453,60 @@ decision=excluded.decision,comment=excluded.comment,decided_utc=excluded.decided
     public async Task<DeviceConflictDecisionDto?> GetDeviceConflictDecisionAsync(string playniteId,string remoteDevice,CancellationToken token)
     {
         await using var connection=Open();await connection.OpenAsync(token).ConfigureAwait(false);
-        var command=connection.CreateCommand();command.CommandText=@"SELECT local_backup_id,remote_backup_id,decision,comment,decided_utc
+        await using var command=connection.CreateCommand();command.CommandText=@"SELECT playnite_id,remote_device,local_backup_id,remote_backup_id,decision,comment,decided_utc
 FROM device_conflict_decisions WHERE playnite_id=$game AND remote_device=$device LIMIT 1;";
         command.Parameters.AddWithValue("$game",playniteId);command.Parameters.AddWithValue("$device",remoteDevice);
         await using var reader=await command.ExecuteReaderAsync(token).ConfigureAwait(false);
-        if(!await reader.ReadAsync(token).ConfigureAwait(false))return null;
-        return new DeviceConflictDecisionDto
-        {
-            PlayniteId=playniteId,RemoteDevice=remoteDevice,
-            LocalBackupId=reader.GetString(0),RemoteBackupId=reader.GetString(1),
-            Decision=reader.GetString(2),Comment=reader.IsDBNull(3)?string.Empty:reader.GetString(3),
-            DecidedUtc=DateTime.Parse(reader.GetString(4)).ToUniversalTime()
-        };
+        return await reader.ReadAsync(token).ConfigureAwait(false) ? ReadDeviceConflictDecision(reader) : null;
     }
+
+    internal async Task<Dictionary<string, DeviceConflictDecisionDto>> GetDeviceConflictDecisionsAsync(
+        string deviceId, string legacyDeviceName, IReadOnlyList<string> playniteIds, CancellationToken token)
+    {
+        token.ThrowIfCancellationRequested();
+        var result = new Dictionary<string, DeviceConflictDecisionDto>(StringComparer.Ordinal);
+        if (playniteIds.Count == 0)
+            return result;
+
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        await using var command = connection.CreateCommand();
+        command.Parameters.AddWithValue("$device", deviceId);
+        command.Parameters.AddWithValue("$legacy", legacyDeviceName);
+        var gameParameters = new string[playniteIds.Count];
+        for (var i = 0; i < playniteIds.Count; i++)
+        {
+            var name = "$game" + i;
+            command.Parameters.AddWithValue(name, playniteIds[i]);
+            gameParameters[i] = name;
+        }
+        command.CommandText = $@"
+SELECT playnite_id,remote_device,local_backup_id,remote_backup_id,decision,comment,decided_utc
+FROM device_conflict_decisions
+WHERE playnite_id IN ({string.Join(",", gameParameters)}) AND remote_device IN ($device, $legacy);";
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+        {
+            var decision = ReadDeviceConflictDecision(reader);
+            // A stable device identity takes precedence even if the stored version pair is stale.
+            if (decision.RemoteDevice == deviceId)
+                result[decision.PlayniteId] = decision;
+            else
+                result.TryAdd(decision.PlayniteId, decision);
+        }
+        return result;
+    }
+
+    private static DeviceConflictDecisionDto ReadDeviceConflictDecision(SqliteDataReader reader) => new()
+    {
+        PlayniteId = reader.GetString(0),
+        RemoteDevice = reader.GetString(1),
+        LocalBackupId = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+        RemoteBackupId = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
+        Decision = reader.GetString(4),
+        Comment = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+        DecidedUtc = DateTime.Parse(reader.GetString(6)).ToUniversalTime()
+    };
 
 
     public async Task<List<AuditLogEntryDto>> GetAuditAsync(int limit, CancellationToken token)
