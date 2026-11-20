@@ -1,3 +1,7 @@
+## 2026-11-20 产品改进优先级
+
+下一轮优先处理跨设备摘要选取、远端比较覆盖提示及人工决定的版本归属。最新计划和验收样本见[活动队列顶部](../AUTONOMOUS_BACKLOG.md)。同时间备份的查询重复行已在内存 SQLite 核对；宿主体验继续沿用 C04 和 A09。产品代码仍为 C05 候选。
+
 ## 2026-11-16 用户要求清理C05临时输出
 
 盘点时D盘可用1.41 GiB、C盘4.06 GiB。C05隔离Playnite主进程已经退出，仅剩父进程已退出的Worker PID 57304；确认可执行文件位于仓库新建profile后已停止。用户要求清理后再次调用PowerShell `Remove-Item -LiteralPath -Recurse -Force`，命令在shell启动前被策略拒绝；未用替代删除方式。C05的12个scratch和隔离profile仍在`.tmp`，约686 MiB。C盘相关Playnite临时目录为空。逐项路径和状态见[C05门禁证据](../design/ui-redesign-round6-20261113/evidence/C05-task-progress-20261116/candidate-gates.json)。
