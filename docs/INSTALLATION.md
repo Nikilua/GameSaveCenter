@@ -5,7 +5,7 @@
 建议使用 Windows 10/11 x64，并安装：
 
 1. Playnite 10.56 或兼容的 Playnite 10 稳定版；
-2. Visual Studio 2022（含“.NET 桌面开发”），或 .NET 8 / .NET 9 稳定版 SDK；
+2. [global.json](../global.json) 锁定的 .NET SDK，可配合安装含“.NET 桌面开发”工作负载的 Visual Studio 2022；
 3. .NET Framework 4.6.2 Developer Pack（项目也引用 reference assemblies 包）；
 4. Ludusavi 最新稳定版；
 5. Rclone 最新稳定版（仅云端复制需要）。
@@ -54,8 +54,8 @@ scripts\build.cmd
 
 ```text
 artifacts/GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec/
-artifacts/GameSaveCenter-0.1.0-playnite.zip
-artifacts/GameSaveCenter-0.1.0.pext
+artifacts/GameSaveCenter-<版本>-playnite.zip
+artifacts/GameSaveCenter-<版本>.pext
 ```
 
 Worker 默认按 `win-x64` 自包含发布，不要求目标电脑额外安装 .NET 8 Runtime。
@@ -75,6 +75,8 @@ Worker 默认按 `win-x64` 自包含发布，不要求目标电脑额外安装 .
 ```
 
 安装后完全退出并重启 Playnite。
+
+源码的发布版本由[构建配置](../Directory.Build.props)的 `VersionPrefix` 与[扩展清单](../src/GameSaveCenter.Playnite/extension.yaml)的 `Version` 共同确定。已安装的版本可以在 Playnite 的扩展管理中查看。通过[一键开发安装](../README.md#一键开发安装)安装时，也可以核对生成的 `artifacts/last-dev-install.txt`。
 
 ## 五、配置插件
 
