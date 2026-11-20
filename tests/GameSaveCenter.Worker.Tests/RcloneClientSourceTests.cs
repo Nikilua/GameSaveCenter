@@ -18,7 +18,8 @@ public sealed class RcloneClientSourceTests
 
         Assert.DoesNotContain("workingDirectory", source, StringComparison.Ordinal);
         Assert.Contains("RunSafeAsync(IReadOnlyList<string> arguments, TimeSpan timeout, CancellationToken token)", source, StringComparison.Ordinal);
-        Assert.Contains("_runner.RunAsync(_options.RcloneExecutable, arguments, null, timeout, token)", source, StringComparison.Ordinal);
+        Assert.Contains(": this(options, runner.RunAsync)", source, StringComparison.Ordinal);
+        Assert.Contains("_runProcess(_options.RcloneExecutable, arguments, null, timeout, token)", source, StringComparison.Ordinal);
     }
 
     private static string FindRepositoryRoot()

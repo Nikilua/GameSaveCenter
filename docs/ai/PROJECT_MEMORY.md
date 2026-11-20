@@ -1427,6 +1427,8 @@ Actions #1054/run `38944728502` 已在当前文档 HEAD `79748216` 终态成功�
 
 事实来源为当前代码、证据、Git 和用户指令。每阶段按变更范围验证，同步文档，检查暂存范围并单独用中文 commit，由 Agent push 当前分支的上游（默认 `origin/main`），再核对远端分支是否包含提交。禁止提交 artifacts、.tmp、bin/obj、用户配置、凭据和可再生大包。
 
+源码交付按 [AGENTS.md 的构建门禁](../../AGENTS.md#一键构建与-github-交付门禁)核对中文一键入口完整链及最终推送提交的 GitHub Windows 基线 SDK、SDK 10 两项 job。构建或 CI 失败保留原始诊断，同步修复后对新提交验收。
+
 ## 项目与模块
 
 - 当前版本由 `Directory.Build.props` 与 `src/GameSaveCenter.Playnite/extension.yaml` 决定：0.6.73。版本号不能替代 commit、SHA-256、MVID 的包身份核对。
