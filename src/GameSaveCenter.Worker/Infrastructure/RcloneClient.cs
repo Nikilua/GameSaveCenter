@@ -5,6 +5,7 @@ namespace GameSaveCenter.Worker.Infrastructure;
 /// <summary>Safe, one-way Rclone adapter. It never calls sync, move, delete or purge.</summary>
 public sealed class RcloneClient
 {
+    private const int MaxDeviceStateFiles = 64;
     private static readonly HashSet<string> AllowedCommands = new(StringComparer.OrdinalIgnoreCase)
     {
         "copy", "check", "lsf", "cat", "version"
@@ -64,20 +65,22 @@ public sealed class RcloneClient
     }
 
     /// <summary>Lists remote sidecar paths. This is read-only and never modifies the remote.</summary>
-    internal async Task<(ProcessResult Result, IReadOnlyList<string> Paths)> ListDeviceStateFilesAsync(CancellationToken token)
+    internal async Task<(ProcessResult Result, IReadOnlyList<string> Paths, bool HasMore)> ListDeviceStateFilesAsync(CancellationToken token)
     {
         if (!IsConfigured)
-            return (ProcessResult.Failed(-1, string.Empty, "Rclone is not configured."), Array.Empty<string>());
+            return (ProcessResult.Failed(-1, string.Empty, "Rclone is not configured."), Array.Empty<string>(), false);
 
         var result = await RunSafeAsync(
             new[] { "lsf", _options.RcloneDestination, "--recursive", "--files-only", "--include", "*/DeviceState/*.json" },
             TimeSpan.FromMinutes(2), token).ConfigureAwait(false);
         if (!result.Success)
-            return (result, Array.Empty<string>());
+            return (result, Array.Empty<string>(), false);
 
         var paths = result.StandardOutput.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(x => x.Trim()).Where(x => x.Length > 0).Take(64).ToArray();
-        return (result, paths);
+            .Select(x => x.Trim()).Where(x => x.Length > 0).Take(MaxDeviceStateFiles + 1).ToArray();
+        return paths.Length > MaxDeviceStateFiles
+            ? (result, paths[..MaxDeviceStateFiles], true)
+            : (result, paths, false);
     }
 
     /// <summary>Performs a bounded read-only remote probe without uploading or changing files.</summary>
@@ -90,12 +93,13 @@ public sealed class RcloneClient
     }
 
     /// <summary>Reads a small JSON sidecar; callers enforce their own schema and size limits.</summary>
-    public async Task<string> ReadRemoteTextAsync(string remoteRelativePath,CancellationToken token)
+    internal Task<ProcessResult> ReadDeviceStateFileAsync(string remoteRelativePath, CancellationToken token)
     {
-        if (!IsConfigured) return string.Empty;
-        var result = await RunSafeAsync(new[] { "cat", CombineRemote(_options.RcloneDestination,remoteRelativePath) },
-            TimeSpan.FromMinutes(1),token).ConfigureAwait(false);
-        return result.Success&&result.StandardOutput.Length<=1024*1024 ? result.StandardOutput : string.Empty;
+        if (!IsConfigured)
+            return Task.FromResult(ProcessResult.Failed(-1, string.Empty, "Rclone is not configured."));
+
+        return RunSafeAsync(new[] { "cat", CombineRemote(_options.RcloneDestination, remoteRelativePath) },
+            TimeSpan.FromMinutes(1), token);
     }
 
     public async Task<string> GetVersionAsync(CancellationToken token)

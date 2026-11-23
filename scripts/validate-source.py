@@ -781,7 +781,7 @@ def check_device_state_guards() -> None:
     service = (ROOT / "src/GameSaveCenter.Worker/Services/DeviceStateService.cs").read_text(encoding="utf-8")
     rclone = (ROOT / "src/GameSaveCenter.Worker/Infrastructure/RcloneClient.cs").read_text(encoding="utf-8")
     ui = read_workspace_views()["MaintenanceView.xaml"]
-    for token in ("DeviceStateSidecarDto", "DeviceConflictDetector", "GetLatestBackupSummariesAsync", "ReadRemoteTextAsync"):
+    for token in ("DeviceStateSidecarDto", "DeviceConflictDetector", "GetLatestBackupSummariesAsync", "ReadDeviceStateFileAsync"):
         if token not in service:
             fail(f"Device-state service guard missing: {token}")
     for forbidden in ('"sync"', '"delete"', '"purge"', '"move"'):

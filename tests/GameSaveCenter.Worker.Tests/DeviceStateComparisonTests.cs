@@ -74,6 +74,64 @@ public sealed class DeviceStateComparisonTests : IDisposable
     }
 
     [Theory]
+    [InlineData("transport", false)]
+    [InlineData("transport", true)]
+    [InlineData("empty", false)]
+    [InlineData("invalid-json", true)]
+    [InlineData("invalid-schema", false)]
+    [InlineData("oversized", true)]
+    public async Task SyncReportsUnreadableFilesAndKeepsAvailableComparisons(string failure, bool hasReadableFile)
+    {
+        var broken = Sidecar(1);
+        var readable = Sidecar(2, "Laptop", "cd123456789012345678901234567890");
+        var failedRead = failure switch
+        {
+            "transport" => ProcessResult.Failed(1, "", "fixture diagnostic"),
+            "empty" => new ProcessResult(0, "", ""),
+            "invalid-json" => new ProcessResult(0, "{", ""),
+            "invalid-schema" => new ProcessResult(0, """{"schemaVersion":99,"deviceName":"Desktop"}""", ""),
+            "oversized" => new ProcessResult(0, new string('x', 1024 * 1024 + 1), ""),
+            _ => throw new ArgumentOutOfRangeException(nameof(failure))
+        };
+        var (_, service) = await CreateAsync(hasReadableFile ? new[] { broken, readable } : new[] { broken }, null,
+            readOverride: sidecar => sidecar.DeviceId == broken.DeviceId ? failedRead : null);
+
+        var result = await service.SyncAsync(CancellationToken.None);
+
+        Assert.True(result.Uploaded);
+        Assert.Contains("有 1 份云端设备摘要读取失败或格式无效", result.StatusMessage);
+        Assert.DoesNotContain("暂未发现其他设备摘要", result.StatusMessage);
+        Assert.DoesNotContain("fixture diagnostic", result.StatusMessage);
+        if (hasReadableFile)
+        {
+            Assert.Contains("仅完成部分比较", result.StatusMessage);
+            Assert.Contains("在已比较条目中未发现", result.StatusMessage);
+            Assert.Equal("Laptop", Assert.Single(result.Coverage).DeviceName);
+            Assert.Equal(2, result.Comparisons.Count);
+        }
+        else
+        {
+            Assert.Contains("未能完成其他设备的比较", result.StatusMessage);
+            Assert.Empty(result.Coverage);
+            Assert.Empty(result.Comparisons);
+        }
+    }
+
+    [Fact]
+    public async Task SyncReportsWhenTheRemoteFileLimitLeavesSummariesUnread()
+    {
+        var sidecars = Enumerable.Range(1, 65).Select(i => Sidecar(0, $"Device {i}", i.ToString("x32"))).ToArray();
+        var (_, service) = await CreateAsync(sidecars);
+
+        var result = await service.SyncAsync(CancellationToken.None);
+
+        Assert.Equal(64, calls.Count(x => x == "cat"));
+        Assert.Equal(64, result.RemoteSidecarsRead);
+        Assert.Contains("仅完成部分比较", result.StatusMessage);
+        Assert.Contains("其余文件尚未比较", result.StatusMessage);
+    }
+
+    [Theory]
     [InlineData(499, false)]
     [InlineData(500, false)]
     [InlineData(501, true)]
@@ -244,7 +302,8 @@ public sealed class DeviceStateComparisonTests : IDisposable
         => await CreateAsync(sidecars, null);
 
     private async Task<(SqliteStateStore Store, DeviceStateService Service)> CreateAsync(
-        DeviceStateSidecarDto[] sidecars, Action? afterRead, ProcessResult? listingResult = null)
+        DeviceStateSidecarDto[] sidecars, Action? afterRead, ProcessResult? listingResult = null,
+        Func<DeviceStateSidecarDto, ProcessResult?>? readOverride = null)
     {
         var options = new WorkerOptions
         {
@@ -267,13 +326,15 @@ public sealed class DeviceStateComparisonTests : IDisposable
             {
                 "copy" => new ProcessResult(0, "", ""),
                 "lsf" => listingResult ?? new ProcessResult(0, string.Join("\n", byPath.Keys), ""),
-                "cat" => new ProcessResult(0, JsonSerializer.Serialize(byPath[command[1]["fixture:".Length..]]), ""),
+                "cat" => ReadSidecar(byPath[command[1]["fixture:".Length..]]),
                 _ => throw new InvalidOperationException($"Unexpected rclone command {command[0]}")
             };
             if (command[0] == "cat")
                 afterRead?.Invoke();
             return Task.FromResult(result);
         });
+        ProcessResult ReadSidecar(DeviceStateSidecarDto sidecar)
+            => readOverride?.Invoke(sidecar) ?? new ProcessResult(0, JsonSerializer.Serialize(sidecar), "");
         return (store, new DeviceStateService(options, store, rclone,
             new CloudTransferCoordinator(NullLogger<CloudTransferCoordinator>.Instance), NullLogger<DeviceStateService>.Instance));
     }

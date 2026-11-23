@@ -13,6 +13,7 @@ namespace GameSaveCenter.Worker.Services;
 public sealed class DeviceStateService
 {
     private const int MaxComparisonsPerDevice = 500;
+    private const int MaxSidecarLength = 1024 * 1024;
     private readonly WorkerOptions _options;
     private readonly SqliteStateStore _store;
     private readonly RcloneClient _rclone;
@@ -47,7 +48,7 @@ public sealed class DeviceStateService
             return result;
         }
         result.Uploaded=true;
-        var (listing, remotePaths) = await _rclone.ListDeviceStateFilesAsync(token).ConfigureAwait(false);
+        var (listing, remotePaths, hasMoreFiles) = await _rclone.ListDeviceStateFilesAsync(token).ConfigureAwait(false);
         token.ThrowIfCancellationRequested();
         if (!listing.Success)
         {
@@ -58,15 +59,27 @@ public sealed class DeviceStateService
         }
 
         var localByGame=sidecar.Backups.ToDictionary(x=>x.PlayniteId,StringComparer.OrdinalIgnoreCase);
+        var unreadableFiles = 0;
         foreach(var remotePath in remotePaths)
         {
             token.ThrowIfCancellationRequested();
-            var text=await _rclone.ReadRemoteTextAsync(remotePath,token).ConfigureAwait(false);
-            if(string.IsNullOrWhiteSpace(text))continue;
+            var read = await _rclone.ReadDeviceStateFileAsync(remotePath, token).ConfigureAwait(false);
+            token.ThrowIfCancellationRequested();
+            if (!read.Success || read.StandardOutput.Length > MaxSidecarLength || string.IsNullOrWhiteSpace(read.StandardOutput))
+            {
+                unreadableFiles++;
+                _logger.LogWarning("Could not read a device-state sidecar. Exit code {ExitCode}, error code {ErrorCode}, output length {Length}.",
+                    read.ExitCode, read.ErrorCode, read.StandardOutput.Length);
+                continue;
+            }
             try
             {
-                var remote=JsonSerializer.Deserialize<DeviceStateSidecarDto>(text,JsonOptions);
-                if(remote==null||remote.SchemaVersion is <1 or >4||string.IsNullOrWhiteSpace(remote.DeviceName)||remote.Backups==null)continue;
+                var remote=JsonSerializer.Deserialize<DeviceStateSidecarDto>(read.StandardOutput,JsonOptions);
+                if (remote == null || remote.SchemaVersion is < 1 or > 4 || string.IsNullOrWhiteSpace(remote.DeviceName) || remote.Backups == null)
+                {
+                    unreadableFiles++;
+                    continue;
+                }
                 var remoteDeviceId=WorkerOptions.IsValidDeviceId(remote.DeviceId)
                     ? remote.DeviceId.ToLowerInvariant()
                     : remote.DeviceName;
@@ -111,14 +124,22 @@ public sealed class DeviceStateService
                 }
                 result.Comparisons.AddRange(compared);
             }
-            catch(JsonException ex){_logger.LogWarning(ex,"Ignoring invalid device-state sidecar {Path}",remotePath);}
+            catch (JsonException)
+            {
+                unreadableFiles++;
+                _logger.LogWarning("A device-state sidecar contains invalid JSON.");
+            }
         }
         token.ThrowIfCancellationRequested();
         result.Comparisons=result.Comparisons.OrderByDescending(x=>x.HasConflict).ThenBy(x=>x.GameName,StringComparer.OrdinalIgnoreCase).ToList();
-        var partial = result.Coverage.Any(x => x.Compared < x.Total);
+        var fileWarning = unreadableFiles > 0 ? $"有 {unreadableFiles} 份云端设备摘要读取失败或格式无效。" : string.Empty;
+        if (hasMoreFiles)
+            fileWarning += "云端摘要文件超过本次读取上限，其余文件尚未比较。";
+        var partial = fileWarning.Length > 0 || result.Coverage.Any(x => x.Compared < x.Total);
         result.StatusMessage = result.RemoteSidecarsRead == 0
-            ? "已上传本机摘要；云端暂未发现其他设备摘要。"
+            ? (partial ? $"已上传本机摘要。{fileWarning}未能完成其他设备的比较。" : "已上传本机摘要；云端暂未发现其他设备摘要。")
             : (partial ? "仅完成部分比较。其余条目仍待比较。" : "设备摘要已比较。")
+              + fileWarning
               + (result.Comparisons.Any(x => x.HasConflict)
                   ? "在已比较条目中发现需要人工决定的设备分叉。"
                   : "在已比较条目中未发现需要人工决定的分叉。");
