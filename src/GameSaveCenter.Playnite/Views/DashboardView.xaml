@@ -1347,7 +1347,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel>
                         <TextBlock x:Name="DialogTitleText" Style="{StaticResource GscRedesignFeedbackDialogTitle}"/>
-                        <ScrollViewer x:Name="DialogMessageScroll" MaxHeight="420"
+                        <ScrollViewer MaxHeight="420" x:Name="DialogMessageScroll"
                                       Margin="0,10,0,0"
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Disabled"

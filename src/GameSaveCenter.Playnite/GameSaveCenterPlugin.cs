@@ -955,9 +955,10 @@ namespace GameSaveCenter.Playnite
             // like the embedded confirmation surface, so keep the fallback inside the same
             // dispatcher boundary instead of showing a modal window from a pool thread.
             var result = System.Windows.MessageBoxResult.No;
-            var nativeMessage = restoreDetails == null ? message : $"{message}\n\n{restoreDetails.Changes}\n目标目录：{restoreDetails.Directories}";
+            if (restoreDetails != null)
+                message += $"\n\n{restoreDetails.Changes}\n目标目录：{restoreDetails.Directories}";
             if (!TryInvokeUi(
-                    () => result = PlayniteApi.Dialogs.ShowMessage(nativeMessage, title, System.Windows.MessageBoxButton.YesNo),
+                    () => result = PlayniteApi.Dialogs.ShowMessage(message, title, System.Windows.MessageBoxButton.YesNo),
                     "native confirmation"))
                 return false;
             return result == System.Windows.MessageBoxResult.Yes;
