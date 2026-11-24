@@ -25,6 +25,43 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R11HistoryTimeNavigationBehaviorTests
 {
     [Fact]
+    public void PinsKeepBothSearchResultsOutsideTheLoadedHistory()
+    {
+        RunSta(() =>
+        {
+            var now = DateTime.UtcNow;
+            var loaded = Backup("loaded", now);
+            var first = Backup("older-A", now.AddDays(-40));
+            var second = Backup("older-B", now.AddDays(-10));
+            first.PlayniteId = second.PlayniteId = loaded.PlayniteId = "game";
+            var model = CreateBareDashboardViewModel(loaded);
+            using var picker = new GamePickerViewModel
+            {
+                SelectedItem = new GamePickerItem(new GameStatusDto { PlayniteId = "game", Name = "Demo" })
+            };
+            SetField(model, "gamePicker", picker);
+            SetField(model, "currentWorkspace", WorkspaceKind.Saves);
+
+            model.SelectedBackup = first;
+            model.PinHistoryComparisonACommand.Execute(null);
+            Assert.Same(first, model.CompareLeftBackup);
+            Assert.Null(model.CompareRightBackup);
+            model.BackupHistorySearchText = "other term";
+            model.SelectedBackup = second;
+            model.PinHistoryComparisonBCommand.Execute(null);
+
+            Assert.Same(first, model.CompareLeftBackup);
+            Assert.Same(second, model.CompareRightBackup);
+            Assert.True(model.OpenPinnedHistoryComparisonCommand.CanExecute(null));
+            Assert.Equal(new[] { first, second, loaded }, model.HistoryComparisonChoices);
+            Assert.Single(model.Backups);
+            model.ClearHistoryComparisonPinsCommand.Execute(null);
+            Assert.False(model.HasPinnedHistoryComparison);
+            Assert.Same(loaded, Assert.Single(model.HistoryComparisonChoices));
+        });
+    }
+
+    [Fact]
     public void ArrivalAtTheTopInsertsOnceWithoutResettingExistingRows()
     {
         RunSta(() =>

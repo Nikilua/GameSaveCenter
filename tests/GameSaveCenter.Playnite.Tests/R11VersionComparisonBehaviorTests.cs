@@ -187,6 +187,7 @@ public sealed class R11VersionComparisonBehaviorTests
         }
 
         public ObservableCollection<BackupVersionDto> Backups { get; } = new ObservableCollection<BackupVersionDto>();
+        public IEnumerable<BackupVersionDto> HistoryComparisonChoices => Backups;
         public ObservableCollection<SavePathCandidateDto> SaveCandidates { get; } = new ObservableCollection<SavePathCandidateDto>();
         public int SaveTabIndex { get; set; } = 3;
         public BackupVersionDto? SelectedBackup { get; set; }

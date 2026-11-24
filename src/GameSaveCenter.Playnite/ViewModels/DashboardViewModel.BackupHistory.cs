@@ -29,6 +29,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private ICollectionView searchedBackupHistoryView = null!;
         private BatchObservableCollection<BackupVersionDto> backupSearchResults = null!;
         private CancellationTokenSource? backupSearchRequest;
+        private string? backupSearchGameId;
         private BackupVersionPageDto? backupSearchPage;
         private (DateTime? FromUtc, DateTime? BeforeUtc) backupSearchBounds;
         private string backupSearchStatus = string.Empty;
@@ -62,6 +63,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 RefreshBackupHistoryView();
                 OnPropertyChanged(nameof(BackupHistoryRangeSummary));
                 RaiseCommandStates();
+                if (backupHistoryCalendarDay.HasValue) Observe(SearchBackupHistoryAsync(loadMore: false));
             }
         }
 
@@ -74,6 +76,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ? value
                     : BackupHistoryDateRange.All;
                 if (string.Equals(backupHistoryRange, normalized, StringComparison.Ordinal)) return;
+                ClearBackupCalendarSelection();
 
                 backupHistoryRange = normalized;
                 ResetBackupHistorySearch();
@@ -86,13 +89,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         }
 
         public bool BackupHistoryHasActiveRange
-            => !string.Equals(BackupHistoryRange, BackupHistoryDateRange.All, StringComparison.Ordinal);
+            => backupHistoryCalendarDay.HasValue || !string.Equals(BackupHistoryRange, BackupHistoryDateRange.All, StringComparison.Ordinal);
 
         public string BackupHistoryRangeSummary
         {
             get
             {
                 if (!string.IsNullOrEmpty(backupSearchStatus)) return backupSearchStatus;
+                if (backupHistoryCalendarDay.HasValue && backupSearchPage != null)
+                    return $"本地日期 {backupHistoryCalendarDay:yyyy-MM-dd} · 显示 {backupSearchResults.Count}/{backupSearchPage.TotalCount} 个版本";
                 if (backupSearchPage != null)
                     return $"全部历史搜索“{TruncateSearchSummary(BackupHistorySearchText.Trim())}” · 显示 {backupSearchResults.Count}/{backupSearchPage.TotalCount} 个匹配版本";
 
@@ -123,6 +128,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             InitializeBackupCoverCommands();
             InitializeMediaBackupLinksCommands();
+            InitializeHistoryComparisonCommands();
+            InitializeBackupCalendarCommands();
             pendingBackupArrivals = Array.Empty<BackupVersionDto>();
             recentBackupArrivals = Array.Empty<BackupVersionDto>();
             loadedBackupHistoryView = new CollectionViewSource { Source = Backups }.View;
@@ -158,6 +165,9 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (!(item is BackupVersionDto backup)
                 || !BackupHistoryDateRange.Matches(backup, BackupHistoryRange, DateTime.Now))
+                return false;
+            if (backupHistoryCalendarDay.HasValue && (backup.CreatedUtc == DateTime.MinValue
+                || BackupHistoryDateRange.ConvertUtcToLocal(backup.CreatedUtc, TimeZoneInfo.Local).Date != backupHistoryCalendarDay.Value))
                 return false;
 
             var search = BackupHistorySearchText.Trim();
@@ -197,6 +207,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var request = backupSearchRequest;
             backupSearchRequest = null;
+            backupSearchGameId = null;
             request?.Cancel();
             var hadResults = backupSearchPage != null;
             backupSearchPage = null;
@@ -215,14 +226,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var gameId = SelectedGame?.PlayniteId;
             var term = BackupHistorySearchText.Trim();
-            if (string.IsNullOrWhiteSpace(gameId) || term.Length == 0) return;
+            if (string.IsNullOrWhiteSpace(gameId) || (term.Length == 0 && !backupHistoryCalendarDay.HasValue)) return;
 
             backupSearchRequest?.Cancel();
             using var request = new CancellationTokenSource();
             backupSearchRequest = request;
+            backupSearchGameId = gameId;
             var cursor = loadMore ? backupSearchPage : null;
-            var bounds = loadMore ? backupSearchBounds : BackupHistoryDateRange.GetUtcBounds(BackupHistoryRange, DateTime.Now);
-            backupSearchStatus = loadMore ? "正在加载更多匹配版本…" : "正在搜索当前游戏的全部历史…";
+            (DateTime? FromUtc, DateTime? BeforeUtc) bounds = loadMore ? backupSearchBounds : backupHistoryCalendarDay.HasValue
+                ? ((DateTime?)backupHistoryCalendarDay.Value.ToUniversalTime(), (DateTime?)backupHistoryCalendarDay.Value.AddDays(1).ToUniversalTime())
+                : BackupHistoryDateRange.GetUtcBounds(BackupHistoryRange, DateTime.Now);
+            backupSearchStatus = loadMore ? "正在加载更多匹配版本…" : "正在读取匹配的历史版本…";
             OnPropertyChanged(nameof(BackupHistoryRangeSummary));
             RaiseCommandStates();
             try
@@ -289,6 +303,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void ClearBackupHistoryRange()
         {
+            ClearBackupCalendarSelection();
             BackupHistoryRange = BackupHistoryDateRange.All;
             StatusMessage = "已清空历史日期范围，恢复显示全部版本。";
         }

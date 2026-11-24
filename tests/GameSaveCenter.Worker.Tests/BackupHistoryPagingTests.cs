@@ -124,6 +124,57 @@ public sealed class BackupHistoryPagingTests : IDisposable
             "game-1", 10, null, null, token, "VERSION-", timestamp, timestamp.AddDays(1));
         Assert.Equal(3, byId.TotalCount);
         Assert.Equal("version-0902", byId.Items.Last().BackupId);
+        var exact = await store.GetBackupVersionPageAsync("game-1", 100, null, null, token, exactBackupId: "version-0901");
+        Assert.Equal("version-0901", Assert.Single(exact.Items).BackupId);
+        Assert.Empty((await store.GetBackupVersionPageAsync(
+            "game-2", 100, null, null, token, exactBackupId: "version-0901")).Items);
+    }
+
+    [Fact]
+    public async Task CalendarUsesLocalDayBoundariesAndCountsOnlyTheRequestedGame()
+    {
+        Directory.CreateDirectory(root);
+        var store = new SqliteStateStore(new WorkerOptions
+        {
+            DataDirectory = Path.Combine(root, "state"),
+            LudusaviBackupDirectory = Path.Combine(root, "saves"),
+            MediaArchiveDirectory = Path.Combine(root, "media")
+        }, NullLogger<SqliteStateStore>.Instance);
+        var token = CancellationToken.None;
+        await store.InitializeAsync(token);
+        var localMonthStartUtc = new DateTime(2026, 10, 31, 16, 0, 0, DateTimeKind.Utc);
+        var dates = new[]
+        {
+            localMonthStartUtc.AddTicks(-1), localMonthStartUtc,
+            localMonthStartUtc.AddDays(1).AddTicks(-1), localMonthStartUtc.AddDays(1),
+            localMonthStartUtc.AddDays(30).AddTicks(-1), localMonthStartUtc.AddDays(30)
+        };
+        for (var index = 0; index < dates.Length; index++)
+            await store.AddBackupVersionAsync(new BackupVersionDto
+            {
+                PlayniteId = "calendar-game",
+                BackupId = $"save-{index}",
+                LudusaviName = "Demo",
+                CreatedUtc = dates[index]
+            }, "[]", token);
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "another-game",
+            BackupId = "save-1",
+            LudusaviName = "Demo",
+            CreatedUtc = localMonthStartUtc
+        }, "[]", token);
+
+        var counts = await store.GetBackupCalendarAsync(new BackupCalendarQueryDto
+        {
+            PlayniteId = "calendar-game",
+            UtcDayBoundaries = Enumerable.Range(0, 31).Select(day => localMonthStartUtc.AddDays(day)).ToList()
+        }, token);
+        Assert.Equal(new[] { 1, 2, 30 }, counts.Select(entry => entry.Day));
+        Assert.Equal(new[] { 2, 1, 1 }, counts.Select(entry => entry.Count));
+        var firstDay = await store.GetBackupVersionPageAsync("calendar-game", 100, null, null, token,
+            createdFromUtc: localMonthStartUtc, createdBeforeUtc: localMonthStartUtc.AddDays(1));
+        Assert.Equal(new[] { "save-2", "save-1" }, firstDay.Items.Select(item => item.BackupId));
     }
 
     private static string Manifest(string path, string hash)

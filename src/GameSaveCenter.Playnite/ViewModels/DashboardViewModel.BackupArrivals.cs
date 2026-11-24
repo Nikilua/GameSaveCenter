@@ -57,6 +57,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (!HasPendingBackupArrivals) return null;
             var arrivals = pendingBackupArrivals;
             SetPendingBackupArrivals(Array.Empty<BackupVersionDto>());
+            ClearBackupCalendarSelection();
             BackupHistorySearchText = string.Empty;
             BackupHistoryRange = BackupHistoryDateRange.All;
             InsertBackupArrivals(arrivals);

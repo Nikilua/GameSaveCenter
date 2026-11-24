@@ -87,6 +87,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.BackupAll=>await _backup.SubmitAllAsync(ReadCorrelated<BackupRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListBackups=>await ListBackupsAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListBackupHistoryPage=>await ListBackupHistoryPageAsync(Read<BackupHistoryPageQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.GetBackupCalendar=>await _store.GetBackupCalendarAsync(Read<BackupCalendarQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.CompareBackups=>await CompareBackupsAsync(Read<BackupCompareRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewRetention=>await PreviewRetentionAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateBackupMetadata=>await UpdateMetadataAsync(Read<BackupMetadataUpdateDto>(request),token).ConfigureAwait(false),
@@ -328,10 +329,12 @@ public sealed class IpcRequestDispatcher
     {
         if (string.IsNullOrWhiteSpace(query.PlayniteId)) return new BackupVersionPageDto();
 
-        if (!string.IsNullOrWhiteSpace(query.SearchText))
+        if (!string.IsNullOrWhiteSpace(query.SearchText) || !string.IsNullOrWhiteSpace(query.ExactBackupId)
+            || query.CreatedFromUtc.HasValue || query.CreatedBeforeUtc.HasValue)
             return await _store.GetBackupVersionPageAsync(
                 query.PlayniteId, query.Limit, query.BeforeCreatedUtcKey, query.BeforeBackupId, token,
-                query.SearchText, query.CreatedFromUtc, query.CreatedBeforeUtc).ConfigureAwait(false);
+                query.SearchText, query.CreatedFromUtc, query.CreatedBeforeUtc,
+                exactBackupId: query.ExactBackupId).ConfigureAwait(false);
 
         var page = await _store.GetBackupVersionPageAsync(
             query.PlayniteId,

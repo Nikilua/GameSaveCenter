@@ -1284,6 +1284,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 {
                     CancelDetailsLoad();
                     ResetBackupHistorySearch();
+                    ResetBackupCalendar();
                     if (currentWorkspace == WorkspaceKind.Saves) ResetBackupCover();
                 }
                 if (currentWorkspace == WorkspaceKind.Maintenance && value != WorkspaceKind.Maintenance)
@@ -1434,9 +1435,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 if (!sameBackup) ResetRestorePlanMappingPreview();
                 RefreshSelectedBackupLineage();
-                if (!sameBackup || !IsBackupInCurrentCollection(CompareLeftBackup) || !IsBackupInCurrentCollection(CompareRightBackup))
+                if (!sameBackup) ResetRestoreWorkflow();
+                if (!HasPinnedHistoryComparison && (!sameBackup || !IsBackupInCurrentCollection(CompareLeftBackup) || !IsBackupInCurrentCollection(CompareRightBackup)))
                 {
-                    ResetRestoreWorkflow();
+                    if (sameBackup) ResetRestoreWorkflow();
                     ClearBackupComparison();
                     SetDefaultComparisonSelection(value);
                 }
@@ -5324,6 +5326,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             var gameId = SelectedGame?.PlayniteId ?? throw new InvalidOperationException("请先选择游戏。");
             var leftBackupId = leftBackup.BackupId;
             var rightBackupId = rightBackup.BackupId;
+            if (!await VerifyPinnedHistoryComparisonAsync(gameId, leftBackupId, rightBackupId)) return;
             var comparedSummary = BuildComparisonSummary(leftBackup, rightBackup);
             var diff = await plugin.RequestAsync<BackupDiffDto>(MessageTypes.CompareBackups,
                 new BackupCompareRequestDto { PlayniteId = gameId, LeftBackupId = leftBackupId, RightBackupId = rightBackupId });
@@ -5378,6 +5381,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             if (LastBackupDiff != null) ClearBackupComparison();
             CompareSelectionSummary = BuildComparisonSelectionSummary(CompareLeftBackup, CompareRightBackup);
             OnPropertyChanged(nameof(CompareSelectionSummaryFullDisplay));
+            OnPropertyChanged(nameof(PinnedHistoryComparisonSummary));
             OnPropertyChanged(nameof(DiffComparedSummaryFullDisplay));
             OnPropertyChanged(nameof(CanCompareSelectedBackups));
             RaiseCommandStates();
@@ -6306,6 +6310,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             // duplicate IPC requests for the same game.
             if (!string.Equals(e.PropertyName, nameof(GamePickerViewModel.SelectedItem), StringComparison.Ordinal)) return;
             var selected = gamePicker.SelectedGame;
+            if (pinnedHistoryGameId != null && !string.Equals(pinnedHistoryGameId, selected?.PlayniteId, StringComparison.OrdinalIgnoreCase))
+                ClearHistoryComparisonPins(restoreDefault: false);
+            if (backupSearchGameId != null && !string.Equals(backupSearchGameId, selected?.PlayniteId, StringComparison.OrdinalIgnoreCase))
+                ResetBackupHistorySearch();
             RecordRecentAccess();
             if (selected != null && !string.Equals(GameDiagnosticPlayniteId, selected.PlayniteId, StringComparison.OrdinalIgnoreCase))
                 GameDiagnosticPlayniteId = selected.PlayniteId;
@@ -6642,6 +6650,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 InvalidateMediaDetailsContext();
                 ResetBackupHistorySearch();
+                ResetBackupCalendar();
+                ClearHistoryComparisonPins(restoreDefault: false);
                 ResetBackupArrivals();
                 ResetSaveDetailsState();
                 Backups.Clear();
@@ -6701,6 +6711,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 LoadMoreBackupHistoryCommand, SearchAllBackupHistoryCommand, ChooseBackupCoverCommand,
                 LoadMoreBackupCoverCandidatesCommand, SetBackupCoverCommand, ClearBackupCoverCommand,
                 ListMediaBackupLinksCommand, LoadMoreMediaBackupLinksCommand, OpenMediaLinkedBackupCommand, ClearLinkedBackupFocusCommand,
+                PinHistoryComparisonACommand, PinHistoryComparisonBCommand, ClearHistoryComparisonPinsCommand, OpenPinnedHistoryComparisonCommand,
+                ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,

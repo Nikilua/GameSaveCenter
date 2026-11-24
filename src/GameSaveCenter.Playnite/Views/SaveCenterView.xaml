@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Redesign.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <infra:BackupArrivalVisibilityConverter x:Key="SaveArrivalsVisibility"/>
+            <BooleanToVisibilityConverter x:Key="SaveCalendarVisibility"/>
 <Style x:Key="SaveDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"/>
             <Style x:Key="SaveTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="SaveLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
@@ -150,6 +151,24 @@
                                             <TextBlock Text="{Binding SelectedGame.MatchStateDisplay, Mode=OneWay, TargetNullValue=当前规则未匹配}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" ToolTip="{Binding SelectedGame.IdentityDisplay, Mode=OneWay}"/>
                                         </StackPanel>
                                         <TextBlock Text="{Binding BackupHistoryRangeSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,4,0,0" TextWrapping="Wrap" AutomationProperties.HelpText="历史版本日期范围和可见数量"/>
+                                        <StackPanel Margin="0,4,0,0">
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasPinnedHistoryComparison}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                            <TextBlock Text="{Binding PinnedHistoryComparisonSummary}" ToolTip="{Binding CompareSelectionSummaryFullDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                            <WrapPanel Margin="0,6,0,0">
+                                                <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="查看 A/B 差异" Command="{Binding OpenPinnedHistoryComparisonCommand}" Margin="0,0,6,4"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="交换 A/B" Command="{Binding SwapCompareBackupCommand}" Margin="0,0,6,4"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="清空 A/B" Command="{Binding ClearHistoryComparisonPinsCommand}" Margin="0,0,0,4"/>
+                                            </WrapPanel>
+                                        </StackPanel>
                                         <Border x:Name="SaveDetailsStaleBanner" Padding="8" Margin="0,8,0,0">
                                             <Border.Style>
                                                 <Style TargetType="Border" BasedOn="{StaticResource GscDiagnosticHintBubble}">
@@ -226,6 +245,7 @@
                                         </ui:Button>
                                     </WrapPanel>
                                     <Border x:Name="SaveHistoryToolbarSurface" Grid.Row="2" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="{StaticResource GscHairlineThickness}" CornerRadius="10" Padding="8" Margin="0,8,0,0">
+                                        <StackPanel>
                                         <WrapPanel x:Name="SaveHistoryToolbarActions" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                                             <Grid x:Name="SaveHistorySearchBoxHost" Width="196" MinWidth="150" Margin="0,0,8,6">
                                                 <TextBox x:Name="SaveHistorySearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupHistorySearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="120" Padding="30,4,34,4" ToolTip="输入时筛选已载入版本。按 Enter 搜索当前游戏全部历史的名称、备注、设备、系统或版本 ID。" AutomationProperties.Name="搜索存档历史" PreviewKeyDown="OnSaveHistorySearchPreviewKeyDown"/>
@@ -251,6 +271,8 @@
                                                 </Button>
                                             </Grid>
                                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="搜索全部历史" Command="{Binding SearchAllBackupHistoryCommand}" Margin="0,0,8,6"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="设为 A" Command="{Binding PinHistoryComparisonACommand}" Margin="0,0,8,6" AutomationProperties.Name="将所选版本设为 A 比较基准"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="设为 B" Command="{Binding PinHistoryComparisonBCommand}" Margin="0,0,8,6" AutomationProperties.Name="将所选版本设为 B 比较对照"/>
                                             <ui:Button Content="显示历史列表" Command="{Binding ClearLinkedBackupFocusCommand}" Margin="0,0,8,6">
                                                 <ui:Button.Style>
                                                     <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiCompactButton}">
@@ -267,6 +289,7 @@
                                                 <TextBlock Text="范围" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                                 <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupHistoryRangeOptions}" SelectedItem="{Binding BackupHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="108" ToolTip="按本地日历日期筛选历史版本；今天/昨天不按固定 24 小时计算。" AutomationProperties.Name="历史版本日期范围"/>
                                             </StackPanel>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="日历" Command="{Binding ToggleBackupCalendarCommand}" Margin="0,0,8,6" AutomationProperties.Name="按日历查看存档历史"/>
                                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="清空范围" Command="{Binding ClearBackupHistoryRangeCommand}" Margin="0,0,8,6" ToolTip="恢复显示全部历史版本" AutomationProperties.Name="清空历史版本日期范围"/>
                                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="最近版本" Command="{Binding JumpToRecentBackupCommand}" Margin="0,0,8,6" ToolTip="选择当前日期范围内最新的版本" AutomationProperties.Name="跳到最近历史版本"/>
                                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="较早版本" Command="{Binding JumpToEarlierBackupCommand}" Margin="0,0,8,6" ToolTip="选择当前已载入日期范围内最早的版本" AutomationProperties.Name="跳到较早历史版本"/>
@@ -286,6 +309,57 @@
                                             </WrapPanel>
                                         </Expander>
                                         </WrapPanel>
+                                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="8" Margin="0,4,0,0" HorizontalAlignment="Left" MaxWidth="320">
+                                            <Border.Visibility>
+                                                <Binding Path="IsBackupCalendarOpen" Converter="{StaticResource SaveCalendarVisibility}"/>
+                                            </Border.Visibility>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <DockPanel Margin="0,0,0,6">
+                                                    <ui:Button DockPanel.Dock="Left" Style="{DynamicResource GscWpfUiCompactButton}" Content="‹" Command="{Binding PreviousBackupCalendarMonthCommand}" MinWidth="36" AutomationProperties.Name="日历上一个月"/>
+                                                    <ui:Button DockPanel.Dock="Right" Style="{DynamicResource GscWpfUiCompactButton}" Content="›" Command="{Binding NextBackupCalendarMonthCommand}" MinWidth="36" AutomationProperties.Name="日历下一个月"/>
+                                                    <TextBlock Text="{Binding BackupCalendarMonthLabel}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8,0"/>
+                                                </DockPanel>
+                                                <UniformGrid Grid.Row="1" Columns="7">
+                                                    <TextBlock Text="一" TextAlignment="Center"/><TextBlock Text="二" TextAlignment="Center"/>
+                                                    <TextBlock Text="三" TextAlignment="Center"/><TextBlock Text="四" TextAlignment="Center"/>
+                                                    <TextBlock Text="五" TextAlignment="Center"/><TextBlock Text="六" TextAlignment="Center"/>
+                                                    <TextBlock Text="日" TextAlignment="Center"/>
+                                                </UniformGrid>
+                                                <ItemsControl Grid.Row="2" ItemsSource="{Binding BackupCalendarDays}" AutomationProperties.Name="当月日期" KeyboardNavigation.DirectionalNavigation="Contained">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate><UniformGrid Columns="7"/></ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <ui:Button MinWidth="0" MinHeight="38" Padding="2" Margin="1"
+                                                                       Command="{Binding DataContext.SelectBackupCalendarDayCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                       CommandParameter="{Binding}" AutomationProperties.Name="{Binding AccessibleLabel}">
+                                                                <ui:Button.Style>
+                                                                    <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiCompactButton}">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding Date}" Value="{x:Null}">
+                                                                                <Setter Property="Visibility" Value="Hidden"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </ui:Button.Style>
+                                                                <Grid>
+                                                                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                                                                    <TextBlock Text="{Binding DayLabel}" TextAlignment="Center"/>
+                                                                    <TextBlock Grid.Row="1" Text="{Binding CountLabel}" TextAlignment="Center" Foreground="{DynamicResource GscAccentBrush}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                                </Grid>
+                                                            </ui:Button>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <TextBlock Grid.Row="3" Text="{Binding BackupCalendarStatus}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            </Grid>
+                                        </Border>
+                                        </StackPanel>
                                     </Border>
                                 </Grid>
                             </Border>
@@ -1036,7 +1110,7 @@
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0" MinWidth="0">
                                         <TextBlock Text="A · 基准版本" Style="{DynamicResource GscCaptionStyle}"/>
-                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Backups}" SelectedItem="{Binding CompareLeftBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="A 是比较基准；B 中新增的文件会显示为新增。" AutomationProperties.Name="选择 A 基准版本" Margin="0,4,0,0">
+                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding HistoryComparisonChoices}" SelectedItem="{Binding CompareLeftBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="A 是比较基准；B 中新增的文件会显示为新增。" AutomationProperties.Name="选择 A 基准版本" Margin="0,4,0,0">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding ComparisonRelativeDisplay, Mode=OneWay}" ToolTip="{Binding ComparisonFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding ComparisonFullDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
@@ -1046,7 +1120,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" MinWidth="0">
                                         <TextBlock Text="B · 对照版本" Style="{DynamicResource GscCaptionStyle}"/>
-                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding Backups}" SelectedItem="{Binding CompareRightBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="B 是比较对照；A 中有而 B 中没有的文件会显示为删除。" AutomationProperties.Name="选择 B 对照版本" Margin="0,4,0,0">
+                                        <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding HistoryComparisonChoices}" SelectedItem="{Binding CompareRightBackup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="B 是比较对照；A 中有而 B 中没有的文件会显示为删除。" AutomationProperties.Name="选择 B 对照版本" Margin="0,4,0,0">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding ComparisonRelativeDisplay, Mode=OneWay}" ToolTip="{Binding ComparisonFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding ComparisonFullDisplay, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>

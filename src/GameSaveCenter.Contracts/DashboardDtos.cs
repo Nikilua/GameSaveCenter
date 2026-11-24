@@ -204,6 +204,7 @@ namespace GameSaveCenter.Contracts
     {
         public string PlayniteId { get; set; } = string.Empty;
         public string SearchText { get; set; } = string.Empty;
+        public string ExactBackupId { get; set; } = string.Empty;
         public DateTime? CreatedFromUtc { get; set; }
         public DateTime? CreatedBeforeUtc { get; set; }
         public int Limit { get; set; } = 100;
