@@ -13,6 +13,7 @@
                 <!-- Redesign already merges WpfUiProduction and its component dictionaries. -->
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/Redesign.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <infra:BackupArrivalVisibilityConverter x:Key="SaveArrivalsVisibility"/>
 <Style x:Key="SaveDataGrid" TargetType="DataGrid" BasedOn="{StaticResource GscRedesignWorkspaceDataGrid}"/>
             <Style x:Key="SaveTableFrame" TargetType="Border" BasedOn="{StaticResource GscRedesignTableFrame}"/>
             <Style x:Key="SaveLongText" TargetType="TextBlock"><Setter Property="TextTrimming" Value="CharacterEllipsis"/><Setter Property="TextWrapping" Value="NoWrap"/><Setter Property="ToolTip" Value="{Binding Text, RelativeSource={RelativeSource Self}}"/></Style>
@@ -281,9 +282,19 @@
                                 <DataGridTemplateColumn x:Name="SaveHistoryTypeColumn" Header="类型" Width="124" MinWidth="104">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Style="{DynamicResource GscRedesignTableStatusPill}" BorderBrush="{DynamicResource GscAccentTintStrongBrush}">
-                                                <TextBlock Text="{Binding BackupTypeDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold"/>
-                                            </Border>
+                                            <DockPanel>
+                                                <TextBlock DockPanel.Dock="Right" Text="新" AutomationProperties.Name="新版本" Foreground="{DynamicResource GscAccentBrush}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="4,0,0,0">
+                                                    <TextBlock.Visibility>
+                                                        <MultiBinding Converter="{StaticResource SaveArrivalsVisibility}" Mode="OneWay">
+                                                            <Binding/>
+                                                            <Binding Path="DataContext.RecentBackupArrivals" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Visibility>
+                                                </TextBlock>
+                                                <Border Style="{DynamicResource GscRedesignTableStatusPill}" BorderBrush="{DynamicResource GscAccentTintStrongBrush}">
+                                                    <TextBlock Text="{Binding BackupTypeDisplay, Mode=OneWay}" Foreground="{DynamicResource GscAccentBrush}" FontSize="{DynamicResource GscCaptionFontSize}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" ToolTip="{Binding BackupTypeDisplay}"/>
+                                                </Border>
+                                            </DockPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -333,6 +344,20 @@
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
                             </DataGrid>
+                            <ui:Button x:Name="SaveHistoryArrivalsButton" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="12,0,24,18"
+                                       Content="{Binding PendingBackupArrivalText}" AutomationProperties.Name="{Binding PendingBackupArrivalText}"
+                                       ToolTip="清空筛选并跳到最新到达的版本" Click="OnRevealBackupArrivalsClick">
+                                <ui:Button.Style>
+                                    <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiCompactButton}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasPendingBackupArrivals}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:Button.Style>
+                            </ui:Button>
                             <TextBlock x:Name="SaveHistoryEmptyStateText" Grid.Row="1" Text="暂无存档历史&#xA;完成一次备份后，历史版本会显示在这里。" IsHitTestVisible="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource GscEmptyStateText}">

@@ -25,6 +25,107 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R11HistoryTimeNavigationBehaviorTests
 {
     [Fact]
+    public void ArrivalAtTheTopInsertsOnceWithoutResettingExistingRows()
+    {
+        RunSta(() =>
+        {
+            var now = DateTime.UtcNow;
+            var oldHead = Backup("old", now.AddMinutes(-1));
+            var newHead = Backup("new", now);
+            var model = CreateBareDashboardViewModel(oldHead);
+            SetField(model, "selectedBackup", oldHead);
+            var notifications = new List<System.Collections.Specialized.NotifyCollectionChangedAction>();
+            model.Backups.CollectionChanged += (_, e) => notifications.Add(e.Action);
+            var page = new BackupVersionPageDto
+            {
+                Items = new List<BackupVersionDto> { newHead, oldHead },
+                TotalCount = 2
+            };
+            var apply = typeof(DashboardViewModel).GetMethod("ApplyBackupArrivalPage", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
+            Assert.True((bool)apply.Invoke(model, new object[] { page })!);
+            Assert.True((bool)apply.Invoke(model, new object[] { page })!);
+            Assert.Equal(new[] { newHead, oldHead }, model.Backups);
+            Assert.Equal(System.Collections.Specialized.NotifyCollectionChangedAction.Add, Assert.Single(notifications));
+            Assert.Same(oldHead, model.SelectedBackup);
+            Assert.Same(newHead, Assert.Single(model.RecentBackupArrivals));
+            Assert.False(model.HasPendingBackupArrivals);
+        });
+    }
+
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void NewVersionsWaitOutsideTheViewportAndRevealTogetherOnlyOnRequest(GameSaveCenterThemeMode theme)
+    {
+        RunSta(() =>
+        {
+            var now = DateTime.UtcNow;
+            var initial = Enumerable.Range(1, 40).Select(day => Backup($"old-{day}", now.AddDays(-day))).ToArray();
+            var first = Backup("new-1", now.AddMinutes(-1));
+            var second = Backup("new-2", now);
+            var model = CreateBareDashboardViewModel(initial);
+            SetField(model, "selectedBackup", initial[15]);
+            var view = new SaveCenterView
+            {
+                DataContext = model,
+                PreferencePersistenceOverrideForBehaviorTest = () => { },
+                SystemMotionEnabledProviderForBehaviorTest = () => false
+            };
+            var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(view, true, 78, theme, false);
+            AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: false);
+            var window = new Window { Width = 980, Height = 640, Content = view, ShowInTaskbar = false };
+            var apply = typeof(DashboardViewModel).GetMethod("ApplyBackupArrivalPage", BindingFlags.Instance | BindingFlags.NonPublic)!;
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+                view.ApplyResponsiveLayout(view.ActualWidth, view.ActualHeight);
+                PumpLayout(window);
+                var history = FindVisualChildren<DataGrid>(view).Single(grid => grid.Name == "SaveHistoryGrid");
+                var scroll = (ScrollViewer)history.Template.FindName("DG_ScrollViewer", history);
+                history.ScrollIntoView(initial[30]);
+                PumpLayout(window);
+                Assert.True(scroll.VerticalOffset > 0, $"History viewport={scroll.ViewportHeight}, extent={scroll.ExtentHeight}");
+                Assert.True(model.IsReadingOlderBackups, "The history view must report that older rows are visible.");
+                FocusManager.SetFocusedElement(window, history);
+                var offset = scroll.VerticalOffset;
+                var currency = history.CurrentItem;
+                var focus = Keyboard.FocusedElement;
+                var firstPage = new BackupVersionPageDto { Items = new[] { first }.Concat(initial).ToList(), TotalCount = 41 };
+                var secondPage = new BackupVersionPageDto { Items = new[] { second, first }.Concat(initial).ToList(), TotalCount = 42 };
+                Assert.True((bool)apply.Invoke(model, new object[] { firstPage })!);
+                Assert.True((bool)apply.Invoke(model, new object[] { secondPage })!);
+                Assert.True((bool)apply.Invoke(model, new object[] { secondPage })!);
+                PumpLayout(window);
+                Assert.Equal("有 2 个新版本", model.PendingBackupArrivalText);
+                Assert.Equal(offset, scroll.VerticalOffset);
+                Assert.Same(initial[15], history.SelectedItem);
+                Assert.Same(currency, history.CurrentItem);
+                Assert.Same(focus, Keyboard.FocusedElement);
+                Assert.Same(history, FocusManager.GetFocusedElement(window));
+                Assert.Equal(40, history.Items.Count);
+
+                var reveal = FindVisualChildren<ButtonBase>(view).Single(button => button.Name == "SaveHistoryArrivalsButton");
+                Assert.True(reveal.IsVisible);
+                InvokeClick(reveal);
+                PumpLayout(window);
+                Assert.Same(second, history.SelectedItem);
+                Assert.Same(second, history.CurrentItem);
+                Assert.Equal(42, history.Items.Count);
+                Assert.False(model.HasPendingBackupArrivals);
+                Assert.Contains(second, model.RecentBackupArrivals);
+                Assert.Contains(first, model.RecentBackupArrivals);
+                Assert.Contains(FindVisualChildren<TextBlock>(history),
+                    label => label.IsVisible && AutomationProperties.GetName(label) == "新版本");
+                Assert.True((bool)apply.Invoke(model, new object[] { secondPage })!);
+                Assert.False(model.HasPendingBackupArrivals);
+            }
+            finally { window.Close(); }
+        });
+    }
+
+    [Fact]
     public void LocalCalendarRangesHandleTodayYesterdayAndUnknownDates()
     {
         var localNow = DateTime.SpecifyKind(new DateTime(2026, 11, 1, 12, 0, 0), DateTimeKind.Local);

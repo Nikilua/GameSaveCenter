@@ -121,6 +121,8 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         partial void OnBackupHistoryInitialize()
         {
+            pendingBackupArrivals = Array.Empty<BackupVersionDto>();
+            recentBackupArrivals = Array.Empty<BackupVersionDto>();
             loadedBackupHistoryView = new CollectionViewSource { Source = Backups }.View;
             loadedBackupHistoryView.Filter = FilterBackupHistory;
             backupSearchResults = new BatchObservableCollection<BackupVersionDto>();

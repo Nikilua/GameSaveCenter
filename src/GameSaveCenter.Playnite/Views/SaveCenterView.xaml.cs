@@ -1,8 +1,12 @@
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using GameSaveCenter.Playnite.Infrastructure;
 using GameSaveCenter.Playnite.ViewModels;
 
@@ -32,6 +36,7 @@ namespace GameSaveCenter.Playnite.Views
         private DataGridViewConfigurationController? candidateViewConfiguration;
         private readonly WrapPanelRowGapController historyActionRowGap;
         private readonly WrapPanelRowGapController historyToolbarRowGap;
+        private DashboardViewModel? backupArrivalModel;
 
         internal Action? PreferencePersistenceOverrideForBehaviorTest { get; set; }
         internal Func<bool>? SystemMotionEnabledProviderForBehaviorTest { get; set; }
@@ -47,6 +52,12 @@ namespace GameSaveCenter.Playnite.Views
             SaveHistoryActionsScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveCandidateInspectorScrollViewer.IsVisibleChanged += InspectorIsVisibleChanged;
             SaveHistoryPageScrollViewer.ScrollChanged += PageScrollViewerChanged;
+            SaveHistoryPageScrollViewer.ScrollChanged += OnBackupHistoryViewportChanged;
+            SaveHistoryGrid.IsVisibleChanged += (_, _) => UpdateBackupHistoryReadingPosition();
+            SaveHistoryGrid.UnloadingRow += (_, e) =>
+            {
+                if (e.Row.HasAnimatedProperties) e.Row.BeginAnimation(Control.BackgroundProperty, null);
+            };
             SaveCandidatePageScrollViewer.ScrollChanged += PageScrollViewerChanged;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -62,6 +73,7 @@ namespace GameSaveCenter.Playnite.Views
             GscMotion.Normalize(SaveHistoryInspectorFrame);
             GscMotion.Normalize(SaveCandidateInspectorFrame);
             AttachColumnLayouts();
+            AttachBackupArrivalModel();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -69,6 +81,7 @@ namespace GameSaveCenter.Playnite.Views
             CancelHistoryInspectorTransition();
             CancelCandidateInspectorTransition();
             DetachColumnLayouts();
+            DetachBackupArrivalModel();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -78,6 +91,73 @@ namespace GameSaveCenter.Playnite.Views
             if (!(DataContext is DashboardViewModel))
                 SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty, new Binding("Backups"));
             AttachColumnLayouts();
+            AttachBackupArrivalModel();
+        }
+
+        private void AttachBackupArrivalModel()
+        {
+            DetachBackupArrivalModel();
+            backupArrivalModel = DataContext as DashboardViewModel;
+            if (backupArrivalModel == null) return;
+            backupArrivalModel.PropertyChanged += OnBackupArrivalModelChanged;
+            UpdateBackupHistoryReadingPosition();
+        }
+
+        private void DetachBackupArrivalModel()
+        {
+            if (backupArrivalModel == null) return;
+            backupArrivalModel.PropertyChanged -= OnBackupArrivalModelChanged;
+            backupArrivalModel.IsReadingOlderBackups = true;
+            backupArrivalModel = null;
+        }
+
+        private void OnBackupHistoryViewportChanged(object sender, ScrollChangedEventArgs e)
+            => UpdateBackupHistoryReadingPosition();
+
+        private void UpdateBackupHistoryReadingPosition()
+        {
+            if (backupArrivalModel == null) return;
+            var gridScroll = SaveHistoryGrid.Template?.FindName("DG_ScrollViewer", SaveHistoryGrid) as ScrollViewer;
+            backupArrivalModel.IsReadingOlderBackups = !SaveHistoryGrid.IsVisible
+                || (gridScroll?.VerticalOffset ?? 0) > 0
+                || (SaveHistoryGrid.SelectedItem != null && SaveHistoryGrid.Items.Count > 0
+                    && !ReferenceEquals(SaveHistoryGrid.SelectedItem, SaveHistoryGrid.Items[0]))
+                || (SaveHistoryPageScrollViewer.IsAncestorOf(SaveHistoryGrid)
+                    && SaveHistoryGrid.TranslatePoint(new Point(), SaveHistoryPageScrollViewer).Y < 0);
+        }
+
+        private void OnBackupArrivalModelChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(DashboardViewModel.RecentBackupArrivals)
+                || backupArrivalModel == null || !SaveHistoryGrid.IsVisible || !IsInspectorMotionEnabled) return;
+            var arrivals = backupArrivalModel.RecentBackupArrivals;
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                if (!IsLoaded || !SaveHistoryGrid.IsVisible || !IsInspectorMotionEnabled
+                    || !ReferenceEquals(arrivals, backupArrivalModel?.RecentBackupArrivals)
+                    || TryFindResource("GscAccentTintBrush") is not Brush highlight) return;
+                foreach (var arrival in arrivals)
+                {
+                    if (SaveHistoryGrid.ItemContainerGenerator.ContainerFromItem(arrival) is not DataGridRow row) continue;
+                    var flash = new ObjectAnimationUsingKeyFrames
+                    {
+                        Duration = GscMotion.Slow,
+                        FillBehavior = FillBehavior.Stop
+                    };
+                    flash.KeyFrames.Add(new DiscreteObjectKeyFrame(highlight, KeyTime.FromTimeSpan(TimeSpan.Zero)));
+                    row.BeginAnimation(Control.BackgroundProperty, flash);
+                }
+            }));
+        }
+
+        private void OnRevealBackupArrivalsClick(object sender, RoutedEventArgs e)
+        {
+            var target = backupArrivalModel?.RevealBackupArrivals();
+            if (target == null) return;
+            SaveHistoryGrid.ScrollIntoView(target);
+            SaveHistoryGrid.CurrentItem = target;
+            SaveHistoryGrid.Focus();
+            e.Handled = true;
         }
 
         private void AttachColumnLayouts()
@@ -497,6 +577,7 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnSaveHistorySelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            UpdateBackupHistoryReadingPosition();
             historyInspectorOpen = false;
             CancelHistoryInspectorTransition();
             if (IsLoaded && responsiveWidth > 0 && responsiveHeight > 0)

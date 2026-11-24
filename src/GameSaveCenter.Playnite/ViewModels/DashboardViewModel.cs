@@ -4134,12 +4134,17 @@ namespace GameSaveCenter.Playnite.ViewModels
                             var selectedBackupId = SelectedBackup?.BackupId;
                             var selectedCandidateBeforeRefresh = SelectedCandidate;
                             var selectedCandidateIndex = SelectedCandidate == null ? -1 : SaveCandidates.IndexOf(SelectedCandidate);
-                            if (forceBackupHistory || !string.IsNullOrWhiteSpace(pendingTaskBackupId)
+                            var isExplicitHistoryReload = forceBackupHistory || !string.IsNullOrWhiteSpace(pendingTaskBackupId)
                                 || !string.IsNullOrWhiteSpace(pendingFindingBackupId)
-                                || !string.IsNullOrWhiteSpace(pendingStorageBackupId))
-                                ResetBackupHistorySearch();
-                            Replace(Backups, backupsTask.Result.Items, SnapshotComparers.Backup);
-                            SetBackupHistoryPageState(backupsTask.Result);
+                                || !string.IsNullOrWhiteSpace(pendingStorageBackupId);
+                            if (isExplicitHistoryReload) ResetBackupHistorySearch();
+                            var retainedHistory = !isExplicitHistoryReload && ApplyBackupArrivalPage(backupsTask.Result);
+                            if (!retainedHistory)
+                            {
+                                ResetBackupArrivals();
+                                Replace(Backups, backupsTask.Result.Items, SnapshotComparers.Backup);
+                                SetBackupHistoryPageState(backupsTask.Result);
+                            }
                             Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
                             var requestedTaskBackupId = pendingTaskBackupId;
                             var requestedFindingBackupId = pendingFindingBackupId;
@@ -4174,13 +4179,13 @@ namespace GameSaveCenter.Playnite.ViewModels
                                 if (storageBackup == null)
                                     StatusMessage = $"存储分析对应版本“{requestedStorageBackupId}”已不存在，未选择其他版本；已打开对应游戏。";
                             }
-                            else if (backupSearchPage == null)
+                            else if (!retainedHistory && backupSearchPage == null)
                                 SelectedBackup = SelectionAnchorResolver.Restore(Backups, selectedBackupId, selectedBackupIndex, backup => backup.BackupId)!;
                             MarkRestorePlanDraftsForSnapshot(
                                 id,
                                 SelectedGame,
                                 Backups,
-                                !backupsTask.Result.HasMore && Backups.Count >= backupsTask.Result.TotalCount);
+                                !BackupHistoryHasMore && Backups.Count >= backupsTask.Result.TotalCount);
                             SelectedCandidate = RestoreSaveCandidateSelection(SaveCandidates, selectedCandidateBeforeRefresh, selectedCandidateIndex)!;
                             CompleteSaveDetailsLoad();
                             RaiseCommandStates();
@@ -6629,6 +6634,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 InvalidateMediaDetailsContext();
                 ResetBackupHistorySearch();
+                ResetBackupArrivals();
                 ResetSaveDetailsState();
                 Backups.Clear();
                 Media.Clear();
