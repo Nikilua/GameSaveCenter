@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 using GameSaveCenter.Contracts;
@@ -23,6 +24,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         public ICommand OpenSelectedTaskGameCommand { get; private set; } = null!;
         public ICommand OpenSelectedTaskSourceCommand { get; private set; } = null!;
+        public ICommand OpenReportedProtectionBackupCommand { get; private set; } = null!;
         public ICommand ReturnToNavigationSourceCommand { get; private set; } = null!;
         public ICommand ClearTaskNavigationContextCommand { get; private set; } = null!;
         public ICommand OpenStorageGameCommand { get; private set; } = null!;
@@ -117,6 +119,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenSelectedTaskSourceCommand = new RelayCommand(
                 value => OpenSelectedTaskSource(value as TaskSourceReferenceDto),
                 value => !IsBusy && value is TaskSourceReferenceDto reference && reference.HasStableIdentity);
+            OpenReportedProtectionBackupCommand = new RelayCommand(
+                _ =>
+                {
+                    var task = SelectedTask;
+                    if (task?.RestoreReport != null) Run(() => OpenReportedProtectionBackupAsync(task.TaskId, task.RestoreReport));
+                },
+                _ => !IsBusy && SelectedTask?.RestoreReport is RestoreReportDto report && report.PreRestoreCreated
+                    && !string.IsNullOrWhiteSpace(report.PlayniteId) && !string.IsNullOrWhiteSpace(report.PreRestoreBackupId));
             ReturnToNavigationSourceCommand = new RelayCommand(
                 _ => ReturnToNavigationSource(),
                 _ => !IsBusy && HasNavigationReturnTarget);
@@ -229,6 +239,26 @@ namespace GameSaveCenter.Playnite.ViewModels
                 CurrentWorkspace == WorkspaceKind.Tasks ? WorklistGroupMode : string.Empty,
                 selectedMediaId));
             OnNavigationHistoryChanged();
+        }
+
+        private async Task OpenReportedProtectionBackupAsync(string taskId, RestoreReportDto report)
+        {
+            var page = await ReadExactHistoryVersionAsync(report.PlayniteId, report.PreRestoreBackupId).ConfigureAwait(false);
+            ApplyOnUi(() =>
+            {
+                if (CurrentWorkspace != WorkspaceKind.Tasks || !string.Equals(SelectedTask?.TaskId, taskId, StringComparison.Ordinal)) return;
+                var game = Games.FirstOrDefault(candidate => string.Equals(candidate.PlayniteId, report.PlayniteId, StringComparison.OrdinalIgnoreCase));
+                if (game == null || page.Items.Count == 0)
+                {
+                    StatusMessage = "该次恢复的保护版本已不可用，已保留结果报告。";
+                    return;
+                }
+                PushNavigationReturnTarget("返回恢复结果", $"任务中心 · {report.GameName}");
+                CurrentWorkspace = WorkspaceKind.Saves;
+                SelectedGame = game;
+                FocusHistoryVersion(page, "该次恢复创建的保护版本");
+                RequestWorkspaceLoad();
+            });
         }
 
         private void OpenSelectedTaskSource(TaskSourceReferenceDto? source)

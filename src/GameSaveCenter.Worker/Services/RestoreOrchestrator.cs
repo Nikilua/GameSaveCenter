@@ -86,6 +86,8 @@ public sealed class RestoreOrchestrator
         };
         return await _tasks.RunAsync("Restore",game.PlayniteId,game.Name,async(progress,ct)=>
         {
+            report.WriteState = TaskState.Queued;
+            report.VerificationState = TaskState.Queued;
             progress.SetRestoreReport(report);
             var state=RestoreState.Requested;
             await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
@@ -149,19 +151,36 @@ public sealed class RestoreOrchestrator
                 // From this point onward the restore client may have changed a subset of live
                 // files even when it throws or reports failure. Every failure path therefore
                 // goes through the same mandatory PreRestore rollback below.
+                report.WriteState = TaskState.Running;
+                progress.SetRestoreReport(report);
                 var restored=await RestoreTargetAsync(targetBackupPath,match,request.BackupId,false,ct).ConfigureAwait(false);
                 if(!restored.Success||!restored.Json.HasValue||LudusaviResultParser.SomeGamesFailed(restored.Json.Value))
+                {
+                    report.WriteState = TaskState.Failed;
                     throw new WorkerOperationException("RESTORE_WRITE_FAILED","恢复未完整写入目标存档。",restored.ErrorMessage);
+                }
+                report.WriteState = TaskState.Succeeded;
+                progress.SetRestoreReport(report);
                 state=RestoreState.RestoreExecuted;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
                 report.Stage="恢复后校验";progress.SetRestoreReport(report);
                 await progress.ReportAsync(88,"正在执行恢复后校验").ConfigureAwait(false);
+                report.VerificationState = TaskState.Running;
+                progress.SetRestoreReport(report);
                 var post=await RestoreTargetAsync(targetBackupPath,match,request.BackupId,true,ct).ConfigureAwait(false);
                 if(!post.Success||!post.Json.HasValue||LudusaviResultParser.SomeGamesFailed(post.Json.Value))
+                {
+                    report.VerificationState = TaskState.Failed;
                     throw new WorkerOperationException("RESTORE_POST_VALIDATION_FAILED","恢复后校验未通过。",post.ErrorMessage);
+                }
+                report.VerificationState = TaskState.Succeeded;
+                progress.SetRestoreReport(report);
                 state=RestoreState.PostRestoreValidated;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
             }
             catch(Exception restoreError)
             {
+                if (report.WriteState == TaskState.Running) report.WriteState = TaskState.Cancelled;
+                if (report.VerificationState == TaskState.Running) report.VerificationState = TaskState.Cancelled;
+                progress.SetRestoreReport(report);
                 // Safety rollback must not inherit a user cancellation token: once live files
                 // may have changed, restoring the locked snapshot is mandatory best effort.
                 state=RestoreState.RollbackAttempted;

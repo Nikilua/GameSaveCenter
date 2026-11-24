@@ -196,8 +196,6 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var explanation = RestoreFailureExplanation.ForText(null, error);
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, error, explanation.Resolution);
             }
-            if (executing || task?.State == TaskState.Queued || task?.State == TaskState.Running || task?.State == TaskState.WaitingForUser)
-                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Active, "当前阶段：保护备份。Worker 会先创建并锁定当前状态的 PreRestore；随后才预览、写入并执行恢复后校验。");
             if (task?.State == TaskState.Succeeded)
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Complete, string.IsNullOrWhiteSpace(task.DetailMessage) ? "安全恢复完成。" : task.DetailMessage);
             if (task?.State == TaskState.Cancelled)
@@ -206,6 +204,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 var explanation = RestoreFailureExplanation.ForTask(task);
                 return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Failed, BuildExecutionFailureDetail(task), explanation.Resolution);
+            }
+            if (executing || task?.State == TaskState.Queued || task?.State == TaskState.Running || task?.State == TaskState.WaitingForUser)
+            {
+                var stage = task?.RestoreReport?.Stage;
+                return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Active,
+                    string.IsNullOrWhiteSpace(stage)
+                        ? "等待 Worker 报告阶段。恢复会先创建并锁定保护备份（PreRestore）。"
+                        : $"当前阶段：{stage}");
             }
             return new RestoreWorkflowStepState("execution", "执行结果", RestoreWorkflowStepStatus.Pending, "尚未开始写入当前存档。");
         }

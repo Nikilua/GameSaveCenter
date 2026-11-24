@@ -1456,7 +1456,6 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (!sameBackup) ResetRestoreWorkflow();
                 if (!HasPinnedHistoryComparison && (!sameBackup || !IsBackupInCurrentCollection(CompareLeftBackup) || !IsBackupInCurrentCollection(CompareRightBackup)))
                 {
-                    if (sameBackup) ResetRestoreWorkflow();
                     ClearBackupComparison();
                     SetDefaultComparisonSelection(value);
                 }
@@ -2657,6 +2656,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (change == null || change.Task == null) continue;
                     RememberTaskTimelineChange(change);
                     taskIndex.Merge(Tasks, change.Task);
+                    ObserveRestoreExecutionTask(change.Task);
                     knownTaskStates[change.Task.TaskId] = change.Task.State;
                     taskSnapshotInitialized = true;
                     ApplyTrainerDownloadTaskUpdate(change.Task);
@@ -5571,6 +5571,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 return;
             }
             BeginRestoreExecution();
+            var restoreRequestId = restoreExecutionRequestId;
             TaskStatusDto? task = null;
             try
             {
@@ -5578,18 +5579,25 @@ namespace GameSaveCenter.Playnite.ViewModels
                 {
                     PlayniteId = gameId,
                     BackupId = backupId,
+                    RequestId = restoreRequestId,
                     ConfirmedCurrentSnapshot = true,
                     ConfirmedGameClosed = true,
                     UserComment = "Playnite restore wizard"
                 }, TimeSpan.FromMinutes(30));
-                CompleteRestoreExecution(task);
+                if (restoreExecutionRequestId == restoreRequestId) CompleteRestoreExecution(task);
                 await RefreshCoreAsync(false);
                 NotifyTaskResults(new[] { task });
             }
             catch (Exception ex)
             {
-                if (task == null)
-                    CompleteRestoreExecution(null, ex.Message);
+                if (task == null && restoreExecutionRequestId == restoreRequestId)
+                {
+                    if (restoreTask?.State == TaskState.Cancelled || restoreTask?.State == TaskState.Succeeded
+                        || restoreTask?.State == TaskState.Failed)
+                        CompleteRestoreExecution(restoreTask);
+                    else
+                        CompleteRestoreExecution(null, ex.Message);
+                }
                 throw;
             }
         }
@@ -6757,7 +6765,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 PinHistoryComparisonACommand, PinHistoryComparisonBCommand, ClearHistoryComparisonPinsCommand, OpenPinnedHistoryComparisonCommand,
                 ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,
                 RefreshBackupGalleryCommand, LoadMoreBackupGalleryCommand, OpenBackupGalleryVersionCommand, OpenHistoryFromBackupGalleryCommand,
-                PreviewProgressRecapCommand, SaveProgressRecapCommand
+                PreviewProgressRecapCommand, SaveProgressRecapCommand,
+                OpenReportedProtectionBackupCommand
             }.OfType<RelayCommand>())
             {
                 command.RaiseCanExecuteChanged();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using GameSaveCenter.Contracts;
 
@@ -10,6 +11,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private bool restoreTargetConfirmed;
         private bool restoreExecutionActive;
         private TaskStatusDto? restoreTask;
+        private string restoreExecutionRequestId = string.Empty;
         private string restoreReadinessError = string.Empty;
         private string restoreExecutionError = string.Empty;
         private string restoreWorkflowSummary = "选择一个版本后，按顺序完成四个阶段。";
@@ -36,6 +38,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             restoreTargetConfirmed = false;
             restoreExecutionActive = false;
             restoreTask = null;
+            restoreExecutionRequestId = string.Empty;
             restoreReadinessError = string.Empty;
             restoreExecutionError = string.Empty;
             RefreshRestoreWorkflow();
@@ -51,9 +54,24 @@ namespace GameSaveCenter.Playnite.ViewModels
                 restoreTask,
                 restoreReadinessError,
                 restoreExecutionError);
-            restoreWorkflowSteps.Clear();
-            foreach (var step in steps) restoreWorkflowSteps.Add(step);
+            if (restoreWorkflowSteps.Count != steps.Count)
+            {
+                restoreWorkflowSteps.Clear();
+                foreach (var step in steps) restoreWorkflowSteps.Add(step);
+            }
+            else
+            {
+                for (var index = 0; index < steps.Count; index++)
+                {
+                    var previous = restoreWorkflowSteps[index];
+                    var next = steps[index];
+                    if (previous.Key != next.Key || previous.Status != next.Status || previous.Detail != next.Detail
+                        || previous.DetailFullDisplay != next.DetailFullDisplay || previous.Resolution != next.Resolution)
+                        restoreWorkflowSteps[index] = next;
+                }
+            }
             RestoreWorkflowSummary = RestoreWorkflowProgress.BuildSummary(steps);
+            OnPropertyChanged(nameof(RestoreWorkflowSteps));
             OnPropertyChanged(nameof(RestoreWorkflowHasFailure));
         }
 
@@ -75,6 +93,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             restoreTargetConfirmed = true;
             restoreExecutionActive = true;
+            restoreExecutionRequestId = Guid.NewGuid().ToString("N");
             restoreTask = null;
             restoreExecutionError = string.Empty;
             RefreshRestoreWorkflow();
@@ -85,6 +104,17 @@ namespace GameSaveCenter.Playnite.ViewModels
             restoreExecutionActive = false;
             restoreTask = task;
             restoreExecutionError = error ?? string.Empty;
+            restoreExecutionRequestId = string.Empty;
+            RefreshRestoreWorkflow();
+        }
+
+        private void ObserveRestoreExecutionTask(TaskStatusDto task)
+        {
+            if (string.IsNullOrEmpty(restoreExecutionRequestId)
+                || !string.Equals(task.RequestId, restoreExecutionRequestId, StringComparison.Ordinal)) return;
+            if (restoreTask?.State == TaskState.Succeeded || restoreTask?.State == TaskState.Failed
+                || restoreTask?.State == TaskState.Cancelled) return;
+            restoreTask = task;
             RefreshRestoreWorkflow();
         }
     }

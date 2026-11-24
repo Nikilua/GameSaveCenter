@@ -220,6 +220,8 @@ namespace GameSaveCenter.Contracts
         public long TotalBytes { get; set; }
         public string PreRestoreBackupId { get; set; } = string.Empty;
         public bool PreRestoreCreated { get; set; }
+        public TaskState? WriteState { get; set; }
+        public TaskState? VerificationState { get; set; }
         public string Stage { get; set; } = string.Empty;
         public string OutcomeKind { get; set; } = "Running";
         public string FailureCode { get; set; } = string.Empty;
@@ -234,6 +236,19 @@ namespace GameSaveCenter.Contracts
         public string ProtectionDisplay => PreRestoreCreated
             ? $"保护备份：已创建并锁定 {PreRestoreBackupId}"
             : "保护备份：尚未确认创建";
+
+        public string WriteResultDisplay => $"写入结果：{DescribeObservedState(WriteState)}";
+        public string VerificationResultDisplay => $"恢复后校验：{DescribeObservedState(VerificationState)}";
+
+        private static string DescribeObservedState(TaskState? state) => state switch
+        {
+            TaskState.Queued => "尚未开始",
+            TaskState.Running => "正在执行",
+            TaskState.Succeeded => "已完成",
+            TaskState.Failed => "未通过",
+            TaskState.Cancelled => "中断，完成状态未确认",
+            _ => "未知"
+        };
 
         public string OutcomeDisplay => OutcomeKind switch
         {
@@ -258,6 +273,8 @@ namespace GameSaveCenter.Contracts
             TotalBytes = TotalBytes,
             PreRestoreBackupId = PreRestoreBackupId,
             PreRestoreCreated = PreRestoreCreated,
+            WriteState = WriteState,
+            VerificationState = VerificationState,
             Stage = Stage,
             OutcomeKind = OutcomeKind,
             FailureCode = FailureCode,
@@ -276,6 +293,8 @@ namespace GameSaveCenter.Contracts
                 $"目标版本：{BackupId}",
                 FileScopeDisplay,
                 ProtectionDisplay,
+                WriteResultDisplay,
+                VerificationResultDisplay,
                 $"失败阶段：{FailureDisplay}",
                 $"任务 ID：{TaskId}"
             };

@@ -449,6 +449,20 @@
                     <TextBlock Text="{Binding SelectedTask.RestoreReport.TaskId, StringFormat=任务 ID：{0}}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                     <TextBlock Text="{Binding SelectedTask.RestoreReport.FileScopeDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                     <TextBlock Text="{Binding SelectedTask.RestoreReport.ProtectionDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                    <ui:Button Content="查看保护备份" Command="{Binding OpenReportedProtectionBackupCommand}" Margin="0,6,0,0">
+                        <ui:Button.Style>
+                            <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiCompactButton}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedTask.RestoreReport.PreRestoreCreated}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:Button.Style>
+                    </ui:Button>
+                    <TextBlock Text="{Binding SelectedTask.RestoreReport.WriteResultDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding SelectedTask.RestoreReport.VerificationResultDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                     <TextBlock Text="{Binding SelectedTask.RestoreReport.FailureDisplay}" Foreground="{DynamicResource GscSecondaryTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>

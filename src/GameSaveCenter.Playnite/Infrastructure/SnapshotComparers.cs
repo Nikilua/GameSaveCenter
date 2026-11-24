@@ -56,6 +56,12 @@ namespace GameSaveCenter.Playnite.Infrastructure
             && a.CreatedUtc == b.CreatedUtc
             && a.StartedUtc == b.StartedUtc
             && a.FinishedUtc == b.FinishedUtc
+            && a.RestoreReport?.WriteState == b.RestoreReport?.WriteState
+            && a.RestoreReport?.VerificationState == b.RestoreReport?.VerificationState
+            && a.RestoreReport?.PreRestoreCreated == b.RestoreReport?.PreRestoreCreated
+            && string.Equals(a.RestoreReport?.PreRestoreBackupId, b.RestoreReport?.PreRestoreBackupId, StringComparison.Ordinal)
+            && string.Equals(a.RestoreReport?.Stage, b.RestoreReport?.Stage, StringComparison.Ordinal)
+            && string.Equals(a.RestoreReport?.OutcomeKind, b.RestoreReport?.OutcomeKind, StringComparison.Ordinal)
             && string.Equals(a.ErrorCode, b.ErrorCode, StringComparison.Ordinal)
             && string.Equals(a.ErrorMessage, b.ErrorMessage, StringComparison.Ordinal);
 

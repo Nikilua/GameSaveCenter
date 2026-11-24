@@ -742,19 +742,19 @@
                                 <TextBlock Text="恢复流程" Style="{StaticResource SaveHistoryDetailSectionTitle}"/>
                                 <TextBlock Text="{Binding RestoreWorkflowSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.Name="恢复流程摘要"/>
                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,8,0,0">
-                                    <ItemsControl ItemsSource="{Binding RestoreWorkflowSteps}" AutomationProperties.Name="恢复四步流程">
+                                    <ItemsControl x:Name="SaveRestoreWorkflowSteps" ItemsSource="{Binding RestoreWorkflowSteps}" AutomationProperties.Name="恢复四步流程">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="{StaticResource GscHairlineThickness}" Padding="8" Margin="0,0,0,6">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions><ColumnDefinition Width="26"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                                                        <TextBlock Text="{Binding Glyph}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Top"/>
+                                                        <TextBlock x:Name="RestoreStepGlyph" Text="{Binding Glyph}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Top"/>
                                                         <StackPanel Grid.Column="1" Margin="6,0,8,0">
                                                             <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
-                                                            <TextBlock Text="{Binding Detail}" ToolTip="{Binding DetailFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding DetailFullDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                                                            <TextBlock x:Name="RestoreStepDetail" Text="{Binding Detail}" ToolTip="{Binding DetailFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding DetailFullDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0"/>
                                                             <TextBlock Text="{Binding ResolutionDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0" AutomationProperties.HelpText="{Binding ResolutionDisplay}"/>
                                                         </StackPanel>
-                                                        <TextBlock Grid.Column="2" Text="{Binding StatusDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Top"/>
+                                                        <TextBlock x:Name="RestoreStepStatus" Grid.Column="2" Text="{Binding StatusDisplay}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Top"/>
                                                     </Grid>
                                                 </Border>
                                             </DataTemplate>

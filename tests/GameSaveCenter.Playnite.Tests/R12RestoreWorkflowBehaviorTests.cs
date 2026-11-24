@@ -21,6 +21,28 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class R12RestoreWorkflowBehaviorTests
 {
     [Fact]
+    public void ExecutionUsesTheWorkerStageAndHonorsTerminalResultDuringTheRequest()
+    {
+        var backup = new BackupVersionDto { BackupId = "version", CreatedUtc = DateTime.UtcNow };
+        var task = new TaskStatusDto
+        {
+            State = TaskState.Running,
+            ProgressPercent = 88,
+            RestoreReport = new RestoreReportDto { Stage = "恢复后校验" }
+        };
+        var active = RestoreWorkflowProgress.Build(backup, false, true, true, task, string.Empty, string.Empty).Last();
+        Assert.Equal(RestoreWorkflowStepStatus.Active, active.Status);
+        Assert.Equal("当前阶段：恢复后校验", active.Detail);
+        task.State = TaskState.Cancelled;
+        var cancelled = RestoreWorkflowProgress.Build(backup, false, true, true, task, string.Empty, string.Empty).Last();
+        Assert.Equal(RestoreWorkflowStepStatus.Cancelled, cancelled.Status);
+        task.State = TaskState.Succeeded;
+        var complete = RestoreWorkflowProgress.Build(backup, false, true, true, task, string.Empty, string.Empty).Last();
+        Assert.Equal(RestoreWorkflowStepStatus.Complete, complete.Status);
+        Assert.Equal("写入结果：未知", new RestoreReportDto().WriteResultDisplay);
+    }
+
+    [Fact]
     public void SelectionWithoutReadinessKeepsExecutionPending()
     {
         var steps = RestoreWorkflowProgress.Build(Version("selected"), false, false, false, null, string.Empty, string.Empty);

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -37,6 +38,7 @@ namespace GameSaveCenter.Playnite.Views
         private readonly WrapPanelRowGapController historyActionRowGap;
         private readonly WrapPanelRowGapController historyToolbarRowGap;
         private DashboardViewModel? backupArrivalModel;
+        private string? restoreStepMotionKey;
 
         internal Action? PreferencePersistenceOverrideForBehaviorTest { get; set; }
         internal Func<bool>? SystemMotionEnabledProviderForBehaviorTest { get; set; }
@@ -101,6 +103,7 @@ namespace GameSaveCenter.Playnite.Views
             if (backupArrivalModel == null) return;
             backupArrivalModel.PropertyChanged += OnBackupArrivalModelChanged;
             UpdateBackupHistoryReadingPosition();
+            UpdateRestoreStepMotion(animate: false);
             if (backupArrivalModel.IsShowingFocusedHistoryBackup) OpenLinkedHistoryInspector();
         }
 
@@ -110,6 +113,7 @@ namespace GameSaveCenter.Playnite.Views
             backupArrivalModel.PropertyChanged -= OnBackupArrivalModelChanged;
             backupArrivalModel.IsReadingOlderBackups = true;
             backupArrivalModel = null;
+            restoreStepMotionKey = null;
         }
 
         private void OnBackupHistoryViewportChanged(object sender, ScrollChangedEventArgs e)
@@ -132,6 +136,8 @@ namespace GameSaveCenter.Playnite.Views
             if (e.PropertyName == nameof(DashboardViewModel.IsShowingFocusedHistoryBackup)
                 && backupArrivalModel?.IsShowingFocusedHistoryBackup == true)
                 OpenLinkedHistoryInspector();
+            if (e.PropertyName == nameof(DashboardViewModel.RestoreWorkflowSteps))
+                UpdateRestoreStepMotion(animate: true);
             if (e.PropertyName != nameof(DashboardViewModel.RecentBackupArrivals)
                 || backupArrivalModel == null || !SaveHistoryGrid.IsVisible || !IsInspectorMotionEnabled) return;
             var arrivals = backupArrivalModel.RecentBackupArrivals;
@@ -150,6 +156,31 @@ namespace GameSaveCenter.Playnite.Views
                     };
                     flash.KeyFrames.Add(new DiscreteObjectKeyFrame(highlight, KeyTime.FromTimeSpan(TimeSpan.Zero)));
                     row.BeginAnimation(Control.BackgroundProperty, flash);
+                }
+            }));
+        }
+
+        private void UpdateRestoreStepMotion(bool animate)
+        {
+            var step = backupArrivalModel?.RestoreWorkflowSteps?.FirstOrDefault(
+                item => item.Status == RestoreWorkflowStepStatus.Active);
+            var key = step == null ? null : step.Key + "|" + step.Detail;
+            if (string.Equals(key, restoreStepMotionKey, StringComparison.Ordinal)) return;
+            restoreStepMotionKey = key;
+            if (!animate || step == null || !SaveRestoreWorkflowSteps.IsVisible || !IsInspectorMotionEnabled) return;
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                if (!IsLoaded || !SaveRestoreWorkflowSteps.IsVisible || !IsInspectorMotionEnabled
+                    || !string.Equals(key, restoreStepMotionKey, StringComparison.Ordinal)
+                    || SaveRestoreWorkflowSteps.ItemContainerGenerator.ContainerFromItem(step) is not ContentPresenter presenter) return;
+                var template = presenter.ContentTemplate;
+                foreach (var name in new[] { "RestoreStepGlyph", "RestoreStepDetail", "RestoreStepStatus" })
+                {
+                    if (template?.FindName(name, presenter) is not TextBlock text) continue;
+                    text.BeginAnimation(OpacityProperty, new DoubleAnimation(0.65, 1, GscMotion.Fast)
+                    {
+                        FillBehavior = FillBehavior.Stop
+                    });
                 }
             }));
         }

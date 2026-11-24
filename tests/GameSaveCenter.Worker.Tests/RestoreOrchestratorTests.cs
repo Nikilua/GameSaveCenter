@@ -79,6 +79,8 @@ public sealed class RestoreOrchestratorTests : IDisposable
         Assert.Equal(TaskState.Succeeded, restore.State);
         Assert.Equal("Completed", restore.RestoreReport?.OutcomeKind);
         Assert.True(restore.RestoreReport?.PreRestoreCreated);
+        Assert.Equal(TaskState.Succeeded, restore.RestoreReport?.WriteState);
+        Assert.Equal(TaskState.Succeeded, restore.RestoreReport?.VerificationState);
         Assert.False(string.IsNullOrWhiteSpace(restore.RestoreReport?.PreRestoreBackupId));
         Assert.Equal("B", client.CurrentSave);
 
@@ -211,6 +213,8 @@ public sealed class RestoreOrchestratorTests : IDisposable
 
         Assert.Equal(TaskState.Failed, result.State);
         Assert.Equal("RESTORE_FAILED_ROLLED_BACK", result.ErrorCode);
+        Assert.Equal(TaskState.Succeeded, result.RestoreReport?.WriteState);
+        Assert.Equal(TaskState.Failed, result.RestoreReport?.VerificationState);
         Assert.Equal("B", await File.ReadAllTextAsync(client.LiveSavePath));
     }
 
