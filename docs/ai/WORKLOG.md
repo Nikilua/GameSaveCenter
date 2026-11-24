@@ -26,6 +26,8 @@ SDK 8.0.423 Release 定向 Worker 4 项与隔离 WPF 20 项通过，0 失败、0
 
 首个提交 `6bd88132077ae093e37e9b748e4885dacef0f165` 的 Windows run `45361851191` 在基线 job `138333619957` 和 SDK 10 job `138333620238` 均因 `R19AsyncContextSourceTests.DetailsReadsRequireTheStartingGameWorkspaceAndGenerationAtCommitBoundaries` 失败。原始诊断运行标识分别为 `20261124T090628479Z-85cd605e` 与 `20261124T090637818Z-c9da10b9`。修正保留原有工作区切换守卫及取消顺序，并保存切换前的工作区用于决定是否加载封面。
 
+`2eb48ad215bfcf3f433d652db94776a2fe253438` 的 Windows run `45364503412` 两个 job 失败，基线 job `138342620476` 的原始日志显示新增命令将既有媒体批量命令移出 `R21AutomationValueBehaviorTests.MediaBatchCommandsRefreshBusyCanExecuteState` 的源码检查范围。将新增命令放到统一刷新列表尾部，保留既有命令和断言。R21、R19 和恢复步骤隔离定向共 34 项通过，TRX 在 `.tmp/player-11-12/ui/command-refresh-and-restore.trx`。
+
 ## 2026-11-24 玩家体验 03 新版本到达时保留阅读位置
 
 基于 `c9c26e5d1b7828d2a72d92cd8e39926d8977902d` 在 `.tmp/pe03` 单独开发，避免改变 01 正在验收的主工作区。创建工作树前 C 盘可用 9,267,326,976 字节，D 盘可用 13,482,037,248 字节。既有工作树和其他批次证据保留。

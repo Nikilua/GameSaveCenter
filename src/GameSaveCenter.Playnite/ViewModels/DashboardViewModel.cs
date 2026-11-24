@@ -6730,13 +6730,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, ApplyPolicyTemplateBatchCommand, RetryPolicyTemplateBatchItemCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
-                LoadMoreBackupHistoryCommand, SearchAllBackupHistoryCommand, ChooseBackupCoverCommand,
-                LoadMoreBackupCoverCandidatesCommand, SetBackupCoverCommand, ClearBackupCoverCommand,
-                ListMediaBackupLinksCommand, LoadMoreMediaBackupLinksCommand, OpenMediaLinkedBackupCommand, ClearLinkedBackupFocusCommand,
-                PinHistoryComparisonACommand, PinHistoryComparisonBCommand, ClearHistoryComparisonPinsCommand, OpenPinnedHistoryComparisonCommand,
-                ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,
-                RefreshBackupGalleryCommand, LoadMoreBackupGalleryCommand, OpenBackupGalleryVersionCommand, OpenHistoryFromBackupGalleryCommand,
-                PreviewProgressRecapCommand, SaveProgressRecapCommand,
+                LoadMoreBackupHistoryCommand,
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,
@@ -6756,7 +6750,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                 OpenGameToolDirectoryCommand,DeleteGameToolCommand,RelocateGameToolCommand,SyncTrainerCatalogCommand,SearchTrainerCatalogCommand,ApplyRecommendedProtectionCommand,
                  LoadTrainerReleasesCommand,DownloadTrainerCommand,CancelTrainerDownloadCommand,
                  RefreshNotificationInboxCommand, MarkSelectedNotificationReadCommand, MarkVisibleNotificationsReadCommand, ClearReadNotificationRecordsCommand,
-                 OpenSelectedNotificationGameCommand, OpenSelectedNotificationTaskCommand, OpenSelectedNotificationFirstTaskCommand
+                 OpenSelectedNotificationGameCommand, OpenSelectedNotificationTaskCommand, OpenSelectedNotificationFirstTaskCommand,
+                SearchAllBackupHistoryCommand, ChooseBackupCoverCommand,
+                LoadMoreBackupCoverCandidatesCommand, SetBackupCoverCommand, ClearBackupCoverCommand,
+                ListMediaBackupLinksCommand, LoadMoreMediaBackupLinksCommand, OpenMediaLinkedBackupCommand, ClearLinkedBackupFocusCommand,
+                PinHistoryComparisonACommand, PinHistoryComparisonBCommand, ClearHistoryComparisonPinsCommand, OpenPinnedHistoryComparisonCommand,
+                ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,
+                RefreshBackupGalleryCommand, LoadMoreBackupGalleryCommand, OpenBackupGalleryVersionCommand, OpenHistoryFromBackupGalleryCommand,
+                PreviewProgressRecapCommand, SaveProgressRecapCommand
             }.OfType<RelayCommand>())
             {
                 command.RaiseCanExecuteChanged();
