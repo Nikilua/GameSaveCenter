@@ -285,7 +285,7 @@
                                             <DockPanel>
                                                 <TextBlock DockPanel.Dock="Right" Text="新" AutomationProperties.Name="新版本" Foreground="{DynamicResource GscAccentBrush}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="4,0,0,0">
                                                     <TextBlock.Visibility>
-                                                        <MultiBinding Converter="{StaticResource SaveArrivalsVisibility}" Mode="OneWay">
+                                                        <MultiBinding Converter="{StaticResource SaveArrivalsVisibility}">
                                                             <Binding/>
                                                             <Binding Path="DataContext.RecentBackupArrivals" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
                                                         </MultiBinding>
