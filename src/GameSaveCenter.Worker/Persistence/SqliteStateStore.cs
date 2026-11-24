@@ -126,6 +126,7 @@ WHERE COALESCE(classification_state,'')='' OR classification_state='Assigned';";
         mediaCloudIndex.CommandText = "CREATE INDEX IF NOT EXISTS ix_media_cloud_state ON media(cloud_state,classification_state,playnite_id);";
         await mediaCloudIndex.ExecuteNonQueryAsync(token).ConfigureAwait(false);
         await EnsureBackupVersionSchemaAsync(connection, token).ConfigureAwait(false);
+        await EnsureBackupCoverSchemaAsync(connection, token).ConfigureAwait(false);
     }
 
     public async Task<List<GameToolDto>> GetGameToolsAsync(string playniteId, CancellationToken token)
@@ -1056,7 +1057,9 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         CancellationToken token,
         string? searchText = null,
         DateTime? createdFromUtc = null,
-        DateTime? createdBeforeUtc = null)
+        DateTime? createdBeforeUtc = null,
+        string? coverMediaId = null,
+        string? exactBackupId = null)
     {
         var page = new BackupVersionPageDto();
         if (string.IsNullOrWhiteSpace(playniteId)) return page;
@@ -1078,6 +1081,13 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         }
         if (createdFromUtc.HasValue) filters += " AND created_utc>=$fromUtc";
         if (createdBeforeUtc.HasValue) filters += " AND created_utc<$beforeUtc";
+        if (!string.IsNullOrWhiteSpace(exactBackupId)) filters += " AND backup_id=$exactBackup";
+        if (!string.IsNullOrWhiteSpace(coverMediaId))
+            filters += @" AND EXISTS (
+    SELECT 1 FROM backup_covers c JOIN media m ON m.media_id=c.media_id
+    WHERE c.media_id=$coverMedia AND c.playnite_id=backup_versions.playnite_id
+      AND c.backup_id=backup_versions.backup_id AND m.playnite_id=c.playnite_id
+      AND m.kind=$coverKind AND m.classification_state='Assigned')";
 
         void BindFilters(SqliteCommand query)
         {
@@ -1087,6 +1097,13 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
                 query.Parameters.AddWithValue("$fromUtc", createdFromUtc.Value.ToUniversalTime().ToString("O"));
             if (createdBeforeUtc.HasValue)
                 query.Parameters.AddWithValue("$beforeUtc", createdBeforeUtc.Value.ToUniversalTime().ToString("O"));
+            if (!string.IsNullOrWhiteSpace(exactBackupId))
+                query.Parameters.AddWithValue("$exactBackup", exactBackupId);
+            if (!string.IsNullOrWhiteSpace(coverMediaId))
+            {
+                query.Parameters.AddWithValue("$coverMedia", coverMediaId);
+                query.Parameters.AddWithValue("$coverKind", (int)MediaKind.Screenshot);
+            }
         }
 
         await using (var countCommand = connection.CreateCommand())

@@ -921,6 +921,37 @@
                                      <TextBlock Text="{Binding SelectedMedia.SizeDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
                                  </StackPanel>
                                  <TextBlock Text="{Binding SelectedMedia.CapturedRelativeDisplay, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" Margin="0,3,0,0" ToolTip="{Binding SelectedMedia.CapturedFullDisplay, Mode=OneWay}" AutomationProperties.HelpText="{Binding SelectedMedia.CapturedFullDisplay, Mode=OneWay}"/>
+                                 <StackPanel Margin="0,8,0,0">
+                                     <StackPanel.Style>
+                                         <Style TargetType="StackPanel">
+                                             <Setter Property="Visibility" Value="Collapsed"/>
+                                             <Style.Triggers>
+                                                 <DataTrigger Binding="{Binding SelectedMedia.Kind}" Value="{x:Static contracts:MediaKind.Screenshot}">
+                                                     <Setter Property="Visibility" Value="Visible"/>
+                                                 </DataTrigger>
+                                             </Style.Triggers>
+                                         </Style>
+                                     </StackPanel.Style>
+                                     <WrapPanel>
+                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ListMediaBackupLinksCommand}" Content="查看关联存档" Margin="0,0,6,4"/>
+                                         <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadMoreMediaBackupLinksCommand}" Content="更多关联存档" Margin="0,0,0,4"/>
+                                     </WrapPanel>
+                                     <TextBlock Text="{Binding MediaBackupLinksStatus}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                     <ItemsControl ItemsSource="{Binding MediaBackupLinks}" AutomationProperties.Name="截图关联的存档版本">
+                                         <ItemsControl.ItemTemplate>
+                                             <DataTemplate>
+                                                 <ui:Button Style="{DynamicResource GscWpfUiCompactButton}"
+                                                            Command="{Binding DataContext.OpenMediaLinkedBackupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}" AutomationProperties.Name="{Binding CreatedFullDisplay}" Margin="0,4,0,0">
+                                                     <StackPanel>
+                                                         <TextBlock Text="{Binding CreatedFullDisplay}" TextWrapping="Wrap"/>
+                                                         <TextBlock Text="{Binding Comment}" TextWrapping="Wrap"/>
+                                                     </StackPanel>
+                                                 </ui:Button>
+                                             </DataTemplate>
+                                         </ItemsControl.ItemTemplate>
+                                     </ItemsControl>
+                                 </StackPanel>
                                  <Grid Margin="0,6,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*" MinWidth="0"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding SelectedMedia.ArchivePath, Mode=OneWay, TargetNullValue=未生成归档路径}" AutomationProperties.Name="媒体完整路径（可选择）"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding CopyPathCommand}" CommandParameter="{Binding SelectedMedia.ArchivePath}" Content="复制完整路径" ToolTip="复制未省略的媒体归档路径" AutomationProperties.Name="复制媒体完整路径" Margin="8,0,0,0"/></Grid>
                                 <Border x:Name="MediaPreviewPanel" Height="178" CornerRadius="12" ClipToBounds="True" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscControlStrokeBrush}" BorderThickness="{StaticResource GscHairlineThickness}" Margin="0,14,0,14">
                                     <Grid>

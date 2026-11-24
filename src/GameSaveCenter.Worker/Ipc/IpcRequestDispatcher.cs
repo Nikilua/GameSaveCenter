@@ -90,6 +90,9 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.CompareBackups=>await CompareBackupsAsync(Read<BackupCompareRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.PreviewRetention=>await PreviewRetentionAsync(Read<GameQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UpdateBackupMetadata=>await UpdateMetadataAsync(Read<BackupMetadataUpdateDto>(request),token).ConfigureAwait(false),
+                MessageTypes.GetBackupCover=>await GetBackupCoverAsync(Read<BackupCoverQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.SetBackupCover=>await _store.SetBackupCoverAsync(Read<BackupCoverUpdateDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ListBackupCoversForMedia=>await _store.GetBackupCoversForMediaAsync(Read<BackupCoverMediaQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ValidateRestoreReadiness=>await ValidateRestoreReadinessAsync(Read<RestoreReadinessRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestorePreview=>await _restore.PreviewMappingAsync(Read<RestoreMappingPreviewRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestoreExecute=>await _restore.ExecuteAsync(ReadCorrelated<RestoreRequestDto>(request),token).ConfigureAwait(false),
@@ -377,6 +380,9 @@ public sealed class IpcRequestDispatcher
 
         return page;
     }
+
+    private Task<BackupCoverDto> GetBackupCoverAsync(BackupCoverQueryDto query, CancellationToken token)
+        => _store.GetBackupCoverAsync(query.PlayniteId, query.BackupId, token);
     private Task<List<MediaItemDto>> ListMediaAsync(GameQueryDto query,CancellationToken token)
         =>_store.GetMediaAsync(query.PlayniteId,ClampMediaPageSize(query.Limit),token);
     private async Task<MediaItemDto> UpdateMediaMetadataAsync(MediaMetadataUpdateDto update,CancellationToken token)

@@ -101,6 +101,7 @@ namespace GameSaveCenter.Playnite.Views
             if (backupArrivalModel == null) return;
             backupArrivalModel.PropertyChanged += OnBackupArrivalModelChanged;
             UpdateBackupHistoryReadingPosition();
+            if (backupArrivalModel.IsShowingMediaLinkedBackup) OpenLinkedHistoryInspector();
         }
 
         private void DetachBackupArrivalModel()
@@ -128,6 +129,9 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnBackupArrivalModelChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(DashboardViewModel.IsShowingMediaLinkedBackup)
+                && backupArrivalModel?.IsShowingMediaLinkedBackup == true)
+                OpenLinkedHistoryInspector();
             if (e.PropertyName != nameof(DashboardViewModel.RecentBackupArrivals)
                 || backupArrivalModel == null || !SaveHistoryGrid.IsVisible || !IsInspectorMotionEnabled) return;
             var arrivals = backupArrivalModel.RecentBackupArrivals;
@@ -147,6 +151,16 @@ namespace GameSaveCenter.Playnite.Views
                     flash.KeyFrames.Add(new DiscreteObjectKeyFrame(highlight, KeyTime.FromTimeSpan(TimeSpan.Zero)));
                     row.BeginAnimation(Control.BackgroundProperty, flash);
                 }
+            }));
+        }
+
+        private void OpenLinkedHistoryInspector()
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                if (IsLoaded && SaveHistoryGrid.SelectedItem != null
+                    && backupArrivalModel?.IsShowingMediaLinkedBackup == true && !historyInspectorOpen)
+                    OpenHistoryInspector();
             }));
         }
 
@@ -628,6 +642,11 @@ namespace GameSaveCenter.Playnite.Views
                 return;
             }
 
+            OpenHistoryInspector();
+        }
+
+        private void OpenHistoryInspector()
+        {
             historyInspectorTransitionGeneration++;
             historyInspectorClosing = false;
             historyInspectorOpen = true;

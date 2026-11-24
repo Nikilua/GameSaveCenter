@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:infra="clr-namespace:GameSaveCenter.Playnite.Infrastructure"
              xmlns:ui="clr-namespace:GameSaveCenter.Playnite.Controls"
+             xmlns:contracts="clr-namespace:GameSaveCenter.Contracts;assembly=GameSaveCenter.Contracts"
              FontFamily="{DynamicResource GscUiFontFamily}"
              Foreground="{DynamicResource GscPrimaryTextBrush}" TextElement.Foreground="{DynamicResource GscPrimaryTextBrush}"
              Background="Transparent" UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -250,6 +251,18 @@
                                                 </Button>
                                             </Grid>
                                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="搜索全部历史" Command="{Binding SearchAllBackupHistoryCommand}" Margin="0,0,8,6"/>
+                                            <ui:Button Content="显示历史列表" Command="{Binding ClearLinkedBackupFocusCommand}" Margin="0,0,8,6">
+                                                <ui:Button.Style>
+                                                    <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiCompactButton}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsShowingMediaLinkedBackup}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ui:Button.Style>
+                                            </ui:Button>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,6">
                                                 <TextBlock Text="范围" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                                 <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupHistoryRangeOptions}" SelectedItem="{Binding BackupHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="108" ToolTip="按本地日历日期筛选历史版本；今天/昨天不按固定 24 小时计算。" AutomationProperties.Name="历史版本日期范围"/>
@@ -459,6 +472,63 @@
                                             <TextBlock Grid.Row="2" Text="保护" Style="{StaticResource SaveHistoryDetailLabel}" Margin="0,6,0,0"/>
                                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedBackup.LockStateDisplay, Mode=OneWay}" Style="{StaticResource SaveHistoryDetailValue}" Margin="0,6,0,0"/>
                                         </Grid>
+                                    </StackPanel>
+                                </Border>
+                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="存档封面" Style="{StaticResource SaveHistoryDetailSectionTitle}"/>
+                                        <ui:AsyncThumbnailImage SourcePath="{Binding CurrentBackupCover.ArchivePath}"
+                                                                PreviewWidth="320" Height="108" Stretch="Uniform" Margin="0,6,0,0"
+                                                                AutomationProperties.Name="存档封面预览">
+                                            <ui:AsyncThumbnailImage.Style>
+                                                <Style TargetType="ui:AsyncThumbnailImage">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CurrentBackupCover.State}" Value="{x:Static contracts:BackupCoverState.Available}">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ui:AsyncThumbnailImage.Style>
+                                        </ui:AsyncThumbnailImage>
+                                        <TextBlock Text="{Binding BackupCoverStatus}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                        <WrapPanel Margin="0,8,0,0">
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="选择截图" Command="{Binding ChooseBackupCoverCommand}" Margin="0,0,6,6"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="解除关联" Command="{Binding ClearBackupCoverCommand}" Margin="0,0,0,6"/>
+                                        </WrapPanel>
+                                        <StackPanel>
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsBackupCoverChooserOpen}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                            <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupCoverCandidates}"
+                                                      SelectedItem="{Binding SelectedBackupCoverCandidate}" DisplayMemberPath="FileName"
+                                                      AutomationProperties.Name="选择当前游戏的封面截图"/>
+                                            <ui:AsyncThumbnailImage SourcePath="{Binding SelectedBackupCoverCandidate.ArchivePath}" PreviewWidth="280"
+                                                                    Height="84" Stretch="Uniform" Margin="0,6,0,0"
+                                                                    AutomationProperties.Name="所选截图预览">
+                                                <ui:AsyncThumbnailImage.Style>
+                                                    <Style TargetType="ui:AsyncThumbnailImage">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding SelectedBackupCoverCandidate}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ui:AsyncThumbnailImage.Style>
+                                            </ui:AsyncThumbnailImage>
+                                            <WrapPanel Margin="0,6,0,0">
+                                                <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="设为封面" Command="{Binding SetBackupCoverCommand}"
+                                                           CommandParameter="{Binding SelectedBackupCoverCandidate}" Margin="0,0,6,6"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更多截图" Command="{Binding LoadMoreBackupCoverCandidatesCommand}" Margin="0,0,0,6"/>
+                                            </WrapPanel>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">

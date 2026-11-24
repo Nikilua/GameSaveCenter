@@ -198,7 +198,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OnPropertyChanged(nameof(PendingMaintenanceFindingsScrollRestore));
         }
 
-        private void PushNavigationReturnTarget(string returnLabel, string sourceSummary)
+        private void PushNavigationReturnTarget(string returnLabel, string sourceSummary, string selectedMediaId = "")
         {
             navigationHistory.Push(new WorkspaceNavigationSnapshot(
                 CurrentWorkspace,
@@ -226,7 +226,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 CurrentWorkspace == WorkspaceKind.Tasks && selectedWorklistBrowserEntry != null ? (int)selectedWorklistBrowserEntry.Kind : 0,
                 CurrentWorkspace == WorkspaceKind.Tasks ? selectedWorklistBrowserEntry?.StableObjectId ?? string.Empty : string.Empty,
                 CurrentWorkspace == WorkspaceKind.Tasks ? WorklistSearchText : string.Empty,
-                CurrentWorkspace == WorkspaceKind.Tasks ? WorklistGroupMode : string.Empty));
+                CurrentWorkspace == WorkspaceKind.Tasks ? WorklistGroupMode : string.Empty,
+                selectedMediaId));
             OnNavigationHistoryChanged();
         }
 
@@ -421,6 +422,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                     Run(() => LoadTaskPageAsync(true));
                     if (!selectedGameRestored)
                         StatusMessage += " 原游戏已不在当前快照中，未自动选择其他游戏。";
+                    break;
+                case WorkspaceKind.Media when !string.IsNullOrEmpty(entry.SelectedMediaId):
+                    MediaTabIndex = entry.MediaTabIndex;
+                    SelectedMedia = (selectedGameRestored
+                        ? Media.FirstOrDefault(item => string.Equals(item.MediaId, entry.SelectedMediaId, StringComparison.Ordinal))
+                        : null)!;
+                    RequestWorkspaceLoad();
+                    StatusMessage = SelectedMedia != null ? $"已返回{entry.SourceSummary}。" : "原截图已不在当前媒体列表。";
                     break;
                 default:
                     CurrentWorkspace = entry.Workspace;

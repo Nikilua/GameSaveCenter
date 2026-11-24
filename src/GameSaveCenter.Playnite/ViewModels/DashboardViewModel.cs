@@ -1279,16 +1279,22 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => currentWorkspace;
             set
             {
-                if (currentWorkspace != value)
+                var changedWorkspace = currentWorkspace != value;
+                if (changedWorkspace)
                 {
                     CancelDetailsLoad();
                     ResetBackupHistorySearch();
+                    if (currentWorkspace == WorkspaceKind.Saves) ResetBackupCover();
                 }
                 if (currentWorkspace == WorkspaceKind.Maintenance && value != WorkspaceKind.Maintenance)
                     CancelCloudTransferRequest();
                 if (currentWorkspace == WorkspaceKind.Media && value != WorkspaceKind.Media)
+                {
                     CancelMediaClassificationHistoryRequest();
+                    ResetMediaBackupLinks();
+                }
                 SetValue(ref currentWorkspace, value);
+                if (value == WorkspaceKind.Saves && changedWorkspace) RefreshBackupCover();
                 plugin.SessionLastWorkspace = value;
                 uiStateSave?.Schedule();
                 RecordRecentAccess();
@@ -1435,6 +1441,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     SetDefaultComparisonSelection(value);
                 }
                 SyncBackupEditor(value, sameBackup);
+                if (!sameBackup) RefreshBackupCover();
                 OnPropertyChanged(nameof(RestoreAvailabilityHint));
                 OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
                 RaiseCommandStates();
@@ -1531,6 +1538,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     OnPropertyChanged(nameof(SelectedMedia));
                 }
                 SyncMediaEditor(value, sameMedia);
+                if (!sameMedia) ResetMediaBackupLinks();
                 OnPropertyChanged(nameof(CanNavigatePreviousMedia));
                 OnPropertyChanged(nameof(CanNavigateNextMedia));
                 OnPropertyChanged(nameof(MediaDetailNavigationDisplay));
@@ -6690,7 +6698,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, ApplyPolicyTemplateBatchCommand, RetryPolicyTemplateBatchItemCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
-                LoadMoreBackupHistoryCommand, SearchAllBackupHistoryCommand,
+                LoadMoreBackupHistoryCommand, SearchAllBackupHistoryCommand, ChooseBackupCoverCommand,
+                LoadMoreBackupCoverCandidatesCommand, SetBackupCoverCommand, ClearBackupCoverCommand,
+                ListMediaBackupLinksCommand, LoadMoreMediaBackupLinksCommand, OpenMediaLinkedBackupCommand, ClearLinkedBackupFocusCommand,
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,

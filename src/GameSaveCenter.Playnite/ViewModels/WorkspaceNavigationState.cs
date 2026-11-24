@@ -35,7 +35,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             int worklistEntryKind = 0,
             string worklistEntryStableId = "",
             string worklistSearchText = "",
-            string worklistGroupMode = "")
+            string worklistGroupMode = "",
+            string selectedMediaId = "")
         {
             Workspace = workspace;
             SelectedGameId = selectedGameId ?? string.Empty;
@@ -63,6 +64,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             WorklistEntryStableId = worklistEntryStableId ?? string.Empty;
             WorklistSearchText = worklistSearchText ?? string.Empty;
             WorklistGroupMode = worklistGroupMode ?? string.Empty;
+            SelectedMediaId = selectedMediaId ?? string.Empty;
         }
 
         public WorkspaceKind Workspace { get; }
@@ -91,6 +93,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public string WorklistEntryStableId { get; }
         public string WorklistSearchText { get; }
         public string WorklistGroupMode { get; }
+        public string SelectedMediaId { get; }
 
         private static double NormalizeOffset(double value)
             => double.IsNaN(value) || double.IsInfinity(value) || value < 0 ? 0 : value;
