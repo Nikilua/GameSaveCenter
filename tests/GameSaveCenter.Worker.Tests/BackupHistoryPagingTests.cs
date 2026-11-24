@@ -76,6 +76,56 @@ public sealed class BackupHistoryPagingTests : IDisposable
         Assert.Equal("a", next.Items[0].ParentBackupId);
     }
 
+    [Fact]
+    public async Task SearchesBeyondLoadedPagesWithLiteralUnicodeAndStableContinuation()
+    {
+        var options = new WorkerOptions
+        {
+            DataDirectory = Path.Combine(root, "state"),
+            LudusaviBackupDirectory = Path.Combine(root, "saves"),
+            MediaArchiveDirectory = Path.Combine(root, "media")
+        };
+        var store = new SqliteStateStore(options, NullLogger<SqliteStateStore>.Instance);
+        var token = CancellationToken.None;
+        await store.InitializeAsync(token);
+        var timestamp = new DateTime(2026, 10, 19, 8, 0, 0, DateTimeKind.Utc);
+        for (var index = 0; index < 903; index++)
+        {
+            await store.AddBackupVersionAsync(new BackupVersionDto
+            {
+                PlayniteId = "game-1",
+                BackupId = $"version-{index:D4}",
+                LudusaviName = "Demo",
+                CreatedUtc = index < 900 ? timestamp.AddDays(1) : timestamp,
+                Comment = index == 900 ? "王城門口 %_ Ä" : string.Empty,
+                SourceDevice = index == 901 ? "王城門口 %_ ä" : string.Empty
+            }, "[]", token);
+        }
+        await store.AddBackupVersionAsync(new BackupVersionDto
+        {
+            PlayniteId = "game-2",
+            BackupId = "other",
+            LudusaviName = "Demo",
+            CreatedUtc = timestamp,
+            Comment = "王城門口 %_ Ä"
+        }, "[]", token);
+
+        var unfiltered = await store.GetBackupVersionPageAsync("game-1", 100, null, null, token);
+        Assert.DoesNotContain(unfiltered.Items, item => item.BackupId == "version-0900");
+        var first = await store.GetBackupVersionPageAsync("game-1", 1, null, null, token, "王城門口 %_ ä");
+        Assert.Equal(2, first.TotalCount);
+        Assert.Equal("version-0900", Assert.Single(first.Items).BackupId);
+        Assert.True(first.HasMore);
+        var second = await store.GetBackupVersionPageAsync(
+            "game-1", 1, first.NextCreatedUtcKey, first.NextBackupId, token, "王城門口 %_ ä");
+        Assert.Equal("version-0901", Assert.Single(second.Items).BackupId);
+        Assert.False(second.HasMore);
+        var byId = await store.GetBackupVersionPageAsync(
+            "game-1", 10, null, null, token, "VERSION-", timestamp, timestamp.AddDays(1));
+        Assert.Equal(3, byId.TotalCount);
+        Assert.Equal("version-0902", byId.Items.Last().BackupId);
+    }
+
     private static string Manifest(string path, string hash)
         => JsonSerializer.Serialize(new[] { new FileManifestEntry { RelativePath = path, SizeBytes = 24, Sha256 = hash } });
 

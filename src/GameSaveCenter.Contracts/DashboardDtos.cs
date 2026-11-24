@@ -203,6 +203,9 @@ namespace GameSaveCenter.Contracts
     public sealed class BackupHistoryPageQueryDto
     {
         public string PlayniteId { get; set; } = string.Empty;
+        public string SearchText { get; set; } = string.Empty;
+        public DateTime? CreatedFromUtc { get; set; }
+        public DateTime? CreatedBeforeUtc { get; set; }
         public int Limit { get; set; } = 100;
         public bool ForceRefresh { get; set; }
         public string BeforeCreatedUtcKey { get; set; } = string.Empty;

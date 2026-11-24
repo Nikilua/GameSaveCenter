@@ -129,6 +129,7 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         Assert.Contains("JumpToRecentBackupCommand", save);
         Assert.Contains("JumpToEarlierBackupCommand", save);
         Assert.Contains("BackupHistorySearchText", save);
+        Assert.Contains("Command=\"{Binding SearchAllBackupHistoryCommand}\"", save);
         Assert.Contains("StatusMessageFullDisplay, Mode=OneWay", System.IO.File.ReadAllText(System.IO.Path.Combine(root, "src", "GameSaveCenter.Playnite", "Views", "DashboardView.xaml")));
         Assert.Contains("SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty", saveCode);
         Assert.Contains("nameof(DashboardViewModel.BackupHistoryView)", saveCode);
@@ -151,6 +152,9 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
             other.SourceDevice = "LAPTOP-02";
             var viewModel = CreateBareDashboardViewModel(selected, other);
             SetField(viewModel, "selectedBackup", selected);
+            var submittedText = string.Empty;
+            SetField(viewModel, "<SearchAllBackupHistoryCommand>k__BackingField",
+                new RelayCommand(_ => submittedText = viewModel.BackupHistorySearchText));
 
             var view = new SaveCenterView
             {
@@ -174,7 +178,7 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
                 PumpLayout(window);
 
                 var search = FindVisualChildren<TextBox>(view)
-                    .Single(control => AutomationProperties.GetName(control) == "搜索已载入的存档历史");
+                    .Single(control => AutomationProperties.GetName(control) == "搜索存档历史");
                 var history = (DataGrid)view.GetType()
                     .GetField("SaveHistoryGrid", BindingFlags.Instance | BindingFlags.NonPublic)!
                     .GetValue(view)!;
@@ -201,6 +205,14 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
 
                 var source = PresentationSource.FromVisual(search);
                 Assert.NotNull(source);
+                var enter = new KeyEventArgs(Keyboard.PrimaryDevice, source!, Environment.TickCount, Key.Enter)
+                {
+                    RoutedEvent = Keyboard.PreviewKeyDownEvent
+                };
+                search.RaiseEvent(enter);
+                Assert.True(enter.Handled);
+                Assert.Equal("not-a-match", submittedText);
+
                 var escape = new KeyEventArgs(Keyboard.PrimaryDevice, source!, Environment.TickCount, Key.Escape)
                 {
                     RoutedEvent = Keyboard.PreviewKeyDownEvent

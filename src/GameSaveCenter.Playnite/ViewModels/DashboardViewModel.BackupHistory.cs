@@ -25,7 +25,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string backupHistoryCursorBackupId = string.Empty;
         private BackupLineageDisplay selectedBackupLineage = new BackupLineageDisplay();
 
-        public ICollectionView BackupHistoryView { get; private set; } = null!;
+        private ICollectionView loadedBackupHistoryView = null!;
+        private ICollectionView searchedBackupHistoryView = null!;
+        private BatchObservableCollection<BackupVersionDto> backupSearchResults = null!;
+        private CancellationTokenSource? backupSearchRequest;
+        private BackupVersionPageDto? backupSearchPage;
+        private (DateTime? FromUtc, DateTime? BeforeUtc) backupSearchBounds;
+        private string backupSearchStatus = string.Empty;
+
+        public ICollectionView BackupHistoryView => backupSearchPage == null ? loadedBackupHistoryView : searchedBackupHistoryView;
+        public ICommand SearchAllBackupHistoryCommand { get; private set; } = null!;
 
         public IReadOnlyList<string> BackupHistoryRangeOptions => BackupHistoryDateRange.Options;
 
@@ -48,6 +57,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (string.Equals(backupHistorySearchText, normalized, StringComparison.Ordinal)) return;
 
                 backupHistorySearchText = normalized;
+                ResetBackupHistorySearch();
                 OnPropertyChanged(nameof(BackupHistorySearchText));
                 RefreshBackupHistoryView();
                 OnPropertyChanged(nameof(BackupHistoryRangeSummary));
@@ -66,6 +76,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 if (string.Equals(backupHistoryRange, normalized, StringComparison.Ordinal)) return;
 
                 backupHistoryRange = normalized;
+                ResetBackupHistorySearch();
                 OnPropertyChanged(nameof(BackupHistoryRange));
                 RefreshBackupHistoryView();
                 OnPropertyChanged(nameof(BackupHistoryHasActiveRange));
@@ -81,6 +92,10 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             get
             {
+                if (!string.IsNullOrEmpty(backupSearchStatus)) return backupSearchStatus;
+                if (backupSearchPage != null)
+                    return $"全部历史搜索“{TruncateSearchSummary(BackupHistorySearchText.Trim())}” · 显示 {backupSearchResults.Count}/{backupSearchPage.TotalCount} 个匹配版本";
+
                 var total = BackupHistoryTotalCount;
                 var loaded = Backups.Count;
                 var visible = BackupHistoryView == null
@@ -106,8 +121,10 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         partial void OnBackupHistoryInitialize()
         {
-            BackupHistoryView = new CollectionViewSource { Source = Backups }.View;
-            BackupHistoryView.Filter = FilterBackupHistory;
+            loadedBackupHistoryView = new CollectionViewSource { Source = Backups }.View;
+            loadedBackupHistoryView.Filter = FilterBackupHistory;
+            backupSearchResults = new BatchObservableCollection<BackupVersionDto>();
+            searchedBackupHistoryView = new CollectionViewSource { Source = backupSearchResults }.View;
             Backups.CollectionChanged += OnBackupHistoryCollectionChanged;
             ClearBackupHistoryRangeCommand = new RelayCommand(
                 _ => ClearBackupHistoryRange(),
@@ -119,8 +136,17 @@ namespace GameSaveCenter.Playnite.ViewModels
                 _ => JumpToBackup(false),
                 _ => !IsBusy && CanJumpBackupHistory());
             LoadMoreBackupHistoryCommand = new RelayCommand(
-                _ => Run(LoadMoreBackupHistoryAsync),
-                _ => !IsBusy && !IsLoadingMoreBackupHistory && BackupHistoryHasMore && SelectedGame != null);
+                _ =>
+                {
+                    if (backupSearchPage != null) Observe(SearchBackupHistoryAsync(loadMore: true));
+                    else Run(LoadMoreBackupHistoryAsync);
+                },
+                _ => !IsBusy && !IsLoadingMoreBackupHistory && backupSearchRequest == null
+                    && (backupSearchPage?.HasMore ?? BackupHistoryHasMore) && SelectedGame != null);
+            SearchAllBackupHistoryCommand = new RelayCommand(
+                _ => Observe(SearchBackupHistoryAsync(loadMore: false)),
+                _ => !IsBusy && CurrentWorkspace == WorkspaceKind.Saves && SelectedGame != null
+                    && !string.IsNullOrWhiteSpace(BackupHistorySearchText));
             RefreshSelectedBackupLineage();
         }
 
@@ -160,7 +186,96 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void RefreshBackupHistoryView()
         {
-            BackupHistoryView?.Refresh();
+            loadedBackupHistoryView?.Refresh();
+        }
+
+        private void ResetBackupHistorySearch()
+        {
+            var request = backupSearchRequest;
+            backupSearchRequest = null;
+            request?.Cancel();
+            var hadResults = backupSearchPage != null;
+            backupSearchPage = null;
+            backupSearchStatus = string.Empty;
+            if (hadResults) OnPropertyChanged(nameof(BackupHistoryView));
+            if (hadResults) backupSearchResults.Clear();
+            OnPropertyChanged(nameof(BackupHistoryRangeSummary));
+        }
+
+        private async Task SearchBackupHistoryAsync(bool loadMore)
+        {
+            var gameId = SelectedGame?.PlayniteId;
+            var term = BackupHistorySearchText.Trim();
+            if (string.IsNullOrWhiteSpace(gameId) || term.Length == 0) return;
+
+            backupSearchRequest?.Cancel();
+            using var request = new CancellationTokenSource();
+            backupSearchRequest = request;
+            var cursor = loadMore ? backupSearchPage : null;
+            var bounds = loadMore ? backupSearchBounds : BackupHistoryDateRange.GetUtcBounds(BackupHistoryRange, DateTime.Now);
+            backupSearchStatus = loadMore ? "正在加载更多匹配版本…" : "正在搜索当前游戏的全部历史…";
+            OnPropertyChanged(nameof(BackupHistoryRangeSummary));
+            RaiseCommandStates();
+            try
+            {
+                var page = await plugin.RequestAsync<BackupVersionPageDto>(
+                    MessageTypes.ListBackupHistoryPage,
+                    new BackupHistoryPageQueryDto
+                    {
+                        PlayniteId = gameId!,
+                        Limit = BackupHistoryPageSize,
+                        SearchText = term,
+                        CreatedFromUtc = bounds.FromUtc,
+                        CreatedBeforeUtc = bounds.BeforeUtc,
+                        BeforeCreatedUtcKey = cursor?.NextCreatedUtcKey ?? string.Empty,
+                        BeforeBackupId = cursor?.NextBackupId ?? string.Empty
+                    },
+                    cancellationToken: request.Token).ConfigureAwait(false);
+                ApplyOnUi(() =>
+                {
+                    if (!ReferenceEquals(backupSearchRequest, request)
+                        || !IsSelectedGame(gameId!) || CurrentWorkspace != WorkspaceKind.Saves) return;
+
+                    var previousSelection = SelectedBackup?.BackupId;
+                    if (loadMore)
+                    {
+                        var knownIds = new HashSet<string>(backupSearchResults.Select(item => item.BackupId), StringComparer.Ordinal);
+                        foreach (var item in page.Items)
+                            if (knownIds.Add(item.BackupId)) backupSearchResults.Add(item);
+                    }
+                    else
+                    {
+                        backupSearchResults.ReplaceAll(page.Items, SnapshotComparers.Backup);
+                    }
+                    var changedView = backupSearchPage == null;
+                    backupSearchPage = page;
+                    backupSearchBounds = bounds;
+                    backupSearchStatus = string.Empty;
+                    if (changedView) OnPropertyChanged(nameof(BackupHistoryView));
+                    if (previousSelection != null)
+                        SelectedBackup = backupSearchResults.FirstOrDefault(item => item.BackupId == previousSelection)!;
+                });
+            }
+            catch (OperationCanceledException) when (request.IsCancellationRequested) { }
+            catch (Exception ex)
+            {
+                ApplyOnUi(() =>
+                {
+                    if (!ReferenceEquals(backupSearchRequest, request)) return;
+                    backupSearchStatus = "历史搜索失败，可重新搜索。";
+                    ReportDashboardFailure(ex, true);
+                });
+            }
+            finally
+            {
+                ApplyOnUi(() =>
+                {
+                    if (!ReferenceEquals(backupSearchRequest, request)) return;
+                    backupSearchRequest = null;
+                    OnPropertyChanged(nameof(BackupHistoryRangeSummary));
+                    RaiseCommandStates();
+                });
+            }
         }
 
         private void ClearBackupHistoryRange()

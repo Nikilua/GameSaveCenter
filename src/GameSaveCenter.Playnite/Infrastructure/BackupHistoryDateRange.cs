@@ -56,6 +56,11 @@ namespace GameSaveCenter.Playnite.Infrastructure
                 : $"本地日期 {from:yyyy-MM-dd} 至 {to:yyyy-MM-dd}";
         }
 
+        internal static (DateTime? FromUtc, DateTime? BeforeUtc) GetUtcBounds(string range, DateTime localNow)
+            => TryResolve(range, localNow, out var from, out var to)
+                ? (from.ToUniversalTime(), to.AddDays(1).ToUniversalTime())
+                : ((DateTime?)null, (DateTime?)null);
+
         internal static IEnumerable<BackupVersionDto> OrderForNavigation(
             IEnumerable<BackupVersionDto> source,
             bool recentFirst)

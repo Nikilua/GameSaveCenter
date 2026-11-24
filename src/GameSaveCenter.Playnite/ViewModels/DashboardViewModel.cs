@@ -1280,7 +1280,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             set
             {
                 if (currentWorkspace != value)
+                {
                     CancelDetailsLoad();
+                    ResetBackupHistorySearch();
+                }
                 if (currentWorkspace == WorkspaceKind.Maintenance && value != WorkspaceKind.Maintenance)
                     CancelCloudTransferRequest();
                 if (currentWorkspace == WorkspaceKind.Media && value != WorkspaceKind.Media)
@@ -4131,6 +4134,10 @@ namespace GameSaveCenter.Playnite.ViewModels
                             var selectedBackupId = SelectedBackup?.BackupId;
                             var selectedCandidateBeforeRefresh = SelectedCandidate;
                             var selectedCandidateIndex = SelectedCandidate == null ? -1 : SaveCandidates.IndexOf(SelectedCandidate);
+                            if (forceBackupHistory || !string.IsNullOrWhiteSpace(pendingTaskBackupId)
+                                || !string.IsNullOrWhiteSpace(pendingFindingBackupId)
+                                || !string.IsNullOrWhiteSpace(pendingStorageBackupId))
+                                ResetBackupHistorySearch();
                             Replace(Backups, backupsTask.Result.Items, SnapshotComparers.Backup);
                             SetBackupHistoryPageState(backupsTask.Result);
                             Replace(SaveCandidates, candidatesTask.Result, SnapshotComparers.SaveCandidate);
@@ -4167,7 +4174,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                                 if (storageBackup == null)
                                     StatusMessage = $"存储分析对应版本“{requestedStorageBackupId}”已不存在，未选择其他版本；已打开对应游戏。";
                             }
-                            else
+                            else if (backupSearchPage == null)
                                 SelectedBackup = SelectionAnchorResolver.Restore(Backups, selectedBackupId, selectedBackupIndex, backup => backup.BackupId)!;
                             MarkRestorePlanDraftsForSnapshot(
                                 id,
@@ -5273,6 +5280,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (string.Equals(BackupComment, comment, StringComparison.Ordinal)) backupCommentDirty = false;
                     if (LockSelectedBackup == locked) backupLockDirty = false;
                 }
+                ApplyOnUi(ResetBackupHistorySearch);
                 await LoadDetailsAsync();
             }
             ConfirmSuccess("备份备注与锁定状态已保存");
@@ -6620,6 +6628,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ApplyOnUi(() =>
             {
                 InvalidateMediaDetailsContext();
+                ResetBackupHistorySearch();
                 ResetSaveDetailsState();
                 Backups.Clear();
                 Media.Clear();
@@ -6675,7 +6684,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 CreatePolicyTemplateCommand, SavePolicyTemplateCommand, ApplyPolicyTemplateCommand, ApplyPolicyTemplateBatchCommand, RetryPolicyTemplateBatchItemCommand, DeletePolicyTemplateCommand,
                 UpdateBackupMetadataCommand, CancelBackupMetadataCommand, CompareBackupCommand, SwapCompareBackupCommand, LoadMoreDiffPathsCommand, ClearDiffPathFiltersCommand, PreviewRetentionCommand,
                 ClearBackupHistoryRangeCommand, JumpToRecentBackupCommand, JumpToEarlierBackupCommand,
-                LoadMoreBackupHistoryCommand,
+                LoadMoreBackupHistoryCommand, SearchAllBackupHistoryCommand,
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,

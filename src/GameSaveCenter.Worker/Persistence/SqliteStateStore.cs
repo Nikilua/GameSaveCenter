@@ -1053,7 +1053,10 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         int limit,
         string? beforeCreatedUtcKey,
         string? beforeBackupId,
-        CancellationToken token)
+        CancellationToken token,
+        string? searchText = null,
+        DateTime? createdFromUtc = null,
+        DateTime? createdBeforeUtc = null)
     {
         var page = new BackupVersionPageDto();
         if (string.IsNullOrWhiteSpace(playniteId)) return page;
@@ -1062,23 +1065,45 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         await using var connection = Open();
         await connection.OpenAsync(token).ConfigureAwait(false);
 
+        var search = searchText?.Trim();
+        var filters = "playnite_id=$id";
+        if (!string.IsNullOrEmpty(search))
+        {
+            connection.CreateFunction<string?, string, bool>("history_contains",
+                (value, term) => value?.IndexOf(term, StringComparison.OrdinalIgnoreCase) >= 0,
+                isDeterministic: true);
+            filters += " AND (history_contains(backup_id,$search) OR history_contains(ludusavi_name,$search)"
+                + " OR history_contains(comment,$search) OR history_contains(source_device,$search)"
+                + " OR history_contains(operating_system,$search))";
+        }
+        if (createdFromUtc.HasValue) filters += " AND created_utc>=$fromUtc";
+        if (createdBeforeUtc.HasValue) filters += " AND created_utc<$beforeUtc";
+
+        void BindFilters(SqliteCommand query)
+        {
+            query.Parameters.AddWithValue("$id", playniteId);
+            if (!string.IsNullOrEmpty(search)) query.Parameters.AddWithValue("$search", search);
+            if (createdFromUtc.HasValue)
+                query.Parameters.AddWithValue("$fromUtc", createdFromUtc.Value.ToUniversalTime().ToString("O"));
+            if (createdBeforeUtc.HasValue)
+                query.Parameters.AddWithValue("$beforeUtc", createdBeforeUtc.Value.ToUniversalTime().ToString("O"));
+        }
+
         await using (var countCommand = connection.CreateCommand())
         {
-            countCommand.CommandText = "SELECT COUNT(*) FROM backup_versions WHERE playnite_id=$id;";
-            countCommand.Parameters.AddWithValue("$id", playniteId);
+            countCommand.CommandText = $"SELECT COUNT(*) FROM backup_versions WHERE {filters};";
+            BindFilters(countCommand);
             page.TotalCount = Convert.ToInt32(await countCommand.ExecuteScalarAsync(token).ConfigureAwait(false));
         }
 
         await using var command = connection.CreateCommand();
-        command.CommandText = !string.IsNullOrWhiteSpace(beforeCreatedUtcKey)
-            ? @"SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json,parent_backup_id,manifest_json
-FROM backup_versions
-WHERE playnite_id=$id AND (created_utc<$before OR (created_utc=$before AND backup_id>$beforeId))
-ORDER BY created_utc DESC,backup_id ASC LIMIT $limit;"
-            : @"SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json,parent_backup_id,manifest_json
-FROM backup_versions WHERE playnite_id=$id
+        var cursorFilter = string.IsNullOrWhiteSpace(beforeCreatedUtcKey)
+            ? string.Empty
+            : " AND (created_utc<$before OR (created_utc=$before AND backup_id>$beforeId))";
+        command.CommandText = $@"SELECT backup_id,ludusavi_name,created_utc,total_bytes,file_count,is_locked,comment,source_device,operating_system,is_pre_restore,archive_path,restore_readiness_json,parent_backup_id,manifest_json
+FROM backup_versions WHERE {filters}{cursorFilter}
 ORDER BY created_utc DESC,backup_id ASC LIMIT $limit;";
-        command.Parameters.AddWithValue("$id", playniteId);
+        BindFilters(command);
         command.Parameters.AddWithValue("$limit", safeLimit + 1);
         if (!string.IsNullOrWhiteSpace(beforeCreatedUtcKey))
         {

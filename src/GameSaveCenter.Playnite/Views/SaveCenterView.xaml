@@ -226,7 +226,7 @@
                                     <Border x:Name="SaveHistoryToolbarSurface" Grid.Row="2" Background="{DynamicResource GscControlFillBrush}" BorderBrush="{DynamicResource GscDividerBrush}" BorderThickness="{StaticResource GscHairlineThickness}" CornerRadius="10" Padding="8" Margin="0,8,0,0">
                                         <WrapPanel x:Name="SaveHistoryToolbarActions" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                                             <Grid x:Name="SaveHistorySearchBoxHost" Width="196" MinWidth="150" Margin="0,0,8,6">
-                                                <TextBox x:Name="SaveHistorySearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupHistorySearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="120" Padding="30,4,34,4" ToolTip="只搜索已载入版本的名称、备注、设备、系统或版本 ID；不会读取存档文件。" AutomationProperties.Name="搜索已载入的存档历史" PreviewKeyDown="OnSaveHistorySearchPreviewKeyDown"/>
+                                                <TextBox x:Name="SaveHistorySearchTextBox" Style="{DynamicResource GscWpfUiTextBox}" Text="{Binding BackupHistorySearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="120" Padding="30,4,34,4" ToolTip="输入时筛选已载入版本。按 Enter 搜索当前游戏全部历史的名称、备注、设备、系统或版本 ID。" AutomationProperties.Name="搜索存档历史" PreviewKeyDown="OnSaveHistorySearchPreviewKeyDown"/>
                                                 <ui:ThemeAwareIcon Style="{StaticResource GscLineIcon}" IconData="{StaticResource GscIconSearch}" Width="16" Height="16" Foreground="{DynamicResource GscSecondaryTextBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False"/>
                                                 <TextBlock Text="搜索备注、设备或 ID" VerticalAlignment="Center" Margin="30,0,10,0" IsHitTestVisible="False">
                                                     <TextBlock.Style>
@@ -248,6 +248,7 @@
                                                     </Button.Style>
                                                 </Button>
                                             </Grid>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="搜索全部历史" Command="{Binding SearchAllBackupHistoryCommand}" Margin="0,0,8,6"/>
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,6">
                                                 <TextBlock Text="范围" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                                                 <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupHistoryRangeOptions}" SelectedItem="{Binding BackupHistoryRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="108" ToolTip="按本地日历日期筛选历史版本；今天/昨天不按固定 24 小时计算。" AutomationProperties.Name="历史版本日期范围"/>

@@ -516,6 +516,13 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnSaveHistorySearchPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Enter && DataContext is DashboardViewModel model
+                && model.SearchAllBackupHistoryCommand.CanExecute(null))
+            {
+                model.SearchAllBackupHistoryCommand.Execute(null);
+                e.Handled = true;
+                return;
+            }
             if (e.Key != Key.Escape || !(sender is TextBox textBox) || textBox.Text.Length == 0)
                 return;
 

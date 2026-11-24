@@ -325,6 +325,11 @@ public sealed class IpcRequestDispatcher
     {
         if (string.IsNullOrWhiteSpace(query.PlayniteId)) return new BackupVersionPageDto();
 
+        if (!string.IsNullOrWhiteSpace(query.SearchText))
+            return await _store.GetBackupVersionPageAsync(
+                query.PlayniteId, query.Limit, query.BeforeCreatedUtcKey, query.BeforeBackupId, token,
+                query.SearchText, query.CreatedFromUtc, query.CreatedBeforeUtc).ConfigureAwait(false);
+
         var page = await _store.GetBackupVersionPageAsync(
             query.PlayniteId,
             query.Limit,
