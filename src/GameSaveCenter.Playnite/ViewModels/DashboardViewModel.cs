@@ -889,7 +889,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         /// <summary>Remembers the ordinary media tab; purpose actions may override it once.</summary>
         public int MediaTabIndex { get => mediaTabIndex; set { SetValue(ref mediaTabIndex, Math.Max(0, Math.Min(3, value))); } }
         /// <summary>Remembers the ordinary save tab; diagnostics can route directly to paths.</summary>
-        public int SaveTabIndex { get => saveTabIndex; set { SetValue(ref saveTabIndex, Math.Max(0, Math.Min(3, value))); } }
+        public int SaveTabIndex
+        {
+            get => saveTabIndex;
+            set
+            {
+                var index = Math.Max(0, Math.Min(BackupGalleryTabIndex, value));
+                if (saveTabIndex == index) return;
+                SetValue(ref saveTabIndex, index);
+                if (index == BackupGalleryTabIndex) EnsureBackupGalleryLoaded();
+            }
+        }
         public EnvironmentCheckReportDto EnvironmentCheck
         {
             get => environmentCheck;
@@ -1285,7 +1295,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     CancelDetailsLoad();
                     ResetBackupHistorySearch();
                     ResetBackupCalendar();
-                    if (currentWorkspace == WorkspaceKind.Saves) ResetBackupCover();
+                    if (currentWorkspace == WorkspaceKind.Saves)
+                    {
+                        ResetBackupCover();
+                        ResetBackupGallery();
+                    }
                 }
                 if (currentWorkspace == WorkspaceKind.Maintenance && value != WorkspaceKind.Maintenance)
                     CancelCloudTransferRequest();
@@ -1295,7 +1309,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ResetMediaBackupLinks();
                 }
                 SetValue(ref currentWorkspace, value);
-                if (value == WorkspaceKind.Saves && previousWorkspace != value) RefreshBackupCover();
+                if (value == WorkspaceKind.Saves && previousWorkspace != value)
+                {
+                    RefreshBackupCover();
+                    EnsureBackupGalleryLoaded();
+                }
                 plugin.SessionLastWorkspace = value;
                 uiStateSave?.Schedule();
                 RecordRecentAccess();
@@ -4198,6 +4216,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                                 !BackupHistoryHasMore && Backups.Count >= backupsTask.Result.TotalCount);
                             SelectedCandidate = RestoreSaveCandidateSelection(SaveCandidates, selectedCandidateBeforeRefresh, selectedCandidateIndex)!;
                             CompleteSaveDetailsLoad();
+                            EnsureBackupGalleryLoaded();
                             RaiseCommandStates();
                         });
                     }
@@ -6314,6 +6333,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ClearHistoryComparisonPins(restoreDefault: false);
             if (backupSearchGameId != null && !string.Equals(backupSearchGameId, selected?.PlayniteId, StringComparison.OrdinalIgnoreCase))
                 ResetBackupHistorySearch();
+            if (backupGalleryGameId != null && !string.Equals(backupGalleryGameId, selected?.PlayniteId, StringComparison.Ordinal))
+                ResetBackupGallery();
             RecordRecentAccess();
             if (selected != null && !string.Equals(GameDiagnosticPlayniteId, selected.PlayniteId, StringComparison.OrdinalIgnoreCase))
                 GameDiagnosticPlayniteId = selected.PlayniteId;
@@ -6651,6 +6672,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 InvalidateMediaDetailsContext();
                 ResetBackupHistorySearch();
                 ResetBackupCalendar();
+                ResetBackupGallery();
                 ClearHistoryComparisonPins(restoreDefault: false);
                 ResetBackupArrivals();
                 ResetSaveDetailsState();
@@ -6713,6 +6735,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ListMediaBackupLinksCommand, LoadMoreMediaBackupLinksCommand, OpenMediaLinkedBackupCommand, ClearLinkedBackupFocusCommand,
                 PinHistoryComparisonACommand, PinHistoryComparisonBCommand, ClearHistoryComparisonPinsCommand, OpenPinnedHistoryComparisonCommand,
                 ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,
+                RefreshBackupGalleryCommand, LoadMoreBackupGalleryCommand, OpenBackupGalleryVersionCommand, OpenHistoryFromBackupGalleryCommand,
+                PreviewProgressRecapCommand, SaveProgressRecapCommand,
                 AddMediaSourceCommand, PreviewMediaSourceCommand, AcceptCandidateCommand, RejectCandidateCommand, ReassignMediaCommand,
                 UpdateMediaMetadataCommand, FavoriteSelectedMediaCommand, UnfavoriteSelectedMediaCommand, CommentSelectedMediaCommand,
                 OpenSelectedMediaCommand,RevealSelectedMediaCommand,PreviousMediaCommand,NextMediaCommand,

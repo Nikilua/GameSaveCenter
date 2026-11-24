@@ -130,6 +130,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             InitializeMediaBackupLinksCommands();
             InitializeHistoryComparisonCommands();
             InitializeBackupCalendarCommands();
+            InitializeBackupGalleryCommands();
+            InitializeProgressRecapCommands();
             pendingBackupArrivals = Array.Empty<BackupVersionDto>();
             recentBackupArrivals = Array.Empty<BackupVersionDto>();
             loadedBackupHistoryView = new CollectionViewSource { Source = Backups }.View;
@@ -212,10 +214,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             var hadResults = backupSearchPage != null;
             backupSearchPage = null;
             backupSearchStatus = string.Empty;
-            if (isShowingMediaLinkedBackup)
+            if (isShowingFocusedHistoryBackup)
             {
-                isShowingMediaLinkedBackup = false;
-                OnPropertyChanged(nameof(IsShowingMediaLinkedBackup));
+                isShowingFocusedHistoryBackup = false;
+                OnPropertyChanged(nameof(IsShowingFocusedHistoryBackup));
             }
             if (hadResults) OnPropertyChanged(nameof(BackupHistoryView));
             if (hadResults) backupSearchResults.Clear();

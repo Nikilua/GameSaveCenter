@@ -1059,7 +1059,8 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         DateTime? createdFromUtc = null,
         DateTime? createdBeforeUtc = null,
         string? coverMediaId = null,
-        string? exactBackupId = null)
+        string? exactBackupId = null,
+        bool hasCoverOnly = false)
     {
         var page = new BackupVersionPageDto();
         if (string.IsNullOrWhiteSpace(playniteId)) return page;
@@ -1082,6 +1083,8 @@ ON CONFLICT(playnite_id,backup_id) DO UPDATE SET ludusavi_name=excluded.ludusavi
         if (createdFromUtc.HasValue) filters += " AND created_utc>=$fromUtc";
         if (createdBeforeUtc.HasValue) filters += " AND created_utc<$beforeUtc";
         if (!string.IsNullOrWhiteSpace(exactBackupId)) filters += " AND backup_id=$exactBackup";
+        if (hasCoverOnly)
+            filters += " AND EXISTS (SELECT 1 FROM backup_covers c WHERE c.playnite_id=backup_versions.playnite_id AND c.backup_id=backup_versions.backup_id)";
         if (!string.IsNullOrWhiteSpace(coverMediaId))
             filters += @" AND EXISTS (
     SELECT 1 FROM backup_covers c JOIN media m ON m.media_id=c.media_id

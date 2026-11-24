@@ -27,6 +27,7 @@ namespace GameSaveCenter.Contracts
         public const string GetBackupCover = "backup.cover.get";
         public const string SetBackupCover = "backup.cover.set";
         public const string ListBackupCoversForMedia = "backup.cover.media";
+        public const string ListBackupCoverGallery = "backup.cover.gallery";
         public const string ValidateRestoreReadiness = "restore.readiness.validate";
         public const string ValidateGame = "validation.game";
         public const string GetGamePolicy = "policy.get";

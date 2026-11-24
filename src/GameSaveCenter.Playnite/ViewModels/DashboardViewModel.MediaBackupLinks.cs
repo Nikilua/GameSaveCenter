@@ -10,12 +10,12 @@ namespace GameSaveCenter.Playnite.ViewModels
     public sealed partial class DashboardViewModel
     {
         private BackupVersionPageDto? mediaBackupLinksPage;
-        private bool isShowingMediaLinkedBackup;
+        private bool isShowingFocusedHistoryBackup;
         private string mediaBackupLinksStatus = string.Empty;
 
         public BatchObservableCollection<BackupVersionDto> MediaBackupLinks { get; } = new BatchObservableCollection<BackupVersionDto>();
         public string MediaBackupLinksStatus => mediaBackupLinksStatus;
-        public bool IsShowingMediaLinkedBackup => isShowingMediaLinkedBackup;
+        public bool IsShowingFocusedHistoryBackup => isShowingFocusedHistoryBackup;
         public ICommand ListMediaBackupLinksCommand { get; private set; } = null!;
         public ICommand LoadMoreMediaBackupLinksCommand { get; private set; } = null!;
         public ICommand OpenMediaLinkedBackupCommand { get; private set; } = null!;
@@ -33,7 +33,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenMediaLinkedBackupCommand = new RelayCommand(
                 backup => Run(() => OpenMediaLinkedBackupAsync(((BackupVersionDto)backup!).BackupId)),
                 backup => CanReadMediaBackupLinks && backup is BackupVersionDto);
-            ClearLinkedBackupFocusCommand = new RelayCommand(_ => ResetBackupHistorySearch(), _ => IsShowingMediaLinkedBackup);
+            ClearLinkedBackupFocusCommand = new RelayCommand(_ => ResetBackupHistorySearch(), _ => IsShowingFocusedHistoryBackup);
         }
 
         private void ResetMediaBackupLinks()
@@ -91,20 +91,27 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 PushNavigationReturnTarget("返回原截图", $"媒体中心 · {media.FileName}", media.MediaId);
                 CurrentWorkspace = WorkspaceKind.Saves;
-                SaveTabIndex = 0;
-                BackupHistorySearchText = string.Empty;
-                BackupHistoryRange = BackupHistoryDateRange.All;
-                backupSearchResults.ReplaceAll(page.Items);
-                backupSearchPage = page;
-                backupSearchStatus = "截图关联的存档版本";
-                OnPropertyChanged(nameof(BackupHistoryView));
-                OnPropertyChanged(nameof(BackupHistoryRangeSummary));
-                SelectedBackup = backup;
-                isShowingMediaLinkedBackup = true;
-                OnPropertyChanged(nameof(IsShowingMediaLinkedBackup));
-                RaiseCommandStates();
+                FocusHistoryVersion(page, "截图关联的存档版本");
                 RequestWorkspaceLoad();
             });
+        }
+
+        private void FocusHistoryVersion(BackupVersionPageDto page, string summary)
+        {
+            SaveTabIndex = 0;
+            ClearBackupCalendarSelection();
+            BackupHistorySearchText = string.Empty;
+            BackupHistoryRange = BackupHistoryDateRange.All;
+            ResetBackupHistorySearch();
+            backupSearchResults.ReplaceAll(page.Items);
+            backupSearchPage = page;
+            backupSearchStatus = summary;
+            OnPropertyChanged(nameof(BackupHistoryView));
+            OnPropertyChanged(nameof(BackupHistoryRangeSummary));
+            SelectedBackup = page.Items[0];
+            isShowingFocusedHistoryBackup = true;
+            OnPropertyChanged(nameof(IsShowingFocusedHistoryBackup));
+            RaiseCommandStates();
         }
 
         private bool IsMediaBackupLinksContext(string gameId, string mediaId)

@@ -278,7 +278,7 @@
                                                     <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiCompactButton}">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsShowingMediaLinkedBackup}" Value="True">
+                                                            <DataTrigger Binding="{Binding IsShowingFocusedHistoryBackup}" Value="True">
                                                                 <Setter Property="Visibility" Value="Visible"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
@@ -1225,6 +1225,73 @@
                         </Border>
                     </Grid>
                 </ScrollViewer>
+            </TabItem>
+            <TabItem Header="进度画廊">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <TextBlock Text="{Binding BackupGalleryStatus}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                        <WrapPanel Grid.Row="1">
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="打开存档历史" Command="{Binding OpenHistoryFromBackupGalleryCommand}" Margin="0,0,8,4"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="刷新画廊" Command="{Binding RefreshBackupGalleryCommand}" Margin="0,0,8,4"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更多进度" Command="{Binding LoadMoreBackupGalleryCommand}" Margin="0,0,0,4"/>
+                        </WrapPanel>
+                    </Grid>
+                    <ListBox Grid.Row="1" Tag="FiniteViewport" AutomationProperties.Name="带封面的存档进度"
+                             ItemsSource="{Binding BackupGalleryItems}" Background="Transparent" BorderThickness="0"
+                             HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
+                             VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="8" Margin="0,0,0,6">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="116"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                        <ui:MediaThumbnailPreview SourcePath="{Binding Cover.ArchivePath}" Kind="{x:Static contracts:MediaKind.Screenshot}"
+                                                                  PreviewWidth="112" AutomationProperties.Name="进度封面"/>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="{Binding Title}" Style="{DynamicResource GscSectionTitleStyle}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Backup.CreatedFullDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Backup.SourceDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Backup.LockStateDisplay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                            <WrapPanel Margin="0,6,0,0">
+                                                <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="查看存档版本"
+                                                           Command="{Binding DataContext.OpenBackupGalleryVersionCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                           CommandParameter="{Binding}" Margin="0,0,8,4"/>
+                                                <CheckBox Content="加入回顾" Style="{DynamicResource GscCheckBox}" IsChecked="{Binding IsSelected}"
+                                                          IsEnabled="{Binding CanToggleForRecap}" VerticalAlignment="Center" Margin="0,0,0,4"/>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Grid Grid.Row="2" Margin="0,8,0,0">
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <WrapPanel>
+                            <TextBlock Text="{Binding ProgressRecapSelectionLabel}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4"/>
+                            <CheckBox IsChecked="{Binding ProgressRecapKeepMissing}" Content="保留缺图占位" Style="{DynamicResource GscCheckBox}" VerticalAlignment="Center" Margin="0,0,8,4"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="预览回顾图" Command="{Binding PreviewProgressRecapCommand}" Margin="0,0,8,4"/>
+                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="保存 PNG" Command="{Binding SaveProgressRecapCommand}" Margin="0,0,0,4"/>
+                        </WrapPanel>
+                        <TextBlock Grid.Row="1" Text="{Binding ProgressRecapStatus}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                        <Image Grid.Row="2" Source="{Binding ProgressRecapPreview}" Stretch="Uniform" MaxHeight="280" AutomationProperties.Name="进度回顾图片预览">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ProgressRecapPreview}" Value="{x:Null}"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Grid>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

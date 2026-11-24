@@ -33,22 +33,59 @@ WHERE c.playnite_id=$game AND c.backup_id=$backup;";
         command.Parameters.AddWithValue("$backup", backupId);
         await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
         if (!await reader.ReadAsync(token).ConfigureAwait(false)) return new BackupCoverDto();
+        return ReadBackupCover(reader, 0, playniteId);
+    }
 
-        var cover = new BackupCoverDto { MediaId = reader.GetString(0), State = BackupCoverState.Offline };
-        if (reader.IsDBNull(2)) return cover;
-        if (reader.IsDBNull(1) || !string.Equals(reader.GetString(1), playniteId, StringComparison.Ordinal)
-            || reader.GetInt32(2) != (int)MediaKind.Screenshot || reader.GetString(3) != "Assigned")
+    private static BackupCoverDto ReadBackupCover(SqliteDataReader reader, int offset, string playniteId)
+    {
+        var cover = new BackupCoverDto { MediaId = reader.GetString(offset), State = BackupCoverState.Offline };
+        if (reader.IsDBNull(offset + 2)) return cover;
+        if (reader.IsDBNull(offset + 1) || !string.Equals(reader.GetString(offset + 1), playniteId, StringComparison.Ordinal)
+            || reader.GetInt32(offset + 2) != (int)MediaKind.Screenshot || reader.GetString(offset + 3) != "Assigned")
         {
             cover.State = BackupCoverState.Reclassified;
             return cover;
         }
-        var path = reader.GetString(4);
+        var path = reader.GetString(offset + 4);
         if (File.Exists(path))
         {
             cover.State = BackupCoverState.Available;
             cover.ArchivePath = path;
         }
         return cover;
+    }
+
+    public async Task<BackupCoverGalleryPageDto> GetBackupCoverGalleryAsync(BackupCoverGalleryQueryDto query, CancellationToken token)
+    {
+        var versions = await GetBackupVersionPageAsync(query.PlayniteId, 36, query.BeforeCreatedUtcKey,
+            query.BeforeBackupId, token, hasCoverOnly: true).ConfigureAwait(false);
+        var page = new BackupCoverGalleryPageDto
+        {
+            TotalCount = versions.TotalCount,
+            HasMore = versions.HasMore,
+            NextCreatedUtcKey = versions.NextCreatedUtcKey,
+            NextBackupId = versions.NextBackupId
+        };
+        if (versions.Items.Count == 0) return page;
+
+        await using var connection = Open();
+        await connection.OpenAsync(token).ConfigureAwait(false);
+        await using var command = connection.CreateCommand();
+        var ids = versions.Items.Select((item, index) => command.Parameters.AddWithValue($"$backup{index}", item.BackupId).ParameterName);
+        command.CommandText = $@"
+SELECT c.backup_id, c.media_id, m.playnite_id, m.kind, m.classification_state, m.archive_path
+FROM backup_covers c LEFT JOIN media m ON m.media_id=c.media_id
+WHERE c.playnite_id=$game AND c.backup_id IN ({string.Join(",", ids)});";
+        command.Parameters.AddWithValue("$game", query.PlayniteId);
+        var covers = new Dictionary<string, BackupCoverDto>(StringComparer.Ordinal);
+        await using var reader = await command.ExecuteReaderAsync(token).ConfigureAwait(false);
+        while (await reader.ReadAsync(token).ConfigureAwait(false))
+            covers.Add(reader.GetString(0), ReadBackupCover(reader, 1, query.PlayniteId));
+
+        foreach (var version in versions.Items)
+            if (covers.TryGetValue(version.BackupId, out var cover))
+                page.Items.Add(new BackupCoverGalleryEntryDto { Backup = version, Cover = cover });
+        return page;
     }
 
     public Task<BackupVersionPageDto> GetBackupCoversForMediaAsync(BackupCoverMediaQueryDto query, CancellationToken token)

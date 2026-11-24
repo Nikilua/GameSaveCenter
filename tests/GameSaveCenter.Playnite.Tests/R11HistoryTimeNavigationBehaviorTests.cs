@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite;
@@ -24,6 +25,103 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R11HistoryTimeNavigationBehaviorTests
 {
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light)]
+    [InlineData(GameSaveCenterThemeMode.Dark)]
+    public void GalleryBindsCardNavigationAndRecapSelectionInANarrowWindow(GameSaveCenterThemeMode theme)
+    {
+        RunSta(() =>
+        {
+            var now = DateTime.UtcNow;
+            var state = new GalleryPageState(Backup("cover-version", now));
+            var view = new SaveCenterView { DataContext = state };
+            var palette = AdaptiveThemePaletteFactory.CreateWithHighContrastOverride(view, true, 78, theme, false);
+            AdaptiveThemePaletteFactory.ApplyRuntimeThemeResources(view.Resources, palette, glassEnabled: true, motionEnabled: false);
+            var window = new Window { Width = 980, Height = 640, Content = view, ShowInTaskbar = false };
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+                var gallery = FindVisualChildren<ListBox>(view).Single(item =>
+                    AutomationProperties.GetName(item) == "带封面的存档进度");
+                Assert.True(gallery.IsVisible);
+                var open = FindVisualChildren<ButtonBase>(gallery).Single(item => Equals(item.Content, "查看存档版本"));
+                InvokeClick(open);
+                Assert.Same(state.BackupGalleryItems[0], state.Opened);
+                var check = FindVisualChildren<CheckBox>(gallery).Single(item => Equals(item.Content, "加入回顾"));
+                check.IsChecked = true;
+                PumpLayout(window);
+                Assert.True(state.BackupGalleryItems[0].IsSelected);
+            }
+            finally { window.Close(); }
+        });
+    }
+
+    private sealed class GalleryPageState
+    {
+        public GalleryPageState(BackupVersionDto backup)
+        {
+            BackupGalleryItems = new[] { new BackupGalleryCardViewModel(new BackupCoverGalleryEntryDto { Backup = backup }, () => true) };
+            OpenBackupGalleryVersionCommand = new RelayCommand(item => Opened = (BackupGalleryCardViewModel)item!);
+        }
+
+        public int SaveTabIndex { get; set; } = 4;
+        public BackupGalleryCardViewModel[] BackupGalleryItems { get; }
+        public System.Windows.Input.ICommand OpenBackupGalleryVersionCommand { get; }
+        public BackupGalleryCardViewModel? Opened { get; private set; }
+    }
+
+    [Fact]
+    public void RecapPngPreservesTheRenderedPreviewAndCleansUpAfterFailedPublish()
+    {
+        RunSta(() =>
+        {
+            var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "gsc-recap-tests", Guid.NewGuid().ToString("N"));
+            System.IO.Directory.CreateDirectory(root);
+            try
+            {
+                var pixels = new byte[] { 70, 105, 245, 255 };
+                var photo = BitmapSource.Create(1, 1, 96, 96, PixelFormats.Bgra32, null, pixels, 4);
+                var shortPreview = ProgressRecapRenderer.Render(new[]
+                {
+                    new ProgressRecapCard(photo, "2026-11-20", "王城门口"),
+                    new ProgressRecapCard(null, "2026-11-24", "重新出发")
+                });
+                var preview = ProgressRecapRenderer.Render(new[]
+                {
+                    new ProgressRecapCard(photo, "2026-11-20", string.Concat(Enumerable.Repeat("沿着王城门口继续探索。", 14))),
+                    new ProgressRecapCard(null, "2026-11-24", "重新出发")
+                });
+                Assert.True(preview.IsFrozen);
+                Assert.True(preview.PixelHeight > shortPreview.PixelHeight);
+                var destination = System.IO.Path.Combine(root, "recap.png");
+                ProgressRecapRenderer.SavePng(preview, destination);
+                using (var stream = System.IO.File.OpenRead(destination))
+                {
+                    var png = new PngBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad).Frames[0];
+                    Assert.Equal(preview.PixelWidth, png.PixelWidth);
+                    Assert.Equal(preview.PixelHeight, png.PixelHeight);
+                    Assert.Equal(ReadPixels(preview), ReadPixels(png));
+                }
+                var occupied = System.IO.Path.Combine(root, "existing");
+                System.IO.Directory.CreateDirectory(occupied);
+                Assert.ThrowsAny<System.IO.IOException>(() => ProgressRecapRenderer.SavePng(preview, occupied));
+                Assert.True(System.IO.Directory.Exists(occupied));
+                Assert.Equal(new[] { destination }, System.IO.Directory.GetFiles(root));
+            }
+            finally { System.IO.Directory.Delete(root, true); }
+        });
+    }
+
+    private static byte[] ReadPixels(BitmapSource source)
+    {
+        var bitmap = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
+        var stride = bitmap.PixelWidth * 4;
+        var pixels = new byte[stride * bitmap.PixelHeight];
+        bitmap.CopyPixels(pixels, stride, 0);
+        return pixels;
+    }
+
     [Fact]
     public void PinsKeepBothSearchResultsOutsideTheLoadedHistory()
     {

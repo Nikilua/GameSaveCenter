@@ -101,7 +101,7 @@ namespace GameSaveCenter.Playnite.Views
             if (backupArrivalModel == null) return;
             backupArrivalModel.PropertyChanged += OnBackupArrivalModelChanged;
             UpdateBackupHistoryReadingPosition();
-            if (backupArrivalModel.IsShowingMediaLinkedBackup) OpenLinkedHistoryInspector();
+            if (backupArrivalModel.IsShowingFocusedHistoryBackup) OpenLinkedHistoryInspector();
         }
 
         private void DetachBackupArrivalModel()
@@ -129,8 +129,8 @@ namespace GameSaveCenter.Playnite.Views
 
         private void OnBackupArrivalModelChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(DashboardViewModel.IsShowingMediaLinkedBackup)
-                && backupArrivalModel?.IsShowingMediaLinkedBackup == true)
+            if (e.PropertyName == nameof(DashboardViewModel.IsShowingFocusedHistoryBackup)
+                && backupArrivalModel?.IsShowingFocusedHistoryBackup == true)
                 OpenLinkedHistoryInspector();
             if (e.PropertyName != nameof(DashboardViewModel.RecentBackupArrivals)
                 || backupArrivalModel == null || !SaveHistoryGrid.IsVisible || !IsInspectorMotionEnabled) return;
@@ -159,7 +159,7 @@ namespace GameSaveCenter.Playnite.Views
             Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
             {
                 if (IsLoaded && SaveHistoryGrid.SelectedItem != null
-                    && backupArrivalModel?.IsShowingMediaLinkedBackup == true && !historyInspectorOpen)
+                    && backupArrivalModel?.IsShowingFocusedHistoryBackup == true && !historyInspectorOpen)
                     OpenHistoryInspector();
             }));
         }

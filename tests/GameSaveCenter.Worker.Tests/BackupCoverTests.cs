@@ -51,6 +51,36 @@ public sealed class BackupCoverTests : IDisposable
     }
 
     [Fact]
+    public async Task GalleryPagesOnlyCoveredBackupsWithStableIdentityAtEqualTimestamps()
+    {
+        var store = await OpenAsync();
+        var cover = await SeedMediaAsync(store, "game-a", "cover");
+        for (var index = 0; index < 39; index++)
+        {
+            var id = $"version-{index:D2}";
+            await SeedBackupAsync(store, "game-a", id, index == 0);
+            if (index != 37)
+                await SetCoverAsync(store, "game-a", id, cover.MediaId);
+        }
+        await SeedBackupAsync(store, "game-b", "version-00", locked: false);
+        var otherCover = await SeedMediaAsync(store, "game-b", "other-cover");
+        await SetCoverAsync(store, "game-b", "version-00", otherCover.MediaId);
+
+        var query = new BackupCoverGalleryQueryDto { PlayniteId = "game-a" };
+        var first = await store.GetBackupCoverGalleryAsync(query, CancellationToken.None);
+        Assert.Equal(38, first.TotalCount);
+        Assert.Equal(36, first.Items.Count);
+        Assert.True(first.HasMore);
+        Assert.True(first.Items[0].Backup.IsLocked);
+        Assert.All(first.Items, item => Assert.Equal(cover.MediaId, item.Cover.MediaId));
+        query.BeforeCreatedUtcKey = first.NextCreatedUtcKey;
+        query.BeforeBackupId = first.NextBackupId;
+        var next = await store.GetBackupCoverGalleryAsync(query, CancellationToken.None);
+        Assert.Equal(new[] { "version-36", "version-38" }, next.Items.Select(item => item.Backup.BackupId));
+        Assert.False(next.HasMore);
+    }
+
+    [Fact]
     public async Task ReverseLookupReturnsBothBackupsAndResolvesOnlyLiveExactLinks()
     {
         var store = await OpenAsync();

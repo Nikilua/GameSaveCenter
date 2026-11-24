@@ -94,6 +94,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.GetBackupCover=>await GetBackupCoverAsync(Read<BackupCoverQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.SetBackupCover=>await _store.SetBackupCoverAsync(Read<BackupCoverUpdateDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ListBackupCoversForMedia=>await _store.GetBackupCoversForMediaAsync(Read<BackupCoverMediaQueryDto>(request),token).ConfigureAwait(false),
+                MessageTypes.ListBackupCoverGallery=>await _store.GetBackupCoverGalleryAsync(Read<BackupCoverGalleryQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ValidateRestoreReadiness=>await ValidateRestoreReadinessAsync(Read<RestoreReadinessRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestorePreview=>await _restore.PreviewMappingAsync(Read<RestoreMappingPreviewRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestoreExecute=>await _restore.ExecuteAsync(ReadCorrelated<RestoreRequestDto>(request),token).ConfigureAwait(false),
