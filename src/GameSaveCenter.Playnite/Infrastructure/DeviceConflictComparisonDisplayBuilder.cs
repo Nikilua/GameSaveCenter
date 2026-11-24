@@ -13,7 +13,20 @@ public static class DeviceConflictComparisonDisplayBuilder
             return new[] { "选择设备对比记录后显示两侧版本与校验依据。" };
 
         var referenceUtc = nowUtc ?? DateTime.UtcNow;
-        var lines = new List<string>
+        var lines = new List<string>();
+        if (comparison.ComparisonUtc.HasValue)
+        {
+            lines.Add($"本次比较 · {FormatTimestamp(comparison.ComparisonUtc, referenceUtc)}");
+            lines.Add(comparison.PreviousComparisonUtc.HasValue
+                ? $"上次完整比较 · {FormatTimestamp(comparison.PreviousComparisonUtc, referenceUtc)}"
+                : "没有可用的上次比较记录");
+            if (!string.IsNullOrWhiteSpace(comparison.RemoteDeviceId))
+                lines.Add($"远端设备 ID · {comparison.RemoteDeviceId}");
+            if (!string.IsNullOrWhiteSpace(comparison.ComparisonCoverageDisplay))
+                lines.Add(comparison.ComparisonCoverageDisplay);
+            lines.AddRange(comparison.ComparisonChanges);
+        }
+        lines.AddRange(new[]
         {
             $"检测原因：{comparison.ReasonDisplay} · 检测把握 {FormatConfidence(comparison.Confidence)}（摘要启发式，不等同于恢复校验）。",
             FormatVersion("本机", comparison.LocalDevice, comparison.LocalBackupId, comparison.LocalCreatedUtc, comparison.LocalTotalBytes, comparison.LocalFileCount, referenceUtc),
@@ -27,7 +40,7 @@ public static class DeviceConflictComparisonDisplayBuilder
             comparison.HasConflict
                 ? "分支冲突需要人工决定；系统不会因为创建时间较新就推荐覆盖另一侧。"
                 : "此检测未发现需要人工决定的分叉；仍请按两侧证据确认后再恢复。"
-        };
+        });
         if (comparison.PreviousDecision is { } previous)
         {
             var local = string.IsNullOrWhiteSpace(previous.LocalBackupId) ? "未知" : previous.LocalBackupId;

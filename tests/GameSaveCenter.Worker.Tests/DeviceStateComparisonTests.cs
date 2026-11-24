@@ -131,6 +131,56 @@ public sealed class DeviceStateComparisonTests : IDisposable
         Assert.Contains("其余文件尚未比较", result.StatusMessage);
     }
 
+    [Fact]
+    public async Task ComparisonHistoryKeepsCompleteBaselineThroughFailedAndTruncatedReadsForSameNamedDevices()
+    {
+        const string firstId = "ab123456789012345678901234567801";
+        const string secondId = "ab123456789012345678901234567802";
+        var first = Sidecar(2, "Desktop", firstId);
+        var second = Sidecar(1, "Desktop", secondId);
+        var failedRead = false;
+        var (store, service) = await CreateAsync(new[] { first, second }, null,
+            readOverride: sidecar => failedRead && sidecar.DeviceId == secondId
+                ? ProcessResult.Failed(1, "", "fixture diagnostic") : null);
+        await AddBackup(store, "game-0", "local", Timestamp);
+        await store.SaveDeviceConflictDecisionAsync(new DeviceConflictDecisionDto
+        {
+            PlayniteId = "game-0", RemoteDevice = firstId, LocalBackupId = "local",
+            RemoteBackupId = "remote-0", Decision = "KeepBoth", DecidedUtc = Timestamp
+        }, CancellationToken.None);
+
+        var baseline = await service.SyncAsync(CancellationToken.None);
+        first.Backups.RemoveAt(1);
+        first.Backups[0].BackupId = "new-first";
+        failedRead = true;
+        var failed = await service.SyncAsync(CancellationToken.None);
+        var seen = Assert.Single(failed.Comparisons);
+        Assert.Equal(baseline.GeneratedUtc, seen.PreviousComparisonUtc);
+        Assert.Empty(seen.ComparisonChanges);
+        failedRead = false;
+        var originalSecondBackups = second.Backups;
+        second.Backups = Sidecar(501).Backups;
+        var truncated = await service.SyncAsync(CancellationToken.None);
+        Assert.DoesNotContain(truncated.Comparisons, row => row.PlayniteId == "game-1" && row.RemoteDeviceId == firstId);
+        Assert.Equal(baseline.GeneratedUtc, truncated.Comparisons.Single(row => row.RemoteDeviceId == firstId).PreviousComparisonUtc);
+
+        second.Backups = originalSecondBackups;
+        second.Backups[0].BackupId = "new-second";
+        var (_, reopenedService) = await CreateAsync(first, second);
+        var complete = await reopenedService.SyncAsync(CancellationToken.None);
+        var changedFirst = complete.Comparisons.Single(row => row.RemoteDeviceId == firstId && row.PlayniteId == "game-0");
+        var changedSecond = complete.Comparisons.Single(row => row.RemoteDeviceId == secondId);
+        Assert.Equal(baseline.GeneratedUtc, changedFirst.PreviousComparisonUtc);
+        Assert.Equal(baseline.GeneratedUtc, changedSecond.PreviousComparisonUtc);
+        Assert.Contains(changedFirst.ComparisonChanges, line => line.Contains("new-first"));
+        Assert.Contains(changedFirst.ComparisonChanges, line => line.Contains("复核"));
+        Assert.Contains("new-second", Assert.Single(changedSecond.ComparisonChanges));
+        var unlisted = complete.Comparisons.Single(row => row.PlayniteId == "game-1");
+        Assert.Equal(firstId, unlisted.RemoteDeviceId);
+        Assert.Empty(unlisted.RemoteBackupId);
+        Assert.Contains("remote-1", Assert.Single(unlisted.ComparisonChanges));
+    }
+
     [Theory]
     [InlineData(499, false)]
     [InlineData(500, false)]

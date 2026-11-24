@@ -64,6 +64,10 @@ namespace GameSaveCenter.Contracts
         public string DecisionComment { get; set; } = string.Empty;
         public DateTime? DecidedUtc { get; set; }
         public DeviceConflictDecisionDto? PreviousDecision { get; set; }
+        public DateTime? ComparisonUtc { get; set; }
+        public DateTime? PreviousComparisonUtc { get; set; }
+        public string ComparisonCoverageDisplay { get; set; } = string.Empty;
+        public List<string> ComparisonChanges { get; set; } = new List<string>();
         public string StateDisplay => HasConflict ? "需要人工决定" : "一致或仅单端存在";
         public string DecisionDisplay => PreviousDecision != null ? "待复核" : DisplayDecision(Decision);
 
@@ -143,6 +147,7 @@ namespace GameSaveCenter.Contracts
 
     public sealed class DeviceComparisonCoverageDto
     {
+        public string DeviceId { get; set; } = string.Empty;
         public string DeviceName { get; set; } = string.Empty;
         public int Compared { get; set; }
         public int Total { get; set; }

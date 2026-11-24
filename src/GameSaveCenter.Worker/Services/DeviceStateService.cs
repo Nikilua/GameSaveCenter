@@ -85,7 +85,12 @@ public sealed class DeviceStateService
                     : remote.DeviceName;
                 if(string.Equals(remoteDeviceId,deviceId,StringComparison.OrdinalIgnoreCase))continue;
                 result.RemoteSidecarsRead++;
-                var coverage=new DeviceComparisonCoverageDto{DeviceName=remote.DeviceName,Total=remote.Backups.Count};
+                var coverage=new DeviceComparisonCoverageDto
+                {
+                    DeviceName=remote.DeviceName,
+                    DeviceId=WorkerOptions.IsValidDeviceId(remote.DeviceId) ? remoteDeviceId : string.Empty,
+                    Total=remote.Backups.Count
+                };
                 result.Coverage.Add(coverage);
                 var compared = new List<DeviceConflictStatusDto>();
                 foreach(var item in remote.Backups.Take(MaxComparisonsPerDevice))
@@ -115,13 +120,6 @@ public sealed class DeviceStateService
                     });
                 }
                 coverage.Compared = compared.Count;
-                var decisions = await _store.GetDeviceConflictDecisionsAsync(remoteDeviceId, remote.DeviceName,
-                    compared.Select(x => x.PlayniteId).Distinct(StringComparer.Ordinal).ToArray(), token).ConfigureAwait(false);
-                foreach (var comparison in compared)
-                {
-                    if (decisions.TryGetValue(comparison.PlayniteId, out var decision))
-                        comparison.ApplyRecordedDecision(decision);
-                }
                 result.Comparisons.AddRange(compared);
             }
             catch (JsonException)
@@ -131,11 +129,25 @@ public sealed class DeviceStateService
             }
         }
         token.ThrowIfCancellationRequested();
-        result.Comparisons=result.Comparisons.OrderByDescending(x=>x.HasConflict).ThenBy(x=>x.GameName,StringComparer.OrdinalIgnoreCase).ToList();
         var fileWarning = unreadableFiles > 0 ? $"有 {unreadableFiles} 份云端设备摘要读取失败或格式无效。" : string.Empty;
         if (hasMoreFiles)
             fileWarning += "云端摘要文件超过本次读取上限，其余文件尚未比较。";
         var partial = fileWarning.Length > 0 || result.Coverage.Any(x => x.Compared < x.Total);
+        var uniqueNames = result.Coverage.GroupBy(x => x.DeviceName, StringComparer.OrdinalIgnoreCase)
+            .Where(group => group.Count() == 1).Select(group => group.Key).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        foreach (var group in result.Comparisons.GroupBy(x => x.RemoteDeviceId, StringComparer.OrdinalIgnoreCase))
+        {
+            var name = group.First().RemoteDevice;
+            var legacyName = !partial && uniqueNames.Contains(name) ? name : string.Empty;
+            if (!WorkerOptions.IsValidDeviceId(group.Key) && legacyName.Length == 0) continue;
+            var decisions = await _store.GetDeviceConflictDecisionsAsync(group.Key, legacyName,
+                group.Select(x => x.PlayniteId).Distinct(StringComparer.Ordinal).ToArray(), token).ConfigureAwait(false);
+            foreach (var comparison in group)
+                if (decisions.TryGetValue(comparison.PlayniteId, out var decision))
+                    comparison.ApplyRecordedDecision(decision);
+        }
+        await _store.ObserveDeviceComparisonAsync(result, localByGame, !partial, token).ConfigureAwait(false);
+        result.Comparisons=result.Comparisons.OrderByDescending(x=>x.HasConflict).ThenBy(x=>x.GameName,StringComparer.OrdinalIgnoreCase).ToList();
         result.StatusMessage = result.RemoteSidecarsRead == 0
             ? (partial ? $"已上传本机摘要。{fileWarning}未能完成其他设备的比较。" : "已上传本机摘要；云端暂未发现其他设备摘要。")
             : (partial ? "仅完成部分比较。其余条目仍待比较。" : "设备摘要已比较。")

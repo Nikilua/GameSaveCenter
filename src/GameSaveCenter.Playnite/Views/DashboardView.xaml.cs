@@ -136,6 +136,9 @@ namespace GameSaveCenter.Playnite.Views
 
             DialogTitleText = new TextBlock();
             DialogMessageText = new TextBlock();
+            DialogRestoreFileList = new Expander();
+            DialogRestoreDetailsPanel = new StackPanel { Visibility = Visibility.Collapsed };
+            DialogRestoreDetailsPanel.Children.Add(DialogRestoreFileList);
             DialogCopyButton = new Button { Content = "复制详情", Visibility = Visibility.Collapsed };
             DialogNeverButton = new Button { Content = "不再提醒", Visibility = Visibility.Collapsed };
             DialogLaterButton = new Button { Content = "以后再说", Visibility = Visibility.Collapsed };
@@ -159,6 +162,7 @@ namespace GameSaveCenter.Playnite.Views
             var content = new StackPanel();
             content.Children.Add(DialogTitleText);
             content.Children.Add(DialogMessageText);
+            content.Children.Add(DialogRestoreDetailsPanel);
             content.Children.Add(buttons);
             DialogCard.Child = content;
             DialogOverlay.Children.Add(DialogCard);
