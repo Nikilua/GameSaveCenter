@@ -629,6 +629,12 @@ namespace GameSaveCenter.Playnite.Views
                 ApplyResponsiveLayout(responsiveWidth, lastRequestedHeight > 0 ? lastRequestedHeight : responsiveHeight);
         }
 
+        private void OnLineageGraphNodeChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (DataContext is DashboardViewModel model)
+                model.SelectedLineageGraphNode = e.NewValue as BackupLineageGraphNode;
+        }
+
         private void OnClearSaveHistorySearchClick(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement source && source.Tag is TextBox textBox)

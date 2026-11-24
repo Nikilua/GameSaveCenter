@@ -42,6 +42,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             var right = baseline ? existing ? CompareRightBackup : null : selected;
             if (baseline && IsSameBackup(right, selected.BackupId)) right = null;
             if (!baseline && IsSameBackup(left, selected.BackupId)) left = null;
+            SetPinnedHistoryComparison(gameId!, left, right);
+        }
+
+        private void SetPinnedHistoryComparison(string gameId, BackupVersionDto? left, BackupVersionDto? right)
+        {
             pinnedHistoryGameId = gameId;
             var choices = new[] { left, right }.OfType<BackupVersionDto>().ToList();
             var seen = new HashSet<string>(choices.Select(item => item.BackupId), StringComparer.OrdinalIgnoreCase);

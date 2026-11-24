@@ -608,14 +608,60 @@
                                 <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,12,0,0">
                                     <StackPanel>
                                         <TextBlock Text="来源关系" Style="{StaticResource SaveHistoryDetailSectionTitle}"/>
+                                        <ui:Button Command="{Binding ToggleBackupLineageGraphCommand}" HorizontalAlignment="Left" Margin="0,6,0,0">
+                                            <ui:Button.Style>
+                                                <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiCompactButton}">
+                                                    <Setter Property="Content" Value="显示分支图"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ShowBackupLineageGraph}" Value="True">
+                                                            <Setter Property="Content" Value="显示来源列表"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ui:Button.Style>
+                                        </ui:Button>
                                         <TextBlock Text="{Binding SelectedBackupLineageSummary, Mode=OneWay}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0" AutomationProperties.HelpText="{Binding SelectedBackupLineageSummary, Mode=OneWay}"/>
                                         <ItemsControl ItemsSource="{Binding SelectedBackupLineageItems, Mode=OneWay}" Margin="0,5,0,0" AutomationProperties.Name="备份来源关系文字列表" AutomationProperties.HelpText="{Binding SelectedBackupLineageSummary, Mode=OneWay}">
+                                            <ItemsControl.Style>
+                                                <Style TargetType="ItemsControl">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ShowBackupLineageGraph}" Value="True"><Setter Property="Visibility" Value="Collapsed"/></DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ItemsControl.Style>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,2,0,0" AutomationProperties.Name="{Binding}"/>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
+                                        <StackPanel Visibility="{Binding ShowBackupLineageGraph, Converter={StaticResource SaveCalendarVisibility}}" Margin="0,6,0,0">
+                                            <TreeView ItemsSource="{Binding BackupLineageGraphRoots}" SelectedItemChanged="OnLineageGraphNodeChanged"
+                                                      AutomationProperties.Name="存档版本分支图" MaxHeight="230"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                      VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
+                                                      Background="Transparent" Foreground="{DynamicResource GscPrimaryTextBrush}" BorderThickness="0">
+                                                <TreeView.ItemContainerStyle>
+                                                    <Style TargetType="TreeViewItem">
+                                                        <Setter Property="IsExpanded" Value="True"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource GscPrimaryTextBrush}"/>
+                                                    </Style>
+                                                </TreeView.ItemContainerStyle>
+                                                <TreeView.ItemTemplate>
+                                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                                        <StackPanel Orientation="Horizontal" ToolTip="{Binding Backup.BackupId}">
+                                                            <Path Data="M 1,0 L 1,8 L 10,8" Stroke="{DynamicResource GscSecondaryTextBrush}" Margin="0,0,4,0" VerticalAlignment="Center"
+                                                                  Visibility="{Binding HasParent, Converter={StaticResource SaveCalendarVisibility}}"/>
+                                                            <TextBlock Text="{Binding Backup.CreatedRelativeDisplay}" Style="{DynamicResource GscCaptionStyle}"/>
+                                                            <TextBlock Text="{Binding Backup.SourceDisplay}" Style="{DynamicResource GscCaptionStyle}" Margin="6,0,0,0"/>
+                                                        </StackPanel>
+                                                    </HierarchicalDataTemplate>
+                                                </TreeView.ItemTemplate>
+                                            </TreeView>
+                                            <TextBlock Text="{Binding BackupLineageGraphSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            <TextBlock Text="{Binding SelectedLineageGraphNode.Backup.Comment}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="与当前版本比较" Command="{Binding CompareLineageGraphNodeCommand}" HorizontalAlignment="Left" Margin="0,6,0,0"/>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Border>
                                 <Separator Margin="0,16,0,12"/>

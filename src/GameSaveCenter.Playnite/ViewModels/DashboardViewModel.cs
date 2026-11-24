@@ -5554,12 +5554,29 @@ namespace GameSaveCenter.Playnite.ViewModels
             var gameName = game.Name;
             var backupId = backup.BackupId;
             var confirmation = BuildRestoreConfirmation(gameName, backup);
+            RestoreConfirmationPreviewDto? preview = null;
+            try
+            {
+                preview = await plugin.RequestAsync<RestoreConfirmationPreviewDto>(MessageTypes.RestoreConfirmationPreview,
+                    new RestoreConfirmationPreviewQueryDto { PlayniteId = gameId, BackupId = backupId },
+                    TimeSpan.FromSeconds(25));
+            }
+            catch (Exception error)
+            {
+                Logger.Debug(error, "Read-only restore confirmation preview is unavailable.");
+            }
+            if (!RestoreConfirmationGuard.IsCurrent(gameId, backupId, SelectedGame?.PlayniteId, SelectedBackup?.BackupId))
+            {
+                StatusMessage = "预览期间游戏或版本已变化，请重新检查当前版本。";
+                return;
+            }
             if (!await plugin.ConfirmAsync(
                     "GameSaveCenter 安全恢复",
                     confirmation,
                     "开始安全恢复",
                     "取消",
-                    isDangerous: true)) return;
+                    isDangerous: true,
+                    restoreDetails: new RestoreConfirmationDetails(gameName, backup, preview))) return;
             if (!RestoreConfirmationGuard.IsCurrent(
                     gameId,
                     backupId,
@@ -6766,7 +6783,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,
                 RefreshBackupGalleryCommand, LoadMoreBackupGalleryCommand, OpenBackupGalleryVersionCommand, OpenHistoryFromBackupGalleryCommand,
                 PreviewProgressRecapCommand, SaveProgressRecapCommand,
-                OpenReportedProtectionBackupCommand
+                OpenReportedProtectionBackupCommand, ToggleBackupLineageGraphCommand, CompareLineageGraphNodeCommand
             }.OfType<RelayCommand>())
             {
                 command.RaiseCanExecuteChanged();

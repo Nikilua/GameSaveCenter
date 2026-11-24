@@ -52,16 +52,7 @@ public static class BackupLineageDisplayBuilder
             || context.Count < loaded.Count
             || loaded.Count < Math.Max(0, totalVersionCount);
 
-        var model = new BackupLineageBuilder().Build(context.Select(item => new BackupSnapshot
-        {
-            BackupId = item.BackupId,
-            ParentBackupId = item.ParentBackupId,
-            CreatedUtc = item.CreatedUtc,
-            SourceDevice = item.SourceDevice,
-            TotalBytes = item.TotalBytes,
-            FileCount = item.FileCount,
-            ContentFingerprint = item.ContentFingerprint
-        }));
+        var model = CreateLineageModel(context);
 
         var selectedNodes = model.Nodes
             .Where(node => string.Equals(node.BackupId, selectedId, StringComparison.OrdinalIgnoreCase))
@@ -175,6 +166,18 @@ public static class BackupLineageDisplayBuilder
             Items = visible
         };
     }
+
+    internal static BackupLineageModel CreateLineageModel(IEnumerable<BackupVersionDto> context)
+        => new BackupLineageBuilder().Build(context.Select(item => new BackupSnapshot
+        {
+            BackupId = item.BackupId,
+            ParentBackupId = item.ParentBackupId,
+            CreatedUtc = item.CreatedUtc,
+            SourceDevice = item.SourceDevice,
+            TotalBytes = item.TotalBytes,
+            FileCount = item.FileCount,
+            ContentFingerprint = item.ContentFingerprint
+        }));
 
     private static RelatedVersion CreateRelated(string kind, BackupLineageNode node)
         => new RelatedVersion(kind, node.BackupId, node.CreatedUtc,

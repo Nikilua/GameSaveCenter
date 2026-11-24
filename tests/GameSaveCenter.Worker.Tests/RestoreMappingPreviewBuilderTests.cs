@@ -10,6 +10,36 @@ namespace GameSaveCenter.Worker.Tests;
 public sealed class RestoreMappingPreviewBuilderTests
 {
     [Fact]
+    public void ConfirmationPreviewUsesReportedRedirectsAndKeepsUnsupportedCountsUnknown()
+    {
+        using var json = JsonDocument.Parse("""
+            {"games":{"Demo Game":{"decision":"Processed","files":{
+              "C:/source/new.sav":{"change":"New","redirectedPath":"D:/target/new.sav"},
+              "D:/target/settings.sav":{"change":"Different"},
+              "D:/target/unchanged.sav":{"change":"Same"},
+              "D:/ignored/old.sav":{"change":"Removed","ignored":true}
+            }}}}
+            """);
+        var result = LudusaviCommandResult.SuccessResult(json.RootElement.Clone(), "", 0, "");
+        var preview = RestoreConfirmationPreviewBuilder.Build(result, "Demo Game");
+        Assert.True(preview.HasFileList);
+        Assert.Equal(1, preview.AddedCount);
+        Assert.Equal(1, preview.ModifiedCount);
+        Assert.Null(preview.RemovedCount);
+        Assert.Equal(Path.GetDirectoryName("D:/target/new.sav"), Assert.Single(preview.TargetDirectories));
+        Assert.Contains(preview.Files, file => file.Path == "D:/target/new.sav" && file.Change == "新增");
+        Assert.Equal(3, preview.FileCount);
+        Assert.False(RestoreConfirmationPreviewBuilder.Build(result, "Another game").HasFileList);
+
+        using var unknown = JsonDocument.Parse("""{"games":{"Demo Game":{"files":{"D:/target/save.sav":{"bytes":12}}}}}""");
+        var partial = RestoreConfirmationPreviewBuilder.Build(
+            LudusaviCommandResult.SuccessResult(unknown.RootElement.Clone(), "", 0, ""), "Demo Game");
+        Assert.Null(partial.AddedCount);
+        Assert.Null(partial.ModifiedCount);
+        Assert.Equal("变更未知", Assert.Single(partial.Files).Change);
+    }
+
+    [Fact]
     public void PreviewSummaryContainsCountsButNeverRawPathsOrWarnings()
     {
         const string secretPath = "C:/Users/test-user/Documents/private-slot.sav";

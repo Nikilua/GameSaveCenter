@@ -40,6 +40,7 @@ namespace GameSaveCenter.Contracts
         public const string ApplyPolicyTemplate = "policy.template.apply";
         public const string ApplyPolicyTemplateBatch = "policy.template.batch.apply";
         public const string RestorePreview = "restore.preview";
+        public const string RestoreConfirmationPreview = "restore.confirmation.preview";
         public const string RestoreExecute = "restore.execute";
         public const string UndoRestore = "restore.undo";
         public const string SyncMedia = "media.sync";

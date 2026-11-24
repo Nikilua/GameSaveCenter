@@ -25,6 +25,7 @@
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceColorsDark.xaml"/>
                 <ResourceDictionary Source="/GameSaveCenter.Playnite;component/Themes/AcrylicReferenceControls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="RestoreConfirmationFilesVisibility"/>
         <converters:MediaThumbnailConverter x:Key="MediaThumbnailConverter"/>
         <converters:MediaVideoSourceConverter x:Key="MediaVideoSourceConverter"/>
 
@@ -1351,7 +1352,40 @@
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Disabled"
                                       CanContentScroll="True">
-                            <TextBlock x:Name="DialogMessageText" Style="{StaticResource GscRedesignFeedbackDialogMessage}" Margin="0"/>
+                            <StackPanel>
+                                <StackPanel x:Name="DialogRestoreDetailsPanel" Visibility="Collapsed" Margin="0,0,0,10">
+                                    <UniformGrid Columns="1" SizeChanged="OnRestoreComparisonSizeChanged">
+                                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="8" Margin="0,0,5,5">
+                                            <StackPanel>
+                                                <TextBlock Text="当前存档" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Current}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="8" Margin="0,0,5,5">
+                                            <StackPanel>
+                                                <TextBlock Text="拟恢复版本" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Target}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Style="{DynamicResource GscRedesignSubCard}" Padding="8" Margin="0,0,0,5">
+                                            <StackPanel>
+                                                <TextBlock Text="目标目录" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Directories}" TextWrapping="Wrap" Margin="0,4,0,0" ToolTip="{Binding Directories}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </UniformGrid>
+                                    <TextBlock Text="{Binding Changes}" TextWrapping="Wrap" Margin="0,4,0,4" Style="{DynamicResource GscCaptionStyle}"/>
+                                    <Expander x:Name="DialogRestoreFileList" Header="{Binding FileListTitle}" Style="{StaticResource GscDisclosureCard}">
+                                        <Expander.Visibility>
+                                            <Binding Path="HasFiles" Converter="{StaticResource RestoreConfirmationFilesVisibility}"/>
+                                        </Expander.Visibility>
+                                        <TextBox Text="{Binding FileListText, Mode=OneWay}" Style="{DynamicResource GscWpfUiTextBox}" IsReadOnly="True"
+                                                 MaxHeight="180" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Disabled" AutomationProperties.Name="恢复预览文件"/>
+                                    </Expander>
+                                </StackPanel>
+                                <TextBlock x:Name="DialogMessageText" Style="{StaticResource GscRedesignFeedbackDialogMessage}" Margin="0"/>
+                            </StackPanel>
                         </ScrollViewer>
                     </StackPanel>
                     <Border Grid.Row="1" Style="{StaticResource GscHorizontalDivider}" Margin="0,18,0,16"/>

@@ -1296,7 +1296,10 @@ namespace GameSaveCenter.Playnite.Views
             dialogShowsResult = false;
             activeDialogDetailMessage = string.Empty;
             DialogTitleText.Text = request.Title;
-            DialogMessageText.Text = request.Message;
+            SetRestoreConfirmationDetails(request.RestoreDetails);
+            DialogMessageText.Text = request.RestoreDetails == null
+                ? request.Message
+                : "请确认游戏、启动器和 MOD 管理器均已关闭。继续恢复此历史版本？";
             DialogCancelButton.Content = request.CancelText;
             DialogCancelButton.Visibility = Visibility.Visible;
             DialogConfirmButton.Content = request.ConfirmText;
@@ -1312,11 +1315,25 @@ namespace GameSaveCenter.Playnite.Views
             OpenDialog(request.IsDangerous ? DialogCancelButton : DialogConfirmButton);
         }
 
+        private void SetRestoreConfirmationDetails(RestoreConfirmationDetails? details)
+        {
+            DialogRestoreFileList.IsExpanded = false;
+            DialogRestoreDetailsPanel.DataContext = details;
+            DialogRestoreDetailsPanel.Visibility = details == null ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void OnRestoreComparisonSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Primitives.UniformGrid grid && e.WidthChanged)
+                grid.Columns = e.NewSize.Width >= 490 ? 3 : 1;
+        }
+
         private void ShowFallbackChoice(UiChoiceEventArgs request)
         {
             activeChoice = request;
             dialogShowsResult = false;
             choiceDialog = true;
+            SetRestoreConfirmationDetails(null);
             DialogTitleText.Text = request.Title;
             DialogMessageText.Text = request.Message;
             DialogCancelButton.Visibility = Visibility.Collapsed;
@@ -1336,6 +1353,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             activeConfirmation?.Completion.TrySetResult(false);
             activeConfirmation = null;
+            SetRestoreConfirmationDetails(null);
             dialogShowsResult = true;
             activeDialogDetailMessage = string.IsNullOrWhiteSpace(message) ? "未知错误" : message;
             DialogTitleText.Text = title;

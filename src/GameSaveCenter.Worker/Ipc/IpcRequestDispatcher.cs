@@ -97,6 +97,7 @@ public sealed class IpcRequestDispatcher
                 MessageTypes.ListBackupCoverGallery=>await _store.GetBackupCoverGalleryAsync(Read<BackupCoverGalleryQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.ValidateRestoreReadiness=>await ValidateRestoreReadinessAsync(Read<RestoreReadinessRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestorePreview=>await _restore.PreviewMappingAsync(Read<RestoreMappingPreviewRequestDto>(request),token).ConfigureAwait(false),
+                MessageTypes.RestoreConfirmationPreview=>await _restore.PreviewConfirmationAsync(Read<RestoreConfirmationPreviewQueryDto>(request),token).ConfigureAwait(false),
                 MessageTypes.RestoreExecute=>await _restore.ExecuteAsync(ReadCorrelated<RestoreRequestDto>(request),token).ConfigureAwait(false),
                 MessageTypes.UndoRestore=>await _restore.UndoAsync(Read<GameQueryDto>(request).PlayniteId,token,request.RequestId).ConfigureAwait(false),
                 MessageTypes.SyncMedia=>await _media.SyncAsync(Read<MediaSyncRequestDto>(request),token).ConfigureAwait(false),

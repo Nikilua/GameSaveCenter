@@ -23,13 +23,7 @@ public sealed class RestoreOrchestrator
 
     public async Task<RestoreMappingPreviewDto> PreviewMappingAsync(RestoreMappingPreviewRequestDto request,CancellationToken token)
     {
-        if (string.IsNullOrWhiteSpace(request.PlayniteId) || string.IsNullOrWhiteSpace(request.BackupId))
-            throw new ArgumentException("A game and backup version are required for restore mapping preview.", nameof(request));
-        var match=await ResolveAsync(request.PlayniteId,token).ConfigureAwait(false);
-        using var lease = await _gameLock.AcquireAsync(request.PlayniteId, GameOperationKind.Restore, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
-        if (lease == null)
-            throw new WorkerOperationException("GAME_OPERATION_BUSY","该游戏已有备份、恢复或媒体操作正在执行，已跳过恢复预览。",request.PlayniteId);
-        var result = await _ludusavi.RestoreAsync(match,request.BackupId,true,token).ConfigureAwait(false);
+        var (result, match) = await ReadLocalRestorePreviewAsync(request.PlayniteId, request.BackupId, token).ConfigureAwait(false);
         return RestoreMappingPreviewBuilder.Build(
             result,
             request.PlayniteId,
@@ -38,6 +32,25 @@ public sealed class RestoreOrchestrator
             DateTime.UtcNow,
             request.MappingFingerprintKeyBase64,
             request.MappingFingerprintKeyId);
+    }
+
+    public async Task<RestoreConfirmationPreviewDto> PreviewConfirmationAsync(RestoreConfirmationPreviewQueryDto request, CancellationToken token)
+    {
+        var (result, match) = await ReadLocalRestorePreviewAsync(request.PlayniteId, request.BackupId, token).ConfigureAwait(false);
+        return RestoreConfirmationPreviewBuilder.Build(result, match);
+    }
+
+    private async Task<(LudusaviCommandResult Result, string Match)> ReadLocalRestorePreviewAsync(
+        string playniteId, string backupId, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(playniteId) || string.IsNullOrWhiteSpace(backupId))
+            throw new ArgumentException("A game and backup version are required for restore mapping preview.");
+        var match = await ResolveAsync(playniteId, token).ConfigureAwait(false);
+        using var lease = await _gameLock.AcquireAsync(playniteId, GameOperationKind.Restore, TimeSpan.FromSeconds(10), token).ConfigureAwait(false);
+        if (lease == null)
+            throw new WorkerOperationException("GAME_OPERATION_BUSY", "该游戏已有备份、恢复或媒体操作正在执行，已跳过恢复预览。", playniteId);
+        var result = await _ludusavi.RestoreAsync(match, backupId, true, token).ConfigureAwait(false);
+        return (result, match);
     }
 
     public async Task<TaskStatusDto> ExecuteAsync(RestoreRequestDto request,CancellationToken token)
@@ -97,7 +110,11 @@ public sealed class RestoreOrchestrator
             state=RestoreState.GameClosedVerified;await AuditAsync(game.PlayniteId,state,request,ct).ConfigureAwait(false);
 
             var before=await _ludusavi.ListBackupsAsync(new[]{match},ct).ConfigureAwait(false);
-            var beforeIds=before.Success&&before.Json.HasValue?LudusaviResultParser.ParseBackupList(before.Json.Value,game.PlayniteId,match).Select(x=>x.BackupId).ToHashSet(StringComparer.OrdinalIgnoreCase):new HashSet<string>();
+            if (!before.Success || !before.Json.HasValue || LudusaviResultParser.SomeGamesFailed(before.Json.Value))
+                throw new WorkerOperationException("RESTORE_PRERESTORE_FAILED",
+                    "无法核对保护快照创建前的版本清单，已停止恢复。", before.ErrorMessage);
+            var beforeIds = LudusaviResultParser.ParseBackupList(before.Json.Value, game.PlayniteId, match)
+                .Select(version => version.BackupId).ToHashSet(StringComparer.OrdinalIgnoreCase);
             report.Stage="保护备份";progress.SetRestoreReport(report);
             await progress.ReportAsync(15,"正在创建 PreRestore 安全快照").ConfigureAwait(false);
             var pre=await _ludusavi.BackupAsync(new[]{match},true,false,ct).ConfigureAwait(false);
@@ -107,13 +124,16 @@ public sealed class RestoreOrchestrator
                     "恢复前保护快照失败，已中止危险恢复；当前存档尚未进入写入阶段。",
                     pre.ErrorMessage);
             var after=await _ludusavi.ListBackupsAsync(new[]{match},ct).ConfigureAwait(false);
-            var versions=after.Success&&after.Json.HasValue?LudusaviResultParser.ParseBackupList(after.Json.Value,game.PlayniteId,match):new List<BackupVersionDto>();
-            var preVersion=versions.FirstOrDefault(x=>!beforeIds.Contains(x.BackupId))??versions.OrderByDescending(x=>x.CreatedUtc).FirstOrDefault();
-            if(preVersion==null)
+            var versions = after.Success && after.Json.HasValue && !LudusaviResultParser.SomeGamesFailed(after.Json.Value)
+                ? LudusaviResultParser.ParseBackupList(after.Json.Value, game.PlayniteId, match)
+                : new List<BackupVersionDto>();
+            var created = versions.Where(version => !beforeIds.Contains(version.BackupId)).ToArray();
+            if (created.Length != 1)
                 throw new WorkerOperationException(
                     "RESTORE_PRERESTORE_FAILED",
                     "恢复前保护快照已返回，但无法确认其版本，已中止危险恢复；当前存档尚未进入写入阶段。",
                     "PreRestore version was not identified after the backup operation.");
+            var preVersion = created[0];
             preVersion.IsPreRestore=true;preVersion.IsLocked=true;preVersion.Comment=$"PreRestore {DateTime.Now:yyyy-MM-dd HH:mm:ss} {request.UserComment}".Trim();
             var edit=await _ludusavi.EditBackupAsync(match,preVersion.BackupId,preVersion.Comment,true,ct).ConfigureAwait(false);
             if(!edit.Success)

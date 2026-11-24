@@ -10,6 +10,29 @@ namespace GameSaveCenter.Playnite.Tests;
 public sealed class BackupLineageDisplayBehaviorTests
 {
     [Fact]
+    public void BranchGraphShowsBothRecordedChildrenAndBreaksCircularLinks()
+    {
+        var parent = new BackupVersionDto { BackupId = "parent", PlayniteId = "game" };
+        var left = new BackupVersionDto { BackupId = "left", ParentBackupId = "parent", PlayniteId = "game", SourceDevice = "PC" };
+        var right = new BackupVersionDto { BackupId = "right", ParentBackupId = "parent", PlayniteId = "game", SourceDevice = "Laptop" };
+        var graph = BackupLineageGraphBuilder.Build(left, new[] { parent, left, right }, 4);
+        var root = Assert.Single(graph.Roots);
+        Assert.Same(parent, root.Backup);
+        Assert.Equal(new[] { left, right }, root.Children.Select(child => child.Backup));
+        Assert.Same(left, graph.Selected?.Backup);
+        Assert.Contains("历史范围不完整", graph.Summary);
+        parent.ParentBackupId = "left";
+        var cyclic = BackupLineageGraphBuilder.Build(left, new[] { parent, left, right }, 3);
+        Assert.Contains("循环", cyclic.Summary);
+        Assert.False(Assert.Single(cyclic.Roots).HasParent);
+
+        left.ParentBackupId = "unknown";
+        var partial = BackupLineageGraphBuilder.Build(left, new[] { left }, 3);
+        Assert.Contains("父版本未出现", partial.Summary);
+        Assert.Empty(Assert.Single(partial.Roots).Children);
+    }
+
+    [Fact]
     public void DisplaysForksSameContentAndDeviceNamesAsChronologicalText()
     {
         var start = new DateTime(2026, 10, 1, 8, 0, 0, DateTimeKind.Utc);

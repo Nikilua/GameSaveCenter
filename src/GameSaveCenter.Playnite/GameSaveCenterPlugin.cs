@@ -936,8 +936,12 @@ namespace GameSaveCenter.Playnite
         }
 
         public async Task<bool> ConfirmAsync(string title, string message, string confirmText = "确认", string cancelText = "取消", bool isDangerous = false)
+            => await ConfirmAsync(title, message, confirmText, cancelText, isDangerous, null).ConfigureAwait(false);
+
+        internal async Task<bool> ConfirmAsync(string title, string message, string confirmText, string cancelText, bool isDangerous,
+            RestoreConfirmationDetails? restoreDetails)
         {
-            var args = new UiConfirmationEventArgs(title, message, confirmText, cancelText, isDangerous);
+            var args = new UiConfirmationEventArgs(title, message, confirmText, cancelText, isDangerous) { RestoreDetails = restoreDetails };
             if (!TryInvokeUi(() => UiConfirmationRequested?.Invoke(this, args), "confirmation request"))
             {
                 // A destructive or restore action must never proceed when its confirmation UI
@@ -951,8 +955,9 @@ namespace GameSaveCenter.Playnite
             // like the embedded confirmation surface, so keep the fallback inside the same
             // dispatcher boundary instead of showing a modal window from a pool thread.
             var result = System.Windows.MessageBoxResult.No;
+            var nativeMessage = restoreDetails == null ? message : $"{message}\n\n{restoreDetails.Changes}\n目标目录：{restoreDetails.Directories}";
             if (!TryInvokeUi(
-                    () => result = PlayniteApi.Dialogs.ShowMessage(message, title, System.Windows.MessageBoxButton.YesNo),
+                    () => result = PlayniteApi.Dialogs.ShowMessage(nativeMessage, title, System.Windows.MessageBoxButton.YesNo),
                     "native confirmation"))
                 return false;
             return result == System.Windows.MessageBoxResult.Yes;

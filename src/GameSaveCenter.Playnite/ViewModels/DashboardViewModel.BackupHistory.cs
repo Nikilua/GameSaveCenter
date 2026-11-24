@@ -132,6 +132,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             InitializeBackupCalendarCommands();
             InitializeBackupGalleryCommands();
             InitializeProgressRecapCommands();
+            InitializeLineageGraphCommands();
             pendingBackupArrivals = Array.Empty<BackupVersionDto>();
             recentBackupArrivals = Array.Empty<BackupVersionDto>();
             loadedBackupHistoryView = new CollectionViewSource { Source = Backups }.View;
@@ -331,6 +332,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 BackupHistoryTotalCount);
             OnPropertyChanged(nameof(SelectedBackupLineageSummary));
             OnPropertyChanged(nameof(SelectedBackupLineageItems));
+            RefreshBackupLineageGraph();
         }
 
         private async Task LoadMoreBackupHistoryAsync()

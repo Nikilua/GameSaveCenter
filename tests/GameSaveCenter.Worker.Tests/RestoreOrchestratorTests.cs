@@ -219,6 +219,24 @@ public sealed class RestoreOrchestratorTests : IDisposable
     }
 
     [Fact]
+    public async Task AnUnchangedVersionListDoesNotTreatAnOldBackupAsThisRestoreProtection()
+    {
+        await SeedGameAsync();
+        client.SetCurrentSave("B");
+        client.Backups.Add("A", "A");
+        client.SkipCreatingProtectionVersion = true;
+
+        var result = await CreateOrchestrator().ExecuteAsync(Request("A"), CancellationToken.None);
+
+        Assert.Equal(TaskState.Failed, result.State);
+        Assert.Equal("RESTORE_PRERESTORE_FAILED", result.ErrorCode);
+        Assert.Empty(client.EditedBackups);
+        Assert.Empty(client.RestoreOperations);
+        Assert.False(result.RestoreReport?.PreRestoreCreated);
+        Assert.Equal("B", await File.ReadAllTextAsync(client.LiveSavePath));
+    }
+
+    [Fact]
     public async Task PermissionDeniedAndReadOnlyFailures_RollBackWithoutLosingCurrentState()
     {
         await SeedGameAsync();
@@ -452,10 +470,13 @@ public sealed class RestoreOrchestratorTests : IDisposable
                 FailPreRestoreCount--;
                 return Task.FromResult(Failure("pre-restore failed"));
             }
+            if (SkipCreatingProtectionVersion) return Task.FromResult(Success(BackupJson()));
             var id = "pre-" + DateTime.UtcNow.Ticks;
             Backups[id] = CurrentSave;
             return Task.FromResult(Success(BackupJson(id)));
         }
+
+        public bool SkipCreatingProtectionVersion { get; set; }
 
         public Task<LudusaviCommandResult> ListBackupsAsync(IEnumerable<string> games, CancellationToken token)
             => Task.FromResult(Success(BackupJson()));
