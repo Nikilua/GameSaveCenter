@@ -1339,6 +1339,59 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="游玩记录">
+                <Grid Margin="0,8,0,0">
+                    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                    <WrapPanel Margin="0,0,0,4">
+                        <TextBlock Text="{Binding PlaySessionHistoryStatus}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4"/>
+                        <ui:Button Content="刷新记录" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding RefreshPlaySessionHistoryCommand}" Margin="0,0,8,4"/>
+                        <ui:Button Content="加载更早记录" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding LoadMorePlaySessionHistoryCommand}" Margin="0,0,0,4"/>
+                    </WrapPanel>
+                    <ListBox Grid.Row="1" Tag="FiniteViewport" ItemsSource="{Binding PlaySessionHistory}" AutomationProperties.Name="已结束的游玩记录"
+                             Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem"><Setter Property="HorizontalContentAlignment" Value="Stretch"/></Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{DynamicResource GscRedesignSubCard}" Padding="10" Margin="0,0,0,6">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Exited}" Style="{DynamicResource GscSectionTitleStyle}" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Period}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding EvidenceNote}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                        <ItemsControl ItemsSource="{Binding Tasks}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Margin="0,6,0,0">
+                                                        <TextBlock Text="{Binding Title}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                                        <TextBlock Text="{Binding Outcome}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                                        <ui:Button Content="查看任务" ToolTip="{Binding Title}" AutomationProperties.Name="{Binding Title}"
+                                                                   HorizontalAlignment="Left" Margin="0,4,0,0" Style="{DynamicResource GscWpfUiCompactButton}"
+                                                                   Command="{Binding DataContext.OpenPlaySessionTaskCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                        <ItemsControl ItemsSource="{Binding Results}" Margin="0,4,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <WrapPanel Margin="0,4,0,0">
+                                                        <ui:Button Content="{Binding KindDisplay, StringFormat=查看{0}}" Style="{DynamicResource GscWpfUiCompactButton}" Margin="0,0,8,0"
+                                                                   ToolTip="{Binding IdentityDisplay}" CommandParameter="{Binding}"
+                                                                   Command="{Binding DataContext.OpenPlaySessionResultCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+                                                        <TextBlock Text="{Binding DisplayName}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center"/>
+                                                    </WrapPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

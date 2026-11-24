@@ -105,6 +105,64 @@ public sealed class BackupCoverTests : IDisposable
         Assert.Empty((await store.GetBackupCoversForMediaAsync(query, CancellationToken.None)).Items);
     }
 
+    [Fact]
+    public async Task PlaySessionHistoryPreservesExactResultsAcrossMidnightAndReload()
+    {
+        var store = await OpenAsync();
+        var beforeMidnight = new DateTime(2026, 11, 23, 23, 58, 0, DateTimeKind.Utc);
+        await store.AddSessionAsync(new GameSessionEventDto
+        {
+            SessionId = "first", PlayniteId = "game-a", StartedUtc = beforeMidnight,
+            StoppedUtc = beforeMidnight.AddMinutes(3), ElapsedSeconds = 180
+        }, CancellationToken.None);
+        await store.AddSessionAsync(new GameSessionEventDto
+        {
+            SessionId = "second", PlayniteId = "game-a", StartedUtc = beforeMidnight.AddMinutes(4),
+            StoppedUtc = beforeMidnight.AddMinutes(6), ElapsedSeconds = 120
+        }, CancellationToken.None);
+        await store.AddSessionAsync(new GameSessionEventDto
+        {
+            SessionId = "open", PlayniteId = "game-a", StartedUtc = beforeMidnight.AddMinutes(7)
+        }, CancellationToken.None);
+
+        var media = await SeedMediaAsync(store, "game-a", "this-session");
+        foreach (var (sessionId, backupId) in new[] { ("first", "original-version"), ("second", "newer-version") })
+        {
+            await SeedBackupAsync(store, "game-a", backupId, locked: false);
+            await store.AddOrUpdateTaskAsync(new TaskStatusDto
+            {
+                TaskId = sessionId + "-backup", SessionId = sessionId, GameId = "game-a", TaskType = "Backup",
+                State = TaskState.Succeeded, CreatedUtc = beforeMidnight,
+                BackupResult = new BackupResultDto { LocalState = "Succeeded", CloudState = "Failed" },
+                SourceReferences = new List<TaskSourceReferenceDto>
+                {
+                    new() { StableId = backupId, PlayniteId = "game-a", Kind = TaskSourceReferenceKind.BackupVersion }
+                }
+            }, CancellationToken.None);
+        }
+        await store.AddOrUpdateTaskAsync(new TaskStatusDto
+        {
+            TaskId = "older-media-task", SessionId = "first", GameId = "game-a", TaskType = "MediaSync",
+            State = TaskState.Succeeded, CreatedUtc = beforeMidnight
+        }, CancellationToken.None);
+
+        store = await OpenAsync();
+        var page = await store.GetPlaySessionHistoryAsync(new() { PlayniteId = "game-a" }, CancellationToken.None);
+        Assert.Equal(new[] { "second", "first" }, page.Items.Select(session => session.SessionId));
+        var first = page.Items[1];
+        Assert.Equal(180, first.ElapsedSeconds);
+        Assert.NotEqual(first.StartedUtc.Date, first.StoppedUtc.Date);
+        var backup = Assert.Single(first.Tasks.Where(task => task.TaskType == "Backup"));
+        Assert.Equal("Succeeded", backup.BackupResult?.LocalState);
+        Assert.Equal("Failed", backup.BackupResult?.CloudState);
+        Assert.Equal("original-version", Assert.Single(backup.SourceReferences).StableId);
+        Assert.Empty(Assert.Single(first.Tasks.Where(task => task.TaskType == "MediaSync")).SourceReferences);
+        var mediaKey = new GameMediaIdentityDto { PlayniteId = "game-a", MediaId = media.MediaId };
+        Assert.Equal(media.MediaId, (await store.GetSessionMediaAsync(mediaKey, CancellationToken.None)).MediaId);
+        await store.AssignMediaAsync(media.MediaId, "game-b", media.ArchivePath, CancellationToken.None);
+        Assert.Empty((await store.GetSessionMediaAsync(mediaKey, CancellationToken.None)).MediaId);
+    }
+
     private async Task<SqliteStateStore> OpenAsync()
     {
         var store = new SqliteStateStore(new WorkerOptions

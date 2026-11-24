@@ -894,10 +894,11 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => saveTabIndex;
             set
             {
-                var index = Math.Max(0, Math.Min(BackupGalleryTabIndex, value));
+                var index = Math.Max(0, Math.Min(PlaySessionHistoryTabIndex, value));
                 if (saveTabIndex == index) return;
                 SetValue(ref saveTabIndex, index);
                 if (index == BackupGalleryTabIndex) EnsureBackupGalleryLoaded();
+                if (index == PlaySessionHistoryTabIndex) EnsurePlaySessionHistoryLoaded();
             }
         }
         public EnvironmentCheckReportDto EnvironmentCheck
@@ -1299,6 +1300,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     {
                         ResetBackupCover();
                         ResetBackupGallery();
+                        ResetPlaySessionHistory();
                     }
                 }
                 if (currentWorkspace == WorkspaceKind.Maintenance && value != WorkspaceKind.Maintenance)
@@ -1313,6 +1315,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 {
                     RefreshBackupCover();
                     EnsureBackupGalleryLoaded();
+                    EnsurePlaySessionHistoryLoaded();
                 }
                 plugin.SessionLastWorkspace = value;
                 uiStateSave?.Schedule();
@@ -4217,6 +4220,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                             SelectedCandidate = RestoreSaveCandidateSelection(SaveCandidates, selectedCandidateBeforeRefresh, selectedCandidateIndex)!;
                             CompleteSaveDetailsLoad();
                             EnsureBackupGalleryLoaded();
+                            EnsurePlaySessionHistoryLoaded();
                             RaiseCommandStates();
                         });
                     }
@@ -6360,6 +6364,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ResetBackupHistorySearch();
             if (backupGalleryGameId != null && !string.Equals(backupGalleryGameId, selected?.PlayniteId, StringComparison.Ordinal))
                 ResetBackupGallery();
+                ResetPlaySessionHistory();
             RecordRecentAccess();
             if (selected != null && !string.Equals(GameDiagnosticPlayniteId, selected.PlayniteId, StringComparison.OrdinalIgnoreCase))
                 GameDiagnosticPlayniteId = selected.PlayniteId;
@@ -6698,6 +6703,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ResetBackupHistorySearch();
                 ResetBackupCalendar();
                 ResetBackupGallery();
+                ResetPlaySessionHistory();
                 ClearHistoryComparisonPins(restoreDefault: false);
                 ResetBackupArrivals();
                 ResetSaveDetailsState();
@@ -6783,7 +6789,8 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,
                 RefreshBackupGalleryCommand, LoadMoreBackupGalleryCommand, OpenBackupGalleryVersionCommand, OpenHistoryFromBackupGalleryCommand,
                 PreviewProgressRecapCommand, SaveProgressRecapCommand,
-                OpenReportedProtectionBackupCommand, ToggleBackupLineageGraphCommand, CompareLineageGraphNodeCommand
+                OpenReportedProtectionBackupCommand, ToggleBackupLineageGraphCommand, CompareLineageGraphNodeCommand,
+                RefreshPlaySessionHistoryCommand, LoadMorePlaySessionHistoryCommand, OpenPlaySessionTaskCommand, OpenPlaySessionResultCommand
             }.OfType<RelayCommand>())
             {
                 command.RaiseCanExecuteChanged();

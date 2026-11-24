@@ -131,6 +131,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             InitializeHistoryComparisonCommands();
             InitializeBackupCalendarCommands();
             InitializeBackupGalleryCommands();
+            InitializePlaySessionHistory();
             InitializeProgressRecapCommands();
             InitializeLineageGraphCommands();
             pendingBackupArrivals = Array.Empty<BackupVersionDto>();

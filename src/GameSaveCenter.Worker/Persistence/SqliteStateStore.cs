@@ -81,6 +81,8 @@ public sealed partial class SqliteStateStore : ITaskStatusStore
         await EnsureColumnAsync(connection, "tasks", "progress_rate", "REAL NOT NULL DEFAULT 0", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "progress_eta_seconds", "REAL", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "progress_updated_utc", "TEXT", token).ConfigureAwait(false);
+        await EnsureColumnAsync(connection, "tasks", "backup_result_json", "TEXT NOT NULL DEFAULT ''", token).ConfigureAwait(false);
+        await EnsurePlaySessionHistoryIndexesAsync(connection, token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "elapsed_seconds", "REAL", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "monotonic_started_timestamp", "INTEGER", token).ConfigureAwait(false);
         await EnsureColumnAsync(connection, "tasks", "monotonic_frequency", "INTEGER", token).ConfigureAwait(false);
@@ -821,11 +823,12 @@ WHERE state IN ($queued,$running) AND (worker_session_id='' OR worker_session_id
     }
 
     public Task AddOrUpdateTaskAsync(TaskStatusDto task, CancellationToken token) => ExecuteAsync(@"
-INSERT INTO tasks(task_id,request_id,notification_issue_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,elapsed_seconds,monotonic_started_timestamp,monotonic_frequency,error_code,error_message,restore_report_json,source_references_json,progress_completed_units,progress_total_units,progress_unit,progress_rate,progress_eta_seconds,progress_updated_utc)
-VALUES($id,$request,$notificationIssue,$session,$worker,$type,$game,$name,$state,$progress,$message,$stageMessage,$cancellationState,$created,$started,$finished,$elapsed,$monotonicStarted,$monotonicFrequency,$errorCode,$errorMessage,$restoreReport,$sourceReferences,$progressCompleted,$progressTotal,$progressUnit,$progressRate,$progressEta,$progressUpdated)
+INSERT INTO tasks(task_id,request_id,notification_issue_id,session_id,worker_session_id,task_type,game_id,game_name,state,progress,message,stage_message,cancellation_state,created_utc,started_utc,finished_utc,elapsed_seconds,monotonic_started_timestamp,monotonic_frequency,error_code,error_message,restore_report_json,source_references_json,progress_completed_units,progress_total_units,progress_unit,progress_rate,progress_eta_seconds,progress_updated_utc,backup_result_json)
+VALUES($id,$request,$notificationIssue,$session,$worker,$type,$game,$name,$state,$progress,$message,$stageMessage,$cancellationState,$created,$started,$finished,$elapsed,$monotonicStarted,$monotonicFrequency,$errorCode,$errorMessage,$restoreReport,$sourceReferences,$progressCompleted,$progressTotal,$progressUnit,$progressRate,$progressEta,$progressUpdated,$backupResult)
 ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progress,message=excluded.message,stage_message=excluded.stage_message,cancellation_state=excluded.cancellation_state,worker_session_id=excluded.worker_session_id,
  request_id=excluded.request_id,notification_issue_id=excluded.notification_issue_id,started_utc=excluded.started_utc,finished_utc=excluded.finished_utc,elapsed_seconds=excluded.elapsed_seconds,monotonic_started_timestamp=excluded.monotonic_started_timestamp,monotonic_frequency=excluded.monotonic_frequency,error_code=excluded.error_code,error_message=excluded.error_message,restore_report_json=excluded.restore_report_json,source_references_json=excluded.source_references_json,
- progress_completed_units=excluded.progress_completed_units,progress_total_units=excluded.progress_total_units,progress_unit=excluded.progress_unit,progress_rate=excluded.progress_rate,progress_eta_seconds=excluded.progress_eta_seconds,progress_updated_utc=excluded.progress_updated_utc;",
+ progress_completed_units=excluded.progress_completed_units,progress_total_units=excluded.progress_total_units,progress_unit=excluded.progress_unit,progress_rate=excluded.progress_rate,progress_eta_seconds=excluded.progress_eta_seconds,progress_updated_utc=excluded.progress_updated_utc,
+ backup_result_json=COALESCE(NULLIF(excluded.backup_result_json,''),tasks.backup_result_json);",
         new Dictionary<string, object?>
         {
             ["$id"] = task.TaskId, ["$request"] = task.RequestId, ["$notificationIssue"] = task.NotificationIssueId ?? string.Empty, ["$session"] = task.SessionId, ["$worker"] = task.WorkerSessionId, ["$type"] = task.TaskType, ["$game"] = task.GameId, ["$name"] = task.GameName,
@@ -834,6 +837,8 @@ ON CONFLICT(task_id) DO UPDATE SET state=excluded.state,progress=excluded.progre
             ["$monotonicStarted"] = task.MonotonicStartedTimestamp > 0 ? task.MonotonicStartedTimestamp : null, ["$monotonicFrequency"] = task.MonotonicFrequency > 0 ? task.MonotonicFrequency : null,
             ["$errorCode"] = task.ErrorCode, ["$errorMessage"] = task.ErrorMessage,
             ["$restoreReport"] = task.RestoreReport == null ? string.Empty : JsonSerializer.Serialize(task.RestoreReport, _json),
+            ["$backupResult"] = string.IsNullOrWhiteSpace(task.SessionId) || task.BackupResult == null
+                ? string.Empty : JsonSerializer.Serialize(task.BackupResult, _json),
             ["$sourceReferences"] = task.SourceReferences == null || task.SourceReferences.Count == 0
                 ? string.Empty
                 : JsonSerializer.Serialize(task.SourceReferences, _json),

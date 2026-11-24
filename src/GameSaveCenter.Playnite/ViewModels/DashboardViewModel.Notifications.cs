@@ -294,43 +294,48 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
 
                 PushNavigationReturnTarget("返回通知", $"来源通知：{notification.Title} · {notification.NotificationId}");
-                taskSearchRefresh.Cancel();
-                taskHistoryQueryRefresh.Cancel();
-                taskSearchText = task.TaskId;
-                taskStatusFilter = "全部";
-                taskGameFilter = "全部";
-                taskTypeFilter = "全部";
-                pendingTaskGameFilter = "全部";
-                pendingTaskTypeFilter = "全部";
-                pendingTaskDynamicFilterRestore = false;
-                taskHistoryScope = "全部历史";
-                taskHistoryRange = "全部时间";
-                taskNavigationGameId = string.Empty;
-                taskNavigationGameName = string.Empty;
-                pendingNavigationTaskId = task.TaskId;
-                pendingNavigationTaskIndex = -1;
-                restoringNavigationTaskSelection = true;
-
-                OnPropertyChanged(nameof(TaskSearchText));
-                OnPropertyChanged(nameof(TaskStatusFilter));
-                OnPropertyChanged(nameof(TaskGameFilter));
-                OnPropertyChanged(nameof(TaskTypeFilter));
-                OnPropertyChanged(nameof(TaskHistoryScope));
-                OnPropertyChanged(nameof(TaskHistoryRange));
-                OnPropertyChanged(nameof(TaskLoadedSummary));
-                OnPropertyChanged(nameof(TaskTotalCountLabel));
-                OnPropertyChanged(nameof(HasTaskNavigationTarget));
-                OnPropertyChanged(nameof(TaskNavigationSourceSummary));
-                OnPropertyChanged(nameof(TaskHasActiveFilters));
-                OnPropertyChanged(nameof(TaskActiveFiltersSummary));
-
-                RefreshTasksView();
-                CurrentWorkspace = WorkspaceKind.Tasks;
-                RequestTaskHistoryRefresh(immediate: true, force: true);
+                FocusExactTask(task.TaskId);
                 NotificationContextStatusMessage = string.Empty;
                 StatusMessage = $"已按任务 ID 打开{taskLabel}“{task.TaskTypeDisplay}”详情；可从任务来源继续进入版本或关联问题。";
                 RaiseCommandStates();
             });
+        }
+
+        private void FocusExactTask(string taskId)
+        {
+            taskSearchRefresh.Cancel();
+            taskHistoryQueryRefresh.Cancel();
+            taskSearchText = taskId;
+            taskStatusFilter = "全部";
+            taskGameFilter = "全部";
+            taskTypeFilter = "全部";
+            pendingTaskGameFilter = "全部";
+            pendingTaskTypeFilter = "全部";
+            pendingTaskDynamicFilterRestore = false;
+            taskHistoryScope = "全部历史";
+            taskHistoryRange = "全部时间";
+            taskNavigationGameId = string.Empty;
+            taskNavigationGameName = string.Empty;
+            pendingNavigationTaskId = taskId;
+            pendingNavigationTaskIndex = -1;
+            restoringNavigationTaskSelection = true;
+
+            OnPropertyChanged(nameof(TaskSearchText));
+            OnPropertyChanged(nameof(TaskStatusFilter));
+            OnPropertyChanged(nameof(TaskGameFilter));
+            OnPropertyChanged(nameof(TaskTypeFilter));
+            OnPropertyChanged(nameof(TaskHistoryScope));
+            OnPropertyChanged(nameof(TaskHistoryRange));
+            OnPropertyChanged(nameof(TaskLoadedSummary));
+            OnPropertyChanged(nameof(TaskTotalCountLabel));
+            OnPropertyChanged(nameof(HasTaskNavigationTarget));
+            OnPropertyChanged(nameof(TaskNavigationSourceSummary));
+            OnPropertyChanged(nameof(TaskHasActiveFilters));
+            OnPropertyChanged(nameof(TaskActiveFiltersSummary));
+
+            RefreshTasksView();
+            CurrentWorkspace = WorkspaceKind.Tasks;
+            RequestTaskHistoryRefresh(immediate: true, force: true);
         }
 
         private async Task RunNotificationRecordMutationAsync(Func<Task<int?>> mutation)

@@ -117,6 +117,12 @@ public sealed class TaskCoordinator
                 task.ProgressRatePerSecond = metrics?.RatePerSecond ?? 0;
                 task.ProgressEtaSeconds = metrics?.EtaSeconds;
                 task.ProgressUpdatedUtc = metrics?.UpdatedUtc;
+            }, source =>
+            {
+                if (!source.HasStableIdentity || task.SourceReferences.Count >= 32
+                    || task.SourceReferences.Any(item => item.Kind == source.Kind
+                        && string.Equals(item.StableId, source.StableId, StringComparison.Ordinal))) return;
+                task.SourceReferences = task.SourceReferences.Concat(new[] { source.Clone() }).ToList();
             });
             await operation(progress,linked.Token).ConfigureAwait(false);
             await CompleteSuccessAsync(runtime, progress).ConfigureAwait(false);
@@ -385,6 +391,7 @@ public sealed class TaskProgress
     private readonly Action<BackupResultDto>? _setBackupResult;
     private readonly Action<RestoreReportDto>? _setRestoreReport;
     private readonly Action<TaskProgressMetrics?>? _setMetrics;
+    private readonly Action<TaskSourceReferenceDto>? _addSourceReference;
     private readonly Queue<WorkSample> _samples = new();
     private long lastCompletedUnits = -1;
     private long lastTotalUnits = -1;
@@ -398,13 +405,16 @@ public sealed class TaskProgress
         Func<int,string,Task> report,
         Action<BackupResultDto>? setBackupResult = null,
         Action<RestoreReportDto>? setRestoreReport = null,
-        Action<TaskProgressMetrics?>? setMetrics = null)
+        Action<TaskProgressMetrics?>? setMetrics = null,
+        Action<TaskSourceReferenceDto>? addSourceReference = null)
     {
         _report=report;
         _setBackupResult=setBackupResult;
         _setRestoreReport=setRestoreReport;
         _setMetrics=setMetrics;
+        _addSourceReference = addSourceReference;
     }
+    public void AddSourceReference(TaskSourceReferenceDto source) => _addSourceReference?.Invoke(source);
     public Task ReportAsync(int percent,string message)
     {
         _setMetrics?.Invoke(null);

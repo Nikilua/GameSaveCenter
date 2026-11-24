@@ -8,7 +8,8 @@ public enum TaskSourceReferenceKind
     Game,
     BackupVersion,
     MediaBatch,
-    CloudTransfer
+    CloudTransfer,
+    MediaItem
 }
 
 /// <summary>
@@ -30,6 +31,7 @@ public sealed class TaskSourceReferenceDto
         TaskSourceReferenceKind.BackupVersion => "存档版本",
         TaskSourceReferenceKind.MediaBatch => "媒体批次",
         TaskSourceReferenceKind.CloudTransfer => "云队列",
+        TaskSourceReferenceKind.MediaItem => "媒体文件",
         _ => "任务来源"
     };
     public string IdentityDisplay => string.IsNullOrWhiteSpace(DisplayName)

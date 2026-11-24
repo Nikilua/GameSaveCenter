@@ -445,6 +445,11 @@ namespace GameSaveCenter.Playnite.ViewModels
                     else
                         StatusMessage = $"已返回{entry.SourceSummary}。";
                     break;
+                case WorkspaceKind.Saves:
+                    SaveTabIndex = entry.SaveTabIndex;
+                    RequestWorkspaceLoad();
+                    StatusMessage = selectedGameRestored ? $"已返回{entry.SourceSummary}。" : "原游戏已不在当前列表中。";
+                    break;
                 case WorkspaceKind.Tasks:
                     RestoreTaskSnapshot(entry);
                     RestoreWorklistBrowserSnapshot(entry);

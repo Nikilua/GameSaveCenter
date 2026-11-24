@@ -235,6 +235,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                 async (progress, ct) =>
                 {
                     await progress.ReportAsync(10, $"{requestLabel}：正在扫描存档").ConfigureAwait(false);
+                    var previousVersions = await _store.GetBackupVersionsAsync(game.PlayniteId, ct).ConfigureAwait(false);
                     var operation = await _ludusavi
                         .BackupAsync(new[] { match.Name }, request.Force, false, ct)
                         .ConfigureAwait(false);
@@ -286,8 +287,7 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         $"pending-{now:yyyyMMddHHmmss}",
                         now);
 
-                    var previous = (await _store.GetBackupVersionsAsync(game.PlayniteId, ct).ConfigureAwait(false))
-                        .FirstOrDefault();
+                    var previous = previousVersions.FirstOrDefault();
                     var policy = await _store.GetPolicyAsync(game.PlayniteId, ct).ConfigureAwait(false);
                     var previousDomain = previous == null
                         ? null
@@ -318,7 +318,8 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                     await progress.ReportAsync(70, $"{requestLabel}：正在索引历史版本").ConfigureAwait(false);
                     await RefreshBackupHistoryAsync(game.PlayniteId, match.Name, ct).ConfigureAwait(false);
 
-                    var indexed = (await _store.GetBackupVersionsAsync(game.PlayniteId, ct).ConfigureAwait(false))
+                    var indexedVersions = await _store.GetBackupVersionsAsync(game.PlayniteId, ct).ConfigureAwait(false);
+                    var indexed = indexedVersions
                         .OrderByDescending(x => x.CreatedUtc)
                         .FirstOrDefault();
                     if (indexed == null)
@@ -337,6 +338,19 @@ public sealed class BackupOrchestrator : IBackupHistoryRebuilder
                         : indexed.ParentBackupId;
                     await _store.AddBackupVersionAsync(indexed, JsonSerializer.Serialize(snapshot.Files), ct)
                         .ConfigureAwait(false);
+                    if (!string.IsNullOrWhiteSpace(request.NotificationSessionId) && (change is "New" or "Different"))
+                    {
+                        var priorIds = previousVersions.Select(version => version.BackupId).ToHashSet(StringComparer.OrdinalIgnoreCase);
+                        var newlyIndexed = indexedVersions.Where(version => !priorIds.Contains(version.BackupId)).Take(2).ToArray();
+                        if (newlyIndexed.Length == 1 && string.Equals(newlyIndexed[0].BackupId, indexed.BackupId, StringComparison.OrdinalIgnoreCase))
+                            progress.AddSourceReference(new TaskSourceReferenceDto
+                            {
+                                Kind = TaskSourceReferenceKind.BackupVersion,
+                                StableId = indexed.BackupId,
+                                PlayniteId = game.PlayniteId,
+                                DisplayName = indexed.BackupId
+                            });
+                    }
 
                     var backupResult = new BackupResultDto
                     {

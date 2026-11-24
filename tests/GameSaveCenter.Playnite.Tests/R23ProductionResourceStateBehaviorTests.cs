@@ -898,7 +898,7 @@ public sealed class R23ProductionResourceStateBehaviorTests
 
             var pages = new[]
             {
-                (FileName: "SaveCenterView.xaml", ExpectedCount: 4),
+                (FileName: "SaveCenterView.xaml", ExpectedCount: 6),
                 (FileName: "MediaCenterView.xaml", ExpectedCount: 4),
                 (FileName: "MaintenanceView.xaml", ExpectedCount: 6),
                 (FileName: "TrainerCenterView.xaml", ExpectedCount: 4)
@@ -907,6 +907,7 @@ public sealed class R23ProductionResourceStateBehaviorTests
                 (page.FileName, Headers: ReadTopLevelWorkspaceTabHeaders(page.FileName))).ToArray();
             foreach (var page in productionHeaders)
                 Assert.Equal(pages.Single(expected => expected.FileName == page.FileName).ExpectedCount, page.Headers.Length);
+            Assert.Equal(new[] { "进度画廊", "游玩记录" }, productionHeaders[0].Headers.Skip(4));
 
             var resources = LoadProductionResources();
             var tabControlStyle = Assert.IsType<Style>(resources["GscRedesignWorkspaceTabControl"]);

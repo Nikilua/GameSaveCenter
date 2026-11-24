@@ -1209,10 +1209,33 @@ public sealed class MediaSyncService
                 .ToList();
             var candidates=EnumerateCandidates(sources);
             var copied=0;var index=0;
+            var referenced = 0;
+            async Task RecordSessionMediaAsync(MediaItemDto item)
+            {
+                if (referenced >= 24) return;
+                try
+                {
+                    if (await _store.GetMediaByIdAsync(item.MediaId, ct).ConfigureAwait(false) == null) return;
+                }
+                catch (Exception ex) when (ex is not OperationCanceledException)
+                {
+                    _logger.LogWarning(ex, "Could not confirm session media reference {MediaId}", item.MediaId);
+                    return;
+                }
+                progress.AddSourceReference(new TaskSourceReferenceDto
+                {
+                    Kind = TaskSourceReferenceKind.MediaItem,
+                    StableId = item.MediaId,
+                    PlayniteId = game.PlayniteId,
+                    DisplayName = item.FileName
+                });
+                referenced++;
+            }
             foreach(var candidate in candidates.OrderBy(x=>x.Path,StringComparer.OrdinalIgnoreCase))
             {
                 ct.ThrowIfCancellationRequested();index++;
-                if(await ArchiveCandidateAsync(candidate.Path,candidate.Source,game,"游戏专属来源",ct).ConfigureAwait(false))copied++;
+                if(await ArchiveCandidateAsync(candidate.Path,candidate.Source,game,"游戏专属来源",ct,
+                    string.IsNullOrWhiteSpace(request.NotificationSessionId) ? null : RecordSessionMediaAsync).ConfigureAwait(false))copied++;
                 if(index%20==0)await progress.ReportWorkAsync(index,candidates.Count,"文件",$"已检查 {index}/{candidates.Count}",Math.Min(85,5+(int)(80d*index/Math.Max(1,candidates.Count)))).ConfigureAwait(false);
             }
 
@@ -1451,7 +1474,8 @@ public sealed class MediaSyncService
             Task = task
         };
 
-    private async Task<bool> ArchiveCandidateAsync(string path,MediaSourceKind source,GameDescriptorDto? game,string classificationReason,CancellationToken token)
+    private async Task<bool> ArchiveCandidateAsync(string path,MediaSourceKind source,GameDescriptorDto? game,string classificationReason,
+        CancellationToken token, Func<MediaItemDto, Task>? onArchived = null)
     {
         try
         {
@@ -1481,7 +1505,7 @@ public sealed class MediaSyncService
             var hash=await ComputeSha256Async(path,token).ConfigureAwait(false);
             await _store.UpsertMediaFileSignatureAsync(path,current.Length,current.LastWriteTimeUtc,hash,currentSampleHash,token).ConfigureAwait(false);
             if(await _store.MediaHashExistsAsync(hash,token).ConfigureAwait(false))return false;
-            return await ArchiveWithHashAsync(path,current,hash,source,game,classificationReason,token).ConfigureAwait(false);
+            return await ArchiveWithHashAsync(path,current,hash,source,game,classificationReason,token,onArchived).ConfigureAwait(false);
         }
         catch(OperationCanceledException){throw;}
         catch (UnauthorizedAccessException ex)
@@ -1499,7 +1523,8 @@ public sealed class MediaSyncService
         }
     }
 
-    private async Task<bool> ArchiveWithHashAsync(string path,FileInfo info,string hash,MediaSourceKind source,GameDescriptorDto? game,string classificationReason,CancellationToken token)
+    private async Task<bool> ArchiveWithHashAsync(string path,FileInfo info,string hash,MediaSourceKind source,GameDescriptorDto? game,
+        string classificationReason,CancellationToken token, Func<MediaItemDto, Task>? onArchived = null)
     {
         if(!info.Exists)return false;
         var captured=info.CreationTimeUtc==DateTime.MinValue?info.LastWriteTimeUtc:info.CreationTimeUtc;
@@ -1509,12 +1534,14 @@ public sealed class MediaSyncService
             :BuildArchivePath(game,source,kind,captured,hash,info.Extension);
         Directory.CreateDirectory(Path.GetDirectoryName(archive)!);
         await CopyAtomicallyAsync(path,archive,token).ConfigureAwait(false);
-        await _store.AddMediaAsync(new MediaItemDto
+        var item = new MediaItemDto
         {
             MediaId=Guid.NewGuid().ToString("N"),PlayniteId=game?.PlayniteId??string.Empty,Kind=kind,Source=source,
             ArchivePath=archive,OriginalPath=path,CapturedUtc=captured,SizeBytes=info.Length,Sha256=hash,
             CloudState=game==null?"NotApplicable":"Pending",ClassificationState=game==null?"Inbox":"Assigned",ClassificationReason=classificationReason
-        },token).ConfigureAwait(false);
+        };
+        await _store.AddMediaAsync(item,token).ConfigureAwait(false);
+        if (onArchived != null) await onArchived(item).ConfigureAwait(false);
         return true;
     }
 
