@@ -1279,8 +1279,8 @@ namespace GameSaveCenter.Playnite.ViewModels
             get => currentWorkspace;
             set
             {
-                var changedWorkspace = currentWorkspace != value;
-                if (changedWorkspace)
+                var previousWorkspace = currentWorkspace;
+                if (currentWorkspace != value)
                 {
                     CancelDetailsLoad();
                     ResetBackupHistorySearch();
@@ -1294,7 +1294,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     ResetMediaBackupLinks();
                 }
                 SetValue(ref currentWorkspace, value);
-                if (value == WorkspaceKind.Saves && changedWorkspace) RefreshBackupCover();
+                if (value == WorkspaceKind.Saves && previousWorkspace != value) RefreshBackupCover();
                 plugin.SessionLastWorkspace = value;
                 uiStateSave?.Schedule();
                 RecordRecentAccess();

@@ -6,6 +6,8 @@
 
 SDK 8.0.423 Release 定向 Worker 4 项与隔离 WPF 20 项通过，0 失败、0 跳过。新 Worker 用例覆盖重启后读取、游戏范围、换图、解除、分类和文件状态、反查多个版本、删除一项及保护状态。WPF 复用了存档历史与媒体页面的回归，实际 Playnite 配图与反查交互待验。原始 TRX 在 `.tmp/player-05-06`。精确提交的本地完整入口与双 SDK 门禁待验。
 
+首个提交 `6bd88132077ae093e37e9b748e4885dacef0f165` 的 Windows run `45361851191` 在基线 job `138333619957` 和 SDK 10 job `138333620238` 均因 `R19AsyncContextSourceTests.DetailsReadsRequireTheStartingGameWorkspaceAndGenerationAtCommitBoundaries` 失败。原始诊断运行标识分别为 `20261124T090628479Z-85cd605e` 与 `20261124T090637818Z-c9da10b9`。修正保留原有工作区切换守卫及取消顺序，并保存切换前的工作区用于决定是否加载封面。
+
 ## 2026-11-24 玩家体验 03 新版本到达时保留阅读位置
 
 基于 `c9c26e5d1b7828d2a72d92cd8e39926d8977902d` 在 `.tmp/pe03` 单独开发，避免改变 01 正在验收的主工作区。创建工作树前 C 盘可用 9,267,326,976 字节，D 盘可用 13,482,037,248 字节。既有工作树和其他批次证据保留。
