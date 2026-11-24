@@ -464,6 +464,41 @@ namespace GameSaveCenter.Playnite.Views
             e.Handled = true;
         }
 
+        private void OnGameShortcutSelectionChanged(object sender, SelectionChangedEventArgs e) => RefreshGameShortcutActions();
+
+        private void OnGameShortcutAddClick(object sender, RoutedEventArgs e)
+        {
+            var gameId = CurrentShortcutGameId;
+            if (gameId == null || viewModel == null || !(CommandDirectoryResultsListBox.SelectedItem is CommandDirectoryItem item)
+                || !CommandDirectoryPreferencePolicy.IsGameShortcut(item.Id)) return;
+            var shortcuts = viewModel.GetGameCommandShortcuts(gameId).ToList();
+            if (shortcuts.Contains(item.Id, StringComparer.Ordinal)) return;
+            shortcuts.Add(item.Id);
+            SaveGameShortcuts(gameId, shortcuts.ToArray(), item.Id);
+            GameShortcutChoices.Focus();
+        }
+
+        private void OnGameShortcutEditClick(object sender, RoutedEventArgs e)
+        {
+            var gameId = CurrentShortcutGameId;
+            if (gameId == null || viewModel == null || !(GameShortcutChoices.SelectedItem is CommandDirectoryItem item)) return;
+            var shortcuts = viewModel.GetGameCommandShortcuts(gameId).ToList();
+            if (ReferenceEquals(sender, GameShortcutRemoveButton))
+                shortcuts.Remove(item.Id);
+            else if (!CommandDirectoryPreferencePolicy.TryMoveShortcut(shortcuts, item.Id,
+                ReferenceEquals(sender, GameShortcutUpButton) ? -1 : 1)) return;
+            SaveGameShortcuts(gameId, shortcuts.ToArray(), item.Id);
+            GameShortcutChoices.Focus();
+        }
+
+        private void OnGameShortcutOpenClick(object sender, RoutedEventArgs e)
+        {
+            if (CurrentShortcutGameId == null || viewModel?.IsBusy != false
+                || !(GameShortcutChoices.SelectedItem is CommandDirectoryItem item) || !item.TryExecute()) return;
+            CloseCommandDirectoryForItem(item);
+            e.Handled = true;
+        }
+
         private void OnCommandDirectoryScrimMouseDown(object sender, MouseButtonEventArgs e)
         {
             CloseCommandDirectory(restoreFocus: false);
