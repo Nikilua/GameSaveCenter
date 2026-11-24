@@ -62,7 +62,9 @@ namespace GameSaveCenter.Playnite.Infrastructure
         {
             this.preview = preview ?? new RestoreConfirmationPreviewDto();
             Current = $"{gameName}\n执行前会确认游戏已关闭，并创建和锁定当前存档的 PreRestore 快照。";
-            Target = $"{backup.CreatedFullDisplay}\n{backup.BackupId}\n{backup.SourceDisplay} · {backup.LockStateDisplay}";
+            Target = $"{backup.CreatedFullDisplay} · {backup.BackupTypeDisplay}\n{backup.BackupId}\n"
+                + $"{backup.SourceDisplay} · {backup.OperatingSystemDisplay} · {backup.LockStateDisplay}\n"
+                + $"可恢复性：{backup.RestoreReadinessStatusDisplay}\n{backup.RestoreReadinessSummaryDisplay}";
         }
 
         public string Current { get; }

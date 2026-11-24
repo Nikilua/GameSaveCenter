@@ -136,9 +136,9 @@ namespace GameSaveCenter.Playnite.Views
 
             DialogTitleText = new TextBlock();
             DialogMessageText = new TextBlock();
+            DialogMessageScroll = new ScrollViewer { Content = DialogMessageText, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
             DialogRestoreFileList = new Expander();
-            DialogRestoreDetailsPanel = new StackPanel { Visibility = Visibility.Collapsed };
-            DialogRestoreDetailsPanel.Children.Add(DialogRestoreFileList);
+            DialogRestoreDetailsPanel = new ScrollViewer { Content = DialogRestoreFileList, Visibility = Visibility.Collapsed };
             DialogCopyButton = new Button { Content = "复制详情", Visibility = Visibility.Collapsed };
             DialogNeverButton = new Button { Content = "不再提醒", Visibility = Visibility.Collapsed };
             DialogLaterButton = new Button { Content = "以后再说", Visibility = Visibility.Collapsed };
@@ -161,7 +161,7 @@ namespace GameSaveCenter.Playnite.Views
 
             var content = new StackPanel();
             content.Children.Add(DialogTitleText);
-            content.Children.Add(DialogMessageText);
+            content.Children.Add(DialogMessageScroll);
             content.Children.Add(DialogRestoreDetailsPanel);
             content.Children.Add(buttons);
             DialogCard.Child = content;
@@ -1301,9 +1301,7 @@ namespace GameSaveCenter.Playnite.Views
             activeDialogDetailMessage = string.Empty;
             DialogTitleText.Text = request.Title;
             SetRestoreConfirmationDetails(request.RestoreDetails);
-            DialogMessageText.Text = request.RestoreDetails == null
-                ? request.Message
-                : "请确认游戏、启动器和 MOD 管理器均已关闭。继续恢复此历史版本？";
+            DialogMessageText.Text = request.Message;
             DialogCancelButton.Content = request.CancelText;
             DialogCancelButton.Visibility = Visibility.Visible;
             DialogConfirmButton.Content = request.ConfirmText;
@@ -1324,6 +1322,7 @@ namespace GameSaveCenter.Playnite.Views
             DialogRestoreFileList.IsExpanded = false;
             DialogRestoreDetailsPanel.DataContext = details;
             DialogRestoreDetailsPanel.Visibility = details == null ? Visibility.Collapsed : Visibility.Visible;
+            DialogMessageScroll.Visibility = details == null ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OnRestoreComparisonSizeChanged(object sender, SizeChangedEventArgs e)

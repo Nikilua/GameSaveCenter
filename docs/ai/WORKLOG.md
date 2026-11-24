@@ -12,6 +12,12 @@ WPF 按测试类隔离桌面 82 通过、0 失败、0 跳过，覆盖原有命�
 
 提交 `ee788d55a3cf033f3d334a8ac3c96b0bd095c293` 的 [run 45378222455](https://github.com/Nikilua/GameSaveCenter/actions/runs/45378222455) 在两个 SDK 上均未进入测试。基线 job 138390074518 的 Python XAML 校验未在同名代码文件找到事件后抛出异常。SDK 10 job 138390075028 的 PowerShell 输出明确指向 `OnGameShortcutSelectionChanged` 等处理函数，诊断 artifact 14911982439。将事件处理函数移到 `AcrylicProductionShellView.xaml.cs`，保持原调用逻辑。重新通过 Python 源码检查、27 份 XAML 结构检查以及隔离桌面键盘回归 7 通过、0 失败、0 跳过。此前 SHA 的独立 Worker 定向回归 72 通过、0 失败、0 跳过。根入口 PID 42216 在隔离预检退出 1（`artifacts/player-16-ee788d55`）。
 
+### 通用确认与恢复预览的滚动修复
+
+设备比较提交 `074b0f9fa80ab3beb1f7d8a8113656a8268f5937` 的 [run 45376695528](https://github.com/Nikilua/GameSaveCenter/actions/runs/45376695528) 两个 job 138384762022 和 138384762367 均在 R22 `ProductionDialogKeepsLongMessageScrollAndConsistentActionSpacing` 失败。原件 artifact 14913940091、14913646209，各自记录 1,685 通过、1 失败、19 跳过。普通确认说明继续由原滚动控件直接承载。恢复确认使用单独的有界滚动区域，显示版本类型、系统、锁定与可恢复性，保留确认、取消和保护快照流程。原断言不变。源码检查、27 份 XAML 检查及确认、焦点、退出动画、通知的隔离回归共 16 通过、0 失败、0 跳过。开工 C 盘 9,054,842,880 字节、D 盘 17,792,909,312 字节可用。
+
+上一 SHA `d61e76a2e0af397a12b148978483d8204936a22a` 根入口 PID 41940 在 Worker 43088 的隔离冲突处退出 1，另行运行完整 Core 157 通过、Worker 440 通过，均 0 失败、0 跳过。保留独立 TRX、原有 XAML 失败和隔离预检证据。
+
 ## 2026-11-24 玩家体验 15 跨设备比较变化
 
 从 `bb055462c613f8878bb1decb37927559c60e0dd1` 接续。设备对比详情显示本次和上次完整比较时间、稳定设备 ID、比较范围，以及本机版本、远端摘要和历史决定的变化。SQLite 基线按远端设备 ID 持久化。传输失败、摘要格式异常或达到条数上限时保留旧基线。单次完全读取仅说明该设备本次摘要中是否列出版本。
