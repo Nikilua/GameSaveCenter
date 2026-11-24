@@ -12,7 +12,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 {
     public sealed partial class DashboardViewModel
     {
-        private const int PlaySessionHistoryTabIndex = 5;
+        internal const int PlaySessionHistoryTabIndex = 5;
         private readonly LatestRequestCoordinator playSessionReads = new LatestRequestCoordinator();
         private PlaySessionHistoryPageDto? playSessionPage;
         private string? playSessionGameId;
@@ -140,18 +140,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             if (source.Kind == TaskSourceReferenceKind.MediaItem)
             {
-                var media = await plugin.RequestAsync<MediaItemDto>(MessageTypes.GetSessionMedia,
-                    new GameMediaIdentityDto { PlayniteId = source.PlayniteId, MediaId = source.StableId }).ConfigureAwait(false);
-                ApplyOnUi(() =>
-                {
-                    if (!CanReadPlaySessionHistory || !IsSelectedGame(source.PlayniteId)) return;
-                    if (media.MediaId != source.StableId || !File.Exists(media.ArchivePath))
-                    {
-                        StatusMessage = "这次游玩的归档媒体已删除、重新归类或不可用。";
-                        return;
-                    }
-                    Process.Start(new ProcessStartInfo { FileName = media.ArchivePath, UseShellExecute = true });
-                });
+                await OpenExactSessionMediaAsync(source,
+                    () => CanReadPlaySessionHistory && IsSelectedGame(source.PlayniteId)).ConfigureAwait(false);
                 return;
             }
             var page = await ReadExactHistoryVersionAsync(source.PlayniteId, source.StableId).ConfigureAwait(false);
@@ -165,6 +155,22 @@ namespace GameSaveCenter.Playnite.ViewModels
                 }
                 PushNavigationReturnTarget("返回游玩记录", "游玩记录");
                 FocusHistoryVersion(page, "这次游玩生成的存档版本");
+            });
+        }
+
+        private async Task OpenExactSessionMediaAsync(TaskSourceReferenceDto source, Func<bool> isContextCurrent)
+        {
+            var media = await plugin.RequestAsync<MediaItemDto>(MessageTypes.GetSessionMedia,
+                new GameMediaIdentityDto { PlayniteId = source.PlayniteId, MediaId = source.StableId }).ConfigureAwait(false);
+            ApplyOnUi(() =>
+            {
+                if (!isContextCurrent()) return;
+                if (media.MediaId != source.StableId || !File.Exists(media.ArchivePath))
+                {
+                    StatusMessage = "这次游玩的归档媒体已删除、重新归类或不可用。";
+                    return;
+                }
+                Process.Start(new ProcessStartInfo { FileName = media.ArchivePath, UseShellExecute = true });
             });
         }
     }
@@ -199,7 +205,10 @@ namespace GameSaveCenter.Playnite.ViewModels
             TaskId = task.TaskId;
             SessionId = task.SessionId;
             Title = $"{task.TaskTypeDisplay} · {task.StateDisplay}";
-            Outcome = task.BackupResult?.HasResult == true ? task.BackupResult.StateDisplay : task.Message;
+            Outcome = task.BackupResult?.HasResult == true
+                ? string.Join(Environment.NewLine, new[] { task.BackupResult.StateDisplay, task.Message }
+                    .Where(line => !string.IsNullOrWhiteSpace(line)).Distinct(StringComparer.Ordinal))
+                : task.Message;
         }
 
         internal string TaskId { get; }

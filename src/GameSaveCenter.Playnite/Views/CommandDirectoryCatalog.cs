@@ -192,6 +192,17 @@ namespace GameSaveCenter.Playnite.Views
                 WorkspaceKind.Maintenance,
                 unavailableReason: () => "当前无法打开保留与清理审阅页。"));
 
+            items.Add(CreateItem(
+                "game.session-history",
+                "回看当前游戏的游玩记录",
+                new[] { "游玩结果", "退出记录", "Session history" },
+                "页面导航",
+                CommandDirectoryScope.CurrentGame,
+                CreateReviewNavigation(WorkspaceKind.Saves, () => dashboard.SaveTabIndex = DashboardViewModel.PlaySessionHistoryTabIndex),
+                WorkspaceKind.Saves,
+                additionalCanExecute: () => !dashboard.IsBusy && dashboard.SelectedGame != null,
+                unavailableReason: () => dashboard.IsBusy ? "请等待当前操作结束。" : "请先选择当前游戏。"));
+
             if (items.Select(item => item.Id).Distinct(StringComparer.Ordinal).Count() != items.Count)
                 throw new InvalidOperationException("命令目录中存在重复的稳定 ID。");
 

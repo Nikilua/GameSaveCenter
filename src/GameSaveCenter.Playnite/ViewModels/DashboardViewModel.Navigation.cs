@@ -276,6 +276,12 @@ namespace GameSaveCenter.Playnite.ViewModels
                 case TaskSourceReferenceKind.MediaBatch:
                     OpenTaskMediaBatch(source);
                     break;
+                case TaskSourceReferenceKind.MediaItem:
+                    var taskId = SelectedTask?.TaskId;
+                    if (!string.IsNullOrWhiteSpace(taskId))
+                        Run(() => OpenExactSessionMediaAsync(source, () => CurrentWorkspace == WorkspaceKind.Tasks
+                            && string.Equals(SelectedTask?.TaskId, taskId, StringComparison.Ordinal)));
+                    break;
                 case TaskSourceReferenceKind.CloudTransfer:
                     OpenTaskCloudTransfer(source);
                     break;

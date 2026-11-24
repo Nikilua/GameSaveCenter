@@ -400,12 +400,34 @@
                                  AutomationProperties.Name="搜索命令"
                                  AutomationProperties.HelpText="输入中文或英文名称、别名或分类。按向上或向下选择命令，按 Enter 执行，按 Escape 关闭命令搜索。"
                                  Margin="0,0,0,10"/>
-                        <TextBlock x:Name="CommandDirectoryResultsSummaryText" Grid.Row="2"
+                        <StackPanel Grid.Row="2">
+                        <TextBlock x:Name="CommandDirectoryResultsSummaryText"
                                    Text="常用命令"
                                    FontSize="{DynamicResource GscCaptionFontSize}"
                                    Foreground="{DynamicResource GscSecondaryTextBrush}"
                                    Margin="2,0,0,6"
                                    AutomationProperties.Name="命令搜索结果数量"/>
+                            <Expander x:Name="GameShortcutsPanel" Header="当前游戏常用操作" Visibility="Collapsed" Margin="0,0,0,6">
+                                <StackPanel Margin="2,4,0,0">
+                                    <ComboBox x:Name="GameShortcutChoices" Style="{DynamicResource GscWpfUiComboBox}"
+                                              DisplayMemberPath="Name" SelectionChanged="OnGameShortcutSelectionChanged"
+                                              AutomationProperties.Name="当前游戏已固定的操作"/>
+                                    <WrapPanel Margin="0,4,0,0">
+                                        <ui:Button x:Name="GameShortcutOpenButton" Content="打开" Click="OnGameShortcutOpenClick"
+                                                   Style="{DynamicResource GscWpfUiContextButton}" Margin="0,0,6,4"/>
+                                        <ui:Button x:Name="GameShortcutUpButton" Content="上移" Click="OnGameShortcutEditClick"
+                                                   Style="{DynamicResource GscWpfUiContextButton}" Margin="0,0,6,4"/>
+                                        <ui:Button x:Name="GameShortcutDownButton" Content="下移" Click="OnGameShortcutEditClick"
+                                                   Style="{DynamicResource GscWpfUiContextButton}" Margin="0,0,6,4"/>
+                                        <ui:Button x:Name="GameShortcutRemoveButton" Content="移除" Click="OnGameShortcutEditClick"
+                                                   Style="{DynamicResource GscWpfUiContextButton}" Margin="0,0,6,4"/>
+                                        <ui:Button x:Name="GameShortcutAddButton" Content="固定选中的命令" Click="OnGameShortcutAddClick"
+                                                   Style="{DynamicResource GscWpfUiContextButton}" Margin="0,0,6,4"
+                                                   ToolTip="在搜索结果中选择当前游戏的存档、媒体、工具或游玩记录命令"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Expander>
+                        </StackPanel>
                         <TextBlock x:Name="CommandDirectoryNoticeText" Grid.Row="3"
                                    Visibility="Collapsed"
                                    Foreground="{DynamicResource GscSecondaryTextBrush}"
@@ -459,7 +481,7 @@
                             </Grid>
                             </ScrollViewer>
                         </Border>
-                        <ListBox x:Name="CommandDirectoryResultsListBox" Grid.Row="5"
+                        <ListBox x:Name="CommandDirectoryResultsListBox" Grid.Row="5" SelectionChanged="OnGameShortcutSelectionChanged"
                                  BorderThickness="0" Background="Transparent" Padding="0"
                                  IsTabStop="False"
                                  ScrollViewer.VerticalScrollBarVisibility="Auto"

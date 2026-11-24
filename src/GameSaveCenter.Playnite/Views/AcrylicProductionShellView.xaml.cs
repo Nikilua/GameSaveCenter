@@ -159,6 +159,7 @@ namespace GameSaveCenter.Playnite.Views
             KeyboardShortcutHelpPopup.IsOpen = false;
             commandDirectoryContextSnapshot = CommandDirectoryContextSnapshot.Capture(viewModel);
             NotifyCommandDirectoryCanExecuteChanged();
+            RefreshGameShortcuts();
             CommandDirectorySearchTextBox.Clear();
             UpdateCommandDirectorySearchResults();
             CommandDirectoryOverlay.Visibility = Visibility.Visible;
@@ -1072,6 +1073,7 @@ namespace GameSaveCenter.Playnite.Views
         {
             foreach (var item in commandDirectoryItems)
                 item.RaiseCanExecuteChanged();
+            RefreshGameShortcutActions();
         }
 
         private void OnKeyboardHelpClick(object sender, RoutedEventArgs e)

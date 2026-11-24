@@ -363,6 +363,15 @@ namespace GameSaveCenter.Playnite.Settings
             set => pinnedCommandIds = CommandDirectoryPreferencePolicy.NormalizePinned(value);
         }
 
+        private Dictionary<string, List<string>> gameCommandShortcuts = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
+        public Dictionary<string, List<string>> GameCommandShortcuts
+        {
+            get => gameCommandShortcuts;
+            set => gameCommandShortcuts = CommandDirectoryPreferencePolicy.NormalizeGameShortcuts(value);
+        }
+
         /// <summary>Bounded most-recently-invoked command IDs, kept separate from recent game access.</summary>
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Replace)]
         public List<string> RecentCommandIds
@@ -899,6 +908,7 @@ namespace GameSaveCenter.Playnite.Settings
             DataGridHiddenColumnKeys = other.DataGridHiddenColumnKeys;
             RecentAccess = other.RecentAccess;
             PinnedCommandIds = other.PinnedCommandIds;
+            GameCommandShortcuts = other.GameCommandShortcuts;
             RecentCommandIds = other.RecentCommandIds;
             Worklists = other.Worklists;
             ActiveWorklistId = other.ActiveWorklistId;

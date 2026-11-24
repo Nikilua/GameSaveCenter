@@ -187,6 +187,7 @@ namespace GameSaveCenter.Playnite.Settings
             settings.DataGridHiddenColumnKeys = new Dictionary<string, List<string>>(StringComparer.Ordinal);
             settings.RecentAccess = new List<RecentAccessRecord>();
             settings.PinnedCommandIds = new List<string>();
+            settings.GameCommandShortcuts = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
             settings.RecentCommandIds = new List<string>();
             return count;
         }

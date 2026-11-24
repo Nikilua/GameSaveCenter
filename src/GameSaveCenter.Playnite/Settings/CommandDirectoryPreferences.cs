@@ -28,6 +28,39 @@ namespace GameSaveCenter.Playnite.Settings
         public const int MaximumPinnedCommandCount = 5;
         public const int MaximumRecentCommandCount = 20;
         private const int MaximumCommandIdLength = 128;
+        private static readonly string[] GameShortcutIds =
+        {
+            "workspace.saves", "workspace.media", "workspace.trainers", "review.restore", "game.session-history"
+        };
+
+        public static bool IsGameShortcut(string id)
+            => GameShortcutIds.Contains(id, StringComparer.OrdinalIgnoreCase);
+
+        public static Dictionary<string, List<string>> NormalizeGameShortcuts(IDictionary<string, List<string>>? source)
+        {
+            var result = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            if (source == null) return result;
+            var canonicalIds = BuildCanonicalIds(GameShortcutIds);
+            foreach (var pair in source)
+            {
+                var gameId = pair.Key.Trim();
+                if (gameId.Length == 0 || gameId.Length > MaximumCommandIdLength) continue;
+                var shortcuts = NormalizeIds(pair.Value, MaximumPinnedCommandCount, canonicalIds);
+                if (shortcuts.Count != 0) result[gameId] = shortcuts;
+            }
+            return result;
+        }
+
+        public static bool TryMoveShortcut(List<string> shortcuts, string id, int direction)
+        {
+            if (direction != -1 && direction != 1) return false;
+            var oldIndex = shortcuts.FindIndex(item => string.Equals(item, id, StringComparison.Ordinal));
+            var newIndex = oldIndex + direction;
+            if (oldIndex < 0 || newIndex < 0 || newIndex >= shortcuts.Count) return false;
+            shortcuts.RemoveAt(oldIndex);
+            shortcuts.Insert(newIndex, id);
+            return true;
+        }
 
         public static List<string> NormalizePinned(IEnumerable<string>? source)
             => NormalizeIds(source, MaximumPinnedCommandCount, null);

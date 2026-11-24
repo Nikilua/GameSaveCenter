@@ -30,7 +30,7 @@ namespace GameSaveCenter.Playnite.Views
         }
 
         private WorkspaceKind Workspace { get; }
-        private string? GameId { get; }
+        internal string? GameId { get; }
         private string? GameName { get; }
         private string? TaskId { get; }
         private string? TaskType { get; }

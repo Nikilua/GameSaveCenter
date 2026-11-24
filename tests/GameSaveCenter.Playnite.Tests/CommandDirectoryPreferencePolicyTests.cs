@@ -36,6 +36,31 @@ public sealed class CommandDirectoryPreferencePolicyTests
 
         Assert.Empty(restored.PinnedCommandIds);
         Assert.Empty(restored.RecentCommandIds);
+        Assert.Empty(restored.GameCommandShortcuts);
+    }
+
+    [Fact]
+    public void GameShortcutsKeepGameIdentityAndOrderAcrossSettingsReload()
+    {
+        var settings = new GameSaveCenterSettings
+        {
+            GameCommandShortcuts = new()
+            {
+                ["game-a"] = new() { "workspace.saves", "WORKSPACE.MEDIA", "workspace.media", "settings.open" },
+                ["game-b"] = new() { "game.session-history" }
+            },
+            PinnedCommandIds = new() { "settings.open" }
+        };
+
+        var first = settings.GameCommandShortcuts["game-a"];
+        Assert.True(CommandDirectoryPreferencePolicy.TryMoveShortcut(first, "workspace.media", -1));
+        Assert.False(CommandDirectoryPreferencePolicy.TryMoveShortcut(first, "workspace.media", -1));
+        Assert.False(CommandDirectoryPreferencePolicy.TryMoveShortcut(first, "unknown.command", 1));
+
+        var restored = JsonConvert.DeserializeObject<GameSaveCenterSettings>(JsonConvert.SerializeObject(settings))!;
+        Assert.Equal(new[] { "workspace.media", "workspace.saves" }, restored.GameCommandShortcuts["GAME-A"]);
+        Assert.Equal("game.session-history", Assert.Single(restored.GameCommandShortcuts["game-b"]));
+        Assert.Equal("settings.open", Assert.Single(restored.PinnedCommandIds));
     }
 
     [Fact]

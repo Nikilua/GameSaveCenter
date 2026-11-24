@@ -152,11 +152,11 @@ public sealed class BackupCoverTests : IDisposable
         var first = page.Items[1];
         Assert.Equal(180, first.ElapsedSeconds);
         Assert.NotEqual(first.StartedUtc.Date, first.StoppedUtc.Date);
-        var backup = Assert.Single(first.Tasks.Where(task => task.TaskType == "Backup"));
+        var backup = Assert.Single(first.Tasks, task => task.TaskType == "Backup");
         Assert.Equal("Succeeded", backup.BackupResult?.LocalState);
         Assert.Equal("Failed", backup.BackupResult?.CloudState);
         Assert.Equal("original-version", Assert.Single(backup.SourceReferences).StableId);
-        Assert.Empty(Assert.Single(first.Tasks.Where(task => task.TaskType == "MediaSync")).SourceReferences);
+        Assert.Empty(Assert.Single(first.Tasks, task => task.TaskType == "MediaSync").SourceReferences);
         var mediaKey = new GameMediaIdentityDto { PlayniteId = "game-a", MediaId = media.MediaId };
         Assert.Equal(media.MediaId, (await store.GetSessionMediaAsync(mediaKey, CancellationToken.None)).MediaId);
         await store.AssignMediaAsync(media.MediaId, "game-b", media.ArchivePath, CancellationToken.None);

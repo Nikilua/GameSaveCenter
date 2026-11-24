@@ -29,6 +29,7 @@ public sealed class CommandDirectoryRegisteredRouteTests
         yield return new object[] { "task.open-associated-game", "Open related game", 4, WorkspaceKind.Tasks };
         yield return new object[] { "review.restore", "Review restore", 0, WorkspaceKind.Saves };
         yield return new object[] { "review.retention", "Review cleanup", 0, WorkspaceKind.Maintenance };
+        yield return new object[] { "game.session-history", "Session history", 0, WorkspaceKind.Saves };
     }
 
     [Theory]
@@ -48,7 +49,8 @@ public sealed class CommandDirectoryRegisteredRouteTests
         Assert.Equal(1, fixture.Commands.Sum(command => command.Count));
         Assert.Equal(1, fixture.Commands[commandIndex].Count);
         Assert.Equal(commandIndex == 0 ? (object)target : null, fixture.Commands[commandIndex].Parameter);
-        Assert.Equal(id == "review.restore" ? 0 : 2, fixture.Dashboard.SaveTabIndex);
+        Assert.Equal(id switch { "review.restore" => 0, "game.session-history" => DashboardViewModel.PlaySessionHistoryTabIndex, _ => 2 },
+            fixture.Dashboard.SaveTabIndex);
         Assert.Equal(id == "review.retention" ? 3 : 1, fixture.Dashboard.MaintenanceTabIndex);
         fixture.AssertProtectedState();
     }
@@ -94,6 +96,7 @@ public sealed class CommandDirectoryRegisteredRouteTests
     [InlineData("workspace.trainers")]
     [InlineData("workspace.media")]
     [InlineData("review.restore")]
+    [InlineData("game.session-history")]
     public void RemovedCapturedGameNeverFallsThroughToAnotherGame(string id)
     {
         var fixture = new Fixture();
