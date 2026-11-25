@@ -14000,3 +14000,11 @@ C01修正 `aa590a1b8c710e0788098b27b128719001aeead3`、C02 `e5bf3fce3e0e410f97fd
 Playnite仅在新建隔离profile启动并随后正常关闭；未打开插件页、未做现场视觉验收。未接触真实用户profile、配置、库、存档、云端或其他任务TRX/TestResults；没有物理键鼠或UIA操作。此文档阶段只更新交接与证据索引，没有重新执行完整链。
 
 清理预检确认旧包备份 `.tmp/round6-final-prerun-package-20261115` 在仓库`.tmp/`内，ACL owner为当前用户；242个文件/203,299,385 bytes、0重解析点、0 Git跟踪项、无文档/脚本引用、无进程引用、0独占锁。精确PowerShell `Remove-Item -LiteralPath -Recurse -Force` 调用被执行策略拒绝，备份保留，未绕过。当前ZIP/PEXT、隔离安装profile、根链与独立build输出、诊断及失败记录保留；未清用户TRX/TestResults或未知目录。
+## 2026-11-25 带数据的隔离 Playnite 基线
+
+基线 `c35c1ff5`。首次配置完成后审计未等到宿主退出，诊断为 `artifacts/royal-story-baseline/host-startup-blocker.json`。复用已初始化的新隔离配置 `.tmp/royal-story-baseline`，以该提交的插件与库种子启动真实 Playnite 10.56。种子清单确认两款游戏；第一款的隔离 Worker 数据库写入 120 条合成版本、两条分支、可比较的文件清单和四张 PNG。探针使用合成元数据与截图，没有可恢复的 Ludusavi 库。
+
+旧画廊入口进入单条 `story-120` 的聚焦历史。点「显示历史列表」可回到 100/120，「加载更早版本」后计数显示 120，表格用 Ctrl+End 仍停在 `story-021`。全历史搜索找到首批之外的「进王城前」`story-013`。配图选择器按时间倒序并预选最新图。实际选择 `royal-gate-1.png` 并保存，媒体详情读回唯一关联。点关联后进入存档历史并出现「返回原截图」，稳定后却停在列表顶部，没有选中目标。绕行全历史搜索，将 `story-013` 设为 A、`story-120` 设为 B，得到精确比较，`royal-story/save.dat` 修改一项，大小 +1 B。
+
+宿主显示 Ludusavi 不可用，恢复被禁用。实际恢复、保护版本结果入口和新档到达时的选中、焦点、滚动与动效仍待验证。截图反查跳转和深页显示问题留作本次基线观察。
+
