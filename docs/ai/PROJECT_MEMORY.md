@@ -1,3 +1,7 @@
+## 2026-11-25 玩家界面后续规划
+
+[三个界面改进批次](../design/PLAYER_UI_FOLLOWUP_2026-11-25.md)接续 01–16。带数据走查、按时间推荐截图与画廊返回历史由并行任务推进。
+
 ## 2026-11-25 一键隔离 Playnite 的 Worker 连接
 
 一键安装的隔离环境统一使用 `GameSaveCenter__PipeName` 和 `GameSaveCenter__EventPipeName`，宿主兼容旧审计显式名称。启动日志随已配置的 Worker 数据目录隔离。详见[工作日志](WORKLOG.md#2026-11-25-隔离-playnite-的-worker-连接)。

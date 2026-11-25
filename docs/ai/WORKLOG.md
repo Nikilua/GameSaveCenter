@@ -1,3 +1,7 @@
+## 2026-11-25 后续界面与动效计划
+
+核对了差异路径、通知筛选和回顾图导出入口，将三批待办、代表性验收和同提交构建及清理要求写入[本地计划](../design/PLAYER_UI_FOLLOWUP_2026-11-25.md)。本阶段交付文档。
+
 ## 2026-11-25 隔离 Playnite 的 Worker 连接
 
 `9efcbc4b3b43e3ac0df689c0e0f7b14adf3c78f7` 的 GitHub 双 SDK [run 45382831835](https://github.com/Nikilua/GameSaveCenter/actions/runs/45382831835) 成功，基线 job 138405988490、SDK 10 job 138405988025。根目录一键复跑 PID 10652 退出 0，实际 2,041 通过、0 失败、58 跳过（160 份 TRX，诊断 `20261125T004815290Z-23eb63ec`），六个安装程序集均匹配，Playnite PID 46724 启动，配置 `.tmp/pe-final9-profile`。在宿主确实打开首页、历史版本、进度画廊、游玩记录。真实宿主空库，功能数据由自动化回归覆盖。
