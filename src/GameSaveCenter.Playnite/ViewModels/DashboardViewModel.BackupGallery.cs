@@ -145,6 +145,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             ResetBackupHistorySearch();
             SaveTabIndex = 0;
             RaiseCommandStates();
+            if (Backups.Count == 0) RequestWorkspaceLoad();
         }
     }
 }

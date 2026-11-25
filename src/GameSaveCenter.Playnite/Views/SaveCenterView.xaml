@@ -583,7 +583,7 @@
                                             </StackPanel.Style>
                                             <TextBlock Text="{Binding BackupCoverCandidateSummary}" Style="{DynamicResource GscCaptionStyle}"
                                                        TextWrapping="Wrap" Margin="0,0,0,6"/>
-                                            <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupCoverCandidates}"
+                                            <ComboBox Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding BackupCoverCandidates}"
                                                       SelectedItem="{Binding SelectedBackupCoverCandidate}"
                                                       IsSynchronizedWithCurrentItem="False"
                                                       AutomationProperties.Name="选择当前游戏的封面截图">

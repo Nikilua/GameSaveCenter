@@ -45,6 +45,29 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         });
     }
 
+    [Fact]
+    public void GalleryHistoryRequestsInitialLoadAndKeepsFollowingTheVersionCollection()
+    {
+        RunSta(() =>
+        {
+            var model = CreateBareDashboardViewModel();
+            SetField(model, "currentWorkspace", WorkspaceKind.Saves);
+            SetField(model, "saveTabIndex", 4);
+            WorkspaceKind? requested = null;
+            model.WorkspaceLoadSchedulerOverrideForAudit = workspace => requested = workspace;
+
+            Invoke(model, "OpenHistoryFromBackupGallery");
+            var view = model.BackupHistoryView;
+            var now = DateTime.UtcNow;
+            model.Backups.ReplaceAll(new[] { Backup("newest", now) });
+            model.Backups.ApplyBatch(() => model.Backups.Add(Backup("older", now.AddDays(-2))));
+
+            Assert.Equal(WorkspaceKind.Saves, requested);
+            Assert.Same(view, model.BackupHistoryView);
+            Assert.Equal(new[] { "newest", "older" }, view.Cast<BackupVersionDto>().Select(item => item.BackupId));
+        });
+    }
+
     [Theory]
     [InlineData(-8, "备份前 8 分钟")]
     [InlineData(3, "备份后 3 分钟")]

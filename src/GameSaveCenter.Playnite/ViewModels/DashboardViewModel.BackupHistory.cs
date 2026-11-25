@@ -136,10 +136,12 @@ namespace GameSaveCenter.Playnite.ViewModels
             InitializeLineageGraphCommands();
             pendingBackupArrivals = Array.Empty<BackupVersionDto>();
             recentBackupArrivals = Array.Empty<BackupVersionDto>();
-            loadedBackupHistoryView = new CollectionViewSource { Source = Backups }.View;
+            // The dashboard owns these views even when history has no active binding.
+            // Keep collection notifications connected across gallery and focused-history navigation.
+            loadedBackupHistoryView = new ListCollectionView(Backups);
             loadedBackupHistoryView.Filter = FilterBackupHistory;
             backupSearchResults = new BatchObservableCollection<BackupVersionDto>();
-            searchedBackupHistoryView = new CollectionViewSource { Source = backupSearchResults }.View;
+            searchedBackupHistoryView = new ListCollectionView(backupSearchResults);
             Backups.CollectionChanged += OnBackupHistoryCollectionChanged;
             ClearBackupHistoryRangeCommand = new RelayCommand(
                 _ => ClearBackupHistoryRange(),
