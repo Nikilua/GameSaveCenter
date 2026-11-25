@@ -584,9 +584,16 @@
                                             <TextBlock Text="{Binding BackupCoverCandidateSummary}" Style="{DynamicResource GscCaptionStyle}"
                                                        TextWrapping="Wrap" Margin="0,0,0,6"/>
                                             <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupCoverCandidates}"
-                                                      SelectedItem="{Binding SelectedBackupCoverCandidate}" DisplayMemberPath="Display"
+                                                      SelectedItem="{Binding SelectedBackupCoverCandidate}"
                                                       IsSynchronizedWithCurrentItem="False"
-                                                      AutomationProperties.Name="选择当前游戏的封面截图"/>
+                                                      AutomationProperties.Name="选择当前游戏的封面截图">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Display}" Style="{StaticResource SaveLongText}"
+                                                                   AutomationProperties.Name="{Binding Display}"/>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
                                             <ui:AsyncThumbnailImage SourcePath="{Binding SelectedBackupCoverCandidate.Media.ArchivePath}" PreviewWidth="280"
                                                                     Height="84" Stretch="Uniform" Margin="0,6,0,0"
                                                                     AutomationProperties.Name="所选截图预览">

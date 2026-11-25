@@ -160,7 +160,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var difference = media.CapturedUtc.ToUniversalTime() - backupUtc.ToUniversalTime();
                 if (difference == TimeSpan.Zero)
                 {
-                    Display += " · 与备份同一时间";
+                    Display = $"与备份同一时间 · {Display}";
                     return;
                 }
 
@@ -172,7 +172,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                     < 60 => $"{minutes} 分钟",
                     _ => $"{minutes / 60} 小时 {minutes % 60} 分钟"
                 };
-                Display += $" · 备份{direction} {distance}";
+                Display = $"备份{direction} {distance} · {Display}";
             }
 
             public MediaItemDto Media { get; }

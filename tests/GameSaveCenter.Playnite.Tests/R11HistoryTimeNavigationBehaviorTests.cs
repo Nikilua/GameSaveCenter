@@ -56,7 +56,7 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         var candidate = new DashboardViewModel.BackupCoverCandidate(media, backup);
 
         Assert.Same(media, candidate.Media);
-        Assert.Equal("castle.png · " + label, candidate.Display);
+        Assert.Equal(label + " · castle.png", candidate.Display);
     }
 
     [Theory]
