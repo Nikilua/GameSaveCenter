@@ -92,6 +92,35 @@ public sealed class MediaQueryPersistenceTests : IDisposable
     }
 
     [Fact]
+    public async Task NearbyScreenshotQueryFindsOldCapturesBeforeAndAfterBackupWithoutChangingAllMediaPaging()
+    {
+        var backup = new DateTime(2026, 10, 7, 12, 0, 0, DateTimeKind.Utc);
+        await AddMediaAsync("eight-before", "game-1", backup.AddMinutes(-8));
+        await AddMediaAsync("three-after", "game-1", backup.AddMinutes(3));
+        await AddMediaAsync("outside-window", "game-1", backup.AddHours(-25));
+        await AddMediaAsync("unrelated-game", "game-2", backup);
+        await AddMediaAsync("video", "game-1", backup, MediaKind.VideoClip);
+        for (var i = 0; i < 49; i++)
+            await AddMediaAsync($"recent-{i}", "game-1", backup.AddDays(30).AddMinutes(i));
+
+        var near = await store.GetMediaPageAsync(new MediaQueryDto
+        {
+            PlayniteId = "game-1", Kind = MediaKind.Screenshot, NearCapturedUtc = backup, Limit = 48
+        }, CancellationToken.None);
+        var query = new MediaQueryDto { PlayniteId = "game-1", Kind = MediaKind.Screenshot, Limit = 48 };
+        var first = await store.GetMediaPageAsync(query, CancellationToken.None);
+        query.Cursor = first.NextCursor;
+        var next = await store.GetMediaPageAsync(query, CancellationToken.None);
+
+        Assert.Equal(new[] { "three-after", "eight-before" }, near.Items.Select(item => item.MediaId));
+        Assert.False(near.HasMore);
+        Assert.Equal(52, first.TotalCount);
+        Assert.Equal(48, first.Items.Count);
+        Assert.Contains(next.Items, item => item.MediaId == "eight-before");
+        Assert.Contains(next.Items, item => item.MediaId == "outside-window");
+    }
+
+    [Fact]
     public async Task MediaPageQueriesUseStableCaptureIndexes()
     {
         for (var i = 0; i < 1000; i++)

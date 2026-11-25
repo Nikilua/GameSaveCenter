@@ -25,6 +25,40 @@ namespace GameSaveCenter.Playnite.Tests;
 
 public sealed class R11HistoryTimeNavigationBehaviorTests
 {
+    [Fact]
+    public void GalleryHistoryReturnsToUnfilteredListInsteadOfFocusingNewestVersion()
+    {
+        RunSta(() =>
+        {
+            var now = DateTime.UtcNow;
+            var model = CreateBareDashboardViewModel(Backup("newest", now), Backup("older", now.AddDays(-2)));
+            SetField(model, "saveTabIndex", 4);
+            model.BackupHistorySearchText = "newest";
+            SetField(model, "isShowingFocusedHistoryBackup", true);
+
+            Invoke(model, "OpenHistoryFromBackupGallery");
+
+            Assert.Equal(0, model.SaveTabIndex);
+            Assert.False(model.IsShowingFocusedHistoryBackup);
+            Assert.Empty(model.BackupHistorySearchText);
+            Assert.Equal(new[] { "newest", "older" }, model.BackupHistoryView.Cast<BackupVersionDto>().Select(item => item.BackupId));
+        });
+    }
+
+    [Theory]
+    [InlineData(-8, "备份前 8 分钟")]
+    [InlineData(3, "备份后 3 分钟")]
+    [InlineData(0, "与备份同一时间")]
+    public void CoverCandidateUsesSelectedBackupTime(int minutes, string label)
+    {
+        var backup = new DateTime(2026, 10, 7, 12, 0, 0, DateTimeKind.Utc);
+        var media = new MediaItemDto { OriginalPath = "castle.png", CapturedUtc = backup.AddMinutes(minutes) };
+        var candidate = new DashboardViewModel.BackupCoverCandidate(media, backup);
+
+        Assert.Same(media, candidate.Media);
+        Assert.Equal("castle.png · " + label, candidate.Display);
+    }
+
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]

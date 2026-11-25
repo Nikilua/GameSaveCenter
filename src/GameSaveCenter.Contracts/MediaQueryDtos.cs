@@ -13,6 +13,8 @@ public sealed class MediaQueryDto
     public int Limit { get; set; } = 200;
     /// <summary>Opaque cursor returned by the previous page.</summary>
     public string Cursor { get; set; } = string.Empty;
+    /// <summary>When set, return one bounded set of nearby captures in distance order.</summary>
+    public DateTime? NearCapturedUtc { get; set; }
 }
 
 /// <summary>One stable, cursor-paginated media response.</summary>

@@ -39,14 +39,20 @@ public sealed partial class SqliteStateStore
         var totalCount = Convert.ToInt32(await countCommand.ExecuteScalarAsync(token).ConfigureAwait(false));
 
         var pageCommand = connection.CreateCommand();
-        var where = BuildMediaWhere(pageCommand, query, classificationState, includeCursor: true);
+        var near = query.NearCapturedUtc?.ToUniversalTime();
+        var where = BuildMediaWhere(pageCommand, query, classificationState, includeCursor: !near.HasValue);
+        var order = near.HasValue
+            ? "ABS(julianday(captured_utc) - julianday($near)), captured_utc DESC, media_id DESC"
+            : "captured_utc DESC, media_id DESC";
+        if (near.HasValue)
+            pageCommand.Parameters.AddWithValue("$near", near.Value.ToString("O", CultureInfo.InvariantCulture));
         pageCommand.CommandText = $@"
 SELECT media_id,playnite_id,kind,source,archive_path,original_path,captured_utc,size_bytes,sha256,is_favorite,comment,cloud_state,classification_state,classification_reason
 FROM media
 WHERE {where}
-ORDER BY captured_utc DESC, media_id DESC
+ORDER BY {order}
 LIMIT $limit;";
-        pageCommand.Parameters.AddWithValue("$limit", limit + 1);
+        pageCommand.Parameters.AddWithValue("$limit", near.HasValue ? limit : limit + 1);
 
         var items = new List<MediaItemDto>(limit);
         await using var reader = await pageCommand.ExecuteReaderAsync(token).ConfigureAwait(false);
@@ -110,6 +116,17 @@ LIMIT $limit;";
             };
             textPredicates.AddRange(sourcePredicates);
             predicates.Add("(" + string.Join(" OR ", textPredicates) + ")");
+        }
+
+        if (query.NearCapturedUtc is DateTime nearCapture)
+        {
+            var utc = nearCapture.ToUniversalTime();
+            var oneDay = TimeSpan.TicksPerDay;
+            var from = new DateTime(Math.Max(0, utc.Ticks - oneDay), DateTimeKind.Utc);
+            var through = new DateTime(Math.Min(DateTime.MaxValue.Ticks, utc.Ticks + oneDay), DateTimeKind.Utc);
+            predicates.Add("captured_utc >= $near_from AND captured_utc <= $near_through");
+            command.Parameters.AddWithValue("$near_from", from.ToString("O", CultureInfo.InvariantCulture));
+            command.Parameters.AddWithValue("$near_through", through.ToString("O", CultureInfo.InvariantCulture));
         }
 
         var cursor = includeCursor ? DecodeMediaCursor(query.Cursor) : null;

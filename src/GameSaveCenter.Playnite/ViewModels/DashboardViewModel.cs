@@ -6783,7 +6783,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                  RefreshNotificationInboxCommand, MarkSelectedNotificationReadCommand, MarkVisibleNotificationsReadCommand, ClearReadNotificationRecordsCommand,
                  OpenSelectedNotificationGameCommand, OpenSelectedNotificationTaskCommand, OpenSelectedNotificationFirstTaskCommand,
                 SearchAllBackupHistoryCommand, ChooseBackupCoverCommand,
-                LoadMoreBackupCoverCandidatesCommand, SetBackupCoverCommand, ClearBackupCoverCommand,
+                BrowseAllBackupCoverCandidatesCommand, LoadMoreBackupCoverCandidatesCommand, SetBackupCoverCommand, ClearBackupCoverCommand,
                 ListMediaBackupLinksCommand, LoadMoreMediaBackupLinksCommand, OpenMediaLinkedBackupCommand, ClearLinkedBackupFocusCommand,
                 PinHistoryComparisonACommand, PinHistoryComparisonBCommand, ClearHistoryComparisonPinsCommand, OpenPinnedHistoryComparisonCommand,
                 ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,

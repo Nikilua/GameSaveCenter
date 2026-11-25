@@ -35,7 +35,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             OpenBackupGalleryVersionCommand = new RelayCommand(
                 item => Run(() => OpenBackupGalleryVersionAsync(((BackupGalleryCardViewModel)item!).Backup)),
                 item => CanUseBackupGallery && !IsBusy && item is BackupGalleryCardViewModel);
-            OpenHistoryFromBackupGalleryCommand = new RelayCommand(_ => OpenHistoryFromBackupGallery());
+            OpenHistoryFromBackupGalleryCommand = new RelayCommand(_ => OpenHistoryFromBackupGallery(), _ => CanUseBackupGallery && !IsBusy);
         }
 
         private void EnsureBackupGalleryLoaded()
@@ -139,14 +139,12 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private void OpenHistoryFromBackupGallery()
         {
-            var newest = Backups.FirstOrDefault();
-            if (newest == null)
-            {
-                SaveTabIndex = 0;
-                return;
-            }
-            FocusHistoryVersion(new BackupVersionPageDto { Items = new List<BackupVersionDto> { newest }, TotalCount = 1 },
-                "当前游戏的最近存档");
+            ClearBackupCalendarSelection();
+            BackupHistorySearchText = string.Empty;
+            BackupHistoryRange = BackupHistoryDateRange.All;
+            ResetBackupHistorySearch();
+            SaveTabIndex = 0;
+            RaiseCommandStates();
         }
     }
 }

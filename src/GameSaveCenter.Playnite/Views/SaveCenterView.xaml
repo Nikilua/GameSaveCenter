@@ -581,10 +581,13 @@
                                                     </Style.Triggers>
                                                 </Style>
                                             </StackPanel.Style>
+                                            <TextBlock Text="{Binding BackupCoverCandidateSummary}" Style="{DynamicResource GscCaptionStyle}"
+                                                       TextWrapping="Wrap" Margin="0,0,0,6"/>
                                             <ComboBox Style="{DynamicResource GscWpfUiFilterComboBox}" ItemsSource="{Binding BackupCoverCandidates}"
-                                                      SelectedItem="{Binding SelectedBackupCoverCandidate}" DisplayMemberPath="FileName"
+                                                      SelectedItem="{Binding SelectedBackupCoverCandidate}" DisplayMemberPath="Display"
+                                                      IsSynchronizedWithCurrentItem="False"
                                                       AutomationProperties.Name="选择当前游戏的封面截图"/>
-                                            <ui:AsyncThumbnailImage SourcePath="{Binding SelectedBackupCoverCandidate.ArchivePath}" PreviewWidth="280"
+                                            <ui:AsyncThumbnailImage SourcePath="{Binding SelectedBackupCoverCandidate.Media.ArchivePath}" PreviewWidth="280"
                                                                     Height="84" Stretch="Uniform" Margin="0,6,0,0"
                                                                     AutomationProperties.Name="所选截图预览">
                                                 <ui:AsyncThumbnailImage.Style>
@@ -600,6 +603,7 @@
                                             <WrapPanel Margin="0,6,0,0">
                                                 <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="设为封面" Command="{Binding SetBackupCoverCommand}"
                                                            CommandParameter="{Binding SelectedBackupCoverCandidate}" Margin="0,0,6,6"/>
+                                                <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="浏览全部" Command="{Binding BrowseAllBackupCoverCandidatesCommand}" Margin="0,0,6,6"/>
                                                 <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载更多截图" Command="{Binding LoadMoreBackupCoverCandidatesCommand}" Margin="0,0,0,6"/>
                                             </WrapPanel>
                                         </StackPanel>

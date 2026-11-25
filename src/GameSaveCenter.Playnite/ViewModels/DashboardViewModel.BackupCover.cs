@@ -12,12 +12,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         private BackupCoverDto currentBackupCover = new BackupCoverDto();
         private string backupCoverError = string.Empty;
         private MediaPageDto? backupCoverCandidatePage;
-        private MediaItemDto? selectedBackupCoverCandidate;
+        private bool showingAllBackupCoverCandidates;
+        private BackupCoverCandidate? selectedBackupCoverCandidate;
 
         public BackupCoverDto CurrentBackupCover => currentBackupCover;
         public bool IsBackupCoverChooserOpen => backupCoverCandidatePage != null;
-        public BatchObservableCollection<MediaItemDto> BackupCoverCandidates { get; } = new BatchObservableCollection<MediaItemDto>();
-        public MediaItemDto? SelectedBackupCoverCandidate
+        public string BackupCoverCandidateSummary => !IsBackupCoverChooserOpen ? string.Empty
+            : showingAllBackupCoverCandidates
+                ? (BackupCoverCandidates.Count == 0 ? "当前游戏暂无可选截图" : "全部截图 · 按拍摄时间")
+                : (BackupCoverCandidates.Count == 0 ? "备份前后 24 小时内没有截图" : "备份前后 24 小时 · 按时间接近程度");
+        public BatchObservableCollection<BackupCoverCandidate> BackupCoverCandidates { get; } = new BatchObservableCollection<BackupCoverCandidate>();
+        public BackupCoverCandidate? SelectedBackupCoverCandidate
         {
             get => selectedBackupCoverCandidate;
             set => SetValue(ref selectedBackupCoverCandidate, value);
@@ -31,6 +36,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         };
 
         public ICommand ChooseBackupCoverCommand { get; private set; } = null!;
+        public ICommand BrowseAllBackupCoverCandidatesCommand { get; private set; } = null!;
         public ICommand LoadMoreBackupCoverCandidatesCommand { get; private set; } = null!;
         public ICommand SetBackupCoverCommand { get; private set; } = null!;
         public ICommand ClearBackupCoverCommand { get; private set; } = null!;
@@ -41,11 +47,15 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void InitializeBackupCoverCommands()
         {
             ChooseBackupCoverCommand = new RelayCommand(_ => Run(() => LoadBackupCoverCandidatesAsync(false)), _ => CanManageBackupCover);
+            BrowseAllBackupCoverCandidatesCommand = new RelayCommand(
+                _ => Run(() => LoadBackupCoverCandidatesAsync(false, browseAll: true)),
+                _ => CanManageBackupCover && IsBackupCoverChooserOpen && !showingAllBackupCoverCandidates);
             LoadMoreBackupCoverCandidatesCommand = new RelayCommand(
-                _ => Run(() => LoadBackupCoverCandidatesAsync(true)), _ => CanManageBackupCover && backupCoverCandidatePage?.HasMore == true);
+                _ => Run(() => LoadBackupCoverCandidatesAsync(true, browseAll: true)),
+                _ => CanManageBackupCover && showingAllBackupCoverCandidates && backupCoverCandidatePage?.HasMore == true);
             SetBackupCoverCommand = new RelayCommand(
-                candidate => RunBackupCoverUpdate(((MediaItemDto)candidate!).MediaId),
-                candidate => CanManageBackupCover && candidate is MediaItemDto);
+                candidate => RunBackupCoverUpdate(((BackupCoverCandidate)candidate!).Media.MediaId),
+                candidate => CanManageBackupCover && candidate is BackupCoverCandidate item && BackupCoverCandidates.Contains(item));
             ClearBackupCoverCommand = new RelayCommand(_ => RunBackupCoverUpdate(string.Empty),
                 _ => CanManageBackupCover && !string.IsNullOrEmpty(currentBackupCover?.MediaId));
         }
@@ -61,9 +71,11 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void CloseBackupCoverChooser()
         {
             backupCoverCandidatePage = null;
+            showingAllBackupCoverCandidates = false;
             BackupCoverCandidates?.Clear();
             SelectedBackupCoverCandidate = null;
             OnPropertyChanged(nameof(IsBackupCoverChooserOpen));
+            OnPropertyChanged(nameof(BackupCoverCandidateSummary));
         }
 
         private void RefreshBackupCover()
@@ -106,29 +118,65 @@ namespace GameSaveCenter.Playnite.ViewModels
             finally { backupCoverReads.End(request); }
         }
 
-        private async Task LoadBackupCoverCandidatesAsync(bool append)
+        private async Task LoadBackupCoverCandidatesAsync(bool append, bool browseAll = false)
         {
             var gameId = SelectedGame?.PlayniteId;
-            var backupId = SelectedBackup?.BackupId;
-            if (string.IsNullOrEmpty(gameId) || string.IsNullOrEmpty(backupId)) return;
+            var backup = SelectedBackup;
+            if (string.IsNullOrEmpty(gameId) || backup == null || string.IsNullOrEmpty(backup.BackupId)) return;
+            browseAll |= backup.CreatedUtc == DateTime.MinValue;
             var page = await plugin.RequestAsync<MediaPageDto>(MessageTypes.ListMediaPage, new MediaQueryDto
             {
                 PlayniteId = gameId!,
                 Kind = MediaKind.Screenshot,
                 Limit = 48,
+                NearCapturedUtc = browseAll ? (DateTime?)null : backup.CreatedUtc,
                 Cursor = append ? backupCoverCandidatePage?.NextCursor ?? string.Empty : string.Empty
             }).ConfigureAwait(false);
             ApplyOnUi(() =>
             {
-                if (!IsBackupCoverContext(gameId!, backupId!)) return;
-                if (!append) CloseBackupCoverChooser();
-                foreach (var item in page.Items) BackupCoverCandidates.Add(item);
+                if (!IsBackupCoverContext(gameId!, backup.BackupId)) return;
+                if (!append)
+                {
+                    SelectedBackupCoverCandidate = null;
+                    BackupCoverCandidates.Clear();
+                }
+                foreach (var item in page.Items) BackupCoverCandidates.Add(new BackupCoverCandidate(item, backup.CreatedUtc));
                 backupCoverCandidatePage = page;
-                backupCoverError = page.TotalCount == 0 ? "当前游戏暂无可选截图" : string.Empty;
+                showingAllBackupCoverCandidates = browseAll;
                 OnPropertyChanged(nameof(IsBackupCoverChooserOpen));
-                OnPropertyChanged(nameof(BackupCoverStatus));
+                OnPropertyChanged(nameof(BackupCoverCandidateSummary));
                 RaiseCommandStates();
             });
+        }
+
+        public sealed class BackupCoverCandidate
+        {
+            public BackupCoverCandidate(MediaItemDto media, DateTime backupUtc)
+            {
+                Media = media;
+                Display = media.FileName;
+                if (backupUtc == DateTime.MinValue || media.CapturedUtc == DateTime.MinValue) return;
+
+                var difference = media.CapturedUtc.ToUniversalTime() - backupUtc.ToUniversalTime();
+                if (difference == TimeSpan.Zero)
+                {
+                    Display += " · 与备份同一时间";
+                    return;
+                }
+
+                var direction = difference < TimeSpan.Zero ? "前" : "后";
+                var minutes = (long)Math.Abs(difference.TotalMinutes);
+                var distance = minutes switch
+                {
+                    0 => "不到 1 分钟",
+                    < 60 => $"{minutes} 分钟",
+                    _ => $"{minutes / 60} 小时 {minutes % 60} 分钟"
+                };
+                Display += $" · 备份{direction} {distance}";
+            }
+
+            public MediaItemDto Media { get; }
+            public string Display { get; }
         }
 
         private void RunBackupCoverUpdate(string mediaId)
