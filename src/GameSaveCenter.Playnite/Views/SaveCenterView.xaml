@@ -1257,6 +1257,7 @@
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
                                                         <Expander Header="{Binding}" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" AutomationProperties.Name="{Binding AutomationName}"
+                                                                  infra:AdaptiveThemePaletteFactory.MotionEnabledActive="False"
                                                                   Focusable="False" Margin="0,0,0,6">
                                                             <Expander.Resources>
                                                                 <DataTemplate x:Key="DiffDirectoryFiles">
@@ -1290,7 +1291,7 @@
                                                                 </DataTemplate>
                                                             </Expander.HeaderTemplate>
                                                             <Expander.Style>
-                                                                <Style TargetType="Expander" BasedOn="{StaticResource GscExpander}">
+                                                                <Style TargetType="Expander" BasedOn="{StaticResource GscDisclosureCard}">
                                                                     <Style.Triggers>
                                                                         <Trigger Property="IsExpanded" Value="True">
                                                                             <Setter Property="Content" Value="{Binding}"/>

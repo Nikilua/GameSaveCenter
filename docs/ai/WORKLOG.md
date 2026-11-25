@@ -4,6 +4,10 @@
 
 SDK 8.0.423 的 `R11DiffListSearchBehaviorTests` 6 过、0 失败、0 跳过。覆盖两目录同名文件、根目录、超过首批上限的计数、筛选路径、方向翻转后的分类、窄窗双主题、快速开合、关闭动画配置与完整路径复制。原始 TRX 为 `artifacts/player-followup-a-focused/batch-a-focused.trx`。真实宿主和双 SDK 的精确 SHA 门禁待执行。
 
+首个候选 `2cbccdeacbdb46e0f68ee844596190d96febb732` 的 SDK 10 在源码测试组发现两条共享折叠样式约束失败。修正目录行以统一披露卡样式为基类，并将共享标题的图标与文字放入有限宽度的两列，窄窗下可省略目录路径并完整换行计数。首轮诊断见 [Windows run 45651559807](https://github.com/Nikilua/GameSaveCenter/actions/runs/45651559807) 的 [SDK 10 job](https://github.com/Nikilua/GameSaveCenter/actions/runs/45651559807/job/139337123180) 和 [诊断 15041835831](https://github.com/Nikilua/GameSaveCenter/actions/runs/45651559807/artifacts/15041835831)。
+
+基线 job 同样失败，原件 [15041886035](https://github.com/Nikilua/GameSaveCenter/actions/runs/45651559807/artifacts/15041886035)。同 SHA 本地入口 PID 56120 退出 1，1,177 项中 1,157 通过、2 失败、18 跳过。保留 `artifacts/build-diagnostics/20261125T161317350Z-60c7bda6` 和安装入口捕获 `artifacts/player-followup-a-final`。更早两次本地尝试分别停在沙箱进程检查和已存在的隔离配置目录，尚未进入测试。
+
 ## 2026-11-25 隔离存档故事验收
 
 源码 `d7ef9762699a5eb13ae86773e449023312f86f8e` 通过中文一键入口。PID 53384 退出 0，经 `GameSaveCenter-Run.cmd` 执行 SDK 8.0.423 Release 全链。2,106 项中 2,048 通过、0 失败、58 跳过，157 个 WPF 隔离类完成。发布、打包、六个安装程序集身份核验及隔离 Playnite 启动完成。原件 `artifacts/royal-story-delivery3/`，诊断 `20261125T111107769Z-0050dae7`。源码校验通过，27 个生产 XAML 静态审查 0 错误、25 警告。最终 [Actions run 45601943050](https://github.com/Nikilua/GameSaveCenter/actions/runs/45601943050) 核对精确 SHA，基线 139162803529、SDK 10.0.401 job 139162803845 都成功。诊断 artifact 为 15021790025、15018755409，安装预览 15020033948。
