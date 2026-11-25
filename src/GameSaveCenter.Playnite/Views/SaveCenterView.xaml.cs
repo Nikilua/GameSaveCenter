@@ -70,6 +70,21 @@ namespace GameSaveCenter.Playnite.Views
             => AdaptiveThemePaletteFactory.GetMotionEnabledActive(this)
                && (SystemMotionEnabledProviderForBehaviorTest?.Invoke() ?? GscMotion.IsEnabled(true));
 
+        private void OnDiffDirectoryFilesLoaded(object sender, RoutedEventArgs e)
+        {
+            if (IsInspectorMotionEnabled && sender is FrameworkElement content)
+                content.BeginAnimation(OpacityProperty, new DoubleAnimation(0.8, 1, GscMotion.GetDuration(content, GscMotion.MotionDurationKind.Fast))
+                {
+                    FillBehavior = FillBehavior.Stop
+                });
+        }
+
+        private void OnDiffDirectoryFilesUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement content)
+                content.BeginAnimation(OpacityProperty, null);
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             GscMotion.Normalize(SaveHistoryInspectorFrame);

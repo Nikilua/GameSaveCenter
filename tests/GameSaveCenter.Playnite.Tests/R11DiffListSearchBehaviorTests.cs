@@ -6,12 +6,16 @@ using System.Runtime.Serialization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.Infrastructure;
+using GameSaveCenter.Playnite.Settings;
 using GameSaveCenter.Playnite.ViewModels;
 using GameSaveCenter.Playnite.Views;
 using Xunit;
@@ -46,6 +50,40 @@ public sealed class R11DiffListSearchBehaviorTests
         Assert.Empty(removedOnly.Modified);
         Assert.Equal(new[] { "slot/old.sav" }, removedOnly.Removed);
         Assert.False(removedOnly.HasMore);
+    }
+
+    [Fact]
+    public void DirectoryCountsCoverEveryMatchAndRetainDirectionAndFullCopyPath()
+    {
+        var diff = new BackupDiffDto
+        {
+            Added = Enumerable.Range(0, 124).Select(index => $"slot/new-{index:D3}.sav")
+                .Concat(new[] { @"slot\same.sav", "root.sav" }).ToList(),
+            Modified = new[] { "other/same.sav" }.ToList(),
+            Removed = new[] { "slot/removed.sav" }.ToList()
+        };
+        var dashboard = CreateDetachedDiffDashboard(diff, visibleLimit: 120, searchText: "");
+        dashboard.DiffByDirectory = true;
+        Assert.Equal(new[] { "根目录", "other", "slot" }, dashboard.VisibleDiffDirectories.Select(group => group.Name));
+        var slot = dashboard.VisibleDiffDirectories.Single(group => group.Name == "slot");
+        Assert.Equal((125, 0, 1), (slot.AddedCount, slot.ModifiedCount, slot.RemovedCount));
+        Assert.Equal(120, slot.VisiblePaths.Count);
+        slot.LoadMoreCommand.Execute(null);
+        Assert.Equal(126, slot.VisiblePaths.Count);
+        Assert.False(slot.LoadMoreCommand.CanExecute(null));
+
+        dashboard.DiffPathSearchText = "same.sav";
+        Assert.Equal(new[] { "other", "slot" }, dashboard.VisibleDiffDirectories.Select(group => group.Name));
+        Assert.Equal(@"slot\same.sav", Assert.Single(dashboard.VisibleDiffDirectories[1].VisiblePaths).FullPath);
+        Assert.Equal("修改", Assert.Single(dashboard.VisibleDiffDirectories[0].VisiblePaths).Kind);
+
+        (diff.Added, diff.Removed) = (diff.Removed, diff.Added);
+        InvokeDashboardMethod(dashboard, "RefreshDiffPathResults");
+        slot = dashboard.VisibleDiffDirectories[1];
+        Assert.Equal((0, 0, 1), (slot.AddedCount, slot.ModifiedCount, slot.RemovedCount));
+        Assert.Equal("删除", Assert.Single(slot.VisiblePaths).Kind);
+        dashboard.DiffByDirectory = false;
+        Assert.Equal(new[] { @"slot\same.sav" }, dashboard.DiffRemovedPaths);
     }
 
     [Fact]
@@ -163,6 +201,55 @@ public sealed class R11DiffListSearchBehaviorTests
         });
     }
 
+    [Theory]
+    [InlineData(GameSaveCenterThemeMode.Light, true)]
+    [InlineData(GameSaveCenterThemeMode.Dark, false)]
+    public void DirectoryDisclosureAtNarrowWidthKeepsTheHeaderAndBuildsOnlyExpandedRows(GameSaveCenterThemeMode theme, bool motion)
+    {
+        RunSta(() =>
+        {
+            const string path = "profiles/very-long-save-slot/same.sav";
+            var state = new DiffPageState(path) { DiffByDirectory = true };
+            var view = new SaveCenterView { DataContext = state, SystemMotionEnabledProviderForBehaviorTest = () => motion };
+            R06SelectionStateBehaviorTests.ApplyTheme(view, view.Resources, theme);
+            AdaptiveThemePaletteFactory.SetMotionEnabledActive(view, motion);
+            var window = new Window { Width = 900, Height = 640, Content = view, ShowInTaskbar = false };
+
+            try
+            {
+                window.Show();
+                PumpLayout(window);
+                var group = FindVisualChildren<Expander>(view).Single(expander => expander.Header is BackupDiffDirectory);
+                var header = Assert.IsType<ToggleButton>(group.Template.FindName("HeaderSite", group));
+                Assert.True(header.Focusable);
+                Assert.True(header.IsTabStop);
+                Assert.Contains("新增 1", AutomationProperties.GetName(group));
+                Assert.Contains(FindVisualChildren<TextBlock>(header), text => text.Text == "profiles/very-long-save-slot" && text.ActualWidth > 0);
+                Assert.DoesNotContain(FindVisualChildren<Button>(group), button => Equals(button.CommandParameter, path));
+
+                var toggle = Assert.IsAssignableFrom<IToggleProvider>(new ToggleButtonAutomationPeer(header).GetPattern(PatternInterface.Toggle));
+                toggle.Toggle();
+                PumpLayout(window);
+                var copy = FindVisualChildren<Button>(group).Single(button => Equals(button.CommandParameter, path));
+                Assert.True(copy.IsTabStop);
+                copy.Command!.Execute(copy.CommandParameter);
+                Assert.Equal(path, state.CopiedPath);
+
+                toggle.Toggle();
+                toggle.Toggle();
+                toggle.Toggle();
+                PumpLayout(window);
+                Assert.False(group.IsExpanded);
+                Assert.Same(header, group.Template.FindName("HeaderSite", group));
+                Assert.DoesNotContain(FindVisualChildren<Button>(group), button => Equals(button.CommandParameter, path));
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
     private static System.Collections.Generic.IEnumerable<T> FindVisualChildren<T>(DependencyObject root) where T : DependencyObject
     {
         for (var index = 0; index < VisualTreeHelper.GetChildrenCount(root); index++)
@@ -209,6 +296,7 @@ public sealed class R11DiffListSearchBehaviorTests
         SetDashboardField(dashboard, "<DiffAddedPaths>k__BackingField", new BatchObservableCollection<string>());
         SetDashboardField(dashboard, "<DiffModifiedPaths>k__BackingField", new BatchObservableCollection<string>());
         SetDashboardField(dashboard, "<DiffRemovedPaths>k__BackingField", new BatchObservableCollection<string>());
+        SetDashboardField(dashboard, "<VisibleDiffDirectories>k__BackingField", new BatchObservableCollection<BackupDiffDirectory>());
         SetDashboardField(dashboard, "<DiffPathKindOptions>k__BackingField", new[] { "全部", "新增", "修改", "删除" });
         SetDashboardField(dashboard, "lastBackupDiff", diff);
         SetDashboardField(dashboard, "diffPathVisibleLimit", visibleLimit);
@@ -246,6 +334,7 @@ public sealed class R11DiffListSearchBehaviorTests
                 Summary = "合成差异"
             };
             CopyPathCommand = new TestCommand(value => CopiedPath = value as string ?? string.Empty);
+            VisibleDiffDirectories = BackupDiffPathFilter.Apply(LastBackupDiff, null, null, 120).GroupByDirectory();
         }
 
         public ObservableCollection<BackupVersionDto> Backups { get; } = new ObservableCollection<BackupVersionDto>();
@@ -257,6 +346,8 @@ public sealed class R11DiffListSearchBehaviorTests
         public ObservableCollection<string> DiffAddedPaths { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> DiffModifiedPaths { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> DiffRemovedPaths { get; } = new ObservableCollection<string>();
+        public bool DiffByDirectory { get; set; }
+        public System.Collections.Generic.IReadOnlyList<BackupDiffDirectory> VisibleDiffDirectories { get; }
         public string DiffPathSearchText { get; set; } = string.Empty;
         public string DiffPathKindFilter { get; set; } = "全部";
         public string[] DiffPathKindOptions { get; } = { "全部", "新增", "修改", "删除" };

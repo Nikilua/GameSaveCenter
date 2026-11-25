@@ -1196,6 +1196,7 @@
                                     <ComboBox Grid.Column="1" Style="{DynamicResource GscWpfUiComboBox}" ItemsSource="{Binding DiffPathKindOptions}" SelectedItem="{Binding DiffPathKindFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="只显示新增、修改或删除路径" AutomationProperties.Name="差异路径类型筛选" Margin="10,0,0,0"/>
                                     <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding ClearDiffPathFiltersCommand}" Content="清除筛选" AutomationProperties.Name="清除差异路径筛选" Margin="10,0,0,0"/>
                                     <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Margin="0,6,0,0">
+                                        <CheckBox Content="按目录查看" Style="{DynamicResource GscCheckBox}" IsChecked="{Binding DiffByDirectory}" Margin="0,0,0,4"/>
                                         <TextBlock Text="{Binding DiffPathFilterSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
                                         <TextBlock Text="{Binding DiffUnknownSummary}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,3,0,0"/>
                                     </StackPanel>
@@ -1229,6 +1230,16 @@
                                                   VerticalScrollBarVisibility="Auto"
                                                   HorizontalScrollBarVisibility="Disabled">
                                         <StackPanel>
+                                            <StackPanel>
+                                                <StackPanel.Style>
+                                                    <Style TargetType="StackPanel">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding DiffByDirectory}" Value="True">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </StackPanel.Style>
                                             <TextBlock Text="新增文件（匹配路径）" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"/>
                                             <ItemsControl ItemsSource="{Binding DiffAddedPaths}">
                                                 <ItemsControl.ItemTemplate><DataTemplate><Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding ., Mode=OneWay}" IsReadOnly="True" ToolTip="{Binding}" Foreground="{DynamicResource GscSuccessBrush}"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.CopyPathCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Content="复制" AutomationProperties.Name="复制完整新增路径" Margin="8,0,0,0"/></Grid></DataTemplate></ItemsControl.ItemTemplate>
@@ -1241,7 +1252,71 @@
                                             <ItemsControl ItemsSource="{Binding DiffRemovedPaths}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate><DataTemplate><Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBox Style="{StaticResource GscWpfUiPathDetailTextBox}" Text="{Binding ., Mode=OneWay}" IsReadOnly="True" ToolTip="{Binding}" Foreground="{DynamicResource GscErrorBrush}"/><ui:Button Grid.Column="1" Style="{DynamicResource GscWpfUiCompactButton}" Command="{Binding DataContext.CopyPathCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding}" Content="复制" AutomationProperties.Name="复制完整删除路径" Margin="8,0,0,0"/></Grid></DataTemplate></ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <ui:Button Style="{DynamicResource GscWpfUiActionButton}" Command="{Binding LoadMoreDiffPathsCommand}" Content="加载更多差异路径" ToolTip="每次只增加有限数量的路径，避免大清单一次性展开" AutomationProperties.Name="加载更多差异路径" Margin="0,10,0,0" HorizontalAlignment="Left"/>
+                                            </StackPanel>
+                                            <ItemsControl ItemsSource="{Binding VisibleDiffDirectories}" AutomationProperties.Name="差异目录">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Expander Header="{Binding}" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" AutomationProperties.Name="{Binding AutomationName}"
+                                                                  Focusable="False" Margin="0,0,0,6">
+                                                            <Expander.Resources>
+                                                                <DataTemplate x:Key="DiffDirectoryFiles">
+                                                                    <StackPanel Loaded="OnDiffDirectoryFilesLoaded" Unloaded="OnDiffDirectoryFilesUnloaded">
+                                                                        <ItemsControl ItemsSource="{Binding VisiblePaths}" AutomationProperties.Name="目录内的差异文件">
+                                                                            <ItemsControl.ItemTemplate>
+                                                                                <DataTemplate>
+                                                                                    <Grid Margin="0,0,0,5">
+                                                                                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                                                        <TextBlock Text="{Binding Kind}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                                                                        <TextBlock Grid.Column="1" Text="{Binding FileName}" Style="{DynamicResource GscBodyStyle}" VerticalAlignment="Center"
+                                                                                                   TextTrimming="CharacterEllipsis" ToolTip="{Binding FullPath}" AutomationProperties.HelpText="{Binding FullPath}"/>
+                                                                                        <ui:Button Grid.Column="2" Style="{DynamicResource GscWpfUiCompactButton}" Content="复制"
+                                                                                                   AutomationProperties.Name="{Binding CopyName}" CommandParameter="{Binding FullPath}" Margin="8,0,0,0"
+                                                                                                   Command="{Binding DataContext.CopyPathCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                                                                                    </Grid>
+                                                                                </DataTemplate>
+                                                                            </ItemsControl.ItemTemplate>
+                                                                        </ItemsControl>
+                                                                        <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="加载此目录的更多文件"
+                                                                                   Command="{Binding LoadMoreCommand}" HorizontalAlignment="Left"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </Expander.Resources>
+                                                            <Expander.HeaderTemplate>
+                                                                <DataTemplate>
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource GscBodyStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                                                                        <TextBlock Text="{Binding Counts}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                                                    </StackPanel>
+                                                                </DataTemplate>
+                                                            </Expander.HeaderTemplate>
+                                                            <Expander.Style>
+                                                                <Style TargetType="Expander" BasedOn="{StaticResource GscExpander}">
+                                                                    <Style.Triggers>
+                                                                        <Trigger Property="IsExpanded" Value="True">
+                                                                            <Setter Property="Content" Value="{Binding}"/>
+                                                                            <Setter Property="ContentTemplate" Value="{DynamicResource DiffDirectoryFiles}"/>
+                                                                        </Trigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Expander.Style>
+                                                        </Expander>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <ui:Button Command="{Binding LoadMoreDiffPathsCommand}" ToolTip="分批显示目录或路径" Margin="0,10,0,0" HorizontalAlignment="Left">
+                                                <ui:Button.Style>
+                                                    <Style TargetType="ui:Button" BasedOn="{StaticResource GscWpfUiActionButton}">
+                                                        <Setter Property="Content" Value="加载更多差异路径"/>
+                                                        <Setter Property="AutomationProperties.Name" Value="加载更多差异路径"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding DiffByDirectory}" Value="True">
+                                                                <Setter Property="Content" Value="加载更多目录"/>
+                                                                <Setter Property="AutomationProperties.Name" Value="加载更多目录"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ui:Button.Style>
+                                            </ui:Button>
                                             <TextBlock Text="{Binding DiffSummary, TargetNullValue=选择两个版本后，比较结果会显示在这里。, FallbackValue=选择两个版本后，比较结果会显示在这里。}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap" Margin="0,4,0,0"/>
                                         </StackPanel>
                                     </ScrollViewer>

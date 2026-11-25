@@ -194,6 +194,8 @@ namespace GameSaveCenter.Playnite.ViewModels
         private string diffPathSearchText = string.Empty;
         private string diffPathKindFilter = "全部";
         private int diffPathVisibleLimit = 120;
+        private bool diffByDirectory;
+        private IReadOnlyList<BackupDiffDirectory> diffDirectories = Array.Empty<BackupDiffDirectory>();
         private int diffAddedMatchCount;
         private int diffModifiedMatchCount;
         private int diffRemovedMatchCount;
@@ -560,6 +562,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         public BatchObservableCollection<ProcessMappingDto> ProcessMappings { get; } = new BatchObservableCollection<ProcessMappingDto>();
         public BatchObservableCollection<BackupVersionDto> Backups { get; } = new BatchObservableCollection<BackupVersionDto>();
         public BatchObservableCollection<string> DiffAddedPaths { get; } = new BatchObservableCollection<string>();
+        public BatchObservableCollection<BackupDiffDirectory> VisibleDiffDirectories { get; } = new BatchObservableCollection<BackupDiffDirectory>();
         public BatchObservableCollection<string> DiffModifiedPaths { get; } = new BatchObservableCollection<string>();
         public BatchObservableCollection<string> DiffRemovedPaths { get; } = new BatchObservableCollection<string>();
         public IReadOnlyList<string> DiffPathKindOptions { get; } = new[] { "全部", "新增", "修改", "删除" };
@@ -1738,6 +1741,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
         public int DiffAddedMatchCount { get => diffAddedMatchCount; private set => SetValue(ref diffAddedMatchCount, value); }
+        public bool DiffByDirectory
+        {
+            get => diffByDirectory;
+            set
+            {
+                if (diffByDirectory == value) return;
+                SetValue(ref diffByDirectory, value);
+                diffPathVisibleLimit = BackupDiffDirectory.PageSize;
+                RefreshDiffPathResults();
+                RaiseCommandStates();
+            }
+        }
         public int DiffModifiedMatchCount { get => diffModifiedMatchCount; private set => SetValue(ref diffModifiedMatchCount, value); }
         public int DiffRemovedMatchCount { get => diffRemovedMatchCount; private set => SetValue(ref diffRemovedMatchCount, value); }
         public int DiffPathVisibleCount { get => diffPathVisibleCount; private set => SetValue(ref diffPathVisibleCount, value); }
@@ -5471,8 +5486,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void LoadMoreDiffPaths()
         {
             if (!DiffPathHasMore) return;
-            diffPathVisibleLimit += 120;
-            RefreshDiffPathResults();
+            diffPathVisibleLimit += BackupDiffDirectory.PageSize;
+            if (DiffByDirectory)
+            {
+                foreach (var directory in diffDirectories.Skip(VisibleDiffDirectories.Count).Take(BackupDiffDirectory.PageSize))
+                    VisibleDiffDirectories.Add(directory);
+                DiffPathHasMore = VisibleDiffDirectories.Count < diffDirectories.Count;
+            }
+            else
+            {
+                RefreshDiffPathResults();
+            }
             RaiseCommandStates();
         }
 
@@ -5486,20 +5510,34 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void RefreshDiffPathResults()
         {
             var projection = BackupDiffPathFilter.Apply(LastBackupDiff, DiffPathSearchText, DiffPathKindFilter, diffPathVisibleLimit);
-            DiffAddedPaths.ReplaceAll(projection.VisibleAdded);
-            DiffModifiedPaths.ReplaceAll(projection.VisibleModified);
-            DiffRemovedPaths.ReplaceAll(projection.VisibleRemoved);
+            if (DiffByDirectory)
+            {
+                diffDirectories = projection.GroupByDirectory();
+                VisibleDiffDirectories.ReplaceAll(diffDirectories.Take(diffPathVisibleLimit));
+            }
+            else
+            {
+                diffDirectories = Array.Empty<BackupDiffDirectory>();
+                VisibleDiffDirectories.ReplaceAll(diffDirectories);
+                DiffAddedPaths.ReplaceAll(projection.VisibleAdded);
+                DiffModifiedPaths.ReplaceAll(projection.VisibleModified);
+                DiffRemovedPaths.ReplaceAll(projection.VisibleRemoved);
+            }
             DiffAddedMatchCount = projection.Added.Count;
             DiffModifiedMatchCount = projection.Modified.Count;
             DiffRemovedMatchCount = projection.Removed.Count;
             DiffPathVisibleCount = projection.VisibleCount;
-            DiffPathHasMore = projection.HasMore;
+            DiffPathHasMore = DiffByDirectory
+                ? VisibleDiffDirectories.Count < diffDirectories.Count
+                : projection.HasMore;
             var totalMatches = projection.MatchCount;
             var filterDescription = string.IsNullOrWhiteSpace(DiffPathSearchText) ? "全部路径" : $"路径包含“{DiffPathSearchText.Trim()}”";
             if (!string.Equals(DiffPathKindFilter, "全部", StringComparison.Ordinal)) filterDescription += $" · 类型：{DiffPathKindFilter}";
             DiffPathFilterSummary = LastBackupDiff == null
                 ? "比较两个版本后，可按类型和路径筛选。"
-                : $"{filterDescription}：匹配 {totalMatches} 条，当前显示 {DiffPathVisibleCount} 条" + (DiffPathHasMore ? "，还可加载更多。" : "。");
+                : DiffByDirectory
+                    ? $"{filterDescription}：在本次比较返回的路径中匹配 {totalMatches} 条，共 {diffDirectories.Count} 个目录。目录计数包含匹配但尚未展开或加载的文件。"
+                    : $"{filterDescription}：匹配 {totalMatches} 条，当前显示 {DiffPathVisibleCount} 条" + (DiffPathHasMore ? "，还可加载更多。" : "。");
             DiffUnknownSummary = LastBackupDiff == null
                 ? "差异质量和未变化数量会在比较后单独显示。"
                 : string.Equals(LastBackupDiff.ComparisonQuality, "Exact", StringComparison.OrdinalIgnoreCase)

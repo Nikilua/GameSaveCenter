@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using GameSaveCenter.Contracts;
+using GameSaveCenter.Playnite.Infrastructure;
 
 namespace GameSaveCenter.Playnite.ViewModels;
 
@@ -65,4 +67,67 @@ public sealed class BackupDiffPathFilterResult
         || Removed.Count > VisibleRemoved.Count;
     public int MatchCount => Added.Count + Modified.Count + Removed.Count;
     public int VisibleCount => VisibleAdded.Count + VisibleModified.Count + VisibleRemoved.Count;
+
+    internal IReadOnlyList<BackupDiffDirectory> GroupByDirectory()
+        => Added.Select(path => new BackupDiffDirectoryPath(path, "新增"))
+            .Concat(Modified.Select(path => new BackupDiffDirectoryPath(path, "修改")))
+            .Concat(Removed.Select(path => new BackupDiffDirectoryPath(path, "删除")))
+            .GroupBy(entry => entry.Directory, StringComparer.OrdinalIgnoreCase)
+            .OrderBy(group => group.Key, StringComparer.OrdinalIgnoreCase)
+            .Select(group => new BackupDiffDirectory(group.Key, group.ToArray()))
+            .ToArray();
+}
+
+public sealed class BackupDiffDirectoryPath
+{
+    public BackupDiffDirectoryPath(string path, string kind)
+    {
+        FullPath = path;
+        Kind = kind;
+        var separator = Math.Max(path.LastIndexOf('/'), path.LastIndexOf('\\'));
+        Directory = separator < 0 ? string.Empty : path.Substring(0, separator).Replace('\\', '/');
+        FileName = path.Substring(separator + 1);
+    }
+
+    public string Directory { get; }
+    public string FullPath { get; }
+    public string FileName { get; }
+    public string Kind { get; }
+    public string CopyName => $"复制完整{Kind}路径：{FullPath}";
+}
+
+public sealed class BackupDiffDirectory
+{
+    internal const int PageSize = 120;
+    private readonly IReadOnlyList<BackupDiffDirectoryPath> paths;
+    private readonly RelayCommand loadMoreCommand;
+
+    public BackupDiffDirectory(string directory, IReadOnlyList<BackupDiffDirectoryPath> paths)
+    {
+        Name = directory.Length == 0 ? "根目录" : directory;
+        this.paths = paths;
+        AddedCount = paths.Count(path => path.Kind == "新增");
+        ModifiedCount = paths.Count(path => path.Kind == "修改");
+        RemovedCount = paths.Count(path => path.Kind == "删除");
+        loadMoreCommand = new RelayCommand(_ => LoadMore(), _ => VisiblePaths.Count < paths.Count);
+        LoadMore();
+    }
+
+    public string Name { get; }
+    public int AddedCount { get; }
+    public int ModifiedCount { get; }
+    public int RemovedCount { get; }
+    public string Counts => $"新增 {AddedCount}　修改 {ModifiedCount}　删除 {RemovedCount}";
+    public string AutomationName => $"{Name}，{Counts}";
+    public override string ToString() => AutomationName;
+    public bool IsExpanded { get; set; }
+    public BatchObservableCollection<BackupDiffDirectoryPath> VisiblePaths { get; } = new BatchObservableCollection<BackupDiffDirectoryPath>();
+    public ICommand LoadMoreCommand => loadMoreCommand;
+
+    private void LoadMore()
+    {
+        foreach (var path in paths.Skip(VisiblePaths.Count).Take(PageSize))
+            VisiblePaths.Add(path);
+        loadMoreCommand.RaiseCanExecuteChanged();
+    }
 }
