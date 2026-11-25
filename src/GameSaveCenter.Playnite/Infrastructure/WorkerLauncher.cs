@@ -41,9 +41,10 @@ namespace GameSaveCenter.Playnite.Infrastructure
 
                 var fullExecutable = Path.GetFullPath(executable);
                 var processName = Path.GetFileNameWithoutExtension(fullExecutable);
-                var logPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    "GameSaveCenter", "Logs", "worker-launch.log");
+                var dataDirectory = Environment.GetEnvironmentVariable("GameSaveCenter__DataDirectory");
+                if (string.IsNullOrWhiteSpace(dataDirectory))
+                    dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GameSaveCenter");
+                var logPath = Path.Combine(dataDirectory, "Logs", "worker-launch.log");
                 workerLogPath = logPath;
                 Directory.CreateDirectory(Path.GetDirectoryName(logPath));
                 var expectedVersionLabel = string.IsNullOrWhiteSpace(expectedVersion) ? "unknown" : expectedVersion;

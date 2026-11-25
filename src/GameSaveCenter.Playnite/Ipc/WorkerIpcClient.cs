@@ -111,8 +111,8 @@ namespace GameSaveCenter.Playnite.Ipc
 
         public WorkerIpcClient()
             : this(
-                ResolveEnvironmentPipeName("GSC_UI_AUDIT_PIPE_NAME", ProtocolConstants.PipeName),
-                ResolveEnvironmentPipeName("GSC_UI_AUDIT_EVENT_PIPE_NAME", ProtocolConstants.EventPipeName)) { }
+                ResolveEnvironmentPipeName("GSC_UI_AUDIT_PIPE_NAME", "GameSaveCenter__PipeName", ProtocolConstants.PipeName),
+                ResolveEnvironmentPipeName("GSC_UI_AUDIT_EVENT_PIPE_NAME", "GameSaveCenter__EventPipeName", ProtocolConstants.EventPipeName)) { }
 
         internal WorkerIpcClient(string pipeName, string eventPipeName)
         {
@@ -123,9 +123,11 @@ namespace GameSaveCenter.Playnite.Ipc
         internal string PipeNameForDiagnostics => pipeName;
         internal string EventPipeNameForDiagnostics => eventPipeName;
 
-        private static string ResolveEnvironmentPipeName(string variableName, string fallback)
+        private static string ResolveEnvironmentPipeName(string auditVariable, string workerVariable, string fallback)
         {
-            var configured = Environment.GetEnvironmentVariable(variableName);
+            var configured = Environment.GetEnvironmentVariable(auditVariable);
+            if (string.IsNullOrWhiteSpace(configured))
+                configured = Environment.GetEnvironmentVariable(workerVariable);
             return string.IsNullOrWhiteSpace(configured) ? fallback : configured.Trim();
         }
 

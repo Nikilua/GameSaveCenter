@@ -49,6 +49,31 @@ public sealed class WorkerIpcClientBehaviorTests : IAsyncLifetime
     }
 
     [Fact]
+    public void OneClickEnvironmentUsesTheSamePrivatePipesAsTheWorker()
+    {
+        var names = new[] { "GSC_UI_AUDIT_PIPE_NAME", "GSC_UI_AUDIT_EVENT_PIPE_NAME",
+            "GameSaveCenter__PipeName", "GameSaveCenter__EventPipeName" };
+        var previous = names.Select(Environment.GetEnvironmentVariable).ToArray();
+        var pipe = TestPipeName;
+        try
+        {
+            Environment.SetEnvironmentVariable(names[0], null);
+            Environment.SetEnvironmentVariable(names[1], null);
+            Environment.SetEnvironmentVariable(names[2], pipe);
+            Environment.SetEnvironmentVariable(names[3], pipe + ".Events");
+            var client = new WorkerIpcClient();
+
+            Assert.Equal(pipe, client.PipeNameForDiagnostics);
+            Assert.Equal(pipe + ".Events", client.EventPipeNameForDiagnostics);
+        }
+        finally
+        {
+            for (var index = 0; index < names.Length; index++)
+                Environment.SetEnvironmentVariable(names[index], previous[index]);
+        }
+    }
+
+    [Fact]
     public void IsolatedAuditEnvironmentOverridesTheProductionPipePair()
     {
         const string pipeVariable = "GSC_UI_AUDIT_PIPE_NAME";
