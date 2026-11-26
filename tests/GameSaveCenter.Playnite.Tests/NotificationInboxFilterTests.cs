@@ -51,10 +51,78 @@ public sealed class NotificationInboxFilterTests
             NowUtc));
     }
 
+    [Fact]
+    public void CurrentGameScopeUsesStableIdAndExcludesSameNameGamesAndGlobalRecords()
+    {
+        var selectedGameRecord = new NotificationRecordDto { GameId = "playnite-game-a", Title = "同名游戏" };
+        var sameNameRecord = new NotificationRecordDto { GameId = "playnite-game-b", Title = "同名游戏" };
+        var globalRecord = new NotificationRecordDto { GameId = string.Empty, Title = "全局通知" };
+
+        Assert.True(MatchesCurrentGame(selectedGameRecord, "PLAYNITE-GAME-A"));
+        Assert.False(MatchesCurrentGame(sameNameRecord, "playnite-game-a"));
+        Assert.True(MatchesCurrentGame(sameNameRecord, "playnite-game-b"));
+        Assert.False(MatchesCurrentGame(globalRecord, "playnite-game-a"));
+        Assert.False(MatchesCurrentGame(selectedGameRecord, null));
+    }
+
+    [Fact]
+    public void CurrentGameScopeComposesWithSeverityAndTimeFilters()
+    {
+        var recentError = new NotificationRecordDto
+        {
+            GameId = "playnite-game-a",
+            Severity = NotificationSeverity.Error,
+            CreatedUtc = NowUtc.AddHours(-1)
+        };
+        var oldError = new NotificationRecordDto
+        {
+            GameId = "playnite-game-a",
+            Severity = NotificationSeverity.Error,
+            CreatedUtc = NowUtc.AddDays(-8)
+        };
+        var recentWarning = new NotificationRecordDto
+        {
+            GameId = "playnite-game-a",
+            Severity = NotificationSeverity.Warning,
+            CreatedUtc = NowUtc.AddHours(-1)
+        };
+
+        Assert.True(NotificationInboxFilter.Matches(
+            recentError,
+            "错误",
+            NotificationInboxFilter.Last7Days,
+            NowUtc,
+            filterByGame: true,
+            gameId: "playnite-game-a"));
+        Assert.False(NotificationInboxFilter.Matches(
+            oldError,
+            "错误",
+            NotificationInboxFilter.Last7Days,
+            NowUtc,
+            filterByGame: true,
+            gameId: "playnite-game-a"));
+        Assert.False(NotificationInboxFilter.Matches(
+            recentWarning,
+            "错误",
+            NotificationInboxFilter.Last7Days,
+            NowUtc,
+            filterByGame: true,
+            gameId: "playnite-game-a"));
+    }
+
     private static bool Matches(string timeFilter, DateTime createdUtc)
         => NotificationInboxFilter.Matches(
             new NotificationRecordDto { CreatedUtc = createdUtc },
             NotificationInboxFilter.AllSeverities,
             timeFilter,
             NowUtc);
+
+    private static bool MatchesCurrentGame(NotificationRecordDto record, string? gameId)
+        => NotificationInboxFilter.Matches(
+            record,
+            NotificationInboxFilter.AllSeverities,
+            NotificationInboxFilter.AllTime,
+            NowUtc,
+            filterByGame: true,
+            gameId: gameId);
 }

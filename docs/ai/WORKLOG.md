@@ -1,3 +1,11 @@
+## 2026-11-26 玩家界面后续 B · 当前游戏通知范围
+
+通知收件箱默认“全部游戏”，可切到当前游戏范围；条件直接比较 `NotificationRecordDto.GameId` 与当前 `GameStatusDto.PlayniteId`，不依据名字。该范围会与时间、级别和搜索组合，系统通知或其他同名游戏的通知不会混入。切换范围由绑定控件保留焦点；游戏上下文变化重新应用条件。刷新时继续按通知 ID 保留仍可见的选中项；可见集合批量已读先复制当前筛选结果再发 Worker 请求。当前游戏名显示在范围行，无选中游戏时说明为空结果并可从空状态回到全部游戏。摘要标明 Worker 最近 30 天且最多返回 500 条，不宣称全历史。
+
+SDK 8.0.423 定向测试 20/20 通过，覆盖同名游戏、不同稳定 ID、无游戏 ID 的全局通知、时间/级别组合、当前过滤集合批量已读、无选中游戏、空结果返回全部游戏、键盘焦点保持和窄/宽布局行位。`scripts/check-xaml.ps1` 检查 27 个 XAML 通过，`python scripts/validate-source.py` 与 `git diff --check` 通过。仓库没有 `scripts/validate_wpf_ui.py`，因此不记录该检查的通过结果。
+
+B 精确 SHA 的本机完整入口、发布/安装/启动与 GitHub 双 SDK 门禁待执行。此轮 CUA 初始化因缺少运行时 kernel assets 失败；不会把离屏与 WPF 行为测试称作真实 Playnite 目视验收。
+
 ## 2026-11-26 玩家界面后续 A · 差异按目录查看
 
 比较页保留平铺列表，增加「按目录查看」。目录计数覆盖比较结果里命中筛选的全部路径，根目录单列，完整路径可复制。目录标题和展开后的文件分别分批显示；文件控件只在展开时创建。打开时复用共享短时长做轻淡入，关闭时立即收起。
@@ -20,7 +28,7 @@ SDK 8.0.423 的 `R11DiffListSearchBehaviorTests` 6 过、0 失败、0 跳过。�
 
 同一 SHA 的本机中文一键入口 PID 52808 实际退出码为 1，运行 `20261126T014847210Z-f79506f7`。Core 157/157、Worker 441/441 通过；WPF 已执行 1,609 项，1,586 通过、4 失败、19 跳过，失败后入口在测试阶段停止，未进入发布、打包、安装和启动。保留入口日志 `artifacts/player-followup-a-36762149/` 与原始诊断 `artifacts/build-diagnostics/20261126T014847210Z-f79506f7/`。
 
-根因是 `CreateBareDashboardViewModel()` 用 `FormatterServices.GetUninitializedObject` 建立测试夹具，因此没有执行自动属性 `VisibleDiffDirectories` 的初始化器。夹具已显式初始化该集合，没有改生产行为。SDK 8.0.423 定向重建后 R11 全类 19/19 通过、0 失败、0 跳过；TRX 为 `artifacts/player-followup-a-r11fix2/tests/R11HistoryTimeNavigationBehaviorTests.trx`。此修正和本段记录待提交；修正提交上的完整入口及基线/SDK 10 门禁待执行。
+根因是 `CreateBareDashboardViewModel()` 用 `FormatterServices.GetUninitializedObject` 建立测试夹具，因此没有执行自动属性 `VisibleDiffDirectories` 的初始化器。夹具已显式初始化该集合，没有改生产行为。SDK 8.0.423 定向重建后 R11 全类 19/19 通过、0 失败、0 跳过；TRX 为 `artifacts/player-followup-a-r11fix2/tests/R11HistoryTimeNavigationBehaviorTests.trx`。修正提交 `2918f0ade7916577f4386ce07ff6a0b80748214f` 已推送 `origin/main`。该 SHA 上根目录 `GameSaveCenter-一键构建安装运行.cmd` 调用了 `GameSaveCenter-Run.cmd`，PID 54928 实际退出码 0。Release 构建、160 份 TRX、2,109 项测试（2,051 通过、0 失败、58 跳过）、Worker 发布、PEXT/ZIP 打包、六个安装程序集均核对为 `0.6.73+2918f0ade7916577f4386ce07ff6a0b80748214f`，隔离 Playnite 进程启动身份已确认。该新 profile 打开首次配置页，没有加载插件主页，Worker 进程/私有管道未被实测；目录比较此前在 `a6311798` 的带数据 Playnite 页面已实际操作。精确 GitHub run [#1628](https://github.com/Nikilua/GameSaveCenter/actions/runs/45741557414) 的基线 job [139647545813](https://github.com/Nikilua/GameSaveCenter/actions/runs/45741557414/job/139647545813) 与 SDK 10 job [139647546231](https://github.com/Nikilua/GameSaveCenter/actions/runs/45741557414/job/139647546231) 均为 completed/success。
 
 ## 2026-11-25 隔离存档故事验收
 

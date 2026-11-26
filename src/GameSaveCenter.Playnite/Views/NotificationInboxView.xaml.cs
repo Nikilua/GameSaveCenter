@@ -63,6 +63,11 @@ namespace GameSaveCenter.Playnite.Views
                     Grid.SetRow(NotificationTimeFilterComboBox, 1);
                     Grid.SetColumn(NotificationTimeFilterComboBox, 1);
                     Grid.SetColumnSpan(NotificationTimeFilterComboBox, 1);
+                    Grid.SetRow(NotificationGameScopeComboBox, 2);
+                    Grid.SetColumn(NotificationGameScopeComboBox, 0);
+                    Grid.SetRow(NotificationGameScopeDescription, 2);
+                    Grid.SetColumn(NotificationGameScopeDescription, 1);
+                    Grid.SetColumnSpan(NotificationGameScopeDescription, 4);
                     Grid.SetRow(NotificationInboxRefreshButton, 1);
                     Grid.SetColumn(NotificationInboxRefreshButton, 3);
                     Grid.SetRow(NotificationCompactDetailsButton, 1);
@@ -96,6 +101,11 @@ namespace GameSaveCenter.Playnite.Views
                     Grid.SetRow(NotificationTimeFilterComboBox, 0);
                     Grid.SetColumn(NotificationTimeFilterComboBox, 2);
                     Grid.SetColumnSpan(NotificationTimeFilterComboBox, 1);
+                    Grid.SetRow(NotificationGameScopeComboBox, 1);
+                    Grid.SetColumn(NotificationGameScopeComboBox, 0);
+                    Grid.SetRow(NotificationGameScopeDescription, 1);
+                    Grid.SetColumn(NotificationGameScopeDescription, 1);
+                    Grid.SetColumnSpan(NotificationGameScopeDescription, 4);
                     Grid.SetRow(NotificationInboxRefreshButton, 0);
                     Grid.SetColumn(NotificationInboxRefreshButton, 3);
                     NotificationCompactDetailsButton.Visibility = Visibility.Collapsed;
@@ -111,6 +121,7 @@ namespace GameSaveCenter.Playnite.Views
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)
         {
             NotificationInboxSearchTextBox.SetCurrentValue(TextBox.TextProperty, string.Empty);
+            NotificationGameScopeComboBox.SetCurrentValue(ComboBox.SelectedIndexProperty, 0);
             NotificationSeverityFilterComboBox.SetCurrentValue(ComboBox.SelectedIndexProperty, 0);
             NotificationTimeFilterComboBox.SetCurrentValue(ComboBox.SelectedIndexProperty, 0);
             NotificationInboxSearchTextBox.Focus();

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GameSaveCenter.Contracts;
 using GameSaveCenter.Playnite.ViewModels;
@@ -43,6 +45,36 @@ public sealed class NotificationInboxReadActionsTests
         Assert.Equal(
             new[] { "visible-unread-1", "visible-unread-2" },
             Assert.IsType<NotificationRecordIdsDto>(request.Payload).NotificationIds);
+    }
+
+    [Fact]
+    public async Task MarkVisibleCurrentGameSnapshotExcludesSameNameGameAndGlobalRecords()
+    {
+        var requests = new List<(string Type, object Payload)>();
+        var actions = CreateActions(requests, (_, _, _, _, _) => Task.FromResult(false));
+        var now = DateTime.UtcNow;
+        var records = new[]
+        {
+            new NotificationRecordDto { NotificationId = "game-a", GameId = "game-a", Title = "同名游戏通知", CreatedUtc = now },
+            new NotificationRecordDto { NotificationId = "game-b", GameId = "game-b", Title = "同名游戏通知", CreatedUtc = now },
+            new NotificationRecordDto { NotificationId = "global", GameId = string.Empty, Title = "系统通知", CreatedUtc = now }
+        };
+        var currentGameItems = records
+            .Where(record => NotificationInboxFilter.Matches(
+                record,
+                NotificationInboxFilter.AllSeverities,
+                NotificationInboxFilter.AllTime,
+                now,
+                filterByGame: true,
+                gameId: "game-a"))
+            .Select(record => new NotificationInboxItem(record))
+            .ToList();
+
+        var changed = await actions.MarkVisibleAsReadAsync(currentGameItems);
+
+        Assert.Equal(1, changed);
+        var request = Assert.Single(requests);
+        Assert.Equal(new[] { "game-a" }, Assert.IsType<NotificationRecordIdsDto>(request.Payload).NotificationIds);
     }
 
     [Fact]

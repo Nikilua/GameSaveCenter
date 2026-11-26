@@ -16,6 +16,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private NotificationInboxItem? selectedNotification;
         private string notificationSeverityFilter = NotificationInboxFilter.AllSeverities;
         private string notificationTimeFilter = NotificationInboxFilter.AllTime;
+        private string notificationGameScopeFilter = NotificationInboxFilter.AllGames;
         private string notificationInboxSearchText = string.Empty;
         private string notificationInboxErrorMessage = string.Empty;
         private string notificationContextStatusMessage = string.Empty;
@@ -34,8 +35,14 @@ namespace GameSaveCenter.Playnite.ViewModels
             NotificationInboxFilter.Last7Days,
             NotificationInboxFilter.Last30Days
         };
+        public IReadOnlyList<string> NotificationGameScopeOptions { get; } = new[]
+        {
+            NotificationInboxFilter.AllGames,
+            NotificationInboxFilter.CurrentGame
+        };
 
         public ICommand RefreshNotificationInboxCommand { get; private set; } = null!;
+        public ICommand ShowAllNotificationGamesCommand { get; private set; } = null!;
         public ICommand MarkSelectedNotificationReadCommand { get; private set; } = null!;
         public ICommand MarkVisibleNotificationsReadCommand { get; private set; } = null!;
         public ICommand ClearReadNotificationRecordsCommand { get; private set; } = null!;
@@ -127,6 +134,24 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
+        public string NotificationGameScopeFilter
+        {
+            get => notificationGameScopeFilter;
+            set
+            {
+                var normalized = NotificationGameScopeOptions.Contains(value)
+                    ? value
+                    : NotificationInboxFilter.AllGames;
+                if (string.Equals(notificationGameScopeFilter, normalized, StringComparison.Ordinal)) return;
+                notificationGameScopeFilter = normalized;
+                OnPropertyChanged(nameof(NotificationGameScopeFilter));
+                OnPropertyChanged(nameof(CanShowAllGamesFromNotificationEmptyState));
+                OnPropertyChanged(nameof(NotificationGameScopeDescription));
+                ApplyNotificationInboxFilters();
+                RaiseCommandStates();
+            }
+        }
+
         public bool IsNotificationInboxLoading
         {
             get => isNotificationInboxLoading;
@@ -179,16 +204,27 @@ namespace GameSaveCenter.Playnite.ViewModels
         public bool CanClearReadNotificationRecords =>
             !IsNotificationInboxLoading && !IsNotificationInboxMutating && NotificationReadCount > 0;
         public string NotificationInboxCountSummary => NotificationRecords.Count == 0
-            ? "最近 30 天 · 暂无记录"
-            : $"最近 30 天 · 未读 {NotificationUnreadCount} · 当前显示 {NotificationInboxItems.Count}/{NotificationRecords.Count}";
+            ? "最近 30 天 · 最多 500 条 · 暂无记录"
+            : $"最近 30 天 · 最多 500 条 · 未读 {NotificationUnreadCount} · 显示 {NotificationInboxItems.Count}/{NotificationRecords.Count}";
         public bool NotificationInboxHasNoRecords => !IsNotificationInboxLoading && NotificationRecords.Count == 0 && !HasNotificationInboxError;
         public bool NotificationInboxHasNoFilterResults => !IsNotificationInboxLoading && NotificationRecords.Count > 0 && NotificationInboxItems.Count == 0;
+        public bool HasSelectedNotificationScopeGame => !string.IsNullOrWhiteSpace(SelectedGame?.PlayniteId);
+        public bool CanShowAllGamesFromNotificationEmptyState
+            => string.Equals(NotificationGameScopeFilter, NotificationInboxFilter.CurrentGame, StringComparison.Ordinal);
+        public string NotificationGameScopeDescription => HasSelectedNotificationScopeGame
+            ? $"当前游戏：{SelectedGame.Name} · 使用 Playnite 游戏 ID 匹配"
+            : string.Equals(NotificationGameScopeFilter, NotificationInboxFilter.CurrentGame, StringComparison.Ordinal)
+                ? "当前没有已选游戏；此范围暂时为空。"
+                : "选择游戏后可以按稳定 ID 查看对应通知。";
 
         partial void OnNotificationInboxInitialize()
         {
             RefreshNotificationInboxCommand = new RelayCommand(
                 _ => Run(LoadNotificationInboxAsync),
                 _ => !IsNotificationInboxLoading && !IsNotificationInboxMutating);
+            ShowAllNotificationGamesCommand = new RelayCommand(
+                _ => NotificationGameScopeFilter = NotificationInboxFilter.AllGames,
+                _ => CanShowAllGamesFromNotificationEmptyState);
             notificationInboxReadActions = new NotificationInboxReadActions(
                 (type, payload) => plugin.RequestAsync<int>(type, payload, TimeSpan.FromSeconds(20)),
                 plugin.ConfirmAsync);
@@ -409,9 +445,17 @@ namespace GameSaveCenter.Playnite.ViewModels
         {
             var search = NotificationInboxSearchText.Trim();
             var nowUtc = DateTime.UtcNow;
+            var filterByGame = string.Equals(NotificationGameScopeFilter, NotificationInboxFilter.CurrentGame, StringComparison.Ordinal);
+            var gameId = filterByGame ? SelectedGame?.PlayniteId : null;
             var filtered = allNotificationInboxItems.Where(item =>
             {
-                if (!NotificationInboxFilter.Matches(item.Record, NotificationSeverityFilter, NotificationTimeFilter, nowUtc))
+                if (!NotificationInboxFilter.Matches(
+                    item.Record,
+                    NotificationSeverityFilter,
+                    NotificationTimeFilter,
+                    nowUtc,
+                    filterByGame,
+                    gameId))
                     return false;
                 return search.Length == 0
                     || ContainsNotificationSearchValue(item.Title, search)

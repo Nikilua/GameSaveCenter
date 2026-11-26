@@ -10,14 +10,24 @@ namespace GameSaveCenter.Playnite.ViewModels
         public const string Last24Hours = "最近24小时";
         public const string Last7Days = "最近7天";
         public const string Last30Days = "最近30天";
+        public const string AllGames = "全部游戏";
+        public const string CurrentGame = "当前游戏";
 
         public static bool Matches(
             NotificationRecordDto record,
             string? severity,
             string? timeRange,
-            DateTime nowUtc)
+            DateTime nowUtc,
+            bool filterByGame = false,
+            string? gameId = null)
         {
             if (record == null) return false;
+            if (filterByGame
+                && (string.IsNullOrWhiteSpace(gameId)
+                    || string.IsNullOrWhiteSpace(record.GameId)
+                    || !string.Equals(record.GameId, gameId, StringComparison.OrdinalIgnoreCase)))
+                return false;
+
             var selectedSeverity = severity ?? AllSeverities;
             if (selectedSeverity != AllSeverities
                 && !string.Equals(selectedSeverity, SeverityName(record.Severity), StringComparison.Ordinal))

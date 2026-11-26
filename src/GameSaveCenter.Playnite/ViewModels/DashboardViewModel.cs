@@ -6385,6 +6385,9 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 OnPropertyChanged(nameof(SelectedGame));
                 NotifyOverviewSelectedGameDisplaysChanged();
+                OnPropertyChanged(nameof(HasSelectedNotificationScopeGame));
+                OnPropertyChanged(nameof(NotificationGameScopeDescription));
+                ApplyNotificationInboxFilters();
                 OnPropertyChanged(nameof(RestoreAvailabilityHint));
                 OnPropertyChanged(nameof(RestoreAvailabilityNeedsMaintenance));
                 OnPropertyChanged(nameof(MediaInboxAvailabilityHint));

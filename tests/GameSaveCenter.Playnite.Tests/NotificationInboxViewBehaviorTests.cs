@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,8 +34,10 @@ public sealed class NotificationInboxViewBehaviorTests
                 var search = Assert.IsType<TextBox>(view.FindName("NotificationInboxSearchTextBox"));
                 var severity = Assert.IsType<ComboBox>(view.FindName("NotificationSeverityFilterComboBox"));
                 var time = Assert.IsType<ComboBox>(view.FindName("NotificationTimeFilterComboBox"));
+                var gameScope = Assert.IsType<ComboBox>(view.FindName("NotificationGameScopeComboBox"));
                 var clear = Assert.IsAssignableFrom<Button>(view.FindName("NotificationClearFiltersButton"));
                 search.Text = "合成查询";
+                gameScope.SelectedIndex = 1;
                 severity.SelectedIndex = 1;
                 time.SelectedIndex = 1;
                 Assert.True(clear.Focus());
@@ -44,12 +47,56 @@ public sealed class NotificationInboxViewBehaviorTests
                 Assert.Equal(string.Empty, search.Text);
                 Assert.Equal(0, severity.SelectedIndex);
                 Assert.Equal(0, time.SelectedIndex);
+                Assert.Equal(0, gameScope.SelectedIndex);
                 Assert.Same(search, Keyboard.FocusedElement);
                 Assert.Equal(string.Empty, data.NotificationInboxSearchText);
                 Assert.Equal("全部级别", data.NotificationSeverityFilter);
                 Assert.Equal("全部时间", data.NotificationTimeFilter);
+                Assert.Equal("全部游戏", data.NotificationGameScopeFilter);
                 Assert.Contains("不会修改通知记录或已读状态", AutomationProperties.GetHelpText(clear));
                 Assert.Equal(0, data.MarkSelectedExecutions + data.MarkVisibleExecutions + data.ClearReadExecutions);
+            }
+            finally { window.Close(); }
+        });
+    }
+
+    [Fact]
+    public void GameScopeKeepsKeyboardFocusAndOffersAllGamesFromEmptyResults()
+    {
+        RunSta(() =>
+        {
+            var data = new NotificationInboxData
+            {
+                NotificationInboxHasNoFilterResults = true,
+                HasSelectedNotificationScopeGame = false
+            };
+            var view = new NotificationInboxView { DataContext = data };
+            var window = new Window { Content = view, Width = 900, Height = 600, ShowInTaskbar = false, WindowStyle = WindowStyle.None, Opacity = 0.01 };
+            try
+            {
+                window.Show();
+                window.UpdateLayout();
+                var scope = Assert.IsType<ComboBox>(view.FindName("NotificationGameScopeComboBox"));
+                var viewAll = Assert.IsAssignableFrom<Button>(view.FindName("NotificationViewAllGamesButton"));
+                Assert.Equal(Visibility.Collapsed, viewAll.Visibility);
+                Assert.Equal("通知游戏范围", AutomationProperties.GetName(scope));
+                Assert.Contains("Playnite 游戏 ID", AutomationProperties.GetHelpText(scope));
+                Assert.True(scope.IsEnabled);
+                Assert.Equal("选择游戏后可以按稳定 ID 查看对应通知。", ((TextBlock)view.FindName("NotificationGameScopeDescription")!).Text);
+                Assert.True(scope.Focus());
+                Keyboard.Focus(scope);
+                scope.SelectedIndex = 1;
+                window.Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() => { }));
+                Assert.Same(scope, Keyboard.FocusedElement);
+                Assert.Equal("当前游戏", data.NotificationGameScopeFilter);
+                Assert.Equal("当前没有已选游戏；此范围暂时为空。", ((TextBlock)view.FindName("NotificationGameScopeDescription")!).Text);
+                Assert.Equal(Visibility.Visible, viewAll.Visibility);
+                Assert.Same(data.ShowAllNotificationGamesCommand, viewAll.Command);
+                Assert.Contains("不会修改记录或已读状态", AutomationProperties.GetHelpText(viewAll));
+                viewAll.Command.Execute(null);
+                Assert.Equal("全部游戏", data.NotificationGameScopeFilter);
+                window.Dispatcher.Invoke(DispatcherPriority.DataBind, new Action(() => { }));
+                Assert.Equal(Visibility.Collapsed, viewAll.Visibility);
             }
             finally { window.Close(); }
         });
@@ -196,6 +243,25 @@ public sealed class NotificationInboxViewBehaviorTests
     }
 
     [Fact]
+    public void GameScopeUsesItsOwnRowInCompactAndWideLayouts()
+    {
+        RunSta(() =>
+        {
+            var view = new NotificationInboxView { DataContext = new NotificationInboxData() };
+            var scope = Assert.IsType<ComboBox>(view.FindName("NotificationGameScopeComboBox"));
+            var description = Assert.IsType<TextBlock>(view.FindName("NotificationGameScopeDescription"));
+
+            view.ApplyResponsiveLayout(744, 460);
+            Assert.Equal(2, Grid.GetRow(scope));
+            Assert.Equal(2, Grid.GetRow(description));
+
+            view.ApplyResponsiveLayout(1200, 800);
+            Assert.Equal(1, Grid.GetRow(scope));
+            Assert.Equal(1, Grid.GetRow(description));
+        });
+    }
+
+    [Fact]
     public void ReadActionsUseBoundCommandsAndExposeTheirSafetyScopeToAutomation()
     {
         RunSta(() =>
@@ -251,7 +317,7 @@ public sealed class NotificationInboxViewBehaviorTests
                 openTask.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
                 openFirstTask.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
 
-                Assert.Equal(2, Grid.GetRow(actionBar));
+                Assert.Equal(3, Grid.GetRow(actionBar));
                 Assert.Equal(markSelected.Margin, markVisible.Margin);
                 Assert.Equal(markVisible.Margin, clearRead.Margin);
                 Assert.Equal(markSelected.MinHeight, markVisible.MinHeight);
@@ -329,17 +395,51 @@ public sealed class NotificationInboxViewBehaviorTests
         return null;
     }
 
-    private sealed class NotificationInboxData
+    private sealed class NotificationInboxData : INotifyPropertyChanged
     {
+        private string notificationGameScopeFilter = "全部游戏";
         public int MarkSelectedExecutions { get; private set; }
         public int MarkVisibleExecutions { get; private set; }
         public int ClearReadExecutions { get; private set; }
         public ObservableCollection<NotificationInboxItem> NotificationInboxItems { get; } = new ObservableCollection<NotificationInboxItem>();
         public string[] NotificationSeverityOptions { get; } = new[] { "全部级别", "错误", "警告", "成功", "信息" };
         public string[] NotificationTimeOptions { get; } = new[] { "全部时间", "最近24小时", "最近7天", "最近30天" };
+        public string[] NotificationGameScopeOptions { get; } = new[] { "全部游戏", "当前游戏" };
         public NotificationInboxItem? SelectedNotification { get; set; }
         public string NotificationSeverityFilter { get; set; } = "全部级别";
         public string NotificationTimeFilter { get; set; } = "全部时间";
+        public string NotificationGameScopeFilter
+        {
+            get => notificationGameScopeFilter;
+            set
+            {
+                if (notificationGameScopeFilter == value) return;
+                notificationGameScopeFilter = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotificationGameScopeFilter)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanShowAllGamesFromNotificationEmptyState)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotificationGameScopeDescription)));
+            }
+        }
+        private bool hasSelectedNotificationScopeGame = true;
+        public string NotificationGameScopeDescription => HasSelectedNotificationScopeGame
+            ? "当前游戏：测试游戏 · 使用 Playnite 游戏 ID 匹配"
+            : NotificationGameScopeFilter == "当前游戏"
+                ? "当前没有已选游戏；此范围暂时为空。"
+                : "选择游戏后可以按稳定 ID 查看对应通知。";
+        public bool HasSelectedNotificationScopeGame
+        {
+            get => hasSelectedNotificationScopeGame;
+            set
+            {
+                if (hasSelectedNotificationScopeGame == value) return;
+                hasSelectedNotificationScopeGame = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasSelectedNotificationScopeGame)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(NotificationGameScopeDescription)));
+            }
+        }
+        public bool CanShowAllGamesFromNotificationEmptyState => NotificationGameScopeFilter == "当前游戏";
+        public System.Windows.Input.ICommand ShowAllNotificationGamesCommand { get; }
+        public event PropertyChangedEventHandler? PropertyChanged;
         public string NotificationInboxSearchText { get; set; } = string.Empty;
         public int NotificationUnreadCount => 0;
         public string NotificationInboxCountSummary => "最近 30 天 · 暂无记录";
@@ -367,6 +467,7 @@ public sealed class NotificationInboxViewBehaviorTests
             MarkSelectedNotificationReadCommand = new RelayCommand(_ => MarkSelectedExecutions++);
             MarkVisibleNotificationsReadCommand = new RelayCommand(_ => MarkVisibleExecutions++);
             ClearReadNotificationRecordsCommand = new RelayCommand(_ => ClearReadExecutions++);
+            ShowAllNotificationGamesCommand = new RelayCommand(_ => NotificationGameScopeFilter = "全部游戏");
         }
     }
 }
