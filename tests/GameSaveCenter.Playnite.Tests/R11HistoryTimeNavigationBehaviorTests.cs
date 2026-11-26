@@ -170,6 +170,34 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         });
     }
 
+    [Fact]
+    public void ProgressRecapCommandsKeepTheCapturedOrderWhenMoreGalleryItemsAreAppended()
+    {
+        var model = CreateBareDashboardViewModel();
+        var first = GalleryCard(model, "game", "a", "起点");
+        var second = GalleryCard(model, "game", "b", "王城外");
+        var third = GalleryCard(model, "game", "c", "王城前");
+
+        AddGalleryCard(model, first);
+        AddGalleryCard(model, second);
+        first.IsSelected = true;
+        second.IsSelected = true;
+        AddGalleryCard(model, third); // Represents a later gallery page.
+        third.IsSelected = true;
+
+        var moved = model.ProgressRecapOrderItems[2];
+        model.MoveProgressRecapItemUpCommand.Execute(moved);
+        model.MoveProgressRecapItemUpCommand.Execute(moved);
+
+        Assert.Equal(new[] { "c", "a", "b" }, model.ProgressRecapOrderItems.Select(item => item.Backup.BackupId));
+        Assert.Equal("第 1 项，共 3 项", moved.PositionLabel);
+
+        model.RemoveProgressRecapItemCommand.Execute(moved);
+        Assert.False(third.IsSelected);
+        Assert.Equal(2, model.ProgressRecapOrderItems.Count);
+        Assert.Equal("第 1 项，共 2 项", model.ProgressRecapOrderItems[0].PositionLabel);
+    }
+
     private static byte[] ReadPixels(BitmapSource source)
     {
         var bitmap = new FormatConvertedBitmap(source, PixelFormats.Bgra32, null, 0);
@@ -628,6 +656,23 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
     private static BackupVersionDto Backup(string id, DateTime createdUtc)
         => new BackupVersionDto { BackupId = id, CreatedUtc = createdUtc };
 
+    private static BackupGalleryCardViewModel GalleryCard(DashboardViewModel model, string gameId, string backupId, string title)
+        => new BackupGalleryCardViewModel(new BackupCoverGalleryEntryDto
+        {
+            Backup = new BackupVersionDto { PlayniteId = gameId, BackupId = backupId, Comment = title },
+            Cover = new BackupCoverDto()
+        }, () => model.ProgressRecapOrderItems.Count < 9);
+
+    private static void AddGalleryCard(DashboardViewModel model, BackupGalleryCardViewModel card)
+    {
+        card.PropertyChanged += (_, change) =>
+        {
+            if (change.PropertyName == nameof(BackupGalleryCardViewModel.IsSelected))
+                Invoke(model, "OnBackupGalleryCardSelectionChanged", card);
+        };
+        model.BackupGalleryItems.Add(card);
+    }
+
     private static DashboardViewModel CreateBareDashboardViewModel(params BackupVersionDto[] backups)
     {
         var settings = new GameSaveCenterSettings();
@@ -648,6 +693,8 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         SetField(viewModel, "<DiffAddedPaths>k__BackingField", new BatchObservableCollection<string>());
         SetField(viewModel, "<DiffModifiedPaths>k__BackingField", new BatchObservableCollection<string>());
         SetField(viewModel, "<DiffRemovedPaths>k__BackingField", new BatchObservableCollection<string>());
+        SetField(viewModel, "<BackupGalleryItems>k__BackingField", new BatchObservableCollection<BackupGalleryCardViewModel>());
+        SetField(viewModel, "progressRecapSelectionOrder", new ProgressRecapSelectionOrder());
         SetField(viewModel, "<Backups>k__BackingField", new BatchObservableCollection<BackupVersionDto>(backups));
 
         Invoke(viewModel, "OnBackupHistoryInitialize");
@@ -672,11 +719,12 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         onClick!.Invoke(button, null);
     }
 
-    private static void Invoke(object target, string methodName)
+    private static void Invoke(object target, string methodName, params object?[] arguments)
     {
-        var method = target.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+        var method = target.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+            .SingleOrDefault(candidate => candidate.Name == methodName && candidate.GetParameters().Length == arguments.Length);
         Assert.NotNull(method);
-        method!.Invoke(target, null);
+        method!.Invoke(target, arguments);
     }
 
     private static void SetField(object target, string name, object? value)

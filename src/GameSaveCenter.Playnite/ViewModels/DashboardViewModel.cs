@@ -26,7 +26,7 @@ using Playnite.SDK;
 namespace GameSaveCenter.Playnite.ViewModels
 {
     /// <summary>Apple-inspired dashboard state; all file operations remain in the Worker.</summary>
-    public sealed partial class DashboardViewModel : ObservableObject
+    public sealed partial class DashboardViewModel : ObservableObject, IProgressRecapOrderMoveSource
     {
         partial void OnWorkspaceStateInitialize();
         partial void OnNavigationStateInitialize();
@@ -6830,6 +6830,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                 ToggleBackupCalendarCommand, PreviousBackupCalendarMonthCommand, NextBackupCalendarMonthCommand, SelectBackupCalendarDayCommand,
                 RefreshBackupGalleryCommand, LoadMoreBackupGalleryCommand, OpenBackupGalleryVersionCommand, OpenHistoryFromBackupGalleryCommand,
                 PreviewProgressRecapCommand, SaveProgressRecapCommand,
+                MoveProgressRecapItemUpCommand, MoveProgressRecapItemDownCommand, RemoveProgressRecapItemCommand,
                 OpenReportedProtectionBackupCommand, ToggleBackupLineageGraphCommand, CompareLineageGraphNodeCommand,
                 RefreshPlaySessionHistoryCommand, LoadMorePlaySessionHistoryCommand, OpenPlaySessionTaskCommand, OpenPlaySessionResultCommand
             }.OfType<RelayCommand>())

@@ -52,6 +52,7 @@ namespace GameSaveCenter.Playnite.ViewModels
             backupGalleryPage = null;
             isBackupGalleryLoading = false;
             BackupGalleryItems?.Clear();
+            progressRecapSelectionOrder?.Clear();
             InvalidateProgressRecap();
             backupGalleryStatus = string.Empty;
             OnPropertyChanged(nameof(BackupGalleryStatus));
@@ -89,8 +90,7 @@ namespace GameSaveCenter.Playnite.ViewModels
                         card.PropertyChanged += (_, change) =>
                         {
                             if (change.PropertyName != nameof(BackupGalleryCardViewModel.IsSelected)) return;
-                            foreach (var visibleCard in BackupGalleryItems) visibleCard.NotifyRecapAvailability();
-                            InvalidateProgressRecap();
+                            OnBackupGalleryCardSelectionChanged(card);
                         };
                         BackupGalleryItems.Add(card);
                     }

@@ -12,10 +12,18 @@ namespace GameSaveCenter.Playnite.ViewModels
     public sealed partial class DashboardViewModel
     {
         private readonly LatestRequestCoordinator progressRecapRequests = new LatestRequestCoordinator();
+        private readonly ProgressRecapSelectionOrder progressRecapSelectionOrder = new ProgressRecapSelectionOrder();
         private bool progressRecapKeepMissing = true;
         private bool progressRecapSaving;
         private BitmapSource? progressRecapPreview;
         private string progressRecapStatus = string.Empty;
+
+        internal event EventHandler<ProgressRecapOrderMoveStartingEventArgs>? ProgressRecapOrderMoveStarting;
+        event EventHandler<ProgressRecapOrderMoveStartingEventArgs>? IProgressRecapOrderMoveSource.ProgressRecapOrderMoveStarting
+        {
+            add => ProgressRecapOrderMoveStarting += value;
+            remove => ProgressRecapOrderMoveStarting -= value;
+        }
 
         public bool ProgressRecapKeepMissing
         {
@@ -28,12 +36,18 @@ namespace GameSaveCenter.Playnite.ViewModels
             }
         }
 
-        private int SelectedProgressRecapCount => BackupGalleryItems?.Count(item => item.IsSelected) ?? 0;
+        private int SelectedProgressRecapCount => progressRecapSelectionOrder?.Count ?? 0;
         public string ProgressRecapSelectionLabel => $"已选 {SelectedProgressRecapCount}/9 个进度";
+        public bool HasProgressRecapItems => SelectedProgressRecapCount > 0;
+        public System.Collections.ObjectModel.ObservableCollection<ProgressRecapOrderItemViewModel> ProgressRecapOrderItems
+            => progressRecapSelectionOrder.Items;
         public BitmapSource? ProgressRecapPreview => progressRecapPreview;
         public string ProgressRecapStatus => progressRecapStatus;
         public ICommand PreviewProgressRecapCommand { get; private set; } = null!;
         public ICommand SaveProgressRecapCommand { get; private set; } = null!;
+        public ICommand MoveProgressRecapItemUpCommand { get; private set; } = null!;
+        public ICommand MoveProgressRecapItemDownCommand { get; private set; } = null!;
+        public ICommand RemoveProgressRecapItemCommand { get; private set; } = null!;
 
         private void InitializeProgressRecapCommands()
         {
@@ -46,6 +60,55 @@ namespace GameSaveCenter.Playnite.ViewModels
                     if (preview != null) Observe(SaveProgressRecapAsync(preview));
                 },
                 _ => CanUseBackupGallery && !progressRecapSaving && progressRecapPreview != null);
+            MoveProgressRecapItemUpCommand = new RelayCommand(
+                item => MoveProgressRecapItem(item, -1),
+                item => CanMoveProgressRecapItem(item, -1));
+            MoveProgressRecapItemDownCommand = new RelayCommand(
+                item => MoveProgressRecapItem(item, 1),
+                item => CanMoveProgressRecapItem(item, 1));
+            RemoveProgressRecapItemCommand = new RelayCommand(
+                RemoveProgressRecapItem,
+                item => CanUseBackupGallery && item is ProgressRecapOrderItemViewModel);
+        }
+
+        private bool CanMoveProgressRecapItem(object? value, int direction)
+            => CanUseBackupGallery && value is ProgressRecapOrderItemViewModel item
+                && progressRecapSelectionOrder.CanMove(item, direction);
+
+        private void MoveProgressRecapItem(object? value, int direction)
+        {
+            if (value is not ProgressRecapOrderItemViewModel item
+                || !progressRecapSelectionOrder.CanMove(item, direction)) return;
+            var currentIndex = progressRecapSelectionOrder.Items.IndexOf(item);
+            var adjacent = progressRecapSelectionOrder.Items[currentIndex + direction];
+            ProgressRecapOrderMoveStarting?.Invoke(this,
+                new ProgressRecapOrderMoveStartingEventArgs(item, adjacent, direction));
+            if (!progressRecapSelectionOrder.Move(item, direction)) return;
+            InvalidateProgressRecap();
+        }
+
+        private void RemoveProgressRecapItem(object? value)
+        {
+            if (value is not ProgressRecapOrderItemViewModel item) return;
+            var card = BackupGalleryItems.FirstOrDefault(candidate =>
+                ProgressRecapIdentity.From(candidate.Backup).Equals(item.Identity));
+            if (card?.IsSelected == true)
+            {
+                card.IsSelected = false;
+                return;
+            }
+
+            if (!progressRecapSelectionOrder.Remove(item.Identity)) return;
+            foreach (var visibleCard in BackupGalleryItems) visibleCard.NotifyRecapAvailability();
+            InvalidateProgressRecap();
+        }
+
+        private void OnBackupGalleryCardSelectionChanged(BackupGalleryCardViewModel card)
+        {
+            if (card.IsSelected) progressRecapSelectionOrder.Add(card);
+            else progressRecapSelectionOrder.Remove(ProgressRecapIdentity.From(card.Backup));
+            foreach (var visibleCard in BackupGalleryItems) visibleCard.NotifyRecapAvailability();
+            InvalidateProgressRecap();
         }
 
         private void InvalidateProgressRecap()
@@ -58,7 +121,7 @@ namespace GameSaveCenter.Playnite.ViewModels
 
         private async Task PreviewProgressRecapAsync()
         {
-            var selected = BackupGalleryItems.Where(item => item.IsSelected).ToArray();
+            var selected = progressRecapSelectionOrder.Items.ToArray();
             if (selected.Length < 2 || selected.Length > 9) return;
             var keepMissing = ProgressRecapKeepMissing;
             var request = progressRecapRequests.Begin();
@@ -151,6 +214,7 @@ namespace GameSaveCenter.Playnite.ViewModels
         private void NotifyProgressRecapChanged()
         {
             OnPropertyChanged(nameof(ProgressRecapSelectionLabel));
+            OnPropertyChanged(nameof(HasProgressRecapItems));
             OnPropertyChanged(nameof(ProgressRecapStatus));
             OnPropertyChanged(nameof(ProgressRecapPreview));
             RaiseCommandStates();

@@ -1404,15 +1404,67 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <Grid Grid.Row="2" Margin="0,8,0,0">
-                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
                         <WrapPanel>
                             <TextBlock Text="{Binding ProgressRecapSelectionLabel}" Style="{DynamicResource GscCaptionStyle}" VerticalAlignment="Center" Margin="0,0,10,4"/>
                             <CheckBox IsChecked="{Binding ProgressRecapKeepMissing}" Content="保留缺图占位" Style="{DynamicResource GscCheckBox}" VerticalAlignment="Center" Margin="0,0,8,4"/>
                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="预览回顾图" Command="{Binding PreviewProgressRecapCommand}" Margin="0,0,8,4"/>
                             <ui:Button Style="{DynamicResource GscWpfUiCompactButton}" Content="保存 PNG" Command="{Binding SaveProgressRecapCommand}" Margin="0,0,0,4"/>
                         </WrapPanel>
-                        <TextBlock Grid.Row="1" Text="{Binding ProgressRecapStatus}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
-                        <Image Grid.Row="2" Source="{Binding ProgressRecapPreview}" Stretch="Uniform" MaxHeight="280" AutomationProperties.Name="进度回顾图片预览">
+                        <StackPanel Grid.Row="1" Margin="0,3,0,2">
+                            <TextBlock Text="已选顺序" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Text="选中进度后，可用上移、下移调整回顾图讲述顺序。" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource GscCaptionStyle}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasProgressRecapItems}" Value="False"><Setter Property="Visibility" Value="Visible"/></DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                          CanContentScroll="False" Margin="0,4,0,0">
+                                <ItemsControl x:Name="ProgressRecapOrderList" ItemsSource="{Binding ProgressRecapOrderItems}"
+                                              AutomationProperties.Name="已选进度顺序">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{DynamicResource GscRedesignSubCard}" Padding="6" Margin="0,0,6,6" Width="206"
+                                                    AutomationProperties.Name="{Binding AutomationName}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                                    <StackPanel VerticalAlignment="Center" Margin="0,0,4,0">
+                                                        <TextBlock Text="{Binding PositionLabel}" Style="{DynamicResource GscCaptionStyle}" FontWeight="SemiBold"
+                                                                   AutomationProperties.Name="{Binding AutomationName}"/>
+                                                        <TextBlock Text="{Binding Title}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="NoWrap"
+                                                                   TextTrimming="CharacterEllipsis" ToolTip="{Binding Title}"/>
+                                                    </StackPanel>
+                                                    <WrapPanel Grid.Column="1" VerticalAlignment="Center">
+                                                        <ui:Button Width="32" Height="32" Padding="0" Content="↑" ToolTip="上移"
+                                                                   AutomationProperties.Name="{Binding MoveUpAutomationName}" AutomationProperties.HelpText="将此进度上移一位"
+                                                                   Command="{Binding DataContext.MoveProgressRecapItemUpCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                   CommandParameter="{Binding}"/>
+                                                        <ui:Button Width="32" Height="32" Padding="0" Content="↓" ToolTip="下移"
+                                                                   AutomationProperties.Name="{Binding MoveDownAutomationName}" AutomationProperties.HelpText="将此进度下移一位"
+                                                                   Command="{Binding DataContext.MoveProgressRecapItemDownCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                   CommandParameter="{Binding}"/>
+                                                        <ui:Button Width="32" Height="32" Padding="0" Content="×" ToolTip="移除"
+                                                                   AutomationProperties.Name="{Binding RemoveAutomationName}" AutomationProperties.HelpText="从回顾图中移除此进度"
+                                                                   Command="{Binding DataContext.RemoveProgressRecapItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                   CommandParameter="{Binding}"/>
+                                                    </WrapPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                        <TextBlock Grid.Row="2" Text="{Binding ProgressRecapStatus}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                        <Image Grid.Row="3" Source="{Binding ProgressRecapPreview}" Stretch="Uniform" MaxHeight="280" AutomationProperties.Name="进度回顾图片预览">
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Style.Triggers>

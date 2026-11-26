@@ -1,16 +1,30 @@
+## 2026-11-26 玩家界面后续 C · 回顾图顺序
+
+回顾图现在保留用户选定顺序，稳定键由 `(PlayniteId, BackupId)` 构成，因此载入下一页不重排已有条目。新增“已选顺序”卡片行、静态序号、上移/下移/移除命令；预览按该顺序生成，保存继续使用预览位图。移动时只让移动项与相邻项做一次共享 `GscMotion` 180ms 归位，输入状态立即生效；焦点跟随移动项。Reduced Motion/高对比度走直接换位。
+
+SDK 8.0.423 定向 `ProgressRecap` 共 9/9 通过、0 失败、0 跳过，TRX 为 `.tmp/player-followup-c-candidate-20261126-tests/trx/progress-recap-focused-final.trx`。覆盖稳定身份与后续分页、9 项上限和移除、760×640 浅/深主题的焦点与 UIA 序号、受影响卡片动效、快速连续移动、Reduced Motion 立即换位，以及预览/PNG 像素一致。可选截图落在 `.tmp/player-followup-c-candidate-20261126-tests/progress-recap-captures/`，用于检查合成已选状态；它们来自测试窗口，不是 Playnite 实机截图。
+
+`python scripts/validate-source.py` 通过，`git diff --check` 通过。WPF 静态检查扫描 110 个 XAML：0 错误、50 警告、358 提示；警告包括已有共享资源和 `.tmp/pe03` 工作树文件。`scripts/render-qa.ps1` 产出 356 张 PNG、0 `PROBLEM`，报告 `.tmp/player-followup-c-candidate-20261126-render/render-qa-report.txt`；样本使用合成 workspace fixtures，报告基线 SHA `ce372db...` 且标记 `WorkingTreeClean=false`。该 Render QA 的画廊为空态，选中卡片外观另由上面的 760×640 测试截图查看。本批代码尚未在真实 Playnite 中目视验收；最终中文一键入口和双 SDK CI 待提交后运行。
+
 ## 2026-11-26 玩家界面后续 B · 当前游戏通知范围
 
 通知收件箱默认“全部游戏”，可切到当前游戏范围；条件直接比较 `NotificationRecordDto.GameId` 与当前 `GameStatusDto.PlayniteId`，不依据名字。该范围会与时间、级别和搜索组合，系统通知或其他同名游戏的通知不会混入。切换范围由绑定控件保留焦点；游戏上下文变化重新应用条件。刷新时继续按通知 ID 保留仍可见的选中项；可见集合批量已读先复制当前筛选结果再发 Worker 请求。当前游戏名显示在范围行，无选中游戏时说明为空结果并可从空状态回到全部游戏。摘要标明 Worker 最近 30 天且最多返回 500 条，不宣称全历史。
 
 SDK 8.0.423 定向测试 20/20 通过，覆盖同名游戏、不同稳定 ID、无游戏 ID 的全局通知、时间/级别组合、当前过滤集合批量已读、无选中游戏、空结果返回全部游戏、键盘焦点保持和窄/宽布局行位。`scripts/check-xaml.ps1` 检查 27 个 XAML 通过，`python scripts/validate-source.py` 与 `git diff --check` 通过。仓库没有 `scripts/validate_wpf_ui.py`，因此不记录该检查的通过结果。
 
-B 精确 SHA 的本机完整入口、发布/安装/启动与 GitHub 双 SDK 门禁待执行。此轮 CUA 初始化因缺少运行时 kernel assets 失败；不会把离屏与 WPF 行为测试称作真实 Playnite 目视验收。
+B 初始 SHA 的本机入口、发布/安装/启动成功；GitHub 基线渲染失败揭示紧凑布局问题。下文记录修复提交的本机完整入口与双 SDK 门禁。此轮 CUA 初始化曾因缺少运行时 kernel assets 失败；不会把离屏与 WPF 行为测试称作真实 Playnite 目视验收。
 
 首个 B 提交 `7e9822d91b4e892eb29a0c12914cb06ae96c187c` 的根目录中文入口实际退出 0；共 2,114 项、2,056 通过、0 失败、58 跳过，157 个 WPF 隔离类完成。入口调用 `GameSaveCenter-Run.cmd`，发布 Worker、打包 ZIP/PEXT、核验六个程序集构建身份，隔离安装与 Playnite 启动均到达成功标记。结果见 `artifacts/player-followup-b-7e9822d9-retry1/entry-result.json`；隔离窗口停在首次配置，验证后只关闭本次 profile 的 Playnite 与 Worker。
 
 该 SHA 对应 GitHub run [45750514576](https://github.com/Nikilua/GameSaveCenter/actions/runs/45750514576)：SDK 10 job 139676902592 成功，基线 job 139676902920 在 `render-qa.ps1` 失败。保留的本机复现报告 `.tmp/player-followup-b-render-repro-7e9822d9/render/render-qa-report.txt` 将问题定位为通知列表在 1040×700 浅/深主题只有 2/3 行完整可读。将当前游戏范围与已读操作合并到一行，超窄窗口把操作换到第二行；`NotificationInboxViewBehaviorTests` 定向 7/7 通过，TRX 位于 `.tmp/player-followup-b-layoutfix-7e9822d9/results/notification-inbox-layout.trx`。修复后 Render QA 输出 352 张 PNG、0 `PROBLEM`、`render-qa OK`，两主题均显示 3/3 行，报告 `.tmp/player-followup-b-render-fix-7e9822d9/render/render-qa-report.txt`。`check-xaml.ps1`（27 项）、`validate-source.py` 与 `git diff --check` 通过。
 
-上述修复尚未提交；修复精确 SHA 的完整根入口和 GitHub 双 SDK 尚待执行。RenderHarness 结果不等于真实 Playnite 通知页目视验证；用户已完成此前带数据存档故事走查，本轮不重复该场景。
+最终修复提交 `ce372dbccdf60a190d6a923123c3cc8c0566cbaf` 已推送 `origin/main`。根目录 `GameSaveCenter-一键构建安装运行.cmd` 调用 `GameSaveCenter-Run.cmd`；隔离运行 PID 42704 实际 exit 0，SDK 8.0.423 / Release 共 2,114 项、2,056 通过、0 失败、58 跳过。构建、测试、Worker 发布、ZIP/PEXT 打包、六个安装程序集身份核验与隔离 Playnite 启动均成功。摘要与安装身份见 `artifacts/player-followup-b-ce372dbc/entry-result.json` 和 `artifacts/player-followup-b-ce372dbc/install-report.txt`。该 SHA 的 GitHub run [45765695155](https://github.com/Nikilua/GameSaveCenter/actions/runs/45765695155) 基线 job [139725951620](https://github.com/Nikilua/GameSaveCenter/actions/runs/45765695155/job/139725951620) 与 SDK 10 job [139725951886](https://github.com/Nikilua/GameSaveCenter/actions/runs/45765695155/job/139725951886) 均 completed/success。新隔离 profile 停在首次配置页，未目视验收通知页；用户已完成此前带数据存档故事走查，本批未重复。
+
+## 2026-11-26 玩家界面后续 B · 当前游戏通知范围修复
+
+初始 B 提交 `7e9822d91b4e892eb29a0c12914cb06ae96c187c` 的 root Render QA 失败，实际失败步骤是 1040×700 浅/深主题通知列表高度：只完整显示 2/3 行。修复将当前游戏范围与批量操作合为一行，超窄窗口才堆叠；`NotificationInboxViewBehaviorTests` 7/7，修复后 Render QA 352 PNG、0 `PROBLEM`，两主题均显示 3/3 行。
+
+修复提交 `ce372dbccdf60a190d6a923123c3cc8c0566cbaf` 精确本机入口 exit 0，2,114 项、2,056 通过、0 失败、58 跳过；发布、打包、六程序集身份与隔离启动完成。GitHub run [45765695155](https://github.com/Nikilua/GameSaveCenter/actions/runs/45765695155) 的基线 job 139725951620 和 SDK 10 job 139725951886 均成功。原始失败、入口及安装报告见 `artifacts/player-followup-b-ce372dbc/` 与首轮修复复现 `.tmp/player-followup-b-render-repro-7e9822d9/`。此修正只由 WPF Render QA 实测，没有声称通知页在 Playnite 前台目视核验。
 
 ## 2026-11-26 玩家界面后续 A · 差异按目录查看
 

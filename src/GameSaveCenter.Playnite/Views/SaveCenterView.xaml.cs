@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -38,6 +42,11 @@ namespace GameSaveCenter.Playnite.Views
         private readonly WrapPanelRowGapController historyActionRowGap;
         private readonly WrapPanelRowGapController historyToolbarRowGap;
         private DashboardViewModel? backupArrivalModel;
+        private INotifyCollectionChanged? recapOrderCollection;
+        private NotifyCollectionChangedEventHandler? recapOrderCollectionChangedHandler;
+        private IProgressRecapOrderMoveSource? recapOrderMoveSource;
+        private EventHandler<ProgressRecapOrderMoveStartingEventArgs>? recapOrderMoveStartingHandler;
+        private ProgressRecapOrderMoveStartingEventArgs? pendingRecapOrderMove;
         private string? restoreStepMotionKey;
 
         internal Action? PreferencePersistenceOverrideForBehaviorTest { get; set; }
@@ -91,6 +100,7 @@ namespace GameSaveCenter.Playnite.Views
             GscMotion.Normalize(SaveCandidateInspectorFrame);
             AttachColumnLayouts();
             AttachBackupArrivalModel();
+            AttachProgressRecapOrder();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -99,6 +109,7 @@ namespace GameSaveCenter.Playnite.Views
             CancelCandidateInspectorTransition();
             DetachColumnLayouts();
             DetachBackupArrivalModel();
+            DetachProgressRecapOrder(normalize: true);
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -109,6 +120,129 @@ namespace GameSaveCenter.Playnite.Views
                 SaveHistoryGrid.SetBinding(ItemsControl.ItemsSourceProperty, new Binding("Backups"));
             AttachColumnLayouts();
             AttachBackupArrivalModel();
+            Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(AttachProgressRecapOrder));
+        }
+
+        private void AttachProgressRecapOrder()
+        {
+            DetachProgressRecapOrder(normalize: false);
+            if (!IsLoaded) return;
+            recapOrderCollection = ProgressRecapOrderList.ItemsSource as INotifyCollectionChanged;
+            if (recapOrderCollection != null)
+            {
+                recapOrderCollectionChangedHandler = OnProgressRecapOrderCollectionChanged;
+                recapOrderCollection.CollectionChanged += recapOrderCollectionChangedHandler;
+            }
+            recapOrderMoveSource = DataContext as IProgressRecapOrderMoveSource;
+            if (recapOrderMoveSource != null)
+            {
+                recapOrderMoveStartingHandler = OnProgressRecapOrderMoveStarting;
+                recapOrderMoveSource.ProgressRecapOrderMoveStarting += recapOrderMoveStartingHandler;
+            }
+            ProgressRecapOrderList.UpdateLayout();
+        }
+
+        private void DetachProgressRecapOrder(bool normalize)
+        {
+            if (recapOrderCollection != null && recapOrderCollectionChangedHandler != null)
+                recapOrderCollection.CollectionChanged -= recapOrderCollectionChangedHandler;
+            recapOrderCollection = null;
+            recapOrderCollectionChangedHandler = null;
+            if (recapOrderMoveSource != null && recapOrderMoveStartingHandler != null)
+                recapOrderMoveSource.ProgressRecapOrderMoveStarting -= recapOrderMoveStartingHandler;
+            recapOrderMoveSource = null;
+            recapOrderMoveStartingHandler = null;
+            pendingRecapOrderMove = null;
+            if (!normalize) return;
+            foreach (var item in ProgressRecapOrderList.Items)
+            {
+                if (ProgressRecapOrderList.ItemContainerGenerator.ContainerFromItem(item) is FrameworkElement container)
+                    GscMotion.Normalize(container);
+            }
+        }
+
+        private void OnProgressRecapOrderCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action != NotifyCollectionChangedAction.Move || !IsLoaded) return;
+            var moved = e.NewItems?.OfType<ProgressRecapOrderItemViewModel>().FirstOrDefault();
+            if (moved == null) return;
+
+            var move = pendingRecapOrderMove;
+            pendingRecapOrderMove = null;
+            var adjacent = move?.MovedItem == moved ? move.AdjacentItem : null;
+            var motionEnabled = IsInspectorMotionEnabled;
+            var movedOffsetY = move?.Direction < 0 ? 6 : -6;
+
+            var focused = Keyboard.FocusedElement as FrameworkElement;
+            var movedContainer = ProgressRecapOrderList.ItemContainerGenerator.ContainerFromItem(moved) as DependencyObject;
+            var focusFollowsMovedItem = focused != null && movedContainer != null && IsDescendantOrSelf(movedContainer, focused);
+            var focusedAction = focused is ButtonBase focusedButton
+                ? AutomationProperties.GetName(focusedButton).Split('，').LastOrDefault()
+                : null;
+
+            if ((!motionEnabled || adjacent == null) && !focusFollowsMovedItem) return;
+            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+            {
+                if (!IsLoaded) return;
+                ProgressRecapOrderList.UpdateLayout();
+                if (motionEnabled && IsInspectorMotionEnabled)
+                {
+                    AnimateRecapOrderItem(moved, movedOffsetY);
+                    if (adjacent != null)
+                        AnimateRecapOrderItem(adjacent, -movedOffsetY);
+                }
+
+                if (!focusFollowsMovedItem
+                    || ProgressRecapOrderList.ItemContainerGenerator.ContainerFromItem(moved) is not DependencyObject movedPresenter)
+                {
+                    return;
+                }
+                if (!(focused is ButtonBase focusedButtonAfterMove && focusedButtonAfterMove.IsEnabled
+                    && IsDescendantOrSelf(movedPresenter, focusedButtonAfterMove)))
+                {
+                    var movedButtons = FindVisualChildren<ButtonBase>(movedPresenter).Where(button => button.IsEnabled).ToArray();
+                    var replacement = movedButtons.FirstOrDefault(button =>
+                        !string.IsNullOrEmpty(focusedAction)
+                        && AutomationProperties.GetName(button).EndsWith("，" + focusedAction, StringComparison.Ordinal))
+                        ?? movedButtons.FirstOrDefault();
+                    if (replacement != null) Keyboard.Focus(replacement);
+                }
+            }));
+        }
+
+        private void OnProgressRecapOrderMoveStarting(object? sender, ProgressRecapOrderMoveStartingEventArgs e)
+            => pendingRecapOrderMove = e;
+
+        private void AnimateRecapOrderItem(ProgressRecapOrderItemViewModel item, double offsetY)
+        {
+            if (ProgressRecapOrderList.ItemContainerGenerator.ContainerFromItem(item) is not FrameworkElement container)
+                return;
+            GscMotion.Normalize(container);
+            GscMotion.GetMutableTranslateTransform(container).Y = offsetY;
+            GscMotion.AnimateTranslate(container, 0, 0, GscMotion.MotionDurationKind.Transition);
+        }
+
+        private static bool IsDescendantOrSelf(DependencyObject ancestor, DependencyObject descendant)
+        {
+            var current = descendant;
+            while (current != null)
+            {
+                if (ReferenceEquals(current, ancestor)) return true;
+                current = current is Visual || current is System.Windows.Media.Media3D.Visual3D
+                    ? VisualTreeHelper.GetParent(current)
+                    : LogicalTreeHelper.GetParent(current);
+            }
+            return false;
+        }
+
+        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, index);
+                if (child is T typed) yield return typed;
+                foreach (var descendant in FindVisualChildren<T>(child)) yield return descendant;
+            }
         }
 
         private void AttachBackupArrivalModel()
