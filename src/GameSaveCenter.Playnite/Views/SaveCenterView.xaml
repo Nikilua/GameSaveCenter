@@ -1256,9 +1256,15 @@
                                             <ItemsControl ItemsSource="{Binding VisibleDiffDirectories}" AutomationProperties.Name="差异目录">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Expander Header="{Binding}" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" AutomationProperties.Name="{Binding AutomationName}"
+                                                        <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" AutomationProperties.Name="{Binding AutomationName}"
                                                                   infra:AdaptiveThemePaletteFactory.MotionEnabledActive="False"
                                                                   Focusable="False" Margin="0,0,0,6">
+                                                            <Expander.Header>
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding Name}" Style="{DynamicResource GscBodyStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                                                                    <TextBlock Text="{Binding Counts}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
+                                                                </StackPanel>
+                                                            </Expander.Header>
                                                             <Expander.Resources>
                                                                 <DataTemplate x:Key="DiffDirectoryFiles">
                                                                     <StackPanel Loaded="OnDiffDirectoryFilesLoaded" Unloaded="OnDiffDirectoryFilesUnloaded">
@@ -1282,14 +1288,6 @@
                                                                     </StackPanel>
                                                                 </DataTemplate>
                                                             </Expander.Resources>
-                                                            <Expander.HeaderTemplate>
-                                                                <DataTemplate>
-                                                                    <StackPanel>
-                                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource GscBodyStyle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
-                                                                        <TextBlock Text="{Binding Counts}" Style="{DynamicResource GscCaptionStyle}" TextWrapping="Wrap"/>
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-                                                            </Expander.HeaderTemplate>
                                                             <Expander.Style>
                                                                 <Style TargetType="Expander" BasedOn="{StaticResource GscDisclosureCard}">
                                                                     <Style.Triggers>

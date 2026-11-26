@@ -219,7 +219,7 @@ public sealed class R11DiffListSearchBehaviorTests
             {
                 window.Show();
                 PumpLayout(window);
-                var group = FindVisualChildren<Expander>(view).Single(expander => expander.Header is BackupDiffDirectory);
+                var group = FindVisualChildren<Expander>(view).Single(expander => expander.DataContext is BackupDiffDirectory);
                 var header = Assert.IsType<ToggleButton>(group.Template.FindName("HeaderSite", group));
                 Assert.True(header.Focusable);
                 Assert.True(header.IsTabStop);

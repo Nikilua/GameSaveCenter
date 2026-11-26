@@ -8,6 +8,14 @@ SDK 8.0.423 的 `R11DiffListSearchBehaviorTests` 6 过、0 失败、0 跳过。�
 
 基线 job 同样失败，原件 [15041886035](https://github.com/Nikilua/GameSaveCenter/actions/runs/45651559807/artifacts/15041886035)。同 SHA 本地入口 PID 56120 退出 1，1,177 项中 1,157 通过、2 失败、18 跳过。保留 `artifacts/build-diagnostics/20261125T161317350Z-60c7bda6` 和安装入口捕获 `artifacts/player-followup-a-final`。更早两次本地尝试分别停在沙箱进程检查和已存在的隔离配置目录，尚未进入测试。
 
+候选 `a631179807e9671166ba6f99f4b0bf344a76360f` 的本机入口 PID 17688 退出 1，完成 58/157 个 WPF 隔离类后，在 `R06ColumnHeaderHelpTests.ProductionTablesUseSharedHeaderHelpAndKeepLongHeaderStrategy` 停止。1,464 项中 1,444 通过、1 失败、19 跳过；原始 TRX 位于 `artifacts/build-diagnostics/20261125T161835404Z-b2aec644/tests/wpf.R06ColumnHeaderHelpTests/wpf.R06ColumnHeaderHelpTests.trx`。测试用宽泛的源码断言拒绝视图中任意 `Header="{Binding...`，所以目录分组改为在 `Expander.Header` 直接声明共享样式内容，测试通过 `DataContext` 找分组。
+
+精确 GitHub run [45652504248](https://github.com/Nikilua/GameSaveCenter/actions/runs/45652504248) 的基线 job [139340432995](https://github.com/Nikilua/GameSaveCenter/actions/runs/45652504248/job/139340432995) 与 SDK 10.0.401 job [139340433492](https://github.com/Nikilua/GameSaveCenter/actions/runs/45652504248/job/139340433492) 都在编译与测试步骤失败，原因相同；失败诊断 artifact 为 [15041474309](https://github.com/Nikilua/GameSaveCenter/actions/runs/45652504248/artifacts/15041474309) 和 [15040944464](https://github.com/Nikilua/GameSaveCenter/actions/runs/45652504248/artifacts/15040944464)。
+
+修复后的 `batch-a-focused-final2.trx` 共 14/14 通过、0 失败、0 跳过，含 R11 与 R06。`python scripts/validate-source.py` 通过；`validate_wpf_ui.py src/GameSaveCenter.Playnite` 扫描 27 个生产 XAML，0 错误、25 条既有警告、164 条提示。最新源码 Render QA 生成 430 张 PNG、0 `PROBLEM`，`render-qa OK`，报告在 `artifacts/player-followup-a-release-final-render/render-qa-report.txt`。
+
+可见隔离 Playnite 加载 `a6311798` 版本，使用两个合成版本复核 A→B 共 127 条路径：根目录新增 1，`profiles/east` 新增 124、修改 1，`profiles/west` 删除 1，总结为新增 125、修改 1、删除 1、大小 +763 B。按 `same.sav` 筛选后仍显示 east/west 两个父目录和对应计数；已展开 east 目录并看到文件行。自动化另覆盖双主题窄窗、焦点、快速开合、关闭动画及大清单；真实宿主观察限于页面渲染、A/B 结果、目录分组与搜索，没有把离屏/自动化结果记作实机键盘或动画验证。修正后精确交付提交的本地入口、六个程序集安装身份、隔离启动与双 SDK 结果仍待完成。
+
 ## 2026-11-25 隔离存档故事验收
 
 源码 `d7ef9762699a5eb13ae86773e449023312f86f8e` 通过中文一键入口。PID 53384 退出 0，经 `GameSaveCenter-Run.cmd` 执行 SDK 8.0.423 Release 全链。2,106 项中 2,048 通过、0 失败、58 跳过，157 个 WPF 隔离类完成。发布、打包、六个安装程序集身份核验及隔离 Playnite 启动完成。原件 `artifacts/royal-story-delivery3/`，诊断 `20261125T111107769Z-0050dae7`。源码校验通过，27 个生产 XAML 静态审查 0 错误、25 警告。最终 [Actions run 45601943050](https://github.com/Nikilua/GameSaveCenter/actions/runs/45601943050) 核对精确 SHA，基线 139162803529、SDK 10.0.401 job 139162803845 都成功。诊断 artifact 为 15021790025、15018755409，安装预览 15020033948。
