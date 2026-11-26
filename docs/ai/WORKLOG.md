@@ -6,6 +6,12 @@ SDK 8.0.423 定向测试 20/20 通过，覆盖同名游戏、不同稳定 ID、�
 
 B 精确 SHA 的本机完整入口、发布/安装/启动与 GitHub 双 SDK 门禁待执行。此轮 CUA 初始化因缺少运行时 kernel assets 失败；不会把离屏与 WPF 行为测试称作真实 Playnite 目视验收。
 
+首个 B 提交 `7e9822d91b4e892eb29a0c12914cb06ae96c187c` 的根目录中文入口实际退出 0；共 2,114 项、2,056 通过、0 失败、58 跳过，157 个 WPF 隔离类完成。入口调用 `GameSaveCenter-Run.cmd`，发布 Worker、打包 ZIP/PEXT、核验六个程序集构建身份，隔离安装与 Playnite 启动均到达成功标记。结果见 `artifacts/player-followup-b-7e9822d9-retry1/entry-result.json`；隔离窗口停在首次配置，验证后只关闭本次 profile 的 Playnite 与 Worker。
+
+该 SHA 对应 GitHub run [45750514576](https://github.com/Nikilua/GameSaveCenter/actions/runs/45750514576)：SDK 10 job 139676902592 成功，基线 job 139676902920 在 `render-qa.ps1` 失败。保留的本机复现报告 `.tmp/player-followup-b-render-repro-7e9822d9/render/render-qa-report.txt` 将问题定位为通知列表在 1040×700 浅/深主题只有 2/3 行完整可读。将当前游戏范围与已读操作合并到一行，超窄窗口把操作换到第二行；`NotificationInboxViewBehaviorTests` 定向 7/7 通过，TRX 位于 `.tmp/player-followup-b-layoutfix-7e9822d9/results/notification-inbox-layout.trx`。修复后 Render QA 输出 352 张 PNG、0 `PROBLEM`、`render-qa OK`，两主题均显示 3/3 行，报告 `.tmp/player-followup-b-render-fix-7e9822d9/render/render-qa-report.txt`。`check-xaml.ps1`（27 项）、`validate-source.py` 与 `git diff --check` 通过。
+
+上述修复尚未提交；修复精确 SHA 的完整根入口和 GitHub 双 SDK 尚待执行。RenderHarness 结果不等于真实 Playnite 通知页目视验证；用户已完成此前带数据存档故事走查，本轮不重复该场景。
+
 ## 2026-11-26 玩家界面后续 A · 差异按目录查看
 
 比较页保留平铺列表，增加「按目录查看」。目录计数覆盖比较结果里命中筛选的全部路径，根目录单列，完整路径可复制。目录标题和展开后的文件分别分批显示；文件控件只在展开时创建。打开时复用共享短时长做轻淡入，关闭时立即收起。

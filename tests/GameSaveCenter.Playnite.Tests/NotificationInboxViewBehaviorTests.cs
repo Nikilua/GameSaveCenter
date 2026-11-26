@@ -250,14 +250,25 @@ public sealed class NotificationInboxViewBehaviorTests
             var view = new NotificationInboxView { DataContext = new NotificationInboxData() };
             var scope = Assert.IsType<ComboBox>(view.FindName("NotificationGameScopeComboBox"));
             var description = Assert.IsType<TextBlock>(view.FindName("NotificationGameScopeDescription"));
+            var scopeActions = Assert.IsType<Grid>(view.FindName("NotificationScopeActionsGrid"));
+            var actions = Assert.IsType<WrapPanel>(view.FindName("NotificationReadActions"));
 
             view.ApplyResponsiveLayout(744, 460);
-            Assert.Equal(2, Grid.GetRow(scope));
-            Assert.Equal(2, Grid.GetRow(description));
+            Assert.Equal(2, Grid.GetRow(scopeActions));
+            Assert.Equal(0, Grid.GetRow(scope));
+            Assert.Equal(0, Grid.GetRow(description));
+            Assert.Equal(0, Grid.GetRow(actions));
+            Assert.Equal(2, Grid.GetColumn(actions));
+
+            view.ApplyResponsiveLayout(520, 460);
+            Assert.Equal(2, Grid.GetRow(scopeActions));
+            Assert.Equal(1, Grid.GetRow(actions));
+            Assert.Equal(3, Grid.GetColumnSpan(actions));
 
             view.ApplyResponsiveLayout(1200, 800);
-            Assert.Equal(1, Grid.GetRow(scope));
-            Assert.Equal(1, Grid.GetRow(description));
+            Assert.Equal(1, Grid.GetRow(scopeActions));
+            Assert.Equal(0, Grid.GetRow(actions));
+            Assert.Equal(2, Grid.GetColumn(actions));
         });
     }
 
@@ -317,7 +328,10 @@ public sealed class NotificationInboxViewBehaviorTests
                 openTask.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
                 openFirstTask.GetBindingExpression(Button.CommandProperty)?.UpdateTarget();
 
-                Assert.Equal(3, Grid.GetRow(actionBar));
+                var scopeActions = Assert.IsType<Grid>(view.FindName("NotificationScopeActionsGrid"));
+                Assert.Equal(2, Grid.GetRow(scopeActions));
+                Assert.Equal(0, Grid.GetRow(actionBar));
+                Assert.Equal(2, Grid.GetColumn(actionBar));
                 Assert.Equal(markSelected.Margin, markVisible.Margin);
                 Assert.Equal(markVisible.Margin, clearRead.Margin);
                 Assert.Equal(markSelected.MinHeight, markVisible.MinHeight);

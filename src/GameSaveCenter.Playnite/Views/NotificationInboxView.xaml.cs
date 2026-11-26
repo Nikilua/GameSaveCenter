@@ -9,6 +9,7 @@ namespace GameSaveCenter.Playnite.Views
     {
         private bool isApplyingResponsiveLayout;
         private bool? compactLayout;
+        private bool? stackedScopeActions;
         private bool compactInspectorOpen;
 
         public NotificationInboxView()
@@ -28,12 +29,14 @@ namespace GameSaveCenter.Playnite.Views
         {
             if (isApplyingResponsiveLayout || double.IsNaN(width) || double.IsInfinity(width)) return;
             var useCompact = width < 980;
-            if (compactLayout == useCompact) return;
+            var stackActions = useCompact && width < 580;
+            if (compactLayout == useCompact && stackedScopeActions == stackActions) return;
 
             isApplyingResponsiveLayout = true;
             try
             {
                 compactLayout = useCompact;
+                stackedScopeActions = stackActions;
                 if (useCompact)
                 {
                     compactInspectorOpen = false;
@@ -63,11 +66,7 @@ namespace GameSaveCenter.Playnite.Views
                     Grid.SetRow(NotificationTimeFilterComboBox, 1);
                     Grid.SetColumn(NotificationTimeFilterComboBox, 1);
                     Grid.SetColumnSpan(NotificationTimeFilterComboBox, 1);
-                    Grid.SetRow(NotificationGameScopeComboBox, 2);
-                    Grid.SetColumn(NotificationGameScopeComboBox, 0);
-                    Grid.SetRow(NotificationGameScopeDescription, 2);
-                    Grid.SetColumn(NotificationGameScopeDescription, 1);
-                    Grid.SetColumnSpan(NotificationGameScopeDescription, 4);
+                    Grid.SetRow(NotificationScopeActionsGrid, 2);
                     Grid.SetRow(NotificationInboxRefreshButton, 1);
                     Grid.SetColumn(NotificationInboxRefreshButton, 3);
                     Grid.SetRow(NotificationCompactDetailsButton, 1);
@@ -101,16 +100,19 @@ namespace GameSaveCenter.Playnite.Views
                     Grid.SetRow(NotificationTimeFilterComboBox, 0);
                     Grid.SetColumn(NotificationTimeFilterComboBox, 2);
                     Grid.SetColumnSpan(NotificationTimeFilterComboBox, 1);
-                    Grid.SetRow(NotificationGameScopeComboBox, 1);
-                    Grid.SetColumn(NotificationGameScopeComboBox, 0);
-                    Grid.SetRow(NotificationGameScopeDescription, 1);
-                    Grid.SetColumn(NotificationGameScopeDescription, 1);
-                    Grid.SetColumnSpan(NotificationGameScopeDescription, 4);
+                    Grid.SetRow(NotificationScopeActionsGrid, 1);
                     Grid.SetRow(NotificationInboxRefreshButton, 0);
                     Grid.SetColumn(NotificationInboxRefreshButton, 3);
                     NotificationCompactDetailsButton.Visibility = Visibility.Collapsed;
                     NotificationInboxSearchHost.Margin = new Thickness(0, 0, 10, 0);
                 }
+
+                Grid.SetRow(NotificationReadActions, stackActions ? 1 : 0);
+                Grid.SetColumn(NotificationReadActions, stackActions ? 0 : 2);
+                Grid.SetColumnSpan(NotificationReadActions, stackActions ? 3 : 1);
+                NotificationReadActions.Margin = stackActions
+                    ? new Thickness(0, 4, 0, 0)
+                    : new Thickness(8, 0, 0, 0);
             }
             finally
             {
