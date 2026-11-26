@@ -644,6 +644,7 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         SetField(viewModel, "diffPathSearchText", string.Empty);
         SetField(viewModel, "diffPathKindFilter", "全部");
         SetField(viewModel, "diffPathVisibleLimit", 120);
+        SetField(viewModel, "<VisibleDiffDirectories>k__BackingField", new BatchObservableCollection<BackupDiffDirectory>());
         SetField(viewModel, "<DiffAddedPaths>k__BackingField", new BatchObservableCollection<string>());
         SetField(viewModel, "<DiffModifiedPaths>k__BackingField", new BatchObservableCollection<string>());
         SetField(viewModel, "<DiffRemovedPaths>k__BackingField", new BatchObservableCollection<string>());

@@ -16,6 +16,12 @@ SDK 8.0.423 的 `R11DiffListSearchBehaviorTests` 6 过、0 失败、0 跳过。�
 
 可见隔离 Playnite 加载 `a6311798` 版本，使用两个合成版本复核 A→B 共 127 条路径：根目录新增 1，`profiles/east` 新增 124、修改 1，`profiles/west` 删除 1，总结为新增 125、修改 1、删除 1、大小 +763 B。按 `same.sav` 筛选后仍显示 east/west 两个父目录和对应计数；已展开 east 目录并看到文件行。自动化另覆盖双主题窄窗、焦点、快速开合、关闭动画及大清单；真实宿主观察限于页面渲染、A/B 结果、目录分组与搜索，没有把离屏/自动化结果记作实机键盘或动画验证。修正后精确交付提交的本地入口、六个程序集安装身份、隔离启动与双 SDK 结果仍待完成。
 
+精确候选 `3676214927565fc8e2a8b0cc41235b3343cbb5e4` 的 Actions run [#1627](https://github.com/Nikilua/GameSaveCenter/actions/runs/45737702365) 中，基线 job [139634830932](https://github.com/Nikilua/GameSaveCenter/actions/runs/45737702365/job/139634830932) 与 SDK 10 job [139634830538](https://github.com/Nikilua/GameSaveCenter/actions/runs/45737702365/job/139634830538) 均在测试阶段失败：`R11HistoryTimeNavigationBehaviorTests` 的 4 项在未运行构造器的合成 DashboardViewModel 中触发空引用。原始诊断 artifact 为[基线 15079374860](https://github.com/Nikilua/GameSaveCenter/actions/runs/45737702365/artifacts/15079374860)和[SDK 10 15080522434](https://github.com/Nikilua/GameSaveCenter/actions/runs/45737702365/artifacts/15080522434)。
+
+同一 SHA 的本机中文一键入口 PID 52808 实际退出码为 1，运行 `20261126T014847210Z-f79506f7`。Core 157/157、Worker 441/441 通过；WPF 已执行 1,609 项，1,586 通过、4 失败、19 跳过，失败后入口在测试阶段停止，未进入发布、打包、安装和启动。保留入口日志 `artifacts/player-followup-a-36762149/` 与原始诊断 `artifacts/build-diagnostics/20261126T014847210Z-f79506f7/`。
+
+根因是 `CreateBareDashboardViewModel()` 用 `FormatterServices.GetUninitializedObject` 建立测试夹具，因此没有执行自动属性 `VisibleDiffDirectories` 的初始化器。夹具已显式初始化该集合，没有改生产行为。SDK 8.0.423 定向重建后 R11 全类 19/19 通过、0 失败、0 跳过；TRX 为 `artifacts/player-followup-a-r11fix2/tests/R11HistoryTimeNavigationBehaviorTests.trx`。此修正和本段记录待提交；修正提交上的完整入口及基线/SDK 10 门禁待执行。
+
 ## 2026-11-25 隔离存档故事验收
 
 源码 `d7ef9762699a5eb13ae86773e449023312f86f8e` 通过中文一键入口。PID 53384 退出 0，经 `GameSaveCenter-Run.cmd` 执行 SDK 8.0.423 Release 全链。2,106 项中 2,048 通过、0 失败、58 跳过，157 个 WPF 隔离类完成。发布、打包、六个安装程序集身份核验及隔离 Playnite 启动完成。原件 `artifacts/royal-story-delivery3/`，诊断 `20261125T111107769Z-0050dae7`。源码校验通过，27 个生产 XAML 静态审查 0 错误、25 警告。最终 [Actions run 45601943050](https://github.com/Nikilua/GameSaveCenter/actions/runs/45601943050) 核对精确 SHA，基线 139162803529、SDK 10.0.401 job 139162803845 都成功。诊断 artifact 为 15021790025、15018755409，安装预览 15020033948。
