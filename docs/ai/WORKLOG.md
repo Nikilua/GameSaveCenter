@@ -2,9 +2,15 @@
 
 回顾图现在保留用户选定顺序，稳定键由 `(PlayniteId, BackupId)` 构成，因此载入下一页不重排已有条目。新增“已选顺序”卡片行、静态序号、上移/下移/移除命令；预览按该顺序生成，保存继续使用预览位图。移动时只让移动项与相邻项做一次共享 `GscMotion` 180ms 归位，输入状态立即生效；焦点跟随移动项。Reduced Motion/高对比度走直接换位。
 
-SDK 8.0.423 定向 `ProgressRecap` 共 9/9 通过、0 失败、0 跳过，TRX 为 `.tmp/player-followup-c-candidate-20261126-tests/trx/progress-recap-focused-final.trx`。覆盖稳定身份与后续分页、9 项上限和移除、760×640 浅/深主题的焦点与 UIA 序号、受影响卡片动效、快速连续移动、Reduced Motion 立即换位，以及预览/PNG 像素一致。可选截图落在 `.tmp/player-followup-c-candidate-20261126-tests/progress-recap-captures/`，用于检查合成已选状态；它们来自测试窗口，不是 Playnite 实机截图。
+SDK 8.0.423 定向 `ProgressRecap` 共 9/9 通过、0 失败、0 跳过，TRX 为 `artifacts/player-followup-c-38ecae44/focused-tests/progress-recap-focused-final.trx`。覆盖稳定身份与后续分页、9 项上限和移除、760×640 浅/深主题的焦点与 UIA 序号、受影响卡片动效、快速连续移动、Reduced Motion 立即换位，以及预览/PNG 像素一致。可选截图已保存在 `artifacts/player-followup-c-38ecae44/focused-tests/progress-recap-captures/`，用于检查合成已选状态；它们来自测试窗口，不是 Playnite 实机截图。
 
-`python scripts/validate-source.py` 通过，`git diff --check` 通过。WPF 静态检查扫描 110 个 XAML：0 错误、50 警告、358 提示；警告包括已有共享资源和 `.tmp/pe03` 工作树文件。`scripts/render-qa.ps1` 产出 356 张 PNG、0 `PROBLEM`，报告 `.tmp/player-followup-c-candidate-20261126-render/render-qa-report.txt`；样本使用合成 workspace fixtures，报告基线 SHA `ce372db...` 且标记 `WorkingTreeClean=false`。该 Render QA 的画廊为空态，选中卡片外观另由上面的 760×640 测试截图查看。本批代码尚未在真实 Playnite 中目视验收；最终中文一键入口和双 SDK CI 待提交后运行。
+`python scripts/validate-source.py` 通过，`git diff --check` 通过。WPF 静态检查扫描 110 个 XAML：0 错误、50 警告、358 提示；警告包括已有共享资源和 `.tmp/pe03` 工作树文件。`scripts/render-qa.ps1` 产出 356 张 PNG、0 `PROBLEM`，报告保存在 `artifacts/player-followup-c-38ecae44/render-qa-candidate/render-qa-report.txt`；样本使用合成 workspace fixtures，报告基线 SHA `ce372db...` 且标记 `WorkingTreeClean=false`。该 Render QA 的画廊为空态，选中卡片外观另由上面的 760×640 测试截图查看。本批代码尚未在真实 Playnite 页面手动目视验收；用户已完成此前带数据故事走查，本批不重复该流程。
+
+最终代码提交 `38ecae44ef911d40cd037c9b37f7c5599788d72d` 已推送 `origin/main`。根目录 `GameSaveCenter-一键构建安装运行.cmd` 确认调用 `GameSaveCenter-Run.cmd`；PID 60056 实际 exit 0。SDK 8.0.423 / Release 的完整 TRX 汇总为 2,123 项、2,065 通过、0 失败、58 跳过（Core 157、Playnite source 582、Worker 441、WPF 隔离 943；158 个 WPF 隔离类）。Worker 发布、ZIP/PEXT 打包、六个程序集版本身份一致、隔离 Playnite profile 启动核验均通过。启动 PID 23648 使用本轮新建 profile，未手动打开回顾顺序页，门禁后已关闭。报告见 `artifacts/player-followup-c-38ecae44/entry-result.json`、`install-report.txt` 和 `artifacts/build-diagnostics/20261126T093600724Z-55974ab3/summary.json`。
+
+精确 SHA 的 GitHub Actions run [#1631](https://github.com/Nikilua/GameSaveCenter/actions/runs/45798164878) 对应 `38ecae44ef911d40cd037c9b37f7c5599788d72d`，run id `45798164878` completed/success。基线 job [139834097642](https://github.com/Nikilua/GameSaveCenter/actions/runs/45798164878/job/139834097642) 与 SDK 10.0.401 job [139834097075](https://github.com/Nikilua/GameSaveCenter/actions/runs/45798164878/job/139834097075) 均 completed/success；基线编译/测试、Render QA、WPF 静态审查、Playnite 扩展包生成和 artifact 上传全部成功。原始 artifact：基线诊断 `GameSaveCenter-build-diagnostics` id `15110233039`，SDK 10 诊断 `GameSaveCenter-sdk10-build-diagnostics` id `15107044676`，PEXT/ZIP `GameSaveCenter-windows-preview` id `15109867831`。
+
+清理前逐路径确认本轮 `.tmp` 输出位于仓库临时目录、没有重解析点、Git 跟踪文件、工作树引用或活动进程。删除五个构建/测试/profile 目录，估算移除 673,275,468 bytes；D 盘空闲空间实际增加 677,785,600 bytes。文档引用的定向 TRX、四张合成窗口截图和 356 张 Render QA 输出移至 `artifacts/player-followup-c-38ecae44/` 保留。旧走查 profile 与其他任务产物未动。
 
 ## 2026-11-26 玩家界面后续 B · 当前游戏通知范围
 
