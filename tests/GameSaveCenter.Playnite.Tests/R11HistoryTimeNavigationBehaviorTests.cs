@@ -273,6 +273,50 @@ public sealed class R11HistoryTimeNavigationBehaviorTests
         });
     }
 
+    [Fact]
+    public void CompletedBackupVersionEventRequestsHistoryReloadForItsGame()
+    {
+        var shouldReload = typeof(DashboardViewModel).GetMethod(
+            "HasCompletedBackupVersionArrival",
+            BindingFlags.Static | BindingFlags.NonPublic)!;
+        var feed = new TaskChangeFeedDto
+        {
+            Changes = new List<TaskChangeEventDto>
+            {
+                new TaskChangeEventDto
+                {
+                    Task = new TaskStatusDto
+                    {
+                        TaskType = "Backup",
+                        GameId = "game-a",
+                        State = TaskState.Succeeded,
+                        SourceReferences = new List<TaskSourceReferenceDto>
+                        {
+                            new TaskSourceReferenceDto
+                            {
+                                Kind = TaskSourceReferenceKind.BackupVersion,
+                                PlayniteId = "game-a",
+                                StableId = "backup-new"
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        Assert.True((bool)shouldReload.Invoke(null, new object[] { feed, "GAME-A" })!);
+        Assert.False((bool)shouldReload.Invoke(null, new object[] { feed, "game-b" })!);
+
+        feed.Changes[0].Task.State = TaskState.Running;
+        Assert.False((bool)shouldReload.Invoke(null, new object[] { feed, "game-a" })!);
+        feed.Changes[0].Task.State = TaskState.Succeeded;
+        feed.Changes[0].Task.TaskType = "Restore";
+        Assert.False((bool)shouldReload.Invoke(null, new object[] { feed, "game-a" })!);
+        feed.Changes[0].Task.TaskType = "Backup";
+        feed.Changes[0].Task.SourceReferences.Clear();
+        Assert.False((bool)shouldReload.Invoke(null, new object[] { feed, "game-a" })!);
+    }
+
     [Theory]
     [InlineData(GameSaveCenterThemeMode.Light)]
     [InlineData(GameSaveCenterThemeMode.Dark)]

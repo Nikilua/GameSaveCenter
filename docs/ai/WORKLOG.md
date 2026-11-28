@@ -14102,3 +14102,24 @@ C01修正 `aa590a1b8c710e0788098b27b128719001aeead3`、C02 `e5bf3fce3e0e410f97fd
 Playnite仅在新建隔离profile启动并随后正常关闭；未打开插件页、未做现场视觉验收。未接触真实用户profile、配置、库、存档、云端或其他任务TRX/TestResults；没有物理键鼠或UIA操作。此文档阶段只更新交接与证据索引，没有重新执行完整链。
 
 清理预检确认旧包备份 `.tmp/round6-final-prerun-package-20261115` 在仓库`.tmp/`内，ACL owner为当前用户；242个文件/203,299,385 bytes、0重解析点、0 Git跟踪项、无文档/脚本引用、无进程引用、0独占锁。精确PowerShell `Remove-Item -LiteralPath -Recurse -Force` 调用被执行策略拒绝，备份保留，未绕过。当前ZIP/PEXT、隔离安装profile、根链与独立build输出、诊断及失败记录保留；未清用户TRX/TestResults或未知目录。
+## 2026-11-28 舒适度首批执行中
+
+任务 1–3 依照 UI_COMFORT_AND_RESPONSIVENESS_2026-11-27.md 先复用隔离宿主，不碰真实游戏库、存档、配置或云端。当前真实 Playnite profile 为 .tmp/comfort-a2c-acc68d34，ProfileId 10fb1417-79ca-4ec8-abe5-5ff48a956f00；扩展安装目录 ID GameSaveCenter_66e9f2d7-67bb-43ef-b62a-b8e60734fcec，旧候选版本 0.6.73+acc68d34…；Worker SQLite 位于该 profile 的 GameSaveCenter/gamesavecenter.db，私有命名管道为 GameSaveCenter.Worker.Comfort.76477b1fea624287be3a63d08e6623e5 与 .Events，云上传关闭。两个合成游戏 ID 为 16246ed8-8a3f-4a8d-87a0-be6840afbd5f 与 75658223-6718-44b4-bde0-9fc23c501a58，显示名相同。隔离游戏会启动独立空白 Notepad；原用户文档窗口未关闭。
+
+### 1–2：带数据宿主和 A/B/C
+
+任务 1 的 scripts/seed-comfort-a2c-host.py 生成/更新两个差异目录、森林入口/水晶洞穴/港口日落三张 480×270 PNG 和一个离线媒体引用，并校验 profile marker、数据库完整性、外键和固定游戏/备份 ID。脚本语法检查通过；路径防护要求解析目标在仓库 .tmp 下且目录/输入/输出不为重解析点。Playnite/Worker 仍运行时不重写数据库。最终候选安装后仍需重新核对六个程序集、Worker 进程、主页读取及私有管道身份。
+
+任务 2 已有前序同一合成宿主的实际键盘/命令证据：A 的目录比较显示 Added 1、Modified 1、Removed 0、差异 −8 B，并经 Return/Shift+Tab/Space 操作；B 对当前游戏可见通知标记已读从 9 条降至 8 条，另一同名游戏及全局通知保留；C 将第 3 张截图移至首位并导出 956×295 PNG，21,327 bytes，SHA-256 612F8CF736D5BB892830B13490C6240A35759E54593A07E6D2AE57AD2D604F6E。本轮当前 profile 的实际 CUA 观察为 1360×900、Windows 显示比例 150%、深色主题，历史页旧安装仍选中 52 B 行，下一行 51 B；最终候选上仍需重做 A/B/C 并核导出顺序/哈希。当前对照截图在本轮 CUA 观测中显示，尚未另存为本地 PNG，不把它计为持久化截图文件。
+
+### 3：后台新档提示复核与修复
+
+前序代表游戏会话实际触发三次 GameStopped：session f2ad4dc9372b424e88d5afdb61d112d0 / task 762eddec82a4412c9b98a5123ddff18d 成功并创建 51 B 版本；session 6797268e9f724ce5980bdaa126face82 / task 6c3f278a5be24825b1a374fe45bc8c07 成功并创建 52 B 版本；session eab8c6cc16d64ee38dff820e70059983 / task dba5442e287443af8647b1f1d7b3704a 于 2026-11-28T04:22:28Z 成功并创建 57 B 版本。第二次曾需手动刷新后才显示 52 B、新标记和更新计数，同时保留旧行选择；第三次自动刷新周期已过且 Worker DB 有 57 B 新档时，页面仍停在 52 B。Worker 日志记录 12:22:29 的任务快照已到达而历史详情未重载。该数据库证据与当时可见 Playnite 画面区分记录；本轮不是离屏代理。
+
+根因是 RequestBackgroundRefreshAsync 先处理任务事件并更新已知任务状态，后续快照在状态比较中看不到变化，于是没有触发存档详情刷新。当前未提交修复在选中游戏仍相同且仍处于 Saves 工作区时，对成功的 Backup 任务及带 BackupVersion 稳定来源引用的变化定点调用 LoadDetailsAsync；刷新期间若切换游戏/工作区则不向新上下文写入。ResetRequired 也补一次所选历史重读。R11HistoryTimeNavigationBehaviorTests 新增事件识别正例与错游戏、运行中、Restore、缺稳定来源引用负例。生产 Worker 的 BackupOrchestrator 在 GameStopped 的 New/Different 结果会附 BackupVersion 来源引用，契约与宿主路径匹配。
+
+定向测试第一次直接从全局 SDK 启动因 global.json 要求 8.0.423 而失败；仓库 SDK bootstrap 选择本机缓存 8.0.423（Bootstrapped=false）后，第一次测试因既有 GscBuildCommit 要求失败。两项原始诊断分别保存在 .tmp/comfort-a2c-acc68d34/test-results/a2c-sdk-selection-diagnostic.txt 与 a2c-r11-build-identity-diagnostic.txt。采用仓库 source-root 和 commit 身份环境变量的再次运行 21/21 通过、0 失败、0 跳过，TRX 为 .tmp/comfort-a2c-acc68d34/test-results/a2c-background-arrival-focused-with-identity.trx；此为 pre-commit 结果，须在完整候选 SHA 上复跑。
+
+三项状态均为“待验及原因”，不计交付完成：任务 1 等最终入口安装与隔离 Worker/管道核验，任务 2 等同候选 A/B/C，任务 3 等最终 SHA 上保持历史页时的双连续 GameStopped 到达、计数与旧焦点验证。根入口和 Actions 仍待提交后执行。原 profile 与可追溯日志保留。尝试用系统截屏保存对照时，Win+Shift+S 截图浮层使 CUA 输入返回 failed to activate captured window；没有改用非 CUA 桌面注入，待用户按 Esc 后继续可见宿主。
+
+\r\n

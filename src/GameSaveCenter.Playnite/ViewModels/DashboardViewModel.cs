@@ -2766,12 +2766,16 @@ namespace GameSaveCenter.Playnite.ViewModels
         public async Task RequestBackgroundRefreshAsync()
         {
             var started = false;
+            var selectedGameId = string.Empty;
+            var historyWorkspaceActive = false;
             try
             {
                 ApplyOnUi(() =>
                 {
                     if (!plugin.Settings.EnableDashboardAutoRefresh || IsBackgroundRefreshing) return;
                     IsBackgroundRefreshing = true;
+                    selectedGameId = SelectedGame?.PlayniteId ?? string.Empty;
+                    historyWorkspaceActive = CurrentWorkspace == WorkspaceKind.Saves;
                     started = true;
                 });
                 if (!started) return;
@@ -2779,6 +2783,9 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var taskChanges=await plugin.RequestAsync<TaskChangeFeedDto>(MessageTypes.GetTaskChanges,
                     new TaskChangeRequestDto{AfterSequence=lastTaskEventSequence,Limit=100});
                 lastTaskEventSequence=taskChanges.LatestSequence;
+                // The terminal event may arrive before the snapshot, making its state diff look unchanged.
+                var selectedGameBackupArrival = historyWorkspaceActive
+                    && (taskChanges.ResetRequired || HasCompletedBackupVersionArrival(taskChanges, selectedGameId));
                 var refreshDashboard=taskChanges.ResetRequired||taskChanges.Changes.Count>0||
                     DateTime.UtcNow-lastFullDashboardRefreshUtc>=TimeSpan.FromMinutes(1);
                 if(!refreshDashboard)return;
@@ -2786,7 +2793,14 @@ namespace GameSaveCenter.Playnite.ViewModels
                 var loadDetails = false;
                 ApplyOnUi(() =>
                 {
-                    loadDetails = refreshDetails && !IsBusy && SelectedGame != null;
+                    var stillShowingArrivalGame = string.Equals(
+                        SelectedGame?.PlayniteId,
+                        selectedGameId,
+                        StringComparison.OrdinalIgnoreCase);
+                    loadDetails = !IsBusy && SelectedGame != null
+                        && (refreshDetails || (selectedGameBackupArrival
+                            && stillShowingArrivalGame
+                            && CurrentWorkspace == WorkspaceKind.Saves));
                 });
                 if (loadDetails) await LoadDetailsAsync();
             }
@@ -2798,6 +2812,23 @@ namespace GameSaveCenter.Playnite.ViewModels
             {
                 if (started) ApplyOnUi(() => IsBackgroundRefreshing = false);
             }
+        }
+
+        private static bool HasCompletedBackupVersionArrival(TaskChangeFeedDto taskChanges, string selectedGameId)
+        {
+            if (taskChanges?.Changes == null || string.IsNullOrWhiteSpace(selectedGameId)) return false;
+            return taskChanges.Changes.Any(change =>
+            {
+                var task = change?.Task;
+                return task != null
+                    && task.State == TaskState.Succeeded
+                    && string.Equals(task.TaskType, "Backup", StringComparison.Ordinal)
+                    && string.Equals(task.GameId, selectedGameId, StringComparison.OrdinalIgnoreCase)
+                    && task.SourceReferences?.Any(source => source != null
+                        && source.Kind == TaskSourceReferenceKind.BackupVersion
+                        && string.Equals(source.PlayniteId, selectedGameId, StringComparison.OrdinalIgnoreCase)
+                        && !string.IsNullOrWhiteSpace(source.StableId)) == true;
+            });
         }
 
         private async Task RefreshCoreAsync(bool synchronize, TimeSpan? snapshotTimeout = null)
